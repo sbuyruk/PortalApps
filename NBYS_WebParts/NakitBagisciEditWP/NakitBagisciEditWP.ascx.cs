@@ -241,8 +241,9 @@ namespace NBYS_WebParts.NakitBagisciEditWP
                     AdiTxt.Text = nakitBagisci.Adi.ReturnEmptyIfNull().ToString();
                     TCKimlikNoTxt.Text = nakitBagisci.TCKimlikNo.ReturnEmptyIfNull().ToString();
                     AdresTxt.Text = nakitBagisci.Adres.ReturnEmptyIfNull().ToString();
+                    MeslekTxt.Text = nakitBagisci.Meslek.ReturnEmptyIfNull().ToString();
 
-                    //TextInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true).TextInfo;
+                    //TextInfo culturInfo
                     //string upperCaseIl = culturInfo.ToUpper(nakitBagisci.Ili.ReturnEmptyIfNull().ToString());
                     string ilstr = nakitBagisci.Ili.ReturnEmptyIfNull().ToString();
                     if (IliDDL.Items.FindByValue(ilstr) != null)
@@ -287,12 +288,12 @@ namespace NBYS_WebParts.NakitBagisciEditWP
 
                     if (nakitBagisciId == 0)
                     {
-                        isSaved = saveNakitBagisci(nakitBagisci);
+                        isSaved = SaveNakitBagisci(nakitBagisci);
                     }
                     else
                     {
                         nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
-                        isSaved = updateNakitBagisci(nakitBagisci);
+                        isSaved = UpdateNakitBagisci(nakitBagisci);
                     }
 
                 }
@@ -316,12 +317,13 @@ namespace NBYS_WebParts.NakitBagisciEditWP
             }
 
         }
-        private bool saveNakitBagisci(NakitBagisci nakitBagisci)
+        private bool SaveNakitBagisci(NakitBagisci nakitBagisci)
         {
             bool isSaved = false;
             nakitBagisci.Adi = AdiTxt.Text.ReturnEmptyIfNull().ToString();
             nakitBagisci.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
             nakitBagisci.Adres = AdresTxt.Text.ReturnEmptyIfNull().ToString();
+            nakitBagisci.Meslek = MeslekTxt.Text.ReturnEmptyIfNull().ToString();
             nakitBagisci.Ili = IliDDL.SelectedItem.Value.ConvertToInt();
             nakitBagisci.Ilcesi = IlcesiDDL.SelectedItem.Value.ConvertToInt();
             nakitBagisci.Telefon1 = Telefon1Txt.Text.ReturnEmptyIfNull().ToString();
@@ -346,13 +348,14 @@ namespace NBYS_WebParts.NakitBagisciEditWP
                 isSaved = true;
             return isSaved;
         }
-        private bool updateNakitBagisci(NakitBagisci nakitBagisci)
+        private bool UpdateNakitBagisci(NakitBagisci nakitBagisci)
         {
             bool statusChanged = false;
             bool isSaved = false;
             nakitBagisci.Adi = AdiTxt.Text.ReturnEmptyIfNull().ToString();
             nakitBagisci.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
             nakitBagisci.Adres = AdresTxt.Text.ReturnEmptyIfNull().ToString();
+            nakitBagisci.Meslek = MeslekTxt.Text.ReturnEmptyIfNull().ToString();
             nakitBagisci.Ili = IliDDL.SelectedItem.Value.ConvertToInt();
             nakitBagisci.Ilcesi = IlcesiDDL.SelectedItem.Value.ConvertToInt();
             nakitBagisci.Telefon1 = Telefon1Txt.Text.ReturnEmptyIfNull().ToString();

@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -28,7 +28,27 @@
             modalInstance.hide();
         }
     }
+    function CloseModalDosyaNo() {
+        var myModalEl = document.getElementById('DosyaNoDegistirModalDiv');
+        var modalInstance = bootstrap.Modal.getInstance(myModalEl);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
 
+        // Fallback: Postback sonrası backdrop'un DOM'da kalmasını önle
+        setTimeout(function () {
+            document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+                el.parentNode.removeChild(el);
+            });
+            document.body.classList.remove('modal-open');
+            document.body.style.removeProperty('overflow');
+            document.body.style.removeProperty('padding-right');
+        }, 300);
+    }
+    function DosyaNoDegistirModalAc() {
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('DosyaNoDegistirModalDiv'));
+        myModalInstance.show();
+    }
     function FaizTutariHesapla() {
         var devirAnaPara = $('#<%= DevirAnaParaTxt.ClientID%>').val().replace(/\./g, "").replace(",", ".");
         var devirFaizliBakiye = $('#<%= DevirFaizliBakiyeTxt.ClientID%>').val().replace(/\./g, "").replace(",", ".");
@@ -39,7 +59,7 @@
             devirFaizliBakiye = 0;
         var sonuc = parseFloat(devirFaizliBakiye) - parseFloat(devirAnaPara);
         $('#<%= DevirFaizTutariTxt.ClientID%>').val(sonuc);
- 
+
     }
     function DevirAlBtnClick() {
         document.getElementById('<%= DevirAlBtn.ClientID%>').click();
@@ -50,13 +70,23 @@
 
 <div class="container ">
     <div class="card shadow">
-        <div class="card-header" id="CardHeader" runat="server">
-            <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
-            <asp:Image ID="AktifPasifImg" ClientIDMode="Static" runat="server" ImageUrl="../_layouts/19/images/TBYS_WebParts/belli-degil.png" CssClass="float-end" onerror="this.src='../TBYSResimleri/belli-degil.png';" />
+        <%--Sayfa başlığı--%>
+        <div class="card-header" id="CardHeaderDiv" runat="server">
+            <asp:LinkButton ID="LinkButton1" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
+            <asp:Image ID="AktifPasifImg" ClientIDMode="Static" runat="server" 
+                ImageUrl="../_layouts/19/images/TBYS_WebParts/belli-degil.png" 
+                CssClass="float-end me-3" onerror="this.src='../TBYSResimleri/belli-degil.png';" />
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label text-danger fw-bold" ID="TitleLbl" runat="server" Text="Kira Sözleşmesi"></asp:Label>
-                <asp:Label CssClass="col-form-label" ID="IdLbl" runat="server"></asp:Label>
-                <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server" style="display: block;"></asp:Label>
+                <asp:Label CssClass="form-label text-success fw-bold mb-1" ID="TitleLbl" runat="server" Text="Kira Sözleşmesi"></asp:Label>
+                <div class="form-group m-0 float-end me-2">
+                    <asp:Label CssClass="form-control fw-semibold" ID="IdLbl" runat="server"></asp:Label>
+                </div>
+                <div class="form-group m-0 float-end">
+                    <asp:Label CssClass="form-control fw-semibold" ID="KiraciAdiLbl" runat="server"></asp:Label>
+                </div>
+                <div class="form-group m-0 float-end">
+                    <asp:Label CssClass="form-control fw-semibold" ID="SorumluBolgeIdLbl" runat="server" Visible="false"></asp:Label>
+                </div>
             </h3>
         </div>
         <div class="card-body">
@@ -66,30 +96,30 @@
                         <div id="TasinmazListDiv" class="form-group col-5">
                             <div id="DevirDiv" runat="server" class="form-group border border-dark p-2">
                                 <div class="form-group border-bottom text-center">
-                                    <label class="col-form-label fw-bold" for="DevirAnaParaTxt">Devir</label>
+                                    <label class="form-label fw-bold" for="DevirAnaParaTxt">Devir</label>
                                 </div>
                                 <div class="row ">
                                     <div class="form-group col-3">
-                                        <label class="col-form-label" for="DevirAnaParaTxt">AnaPara</label>
+                                        <label class="form-label" for="DevirAnaParaTxt">AnaPara</label>
                                         <input type="text" id="DevirAnaParaTxt" runat="server" class="form-control input-money text-end" tooltip="Önceki Sözleşmeden devreden borç (ana para)"
                                             onchange="FaizTutariHesapla()" onkeyup="FaizTutariHesapla()" oncut="FaizTutariHesapla()" onpaste="FaizTutariHesapla()" oninput="FaizTutariHesapla()" />
                                     </div>
                                     <div class="form-group col-3">
-                                        <label class="col-form-label " for="DevirFaizTutariTxt">Faiz </label>
+                                        <label class="form-label " for="DevirFaizTutariTxt">Faiz </label>
                                         <asp:TextBox type="text" ID="DevirFaizTutariTxt" runat="server" CssClass="form-control input-money text-end bg-secondary" ToolTip="Önceki Sözleşmeden devreden faiz tutarı" />
                                     </div>
                                     <div class="form-group col-3">
-                                        <label class="col-form-label " for="DevirFaizliBakiyeTxt">FaizliBakiye</label>
+                                        <label class="form-label " for="DevirFaizliBakiyeTxt">FaizliBakiye</label>
                                         <input type="text" id="DevirFaizliBakiyeTxt" runat="server" class="form-control input-money text-end" tooltip="Önceki Sözleşmeden devreden faizli bakiye"
                                             onchange="FaizTutariHesapla()" onkeyup="FaizTutariHesapla()" oncut="FaizTutariHesapla()" onpaste="FaizTutariHesapla()" oninput="FaizTutariHesapla()" />
                                     </div>
                                     <div class="form-group col-3">
-                                        <label class="col-form-label text-white" >......... .......</label>
+                                        <label class="form-label text-white">......... .......</label>
                                         <asp:LinkButton CssClass="btn btn-danger" ID="DevirAlBtn" runat="server" CausesValidation="false" Text="Devir Al" OnClick="DevirAlBtn_Click" />
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group table border border-dark " >
+                            <div class="form-group table border border-dark ">
                                 <div class="form-group">
                                     <asp:LinkButton ID="KiraciTasinmazDegistirBtn" runat="server" CssClass="btn btn-primary float-end" Text="Kiracı/Taşınmaz Değiştir" OnClick="KiraciTasinmazDegistirBtn_Click"></asp:LinkButton>
                                 </div>
@@ -98,15 +128,15 @@
                                 </div>
 
                             </div>
-                            <div id="SozlesmeDurumuDiv" runat="server" class="p-1 border border-dark alert-secondary" style="display:none">
+                            <div id="SozlesmeDurumuDiv" runat="server" class="p-1 border border-dark alert-secondary" style="display: none">
                                 <div class="row form-group ">
-                                    <label class="col-form-label col-5" for="SozlesmeDurumuDDL">Sözleşme Durumu</label>
+                                    <label class="form-label col-5" for="SozlesmeDurumuDDL">Sözleşme Durumu</label>
                                     <div class="col-7">
-                                        <asp:DropDownList ID="SozlesmeDurumuDDL" runat="server" class="form-control" ></asp:DropDownList>
+                                        <asp:DropDownList ID="SozlesmeDurumuDDL" runat="server" class="form-control"></asp:DropDownList>
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <label class="col-form-label col-5" for="SozlesmeDurumuDDL">Değişme Tarihi</label>
+                                    <label class="form-label col-5" for="SozlesmeDurumuDDL">Değişme Tarihi</label>
                                     <div class="col-7">
                                         <input type="text" id="DurumDegismeTarTxt" class="form-control DateTimePickerV1" runat="server" readonly="readonly" />
                                     </div>
@@ -114,7 +144,7 @@
                             </div>
                             <div class="form-group border border-dark p-2" style="background-color: aliceblue">
                                 <div class="form-group">
-                                    <asp:Label CssClass="col-form-label fw-bold" ID="Label3" runat="server">Sözleşme Formu</asp:Label>
+                                    <asp:Label CssClass="form-label fw-bold" ID="Label3" runat="server">Sözleşme Formu</asp:Label>
                                 </div>
                                 <div class="form-group text-center">
                                     <a id="DosyaLnk" runat="server" class="btn btn-outline-primary" data-fancybox data-type="pdf" data-width="960" data-height="720" href="#">Sözleşmeyi Görüntüle
@@ -130,69 +160,75 @@
                         <div class="form-group col-7 border-top">
                             <div class="row">
                                 <div class="form-group col-3 border-right">
-                                    <div class="form-group">
-                                        <label class="col-form-label " for="DosyaNoTxt">Dosya No</label>
-                                        <asp:TextBox ID="DosyaNoTxt" runat="server" CssClass="form-control input-integer" ToolTip="Dosya No"></asp:TextBox>
+                                    <div class="form-group row">
+                                        <div class="col">
+                                            <label class="form-label " for="DosyaNoTxt">Dosya No</label>
+                                            <asp:TextBox ID="DosyaNoTxt" runat="server" CssClass="form-control input-integer" ToolTip="Dosya No"></asp:TextBox>
+                                        </div>
+                                        <div class="col">
+                                            <label class="form-label">Değiştir</label>
+                                            <asp:LinkButton ID="DosyaNoDegistirBtn" CssClass="btn btn-outline-primary" runat="server" Text="Değiştir" OnClick="DosyaNoDegistirBtn_Click" />
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-form-label " for="IlkSozlesmeTarTxt">İlk Söz.Tar.</label>
+                                        <label class="form-label " for="IlkSozlesmeTarTxt">İlk Söz.Tar.</label>
                                         <input type="text" id="IlkSozlesmeTarTxt" name="IlkSozlesmeTarTxt" class="form-control input-date DateTimePickerV1" runat="server" placeholder="dd.MM.yyyy" />
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-form-label" for="SozBasTarTxt">Söz.Baş.Tar.</label>
-                                        <input type="text" id="SozBasTarTxt" name="SozBasTarTxt" class="form-control input-date DateTimePickerV1" runat="server" placeholder="dd.MM.yyyy"/>
+                                        <label class="form-label" for="SozBasTarTxt">Söz.Baş.Tar.</label>
+                                        <input type="text" id="SozBasTarTxt" name="SozBasTarTxt" class="form-control input-date DateTimePickerV1" runat="server" placeholder="dd.MM.yyyy" />
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-form-label" for="SozBitTarTxt">Söz.Bit.Tar.</label>
-                                        <input type="text" id="SozBitTarTxt" name="SozBitTarTxt" class="form-control input-date DateTimePickerV1" runat="server" placeholder="dd.MM.yyyy"/>
+                                        <label class="form-label" for="SozBitTarTxt">Söz.Bit.Tar.</label>
+                                        <input type="text" id="SozBitTarTxt" name="SozBitTarTxt" class="form-control input-date DateTimePickerV1" runat="server" placeholder="dd.MM.yyyy" />
                                     </div>
 
                                 </div>
                                 <div class="form-group col-3 border-right">
                                     <div class="form-group">
-                                        <label class="col-form-label" for="OdemeSekliDDL">Ödeme Şekli</label>
+                                        <label class="form-label" for="OdemeSekliDDL">Ödeme Şekli</label>
                                         <asp:DropDownList ID="OdemeSekliDDL" runat="server" class="form-control" AutoPostBack="true" OnSelectedIndexChanged="OdemeSekliDDL_SelectedIndexChanged" Height="34px"></asp:DropDownList>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-form-label" for="TaksitSayisiTxt">Taksit Sayısı</label>
-                                        <asp:TextBox ID="TaksitSayisiTxt" runat="server" CssClass="form-control input-integer" type="number" step="1" min="1" max="12" >12</asp:TextBox>
+                                        <label class="form-label" for="TaksitSayisiTxt">Taksit Sayısı</label>
+                                        <asp:TextBox ID="TaksitSayisiTxt" runat="server" CssClass="form-control input-integer" type="number" step="1" min="1" max="12">12</asp:TextBox>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-form-label" for="KiraBedeliTxt">Kira Bedeli</label>
+                                        <label class="form-label" for="KiraBedeliTxt">Kira Bedeli</label>
                                         <input class="form-control input-money text-end " id="KiraBedeliTxt" runat="server" />
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-form-label" for="ArtisAyiTxt">Artış Ayı</label>
-                                        <asp:TextBox ID="ArtisAyiTxt" runat="server" CssClass="form-control input-integer" type="number" step="1" min="1" max="12" ToolTip="Artış Yenileme Ayı" ></asp:TextBox>
+                                        <label class="form-label" for="ArtisAyiTxt">Artış Ayı</label>
+                                        <asp:TextBox ID="ArtisAyiTxt" runat="server" CssClass="form-control input-integer" type="number" step="1" min="1" max="12" ToolTip="Artış Yenileme Ayı"></asp:TextBox>
                                     </div>
                                 </div>
                                 <div class="form-group col-6 border border-dark pr-2">
                                     <div class="row">
                                         <div class="form-group col-6 border-right ">
                                             <div class="form-group">
-                                                <label class="col-form-label " for="TeminatCinsiTxt">Teminat Cinsi</label>
+                                                <label class="form-label " for="TeminatCinsiTxt">Teminat Cinsi</label>
                                                 <asp:TextBox ID="TeminatCinsiTxt" runat="server" CssClass="form-control" ToolTip="Teminat Cinsi" ReadOnly="true"></asp:TextBox>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-form-label" for="TeminatTutariTxt">Belirlenen Teminat</label>
+                                                <label class="form-label" for="TeminatTutariTxt">Belirlenen Teminat</label>
                                                 <input class="form-control input-money text-end" id="TeminatTutariTxt" runat="server" readonly="readonly" />
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-form-label" for="IadeTeminatTutariTxt">İade-Mahsup</label>
+                                                <label class="form-label" for="IadeTeminatTutariTxt">İade-Mahsup</label>
                                                 <input class="form-control input-money text-end" id="IadeTeminatTutariTxt" runat="server" readonly="readonly" />
                                             </div>
                                         </div>
                                         <div class="form-group col-6 ">
                                             <div class="form-group">
-                                                <label class="col-form-label" for="TeminatOdemeTarTxt">Teminat Tarihi</label>
+                                                <label class="form-label" for="TeminatOdemeTarTxt">Teminat Tarihi</label>
                                                 <input type="text" id="TeminatOdemeTarTxt" name="TeminatOdemeTarTxt" class="form-control" runat="server" readonly="readonly" />
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-form-label" for="OdenenTeminatTutariTxt">Ödenen Teminat</label>
+                                                <label class="form-label" for="OdenenTeminatTutariTxt">Ödenen Teminat</label>
                                                 <input class="form-control input-money text-end" id="OdenenTeminatTutariTxt" runat="server" readonly="readonly" />
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-form-label" for="KalanTeminatTutariTxt">Kalan Teminat</label>
+                                                <label class="form-label" for="KalanTeminatTutariTxt">Kalan Teminat</label>
                                                 <input class="form-control input-money text-end" id="KalanTeminatTutariTxt" runat="server" readonly="readonly" />
                                             </div>
 
@@ -209,24 +245,24 @@
                             </div>
                             <div class="row  border-top">
                                 <div class="form-group col-5">
-                                    <label class="col-form-label" for="KefilAdiSoyadiTxt">Kefil</label>
+                                    <label class="form-label" for="KefilAdiSoyadiTxt">Kefil</label>
                                     <asp:TextBox ID="KefilAdiSoyadiTxt" runat="server" CssClass="form-control" ToolTip="Kefilin Adı Soyadı"></asp:TextBox>
                                 </div>
                                 <div class="form-group col">
-                                    <label class="col-form-label" for="KefilTcKimlikNoTxt">Kefil TC K.No</label>
+                                    <label class="form-label" for="KefilTcKimlikNoTxt">Kefil TC K.No</label>
                                     <asp:TextBox ID="KefilTcKimlikNoTxt" runat="server" CssClass="form-control" ToolTip="Kefilin TC Kimlik numarası"></asp:TextBox>
                                 </div>
                                 <div class="form-group col">
-                                    <label class="col-form-label" for="KefilTelTxt">Kefil Tel</label>
+                                    <label class="form-label" for="KefilTelTxt">Kefil Tel</label>
                                     <asp:TextBox ID="KefilTelTxt" runat="server" CssClass="form-control" ToolTip="Kefilin Telefonu"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-form-label" for="KefilAdresTxt">Kefil Adres</label>
+                                <label class="form-label" for="KefilAdresTxt">Kefil Adres</label>
                                 <asp:TextBox ID="KefilAdresTxt" runat="server" TextMode="MultiLine" Rows="2" CssClass="form-control" ToolTip="Kefil Ardes"></asp:TextBox>
                             </div>
                             <div class="form-group">
-                                <label class="col-form-label" for="AciklamaTxt">Açıklama</label>
+                                <label class="form-label" for="AciklamaTxt">Açıklama</label>
                                 <asp:TextBox ID="AciklamaTxt" runat="server" TextMode="MultiLine" Rows="5" CssClass="form-control" ToolTip="Açıklama"></asp:TextBox>
                             </div>
                         </div>
@@ -234,6 +270,59 @@
                     <div>
                         <asp:Label ID="UyariLbl" class="text-danger" runat="server"></asp:Label>
                     </div>
+                    <%--DosyaNoDeğiştir  --%>
+                    <div class="modal" id="DosyaNoDegistirModalDiv" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+                                    <h3>
+                                        <asp:Label ID="Label4" runat="server" Text="Label">Geçmişteki sözleşmeler dahil DosyaNo değiştirilecek</asp:Label>
+                                    </h3>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="border m-3 p-3 text-center">
+                                        <div class="row">
+                                            <div class="col form-group">
+                                                <asp:Label class="form-label fw-semibold" ID="Label5" runat="server" Text="Eski Dosya No"></asp:Label>
+                                                <asp:Label ID="EskiDosyaNoLbl" class="form-control form-label" runat="server" ></asp:Label>
+                                            </div>
+                                            <div class="col form-group">
+                                                <asp:Label class="form-label fw-semibold" ID="Label6" runat="server" Text="Yeni Dosya No"></asp:Label>
+                                                <%--<asp:TextBox ID="YeniDosyaNoTxt" class="form-label" runat="server" TextMode="Number" onkeyup="ToggleDosyaNoDegistirNowBtn();" onchange="ToggleDosyaNoDegistirNowBtn();"></asp:TextBox>--%>
+                                                <asp:DropDownList ID="YeniDosyaNoDDL" runat="server" class="form-control form-select"></asp:DropDownList>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-3">
+                                            <asp:LinkButton ID="DosyaNoDegistirNowBtn" CssClass="col-3 btn btn-primary" runat="server" Text="Değiştir" OnClick="DosyaNoDegistirNowBtn_Click" />
+                                        </div>
+                                    </div>
+                                    <div class="table">
+                                        <div class="m-1 text-center" id="NakitBagisciDiv">
+                                            <table id="CustomModalDataTable" class="table table-hover row-border" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Dosya No</th>
+                                                        <th>Sözleşme Tarihi</th>
+                                                        <th>Kira Bedeli</th>
+                                                        <th>Ödeme Şekli</th>
+                                                        <th>Sözleşme Durumu</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <%--  --%>
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>
@@ -245,7 +334,7 @@
             <asp:LinkButton ID="KiraciBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Kiracı" OnClick="KiraciBtn_Click" />
             <asp:LinkButton ID="OdemePlaniGoruntuleBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="Ödeme Planı" OnClick="OdemePlaniGoruntuleBtn_Click" Visible="false"></asp:LinkButton>
 
-            
+
             <asp:LinkButton ID="UpdateBtn" runat="server" CssClass="btn btn-primary" Text="Sözleşme Güncelle" OnClick="UpdateBtn_Click"></asp:LinkButton>
             <asp:LinkButton ID="DeleteBtn" runat="server" CssClass="btn btn-danger" Text="Sözleşmeyi Sil" OnClick="DeleteBtn_Click"></asp:LinkButton>
             <asp:LinkButton ID="SozlesmeYenileBtn" runat="server" CssClass="btn btn-warning" Text="Sözleşmeyi Yenile" OnClick="SozlesmeYenileBtn_Click" Visible="false"></asp:LinkButton>
@@ -260,28 +349,28 @@
                     <div class="card">
                         <div class="card-header">
                             <h3>
-                                <asp:Label ID="ModalLbl" class="col-form-label" Text="Sözleşme Güncelleme" runat="server"></asp:Label></h3>
+                                <asp:Label ID="ModalLbl" class="form-label" Text="Sözleşme Güncelleme" runat="server"></asp:Label></h3>
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <asp:Label ID="MessageLbl" runat="server" class="col-form-label"></asp:Label>
+                                <asp:Label ID="MessageLbl" runat="server" class="form-label"></asp:Label>
                                 <asp:HiddenField ID="SenderHF" runat="server" />
                             </div>
                             <div class="form-group row">
                                 <div class="form-group col-3">
-                                     <asp:Label ID="DurumDegisimTarihiLbl" runat="server" class="col-form-label">Sözleşme Fesih Tarihi </asp:Label>
+                                    <asp:Label ID="DurumDegisimTarihiLbl" runat="server" class="form-label">Sözleşme Fesih Tarihi </asp:Label>
                                     <asp:TextBox type="ModalDurumDegismeTarTxt" ID="ModalDurumDegismeTarTxt" CssClass="form-control DateTimePickerV1 input-date" runat="server" onkeydown="return false;" />
                                 </div>
-                               <div class="form-group col" id="ArtisOraniDiv" runat="server" style="display:none">
-                                   <asp:Label ID="Label1" runat="server" class="col-form-label">Artış Oranı </asp:Label>
-                                   <asp:TextBox type="text" ID="ArtisOraniTxt" CssClass="form-control input-decimal" runat="server" ReadOnly="true"  />
-                                   <asp:Label ID="ArtisOraniLbl" runat="server" class="col-form-label text-danger"></asp:Label>
-                               </div>
-                               <div class="form-group col" id="YeniKiraBedeliDiv" runat="server" style="display:none">
-                                   <asp:Label ID="Label2" runat="server" class="col-form-label">Yeni Kira Bedeli </asp:Label>
-                                   <asp:TextBox type="text" ID="YeniKiraBedeliTxt" CssClass="form-control input-money" runat="server" ReadOnly="true" />
-                               </div>                                
-                               
+                                <div class="form-group col" id="ArtisOraniDiv" runat="server" style="display: none">
+                                    <asp:Label ID="Label1" runat="server" class="form-label">Artış Oranı </asp:Label>
+                                    <asp:TextBox type="text" ID="ArtisOraniTxt" CssClass="form-control input-decimal" runat="server" ReadOnly="true" />
+                                    <asp:Label ID="ArtisOraniLbl" runat="server" class="form-label text-danger"></asp:Label>
+                                </div>
+                                <div class="form-group col" id="YeniKiraBedeliDiv" runat="server" style="display: none">
+                                    <asp:Label ID="Label2" runat="server" class="form-label">Yeni Kira Bedeli </asp:Label>
+                                    <asp:TextBox type="text" ID="YeniKiraBedeliTxt" CssClass="form-control input-money" runat="server" ReadOnly="true" />
+                                </div>
+
                             </div>
                         </div>
                         <div class="card-footer">
@@ -293,6 +382,7 @@
                 </div>
             </div>
         </div>
+       
     </div>
 </div>
 

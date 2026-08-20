@@ -165,12 +165,12 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP
 
                     // usage counts (APT includes ISHANI)
                     string kiraDurumuStr = string.Empty;
-                    int apt = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-                    int ishani = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-                    int mes = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-                    int isy = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-                    int ars = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-                    int tar = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                    int apt = tasinmaz.SelectTasinmazAdetByBolgeCinsiKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                    int ishani = tasinmaz.SelectTasinmazAdetByBolgeCinsiKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                    int mes = tasinmaz.SelectTasinmazAdetByBolgeCinsiKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                    int isy = tasinmaz.SelectTasinmazAdetByBolgeCinsiKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                    int ars = tasinmaz.SelectTasinmazAdetByBolgeCinsiKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                    int tar = tasinmaz.SelectTasinmazAdetByBolgeCinsiKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
 
                     int tm = ankTM;
                     int cm = ankCM;

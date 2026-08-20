@@ -204,14 +204,14 @@ namespace IKYS_WebParts.MazereteMahsupWP
 
                 if (mazeretIzinDonemi == null)
                 {
-                    MessageHelper.PublishMessage("Mahsup islemi yapilamaz, Izin d�nemi bulunamadi!", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Mahsup islemi yapilamaz, Izin dönemi bulunamadi!", ProjeConstants.MESAJ_HATA);
                 }
                 else
                 {
-                    //�cretli izin hareketi yarat 
-                    //�cretli izin d�nemini g�ncelle
+                    //ücretli izin hareketi yarat 
+                    //ücretli izin dönemini güncelle
                     //mazeret iznine 9 saat ekle
-                    //her ��� de ok ise islem tamamlandi
+                    //her üçü de ok ise islem tamamlandi
                     //eger herhangi biri tamamlanmadi ize rollback yap
 
                     if (ucretliIzinDonemi == null)
@@ -246,7 +246,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
                         isIzinHareketSaved = izinHareketId > 0 ? true : false;
                         if (isIzinHareketSaved)
                         {
-                            string mahsupAciklama = "�cretli izinden Mazerete mahsup edildi.";
+                            string mahsupAciklama = "Ücretli izinden Mazerete mahsup edildi.";
                             Mahsup mahsup = MahsupTablosunaEkle(izinHareket, ProjeConstants.IZINTIPI_UCRETLI_INT, mazeretIzinDonemi.Id, ucretliIzinDonemi.Id, mahsupAciklama);
                             mahsupRB = mahsup;
                             int ucretliKullanilanIzinInt = ucretliIzinDonemi.KullanilanIzin.ConvertToInt() + 1;
@@ -283,10 +283,10 @@ namespace IKYS_WebParts.MazereteMahsupWP
                     bool isIzinHareketRB = izinHareket.Delete();
                     bool isUcretliIzinRB = ucretliIzinDonemiRB.Update();
                     bool isMazeretIzinRB = mazeretIzinDonemiRB.Update();
-                    string message = "�cretli izinden Mazeret Iznine Mahsup sirasinda sorunlarla karsilasildi. Geri alma isleminde: "
-                        + " Izin Hareketi geri alma : " + (isIzinHareketRB ? "Basarili. " : "Basarisiz. ")
-                        + " �cretli Izin D�nemi geri alma : " + (isUcretliIzinRB ? "Basarili. " : " Basarisiz")
-                        + (isUcretliIzinRB ? "Basarili. " : " Basarisiz.");
+                    string message = "Ücretli izinden Mazeret İznine Mahsup sırasında sorunlarla karşılaşıldı. Geri alma işleminde: "
+                        + " İzin Hareketi geri alma : " + (isIzinHareketRB ? "Başarılı. " : "Başarısız. ")
+                        + " Ücretli İzin Dönemi geri alma : " + (isUcretliIzinRB ? "Başarılı. " : " Başarısız")
+                        + (isUcretliIzinRB ? "Başarılı. " : " Başarısız.");
                     MessageHelper.PublishMessage(message, ProjeConstants.MESAJ_HATA);
                 }
             }
@@ -351,7 +351,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
                 TableCell adiSoyadiCell = new TableCell();
                 adiSoyadiCell.Text = adiSoyadi;
                 row.Controls.Add(adiSoyadiCell);
-                //izin d�nemleri yoksa olustur
+                //izin dönemleri yoksa olustur
                 IzinDonem mazeretIzinDonemi = new IzinDonem();
                 DateTime now = DateTime.Now;
                 mazeretIzinDonemi = mazeretIzinDonemi.SelectByIzinTarihi(personelId, ProjeConstants.IZINTIPI_MAZERET_INT, now);
@@ -434,7 +434,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
                 row.Controls.Add(UcretliKalanIzinCell);
                 if (!isForExcel)
                 {
-                    if ((mazaretKalanIzinInt < 8) && (isMahsup))//kalan izin s�resi 8 saatten azsa mahsup et �iksin
+                    if ((mazaretKalanIzinInt < 8) && (isMahsup))//kalan izin süresi 8 saatten azsa mahsup et çiksin
                     {
 
                         LinkButton MahsupBtn = new LinkButton();
@@ -457,9 +457,9 @@ namespace IKYS_WebParts.MazereteMahsupWP
                             }
                         };
                         MahsupCell.Controls.Add(MahsupBtn);
-                        //dilek�e butonu
+                        //dilekçe butonu
                         LinkButton DilekceBtn = new LinkButton();
-                        DilekceBtn.Text = "Dilek�e";
+                        DilekceBtn.Text = "Dilekçe";
                         DilekceBtn.ID = "DilekceBtn" + sira;
                         TableUpdatePanel.ContentTemplateContainer.Controls.Add(DilekceBtn);
                         DilekceBtn.CssClass = "btn btn-outline-primary";
@@ -597,15 +597,15 @@ namespace IKYS_WebParts.MazereteMahsupWP
             IzinDonemleriTable.Rows.Clear();
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell izinTipiCell = new TableHeaderCell();
-            izinTipiCell.Text = "Izin Tipi";
+            izinTipiCell.Text = "İzin Tipi";
             TableHeaderCell donemCell = new TableHeaderCell();
-            donemCell.Text = "Izin D�nemi";
+            donemCell.Text = "İzin Dönemi";
             TableHeaderCell hakCell = new TableHeaderCell();
-            hakCell.Text = "Izin Hakki";
+            hakCell.Text = "İzin Hakkı";
             TableHeaderCell kullanilanCell = new TableHeaderCell();
-            kullanilanCell.Text = "Kullanilan Izin";
+            kullanilanCell.Text = "Kullanılan İzin";
             TableHeaderCell kalanCell = new TableHeaderCell();
-            kalanCell.Text = "Kalan Izin";
+            kalanCell.Text = "Kalan İzin";
 
             th.Controls.Add(izinTipiCell);
             th.Controls.Add(donemCell);
@@ -619,7 +619,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
         {
             if (personel != null)
             {
-                OnayLbl.Text = "Onaylamaniz halinde Yillik �cretli Izinden 1 g�n (9 saat) Mazeret iznine aktarilacaktir.";
+                OnayLbl.Text = "Onaylamaniz halinde Yillik Ücretli Izinden 1 gün (9 saat) Mazeret iznine aktarilacaktir.";
             }
 
         }
@@ -643,7 +643,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
             mazeretCell.ColumnSpan = 3;
 
             TableHeaderCell izinDonemiCell = new TableHeaderCell();
-            izinDonemiCell.Text = "Yillik Izin D�nemi";
+            izinDonemiCell.Text = "Yillik Izin Dönemi";
             izinDonemiCell.ColumnSpan = 2;
 
             TableHeaderCell mahsupBtnCell = new TableHeaderCell();
@@ -651,7 +651,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
             mahsupBtnCell.RowSpan = 2;
 
             TableHeaderCell dilekceBtnCell = new TableHeaderCell();
-            dilekceBtnCell.Text = "Dilek�e";
+            dilekceBtnCell.Text = "Dilekçe";
             dilekceBtnCell.RowSpan = 2;
 
             th.Controls.Add(siraCell);
@@ -677,7 +677,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
 
 
             TableHeaderCell donemCell = new TableHeaderCell();
-            donemCell.Text = "D�nem";
+            donemCell.Text = "Dönem";
             TableHeaderCell kalanCell = new TableHeaderCell();
             kalanCell.Text = "Kalan Izin";
 
@@ -725,7 +725,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
                 bool isSaved = BirGunMahsupEt();
                 if (isSaved)
                 {
-                    MessageHelper.PublishMessage("Izin Kaydi G�ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("İzin Kaydı Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                     RedirectToPage(ProjeConstants.PAGE_MAZERETEMAHSUP);
                 }
 
@@ -733,7 +733,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
             catch (Exception exception)
             {
                 ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Izin Talebi Kaydedilemedi");
+                Exception exceptionInfo = new Exception("İzin Talebi Kaydedilemedi");
                 exceptionHelper.Exceptions.Add(exceptionInfo);
                 exceptionHelper.PublishException();
             }

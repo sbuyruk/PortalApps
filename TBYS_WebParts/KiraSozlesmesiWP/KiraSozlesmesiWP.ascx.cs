@@ -5,11 +5,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Globalization;
+using System.Linq;
+using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using System.Transactions;
 
 namespace TBYS_WebParts.KiraSozlesmesiWP
 {
@@ -212,13 +215,14 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
 
                 if (!string.IsNullOrEmpty(KiraSozlesmeIdQS))
                 {
-                    IdLbl.Text = "(Sözleşme NO: " + kiraSozlesme.Id.ToString() +" Dosya No:"+ kiraSozlesme.DosyaNo + ") ";
+                    IdLbl.Text = "Sözleşme No: " + kiraSozlesme.Id.ToString() ;
+                    EskiDosyaNoLbl.Text = kiraSozlesme.DosyaNo.ToString();
                     Kiraci kiraci = new Kiraci();
                     kiraci = kiraci.Select<Kiraci>(kiraSozlesme.KiraciId);
                     if (kiraci != null)
                     {
                         KiraciIdQS = kiraSozlesme.KiraciId.ToString();
-                        AdiLbl.Text = kiraci.Adi + " " + kiraci.Soyadi;
+                        KiraciAdiLbl.Text = kiraci.Adi + " " + kiraci.Soyadi;
                     }
                     SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
                     KiraSozlesmeFormunuDoldur(kiraSozlesme);
@@ -280,13 +284,13 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
 
                 if (kiraSozlesme != null && !kiraSozlesme.Aktif)
                 {
-                    IdLbl.Text = "(Sözleşme NO: " + kiraSozlesme.Id.ToString() + " Dosya No:" + kiraSozlesme.DosyaNo + ") ";
+                    IdLbl.Text = "Sözleşme No: " + kiraSozlesme.Id.ToString() ;
                     Kiraci kiraci = new Kiraci();
                     kiraci = kiraci.Select<Kiraci>(kiraSozlesme.KiraciId);
                     if (kiraci != null)
                     {
                         KiraciIdQS = kiraSozlesme.KiraciId.ToString();
-                        AdiLbl.Text = kiraci.Adi + " " + kiraci.Soyadi;
+                        KiraciAdiLbl.Text = kiraci.Adi + " " + kiraci.Soyadi;
                     }
                     SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
                     KiraSozlesmeFormunuDoldur(kiraSozlesme);
@@ -348,6 +352,8 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
         }
         private void KiraSozlesmeFormunuDoldur(KiraSozlesme kiraSozlesme)
         {
+            SorumluBolgeIdLbl.Text = kiraSozlesme.BolgeId.ToString();
+
             DevirAnaParaTxt.Value = kiraSozlesme.DevirAnaPara.ToString();
             DevirFaizTutariTxt.Text = kiraSozlesme.DevirFaizTutari.ToString();
             DevirFaizliBakiyeTxt.Value = kiraSozlesme.DevirFaizliBakiye.ToString();
@@ -620,7 +626,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             }
             catch (Exception e)
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "CloseModal();", true);
+                UtilityHelper.ScriptCalistir("CloseModal();");
                 ExceptionHelper exhelper = new ExceptionHelper(e);
                 exhelper.PublishException();
             }
@@ -1461,6 +1467,246 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
         {
             RedirectToPage(ProjeConstants.PAGE_TEMINAT_ISLEMLERI + "?KiraSozlesmeId=" + KiraSozlesmeIdQS);
         }
+        #region dosya no değistir modal
+        protected void DosyaNoDegistirBtn_Click(object sender, EventArgs e)
+        {
+            //modal acilsin,
+            //içi sözleşme dolsun,
+            //eski dosya no ve  yeni dosya no alanları olsun.
+            //yeni dosyano DDL olarak gelsin ve 20 tane alternatif sayı gelsin.aksi halde dosya no lar karışır
+            DosyaNoDegistirModalAc();
+        }
+        protected void DosyaNoDegistirNowBtn_Click(object sender, EventArgs e)
+        {
+            //Sozleşme numaralarını bulsun ve değiştirsin
+            try
+            {
+                KiraSozlesme kiraSozlesme = new KiraSozlesme();
+                List<KiraSozlesme> list = kiraSozlesme.SelectKiraSozlesmeList(
+                    KiraciIdQS.ConvertToInt(), ProjeConstants.KIRASOZLESME_AKTIF_HEPSI_INT, ProjeConstants.BOLGE_HEPSI_INT);
+                if (list != null)
+                {
+                    int yeniDosyaNo = YeniDosyaNoDDL.SelectedValue.ConvertToInt();
+                    using (TransactionScope scope = new TransactionScope())
+                    {
+                        foreach (KiraSozlesme item in list)
+                        {
+                            item.DosyaNo = yeniDosyaNo;
+                            item.Update();
+                        }
+                        scope.Complete();
+                        DosyaNoTxt.Text= YeniDosyaNoDDL.SelectedValue;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                exHelper.PublishException();
+            }
+            finally
+            {
+                UtilityHelper.ScriptCalistir("CloseModalDosyaNo();");
+                //KiraSozlesme kiraSozlesme = new KiraSozlesme();
+                //kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+                //if (kiraSozlesme != null)
+                //{
+                //    SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
+                //}
+            }
+        }
+
+        private void DosyaNoDegistirModalAc()
+        {
+            EskiDosyaNoLbl.Text = DosyaNoTxt.Text;
+            YeniDosyaNoDDLDoldur();
+            TabloModalOlustur();
+            UtilityHelper.ScriptCalistir("DosyaNoDegistirModalAc();");
+        }
+
+        private void YeniDosyaNoDDLDoldur()
+        {
+            // KiraSozlesme içindeki dosya no'ları bul DosyaNos adlı listeye koy
+            KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
+            List<KiraSozlesme> tumSozlesmeler = kiraSozlesmeDao.SelectAll<KiraSozlesme>();
+
+            List<int> dosyaNos = tumSozlesmeler
+                .Where(s => s.DosyaNo > 0 && s.BolgeId == SorumluBolgeIdLbl.Text.ConvertToInt())
+                .Select(s => s.DosyaNo)
+                .Distinct()
+                .OrderBy(d => d)
+                .ToList();
+
+            List<string> yeniDosyaNoList = new List<string>();
+
+            if (dosyaNos.Count > 0)
+            {
+                int enKucukDosyaNo = 1;// dosyaNos.First();
+                int enBuyukDosyaNo = dosyaNos.Last();
+                HashSet<int> mevcutDosyaNoSet = new HashSet<int>(dosyaNos);
+
+                // en küçük dosyano'dan en büyük dosyano'ya kadar aradaki boşlukları bul
+                for (int i = enKucukDosyaNo; i <= enBuyukDosyaNo && yeniDosyaNoList.Count < 20; i++)
+                {
+                    if (!mevcutDosyaNoSet.Contains(i))
+                    {
+                        yeniDosyaNoList.Add(i.ToString());
+                    }
+                }
+
+                // boşluk sayısı 20'den az ise en büyük dosyano'dan sonrasını ekle
+                int sonrakiDosyaNo = enBuyukDosyaNo + 1;
+                while (yeniDosyaNoList.Count < 20)
+                {
+                    yeniDosyaNoList.Add(sonrakiDosyaNo.ToString());
+                    sonrakiDosyaNo++;
+                }
+            }
+            else
+            {
+                // hiç dosya no yoksa 1'den başlayarak 20 tane üret
+                for (int i = 1; i <= 20; i++)
+                {
+                    yeniDosyaNoList.Add(i.ToString());
+                }
+            }
+
+            //YeniDosyaNoDDL.DataSource = yeniDosyaNoList;
+            //YeniDosyaNoDDL.DataBind();
+            YeniDosyaNoDDL.Items.Clear();
+            foreach (var dosyaNo in yeniDosyaNoList)
+            {
+                YeniDosyaNoDDL.Items.Add(new ListItem(dosyaNo, dosyaNo));
+            }
+        }
+        private void TabloModalOlustur()
+        {
+            var jsonData = TabloModalJson(); //veri çekilip json a çeviriliyor
+            var jsString = CreateModalDataTable(jsonData); //javascript kodu hazirlaniyor.
+            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
+                typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
+        }
+        private string TabloModalJson()
+        {
+            string jSon = string.Empty;
+
+            try
+            {
+                List<KiraSozlesmeListItem> list = GetDataList();
+                var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
+                jSon = serializer.Serialize(list);
+            }
+            catch (Exception exception)
+            {
+                ExceptionHelper exceptionHelper = new ExceptionHelper();
+                exceptionHelper.Exceptions.Add(exception);
+                exceptionHelper.PublishException();
+            }
+            return jSon;
+        }
+        private string CreateModalDataTable(string jsonData)
+        {
+            string tableString = @"
+            if ( $.fn.DataTable.isDataTable('#CustomModalDataTable') ) {
+              $('#CustomModalDataTable').DataTable().destroy();
+            }
+            $('#CustomModalDataTable tbody').empty();
+
+            jQuery('#CustomModalDataTable').DataTable({
+            data: " + jsonData + @",
+            columns: [
+                    { data: 'DosyaNo', 'width': '10%' },
+                    { data: 'TarihAraligi'},
+                    { data: 'KiraBedeli' },              
+                    { data: 'OdemeSekli' },
+                    { data: 'SozlesmeDurumu' },
+            ],
+            'language': {
+                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+            },
+            responsive: true,
+            dom: 'pirt',
+        });
+            ";
+
+            return tableString;
+        }
+        private List<KiraSozlesmeListItem> GetDataList()
+        {
+
+            KiraSozlesme kiraSozlesme = new KiraSozlesme();
+            List<KiraSozlesmeListItem> list = new List<KiraSozlesmeListItem>();
+            DataTable dataTable = kiraSozlesme.SelectKiraSozlesmeListReturnDT(KiraciIdQS.ConvertToInt(), ProjeConstants.KIRASOZLESME_AKTIF_HEPSI_INT, ProjeConstants.BOLGE_HEPSI_INT);
+            if (dataTable != null)
+            {
+                int SiraNo = 1;
+                KiraSozlesmeListItem tempSozlesmeItem = null;
+
+                IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+                DataView dataView = new DataView(dataTable);
+                dataView.Sort = "SozBitTar DESC,SozBasTar DESC,DosyaNo";
+                int tempSozlesmeId = 0;
+                int tasinmazAdedi = 0;
+                string ilkAdres = string.Empty;
+                foreach (DataRowView row in dataView)
+                {
+                    string dosyaNo = row["DosyaNo"].ToString();
+                    string kiraciId = row["KiraciId"].ToString();
+                    string kiraciAdi = row["KiraciAdi"].ToString();
+                    string kiraciSoyadi = row["KiraciSoyadi"].ToString();
+                    string ilkSozlesmeTar = row["IlkSozlesmeTar"].ToString();
+                    string sozBasTar = row["SozBasTar"].ToString();
+                    string sozBitTar = row["SozBitTar"].ToString();
+                    string odemeSekli = row["odemeSekli"].ToString();
+                    decimal kiraBedeli = row["KiraBedeli"].ConvertToDecimal();
+                    string sozlesmeDurumu = row["SozlesmeDurumu"].ToString();
+                    int kiraSozlesmeId = row["KiraSozlesmeId"].ConvertToInt();
+                    string BolumNo = row["BolumNo"].ToString();
+
+                    if (tempSozlesmeId == kiraSozlesmeId)
+                    {
+                        tempSozlesmeId = kiraSozlesmeId;
+
+                        list.Remove(tempSozlesmeItem);
+
+
+                        //tempSozlesmeItem.Adres += "@" + adres;
+                        tasinmazAdedi++;
+                        list.Add(tempSozlesmeItem);
+                    }
+                    else
+                    {
+                        KiraSozlesmeListItem sozlesmeItem = new KiraSozlesmeListItem();
+                        sozlesmeItem.Sirano = SiraNo++.ToString();
+                        sozlesmeItem.DosyaNo = dosyaNo;
+                        sozlesmeItem.SozlesmeId = kiraSozlesmeId.ToString();
+                        sozlesmeItem.TarihAraligi = sozBasTar.ConvertToDatetimeEmptyIfNull() + "-" + sozBitTar.ConvertToDatetimeEmptyIfNull();
+                        sozlesmeItem.OdemeSekli = odemeSekli;
+                        sozlesmeItem.KiraBedeli = kiraBedeli.ToString("N", culturInfo);
+                        sozlesmeItem.SozlesmeDurumu = sozlesmeDurumu;
+                        list.Add(sozlesmeItem);
+                        tempSozlesmeItem = sozlesmeItem;
+                        tasinmazAdedi = 1;
+                    }
+                    tempSozlesmeId = kiraSozlesmeId;
+
+                }
+            }
+
+            return list;
+        }
+        private class KiraSozlesmeListItem
+        {
+            public string Sirano { get; set; }
+            public string DosyaNo { get; set; }
+            public string SozlesmeId { get; set; }
+            public string TarihAraligi { get; set; }
+            public string OdemeSekli { get; set; }
+            public string KiraBedeli { get; set; }
+            public string SozlesmeDurumu { get; set; }
+        }
+        #endregion
         #region dosya yukle/goruntule
         protected void BelgeSilBtn_Click(object sender, EventArgs e)
         {

@@ -228,21 +228,21 @@ namespace IKYS_WebParts.PersonelGirisiWP
                     FillData2DDLs();
                     if (String.IsNullOrEmpty(DestinationAppQS) || String.Equals(DestinationAppQS, ""))
                     {
-                        //Pers Girisi açilacak PG
+                        //Pers Girisi aÃ§ilacak PG
                         OpenPersonelGirisi();
                     }
                     else if (String.Equals(DestinationAppQS, "PerD"))
                     {
-                        //Duzenle açilacak
+                        //Duzenle aÃ§ilacak
                         OpenPersonelDuzenle();
                     }
                     if (!string.IsNullOrEmpty(MesajQS))
                     {
-                        MessageHelper.PublishMessage("Personel Kaydedildi, lütfen Kimlik, Egitim, Iletisim, Aile vb bilgileri Tamamlayiniz", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Personel Kaydedildi, lÃ¼tfen Kimlik, Egitim, Iletisim, Aile vb bilgileri Tamamlayiniz", ProjeConstants.MESAJ_BASARILI, 2000);
                         MesajQS = string.Empty;
                     }
                 }
-                else // NEDEN??? Çünkü postback disinda olmazsa tablo satirlarina eklenen sil btn çalismiyor
+                else // NEDEN??? Ã‡Ã¼nkÃ¼ postback disinda olmazsa tablo satirlarina eklenen sil btn Ã§alismiyor
                 {
                     Personel personelDao = new Personel();
                     Personel personel = personelDao.Select<Personel>(PersonelIdQS.ConvertToInt());
@@ -250,7 +250,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                         FillAileBilgileriTable(personel);
                 }
                 // Postback veya degil farketmez.
-                // (querystring içinde) activeTab varsa o taba odaklan (Kaydet butonlarinda ActiveTabQSi set etmek gerekir mi?)
+                // (querystring iÃ§inde) activeTab varsa o taba odaklan (Kaydet butonlarinda ActiveTabQSi set etmek gerekir mi?)
                 if (!string.IsNullOrEmpty(ActiveTabQS))
                 {
                     //ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "setActiveTab('" + ActiveTabQS + "');", true);
@@ -326,7 +326,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
 
                 IsBilgileri ib = new IsBilgileri();
                 ib = ib.SelectByPersonelId(personel.Id);
-                if (ib != null)//SB 27.10.2021 Yesim hanim isten ayrilan personelin de izin bilgilerini görmek istedi //(ib.CalismaDurumu == ProjeConstants.PER_CALISIYOR_INT) 
+                if (ib != null)//SB 27.10.2021 Yesim hanim isten ayrilan personelin de izin bilgilerini gÃ¶rmek istedi //(ib.CalismaDurumu == ProjeConstants.PER_CALISIYOR_INT) 
                 {
                     FillIsBilgileri(personel, ib);
 
@@ -360,12 +360,12 @@ namespace IKYS_WebParts.PersonelGirisiWP
         {
             //IsBilgileri isb = new IsBilgileri();
             //isb = isb.SelectByPersonelId(personel.Id);
-            //ünvan
+            //Ã¼nvan
             UtilityHelper.SetDDLValue(UnvanTanimDDL, isb.UnvanId.ToString());            
             //birim
             UtilityHelper.SetDDLValue(BirimDDL, isb.BirimId.ToString());
             GorevTanimDDLDoldur(isb.BirimId);
-            //görev
+            //gÃ¶rev
             UtilityHelper.SetDDLValue(GorevTanimDDL, isb.GorevId.ToString());
             //Calisma Durumu
             UtilityHelper.SetDDLValue(CalismaDurumuDDL, isb.CalismaDurumu.ToString());
@@ -387,7 +387,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             }
             //ise Bas Tar
             IsbasTarTxt.Value = isb.BaslamaTar.ConvertToDatetimeEmptyIfNull();
-            //izin dönemi baslangiç tar
+            //izin dÃ¶nemi baslangiÃ§ tar
             IzinDonemiBasTarTxt.Value = isb.IzinDonemiBasTar.ConvertToDatetimeEmptyIfNull();
             //protokol sira
             ProtokolSirasiTxt.Text = isb.ProtokolSiraNo.ReturnEmptyIfNull().ToString();
@@ -779,7 +779,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 {
                     //DateTime izinDonemiBasi = izinDonem != null ? izinDonem.BaslangicTarihi : today.AddYears(-1);
                     DateTime izinDonemiSonu = izinDonem != null ? izinDonem.BitisTarihi : today.AddMonths(1); ;
-                    //DataTable dataTable = izinHareket.SelectByIzinDonemiReturnDataTable(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, izinDonemiBasi, threeMonthsLater);//3 ay içinde yeni izin dönemi basliyor olabilir
+                    //DataTable dataTable = izinHareket.SelectByIzinDonemiReturnDataTable(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, izinDonemiBasi, threeMonthsLater);//3 ay iÃ§inde yeni izin dÃ¶nemi basliyor olabilir
                     DataTable dataTable = izinHareket.SelectByIzinDonemiReturnDataTable(izinDonem.Id, personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
                     int SiraNo = 1;
                     if (dataTable == null)
@@ -787,7 +787,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                         UcretliIzinHareketTable.Rows.Clear();
                         TableRow tr = new TableRow();
                         TableCell tc = new TableCell();
-                        tc.Text = "Henüz izin kullanilmamis.";
+                        tc.Text = "HenÃ¼z izin kullanilmamis.";
                         tr.Controls.Add(tc);
                         UcretliIzinHareketTable.Controls.Add(tr);
                     }
@@ -830,7 +830,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                             SureCell.Text = sure + " " + birim;
                             row.Controls.Add(SureCell);
 
-                            if (bastar > izinDonemiSonu) //gelecek izin dönemine aitse farkli renk yazdir
+                            if (bastar > izinDonemiSonu) //gelecek izin dÃ¶nemine aitse farkli renk yazdir
                             {
                                 SiraNoCell.ForeColor = System.Drawing.Color.Red;
                                 IzinTipiCell.ForeColor = System.Drawing.Color.Red;
@@ -839,7 +839,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                                 BitTarCell.ForeColor = System.Drawing.Color.Red;
                                 SureCell.ForeColor = System.Drawing.Color.Red;
 
-                                row.ToolTip = "Yeni Izin Dönemi";
+                                row.ToolTip = "Yeni Izin DÃ¶nemi";
                             }
                             UcretliIzinHareketTable.Controls.Add(row);
                         }
@@ -884,7 +884,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                         MazeretIzinHareketTable.Rows.Clear();
                         TableRow tr = new TableRow();
                         TableCell tc = new TableCell();
-                        tc.Text = "Henüz izin kullanilmamis.";
+                        tc.Text = "HenÃ¼z izin kullanilmamis.";
                         tr.Controls.Add(tc);
                         MazeretIzinHareketTable.Controls.Add(tr);
                     }
@@ -926,7 +926,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                             SureCell.Text = sure.ConvertToTimeSpanReturnInHHmm();
                             row.Controls.Add(SureCell);
 
-                            if (bastar > izinDonemiSonu) //gelecek izin dönemine aitse farkli renk yazdir
+                            if (bastar > izinDonemiSonu) //gelecek izin dÃ¶nemine aitse farkli renk yazdir
                             {
                                 SiraNoCell.ForeColor = System.Drawing.Color.Red;
                                 BasTarCell.ForeColor = System.Drawing.Color.Red;
@@ -934,7 +934,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                                 BitSaatCell.ForeColor = System.Drawing.Color.Red;
                                 SureCell.ForeColor = System.Drawing.Color.Red;
 
-                                row.ToolTip = "Yeni Izin Dönemi";
+                                row.ToolTip = "Yeni Izin DÃ¶nemi";
                             }
                             MazeretIzinHareketTable.Controls.Add(row);
                         }
@@ -976,7 +976,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 row.Controls.Add(BitTarCell);
 
                 TableCell SureCell = new TableCell();
-                SureCell.Text = item.Sure + " " + item.Birim + (item.IzinTipi == ProjeConstants.IZINTIPI_SUTIZNI_INT ? "(Günde 1 Saat 30 Dk.)" : "");
+                SureCell.Text = item.Sure + " " + item.Birim + (item.IzinTipi == ProjeConstants.IZINTIPI_SUTIZNI_INT ? "(GÃ¼nde 1 Saat 30 Dk.)" : "");
                 row.Controls.Add(SureCell);
                 DigerIzinlerTable.Controls.Add(row);
             }
@@ -986,7 +986,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 UcretliIzinHareketTable.Rows.Clear();
                 TableRow tr = new TableRow();
                 TableCell tc = new TableCell();
-                tc.Text = "Henüz izin kullanilmamis.";
+                tc.Text = "HenÃ¼z izin kullanilmamis.";
                 tr.Controls.Add(tc);
                 UcretliIzinHareketTable.Controls.Add(tr);
             }
@@ -1000,11 +1000,11 @@ namespace IKYS_WebParts.PersonelGirisiWP
             TableHeaderCell izintipiCell = new TableHeaderCell();
             izintipiCell.Text = "Izin Tipi";
             TableHeaderCell bastarCell = new TableHeaderCell();
-            bastarCell.Text = "Baslangiç tarihi";
+            bastarCell.Text = "BaslangiÃ§ tarihi";
             TableHeaderCell bittarCell = new TableHeaderCell();
             bittarCell.Text = "Bitis tarihi";
             TableHeaderCell sureCell = new TableHeaderCell();
-            sureCell.Text = "Izinli Süre";
+            sureCell.Text = "Izinli SÃ¼re";
             TableHeaderCell yazdirCell = new TableHeaderCell();
             yazdirCell.Text = "Yazdir";
             th.Controls.Add(siraCell);
@@ -1024,11 +1024,11 @@ namespace IKYS_WebParts.PersonelGirisiWP
             TableHeaderCell izintipiCell = new TableHeaderCell();
             izintipiCell.Text = "Tarih";
             TableHeaderCell bastarCell = new TableHeaderCell();
-            bastarCell.Text = "Baslangiç Saati";
+            bastarCell.Text = "BaslangiÃ§ Saati";
             TableHeaderCell bittarCell = new TableHeaderCell();
             bittarCell.Text = "Bitis Saati";
             TableHeaderCell sureCell = new TableHeaderCell();
-            sureCell.Text = "Izinli Süre";
+            sureCell.Text = "Izinli SÃ¼re";
             TableHeaderCell yazdirCell = new TableHeaderCell();
             yazdirCell.Text = "Yazdir";
             th.Controls.Add(siraCell);
@@ -1156,7 +1156,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             TableHeaderCell MezuniyetTarCell = new TableHeaderCell();
             MezuniyetTarCell.Text = "Mezuniyet Tarihi";
             TableHeaderCell AciklamaCell = new TableHeaderCell();
-            AciklamaCell.Text = "Açiklama";
+            AciklamaCell.Text = "AÃ§iklama";
 
             th.Controls.Add(siraCell);
             th.Controls.Add(OkulCell);
@@ -1176,7 +1176,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             TableHeaderCell KursCell = new TableHeaderCell();
             KursCell.Text = "Kurs/Egt/Sertifika";
             TableHeaderCell SureCell = new TableHeaderCell();
-            SureCell.Text = "Kurs Süresi";
+            SureCell.Text = "Kurs SÃ¼resi";
             TableHeaderCell TarihCell = new TableHeaderCell();
             TarihCell.Text = "Tarih";
             TableHeaderCell VerenKurumCell = new TableHeaderCell();
@@ -1197,9 +1197,9 @@ namespace IKYS_WebParts.PersonelGirisiWP
             TableHeaderCell siraCell = new TableHeaderCell();
             siraCell.Text = "Sira";
             TableHeaderCell IsyeriCell = new TableHeaderCell();
-            IsyeriCell.Text = "Çalistigi Isyeri";
+            IsyeriCell.Text = "Ã‡alistigi Isyeri";
             TableHeaderCell GorevCell = new TableHeaderCell();
-            GorevCell.Text = "Yaptigi Görev";
+            GorevCell.Text = "Yaptigi GÃ¶rev";
             TableHeaderCell BasTarCell = new TableHeaderCell();
             BasTarCell.Text = "Baslama Tarihi";
             TableHeaderCell BitTarCell = new TableHeaderCell();
@@ -1218,13 +1218,13 @@ namespace IKYS_WebParts.PersonelGirisiWP
             UcretliIzinDonemleriTable.Rows.Clear();
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell donemCell = new TableHeaderCell();
-            donemCell.Text = "Izin Dönemi";
+            donemCell.Text = "Ä°zin DÃ¶nemi";
             TableHeaderCell hakCell = new TableHeaderCell();
-            hakCell.Text = "Izin Hakki";
+            hakCell.Text = "Ä°zin HakkÄ±";
             TableHeaderCell kullanilanCell = new TableHeaderCell();
-            kullanilanCell.Text = "Kullanilan Izin";
+            kullanilanCell.Text = "KullanÄ±lan Ä°zin";
             TableHeaderCell kalanCell = new TableHeaderCell();
-            kalanCell.Text = "Kalan Izin";
+            kalanCell.Text = "Kalan Ä°zin";
             th.Controls.Add(donemCell);
             th.Controls.Add(hakCell);
             th.Controls.Add(kullanilanCell);
@@ -1240,11 +1240,11 @@ namespace IKYS_WebParts.PersonelGirisiWP
             TableHeaderCell izintipiCell = new TableHeaderCell();
             izintipiCell.Text = "Izin Tipi";
             TableHeaderCell bastarCell = new TableHeaderCell();
-            bastarCell.Text = "Baslangiç tarihi";
+            bastarCell.Text = "BaslangiÃ§ tarihi";
             TableHeaderCell bittarCell = new TableHeaderCell();
             bittarCell.Text = "Bitis tarihi";
             TableHeaderCell sureCell = new TableHeaderCell();
-            sureCell.Text = "Süre";
+            sureCell.Text = "SÃ¼re";
 
             TableHeaderCell durumCell = new TableHeaderCell();
             durumCell.Text = "Durum";
@@ -1266,11 +1266,11 @@ namespace IKYS_WebParts.PersonelGirisiWP
             TableHeaderCell izintipiCell = new TableHeaderCell();
             izintipiCell.Text = "Izin Tipi";
             TableHeaderCell bastarCell = new TableHeaderCell();
-            bastarCell.Text = "Baslangiç Tarihi";
+            bastarCell.Text = "BaslangiÃ§ Tarihi";
             TableHeaderCell bittarCell = new TableHeaderCell();
             bittarCell.Text = "Bitis Tarihi";
             TableHeaderCell sureCell = new TableHeaderCell();
-            sureCell.Text = "Izinli Süre";
+            sureCell.Text = "Izinli SÃ¼re";
 
             th.Controls.Add(siraCell);
             th.Controls.Add(izintipiCell);
@@ -1304,10 +1304,10 @@ namespace IKYS_WebParts.PersonelGirisiWP
             List<GorevTanim> list = gorevDao.SelectByBirimId(birimId);
             foreach (GorevTanim gr in list)
             {
-                // base display text = görev adi
+                // base display text = gÃ¶rev adi
                 string display = gr.Adi.ReturnEmptyIfNull().ToString();
 
-                // if this görev is assigned to a person, append "(Adi Soyadi)"
+                // if this gÃ¶rev is assigned to a person, append "(Adi Soyadi)"
                 if (gr.PersonelId > 0)
                 {
                     Personel assigned = new Personel();
@@ -1386,10 +1386,10 @@ namespace IKYS_WebParts.PersonelGirisiWP
             AyrilmaSebebiDDL.Items.Add("");
             AyrilmaSebebiDDL.Items.Add("Emeklilik");
             AyrilmaSebebiDDL.Items.Add("Istifa");
-            AyrilmaSebebiDDL.Items.Add("Görev Süresi Doldu");
+            AyrilmaSebebiDDL.Items.Add("GÃ¶rev SÃ¼resi Doldu");
             AyrilmaSebebiDDL.Items.Add("Is Akdi Feshi");
             AyrilmaSebebiDDL.Items.Add("Yas Haddi");
-            AyrilmaSebebiDDL.Items.Add("Sirkete Dönme");
+            AyrilmaSebebiDDL.Items.Add("Sirkete DÃ¶nme");
 
         }
         private void FillKadrosuzAyrilmaSebebiDDL()
@@ -1398,11 +1398,11 @@ namespace IKYS_WebParts.PersonelGirisiWP
             KadrosuzAyrilmaSebebiDDL.Items.Add("");
             KadrosuzAyrilmaSebebiDDL.Items.Add("Emeklilik");
             KadrosuzAyrilmaSebebiDDL.Items.Add("Istifa");
-            KadrosuzAyrilmaSebebiDDL.Items.Add("Görev Süresi Doldu");
+            KadrosuzAyrilmaSebebiDDL.Items.Add("GÃ¶rev SÃ¼resi Doldu");
             KadrosuzAyrilmaSebebiDDL.Items.Add("Is Akdi Feshi");
             KadrosuzAyrilmaSebebiDDL.Items.Add("Yas Haddi");
-            KadrosuzAyrilmaSebebiDDL.Items.Add("Sirkete Dönme");
-            KadrosuzAyrilmaSebebiDDL.Items.Add("Sözlesme Bitti");
+            KadrosuzAyrilmaSebebiDDL.Items.Add("Sirkete DÃ¶nme");
+            KadrosuzAyrilmaSebebiDDL.Items.Add("SÃ¶zlesme Bitti");
 
         }
         private void FillIkametIlData()
@@ -1496,7 +1496,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
         private void PersonelTipiDDLDoldur()
         {
             PersonelTipiDDL.Items.Clear();
-            // Enum'u Dropdown için listeye dönüstürme
+            // Enum'u Dropdown iÃ§in listeye dÃ¶nÃ¼stÃ¼rme
 
             var personelTipleri = Enum.GetValues(typeof(PersonelTipi))
                            .Cast<PersonelTipi>()
@@ -1530,18 +1530,18 @@ namespace IKYS_WebParts.PersonelGirisiWP
             if (personelUpdated && kimlikUpdated)
             {
                 IzinDonemiBilgileriniGuncelle(personel);
-                MessageHelper.PublishMessage("Personel bilgileri güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                MessageHelper.PublishMessage("Personel bilgileri gÃ¼ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
             }
             else if (personelUpdated)
             {
                 IzinDonemiBilgileriniGuncelle(personel);
-                MessageHelper.PublishMessage("Personel kimlik bilgileri eksik olarak güncellendi.", ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("Personel kimlik bilgileri eksik olarak gÃ¼ncellendi.", ProjeConstants.MESAJ_BILGI);
             }
 
             else if (kimlikUpdated)
-                MessageHelper.PublishMessage("Personel bilgisi eksik olarak güncellendi.", ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("Personel bilgisi eksik olarak gÃ¼ncellendi.", ProjeConstants.MESAJ_BILGI);
             else
-                MessageHelper.PublishMessage("Personel bilgileri güncellenemedi.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Personel bilgileri gÃ¼ncellenemedi.", ProjeConstants.MESAJ_HATA);
 
         }
         protected void KadrosuzUpdateIsBilgileriBtn_Click(object sender, EventArgs e)
@@ -1576,10 +1576,10 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 IsBilgileri ib = new IsBilgileri();
                 ib = ib.SelectByPersonelId(personel.Id);
                 FillIsBilgileri(personel,ib);
-                MessageHelper.PublishMessage("Is bilgileri güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                MessageHelper.PublishMessage("Is bilgileri gÃ¼ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
             }
             else
-                MessageHelper.PublishMessage("Is bilgileri güncellenemedi.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Is bilgileri gÃ¼ncellenemedi.", ProjeConstants.MESAJ_HATA);
         }
         protected void UpdateIletisimBtn_Click(object sender, EventArgs e)
         {
@@ -1594,9 +1594,9 @@ namespace IKYS_WebParts.PersonelGirisiWP
             }
 
             if (iletisimUpdated)
-                MessageHelper.PublishMessage("Iletisim bilgileri güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                MessageHelper.PublishMessage("Iletisim bilgileri gÃ¼ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
             else
-                MessageHelper.PublishMessage("Iletisim bilgileri güncellenemedi.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Iletisim bilgileri gÃ¼ncellenemedi.", ProjeConstants.MESAJ_HATA);
         }
         protected void AileDuzenleBtn_Click(object sender, EventArgs e)
         {
@@ -1755,7 +1755,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                         //Kadrodaki yerini kaydet
                         if (isBilgileri.CalismaDurumu == ProjeConstants.PER_CALISIYOR_INT)
                         {
-                            //Önceki görev tanimindan PersonelId'yi Sil
+                            //Ã–nceki gÃ¶rev tanimindan PersonelId'yi Sil
                             GorevTanim oldGt = new GorevTanim();
                             oldGt = oldGt.Select<GorevTanim>(oldGorevId);
                             if (oldGt != null)
@@ -2000,8 +2000,8 @@ namespace IKYS_WebParts.PersonelGirisiWP
 
                     //Aile, Egitim, Kurs,IsTecrube   tablolari ayrica save edilecek
 
-                    //hataya düsmediyse kayit tamam
-                    //Per düzenleme olarak tekrar aç, açinca mesaj ver           
+                    //hataya dÃ¼smediyse kayit tamam
+                    //Per dÃ¼zenleme olarak tekrar aÃ§, aÃ§inca mesaj ver           
                     SenderAppQS = isb.CalismaDurumu == ProjeConstants.PER_AYRILDI_INT ? "EPL" : SenderAppQS;
                     RedirectToPage(ProjeConstants.PAGE_PERSONEL_EDIT + "?Mesaj=true&PersonelId=" + personel.Id + "&DestinationApp=PerD&SenderApp=" + SenderAppQS);
 
@@ -2125,7 +2125,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Resim Seçmediniz.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Resim SeÃ§mediniz.", ProjeConstants.MESAJ_HATA);
             }
 
         }
@@ -2149,7 +2149,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Islem Tamamlandi.Resim yüklendi.", ProjeConstants.MESAJ_BASARILI);
+                MessageHelper.PublishMessage("Islem Tamamlandi.Resim yÃ¼klendi.", ProjeConstants.MESAJ_BASARILI);
             }
         }
         protected void PersonelTipiDDL_SelectedIndexChanged(object sender, EventArgs e)

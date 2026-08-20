@@ -1,9 +1,11 @@
+using DAO.Ortak;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
@@ -20,10 +22,11 @@ namespace Model.TBYS
         public string Aciklama { get; set; }
         public override T Select<T>(int id)
         {
-            string sqlString = string.Format(@"SELECT *
+            SqlQuery query = new SqlQuery(@"SELECT *
                                FROM Odeme_Table 
-                               WHERE  Id={0}", id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                               WHERE  Id=@Id");
+            query.AddParameter("@Id", id);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             List<Odeme> list = ToList<Odeme>(dataTable);
             Odeme odeme = new Odeme();
             odeme = list.FirstOrDefault();
@@ -35,9 +38,9 @@ namespace Model.TBYS
             GenericEntity<Odeme> genericEntity = new GenericEntity<Odeme>(ProjeConstants.SQL_SELECT);
             OlusturmaTarihi = DateTime.Now;
             Id = id;
-            string sqlString = genericEntity.GetQuery(this);
+            SqlQuery query = genericEntity.GetQueryParametreli(this);
 
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(query, "");
             List<Odeme> list = ToList<Odeme>(dataTable);
             Odeme odeme = new Odeme();
             odeme = list.FirstOrDefault();
@@ -50,8 +53,8 @@ namespace Model.TBYS
                 GenericEntity<Odeme> genericEntity = new GenericEntity<Odeme>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
+                SqlQuery query = genericEntity.GetQueryParametreli(this);
+                int id = dao.Insert(query);
 
                 this.Id = id;
                 if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
@@ -79,8 +82,8 @@ namespace Model.TBYS
                         GenericEntity<Odeme> genericEntity = new GenericEntity<Odeme>(ProjeConstants.SQL_UPDATE);
                         DegistirmeTarihi = DateTime.Now;
                         Degistiren = UtilityHelper.GetCurrentUserName();
-                        string sqlString = genericEntity.GetQuery(this);
-                        isSuccess = dao.Update2Db(sqlString);
+                        SqlQuery query = genericEntity.GetQueryParametreli(this);
+                        isSuccess = dao.Update2Db(query);
                     }
                     if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
                     {
@@ -103,11 +106,11 @@ namespace Model.TBYS
                 if (Id != 0)
                 {
                     GenericEntity<Odeme> genericEntity = new GenericEntity<Odeme>(ProjeConstants.SQL_DELETE);
-                    string sqlString = genericEntity.GetQuery(this);
+                    SqlQuery query = genericEntity.GetQueryParametreli(this);
                     Odeme item = Select<Odeme>(Id);
                     if (item != null)
                     {
-                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                        isDeleted = dao.DeleteFromDb(query, "");
                     }
                     else isDeleted = false;
                     if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
@@ -173,78 +176,85 @@ namespace Model.TBYS
         }
         public bool DeleteBySozlesmeId(int sozlesmeId)
         {
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 DELETE Odeme_Table 
-                WHERE SozlesmeId={0}", sozlesmeId);
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+                WHERE SozlesmeId=@SozlesmeId");
+            query.AddParameter("@SozlesmeId", sozlesmeId);
+            bool isSuccess = dao.DeleteFromDb(query, "");
             return isSuccess;
         }
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"SELECT *
+            SqlQuery query = new SqlQuery(@"SELECT *
                                FROM Odeme_Table");
 
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(query, "");
             List<Odeme> list = ToList<Odeme>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
         public List<Odeme> SelectByKiraciId(int kiraciId)
         {
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT * FROM Odeme_Table
-                WHERE KiraciId={0}
-                ORDER BY OdemeTarihi Desc", kiraciId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                WHERE KiraciId=@KiraciId
+                ORDER BY OdemeTarihi Desc");
+            query.AddParameter("@KiraciId", kiraciId);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             List<Odeme> list = ToList<Odeme>(dataTable);
             return list;
 
         }
         public List<Odeme> SelectBySozlesmeIdOdemePlaniId(int sozlesmeId, int odemePlaniId)
         {
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT * FROM Odeme_Table
-                WHERE SozlesmeId={0} AND OdemePlaniId={1}
-                ORDER BY OdemeTarihi ", sozlesmeId.ReturnQuotedValue(), odemePlaniId);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                WHERE SozlesmeId=@SozlesmeId AND OdemePlaniId=@OdemePlaniId
+                ORDER BY OdemeTarihi ");
+            query.AddParameter("@SozlesmeId", sozlesmeId);
+            query.AddParameter("@OdemePlaniId", odemePlaniId);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             List<Odeme> list = ToList<Odeme>(dataTable);
             return list;
 
         }
-        public DataTable SelectByKiraciAyYil(int kiraciId, int ay, int yil)
-        {
-            string ayYilStr = string.Empty;
-            if ((ay != ProjeConstants.HEPSI_INT) && (yil != ProjeConstants.HEPSI_INT))
-            {
-                ayYilStr = string.Format(@"
-                    WHERE MONTH(A.OdemeTarihi)={0} AND YEAR(A.OdemeTarihi) ={1}", ay.ReturnQuotedValue(), yil.ReturnQuotedValue());
-            }
-            else if ((ay == ProjeConstants.HEPSI_INT) && (yil != ProjeConstants.HEPSI_INT))
-            {
-                ayYilStr = string.Format(@"
-                    WHERE YEAR(A.OdemeTarihi) ={0}", yil.ReturnQuotedValue());
-            }
-            else if ((ay != ProjeConstants.HEPSI_INT) && (yil == ProjeConstants.HEPSI_INT))
-            {
-                ayYilStr = string.Format(@"
-                    WHERE MONTH(A.OdemeTarihi)={0} ", ay.ReturnQuotedValue());
-            }
-            //WHERE MONTH(OdemeTarihi)={0} AND YEAR(OdemeTarihi)={1} {2}
-            string kiraciIdStr = kiraciId > 0 ? string.Format(@" AND A.KiraciId={0}", kiraciId) : string.Empty;
-
-            string sqlString = string.Format(@"
+		public DataTable SelectByKiraciAyYil(int kiraciId, int ay, int yil)
+		{
+			StringBuilder sb = new StringBuilder(@"
 				SELECT A.Id, B.Adi KiraciAdiSoyadi, F.Bolge, 
-                    A.Id OdemeId, A.OdemeTarihi, A.OdenenTutar, A.Aciklama, A.SozlesmeId, A.KiraciId, A.OdemePlaniId, B.KiralamaAmaci 
-                FROM Odeme_Table A
-                    INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId 
-				    INNER JOIN KiraSozlesme_Table C ON C.Id=A.SozlesmeId
+					A.Id OdemeId, A.OdemeTarihi, A.OdenenTutar, A.Aciklama, A.SozlesmeId, A.KiraciId, A.OdemePlaniId, B.KiralamaAmaci 
+				FROM Odeme_Table A
+					INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId 
+					INNER JOIN KiraSozlesme_Table C ON C.Id=A.SozlesmeId
 					INNER JOIN SozlesmeTasinmaz_Table D ON D.Id=(Select TOP 1 Id From SozlesmeTasinmaz_Table WHERE SozlesmeId=A.SozlesmeId) 
 					INNER JOIN Tasinmaz_Table E ON E.Id=D.TasinmazId 
-                    INNER JOIN Il_Table F ON F.IlAdi= E.Ili
-                {0} {1}
-                ORDER BY A.OdemeTarihi DESC, B.Id, A.SozlesmeId
-            ", ayYilStr, kiraciIdStr);
-            // bölge de seçime eklendigi için sorgu üstteki ile degisti SB 23/09/2019
+					INNER JOIN Il_Table F ON F.IlAdi= E.Ili
+				WHERE 1=1 ");
+			SqlQuery query = new SqlQuery();
+			if ((ay != ProjeConstants.HEPSI_INT) && (yil != ProjeConstants.HEPSI_INT))
+			{
+				sb.Append(" AND MONTH(A.OdemeTarihi)=@Ay AND YEAR(A.OdemeTarihi)=@Yil ");
+				query.AddParameter("@Ay", ay);
+				query.AddParameter("@Yil", yil);
+			}
+			else if ((ay == ProjeConstants.HEPSI_INT) && (yil != ProjeConstants.HEPSI_INT))
+			{
+				sb.Append(" AND YEAR(A.OdemeTarihi)=@Yil ");
+				query.AddParameter("@Yil", yil);
+			}
+			else if ((ay != ProjeConstants.HEPSI_INT) && (yil == ProjeConstants.HEPSI_INT))
+			{
+				sb.Append(" AND MONTH(A.OdemeTarihi)=@Ay ");
+				query.AddParameter("@Ay", ay);
+			}
+			if (kiraciId > 0)
+			{
+				sb.Append(" AND A.KiraciId=@KiraciId ");
+				query.AddParameter("@KiraciId", kiraciId);
+			}
+			sb.Append(" ORDER BY A.OdemeTarihi DESC, B.Id, A.SozlesmeId ");
+			query.Sql = sb.ToString();
+            // bÃ¶lge de seÃ§ime eklendigi iÃ§in sorgu Ã¼stteki ile degisti SB 23/09/2019
             //string sqlString = string.Format(@"
             //    SELECT A.Id, B.Adi,B.Soyadi,  B.Adi+' '+B.Soyadi KiraciAdiSoyadi,
             //        A.Id OdemeId, A.OdemeTarihi, A.OdenenTutar, A.Aciklama, A.SozlesmeId, A.KiraciId, A.OdemePlaniId 
@@ -253,117 +263,119 @@ namespace Model.TBYS
             //    {0} {1}
             //    ORDER BY A.OdemeTarihi DESC, B.Id, A.SozlesmeId
             //", ayYilStr,kiraciIdStr);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+			DataTable dataTable = dao.SelectFromDb(query, "");
 
-            return dataTable;
+			return dataTable;
 
-        }
-        public DataTable SelectByKiraciAyYilReturnDataTable(int bolgeId,int kiraciId,DateTime bastar, DateTime bittar)//int ay, int yil)
-        {
-            bittar = UtilityHelper.TariheSaatEkle(bittar, "23:59:59");
-            string   bastarStr = string.Format(@"
-                    AND A.OdemeTarihi BETWEEN {0} AND {1}", bastar.ReturnQuotedValue(), bittar.ReturnQuotedValue());
-
-            //WHERE MONTH(OdemeTarihi)={0} AND YEAR(OdemeTarihi)={1} {2}
-            string kiraciIdStr = kiraciId > 0 ? string.Format(@" AND A.KiraciId={0}", kiraciId) : string.Empty;
-            string bolgeStr = ((bolgeId == ProjeConstants.HEPSI_INT) || (bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT)) ? string.Empty : string.Format(" AND C.BolgeId={0}", bolgeId);
-            string sqlString = string.Format(@"
+		}
+		public DataTable SelectByKiraciAyYilReturnDataTable(int bolgeId,int kiraciId,DateTime bastar, DateTime bittar)//int ay, int yil)
+		{
+			bittar = UtilityHelper.TariheSaatEkle(bittar, "23:59:59");
+			StringBuilder sb = new StringBuilder(@"
 				SELECT A.Id, A.Id OdemeId,A.OdemePlaniId,A.SozlesmeId,A.KiraciId,
-	                A.OdemeTarihi, A.OdenenTutar, A.Aciklama, 
-	                B.Adi, B.Soyadi, B.KiralamaAmaci, 
-	                C.SozBasTar, C.SozBitTar, C.IlkSozlesmeTar,C.DosyaNo, C.ArtisAyi,C.KiraBedeli,C.OdemeSekli, 
-	                D.VadeBitTar, E.Id TeminatId,
+					A.OdemeTarihi, A.OdenenTutar, A.Aciklama, 
+					B.Adi, B.Soyadi, B.KiralamaAmaci, 
+					C.SozBasTar, C.SozBitTar, C.IlkSozlesmeTar,C.DosyaNo, C.ArtisAyi,C.KiraBedeli,C.OdemeSekli, 
+					D.VadeBitTar, E.Id TeminatId,
 					H.KisaAdi Bolge
-                FROM Odeme_Table A
-                
-                    INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId 
-	                INNER JOIN KiraSozlesme_Table C ON C.Id=A.SozlesmeId
-	                INNER JOIN OdemePlani_Table D ON D.Id=A.OdemePlaniId
-                    LEFT JOIN TeminatIslem_Table E ON E.OdemeId=A.Id
+				FROM Odeme_Table A
+
+					INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId 
+					INNER JOIN KiraSozlesme_Table C ON C.Id=A.SozlesmeId
+					INNER JOIN OdemePlani_Table D ON D.Id=A.OdemePlaniId
+					LEFT JOIN TeminatIslem_Table E ON E.OdemeId=A.Id
 					LEFT JOIN Bolge_Table H ON H.Id=C.BolgeId
-                WHERE 1>0 
-                {0} {1} {2}
-                ORDER BY A.OdemeTarihi DESC, B.Id, A.SozlesmeId
-            ", bastarStr, kiraciIdStr,bolgeStr);
-            // bölge de seçime eklendigi için sorgu üstteki ile degisti SB 23/09/2019
-            //string sqlString = string.Format(@"
-            //    SELECT A.Id, B.Adi,B.Soyadi,  B.Adi+' '+B.Soyadi KiraciAdiSoyadi,
-            //        A.Id OdemeId, A.OdemeTarihi, A.OdenenTutar, A.Aciklama, A.SozlesmeId, A.KiraciId, A.OdemePlaniId 
-            //    FROM Odeme_Table A
-            //    INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId 
-            //    {0} {1}
-            //    ORDER BY A.OdemeTarihi DESC, B.Id, A.SozlesmeId
-            //", ayYilStr,kiraciIdStr);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+				WHERE 1=1 ");
+			SqlQuery query = new SqlQuery();
+			sb.Append(" AND A.OdemeTarihi BETWEEN @BasTarih AND @BitTarih ");
+			query.AddParameter("@BasTarih", bastar);
+			query.AddParameter("@BitTarih", bittar);
+			if (kiraciId > 0)
+			{
+				sb.Append(" AND A.KiraciId=@KiraciId ");
+				query.AddParameter("@KiraciId", kiraciId);
+			}
+			if (bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT)
+			{
+				sb.Append(" AND C.BolgeId=@BolgeId ");
+				query.AddParameter("@BolgeId", bolgeId);
+			}
+			sb.Append(" ORDER BY A.OdemeTarihi DESC, B.Id, A.SozlesmeId ");
+			query.Sql = sb.ToString();
+            // bÃ¶lge de seÃ§ime eklendigi iÃ§in sorgu Ã¼stteki ile degisti SB 23/09/2019
+            DataTable dataTable = dao.SelectFromDb(query, "");
 
             return dataTable;
 
         }
-        public DataTable SelectByAyYilReturnDataTable( int ay, int yil)
-        {
-            string ayYilStr = string.Empty;
-            if ((ay != ProjeConstants.HEPSI_INT) && (yil != ProjeConstants.HEPSI_INT))
-            {
-                ayYilStr = string.Format(@"
-                    WHERE MONTH(A.OdemeTarihi)={0} AND YEAR(A.OdemeTarihi) ={1}", ay.ReturnQuotedValue(), yil.ReturnQuotedValue());
-            }
-            else if ((ay == ProjeConstants.HEPSI_INT) && (yil != ProjeConstants.HEPSI_INT))
-            {
-                ayYilStr = string.Format(@"
-                    WHERE YEAR(A.OdemeTarihi) ={0}", yil.ReturnQuotedValue());
-            }
-            else if ((ay != ProjeConstants.HEPSI_INT) && (yil == ProjeConstants.HEPSI_INT))
-            {
-                ayYilStr = string.Format(@"
-                    WHERE MONTH(A.OdemeTarihi)={0} ", ay.ReturnQuotedValue());
-            }
+		public DataTable SelectByAyYilReturnDataTable( int ay, int yil)
+		{
+			StringBuilder sb = new StringBuilder(@"
+				SELECT 
+					A.OdemeTarihi, A.OdenenTutar, A.Aciklama, 
+					B.Adi, B.Soyadi 
+					--D.Id TeminatId, D.IslemTipi
+				FROM Odeme_Table A
+					INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId 
+					INNER JOIN KiraSozlesme_Table C ON C.Id=A.SozlesmeId	                
+					LEFT JOIN TeminatIslem_Table E ON E.OdemeId=A.Id
+				WHERE 1=1 ");
+			SqlQuery query = new SqlQuery();
+			if ((ay != ProjeConstants.HEPSI_INT) && (yil != ProjeConstants.HEPSI_INT))
+			{
+				sb.Append(" AND MONTH(A.OdemeTarihi)=@Ay AND YEAR(A.OdemeTarihi)=@Yil ");
+				query.AddParameter("@Ay", ay);
+				query.AddParameter("@Yil", yil);
+			}
+			else if ((ay == ProjeConstants.HEPSI_INT) && (yil != ProjeConstants.HEPSI_INT))
+			{
+				sb.Append(" AND YEAR(A.OdemeTarihi)=@Yil ");
+				query.AddParameter("@Yil", yil);
+			}
+			else if ((ay != ProjeConstants.HEPSI_INT) && (yil == ProjeConstants.HEPSI_INT))
+			{
+				sb.Append(" AND MONTH(A.OdemeTarihi)=@Ay ");
+				query.AddParameter("@Ay", ay);
+			}
+			sb.Append(" ORDER BY A.OdemeTarihi DESC, B.Id, A.SozlesmeId ");
+			query.Sql = sb.ToString();
 
-
-            string sqlString = string.Format(@"
-                SELECT 
-	                A.OdemeTarihi, A.OdenenTutar, A.Aciklama, 
-	                B.Adi, B.Soyadi 
-	                --D.Id TeminatId, D.IslemTipi
-                FROM Odeme_Table A
-                    INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId 
-	                INNER JOIN KiraSozlesme_Table C ON C.Id=A.SozlesmeId	                
-                    LEFT JOIN TeminatIslem_Table E ON E.OdemeId=A.Id
-                {0} 
-                ORDER BY A.OdemeTarihi DESC, B.Id, A.SozlesmeId
-            ", ayYilStr);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+			DataTable dataTable = dao.SelectFromDb(query, "");
 
             return dataTable;
 
         }
-        public List<Odeme> SelectByKiraciVadeBasTarVadeBitTar(int sozlesmeId,int kiraciId, DateTime ilkTarih, DateTime ikinciTarih)
-        {
-            DateTime tarih1= new DateTime(ilkTarih.Year,ilkTarih.Month,ilkTarih.Day);
-            DateTime tarih2= new DateTime(ikinciTarih.Year, ikinciTarih.Month, ikinciTarih.Day);
-            DateTime tarihbas = UtilityHelper.TariheSaatEkle(tarih1, "00:00"); 
-            DateTime tarihbit = UtilityHelper.TariheSaatEkle(tarih2, "23:59"); 
-            string sqlString = string.Format(@"
+		public List<Odeme> SelectByKiraciVadeBasTarVadeBitTar(int sozlesmeId,int kiraciId, DateTime ilkTarih, DateTime ikinciTarih)
+		{
+			DateTime tarih1= new DateTime(ilkTarih.Year,ilkTarih.Month,ilkTarih.Day);
+			DateTime tarih2= new DateTime(ikinciTarih.Year, ikinciTarih.Month, ikinciTarih.Day);
+			DateTime tarihbas = UtilityHelper.TariheSaatEkle(tarih1, "00:00"); 
+			DateTime tarihbit = UtilityHelper.TariheSaatEkle(tarih2, "23:59"); 
+			SqlQuery query = new SqlQuery(@"
 				SELECT * 
-                FROM Odeme_Table A
-                WHERE KiraciId= {0} AND SozlesmeId={1}
-                    AND OdemeTarihi BETWEEN {2} AND {3}
-                ORDER BY A.OdemeTarihi 
-            ", kiraciId,sozlesmeId, tarihbas.ConvertToDDMMYYYHHmmFormat().ReturnQuotedValue(), tarihbit.ConvertToDDMMYYYHHmmFormat().ReturnQuotedValue());
+				FROM Odeme_Table A
+				WHERE KiraciId=@KiraciId AND SozlesmeId=@SozlesmeId
+					AND OdemeTarihi BETWEEN @BasTarih AND @BitTarih
+				ORDER BY A.OdemeTarihi ");
+			query.AddParameter("@KiraciId", kiraciId);
+			query.AddParameter("@SozlesmeId", sozlesmeId);
+			query.AddParameter("@BasTarih", tarihbas);
+			query.AddParameter("@BitTarih", tarihbit);
 
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+			DataTable dataTable = dao.SelectFromDb(query, "");
             List<Odeme> list = ToList<Odeme>(dataTable);
             return list;
         }
         public decimal SelectSumBySozlesmeIdOdemePlaniId(int sozlesmeId, int odemePlaniId)
         {
             decimal toplam = 0;
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT SUM(OdenenTutar) Toplam FROM Odeme_Table
-                WHERE SozlesmeId={0} 
-                    AND OdemePlaniId={1} 
-                ", sozlesmeId.ReturnQuotedValue(), odemePlaniId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                WHERE SozlesmeId=@SozlesmeId 
+                    AND OdemePlaniId=@OdemePlaniId");
+            query.AddParameter("@SozlesmeId", sozlesmeId);
+            query.AddParameter("@OdemePlaniId", odemePlaniId);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 if (dataTable.Rows.Count > 0)
@@ -406,7 +418,7 @@ namespace Model.TBYS
                     decimal toplamOdenen = odemeDao.SelectSumBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlani.Id);
                     //Gunluk ise
                     // OdemeAyrintiya kayit atsin TODO SB
-                    //if (kiraSozlesme.GecikmeZammiTipi.Equals("Günlük"))
+                    //if (kiraSozlesme.GecikmeZammiTipi.Equals("GÃ¼nlÃ¼k"))
                     //{
                     //    UtilityHelper.OdemeAyrintiliGunlukFaizhesapla(kiraSozlesme, odemePlani);
                     //}
@@ -420,7 +432,7 @@ namespace Model.TBYS
             catch (Exception exception1)
             {
                 ExceptionHelper exHelper = new ExceptionHelper();
-                Exception exception2 = new Exception("Ödeme Kaydedilemedi");
+                Exception exception2 = new Exception("Ã–deme Kaydedilemedi");
                 exHelper.Exceptions.Add(exception2);
                 exHelper.Exceptions.Add(exception1);
                 exHelper.PublishException();
@@ -454,7 +466,7 @@ namespace Model.TBYS
                     decimal toplamOdenen = odemeDao.SelectSumBySozlesmeIdOdemePlaniId(odemePlani.SozlesmeId, odemePlani.Id);
                     odemePlani.OdenenTutar = toplamOdenen;
                     odemePlani.Aciklama += aciklama + System.Environment.NewLine +
-                        " *" + odeme.OdemeTarihi.ConvertToDatetimeEmptyIfNull() + " tarihli " + odeme.OdenenTutar.ToString("N", culturInfo) + " ödeme silindi." + System.Environment.NewLine;
+                        " *" + odeme.OdemeTarihi.ConvertToDatetimeEmptyIfNull() + " tarihli " + odeme.OdenenTutar.ToString("N", culturInfo) + " Ã¶deme silindi." + System.Environment.NewLine;
                     odemePlani.Degistiren = kullanici;
                     odemePlani.Update();
                 }
@@ -464,7 +476,7 @@ namespace Model.TBYS
             {
 
                 ExceptionHelper exHelper = new ExceptionHelper();
-                Exception exception2 = new Exception("Ödeme Silinemedi");
+                Exception exception2 = new Exception("Ã–deme Silinemedi");
                 exHelper.Exceptions.Add(exception2);
                 exHelper.Exceptions.Add(exception1);
                 exHelper.PublishException();
@@ -499,11 +511,11 @@ namespace Model.TBYS
                     }
                     else
                     {
-                        ExceptionHelper ex = new ExceptionHelper(new Exception("Ödeme Tablosunda OdemePlaniId=0 oldugundan kayit yapilamadi"));
+                        ExceptionHelper ex = new ExceptionHelper(new Exception("Ã–deme Tablosunda OdemePlaniId=0 oldugundan kayit yapilamadi"));
                         ex.PublishException();
                     }
                 }
-                //Odeme tablosunu güncelle
+                //Odeme tablosunu gÃ¼ncelle
                 if (yeniOdemePlani != null)
                 {
                     odeme = odeme.Select(odemeId.ConvertToInt());
@@ -521,7 +533,7 @@ namespace Model.TBYS
                 
                 if (guncellendiMi)
                 {
-                    //onceki Odeme planini güncelle
+                    //onceki Odeme planini gÃ¼ncelle
                     if (oncekiOdemePlani != null)
                     {
                         Odeme odemeDao = new Odeme();
@@ -530,7 +542,7 @@ namespace Model.TBYS
                         oncekiOdemePlani.Degistiren = kullanici;
                         oncekiOdemePlani.Update();
                     }
-                    //yeni Odeme planini güncelle
+                    //yeni Odeme planini gÃ¼ncelle
                     if (yeniOdemePlani != null)
                     {
                         Odeme odemeDao = new Odeme();
@@ -548,7 +560,7 @@ namespace Model.TBYS
             {
                 odemeVeOdemePlaniGuncellendiMi = false;
                 ExceptionHelper exHelper = new ExceptionHelper();
-                Exception exception2 = new Exception("Ödeme Kaydedilemedi");
+                Exception exception2 = new Exception("Ã–deme Kaydedilemedi");
                 exHelper.Exceptions.Add(exception2);
                 exHelper.Exceptions.Add(exception1);
                 exHelper.PublishException();

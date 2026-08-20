@@ -49,9 +49,9 @@
                         <asp:Label CssClass="form-label " ID="AdiLbl" runat="server"></asp:Label>
                         <div class="form-group m-0 float-end me-2">
                             <asp:Label CssClass="form-control fw-semibold" ID="IdLbl" runat="server"></asp:Label>
-                        <div class="form-group m-0 float-end">
-                            <asp:Label CssClass="form-control fw-semibold" ID="AdresLbl" runat="server"></asp:Label>
-                        </div>
+                            <div class="form-group m-0 float-end">
+                                <asp:Label CssClass="form-control fw-semibold" ID="AdresLbl" runat="server"></asp:Label>
+                            </div>
                         </div>
                         <div class="form-group m-0 float-end">
                             <asp:Label CssClass="form-control fw-semibold" ID="SorumluBolgeTxt" runat="server"></asp:Label>
@@ -322,7 +322,7 @@
                                                             <asp:GridView ID="BagimsizBolumGridView" runat="server" CssClass="table table-striped table-hover" AutoGenerateColumns="False" EmptyDataText="Alt bölüm kaydı bulunamadı">
                                                                 <Columns>
                                                                     <asp:BoundField DataField="BolumNo" HeaderText="Bölüm No" />
-                                                                    <asp:BoundField DataField="KullanimAmaci" HeaderText="Kullanım Amacı" />
+                                                                    <asp:BoundField DataField="KullanimAmaci" HeaderText="Kullanım Şekli" />
                                                                     <asp:BoundField DataField="Nitelik" HeaderText="Nitelik" />
                                                                     <asp:BoundField DataField="Metrekare" HeaderText="Metrekare" DataFormatString="{0:N2}" />
                                                                     <asp:BoundField DataField="MuhasebeyeKayitliDeger" HeaderText="Muhasebey Kaydı Değeri" DataFormatString="{0:C2}" />

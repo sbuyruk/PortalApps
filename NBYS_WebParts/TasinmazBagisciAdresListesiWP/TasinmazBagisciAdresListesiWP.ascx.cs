@@ -248,26 +248,15 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
         }
         private MemoryStream GetTemplateStream(string templateFileName)
         {
-            string newFileUrl = string.Empty;
-
             string siteUrl = SPContext.Current.Web.Url;
             using (SPSite spSite = new SPSite(siteUrl))
+            using (SPWeb web = spSite.OpenWeb())
             {
-                SPList list = SPContext.Current.Web.Lists[LibraryNameQS];
-                SPQuery query = new SPQuery();
-                query.ViewFields = @"<FieldRef Name='FileLeafRef' />";
-                query.Query =
-                  @"<Where>
-                          <Eq>
-                            <FieldRef Name='FileLeafRef' />
-                            <Value Type='File'>" + templateFileName + @"</Value>
-                          </Eq>
-                        </Where>";
-                SPListItemCollection collection = list.GetItems(query);
+                string fileUrl = web.Url + "/" + LibraryNameQS + "/" + templateFileName;
                 MemoryStream memStr = new MemoryStream();
-                if (collection.Count > 0)
+                SPFile file = web.GetFile(fileUrl);
+                if (file != null && file.Exists)
                 {
-                    SPFile file = collection[0].File;
                     byte[] byteArray = file.OpenBinary();
                     memStr.Write(byteArray, 0, byteArray.Length);
                 }

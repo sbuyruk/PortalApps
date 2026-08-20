@@ -216,11 +216,11 @@
                 <div class="card-header">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-1">
-                        <i class="bi bi-briefcase-fill"></i>
-                        <asp:Label CssClass="form-label fw-semibold  btn-outline-primary" ID="TitleLbl" runat="server" Text="Görev Onayı GirişiZ"></asp:Label>
-                        <asp:Label CssClass="form-label fw-semibold text-white" ID="GorevOnayIdLbl" runat="server"></asp:Label>
-                        <asp:Label CssClass="form-label fw-semibold" ID="PersonelAdiLbl" runat="server"></asp:Label>
-                        <asp:Label CssClass="form-label fw-semibold text-secondary" ID="AmirOnayiLbl" runat="server"></asp:Label>
+                        <i class="bi bi-luggage-fill"></i>
+                        <asp:Label CssClass="form-label fw-semibold text-primary me-3" ID="TitleLbl" runat="server" Text="Yurt Dışı/Şehir Dışı Görev Girişi "></asp:Label>
+                        <asp:Label CssClass="form-label fw-semibold text-white me-2" ID="GorevOnayIdLbl" runat="server"></asp:Label>
+                        <asp:Label CssClass="form-label fw-semibold text-secondary me-2" ID="PersonelAdiLbl" runat="server"></asp:Label>
+                        <asp:Label CssClass="form-label fw-semibold text-secondary me-2" ID="AmirOnayiLbl" runat="server"></asp:Label>
                         <asp:Label CssClass="badge bg-danger fs-6 ms-2" ID="OdendiLbl" runat="server" Text="ÖDENDİ" Visible="false"></asp:Label>
                     </h3>
                 </div>
@@ -432,7 +432,7 @@
 
                 </div>
                 <div class="card-footer footer-actions d-flex flex-wrap align-items-center gap-2">
-                    <asp:LinkButton ID="SaveBtn" CssClass="btn btn-success" runat="server" Text="Kaydet" OnClick="SaveBtn_Click" Visible="false" />
+                    <asp:LinkButton ID="SaveBtn" CssClass="btn btn-success" runat="server" Text="Kaydet" OnClick="SaveBtn_Click"  />
                     <asp:LinkButton ID="UpdateBtn" CssClass="btn btn-primary" runat="server" Text="Güncelle" OnClick="UpdateBtn_Click" Visible="false" />
                     <asp:LinkButton ID="DeleteBtn" CssClass="btn btn-danger" runat="server" Text="Sil" OnClick="DeleteBtn_Click" />
                     <label class="text-danger small mb-0 ms-2" for="YevmiyeTxt"><i class="bi bi-exclamation-triangle"></i> (Yaptığınız değişikliklerin geçerli olması için lütfen Kaydet veya Güncelle düğmesine basınız.)</label>

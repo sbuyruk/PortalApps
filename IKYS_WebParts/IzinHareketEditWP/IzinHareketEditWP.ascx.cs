@@ -197,7 +197,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
                 AciklamaTxt.Enabled = false;
                 AmirImzaDDL.Enabled = false;
                 VekilImzaDDL.Enabled = false;
-                MessageHelper.PublishMessage("Izin düzenleme süresi geçtigi için degisiklik yapilamaz.", ProjeConstants.MESAJ_BILGI,3000);
+                MessageHelper.PublishMessage("Ä°zin dÃ¼zenleme sÃ¼resi geÃ§tiÄŸi iÃ§in deÄŸiÅŸiklik yapÄ±lamaz.", ProjeConstants.MESAJ_BILGI,3000);
             }
         }
         private void GorunumuAyarla()
@@ -252,7 +252,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             }
             else
             {
-                MessageHelper.PublishMessage("Izin kaydi bulunamadi", ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("Ä°zin kaydÄ± bulunamadÄ±", ProjeConstants.MESAJ_BILGI);
             }
 
 
@@ -421,7 +421,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
                     izinHareket.BaslangicTarihi = IzinBasTarTxt.Value.ConvertToDatetime();
                     izinHareket.Adres = AdresTxt.Text;
                     izinSuresiOnceki = izinHareket.Sure;
-                    if ((izinHareket.IzinTipi != ProjeConstants.IZINTIPI_MAZERET_INT)) // Mazeret izni hariç diger izinler
+                    if ((izinHareket.IzinTipi != ProjeConstants.IZINTIPI_MAZERET_INT)) // Mazeret izni hariÃ§ diger izinler
                     {
                         TimeSpan izinBitisSaati = new TimeSpan(0, 17, 0, 0);
                         DateTime bitisTar = (IzinBitTarTxt.Value.ConvertToDatetime() + izinBitisSaati);
@@ -445,16 +445,16 @@ namespace IKYS_WebParts.IzinHareketEditWP
                         izinHareket.AmirImza = AmirImzaDDL.SelectedItem.Value.ConvertToInt();
                     }
 
-                    //sadece Mazeret ve Ucretli izinler için Dönem hesapla
+                    //sadece Mazeret ve Ucretli izinler iÃ§in DÃ¶nem hesapla
                     if ((izinHareket.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT) ||
                        (izinHareket.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT))
                     {
-                        //mevcut izin dönemini bul
-                        //izin tarihi güncellendiyse izin dönemi degisti mi
-                        // evet ise eski izin doneminden kullanilan izni çikar, kalan izne ekle, yeni izin donemId sini hareket table'a yaz
+                        //mevcut izin dÃ¶nemini bul
+                        //izin tarihi gÃ¼ncellendiyse izin dÃ¶nemi degisti mi
+                        // evet ise eski izin doneminden kullanilan izni Ã§ikar, kalan izne ekle, yeni izin donemId sini hareket table'a yaz
                         // hayir ise yeni izin onemi zaten var mi bak yoksa yeni izin donemi olustur
-                        //       izinhareket de izindonemId yi güncelle
-                        // izintalepTabledaki kaydi güncelle
+                        //       izinhareket de izindonemId yi gÃ¼ncelle
+                        // izintalepTabledaki kaydi gÃ¼ncelle
                         IzinDonem mevutIzinDonemi = new IzinDonem();
                         mevutIzinDonemi = mevutIzinDonemi.Select<IzinDonem>(izinHareket.IzinDonemId);
 
@@ -473,17 +473,17 @@ namespace IKYS_WebParts.IzinHareketEditWP
                         string yeniSure = string.Empty;
                         if (yeniIzinDonemi.Id != mevutIzinDonemi.Id)
                         {
-                            mevutIzinDonemi.KullanilanIzinGuncelle(mevutIzinDonemi, izinSuresiOnceki, false, CurrentUserName);//önceki dönemden düs
+                            mevutIzinDonemi.KullanilanIzinGuncelle(mevutIzinDonemi, izinSuresiOnceki, false, CurrentUserName);//Ã¶nceki dÃ¶nemden dÃ¼s
                             yeniSure = IKYSOrtak.IzinSuresiHesapla(izinHareket.IzinTipi, izinHareket.BaslangicTarihi, izinHareket.BitisTarihi);
 
-                            yeniIzinDonemi.KullanilanIzinGuncelle(yeniIzinDonemi, yeniSure, true, CurrentUserName);//sonraki döneme ekle
+                            yeniIzinDonemi.KullanilanIzinGuncelle(yeniIzinDonemi, yeniSure, true, CurrentUserName);//sonraki dÃ¶neme ekle
                         }
                         else
                         {
-                            yeniIzinDonemi.KullanilanIzinGuncelle(yeniIzinDonemi, izinSuresiOnceki, false, CurrentUserName);// dönemden düs
+                            yeniIzinDonemi.KullanilanIzinGuncelle(yeniIzinDonemi, izinSuresiOnceki, false, CurrentUserName);// dÃ¶nemden dÃ¼s
                             yeniSure = IKYSOrtak.IzinSuresiHesapla(izinHareket.IzinTipi, izinHareket.BaslangicTarihi, izinHareket.BitisTarihi);
 
-                            yeniIzinDonemi.KullanilanIzinGuncelle(yeniIzinDonemi, yeniSure, true, CurrentUserName);//sonraki döneme ekle
+                            yeniIzinDonemi.KullanilanIzinGuncelle(yeniIzinDonemi, yeniSure, true, CurrentUserName);//sonraki dÃ¶neme ekle
                         }
 
                         izinHareket.IzinDonemId = yeniIzinDonemi != null ? yeniIzinDonemi.Id : 0;
@@ -517,7 +517,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             string hesaplananIzin = string.Empty;
 
 
-            if (izinDonemi.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT) //yalnizca izin tipi ÜCRETLI izinse  kalan izin süresini hesapla
+            if (izinDonemi.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT) //yalnizca izin tipi ÃœCRETLI izinse  kalan izin sÃ¼resini hesapla
             {
                 if (izinDonemi != null)
                 {
@@ -552,18 +552,18 @@ namespace IKYS_WebParts.IzinHareketEditWP
                     izinSuresiOnceki = izinHareket.Sure;
 
 
-                    //sadece Mazeret ve Ucretli izinler için Dönem hesapla
+                    //sadece Mazeret ve Ucretli izinler iÃ§in DÃ¶nem hesapla
                     if ((izinHareket.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT) ||
                        (izinHareket.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT))
                     {
-                        //mevcut izin dönemini bul
-                        // izin doneminden kullanilan izni çikar, kalan izne ekle, 
-                        // izintalepTabledaki kaydi güncelle
+                        //mevcut izin dÃ¶nemini bul
+                        // izin doneminden kullanilan izni Ã§ikar, kalan izne ekle, 
+                        // izintalepTabledaki kaydi gÃ¼ncelle
                         IzinDonem mevutIzinDonemi = new IzinDonem();
                         mevutIzinDonemi = mevutIzinDonemi.Select<IzinDonem>(izinHareket.IzinDonemId);
                         if (mevutIzinDonemi != null)
                         {
-                            mevutIzinDonemi.KullanilanIzinGuncelle(mevutIzinDonemi, izinSuresiOnceki, false, CurrentUserName);// dönemden düs
+                            mevutIzinDonemi.KullanilanIzinGuncelle(mevutIzinDonemi, izinSuresiOnceki, false, CurrentUserName);// dÃ¶nemden dÃ¼s
 
                         }
                     }
@@ -612,8 +612,8 @@ namespace IKYS_WebParts.IzinHareketEditWP
                     bool isSaved = IzinHareketGuncelle(izinHareket);
                     if (isSaved)
                     {
-                        IzinTalebiniGüncelle(izinHareket.IzinTalepId, izinHareket);
-                        MessageHelper.PublishMessage("Izin Kaydi Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        IzinTalebiniGÃ¼ncelle(izinHareket.IzinTalepId, izinHareket);
+                        MessageHelper.PublishMessage("Izin Kaydi GÃ¼ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                         //RedirectToPage(ProjeConstants.PAGE_IZINHAREKET_LIST);
                     }
                 }
@@ -626,7 +626,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
                 exceptionHelper.PublishException();
             }
         }
-        private void IzinTalebiniGüncelle(int izinTalepId, IzinHareket izinHareket)
+        private void IzinTalebiniGÃ¼ncelle(int izinTalepId, IzinHareket izinHareket)
         {
             try
             {
@@ -635,7 +635,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
                 if (izinTalep != null)
                 {
 
-                    izinTalep.Aciklama += System.Environment.NewLine + CurrentUserName + " tarafindan " + DateTime.Now.ReturnTRDateFormat() + " tarihinde izin kaydi güncellendi";
+                    izinTalep.Aciklama += System.Environment.NewLine + CurrentUserName + " tarafindan " + DateTime.Now.ReturnTRDateFormat() + " tarihinde izin kaydi gÃ¼ncellendi";
                     izinTalep.Adres = izinHareket.Adres;
                     izinTalep.AmirImza = izinHareket.AmirImza;
                     izinTalep.BaslangicTarihi = izinHareket.BaslangicTarihi;
@@ -677,7 +677,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
         {
             try
             {
-                //popup aç
+                //popup aÃ§
                 var openPopup = "OpenModalOnay();";
                 System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openPopup, true);
 
@@ -702,7 +702,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
                     if (isSaved)
                     {
                         IzinTalebiniSil(izinHareket.IzinTalepId);
-                        MessageHelper.PublishMessage("Izin Kaydi Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Ä°zin KaydÄ± Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                         RedirectToPage(ProjeConstants.PAGE_IZINHAREKET_LIST);
                     }
                 }
@@ -732,7 +732,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             catch (Exception exception)
             {
                 ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Izin Talebi Silinemedi");
+                Exception exceptionInfo = new Exception("Ä°zin Talebi Silinemedi");
                 exceptionHelper.Exceptions.Add(exceptionInfo);
                 exceptionHelper.PublishException();
             }
@@ -795,7 +795,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             catch (Exception exception)
             {
                 ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Izin Kaydi Iptal Edilemedi");
+                Exception exceptionInfo = new Exception("Ä°zin KaydÄ± Ä°ptal Edilemedi");
                 exceptionHelper.Exceptions.Add(exceptionInfo);
                 exceptionHelper.PublishException();
             }

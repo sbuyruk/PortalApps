@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using DAO.Ortak;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
@@ -16,6 +17,107 @@ namespace Model.Ortak
         public GenericEntity(int sqlOption)
         {
             _sqlOption = sqlOption;
+        }
+
+        public SqlQuery GetQueryParametreli(T t)
+        {
+            if (_sqlOption == ProjeConstants.SQL_SELECT)
+                return GetSelectParametreli(t);
+            else if (_sqlOption == ProjeConstants.SQL_UPDATE || _sqlOption == ProjeConstants.SQL_SELECTWITHFILTER)
+                return GetUpdateParametreli(t);
+            else if (_sqlOption == ProjeConstants.SQL_DELETE)
+                return GetDeleteParametreli(t);
+            else
+                return GetInsertParametreli(t);
+        }
+
+        private SqlQuery GetInsertParametreli(T modelType)
+        {
+            Type type = modelType.GetType();
+            SqlQuery query = new SqlQuery();
+            StringBuilder sbCols = new StringBuilder();
+            StringBuilder sbVals = new StringBuilder();
+
+            foreach (System.Reflection.PropertyInfo pi in type.GetProperties())
+            {
+                if (pi.Name.Equals("Id"))
+                    continue;
+
+                if (sbCols.Length > 0)
+                {
+                    sbCols.Append(", ");
+                    sbVals.Append(", ");
+                }
+                sbCols.Append(pi.Name);
+                sbVals.Append("@" + pi.Name);
+                query.AddParameter("@" + pi.Name, GetParameterValue(modelType, pi));
+            }
+
+            query.Sql = string.Format("INSERT INTO {0} ({1}) VALUES({2})", type.Name + "_Table", sbCols, sbVals);
+            return query;
+        }
+
+        private SqlQuery GetUpdateParametreli(T modelType)
+        {
+            Type type = typeof(T);
+            SqlQuery query = new SqlQuery();
+            StringBuilder sbSet = new StringBuilder();
+
+            foreach (System.Reflection.PropertyInfo pi in type.GetProperties())
+            {
+                query.AddParameter("@" + pi.Name, GetParameterValue(modelType, pi));
+                if (pi.Name.Equals("Id"))
+                    continue;
+
+                if (sbSet.Length > 0)
+                    sbSet.Append(", ");
+                sbSet.AppendFormat("{0}=@{0}", pi.Name);
+            }
+
+            query.Sql = string.Format("Update {0} Set {1} Where Id=@Id", type.Name + "_Table", sbSet);
+            return query;
+        }
+
+        private SqlQuery GetDeleteParametreli(T modelType)
+        {
+            Type type = typeof(T);
+            SqlQuery query = new SqlQuery();
+            System.Reflection.PropertyInfo pi = type.GetProperty("Id");
+            query.AddParameter("@Id", GetParameterValue(modelType, pi));
+            query.Sql = string.Format("Delete From {0} Where Id=@Id", type.Name + "_Table");
+            return query;
+        }
+
+        private SqlQuery GetSelectParametreli(T modelType)
+        {
+            Type type = typeof(T);
+            SqlQuery query = new SqlQuery();
+            StringBuilder sbCols = new StringBuilder();
+
+            foreach (System.Reflection.PropertyInfo pi in type.GetProperties())
+            {
+                if (sbCols.Length > 0)
+                    sbCols.Append(", ");
+                sbCols.Append(pi.Name);
+            }
+
+            System.Reflection.PropertyInfo idPi = type.GetProperty("Id");
+            query.AddParameter("@Id", GetParameterValue(modelType, idPi));
+            query.Sql = string.Format("Select {0} From {1} Where Id=@Id", sbCols, type.Name.Replace("Entity", string.Empty) + "_Table");
+            return query;
+        }
+
+        private static object GetParameterValue(T modelType, System.Reflection.PropertyInfo pi)
+        {
+            object raw = pi.GetValue(modelType);
+            if (raw == null)
+                return DBNull.Value;
+
+            // Mevcut GetInsertValues kuralı: 1901 öncesi tarihler null yazılır
+            if (pi.PropertyType == typeof(DateTime) && (DateTime)raw < new DateTime(1901, 1, 1))
+                return DBNull.Value;
+
+            return raw;
         }
 
         public string GetQuery(T t)

@@ -296,26 +296,14 @@ namespace NBYS_WebParts.BagisaVesileOlanArmaganBelgesiWP
             MemoryStream memStr = new MemoryStream();
             try
             {
-                string newFileUrl = string.Empty;
-
                 string siteUrl = SPContext.Current.Web.Url;
                 using (SPSite spSite = new SPSite(siteUrl))
+                using (SPWeb web = spSite.OpenWeb())
                 {
-                    //Console.WriteLine("Querying for template.docx");
-                    SPList list = SPContext.Current.Web.Lists[ProjeConstants.NBYSBELGELERI_LIB];
-                    SPQuery query = new SPQuery();
-                    query.ViewFields = @"<FieldRef Name='FileLeafRef' />";
-                    query.Query =
-                      @"<Where>
-                          <Eq>
-                            <FieldRef Name='FileLeafRef' />
-                            <Value Type='File'>TemplateBagisaVesile.docx</Value>
-                          </Eq>
-                        </Where>";
-                    SPListItemCollection collection = list.GetItems(query);
-                    if (collection.Count > 0)
+                    string fileUrl = web.Url + "/" + ProjeConstants.NBYSBELGELERI_LIB + "/TemplateBagisaVesile.docx";
+                    SPFile file = web.GetFile(fileUrl);
+                    if (file != null && file.Exists)
                     {
-                        SPFile file = collection[0].File;
                         byte[] byteArray = file.OpenBinary();
                         memStr.Write(byteArray, 0, byteArray.Length);
                     }

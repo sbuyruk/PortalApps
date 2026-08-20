@@ -215,7 +215,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 return;
             }
 
-            //SaveBtn.Visible = true;
+            SaveBtn.Visible = true;
 
             int totalMinutes = (int)Math.Floor(diff.TotalMinutes);
             int days = totalMinutes / (60 * 24);
@@ -283,7 +283,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             DeleteBtn.Visible = true;
             RaporAlBtn.Visible = true;
             TitleLbl.CssClass = "col-form-primary  btn-outline-primary mb-1";
-            TitleLbl.Text = "Görev Onayı Düzenleme";
+            TitleLbl.Text = "Yurt Dışı/Şehir Dışı Görev Düzenleme";
 
             if (gorevOnay != null)
             {
@@ -1214,13 +1214,43 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 GorevOnay gorevOnay = Kaydet();
                 if (gorevOnay != null)
                 {
-                    if (!AuthQS.Equals("IKYS"))
-                    {
+
                         Personel personel = new Personel();
                         personel = personel.Select<Personel>(PersonelIdQS.ReturnZeroIfNull().ConvertToInt());
                         if (personel != null)
                         {
-                            //IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi");
+                            List<string> emailList = new List<string>();
+                            //Bu personelin Amirini bul
+                            IsBilgileri isBilgileri = new IsBilgileri();
+                            isBilgileri = isBilgileri.SelectByPersonelId(personel.Id);
+                            Personel amir = new Personel();
+                            if (isBilgileri != null)
+                            {
+                                BirimTanim birimTanim = new BirimTanim();
+                                birimTanim = birimTanim.Select<BirimTanim>(isBilgileri.BirimId);
+                                amir = amir.Select(birimTanim.AmirId);
+                                if (birimTanim != null)
+                                {
+                                    amir = amir.Select(birimTanim.AmirId);
+                                    IletisimBilgileri amirIsBilgileri= new IletisimBilgileri();
+                                    amirIsBilgileri = amirIsBilgileri.SelectByPersonelId(amir.Id);
+                                    emailList.Add(amirIsBilgileri.InternetEPosta);
+                                }
+                                IletisimBilgileri ib = new IletisimBilgileri();
+                                ib = ib.SelectByPersonelId(personel.Id);
+                                emailList.Add(ib.InternetEPosta);
+                            }
+
+                        if (!AuthQS.Equals("IKYS"))
+                        {
+                            //amire mail gönder
+                            //personele  mail gönder
+                            IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Giriş");
+                        }
+                        else
+                        {
+                            //IKYS yetkili birim için mail gönder
+                            IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Giriş",false);
                         }
                     }
                     RedirectToPage(ProjeConstants.PAGE_GOREVONAY_LIST + "?Mesaj=true" + "&SecilenId=" + gorevOnay.Id + (string.IsNullOrEmpty(AuthQS) ? string.Empty : "&Auth=" + ProjeConstants.IKYS_YETKILI_BIRIM));

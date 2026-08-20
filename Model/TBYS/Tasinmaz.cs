@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using DAO.Ortak;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
@@ -101,10 +102,11 @@ namespace Model.TBYS
         }
         public override T Select<T>(int id)
         {
-            string sqlString = string.Format(@"SELECT *
+            SqlQuery query = new SqlQuery(@"SELECT *
                                FROM Tasinmaz_Table 
-                               WHERE EnvanterdeMi=1 AND Id={0}", id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                               WHERE EnvanterdeMi=1 AND Id=@Id");
+            query.AddParameter("@Id", id);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
             Tasinmaz tasinmaz = new Tasinmaz();
             tasinmaz = list.FirstOrDefault();
@@ -118,8 +120,8 @@ namespace Model.TBYS
                 GenericEntity<Tasinmaz> genericEntity = new GenericEntity<Tasinmaz>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
+                SqlQuery query = genericEntity.GetQueryParametreli(this);
+                int id = dao.Insert(query);
 
                 this.Id = id;
                 if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
@@ -147,8 +149,8 @@ namespace Model.TBYS
                         GenericEntity<Tasinmaz> genericEntity = new GenericEntity<Tasinmaz>(ProjeConstants.SQL_UPDATE);
                         DegistirmeTarihi = DateTime.Now;
                         Degistiren = UtilityHelper.GetCurrentUserName();
-                        string sqlString = genericEntity.GetQuery(this);
-                        isSuccess = dao.Update2Db(sqlString);
+                        SqlQuery query = genericEntity.GetQueryParametreli(this);
+                        isSuccess = dao.Update2Db(query);
                     }
                     if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
                     {
@@ -171,11 +173,11 @@ namespace Model.TBYS
                 if (Id != 0)
                 {
                     GenericEntity<Tasinmaz> genericEntity = new GenericEntity<Tasinmaz>(ProjeConstants.SQL_DELETE);
-                    string sqlString = genericEntity.GetQuery(this);
+                    SqlQuery query = genericEntity.GetQueryParametreli(this);
                     Tasinmaz item = Select(Id);
                     if (item != null)
                     {
-                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                        isDeleted = dao.DeleteFromDb(query, "");
                     }
                     else isDeleted = false;
                     if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
@@ -193,10 +195,11 @@ namespace Model.TBYS
         }
         public Tasinmaz Select(int id)
         {
-            string sqlString = string.Format(@"SELECT *
+            SqlQuery query = new SqlQuery(@"SELECT *
                                FROM Tasinmaz_Table 
-                               WHERE Id={0}", id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                               WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
             Tasinmaz tasinmaz = new Tasinmaz();
             tasinmaz = list.FirstOrDefault();
@@ -206,12 +209,14 @@ namespace Model.TBYS
         public string SelectByIdBolumId(int tasinmazId, int bolumId)
         {
             string retVal = string.Empty;
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT A.Adres, A.Ili, A.Ilcesi, B.BolumNo 
                 FROM Tasinmaz_Table A
-                LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId=A.Id AND B.Id={0}
-                WHERE A.Id={1}", bolumId, tasinmazId);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId=A.Id AND B.Id=@BolumId
+                WHERE A.Id=@TasinmazId");
+            query.AddParameter("@BolumId", bolumId);
+            query.AddParameter("@TasinmazId", tasinmazId);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -226,10 +231,11 @@ namespace Model.TBYS
         }
         public Tasinmaz SelectById(int id)
         {
-            string sqlString = string.Format(@"SELECT *
+            SqlQuery query = new SqlQuery(@"SELECT *
                                FROM Tasinmaz_Table 
-                               WHERE Id={0}", id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                               WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
             Tasinmaz tasinmaz = new Tasinmaz();
             tasinmaz = list.FirstOrDefault();
@@ -238,11 +244,12 @@ namespace Model.TBYS
         }
         public Tasinmaz SelectEnvanterdenCikanTasinmaz(int id)
         {
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT *,Convert(nvarchar,replace (EnvanterdenCikmaBedeli,'.',',')) as EnvanterdenCikmaBedeli
                 FROM Tasinmaz_Table 
-                WHERE EnvanterdeMi=0 AND Id={0} ", id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                WHERE EnvanterdeMi=0 AND Id=@Id ");
+            query.AddParameter("@Id", id);
+            DataTable dataTable = dao.SelectFromDb(query, "");
 
             List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
             Tasinmaz tasinmaz = new Tasinmaz();
@@ -250,33 +257,36 @@ namespace Model.TBYS
             return tasinmaz;
 
         }
-        public DataTable SelectByBolgeReturnJson(int bolgeId)
-        {
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND E.Id={0} ", bolgeId);
+		public DataTable SelectByBolgeReturnJson(int bolgeId)
+		{
+			bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+			string bolgeStr = bolgeFiltresiVar ? " AND E.Id=@BolgeId " : string.Empty;
 
-            string sqlString = string.Format(@"
-                SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId,  D.IlceAdi +'/'+C.IlAdi IliIlcesi,E.KisaAdi Bolge,
-                    T.*,
-                    B.Adi+' '+B.Soyadi Bagisci, B.Id BagisciId, B.Sag_vefat                    
-                FROM Tasinmaz_Table T
-	                LEFT JOIN Bagis_Table A ON A.TasinmazId=T.Id
-	                LEFT JOIN TasinmazBagisci_Table B ON B.Id=A.BagisciId
-                    LEFT JOIN IL_Table C ON C.Id=T.IlId
+			SqlQuery query = new SqlQuery(string.Format(@"
+				SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId,  D.IlceAdi +'/'+C.IlAdi IliIlcesi,E.KisaAdi Bolge,
+					T.*,
+					B.Adi+' '+B.Soyadi Bagisci, B.Id BagisciId, B.Sag_vefat                    
+				FROM Tasinmaz_Table T
+					LEFT JOIN Bagis_Table A ON A.TasinmazId=T.Id
+					LEFT JOIN TasinmazBagisci_Table B ON B.Id=A.BagisciId
+					LEFT JOIN IL_Table C ON C.Id=T.IlId
 					LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
 					LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
-                WHERE T.EnvanterdeMi=1 
-				    {0}", bolgeStr);
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            return dataTable;
-        }
+				WHERE T.EnvanterdeMi=1 
+					{0}", bolgeStr));
+			if (bolgeFiltresiVar)
+				query.AddParameter("@BolgeId", bolgeId);
+			DataTable dataTable = null;
+			try
+			{
+				dataTable = dao.SelectFromDb(query, "");
+			}
+			catch (Exception e)
+			{
+				throw;
+			}
+			return dataTable;
+		}
         public override List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"SELECT *
@@ -308,29 +318,31 @@ namespace Model.TBYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
         }
         public string SelectTasinmazBolumNoReturnJson(int envanterde, string kirayaUygunluk)
         {
-            string sqlString = string.Format(@"
-                SELECT 
-                    A.Id, A.Id TasinmazId,A.Cinsi, A.Ili, A.Ilcesi, A.Ili+'/'+A.Ilcesi IliIlcesi, 
-                                        A.SigortaDurumu, A.Adres,A.Adres+' '+A.Ili+'/'+A.Ilcesi AdresIliIlcesi,
-                                        A.MulkiyetSekli, A.KiraDurumu, A.KatMulkiyeti, A.SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
-                                        A.EmlakBeyanDegeri, A.TahminiRayicDegeri, A.TapuTarihi, A.AdaNo, A.ParselNo, A.PaftaNo, A.Yuzolcumu, A.ArsaPayi, A.VakifHissesi,
-                                        A.YevmiyeNo,A.CiltNo, A.SahifeNo, A.KullanimSekli, A.TasinmazFoto, A.TasinmazFoto1, A.TasinmazFoto2, A.TapuFoto, A.KrokiFoto, A.TahkikatFoto,
-                                        A.Nitelik,A.BulunduguKat, A.Aciklama,A.EnvantereGirisTarihi, 
-                                        B.BolumNo,B.Id BolumId
+			SqlQuery query = new SqlQuery(@"
+				SELECT 
+					A.Id, A.Id TasinmazId,A.Cinsi, A.Ili, A.Ilcesi, A.Ili+'/'+A.Ilcesi IliIlcesi, 
+										A.SigortaDurumu, A.Adres,A.Adres+' '+A.Ili+'/'+A.Ilcesi AdresIliIlcesi,
+										A.MulkiyetSekli, A.KiraDurumu, A.KatMulkiyeti, A.SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
+										A.EmlakBeyanDegeri, A.TahminiRayicDegeri, A.TapuTarihi, A.AdaNo, A.ParselNo, A.PaftaNo, A.Yuzolcumu, A.ArsaPayi, A.VakifHissesi,
+										A.YevmiyeNo,A.CiltNo, A.SahifeNo, A.KullanimSekli, A.TasinmazFoto, A.TasinmazFoto1, A.TasinmazFoto2, A.TapuFoto, A.KrokiFoto, A.TahkikatFoto,
+										A.Nitelik,A.BulunduguKat, A.Aciklama,A.EnvantereGirisTarihi, 
+										B.BolumNo,B.Id BolumId
 
-                    FROM Tasinmaz_Table A
-	                    LEFT JOIN BagimsizBolum_Table B On B.TasinmazId = A.Id
-	                    LEFT JOIN KiraSozlesme_Table D ON D.Aktif=1 AND D.Id IN (SELECT SozlesmeId FROM SozlesmeTasinmaz_Table where TasinmazId= A.Id AND (BolumId IS NULL OR BolumId=0 OR BolumId=B.Id))
-                    WHERE A.EnvanterdeMi={0} AND A.KirayaUygunluk={1}
-	                    AND D.Id IS NULL
-                    ORDER BY A.Id 
-                ", envanterde,kirayaUygunluk.ReturnQuotedValue());
+					FROM Tasinmaz_Table A
+						LEFT JOIN BagimsizBolum_Table B On B.TasinmazId = A.Id
+						LEFT JOIN KiraSozlesme_Table D ON D.Aktif=1 AND D.Id IN (SELECT SozlesmeId FROM SozlesmeTasinmaz_Table where TasinmazId= A.Id AND (BolumId IS NULL OR BolumId=0 OR BolumId=B.Id))
+					WHERE A.EnvanterdeMi=@Envanterde AND A.KirayaUygunluk=@KirayaUygunluk
+						AND D.Id IS NULL
+					ORDER BY A.Id 
+				");
+			query.AddParameter("@Envanterde", envanterde);
+			query.AddParameter("@KirayaUygunluk", kirayaUygunluk);
             //string sqlString = string.Format(@"
             //    SELECT ROW_NUMBER() OVER(ORDER BY A.Id) AS Sirano, A.Id, A.Id TasinmazId,A.Cinsi, A.Ili, A.Ilcesi, A.Ili+'/'+A.Ilcesi IliIlcesi, 
             //        A.SigortaDurumu, A.Adres,A.Adres+' '+A.Ili+'/'+A.Ilcesi AdresIliIlcesi,
@@ -346,11 +358,11 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.SelectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(query, "");
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             string json = ToJSON(dataTable);
             return json;
@@ -376,7 +388,7 @@ namespace Model.TBYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             string json = ToJSON(dataTable);
             return json;
@@ -405,7 +417,7 @@ namespace Model.TBYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
 
             return dataTable;
@@ -479,7 +491,7 @@ namespace Model.TBYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
         }
@@ -494,7 +506,7 @@ namespace Model.TBYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
         }
@@ -520,21 +532,23 @@ namespace Model.TBYS
         }
         public List<Tasinmaz> SelectByIlAdi(string ilAdi)
         {
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT * FROM Tasinmaz_Table
-                WHERE EnvanterdeMi=1 AND Ili={0}", ilAdi.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                WHERE EnvanterdeMi=1 AND Ili=@IlAdi");
+            query.AddParameter("@IlAdi", ilAdi);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
             return list;
         }
         public Tasinmaz SelectNext(int tasinmazId)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT * FROM Tasinmaz_Table
-                WHERE EnvanterdeMi=1 AND Id > {0}
-                ORDER BY Id ", tasinmazId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                WHERE EnvanterdeMi=1 AND Id > @TasinmazId
+                ORDER BY Id ");
+            query.AddParameter("@TasinmazId", tasinmazId);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
@@ -550,11 +564,12 @@ namespace Model.TBYS
         public Tasinmaz SelectPrev(int tasinmazId)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT * FROM Tasinmaz_Table
-                WHERE EnvanterdeMi=1 AND Id < {0}
-                ORDER BY Id DESC ", tasinmazId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                WHERE EnvanterdeMi=1 AND Id < @TasinmazId
+                ORDER BY Id DESC ");
+            query.AddParameter("@TasinmazId", tasinmazId);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
@@ -607,19 +622,22 @@ namespace Model.TBYS
                 return null;
             }
         }
-        public decimal SelectTahminiRayicToplami(int bolgeId)
-        {
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
-            decimal toplam = 0;
-            string sqlString = string.Format(@"
-                SELECT SUM(TahminiRayicDegeri) Toplam 
-                FROM Tasinmaz_Table T
-                    LEFT JOIN IL_Table C ON C.Id=T.IlId
-	                LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
-	                LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
-                WHERE T.EnvanterdeMi=1 
-                 {0}", bolgeStr);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+		public decimal SelectTahminiRayicToplami(int bolgeId)
+		{
+			bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+			string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
+			decimal toplam = 0;
+			SqlQuery query = new SqlQuery(string.Format(@"
+				SELECT SUM(TahminiRayicDegeri) Toplam 
+				FROM Tasinmaz_Table T
+					LEFT JOIN IL_Table C ON C.Id=T.IlId
+					LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
+					LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
+				WHERE T.EnvanterdeMi=1 
+				 {0}", bolgeStr));
+			if (bolgeFiltresiVar)
+				query.AddParameter("@BolgeId", bolgeId);
+			DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -628,18 +646,21 @@ namespace Model.TBYS
             }
             return toplam;
         }
-        public decimal SelectEmlakBeyanDegeriToplami(int bolgeId)
-        {
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
-            decimal toplam = 0;
-            string sqlString = string.Format(@"
-                SELECT SUM(EmlakBeyanDegeri) Toplam 
-                FROM Tasinmaz_Table T
-                    LEFT JOIN IL_Table C ON C.Id=T.IlId
-	                LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
-	                LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
-                WHERE T.EnvanterdeMi=1  {0}", bolgeStr);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+		public decimal SelectEmlakBeyanDegeriToplami(int bolgeId)
+		{
+			bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+			string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
+			decimal toplam = 0;
+			SqlQuery query = new SqlQuery(string.Format(@"
+				SELECT SUM(EmlakBeyanDegeri) Toplam 
+				FROM Tasinmaz_Table T
+					LEFT JOIN IL_Table C ON C.Id=T.IlId
+					LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
+					LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
+				WHERE T.EnvanterdeMi=1  {0}", bolgeStr));
+			if (bolgeFiltresiVar)
+				query.AddParameter("@BolgeId", bolgeId);
+			DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -648,18 +669,21 @@ namespace Model.TBYS
             }
             return toplam;
         }
-        public decimal SelectMuhasebeyeKayitliDegerToplami(int bolgeId)
-        {
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
-            decimal toplam = 0;
-            string sqlString = string.Format(@"
-                SELECT SUM(MuhasebeyeKayitliDeger) Toplam 
-                FROM Tasinmaz_Table T
-                    LEFT JOIN IL_Table C ON C.Id=T.IlId
-	                LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
-	                LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
-                WHERE T.EnvanterdeMi=1  {0}", bolgeStr);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+		public decimal SelectMuhasebeyeKayitliDegerToplami(int bolgeId)
+		{
+			bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+			string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
+			decimal toplam = 0;
+			SqlQuery query = new SqlQuery(string.Format(@"
+				SELECT SUM(MuhasebeyeKayitliDeger) Toplam 
+				FROM Tasinmaz_Table T
+					LEFT JOIN IL_Table C ON C.Id=T.IlId
+					LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
+					LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
+				WHERE T.EnvanterdeMi=1  {0}", bolgeStr));
+			if (bolgeFiltresiVar)
+				query.AddParameter("@BolgeId", bolgeId);
+			DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -668,18 +692,21 @@ namespace Model.TBYS
             }
             return toplam;
         }
-        public decimal SelectYaklasikPiyasaToplami(int bolgeId)
-        {
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
-            decimal toplam = 0;
-            string sqlString = string.Format(@"
-                SELECT SUM(YaklasikPiyasaDegeri) Toplam 
-                FROM Tasinmaz_Table T
-                    LEFT JOIN IL_Table C ON C.Id=T.IlId
-	                LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
-	                LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
-                WHERE T.EnvanterdeMi=1  {0}", bolgeStr);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+		public decimal SelectYaklasikPiyasaToplami(int bolgeId)
+		{
+			bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+			string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
+			decimal toplam = 0;
+			SqlQuery query = new SqlQuery(string.Format(@"
+				SELECT SUM(YaklasikPiyasaDegeri) Toplam 
+				FROM Tasinmaz_Table T
+					LEFT JOIN IL_Table C ON C.Id=T.IlId
+					LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
+					LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
+				WHERE T.EnvanterdeMi=1  {0}", bolgeStr));
+			if (bolgeFiltresiVar)
+				query.AddParameter("@BolgeId", bolgeId);
+			DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -691,12 +718,13 @@ namespace Model.TBYS
         public decimal SelectEmlakBeyanDegeriToplamiBySigorta(string sigorta)
         {
             decimal toplam = 0;
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT SUM(EmlakBeyanDegeri) Toplam 
                 FROM Tasinmaz_Table 
                 WHERE EnvanterdeMi=1
-                    AND SigortaDurumu={0}", sigorta.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                    AND SigortaDurumu=@Sigorta");
+            query.AddParameter("@Sigorta", sigorta);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -708,12 +736,13 @@ namespace Model.TBYS
         public decimal SelectTahminiRayicToplamiBySigorta(string sigorta)
         {
             decimal toplam = 0;
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT SUM(TahminiRayicDegeri) Toplam 
                 FROM Tasinmaz_Table 
                 WHERE EnvanterdeMi=1
-                    AND SigortaDurumu={0}", sigorta.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                    AND SigortaDurumu=@Sigorta");
+            query.AddParameter("@Sigorta", sigorta);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -725,15 +754,14 @@ namespace Model.TBYS
         
         public decimal SelectTahminiRayicToplamiByKirayaUygunluk(string kirayaUygunluk)
         {
-            string whereStr = " AND KirayaUygunluk = " + kirayaUygunluk.ReturnQuotedValue();
             decimal toplam = 0;
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT SUM(TahminiRayicDegeri) Toplam 
                 FROM Tasinmaz_Table 
-                WHERE EnvanterdeMi=1 {0} ", whereStr);
+                WHERE EnvanterdeMi=1 AND KirayaUygunluk=@KirayaUygunluk ");
+            query.AddParameter("@KirayaUygunluk", kirayaUygunluk);
 
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -744,17 +772,14 @@ namespace Model.TBYS
         }
         public decimal SelectEmlakBeyanToplamiByKirayaUygunluk(string kirayaUygunluk)
         {
-            string whereStr = " AND KirayaUygunluk=" + kirayaUygunluk.ReturnQuotedValue();
-
-
             decimal toplam = 0;
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT SUM(EmlakBeyanDegeri) Toplam 
                 FROM Tasinmaz_Table 
-                WHERE EnvanterdeMi=1 {0}", whereStr);
+                WHERE EnvanterdeMi=1 AND KirayaUygunluk=@KirayaUygunluk");
+            query.AddParameter("@KirayaUygunluk", kirayaUygunluk);
 
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -765,17 +790,21 @@ namespace Model.TBYS
         }
         public int SelectTasinmazAdetByBolgeMulkiyetSekli(int bolgeId, string mulkiyetSekli)
         {
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
+            bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+            string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
             int Adet = 0;
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(string.Format(@"
                 SELECT COUNT(MulkiyetSekli) Adet 
                 FROM Tasinmaz_Table A
                 LEFT JOIN Il_Table B ON B.Id=A.IlId
                 LEFT JOIN Bolge_Table D ON D.Id=B.BolgeId 
                 WHERE EnvanterdeMi=1 
                     {0}
-                    AND MulkiyetSekli ={1}", bolgeStr, mulkiyetSekli.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                    AND MulkiyetSekli =@MulkiyetSekli", bolgeStr));
+            if (bolgeFiltresiVar)
+                query.AddParameter("@BolgeId", bolgeId);
+            query.AddParameter("@MulkiyetSekli", mulkiyetSekli);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -786,25 +815,82 @@ namespace Model.TBYS
         }
         public int SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(int bolgeId, string kullanimSekli, string kiraDurumu, string mülkiyetSekli, string kirayaUygunluk = null)
         {
+            SqlQuery query = new SqlQuery();
             string whereStr = string.Empty;
             if (!string.IsNullOrEmpty(kiraDurumu))
-                whereStr = " AND KiraDurumu = " + kiraDurumu.ReturnQuotedValue();
+            {
+                whereStr = " AND KiraDurumu = @KiraDurumu";
+                query.AddParameter("@KiraDurumu", kiraDurumu);
+            }
             if (!string.IsNullOrEmpty(mülkiyetSekli))
-                whereStr += " AND MulkiyetSekli = " + mülkiyetSekli.ReturnQuotedValue();
+            {
+                whereStr += " AND MulkiyetSekli = @MulkiyetSekli";
+                query.AddParameter("@MulkiyetSekli", mülkiyetSekli);
+            }
             if (!string.IsNullOrEmpty(kirayaUygunluk))
-                whereStr += " AND KirayaUygunluk = " + kirayaUygunluk.ReturnQuotedValue();
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
+            {
+                whereStr += " AND KirayaUygunluk = @KirayaUygunluk";
+                query.AddParameter("@KirayaUygunluk", kirayaUygunluk);
+            }
+            bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+            string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
+            if (bolgeFiltresiVar)
+                query.AddParameter("@BolgeId", bolgeId);
             int Adet = 0;
-            string sqlString = string.Format(@"
+            query.Sql = string.Format(@"
                 SELECT COUNT(KullanimSekli) Adet 
                 FROM Tasinmaz_Table A
                 LEFT JOIN Il_Table B ON B.Id=A.IlId
                 LEFT JOIN Bolge_Table D ON D.Id=B.BolgeId
                 WHERE EnvanterdeMi=1 
                     {0}
-                    AND KullanimSekli ={1}
-                    {2}", bolgeStr, kullanimSekli.ReturnQuotedValue(), whereStr);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                    AND KullanimSekli =@KullanimSekli
+                    {1}", bolgeStr, whereStr);
+            query.AddParameter("@KullanimSekli", kullanimSekli);
+            DataTable dataTable = dao.SelectFromDb(query, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                Adet = row["Adet"].ConvertToInt();
+
+            }
+            return Adet;
+        }
+        public int SelectTasinmazAdetByBolgeCinsiKiraDurumu(int bolgeId, string cinsi, string kiraDurumu, string mülkiyetSekli, string kirayaUygunluk = null)
+        {
+            SqlQuery query = new SqlQuery();
+            string whereStr = string.Empty;
+            if (!string.IsNullOrEmpty(kiraDurumu))
+            {
+                whereStr = " AND KiraDurumu = @KiraDurumu";
+                query.AddParameter("@KiraDurumu", kiraDurumu);
+            }
+            if (!string.IsNullOrEmpty(mülkiyetSekli))
+            {
+                whereStr += " AND MulkiyetSekli = @MulkiyetSekli";
+                query.AddParameter("@MulkiyetSekli", mülkiyetSekli);
+            }
+            if (!string.IsNullOrEmpty(kirayaUygunluk))
+            {
+                whereStr += " AND KirayaUygunluk = @KirayaUygunluk";
+                query.AddParameter("@KirayaUygunluk", kirayaUygunluk);
+            }
+            bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+            string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
+            if (bolgeFiltresiVar)
+                query.AddParameter("@BolgeId", bolgeId);
+            int Adet = 0;
+            query.Sql = string.Format(@"
+                SELECT COUNT(KullanimSekli) Adet 
+                FROM Tasinmaz_Table A
+                LEFT JOIN Il_Table B ON B.Id=A.IlId
+                LEFT JOIN Bolge_Table D ON D.Id=B.BolgeId
+                WHERE EnvanterdeMi=1 
+                    {0}
+                    AND Cinsi =@Cinsi
+                    {1}", bolgeStr, whereStr);
+            query.AddParameter("@Cinsi", cinsi);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -815,24 +901,74 @@ namespace Model.TBYS
         }
         public int SelectTasinmazAdetByBolgeKullanimSekliKirayaUygunluk(int bolgeId, string kullanimSekli, string kirayaUygunluk, string mülkiyetSekli)
         {
+            SqlQuery query = new SqlQuery();
             string whereStr = string.Empty;
             if (!string.IsNullOrEmpty(kirayaUygunluk))
-                whereStr = " AND KirayaUygunluk = " + kirayaUygunluk.ReturnQuotedValue();
+            {
+                whereStr = " AND KirayaUygunluk = @KirayaUygunluk";
+                query.AddParameter("@KirayaUygunluk", kirayaUygunluk);
+            }
             if (!string.IsNullOrEmpty(mülkiyetSekli))
-                whereStr += " AND MulkiyetSekli = " + mülkiyetSekli.ReturnQuotedValue();
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
+            {
+                whereStr += " AND MulkiyetSekli = @MulkiyetSekli";
+                query.AddParameter("@MulkiyetSekli", mülkiyetSekli);
+            }
+            bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+            string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
+            if (bolgeFiltresiVar)
+                query.AddParameter("@BolgeId", bolgeId);
 
             int Adet = 0;
-            string sqlString = string.Format(@"
+            query.Sql = string.Format(@"
                 SELECT COUNT(KullanimSekli) Adet 
                 FROM Tasinmaz_Table A
                 LEFT JOIN Il_Table B ON B.Id=A.IlId
                 LEFT JOIN Bolge_Table D ON D.Id=B.BolgeId
                 WHERE EnvanterdeMi=1 
                     {0}
-                    AND KullanimSekli ={1}
-                    {2}", bolgeStr, kullanimSekli.ReturnQuotedValue(), whereStr);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                    AND KullanimSekli =@KullanimSekli
+                    {1}", bolgeStr, whereStr);
+            query.AddParameter("@KullanimSekli", kullanimSekli);
+            DataTable dataTable = dao.SelectFromDb(query, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                Adet = row["Adet"].ConvertToInt();
+
+            }
+            return Adet;
+        }
+        public int SelectTasinmazAdetByBolgeCinsiKirayaUygunluk(int bolgeId, string cinsi, string kirayaUygunluk, string mülkiyetSekli)
+        {
+            SqlQuery query = new SqlQuery();
+            string whereStr = string.Empty;
+            if (!string.IsNullOrEmpty(kirayaUygunluk))
+            {
+                whereStr = " AND KirayaUygunluk = @KirayaUygunluk";
+                query.AddParameter("@KirayaUygunluk", kirayaUygunluk);
+            }
+            if (!string.IsNullOrEmpty(mülkiyetSekli))
+            {
+                whereStr += " AND MulkiyetSekli = @MulkiyetSekli";
+                query.AddParameter("@MulkiyetSekli", mülkiyetSekli);
+            }
+            bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+            string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
+            if (bolgeFiltresiVar)
+                query.AddParameter("@BolgeId", bolgeId);
+
+            int Adet = 0;
+            query.Sql = string.Format(@"
+                SELECT COUNT(Cinsi) Adet 
+                FROM Tasinmaz_Table A
+                LEFT JOIN Il_Table B ON B.Id=A.IlId
+                LEFT JOIN Bolge_Table D ON D.Id=B.BolgeId
+                WHERE EnvanterdeMi=1 
+                    {0}
+                    AND Cinsi =@Cinsi
+                    {1}", bolgeStr, whereStr);
+            query.AddParameter("@Cinsi", cinsi);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -843,12 +979,22 @@ namespace Model.TBYS
         }
         public int SelectTasinmazAdetByBolgeKirayaUygunluk(int bolgeId, string kirayaUygunluk, string mulkiyetSekli)
         {
-            string whereStr = " AND KirayaUygunluk=" + kirayaUygunluk.ReturnQuotedValue();
+            SqlQuery query = new SqlQuery();
+            string whereStr = " AND KirayaUygunluk=@KirayaUygunluk";
+            query.AddParameter("@KirayaUygunluk", kirayaUygunluk);
 
-            string mulkiyetStr = string.IsNullOrEmpty(mulkiyetSekli) ? string.Empty : " AND MulkiyetSekli=" + mulkiyetSekli.ReturnQuotedValue();
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
+            string mulkiyetStr = string.Empty;
+            if (!string.IsNullOrEmpty(mulkiyetSekli))
+            {
+                mulkiyetStr = " AND MulkiyetSekli=@MulkiyetSekli";
+                query.AddParameter("@MulkiyetSekli", mulkiyetSekli);
+            }
+            bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+            string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
+            if (bolgeFiltresiVar)
+                query.AddParameter("@BolgeId", bolgeId);
             int Adet = 0;
-            string sqlString = string.Format(@"
+            query.Sql = string.Format(@"
                 SELECT COUNT(KullanimSekli) Adet 
                 FROM Tasinmaz_Table A
                 LEFT JOIN Il_Table B ON B.Id=A.IlId
@@ -857,7 +1003,42 @@ namespace Model.TBYS
                     {0}
                     {1}
                     {2}", bolgeStr, whereStr, mulkiyetStr);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(query, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                Adet = row["Adet"].ConvertToInt();
+
+            }
+            return Adet;
+        }
+        public int SelectTasinmazAdetByBolgeKirayaUygunlukCinsi(int bolgeId, string kirayaUygunluk, string mulkiyetSekli)
+        {
+            SqlQuery query = new SqlQuery();
+            string whereStr = " AND KirayaUygunluk=@KirayaUygunluk";
+            query.AddParameter("@KirayaUygunluk", kirayaUygunluk);
+
+            string mulkiyetStr = string.Empty;
+            if (!string.IsNullOrEmpty(mulkiyetSekli))
+            {
+                mulkiyetStr = " AND MulkiyetSekli=@MulkiyetSekli";
+                query.AddParameter("@MulkiyetSekli", mulkiyetSekli);
+            }
+            bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+            string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
+            if (bolgeFiltresiVar)
+                query.AddParameter("@BolgeId", bolgeId);
+            int Adet = 0;
+            query.Sql = string.Format(@"
+                SELECT COUNT(Cinsi) Adet 
+                FROM Tasinmaz_Table A
+                LEFT JOIN Il_Table B ON B.Id=A.IlId
+                LEFT JOIN Bolge_Table D ON D.Id=B.BolgeId 
+                WHERE EnvanterdeMi=1 
+                    {0}
+                    {1}
+                    {2}", bolgeStr, whereStr, mulkiyetStr);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -869,14 +1050,38 @@ namespace Model.TBYS
         public int SelectTasinmazAdetByIliMulkiyetSekliKullanimSekli(string ilAdi, string mulkiyetSekli, string kullanimSekli)
         {
             int Adet = 0;
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT COUNT(KullanimSekli) Adet 
                 FROM Tasinmaz_Table 
                 WHERE EnvanterdeMi=1 
-                    AND Ili ={0}
-                    AND MulkiyetSekli ={1}
-                    AND KullanimSekli ={2}", ilAdi.ReturnQuotedValue(), mulkiyetSekli.ReturnQuotedValue(), kullanimSekli.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                    AND Ili =@IlAdi
+                    AND MulkiyetSekli =@MulkiyetSekli
+                    AND KullanimSekli =@KullanimSekli");
+            query.AddParameter("@IlAdi", ilAdi);
+            query.AddParameter("@MulkiyetSekli", mulkiyetSekli);
+            query.AddParameter("@KullanimSekli", kullanimSekli);
+            DataTable dataTable = dao.SelectFromDb(query, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                Adet = row["Adet"].ConvertToInt();
+            }
+            return Adet;
+        }
+        public int SelectTasinmazAdetByIliMulkiyetSekliCinsi(string ilAdi, string mulkiyetSekli, string cinsi)
+        {
+            int Adet = 0;
+            SqlQuery query = new SqlQuery(@"
+                SELECT COUNT(Cinsi) Adet 
+                FROM Tasinmaz_Table 
+                WHERE EnvanterdeMi=1 
+                    AND Ili =@IlAdi
+                    AND MulkiyetSekli =@MulkiyetSekli
+                    AND Cinsi =@Cinsi");
+            query.AddParameter("@IlAdi", ilAdi);
+            query.AddParameter("@MulkiyetSekli", mulkiyetSekli);
+            query.AddParameter("@Cinsi", cinsi);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -887,17 +1092,22 @@ namespace Model.TBYS
         public int SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(int bolgeId, string mulkiyetSekli, string sigorta)
         {
             int Adet = 0;
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
-            string sqlString = string.Format(@"
+            bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+            string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
+            SqlQuery query = new SqlQuery(string.Format(@"
                 SELECT COUNT(MulkiyetSekli) Adet 
                 FROM Sigorta_Table A
                     INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId
                     INNER JOIN Il_Table C ON C.Id=B.IlId
                 WHERE EnvanterdeMi=1 
                     {0}
-                    AND MulkiyetSekli ={1}
-                    AND SigortaDurumu ={2}", bolgeStr, mulkiyetSekli.ReturnQuotedValue(), sigorta.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                    AND MulkiyetSekli =@MulkiyetSekli
+                    AND SigortaDurumu =@Sigorta", bolgeStr));
+            if (bolgeFiltresiVar)
+                query.AddParameter("@BolgeId", bolgeId);
+            query.AddParameter("@MulkiyetSekli", mulkiyetSekli);
+            query.AddParameter("@Sigorta", sigorta);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -907,19 +1117,24 @@ namespace Model.TBYS
         }
         public int SelectTasinmazAdetByBolgeKullanimSekliSigorta(int bolgeId, string kullanimSekli, string sigorta)
         {
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
+            bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+            string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
             int Adet = 0;
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(string.Format(@"
                 SELECT COUNT(KullanimSekli) Adet 
                 FROM Sigorta_Table A
                     INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId
                     INNER JOIN Il_Table C ON C.Id=B.IlId
                 WHERE EnvanterdeMi=1 
                     {0}
-                    AND KullanimSekli ={1}
-                    AND SigortaDurumu ={2}", bolgeStr, kullanimSekli.ReturnQuotedValue(), sigorta.ReturnQuotedValue());
+                    AND KullanimSekli =@KullanimSekli
+                    AND SigortaDurumu =@Sigorta", bolgeStr));
+            if (bolgeFiltresiVar)
+                query.AddParameter("@BolgeId", bolgeId);
+            query.AddParameter("@KullanimSekli", kullanimSekli);
+            query.AddParameter("@Sigorta", sigorta);
 
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -927,20 +1142,50 @@ namespace Model.TBYS
             }
             return Adet;
         }
-        public DataTable SelectBolumByTasinmazId(int tasinmazId)
+        public int SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(int bolgeId, string kullanimSekli, string sigorta)
         {
-            string sqlString = string.Format(@"
-                SELECT  A.KatMulkiyeti, A.KullanimSekli,A.Cinsi,A.MulkiyetSekli,D.Adi,D.Soyadi, A.Adres,A.Ilcesi,A.Ili, 
-                    A.AdaNo,A.ParselNo,A.Yuzolcumu,A.ArsaPayi ,A.EnvanterdeMi,A.KullanimSekli,
-					B.Id BolumId,B.BolumNo, B.Aciklama,B.Nitelik, B.Metrekare, B.KullanimAmaci
-                FROM Tasinmaz_Table A
-	                Left Join BagimsizBolum_Table B ON B.TasinmazId=A.Id
-	                Left Join Bagis_Table C ON C.TasinmazId=A.Id
-	                Left Join TasinmazBagisci_Table D ON D.Id=C.BagisciId
-                WHERE A.Id={0} AND EnvanterdeMi=1 AND A.KatMulkiyeti=0", tasinmazId);//,ProjeConstants.KAT_MULKIYETI_YOK.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
+            bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+            string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
+            int Adet = 0;
+            SqlQuery query = new SqlQuery(string.Format(@"
+                SELECT COUNT(A.KullanimSekli) Adet 
+                FROM Sigorta_Table A
+                    --INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId
+                    INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId AND (B.EnvanterdeMi=1 OR B.EnvanterdeMi=2) 
+                    LEFT JOIN BagimsizBolum_Table F ON F.Id=A.BolumId AND F.TasinmazId=B.Id
+                    INNER JOIN Il_Table C ON C.Id=B.IlId
+                WHERE 1>0 
+                    {0}
+                    AND A.KullanimSekli =@KullanimSekli
+                    AND SigortaDurumu =@Sigorta", bolgeStr));
+            if (bolgeFiltresiVar)
+                query.AddParameter("@BolgeId", bolgeId);
+            query.AddParameter("@KullanimSekli", kullanimSekli);
+            query.AddParameter("@Sigorta", sigorta);
+
+            DataTable dataTable = dao.SelectFromDb(query, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                Adet = row["Adet"].ConvertToInt();
+            }
+            return Adet;
         }
+		public DataTable SelectBolumByTasinmazId(int tasinmazId)
+		{
+			SqlQuery query = new SqlQuery(@"
+				SELECT  A.KatMulkiyeti, A.KullanimSekli,A.Cinsi,A.MulkiyetSekli,D.Adi,D.Soyadi, A.Adres,A.Ilcesi,A.Ili, 
+					A.AdaNo,A.ParselNo,A.Yuzolcumu,A.ArsaPayi ,A.EnvanterdeMi,A.KullanimSekli,
+					B.Id BolumId,B.BolumNo, B.Aciklama,B.Nitelik, B.Metrekare, B.KullanimAmaci
+				FROM Tasinmaz_Table A
+					Left Join BagimsizBolum_Table B ON B.TasinmazId=A.Id
+					Left Join Bagis_Table C ON C.TasinmazId=A.Id
+					Left Join TasinmazBagisci_Table D ON D.Id=C.BagisciId
+				WHERE A.Id=@TasinmazId AND EnvanterdeMi=1 AND A.KatMulkiyeti=0");
+			query.AddParameter("@TasinmazId", tasinmazId);
+			DataTable dataTable = dao.SelectFromDb(query, "");
+			return dataTable;
+		}
 
         public DataTable ToplamTasinmazAdediGetir()
         {

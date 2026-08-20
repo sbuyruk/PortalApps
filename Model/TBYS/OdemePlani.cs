@@ -362,7 +362,7 @@ namespace Model.TBYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
         }

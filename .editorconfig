@@ -2,3 +2,7 @@ root = true
 
 [*.{cs,csproj,ascx,aspx,js,css,html,xml,config,txt,md}]
 charset = utf-8
+
+[*.cs]
+# throw e; yerine throw; kullanilmali (stack trace korunur) - CA2200
+dotnet_diagnostic.CA2200.severity = warning

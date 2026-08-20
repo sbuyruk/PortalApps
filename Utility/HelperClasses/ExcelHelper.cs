@@ -147,10 +147,13 @@ namespace Utility.HelperClasses
                 foreach (var r in rowsToRemoveFirst)
                     r.Remove();
             }
-            for (int i = 0; i < sonKacSatirHaric; i++)//son satirlari sil
+            if (sonKacSatirHaric > 0)
             {
-                if (rows.Count<Row>() > 0)
-                    rows.LastOrDefault().Remove();
+                uint maxRowIndex = rows.Where(r => r.RowIndex != null).Select(r => r.RowIndex.Value).DefaultIfEmpty(0u).Max();
+                uint sinirRowIndex = maxRowIndex > (uint)sonKacSatirHaric ? maxRowIndex - (uint)sonKacSatirHaric : 0;
+                var rowsToRemoveLast = rows.Where(r => r.RowIndex != null && r.RowIndex.Value > sinirRowIndex).ToList();
+                foreach (var r in rowsToRemoveLast)
+                    r.Remove();
             }
             // Build columns using the actual cell reference index to account for empty/skipped cells in the header row.
             // OpenXML omits empty cells from the XML, so sequential counting would produce fewer columns than the
@@ -280,7 +283,7 @@ namespace Utility.HelperClasses
             catch (Exception e)
             {
 
-                throw e;
+                throw;
             }
             return result;
         }

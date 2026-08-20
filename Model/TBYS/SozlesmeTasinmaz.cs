@@ -152,7 +152,7 @@ namespace Model.TBYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             string json = ToJSON(dataTable);
             return json;
@@ -175,7 +175,7 @@ namespace Model.TBYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
 
             return dataTable;
@@ -205,7 +205,7 @@ namespace Model.TBYS
                     A.SozlesmeId, 
                     SUM(
                         CASE 
-                            WHEN B.AltBolum = 1 THEN C.Metrekare 
+                            WHEN B.AltBolum = 1 THEN C.BBNetAlan 
                             WHEN B.AltBolum = 0 THEN B.Metrekare 
                             --WHEN B.KatMulkiyeti = 0 THEN C.Metrekare 
                             --WHEN B.KatMulkiyeti = 1 THEN B.Metrekare 

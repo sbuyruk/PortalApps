@@ -242,13 +242,13 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             IzinBilgileriTable.Rows.Clear();
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell donemCell = new TableHeaderCell();
-            donemCell.Text = "Izin Dönemi";
+            donemCell.Text = "İzin Dönemi";
             TableHeaderCell hakCell = new TableHeaderCell();
-            hakCell.Text = "Izin Hakki";
+            hakCell.Text = "İzin Hakkı";
             TableHeaderCell kullanilanCell = new TableHeaderCell();
-            kullanilanCell.Text = "Kullanilan Izin";
+            kullanilanCell.Text = "Kullanılan İzin";
             TableHeaderCell kalanCell = new TableHeaderCell();
-            kalanCell.Text = "Kalan Izin";
+            kalanCell.Text = "Kalan İzin";
             th.Controls.Add(donemCell);
             th.Controls.Add(hakCell);
             th.Controls.Add(kullanilanCell);

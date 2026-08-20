@@ -7,7 +7,14 @@ namespace DAO.Ortak
             //return Global.ConnectionString;
             return ConnectionString;
         }
-        private static string _ConnectionStringDefaultValue = "Server=.;Database=TESTDB;Trusted_Connection=True;";
+        /// <SB>
+        /// ConnectionString, calisan SharePoint web uygulamasinin web.config dosyasindan okunur
+        /// (or: C:\inetpub\wwwroot\wss\VirtualDirectories\<port>\web.config).
+        /// Her ortamda (test/production) 'TSKGV_Connection' adiyla tanimli olmalidir; bulunamazsa hata firlatilir.
+        /// TESTDB için bu TSKGV-DEV3 içinde C:\inetpub\wwwroot\wss\VirtualDirectories\80
+        /// Production'da bu TSKGV-SQL içinde aynı yerde
+        /// </SB>
+        private const string CONNECTION_STRING_NAME = "TSKGV_Connection";
         private static string _ConnectionString;
         public static string ConnectionString
         {
@@ -21,7 +28,7 @@ namespace DAO.Ortak
 
                 if (rootWebConfig.ConnectionStrings.ConnectionStrings.Count > 0)
                 {
-                    connString = rootWebConfig.ConnectionStrings.ConnectionStrings["TSKGV_Connection"];
+                    connString = rootWebConfig.ConnectionStrings.ConnectionStrings[CONNECTION_STRING_NAME];
                     if (connString != null)
                     {
                         _ConnectionString = connString.ConnectionString;
@@ -30,7 +37,10 @@ namespace DAO.Ortak
                 }
                 if (string.IsNullOrEmpty(_ConnectionString))
                 {
-                    _ConnectionString = _ConnectionStringDefaultValue;
+                    throw new System.Configuration.ConfigurationErrorsException(
+                        string.Format("'{0}' baglanti dizesi web.config icinde bulunamadi. " +
+                        "Lutfen <connectionStrings> bolumune '{0}' adiyla gecerli bir baglanti dizesi ekleyin.",
+                        CONNECTION_STRING_NAME));
                 }
                 return _ConnectionString;
             }

@@ -98,11 +98,11 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                     FillIzinBitSaat();
                     FillPersonelDDL();
                     SetLayoutByIzinTipi();
-                    UyariLbl1.Text = " * Tüm personele izin girmek için, hariç tutmak istediginiz personeli seçerek listeye ekleyiniz ve 'Tüm Personele Izin Gir' seçenegini isaretleyiniz.";
-                    UyariLbl2.Text = " * Sadece bir kisim personele izin girecekseniz, izin girmek istediginiz personeli seçerek listeye ekleyiniz ve asagidan 'Sadece Seçilen Personele Izin Gir' seçenegini isaretleyiniz.";
-                    UyariLbl3.Text = " * Yapilan islemler geriye alinamayacagindan lütfen kaydetmeden önce dikkatle kontrol ediniz.";
+                    UyariLbl1.Text = " * TÃ¼m personele izin girmek iÃ§in, hariÃ§ tutmak istediginiz personeli seÃ§erek listeye ekleyiniz ve 'TÃ¼m Personele Ä°zin Gir' seÃ§enegini isaretleyiniz.";
+                    UyariLbl2.Text = " * Sadece bir kisim personele izin girecekseniz, izin girmek istediginiz personeli seÃ§erek listeye ekleyiniz ve asagidan 'Sadece SeÃ§ilen Personele Ä°zin Gir' seÃ§enegini isaretleyiniz.";
+                    UyariLbl3.Text = " * Yapilan islemler geriye alinamayacagindan lÃ¼tfen kaydetmeden Ã¶nce dikkatle kontrol ediniz.";
                 }
-                FillHaricTutulanTable();//CikarBtn event çalismasi için pagekload'da postback sisinda bulunmali
+                FillHaricTutulanTable();//CikarBtn event Ã§alismasi iÃ§in pagekload'da postback sisinda bulunmali
             }
             catch (Exception exception)
             {
@@ -125,7 +125,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
         private void FillIzinTanim()
         {
             IzinTanimDDL.Items.Clear();
-            ListItem li = new ListItem("Ücretli", "1");
+            ListItem li = new ListItem("Ãœcretli", "1");
             IzinTanimDDL.Items.Add(li);
             ListItem li1 = new ListItem("Mazeret", "2");
             IzinTanimDDL.Items.Add(li1);
@@ -207,7 +207,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                 IzinBasSaatDiv.Attributes["style"] = "display:none";
                 IzinBitSaatDiv.Attributes["style"] = "display:none";
                 HaricTutulanDiv.Attributes["style"] = "display:block";
-                AciklamaLbl.Text = "Açiklama";
+                AciklamaLbl.Text = "AÃ§iklama";
                 IzinHareketDiv.Attributes["Class"] = "card-body alert-secondary";
             }
         }
@@ -223,8 +223,8 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
         }
         /// <summary>
         /// Yeni Olusturulan Izin hareketini kisi bazinda kaydeder.
-        /// Girilen Izin baslangiç tarihine bakarak izin dönemi baslangicini bulur,
-        /// Buldugu döneme ait IzinDonem_Table'da kayit yoksa, ekler
+        /// Girilen Izin baslangiÃ§ tarihine bakarak izin dÃ¶nemi baslangicini bulur,
+        /// Buldugu dÃ¶neme ait IzinDonem_Table'da kayit yoksa, ekler
         /// </summary>
         /// <returns></returns>
         private bool YeniIzinHareketiKaydet(Personel personel, int izinTipi)
@@ -258,7 +258,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                     izinHareket.Sure = IKYSOrtak.IzinSuresiHesapla(izinHareket.IzinTipi, izinHareket.BaslangicTarihi, izinHareket.BitisTarihi);
                 }
                 izinHareket.IzinDonemId = 0;
-                //sadece Mazeret ve Ucretli izinler için Dönem hesapla
+                //sadece Mazeret ve Ucretli izinler iÃ§in DÃ¶nem hesapla
                 if ((izinHareket.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT) ||
                    (izinHareket.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT))
                 {
@@ -274,7 +274,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                         izinDonemi = izinDonemi.IzinDonemiGuncelle(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName);
                     }
                     string yeniSure = IKYSOrtak.IzinSuresiHesapla(izinHareket.IzinTipi, izinHareket.BaslangicTarihi, izinHareket.BitisTarihi);
-                    izinDonemi.KullanilanIzinGuncelle(izinDonemi, yeniSure, true, CurrentUserName);//kullanilan izni düs
+                    izinDonemi.KullanilanIzinGuncelle(izinDonemi, yeniSure, true, CurrentUserName);//kullanilan izni dÃ¼s
 
                     izinHareket.IzinDonemId = izinDonemi != null ? izinDonemi.Id : 0;
                 }
@@ -316,14 +316,14 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                 {
                     if (UygulanacakGrupRL.SelectedValue.Equals("Tum"))
                     {
-                        UyariMesajiLbl.Text = "Tüm personele toplu izin girisi yapilacak (Seçilen personel hariç). Lütfen degisikligi kaydetmeden önce dikkatle kontrol ediniz.";
-                        SaveNowBtn.Text = "Tüm personele toplu izin gir (Seçilen personel hariç)";
+                        UyariMesajiLbl.Text = "TÃ¼m personele toplu izin girisi yapilacak (SeÃ§ilen personel hariÃ§). LÃ¼tfen degisikligi kaydetmeden Ã¶nce dikkatle kontrol ediniz.";
+                        SaveNowBtn.Text = "TÃ¼m personele toplu izin gir (SeÃ§ilen personel hariÃ§)";
                         SaveNowBtn.CssClass = "btn btn-outline-danger";
                     }
                     else
                     {
-                        UyariMesajiLbl.Text = "Seçilen personele izin girisi yapilacak. Lütfen degisikligi kaydetmeden önce dikkatle kontrol ediniz.";
-                        SaveNowBtn.Text = "Sadece seçilen personele izin gir ";
+                        UyariMesajiLbl.Text = "SeÃ§ilen personele izin girisi yapilacak. LÃ¼tfen degisikligi kaydetmeden Ã¶nce dikkatle kontrol ediniz.";
+                        SaveNowBtn.Text = "Sadece seÃ§ilen personele izin gir ";
                         SaveNowBtn.CssClass = "btn btn-outline-primary";
                     }
 
@@ -332,7 +332,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Lütfen izin baslangiç ve bitis tarihi seçiniz", ProjeConstants.MESAJ_BILGI);
+                    MessageHelper.PublishMessage("LÃ¼tfen izin baslangiÃ§ ve bitis tarihi seÃ§iniz", ProjeConstants.MESAJ_BILGI);
                 }
 
             }
@@ -353,9 +353,9 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
         /// loop
         /// haric tutulan listede ise continue;
         /// izinDonemi var mi kontrol et yoksa yeni izin donemi olustur.
-        /// kalanizin ve kullanilan izin hanelerini güncelle
+        /// kalanizin ve kullanilan izin hanelerini gÃ¼ncelle
         /// yeni izinHareket nesnesi yarat
-        /// izinHareket bilgilerini toplu izne göre assign et
+        /// izinHareket bilgilerini toplu izne gÃ¶re assign et
         /// izinhareket.save
         /// end loop
         /// </summary>
@@ -445,7 +445,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
 
                     TableCell SilCell = new TableCell();
                     LinkButton SilBtn = new LinkButton();
-                    SilBtn.Text = "Çikar";
+                    SilBtn.Text = "Ã‡ikar";
 
                     SilBtn.ID = "SilBtn" + SiraNo++;
                     TableUpdatePanel.ContentTemplateContainer.Controls.Add(SilBtn);
@@ -503,14 +503,14 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Lütfen izin baslangiç ve bitis tarihi seçiniz", ProjeConstants.MESAJ_BILGI);
+                    MessageHelper.PublishMessage("LÃ¼tfen izin baslangiÃ§ ve bitis tarihi seÃ§iniz", ProjeConstants.MESAJ_BILGI);
                 }
 
             }
             catch (Exception exception)
             {
                 ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Izin girisinde hata ile karsilasildi");
+                Exception exceptionInfo = new Exception("Ä°zin giriÅŸinde hata ile karÅŸÄ±laÅŸÄ±ldÄ±");
                 exceptionHelper.Exceptions.Add(exceptionInfo);
                 exceptionHelper.PublishException();
             }

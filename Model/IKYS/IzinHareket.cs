@@ -253,7 +253,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
 
             return (dataTable);
@@ -271,7 +271,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
 
             return (dataTable);
@@ -290,7 +290,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
         }
         public List<IzinHareket> SelectDigerIzinlerByPersonelIdReturnJson(int personelId)
@@ -309,7 +309,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
         }
         public string ConvertDataTabletoString(DataTable dt)

@@ -288,9 +288,9 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             this.TitleLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-label fw-semibold  btn-outline-primary";
+            @__ctrl.CssClass = "form-label fw-semibold text-primary me-3";
             @__ctrl.ID = "TitleLbl";
-            @__ctrl.Text = "Görev Onayı GirişiZ";
+            @__ctrl.Text = "Yurt Dışı/Şehir Dışı Görev Girişi ";
             return @__ctrl;
         }
         
@@ -303,7 +303,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             this.GorevOnayIdLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-label fw-semibold text-white";
+            @__ctrl.CssClass = "form-label fw-semibold text-white me-2";
             @__ctrl.ID = "GorevOnayIdLbl";
             return @__ctrl;
         }
@@ -317,7 +317,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             this.PersonelAdiLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-label fw-semibold";
+            @__ctrl.CssClass = "form-label fw-semibold text-secondary me-2";
             @__ctrl.ID = "PersonelAdiLbl";
             return @__ctrl;
         }
@@ -331,7 +331,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             this.AmirOnayiLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-label fw-semibold text-secondary";
+            @__ctrl.CssClass = "form-label fw-semibold text-secondary me-2";
             @__ctrl.ID = "AmirOnayiLbl";
             return @__ctrl;
         }
@@ -964,7 +964,6 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             @__ctrl.ID = "SaveBtn";
             @__ctrl.CssClass = "btn btn-success";
             @__ctrl.Text = "Kaydet";
-            @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.SaveBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.SaveBtn_Click);
             return @__ctrl;
@@ -1121,7 +1120,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <h3 class=\"mb-1\">\r\n                        <i class=\"bi bi-" +
-                        "briefcase-fill\"></i>\r\n                        "));
+                        "luggage-fill\"></i>\r\n                        "));
             global::System.Web.UI.WebControls.Label @__ctrl2;
             @__ctrl2 = this.@__BuildControlTitleLbl();
             @__parser.AddParsedSubObject(@__ctrl2);

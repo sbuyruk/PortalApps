@@ -92,11 +92,11 @@
                     </div>
                     <div class="row">
                         <div class="col form-group">
-                            <label class="col-form-label " for="KullanimAmaciTxt">Kullanım Amacı</label>
-                            <asp:TextBox ID="KullanimAmaciTxt" runat="server" CssClass="form-control" ToolTip="Kullanım Amacı"></asp:TextBox>
+                            <label class="col-form-label " for="KullanimAmaciTxt">Kullanım Şekli</label>
+                            <asp:TextBox ID="KullanimAmaciTxt" runat="server" CssClass="form-control" ToolTip="Kullanım Şekli"></asp:TextBox>
                         </div>
                         <div class="col form-group">
-                            <label class="col-form-label " for="KullanimAmaciBtn">Kullanım Amacı</label>
+                            <label class="col-form-label " for="KullanimAmaciBtn">Kullanım Şekli</label>
                             <asp:LinkButton ID="KullanimAmaciGetirBtn" CssClass="btn btn-outline-danger" runat="server" CausesValidation="false" Text="Getir" OnClick="KullanimAmaciGetirBtn_Click"/>
                         </div>
                     </div>

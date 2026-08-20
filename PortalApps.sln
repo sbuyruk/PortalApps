@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.7.11925.98 stable
+VisualStudioVersion = 18.7.11925.98
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAO", "DAO\DAO.csproj", "{1FA61ADE-6FB6-4FEA-95F1-D99C7523D18A}"
 EndProject
@@ -42,6 +42,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFYS_WebParts", "MFYS_WebPa
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileEncodingScanner", "FileEncodingScanner\FileEncodingScanner.csproj", "{6A35FB6C-BFE2-4173-821B-82657AEEADA7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{0E6EEB74-B26E-4458-8636-E1EDDFC4DFFE}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Documents\14082026.xlsx = ..\..\..\Documents\14082026.xlsx
+		NBYS_WebParts\NakitBagisHareketRaporWP\NakitBagisHareketRaporTasarim.html = NBYS_WebParts\NakitBagisHareketRaporWP\NakitBagisHareketRaporTasarim.html
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

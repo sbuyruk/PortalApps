@@ -187,7 +187,7 @@ namespace Model.TBYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
 
             string json = ToJSON(dataTable);
@@ -216,7 +216,7 @@ namespace Model.TBYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
         }

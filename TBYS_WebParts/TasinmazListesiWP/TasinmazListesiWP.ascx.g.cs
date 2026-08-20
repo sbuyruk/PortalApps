@@ -464,43 +464,26 @@ namespace TBYS_WebParts.TasinmazListesiWP {
             @__w.Write("\r\n            </div>\r\n                                        <div style=\"display" +
                     ": none\">\r\n                                ");
             parameterContainer.Controls[6].RenderControl(@__w);
-            @__w.Write(@"
-                            </div>
-            <div class=""form-group"">
-                <table id=""CustomDataTable"" class=""table table-striped row-border"" width=""100%"">
-                    <thead>
-                    </thead>
-                    <tfoot> 
-                        <tr >
-                            <th>No</th>
-                            <th>Sorumlu Bölge</th>
-                            <th>Bagışçı</th>
-                            <th>Adres</th>
-                            <th>İl</th>
-                            <th>İlçe</th>
-                            <th>M. Şekli</th>
-                            <th>K. Şekli</th>
-                            <th>""Bagış Yılı""</th>
-                            <th>Taşınmaz Kartı</th>
-                            <th>Resimler</th>
-                            <th>Düzenle</th>
-                            <th>Emlak Beyan Değeri</th>
-                            <th>Tahmini Rayiç Değeri</th>
-                            <th>Ada No</th>
-                            <th>Pafta No</th>
-                            <th>ParselNo</th>
-                            <th>Yüz Ölçümü</th>
-                            <th>Arsa Payı</th>
-                            <th>Vakıf Hissesi</th>
-                        </tr>
-                    </tfoot>
-                    <tbody></tbody>
-                    
-                </table>
-            </div>
-        </div>
-        <div class=""card-footer"">
-            ");
+            @__w.Write("\r\n                            </div>\r\n            <div class=\"form-group\">\r\n     " +
+                    "           <table id=\"CustomDataTable\" class=\"table table-striped row-border\" wi" +
+                    "dth=\"100%\">\r\n                    <thead>\r\n                    </thead>\r\n        " +
+                    "            <tfoot> \r\n                        <tr >\r\n                           " +
+                    " <th>No</th>\r\n                            <th>Sorumlu Bölge</th>\r\n              " +
+                    "              <th>Bagışçı</th>\r\n                            <th>Adres</th>\r\n    " +
+                    "                        <th>İl</th>\r\n                            <th>İlçe</th>\r\n" +
+                    "                            <th>M. Şekli</th>\r\n                            <th>C" +
+                    "insi</th>\r\n                            <th>K. Şekli</th>\r\n                      " +
+                    "      <th>\"Bagış Yılı\"</th>\r\n                            <th>Taşınmaz Kartı</th>" +
+                    "\r\n                            <th>Resimler</th>\r\n                            <th" +
+                    ">Düzenle</th>\r\n                            <th>Emlak Beyan Değeri</th>\r\n        " +
+                    "                    <th>Tahmini Rayiç Değeri</th>\r\n                            <" +
+                    "th>Ada No</th>\r\n                            <th>Pafta No</th>\r\n                 " +
+                    "           <th>ParselNo</th>\r\n                            <th>Yüz Ölçümü</th>\r\n " +
+                    "                           <th>Arsa Payı</th>\r\n                            <th>V" +
+                    "akıf Hissesi</th>\r\n                        </tr>\r\n                    </tfoot>\r\n" +
+                    "                    <tbody></tbody>\r\n                    \r\n                </tab" +
+                    "le>\r\n            </div>\r\n        </div>\r\n        <div class=\"card-footer\">\r\n    " +
+                    "        ");
             parameterContainer.Controls[7].RenderControl(@__w);
             @__w.Write("\r\n            ");
             parameterContainer.Controls[8].RenderControl(@__w);

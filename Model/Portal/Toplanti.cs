@@ -286,7 +286,7 @@ namespace Model.Portal
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
 
             List<CalendarEvent> eventItems = new List<CalendarEvent>();

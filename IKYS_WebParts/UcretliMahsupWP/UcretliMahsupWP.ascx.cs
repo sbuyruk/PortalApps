@@ -210,13 +210,13 @@ namespace IKYS_WebParts.UcretliMahsupWP
             {
                 OnayLbl.Text = "Onayladiginiz takdirde " + personel.Adi + " " + personel.Soyadi + " Tarafindan " + izinHareket.BaslangicTarihi.ToString("dd.MM.yyyy") + " - "
                 + izinHareket.BitisTarihi.ToString("dd.MM.yyyy") + " Tarihleri Arasinda kullanilan " + izinHareket.Sure + " " + izinHareket.Birim
-                + " s�reli izin i�in MAHSUP ISLEMI uygulanacaktir.";
+                + " süreli izin için MAHSUP ISLEMI uygulanacaktir.";
                 MahsupEtModalBtn.Visible = true;
 
             }
             else
             {
-                OnayLbl.Text = "Mahsup islemi i�in uygun d�nem bulunmamaktadir.";
+                OnayLbl.Text = "Mahsup islemi için uygun dönem bulunmamaktadir.";
                 MahsupEtModalBtn.Visible = false;
             }
 
@@ -278,7 +278,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
             IzinBilgileriTable.Rows.Clear();
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell donemCell = new TableHeaderCell();
-            donemCell.Text = "Izin D�nemi";
+            donemCell.Text = "Izin Dönemi";
             TableHeaderCell hakCell = new TableHeaderCell();
             hakCell.Text = "Izin Hakki";
             TableHeaderCell kullanilanCell = new TableHeaderCell();
@@ -392,16 +392,16 @@ namespace IKYS_WebParts.UcretliMahsupWP
 
                     if ((oncekiIzinDonemi == null) || (yeniIzinDonemi == null))
                     {
-                        MessageHelper.PublishMessage("Mahsup islemi yapilamaz, Izin d�nemi bulunamadi!", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Mahsup işlemi yapılamaz, İzin dönemi bulunamadı!", ProjeConstants.MESAJ_HATA);
                     }
                     else
                     {
 
-                        //�nceki izin d�nemini g�ncelle,  kullanilan izni s�re kadar eksilt, kalan izni s�re kadar artir
-                        //yeni izin d�nemini g�ncelle kullanilan izni s�re kadar artir, kalan izni s�re kadar eksilt
-                        // izinhareketi mahsup=true yap, a�iklama yaz
+                        //önceki izin dönemini güncelle,  kullanilan izni süre kadar eksilt, kalan izni süre kadar artir
+                        //yeni izin dönemini güncelle kullanilan izni süre kadar artir, kalan izni süre kadar eksilt
+                        // izinhareketi mahsup=true yap, açiklama yaz
                         //mahsup tablosune ekle
-                        //her ��� de ok ise islem tamamlandi
+                        //her üçü de ok ise islem tamamlandi
                         //eger herhangi biri tamamlanmadi ize rollback yap
 
                         if (oncekiIzinDonemi != null)
@@ -409,12 +409,12 @@ namespace IKYS_WebParts.UcretliMahsupWP
                             int sure = izinHareket.Sure.ConvertToInt();
                             oncekiIzinDonemiRB = oncekiIzinDonemi;
                             DateTime izinBastar = oncekiIzinDonemi.BaslangicTarihi;
-                            string mahsupAciklama = "# �nceki izin d�nemi= " + oncekiIzinDonemi.BaslangicTarihi + "-" + oncekiIzinDonemi.BitisTarihi
-                                + "; Yeni izin d�nemi= " + yeniIzinDonemi.BaslangicTarihi + "-" + yeniIzinDonemi.BitisTarihi + "; "
-                                + "; Mahsup Edilen s�re = " + izinHareket.Sure;
+                            string mahsupAciklama = "# Önceki izin dönemi= " + oncekiIzinDonemi.BaslangicTarihi + "-" + oncekiIzinDonemi.BitisTarihi
+                                + "; Yeni izin dönemi= " + yeniIzinDonemi.BaslangicTarihi + "-" + yeniIzinDonemi.BitisTarihi + "; "
+                                + "; Mahsup Edilen süre = " + izinHareket.Sure;
                             Mahsup mahsup = MahsupTablosunaEkle(izinHareket, ProjeConstants.IZINTIPI_UCRETLI_INT, oncekiIzinDonemi.Id, yeniIzinDonemi.Id, mahsupAciklama);
                             mahsupRB = mahsup;
-                            //�nceki izin d�nemi mahsupislemleri
+                            //önceki izin dönemi mahsupislemleri
                             int oncekiKullanilanIzinInt = oncekiIzinDonemi.KullanilanIzin.ConvertToInt() - sure;
                             oncekiIzinDonemi.KullanilanIzin = oncekiKullanilanIzinInt.ToString();
                             int oncekiKalanIzinInt = oncekiIzinDonemi.KalanIzin.ConvertToInt() + sure;
@@ -423,7 +423,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
                             oncekiIzinDonemi.Degistiren = CurrentUserName;
                             isOncekiDonemGuncellendi = oncekiIzinDonemi.Update();
 
-                            //yeni izin d�nemi mahsupislemleri
+                            //yeni izin dönemi mahsupislemleri
                             int yeniKullanilanIzinInt = yeniIzinDonemi.KullanilanIzin.ConvertToInt() + sure;
                             yeniIzinDonemi.KullanilanIzin = yeniKullanilanIzinInt.ToString();
                             int yeniKalanIzinInt = yeniIzinDonemi.KalanIzin.ConvertToInt() - sure;
@@ -448,10 +448,10 @@ namespace IKYS_WebParts.UcretliMahsupWP
                         bool isIzinHareketRB = izinHareketRB.Update();
                         bool isOncekiIzinRB = oncekiIzinDonemiRB.Update();
                         bool isYeniIzinRB = yeniIzinDonemiRB.Update();
-                        string message = " Mahsup sirasinda sorunlarla karsilasildi. Geri alma isleminde: "
-                            + " Izin Hareketi geri alma : " + (isIzinHareketRB ? "Basarili. " : "Basarisiz. ")
-                            + " �nceki Izin D�nemi geri alma : " + (isOncekiIzinRB ? "Basarili. " : " Basarisiz")
-                            + (isYeniIzinRB ? "Basarili. " : " Basarisiz.");
+                        string message = " Mahsup sırasında sorunlarla karşılaşıldı. Geri alma işleminde: "
+                            + " İzin Hareketi geri alma : " + (isIzinHareketRB ? "Başarılı. " : "Başarısız. ")
+                            + " Önceki İzin Dönemi geri alma : " + (isOncekiIzinRB ? "Başarılı. " : " Başarısız")
+                            + (isYeniIzinRB ? "Başarılı. " : " Başarısız.");
                         MessageHelper.PublishMessage(message, ProjeConstants.MESAJ_HATA);
                     }
 
@@ -463,7 +463,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
         }
         private void TabloOlustur()
         {
-            var jsonData = GetDataJson();//TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsonData = GetDataJson();//TabloJson(); //veri çekilip json a çeviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -478,7 +478,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
 
                 jQuery('#CustomDataTable').DataTable({
-                    'initComplete': function (settings, json) {//tablo y�klendiginde
+                    'initComplete': function (settings, json) {//tablo yüklendiginde
                         var api = this.api();
                         var row = api.row(function(idx, data, node) { //secilen toplantiya gider
                             return data['Secildi'] == true;

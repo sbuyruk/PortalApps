@@ -167,7 +167,7 @@ namespace Model.Ortak
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             string json = ToJSON(dataTable);
             return json;

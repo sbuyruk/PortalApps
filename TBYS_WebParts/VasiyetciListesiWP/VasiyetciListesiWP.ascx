@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -41,6 +41,7 @@
                     <tfoot> 
                         <tr >
                             <th>V.No</th>
+                            <th>Bölge</th>
                             <th>Adı</th>
                             <th>Soyadı</th>
                             <th>TC Kimlik No</th>
@@ -49,10 +50,10 @@
                             <th>İkamet Adres</th>
                             <th>Telefon</th>
                             <th>"Vasiyet Yılı"</th>
-                            <th>Bölge</th>
+                            <th>Vasiyet Durumu</th>
+                            <th>Sağ/Vefat</th>
                             <th>Vasiyet</th>
                             <th>Düzenle</th>
-                            <th>Sağ/Vefat</th>
                         </tr>
                     </tfoot>
                     <tbody></tbody>

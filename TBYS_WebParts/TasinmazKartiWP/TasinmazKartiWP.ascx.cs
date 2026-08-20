@@ -402,23 +402,10 @@ namespace TBYS_WebParts.TasinmazKartiWP
         }
         private bool DosyaVarMi(string libName, string fileName)
         {
-            bool isDosyaBulundu = false;
-            SPList list = SPContext.Current.Web.Lists[libName];
-            SPQuery query = new SPQuery();
-            query.ViewFields = @"<FieldRef Name='FileLeafRef' />";
-            query.Query = @"<Where>
-                          <Eq>
-                            <FieldRef Name='FileLeafRef' />
-                            <Value Type='File'>" + fileName + @"</Value>
-                          </Eq>
-                        </Where>";
-            SPListItemCollection collection = list.GetItems(query);
-
-            if (collection.Count > 0)
-            {
-                isDosyaBulundu = true;
-            }
-            return isDosyaBulundu;
+            SPWeb web = SPContext.Current.Web;
+            string fileUrl = web.Url + "/" + libName + "/" + fileName;
+            SPFile file = web.GetFile(fileUrl);
+            return file != null && file.Exists;
         }
         private void BagisciBilgileriniDoldur(TasinmazBagisci bagisci)
         {

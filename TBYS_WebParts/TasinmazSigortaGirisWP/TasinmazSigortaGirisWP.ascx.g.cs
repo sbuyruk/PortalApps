@@ -582,7 +582,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KullanimAmaciTxt";
             @__ctrl.CssClass = "form-control";
-            @__ctrl.ToolTip = "Kullanım Amacı";
+            @__ctrl.ToolTip = "Kullanım Şekli";
             return @__ctrl;
         }
         
@@ -1098,14 +1098,14 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP {
                     </div>
                     <div class=""row"">
                         <div class=""col form-group"">
-                            <label class=""col-form-label "" for=""KullanimAmaciTxt"">Kullanım Amacı</label>
+                            <label class=""col-form-label "" for=""KullanimAmaciTxt"">Kullanım Şekli</label>
                             "));
             global::System.Web.UI.WebControls.TextBox @__ctrl8;
             @__ctrl8 = this.@__BuildControlKullanimAmaciTxt();
             @__parser.AddParsedSubObject(@__ctrl8);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col form-gr" +
                         "oup\">\r\n                            <label class=\"col-form-label \" for=\"KullanimA" +
-                        "maciBtn\">Kullanım Amacı</label>\r\n                            "));
+                        "maciBtn\">Kullanım Şekli</label>\r\n                            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl9;
             @__ctrl9 = this.@__BuildControlKullanimAmaciGetirBtn();
             @__parser.AddParsedSubObject(@__ctrl9);

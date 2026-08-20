@@ -83,8 +83,8 @@
                                 </div>
                                 <div class="col">
                                     <div class="form-group">
-                                        <asp:Label CssClass="form-label fw-bold" runat="server" Text="KullanimAmaci"></asp:Label>
-                                        <asp:DropDownList ID="KullanimAmaciDDL" runat="server" CssClass="form-control form-select form-select-lg" ToolTip="Kullanım Amacı" Style="height: auto"></asp:DropDownList>
+                                        <asp:Label CssClass="form-label fw-bold" runat="server" Text="Kullanim Şekli"></asp:Label>
+                                        <asp:DropDownList ID="KullanimAmaciDDL" runat="server" CssClass="form-control form-select form-select-lg" ToolTip="Kullanım Şekli" Style="height: auto"></asp:DropDownList>
                                     </div>
                                 </div>
                                 <div style="display: none">

@@ -881,7 +881,7 @@ namespace Utility.ProjeGlobal
         public const string MESAJ_BASARILI = "alert-success";
         public const string MESAJ_BILGI = "alert-info";
 
-        public const string NAKITBAGISCI_BILINMEYEN = "BILINMEYEN";
+        public const string NAKITBAGISCI_BILINMEYEN = "BİLİNMEYEN";
 
         //personel
         public static string PER_YAKINLIKDERECESI_ES = "Eş";

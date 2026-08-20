@@ -400,11 +400,15 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                 {
                     if (!string.IsNullOrEmpty(BastarQS) && !string.IsNullOrEmpty(BittarQS))
                     {
-                        DateTime basTarih = BastarQS.ConvertToDatetime();
-                        BaslangicTarihiTxt.Text = new DateTime(basTarih.Year, basTarih.Month,1).ConvertToDatetimeEmptyIfNull();
+                        DateTime oncekiYilBasi= new DateTime (DateTime.Today.AddYears(-1).Year, 1, 1);
+                        DateTime basTarih = string.IsNullOrEmpty(BastarQS) ? oncekiYilBasi : BastarQS.ConvertToDatetime();
+                        //BaslangicTarihiTxt.Text = new DateTime(basTarih.Year, basTarih.Month,1).ConvertToDatetimeEmptyIfNull();
+                        BaslangicTarihiTxt.Text = oncekiYilBasi.ConvertToDatetimeEmptyIfNull();
 
-                        DateTime bitTarih = BaslangicTarihiTxt.Text.ConvertToDatetime().AddMonths(1).AddDays(-1);
-                        BitisTarihiTxt.Text = bitTarih.ConvertToDatetimeEmptyIfNull();
+                        DateTime buYilSonu = new DateTime(DateTime.Today.Year, 12, 31);
+                        DateTime bitTarih = string.IsNullOrEmpty(BittarQS) ? buYilSonu : BittarQS.ConvertToDatetime();
+                        //DateTime bitTarih = BaslangicTarihiTxt.Text.ConvertToDatetime().AddMonths(1).AddDays(-1);
+                        BitisTarihiTxt.Text = buYilSonu.ConvertToDatetimeEmptyIfNull();
                     }
 
                     Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
@@ -457,7 +461,38 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
             //DataTable dataTable = sigorta.SelectAllReturnDataTable();
             DataTable dataTable = sigorta.SelectByTeminatSigortaCinsiReturnDataTable(SigortaCinsiQS, VadesiGelenlerChk.Checked, DepremQS.ConvertToBool(), YanginQS.ConvertToBool(), Makine100000QS.ConvertToBool(),
                 Makine5000QS.ConvertToBool(), JeneratorQS.ConvertToBool(), AsansorQS.ConvertToBool(), KazanQS.ConvertToBool(), BolgeIdQS, AuthQS, basTarih, bitTarih);
+            BitAlanlariMetneCevir(dataTable);
             return dataTable;
+        }
+        private void BitAlanlariMetneCevir(DataTable dataTable)
+        {
+            if (dataTable == null)
+            {
+                return;
+            }
+            List<DataColumn> boolColumns = new List<DataColumn>();
+            foreach (DataColumn column in dataTable.Columns)
+            {
+                if (column.DataType == typeof(bool))
+                {
+                    boolColumns.Add(column);
+                }
+            }
+            foreach (DataColumn column in boolColumns)
+            {
+                column.ReadOnly = false;
+                DataColumn tempColumn = new DataColumn(column.ColumnName + "_Str", typeof(string));
+                dataTable.Columns.Add(tempColumn);
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    row[tempColumn] = row[column] == DBNull.Value ? string.Empty : ((bool)row[column] ? "Var" : "Yok");
+                }
+                string columnName = column.ColumnName;
+                int ordinal = column.Ordinal;
+                dataTable.Columns.Remove(column);
+                tempColumn.ColumnName = columnName;
+                tempColumn.SetOrdinal(ordinal);
+            }
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
@@ -566,7 +601,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -600,7 +635,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiginde
+                        'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
@@ -712,12 +747,12 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                     decimal prim = row["Prim"].ReturnZeroIfNull().ConvertToDecimal();
                     decimal sigortaBedeli = row["SigortaBedeli"].ReturnZeroIfNull().ConvertToDecimal();
 
-                    string kullanimSekli = row["KullanimSekli"].ToString();
+                    string tasinmazKullanimSekli = row["TasinmazKullanimSekli"].ToString();
                     string tamAdres = row["TamAdres"].ToString();
                     string teminatListesi = row["TeminatListesi"].ToString();
                     string tasinmazId = row["TasinmazId"].ToString();
                     bool katMulkiyeti = row["KatMulkiyeti"].ReturnFalseIfNull().ConvertToBool();
-                    string kullanimAmaci = row["KullanimAmaci"].ToString();
+                    string sigortaKullanimSekli = row["SigortaKullanimSekli"].ToString();
                     string pDFDosyasi = row["PDFDosyasi"].ToString().Trim();
 
                     SigortaListItem sigortaItem = new SigortaListItem();
@@ -735,10 +770,10 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                     sigortaItem.SigortaBitTar = sigortaBitTar <= DateTime.MinValue ? string.Empty : sigortaBitTar.ToString("dd.MM.yyyy");
                     sigortaItem.AdresKodu = adresKodu;
                     sigortaItem.PoliceNo = policeNo;
-                    sigortaItem.KullanimSekli = katMulkiyeti.Equals(ProjeConstants.KAT_MULKIYETI_VAR) ? kullanimSekli : kullanimAmaci;
+                    sigortaItem.KullanimSekli = katMulkiyeti.Equals(ProjeConstants.KAT_MULKIYETI_VAR) ? tasinmazKullanimSekli : sigortaKullanimSekli;
                     sigortaItem.TeminatListesi = teminatListesi;
                     sigortaItem.Adres = tamAdres;
-                    sigortaItem.Police = FormLinkiGetir(policeDosyalari, ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK, adresKodu, "Poliçe", "btn btn-outline-secondary", pDFDosyasi);
+                    sigortaItem.Police = FormLinkiGetir(policeDosyalari, ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK, adresKodu, "PoliÃ§e", "btn btn-outline-secondary", pDFDosyasi);
                     sigortaItem.Prim = prim.ToString("N", culturInfo);
                     sigortaItem.SigortaBedeli = sigortaBedeli.ToString("N", culturInfo);
                     primToplami += prim;
@@ -746,7 +781,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                     sigortaItem.TasinmazKarti = "<a href=" + ProjeConstants.PAGE_TASINMAZ_KARTI + "?DestinationApp=TD&SenderApp=OL&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Tasinmaz Karti</a>";
                     sigortaItem.Duzenle = string.Empty;
 
-                    sigortaItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZSIGORTA_GIRIS + "?DestinationApp=SigortaD&SenderApp=SigortaL&SigortaId=" + sigortaId + "&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Düzenle</a>";
+                    sigortaItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZSIGORTA_GIRIS + "?DestinationApp=SigortaD&SenderApp=SigortaL&SigortaId=" + sigortaId + "&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>DÃ¼zenle</a>";
 
                     sigortaItem.Secildi = SecilenIdQS.Equals(sigortaItem.SigortaId);
                     list.Add(sigortaItem);

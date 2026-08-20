@@ -97,7 +97,7 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiginde
+                        'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen kayda gider
                                 return data['Secildi'] == true;
@@ -181,7 +181,7 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = VasiyetciJson(); //veri çekilip json a çeviriliyor
+            var jsonData = VasiyetciJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -200,26 +200,15 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
 
         private MemoryStream GetTemplateStream(string templateFileName)
         {
-            string newFileUrl = string.Empty;
-
             string siteUrl = SPContext.Current.Web.Url;
             using (SPSite spSite = new SPSite(siteUrl))
+            using (SPWeb web = spSite.OpenWeb())
             {
-                SPList list = SPContext.Current.Web.Lists[LibraryNameQS];
-                SPQuery query = new SPQuery();
-                query.ViewFields = @"<FieldRef Name='FileLeafRef' />";
-                query.Query =
-                  @"<Where>
-                          <Eq>
-                            <FieldRef Name='FileLeafRef' />
-                            <Value Type='File'>" + templateFileName + @"</Value>
-                          </Eq>
-                        </Where>";
-                SPListItemCollection collection = list.GetItems(query);
+                string fileUrl = web.Url + "/" + LibraryNameQS + "/" + templateFileName;
                 MemoryStream memStr = new MemoryStream();
-                if (collection.Count > 0)
+                SPFile file = web.GetFile(fileUrl);
+                if (file != null && file.Exists)
                 {
-                    SPFile file = collection[0].File;
                     byte[] byteArray = file.OpenBinary();
                     memStr.Write(byteArray, 0, byteArray.Length);
                 }
@@ -321,7 +310,7 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
                 {
                     string message = string.Join(Environment.NewLine, uzunAdresliler);
                     MessageHelper.PublishMessage(message + Environment.NewLine +
-                        " adresi çok uzun oldugundan kesilerek kisaltildi. Lütfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
+                        " adresi Ã§ok uzun oldugundan kesilerek kisaltildi. LÃ¼tfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
                 }
             }
 
@@ -404,7 +393,7 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
                 string etiketDosyaAdi = "Vasiyetci-Adres-Etiketi(" + zaman + ").docx";
                 bool etiketOlustuMu = YeniAdresEtiketDosyasiOlustur(etiketDosyaAdi);
                 if (etiketOlustuMu)
-                    MessageHelper.PublishMessage("Vasiyetçi adres etiketleri hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("VasiyetÃ§i adres etiketleri hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
                 else
                 {
                     MessageHelper.PublishMessage("Adres etiketleri olusturulamadi.", ProjeConstants.MESAJ_BILGI, 3000);

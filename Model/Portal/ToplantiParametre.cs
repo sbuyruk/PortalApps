@@ -197,7 +197,7 @@ namespace Model.Portal
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             string json = ToJSON(dataTable);
             return json;

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -440,6 +440,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NakitBagisRaporuByYil_il.ascx</DependentUpon>
     </Compile>
+    <Compile Include="NakitBagisRaporuWP\NakitBagisRaporuWP.ascx.cs">
+      <DependentUpon>NakitBagisRaporuWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisRaporuWP\NakitBagisRaporuWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NakitBagisRaporuWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="NBYSParametreGirisiWP\NBYSParametreGirisiWP.ascx.cs">
       <DependentUpon>NBYSParametreGirisiWP.ascx</DependentUpon>
     </Compile>
@@ -704,6 +712,10 @@
     <None Include="NakitBagisRaporuByYil_il\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{9c3fb5a1-0a2f-4aa1-84de-30df57b7eb03}</SharePointProjectItemId>
     </None>
+    <None Include="NakitBagisRaporuWP\NakitBagisRaporuWP.webpart" />
+    <None Include="NakitBagisRaporuWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{8aa3ff0c-4a11-410b-9eb6-30e346320e07}</SharePointProjectItemId>
+    </None>
     <None Include="NBYSParametreGirisiWP\NBYSParametreGirisiWP.webpart" />
     <None Include="NBYSParametreGirisiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{df896929-1aba-4bae-b418-cee5116ca3b2}</SharePointProjectItemId>
@@ -944,6 +956,7 @@
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>NakitBagisciEditWP.ascx.g.cs</LastGenOutput>
     </Content>
+    <Content Include="NakitBagisciEditWP\NakitBagisciEditWP_Tasarim.html" />
     <Content Include="NakitBagisciEslestirWP\Elements.xml" />
     <Content Include="NakitBagisciEslestirWP\NakitBagisciEslestirWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
@@ -978,6 +991,11 @@
     <Content Include="NakitBagisRaporuByYil_il\NakitBagisRaporuByYil_il.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>NakitBagisRaporuByYil_il.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="NakitBagisRaporuWP\Elements.xml" />
+    <Content Include="NakitBagisRaporuWP\NakitBagisRaporuWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>NakitBagisRaporuWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="NBYSParametreGirisiWP\Elements.xml" />
     <Content Include="NBYSParametreGirisiWP\NBYSParametreGirisiWP.ascx">

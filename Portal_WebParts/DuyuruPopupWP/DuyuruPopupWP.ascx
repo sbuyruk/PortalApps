@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -7,9 +7,14 @@
 <%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="DuyuruPopupWP.ascx.cs" Inherits="Portal_WebParts.DuyuruPopupWP.DuyuruPopupWP" %>
 <style>
-    .modal
-    .modal-dialog, 
-    .fade{
+    /* Bu kural sadece DuyuruPopupWP'nin kendi modallarını (duyuru-modal
+       class'ıyla işaretlenmiş) hedefler. Daha önce ".modal", ".modal-dialog"
+       ve ".fade" için sayfa genelinde (global) tanımlanmıştı; bu haliyle
+       Bootstrap'in modal-backdrop elementini (class="modal-backdrop fade show")
+       ve sayfadaki diğer web part'ların (örn. BildirimWP) modallarını da
+       etkileyip opak beyaz bir overlay'e dönüştürüyordu. */
+    .duyuru-modal,
+    .duyuru-modal .modal-dialog {
     opacity: 1 !important;
     filter: alpha(opacity=100) !important;
     background: #fff;
@@ -108,7 +113,7 @@
             </ul>
         </div>
         <div class="marquee-sibling-end">
-            Duyuru
+            DuyuruX
         </div>
     </div>
 </div>

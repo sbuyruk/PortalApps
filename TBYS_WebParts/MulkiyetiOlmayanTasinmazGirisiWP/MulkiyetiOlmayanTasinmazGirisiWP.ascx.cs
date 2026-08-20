@@ -3,6 +3,7 @@ using Model.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Transactions;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
@@ -382,30 +383,35 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             tasinmaz.BBBrutAlan = BBBrutAlanTxt.Text.ConvertToDecimal();
             tasinmaz.Nitelik = NitelikTxt.Text;
             tasinmaz.EnvanterdeMi = ProjeConstants.MULKIYETTE_OLMAYAN_TASINMAZ;
-            int id = tasinmaz.Save();
-            tasinmaz.Id = id;
 
-            if (id > 0)
+            using (TransactionScope scope = new TransactionScope())
             {
-                Sigorta sigorta = new Sigorta();
-                sigorta = sigorta.SelectByTasinmazId(tasinmaz.Id);
-                if (sigorta == null)//henuz sigorta kaydi yok yeni sigorta yarat
-                {
-                    sigorta = new Sigorta();
-                    sigorta.TasinmazId = tasinmaz.Id;
-                    sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                    int sigortaid = sigorta.Save();
-                    sigorta.Id = sigortaid;
-                }
-                else
-                {
-                    sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                    sigorta.Update();
-                }
-                return tasinmaz;
-            }
+                int id = tasinmaz.Save();
+                tasinmaz.Id = id;
 
-            else return null;
+                if (id > 0)
+                {
+                    Sigorta sigorta = new Sigorta();
+                    sigorta = sigorta.SelectByTasinmazId(tasinmaz.Id);
+                    if (sigorta == null)//henuz sigorta kaydi yok yeni sigorta yarat
+                    {
+                        sigorta = new Sigorta();
+                        sigorta.TasinmazId = tasinmaz.Id;
+                        sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
+                        int sigortaid = sigorta.Save();
+                        sigorta.Id = sigortaid;
+                    }
+                    else
+                    {
+                        sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
+                        sigorta.Update();
+                    }
+                    scope.Complete();
+                    return tasinmaz;
+                }
+
+                else return null;
+            }
         }
         private bool updateTasinmazData2Db(int tId)
         {
@@ -440,20 +446,24 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 tasinmaz.BBBrutAlan = BBBrutAlanTxt.Text.ConvertToDecimal();
                 tasinmaz.Nitelik = NitelikTxt.Text;
                 tasinmaz.EnvanterdeMi = ProjeConstants.MULKIYETTE_OLMAYAN_TASINMAZ;
-                isSaved = tasinmaz.Update();
-                Sigorta sigorta = new Sigorta();
-                sigorta = sigorta.SelectByTasinmazId(tasinmaz.Id);
-                if (sigorta == null)//henuz sigorta kaydi yok yeni sigorta yarat
+                using (TransactionScope scope = new TransactionScope())
                 {
-                    sigorta = new Sigorta();
-                    sigorta.TasinmazId = tasinmaz.Id;
-                    sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                    sigorta.Save();
-                }
-                else
-                {
-                    sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                    sigorta.Update();
+                    isSaved = tasinmaz.Update();
+                    Sigorta sigorta = new Sigorta();
+                    sigorta = sigorta.SelectByTasinmazId(tasinmaz.Id);
+                    if (sigorta == null)//henuz sigorta kaydi yok yeni sigorta yarat
+                    {
+                        sigorta = new Sigorta();
+                        sigorta.TasinmazId = tasinmaz.Id;
+                        sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
+                        sigorta.Save();
+                    }
+                    else
+                    {
+                        sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
+                        sigorta.Update();
+                    }
+                    scope.Complete();
                 }
             }
 

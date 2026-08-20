@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Bağışçı Bilgileri Değiştirme - Tasarım Önizleme</title>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+        background: #eef1f5;
+        margin: 0;
+        padding: 30px;
+    }
+    .panel {
+        max-width: 900px;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+        overflow: hidden;
+    }
+    .panel-header {
+        background: linear-gradient(90deg, #1b6fb5, #2a8fd6);
+        color: #fff;
+        padding: 18px 26px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .panel-header h2 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+    }
+    .panel-header .id-badge {
+        background: rgba(255,255,255,0.2);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        margin-left: 10px;
+    }
+    .panel-header .close-btn {
+        cursor: pointer;
+        font-size: 20px;
+        opacity: 0.85;
+    }
+    .panel-body {
+        padding: 28px 32px;
+    }
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px 40px;
+    }
+    .field {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+    .field label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #33475b;
+        margin-bottom: 6px;
+    }
+    .field input[type=text],
+    .field input[type=email],
+    .field select,
+    .field textarea {
+        border: 1px solid #cfd7e3;
+        border-radius: 6px;
+        padding: 9px 12px;
+        font-size: 14px;
+        color: #22303f;
+        background: #fbfcfe;
+        transition: border-color .15s, box-shadow .15s;
+    }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+        outline: none;
+        border-color: #2a8fd6;
+        box-shadow: 0 0 0 3px rgba(42,143,214,0.15);
+        background: #fff;
+    }
+    .field textarea {
+        resize: vertical;
+        min-height: 90px;
+    }
+    .field.span-2 {
+        grid-column: span 2;
+    }
+    .checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 0;
+    }
+    .checkbox-row input[type=checkbox] {
+        width: 18px;
+        height: 18px;
+        accent-color: #2a8fd6;
+    }
+    .checkbox-row label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #33475b;
+        margin: 0;
+    }
+    .checkbox-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4px 40px;
+        margin-top: 6px;
+    }
+    .section-title {
+        grid-column: span 2;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        color: #7d8ea3;
+        border-bottom: 1px solid #e5e9f0;
+        padding-bottom: 6px;
+        margin-top: 6px;
+    }
+    .panel-footer {
+        padding: 18px 32px;
+        border-top: 1px solid #eef1f5;
+        display: flex;
+        justify-content: flex-end;
+    }
+    .btn-guncelle {
+        background: #2fa84f;
+        color: #fff;
+        border: none;
+        padding: 11px 26px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 2px 6px rgba(47,168,79,0.35);
+        transition: background .15s;
+    }
+    .btn-guncelle:hover {
+        background: #279943;
+    }
+    .required::after {
+        content: " *";
+        color: #d9534f;
+    }
+</style>
+</head>
+<body>
+    <div class="panel">
+        <div class="panel-header">
+            <h2>Bağışçı Bilgileri Değiştirme <span class="id-badge">#208416</span></h2>
+            <span class="close-btn">&times;</span>
+        </div>
+        <div class="panel-body">
+            <div class="form-grid">
+                <div class="field">
+                    <label class="required">Ad / Unvan</label>
+                    <input type="text" value="EMRE LALE" />
+                </div>
+                <div class="field">
+                    <label>İl</label>
+                    <select><option>Seçiniz</option></select>
+                </div>
+
+                <div class="field">
+                    <label>TC Kimlik No</label>
+                    <input type="text" value="22676422078" />
+                </div>
+                <div class="field">
+                    <label>İlçe</label>
+                    <select><option>Seçiniz</option></select>
+                </div>
+
+                <div class="field">
+                    <label>Meslek</label>
+                    <select>
+                        <option>Seçiniz</option>
+                        <option>Memur</option>
+                        <option>İşçi</option>
+                        <option>Serbest Meslek</option>
+                        <option>Emekli</option>
+                        <option>Diğer</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Telefon 1</label>
+                    <input type="text" value="5335002243" />
+                </div>
+
+                <div class="field span-2">
+                    <label>Adres</label>
+                    <textarea></textarea>
+                </div>
+
+                <div class="field">
+                    <label>Posta Kodu</label>
+                    <input type="text" />
+                </div>
+                <div class="field">
+                    <label>Telefon 2</label>
+                    <input type="text" />
+                </div>
+
+                <div class="field">
+                    <label></label>
+                </div>
+                <div class="field">
+                    <label>E-Posta</label>
+                    <input type="email" />
+                </div>
+
+                <div class="section-title">Durum Bilgileri</div>
+
+                <div class="checkbox-group span-2">
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="ulasilamiyor" />
+                        <label for="ulasilamiyor">Ulaşılamıyor</label>
+                    </div>
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="tuzelkisi" />
+                        <label for="tuzelkisi">Tüzel Kişi</label>
+                    </div>
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="belgeistemiyor" />
+                        <label for="belgeistemiyor">Belge İstemiyor</label>
+                    </div>
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="sagmi" checked />
+                        <label for="sagmi">Sağ mı</label>
+                    </div>
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="dergi" />
+                        <label for="dergi">Dergi Gönderilmesin</label>
+                    </div>
+                </div>
+
+                <div class="field span-2">
+                    <label>Açıklama</label>
+                    <textarea>DAYANIŞMA VAKFI İADE EDİLECEK</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <button class="btn-guncelle">Güncelle</button>
+        </div>
+    </div>
+</body>
+</html>

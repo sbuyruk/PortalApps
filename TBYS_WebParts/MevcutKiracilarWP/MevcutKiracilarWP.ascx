@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -14,7 +14,7 @@
     }
 
 </script>
-<div id="MainContainer" class="container">
+<div id="MainContainer" class="container small">
     <div class="card shadow">
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" CssClass="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
@@ -40,7 +40,7 @@
                     <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">İLK SÖZLEŞME TARİHİ</asp:TableHeaderCell>
                     <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">KİRALAMA AMACI</asp:TableHeaderCell>
                     <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">ÖDEME ŞEKLİ</asp:TableHeaderCell>
-                    <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">METREKARE</asp:TableHeaderCell>
+                    <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">NET ALAN</asp:TableHeaderCell>
                     <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">KİRA BEDELİ (TL)</asp:TableHeaderCell>
                     <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">BORÇ MİKTARI (TL)</asp:TableHeaderCell>
                     <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">FAİZLİ BAKİYE (TL)</asp:TableHeaderCell>

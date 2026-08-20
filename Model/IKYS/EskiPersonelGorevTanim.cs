@@ -202,7 +202,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
         }

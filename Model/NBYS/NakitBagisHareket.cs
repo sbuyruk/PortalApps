@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
@@ -460,7 +461,7 @@ namespace Model.NBYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
         }
@@ -1035,6 +1036,112 @@ IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış'
             ", yil, ayStr);
 
             return sqlString;
+        }
+
+        public DataTable SelectNakitBagisRaporu(
+            DateTime? bagisBasTarihi, DateTime? bagisBitTarihi,
+            decimal? minBagisMiktari, decimal? maxBagisMiktari,
+            int armaganId, DateTime? SonBagisTarihi,
+            int ilId, int ilceId,
+            bool? sag, bool? belgeIstemiyor, bool? ulasilamiyor, bool? tuzelKisi)
+        {
+            string minToplamBagisStr = minBagisMiktari.HasValue ? string.Format(" SUM(A.BagisMiktari) >= {0} ", minBagisMiktari.Value.ConvertDecimalToString()) : string.Empty;
+            string maxToplamBagisStr = maxBagisMiktari.HasValue ? string.Format(" SUM(A.BagisMiktari) <= {0} ", maxBagisMiktari.Value.ConvertDecimalToString()) : string.Empty;
+            string sonBagisTarihiStr = SonBagisTarihi.HasValue ? string.Format(" MAX(A.BagisTarihi) > {0} ", SonBagisTarihi.Value.ReturnTRDateFormat()) : string.Empty;
+
+            StringBuilder havingBuilder = new StringBuilder();
+            if (!string.IsNullOrEmpty(minToplamBagisStr))
+            {
+                havingBuilder.Append(minToplamBagisStr);
+            }
+            if (!string.IsNullOrEmpty(maxToplamBagisStr))
+            {
+                if (havingBuilder.Length > 0)
+                {
+                    havingBuilder.Append(" AND ");
+                }
+                havingBuilder.Append(maxToplamBagisStr);
+            }
+            if (!string.IsNullOrEmpty(sonBagisTarihiStr))
+            {
+                if (havingBuilder.Length > 0)
+                {
+                    havingBuilder.Append(" AND ");
+                }
+                havingBuilder.Append(sonBagisTarihiStr);
+            }
+
+            string havingStr = havingBuilder.Length > 0 ? " HAVING " + havingBuilder.ToString().Trim() : string.Empty;
+            StringBuilder where = new StringBuilder();
+            where.Append(" WHERE 1=1 ");
+
+            if (bagisBasTarihi.HasValue)
+            {
+                where.AppendFormat(" AND A.BagisTarihi >= {0} ", bagisBasTarihi.Value.ReturnTRDateFormat());
+            }
+            if (bagisBitTarihi.HasValue)
+            {
+                where.AppendFormat(" AND A.BagisTarihi <= {0} ", bagisBitTarihi.Value.ReturnTRDateFormat());
+            }
+            
+            if (maxBagisMiktari.HasValue)
+            {
+                where.AppendFormat(" AND A.BagisMiktari <= {0} ", maxBagisMiktari.Value.ConvertDecimalToString());
+            }
+            if (armaganId > ProjeConstants.HEPSI_INT)
+            {
+                where.AppendFormat(" AND A.ArmaganId = {0} ", armaganId);
+            }
+            if (ilId > ProjeConstants.HEPSI_INT)
+            {
+                where.AppendFormat(" AND B.Ili = {0} ", ilId);
+            }
+            if (ilceId > ProjeConstants.HEPSI_INT)
+            {
+                where.AppendFormat(" AND B.Ilcesi = {0} ", ilceId);
+            }
+            if (sag.HasValue)
+            {
+                where.AppendFormat(" AND B.Sag = {0} ", sag.Value ? 1 : 0);
+            }
+            if (belgeIstemiyor.HasValue)
+            {
+                where.AppendFormat(" AND B.BelgeIstemiyor = {0} ", belgeIstemiyor.Value ? 1 : 0);
+            }
+            if (ulasilamiyor.HasValue)
+            {
+                where.AppendFormat(" AND B.Ulasilamiyor = {0} ", ulasilamiyor.Value ? 1 : 0);
+            }
+            if (tuzelKisi.HasValue)
+            {
+                where.AppendFormat(" AND B.TuzelKisi = {0} ", tuzelKisi.Value ? 1 : 0);
+            }
+
+            string sqlString = string.Format(@"
+                SELECT
+                    B.Id NakitBagisciId,
+                    ISNULL(B.Adi,'') + ' ' + ISNULL(B.Soyadi,'') AS AdiSoyadi,
+                    REPLACE(CONVERT(NVARCHAR, SUM(A.BagisMiktari)), '.', ',') + ' ' + ISNULL(A.DovizCinsi,'TL') AS ToplamBagisMiktari,
+                    SUM(A.BagisMiktari) AS ToplamBagisMiktariDecimal,
+                    MAX(A.BagisTarihi) AS SonBagisTarihi,
+                    ISNULL(E.IlAdi,'') AS Ili,
+                    ISNULL(F.IlceAdi,'') AS Ilcesi,
+                    TRIM(ISNULL(B.Telefon1,'') + ' ' + ISNULL(B.Telefon2,'')) AS Telefon,
+                    ISNULL(B.Adres,'') AS Adres
+                FROM NakitBagisHareket_Table A
+                INNER JOIN NakitBagisci_Table B ON B.Id = A.BagisciId
+                LEFT JOIN Armagan_Table C ON C.Id = A.ArmaganId
+                LEFT JOIN ArmaganTanim_Table D ON D.Id = C.ArmaganTanimId
+                LEFT JOIN Il_Table E ON E.Id = B.Ili
+                LEFT JOIN Ilce_Table F ON F.Id = B.Ilcesi
+                {0}
+                GROUP BY B.Id, B.Adi, B.Soyadi, A.DovizCinsi, E.IlAdi, F.IlceAdi, B.Telefon1, B.Telefon2, B.Adres
+                {1}
+                ORDER BY SUM(A.BagisMiktari) DESC
+            ", where.ToString(), havingStr);
+
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            return dataTable;
         }
     }
 

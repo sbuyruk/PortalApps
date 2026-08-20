@@ -631,13 +631,14 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             global::System.Web.UI.WebControls.Label @__ctrl4;
             @__ctrl4 = this.@__BuildControlIdLbl();
             @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <div class=\"form-group m-0 float-end\">\r\n               " +
-                        "             "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <div class=\"form-group m-0 float-end\">\r\n           " +
+                        "                     "));
             global::System.Web.UI.WebControls.Label @__ctrl5;
             @__ctrl5 = this.@__BuildControlAdresLbl();
             @__parser.AddParsedSubObject(@__ctrl5);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        </div>\r\n               " +
-                        "         <div class=\"form-group m-0 float-end\">\r\n                            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
+                        "             <div class=\"form-group m-0 float-end\">\r\n                           " +
+                        " "));
             global::System.Web.UI.WebControls.Label @__ctrl6;
             @__ctrl6 = this.@__BuildControlSorumluBolgeTxt();
             @__parser.AddParsedSubObject(@__ctrl6);
@@ -1242,7 +1243,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             global::System.Web.UI.WebControls.BoundField @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.BoundField();
             @__ctrl.DataField = "KullanimAmaci";
-            @__ctrl.HeaderText = "Kullanım Amacı";
+            @__ctrl.HeaderText = "Kullanım Şekli";
             return @__ctrl;
         }
         

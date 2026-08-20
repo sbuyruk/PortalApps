@@ -223,8 +223,8 @@ namespace TBYS_WebParts.MevcutKiracilarWP
                     TableCell odemeSekliCell = new TableCell();
                     odemeSekliCell.Text = odemeSekli;
 
-                    TableCell metrekareCell = new TableCell();
-                    metrekareCell.Text = MetrekareToplami(kiraSozlesmeId).ToString("N", culturInfo); ;
+                    TableCell brutAlanNetAlanCell = new TableCell();
+                    brutAlanNetAlanCell.Text = MetrekareToplami(kiraSozlesmeId).ToString("N", culturInfo); ;
 
                     TableCell ilkSozTarCell = new TableCell();
                     ilkSozTarCell.Text = ilkSozlesmeTar;
@@ -252,7 +252,7 @@ namespace TBYS_WebParts.MevcutKiracilarWP
                     tableRow.Controls.Add(ilkSozTarCell);
                     tableRow.Controls.Add(kiralamaAmaciCell);
                     tableRow.Controls.Add(odemeSekliCell);
-                    tableRow.Controls.Add(metrekareCell);
+                    tableRow.Controls.Add(brutAlanNetAlanCell);
                     tableRow.Controls.Add(kiraBedeliCell);
                     tableRow.Controls.Add(anaParaCell);
                     tableRow.Controls.Add(faizliBakiyeCell);
@@ -263,7 +263,7 @@ namespace TBYS_WebParts.MevcutKiracilarWP
             }
             else
             {
-                MessageHelper.PublishMessage("Borçlu Kiraci bulunamadi", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("BorÃ§lu Kiraci bulunamadi", ProjeConstants.MESAJ_BILGI, 2000);
             }
 
         }

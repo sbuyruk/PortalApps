@@ -185,6 +185,8 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                 string konaklama = row["Konaklama"].ToString();
                 int personelId = row["PersonelId"].ConvertToInt();
                 int amirOnayi = row["AmirOnayi"].ConvertToInt();
+                string onayRedAciklama = row["OnayRedAciklama"].ReturnEmptyIfNull().ToString();
+                bool reddedildi = amirOnayi == (int)GorevOnay.AmirOnayDurumu.Reddedildi;
 
                 string sure = row["Sure"].ToString();
                 string yevmiye = row["Yevmiye"].ToString();
@@ -200,8 +202,9 @@ namespace IKYS_WebParts.GorevOnayListesiWP
 
                 GorevOnayListItem gorevOnayListItem = new GorevOnayListItem();
                 gorevOnayListItem.ErrorClass = errorClass;
+                gorevOnayListItem.Reddedildi = reddedildi;
                 gorevOnayListItem.GorevOnayId = gorevOnayId;
-                gorevOnayListItem.SecChk = "<input type=checkbox id=chkBox" + gorevOnayId + " name=chkBox" + gorevOnayId + " "+ secildi + " onclick='AddRemoveSecimListesi(" + gorevOnayId + ",this);' />";
+                gorevOnayListItem.SecChk = reddedildi ? string.Empty : "<input type=checkbox id=chkBox" + gorevOnayId + " name=chkBox" + gorevOnayId + " "+ secildi + " onclick='AddRemoveSecimListesi(" + gorevOnayId + ",this);' />";
                 gorevOnayListItem.AdiSoyadi = adiSoyadi;
                 gorevOnayListItem.GorevinSebebi = gorevinSebebi ;
                 gorevOnayListItem.BaslangicTarihi = baslangicTarihi;
@@ -212,6 +215,15 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                 gorevOnayListItem.Transfer = transfer;
                 gorevOnayListItem.Konaklama = konaklama;
                 gorevOnayListItem.Secildi = SecilenIdQS.Equals(gorevOnayId);
+                gorevOnayListItem.AmirOnayiInt = amirOnayi;
+                if (amirOnayi == (int)GorevOnay.AmirOnayDurumu.OnayBekliyor)
+                    gorevOnayListItem.AmirOnayiSiraNo = 0;
+                //else if (gorevOnayListItem.AmirOnayi == (int)GorevOnay.AmirOnayDurumu.Reddedildi)
+                //    gorevOnayListItem.AmirOnayiSiraNo = 1;
+                //else if (gorevOnayListItem.AmirOnayi == (int)GorevOnay.AmirOnayDurumu.Onaylandi)
+                //    gorevOnayListItem.AmirOnayiSiraNo = 2;
+                else
+                    gorevOnayListItem.AmirOnayiSiraNo = 3;
                 if (OdendiYapChk.Checked)
                 {
                     gorevOnayListItem.Odendi = true;
@@ -220,14 +232,19 @@ namespace IKYS_WebParts.GorevOnayListesiWP
 
                 if (AuthQS.Equals(ProjeConstants.IKYS_YETKILI_BIRIM))
                 {
-                    gorevOnayListItem.RaporAl = "<a href=" + ProjeConstants.RAPOR_GOREVONAYBELGESI_URL + "?Auth="+AuthQS+"&GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Rapor Al</a>";
-                    gorevOnayListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVONAY_GIRIS + "?Auth="+AuthQS+"&GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Düzenle</a>";
+                    gorevOnayListItem.RaporAl = reddedildi ? onayRedAciklama : "<a href=" + ProjeConstants.RAPOR_GOREVONAYBELGESI_URL + "?Auth="+AuthQS+"&GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Rapor Al</a>";
+                    gorevOnayListItem.Duzenle = reddedildi ? string.Empty: "<a href=" + ProjeConstants.PAGE_GOREVONAY_GIRIS + "?Auth="+AuthQS+"&GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Düzenle</a>";
                     list.Add(gorevOnayListItem);
                 }else if (personel.Id == personelId)
                 {
                     DateTime today = DateTime.Today;
                     int fark = (today - baslangicTarihi.ConvertToDatetime()).Days;
-                    if (!string.IsNullOrEmpty(baslangicTarihi) && fark<4)
+                    if (amirOnayi == (int)GorevOnay.AmirOnayDurumu.Reddedildi)
+                    {
+                        gorevOnayListItem.RaporAl = onayRedAciklama;
+                        gorevOnayListItem.Duzenle = string.Empty;
+                    }
+                    else if (!string.IsNullOrEmpty(baslangicTarihi) && fark<4)
                     {
                         gorevOnayListItem.RaporAl = "<a href=" + ProjeConstants.RAPOR_GOREVONAYBELGESI_URL + "?GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Rapor Al</a>";
                         gorevOnayListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVONAY_GIRIS + "?GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Düzenle</a>"; 
@@ -239,7 +256,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             }
             return list;
         }
-
+ 
         private bool SureVeYevmiyeHesabiDogruMu(int gorevOnayId)
         {
             GorevOnay gorevOnay = new GorevOnay();
@@ -352,6 +369,9 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             public bool Secildi { get; set; }
             public bool Odendi { get; set; }
             public bool ErrorClass{ get; set; }
+            public bool Reddedildi { get; set; }
+            public int AmirOnayiInt { get; set; }
+            public int AmirOnayiSiraNo { get; set; }
 
         }
         protected void SecilenleriKaydetBtn_Click(object sender, EventArgs e)

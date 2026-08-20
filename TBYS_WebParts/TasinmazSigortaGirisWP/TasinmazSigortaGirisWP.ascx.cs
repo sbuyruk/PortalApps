@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
+using TBYS_WebParts.BagimsizBolumWP;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
@@ -321,28 +322,32 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 if (tasinmaz != null)
                 {
                     AdiLbl.Text = tasinmaz.KullanimSekli + " - " + tasinmaz.Adres + " - " + tasinmaz.Ilcesi + "/" + tasinmaz.Ili;
-                    int sigortaBagimsizBolumNo= sigorta.BolumId.ConvertToInt();
+                    
 
                     BulunduguKatTxt.Text = string.IsNullOrEmpty(sigorta.BulunduguKat) ? tasinmaz.BulunduguKat : sigorta.BulunduguKat;
                     TapuTasinmazNoTxt.Text = tasinmaz.TapuTasinmazNo;
                     YapiTarziTxt.Text = string.IsNullOrEmpty(sigorta.YapiTarzi) ? tasinmaz.YapiTarzi : sigorta.YapiTarzi;
-                    
-                    if (sigortaBagimsizBolumNo > 0) // Bu siorta Bağımsız bölüme ait
+                    KullanimAmaciTxt.Text = sigorta.KullanimSekli;
+                    if (String.IsNullOrEmpty(sigorta.KullanimSekli))
                     {
-                        BagimsizBolum bagimsizBolum = new BagimsizBolum();
-                        bagimsizBolum = bagimsizBolum.Select<BagimsizBolum>(sigortaBagimsizBolumNo);
-                        if (bagimsizBolum != null)
+                        if (tasinmaz.AltBolum) // Bu siorta Bağımsız bölüme ait
                         {
-                            KullanimAmaciTxt.Text = bagimsizBolum.KullanimAmaci;
-                            BBBrutAlanTxt.Text = string.IsNullOrEmpty(sigorta.BBBrutAlan) ? bagimsizBolum.BBBrutAlan.ToString("N", new System.Globalization.CultureInfo("tr-TR"))
-                                : sigorta.BBBrutAlan;
-                            BBNetAlanTxt.Text = string.IsNullOrEmpty(sigorta.BBNetAlan) ? bagimsizBolum.BBNetAlan.ToString("N", new System.Globalization.CultureInfo("tr-TR"))
-                                : sigorta.BBNetAlan;
-                        }
+                            BagimsizBolum bagimsizBolum = new BagimsizBolum();
+                            bagimsizBolum = bagimsizBolum.Select<BagimsizBolum>(sigorta.BolumId);
+                            if (bagimsizBolum != null)
+                            {
+                                KullanimAmaciTxt.Text = bagimsizBolum.KullanimAmaci;
+                                BBBrutAlanTxt.Text = string.IsNullOrEmpty(sigorta.BBBrutAlan) ? bagimsizBolum.BBBrutAlan.ToString("N", new System.Globalization.CultureInfo("tr-TR"))
+                                    : sigorta.BBBrutAlan;
+                                BBNetAlanTxt.Text = string.IsNullOrEmpty(sigorta.BBNetAlan) ? bagimsizBolum.BBNetAlan.ToString("N", new System.Globalization.CultureInfo("tr-TR"))
+                                    : sigorta.BBNetAlan;
+                            }
+                        } 
                     }
                     else
                     {
-                        KullanimAmaciTxt.Text = tasinmaz.KullanimSekli;
+                        if (String.IsNullOrEmpty(KullanimAmaciTxt.Text.Trim()))
+                            KullanimAmaciTxt.Text = tasinmaz.KullanimSekli;
                         BBBrutAlanTxt.Text = string.IsNullOrEmpty(sigorta.BBBrutAlan) ? tasinmaz.BBBrutAlan.ToString("N", new System.Globalization.CultureInfo("tr-TR"))
                             : sigorta.BBBrutAlan;
 
@@ -384,11 +389,11 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                     ListItem li = new ListItem(tasinmaz.BagimsizBolumNo, tasinmaz.BagimsizBolumNo);
                     BagimsizBolumDDL.Items.Add(li);
                     BagimsizBolumNoTxt.Text = tasinmaz.BagimsizBolumNo;
-                    KullanimAmaciTxt.Text = tasinmaz.KullanimSekli;
+                    KullanimAmaciTxt.Text = sigorta.KullanimSekli;
                 }
                 else
                 {
-                    KullanimAmaciTxt.Text = sigorta.KullanimAmaci;
+                    KullanimAmaciTxt.Text = sigorta.KullanimSekli;
                     BagimsizBolum bb = new BagimsizBolum();
                     List<BagimsizBolum> list = bb.SelectByTasinmazId(sigorta.TasinmazId);
                     foreach (BagimsizBolum item in list)
@@ -452,7 +457,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 sigorta.TeminatAciklama = SecilenTeminatAciklamalariniGetir();
                 sigorta.BagimsizBolumNo = BagimsizBolumNoTxt.Text;
                 sigorta.Aciklama = AciklamaTxt.Text;
-                sigorta.KullanimAmaci = KullanimAmaciTxt.Text;
+                sigorta.KullanimSekli = KullanimAmaciTxt.Text;
                 guncellendiMi = sigorta.Update();
                 if (guncellendiMi)
                 {
@@ -492,7 +497,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             sigorta.TeminatAciklama = SecilenTeminatAciklamalariniGetir();
             sigorta.BagimsizBolumNo = BagimsizBolumNoTxt.Text;
             sigorta.Aciklama = AciklamaTxt.Text;
-            sigorta.KullanimAmaci = KullanimAmaciTxt.Text;
+            sigorta.KullanimSekli = KullanimAmaciTxt.Text;
             int sigortaId = sigorta.Save();
             sigorta.Id = sigortaId;
             if (sigortaId > 0)

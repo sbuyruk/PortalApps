@@ -161,7 +161,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             string json = ToJSON(dataTable);
             return json;
@@ -176,7 +176,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
 
             return dataTable;
@@ -249,7 +249,7 @@ namespace Model.IKYS
             catch (Exception e)
             {
 
-                throw e;
+                throw;
             }
         }
     }

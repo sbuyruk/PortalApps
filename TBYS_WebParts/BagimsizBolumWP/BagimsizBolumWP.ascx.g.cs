@@ -434,7 +434,7 @@ namespace TBYS_WebParts.BagimsizBolumWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "form-label fw-bold";
-            @__ctrl.Text = "KullanimAmaci";
+            @__ctrl.Text = "Kullanim Şekli";
             return @__ctrl;
         }
         
@@ -449,7 +449,7 @@ namespace TBYS_WebParts.BagimsizBolumWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KullanimAmaciDDL";
             @__ctrl.CssClass = "form-control form-select form-select-lg";
-            @__ctrl.ToolTip = "Kullanım Amacı";
+            @__ctrl.ToolTip = "Kullanım Şekli";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             return @__ctrl;
         }

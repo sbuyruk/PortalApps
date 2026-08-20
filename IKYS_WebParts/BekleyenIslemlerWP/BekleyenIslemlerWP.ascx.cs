@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
@@ -62,6 +63,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
             {
                 if (!Page.IsPostBack)
                 {
+                    //publish etmeden önce Burayı değiştirmeyi unutma
                     Personel personel = new Personel();//PersonelGetir();
                     personel = personel.Select(1192);
                     if (personel != null && personel.Id > 0)
@@ -150,7 +152,33 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                 item.Transfer = row["Transfer"].ToString();
                 item.Konaklama = row["Konaklama"].ToString();
                 item.Aciklama = row["Aciklama"].ToString();
-                item.Onayla = "<a href='javascript:OpenOnayla(" + gorevOnayId + ");' class='btn btn-outline-primary'>Onayla</a>";
+                item.AmirOnayi = row["AmirOnayi"].ReturnZeroIfNull().ConvertToInt();
+                item.OnayRedAciklama = row["OnayRedAciklama"].ReturnEmptyIfNull().ToString();
+
+                if (item.AmirOnayi == (int)GorevOnay.AmirOnayDurumu.OnayBekliyor)
+                    item.AmirOnayiSiraNo = 0;
+                //else if (item.AmirOnayi == (int)GorevOnay.AmirOnayDurumu.Reddedildi)
+                //    item.AmirOnayiSiraNo = 1;
+                //else if (item.AmirOnayi == (int)GorevOnay.AmirOnayDurumu.Onaylandi)
+                //    item.AmirOnayiSiraNo = 2;
+                else
+                    item.AmirOnayiSiraNo = 3;
+
+                if (item.AmirOnayi == (int)GorevOnay.AmirOnayDurumu.Onaylandi)
+                {
+                    item.Onayla = UtilityHelper.GetEnumDisplayName(GorevOnay.AmirOnayDurumu.Onaylandi);
+                    item.Reddet =string.Empty;
+                }
+                else if (item.AmirOnayi == (int)GorevOnay.AmirOnayDurumu.Reddedildi)
+                {
+                    item.Onayla = UtilityHelper.GetEnumDisplayName(GorevOnay.AmirOnayDurumu.Reddedildi);
+                    item.Reddet = System.Environment.NewLine + item.OnayRedAciklama;
+                }
+                else
+                {
+                    item.Onayla = "<a href='javascript:OpenOnayla(" + gorevOnayId + ");' class='btn btn-outline-primary'>Onayla</a>";
+                    item.Reddet = "<a href='javascript:OpenReddet(" + gorevOnayId + ");' class='btn btn-outline-danger'>Reddet</a>";
+                }
                 item.Incele = "<a href='javascript:OpenIncele(" + gorevOnayId + ");' class='btn btn-outline-secondary'>İncele</a>";
 
                 list.Add(item);
@@ -170,7 +198,12 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
             public string Konaklama { get; set; }
             public string Aciklama { get; set; }
             public string Onayla { get; set; }
+            public string Reddet { get; set; }
             public string Incele { get; set; }
+            public int AmirOnayi { get; set; }
+            public int AmirOnayiSiraNo { get; set; }
+            public string OnayRedAciklama { get; set; }
+
         }
         private string CreateDataTable(string jsonData)
         {
@@ -194,12 +227,23 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                         { data: 'Konaklama' },
                         { data: 'Aciklama' },
                         { data: 'Onayla' },
+                        { data: 'Reddet' },
                         { data: 'Incele' },
+                        { data: 'AmirOnayi', visible: false },
+                        { data: 'AmirOnayiSiraNo', visible: false },
                     ],
                     columnDefs: [
                         { type: 'turkish', targets: [0,3,4,5] }
                     ],
-                    'order': [[1, 'desc']],//sort date desc
+                    'order': [[13, 'asc'], [1, 'desc']],//once AmirOnayi oncelik sirasi, sonra tarih desc
+                    'createdRow': function (row, data, dataIndex) {
+                        if (data.AmirOnayi == 1) {
+                            jQuery(row).addClass('table-success');
+                        }
+                        else if (data.AmirOnayi == 2) {
+                            jQuery(row).addClass('table-danger');
+                        }
+                    },
                     'language': {
                         'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                         'decimal': ',',
@@ -210,7 +254,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
 
             return tableString;
         }
-        protected void ModalInfoBtn_Click(object sender, EventArgs e)
+        protected void ModalOnaylaBtn_Click(object sender, EventArgs e)
         {
             try
             {
@@ -222,10 +266,33 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                     personel = personel.Select<Personel>(gorevOnay.PersonelId);
                     OnayLbl.Text = personel.Adi + " " + personel.Soyadi + " için "
                         + gorevOnay.BaslangicTarihi.ToString("dd.MM.yyyy") + " - " + gorevOnay.BitisTarihi.ToString("dd.MM.yyyy")
-                        + " tarihleri arasındaki görevi onaylamak ya da reddetmek istediğinize emin misiniz?";
+                        + " tarihleri arasındaki görevi onaylamak istediğinize emin misiniz?";
                 }
                 TabloOlustur();
                 UtilityHelper.ScriptCalistir("OpenModalOnay();");
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                exHelper.PublishException();
+            }
+        }
+        protected void ModalReddetBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                GorevOnay gorevOnay = new GorevOnay();
+                gorevOnay = gorevOnay.Select(paramGorevOnayIdLbl.Value.ConvertToInt());
+                if (gorevOnay != null)
+                {
+                    Personel personel = new Personel();
+                    personel = personel.Select<Personel>(gorevOnay.PersonelId);
+                    ReddetLbl.Text = personel.Adi + " " + personel.Soyadi + " için "
+                        + gorevOnay.BaslangicTarihi.ToString("dd.MM.yyyy") + " - " + gorevOnay.BitisTarihi.ToString("dd.MM.yyyy")
+                        + " tarihleri arasındaki görevi reddetmek istediğinize emin misiniz?";
+                }
+                TabloOlustur();
+                UtilityHelper.ScriptCalistir("OpenModalReddet();");
             }
             catch (Exception ex)
             {
@@ -243,17 +310,21 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                 {
                     Personel personel = new Personel();
                     personel = personel.Select<Personel>(gorevOnay.PersonelId);
-                    InceleLbl.Text = "<b>Adı Soyadı:</b> " + personel.Adi + " " + personel.Soyadi + "<br/>"
-                        + "<b>Başlangıç Tarihi:</b> " + gorevOnay.BaslangicTarihi.ToString("dd.MM.yyyy") + "<br/>"
-                        + "<b>Bitiş Tarihi:</b> " + gorevOnay.BitisTarihi.ToString("dd.MM.yyyy") + "<br/>"
-                        + "<b>Süre:</b> " + gorevOnay.Sure + "<br/>"
-                        + "<b>Görevin Sebebi:</b> " + gorevOnay.GorevinSebebi + "<br/>"
-                        + "<b>Görevin Yeri:</b> " + gorevOnay.GorevinYeri + "<br/>"
-                        + "<b>Ulaşım Aracı:</b> " + gorevOnay.UlasimAraci + "<br/>"
-                        + "<b>Transfer:</b> " + gorevOnay.Transfer + "<br/>"
-                        + "<b>Konaklama:</b> " + gorevOnay.Konaklama + "<br/>"
-                        + "<b>Amir Onayı:</b> " + UtilityHelper.GetEnumDisplayName((GorevOnay.AmirOnayDurumu)gorevOnay.AmirOnayi) + "<br/>"
-                        + "<b>Açıklama:</b> " + gorevOnay.Aciklama;
+
+                    GorevInfoTable.Controls.Clear();
+
+                    AddGorevInfoRow("Adı Soyadı", personel.Adi + " " + personel.Soyadi);
+                    AddGorevInfoRow("Başlangıç Tarihi", gorevOnay.BaslangicTarihi.ToString("dd.MM.yyyy"));
+                    AddGorevInfoRow("Bitiş Tarihi", gorevOnay.BitisTarihi.ToString("dd.MM.yyyy"));
+                    AddGorevInfoRow("Süre", gorevOnay.Sure.ToString());
+                    AddGorevInfoRow("Görevin Sebebi", gorevOnay.GorevinSebebi);
+                    AddGorevInfoRow("Görevin Yeri", gorevOnay.GorevinYeri);
+                    AddGorevInfoRow("Ulaşım Aracı", gorevOnay.UlasimAraci);
+                    AddGorevInfoRow("Transfer", gorevOnay.Transfer);
+                    AddGorevInfoRow("Konaklama", gorevOnay.Konaklama);
+                    AddGorevInfoRow("Amir Onayı", UtilityHelper.GetEnumDisplayName((GorevOnay.AmirOnayDurumu)gorevOnay.AmirOnayi));
+                    AddGorevInfoRow("Onay/Red Açıklama", gorevOnay.OnayRedAciklama);
+                    AddGorevInfoRow("Açıklama", gorevOnay.Aciklama);
                 }
                 TabloOlustur();
                 UtilityHelper.ScriptCalistir("OpenModalIncele();");
@@ -263,6 +334,27 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                 ExceptionHelper exHelper = new ExceptionHelper(ex);
                 exHelper.PublishException();
             }
+        }
+
+        private void AddGorevInfoRow(string baslik, string deger)
+        {
+            HtmlTableRow row = new HtmlTableRow();
+
+            HtmlTableCell baslikCell = new HtmlTableCell
+            {
+                InnerText = baslik
+            };
+            baslikCell.Attributes["style"] = "font-weight:bold; width:25%;";
+
+            HtmlTableCell degerCell = new HtmlTableCell
+            {
+                InnerText = deger ?? string.Empty
+            };
+
+            row.Cells.Add(baslikCell);
+            row.Cells.Add(degerCell);
+
+            GorevInfoTable.Rows.Add(row);
         }
         protected void OnaylaBtn_Click(object sender, EventArgs e)
         {
@@ -276,10 +368,11 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                     bool isSuccess = gorevOnay.Update();
                     if (isSuccess)
                     {
+                        OnaylandiMailiGonder(gorevOnay);
                         MessageHelper.PublishMessage("Görev onaylandı.", ProjeConstants.MESAJ_BILGI);
                     }
                     else
-                    {
+                    {                       
                         MessageHelper.PublishMessage("Onaylama işlemi başarısız oldu.", ProjeConstants.MESAJ_HATA);
                     }
                 }
@@ -299,10 +392,12 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                 gorevOnay = gorevOnay.Select(paramGorevOnayIdLbl.Value.ConvertToInt());
                 if (gorevOnay != null)
                 {
+                    gorevOnay.OnayRedAciklama = ReddetAciklamaTxt.Text;
                     gorevOnay.AmirOnayi = (int)GorevOnay.AmirOnayDurumu.Reddedildi;
                     bool isSuccess = gorevOnay.Update();
                     if (isSuccess)
                     {
+                        ReddedildiMailiGonder(gorevOnay);
                         MessageHelper.PublishMessage("Görev reddedildi.", ProjeConstants.MESAJ_BILGI);
                     }
                     else
@@ -311,6 +406,88 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                     }
                 }
                 TabloOlustur();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                exHelper.PublishException();
+            }
+        }
+        private void OnaylandiMailiGonder(GorevOnay gorevOnay)
+        {
+            try
+            {
+                Personel personel = new Personel();
+                personel = personel.Select<Personel>(gorevOnay.PersonelId);
+                if (personel != null)
+                {
+                    List<string> emailList = new List<string>();
+                    //Bu personelin Amirini bul
+                    IsBilgileri isBilgileri = new IsBilgileri();
+                    isBilgileri = isBilgileri.SelectByPersonelId(personel.Id);
+                    Personel amir = new Personel();
+                    if (isBilgileri != null)
+                    {
+                        BirimTanim birimTanim = new BirimTanim();
+                        birimTanim = birimTanim.Select<BirimTanim>(isBilgileri.BirimId);
+                        amir = amir.Select(birimTanim.AmirId);
+                        if (birimTanim != null)
+                        {
+                            amir = amir.Select(birimTanim.AmirId);
+                            IletisimBilgileri amirIsBilgileri = new IletisimBilgileri();
+                            amirIsBilgileri = amirIsBilgileri.SelectByPersonelId(amir.Id);
+                            emailList.Add(amirIsBilgileri.InternetEPosta);
+                        }
+                        IletisimBilgileri ib = new IletisimBilgileri();
+                        ib = ib.SelectByPersonelId(personel.Id);
+                        emailList.Add(ib.InternetEPosta);
+                    }
+                    //amire mail gönder
+                    //personele  mail gönder
+                    IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Onay");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                exHelper.PublishException();
+            }
+        }
+        private void ReddedildiMailiGonder(GorevOnay gorevOnay)
+        {
+            try
+            {
+                Personel personel = new Personel();
+                personel = personel.Select<Personel>(gorevOnay.PersonelId);
+                if (personel != null)
+                {
+                    List<string> emailList = new List<string>();
+                    //Bu personelin Amirini bul
+                    IsBilgileri isBilgileri = new IsBilgileri();
+                    isBilgileri = isBilgileri.SelectByPersonelId(personel.Id);
+                    Personel amir = new Personel();
+                    if (isBilgileri != null)
+                    {
+                        BirimTanim birimTanim = new BirimTanim();
+                        birimTanim = birimTanim.Select<BirimTanim>(isBilgileri.BirimId);
+                        amir = amir.Select(birimTanim.AmirId);
+                        if (birimTanim != null)
+                        {
+                            amir = amir.Select(birimTanim.AmirId);
+                            IletisimBilgileri amirIsBilgileri = new IletisimBilgileri();
+                            amirIsBilgileri = amirIsBilgileri.SelectByPersonelId(amir.Id);
+                            emailList.Add(amirIsBilgileri.InternetEPosta);
+                        }
+                        IletisimBilgileri ib = new IletisimBilgileri();
+                        ib = ib.SelectByPersonelId(personel.Id);
+                        emailList.Add(ib.InternetEPosta);
+                    }
+                    //amire mail gönder
+                    //personele  mail gönder
+                    IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Red");
+
+                }
             }
             catch (Exception ex)
             {

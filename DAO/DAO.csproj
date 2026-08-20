@@ -71,6 +71,7 @@
     <Compile Include="Ortak\DbParam.cs" />
     <Compile Include="Ortak\DBProcess.cs" />
     <Compile Include="Ortak\Global.cs" />
+    <Compile Include="Ortak\SqlQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

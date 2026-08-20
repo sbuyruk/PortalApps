@@ -66,6 +66,7 @@
                             <th>İl</th>
                             <th>İlçe</th>
                             <th>M. Şekli</th>
+                            <th>Cinsi</th>
                             <th>K. Şekli</th>
                             <th>"Bagış Yılı"</th>
                             <th>Taşınmaz Kartı</th>

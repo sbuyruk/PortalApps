@@ -106,7 +106,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
             TableHeaderCell BBNetAlanCell = new TableHeaderCell();
             BBNetAlanCell.Text = "Net Alan";
             TableHeaderCell KullanimAmaciCell = new TableHeaderCell();
-            KullanimAmaciCell.Text = "Kullanim Amaci";
+            KullanimAmaciCell.Text = "Kullanım Şekli";
             TableHeaderCell AciklamaCell = new TableHeaderCell();
             AciklamaCell.Text = "Açiklama";
             TableHeaderCell MuhasebeyeKayitliDegerCell = new TableHeaderCell();
@@ -296,6 +296,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
         }
         private void BagimsizBolumDuzenleModalAc(Tasinmaz tasinmaz, BagimsizBolum bagimsizBolum)
         {
+            KullanimAmaciDDLDoldur();
             BagimsizBolumHeaderLbl.InnerText = "Bagimsiz Bölüm Düzenleme";
             ParamBagimsizBolumIdLbl.Text = bagimsizBolum.Id.ToString();
             AdresTxt.Text = tasinmaz.Adres;
@@ -317,7 +318,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
             GuncelleBtn.Visible = true;
             SilBtn.Visible = false;
             MessageLbl.Visible = false;
-            KullanimAmaciDDLDoldur();
+            
             UtilityHelper.ScriptCalistir("BagimsizBolumModal();");
         }
 

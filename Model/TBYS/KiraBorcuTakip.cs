@@ -1,8 +1,10 @@
+using DAO.Ortak;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
@@ -29,10 +31,11 @@ namespace Model.TBYS
 
         public override T Select<T>(int id)
         {
-            string sqlString = string.Format(@"SELECT *
+            SqlQuery query = new SqlQuery(@"SELECT *
                                FROM KiraBorcuTakip_Table 
-                               WHERE  Id={0}", id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                               WHERE  Id=@Id");
+            query.AddParameter("@Id", id);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             List<KiraBorcuTakip> list = ToList<KiraBorcuTakip>(dataTable);
             KiraBorcuTakip kiraBorcuTakip = new KiraBorcuTakip();
             kiraBorcuTakip = list.FirstOrDefault();
@@ -41,10 +44,11 @@ namespace Model.TBYS
         }
         public KiraBorcuTakip Select(int kiraBorcuTakipId)
         {
-            string sqlString = string.Format(@"SELECT *
+            SqlQuery query = new SqlQuery(@"SELECT *
                                FROM KiraBorcuTakip_Table 
-                               WHERE  Id={0}", kiraBorcuTakipId);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                               WHERE  Id=@Id");
+            query.AddParameter("@Id", kiraBorcuTakipId);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             List<KiraBorcuTakip> list = ToList<KiraBorcuTakip>(dataTable);
             KiraBorcuTakip kiraBorcuTakip = new KiraBorcuTakip();
             kiraBorcuTakip = list.FirstOrDefault();
@@ -59,8 +63,8 @@ namespace Model.TBYS
                 GenericEntity<KiraBorcuTakip> genericEntity = new GenericEntity<KiraBorcuTakip>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
+                SqlQuery query = genericEntity.GetQueryParametreli(this);
+                int id = dao.Insert(query);
 
                 this.Id = id;
                 if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
@@ -88,8 +92,8 @@ namespace Model.TBYS
                         GenericEntity<KiraBorcuTakip> genericEntity = new GenericEntity<KiraBorcuTakip>(ProjeConstants.SQL_UPDATE);
                         DegistirmeTarihi = DateTime.Now;
                         Degistiren = UtilityHelper.GetCurrentUserName();
-                        string sqlString = genericEntity.GetQuery(this);
-                        isSuccess = dao.Update2Db(sqlString);
+                        SqlQuery query = genericEntity.GetQueryParametreli(this);
+                        isSuccess = dao.Update2Db(query);
                     }
                     if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
                     {
@@ -112,11 +116,11 @@ namespace Model.TBYS
                 if (Id != 0)
                 {
                     GenericEntity<KiraBorcuTakip> genericEntity = new GenericEntity<KiraBorcuTakip>(ProjeConstants.SQL_DELETE);
-                    string sqlString = genericEntity.GetQuery(this);
+                    SqlQuery query = genericEntity.GetQueryParametreli(this);
                     KiraBorcuTakip item = Select<KiraBorcuTakip>(Id);
                     if (item != null)
                     {
-                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                        isDeleted = dao.DeleteFromDb(query, "");
                     }
                     else isDeleted = false;
                     if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
@@ -134,13 +138,12 @@ namespace Model.TBYS
         }
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT *
                 FROM KiraBorcuTakip_Table
-                ORDER BY CASE WHEN DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(DosyaNo,999999)
-                ");
+                ORDER BY CASE WHEN DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(DosyaNo,999999)");
 
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(query, "");
             List<KiraBorcuTakip> list = ToList<KiraBorcuTakip>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -148,14 +151,16 @@ namespace Model.TBYS
 
         public KiraBorcuTakip SelectByKiraciIdAyYil(int kiraciId)
         {
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT  *
                 FROM KiraBorcuTakip_Table
-                WHERE KiraciId={0}
-                    AND IslemAyi={1}
-                    AND IslemYili={2}
-                ", kiraciId.ReturnQuotedValue(), DateTime.Today.Month, DateTime.Today.Year);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                WHERE KiraciId=@KiraciId
+                    AND IslemAyi=@IslemAyi
+                    AND IslemYili=@IslemYili");
+            query.AddParameter("@KiraciId", kiraciId);
+            query.AddParameter("@IslemAyi", DateTime.Today.Month);
+            query.AddParameter("@IslemYili", DateTime.Today.Year);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 List<KiraBorcuTakip> list = ToList<KiraBorcuTakip>(dataTable);
@@ -169,19 +174,33 @@ namespace Model.TBYS
         }
         public int SelectCountAdetByTakipIslemiBolge(string takipIslemi, string bolge, int ay, int yil)
         {
-            string takipIslemiStr = string.IsNullOrEmpty(takipIslemi) ? string.Empty : " AND TakipIslemi=" + takipIslemi.ReturnQuotedValue();
-            string bolgeStr = string.IsNullOrEmpty(bolge) ? string.Empty : " AND Bolge=" + bolge.ReturnQuotedValue();
-            string ayStr = ay < 1 ? string.Empty : " AND IslemAyi=" + ay;
-            string yilStr = ay < 2005 ? string.Empty : " AND IslemYili=" + yil;
-            int adet = 0;
-            string sqlString = string.Format(@"
+            StringBuilder sb = new StringBuilder(@"
                 Select COUNT(Id) Adet FROM KiraBorcuTakip_Table                
-                WHERE 1>0 
-                {0} 
-                {1}
-                {2}
-                {3} ", takipIslemiStr, bolgeStr, ayStr,yilStr);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                WHERE 1=1 ");
+            SqlQuery query = new SqlQuery();
+            if (!string.IsNullOrEmpty(takipIslemi))
+            {
+                sb.Append(" AND TakipIslemi=@TakipIslemi ");
+                query.AddParameter("@TakipIslemi", takipIslemi);
+            }
+            if (!string.IsNullOrEmpty(bolge))
+            {
+                sb.Append(" AND Bolge=@Bolge ");
+                query.AddParameter("@Bolge", bolge);
+            }
+            if (ay >= 1)
+            {
+                sb.Append(" AND IslemAyi=@IslemAyi ");
+                query.AddParameter("@IslemAyi", ay);
+            }
+            if (yil >= 2005)
+            {
+                sb.Append(" AND IslemYili=@IslemYili ");
+                query.AddParameter("@IslemYili", yil);
+            }
+            query.Sql = sb.ToString();
+            int adet = 0;
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 if (dataTable.Rows.Count > 0)
@@ -195,14 +214,19 @@ namespace Model.TBYS
         }
         public int SelectCountBySozlesmeId(int kiraSozlesmeId, string takipIslemi)
         {
-            string takipIslemiStr = string.IsNullOrEmpty(takipIslemi) ? string.Empty : " AND TakipIslemi=" + takipIslemi.ReturnQuotedValue();
-            int adet = 0;
-            string sqlString = string.Format(@"
+            StringBuilder sb = new StringBuilder(@"
                 Select COUNT(Id) Adet FROM KiraBorcuTakip_Table                
-                WHERE KiraSozlesmeId={0} 
-                {1}
-                ", kiraSozlesmeId, takipIslemiStr);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                WHERE KiraSozlesmeId=@KiraSozlesmeId ");
+            SqlQuery query = new SqlQuery();
+            query.AddParameter("@KiraSozlesmeId", kiraSozlesmeId);
+            if (!string.IsNullOrEmpty(takipIslemi))
+            {
+                sb.Append(" AND TakipIslemi=@TakipIslemi ");
+                query.AddParameter("@TakipIslemi", takipIslemi);
+            }
+            query.Sql = sb.ToString();
+            int adet = 0;
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 if (dataTable.Rows.Count > 0)

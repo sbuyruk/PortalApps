@@ -14,14 +14,23 @@
         var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
         myModalInstance.show();
     }
+    function OpenModalReddet() {
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalReddetDiv'));
+        myModalInstance.show();
+    }
     function OpenModalIncele() {
         var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalInceleDiv'));
         myModalInstance.show();
     }
     function OpenOnayla(gorevOnayId) {
         document.getElementById('<%= paramGorevOnayIdLbl.ClientID%>').value = gorevOnayId;
-        document.getElementById('<%= ModalInfoBtn.ClientID%>').click();
+        document.getElementById('<%= ModalOnaylaBtn.ClientID%>').click();
         OpenModalOnay();
+    }
+    function OpenReddet(gorevOnayId) {
+        document.getElementById('<%= paramGorevOnayIdLbl.ClientID%>').value = gorevOnayId;
+        document.getElementById('<%= ModalReddetBtn.ClientID%>').click();
+        OpenModalReddet();
     }
     function OpenIncele(gorevOnayId) {
         document.getElementById('<%= paramGorevOnayIdLbl.ClientID%>').value = gorevOnayId;
@@ -52,7 +61,7 @@
             </h3>
         </div>
         <div class="card-body">
-            <div class="section-title"><i class="bi bi-person-badge"></i> Amir Onayı Bekleyen Yurt İçi / Yurt Dışı Görevler</div>
+            <div class="section-title"><i class="bi bi-person-badge"></i> Amir Onayı Bekleyen Yurt İçi / Yurt Dışı GörevlerX</div>
             <div class="form-group" id="MesajDiv" runat="server" style="display: none;">
                 <asp:Label ID="MesajLbl" runat="server" CssClass="col-form-label text-secondary" Text="Bekleyen işleminiz bulunmamaktadır."></asp:Label>
             </div>
@@ -69,7 +78,8 @@
                             <th>Transfer</th>
                             <th>Konaklama</th>
                             <th>Açıklama</th>
-                            <th>Onayla / Reddet</th>
+                            <th>Onayla</th>
+                            <th>Reddet</th>
                             <th>İncele</th>
                         </tr>
                     </thead>
@@ -77,7 +87,8 @@
             </div>
             <div style="display: none">
                 <input id="paramGorevOnayIdLbl" runat="server" style="border-style: none;" />
-                <asp:LinkButton ID="ModalInfoBtn" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="ModalInfoBtn_Click" />
+                <asp:LinkButton ID="ModalOnaylaBtn" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="ModalOnaylaBtn_Click" />
+                <asp:LinkButton ID="ModalReddetBtn" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="ModalReddetBtn_Click" />
                 <asp:LinkButton ID="ModalInceleBtn" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="ModalInceleBtn_Click" />
             </div>
         </div>
@@ -85,24 +96,7 @@
         </div>
     </div>
 
-    <!-- Onay Modal -->
-<%--    <div class="modal fade" id="ModalOnayDiv" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Görev Onayı</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
-                </div>
-                <div class="modal-body">
-                    <asp:Label ID="OnayLbl" runat="server" CssClass="col-form-label"></asp:Label>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
-                    <asp:LinkButton ID="OnaylaBtn" CssClass="btn btn-primary" runat="server" CausesValidation="false" Text="Onayla" OnClick="OnaylaBtn_Click" />
-                </div>
-            </div>
-        </div>
-    </div>--%>
+    <%--Onayla modal--%>
     <div class="modal" id="ModalOnayDiv" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
             <!-- Modal content-->
@@ -116,8 +110,27 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
-                    <asp:LinkButton ID="ReddetBtn" CssClass="btn btn-danger" runat="server" CausesValidation="false" Text="Reddet" OnClick="ReddetBtn_Click" />
                     <asp:LinkButton ID="OnaylaBtn" CssClass="btn btn-primary" runat="server" CausesValidation="false" Text="Onayla" OnClick="OnaylaBtn_Click" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <%--Reddet Modal--%>
+    <div class="modal" id="ModalReddetDiv" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content" style="width: 550px;">
+                <div class="modal-header">
+                    <h5 class="modal-title">Görev Onayı</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    <asp:TextBox ID="ReddetAciklamaTxt" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="3" Placeholder="Reddetme sebebini giriniz..."></asp:TextBox>
+                    <asp:Label ID="ReddetLbl" runat="server" CssClass="col-form-label"></asp:Label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                    <asp:LinkButton ID="ReddetBtn" CssClass="btn btn-danger" runat="server" CausesValidation="false" Text="Reddet" OnClick="ReddetBtn_Click" />
                 </div>
             </div>
         </div>
@@ -131,7 +144,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
                 </div>
                 <div class="modal-body">
-                    <asp:Label ID="InceleLbl" runat="server" CssClass="col-form-label"></asp:Label>
+                    <div class="Table">
+                        <table id="GorevInfoTable" runat="server" class="table table-bordered table-striped" width="100%"></table>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>

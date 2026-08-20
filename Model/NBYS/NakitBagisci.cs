@@ -24,6 +24,7 @@ namespace Model.NBYS
         public bool Sag { get; set; }
         public string Eposta { get; set; }
         public string PostaKodu { get; set; }
+        public string Meslek { get; set; }
         public string Aciklama { get; set; }
         public bool Ulasilamiyor { get; set; }
         public bool BelgeIstemiyor { get; set; }
@@ -279,7 +280,7 @@ namespace Model.NBYS
             catch (Exception e)
             {
 
-                throw e;
+                throw;
             }
             return dataTable;
         }
@@ -296,7 +297,7 @@ namespace Model.NBYS
 
         }
         /// <summary>
-        /// NakitBagisHareket_Table'da Bagisi olmayan Bagisçiyi bulur
+        /// NakitBagisHareket_Table'da Bagisi olmayan BagisÃ§iyi bulur
         /// </summary>
         /// <param name="bagisciId"></param>
         /// <returns></returns>
@@ -449,7 +450,7 @@ namespace Model.NBYS
             catch (Exception e)
             {
 
-                throw e;
+                throw;
             }
 
             if (dataTable != null)
@@ -511,7 +512,7 @@ namespace Model.NBYS
             catch (Exception e)
             {
 
-                throw e;
+                throw;
             }
             if (dataTable != null)
             {
@@ -581,7 +582,7 @@ namespace Model.NBYS
                 WHERE 
                     B.Tarih BETWEEN 
                         {1} AND {2}
-                    {7} --Armagan tablosunda Durum=  daha önce iade edildi olanlar haric
+                    {7} --Armagan tablosunda Durum=  daha Ã¶nce iade edildi olanlar haric
                 GROUP BY A.Id,A.Adi,A.Adres,A.Ili,F.IlAdi,G.IlceAdi,A.Telefon1,A.Telefon2, A.DergiGonderilmesin,A.TuzelKisi, BelgeIstemiyor,Ulasilamiyor
                 EXCEPT				
                 SELECT	E.Id NakitBagisciId, E.Adi,E.Adres,E.Telefon1,E.Telefon2,J.IlceAdi Ilcesi, H.IlAdi Ili,E.DergiGonderilmesin, E.TuzelKisi, BelgeIstemiyor,Ulasilamiyor
@@ -595,7 +596,7 @@ namespace Model.NBYS
                         {1} AND {2} 
 	                AND G.Tarih BETWEEN 
                         {3} AND {4}
-                    {8} --Armagan tablosunda Durum=  daha önce iade edildi olanlar haric
+                    {8} --Armagan tablosunda Durum=  daha Ã¶nce iade edildi olanlar haric
 	                ) Z
 	                INNER JOIN Armagan_Table Y ON Z.NakitBagisciId=Y.BagisciId
                 WHERE Y.Tarih > {4}
@@ -641,7 +642,7 @@ namespace Model.NBYS
             catch (Exception e)
             {
 
-                throw e;
+                throw;
             }
             if (dataTable != null)
             {
@@ -671,7 +672,7 @@ namespace Model.NBYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
         }
@@ -704,7 +705,7 @@ namespace Model.NBYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
 
            
@@ -734,7 +735,7 @@ namespace Model.NBYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
         }
@@ -744,7 +745,7 @@ namespace Model.NBYS
 
             string sqlString = string.Format(@"
                 SELECT A.BagisciId NakitBagisciId,A.BagisciAdi,A.Id AS DuzenliBagisciId, A.ArmaganId,E.Durum
-                    ,ISNULL(B.Adi, 'BAGISÇI BULUNAMADI') AS Adi
+                    ,ISNULL(B.Adi, 'BAGISÃ‡I BULUNAMADI') AS Adi
                     ,A.EslesmeBilgisi
                     ,A.Aciklama AS DuzenliBagisciAciklama
                     ,TCKimlikNo
@@ -784,7 +785,7 @@ namespace Model.NBYS
             {
                 durumstr = string.Format("AND  A.ArmaganId=0 ");
             } else
-            if (!durum.Equals(ProjeConstants.HEPSI)) //eger bos ise query'e hiç eklenmesin
+            if (!durum.Equals(ProjeConstants.HEPSI)) //eger bos ise query'e hiÃ§ eklenmesin
             {
                 durumstr = string.Format("AND Durum = {0}", durum.ReturnQuotedValue());
             }
@@ -798,7 +799,7 @@ namespace Model.NBYS
                     ,A.Telefon aTelefon,A.Eposta aEposta
                     ,A.EslesmeBilgisi aEslesmeBilgisi,A.Aciklama aAciklama                    
 
-                    ,ISNULL(B.Adi, 'BAGISÇI BULUNAMADI') AS bAdi
+                    ,ISNULL(B.Adi, 'BAGISÃ‡I BULUNAMADI') AS bAdi
                     ,B.TCKimlikNo bTCKimlikNo
                     ,Adres bAdres
                     ,Telefon1 bTelefon1

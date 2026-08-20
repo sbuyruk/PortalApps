@@ -129,7 +129,7 @@ namespace Model.Ortak
             {
                 hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_0;
             }
-            else 
+            else
             {
                 if (personel.Asker_sivil == ProjeConstants.PER_ASKER_INT)
                 {
@@ -190,7 +190,7 @@ namespace Model.Ortak
                         exHelper.PublishException();
                     }
 
-                } 
+                }
             }
 
             return hakEdilenIzinGunSayisi;
@@ -312,7 +312,7 @@ namespace Model.Ortak
                     {
                         userto = ib.IntranetEPosta;
                     }
-                    string smtpAdresi =UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
+                    string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
                     MailHelper.EPostaGonder(from, userto, subject, userbody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
 
                     //string to = "izinonaymailgrubu@tskgv.local";
@@ -372,12 +372,27 @@ namespace Model.Ortak
         }
         public static void GorevOnayEPostasiGonder(Personel personel, int gorevOnayId, string tip)
         {
+            GorevOnayEPostasiGonder(personel, gorevOnayId, tip,null, "Giriş");
+        }
+
+        public static void GorevOnayEPostasiGonder(Personel personel, int gorevOnayId, string tip, List<string> ekEpostaAdresleri, string durum,bool isAddMailGrubuToAdress=true)
+        {
             string from = "ikys@tskgv.local";
-            string to = "gorevonaymailgrubu@tskgv.org.tr";
+            string to = isAddMailGrubuToAdress?"gorevonaymailgrubu@tskgv.org.tr;":string.Empty;
+            if (ekEpostaAdresleri != null && ekEpostaAdresleri.Count > 0)
+            {
+                string ekAdresler = string.Join(";", ekEpostaAdresleri
+                    .Where(a => !string.IsNullOrWhiteSpace(a))
+                    .Select(a => a));
+                if (!string.IsNullOrEmpty(ekAdresler))
+                {
+                    to +=  ekAdresler + ";";
+                }
+            }
             string url = string.Empty;
             string body = string.Empty;
             string subject = string.Empty;
-
+            string durumStr= durum.Equals("Onay") ? "onaylanmistir." : durum.Equals("Red") ? "reddedilmistir." : "girilmiştir.";
             if (tip.Equals("SehirIci"))
             {
                 Yoklama yoklama = new Yoklama();
@@ -385,9 +400,9 @@ namespace Model.Ortak
                 if (yoklama != null)
                 {
                     string bastarBittar = yoklama.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + yoklama.BitisTarihi.ConvertToDatetimeEmptyIfNull();
-                    subject = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda Sehir Içi Görev girilmistir. ";
+                    subject = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Sehir Içi Görev " + durumStr;
                     url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/YoklamaListesi.aspx'>Yoklama Listesi </a>";
-                    body = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda Sehir Içi Görev Onayi girilmistir. <br>Yoklama islemlerini " + url + " sayfasindan yapabilirsiniz.";
+                    body = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Sehir Içi Görev " + durumStr + " <br>Yoklama islemlerini " + url + " sayfasindan yapabilirsiniz.";
 
                     string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
                     MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
@@ -401,9 +416,9 @@ namespace Model.Ortak
                 if (gorevOnay != null)
                 {
                     string bastarBittar = gorevOnay.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + gorevOnay.BitisTarihi.ConvertToDatetimeEmptyIfNull();
-                    subject = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda Yurt Içi/Yurt Disi Görev Onayi girilmistir. ";
+                    subject = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Yurt Içi/Yurt Disi Görev " + durumStr;
                     url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/GorevOnayListesi.aspx'>Görev Onay Listesi </a>";
-                    body = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda Yurt Içi/Yurt Disi Görev Onayi girilmistir. <br>Görev onay islemlerini " + url + " sayfasindan yapabilirsiniz.";
+                    body = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Yurt Içi/Yurt Disi Görev " + durumStr + " <br>Görev onay islemlerini " + url + " sayfasindan yapabilirsiniz.";
                     StringBuilder tabloSB = EpostaTablosunuOlustur(gorevOnay);
                     body += "</br>" + tabloSB.ToString();
                     string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
@@ -439,7 +454,7 @@ namespace Model.Ortak
 
             sb.Append("<table>");
             sb.Append("<tr>");
-            sb.Append("<th colspan='2' style='text-align: center; background-color: #dddddd'>Görev Bilgileri</th>");
+            sb.Append("<th colspan='2' style='text-align: center; background-color: #dddddd'>Görev Bilgileri (" + UtilityHelper.GetEnumDisplayName((GorevOnay.AmirOnayDurumu)gorevOnay.AmirOnayi) + ")</th>");
             sb.Append("</tr>");
             sb.Append("<tr>");
             sb.Append("<th>Görev Kayit Numarasi</th>");
@@ -481,6 +496,10 @@ namespace Model.Ortak
             sb.Append("<th>Amir Onayi</th>");
             sb.Append("<td>" + ((GorevOnay.AmirOnayDurumu)gorevOnay.AmirOnayi) + "</td>");
             sb.Append("</tr>");
+            sb.Append("<tr>");
+            sb.Append("<th>Onay/Red Açıklama</th>");
+            sb.Append("<td>" + gorevOnay.OnayRedAciklama + "</td>");
+            sb.Append("</tr>");
 
             sb.Append("</table><br/><br/>");
             sb.Append("<p>");
@@ -489,7 +508,7 @@ namespace Model.Ortak
             sb.Append("<p style='color:gray; font-family: arial;font-size:xx-small;'>IKYS &trade; Bilgi Sistemleri Kismi </p> ");
             return sb;
         }
-        public static void BilgiSistemMailGrubunaEPostaGonder(PersonelItem personelItem, string baslik )
+        public static void BilgiSistemMailGrubunaEPostaGonder(PersonelItem personelItem, string baslik)
         {
             string userto = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_BILGISISTEM_MAILGRUBU);
 
@@ -508,7 +527,7 @@ namespace Model.Ortak
                 {
 
                     StringBuilder tabloSB = PersonelBilgileriTablosunuOlustur(personelItem, baslik);
-                    
+
                     MailHelper.EPostaGonder(from, eposta, subject, "</br>" + tabloSB.ToString(), smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
 
                 }
@@ -546,7 +565,7 @@ namespace Model.Ortak
             sb.Append("</tr>");
             sb.Append("<tr>");
             sb.Append("<th>Adi Soyadi</th>");
-            sb.Append("<td>" + personelItem.PersonelBilgileri.Adi + " " + personelItem.PersonelBilgileri.Soyadi+ "</td>");
+            sb.Append("<td>" + personelItem.PersonelBilgileri.Adi + " " + personelItem.PersonelBilgileri.Soyadi + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
             sb.Append("<th>Kullanici Adi</th>");
@@ -558,16 +577,16 @@ namespace Model.Ortak
             sb.Append("</tr>");
             sb.Append("<tr>");
             sb.Append("<th>Telefon</th>");
-            sb.Append("<td>" + personelItem.IletisimBilgileri.CepTelefonu+ "</td>");
+            sb.Append("<td>" + personelItem.IletisimBilgileri.CepTelefonu + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
             sb.Append("<th>Birimi</th>");
             sb.Append("<td>" + personelItem.IsBilgileriItem.Birim?.Adi + "</td>");
             sb.Append("</tr>");
             sb.Append("<th>Ünvani</th>");
-            sb.Append("<td>" + personelItem.IsBilgileriItem.Unvan?.Adi+ "</td>");
+            sb.Append("<td>" + personelItem.IsBilgileriItem.Unvan?.Adi + "</td>");
             sb.Append("</tr>");
-           
+
 
             sb.Append("</table><br/><br/>");
             sb.Append("<p>");
@@ -629,8 +648,8 @@ namespace Model.Ortak
         public static string PersonelinBolgesiniGetir_Deprecated(string currentUserName)
         {
             Personel personel = PersonelGetir(currentUserName);
-           
-            if (personel!=null)
+
+            if (personel != null)
             {
                 PersonelItem personelItem = new PersonelItem();
                 personelItem.PersonelId = personel.Id;
@@ -649,7 +668,7 @@ namespace Model.Ortak
             }
             else
             {
-                MessageHelper.PublishMessage("Personel bulunamadi",ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Personel bulunamadi", ProjeConstants.MESAJ_HATA);
                 return string.Empty;
             }
         }

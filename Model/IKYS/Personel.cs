@@ -220,7 +220,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
         }
@@ -283,7 +283,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
         }
@@ -310,7 +310,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
         }
@@ -354,7 +354,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
         }
@@ -385,7 +385,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
         }
@@ -407,7 +407,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
         }
@@ -432,7 +432,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             List<Personel> list = ToList<Personel>(dataTable);
 
@@ -458,7 +458,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
         }
@@ -485,7 +485,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
         }
@@ -510,7 +510,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             List<Personel> list = ToList<Personel>(dataTable);
 
@@ -536,7 +536,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             List<Personel> list = ToList<Personel>(dataTable);
 
@@ -563,7 +563,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             List<Personel> list = ToList<Personel>(dataTable);
 
@@ -584,7 +584,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
 
             return dataTable;
@@ -605,7 +605,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             List<Personel> list = ToList<Personel>(dataTable);
             return list;
@@ -626,7 +626,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             List<Personel> list = ToList<Personel>(dataTable);
             return list;

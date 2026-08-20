@@ -97,9 +97,16 @@
                 { data: "AmirOnayi" },
                 { data: "RaporAl" },
                 { data: "Duzenle" },
-
+                { data: 'AmirOnayiInt', visible: false },
+                { data: 'AmirOnayiSiraNo', visible: false },
             ],
             createdRow: function (row, data, dataIndex) {
+                if (data.AmirOnayiInt == 1) {
+                    $(row).addClass('table-success');
+                }
+                else if (data.AmirOnayiInt == 2) {
+                    $(row).addClass('table-danger');
+                }
                 var isError = data && (data.ErrorClass === true || data.ErrorClass === 'true' || data.ErrorClass === '1');
                 if (isError) {
                     $(row).addClass('error-row');
@@ -117,7 +124,7 @@
             columnDefs: [
                 { type: 'turkish', targets: [1, 2, 5] },
             ],
-            'order': [[3, 'desc']],//sort date desc
+            'order': [[3, 'desc'],[10, 'asc']],//sort date desc
             "language": {
                 "url": "http://tskgv-portal/OrtakBelgeler/Turkish.txt",
                 "decimal": ",",
@@ -218,7 +225,7 @@
         <div class="card-header ">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
-                <asp:Label CssClass="form-label fw-semibold  btn-outline-primary" Id="TitleLbl" runat="server" Text="Görev Onay Listesi"></asp:Label>
+                <asp:Label CssClass="form-label fw-semibold  text-primary" Id="TitleLbl" runat="server" Text="Görev Onay Listesi"></asp:Label>
             </h3>
 
         </div>

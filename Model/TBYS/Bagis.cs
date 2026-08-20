@@ -1,3 +1,4 @@
+using DAO.Ortak;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -23,10 +24,11 @@ namespace Model.TBYS
 
         public override T Select<T>(int id)
         {
-            string sqlString = string.Format(@"SELECT *
+            SqlQuery query = new SqlQuery(@"SELECT *
                                FROM Bagis_Table 
-                               WHERE  Id={0}", id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                               WHERE  Id=@Id");
+            query.AddParameter("@Id", id);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             List<Bagis> list = ToList<Bagis>(dataTable);
             Bagis bagis = new Bagis();
             bagis = list.FirstOrDefault();
@@ -38,9 +40,9 @@ namespace Model.TBYS
             GenericEntity<Bagis> genericEntity = new GenericEntity<Bagis>(ProjeConstants.SQL_SELECT);
             OlusturmaTarihi = DateTime.Now;
             Id = id;
-            string sqlString = genericEntity.GetQuery(this);
+            SqlQuery query = genericEntity.GetQueryParametreli(this);
 
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(query, "");
             List<Bagis> list = ToList<Bagis>(dataTable);
             Bagis bagis = new Bagis();
             bagis = list.FirstOrDefault();
@@ -53,8 +55,8 @@ namespace Model.TBYS
                 GenericEntity<Bagis> genericEntity = new GenericEntity<Bagis>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
+                SqlQuery query = genericEntity.GetQueryParametreli(this);
+                int id = dao.Insert(query);
 
                 this.Id = id;
                 if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
@@ -82,8 +84,8 @@ namespace Model.TBYS
                         GenericEntity<Bagis> genericEntity = new GenericEntity<Bagis>(ProjeConstants.SQL_UPDATE);
                         DegistirmeTarihi = DateTime.Now;
                         Degistiren = UtilityHelper.GetCurrentUserName();
-                        string sqlString = genericEntity.GetQuery(this);
-                        isSuccess = dao.Update2Db(sqlString);
+                        SqlQuery query = genericEntity.GetQueryParametreli(this);
+                        isSuccess = dao.Update2Db(query);
                     }
                     if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
                     {
@@ -106,11 +108,11 @@ namespace Model.TBYS
                 if (Id != 0)
                 {
                     GenericEntity<Bagis> genericEntity = new GenericEntity<Bagis>(ProjeConstants.SQL_DELETE);
-                    string sqlString = genericEntity.GetQuery(this);
+                    SqlQuery query = genericEntity.GetQueryParametreli(this);
                     Bagis item = Select<Bagis>(Id);
                     if (item != null)
                     {
-                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                        isDeleted = dao.DeleteFromDb(query, "");
                     }
                     else isDeleted = false;
                     if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
@@ -128,10 +130,10 @@ namespace Model.TBYS
         }
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"SELECT *
+            SqlQuery query = new SqlQuery(@"SELECT *
                                FROM Bagis_Table");
 
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(query, "");
             List<Bagis> list = ToList<Bagis>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -139,60 +141,63 @@ namespace Model.TBYS
         public List<Bagis> SelectByBagisciId(int bagisciId)
         {
 
-            string sqlString = string.Format(@"SELECT * FROM Bagis_Table
-                              WHERE BagisciId={0}", bagisciId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            SqlQuery query = new SqlQuery(@"SELECT * FROM Bagis_Table
+                              WHERE BagisciId=@BagisciId");
+            query.AddParameter("@BagisciId", bagisciId);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             List<Bagis> list = ToList<Bagis>(dataTable);
             return list;
         }
         public DataTable SelectByBagisciIdGroupByKullanimSekli(int bagisciId)
         {
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT B.KullanimSekli,COUNT(A.Id) Adet,B.Ili, SUM(B.TahminiRayicDegeri) TahminiRayic
                 FROM Bagis_Table A
                     INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId
-                WHERE A.BagisciId={0}
+                WHERE A.BagisciId=@BagisciId
                 GROUP BY B.KullanimSekli,B.Ili
-            ", bagisciId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            ");
+            query.AddParameter("@BagisciId", bagisciId);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             return dataTable;
         }
-        public string SelectByBagisciIdReturnJson(int bagisciId)
-        {
-            string sqlString = string.Format(@"
-            SELECT 
-	            A.Id BagisciId, A.Adi, A.Soyadi,
-	            C.Id TasinmazId, C.Adres
-            FROM TasinmazBagisci_Table A
-	            INNER JOIN  Bagis_Table B ON B.BagisciId=A.Id 
-	            INNER JOIN Tasinmaz_Table C ON C.Id=B.TasinmazId AND C.EnvanterdeMi=1
-                              WHERE BagisciId={0}", bagisciId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            string json = ToJSON(dataTable);
-            return json;
-        }
-        public Bagis SelectByTasinmazId(int tasinmazId)
-        {
-
-            string sqlString = string.Format(@"SELECT * FROM Bagis_Table
-                              WHERE TasinmazId={0}", tasinmazId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Bagis> list = ToList<Bagis>(dataTable);
-            Bagis bagis = new Bagis();
-            bagis = list.FirstOrDefault();
-            return bagis;
-        }
+		public string SelectByBagisciIdReturnJson(int bagisciId)
+		{
+			SqlQuery query = new SqlQuery(@"
+			SELECT 
+				A.Id BagisciId, A.Adi, A.Soyadi,
+				C.Id TasinmazId, C.Adres
+			FROM TasinmazBagisci_Table A
+				INNER JOIN  Bagis_Table B ON B.BagisciId=A.Id 
+				INNER JOIN Tasinmaz_Table C ON C.Id=B.TasinmazId AND C.EnvanterdeMi=1
+				WHERE B.BagisciId=@BagisciId");
+			query.AddParameter("@BagisciId", bagisciId);
+			DataTable dataTable = dao.SelectFromDb(query, "");
+			string json = ToJSON(dataTable);
+			return json;
+		}
+		public Bagis SelectByTasinmazId(int tasinmazId)
+		{
+			SqlQuery query = new SqlQuery(@"SELECT * FROM Bagis_Table
+							  WHERE TasinmazId=@TasinmazId");
+			query.AddParameter("@TasinmazId", tasinmazId);
+			DataTable dataTable = dao.SelectFromDb(query, "");
+			List<Bagis> list = ToList<Bagis>(dataTable);
+			Bagis bagis = new Bagis();
+			bagis = list.FirstOrDefault();
+			return bagis;
+		}
         public string SelectTasinmazByBagisciIdReturnJson(int bagisciId)
         {
-            string sqlString = SelectTasinmazBagisByBagisciIdSQL(bagisciId);
+            SqlQuery query = SelectTasinmazBagisByBagisciIdSQL(bagisciId);
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.SelectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(query, "");
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
 
             string json = ToJSON(dataTable);
@@ -200,27 +205,28 @@ namespace Model.TBYS
         }
         public DataTable SelectTasinmazByBagisciIdReturnDT(int bagisciId)
         {
-            string sqlString = SelectTasinmazBagisByBagisciIdSQL(bagisciId);
+            SqlQuery query = SelectTasinmazBagisByBagisciIdSQL(bagisciId);
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.SelectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(query, "");
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
         }
         public decimal SelectSumTahminiRayicByBagisciId(int bagisciId)
         {
             decimal toplam = 0;
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT SUM(TahminiRayicDegeri) Toplam
                 FROM Bagis_Table A
                 INNER JOIN Tasinmaz_Table B ON B.Id = A.TasinmazId AND B.EnvanterdeMi=1
-                WHERE A.BagisciId={0}", bagisciId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                WHERE A.BagisciId=@BagisciId");
+            query.AddParameter("@BagisciId", bagisciId);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 if (dataTable.Rows.Count > 0)
@@ -231,9 +237,9 @@ namespace Model.TBYS
             }
             return toplam;
         }
-        private string SelectTasinmazBagisByBagisciIdSQL(int bagisciId)
+        private SqlQuery SelectTasinmazBagisByBagisciIdSQL(int bagisciId)
         {
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT ROW_NUMBER() OVER (ORDER BY A.Id,B.BagisTarihi) AS Sirano,
                     A.Id TasinmazId,A.TahminiRayicDegeri, A.Cinsi, A.KullanimSekli, A.Adres,
                     A.MulkiyetSekli,A.KiraDurumu, A.EmlakBeyanDegeri,A.TahminiRayicDegeri,
@@ -243,10 +249,11 @@ namespace Model.TBYS
                 INNER JOIN Tasinmaz_Table A on A.Id=B.TasinmazId
                 LEFT JOIN Il_Table C ON C.IlAdi=A.Ili
                 LEFT JOIN Ilce_Table D ON D.IlceAdi=A.Ilcesi AND D.IlId=C.Id
-                WHERE A.EnvanterdeMi=1 AND B.BagisciId={0}
+                WHERE A.EnvanterdeMi=1 AND B.BagisciId=@BagisciId
                 ORDER BY A.Id,B.BagisTarihi
-                                    ", bagisciId);
-            return sqlString;
+                                    ");
+            query.AddParameter("@BagisciId", bagisciId);
+            return query;
         }
     }
 }

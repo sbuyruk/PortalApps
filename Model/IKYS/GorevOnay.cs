@@ -57,6 +57,8 @@ namespace Model.IKYS
         public int AmirOnayi { get; set; }
         public string Transfer { get; set; }
         public string Konaklama { get; set; }
+        public string OnayRedAciklama { get; set; }
+        public int OncekiId { get; set; }=0;
         public override T Select<T>(int id)
         {
             GenericEntity<GorevOnay> genericEntity = new GenericEntity<GorevOnay>(ProjeConstants.SQL_SELECT);
@@ -224,7 +226,7 @@ namespace Model.IKYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
 
             return (dataTable);
@@ -274,7 +276,7 @@ namespace Model.IKYS
                         A.PersonelId,A.GorevinSebebi,A.GorevinYeri,A.BaslangicTarihi,A.BitisTarihi,A.Sure,A.Avans,A.Yevmiye,A.ParaBirimi,
                         A.AracTahsisi,A.AracPlakasi,A.PerSubeImza,A.PerSubeVekil,A.OnayImza,A.OnayMakam,A.OnayMakamVekil,
                         A.UlasimAraci,A.Transfer,A.Konaklama,
-                        A.AmirOnayi,A.GMImza,A.GMVekil, A.Aciklama
+                        A.AmirOnayi,A.GMImza,A.GMVekil, A.Aciklama, A.OnayRedAciklama
                     FROM GorevOnay_Table A
                         INNER JOIN Personel_Table P On A.PersonelId=P.Id 
                     WHERE A.BitisTarihi>={0}
@@ -301,13 +303,13 @@ namespace Model.IKYS
             string sqlString = string.Format(@"
                 SELECT A.Id GorevOnayId, A.PersonelId, P.Adi+' '+P.Soyadi AdiSoyadi,
                     A.GorevinSebebi, A.GorevinYeri, A.BaslangicTarihi, A.BitisTarihi, A.Sure, A.Aciklama, 
-                    A.UlasimAraci, A.Transfer, A.Konaklama
+                    A.UlasimAraci, A.Transfer, A.Konaklama, A.AmirOnayi, A.OnayRedAciklama
                 FROM GorevOnay_Table A
                     INNER JOIN Personel_Table P ON A.PersonelId=P.Id
                     INNER JOIN IsBilgileri_Table I ON I.PersonelId=P.Id
-                WHERE A.AmirOnayi={0} AND I.BirimId IN ({1})
+                WHERE (A.AmirOnayi={0} OR A.AmirOnayi={2} OR A.AmirOnayi={3}) AND I.BirimId IN ({1})
                 ORDER BY A.BaslangicTarihi DESC, A.BitisTarihi DESC ",
-                (int)AmirOnayDurumu.OnayBekliyor, birimIdListStr);
+                (int)AmirOnayDurumu.OnayBekliyor, birimIdListStr, (int)AmirOnayDurumu.Reddedildi, (int)AmirOnayDurumu.Onaylandi);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
 

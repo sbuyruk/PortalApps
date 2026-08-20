@@ -76,7 +76,7 @@ namespace DAO.Ortak
                 {
                     isUpdated = false;
                     SorguyuLogla("UPDATE", false, sqlString, e.Message);
-                    throw e;
+                    throw;
                 }
                 return isUpdated;
             }
@@ -106,7 +106,7 @@ namespace DAO.Ortak
                 {
                     SorguyuLogla("DELETE", false, sqlString, e.Message);
                     isDeleted = false;
-                    throw e;
+                    throw;
                 }
 
                 return isDeleted;
@@ -134,7 +134,7 @@ namespace DAO.Ortak
                 catch (Exception e)
                 {
                     deleted = 0;
-                    throw e;
+                    throw;
                 }
 
                 return deleted;
@@ -166,7 +166,7 @@ namespace DAO.Ortak
                 {
                     SorguyuLogla("DELETE", false, sqlString, e.Message);
                     isDeleted = false;
-                    throw e;
+                    throw;
                 }
 
                 return isDeleted;
@@ -230,6 +230,133 @@ namespace DAO.Ortak
 
             }
         }
+
+        #region Parametreli sorgu overload'ları (SQL injection korumalı)
+
+        /// <summary>
+        /// Verilen sorguları tek bir SqlTransaction içinde sırayla çalıştırır.
+        /// Herhangi biri hata verirse tümü geri alınır (rollback) ve hata fırlatılır.
+        /// </summary>
+        public void ExecuteTransaction(List<SqlQuery> queries)
+        {
+            if (queries == null || queries.Count == 0)
+                return;
+
+            using (SqlConnection con = new SqlConnection(DBProcess.getConnectString()))
+            {
+                con.Open();
+                using (SqlTransaction transaction = con.BeginTransaction())
+                {
+                    SqlQuery current = null;
+                    try
+                    {
+                        foreach (SqlQuery query in queries)
+                        {
+                            current = query;
+                            using (SqlCommand cmd = new SqlCommand(query.Sql, con, transaction))
+                            {
+                                cmd.Parameters.AddRange(query.Parameters.ToArray());
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+                        transaction.Commit();
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        SorguyuLogla("TRANSACTION", false, current != null ? current.ToLogString() : string.Empty, e.Message);
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public int Insert(SqlQuery query)
+        {
+            int id = 0;
+            using (SqlConnection con = new SqlConnection(DBProcess.getConnectString()))
+            using (SqlCommand cmd = new SqlCommand(query.Sql + ";SELECT SCOPE_IDENTITY()", con))
+            {
+                try
+                {
+                    cmd.Parameters.AddRange(query.Parameters.ToArray());
+                    con.Open();
+                    object scalar = cmd.ExecuteScalar();
+                    id = scalar == null || scalar == DBNull.Value ? 0 : Convert.ToInt32(scalar);
+                    if (ProjeConstants.GENEL_SAVE_LOG)
+                        SorguyuLogla("INSERT", true, query.ToLogString(), "Id=" + id);
+                }
+                catch (Exception e)
+                {
+                    SorguyuLogla("INSERT", false, query.ToLogString(), e.Message);
+                    throw;
+                }
+            }
+            return id;
+        }
+
+        public bool Update2Db(SqlQuery query)
+        {
+            using (SqlConnection con = new SqlConnection(DBProcess.getConnectString()))
+            using (SqlCommand cmd = new SqlCommand(query.Sql, con))
+            {
+                try
+                {
+                    cmd.Parameters.AddRange(query.Parameters.ToArray());
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    if (ProjeConstants.GENEL_UPDATE_LOG)
+                        SorguyuLogla("UPDATE", true, query.ToLogString(), string.Empty);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    SorguyuLogla("UPDATE", false, query.ToLogString(), e.Message);
+                    throw;
+                }
+            }
+        }
+
+        public bool DeleteFromDb(SqlQuery query, string aciklama)
+        {
+            using (SqlConnection con = new SqlConnection(DBProcess.getConnectString()))
+            using (SqlCommand cmd = new SqlCommand(query.Sql, con))
+            {
+                try
+                {
+                    cmd.Parameters.AddRange(query.Parameters.ToArray());
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    if (ProjeConstants.GENEL_DELETE_LOG)
+                        SorguyuLogla("DELETE", true, query.ToLogString(), aciklama);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    SorguyuLogla("DELETE", false, query.ToLogString(), e.Message);
+                    throw;
+                }
+            }
+        }
+
+        public DataTable SelectFromDb(SqlQuery query, string identifier)
+        {
+            using (SqlConnection con = new SqlConnection(DBProcess.getConnectString()))
+            using (SqlCommand cmd = new SqlCommand(query.Sql, con))
+            using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+            {
+                cmd.Parameters.AddRange(query.Parameters.ToArray());
+                DataSet dataSet = new DataSet();
+                adapter.Fill(dataSet);
+                DataTable dataTable = dataSet.Tables[0];
+                if (dataTable.Rows.Count == 0)
+                    return null;
+                return dataTable;
+            }
+        }
+
+        #endregion
+
         private SqlTransaction DBTransaction;
         public List<DBObject> ExecuteTransaction()
         {
@@ -318,7 +445,7 @@ namespace DAO.Ortak
                     {
                         item.Success = false;
                     }
-                    //throw e;
+                    throw;
                 }
                 finally
                 {
@@ -368,7 +495,7 @@ namespace DAO.Ortak
         //        {
         //            isSaved = false;
         //            DBTransaction.Rollback();
-        //            throw e;
+        //            throw;
         //        }
         //        return isSaved;
         //    }

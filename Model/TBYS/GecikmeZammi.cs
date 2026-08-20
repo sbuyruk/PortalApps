@@ -1,3 +1,4 @@
+using DAO.Ortak;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,11 @@ namespace Model.TBYS
         public string Aciklama { get; set; }
         public override T Select<T>(int id)
         {
-            string sqlString = string.Format(@"SELECT *
+            SqlQuery query = new SqlQuery(@"SELECT *
                                FROM GecikmeZammi_Table 
-                               WHERE  Id={0}", id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                               WHERE  Id=@Id");
+            query.AddParameter("@Id", id);
+            DataTable dataTable = dao.SelectFromDb(query, "");
             List<GecikmeZammi> list = ToList<GecikmeZammi>(dataTable);
             GecikmeZammi gecikmeZammi = new GecikmeZammi();
             gecikmeZammi = list.FirstOrDefault();
@@ -34,8 +36,8 @@ namespace Model.TBYS
                 GenericEntity<GecikmeZammi> genericEntity = new GenericEntity<GecikmeZammi>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
+                SqlQuery query = genericEntity.GetQueryParametreli(this);
+                int id = dao.Insert(query);
 
                 this.Id = id;
                 if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
@@ -63,8 +65,8 @@ namespace Model.TBYS
                         GenericEntity<GecikmeZammi> genericEntity = new GenericEntity<GecikmeZammi>(ProjeConstants.SQL_UPDATE);
                         DegistirmeTarihi = DateTime.Now;
                         Degistiren = UtilityHelper.GetCurrentUserName();
-                        string sqlString = genericEntity.GetQuery(this);
-                        isSuccess = dao.Update2Db(sqlString);
+                        SqlQuery query = genericEntity.GetQueryParametreli(this);
+                        isSuccess = dao.Update2Db(query);
                     }
                     if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
                     {
@@ -87,11 +89,11 @@ namespace Model.TBYS
                 if (Id != 0)
                 {
                     GenericEntity<GecikmeZammi> genericEntity = new GenericEntity<GecikmeZammi>(ProjeConstants.SQL_DELETE);
-                    string sqlString = genericEntity.GetQuery(this);
+                    SqlQuery query = genericEntity.GetQueryParametreli(this);
                     GecikmeZammi item = Select<GecikmeZammi>(Id);
                     if (item != null)
                     {
-                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                        isDeleted = dao.DeleteFromDb(query, "");
                     }
                     else isDeleted = false;
                     if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
@@ -109,66 +111,71 @@ namespace Model.TBYS
         }
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT *
                 FROM GecikmeZammi_Table
                 ORDER BY BaslangicTarihi DESC");
 
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(query, "");
             List<GecikmeZammi> list = ToList<GecikmeZammi>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
-        public List<GecikmeZammi> SelectBuAyIcindeDegisen(DateTime ilkOdemeTarihi, DateTime sonOdemeTarihi)
-        {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM GecikmeZammi_Table
-				WHERE BaslangicTarihi <= {0} AND ISNULL(BitisTarihi,{0}) >= {1}
-                ORDER BY BaslangicTarihi ", sonOdemeTarihi.ReturnTRDateFormat(), ilkOdemeTarihi.ReturnTRDateFormat());
+		public List<GecikmeZammi> SelectBuAyIcindeDegisen(DateTime ilkOdemeTarihi, DateTime sonOdemeTarihi)
+		{
+			SqlQuery query = new SqlQuery(@"
+				SELECT *
+				FROM GecikmeZammi_Table
+				WHERE BaslangicTarihi <= @SonOdemeTarihi AND ISNULL(BitisTarihi,@SonOdemeTarihi) >= @IlkOdemeTarihi
+				ORDER BY BaslangicTarihi ");
+			query.AddParameter("@IlkOdemeTarihi", ilkOdemeTarihi);
+			query.AddParameter("@SonOdemeTarihi", sonOdemeTarihi);
 
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<GecikmeZammi> list = ToList<GecikmeZammi>(dataTable);
+			DataTable dataTable = dao.SelectFromDb(query, "");
+			List<GecikmeZammi> list = ToList<GecikmeZammi>(dataTable);
 
-            return list;
-        }
-        public List<GecikmeZammi> SelectByBaslangicTarihi(DateTime baslangicTarihi)
-        {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM GecikmeZammi_Table
-				WHERE BaslangicTarihi <= {0}
-                ORDER BY BaslangicTarihi DESC ", baslangicTarihi.ReturnTRDateFormat());
+			return list;
+		}
+		public List<GecikmeZammi> SelectByBaslangicTarihi(DateTime baslangicTarihi)
+		{
+			SqlQuery query = new SqlQuery(@"
+				SELECT *
+				FROM GecikmeZammi_Table
+				WHERE BaslangicTarihi <= @BaslangicTarihi
+				ORDER BY BaslangicTarihi DESC ");
+			query.AddParameter("@BaslangicTarihi", baslangicTarihi);
 
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<GecikmeZammi> list = ToList<GecikmeZammi>(dataTable);
+			DataTable dataTable = dao.SelectFromDb(query, "");
+			List<GecikmeZammi> list = ToList<GecikmeZammi>(dataTable);
 
-            return list;
-        }
-        public List<GecikmeZammi> SelectByBaslangicTarihi(DateTime vadeBaslangicTarihi, DateTime vadeBitisTarihi)
-        {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM GecikmeZammi_Table
-				WHERE BaslangicTarihi <= {1} AND (BitisTarihi is null OR  BitisTarihi>={0}) AND (BitisTarihi is null OR BitisTarihi>={0})
-                ORDER BY BaslangicTarihi DESC ", vadeBaslangicTarihi.ReturnTRDateFormat(), vadeBitisTarihi.ReturnTRDateFormat());
+			return list;
+		}
+		public List<GecikmeZammi> SelectByBaslangicTarihi(DateTime vadeBaslangicTarihi, DateTime vadeBitisTarihi)
+		{
+			SqlQuery query = new SqlQuery(@"
+				SELECT *
+				FROM GecikmeZammi_Table
+				WHERE BaslangicTarihi <= @VadeBitisTarihi AND (BitisTarihi is null OR  BitisTarihi>=@VadeBaslangicTarihi)
+				ORDER BY BaslangicTarihi DESC ");
+			query.AddParameter("@VadeBaslangicTarihi", vadeBaslangicTarihi);
+			query.AddParameter("@VadeBitisTarihi", vadeBitisTarihi);
 
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<GecikmeZammi> list = ToList<GecikmeZammi>(dataTable);
+			DataTable dataTable = dao.SelectFromDb(query, "");
+			List<GecikmeZammi> list = ToList<GecikmeZammi>(dataTable);
 
-            return list;
-        }
-        public GecikmeZammi SelectSonDegisenByTarih(DateTime sonOdemeTar)
-        {
+			return list;
+		}
+		public GecikmeZammi SelectSonDegisenByTarih(DateTime sonOdemeTar)
+		{
 
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM GecikmeZammi_Table
-				WHERE BaslangicTarihi <= {0}
-                ORDER BY BaslangicTarihi DESC
-                ", sonOdemeTar.ReturnTRDateFormat());
+			SqlQuery query = new SqlQuery(@"
+				SELECT *
+				FROM GecikmeZammi_Table
+				WHERE BaslangicTarihi <= @SonOdemeTarihi
+				ORDER BY BaslangicTarihi DESC");
+			query.AddParameter("@SonOdemeTarihi", sonOdemeTar);
 
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+			DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 List<GecikmeZammi> list = ToList<GecikmeZammi>(dataTable);
@@ -183,12 +190,13 @@ namespace Model.TBYS
         }
         public GecikmeZammi SelectOncekiGecikmeZammi(DateTime tarih)
         {
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT *
                 FROM GecikmeZammi_Table
-                WHERE  BaslangicTarihi < {0} 
-                ORDER BY BaslangicTarihi DESC ", tarih.ReturnTRDateFormat());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                WHERE  BaslangicTarihi < @Tarih 
+                ORDER BY BaslangicTarihi DESC ");
+            query.AddParameter("@Tarih", tarih);
+            DataTable dataTable = dao.SelectFromDb(query, "");
 
             if (dataTable != null)
             {
@@ -204,12 +212,13 @@ namespace Model.TBYS
         }
         public GecikmeZammi SelectSonrakiGecikmeZammi(DateTime tarih)
         {
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT *
                 FROM GecikmeZammi_Table
-                WHERE  BaslangicTarihi > {0} 
-                ORDER BY BaslangicTarihi ", tarih.ReturnTRDateFormat());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+                WHERE  BaslangicTarihi > @Tarih 
+                ORDER BY BaslangicTarihi ");
+            query.AddParameter("@Tarih", tarih);
+            DataTable dataTable = dao.SelectFromDb(query, "");
 
             if (dataTable != null)
             {
@@ -226,7 +235,7 @@ namespace Model.TBYS
         public List<GecikmeZammi> SelectByTarih(DateTime ilkOdemeTarihi, DateTime sonOdemeTarihi)
         {
             GecikmeZammi gecikmeZammiDao = new GecikmeZammi();
-            //bu ay içinde oran degisti mi?
+            //bu ay iÃ§inde oran degisti mi?
             List<GecikmeZammi> buayDegisenGecikmeZammiList = gecikmeZammiDao.SelectBuAyIcindeDegisen(ilkOdemeTarihi, sonOdemeTarihi);
 
             bool oncekiGecikmeZammiDaEklensinMi = false;
@@ -253,13 +262,12 @@ namespace Model.TBYS
 
         public GecikmeZammi SelectSonrakiGecikmeZammi()
         {
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 SELECT *
                 FROM GecikmeZammi_Table
-                ORDER BY BaslangicTarihi DESC
-                ");
+                ORDER BY BaslangicTarihi DESC");
 
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(query, "");
             if (dataTable != null)
             {
                 List<GecikmeZammi> list = ToList<GecikmeZammi>(dataTable);

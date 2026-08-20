@@ -205,7 +205,7 @@ namespace Model.NBYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
         }
@@ -238,7 +238,7 @@ namespace Model.NBYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
 
            

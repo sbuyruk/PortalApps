@@ -106,12 +106,12 @@ namespace TBYS_WebParts.VasiyetciListesiWP
         {
             try
             {
-                TitleLbl.Text = "Vasiyetçi Listesi";
+                TitleLbl.Text = "VasiyetÃ§i Listesi";
                 Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
                 BolgeIdQS = bolge == null ? 0 : bolge.Id;
                 if (BolgeIdQS>0)
                 {
-                    TitleLbl.Text = "Vasiyetçi Listesi" + " (" + bolge.KisaAdi + " Bölgesi)";
+                    TitleLbl.Text = "VasiyetÃ§i Listesi" + " (" + bolge.KisaAdi + " BÃ¶lgesi)";
                     
                 }
                 TabloOlustur();
@@ -130,7 +130,7 @@ namespace TBYS_WebParts.VasiyetciListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = VasiyetciJson(); //veri çekilip json a çeviriliyor
+            var jsonData = VasiyetciJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -157,6 +157,7 @@ namespace TBYS_WebParts.VasiyetciListesiWP
                     data: " + jsonData + @",
                     columns: [
                         { data: 'VasiyetciId' },
+                        { data: 'SorumluBolge' },
                         { data: 'Adi'},
                         { data: 'Soyadi'},
                         { data: 'TCKimlikNo' },
@@ -165,10 +166,10 @@ namespace TBYS_WebParts.VasiyetciListesiWP
                         { data: 'IkametAdresi'},
                         { data: 'Telefon1' },
                         { data: 'VasiyetYili' },
-                        { data: 'SorumluBolge' },
-                        { data: 'VasiyetciId' },
-                        { data: 'VasiyetciId' },
+                        { data: 'VasiyetinDurumu' },
                         { data: 'SagVefat' },
+                        { data: 'VasiyetciId' },
+                        { data: 'VasiyetciId' },
 
                     ],
                     'order': [[2, 'desc']],
@@ -176,7 +177,7 @@ namespace TBYS_WebParts.VasiyetciListesiWP
                     [
                     " + duzenleGorunsun + @"
                     {
-                        targets: 10, render: function(data, type, row, meta) {
+                        targets: 12, render: function(data, type, row, meta) {
 
                         var dosyaUrl='" + dosyaUrl + @"';
                         var link='';
@@ -186,8 +187,8 @@ namespace TBYS_WebParts.VasiyetciListesiWP
                         return link;
                     }},
                     {
-                        targets: 11, render: function(data, type, row, meta) {
-                        var link= '<a href=" + ProjeConstants.PAGE_VASIYETCI_GIRISI + @"?DestinationApp=Duzenle&VasiyetciId='+row.VasiyetciId +' class=\'btn btn-outline-primary \'>Düzenle</a>';
+                        targets: 13, render: function(data, type, row, meta) {
+                        var link= '<a href=" + ProjeConstants.PAGE_VASIYETCI_GIRISI + @"?DestinationApp=Duzenle&VasiyetciId='+row.VasiyetciId +' class=\'btn btn-outline-primary \'>DÃ¼zenle</a>';
                         return link;
                     }},
                     ],
@@ -242,7 +243,7 @@ namespace TBYS_WebParts.VasiyetciListesiWP
 
             // For each column
              api
-                                .columns([8])
+                                .columns([9])
                                 .eq(0)
                                 .each(function (colIdx) {
                                     // Set the header cell to contain the input element
@@ -388,7 +389,7 @@ namespace TBYS_WebParts.VasiyetciListesiWP
                 if (duzenleGorunsunMu)
                     if (duzenleGorunsunMu)
                 {
-                    vasiyetciItem.Duzenle = "'<a href=" + ProjeConstants.PAGE_VASIYETCI_GIRISI + @"?DestinationApp=Duzenle&VasiyetciId=' + row.VasiyetciId + ' class=\'btn btn-outline-primary \'>Düzenle</a>'";
+                    vasiyetciItem.Duzenle = "'<a href=" + ProjeConstants.PAGE_VASIYETCI_GIRISI + @"?DestinationApp=Duzenle&VasiyetciId=' + row.VasiyetciId + ' class=\'btn btn-outline-primary \'>DÃ¼zenle</a>'";
                 }
 
 

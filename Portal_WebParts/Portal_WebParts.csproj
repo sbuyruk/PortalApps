@@ -82,6 +82,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BildirimWP\BildirimWP.ascx.cs">
+      <DependentUpon>BildirimWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BildirimWP\BildirimWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BildirimWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="DavaDurusmaListesiWP\DavaDurusmaListesiWP.ascx.cs">
       <DependentUpon>DavaDurusmaListesiWP.ascx</DependentUpon>
     </Compile>
@@ -215,6 +223,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="BildirimWP\BildirimWP.webpart" />
+    <None Include="BildirimWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{329dbada-7a91-4704-880c-ac22d3eb4d21}</SharePointProjectItemId>
+    </None>
     <None Include="DavaDurusmaListesiWP\DavaDurusmaListesiWP.webpart" />
     <None Include="DavaDurusmaListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{95f9b2de-9ff6-4531-bd36-4fd9426febea}</SharePointProjectItemId>
@@ -292,6 +304,11 @@
     <None Include="YoneticiOzetiWP\YoneticiOzetiWP.webpart" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BildirimWP\BildirimWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>BildirimWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="BildirimWP\Elements.xml" />
     <Content Include="DavaDurusmaListesiWP\DavaDurusmaListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>DavaDurusmaListesiWP.ascx.g.cs</LastGenOutput>

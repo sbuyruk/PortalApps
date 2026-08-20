@@ -189,7 +189,7 @@ namespace Portal_WebParts.DuyuruPopupWP
         {
             if (startup && !duyuru.Popup)
             {
-                //ilk açilista popup = false ise gösterme
+                //ilk aÃ§ilista popup = false ise gÃ¶sterme
             }
             else
             {
@@ -213,7 +213,7 @@ namespace Portal_WebParts.DuyuruPopupWP
 
                 HtmlGenericControl modalDiv = new HtmlGenericControl("div");
                 modalDiv.ID = "modalDiv" + duyuru.Id.ToString();
-                modalDiv.Attributes["class"] = "modal fade text-center";
+                modalDiv.Attributes["class"] = "modal fade text-center duyuru-modal";
                 modalDiv.Attributes["role"] = "dialog";
                 ModalPlaceHolder.Controls.Add(modalDiv);
 
@@ -287,8 +287,8 @@ namespace Portal_WebParts.DuyuruPopupWP
 
                 CheckBox OkudumChk = new CheckBox();
                 OkudumChk.ID = "OkudumChk" + duyuru.Id.ToString();
-                OkudumChk.Text = "Okudum, bir daha gösterme";
-                OkudumChk.CssClass = "FontSmall";//ascx içinde style
+                OkudumChk.Text = "Okudum, bir daha gÃ¶sterme";
+                OkudumChk.CssClass = "FontSmall";//ascx iÃ§inde style
                 OkudumChk.Checked = true;
 
                 okudumDiv.Controls.Add(OkudumChk);
@@ -340,7 +340,7 @@ namespace Portal_WebParts.DuyuruPopupWP
                 {
                     clickedx = "false";
                 }
-                if (!Page.IsPostBack || !startup) //kayan duyuruya tiklandiysa göster ama modal butona basildiginda olan postbackde göstermes
+                if (!Page.IsPostBack || !startup) //kayan duyuruya tiklandiysa gÃ¶ster ama modal butona basildiginda olan postbackde gÃ¶stermes
                 {
                     var openDuyuruPopupModal = "OpenDuyuruPopupModal(" + modalDiv.ClientID + "," + duyuru.Id + "," + dgId + "," + clickedx + ",'" + okudumDiv.ClientID + "');";
                     UtilityHelper.ScriptCalistir(openDuyuruPopupModal);

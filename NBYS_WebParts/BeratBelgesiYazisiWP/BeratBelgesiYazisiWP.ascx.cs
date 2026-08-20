@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Script.Serialization;
 using System.Web.UI;
@@ -528,26 +529,15 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP
         }
         private MemoryStream GetTemplateStream(string templateFileName)
         {
-            string newFileUrl = string.Empty;
-
             string siteUrl = SPContext.Current.Web.Url;
             using (SPSite spSite = new SPSite(siteUrl))
+            using (SPWeb web = spSite.OpenWeb())
             {
-                SPList list = SPContext.Current.Web.Lists[ProjeConstants.NBYSBELGELERI_LIB];
-                SPQuery query = new SPQuery();
-                query.ViewFields = @"<FieldRef Name='FileLeafRef' />";
-                query.Query =
-                  @"<Where>
-                          <Eq>
-                            <FieldRef Name='FileLeafRef' />
-                            <Value Type='File'>" + templateFileName + @"</Value>
-                          </Eq>
-                        </Where>";
-                SPListItemCollection collection = list.GetItems(query);
+                string fileUrl = web.Url + "/" + ProjeConstants.NBYSBELGELERI_LIB + "/" + templateFileName;
                 MemoryStream memStr = new MemoryStream();
-                if (collection.Count > 0)
+                SPFile file = web.GetFile(fileUrl);
+                if (file != null && file.Exists)
                 {
-                    SPFile file = collection[0].File;
                     byte[] byteArray = file.OpenBinary();
                     memStr.Write(byteArray, 0, byteArray.Length);
                 }
@@ -780,26 +770,14 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP
             MemoryStream memStr = new MemoryStream();
             try
             {
-                string newFileUrl = string.Empty;
-
                 string siteUrl = SPContext.Current.Web.Url;
                 using (SPSite spSite = new SPSite(siteUrl))
+                using (SPWeb web = spSite.OpenWeb())
                 {
-                    Console.WriteLine("Querying for Test.docx");
-                    SPList list = SPContext.Current.Web.Lists[ProjeConstants.NBYSBELGELERI_LIB];
-                    SPQuery query = new SPQuery();
-                    query.ViewFields = @"<FieldRef Name='FileLeafRef' />";
-                    query.Query =
-                      @"<Where>
-                          <Eq>
-                            <FieldRef Name='FileLeafRef' />
-                            <Value Type='File'>BeratBelgesiTemplate.docx</Value>
-                          </Eq>
-                        </Where>";
-                    SPListItemCollection collection = list.GetItems(query);
-                    if (collection.Count > 0)
+                    string fileUrl = web.Url + "/" + ProjeConstants.NBYSBELGELERI_LIB + "/BeratBelgesiTemplate.docx";
+                    SPFile file = web.GetFile(fileUrl);
+                    if (file != null && file.Exists)
                     {
-                        SPFile file = collection[0].File;
                         byte[] byteArray = file.OpenBinary();
                         memStr.Write(byteArray, 0, byteArray.Length);
                     }
@@ -933,32 +911,10 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP
         }
         private bool DosyaVarMi(string libName, string fileName)
         {
-
-            bool isDosyaBulundu = false;
-            SPList list = SPContext.Current.Web.Lists[libName];
-            SPQuery query = new SPQuery();
-            query.ViewFields = @"<FieldRef Name='FileLeafRef' />";
-
-            query.Query = @"<Where>
-                          <Eq>
-                            <FieldRef Name='FileLeafRef' />
-                            <Value Type='File'>" + fileName + @"</Value>
-                          </Eq>
-                        </Where>";
-            //query.Query = @"
-            //    <Where>
-            //        <Contains>
-            //            <FieldRef Name='FileLeafRef' />
-            //            <Value Type='File'>" + fileName + @"</Value>
-            //        </Contains>
-            //    </Where>";
-            SPListItemCollection collection = list.GetItems(query);
-
-            if (collection.Count > 0)
-            {
-                isDosyaBulundu = true;
-            }
-            return isDosyaBulundu;
+            SPWeb web = SPContext.Current.Web;
+            string fileUrl = web.Url + "/" + libName + "/" + fileName;
+            SPFile file = web.GetFile(fileUrl);
+            return file != null && file.Exists;
         }
         private string CreateDataTable(string jsonData)
         {
@@ -1042,35 +998,17 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP
         }
         private List<SPFile> DosyaListesiniGetir(string libName, string fileName)
         {
-            string newFileUrl = string.Empty;
             List<SPFile> lstFile = new List<SPFile>();
-            string siteUrl = SPContext.Current.Web.Url;
-            using (SPSite spSite = new SPSite(siteUrl))
-            {
-                SPList list = SPContext.Current.Web.Lists[libName];
-                SPQuery query = new SPQuery();
-                query.ViewFields = @"<FieldRef Name='FileLeafRef' />";
-                query.Query =
-                  @"< Where >
-                        < Contains >
-                            < FieldRef Name = 'Title' />
-                            < Value Type = 'File' > " + fileName + @" </ Value >
-                        </ Contains >
-                    </ Where >
-                    <OrderBy>
-                        <FieldRef Name='Modified' Ascending='False'/>
-                    </OrderBy>";
-                SPListItemCollection collection = list.GetItems(query);
-                foreach (SPListItem item in collection)
-                {
-                    if (item.Name.Contains(fileName))
-                    {
-                        lstFile.Add(item.File);
-                    }
-                }
+            SPWeb web = SPContext.Current.Web;
+            SPList list = web.Lists[libName];
+            SPFolder folder = list.RootFolder;
 
-                return lstFile;
-            }
+            var matchedFiles = folder.Files.Cast<SPFile>()
+                .Where(f => f.Name.Contains(fileName))
+                .OrderByDescending(f => f.TimeLastModified);
+
+            lstFile.AddRange(matchedFiles);
+            return lstFile;
         }
         protected void DosyayiSilBtn_Click(object sender, EventArgs e)
         {

@@ -223,6 +223,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                             { data: 'Ili',},
                             { data: 'Ilcesi',},
                             { data: 'MulkiyetSekli'},
+                            { data: 'Cinsi'},
                             { data: 'KullanimSekli'},
                             { data: 'BagisYili',},
                             { data: 'TasinmazKarti'},
@@ -241,8 +242,8 @@ namespace TBYS_WebParts.TasinmazListesiWP
                         columnDefs:
                             [
                             " + duzenleGorunsun + @"
-                            { 'visible': false, targets: [12,13,14,15,16,17,18,19]},
-                            {  targets : [12,13],className: 'dt-body-right'},
+                            { 'visible': false, targets: [13,14,15,16,17,18,19,20]},
+                            {  targets : [13,14],className: 'dt-body-right'},
                             { width: '15%', targets: 2 },
                             { width: '20%', targets: 3 }
                             ],
@@ -286,7 +287,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
 
                             // For each column
                             api
-                                .columns([8])
+                                .columns([9])
                                 .eq(0)
                                 .each(function (colIdx) {
                                     // Set the header cell to contain the input element

@@ -33,7 +33,7 @@ namespace Model.TBYS
         public string BagimsizBolumNo { get; set; }
         public string PDFDosyasi { get; set; }
         public string Aciklama { get; set; }
-        public string KullanimAmaci { get; set; }
+        public string KullanimSekli { get; set; }
         public override T Select<T>(int id)
         {
             string sqlString = string.Format(@"SELECT *
@@ -181,7 +181,7 @@ namespace Model.TBYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             string json = ToJSON(dataTable);
             return json;
@@ -197,7 +197,7 @@ namespace Model.TBYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
 
@@ -237,7 +237,7 @@ namespace Model.TBYS
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
             return dataTable;
 
@@ -277,10 +277,10 @@ namespace Model.TBYS
                 SELECT A.Id SigortaId, B.SorumluBolge,E.KisaAdi Bolge, A.TasinmazId,B.SorumluBolge,A.SigortaCinsi,A.AdresKodu,A.PoliceNo,A.SigortaBasTar,A.SigortaBitTar,
 	                A.YapiTarzi,A.InsaYili, A.BulunduguKat,B.BulunduguKat, A.ToplamKatSayisi,B.ToplamKatSayisi, A.BBNetAlan, B.BBNetAlan ,A.BBBrutAlan, B.BBBrutAlan,
 	                A.SigortaBedeli, A.Prim,A.DaskPoliceNo,A.BagimsizBolumNo,A.PDFDosyasi,A.Prim,
-                    B.Adres+ISNULL(F.BolumNo,'') Adres, B.Ili,B.Ilcesi, B.Ilcesi +' '+ B.Ili IliIlcesi, B.KullanimSekli, B.Cinsi, B.PaftaNo,B.AdaNo,B.ParselNo,B.SahifeNo,F.BolumNo,
+                    B.Adres+ISNULL(F.BolumNo,'') Adres, B.Ili,B.Ilcesi, B.Ilcesi +' '+ B.Ili IliIlcesi, B.KullanimSekli TasinmazKullanimSekli, B.Cinsi, B.PaftaNo,B.AdaNo,B.ParselNo,B.SahifeNo,F.BolumNo,
                     A.TeminatListesi,A.TeminatAciklama,A.Aciklama,B.EnvanterdeMi,
                     B.Adres+ISNULL(F.BolumNo,'') +' '+ B.Ilcesi+'-'+ B.Ili TamAdres,
-                    B.KatMulkiyeti,A.KullanimAmaci,B.TapuTasinmazNo,
+                    B.KatMulkiyeti,A.KullanimSekli SigortaKullanimSekli,B.TapuTasinmazNo,
 	                E.KisaAdi Bolge
                 FROM Sigorta_Table A
                     INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId AND (B.EnvanterdeMi=1 OR B.EnvanterdeMi=2) 

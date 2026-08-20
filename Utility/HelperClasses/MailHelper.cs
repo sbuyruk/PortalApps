@@ -9,7 +9,7 @@ namespace Utility.HelperClasses
     {
         
         /// <summary>
-        /// Eposta gönderir
+        /// Eposta gÃ¶nderir
         /// </summary>
         public static void EPostaGonder(string from, string to, string subject, string body,string smptpAdres)
         {
@@ -31,14 +31,16 @@ namespace Utility.HelperClasses
                     string[] toList= to.Split(new char[] { ';' });
                     foreach (var item in toList)
                     {
+                        if (string.IsNullOrEmpty(item))
+                            continue;
                         mail.To.Add(new MailAddress(item)); 
                     }
 
                     mail.Body = body;
                     smtp.Send(mail);
 
-                    //MessageHelper.PublishMessage(" E-Posta gönderildi ;) : to= " + to + " konu=" + subject, ProjeConstants.MESAJ_BILGI);
-                    //Console.WriteLine(" E-Posta gönderildi ;) : to= " + to + " konu=" + subject);
+                    //MessageHelper.PublishMessage(" E-Posta gÃ¶nderildi ;) : to= " + to + " konu=" + subject, ProjeConstants.MESAJ_BILGI);
+                    //Console.WriteLine(" E-Posta gÃ¶nderildi ;) : to= " + to + " konu=" + subject);
                 }
                 catch (System.Exception exception)
                 {
@@ -61,15 +63,15 @@ namespace Utility.HelperClasses
             mail.AlternateViews.Add(m_calV);
             smtp.Send(mail);
 
-            //MessageHelper.PublishMessage(" Takvime ekle gönderildi ;) : to= " + to + " konu=" + title, ProjeConstants.MESAJ_BILGI);
-            //Console.WriteLine(" Takvime ekle gönderildi ;) : to= " + to + " konu=" + title);
+            //MessageHelper.PublishMessage(" Takvime ekle gÃ¶nderildi ;) : to= " + to + " konu=" + title, ProjeConstants.MESAJ_BILGI);
+            //Console.WriteLine(" Takvime ekle gÃ¶nderildi ;) : to= " + to + " konu=" + title);
         }
         public static void TakvimdenSil(Guid uniqueId, string from, string to, string title, DateTime startTime, DateTime endTime, string location, string desc,string smtpAdres)
         {
             try
             {
                 title = "Iptal Edildi : " + title;
-                string desc2 = desc + "\n\n Toplanti iptal edilmistir. Lütfen takviminizden kaldirmak için 'Takvimden Kaldir' butonuna tiklayiniz.";// UtilityHelper.parametreDegeriSorgula("Toplanti Takvimden Kaldirma Mesaji");
+                string desc2 = desc + "\n\n Toplanti iptal edilmistir. LÃ¼tfen takviminizden kaldirmak iÃ§in 'Takvimden Kaldir' butonuna tiklayiniz.";// UtilityHelper.parametreDegeriSorgula("Toplanti Takvimden Kaldirma Mesaji");
 
                 SmtpClient smtp = new SmtpClient(string.IsNullOrEmpty(smtpAdres) ? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI : smtpAdres);
                 MailMessage mail = new MailMessage();
@@ -83,7 +85,7 @@ namespace Utility.HelperClasses
 
                 mail.AlternateViews.Add(m_calV);
                 smtp.Send(mail);
-                //MessageHelper.PublishMessage(" Takvimden sil gönderildi ;) : to= " + to + " konu=" + title, ProjeConstants.MESAJ_BILGI);
+                //MessageHelper.PublishMessage(" Takvimden sil gÃ¶nderildi ;) : to= " + to + " konu=" + title, ProjeConstants.MESAJ_BILGI);
             }
             catch (Exception ex)
             {

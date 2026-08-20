@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Globalization;
+using System.Transactions;
 using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
@@ -445,30 +446,36 @@ namespace TBYS_WebParts.BagisciBagislariWP
             Tasinmaz tasinmaz = new Tasinmaz();
             tasinmaz = tasinmaz.Select<Tasinmaz>(tasinmazId);
             bool kaydedildiMi = false;
+            Bagis bagis = null;
             if (tasinmaz != null)
             {
-                Bagis bagis = new Bagis();
-                bagis = bagis.SelectByTasinmazId(tasinmazId);
-                if (bagis == null)
+                using (TransactionScope scope = new TransactionScope())
                 {
                     bagis = new Bagis();
-                    bagis.BagisciId = BagisciIdQS.ConvertToInt();
-                    bagis.BagisTarihi = tasinmaz.EnvantereGirisTarihi.ConvertToDatetime();
-                    bagis.BagisYili = bagis.BagisTarihi.Year;
-                    bagis.Olusturan = CurrentUserName;
-                    bagis.TasinmazId = paramTasinmazIdLbl.Value.ConvertToInt();
-                    bagis.Envanterde = true;
-                    int bagisId = bagis.Save();
-                    kaydedildiMi = bagisId > 0;
+                    bagis = bagis.SelectByTasinmazId(tasinmazId);
+                    if (bagis == null)
+                    {
+                        bagis = new Bagis();
+                        bagis.BagisciId = BagisciIdQS.ConvertToInt();
+                        bagis.BagisTarihi = tasinmaz.EnvantereGirisTarihi.ConvertToDatetime();
+                        bagis.BagisYili = bagis.BagisTarihi.Year;
+                        bagis.Olusturan = CurrentUserName;
+                        bagis.TasinmazId = paramTasinmazIdLbl.Value.ConvertToInt();
+                        bagis.Envanterde = true;
+                        int bagisId = bagis.Save();
+                        kaydedildiMi = bagisId > 0;
+                    }
+                    else
+                    {
+                        bagis.BagisciId = BagisciIdQS.ConvertToInt();
+                        bagis.TasinmazId = tasinmazId;
+                        bagis.Degistiren = CurrentUserName;
+                        kaydedildiMi = bagis.Update();
+                    }
+                    if (kaydedildiMi)
+                        scope.Complete();
                 }
-                else
-                {
-                    bagis.BagisciId = BagisciIdQS.ConvertToInt();
-                    bagis.TasinmazId = tasinmazId;
-                    bagis.Degistiren = CurrentUserName;
-                    kaydedildiMi = bagis.Update();
-                }
-                if (kaydedildiMi)
+                if (kaydedildiMi && bagis != null)
                 {
                     MessageHelper.PublishMessage("Bağış Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                     RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_BAGISLARI + "?Mesaj=true" + "&DestinationApp=TBD&BagisciId=" + bagis.BagisciId);

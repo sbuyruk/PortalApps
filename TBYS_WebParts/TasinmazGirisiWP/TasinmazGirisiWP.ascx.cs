@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Transactions;
 using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -551,43 +552,47 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             tasinmaz.InsaatinSinifi = InsaatinSinifiTxt.Text;
             tasinmaz.ArazininCinsi = ArazininCinsiTxt.Text;
 
-            int id = tasinmaz.Save();
-            tasinmaz.Id = id;
-            //tasinmaz tablosundaki Bagisci alani her kaydedildiginde Ad+soyad olarak güncellesin
-            Bagis bagis = new Bagis();
-            bagis = bagis.SelectByTasinmazId(id);
-            if (bagis != null)
+            using (TransactionScope scope = new TransactionScope())
             {
-                TasinmazBagisci bagisci = new TasinmazBagisci();
-                bagisci = bagisci.Select<TasinmazBagisci>(bagis.BagisciId);
-                if (bagisci != null)
+                int id = tasinmaz.Save();
+                tasinmaz.Id = id;
+                //tasinmaz tablosundaki Bagisci alani her kaydedildiginde Ad+soyad olarak güncellesin
+                Bagis bagis = new Bagis();
+                bagis = bagis.SelectByTasinmazId(id);
+                if (bagis != null)
                 {
-                    tasinmaz.BagisciId = bagisci.Id;
-                    tasinmaz.Bagisci = bagisci.Adi + ' ' + bagisci.Soyadi;
-                    tasinmaz.Update();
+                    TasinmazBagisci bagisci = new TasinmazBagisci();
+                    bagisci = bagisci.Select<TasinmazBagisci>(bagis.BagisciId);
+                    if (bagisci != null)
+                    {
+                        tasinmaz.BagisciId = bagisci.Id;
+                        tasinmaz.Bagisci = bagisci.Adi + ' ' + bagisci.Soyadi;
+                        tasinmaz.Update();
+                    }
                 }
-            }
-            if (id > 0)
-            {
-                Sigorta sigorta = new Sigorta();
-                sigorta = sigorta.SelectByTasinmazId(tasinmaz.Id);
-                if (sigorta == null)//henuz sigorta kaydi yok yeni sigorta yarat
+                if (id > 0)
                 {
-                    sigorta = new Sigorta();
-                    sigorta.TasinmazId = tasinmaz.Id;
-                    sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                    int sigortaid = sigorta.Save();
-                    sigorta.Id = sigortaid;
+                    Sigorta sigorta = new Sigorta();
+                    sigorta = sigorta.SelectByTasinmazId(tasinmaz.Id);
+                    if (sigorta == null)//henuz sigorta kaydi yok yeni sigorta yarat
+                    {
+                        sigorta = new Sigorta();
+                        sigorta.TasinmazId = tasinmaz.Id;
+                        sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
+                        int sigortaid = sigorta.Save();
+                        sigorta.Id = sigortaid;
+                    }
+                    else
+                    {
+                        sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
+                        sigorta.Update();
+                    }
+                    scope.Complete();
+                    return tasinmaz;
                 }
-                else
-                {
-                    sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                    sigorta.Update();
-                }
-                return tasinmaz;
-            }
 
-            else return null;
+                else return null;
+            }
         }
         private bool UpdateTasinmazData2Db(int tId)
         {
@@ -667,39 +672,43 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 tasinmaz.BagimsizBolumSayisi = BagimsizBolumSayisiTxt.Text.ConvertToInt();
                 tasinmaz.MalikSayisi = MalikSayisiTxt.Text.ConvertToInt();
 
-                isSaved = tasinmaz.Update();
-
-                Bagis bagis = new Bagis();
-                bagis = bagis.SelectByTasinmazId(tasinmaz.Id);
-                if (bagis != null)
+                using (TransactionScope scope = new TransactionScope())
                 {
-                    TasinmazBagisci bagisci = new TasinmazBagisci();
-                    bagisci = bagisci.Select<TasinmazBagisci>(bagis.BagisciId);
-                    if (bagisci != null)
+                    isSaved = tasinmaz.Update();
+
+                    Bagis bagis = new Bagis();
+                    bagis = bagis.SelectByTasinmazId(tasinmaz.Id);
+                    if (bagis != null)
                     {
-                        tasinmaz.BagisciId = bagisci.Id;
-                        tasinmaz.Bagisci = bagisci.Adi + ' ' + bagisci.Soyadi;
-                        tasinmaz.Update();
+                        TasinmazBagisci bagisci = new TasinmazBagisci();
+                        bagisci = bagisci.Select<TasinmazBagisci>(bagis.BagisciId);
+                        if (bagisci != null)
+                        {
+                            tasinmaz.BagisciId = bagisci.Id;
+                            tasinmaz.Bagisci = bagisci.Adi + ' ' + bagisci.Soyadi;
+                            tasinmaz.Update();
+                        }
+
                     }
 
-                }
-
-                if (!tasinmaz.EnvanterdeMi.Equals(ProjeConstants.TASINMAZ_ENVANTERDEN_CIKTI))
-                {
-                    Sigorta sigorta = new Sigorta();
-                    sigorta = sigorta.SelectByTasinmazId(tasinmaz.Id);
-                    if (sigorta == null)//henuz sigorta kaydi yok yeni sigorta yarat
+                    if (!tasinmaz.EnvanterdeMi.Equals(ProjeConstants.TASINMAZ_ENVANTERDEN_CIKTI))
                     {
-                        sigorta = new Sigorta();
-                        sigorta.TasinmazId = tasinmaz.Id;
-                        sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                        sigorta.Save();
+                        Sigorta sigorta = new Sigorta();
+                        sigorta = sigorta.SelectByTasinmazId(tasinmaz.Id);
+                        if (sigorta == null)//henuz sigorta kaydi yok yeni sigorta yarat
+                        {
+                            sigorta = new Sigorta();
+                            sigorta.TasinmazId = tasinmaz.Id;
+                            sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
+                            sigorta.Save();
+                        }
+                        else
+                        {
+                            sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
+                            sigorta.Update();
+                        }
                     }
-                    else
-                    {
-                        sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                        sigorta.Update();
-                    }
+                    scope.Complete();
                 }
             }
 

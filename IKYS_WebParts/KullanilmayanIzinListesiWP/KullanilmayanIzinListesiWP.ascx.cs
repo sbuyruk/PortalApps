@@ -250,19 +250,19 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
                     row1.Controls.Add(iseGirisCell);
                     
                     TableHeaderCell izinDonemiCell = new TableHeaderCell();
-                    izinDonemiCell.Text = "Izin D�nemi";
+                    izinDonemiCell.Text = "İzin Dönemi";
                     row1.Controls.Add(izinDonemiCell);
 
                     TableHeaderCell izinHakkiCell = new TableHeaderCell();
-                    izinHakkiCell.Text = "Izin Hakki";
+                    izinHakkiCell.Text = "İzin Hakkı";
                     row1.Controls.Add(izinHakkiCell);
 
                     TableHeaderCell kullanilanIzinCell = new TableHeaderCell();
-                    kullanilanIzinCell.Text = "Kullanilan Izin";
+                    kullanilanIzinCell.Text = "Kullanılan İzin";
                     row1.Controls.Add(kullanilanIzinCell);
 
                     TableHeaderCell kalanIzinCell = new TableHeaderCell();
-                    kalanIzinCell.Text = "Kalan Izin";
+                    kalanIzinCell.Text = "Kalan İzin";
                     row1.Controls.Add(kalanIzinCell);
 
                     baslikCell.BorderStyle = BorderStyle.Solid;
@@ -358,7 +358,7 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
                     
                     TableHeaderCell toplamCell = new TableHeaderCell();
                     toplamCell.BorderStyle = BorderStyle.Solid;
-                    toplamCell.Text = toplam.ToString()+" G�n"; 
+                    toplamCell.Text = toplam.ToString()+" Gün"; 
 
                     toplamRow.Controls.Add(toplamLblCell);
                     toplamRow.Controls.Add(toplamCell);
@@ -444,21 +444,21 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
 
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sira";
+            siraCell.Text = "Sıra";
             TableHeaderCell adiSoyadiCell = new TableHeaderCell();
-            adiSoyadiCell.Text = "Adi Soyadi";
+            adiSoyadiCell.Text = "Adı Soyadı";
             TableHeaderCell goreviCell = new TableHeaderCell();
-            goreviCell.Text = "G�revi";
+            goreviCell.Text = "Görevi";
             TableHeaderCell izinBasTarCell = new TableHeaderCell();
-            izinBasTarCell.Text = "Ise Giris Tarihi";
+            izinBasTarCell.Text = "İşe Giriş Tarihi";
             TableHeaderCell izinDonemiCell = new TableHeaderCell();
-            izinDonemiCell.Text = "Izin D�nemi";
+            izinDonemiCell.Text = "İzin Dönemi";
             TableHeaderCell izinHakkiCell = new TableHeaderCell();
-            izinHakkiCell.Text = "Izin Hakki";
+            izinHakkiCell.Text = "İzin Hakkı";
             TableHeaderCell kullanilanIzinCell = new TableHeaderCell();
-            kullanilanIzinCell.Text = "Kullanilan Izin";
+            kullanilanIzinCell.Text = "Kullanılan İzin";
             TableHeaderCell kalanIzinCell = new TableHeaderCell();
-            kalanIzinCell.Text = "Kalan Izin";
+            kalanIzinCell.Text = "Kalan İzin";
 
             th.Controls.Add(siraCell);
             th.Controls.Add(adiSoyadiCell);

@@ -69,7 +69,11 @@ namespace IKYS_WebParts.BekleyenIslemlerWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton ModalInfoBtn;
+        protected global::System.Web.UI.WebControls.LinkButton ModalOnaylaBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton ModalReddetBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
@@ -81,15 +85,23 @@ namespace IKYS_WebParts.BekleyenIslemlerWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton ReddetBtn;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton OnaylaBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        protected global::System.Web.UI.WebControls.Label InceleLbl;
+        protected global::System.Web.UI.WebControls.TextBox ReddetAciklamaTxt;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label ReddetLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton ReddetBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlTable GorevInfoTable;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
@@ -202,7 +214,8 @@ namespace IKYS_WebParts.BekleyenIslemlerWP {
                             <th>Transfer</th>
                             <th>Konaklama</th>
                             <th>Açıklama</th>
-                            <th>Onayla / Reddet</th>
+                            <th>Onayla</th>
+                            <th>Reddet</th>
                             <th>İncele</th>
                         </tr>
                     </thead>
@@ -226,17 +239,34 @@ namespace IKYS_WebParts.BekleyenIslemlerWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlModalInfoBtn() {
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlModalOnaylaBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.ModalInfoBtn = @__ctrl;
+            this.ModalOnaylaBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "ModalInfoBtn";
+            @__ctrl.ID = "ModalOnaylaBtn";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "";
             @__ctrl.OnClientClick = "{return true;};";
-            @__ctrl.Click -= new System.EventHandler(this.ModalInfoBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.ModalInfoBtn_Click);
+            @__ctrl.Click -= new System.EventHandler(this.ModalOnaylaBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.ModalOnaylaBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlModalReddetBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.ModalReddetBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "ModalReddetBtn";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Text = "";
+            @__ctrl.OnClientClick = "{return true;};";
+            @__ctrl.Click -= new System.EventHandler(this.ModalReddetBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.ModalReddetBtn_Click);
             return @__ctrl;
         }
         
@@ -273,23 +303,6 @@ namespace IKYS_WebParts.BekleyenIslemlerWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlReddetBtn() {
-            global::System.Web.UI.WebControls.LinkButton @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.ReddetBtn = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "ReddetBtn";
-            @__ctrl.CssClass = "btn btn-danger";
-            @__ctrl.CausesValidation = false;
-            @__ctrl.Text = "Reddet";
-            @__ctrl.Click -= new System.EventHandler(this.ReddetBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.ReddetBtn_Click);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlOnaylaBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -307,13 +320,59 @@ namespace IKYS_WebParts.BekleyenIslemlerWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControlInceleLbl() {
+        private global::System.Web.UI.WebControls.TextBox @__BuildControlReddetAciklamaTxt() {
+            global::System.Web.UI.WebControls.TextBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TextBox();
+            this.ReddetAciklamaTxt = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "ReddetAciklamaTxt";
+            @__ctrl.CssClass = "form-control";
+            @__ctrl.TextMode = global::System.Web.UI.WebControls.TextBoxMode.MultiLine;
+            @__ctrl.Rows = 3;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Placeholder", "Reddetme sebebini giriniz...");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlReddetLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
-            this.InceleLbl = @__ctrl;
+            this.ReddetLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "InceleLbl";
+            @__ctrl.ID = "ReddetLbl";
             @__ctrl.CssClass = "col-form-label";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlReddetBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.ReddetBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "ReddetBtn";
+            @__ctrl.CssClass = "btn btn-danger";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Text = "Reddet";
+            @__ctrl.Click -= new System.EventHandler(this.ReddetBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.ReddetBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlTable @__BuildControlGorevInfoTable() {
+            global::System.Web.UI.HtmlControls.HtmlTable @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlTable();
+            this.GorevInfoTable = @__ctrl;
+            @__ctrl.ID = "GorevInfoTable";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table table-bordered table-striped");
+            @__ctrl.Width = "100%";
             return @__ctrl;
         }
         
@@ -363,26 +422,35 @@ namespace IKYS_WebParts.BekleyenIslemlerWP {
             @__ctrl6 = this.@__BuildControlparamGorevOnayIdLbl();
             @__parser.AddParsedSubObject(@__ctrl6);
             global::System.Web.UI.WebControls.LinkButton @__ctrl7;
-            @__ctrl7 = this.@__BuildControlModalInfoBtn();
+            @__ctrl7 = this.@__BuildControlModalOnaylaBtn();
             @__parser.AddParsedSubObject(@__ctrl7);
             global::System.Web.UI.WebControls.LinkButton @__ctrl8;
-            @__ctrl8 = this.@__BuildControlModalInceleBtn();
+            @__ctrl8 = this.@__BuildControlModalReddetBtn();
             @__parser.AddParsedSubObject(@__ctrl8);
-            global::System.Web.UI.WebControls.Label @__ctrl9;
-            @__ctrl9 = this.@__BuildControlOnayLbl();
+            global::System.Web.UI.WebControls.LinkButton @__ctrl9;
+            @__ctrl9 = this.@__BuildControlModalInceleBtn();
             @__parser.AddParsedSubObject(@__ctrl9);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl10;
-            @__ctrl10 = this.@__BuildControlReddetBtn();
+            global::System.Web.UI.WebControls.Label @__ctrl10;
+            @__ctrl10 = this.@__BuildControlOnayLbl();
             @__parser.AddParsedSubObject(@__ctrl10);
             global::System.Web.UI.WebControls.LinkButton @__ctrl11;
             @__ctrl11 = this.@__BuildControlOnaylaBtn();
             @__parser.AddParsedSubObject(@__ctrl11);
-            global::System.Web.UI.WebControls.Label @__ctrl12;
-            @__ctrl12 = this.@__BuildControlInceleLbl();
+            global::System.Web.UI.WebControls.TextBox @__ctrl12;
+            @__ctrl12 = this.@__BuildControlReddetAciklamaTxt();
             @__parser.AddParsedSubObject(@__ctrl12);
-            global::System.Web.UI.UpdateProgress @__ctrl13;
-            @__ctrl13 = this.@__BuildControlupdateProgress();
+            global::System.Web.UI.WebControls.Label @__ctrl13;
+            @__ctrl13 = this.@__BuildControlReddetLbl();
             @__parser.AddParsedSubObject(@__ctrl13);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl14;
+            @__ctrl14 = this.@__BuildControlReddetBtn();
+            @__parser.AddParsedSubObject(@__ctrl14);
+            global::System.Web.UI.HtmlControls.HtmlTable @__ctrl15;
+            @__ctrl15 = this.@__BuildControlGorevInfoTable();
+            @__parser.AddParsedSubObject(@__ctrl15);
+            global::System.Web.UI.UpdateProgress @__ctrl16;
+            @__ctrl16 = this.@__BuildControlupdateProgress();
+            @__parser.AddParsedSubObject(@__ctrl16);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -399,6 +467,10 @@ namespace IKYS_WebParts.BekleyenIslemlerWP {
         var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
         myModalInstance.show();
     }
+    function OpenModalReddet() {
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalReddetDiv'));
+        myModalInstance.show();
+    }
     function OpenModalIncele() {
         var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalInceleDiv'));
         myModalInstance.show();
@@ -408,10 +480,17 @@ namespace IKYS_WebParts.BekleyenIslemlerWP {
                          @__w.Write( paramGorevOnayIdLbl.ClientID);
 
             @__w.Write("\').value = gorevOnayId;\r\n        document.getElementById(\'");
-                         @__w.Write( ModalInfoBtn.ClientID);
+                         @__w.Write( ModalOnaylaBtn.ClientID);
 
-            @__w.Write("\').click();\r\n        OpenModalOnay();\r\n    }\r\n    function OpenIncele(gorevOnayId" +
+            @__w.Write("\').click();\r\n        OpenModalOnay();\r\n    }\r\n    function OpenReddet(gorevOnayId" +
                     ") {\r\n        document.getElementById(\'");
+                         @__w.Write( paramGorevOnayIdLbl.ClientID);
+
+            @__w.Write("\').value = gorevOnayId;\r\n        document.getElementById(\'");
+                         @__w.Write( ModalReddetBtn.ClientID);
+
+            @__w.Write("\').click();\r\n        OpenModalReddet();\r\n    }\r\n    function OpenIncele(gorevOnay" +
+                    "Id) {\r\n        document.getElementById(\'");
                          @__w.Write( paramGorevOnayIdLbl.ClientID);
 
             @__w.Write("\').value = gorevOnayId;\r\n        document.getElementById(\'");
@@ -445,7 +524,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP {
             parameterContainer.Controls[2].RenderControl(@__w);
             @__w.Write("\r\n            </h3>\r\n        </div>\r\n        <div class=\"card-body\">\r\n           " +
                     " <div class=\"section-title\"><i class=\"bi bi-person-badge\"></i> Amir Onayı Bekley" +
-                    "en Yurt İçi / Yurt Dışı Görevler</div>\r\n            ");
+                    "en Yurt İçi / Yurt Dışı GörevlerX</div>\r\n            ");
             parameterContainer.Controls[3].RenderControl(@__w);
             @__w.Write("\r\n            ");
             parameterContainer.Controls[4].RenderControl(@__w);
@@ -455,6 +534,8 @@ namespace IKYS_WebParts.BekleyenIslemlerWP {
             parameterContainer.Controls[6].RenderControl(@__w);
             @__w.Write("\r\n                ");
             parameterContainer.Controls[7].RenderControl(@__w);
+            @__w.Write("\r\n                ");
+            parameterContainer.Controls[8].RenderControl(@__w);
             @__w.Write(@"
             </div>
         </div>
@@ -462,8 +543,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP {
         </div>
     </div>
 
-    <!-- Onay Modal -->
-
+    
     <div class=""modal"" id=""ModalOnayDiv"" role=""dialog"">
         <div class=""modal-dialog modal-dialog-centered"">
             <!-- Modal content-->
@@ -474,13 +554,34 @@ namespace IKYS_WebParts.BekleyenIslemlerWP {
                 </div>
                 <div class=""modal-body"">
                     ");
-            parameterContainer.Controls[8].RenderControl(@__w);
+            parameterContainer.Controls[9].RenderControl(@__w);
             @__w.Write("\r\n                </div>\r\n                <div class=\"modal-footer\">\r\n           " +
                     "         <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\"" +
                     ">Vazgeç</button>\r\n                    ");
-            parameterContainer.Controls[9].RenderControl(@__w);
-            @__w.Write("\r\n                    ");
             parameterContainer.Controls[10].RenderControl(@__w);
+            @__w.Write(@"
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class=""modal"" id=""ModalReddetDiv"" role=""dialog"">
+        <div class=""modal-dialog modal-dialog-centered"">
+            <!-- Modal content-->
+            <div class=""modal-content"" style=""width: 550px;"">
+                <div class=""modal-header"">
+                    <h5 class=""modal-title"">Görev Onayı</h5>
+                    <button type=""button"" class=""btn-close"" data-bs-dismiss=""modal"" aria-label=""Kapat""></button>
+                </div>
+                <div class=""modal-body"">
+                    ");
+            parameterContainer.Controls[11].RenderControl(@__w);
+            @__w.Write("\r\n                    ");
+            parameterContainer.Controls[12].RenderControl(@__w);
+            @__w.Write("\r\n                </div>\r\n                <div class=\"modal-footer\">\r\n           " +
+                    "         <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\"" +
+                    ">Vazgeç</button>\r\n                    ");
+            parameterContainer.Controls[13].RenderControl(@__w);
             @__w.Write(@"
                 </div>
             </div>
@@ -495,9 +596,11 @@ namespace IKYS_WebParts.BekleyenIslemlerWP {
                     <button type=""button"" class=""btn-close"" data-bs-dismiss=""modal"" aria-label=""Kapat""></button>
                 </div>
                 <div class=""modal-body"">
-                    ");
-            parameterContainer.Controls[11].RenderControl(@__w);
+                    <div class=""Table"">
+                        ");
+            parameterContainer.Controls[14].RenderControl(@__w);
             @__w.Write(@"
+                    </div>
                 </div>
                 <div class=""modal-footer"">
                     <button type=""button"" class=""btn btn-secondary"" data-bs-dismiss=""modal"">Kapat</button>
@@ -507,7 +610,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP {
     </div>
 
     ");
-            parameterContainer.Controls[12].RenderControl(@__w);
+            parameterContainer.Controls[15].RenderControl(@__w);
             @__w.Write("\r\n</div>\r\n");
         }
         

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Globalization;
+using System.Linq;
 using System.Web.Script.Serialization;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
@@ -167,7 +168,7 @@ namespace TBYS_WebParts.SharePointLibraryFileListWP
         private void TabloOlustur(string fileName)
         {
             List<SPFile> fileList = DosyaListesiniGetir(LibraryNameQS, fileName);
-            var jsonData = ToJSON(fileList, fileName); //veri çekilip json a çeviriliyor
+            var jsonData = ToJSON(fileList, fileName); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -182,7 +183,7 @@ namespace TBYS_WebParts.SharePointLibraryFileListWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiginde
+                        'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
@@ -224,23 +225,10 @@ namespace TBYS_WebParts.SharePointLibraryFileListWP
         }
         private bool DosyaVarMi(string libName, string fileName)
         {
-            bool isDosyaBulundu = false;
-            SPList list = SPContext.Current.Web.Lists[libName];
-            SPQuery query = new SPQuery();
-            query.ViewFields = @"<FieldRef Name='FileLeafRef' />";
-            query.Query = @"<Where>
-                          <Eq>
-                            <FieldRef Name='FileLeafRef' />
-                            <Value Type='File'>" + fileName + @"</Value>
-                          </Eq>
-                        </Where>";
-            SPListItemCollection collection = list.GetItems(query);
-
-            if (collection.Count > 0)
-            {
-                isDosyaBulundu = true;
-            }
-            return isDosyaBulundu;
+            SPWeb web = SPContext.Current.Web;
+            string fileUrl = web.Url + "/" + libName + "/" + fileName;
+            SPFile file = web.GetFile(fileUrl);
+            return file != null && file.Exists;
         }
         private bool DosyayiSPListesindenSil(string libName, string fileName)
         {
@@ -273,35 +261,17 @@ namespace TBYS_WebParts.SharePointLibraryFileListWP
         }
         private List<SPFile> DosyaListesiniGetir(string libName, string fileName)
         {
-            string newFileUrl = string.Empty;
             List<SPFile> lstFile = new List<SPFile>();
-            string siteUrl = SPContext.Current.Web.Url;
-            using (SPSite spSite = new SPSite(siteUrl))
-            {
-                SPList list = SPContext.Current.Web.Lists[libName];
-                SPQuery query = new SPQuery();
-                query.ViewFields = @"<FieldRef Name='FileLeafRef' />";
-                query.Query =
-                  @"< Where >
-                        < Contains >
-                            < FieldRef Name = 'Title' />
-                            < Value Type = 'File' > " + fileName + @" </ Value >
-                        </ Contains >
-                    </ Where >
-                    <OrderBy>
-                        <FieldRef Name='Modified' Ascending='False'/>
-                    </OrderBy>";
-                SPListItemCollection collection = list.GetItems(query);
-                foreach (SPListItem item in collection)
-                {
-                    if (item.Name.Contains(fileName))
-                    {
-                        lstFile.Add(item.File);
-                    }
-                }
+            SPWeb web = SPContext.Current.Web;
+            SPList list = web.Lists[libName];
+            SPFolder folder = list.RootFolder;
 
-                return lstFile;
-            }
+            var matchedFiles = folder.Files.Cast<SPFile>()
+                .Where(f => f.Name.Contains(fileName))
+                .OrderByDescending(f => f.TimeLastModified);
+
+            lstFile.AddRange(matchedFiles);
+            return lstFile;
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {

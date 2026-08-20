@@ -170,11 +170,11 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         {
             DateTime bugun = DateTime.Today;
 
-            Parafe1Txt.Text = @"…./" + bugun.ToString("MM") + @"/" + bugun.Year + " Eml.Ynt.Kd.Uzm.Z.ÇALIS";
-            Parafe2Txt.Text = @"…./" + bugun.ToString("MM") + @"/" + bugun.Year + " Ins.Eml.Ynt.S.Md.M.TASKALDIRAN";
-            KoordineTxt.Text = @"…./" + bugun.ToString("MM") + @"/" + bugun.Year + " Huk.Müs.E.SENGÜL";
+            Parafe1Txt.Text = @"â€¦./" + bugun.ToString("MM") + @"/" + bugun.Year + " Eml.Ynt.Kd.Uzm.Z.Ã‡ALIS";
+            Parafe2Txt.Text = @"â€¦./" + bugun.ToString("MM") + @"/" + bugun.Year + " Ins.Eml.Ynt.S.Md.M.TASKALDIRAN";
+            KoordineTxt.Text = @"â€¦./" + bugun.ToString("MM") + @"/" + bugun.Year + " Huk.MÃ¼s.E.SENGÃœL";
             ImzalayanTxt.Text = @"Erhan SIPAHIOGLU";
-            ImzalayanMakamTxt.Text = @"Genel Müdür Yardimcisi";
+            ImzalayanMakamTxt.Text = @"Genel MÃ¼dÃ¼r Yardimcisi";
             EvrakTarihiTxt.Text = bugun.ToString("dd") + " " + bugun.ToString("MMMM") + " " + bugun.Year;
 
             EvrakSayisiYiliTxt.Text = bugun.ToString("yy");
@@ -258,7 +258,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
                 //    }
 
                 //}
-                string artisOrani = "%" + tufe.ToString("N", culturInfo) + " (TÜFE)";
+                string artisOrani = "%" + tufe.ToString("N", culturInfo) + " (TÃœFE)";
                 //DateTime bastar = string.IsNullOrEmpty(kiraSozlesmeDao.SozBasTar.ConvertToDatetimeEmptyIfNull()) ? DateTime.Today : kiraSozlesmeDao.SozBasTar;
                 //DateTime yenibastar = bastar.AddYears(1);
                 //if ((yenibastar >= ProjeConstants.SINIRLIKIRAARTISI_BASLAMATARIHI) &&
@@ -322,7 +322,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         {
             decimal tufe = 1M;
             YasalFaiz yasalFaiz = new YasalFaiz();
-            //tarih = tarih.AddMonths(1);//bir önceki ay geliyor
+            //tarih = tarih.AddMonths(1);//bir Ã¶nceki ay geliyor
             //DateTime gelecekAy = DateTime.Today.AddMonths(1);
             yasalFaiz = yasalFaiz.SelectByYilAy(tarih.Year, tarih.Month);
             if (yasalFaiz != null)
@@ -416,12 +416,12 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             return isYaziOlusturuldu;
         }
         /// <summary>
-        /// Template dosyasini aç
+        /// Template dosyasini aÃ§
         /// Paragraflari kopyala
-        /// Yeni bir stream içine koy
-        /// Yeni stream içinde veritabanindan gelen verilere göre yeni paragraflar olustur AddData2DestinationStream()
+        /// Yeni bir stream iÃ§ine koy
+        /// Yeni stream iÃ§inde veritabanindan gelen verilere gÃ¶re yeni paragraflar olustur AddData2DestinationStream()
         /// SharePointe kaydet
-        /// Yeni dosyalar için baglanti olustur
+        /// Yeni dosyalar iÃ§in baglanti olustur
         /// </summary>
         /// <param name="dosyaAdi"></param>
         /// <returns></returns>
@@ -463,27 +463,15 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         }
         private MemoryStream GetTemplateStream(string templateFileName)
         {
-            string newFileUrl = string.Empty;
-
             string siteUrl = SPContext.Current.Web.Url;
             using (SPSite spSite = new SPSite(siteUrl))
+            using (SPWeb web = spSite.OpenWeb())
             {
-                Console.WriteLine("Querying for Test.docx");
-                SPList list = SPContext.Current.Web.Lists[ProjeConstants.TBYSBELGELERI_LIB];
-                SPQuery query = new SPQuery();
-                query.ViewFields = @"<FieldRef Name='FileLeafRef' />";
-                query.Query =
-                  @"<Where>
-                          <Eq>
-                            <FieldRef Name='FileLeafRef' />
-                            <Value Type='File'>" + templateFileName + @"</Value>
-                          </Eq>
-                        </Where>";
-                SPListItemCollection collection = list.GetItems(query);
+                string fileUrl = web.Url + "/" + ProjeConstants.TBYSBELGELERI_LIB + "/" + templateFileName;
                 MemoryStream memStr = new MemoryStream();
-                if (collection.Count > 0)
+                SPFile file = web.GetFile(fileUrl);
+                if (file != null && file.Exists)
                 {
-                    SPFile file = collection[0].File;
                     byte[] byteArray = file.OpenBinary();
                     memStr.Write(byteArray, 0, byteArray.Length);
                 }
@@ -530,8 +518,8 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
                     ilcesi = row["Ilcesi"].ToString();
 
                     // %25 olayi
-                    string artisOraniVar = "Tüketici Fiyat Endeksi (TÜFE) on iki aylik ortalamalara göre %" +tufe;
-                    string artisOrani = "%" + TufeTxt.Text + " (TÜFE)";
+                    string artisOraniVar = "TÃ¼ketici Fiyat Endeksi (TÃœFE) on iki aylik ortalamalara gÃ¶re %" +tufe;
+                    string artisOrani = "%" + TufeTxt.Text + " (TÃœFE)";
                     DateTime bastar = string.IsNullOrEmpty(sozBasTar) ? DateTime.Today : sozBasTar.ConvertToDatetime();
                     DateTime yenibastar = bastar.AddYears(1);
                     if ((yenibastar >= ProjeConstants.SINIRLIKIRAARTISI_BASLAMATARIHI) &&
@@ -540,7 +528,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
                     {
                         yeniKiraBedeli = Math.Round(kiraBedeli + kiraBedeli * ProjeConstants.SINIRLIKIRAARTISI_ORANI / 100);
                         artisOrani = "%" + ProjeConstants.SINIRLIKIRAARTISI_ORANI.ToString("N", culturInfo) ;
-                        artisOraniVar = "6098 sayili Türk Borçlar Kanununa eklenen geçici madde kapsaminda yeni dönem kiranizin " + artisOrani;
+                        artisOraniVar = "6098 sayili TÃ¼rk BorÃ§lar Kanununa eklenen geÃ§ici madde kapsaminda yeni dÃ¶nem kiranizin " + artisOrani;
                     }
                     else
                     {
@@ -565,7 +553,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
                     keyValues.Add("YeniBedelVar", yeniKiraBedeli.ToString("N", culturInfo) + " TL ");
                     keyValues.Add("TufeVar", "%" + TufeTxt.Text);
                     keyValues.Add("OdemeSekliVar", odemeSekli.ToLower());
-                    keyValues.Add("SonOdemeVar", odemeSekli.Equals(ProjeConstants.KIRA_ODMSEKLI_YILLIK)? "sözlesmede belirlenen ayin son mesai gününe": "her ayin en son mesai günü aksamina");
+                    keyValues.Add("SonOdemeVar", odemeSekli.Equals(ProjeConstants.KIRA_ODMSEKLI_YILLIK)? "sÃ¶zlesmede belirlenen ayin son mesai gÃ¼nÃ¼ne": "her ayin en son mesai gÃ¼nÃ¼ aksamina");
                     keyValues.Add("ArtisOraniVar", artisOraniVar);
 
                     keyValues.Add("ImzaVar", ImzalayanTxt.Text);
@@ -670,7 +658,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
                 {
                     string message = string.Join(Environment.NewLine, uzunAdresliler);
                     MessageHelper.PublishMessage(message + Environment.NewLine +
-                        " adresi çok uzun oldugundan kesilerek kisaltildi. Lütfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
+                        " adresi Ã§ok uzun oldugundan kesilerek kisaltildi. LÃ¼tfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
                 }
             }
 
