@@ -293,6 +293,7 @@ namespace Utility.ProjeGlobal
         public const string PAGE_MAAS_ARTISI = "MaasArtisi.aspx";
         public const string PAGE_MAAS_OLUSTURMA = "MaasOlusturma.aspx";
         public const string PAGE_HARCIRAH_GIRIS = "HarcirahGiris.aspx";
+        public const string PAGE_BEKLEYENISLEMLER = "BekleyenIslemler.aspx";
         //Bolge
         public const string PAGE_BOLGETASINMAZ_LIST = "BolgeTasinmazListesi.aspx";
         public const string PAGE_BOLGETASINMAZ_KARTI = "BolgeTasinmazKarti.aspx";

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Linq;
 using System.Transactions;
 using System.Web.Script.Serialization;
 using System.Web.UI;
@@ -154,6 +155,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             if (tasinmaz != null)
             {
                 AdresLbl.Text = tasinmaz.Adres;
+                Tasinmaz.SatisPlaniDurumu satisPlaniDurumu = (Tasinmaz.SatisPlaniDurumu)tasinmaz.SatisPlani;
+                SatisPlaniLbl.Text = UtilityHelper.GetEnumDisplayName(satisPlaniDurumu); ;
                 SerhBeyanIrtifakTabloOlustur(tasinmaz);
                 if (tasinmaz.AltBolum)
                 {
@@ -280,6 +283,20 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             KiraDurumuDDLDoldur();
             KullanimSekliDDLDoldur();
             SigortaDurumuDDLDoldur();
+            SatisPlaniDDLDoldur();
+        }
+        private void SatisPlaniDDLDoldur()
+        {
+            SatisPlaniDDL.Items.Clear();
+            var satisPlaniDurumlari = Enum.GetValues(typeof(Tasinmaz.SatisPlaniDurumu))
+                           .Cast<Tasinmaz.SatisPlaniDurumu>()
+                           .ToList();
+            foreach (var item in satisPlaniDurumlari)
+            {
+                int tipiInt = (int)item;
+                string displayName = UtilityHelper.GetEnumDisplayName(item);
+                SatisPlaniDDL.Items.Add(new ListItem(displayName, tipiInt.ToString()));
+            }
         }
         private void IlDDLDoldur()
         {
@@ -466,7 +483,9 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 YapiTarziTxt.Text = tasinmaz.YapiTarzi;
                 InsaatinSinifiTxt.Text = tasinmaz.InsaatinSinifi;
                 ArazininCinsiTxt.Text = tasinmaz.ArazininCinsi;
-    
+                SatisPlaniDDL.SelectedValue = tasinmaz.SatisPlani.ToString();
+                SatisPlaniAciklamaTxt.Text = tasinmaz.SatisPlaniAciklama;
+
                 formDolduMu = true;
             }
             catch (Exception ex)
@@ -551,6 +570,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             tasinmaz.YapiTarzi = YapiTarziTxt.Text;
             tasinmaz.InsaatinSinifi = InsaatinSinifiTxt.Text;
             tasinmaz.ArazininCinsi = ArazininCinsiTxt.Text;
+            tasinmaz.SatisPlani = SatisPlaniDDL.SelectedValue.ConvertToInt();
+            tasinmaz.SatisPlaniAciklama = SatisPlaniAciklamaTxt.Text;
 
             using (TransactionScope scope = new TransactionScope())
             {
@@ -671,6 +692,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 tasinmaz.ArazininCinsi = ArazininCinsiTxt.Text;
                 tasinmaz.BagimsizBolumSayisi = BagimsizBolumSayisiTxt.Text.ConvertToInt();
                 tasinmaz.MalikSayisi = MalikSayisiTxt.Text.ConvertToInt();
+                tasinmaz.SatisPlani = SatisPlaniDDL.SelectedValue.ConvertToInt();
+                tasinmaz.SatisPlaniAciklama = SatisPlaniAciklamaTxt.Text;
 
                 using (TransactionScope scope = new TransactionScope())
                 {

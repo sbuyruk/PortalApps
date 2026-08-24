@@ -76,7 +76,7 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -129,7 +129,7 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP
 
 
                 envanterdenCikanListesiListItem.Tasinmaz = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZ_GIRIS + "?EnvanterdeMi=0&DestinationApp=TD&SenderApp=STL&TasinmazId=" + tasinmazId + " class='btn btn-outline-info'>Tasinmaz</a>";
-                envanterdenCikanListesiListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZ_ENVANTERDEN_CIKARMA + "?EnvanterdeMi=0&DestinationApp=ECD&SenderApp=STL&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Düzenle</a>";
+                envanterdenCikanListesiListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZ_ENVANTERDEN_CIKARMA + "?EnvanterdeMi=0&DestinationApp=ECD&SenderApp=STL&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>DÃ¼zenle</a>";
                 list.Add(envanterdenCikanListesiListItem);
             }
             return list;
@@ -148,7 +148,7 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP
             jQuery(document).ready(function () {
 
                     jQuery('#CustomDataTable').DataTable({
-            'initComplete': function (settings, json) {//tablo yüklendiginde
+            'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                 var api = this.api();
                 var row = api.row(function (idx, data, node) { //secilen satira gider
                     return data['TasinmazId'] == " + SecilenIdQS + @";

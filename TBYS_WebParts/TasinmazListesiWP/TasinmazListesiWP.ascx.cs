@@ -185,7 +185,32 @@ namespace TBYS_WebParts.TasinmazListesiWP
         {
             Tasinmaz tasinmaz = new Tasinmaz();
             DataTable dataTable = tasinmaz.SelectAllReturnDataTable();
+            SatisPlaniKolonunuDisplayAdinaCevir(dataTable);
             return dataTable;
+        }
+        private void SatisPlaniKolonunuDisplayAdinaCevir(DataTable dataTable)
+        {
+            if (dataTable == null || !dataTable.Columns.Contains("SatisPlani"))
+                return;
+
+            int columnIndex = dataTable.Columns["SatisPlani"].Ordinal;
+            dataTable.Columns.Add("SatisPlaniText", typeof(string));
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                if (row["SatisPlani"] == DBNull.Value)
+                    continue;
+
+                int satisPlaniInt = row["SatisPlani"].ConvertToInt();
+                Tasinmaz.SatisPlaniDurumu satisPlaniDurumu = (Tasinmaz.SatisPlaniDurumu)satisPlaniInt;
+                row["SatisPlaniText"] = UtilityHelper.GetEnumDisplayName(satisPlaniDurumu);
+            }
+
+            dataTable.Columns.Remove("SatisPlani");
+            dataTable.Columns["SatisPlaniText"].SetOrdinal(columnIndex);
+            dataTable.Columns["SatisPlaniText"].ColumnName = "Taşınmaza Yapılacak İşlem";
+            if (dataTable.Columns.Contains("SatisPlaniAciklama"))
+                dataTable.Columns["SatisPlaniAciklama"].ColumnName = "Taşınmaza Yapılacak İşlem Açıklaması";
         }
         private string CreateDataTable(string jsonData)
         {

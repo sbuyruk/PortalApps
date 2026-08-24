@@ -15,11 +15,13 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">BildirimlerX</h5>
+                <h5 class="modal-title">Bildirimler</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="KapatX"></button>
             </div>
-            <div class="modal-body">
-                <asp:Label ID="BildirimLbl" runat="server" CssClass="col-form-label"></asp:Label>
+            <div class="modal-body" style="font-size: 1.15rem;">
+                <asp:Label ID="BildirimLbl" runat="server" CssClass="col-form-label" style="font-size: inherit;"></asp:Label>
+                <%-- Amir olarak Onaylamanız gereken Görevler --%>
+                <asp:Label ID="AmirOnayLbl" runat="server" CssClass="col-form-label" style="font-size: inherit;"></asp:Label>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">VazgeçX</button>
@@ -54,6 +56,16 @@
         modalEl.dataset.bildirimInitialized = 'true';
     }
 
+    function ShowBildirimModal() {
+        InitBildirimModal();
+        var modalEl = document.getElementById('ModalAcDiv');
+        if (!modalEl) {
+            return;
+        }
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
+        myModalInstance.show();
+    }
+
     if (document.readyState === 'interactive' || document.readyState === 'complete') {
         InitBildirimModal();
     } else {
@@ -65,6 +77,7 @@
     }
 
     window.InitBildirimModal = InitBildirimModal;
+    window.ShowBildirimModal = ShowBildirimModal;
 })();
 
 </script>

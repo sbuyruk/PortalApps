@@ -43,6 +43,10 @@ namespace Portal_WebParts.BildirimWP {
             "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label BildirimLbl;
         
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label AmirOnayLbl;
+        
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "18.0.0.0")]
         public static implicit operator global::System.Web.UI.TemplateControl(BildirimWP target) 
         {
@@ -59,6 +63,21 @@ namespace Portal_WebParts.BildirimWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BildirimLbl";
             @__ctrl.CssClass = "col-form-label";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "font-size: inherit;");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlAmirOnayLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.AmirOnayLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "AmirOnayLbl";
+            @__ctrl.CssClass = "col-form-label";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "font-size: inherit;");
             return @__ctrl;
         }
         
@@ -77,14 +96,18 @@ namespace Portal_WebParts.BildirimWP {
     <div class=""modal-dialog modal-dialog-centered"">
         <div class=""modal-content"">
             <div class=""modal-header"">
-                <h5 class=""modal-title"">BildirimlerX</h5>
+                <h5 class=""modal-title"">Bildirimler</h5>
                 <button type=""button"" class=""btn-close"" data-bs-dismiss=""modal"" aria-label=""KapatX""></button>
             </div>
-            <div class=""modal-body"">
+            <div class=""modal-body"" style=""font-size: 1.15rem;"">
                 "));
             global::System.Web.UI.WebControls.Label @__ctrl1;
             @__ctrl1 = this.@__BuildControlBildirimLbl();
             @__parser.AddParsedSubObject(@__ctrl1);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                \r\n                "));
+            global::System.Web.UI.WebControls.Label @__ctrl2;
+            @__ctrl2 = this.@__BuildControlAmirOnayLbl();
+            @__parser.AddParsedSubObject(@__ctrl2);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </div>\r\n            <div class=\"modal-footer\">\r\n                <bu" +
                         "tton type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">VazgeçX</bu" +
                         "tton>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<script type=\"t" +
@@ -99,12 +122,16 @@ namespace Portal_WebParts.BildirimWP {
                         "\n        }\r\n\r\n        btnEl.addEventListener(\'click\', function() {\r\n            " +
                         "var myModalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);\r\n           " +
                         " myModalInstance.show();\r\n        });\r\n\r\n        modalEl.dataset.bildirimInitial" +
-                        "ized = \'true\';\r\n    }\r\n\r\n    if (document.readyState === \'interactive\' || docume" +
-                        "nt.readyState === \'complete\') {\r\n        InitBildirimModal();\r\n    } else {\r\n   " +
-                        "     document.addEventListener(\'DOMContentLoaded\', InitBildirimModal);\r\n    }\r\n\r" +
-                        "\n    if (typeof _spBodyOnLoadFunctionNames !== \'undefined\') {\r\n        _spBodyOn" +
-                        "LoadFunctionNames.push(\'InitBildirimModal\');\r\n    }\r\n\r\n    window.InitBildirimMo" +
-                        "dal = InitBildirimModal;\r\n})();\r\n\r\n</script>"));
+                        "ized = \'true\';\r\n    }\r\n\r\n    function ShowBildirimModal() {\r\n        InitBildiri" +
+                        "mModal();\r\n        var modalEl = document.getElementById(\'ModalAcDiv\');\r\n       " +
+                        " if (!modalEl) {\r\n            return;\r\n        }\r\n        var myModalInstance = " +
+                        "bootstrap.Modal.getOrCreateInstance(modalEl);\r\n        myModalInstance.show();\r\n" +
+                        "    }\r\n\r\n    if (document.readyState === \'interactive\' || document.readyState ==" +
+                        "= \'complete\') {\r\n        InitBildirimModal();\r\n    } else {\r\n        document.ad" +
+                        "dEventListener(\'DOMContentLoaded\', InitBildirimModal);\r\n    }\r\n\r\n    if (typeof " +
+                        "_spBodyOnLoadFunctionNames !== \'undefined\') {\r\n        _spBodyOnLoadFunctionName" +
+                        "s.push(\'InitBildirimModal\');\r\n    }\r\n\r\n    window.InitBildirimModal = InitBildir" +
+                        "imModal;\r\n    window.ShowBildirimModal = ShowBildirimModal;\r\n})();\r\n\r\n</script>"));
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

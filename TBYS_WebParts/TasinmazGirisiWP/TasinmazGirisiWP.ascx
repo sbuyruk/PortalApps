@@ -49,9 +49,13 @@
                         <asp:Label CssClass="form-label " ID="AdiLbl" runat="server"></asp:Label>
                         <div class="form-group m-0 float-end me-2">
                             <asp:Label CssClass="form-control fw-semibold" ID="IdLbl" runat="server"></asp:Label>
+
                             <div class="form-group m-0 float-end">
                                 <asp:Label CssClass="form-control fw-semibold" ID="AdresLbl" runat="server"></asp:Label>
                             </div>
+                        </div>
+                        <div class="form-group m-0 float-end">
+                            <asp:Label CssClass="form-control  text-danger fw-semibold" ID="SatisPlaniLbl" runat="server"></asp:Label>
                         </div>
                         <div class="form-group m-0 float-end">
                             <asp:Label CssClass="form-control fw-semibold" ID="SorumluBolgeTxt" runat="server"></asp:Label>
@@ -75,9 +79,11 @@
                         <li class="nav-item" runat="server" id="TasinmazBilgileriNav">
                             <a class="nav-link" id="TasinmazBilgileriLi" data-bs-toggle="tab" href="#TasinmazBilgileriDiv">Taşınmaz Bilgileri</a>
                         </li>
-
                         <li runat="server" class="nav-item" id="DegerlemeNav">
                             <a class="nav-link" id="DegerlemeLi" data-bs-toggle="tab" href="#DegerlemeDiv">Değerleme Bilgileri</a>
+                        </li>
+                        <li runat="server" class="nav-item" id="SatisPlaniNav">
+                            <a class="nav-link" id="SatisPlaniLi" data-bs-toggle="tab" href="#SatisPlaniDiv">Taşınmaza Yapılacak İşlemler</a>
                         </li>
                     </ul>
 
@@ -505,29 +511,44 @@
                         </div>
                         <!-- 4.Tab Değerleme Bilgileri -->
                         <div class="tab-pane" role="tabpanel" id="DegerlemeDiv">
-                            <div class="row p-1">
-                                <div class="col-2 ">
-                                    <div class="form-group m-0 ">
-                                        <label class="form-label fw-semibold" for="MuhasebeyeKayitliDegerTxt">Muhs.Kayt.Değ.</label>
-                                        <input class="form-control input-money text-end" id="MuhasebeyeKayitliDegerTxt" runat="server" />
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="row p-1">
+                                        <div class="col-6 ">
+                                            <div class="form-group m-0 ">
+                                                <label class="form-label fw-semibold" for="MuhasebeyeKayitliDegerTxt">Muhs.Kayt.Değ.</label>
+                                                <input class="form-control input-money text-end" id="MuhasebeyeKayitliDegerTxt" runat="server" />
+                                            </div>
+                                            <div class="form-group m-0 ">
+                                                <label class="form-label fw-semibold" for="EmlakBeyanDegeriTxt">Eml.Bey.Değ.</label>
+                                                <input class="form-control input-money text-end" id="EmlakBeyanDegeriTxt" runat="server" />
+                                            </div>
+                                            <div class="form-group m-0 ">
+                                                <label class="form-label fw-semibold" for="YaklasikPiyasaDegeriTxt">Yak.Piyasa Değ.</label>
+                                                <input class="form-control input-money text-end" id="YaklasikPiyasaDegeriTxt" runat="server" />
+                                            </div>
+                                            <div class="form-group m-0 ">
+                                                <label class="form-label fw-semibold text-end" for="TahminiRayicDegeriTxt">Tah.Rayiç Değ.</label>
+                                                <input class="form-control input-money text-end" id="TahminiRayicDegeriTxt" runat="server" />
+                                            </div>
+                                        </div>
+                                        
                                     </div>
-                                    <div class="form-group m-0 ">
-                                        <label class="form-label fw-semibold" for="EmlakBeyanDegeriTxt">Eml.Bey.Değ.</label>
-                                        <input class="form-control input-money text-end" id="EmlakBeyanDegeriTxt" runat="server" />
-                                    </div>
-                                    <div class="form-group m-0 ">
-                                        <label class="form-label fw-semibold" for="YaklasikPiyasaDegeriTxt">Yak.Piyasa Değ.</label>
-                                        <input class="form-control input-money text-end" id="YaklasikPiyasaDegeriTxt" runat="server" />
-                                    </div>
-                                    <div class="form-group m-0 ">
-                                        <label class="form-label fw-semibold text-end" for="TahminiRayicDegeriTxt">Tah.Rayiç Değ.</label>
-                                        <input class="form-control input-money text-end" id="TahminiRayicDegeriTxt" runat="server" />
+                                    <div class="row p-1">
+                                        <div class="col pt-2">
+                                            <asp:LinkButton ID="KayitliDegerGetirBtn" CssClass="btn btn-outline-secondary" runat="server" CausesValidation="false" Text="Kayıtlı Değerleri Getir" Visible="true" OnClick="KayitliDegerGetirBtn_Click" />
+                                            <asp:LinkButton ID="AltBolumlerdenDegerAlBtn" CssClass="btn btn-outline-danger" runat="server" CausesValidation="false" Text="Alt Bölümlerden Değer Al" Visible="false" OnClick="AltBolumlerdenDegerAlBtn_Click" />
+                                            <asp:LinkButton ID="DegerleriKaydetBtn" CssClass="btn btn-outline-success" runat="server" CausesValidation="false" Text="Değerleri Kaydet" Visible="false" OnClick="DegerleriKaydetBtn_Click" />
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-10" id="BagimsizBolumTabloContainer" runat="server" visible="false">
+                                <div class="col-8" id="BagimsizBolumTabloContainer" runat="server" visible="false">
                                     <div class="form-group">
                                         <table id="CustomDataTable" class="table table-sm table-striped table-bordered" width="100%">
                                             <thead>
+                                                <tr>
+                                                    <th>Taşınmaza Ait Alt Bölümler</th>
+                                                </tr>
                                                 <tr>
                                                     <th>Bölüm No</th>
                                                     <th>Kullanım Amacı</th>
@@ -542,16 +563,22 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row p-1">
-                                <div class="col pt-2">
-                                    <asp:LinkButton ID="KayitliDegerGetirBtn" CssClass="btn btn-outline-secondary" runat="server" CausesValidation="false" Text="Kayıtlı Değerleri Getir" Visible="true" OnClick="KayitliDegerGetirBtn_Click" />
-                                    <asp:LinkButton ID="AltBolumlerdenDegerAlBtn" CssClass="btn btn-outline-danger" runat="server" CausesValidation="false" Text="Alt Bölümlerden Değer Al" Visible="false" OnClick="AltBolumlerdenDegerAlBtn_Click" />
-                                    <asp:LinkButton ID="DegerleriKaydetBtn" CssClass="btn btn-outline-success" runat="server" CausesValidation="false" Text="Değerleri Kaydet" Visible="false" OnClick="DegerleriKaydetBtn_Click" />
-                                </div>
-                            </div>
+                           
 
                         </div>
-
+                         <!-- 5.Tab Satış Planı-Taşınmaza Yapılacak İşlemler -->
+                        <div class="tab-pane" role="tabpanel" id="SatisPlaniDiv">
+                            <div class="col-4">
+                                <div class="form-group m-0 ">
+                                    <label class="form-label fw-semibold" for="SatisPlaniDDL">Taşınmaza Yapılacak İşlem</label>
+                                    <asp:DropDownList ID="SatisPlaniDDL" runat="server" CssClass="form-control form-select fw-semibold"></asp:DropDownList>
+                                </div>
+                                <div class="form-group m-0 ">
+                                    <label class="form-label fw-semibold" for="SatisPlaniAciklamaTxt">Yapılacak İşlem Açıklaması</label>
+                                    <asp:TextBox ID="SatisPlaniAciklamaTxt" runat="server" class="form-control" TextMode="MultiLine" Rows="6" ToolTip="Taşınmaza Yapılacak İşlem Açıklama"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>

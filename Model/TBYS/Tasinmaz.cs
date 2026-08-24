@@ -1,6 +1,7 @@
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 using DAO.Ortak;
@@ -12,6 +13,41 @@ namespace Model.TBYS
     [Serializable]
     public class Tasinmaz : ParentClass
     {
+        public enum SatisPlaniDurumu
+        {
+            [Display(Name = "Envanterde Tutulacak Taşınmaz")]
+            HenuzIslemiPlanlanmamis = 0,
+
+            [Display(Name = "Satışı Yapılacak Taşınmaz")]
+            SatisiYapilacak = 1,
+
+            [Display(Name = "Satışı Planlanan Taşınmaz")]
+            IkinciPlandaSatisDusunulen = 2,
+
+            [Display(Name = "Proje Geliştirilebilecek Taşınmaz")]
+            ProjeGelistirilebilecek = 3,
+
+            [Display(Name = "Hukuki İşlem Gereken Taşınmaz")]
+            HukukiIslemGereken = 4,
+
+            [Display(Name = "Hukuki İşlemi Devam Eden Taşınmaz")]
+            HukukiIslemiDevamEden = 5,
+
+            [Display(Name = "Kamulaştırılacak Taşınmaz")]
+            KamulaTasinmazlar = 6,
+
+            [Display(Name = "Satış Kabiliyeti Olmayan Taşınmaz")]
+            SatisKabiliyetiOlmayan = 7,
+
+            [Display(Name = "Sorunlu Taşınmaz")]
+            SorunluTasinmazlar = 8,
+
+            [Display(Name = "Yeniden İnşa")]
+            YenidenInsa = 9
+
+        }
+        public int SatisPlani { get; set; }
+        public string SatisPlaniAciklama { get; set; }
         public string Cinsi { get; set; }
         public string Nitelik { get; set; }
         //public string Ili { get { return IliStr(); } set { Ili = value; } }
@@ -446,7 +482,8 @@ namespace Model.TBYS
                     T.EmlakBeyanDegeri, T.TahminiRayicDegeri,T.YaklasikPiyasaDegeri,T.MuhasebeyeKayitliDeger,  
                     T. MalikSayisi,T.BagimsizBolumSayisi, T.YapiTarzi, T.InsaatinSinifi, T.ArazininCinsi,
 	                T.Id TasinmazId, G.Id SozlesmeId,H.Adi,G.IlkSozlesmeTar, G.SozBasTar BaslamaTarihi,H.KiralamaAmaci,H.Adres KiraciAdresi,
-	                H.Ili,H.Ilcesi,G.OdemeSekli, G.KiraBedeli, G.ArtisAyi,YEAR(G.SozBasTar)-YEAR(G.IlkSozlesmeTar) KiraSuresi
+	                H.Ili,H.Ilcesi,G.OdemeSekli, G.KiraBedeli, G.ArtisAyi,YEAR(G.SozBasTar)-YEAR(G.IlkSozlesmeTar) KiraSuresi,
+                    T.SatisPlani, T.SatisPlaniAciklama
                 FROM Tasinmaz_Table T
                     LEFT OUTER JOIN Bagis_Table A ON A.TasinmazId = T.Id
                     LEFT OUTER JOIN TasinmazBagisci_Table B ON B.Id = A.BagisciId
@@ -516,7 +553,9 @@ namespace Model.TBYS
                 SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId,T.BagisYili,
                     T.Cinsi, T.Ili, T.Ilcesi, T.Ili+'/'+T.Ilcesi IliIlcesi, T.SigortaDurumu, 
                     T.Adres,T.Adres+' '+T.Ili+'/'+T.Ilcesi AdresIlIlce,
-	                T.MulkiyetSekli, T.KiraDurumu, T.KatMulkiyeti, T.SorumluBolge, T.EdinmeSekli,T.BagisYili, T.EmlakSicilNo,
+	                T.MulkiyetSekli, T.KiraDurumu, 
+                    IIF(T.KatMulkiyeti = 1, 'Kat Mülkiyeti Var', 'Kat Mülkiyeti Yok') AS KatMulkiyeti,
+                    T.SorumluBolge, T.EdinmeSekli,T.BagisYili, T.EmlakSicilNo,
                     T.EmlakBeyanDegeri, T.TahminiRayicDegeri, T.TapuTarihi, T.AdaNo, T.ParselNo, T.PaftaNo, T.Yuzolcumu, T.ArsaPayi, T.VakifHissesi,
 	                T.YevmiyeNo,T.CiltNo, T.SahifeNo, T.KullanimSekli, T.TasinmazFoto, T.TasinmazFoto1, T.TasinmazFoto2, T.TapuFoto, T.KrokiFoto, T.TahkikatFoto,
 	                T.Nitelik,T.BulunduguKat,T.Aciklama,T.EnvantereGirisTarihi,  YEAR(T.EnvanterdenCikmaTarihi) EnvanterdenCikmaYili,
