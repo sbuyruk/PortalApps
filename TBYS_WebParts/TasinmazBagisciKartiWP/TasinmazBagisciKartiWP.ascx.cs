@@ -253,7 +253,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             TitleLbl.Text = bagisci.Adi + " " + bagisci.Soyadi + " Bağışçı Bilgileri";
 
             Bagis bagis = new Bagis();
-            DataTable dataTable = bagis.SelectTasinmazByBagisciIdReturnDT(bagisci.Id);
+            DataTable dataTable = bagis.SelectSatisVsDahilTasinmazByBagisciIdReturnDT(bagisci.Id);
             if (dataTable != null)
             {
                 TasinmazTable.Rows.Clear();
@@ -268,8 +268,19 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
                     string mulkiyetSekli = dataRow["MulkiyetSekli"].ToString();
                     string kullanimSekli = dataRow["KullanimSekli"].ToString();
                     string kiraDurumu = dataRow["KiraDurumu"].ToString();
+                    string envanterdenCikmaSebebi = dataRow["EnvanterdenCikmaSebebi"].ToString();
+                    if (envanterdenCikmaSebebi == "Satış" || envanterdenCikmaSebebi == "Kamulaştırma" || envanterdenCikmaSebebi == "Tevhit")
+                    {
+                        kiraDurumu = envanterdenCikmaSebebi;
+                    }
+                    int envanterdeMi = dataRow["EnvanterdeMi"].ReturnZeroIfNull().ConvertToInt();
+                    string satirCssClass = envanterdeMi == 0 ? "text-body-secondary" : string.Empty;
 
                     TableRow row = new TableRow();
+                    if (envanterdeMi == 0)
+                    {
+                        row.CssClass = satirCssClass;
+                    }
 
                     //TableCell SiraNoCell = new TableCell();
                     //SiraNoCell.Text = sira;
@@ -277,15 +288,18 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
 
                     TableCell CinsiCell = new TableCell();
                     CinsiCell.Text = cinsi + " / " +kullanimSekli;
+                    CinsiCell.CssClass = satirCssClass;
                     row.Controls.Add(CinsiCell); 
-                    
+
 
                     TableCell IlICell = new TableCell();
                     IlICell.Text = ilIlce;
+                    IlICell.CssClass = satirCssClass;
                     row.Controls.Add(IlICell);
 
                     TableCell AdresCell = new TableCell();
                     AdresCell.Text = adres;
+                    AdresCell.CssClass = satirCssClass;
                     row.Controls.Add(AdresCell);
 
                     //TableCell MulkiyetCell = new TableCell();
@@ -294,6 +308,8 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
 
                     TableCell KullanimCell = new TableCell();
                     KullanimCell.Text = mulkiyetSekli + " * " + kiraDurumu;
+                    
+                    KullanimCell.CssClass = satirCssClass;
                     row.Controls.Add(KullanimCell);
 
                     TasinmazTable.Controls.Add(row);

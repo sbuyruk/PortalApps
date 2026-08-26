@@ -203,7 +203,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
             TitleLbl.Text = bagisci.Adi + " " + bagisci.Soyadi + " Tarafından Yapılan Bağışlar";
 
             Bagis bagis = new Bagis();
-            DataTable dataTable = bagis.SelectTasinmazByBagisciIdReturnDT(bagisci.Id);
+            DataTable dataTable = bagis.SelectSatisVsDahilTasinmazByBagisciIdReturnDT(bagisci.Id);
             if (dataTable != null)
             {
                 BagisTasinmazLarTable.Rows.Clear();
@@ -222,42 +222,65 @@ namespace TBYS_WebParts.BagisciBagislariWP
                     string emlakBeyanDegeri = dataRow["EmlakBeyanDegeri"].ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
                     string tahminiRayicDegeri = dataRow["TahminiRayicDegeri"].ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
 
+                    Tasinmaz satirTasinmazi = new Tasinmaz();
+                    satirTasinmazi = satirTasinmazi.Select(tasinmazIdStr.ConvertToInt());
+                    if (satirTasinmazi != null && satirTasinmazi.EnvanterdeMi == 0)
+                    {
+                        kiraDurumu = satirTasinmazi.EnvanterdenCikmaSebebi;
+                    }
+
+                    bool envanterdenCikmis = satirTasinmazi != null && satirTasinmazi.EnvanterdeMi == 0;
+                    string satirCssClass = envanterdenCikmis ? "text-body-secondary" : string.Empty;
+
                     TableRow row = new TableRow();
+                    if (envanterdenCikmis)
+                    {
+                        row.CssClass = satirCssClass;
+                    }
 
                     TableCell SiraNoCell = new TableCell();
                     SiraNoCell.Text = sira;
+                    SiraNoCell.CssClass = satirCssClass;
                     row.Controls.Add(SiraNoCell);
 
                     TableCell KullanimSekliCell = new TableCell();
                     KullanimSekliCell.Text = kullanimSekli;
+                    KullanimSekliCell.CssClass = satirCssClass;
                     row.Controls.Add(KullanimSekliCell);
 
                     TableCell CinsiCell = new TableCell();
                     CinsiCell.Text = cinsi;
+                    CinsiCell.CssClass = satirCssClass;
                     row.Controls.Add(CinsiCell);
 
                     TableCell IlICell = new TableCell();
                     IlICell.Text = ilIlce;
+                    IlICell.CssClass = satirCssClass;
                     row.Controls.Add(IlICell);
 
                     TableCell AdresCell = new TableCell();
                     AdresCell.Text = adres;
+                    AdresCell.CssClass = satirCssClass;
                     row.Controls.Add(AdresCell);
 
                     TableCell MulkiyetCell = new TableCell();
                     MulkiyetCell.Text = mulkiyetSekli;
+                    MulkiyetCell.CssClass = satirCssClass;
                     row.Controls.Add(MulkiyetCell);
 
                     TableCell KullanimCell = new TableCell();
                     KullanimCell.Text = kiraDurumu;
+                    KullanimCell.CssClass = satirCssClass;
                     row.Controls.Add(KullanimCell);
 
                     TableCell EmlakBeyanDegeriCell = new TableCell();
                     EmlakBeyanDegeriCell.Text = emlakBeyanDegeri;
+                    EmlakBeyanDegeriCell.CssClass = satirCssClass;
                     row.Controls.Add(EmlakBeyanDegeriCell);
 
                     TableCell TahminiRayicDegeriCell = new TableCell();
                     TahminiRayicDegeriCell.Text = tahminiRayicDegeri;
+                    TahminiRayicDegeriCell.CssClass = satirCssClass;
                     row.Controls.Add(TahminiRayicDegeriCell);
 
                     TableCell CikarCell = new TableCell();
@@ -430,6 +453,12 @@ namespace TBYS_WebParts.BagisciBagislariWP
             },
             responsive: true,
             dom: 'fpirt',
+            createdRow: function (row, data, dataIndex) {
+                if (data.EnvanterdeMi === 0) {
+                    $(row).addClass('text-secondary');
+                    $('td', row).addClass('text-secondary');
+                }
+            },
 
             });
             ";
@@ -444,7 +473,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
             int tasinmazId = paramTasinmazIdLbl.Value.ConvertToInt();
 
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = tasinmaz.Select<Tasinmaz>(tasinmazId);
+            tasinmaz = tasinmaz.Select(tasinmazId);
             bool kaydedildiMi = false;
             Bagis bagis = null;
             if (tasinmaz != null)
@@ -500,6 +529,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
                     string ili = row["Ili"].ReturnEmptyIfNull().ToString();
                     string ilcesi = row["Ilcesi"].ReturnEmptyIfNull().ToString();
                     string adres = row["Adres"].ReturnEmptyIfNull().ToString();
+                    int envanterdeMi = row["EnvanterdeMi"].ReturnZeroIfNull().ConvertToInt();
                     TasinmazListItem tasinmazItem = new TasinmazListItem();
                     tasinmazItem.SiraNo = SiraNo++.ToString();
                     tasinmazItem.TasinmazId = tasinmazId.ToString();
@@ -508,6 +538,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
                     tasinmazItem.Ili = ili;
                     tasinmazItem.Ilcesi = ilcesi;
                     tasinmazItem.Adres = adres;
+                    tasinmazItem.EnvanterdeMi = envanterdeMi;
                     tasinmazItem.Sec = "<a href='#' class='btn btn-outline-primary' onclick=CallButtonClick("+ BagisciIdQS + ","+ tasinmazId + ");>Ekle</a>";
                     list.Add(tasinmazItem);
 
@@ -525,6 +556,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
             public string Ilcesi { get; set; }
             public string Adres { get; set; }
             public string Sec { get; set; }
+            public int EnvanterdeMi { get; set; }
         }
     }
 }

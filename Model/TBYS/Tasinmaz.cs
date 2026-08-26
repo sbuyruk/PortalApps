@@ -13,6 +13,17 @@ namespace Model.TBYS
     [Serializable]
     public class Tasinmaz : ParentClass
     {
+        /// <summary>
+        /// Tasinmaz envanterden ciktiginda, satis vs. kapsaminda degerlendirilecek
+        /// "EnvanterdenCikmaSebebi" degerleri. Zamanla degisebileceginden tek
+        /// merkezden yonetilir; kullanan sorgular buradan referans almalidir.
+        /// </summary>
+        public static readonly string[] SatisVsDahilEnvanterdenCikmaSebepleri =
+        {
+            "Satış",
+            "Kamulaştırma",
+            "Tevhit"
+        };
         public enum SatisPlaniDurumu
         {
             [Display(Name = "Envanterde Tutulacak Taşınmaz")]
@@ -338,26 +349,41 @@ namespace Model.TBYS
         /// Bagisçisi olmayan envanterdeki tasinmazlari getir Ortak bagislar dahil
         /// </summary>
         /// <returns></returns>
-        public DataTable SelectBagiscisiOlmayanTasinmazlarByBagsciIdReturnDT()
-        {
-            string sqlString = string.Format(@"
-                SELECT A.Id TasinmazId,
-                    A.Id TasinmazId,A.MulkiyetSekli,A.KullanimSekli,A.Ili,A.Ilcesi,A.Adres
-	            FROM Tasinmaz_Table A
-		            LEFT JOIN Bagis_Table B ON B.TasinmazId= A.Id
-	            WHERE A.EnvanterdeMi=1 AND (B.BagisciId IS NULL OR B.BagisciId=0)
-                ");
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            return dataTable;
-        }
+		public DataTable SelectBagiscisiOlmayanTasinmazlarByBagsciIdReturnDT()
+		{
+			string[] sebepler = SatisVsDahilEnvanterdenCikmaSebepleri;
+			string[] sebepParamAdlari = sebepler
+				.Select((sebep, index) => "@Sebep" + index)
+				.ToArray();
+			string sebepInClause = string.Join(",", sebepParamAdlari);
+
+			SqlQuery query = new SqlQuery($@"
+				SELECT A.Id TasinmazId,
+					A.Id TasinmazId,A.MulkiyetSekli,A.KullanimSekli,A.Ili,A.Ilcesi,A.Adres,A.EnvanterdeMi
+				FROM Tasinmaz_Table A
+					LEFT JOIN Bagis_Table B ON B.TasinmazId= A.Id
+				WHERE (B.BagisciId IS NULL OR B.BagisciId=0)
+					AND (
+						A.EnvanterdeMi=1
+						OR (A.EnvanterdeMi=0 AND A.EnvanterdenCikmaSebebi IN ({sebepInClause}))
+					)
+				");
+			for (int i = 0; i < sebepler.Length; i++)
+			{
+				query.AddParameter(sebepParamAdlari[i], sebepler[i]);
+			}
+
+			DataTable dataTable = null;
+			try
+			{
+				dataTable = dao.SelectFromDb(query, "");
+			}
+			catch (Exception e)
+			{
+				throw;
+			}
+			return dataTable;
+		}
         public string SelectTasinmazBolumNoReturnJson(int envanterde, string kirayaUygunluk)
         {
 			SqlQuery query = new SqlQuery(@"

@@ -126,7 +126,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                     tasinmaz = tasinmaz.Select<Tasinmaz>(TasinmazIdQS.ConvertToInt());
                     if (tasinmaz != null)
                     {
-                        //envanterden çikar btn yi visible yap
+                        //envanterden Ã§ikar btn yi visible yap
                         //
                         UpdateBtn.Visible = false;
                         EnvanterdenCikarBtn.Visible = true;
@@ -182,6 +182,9 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
             CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_PLAN_DEG);
             CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_TAPU_BD);
             CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_KAT_KI);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_TASINMAZIADESI);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_TASINMAZSATINALMA);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_IFRAZ);
             CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_DIGER);
 
         }
@@ -226,7 +229,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
 
             try
             {
-                //Onay Popup Aç
+                //Onay Popup AÃ§
 
                 EnvanterdenCikarNowBtn.Visible = true;
                 var openPopup = "OpenModal();";
@@ -261,13 +264,13 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                 {
                     UpdateBtn.Visible = true;
                     EnvanterdenCikarBtn.Visible = false;
-                    MessageHelper.PublishMessage("(Envanterde olmayan) Tasinmaz Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("(Envanterde olmayan) Tasinmaz GÃ¼ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
             }
             catch (Exception ex)
             {
                 ExceptionHelper exHelper = new ExceptionHelper(ex);
-                Exception guncellemeExc = new Exception("(Envanterde olmayan) Tasinmaz Güncellenemedi1");
+                Exception guncellemeExc = new Exception("(Envanterde olmayan) Tasinmaz GÃ¼ncellenemedi1");
                 exHelper.PublishException();
             }
             finally {
@@ -279,7 +282,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
         {
             //tasinmaz.EnvanterdeMi=0 yap
             //EnvanterdenCikarmaWP'i reload et SenderApp
-            //envanterden çikarildi mesaji ver
+            //envanterden Ã§ikarildi mesaji ver
             bool envanterdenCikarildiMi = false;
             bool bagisGuncellendiMi = false;
             try
@@ -313,7 +316,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Envanterden çikarma islemi basarisiz oldu", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("Envanterden Ã§ikarma islemi basarisiz oldu", ProjeConstants.MESAJ_HATA, 2000);
                 }
             }
             catch (Exception ex)

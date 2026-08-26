@@ -217,6 +217,52 @@ namespace Model.TBYS
             }
             return dataTable;
         }
+        public DataTable SelectSatisVsDahilTasinmazByBagisciIdReturnDT(int bagisciId)
+        {
+            SqlQuery query = SelectSatisVsDahilTasinmazByBagisciIdSQL(bagisciId);
+            DataTable dataTable = null;
+            try
+            {
+                dataTable = dao.SelectFromDb(query, "");
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+            return dataTable;
+        }
+        private SqlQuery SelectSatisVsDahilTasinmazByBagisciIdSQL(int bagisciId)
+        {
+            string[] sebepler = Tasinmaz.SatisVsDahilEnvanterdenCikmaSebepleri;
+            string[] sebepParamAdlari = sebepler
+                .Select((sebep, index) => "@Sebep" + index)
+                .ToArray();
+            string sebepInClause = string.Join(",", sebepParamAdlari);
+
+            SqlQuery query = new SqlQuery($@"
+                SELECT ROW_NUMBER() OVER (ORDER BY A.Id,B.BagisTarihi) AS Sirano,
+                    A.Id TasinmazId,A.TahminiRayicDegeri, A.Cinsi, A.KullanimSekli, A.Adres,
+                    A.MulkiyetSekli,A.KiraDurumu, A.EmlakBeyanDegeri,A.TahminiRayicDegeri,A.EnvanterdeMi,A.EnvanterdenCikmaSebebi,
+                    B.Id BagisId,B.BagisYili, 
+                    D.IlceAdi +'-'+C.IlAdi IlIlce                    
+                FROM Bagis_Table B
+                INNER JOIN Tasinmaz_Table A on A.Id=B.TasinmazId
+                LEFT JOIN Il_Table C ON C.IlAdi=A.Ili
+                LEFT JOIN Ilce_Table D ON D.IlceAdi=A.Ilcesi AND D.IlId=C.Id
+                WHERE B.BagisciId=@BagisciId
+                    AND (
+                        A.EnvanterdeMi=1
+                        OR (A.EnvanterdeMi=0 AND A.EnvanterdenCikmaSebebi IN ({sebepInClause}))
+                    )
+                ORDER BY A.Id,B.BagisTarihi
+                                    ");
+            query.AddParameter("@BagisciId", bagisciId);
+            for (int i = 0; i < sebepler.Length; i++)
+            {
+                query.AddParameter(sebepParamAdlari[i], sebepler[i]);
+            }
+            return query;
+        }
         public decimal SelectSumTahminiRayicByBagisciId(int bagisciId)
         {
             decimal toplam = 0;

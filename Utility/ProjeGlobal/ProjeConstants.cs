@@ -514,6 +514,10 @@ namespace Utility.ProjeGlobal
         public const string ENVANTERDEN_CIKARMA_PLAN_DEG = "Plan değişikliği";
         public const string ENVANTERDEN_CIKARMA_TAPU_BD = "Tapu Bilgi Değişikliği";
         public const string ENVANTERDEN_CIKARMA_KAT_KI = "Kat Karşılığı İnşaat";
+        public const string ENVANTERDEN_CIKARMA_TEVHIT = "Tevhit";
+        public const string ENVANTERDEN_CIKARMA_TASINMAZIADESI = "Taşınmaz İadesi";
+        public const string ENVANTERDEN_CIKARMA_TASINMAZSATINALMA = "Taşınmaz Satın Alma";
+        public const string ENVANTERDEN_CIKARMA_IFRAZ  = "İfraz";
         public const string ENVANTERDEN_CIKARMA_DIGER = "Diğer";
 
         public static int TASINMAZ_ENVANTERDE = 1;
