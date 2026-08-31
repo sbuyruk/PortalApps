@@ -2,7 +2,6 @@ using Microsoft.SharePoint;
 using Microsoft.SharePoint.Client;
 using Model.Ortak;
 using Model.TBYS;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -58,7 +57,7 @@ namespace TBYS_WebParts.KPSSorguSonucuWP
                     'columnDefs': [
                         { type: 'turkish', targets: [1,2] },
                         {targets:2, render:function(data, type, row, meta){
-                            if (row.SagVefat =='Açik'){
+                            if (row.SagVefat =='AÃ§ik'){
                                 return 'Sag';
                             }else
                             {
