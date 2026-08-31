@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -68,7 +68,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-form-label" for="DogumTarihiTxt">Doğum Tar.</label>
-                                        <input runat="server" type="text" id="DogumTarihiTxt" name="DogumTarihiTxt" class="form-control DateTimePickerV1" placeholder="gg.aa.yyyy" />
+                                        <input runat="server" type="text" id="DogumTarihiTxt" name="DogumTarihiTxt" class="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy" />
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-form-label" for="MeslegiTxt">Mesleği</label>
@@ -115,7 +115,7 @@
                                     <div class="form-group" id="VefatDiv" runat="server">
                                         <div class="form-group" id="VefatTarihiDiv" runat="server">
                                             <label class="col-form-label" for="VefatTarihiTxt">Vefat Tarihi</label>
-                                            <input runat="server" type="text" id="VefatTarihiTxt" name="DogumTarihiTxt" class="form-control DateTimePickerV1" placeholder="gg.aa.yyyy" />
+                                            <input runat="server" type="text" id="VefatTarihiTxt" name="DogumTarihiTxt" class="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy" />
                                         </div>
                                         <div class="form-group">
                                             <label class="col-form-label" for="DefinYeriTxt">Defin Yeri (Mezarlık)</label>

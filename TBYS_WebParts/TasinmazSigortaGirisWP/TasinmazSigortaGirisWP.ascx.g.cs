@@ -515,6 +515,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP {
             @__ctrl.ID = "SigBasTarTxt";
             @__ctrl.CssClass = "form-control DateTimePickerV1 input-date";
             @__ctrl.AutoPostBack = true;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "gg.aa.yyyy");
             @__ctrl.TextChanged -= new System.EventHandler(this.SigBasTarTxt_TextChanged);
             @__ctrl.TextChanged += new System.EventHandler(this.SigBasTarTxt_TextChanged);
             return @__ctrl;
@@ -530,6 +531,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "SigBitTarTxt";
             @__ctrl.CssClass = "form-control DateTimePickerV1 input-date";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "gg.aa.yyyy");
             return @__ctrl;
         }
         

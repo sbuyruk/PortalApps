@@ -198,6 +198,15 @@ namespace Model.IKYS
                 ", idString);
             return dao.Update2Db(sqlString);
         }
+        public bool UpdateAllOdendiToTrue(string idString)
+        {
+            string sqlString = string.Format(@"
+                    UPDATE GorevOnay_Table
+                    SET Odendi=1
+                    WHERE ID IN ({0})
+                ", idString);
+            return dao.Update2Db(sqlString);
+        }
 
         private string SelectSQL(int id)
         {
@@ -276,7 +285,7 @@ namespace Model.IKYS
                         A.PersonelId,A.GorevinSebebi,A.GorevinYeri,A.BaslangicTarihi,A.BitisTarihi,A.Sure,A.Avans,A.Yevmiye,A.ParaBirimi,
                         A.AracTahsisi,A.AracPlakasi,A.PerSubeImza,A.PerSubeVekil,A.OnayImza,A.OnayMakam,A.OnayMakamVekil,
                         A.UlasimAraci,A.Transfer,A.Konaklama,
-                        A.AmirOnayi,A.GMImza,A.GMVekil, A.Aciklama, A.OnayRedAciklama
+                        A.AmirOnayi,A.GMImza,A.GMVekil, A.Aciklama, A.OnayRedAciklama,A.Odendi,A.OncekiId
                     FROM GorevOnay_Table A
                         INNER JOIN Personel_Table P On A.PersonelId=P.Id 
                     WHERE A.BitisTarihi>={0}

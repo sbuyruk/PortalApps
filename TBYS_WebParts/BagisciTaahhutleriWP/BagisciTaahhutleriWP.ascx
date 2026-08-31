@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -89,7 +89,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-form-label fw-bold" for="DogumTarihiTxt">Doğum Tarihi</label>
-                                    <asp:TextBox ID="DogumTarihiTxt" runat="server" CssClass="form-control DateTimePickerV1 input-date"></asp:TextBox>
+                                    <asp:TextBox ID="DogumTarihiTxt" runat="server" CssClass="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy"></asp:TextBox>
                                 </div>
 
                             </div>
@@ -118,11 +118,11 @@
                                 </div>
                                 <div class="form-group" id="VefatTarihiDiv" runat="server" style="display: none">
                                     <label class="col-form-label fw-bold" for="VefatTarihiTxt">Vefat Tarihi</label>
-                                    <input id="VefatTarihiTxt" class="form-control DateTimePickerV1" runat="server" readonly="readonly">
+                                    <input id="VefatTarihiTxt" class="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy" runat="server" readonly="readonly">
                                 </div>
                                 <div class="form-group">
                                     <label class="col-form-label fw-bold" for="EvrakTarihi">Taahhüt Evrakının Tarihi</label>
-                                    <asp:TextBox ID="EvrakTarihiTxt" runat="server" CssClass="form-control DateTimePickerV1 input-date" ToolTip="Taahhüt Evrakının Tarihi"></asp:TextBox>
+                                    <asp:TextBox ID="EvrakTarihiTxt" runat="server" CssClass="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy" ToolTip="Taahhüt Evrakının Tarihi"></asp:TextBox>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-form-label fw-bold" for="EvrakTarihi">Taahhüt Evrakının Sayısı</label>

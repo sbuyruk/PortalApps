@@ -67,6 +67,7 @@
     }
     function setDataSet(myset) {
         myjsons = myset;
+        initCustomDataTable();
     }
     var myjsons = [{
         "SecChk": "","AdiSoyadi": "", "GorevinSebebi": "","BaslangicTarihi": "", "BitisTarihi": "", "GorevinYeri": "", "AmirOnayi": "", "RaporAl": "", "Duzenle": ""
@@ -74,7 +75,16 @@
 
     jQuery(document).ready(function () {
         jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
-        jQuery('#CustomDataTable').DataTable({
+        initCustomDataTable();
+    });
+
+    function initCustomDataTable() {
+        // Async (UpdatePanel) postback sonrasi #CustomDataTable elemani DOM'da yeniden olusturuldugu icin
+        // eski DataTable ornegi artik gecerli degildir; her seferinde temiz sekilde yeniden kuruluyor.
+        if (jQuery.fn.dataTable.isDataTable('#CustomDataTable')) {
+            jQuery('#CustomDataTable').DataTable().destroy();
+        }
+        table = jQuery('#CustomDataTable').DataTable({
             'initComplete': function (settings, json) {//tablo yüklendiğinde
                 var api = this.api();
                 var row = api.row(function (idx, data, node) { //secilen kayıta gider
@@ -100,13 +110,14 @@
                 { data: 'AmirOnayiInt', visible: false },
                 { data: 'AmirOnayiSiraNo', visible: false },
             ],
-            createdRow: function (row, data, dataIndex) {
-                if (data.AmirOnayiInt == 1) {
-                    $(row).addClass('table-success');
-                }
+            createdRow: function(row, data, dataIndex) {
+                if(data.Odendi == 2) {
+                    $(row).addClass('table-secondary');
+                } 
                 else if (data.AmirOnayiInt == 2) {
                     $(row).addClass('table-danger');
                 }
+                
                 var isError = data && (data.ErrorClass === true || data.ErrorClass === 'true' || data.ErrorClass === '1');
                 if (isError) {
                     $(row).addClass('error-row');
@@ -198,8 +209,8 @@
 
             $('#checkAll').prop('checked', allChecked);
         });
-    });
-    $('#CustomDataTable').on('draw.dt', function () {
+    }
+    $(document).on('draw.dt', '#CustomDataTable', function () {
         table.rows().every(function () {
             var d = this.data();
             var r = this.node();
@@ -254,6 +265,7 @@
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="SecilenleriKaydetBtn" EventName="click" />
                     <asp:AsyncPostBackTrigger ControlID="RaporAlBtn" EventName="click" />
+                    <asp:AsyncPostBackTrigger ControlID="OdendiYapBtn" EventName="click" />
                 </Triggers>
 
             </asp:UpdatePanel>
@@ -271,9 +283,10 @@
         <div class="card-footer">
             <asp:LinkButton ID="YeniGorevOnayiBtn" CssClass="btn btn-outline-success " runat="server" Text="Yeni Görev Onayı" OnClick="YeniGorevOnayiBtn_Click" />
             
-            <asp:CheckBox ID="OdendiYapChk" runat="server" Text="Ödendi Yap" CssClass="form-check form-check-inline ms-3" />
-
             <asp:LinkButton ID="RaporAlBtn" CssClass="btn btn-outline-success float-end" runat="server" Text="Seçilen Görevler İçin Rapor Al" OnClick="RaporAlBtn_Click" />
+            
+            <asp:LinkButton ID="OdendiYapBtn" runat="server" CssClass="btn btn-outline-primary me-3 float-end" CausesValidation="false" Text="Ödendi Yap" OnClick="OdendiYapBtn_Click" OnClientClick="if(confirm('Seçilen görevleri ödendi yapmak istediğinize emin misiniz?')){return true;} else{return false;};" />
+
         </div>
 
     </div>

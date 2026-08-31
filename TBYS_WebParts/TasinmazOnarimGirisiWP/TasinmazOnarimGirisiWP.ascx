@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -49,7 +49,7 @@
                             <div class="form-group col-2">
                                 <label for="OnayTarihiTxt" class="col-form-label">Onay Tarihi</label>
                                 <div>
-                                    <input runat="server" type="text" id="OnayTarihiTxt" name="OnayTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
+                                    <input runat="server" type="text" id="OnayTarihiTxt" name="OnayTarihiTxt" class="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy" />
                                 </div>
                             </div>
                             <div class="form-group col-2">

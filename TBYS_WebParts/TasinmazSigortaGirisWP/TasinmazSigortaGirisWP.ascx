@@ -69,11 +69,11 @@
                 <div class="col border m-2">
                     <div class="form-group">
                         <label class="col-form-label " for="SigBasTarTxt">Sig.Baş.Tar.</label>
-                        <asp:TextBox ID="SigBasTarTxt" runat="server" CssClass="form-control DateTimePickerV1 input-date" AutoPostBack="True" OnTextChanged="SigBasTarTxt_TextChanged"></asp:TextBox>
+                        <asp:TextBox ID="SigBasTarTxt" runat="server" CssClass="form-control DateTimePickerV1 input-date" AutoPostBack="True" OnTextChanged="SigBasTarTxt_TextChanged" placeholder="gg.aa.yyyy"></asp:TextBox>
                     </div>
                     <div class="form-group">
                         <label class="col-form-label " for="SigBitTarTxt">Sig.Bit.Tar.</label>
-                        <asp:TextBox ID="SigBitTarTxt" runat="server" CssClass="form-control DateTimePickerV1 input-date"></asp:TextBox>
+                        <asp:TextBox ID="SigBitTarTxt" runat="server" CssClass="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy"></asp:TextBox>
 
                     </div>
                     <div class="form-group">

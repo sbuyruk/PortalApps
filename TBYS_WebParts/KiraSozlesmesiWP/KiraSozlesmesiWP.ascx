@@ -138,7 +138,7 @@
                                 <div class="row form-group">
                                     <label class="form-label col-5" for="SozlesmeDurumuDDL">Değişme Tarihi</label>
                                     <div class="col-7">
-                                        <input type="text" id="DurumDegismeTarTxt" class="form-control DateTimePickerV1" runat="server" readonly="readonly" />
+                                        <input type="text" id="DurumDegismeTarTxt" class="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy" runat="server" />
                                     </div>
                                 </div>
                             </div>
@@ -172,15 +172,15 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label " for="IlkSozlesmeTarTxt">İlk Söz.Tar.</label>
-                                        <input type="text" id="IlkSozlesmeTarTxt" name="IlkSozlesmeTarTxt" class="form-control input-date DateTimePickerV1" runat="server" placeholder="dd.MM.yyyy" />
+                                        <input type="text" id="IlkSozlesmeTarTxt" name="IlkSozlesmeTarTxt" class="form-control input-date DateTimePickerV1" runat="server" placeholder="gg.aa.yyyy" />
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label" for="SozBasTarTxt">Söz.Baş.Tar.</label>
-                                        <input type="text" id="SozBasTarTxt" name="SozBasTarTxt" class="form-control input-date DateTimePickerV1" runat="server" placeholder="dd.MM.yyyy" />
+                                        <input type="text" id="SozBasTarTxt" name="SozBasTarTxt" class="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy"  runat="server" />
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label" for="SozBitTarTxt">Söz.Bit.Tar.</label>
-                                        <input type="text" id="SozBitTarTxt" name="SozBitTarTxt" class="form-control input-date DateTimePickerV1" runat="server" placeholder="dd.MM.yyyy" />
+                                        <input type="text" id="SozBitTarTxt" name="SozBitTarTxt" class="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy"  runat="server" />
                                     </div>
 
                                 </div>

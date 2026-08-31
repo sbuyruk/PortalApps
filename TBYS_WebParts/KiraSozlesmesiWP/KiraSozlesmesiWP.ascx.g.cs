@@ -647,8 +647,8 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             this.DurumDegismeTarTxt = @__ctrl;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             @__ctrl.ID = "DurumDegismeTarTxt";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control DateTimePickerV1");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("readonly", "readonly");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control DateTimePickerV1 input-date");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "gg.aa.yyyy");
             return @__ctrl;
         }
         
@@ -804,7 +804,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             @__ctrl.ID = "IlkSozlesmeTarTxt";
             @__ctrl.Name = "IlkSozlesmeTarTxt";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-date DateTimePickerV1");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "dd.MM.yyyy");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "gg.aa.yyyy");
             return @__ctrl;
         }
         
@@ -819,8 +819,8 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             @__ctrl.ID = "SozBasTarTxt";
             @__ctrl.Name = "SozBasTarTxt";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-date DateTimePickerV1");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "dd.MM.yyyy");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control DateTimePickerV1 input-date");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "gg.aa.yyyy");
             return @__ctrl;
         }
         
@@ -835,8 +835,8 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             @__ctrl.ID = "SozBitTarTxt";
             @__ctrl.Name = "SozBitTarTxt";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-date DateTimePickerV1");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "dd.MM.yyyy");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control DateTimePickerV1 input-date");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "gg.aa.yyyy");
             return @__ctrl;
         }
         

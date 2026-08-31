@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -99,7 +99,7 @@
                                 </div>
                                 <div class="form-group col">
                                     <label class="col-form-label" for="TeminatTarihiTxt">Teminat Tarihi</label>
-                                    <input type="text" id="TeminatTarihiTxt" name="TeminatTarihiTxt" class="form-control DateTimePickerV1" runat="server" readonly="readonly" />
+                                    <input type="text" id="TeminatTarihiTxt" name="TeminatTarihiTxt" class="form-control DateTimePickerV1 input-date" runat="server" placeholder="gg.aa.yyyy" />
                                 </div>
                                 <div class="form-group col">
                                     <label class="col-form-label" for="TeminatTutariTxt">Belirlenen Teminat</label>
@@ -175,7 +175,7 @@
                         <div class="form-group row">
                             <div class="form-group col">
                                 <label class="col-form-label" for="IslemTarihiTxt">İşlem Tarihi</label>
-                                <input id="IslemTarihiTxt" class="form-control DateTimePickerV1" runat="server" readonly="readonly" />
+                                <input id="IslemTarihiTxt" class="form-control DateTimePickerV1 input-date" runat="server" placeholder="gg.aa.yyyy" />
                             </div>
                             <div class="form-group col">
                                 <label class="col-form-label" for="IslemSaatiTxt">Saat</label>

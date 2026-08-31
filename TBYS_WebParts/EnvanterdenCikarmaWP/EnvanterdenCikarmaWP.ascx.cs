@@ -176,15 +176,27 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
         private void EnvanterdenCikarmaSebebiDDLDoldur()
         {
             CikarmaSebebiDDL.Items.Clear();
-            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_KAMU);
             CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_SATIS);
-            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_INTIFA_HT);
-            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_PLAN_DEG);
-            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_TAPU_BD);
-            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_KAT_KI);
             CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_TASINMAZIADESI);
             CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_TASINMAZSATINALMA);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_IZALEYISUYUILESATIS);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_TRAMPA);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_TAKAS);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_KATIRIFAKINDANKATMULKIYETINEGECIS);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_KATMULKIYETITERKINI);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_MAHKEMEKARARIILEENVANTERDENCIKARMA);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_RESMIKURUMABEDELSIZDEVIR);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_HISSEBIRLESTIRMEYOLUILEBAGIS);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_KAT_KI);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_KAMU);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_IMARUYGULAMASI);
             CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_IFRAZ);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_TEVHIT);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_RESMIKURUMDANYAZIILEDUSUM);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_INTIFA_HT);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_TAPU_BD);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_CINS);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_PLAN_DEG);
             CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_DIGER);
 
         }

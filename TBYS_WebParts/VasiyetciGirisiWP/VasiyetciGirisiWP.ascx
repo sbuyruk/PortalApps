@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -50,7 +50,7 @@
                                     </div>
                                     <div class="form-group">
                                         <asp:Label CssClass="col-from-label" runat="server" Text="Doğum Tarihi"></asp:Label>
-                                        <input id="DogumTarihiTxt" class="form-control DateTimePickerV1" runat="server" readonly="readonly">
+                                        <input id="DogumTarihiTxt" class="form-control DateTimePickerV1 input-date" runat="server" placeholder="gg.aa.yyyy">
                                     </div>
 
                                 </div>
@@ -88,7 +88,7 @@
                                     </div>
                                     <div class="form-group" id="VefatTarihiDiv" runat="server" style="display: none">
                                         <asp:Label CssClass="col-from-label" runat="server" Text="Vefat Tarihi"></asp:Label>
-                                        <input id="VefatTarihiTxt" class="form-control DateTimePickerV1" runat="server" readonly="readonly">
+                                        <input id="VefatTarihiTxt" class="form-control DateTimePickerV1 input-date" runat="server" placeholder="gg.aa.yyyy">
                                     </div>
                                 </div>
                             </div>
@@ -122,7 +122,7 @@
                                  <div class="col">
                                     <div class="form-group">
                                         <asp:Label CssClass="col-from-label" runat="server" Text="Vasiyet Tarihi"></asp:Label>
-                                        <input id="VasiyetTarihiTxt" class="form-control DateTimePickerV1" runat="server" readonly="readonly">
+                                        <input id="VasiyetTarihiTxt" class="form-control DateTimePickerV1 input-date" runat="server" placeholder="gg.aa.yyyy">
                                     </div>
                                  </div>
                                  <div class="col">

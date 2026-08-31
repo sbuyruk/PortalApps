@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -85,7 +85,7 @@
                         <div class="row">
                             <div class="form-group col-2">
                                 <asp:Label CssClass="col-form-label" runat="server" Font-Bold="True">Ödeme Tarihi</asp:Label>
-                                <input runat="server" type="text" id="OdemeTarihiTxt" name="OdemeTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly"
+                                <input runat="server" type="text" id="OdemeTarihiTxt" name="OdemeTarihiTxt" class="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy" readonly="readonly"
                                     onchange="OdeBtnEnable()" onkeyup="OdeBtnEnable()" oncut="OdeBtnEnable()" onpaste="OdeBtnEnable()" oninput="OdeBtnEnable()" />
                             </div>
                             <div class="form-group col-2">
@@ -196,11 +196,11 @@
                                         <div class="form-group row ">
                                             <div class="form-group col-6">
                                                 <asp:Label ID="Label1" CssClass="col-form-label col-2 m-1" runat="server" Text="Vade Başlangıcı"></asp:Label>
-                                                <input runat="server" type="text" id="VadeBasTarTxt" name="VadeBasTarTxt" class="form-control DateTimePickerV1" readonly="readonly" />
+                                                <input runat="server" type="text" id="VadeBasTarTxt" name="VadeBasTarTxt" class="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy" readonly="readonly" />
                                             </div>
                                             <div class="form-group col-6">
                                                 <asp:Label ID="Label2" CssClass="col-form-label col-2 m-1" runat="server" Text="Vade Sonu"></asp:Label>
-                                                <input runat="server" type="text" id="VadeBitTarTxt" name="VadeBitTarTxt" class="form-control DateTimePickerV1" readonly="readonly" />
+                                                <input runat="server" type="text" id="VadeBitTarTxt" name="VadeBitTarTxt" class="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy" readonly="readonly" />
                                             </div>
                                         </div>
                                         <div class="form-group" >

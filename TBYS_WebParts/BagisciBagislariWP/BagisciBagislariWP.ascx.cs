@@ -149,6 +149,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
                 ExceptionHelper exHelper = new ExceptionHelper(exception);
                 exHelper.PublishException();
             }
+
         }
         private void BagisTasinmazLarTableHeaders()
         {
@@ -285,7 +286,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
 
                     TableCell CikarCell = new TableCell();
                     LinkButton CikarBtn = new LinkButton();
-                    CikarBtn.Text = "Çikar";
+                    CikarBtn.Text = "Çıkar";
                     CikarBtn.CssClass = "btn btn-outline-danger btn-sm";
 
                     CikarBtn.ID = "CikarBtn" + sira;
@@ -296,13 +297,13 @@ namespace TBYS_WebParts.BagisciBagislariWP
                         CikarMesajiLbl.Text = "Seçilen Taşınmazı Bağışlardan Çıkarmak İstediğinizden Emin misiniz?";
                         //TasinmazIdLbl.Text = tasinmazIdStr;
                         Tasinmaz tasinmaz = new Tasinmaz();
-                        tasinmaz = tasinmaz.Select<Tasinmaz>(tasinmazIdStr.ConvertToInt());
+                        tasinmaz = tasinmaz.Select(tasinmazIdStr.ConvertToInt());
                         TasinmazAdresLbl.Text = tasinmaz.Adres + " " + tasinmaz.Ilcesi + "/" + tasinmaz.Ili +"</br>";
 
                         BagisIdQS = bagisIdStr;
                         CikarNowBtn.Visible = true;
                         var openPopup = "OpenModalOnay();";
-                        System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openPopup, true);
+                        UtilityHelper.ScriptCalistir(openPopup);
 
                     };
                     CikarCell.Controls.Add(CikarBtn);
@@ -366,10 +367,14 @@ namespace TBYS_WebParts.BagisciBagislariWP
                         if (bagisci != null)
                         {
                             BagisciTasinmazlarTablosunuDoldur(bagisci);
+                            var closePopup = "CloseModal();";
+                            UtilityHelper.ScriptCalistir(closePopup);
                         }
                         else
                         {
                             MessageHelper.PublishMessage("Bağışçı bulunamadı", ProjeConstants.MESAJ_HATA);
+                            var closePopup = "CloseModal();";
+                            UtilityHelper.ScriptCalistir(closePopup);
                         }
 
                         MessageHelper.PublishMessage("Bağışlardan Çıkarıldı", ProjeConstants.MESAJ_BASARILI, 2000);
@@ -378,11 +383,14 @@ namespace TBYS_WebParts.BagisciBagislariWP
             }
             catch (Exception exception)
             {
+                var closePopup = "CloseModal();";
+                UtilityHelper.ScriptCalistir(closePopup);
                 ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
                 Exception exceptionInfo = new Exception("Taşınmaz Bağışlardan Çıkarılamadı");
                 exceptionHelper.Exceptions.Add(exceptionInfo);
                 exceptionHelper.PublishException();
             }
+ 
         }
         protected void BackBtn_Click(object sender, EventArgs e)
         {

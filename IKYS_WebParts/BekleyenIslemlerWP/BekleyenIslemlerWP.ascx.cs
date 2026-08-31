@@ -163,8 +163,12 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                 //    item.AmirOnayiSiraNo = 2;
                 else
                     item.AmirOnayiSiraNo = 3;
-
-                if (item.AmirOnayi == (int)GorevOnay.AmirOnayDurumu.Onaylandi)
+                if (item.OdendiMi)
+                {
+                    item.Onayla = "<span class='text-success'>Ödendi</span>";
+                    item.Reddet = string.Empty;
+                }
+                else if (item.AmirOnayi == (int)GorevOnay.AmirOnayDurumu.Onaylandi)
                 {
                     item.Onayla = UtilityHelper.GetEnumDisplayName(GorevOnay.AmirOnayDurumu.Onaylandi);
                     item.Reddet =string.Empty;
@@ -203,6 +207,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
             public int AmirOnayi { get; set; }
             public int AmirOnayiSiraNo { get; set; }
             public string OnayRedAciklama { get; set; }
+            public bool OdendiMi { get; set; } = false;
 
         }
         private string CreateDataTable(string jsonData)

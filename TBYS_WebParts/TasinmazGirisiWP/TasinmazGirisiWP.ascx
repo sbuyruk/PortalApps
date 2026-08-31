@@ -359,16 +359,16 @@
                                                     </div>
                                                     <div class="form-group m-0 ">
                                                         <label class="form-label fw-semibold" for="EnvantereGirisTarihiTxt">Env.Gir.Tar.</label>
-                                                        <input runat="server" type="text" id="EnvantereGirisTarihiTxt" name="EnvantereGirisTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
+                                                        <input runat="server" type="text" id="EnvantereGirisTarihiTxt" name="EnvantereGirisTarihiTxt" class="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy" />
                                                     </div>
 
                                                     <div class="form-group m-0 ">
                                                         <label class="form-label fw-semibold" for="TapuTarihiTxt">Tapu Tarihi</label>
-                                                        <input runat="server" type="text" id="TapuTarihiTxt" name="TapuTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
+                                                        <input runat="server" type="text" id="TapuTarihiTxt" name="TapuTarihiTxt" class="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy" />
                                                     </div>
                                                     <div class="form-group m-0 ">
                                                         <label class="form-label fw-semibold" for="TapuIslemTarihiTxt">Tapu İşlem Tarihi</label>
-                                                        <input runat="server" type="text" id="TapuIslemTarihiTxt" name="TapuIslemTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
+                                                        <input runat="server" type="text" id="TapuIslemTarihiTxt" name="TapuIslemTarihiTxt" class="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy" />
                                                     </div>
 
                                                 </div>
@@ -661,7 +661,7 @@
                                 <div class="col">
                                     <div class="form-group m-0 ">
                                         <label class="form-label fw-semibold" for="TarihTxt">Tarih</label>
-                                        <input runat="server" type="text" id="TarihTxt" name="SBITarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
+                                        <input runat="server" type="text" id="TarihTxt" name="SBITarihiTxt" class="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy" />
                                         <input type="button" id="clear-SBITarihi" value="Sil" onclick="clearSBITarihi()" />
                                     </div>
                                 </div>

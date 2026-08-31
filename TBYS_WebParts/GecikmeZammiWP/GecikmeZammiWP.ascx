@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -37,7 +37,7 @@
             <div class="form-group row border border-dark m-1">
                 <div class="form-group col-3">
                     <asp:Label CssClass="col-form-label" runat="server">Başlangıç Tarihi</asp:Label>
-                    <input id="YeniBaslangicTarihiTxt" runat="server" class="form-control DateTimePickerV1" readonly="readonly"
+                    <input id="YeniBaslangicTarihiTxt" runat="server" class="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy" 
                         onchange="EkleBtnEnable()" onkeyup="EkleBtnEnable()" oncut="EkleBtnEnable()" onpaste="EkleBtnEnable()" oninput="EkleBtnEnable()" />
                 </div>
                 <div class="form-group col-2">

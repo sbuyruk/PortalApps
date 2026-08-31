@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -42,17 +42,17 @@
                             </div>
                             <div class="form-group">
                                 <label for="EvrakTarihiTxt" class="col-form-label">Evrak Tarihi</label>
-                                <asp:TextBox ID="EvrakTarihiTxt" runat="server" CssClass="form-control"></asp:TextBox>
+                                <asp:TextBox ID="EvrakTarihiTxt" runat="server" CssClass="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy" ></asp:TextBox>
                             </div>
                         </div>
                         <div class="form-group col-2">
                             <div class="form-group">
                                 <label for="GecerlilikTarihiTxt" class="col-form-label">Geçerlilik Tarihi</label>
-                                <asp:TextBox ID="GecerlilikTarihiTxt" runat="server" CssClass="form-control"></asp:TextBox>
+                                <asp:TextBox ID="GecerlilikTarihiTxt" runat="server" CssClass="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy"></asp:TextBox>
                             </div>
                             <div class="form-group">
                                 <label for="SonOdemeTarihiTxt" class="col-form-label">Son Ödeme Tarihi</label>
-                                <asp:TextBox ID="SonOdemeTarihiTxt" runat="server" CssClass="form-control"></asp:TextBox>
+                                <asp:TextBox ID="SonOdemeTarihiTxt" runat="server" CssClass="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy"></asp:TextBox>
                             </div>
                         </div>
                         <div class="form-group col-4">

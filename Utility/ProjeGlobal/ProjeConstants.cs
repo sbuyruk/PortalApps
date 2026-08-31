@@ -508,16 +508,49 @@ namespace Utility.ProjeGlobal
         public const string KIRALAMAAMACI_TESIS = "Tesis";
 
         //envanterden Cikarma
-        public const string ENVANTERDEN_CIKARMA_KAMU = "Kamulaştırma";
+        //1
         public const string ENVANTERDEN_CIKARMA_SATIS = "Satış";
-        public const string ENVANTERDEN_CIKARMA_INTIFA_HT = "İntifa Hakkı Terkini";
-        public const string ENVANTERDEN_CIKARMA_PLAN_DEG = "Plan değişikliği";
-        public const string ENVANTERDEN_CIKARMA_TAPU_BD = "Tapu Bilgi Değişikliği";
-        public const string ENVANTERDEN_CIKARMA_KAT_KI = "Kat Karşılığı İnşaat";
-        public const string ENVANTERDEN_CIKARMA_TEVHIT = "Tevhit";
+        //2
         public const string ENVANTERDEN_CIKARMA_TASINMAZIADESI = "Taşınmaz İadesi";
+        //3
         public const string ENVANTERDEN_CIKARMA_TASINMAZSATINALMA = "Taşınmaz Satın Alma";
+        //4
+        public const string ENVANTERDEN_CIKARMA_IZALEYISUYUILESATIS = "İzale-i Şuyu ile Satış";
+        //5
+        public const string ENVANTERDEN_CIKARMA_TRAMPA = "Trampa";
+        //6
+        public const string ENVANTERDEN_CIKARMA_TAKAS = "Takas";
+        //7
+        public const string ENVANTERDEN_CIKARMA_KATIRIFAKINDANKATMULKIYETINEGECIS = "Kat İrifakından Kat Mülkiyetine Geçiş";
+        //8
+        public const string ENVANTERDEN_CIKARMA_KATMULKIYETITERKINI = "Kat Mülkiyeti Terkini";
+        //9
+        public const string ENVANTERDEN_CIKARMA_MAHKEMEKARARIILEENVANTERDENCIKARMA = "Mahkeme Kararı ile Envanterden Çıkarma";
+        //10
+        public const string ENVANTERDEN_CIKARMA_RESMIKURUMABEDELSIZDEVIR = "Resmi Kuruma Bedelsiz Devir";
+        //11
+        public const string ENVANTERDEN_CIKARMA_HISSEBIRLESTIRMEYOLUILEBAGIS = "Hisse Birleştirme Yoluyla Bağış";
+        //12
+        public const string ENVANTERDEN_CIKARMA_KAT_KI = "Kat Karşılığı İnşaat";
+        //13
+        public const string ENVANTERDEN_CIKARMA_KAMU = "Kamulaştırma";
+        //14
+        public const string ENVANTERDEN_CIKARMA_IMARUYGULAMASI= "İmar Uygulaması";
+        //15
         public const string ENVANTERDEN_CIKARMA_IFRAZ  = "İfraz";
+        //16
+        public const string ENVANTERDEN_CIKARMA_TEVHIT = "Tevhit";
+        //17
+        public const string ENVANTERDEN_CIKARMA_RESMIKURUMDANYAZIILEDUSUM  = "Resmi Kurumdan Gelen Yazı ile Düşülmesi";
+        //18
+        public const string ENVANTERDEN_CIKARMA_INTIFA_HT = "İntifa Hakkı Terkini";
+        //19
+        public const string ENVANTERDEN_CIKARMA_TAPU_BD = "Tapu Bilgi Değişikliği";
+        //20
+        public const string ENVANTERDEN_CIKARMA_CINS = "Cins Değişikliği";
+        //21
+        public const string ENVANTERDEN_CIKARMA_PLAN_DEG = "Plan değişikliği";
+        //22
         public const string ENVANTERDEN_CIKARMA_DIGER = "Diğer";
 
         public static int TASINMAZ_ENVANTERDE = 1;

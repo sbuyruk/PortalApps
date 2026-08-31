@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -186,7 +186,7 @@
                                 <div class="row">
                                     <div class="form-group col-3">
                                         <asp:Label ID="IslemTarihiLbl" CssClass="col-from-label" runat="server" Text="İşlem Tarihi"></asp:Label>
-                                        <asp:TextBox ID="IslemTarihiTxt" CssClass="form-control DateTimePickerV1 input-date" placeholder="dd.mm.yyyy" runat="server" Text="" ClientIDMode="Static"></asp:TextBox>
+                                        <asp:TextBox ID="IslemTarihiTxt" CssClass="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy" runat="server" Text="" ClientIDMode="Static"></asp:TextBox>
                                     </div>
                                     <div class="form-group col-3">
                                         <asp:Label ID="IslemSaatiLbl" CssClass="col-from-label" runat="server" Text="İşlem Saati"></asp:Label>
@@ -194,7 +194,7 @@
                                     </div>
                                      <div class="form-group col-3">
                                         <asp:Label ID="TebligTarihiLbl" CssClass="col-from-label" runat="server" Text="Tebliğ Tarihi"></asp:Label>
-                                        <asp:TextBox ID="TebligTarihiTxt" CssClass="form-control DateTimePickerV1 input-date" placeholder="dd.mm.yyyy" runat="server" Text="" ClientIDMode="Static"></asp:TextBox>
+                                        <asp:TextBox ID="TebligTarihiTxt" CssClass="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy" runat="server" Text="" ClientIDMode="Static"></asp:TextBox>
                                     </div>
                                     <div class="form-group col-3">
                                         <asp:Label ID="TebligEdilenKisiLbl" CssClass="col-from-label" runat="server" Text="Tebliğ Edilen Kişi"></asp:Label>

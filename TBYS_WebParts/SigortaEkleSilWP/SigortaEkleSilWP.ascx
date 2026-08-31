@@ -84,7 +84,7 @@
                             <div class="form-group col-2">
                                 <label for="SigortaBasTarTxt" class="col-form-label">Başlama Tarihi</label>
                                 <div>
-                                    <input runat="server" type="text" id="SigortaBasTarTxt" name="OnayTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
+                                    <input runat="server" type="text" id="SigortaBasTarTxt" name="OnayTarihiTxt" class="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy"/>
                                 </div>
                             </div>
                             <div class="form-group col-2">

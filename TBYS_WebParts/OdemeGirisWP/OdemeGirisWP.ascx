@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -60,7 +60,7 @@
                         </div>
                         <div class="col-2 form-group">
                             <asp:Label runat="server" CssClass="col-form-label fw-bold">Ödeme Tarihi </asp:Label>
-                            <asp:TextBox ID="OdemeTarihiTxt" runat="server" CssClass="form-control DateTimePickerV1 input-date" AutoPostBack="True" OnTextChanged="OdemeTarihiTxt_TextChanged"></asp:TextBox>
+                            <asp:TextBox ID="OdemeTarihiTxt" runat="server" CssClass="form-control DateTimePickerV1 input-date" placeholder="gg.aa.yyyy" AutoPostBack="True" OnTextChanged="OdemeTarihiTxt_TextChanged"></asp:TextBox>
                             <asp:RequiredFieldValidator runat="server" ControlToValidate="OdemeTarihiTxt" ForeColor="Red" ErrorMessage="Ödeme tarihi seçiniz"> </asp:RequiredFieldValidator>
                         </div>
                         <div class="col-1 form-group">
