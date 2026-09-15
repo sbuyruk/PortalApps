@@ -521,7 +521,7 @@ namespace Utility.ProjeGlobal
         //6
         public const string ENVANTERDEN_CIKARMA_TAKAS = "Takas";
         //7
-        public const string ENVANTERDEN_CIKARMA_KATIRIFAKINDANKATMULKIYETINEGECIS = "Kat İrifakından Kat Mülkiyetine Geçiş";
+        public const string ENVANTERDEN_CIKARMA_KATIRIFAKINDANKATMULKIYETINEGECIS = "Kat İrtifakından Kat Mülkiyetine Geçiş";
         //8
         public const string ENVANTERDEN_CIKARMA_KATMULKIYETITERKINI = "Kat Mülkiyeti Terkini";
         //9
@@ -543,14 +543,22 @@ namespace Utility.ProjeGlobal
         //17
         public const string ENVANTERDEN_CIKARMA_RESMIKURUMDANYAZIILEDUSUM  = "Resmi Kurumdan Gelen Yazı ile Düşülmesi";
         //18
-        public const string ENVANTERDEN_CIKARMA_INTIFA_HT = "İntifa Hakkı Terkini";
+        public const string ENVANTERDEN_TOPLULASTIRMAISLEMI = "Toplulaştırma İşlemi";
         //19
-        public const string ENVANTERDEN_CIKARMA_TAPU_BD = "Tapu Bilgi Değişikliği";
+        public const string ENVANTERDEN_YENIDENINSA = "Yeniden İnşa";
         //20
-        public const string ENVANTERDEN_CIKARMA_CINS = "Cins Değişikliği";
+        public const string ENVANTERDEN_TAPUSUOLMAYANTASINMAZ = "Tapusu Olmayan Taşınmaz";
         //21
-        public const string ENVANTERDEN_CIKARMA_PLAN_DEG = "Plan değişikliği";
+        public const string ENVANTERDEN_KADASTROUYGULAMASI= "Kadastro Uygulaması";
         //22
+        public const string ENVANTERDEN_CIKARMA_INTIFA_HT = "İntifa Hakkı Terkini";
+        //23
+        public const string ENVANTERDEN_CIKARMA_TAPU_BD = "Tapu Bilgi Değişikliği";
+        //24
+        public const string ENVANTERDEN_CIKARMA_CINS = "Cins Değişikliği";
+        //25
+        public const string ENVANTERDEN_CIKARMA_PLAN_DEG = "Plan değişikliği";
+        //26
         public const string ENVANTERDEN_CIKARMA_DIGER = "Diğer";
 
         public static int TASINMAZ_ENVANTERDE = 1;
@@ -830,6 +838,7 @@ namespace Utility.ProjeGlobal
         public const int ARMAGAN_TESEKKURMEKTUBUID = 7;
         public const int ARMAGAN_SILTID = 8;
         public const int ARMAGAN_DUZENLIBAGISCIBELGESIID = 9;
+        public const int DUZENLIBAGISBASLANGICYILI = 2023;
 
         public const string ARMAGAN_ALTIN = "Altın";
         public const string ARMAGAN_GUMUS = "Gümüş";

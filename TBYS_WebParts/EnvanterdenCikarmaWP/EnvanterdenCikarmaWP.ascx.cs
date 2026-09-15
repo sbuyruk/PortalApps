@@ -193,6 +193,10 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
             CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_IFRAZ);
             CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_TEVHIT);
             CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_RESMIKURUMDANYAZIILEDUSUM);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_TOPLULASTIRMAISLEMI);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_YENIDENINSA);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_TAPUSUOLMAYANTASINMAZ);
+            CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_KADASTROUYGULAMASI);
             CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_INTIFA_HT);
             CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_TAPU_BD);
             CikarmaSebebiDDL.Items.Add(ProjeConstants.ENVANTERDEN_CIKARMA_CINS);

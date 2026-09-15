@@ -79,6 +79,13 @@
                     <label class="form-label" for="DurumDDL">Durum </label>
                     <asp:DropDownList ID="DurumDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="DurumDDL_SelectedIndexChanged" Style="height: auto" />
                 </div>
+                <div class="form-group col-2">
+                    <label class="form-label" for="BagisAyiDDL">Düzenli Bağış Ay Sayısı</label>
+                    <asp:DropDownList ID="BagisAyiDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="BagisAyiDDL_SelectedIndexChanged" Style="height: auto">
+                        <asp:ListItem Text="12" Value="12" />
+                        <asp:ListItem Text="24" Value="24" />
+                    </asp:DropDownList>
+                </div>
             </div>
             <div style="display: none">
                 <input id="paramNakitBagisciIdLbl" runat="server" text="Label" style="border-style: none;" text-align="center" />
@@ -90,6 +97,7 @@
                             <th>Adı Soyadı</th>
                             <th>TCKN</th>
                             <th>Tutar</th>
+                            <th>Bağış Adedi</th>
                             <th>Başlama Tarihi</th>
                             <th>Telefon</th>
                             <th>Bölge</th>

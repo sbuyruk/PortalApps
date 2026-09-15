@@ -129,6 +129,29 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                 ViewState["SecilenDurum"] = value;
             }
         }
+        private string SecilenBagisAyiQS
+        {
+            get
+            {
+                if (ViewState["SecilenBagisAyi"] == null)
+                {
+                    if (Page.Request.QueryString["SecilenBagisAyi"] != null)
+                    {
+                        ViewState["SecilenBagisAyi"] = Page.Request.QueryString["SecilenBagisAyi"];
+                    }
+                    else
+                    {
+                        ViewState["SecilenBagisAyi"] = "0";
+                    }
+                }
+                return ViewState["SecilenBagisAyi"].ToString();
+            }
+
+            set
+            {
+                ViewState["SecilenBagisAyi"] = value;
+            }
+        }
         private string SecilenBastarQS
         {
             get
@@ -264,6 +287,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                     AyDDLDoldur();
                     YilDDLDoldur();
                     DurumDDLDoldur();
+                    BagisAyiDDLDoldur();
                     SetSecilenBasTarBitTar();
                     TabloOlustur();
                 }
@@ -299,12 +323,18 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                 {
                     foreach (DataRow row in dataTable.Rows)
                     {
+                        int aBagisAdedi = row["aBagisAdedi"].ReturnZeroIfNull().ConvertToInt();
+                        if (!string.IsNullOrEmpty(SecilenBagisAyiQS) && SecilenBagisAyiQS != ProjeConstants.HEPSI_INT.ToString())
+                        {
+                            if (aBagisAdedi != SecilenBagisAyiQS.ConvertToInt())
+                                continue;
+                        }
+
                         int aBagisciId = row["aBagisciId"].ReturnZeroIfNull().ConvertToInt();
                         string aBagisciAdi = row["aBagisciAdi"].ReturnEmptyIfNull().ToString();
                         int aDuzenliBagisciId = row["aDuzenliBagisciId"].ReturnZeroIfNull().ConvertToInt();
                         DateTime aBaslamaTarihi = row["aBaslamaTarihi"].ReturnEmptyIfNull().ConvertToDatetime();
                         decimal aTutar = row["aTutar"].ReturnZeroIfNull().ConvertToDecimal();
-                        int aBagisAdedi = row["aBagisAdedi"].ReturnZeroIfNull().ConvertToInt();
                         decimal aBagisToplami = row["aBagisToplami"].ReturnZeroIfNull().ConvertToDecimal();
                         bool aAktif = row["aAktif"].ReturnFalseIfNull().ConvertToBool();
                         int aArmaganId = row["aArmaganId"].ReturnZeroIfNull().ConvertToInt();
@@ -326,6 +356,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                         bool bUlasilamiyor = row["bUlasilamiyor"].ReturnFalseIfNull().ConvertToBool();
                         bool bBelgeIstemiyor = row["bBelgeIstemiyor"].ReturnFalseIfNull().ConvertToBool();
                         string bDurum = row["bDurum"].ReturnEmptyIfNull().ToString();
+                        int eKacinciBelge = row["KacinciBelge"].ReturnZeroIfNull().ConvertToInt();
 
 
 
@@ -358,7 +389,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                         listItem.bBelgeIstemiyor = bBelgeIstemiyor;
                         listItem.bDurum = bDurum;
                         listItem.BagisciEslestir = BagisciEslestirLinkGetir(aBagisciId,aArmaganId,aBagisciAdi,bAdi,bDurum,aDuzenliBagisciId,aEslesmeBilgisi);
-                        listItem.DuzenliBagisciBelgesi = DuzenliBagisciBelgesiLinkiGetir(aBagisciId, aArmaganId, aBaslamaTarihi, bBelgeIstemiyor, bDurum, aDuzenliBagisciId); //property içindeki logic çalıştırılıyor
+                        listItem.DuzenliBagisciBelgesi = DuzenliBagisciBelgesiLinkiGetir(aBagisciId, aArmaganId, aBaslamaTarihi, bBelgeIstemiyor, bDurum, aDuzenliBagisciId,aBagisAdedi,eKacinciBelge); //property içindeki logic çalıştırılıyor
                         listItem.Adi = AdiLinkGetir(aBagisciId,aBagisciAdi,bAdi,aEslesmeBilgisi);
                         list.Add(listItem);
                     }
@@ -418,7 +449,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
             return link;
         }
 
-        private string DuzenliBagisciBelgesiLinkiGetir(int aBagisciId, int aArmaganId, DateTime aBaslamaTarihi, bool bBelgeIstemiyor, string bDurum, int aDuzenliBagisciId)
+        private string DuzenliBagisciBelgesiLinkiGetir(int aBagisciId, int aArmaganId, DateTime aBaslamaTarihi, bool bBelgeIstemiyor, string bDurum, int aDuzenliBagisciId, int aBagisAdedi, int kacinciBelge)
         {
 
             //string bDurum = this.bDurum;
@@ -431,7 +462,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
             {
                 link = "Belge İstemiyor";
             }
-            else
+            else 
             {
                 ////Duzenli bagisçi belgesi olusturulmus mu, Armagan_Table'dan kontrol et
                 //Armagan armagan = new Armagan();
@@ -450,21 +481,59 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                     }
                     else
                     {
-                        var baslamaTarihi = aBaslamaTarihi.AddMonths(12);
-                        var secilenAy = baslamaTarihi.Month;
-                        var secilenYil = baslamaTarihi.Year;
-                        var queryStr = "&SecilenAy=" + secilenAy + "&SecilenYil=" + secilenYil + "&SecilenArmaganTanimId=" + ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID
-                            + "&DuzenliBagisciId=" + aDuzenliBagisciId;
-                        link = "<a href='" + ProjeConstants.PAGE_ARMAGAN_EDIT + "?ArmaganId=" + aArmaganId + "&NakitBagisciId=" + aBagisciId + queryStr + "' class='btn btn-outline-primary' >Düzenle</a> </br>" + "(" + bDurum + ")";
+                        
+                        if (aBagisAdedi == 12) //birinci yıl dolmuş düzenli bağış belgesi alır
+                        {
+                            var baslamaTarihi = aBaslamaTarihi.AddMonths(12);
+                            var secilenAy = baslamaTarihi.Month;
+                            var secilenYil = baslamaTarihi.Year;
+                            var queryStr = "&SecilenAy=" + secilenAy + "&SecilenYil=" + secilenYil + "&SecilenArmaganTanimId=" + ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID
+                                + "&DuzenliBagisciId=" + aDuzenliBagisciId;
+                            link = "<a href='" + ProjeConstants.PAGE_ARMAGAN_EDIT + "?ArmaganId=" + aArmaganId + "&NakitBagisciId=" + aBagisciId + queryStr + "' class='btn btn-outline-success' >Düzenle</a> </br>" + "(" + bDurum + ")";
+                        }
+                        else if (aBagisAdedi == 24)
+                        {
+                            var baslamaTarihi = aBaslamaTarihi.AddMonths(24);
+                            var secilenAy = baslamaTarihi.Month;
+                            var secilenYil = baslamaTarihi.Year;
+                            var queryStr = "&SecilenAy=" + secilenAy + "&SecilenYil=" + secilenYil + "&SecilenArmaganTanimId=" + ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID
+                                + "&DuzenliBagisciId=" + aDuzenliBagisciId;
+                            if (kacinciBelge>0)
+                            {
+                                link = "<button type=button class='btn btn-primary' onclick=showDuzenliBagisOnay(" + aBagisciId + "," + aDuzenliBagisciId + ")>Düzenli Bağışçı Belgesi oluştur</button>";
+                            }
+                            else
+                            {
+                                link = "<a href='" + ProjeConstants.PAGE_ARMAGAN_EDIT + "?ArmaganId=" + aArmaganId + "&NakitBagisciId=" + aBagisciId + queryStr + "' class='btn btn-outline-primary' >Düzenle</a> </br>" + "(" + bDurum + ")";
+                            }
+                        }
+                        else
+                        {
+                            link = "Bağışçı " + aBagisAdedi + " defa bağış yapmış.";
+                        }
                     }
                 }
                 else
                 {
-                    link = "<button type=button class='btn btn-success' onclick=showDuzenliBagisOnay(" + aBagisciId + "," + aDuzenliBagisciId + ")>Düzenli Bağışçı Belgesi oluştur</button>";
+                    if (aBagisAdedi == 12) //birinci yıl dolmuş düzenli bağış belgesi alır
+                    {
+                        link = "<button type=button class='btn btn-success' onclick=showDuzenliBagisOnay(" + aBagisciId + "," + aDuzenliBagisciId + ")>Düzenli Bağışçı Belgesi oluştur</button>";
+
+                    }
+                    else if (aBagisAdedi == 24)
+                    {
+                        link = "<button type=button class='btn btn-primary' onclick=showDuzenliBagisOnay(" + aBagisciId + "," + aDuzenliBagisciId + ")>Düzenli Bağışçı Belgesi oluştur</button>";
+                    }
+                    else 
+                    {
+                        link = "Bağışçı " + aBagisAdedi + " defa bağış yapmış.";
+                    }
                 }
             }
+
             return link;
         }
+        
 
         private string CreateDataTable(string jsonData)
         {
@@ -489,6 +558,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                     { data: 'Adi',width: '15%'},
                     { data: 'bTCKimlikNo' },
                     { data: 'Tutar', width: '10%', className: 'text-end' },
+                    { data: 'aBagisAdedi', width: '5%', className: 'text-end' },
                     { data: 'BaslamaTarihi', width: '10%'},
                     { data: 'Telefon' },
                     { data: 'Bolge' },
@@ -499,7 +569,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                     { data: 'DuzenliBagisciBelgesi', className: 'text-center' },
                     { data: 'BagisciEslestir', width: '12%', className: 'text-center' },
                 ],
-                'order': [[3, 'desc']],
+                'order': [[4, 'desc']],
 
                 'language': {
                     'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
@@ -813,16 +883,31 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                     //Bu bağışçı daha önce Düzenli Bağışçı belgesi almış mı bak
                     Armagan armagan = new Armagan();
                     armagan = armagan.SelectByBagisciIdAndArmaganTanimId(bagisci.Id, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID);
+                    int yeniArmaganId = 0;
                     if (armagan != null)
                     {
-                        string aciklamaStr = string.IsNullOrEmpty(duzenliNakitBagisci.Aciklama) ? " Daha önce Düzenli Bağışçı Belgesi almış -> " + duzenliNakitBagisci.BagisciAdi : duzenliNakitBagisci.Aciklama;
-                        Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} -> Bu bağışçı daha önce Düzenli Bağışçı Belgesi almış.", ProjeConstants.PAGE_DUZENLIBAGISCI_YUKLEME, aciklamaStr));
-                        exceptionHelper.Exceptions.Add(exception);
-                        return exceptionHelper;
+                        //daha önce Düzenli Bağışçı Belgesi almış, ama BagisAdedi 24 ise ikinci yılı da dolmuş demektir, teşekkür belgesi alabilir.
+                        //buna uygun belge oluşturulmalı
+                        if (duzenliNakitBagisci.BagisAdedi%12==0)
+                        {
+                            yeniArmaganId = EkstreAktarma.ArmaganiKaydet(nakitBagisHareket, bagisci, duzenliNakitBagisci.BagisToplami,
+                                ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID, CurrentUserName);
+                        }
+                        else
+                        {
+                            string aciklamaStr = string.IsNullOrEmpty(duzenliNakitBagisci.Aciklama) ? " Daha önce Düzenli Bağışçı Belgesi almış -> " + duzenliNakitBagisci.BagisciAdi : duzenliNakitBagisci.Aciklama;
+                            Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} -> Bu bağışçı daha önce Düzenli Bağışçı Belgesi almış.", ProjeConstants.PAGE_DUZENLIBAGISCI_YUKLEME, aciklamaStr));
+                            exceptionHelper.Exceptions.Add(exception);
+                            return exceptionHelper;
+                        }
                     }
-                    int armaganId = EkstreAktarma.ArmaganiKaydet(nakitBagisHareket, bagisci, duzenliNakitBagisci.BagisToplami, 
-                        ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID, CurrentUserName);
-                    if (armaganId < 1)
+
+                    else
+                    {
+                        yeniArmaganId = EkstreAktarma.ArmaganiKaydet(nakitBagisHareket, bagisci, duzenliNakitBagisci.BagisToplami,
+                            ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID, CurrentUserName); 
+                    }
+                    if (yeniArmaganId < 1)
                     {
                         string aciklamaStr = string.IsNullOrEmpty(duzenliNakitBagisci.Aciklama) ? " Armağan kaydı oluşturulamadı -> " + duzenliNakitBagisci.BagisciAdi : duzenliNakitBagisci.Aciklama;
                         Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} -> Armağan kaydı oluşturulamadı.", ProjeConstants.PAGE_DUZENLIBAGISCI_YUKLEME, aciklamaStr));
@@ -830,8 +915,8 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                     }
                     else
                     {
-                        duzenliNakitBagisci.ArmaganId = armaganId;
-                        nakitBagisHareket.ArmaganId = armaganId;
+                        duzenliNakitBagisci.ArmaganId = yeniArmaganId;
+                        nakitBagisHareket.ArmaganId = yeniArmaganId;
                         nakitBagisHareket.Update();
                     }
                     duzenliNakitBagisci.Update();
@@ -864,6 +949,11 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
             SetSecilenBasTarBitTar();
             TabloOlustur();
         }
+        protected void BagisAyiDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SecilenBagisAyiQS = BagisAyiDDL.SelectedItem.Value.ToString();
+            TabloOlustur();
+        }
         private void AyDDLDoldur()
         {
             AyDDL.Items.Add(new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString()));
@@ -883,8 +973,11 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
         }
         private void YilDDLDoldur()
         {
+            YilDDL.Items.Clear();
+            YilDDL.Items.Add(new ListItem(ProjeConstants.HEPSI.ToString(), ProjeConstants.DUZENLIBAGISBASLANGICYILI.ToString()));
             var ilkTarih= new DateTime(DateTime.Today.AddMonths(-11).Year, 1, 1);
             var year = ilkTarih.Year;
+
             for (int i = year; i >= year-5; i--)
             {
                 YilDDL.Items.Add(new ListItem(i.ToString(), i.ToString()));
@@ -915,6 +1008,17 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
             if (DurumItem != null)
                 DurumDDL.SelectedValue = DurumItem.Value;
         }
+        private void BagisAyiDDLDoldur()
+        {
+            BagisAyiDDL.Items.Clear();
+            BagisAyiDDL.Items.Add(new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString()));
+            BagisAyiDDL.Items.Add(new ListItem("12", "12"));
+            BagisAyiDDL.Items.Add(new ListItem("24", "24"));
+
+            ListItem bagisAyiItem = BagisAyiDDL.Items.FindByValue(SecilenBagisAyiQS);
+            if (bagisAyiItem != null)
+                BagisAyiDDL.SelectedValue = bagisAyiItem.Value;
+        }
         private void SetSecilenBasTarBitTar()
         {
             int ay = AyDDL.SelectedItem.Value.ConvertToInt();
@@ -926,14 +1030,14 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
             if (ay == 0)
             {
                 bastar = new DateTime(yil, 1, 1);
-                bittar = bastar.AddYears(1).AddDays(-1);
+                bittar = new DateTime(DateTime.Today.Year,12,31);
             }
 
             else
             {
                 bastar = new DateTime(yil, ay, 1);
                 DateTime sonGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
-                bittar = new DateTime(yil, ay, sonGun.Day);
+                bittar = new DateTime(DateTime.Today.Year, ay, sonGun.Day);
             }
             SecilenBastarQS = bastar.ConvertToDatetimeEmptyIfNull();
             SecilenBittarQS = bittar.ConvertToDatetimeEmptyIfNull();

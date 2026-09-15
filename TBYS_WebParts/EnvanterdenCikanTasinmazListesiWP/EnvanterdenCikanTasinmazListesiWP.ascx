@@ -31,6 +31,7 @@
                     <thead>
                         <tr>
                             <th>T.No</th>
+                            <th>Bağışçı</th>
                             <th>Kullanım Şekli</th>
                             <th>Çıkarma Sebebi</th>
                             <th>Çıkarma Yılı</th>

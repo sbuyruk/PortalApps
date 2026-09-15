@@ -813,7 +813,7 @@ namespace Model.NBYS
                     ,D.IlceAdi bIlce
                     ,Ulasilamiyor bUlasilamiyor
                     ,BelgeIstemiyor bBelgeIstemiyor
-                    ,E.Durum bDurum
+                    ,E.Durum bDurum,E.KacinciBelge
                     ,F.KisaAdi bBolgeKisaAdi
                 FROM DuzenliNakitBagisci_Table A
                 LEFT JOIN NakitBagisci_Table B ON A.BagisciId = B.Id

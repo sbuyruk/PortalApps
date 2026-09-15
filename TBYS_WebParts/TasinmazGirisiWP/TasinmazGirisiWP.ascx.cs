@@ -959,43 +959,163 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         }
         protected void DeleteBtn_Click(object sender, EventArgs e)
         {
-            ///Tasinmazin siinmesi bir dizi konrol ile yapilabilir. Su an silme yetkisi kaldirildi SB 24.06.2021
-            if (true)
+
+            //onay için modal popup açılacak. Onay verildikten sonra silme işlemi yapılacak.
+            try
             {
-                MessageHelper.PublishMessage("Taşınmaz silme yetkiniz bulunmamaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
+                //Onay Popup Aç
+
+                DeleteNowBtn.Visible = true;
+                DeleteMesajLbl.Text = "Taşınmaza bağlı Bağışçı, Kira Sözleşmesi, Sigorta ve Onarım işlemleri gibi bilgiler kontrol edilerek silinecektir.";
+                DeleteMesajLbl1.Text = "Bu taşınmazın silinmesini onaylıyor musunuz?";
+                var openPopup = "OpenDeleteModal();";
+                UtilityHelper.ScriptCalistir(openPopup);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                exHelper.PublishException();
+            }
+            ///Tasinmazin siinmesi bir dizi konrol ile yapilabilir. Su an silme yetkisi kaldirildi SB 24.06.2021
+//            if (true)
+//            {
+//                MessageHelper.PublishMessage("Taşınmaz silme yetkiniz bulunmamaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
+//            }
+//            else
+//            {
+//#pragma warning disable CS0162 // Unreachable code detected
+//                Tasinmaz tasinmaz = new Tasinmaz();
+//#pragma warning restore CS0162 // Unreachable code detected
+//                tasinmaz = tasinmaz.Select(TasinmazIdQS.ConvertToInt());
+//                if (tasinmaz != null) //sildikten sonra önceki sayfaya dön
+//                {
+
+//                    if (!SozlesmesiVarMi(tasinmaz))
+//                    {
+//                        if (tasinmaz.Delete())
+//                        {
+
+//                            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+//                            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
+//                            newUrl += "/" + ProjeConstants.PAGE_TASINMAZ_LIST;
+//                            Page.Response.Redirect(newUrl, true);
+
+//                        }
+//                        else
+//                            MessageHelper.PublishMessage("Taşınmaz silinemedi", ProjeConstants.MESAJ_HATA);
+//                    }
+//                    else
+//                    {
+//                        MessageHelper.PublishMessage("Taşınmaza ait sözleşme bulunmaktadir. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
+//                    }
+//                }
+//                else
+//                    MessageHelper.PublishMessage("Taşınmaz bulunamadı", ProjeConstants.MESAJ_HATA);
+//            }
+        }
+        protected void DeleteNowBtn_Click(object sender, EventArgs e)
+        {
+            //Silme onaylandı
+            
+
+            Tasinmaz silinecekTasinmaz = new Tasinmaz();
+            silinecekTasinmaz = silinecekTasinmaz.Select(TasinmazIdQS.ConvertToInt());
+            ExceptionHelper eh = new ExceptionHelper();
+            UtilityHelper.CopyAndCreateImageFromSPLibrary("100TapuFoto.jpg", "100test.jpg", ProjeConstants.RESIMLER_TASINMAZ, eh);
+
+            if (silinecekTasinmaz == null)
+            {
+                MessageHelper.PublishMessage("Taşınmaz bulunamadı", ProjeConstants.MESAJ_HATA);
             }
             else
             {
-#pragma warning disable CS0162 // Unreachable code detected
-                Tasinmaz tasinmaz = new Tasinmaz();
-#pragma warning restore CS0162 // Unreachable code detected
-                tasinmaz = tasinmaz.Select<Tasinmaz>(TasinmazIdQS.ConvertToInt());
-                if (tasinmaz != null) //sildikten sonra önceki sayfaya dön
+                // Bu taşınmazın bağımsız bölümleri var mı
+                BagimsizBolum bagimsizBolum = new BagimsizBolum();
+                List<BagimsizBolum> bolumListesi = bagimsizBolum.SelectByTasinmazId(silinecekTasinmaz.Id);
+                if (bolumListesi!=null && bolumListesi.Count > 0) { 
+                    MessageHelper.PublishMessage("Taşınmaza ait bağımsız bölümler bulunmaktadir. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
+                    return;
+                }
+                //Bağışçısı var mı
+                Bagis bagis = new Bagis();
+                bagis = bagis.SelectByTasinmazId(silinecekTasinmaz.Id);
+                if (bagis != null)
                 {
+                    MessageHelper.PublishMessage("Taşınmaza ait bağışçı bulunmaktadir. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
+                    return;
+                }
+                //sözleşmesi var mı
+                SozlesmeTasinmaz sozlesmeTasinmaz = new SozlesmeTasinmaz();
+                List<SozlesmeTasinmaz> sozlesmeListesi = sozlesmeTasinmaz.SelectByTasinmazId(silinecekTasinmaz.Id);
+                if (sozlesmeListesi!=null && sozlesmeListesi.Count > 0)
+                {
+                    MessageHelper.PublishMessage("Taşınmaza ait sözleşmeler bulunmaktadir. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
+                    return;
+                }
+                //SozlesmeTasinmaz_Table'da TasinmazId olan var mi
+                SozlesmeTasinmaz st = new SozlesmeTasinmaz();
+                List<SozlesmeTasinmaz> stList = st.SelectByTasinmazId(silinecekTasinmaz.Id);
+                if (stList!=null && stList.Count > 0)
+                {
+                    MessageHelper.PublishMessage("Taşınmaza ait sözleşme bulunmaktadir. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
+                    return;
+                }
 
-                    if (!SozlesmesiVarMi(tasinmaz))
-                    {
-                        if (tasinmaz.Delete())
-                        {
+                //Onarım planı var mı
+                Onarim onarim = new Onarim();
+                List<Onarim> onarimList = onarim.SelectByTasinmazId(silinecekTasinmaz.Id);
+                if (onarimList!=null && onarimList.Count > 0)
+                {
+                    MessageHelper.PublishMessage("Taşınmaza ait onarım bulunmaktadir. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
+                    return;
+                }
+                //Sigortası var mı
+                Sigorta sigorta = new Sigorta();
+                sigorta = sigorta.SelectByTasinmazId(silinecekTasinmaz.Id);
+                if (sigorta != null)
+                {
+                    MessageHelper.PublishMessage("Taşınmaza ait sigorta bulunmaktadir. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
+                    return;
+                }
 
-                            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-                            newUrl += "/" + ProjeConstants.PAGE_TASINMAZ_LIST;
-                            Page.Response.Redirect(newUrl, true);
+                //Resimler silinmesin
+                UtilityHelper.ScriptCalistir("CloseDeleteModal();");
+                TasinmaziSil(silinecekTasinmaz);
+                
+            }
 
-                        }
-                        else
-                            MessageHelper.PublishMessage("Taşınmaz silinemedi", ProjeConstants.MESAJ_HATA);
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage("Taşınmaza ait sözleşme bulunmaktadir. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
-                    }
+        }
+
+        private void TasinmaziSil(Tasinmaz silinecekTasinmaz)
+        {
+            try
+            {
+                bool envanterdeMi = silinecekTasinmaz.EnvanterdeMi == ProjeConstants.TASINMAZ_ENVANTERDE;
+                if (silinecekTasinmaz == null)
+                {
+                    MessageHelper.PublishMessage("Taşınmaz bulunamadı", ProjeConstants.MESAJ_HATA);
+                    return;
+                }
+                if (silinecekTasinmaz.Delete())
+                {
+                    string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                    string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
+                    newUrl += "/" + (envanterdeMi ? ProjeConstants.PAGE_TASINMAZ_LIST : ProjeConstants.PAGE_ENVANTERDENCIKANTASINMAZ_LIST);
+                    Page.Response.Redirect(newUrl, true);
                 }
                 else
-                    MessageHelper.PublishMessage("Taşınmaz bulunamadı", ProjeConstants.MESAJ_HATA);
+                {
+                    MessageHelper.PublishMessage("Taşınmaz silinemedi", ProjeConstants.MESAJ_HATA);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                exHelper.PublishException();
             }
         }
+
         protected void ResimlerBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
@@ -1089,7 +1209,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 SBIDeleteBtn.Visible = false;
                 MesajLbl.Text = "Taşınmaza bağlı Bağışçı, Kira Sözleşmesi, Ödeme Planı, Sigorta ve Onarım işlemleri gibi bilgiler aktarılacak.";
                 MesajLbl1.Text = "Bu taşınmazdan kopyalanarak yeni bir taşınmaz yaratılmasını onaylıyor musunuz?";
-                var openPopup = "OpenModal();";
+                var openPopup = "OpenSBIModal();";
                 UtilityHelper.ScriptCalistir(openPopup);
             }
             catch (Exception ex)

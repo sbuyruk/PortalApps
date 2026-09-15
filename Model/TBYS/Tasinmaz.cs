@@ -20,9 +20,9 @@ namespace Model.TBYS
         /// </summary>
         public static readonly string[] SatisVsDahilEnvanterdenCikmaSebepleri =
         {
-            "Satış",
-            "Kamulaştırma",
-            "Tevhit"
+            "Satış","Taşınmaz İadesi", "Taşınmaz Satın Alma","İzale-i Şuyu ile Satış","Trampa","Takas","Kat İrtifakından Kat Mülkiyetine Geçiş",
+            "Kat Mülkiyeti Terkini","Mahkeme Kararı ile Envanterden Çıkarma", "Resmi Kuruma Bedelsiz Devir", "Hisse Birleştirme Yoluyla Bağış",
+            "Kat Karşılığı İnşaat","Kamulaştırma","İmar Uygulaması","İfraz","Tevhit","Resmi Kurumdan Gelen Yazı ile Düşülmesi"
         };
         public enum SatisPlaniDurumu
         {
@@ -575,21 +575,40 @@ namespace Model.TBYS
         }
         private string SelectAllEnvanterdenCikanSQL()
         {
+            //string sqlString = string.Format(@"
+            //    SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId,T.BagisYili,
+            //        T.Cinsi, T.Ili, T.Ilcesi, T.Ili+'/'+T.Ilcesi IliIlcesi, T.SigortaDurumu, 
+            //        T.Adres,T.Adres+' '+T.Ili+'/'+T.Ilcesi AdresIlIlce,
+	           //     T.MulkiyetSekli, T.KiraDurumu, 
+            //        IIF(T.KatMulkiyeti = 1, 'Kat Mülkiyeti Var', 'Kat Mülkiyeti Yok') AS KatMulkiyeti,
+            //        T.SorumluBolge, T.EdinmeSekli,T.BagisYili, T.EmlakSicilNo,
+            //        T.EmlakBeyanDegeri, T.TahminiRayicDegeri, T.TapuTarihi, T.AdaNo, T.ParselNo, T.PaftaNo, T.Yuzolcumu, T.ArsaPayi, T.VakifHissesi,
+	           //     T.YevmiyeNo,T.CiltNo, T.SahifeNo, T.KullanimSekli, T.TasinmazFoto, T.TasinmazFoto1, T.TasinmazFoto2, T.TapuFoto, T.KrokiFoto, T.TahkikatFoto,
+	           //     T.Nitelik,T.BulunduguKat,T.Aciklama,T.EnvantereGirisTarihi,  YEAR(T.EnvanterdenCikmaTarihi) EnvanterdenCikmaYili,
+            //        --B.Adi+' '+B.Soyadi Bagisci, B.Id BagisciId,
+            //        T.EnvantereGirisTarihi,T.EnvanterdenCikmaTarihi,T.EnvanterdenCikmaSebebi,T.EnvanterdenCikmaBedeli
+            //    FROM Tasinmaz_Table T
+	           //     --INNER JOIN Bagis_Table A ON A.TasinmazId=T.Id
+	           //     --INNER JOIN TasinmazBagisci_Table B ON B.Id=A.BagisciId
+            //    WHERE T.EnvanterdeMi=0 
+            //    ");
             string sqlString = string.Format(@"
-                SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId,T.BagisYili,
+                SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId,
+	                B.Adi+' '+B.Soyadi Bagisci, B.Id BagisciId,
+	                T.BagisYili,
                     T.Cinsi, T.Ili, T.Ilcesi, T.Ili+'/'+T.Ilcesi IliIlcesi, T.SigortaDurumu, 
                     T.Adres,T.Adres+' '+T.Ili+'/'+T.Ilcesi AdresIlIlce,
-	                T.MulkiyetSekli, T.KiraDurumu, 
+                    T.MulkiyetSekli, T.KiraDurumu, 
                     IIF(T.KatMulkiyeti = 1, 'Kat Mülkiyeti Var', 'Kat Mülkiyeti Yok') AS KatMulkiyeti,
                     T.SorumluBolge, T.EdinmeSekli,T.BagisYili, T.EmlakSicilNo,
                     T.EmlakBeyanDegeri, T.TahminiRayicDegeri, T.TapuTarihi, T.AdaNo, T.ParselNo, T.PaftaNo, T.Yuzolcumu, T.ArsaPayi, T.VakifHissesi,
-	                T.YevmiyeNo,T.CiltNo, T.SahifeNo, T.KullanimSekli, T.TasinmazFoto, T.TasinmazFoto1, T.TasinmazFoto2, T.TapuFoto, T.KrokiFoto, T.TahkikatFoto,
-	                T.Nitelik,T.BulunduguKat,T.Aciklama,T.EnvantereGirisTarihi,  YEAR(T.EnvanterdenCikmaTarihi) EnvanterdenCikmaYili,
-                    --B.Adi+' '+B.Soyadi Bagisci, B.Id BagisciId,
+                    T.YevmiyeNo,T.CiltNo, T.SahifeNo, T.KullanimSekli, T.TasinmazFoto, T.TasinmazFoto1, T.TasinmazFoto2, T.TapuFoto, T.KrokiFoto, T.TahkikatFoto,
+                    T.Nitelik,T.BulunduguKat,T.Aciklama,T.EnvantereGirisTarihi,  YEAR(T.EnvanterdenCikmaTarihi) EnvanterdenCikmaYili,
+    
                     T.EnvantereGirisTarihi,T.EnvanterdenCikmaTarihi,T.EnvanterdenCikmaSebebi,T.EnvanterdenCikmaBedeli
                 FROM Tasinmaz_Table T
-	                --INNER JOIN Bagis_Table A ON A.TasinmazId=T.Id
-	                --INNER JOIN TasinmazBagisci_Table B ON B.Id=A.BagisciId
+                    LEFT JOIN Bagis_Table A ON A.TasinmazId=T.Id
+                    LEFT JOIN TasinmazBagisci_Table B ON B.Id=A.BagisciId
                 WHERE T.EnvanterdeMi=0 
                 ");
 

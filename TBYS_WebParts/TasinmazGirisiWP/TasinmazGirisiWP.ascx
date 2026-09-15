@@ -8,9 +8,44 @@
 <%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="TasinmazGirisiWP.ascx.cs" Inherits="TBYS_WebParts.TasinmazGirisiWP.TasinmazGirisiWP" %> 
 <script type="text/javascript">
-    function OpenModal() {
-        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+    function OpenSBIModal() {
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('SBIModalOnayDiv'));
         myModalInstance.show();
+    }
+    function OpenDeleteModal() {
+        var modalElement = document.getElementById('DeleteModalOnayDiv');
+        if (modalElement && typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            var myModalInstance = bootstrap.Modal.getOrCreateInstance(modalElement);
+            myModalInstance.show();
+        }
+    }
+    function CloseDeleteModal() {
+        var modalElement = document.getElementById('DeleteModalOnayDiv');
+        if (!modalElement) return;
+
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            var myModalInstance = bootstrap.Modal.getInstance(modalElement);
+            if (myModalInstance) {
+                myModalInstance.hide();
+            } else {
+                bootstrap.Modal.getOrCreateInstance(modalElement).hide();
+            }
+        }
+    }
+
+    if (window.Sys && Sys.WebForms && Sys.WebForms.PageRequestManager) {
+        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+            var backdropList = document.querySelectorAll('.modal-backdrop');
+            for (var i = 0; i < backdropList.length; i++) {
+                if (backdropList[i] && backdropList[i].parentNode) {
+                    backdropList[i].parentNode.removeChild(backdropList[i]);
+                }
+            }
+
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
+        });
     }
     function OpenSerhBeyanIrtifakModal() {
         var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('SerhBeyanIrtifakModalDiv'));
@@ -587,8 +622,7 @@
                     <asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="BackBtn" runat="server" Text="Geri" CausesValidation="false" OnClick="BackBtn_Click" />
                     <asp:LinkButton ID="SaveBtn" CssClass="btn btn-outline-success" runat="server" Text="Kaydet" OnClick="SaveBtn_Click" />
                     <asp:LinkButton ID="UpdateBtn" CssClass="btn btn-outline-primary" runat="server" Text="Güncelle" Visible="false" OnClick="UpdateBtn_Click" />
-                    <asp:LinkButton ID="DeleteBtn" Visible="false" CssClass="btn btn-outline-danger" runat="server" CausesValidation="false" Text="Sil"
-                        OnClientClick="if(confirm(' Silme İşlemini Onaylıyor musunuz?')){return true;} else{return false;};" OnClick="DeleteBtn_Click" />
+                    <asp:LinkButton ID="DeleteBtn" CssClass="btn btn-outline-danger" runat="server" Text="Taşınmazı Sil" Visible="false" OnClick="DeleteBtn_Click" />
                     <asp:LinkButton ID="BagisciBtn" CssClass="btn btn-outline-secondary" runat="server" Text="Bağışçı" Visible="false" OnClick="BagisciBtn_Click" />
 
                     <asp:LinkButton ID="SigortaBtn" CssClass="btn btn-outline-secondary" runat="server" Text="Sigorta" Visible="false" OnClick="SigortaBtn_Click" />
@@ -601,7 +635,37 @@
                     <asp:LinkButton ID="PrevBtn" CssClass="btn btn-outline-secondary float-end mr-2" runat="server" Text="<=Önceki" Visible="false" OnClick="PrevBtn_Click" />
                 </div>
             </div>
-            <div class="modal" id="ModalOnayDiv" role="dialog">
+            <div class="modal" id="DeleteModalOnayDiv" role="dialog">
+                <div class="modal-dialog modal-dialog-centered"">
+                    <!-- Modal content-->
+                    <div class="modal-content" style="width: 550px;">
+                        <div class="modal-header">
+                            <h4 class="modal-title fw-semibold text-danger" runat="server">Taşınmaz Silinecek</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div style="display: none">
+                            </div>
+                            <div>
+                                <div class="text-center">
+                                    <h3>
+                                        <asp:Label CssClass="form-label fw-semibold text-danger" runat="server" Text="Lütfen Dikkat!"></asp:Label></h3>
+                                </div>
+                                <div class="form-group">
+                                    <asp:Label ID="DeleteMesajLbl" CssClass="form-label fw-semibold" runat="server" Text="Taşınmaz Silinecek"></asp:Label>
+                                    <asp:Label ID="DeleteMesajLbl1" CssClass="form-label fw-semibold text-danger" runat="server" Text="Bu taşınmazın silinmesini onaylıyor musunuz?" Style="display:block; margin-top:8px;"></asp:Label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <asp:LinkButton CssClass="btn btn-danger" ID="DeleteNowBtn" runat="server" Text="Taşınmazı Sil" OnClick="DeleteNowBtn_Click" Visible="false" />
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal" id="SBIModalOnayDiv" role="dialog">
                 <div class="modal-dialog modal-dialog-centered"">
                     <!-- Modal content-->
                     <div class="modal-content" style="width: 550px;">

@@ -2893,11 +2893,15 @@ namespace Model.NBYS
         public static int ArmaganiKaydet(NakitBagisHareket nakitBagisHareket, NakitBagisci nakitBagisci, decimal bagisTutari,
             int hakedilenArmaganTanimId, string currentUser,  bool cokluBagis=false)
         {
+            //Armagan_Table'dan bu bagisciId ve hakedilenArmaganTanimId kaç tane armagan aldğını bul
+            int mevcutArmaganSayisi = new Armagan().SelectCountByBagisciIdAndArmaganTanimId(nakitBagisci.Id,hakedilenArmaganTanimId);
+
             int armaganId = 0;
             Armagan armagan = new Armagan();
 
             armagan.CokluBagis=cokluBagis;
             armagan.DuzenliBagis = hakedilenArmaganTanimId==ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID;
+            armagan.KacinciBelge = mevcutArmaganSayisi + 1;
             armagan.BagisciId = nakitBagisci.Id;
             //armagan.BagisId = nakitBagisHareketId;
             armagan.BagisMiktari = bagisTutari;

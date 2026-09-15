@@ -453,6 +453,18 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label DeleteMesajLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label DeleteMesajLbl1;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton DeleteNowBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label MesajLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -2820,12 +2832,9 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "DeleteBtn";
-            @__ctrl.Visible = false;
             @__ctrl.CssClass = "btn btn-outline-danger";
-            @__ctrl.CausesValidation = false;
-            @__ctrl.Text = "Sil";
-            @__ctrl.OnClientClick = "if(confirm(\' Silme İşlemini Onaylıyor musunuz?\')){return true;} else{return false" +
-                ";};";
+            @__ctrl.Text = "Taşınmazı Sil";
+            @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.DeleteBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.DeleteBtn_Click);
             return @__ctrl;
@@ -2996,7 +3005,82 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control13() {
+        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControl__control13() {
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("h4");
+            @__ctrl.TemplateControl = this;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "modal-title fw-semibold text-danger");
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Taşınmaz Silinecek"));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control14() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "form-label fw-semibold text-danger";
+            @__ctrl.Text = "Lütfen Dikkat!";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlDeleteMesajLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.DeleteMesajLbl = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "DeleteMesajLbl";
+            @__ctrl.CssClass = "form-label fw-semibold";
+            @__ctrl.Text = "Taşınmaz Silinecek";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlDeleteMesajLbl1() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.DeleteMesajLbl1 = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "DeleteMesajLbl1";
+            @__ctrl.CssClass = "form-label fw-semibold text-danger";
+            @__ctrl.Text = "Bu taşınmazın silinmesini onaylıyor musunuz?";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "display:block; margin-top:8px;");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlDeleteNowBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.DeleteNowBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "btn btn-danger";
+            @__ctrl.ID = "DeleteNowBtn";
+            @__ctrl.Text = "Taşınmazı Sil";
+            @__ctrl.Visible = false;
+            @__ctrl.Click -= new System.EventHandler(this.DeleteNowBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.DeleteNowBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control15() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.TemplateControl = this;
@@ -3315,7 +3399,51 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                 </div>
             </div>
-            <div class=""modal"" id=""ModalOnayDiv"" role=""dialog"">
+            <div class=""modal"" id=""DeleteModalOnayDiv"" role=""dialog"">
+                <div class=""modal-dialog modal-dialog-centered"""">
+                    <!-- Modal content-->
+                    <div class=""modal-content"" style=""width: 550px;"">
+                        <div class=""modal-header"">
+                            "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl16;
+            @__ctrl16 = this.@__BuildControl__control13();
+            @__parser.AddParsedSubObject(@__ctrl16);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                            <button type=""button"" class=""btn-close"" data-bs-dismiss=""modal"" aria-label=""Close""></button>
+                        </div>
+                        <div class=""modal-body"">
+                            <div style=""display: none"">
+                            </div>
+                            <div>
+                                <div class=""text-center"">
+                                    <h3>
+                                        "));
+            global::System.Web.UI.WebControls.Label @__ctrl17;
+            @__ctrl17 = this.@__BuildControl__control14();
+            @__parser.AddParsedSubObject(@__ctrl17);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("</h3>\r\n                                </div>\r\n                                <d" +
+                        "iv class=\"form-group\">\r\n                                    "));
+            global::System.Web.UI.WebControls.Label @__ctrl18;
+            @__ctrl18 = this.@__BuildControlDeleteMesajLbl();
+            @__parser.AddParsedSubObject(@__ctrl18);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
+            global::System.Web.UI.WebControls.Label @__ctrl19;
+            @__ctrl19 = this.@__BuildControlDeleteMesajLbl1();
+            @__parser.AddParsedSubObject(@__ctrl19);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </div>\r\n   " +
+                        "                     </div>\r\n                        <div class=\"modal-footer\">\r" +
+                        "\n                            "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl20;
+            @__ctrl20 = this.@__BuildControlDeleteNowBtn();
+            @__parser.AddParsedSubObject(@__ctrl20);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                            <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class=""modal"" id=""SBIModalOnayDiv"" role=""dialog"">
                 <div class=""modal-dialog modal-dialog-centered"""">
                     <!-- Modal content-->
                     <div class=""modal-content"" style=""width: 550px;"">
@@ -3326,28 +3454,28 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
                                 <div class=""text-center"">
                                     <h3>
                                         "));
-            global::System.Web.UI.WebControls.Label @__ctrl16;
-            @__ctrl16 = this.@__BuildControl__control13();
-            @__parser.AddParsedSubObject(@__ctrl16);
+            global::System.Web.UI.WebControls.Label @__ctrl21;
+            @__ctrl21 = this.@__BuildControl__control15();
+            @__parser.AddParsedSubObject(@__ctrl21);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("</h3>\r\n                                </div>\r\n                                <d" +
                         "iv class=\"card-body\">\r\n                                    "));
-            global::System.Web.UI.WebControls.Label @__ctrl17;
-            @__ctrl17 = this.@__BuildControlMesajLbl();
-            @__parser.AddParsedSubObject(@__ctrl17);
+            global::System.Web.UI.WebControls.Label @__ctrl22;
+            @__ctrl22 = this.@__BuildControlMesajLbl();
+            @__parser.AddParsedSubObject(@__ctrl22);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
-            global::System.Web.UI.WebControls.Label @__ctrl18;
-            @__ctrl18 = this.@__BuildControlMesajLbl1();
-            @__parser.AddParsedSubObject(@__ctrl18);
+            global::System.Web.UI.WebControls.Label @__ctrl23;
+            @__ctrl23 = this.@__BuildControlMesajLbl1();
+            @__parser.AddParsedSubObject(@__ctrl23);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </div>\r\n   " +
                         "                     </div>\r\n                        <div class=\"modal-footer\">\r" +
                         "\n                            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl19;
-            @__ctrl19 = this.@__BuildControlKopyalaNowBtn();
-            @__parser.AddParsedSubObject(@__ctrl19);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl24;
+            @__ctrl24 = this.@__BuildControlKopyalaNowBtn();
+            @__parser.AddParsedSubObject(@__ctrl24);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl20;
-            @__ctrl20 = this.@__BuildControlSBIDeleteBtn();
-            @__parser.AddParsedSubObject(@__ctrl20);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl25;
+            @__ctrl25 = this.@__BuildControlSBIDeleteBtn();
+            @__parser.AddParsedSubObject(@__ctrl25);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                             <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                         </div>
@@ -3361,9 +3489,9 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
                     <div class=""modal-content"">
                         <div class=""modal-header"">
                             "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl21;
-            @__ctrl21 = this.@__BuildControlModalBaslikLbl();
-            @__parser.AddParsedSubObject(@__ctrl21);
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl26;
+            @__ctrl26 = this.@__BuildControlModalBaslikLbl();
+            @__parser.AddParsedSubObject(@__ctrl26);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                             <button type=""button"" class=""btn-close"" data-bs-dismiss=""modal"" aria-label=""Close""></button>
                         </div>
@@ -3373,9 +3501,9 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
                                     <div class=""form-group m-0 "">
                                         <label class=""form-label fw-semibold"" for=""SerhBeyanIrtifakDDL"">Ş./B./İ.</label>
                                         "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl22;
-            @__ctrl22 = this.@__BuildControlSerhBeyanIrtifakDDL();
-            @__parser.AddParsedSubObject(@__ctrl22);
+            global::System.Web.UI.WebControls.DropDownList @__ctrl27;
+            @__ctrl27 = this.@__BuildControlSerhBeyanIrtifakDDL();
+            @__parser.AddParsedSubObject(@__ctrl27);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>
                                 </div>
@@ -3383,9 +3511,9 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
                                     <div class=""form-group m-0 "">
                                         <label class=""form-label fw-semibold"" for=""MalikLehtarTxt"">Malik/Lehtar</label>
                                         "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl23;
-            @__ctrl23 = this.@__BuildControlMalikLehtarTxt();
-            @__parser.AddParsedSubObject(@__ctrl23);
+            global::System.Web.UI.WebControls.TextBox @__ctrl28;
+            @__ctrl28 = this.@__BuildControlMalikLehtarTxt();
+            @__parser.AddParsedSubObject(@__ctrl28);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>
                                 </div>
@@ -3393,9 +3521,9 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
                                     <div class=""form-group m-0 "">
                                         <label class=""form-label fw-semibold"" for=""TesisKurumTxt"">Tesis Kurum</label>
                                         "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl24;
-            @__ctrl24 = this.@__BuildControlTesisKurumTxt();
-            @__parser.AddParsedSubObject(@__ctrl24);
+            global::System.Web.UI.WebControls.TextBox @__ctrl29;
+            @__ctrl29 = this.@__BuildControlTesisKurumTxt();
+            @__parser.AddParsedSubObject(@__ctrl29);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>
                                 </div>
@@ -3405,9 +3533,9 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
                                     <div class=""form-group m-0 "">
                                         <label class=""form-label fw-semibold"" for=""TarihTxt"">Tarih</label>
                                         "));
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl25;
-            @__ctrl25 = this.@__BuildControlTarihTxt();
-            @__parser.AddParsedSubObject(@__ctrl25);
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl30;
+            @__ctrl30 = this.@__BuildControlTarihTxt();
+            @__parser.AddParsedSubObject(@__ctrl30);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                         <input type=""button"" id=""clear-SBITarihi"" value=""Sil"" onclick=""clearSBITarihi()"" />
                                     </div>
@@ -3416,9 +3544,9 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
                                     <div class=""form-group m-0 "">
                                         <label class=""form-label fw-semibold"" for=""SBIYevmiyeNoTxt"">Terkin Sebebi</label>
                                         "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl26;
-            @__ctrl26 = this.@__BuildControlTerkinSebebiTxt();
-            @__parser.AddParsedSubObject(@__ctrl26);
+            global::System.Web.UI.WebControls.TextBox @__ctrl31;
+            @__ctrl31 = this.@__BuildControlTerkinSebebiTxt();
+            @__parser.AddParsedSubObject(@__ctrl31);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>
                                 </div>
@@ -3426,9 +3554,9 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
                                     <div class=""form-group m-0 "">
                                         <label class=""form-label fw-semibold"" for=""YevmiyeTxt"">Yevmiye No</label>
                                         "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl27;
-            @__ctrl27 = this.@__BuildControlYevmiyeTxt();
-            @__parser.AddParsedSubObject(@__ctrl27);
+            global::System.Web.UI.WebControls.TextBox @__ctrl32;
+            @__ctrl32 = this.@__BuildControlYevmiyeTxt();
+            @__parser.AddParsedSubObject(@__ctrl32);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>
                                 </div>
@@ -3436,18 +3564,18 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
                             <div class=""form-group m-0 "">
                                 <label class=""form-label fw-semibold"" for=""SBIAciklamaTxt"">Açıklama</label>
                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl28;
-            @__ctrl28 = this.@__BuildControlSBIAciklamaTxt();
-            @__parser.AddParsedSubObject(@__ctrl28);
+            global::System.Web.UI.WebControls.TextBox @__ctrl33;
+            @__ctrl33 = this.@__BuildControlSBIAciklamaTxt();
+            @__parser.AddParsedSubObject(@__ctrl33);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
                         "             <div class=\"modal-footer\">\r\n                            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl29;
-            @__ctrl29 = this.@__BuildControlSBIKaydetBtn();
-            @__parser.AddParsedSubObject(@__ctrl29);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl34;
+            @__ctrl34 = this.@__BuildControlSBIKaydetBtn();
+            @__parser.AddParsedSubObject(@__ctrl34);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl30;
-            @__ctrl30 = this.@__BuildControlSBIGuncelleBtn();
-            @__parser.AddParsedSubObject(@__ctrl30);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl35;
+            @__ctrl35 = this.@__BuildControlSBIGuncelleBtn();
+            @__parser.AddParsedSubObject(@__ctrl35);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                             
                             <button type=""button"" class=""btn btn-secondary"" data-bs-dismiss=""modal"">Kapat</button>
@@ -3456,9 +3584,9 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
                 </div>
             </div>
             "));
-            global::System.Web.UI.WebControls.HiddenField @__ctrl31;
-            @__ctrl31 = this.@__BuildControlActiveTabHiddenField();
-            @__parser.AddParsedSubObject(@__ctrl31);
+            global::System.Web.UI.WebControls.HiddenField @__ctrl36;
+            @__ctrl36 = this.@__BuildControlActiveTabHiddenField();
+            @__parser.AddParsedSubObject(@__ctrl36);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        "));
         }
         
@@ -3489,27 +3617,36 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
         private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
-            @__w.Write(@" 
-<script type=""text/javascript"">
-    function OpenModal() {
-        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
-        myModalInstance.show();
-    }
-    function OpenSerhBeyanIrtifakModal() {
-        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('SerhBeyanIrtifakModalDiv'));
-        myModalInstance.show();
-    }
-    function setActiveTab(activeTab) {
-        var tabTrigger = document.querySelector('#' + activeTab);
-        if (tabTrigger) {
-            bootstrap.Tab.getOrCreateInstance(tabTrigger).show();
-        }
-    }
-    // function SetActiveTab(activeTab) {
-    //     $(""#"" + activeTab).tab(""show"");
-    // }
-    function DuzenleSilModalAc(parametreId, islemTipi) {
-        document.getElementById('");
+            @__w.Write(" \r\n<script type=\"text/javascript\">\r\n    function OpenSBIModal() {\r\n        var my" +
+                    "ModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById(\'SBI" +
+                    "ModalOnayDiv\'));\r\n        myModalInstance.show();\r\n    }\r\n    function OpenDelet" +
+                    "eModal() {\r\n        var modalElement = document.getElementById(\'DeleteModalOnayD" +
+                    "iv\');\r\n        if (modalElement && typeof bootstrap !== \'undefined\' && bootstrap" +
+                    ".Modal) {\r\n            var myModalInstance = bootstrap.Modal.getOrCreateInstance" +
+                    "(modalElement);\r\n            myModalInstance.show();\r\n        }\r\n    }\r\n    func" +
+                    "tion CloseDeleteModal() {\r\n        var modalElement = document.getElementById(\'D" +
+                    "eleteModalOnayDiv\');\r\n        if (!modalElement) return;\r\n\r\n        if (typeof b" +
+                    "ootstrap !== \'undefined\' && bootstrap.Modal) {\r\n            var myModalInstance " +
+                    "= bootstrap.Modal.getInstance(modalElement);\r\n            if (myModalInstance) {" +
+                    "\r\n                myModalInstance.hide();\r\n            } else {\r\n               " +
+                    " bootstrap.Modal.getOrCreateInstance(modalElement).hide();\r\n            }\r\n     " +
+                    "   }\r\n    }\r\n\r\n    if (window.Sys && Sys.WebForms && Sys.WebForms.PageRequestMan" +
+                    "ager) {\r\n        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(fu" +
+                    "nction () {\r\n            var backdropList = document.querySelectorAll(\'.modal-ba" +
+                    "ckdrop\');\r\n            for (var i = 0; i < backdropList.length; i++) {\r\n        " +
+                    "        if (backdropList[i] && backdropList[i].parentNode) {\r\n                  " +
+                    "  backdropList[i].parentNode.removeChild(backdropList[i]);\r\n                }\r\n " +
+                    "           }\r\n\r\n            document.body.classList.remove(\'modal-open\');\r\n     " +
+                    "       document.body.style.overflow = \'\';\r\n            document.body.style.paddi" +
+                    "ngRight = \'\';\r\n        });\r\n    }\r\n    function OpenSerhBeyanIrtifakModal() {\r\n " +
+                    "       var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getEle" +
+                    "mentById(\'SerhBeyanIrtifakModalDiv\'));\r\n        myModalInstance.show();\r\n    }\r\n" +
+                    "    function setActiveTab(activeTab) {\r\n        var tabTrigger = document.queryS" +
+                    "elector(\'#\' + activeTab);\r\n        if (tabTrigger) {\r\n            bootstrap.Tab." +
+                    "getOrCreateInstance(tabTrigger).show();\r\n        }\r\n    }\r\n    // function SetAc" +
+                    "tiveTab(activeTab) {\r\n    //     $(\"#\" + activeTab).tab(\"show\");\r\n    // }\r\n    " +
+                    "function DuzenleSilModalAc(parametreId, islemTipi) {\r\n        document.getElemen" +
+                    "tById(\'");
                          @__w.Write( parametreIdLbl.ClientID);
 
             @__w.Write("\').value = parametreId;\r\n        document.getElementById(\'");

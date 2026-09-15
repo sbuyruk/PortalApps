@@ -28,6 +28,7 @@ namespace Model.NBYS
         public bool BagisMiktariYazmasin { get; set; }
         public bool CokluBagis { get; set; }
         public bool DuzenliBagis { get; set; }= false;
+        public int KacinciBelge { get; set; }= 0;
         public override T Select<T>(int id)
         {
             string sqlString = string.Format(@"SELECT *
@@ -556,6 +557,24 @@ namespace Model.NBYS
             Armagan armagan = new Armagan();
             armagan = list.FirstOrDefault();
             return armagan;
+        }
+        public int SelectCountByBagisciIdAndArmaganTanimId(int nakitBagisciId, int armaganTanimId)
+        {
+            string sqlString = string.Format(@"SELECT COUNT(*)
+                                      FROM Armagan_Table
+                                      WHERE BelgeGecersizMi!=1
+                                        AND BagisciId={0}
+                                        AND ArmaganTanimId={1}",
+                nakitBagisciId.ReturnQuotedValue(),
+                armaganTanimId.ReturnQuotedValue());
+
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            if (dataTable != null && dataTable.Rows.Count > 0)
+            {
+                return Convert.ToInt32(dataTable.Rows[0][0]);
+            }
+
+            return 0;
         }
     }
 }

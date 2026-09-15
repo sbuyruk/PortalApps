@@ -120,6 +120,7 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP
 
                 EnvanterdenCikanListesiListItem envanterdenCikanListesiListItem = new EnvanterdenCikanListesiListItem();
                 envanterdenCikanListesiListItem.TasinmazId = tasinmazId;
+                envanterdenCikanListesiListItem.Bagisci = row["Bagisci"].ToString();
                 envanterdenCikanListesiListItem.KullanimSekli = kullanimSekli;
                 envanterdenCikanListesiListItem.EnvanterdenCikmaSebebi = envanterdenCikmaSebebi;
                 envanterdenCikanListesiListItem.EnvanterdenCikmaYili = envanterdenCikmaYili;
@@ -163,6 +164,7 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP
              data: " + jsonData + @",
             columns: [
                 { data: 'TasinmazId' },
+                { data: 'Bagisci' },
                 { data: 'KullanimSekli' },
                 { data: 'EnvanterdenCikmaSebebi' },
                 { data: 'EnvanterdenCikmaYili' },
@@ -281,6 +283,7 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP
         private class EnvanterdenCikanListesiListItem
         {
             public string TasinmazId { get; set; }
+            public string Bagisci { get; set; }
             public string KullanimSekli { get; set; }
             public string EnvanterdenCikmaSebebi { get; set; }
             public string BagisYili { get; set; }
