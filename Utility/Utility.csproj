@@ -83,13 +83,13 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Temp\albaraka..xlsx" />
-    <None Include="Temp\yapikredi.xlsx" />
-    <None Include="Temp\ziraat-ekstre.xlsx" />
     <None Include="tskgv.snk" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Temp\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
