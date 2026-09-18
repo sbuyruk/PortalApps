@@ -1,3 +1,4 @@
+using DAO.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,8 +12,8 @@ namespace Model.Ortak
     public class Olay : ParentClass
     {
         public string Program { get; set; }
-        public string IslemTipi { get; set; } //Giris-düzeltme-silme
-        public string IslemKonusu { get; set; } //faaliyet-tasinmaz-kiraci, sözlesme, nakitbagis vs
+        public string IslemTipi { get; set; } //Giris-dÃ¼zeltme-silme
+        public string IslemKonusu { get; set; } //faaliyet-tasinmaz-kiraci, sÃ¶zlesme, nakitbagis vs
         public DateTime IslemTarihi { get; set; }
         public string IslemYapan { get; set; }
         public string Aciklama { get; set; }
@@ -52,8 +53,8 @@ namespace Model.Ortak
             {
                 GenericEntity<Olay> genericEntity = new GenericEntity<Olay>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
+                SqlQuery query = genericEntity.GetQueryParametreli(this);
+                int id = dao.Insert(query);
 
                 this.Id = id;
                 return id;

@@ -1,3 +1,4 @@
+using DAO.Ortak;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Model.Ortak;
 using System;
@@ -47,8 +48,8 @@ namespace Model.TBYS
                 GenericEntity<OdemePlani> genericEntity = new GenericEntity<OdemePlani>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
+                SqlQuery query = genericEntity.GetQueryParametreli(this);
+                int id = dao.Insert(query);
 
                 this.Id = id;
                 if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
@@ -298,7 +299,7 @@ namespace Model.TBYS
                 WHERE Sira!=0 AND SozlesmeId={0} 
                 {1} 
                 ORDER BY VadeBasTar ", sozlesmeId.ReturnQuotedValue(), vadeBasTarStr);
-            //Sira!=0 olmali çünkü ilk ay devir ayi
+            //Sira!=0 olmali Ã§Ã¼nkÃ¼ ilk ay devir ayi
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<OdemePlani> list = ToList<OdemePlani>(dataTable);
             OdemePlani odemePlani = list.FirstOrDefault<OdemePlani>();
@@ -380,7 +381,7 @@ namespace Model.TBYS
             }
             bool isSaved = false;
 
-            DateTime sozBastarDate = kiraSozlesme.SozBasTar;//.AddMonths(1);//vade tarihi bir ay sonra olsun Zekayi Çalis 22/04/2019
+            DateTime sozBastarDate = kiraSozlesme.SozBasTar;//.AddMonths(1);//vade tarihi bir ay sonra olsun Zekayi Ã‡alis 22/04/2019
             DateTime bittarDate = sozBastarDate.AddMonths(taksitSayisi);
 
             int odemeBitYil = bittarDate.Year;
@@ -405,9 +406,9 @@ namespace Model.TBYS
                 }
 
                 OdemePlani odemePlaniDevir = new OdemePlani();
-                odemePlaniDevir = SaveDevir(kiraSozlesme, kiraSozlesme.DevirAnaPara, kiraSozlesme.DevirFaizTutari, "Önceki Sözlesmeden devir", 0);
+                odemePlaniDevir = SaveDevir(kiraSozlesme, kiraSozlesme.DevirAnaPara, kiraSozlesme.DevirFaizTutari, "Ã–nceki SÃ¶zlesmeden devir", 0);
 
-                for (int i = 1; i <= taksitSayisi; i++)//taksitlere böl
+                for (int i = 1; i <= taksitSayisi; i++)//taksitlere bÃ¶l
                 {
 
                     int yil = vadeBasTarX.Year;
@@ -417,14 +418,14 @@ namespace Model.TBYS
                     {
                         break;
                     }
-                    //odeme sozlesme bas ayda yapildi o yüzden bit ayda ödeme olmasin
+                    //odeme sozlesme bas ayda yapildi o yÃ¼zden bit ayda Ã¶deme olmasin
                     OdemePlani odemePlani = new OdemePlani();
                     odemePlani = SaveNew(kiraSozlesme, yil, ay, vadeBasTarX, vadeBitTarX, sozBastarDate, bittarDate, aylikKira, i);
                     //odemeBasTar ilk ay baslasin zekayi bey 16/11/2017
                     vadeBasTarX = vadeBasTarX.AddMonths(1);
-                    vadeBitTarX = vadeBasTarX.AddMonths(1).AddDays(-1); //vadeBitTarX.AddMonths(1) -- bu subat ayi için yanlis çalisiyor, 29 subat ayin son günü, 1 ay ekleyince 29 mart oluyor, ama ayin sonu olmuyordu. SB
+                    vadeBitTarX = vadeBasTarX.AddMonths(1).AddDays(-1); //vadeBitTarX.AddMonths(1) -- bu subat ayi iÃ§in yanlis Ã§alisiyor, 29 subat ayin son gÃ¼nÃ¼, 1 ay ekleyince 29 mart oluyor, ama ayin sonu olmuyordu. SB
                 }
-                //sözlesme bitimine kadar olan aylar için satir ekle
+                //sÃ¶zlesme bitimine kadar olan aylar iÃ§in satir ekle
                 for (int i = taksitSayisi+1; i <= 12; i++)
                 {
                     int yil = vadeBasTarX.Year;
@@ -475,7 +476,7 @@ namespace Model.TBYS
             //VadeBasTar null veya bos olmali 
             //odemePlani.VadeBasTar = pVadeBasTar; 
             
-            //VadeBitTar eklendi SB 20.01.2021 sebebi BölgelereGöeBorcluKiracilar raporunda içinde bulunulan ayda yeni sözlesmesi olanlarin devir borcu varsa dikkate almiyordu
+            //VadeBitTar eklendi SB 20.01.2021 sebebi BÃ¶lgelereGÃ¶eBorcluKiracilar raporunda iÃ§inde bulunulan ayda yeni sÃ¶zlesmesi olanlarin devir borcu varsa dikkate almiyordu
             odemePlani.VadeBitTar = pVadeBitTar;
 
             odemePlani.AnaPara = devirAnaPara;
