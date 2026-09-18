@@ -353,8 +353,8 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP
             var json = nbh.SelectByBagisciIdReturnJSon(nakitBagisciId, ref rowCount);
             decimal toplamTutar = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
-            BagisBilgileriLbl.Text = rowCount < 1 ? "Bagis bulunmamaktadir" :
-                "Bagisçinin " + rowCount + " defada yaptigi toplam " + toplamTutar.ToString("N", culturInfo) + "TL bagisi bulunmaktadir";
+            BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır" :
+                "Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + "TL bağışı bulunmaktadır";
             return json;
         }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)
