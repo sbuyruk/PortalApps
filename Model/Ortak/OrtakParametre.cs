@@ -1,3 +1,4 @@
+using DAO.Ortak;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -45,8 +46,8 @@ namespace Model.Ortak
             {
                 GenericEntity<OrtakParametre> genericEntity = new GenericEntity<OrtakParametre>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
+                SqlQuery query = genericEntity.GetQueryParametreli(this);
+                int id = dao.Insert(query);
 
                 this.Id = id;
                 return id;

@@ -1,3 +1,4 @@
+using DAO.Ortak;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Model.Ortak;
@@ -36,8 +37,8 @@ namespace Model.TBYS
                 GenericEntity<SozlesmeTasinmaz> genericEntity = new GenericEntity<SozlesmeTasinmaz>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
+                SqlQuery query = genericEntity.GetQueryParametreli(this);
+                int id = dao.Insert(query);
 
                 this.Id = id;
                 if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)

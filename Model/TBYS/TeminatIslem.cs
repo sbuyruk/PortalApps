@@ -1,3 +1,4 @@
+using DAO.Ortak;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -52,8 +53,8 @@ namespace Model.TBYS
                 GenericEntity<TeminatIslem> genericEntity = new GenericEntity<TeminatIslem>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
+                SqlQuery query = genericEntity.GetQueryParametreli(this);
+                int id = dao.Insert(query);
 
                 this.Id = id;
                 if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
@@ -208,7 +209,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"
                 SELECT SUM(IslemTutari) Toplam 
                 FROM TeminatIslem_Table
-                WHERE IslemTipi='Teminat Ödemesi'
+                WHERE IslemTipi='Teminat Ã–demesi'
 	                AND KiraciId={0} ", kiraciId.ReturnQuotedValue());
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
