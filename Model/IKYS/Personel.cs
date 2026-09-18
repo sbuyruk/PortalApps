@@ -1,4 +1,5 @@
 
+using DAO.Ortak;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Model.IKYS
     {
         public enum PersonelTipi
         {
-            [Display(Name = "Tüm Personel")]
+            [Display(Name = "TÃ¼m Personel")]
             Tumu = 0,
 
             [Display(Name = "Kadrolu Personel")]
@@ -69,8 +70,8 @@ namespace Model.IKYS
                 GenericEntity<Personel> genericEntity = new GenericEntity<Personel>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
+                SqlQuery query = genericEntity.GetQueryParametreli(this);
+                int id = dao.Insert(query);
                 if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
                 {
                     OlayKayit olayKayit = new OlayKayit();
@@ -516,7 +517,7 @@ namespace Model.IKYS
 
             return list;
         }
-        //DogumGunuKutlama=1 olanlari döndürür
+        //DogumGunuKutlama=1 olanlari dÃ¶ndÃ¼rÃ¼r
         public List<Personel> SelectByDogumGunu(int gun, int ay)
         {
 
@@ -542,7 +543,7 @@ namespace Model.IKYS
 
             return list;
         }
-        //EvlilikKutlama=1 olanlari döndürür
+        //EvlilikKutlama=1 olanlari dÃ¶ndÃ¼rÃ¼r
         public List<Personel> SelectByEvlilikTar(int gun, int ay)
         {
 

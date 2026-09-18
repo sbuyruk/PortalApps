@@ -1,4 +1,5 @@
 
+using DAO.Ortak;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -47,8 +48,8 @@ namespace Model.IKYS
                 GenericEntity<IzinTalep> genericEntity = new GenericEntity<IzinTalep>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
+                SqlQuery query = genericEntity.GetQueryParametreli(this);
+                int id = dao.Insert(query);
                 if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
                 {
                     OlayKayit olayKayit = new OlayKayit();
@@ -220,7 +221,7 @@ namespace Model.IKYS
 
                     string gelecekUcretliIzinDonemiStr = gelecekUcretliIzinDonemi == null ? "" : string.Format(" OR  IzinDonemId={0}", gelecekUcretliIzinDonemi.Id);
                     string gelecekMazeretIzinDonemiStr = gelecekMazeretIzinDonemi == null ? "" : string.Format(" OR  IzinDonemId={0}", gelecekMazeretIzinDonemi.Id);
-                    izinDonemiStr = string.Format(" AND (IzinDonemId={0} OR IzinDonemId={1} OR IzinDonemId=0 {2} {3}) ", ucretliIzinDonemi.Id, mazeretIzinDonemi.Id, gelecekUcretliIzinDonemiStr, gelecekMazeretIzinDonemiStr);// OR IzinDonemId=0 çünkü ücretli ve mazeret izni disindakilerin izindonemId si yok SB_UPDATE 25.03.2019
+                    izinDonemiStr = string.Format(" AND (IzinDonemId={0} OR IzinDonemId={1} OR IzinDonemId=0 {2} {3}) ", ucretliIzinDonemi.Id, mazeretIzinDonemi.Id, gelecekUcretliIzinDonemiStr, gelecekMazeretIzinDonemiStr);// OR IzinDonemId=0 Ã§Ã¼nkÃ¼ Ã¼cretli ve mazeret izni disindakilerin izindonemId si yok SB_UPDATE 25.03.2019
                 }
             }
 
@@ -244,8 +245,8 @@ namespace Model.IKYS
         /// <param name="basTar"></param>
         /// <param name="bitTar"></param>
         /// <returns>Girilen tarihler arasinda :
-        /// OnayDurumu Reddedildi veya Iptal Edildi olanlar hariç olmak kosulu ile,
-        /// IzinTalebi varsa bu döner, yoksa null döner </returns>
+        /// OnayDurumu Reddedildi veya Iptal Edildi olanlar hariÃ§ olmak kosulu ile,
+        /// IzinTalebi varsa bu dÃ¶ner, yoksa null dÃ¶ner </returns>
         public IzinTalep SelectByPersonelIdBasBitTar(int personelId, DateTime basTar, DateTime bitTar)
         {
             string sqlString = string.Format(@"
