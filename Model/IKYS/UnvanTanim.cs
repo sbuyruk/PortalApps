@@ -1,4 +1,5 @@
 
+using DAO.Ortak;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -33,8 +34,8 @@ namespace Model.IKYS
                 GenericEntity<UnvanTanim> genericEntity = new GenericEntity<UnvanTanim>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
+                SqlQuery query = genericEntity.GetQueryParametreli(this);
+                int id = dao.Insert(query);
                 if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
                 {
                     OlayKayit olayKayit = new OlayKayit();
