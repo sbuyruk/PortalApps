@@ -1,3 +1,4 @@
+using DAO.Ortak;
 using Model.Ortak;
 using System.Collections.Generic;
 using System;
@@ -16,13 +17,13 @@ namespace Model.MTS
         public int MTSKurumTanimId { get; set; }
         public int MTSGorevTanimId { get; set; }
         public int KisiId { get; set; }
-        [DisplayName("G�rev Durumu")]
-        [Required(ErrorMessage = "G�rev Durumu bos olamaz.")]
+        [DisplayName("Görev Durumu")]
+        [Required(ErrorMessage = "Görev Durumu boş olamaz.")]
         public string Durum { get; set; } = ProjeConstants.MTSGOREVDURUMU_GOREVDE;
-        [DisplayName("Baslama Tarihi")]
+        [DisplayName("Başlama Tarihi")]
         public DateTime BaslamaTarihi { get; set; }
 
-        [DisplayName("Ayrilma Tarihi")]
+        [DisplayName("Ayrılma Tarihi")]
         public DateTime? AyrilmaTarihi { get; set; } = null;
 
         public string AyrilmaSebebi { get; set; } = ProjeConstants.MTSAYRILMASEBEBI_BOS;
@@ -35,8 +36,8 @@ namespace Model.MTS
                 GenericEntity<MTSKurumGorev> genericEntity = new GenericEntity<MTSKurumGorev>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
+                SqlQuery query = genericEntity.GetQueryParametreli(this);
+                int id = dao.Insert(query);
                 if (id > 0 && ProjeConstants.MTS_SAVE_LOG)
                 {
                     OlayKayit olayKayit = new OlayKayit();
