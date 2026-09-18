@@ -1,4 +1,5 @@
 
+using DAO.Ortak;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -49,8 +50,8 @@ namespace Model.IKYS
                 GenericEntity<IzinHareket> genericEntity = new GenericEntity<IzinHareket>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
+                SqlQuery query = genericEntity.GetQueryParametreli(this);
+                int id = dao.Insert(query);
                 if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
                 {
                     OlayKayit olayKayit = new OlayKayit();
@@ -177,7 +178,7 @@ namespace Model.IKYS
                     INNER JOIN IzinTanim_Table C ON C.Id= A.IzinTipi
                     LEFT JOIN IsBilgileri_Table D ON D.PersonelId= A.PersonelId
                     INNER JOIN BirimTanim_Table E ON E.Id= D.BirimId
-                WHERE --Mahsup=0 AND --SB 21.09.2020 Yesim Hanimin talebi, Deniz özkanin 21.09.2020 tarihli izni o günkü görevli izinli personel listesinde çikmadi o yüzden mahsup=0 kapatildi
+                WHERE --Mahsup=0 AND --SB 21.09.2020 Yesim Hanimin talebi, Deniz Ã¶zkanin 21.09.2020 tarihli izni o gÃ¼nkÃ¼ gÃ¶revli izinli personel listesinde Ã§ikmadi o yÃ¼zden mahsup=0 kapatildi
                     BaslangicTarihi<={0} AND BitisTarihi>={1}
                 ORDER BY  ProtokolSiraNo, A.IzinTipi, BaslangicTarihi ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat()); //TODO 8 saat olan Mazeret de dahil olsun
 
@@ -193,7 +194,7 @@ namespace Model.IKYS
                 SELECT *
                 FROM IzinHareket_Table A
                 WHERE PersonelId={0} 
-                    AND IzinTipi!=2 AND IzinTipi!=8 -- süt izni ve mazeret haric
+                    AND IzinTipi!=2 AND IzinTipi!=8 -- sÃ¼t izni ve mazeret haric
                     AND BaslangicTarihi<={1} AND BitisTarihi>={2}
                 ORDER BY BitisTarihi DESC
             ",personelId, bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat()); 

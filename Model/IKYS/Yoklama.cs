@@ -1,3 +1,4 @@
+using DAO.Ortak;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -46,8 +47,8 @@ namespace Model.IKYS
                 GenericEntity<Yoklama> genericEntity = new GenericEntity<Yoklama>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
+                SqlQuery query = genericEntity.GetQueryParametreli(this);
+                int id = dao.Insert(query);
                 if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
                 {
                     OlayKayit olayKayit = new OlayKayit();
@@ -238,7 +239,7 @@ namespace Model.IKYS
                 SELECT *
                 FROM Yoklama_Table
                 WHERE PersonelId={0}
-                    AND BulunmamaSebebi=3 --Görevli
+                    AND BulunmamaSebebi=3 --GÃ¶revli
 					AND  (BitisTarihi >= {1} AND BaslangicTarihi <= {2}) ", personelId.ToString(), bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat());
 
                 DataTable dataTable = dao.SelectFromDb(sqlString, "");

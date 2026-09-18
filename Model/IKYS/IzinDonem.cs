@@ -1,4 +1,5 @@
 
+using DAO.Ortak;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -39,8 +40,8 @@ namespace Model.IKYS
                 GenericEntity<IzinDonem> genericEntity = new GenericEntity<IzinDonem>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
+                SqlQuery query = genericEntity.GetQueryParametreli(this);
+                int id = dao.Insert(query);
                 if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
                 {
                     OlayKayit olayKayit = new OlayKayit();
@@ -237,7 +238,7 @@ namespace Model.IKYS
             string sqlstr = string.Format(@" 
                     SELECT * FROM IzinDonem_Table  
                     WHERE PersonelId={0} {1}
-                        AND (BaslangicTarihi<={2} AND BitisTarihi>{3}) ----AND BitisTarihi>={3}) izindönemnin son gününün ertesi günü yeni izin dönemi olmali SB 01.06.2020 
+                        AND (BaslangicTarihi<={2} AND BitisTarihi>{3}) ----AND BitisTarihi>={3}) izindÃ¶nemnin son gÃ¼nÃ¼nÃ¼n ertesi gÃ¼nÃ¼ yeni izin dÃ¶nemi olmali SB 01.06.2020
                     ORDER BY BaslangicTarihi", personelId, izinTipiStr, tarih.ReturnTRDateFormat(), tarih.AddDays(-1).ReturnTRDateFormat());
             return sqlstr;
         }
@@ -279,7 +280,7 @@ namespace Model.IKYS
 
         /// <summary>
         /// personel,izinTipi ve tarih bazinda IzinDonem_Table'da kayit yoksa, IzinDonemi tipinde kayit ekler,  
-        /// IzinDonemi tipinde ekledigi yeni nesneyi döndürür.
+        /// IzinDonemi tipinde ekledigi yeni nesneyi dÃ¶ndÃ¼rÃ¼r.
         /// </summary>
         /// <param name="personel"></param>
         /// <param name="izinTipi"></param>
@@ -326,8 +327,8 @@ namespace Model.IKYS
                     izinDonemi.BaslangicTarihi = izinDonemiBasi;
                     izinDonemi.BitisTarihi = izinDonemiSonu;
                     izinDonemi.Birim = birim;
-                    izinDonemi.Adi = izinDonemiBasi.Year + "-" + izinDonemiSonu.Year + " Izin Donemi";
-                    izinDonemi.Aciklama = " Otomatik Olusturuldu ";
+                    izinDonemi.Adi = izinDonemiBasi.Year + "-" + izinDonemiSonu.Year + " Ä°zin DÃ¶nemi";
+                    izinDonemi.Aciklama = " Otomatik OluÅŸturuldu ";
                     izinDonemi.IzinHakki = IKYSOrtak.IzinHakkiHesapla(personel, izinTipi, izinDonemiBasi, izinDonemiBasTar);
                     string sifirIzin = "0";
 
@@ -343,7 +344,7 @@ namespace Model.IKYS
         }
         public IzinDonem IzinDonemiGuncelle(Personel personel, int izinTipi, DateTime tarih, string currentUserName)
         {
-            //bir kisinin izin dönemi belirlendikten sonra 
+            //bir kisinin izin dÃ¶nemi belirlendikten sonra
             IzinDonem izinDonemi = null;
             IsBilgileri ib = new IsBilgileri();
             ib = ib.SelectByPersonelId(personel.Id);
@@ -379,12 +380,12 @@ namespace Model.IKYS
                     izinDonemi.BaslangicTarihi = izinDonemiBasi;
                     izinDonemi.BitisTarihi = izinDonemiSonu;
                     izinDonemi.Birim = birim;
-                    izinDonemi.Adi = izinDonemiBasi.Year + "-" + izinDonemiSonu.Year + " Izin Donemi";
-                    izinDonemi.Aciklama = " Izin Dönemi Güncellendi. ";
+                    izinDonemi.Adi = izinDonemiBasi.Year + "-" + izinDonemiSonu.Year + " Ä°zin DÃ¶nemi";
+                    izinDonemi.Aciklama = " Ä°zin DÃ¶nemi GÃ¼ncellendi. ";
 
                     izinDonemi.Degistiren = currentUserName;
 
-                    if (izinDonemi.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT) // izin tipi ÜCRETLI izinse 
+                    if (izinDonemi.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT) // izin tipi ÃœCRETLI izinse
                     {
                         izinDonemi.IzinHakki = IKYSOrtak.UcretliIzinHakkiHesapla(personel, izinDonemiBasi, izinDonemiBasTar).ToString();//UtilityHelper.IzinHakkiHesapla(personel, izinTipi, izinDonemiBasi);
                         int kullanilanIzin = izinDonemi.KullanilanIzin.ConvertToInt();
@@ -414,7 +415,7 @@ namespace Model.IKYS
             bool isSaved = false;
 
 
-            if (izinDonemi.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT) //yalnizca izin tipi ÜCRETLI izinse  kalan izin süresini hesapla
+            if (izinDonemi.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT) //yalnizca izin tipi ÃœCRETLI izinse  kalan izin sÃ¼resini hesapla
             {
                 if (izinDonemi != null)
                 {
