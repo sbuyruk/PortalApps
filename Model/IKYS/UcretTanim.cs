@@ -1,3 +1,4 @@
+using DAO.Ortak;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -54,8 +55,8 @@ namespace Model.IKYS
                 GenericEntity<UcretTanim> genericEntity = new GenericEntity<UcretTanim>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
+                SqlQuery query = genericEntity.GetQueryParametreli(this);
+                int id = dao.Insert(query);
                 if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
                 {
                     OlayKayit olayKayit = new OlayKayit();
@@ -285,7 +286,7 @@ namespace Model.IKYS
 
         public bool DeleteByGrupId(int grupId)
         {
-            //GrupId ile eslesen tüm kayitlari siler
+            //GrupId ile eslesen tÃ¼m kayitlari siler
             string sqlString = string.Format(@"
                 DELETE FROM UcretTanim_Table
                 WHERE GrupId={0}", grupId);
@@ -312,7 +313,7 @@ namespace Model.IKYS
                 sqlString = string.Format(@"
                 SELECT UstUcret FROM UcretTanim_Table
                 WHERE GrupId={0} AND Derece={1} AND Kademe={2}", grupId, derece, kademe);
-                //GrupId, Derece ve Kademe ile eslesen Ucret degerini döner
+                //GrupId, Derece ve Kademe ile eslesen Ucret degerini dÃ¶ner
             }
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable.Rows.Count > 0)

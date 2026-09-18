@@ -1,4 +1,5 @@
 using Model.MTS;
+using DAO.Ortak;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -58,8 +59,8 @@ namespace Model.IKYS
                 GenericEntity<ResmiTatil> genericEntity = new GenericEntity<ResmiTatil>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
+                SqlQuery query = genericEntity.GetQueryParametreli(this);
+                int id = dao.Insert(query);
 
                 this.Id = id;
                 if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
@@ -177,7 +178,7 @@ namespace Model.IKYS
         
         public List<ResmiTatil> SelectBySonIkiYil()
         {
-            DateTime basTar = new DateTime(DateTime.Today.AddYears(-1).Year,1,1);//geçen yilbasi
+            DateTime basTar = new DateTime(DateTime.Today.AddYears(-1).Year,1,1);//geÃ§en yilbasi
             DateTime bitTar = basTar.AddYears(2).AddDays(1);
             string sqlString = string.Format(@"
                 SELECT *
@@ -249,7 +250,7 @@ namespace Model.IKYS
 
                         CalendarEvent item = new CalendarEvent();
                         item.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
-                        item.id = 999;//999 önemli tasinamayan event
+                        item.id = 999;//999 Ã¶nemli tasinamayan event
                         item.purpose = ProjeConstants.FAALIYET_AMACI_RESMITATIL_INT;
                         item.title = resmiTatil.Tatil;
                         //item.description = resmiTatil.Tatil;
@@ -273,7 +274,7 @@ namespace Model.IKYS
                 {
                     CalendarEvent item = new CalendarEvent();
                     item.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
-                    item.id = 999;//999 önemli tasinamayan event
+                    item.id = 999;//999 Ã¶nemli tasinamayan event
                     item.purpose = ProjeConstants.FAALIYET_AMACI_RESMITATIL_INT;
                     item.title = resmiTatil.Tatil;
                     //item.description = resmiTatil.Tatil;
