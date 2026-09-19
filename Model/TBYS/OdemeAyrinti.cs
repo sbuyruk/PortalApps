@@ -139,18 +139,21 @@ namespace Model.TBYS
         }
         public bool DeleteBySozlesmeId(int sozlesmeId)
         {
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 DELETE OdemeAyrinti_Table 
-                WHERE SozlesmeId={0}", sozlesmeId);
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+                WHERE SozlesmeId=@SozlesmeId");
+            query.AddParameter("@SozlesmeId", sozlesmeId);
+            bool isSuccess = dao.DeleteFromDb(query, this);
             return isSuccess;
         }
         public bool DeleteByOdemeIdOdemePlaniId(int odemeId, int odemePlaniId)
         {
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 DELETE OdemeAyrinti_Table 
-                WHERE OdemeId={0} AND OdemePlaniId={1}", odemeId, odemePlaniId);
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+                WHERE OdemeId=@OdemeId AND OdemePlaniId=@OdemePlaniId");
+            query.AddParameter("@OdemeId", odemeId);
+            query.AddParameter("@OdemePlaniId", odemePlaniId);
+            bool isSuccess = dao.DeleteFromDb(query, this);
             return isSuccess;
         }
         public override List<T> SelectAll<T>()

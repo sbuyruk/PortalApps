@@ -123,10 +123,11 @@ namespace Model.TBYS
         }
         public bool DeleteBySozlesmeId(int sozlesmeId)
         {
-            string sqlString = string.Format(@" 
+            SqlQuery query = new SqlQuery(@"
                 DELETE OdemePlani_Table 
-                WHERE SozlesmeId={0}", sozlesmeId);
-            bool isDeleted = dao.DeleteFromDb(sqlString, this);
+                WHERE SozlesmeId=@SozlesmeId");
+            query.AddParameter("@SozlesmeId", sozlesmeId);
+            bool isDeleted = dao.DeleteFromDb(query, this);
             if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
             {
                 OlayKayit olayKayit = new OlayKayit();

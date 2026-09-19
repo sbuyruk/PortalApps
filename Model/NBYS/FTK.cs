@@ -257,11 +257,13 @@ namespace Model.NBYS
         }
         public bool DeleteByIslemIdSayac(int ftkIslemId,int sayac)
         {
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 DELETE FROM FTK_Table
-                WHERE  FTKIslemId = {0} AND Sayac = {1}", ftkIslemId,sayac);
+                WHERE  FTKIslemId = @FTKIslemId AND Sayac = @Sayac");
+            query.AddParameter("@FTKIslemId", ftkIslemId);
+            query.AddParameter("@Sayac", sayac);
 
-            bool isDeleted = dao.DeleteFromDb(sqlString, "");
+            bool isDeleted = dao.DeleteFromDb(query, "");
             return isDeleted;
         }
         public DataTable SelectFTKKuruluOlmayanIller(int bolgeId, int ilId)
