@@ -67,8 +67,8 @@ namespace Model.MTS
                         GenericEntity<MTSKurumGorev> genericEntity = new GenericEntity<MTSKurumGorev>(ProjeConstants.SQL_UPDATE);
                         DegistirmeTarihi = DateTime.Now;
                         Degistiren = UtilityHelper.GetCurrentUserName();
-                        string sqlString = genericEntity.GetQuery(this);
-                        isSuccess = dao.Update2Db(sqlString);
+                        SqlQuery query = genericEntity.GetQueryParametreli(this);
+                        isSuccess = dao.Update2Db(query);
                     }
                     if (isSuccess && ProjeConstants.MTS_UPDATE_LOG)
                     {
@@ -91,11 +91,11 @@ namespace Model.MTS
                 if (Id != 0)
                 {
                     GenericEntity<MTSKurumGorev> genericEntity = new GenericEntity<MTSKurumGorev>(ProjeConstants.SQL_DELETE);
-                    string sqlString = genericEntity.GetQuery(this);
+                    SqlQuery query = genericEntity.GetQueryParametreli(this);
                     MTSKurumGorev item = Select<MTSKurumGorev>(Id);
                     if (item != null)
                     {
-                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                        isDeleted = dao.DeleteFromDb(query, "");
                     }
                     else isDeleted = false;
                     if (isDeleted && ProjeConstants.MTS_DELETE_LOG)
