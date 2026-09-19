@@ -49,8 +49,8 @@ namespace Model.Ortak
                 {
                     GenericEntity<SilinenKayit> genericEntity = new GenericEntity<SilinenKayit>(ProjeConstants.SQL_UPDATE);
                     DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
+                    SqlQuery query = genericEntity.GetQueryParametreli(this);
+                    isSuccess = dao.Update2Db(query);
                 }
             }
             catch (Exception)
