@@ -56,30 +56,6 @@ namespace Model.TBYS
             teminatIslem = list.FirstOrDefault();
             return teminatIslem;
         }
-        public  int SaveAll(List<OdemeAyristirma> list)
-        {
-            int count = 0;
-            try
-            {
-                foreach (var item in list)
-                {
-
-                    GenericEntity<OdemeAyristirma> genericEntity = new GenericEntity<OdemeAyristirma>(ProjeConstants.SQL_INSERT);
-                    OlusturmaTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(item);
-                    int id = dao.Insert(sqlString);
-
-                    item.Id = id;
-                    count++;
-                }
-                return count;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
         public override int Save()
         {
             try
