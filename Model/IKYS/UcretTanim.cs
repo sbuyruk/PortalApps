@@ -287,10 +287,11 @@ namespace Model.IKYS
         public bool DeleteByGrupId(int grupId)
         {
             //GrupId ile eslesen tüm kayitlari siler
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 DELETE FROM UcretTanim_Table
-                WHERE GrupId={0}", grupId);
-            bool isDeleted = dao.DeleteFromDb(sqlString, "");
+                WHERE GrupId=@GrupId");
+            query.AddParameter("@GrupId", grupId);
+            bool isDeleted = dao.DeleteFromDb(query, "");
             if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
             {
                 OlayKayit olayKayit = new OlayKayit();

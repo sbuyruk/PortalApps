@@ -167,10 +167,11 @@ namespace Model.Portal
         }
         public bool DeleteByToplantiId(int toplantiid)
         {
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 DELETE ToplantiKatilim_Table 
-                WHERE ToplantiId={0}", toplantiid);
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+                WHERE ToplantiId=@ToplantiId");
+            query.AddParameter("@ToplantiId", toplantiid);
+            bool isSuccess = dao.DeleteFromDb(query, this);
             return isSuccess;
 
         }

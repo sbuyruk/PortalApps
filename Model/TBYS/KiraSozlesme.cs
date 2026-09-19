@@ -383,11 +383,13 @@ namespace Model.TBYS
         public bool UpdateByKiraciId(int bolgeId, int kiraciId)
         {
             bool isUpdated = false;
-            string sqlString = string.Format(@"
+            SqlQuery query = new SqlQuery(@"
                 Update KiraSozlesme_Table
-                Set BolgeId= {0} 
-                Where KiraciId={1}", bolgeId, kiraciId);
-            isUpdated = dao.Update2Db(sqlString);
+                Set BolgeId= @BolgeId
+                Where KiraciId=@KiraciId");
+            query.AddParameter("@BolgeId", bolgeId);
+            query.AddParameter("@KiraciId", kiraciId);
+            isUpdated = dao.Update2Db(query);
             return isUpdated;
         }
 
