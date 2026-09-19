@@ -142,7 +142,6 @@
     <Compile Include="Ortak\ICRUDInterface.cs" />
     <Compile Include="Ortak\Il.cs" />
     <Compile Include="Ortak\Ilce.cs" />
-    <Compile Include="Ortak\OnayTanim.cs" />
     <Compile Include="Ortak\OpenXMLHelper.cs" />
     <Compile Include="Ortak\ParentClass.cs" />
     <Compile Include="Ortak\OrtakParametre.cs" />
