@@ -160,8 +160,8 @@ namespace Model.Portal
                 {
                     GenericEntity<Duyuru> genericEntity = new GenericEntity<Duyuru>(ProjeConstants.SQL_UPDATE);
                     DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
+                    SqlQuery query = genericEntity.GetQueryParametreli(this);
+                    isSuccess = dao.Update2Db(query);
                 }
             }
             catch (Exception)
@@ -172,11 +172,10 @@ namespace Model.Portal
         }
         public override bool Delete()
         {
-            string sqlString = string.Format(@"DELETE 
-                               FROM Duyuru_Table
-                               WHERE Id={0}", Id);
+            GenericEntity<Duyuru> genericEntity = new GenericEntity<Duyuru>(ProjeConstants.SQL_DELETE);
+            SqlQuery query = genericEntity.GetQueryParametreli(this);
 
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+            bool isSuccess = dao.DeleteFromDb(query, this);
 
             return isSuccess;
         }
