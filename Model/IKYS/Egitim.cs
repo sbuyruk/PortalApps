@@ -95,7 +95,7 @@ namespace Model.IKYS
                     Egitim item = Select<Egitim>(Id);
                     if (item != null)
                     {
-                        isDeleted = dao.DeleteFromDb(query, "");
+                        isDeleted = dao.DeleteFromDb(query, item);
                     }
                     else isDeleted = false;
                     if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
