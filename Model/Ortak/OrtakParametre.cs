@@ -24,8 +24,8 @@ namespace Model.Ortak
                 {
                     GenericEntity<OrtakParametre> genericEntity = new GenericEntity<OrtakParametre>(ProjeConstants.SQL_DELETE);
                     OlusturmaTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    bool isDeleted = dao.DeleteFromDb(sqlString, "");
+                    SqlQuery query = genericEntity.GetQueryParametreli(this);
+                    bool isDeleted = dao.DeleteFromDb(query, "");
                     return isDeleted;
                 }
                 else
@@ -105,8 +105,8 @@ namespace Model.Ortak
                 {
                     GenericEntity<OrtakParametre> genericEntity = new GenericEntity<OrtakParametre>(ProjeConstants.SQL_UPDATE);
                     DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
+                    SqlQuery query = genericEntity.GetQueryParametreli(this);
+                    isSuccess = dao.Update2Db(query);
                 }
             }
             catch (Exception)
