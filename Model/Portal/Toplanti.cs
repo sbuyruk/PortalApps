@@ -66,8 +66,8 @@ namespace Model.Portal
                         GenericEntity<Toplanti> genericEntity = new GenericEntity<Toplanti>(ProjeConstants.SQL_UPDATE);
                         DegistirmeTarihi = DateTime.Now;
                         Degistiren = UtilityHelper.GetCurrentUserName();
-                        string sqlString = genericEntity.GetQuery(this);
-                        isSuccess = dao.Update2Db(sqlString);
+                        SqlQuery query = genericEntity.GetQueryParametreli(this);
+                        isSuccess = dao.Update2Db(query);
                     }
                     if (isSuccess && ProjeConstants.PORTAL_UPDATE_LOG)
                     {
@@ -90,11 +90,11 @@ namespace Model.Portal
                 if (Id != 0)
                 {
                     GenericEntity<Toplanti> genericEntity = new GenericEntity<Toplanti>(ProjeConstants.SQL_DELETE);
-                    string sqlString = genericEntity.GetQuery(this);
+                    SqlQuery query = genericEntity.GetQueryParametreli(this);
                     Toplanti item = Select<Toplanti>(Id);
                     if (item != null)
                     {
-                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                        isDeleted = dao.DeleteFromDb(query, "");
                     }
                     else isDeleted = false;
                     if (isDeleted && ProjeConstants.PORTAL_DELETE_LOG)
