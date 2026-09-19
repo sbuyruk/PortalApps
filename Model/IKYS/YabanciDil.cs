@@ -68,8 +68,8 @@ namespace Model.IKYS
                     GenericEntity<YabanciDil> genericEntity = new GenericEntity<YabanciDil>(ProjeConstants.SQL_UPDATE);
                     DegistirmeTarihi = DateTime.Now;
                     Degistiren = UtilityHelper.GetCurrentUserName();
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
+                    SqlQuery query = genericEntity.GetQueryParametreli(this);
+                    isSuccess = dao.Update2Db(query);
                 }
                 if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
                 {
@@ -91,12 +91,12 @@ namespace Model.IKYS
                 if (Id != 0)
                 {
                     GenericEntity<YabanciDil> genericEntity = new GenericEntity<YabanciDil>(ProjeConstants.SQL_DELETE);
-                    string sqlString = genericEntity.GetQuery(this);
+                    SqlQuery query = genericEntity.GetQueryParametreli(this);
 
                     YabanciDil item = Select<YabanciDil>(Id);
                     if (item != null)
                     {
-                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                        isDeleted = dao.DeleteFromDb(query, "");
                     }
                     else isDeleted = false;
                     if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
