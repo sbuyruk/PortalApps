@@ -72,8 +72,8 @@ namespace Model.IKYS
                     GenericEntity<Kimlik> genericEntity = new GenericEntity<Kimlik>(ProjeConstants.SQL_UPDATE);
                     DegistirmeTarihi = DateTime.Now;
                     Degistiren = UtilityHelper.GetCurrentUserName();
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
+                    SqlQuery query = genericEntity.GetQueryParametreli(this);
+                    isSuccess = dao.Update2Db(query);
                 }
                 if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
                 {
@@ -95,12 +95,12 @@ namespace Model.IKYS
                 if (Id != 0)
                 {
                     GenericEntity<Kimlik> genericEntity = new GenericEntity<Kimlik>(ProjeConstants.SQL_DELETE);
-                    string sqlString = genericEntity.GetQuery(this);
+                    SqlQuery query = genericEntity.GetQueryParametreli(this);
 
                     Kimlik item = Select<Kimlik>(Id);
                     if (item != null)
                     {
-                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                        isDeleted = dao.DeleteFromDb(query, "");
                     }
                     else isDeleted = false;
                     if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
