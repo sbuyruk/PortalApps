@@ -77,8 +77,8 @@ namespace Model.IKYS
                     GenericEntity<IsBilgileri> genericEntity = new GenericEntity<IsBilgileri>(ProjeConstants.SQL_UPDATE);
                     DegistirmeTarihi = DateTime.Now;
                     Degistiren = UtilityHelper.GetCurrentUserName();
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
+                    SqlQuery query = genericEntity.GetQueryParametreli(this);
+                    isSuccess = dao.Update2Db(query);
                 }
                 if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
                 {
@@ -100,12 +100,12 @@ namespace Model.IKYS
                 if (Id != 0)
                 {
                     GenericEntity<IsBilgileri> genericEntity = new GenericEntity<IsBilgileri>(ProjeConstants.SQL_DELETE);
-                    string sqlString = genericEntity.GetQuery(this);
+                    SqlQuery query = genericEntity.GetQueryParametreli(this);
 
                     IsBilgileri item = Select<IsBilgileri>(Id);
                     if (item != null)
                     {
-                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                        isDeleted = dao.DeleteFromDb(query, "");
                     }
                     else isDeleted = false;
                     if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
