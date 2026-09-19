@@ -70,8 +70,8 @@ namespace Model.Portal
                 {
                     GenericEntity<ProgramYetki> genericEntity = new GenericEntity<ProgramYetki>(ProjeConstants.SQL_UPDATE);
                     DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
+                    SqlQuery query = genericEntity.GetQueryParametreli(this);
+                    isSuccess = dao.Update2Db(query);
                 }
             }
             catch (Exception)
@@ -83,8 +83,8 @@ namespace Model.Portal
         public override bool Delete()
         {
             GenericEntity<ProgramYetki> genericEntity = new GenericEntity<ProgramYetki>(ProjeConstants.SQL_DELETE);
-            string sqlString = genericEntity.GetQuery(this);
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+            SqlQuery query = genericEntity.GetQueryParametreli(this);
+            bool isSuccess = dao.DeleteFromDb(query, this);
             return isSuccess;
         }
 
