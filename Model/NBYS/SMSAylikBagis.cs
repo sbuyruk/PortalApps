@@ -56,8 +56,8 @@ namespace Model.NBYS
                         GenericEntity<SMSAylikBagis> genericEntity = new GenericEntity<SMSAylikBagis>(ProjeConstants.SQL_UPDATE);
                         DegistirmeTarihi = DateTime.Now;
                         Degistiren = UtilityHelper.GetCurrentUserName();
-                        string sqlString = genericEntity.GetQuery(this);
-                        isSuccess = dao.Update2Db(sqlString);
+                        SqlQuery query = genericEntity.GetQueryParametreli(this);
+                        isSuccess = dao.Update2Db(query);
                     }
                     if (isSuccess && ProjeConstants.NBYS_UPDATE_LOG)
                     {
@@ -80,11 +80,11 @@ namespace Model.NBYS
                 if (Id != 0)
                 {
                     GenericEntity<SMSAylikBagis> genericEntity = new GenericEntity<SMSAylikBagis>(ProjeConstants.SQL_DELETE);
-                    string sqlString = genericEntity.GetQuery(this);
+                    SqlQuery query = genericEntity.GetQueryParametreli(this);
                     SMSAylikBagis item = Select<SMSAylikBagis>(Id);
                     if (item != null)
                     {
-                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                        isDeleted = dao.DeleteFromDb(query, "");
                     }
                     else isDeleted = false;
                     if (isDeleted && ProjeConstants.NBYS_DELETE_LOG)
