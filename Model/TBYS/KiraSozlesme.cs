@@ -606,12 +606,16 @@ namespace Model.TBYS
         public bool UpdateAktifDurum(string durum, string degistirmeTar, bool aktif)
         {
             string durumDegistirmeTar = string.IsNullOrEmpty(degistirmeTar) ? DateTime.Now.ConvertToTimeSpanReturnInHHmm() : degistirmeTar;
-            string sqlString = string.Format(@" UPDATE KiraSozlesme_Table 
-                                SET Aktif={0},
-                                    SozlesmeDurumu={1},
-                                    DurumDegismeTar={2} 
+            SqlQuery query = new SqlQuery(@" UPDATE KiraSozlesme_Table
+                                SET Aktif=@Aktif,
+                                    SozlesmeDurumu=@Durum,
+                                    DurumDegismeTar=@DurumDegismeTar
                                 WHERE  Aktif=1 AND Id=@Id");
-            bool isSaved = dao.Update2Db(sqlString);
+            query.AddParameter("@Aktif", aktif);
+            query.AddParameter("@Durum", durum);
+            query.AddParameter("@DurumDegismeTar", durumDegistirmeTar);
+            query.AddParameter("@Id", Id);
+            bool isSaved = dao.Update2Db(query);
             return isSaved;
         }
         public List<KiraSozlesme> SelectByTasinmazId(int tasinmazId)
