@@ -610,7 +610,7 @@ namespace Model.TBYS
                                 SET Aktif={0},
                                     SozlesmeDurumu={1},
                                     DurumDegismeTar={2} 
-                                WHERE  Aktif=1 AND Id={3}", aktif.ReturnQuotedValue(), durum.ReturnQuotedValue(), durumDegistirmeTar.ReturnQuotedValue(), Id);
+                                WHERE  Aktif=1 AND Id=@Id");
             bool isSaved = dao.Update2Db(sqlString);
             return isSaved;
         }
