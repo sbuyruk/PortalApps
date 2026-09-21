@@ -316,10 +316,10 @@ namespace Model.NBYS
         public bool UpdateDurumByBolge(string fromdurum, string todurum, string bastar, string bittar, int armaganTanimId, int bolgeId)
         {
             bool isSuccess = false;
-            string bolgeStr = bolgeId == ProjeConstants.BOLGE_HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format("  AND Il_Table.BolgeId={0} ", bolgeId);
+            string bolgeStr = bolgeId == ProjeConstants.BOLGE_HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : "  AND Il_Table.BolgeId=@BolgeId ";
 
-            string sqlString = string.Format(@"UPDATE A
-                                                SET Durum={0}
+            SqlQuery query = new SqlQuery(@"UPDATE A
+                                                SET Durum=@ToDurum
                                                 FROM
                                                     Armagan_Table A
                                                     INNER JOIN ArmaganTanim_Table
@@ -328,12 +328,21 @@ namespace Model.NBYS
                                                     ON A.BagisciId = NakitBagisci_Table.Id
                                                 INNER JOIN Il_Table
                                                     ON Il_Table.Id = NakitBagisci_Table.Ili
-                                                WHERE A.BelgeGecersizMi!=1 AND A.Durum = {1}
-                                                    AND A.Tarih BETWEEN {2} AND {3} --AND MONTH(A.Tarih)={2} AND YEAR(A.Tarih)={3} 
-                                                    AND A.ArmaganTanimId={4} " + bolgeStr
-                                                    , todurum.ReturnQuotedValue(), fromdurum.ReturnQuotedValue(), bastar.ReturnQuotedValue(), bittar.ReturnQuotedValue(), armaganTanimId);
+                                                WHERE A.BelgeGecersizMi!=1 AND A.Durum = @FromDurum
+                                                    AND A.Tarih BETWEEN @BasTar AND @BitTar --AND MONTH(A.Tarih)={2} AND YEAR(A.Tarih)={3}
+                                                    AND A.ArmaganTanimId=@ArmaganTanimId " + bolgeStr);
 
-            isSuccess = dao.Update2Db(sqlString);
+            query.AddParameter("@ToDurum", todurum);
+            query.AddParameter("@FromDurum", fromdurum);
+            query.AddParameter("@BasTar", bastar);
+            query.AddParameter("@BitTar", bittar);
+            query.AddParameter("@ArmaganTanimId", armaganTanimId);
+            if (!string.IsNullOrEmpty(bolgeStr))
+            {
+                query.AddParameter("@BolgeId", bolgeId);
+            }
+
+            isSuccess = dao.Update2Db(query);
 
             return isSuccess;
         }
