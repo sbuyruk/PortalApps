@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Elements xmlns="http://schemas.microsoft.com/sharepoint/" >
-  <Module Name="MalzemeCinsiGirisiWP" List="113" Url="_catalogs/wp">
-    <File Path="MalzemeCinsiGirisiWP\MalzemeCinsiGirisiWP.webpart" Url="MYS_WebParts_MalzemeCinsiGirisiWP.webpart" Type="GhostableInLibrary" >
-      <Property Name="Group" Value="MYS_WebParts" />
-    </File>
-  </Module>
-</Elements>
