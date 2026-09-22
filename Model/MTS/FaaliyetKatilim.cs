@@ -177,40 +177,5 @@ namespace Model.MTS
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
-        public int DeleteByFaaliyetId(int faaliyetid)
-        {
-            
-            bool deleteLog = ProjeConstants.MTS_DELETE_LOG;
-            int deleted;
-            string faaliyetIdStr = faaliyetid < 1? string.Empty : string.Format(" WHERE FaaliyetId={0} ", faaliyetid);
-            string sqlString = string.Format(@"
-                DELETE FROM FaaliyetKatilim_Table
-            ", faaliyetIdStr);
-
-            if (deleteLog)
-            {
-                string wherestr = string.Format(" WHERE FaaliyetId={0}", faaliyetid);
-                GenericEntity<FaaliyetKatilim> genericEntitySelect = new GenericEntity<FaaliyetKatilim>(ProjeConstants.SQL_SELECT);
-                string sqlStringSelect = genericEntitySelect.GetQuery(this, wherestr);
-                DataTable dataTable = dao.SelectFromDb(sqlStringSelect, "");
-                List<FaaliyetKatilim> list = ToList<FaaliyetKatilim>(dataTable);
-                if (list.Count > 0)
-                    deleted = dao.DeleteFromDb(sqlString, "", true);
-                else deleted = 0;
-                if (deleted > 0)
-                {
-                    foreach (FaaliyetKatilim item in list)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_FAALIYETKATILIM);
-                    }
-                }
-            }
-            else
-            {
-                deleted = dao.DeleteFromDb(sqlString, "", true);
-            }
-            return deleted;
-        }
     }
 }
