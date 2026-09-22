@@ -3,6 +3,7 @@ using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.Linq;
@@ -120,23 +121,49 @@ namespace Model.MTS
         }
         public int Delete(int faaliyetId, int katilimciId, string aniObjesiIdList="")
         {
+            if (string.IsNullOrWhiteSpace(aniObjesiIdList))
+                return 0;
+
             int deleted;
-            string aniObjesiIdListStr = string.IsNullOrEmpty(aniObjesiIdList) ? string.Empty : string.Format(" AND AniObjesiId IN ({0})", aniObjesiIdList);
+            string[] aniObjesiIdParts = aniObjesiIdList.Split(',');
+            List<int> aniObjesiIds = new List<int>();
+            List<string> aniObjesiIdParameters = new List<string>();
+            for (int i = 0; i < aniObjesiIdParts.Length; i++)
+            {
+                int aniObjesiId;
+                if (!int.TryParse(aniObjesiIdParts[i].Trim(), out aniObjesiId))
+                    throw new ArgumentException("Ani objesi listesi geçersiz bir değer içeriyor.", "aniObjesiIdList");
+
+                aniObjesiIds.Add(aniObjesiId);
+                aniObjesiIdParameters.Add("@AniObjesiId" + i);
+            }
+
+            string wherestr = string.Format("WHERE FaaliyetId=@FaaliyetId AND KatilimciId=@KatilimciId AND AniObjesiId IN ({0})", string.Join(", ", aniObjesiIdParameters));
             string sqlString = string.Format(@"
                 DELETE FROM AniObjesiDagitim_Table
-                WHERE FaaliyetId={0} AND KatilimciId={1}
-                {2}
-            ", faaliyetId, katilimciId, aniObjesiIdListStr);
+                {0}
+            ", wherestr);
 
 
-            string wherestr = string.Format("WHERE FaaliyetId={0} AND KatilimciId={1} {2}", faaliyetId, katilimciId, aniObjesiIdListStr);
             GenericEntity<AniObjesiDagitim> genericEntitySelect = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_SELECT);
             string sqlStringSelect = genericEntitySelect.GetQuery(this, wherestr);
-            DataTable dataTable = dao.SelectFromDb(sqlStringSelect, "");
+            SqlQuery selectQuery = new SqlQuery(sqlStringSelect);
+            selectQuery.Parameters.Add(new SqlParameter("@FaaliyetId", faaliyetId));
+            selectQuery.Parameters.Add(new SqlParameter("@KatilimciId", katilimciId));
+            for (int i = 0; i < aniObjesiIds.Count; i++)
+                selectQuery.Parameters.Add(new SqlParameter(aniObjesiIdParameters[i], aniObjesiIds[i]));
+            DataTable dataTable = dao.SelectFromDb(selectQuery, "");
             List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
             
             if (list.Count > 0)
-                deleted = dao.DeleteFromDb(sqlString, "", true);
+            {
+                SqlQuery deleteQuery = new SqlQuery(sqlString);
+                deleteQuery.Parameters.Add(new SqlParameter("@FaaliyetId", faaliyetId));
+                deleteQuery.Parameters.Add(new SqlParameter("@KatilimciId", katilimciId));
+                for (int i = 0; i < aniObjesiIds.Count; i++)
+                    deleteQuery.Parameters.Add(new SqlParameter(aniObjesiIdParameters[i], aniObjesiIds[i]));
+                deleted = dao.DeleteFromDb(deleteQuery, "", true);
+            }
             else deleted = 0;
             if (deleted > 0 && ProjeConstants.MTS_DELETE_LOG)
             {
