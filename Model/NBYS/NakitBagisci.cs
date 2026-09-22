@@ -1,4 +1,5 @@
 using DAO.Ortak;
+using DAO.Repositories.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -653,63 +654,12 @@ namespace Model.NBYS
         }
         public DataTable SelectByFilterReturnDataTable(string filter, int eksiId)
         {
-            string sqlString = string.Format(@"
-                SELECT distinct(N.Id) NakitBagisciId, N.Adi,Soyadi, TCKimlikNo, A.IlAdi Ili ,B.IlceAdi Ilcesi,Adres,
-	                Telefon1,Telefon2, Telefon1 + IIF(ISNULL(Telefon1,'')!='' AND ISNULL(Telefon2,'')!='',' - ','') + Telefon2 Telefon, 
-                    N.OlusturmaTarihi  ,N.DegistirmeTarihi,N.Degistiren,Sag,Eposta ,PostaKodu, Ulasilamiyor, BelgeIstemiyor                                            
-                FROM NakitBagisci_Table N 
-                    LEFT OUTER JOIN Il_Table A ON A.Id= N.Ili 
-                    LEFT OUTER JOIN Ilce_Table B ON B.Id= N.Ilcesi AND B.IlId=A.Id
-                    ---INNER JOIN NakitBagisHareket_Table C on C.BagisciId=N.Id
-                WHERE N.Id!= {0} AND N.Adi like '%{1}%'
-	                OR N.TCKimlikNo like '%{1}%'
-	                OR N.Telefon1 like '%{1}%'
-	                OR N.Adres like '%{1}%'
-                ORDER BY NakitBagisciId ", eksiId, filter);
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            return dataTable;
+            NakitBagisciSearchRepository repository = new NakitBagisciSearchRepository();
+            return repository.SelectByFilter(filter, eksiId);
         }
         public string SelectByFilter(string filter, int eksiId)
         {
-            string ilStr = string.Empty;
-
-            string sqlString = string.Format(@"
-                SELECT distinct(N.Id) NakitBagisciId, N.Adi,Soyadi, TCKimlikNo, A.IlAdi Ili ,B.IlceAdi Ilcesi,Adres,
-	                Telefon1,Telefon2, Telefon1 + IIF(ISNULL(Telefon1,'')!='' AND ISNULL(Telefon2,'')!='',' - ','') + Telefon2 Telefon, 
-                    N.OlusturmaTarihi  ,N.DegistirmeTarihi,N.Degistiren,Sag,Eposta ,PostaKodu, Ulasilamiyor, BelgeIstemiyor                                            
-                FROM NakitBagisci_Table N 
-                    LEFT OUTER JOIN Il_Table A ON A.Id= N.Ili 
-                    LEFT OUTER JOIN Ilce_Table B ON B.Id= N.Ilcesi AND B.IlId=A.Id
-                    ---INNER JOIN NakitBagisHareket_Table C on C.BagisciId=N.Id
-                WHERE N.Id!= {0} AND N.Adi like '%{1}%'
-	                OR N.TCKimlikNo like '%{1}%'
-	                OR N.Telefon1 like '%{1}%'
-	                OR N.Adres like '%{1}%'
-	                --OR C.Adresi like '%{1}%'
-	                --OR C.BagisTarihi like '%{1}%'
-	                --OR C.BagisMiktari like '%{1}%'
-	                --OR A.IlAdi like '%{1}%'
-	                --OR B.IlceAdi like '%{1}%'
-                ORDER BY NakitBagisciId ", eksiId, filter);
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-
-           
+            DataTable dataTable = SelectByFilterReturnDataTable(filter, eksiId);
             string json = ToJSON(dataTable);
             return json;
         }
