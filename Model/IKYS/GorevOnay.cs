@@ -192,21 +192,67 @@ namespace Model.IKYS
         }
         public bool UpdateAllSecildiToTrue(string idString)
         {
+            List<int> ids = ParseIdList(idString);
+            if (ids.Count == 0)
+                return false;
+
+            List<string> idParameters = new List<string>();
+            for (int i = 0; i < ids.Count; i++)
+                idParameters.Add("@Id" + i);
+
             string sqlString = string.Format(@"
                     UPDATE GorevOnay_Table
                     SET Secildi=1
                     WHERE ID IN ({0})
-                ", idString);
-            return dao.Update2Db(sqlString);
+                ", string.Join(", ", idParameters));
+            SqlQuery query = new SqlQuery(sqlString);
+            for (int i = 0; i < ids.Count; i++)
+                query.Parameters.Add(new SqlParameter(idParameters[i], ids[i]));
+
+            return dao.Update2Db(query);
         }
         public bool UpdateAllOdendiToTrue(string idString)
         {
+            List<int> ids = ParseIdList(idString);
+            if (ids.Count == 0)
+                return false;
+
+            List<string> idParameters = new List<string>();
+            for (int i = 0; i < ids.Count; i++)
+                idParameters.Add("@Id" + i);
+
             string sqlString = string.Format(@"
                     UPDATE GorevOnay_Table
                     SET Odendi=1
                     WHERE ID IN ({0})
-                ", idString);
-            return dao.Update2Db(sqlString);
+                ", string.Join(", ", idParameters));
+            SqlQuery query = new SqlQuery(sqlString);
+            for (int i = 0; i < ids.Count; i++)
+                query.Parameters.Add(new SqlParameter(idParameters[i], ids[i]));
+
+            return dao.Update2Db(query);
+        }
+        private List<int> ParseIdList(string idString)
+        {
+            List<int> ids = new List<int>();
+            if (string.IsNullOrWhiteSpace(idString))
+                return ids;
+
+            string trimmedIdString = idString.Trim();
+            if (trimmedIdString.StartsWith("(") && trimmedIdString.EndsWith(")"))
+                trimmedIdString = trimmedIdString.Substring(1, trimmedIdString.Length - 2);
+
+            string[] idParts = trimmedIdString.Split(',');
+            for (int i = 0; i < idParts.Length; i++)
+            {
+                int id;
+                if (!int.TryParse(idParts[i].Trim(), out id))
+                    throw new ArgumentException("Görev onay ID listesi geçersiz bir değer içeriyor.", "idString");
+
+                ids.Add(id);
+            }
+
+            return ids;
         }
 
         private string SelectSQL(int id)
