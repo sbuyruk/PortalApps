@@ -529,11 +529,12 @@ namespace DAO.Ortak
             string aciklamaStr = aciklama.Length > 250 ? aciklama.Substring(0, 249).Trim() : aciklama.Trim();
             sorgu = sorgu.Replace("'", "").Trim();
             string sorguStr = sorgu.Length > 1000 ? sorgu.Substring(0, 999): sorgu;
-            string sqlString = string.Format(@"
-                INSERT INTO SQLLog_Table (Kullanici, IslemTarihi,Komut,Tablo,Basarili,Sorgu,Aciklama)
-                VALUES({0},{1},{2},{3},{4},{5},{6})", 
-                    "'" + Global.GetCurrentUser() + "'", "'" + DateTime.Now + "'", "'" + komut + "'", "'"+Global.FindTable(sorgu) + "'", 
-                    "'"+basarili + "'", "'" + sorguStr + "'", "'"+ aciklamaStr+ "'");
+            string sqlString = @"
+                INSERT INTO SQLLog_Table
+                (Kullanici, IslemTarihi, Komut, Tablo, Basarili, Sorgu, Aciklama)
+                VALUES
+                (@Kullanici, @IslemTarihi, @Komut, @Tablo, @Basarili, @Sorgu, @Aciklama);
+                SELECT SCOPE_IDENTITY()";
 
             string connectString = DBProcess.getConnectString();
             SqlConnection con = new SqlConnection(connectString);
@@ -545,8 +546,17 @@ namespace DAO.Ortak
                     if (con.State == ConnectionState.Closed)
                     {
                         con.Open();
-                        SqlCommand cmd = new SqlCommand(sqlString + ";SELECT SCOPE_IDENTITY()", con);
-                        id = cmd.ExecuteScalar().ConvertToInt();
+                        using (SqlCommand cmd = new SqlCommand(sqlString, con))
+                        {
+                            cmd.Parameters.AddWithValue("@Kullanici", Global.GetCurrentUser());
+                            cmd.Parameters.AddWithValue("@IslemTarihi", DateTime.Now.ToString());
+                            cmd.Parameters.AddWithValue("@Komut", komut ?? string.Empty);
+                            cmd.Parameters.AddWithValue("@Tablo", Global.FindTable(sorgu));
+                            cmd.Parameters.AddWithValue("@Basarili", basarili.ToString());
+                            cmd.Parameters.AddWithValue("@Sorgu", sorguStr);
+                            cmd.Parameters.AddWithValue("@Aciklama", aciklamaStr);
+                            id = cmd.ExecuteScalar().ConvertToInt();
+                        }
                         con.Close();
                     }
                 }
