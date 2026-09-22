@@ -260,11 +260,48 @@ namespace Model.NBYS
 
         public bool UpdateAktifByIdList(string idler)
         {
-            string sqlString = string.Format(@"
+            if (string.IsNullOrWhiteSpace(idler))
+            {
+                return false;
+            }
+
+            string idListesi = idler.Trim();
+            if (idListesi.StartsWith("(") && idListesi.EndsWith(")"))
+            {
+                idListesi = idListesi.Substring(1, idListesi.Length - 2);
+            }
+
+            if (string.IsNullOrWhiteSpace(idListesi))
+            {
+                return false;
+            }
+
+            string[] idDegerleri = idListesi.Split(',');
+            List<int> idlerListesi = new List<int>();
+            List<string> idParametreleri = new List<string>();
+            for (int i = 0; i < idDegerleri.Length; i++)
+            {
+                int id;
+                if (!int.TryParse(idDegerleri[i].Trim(), out id))
+                {
+                    throw new ArgumentException("ID listesi yalnızca geçerli tam sayılar içermelidir.", "idler");
+                }
+
+                idlerListesi.Add(id);
+                idParametreleri.Add("@Id" + i);
+            }
+
+            SqlQuery query = new SqlQuery(@"
                 UPDATE FTKKisi_Table
-                SET UyelikDurumu={0}
-                WHERE Id in {1}", ProjeConstants.FTK_UYELIK_DURUMU_AKTIF_DEGIL.ReturnQuotedValue(), idler);
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+                SET UyelikDurumu=@UyelikDurumu
+                WHERE Id IN (" + string.Join(", ", idParametreleri) + ")");
+            query.AddParameter("@UyelikDurumu", ProjeConstants.FTK_UYELIK_DURUMU_AKTIF_DEGIL);
+            for (int i = 0; i < idlerListesi.Count; i++)
+            {
+                query.AddParameter(idParametreleri[i], idlerListesi[i]);
+            }
+
+            bool isSuccess = dao.Update2Db(query);
             return isSuccess;
         }
     }
