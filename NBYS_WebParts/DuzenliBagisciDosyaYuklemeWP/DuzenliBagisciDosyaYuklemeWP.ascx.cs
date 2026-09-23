@@ -1,6 +1,7 @@
 using Microsoft.SharePoint.JSGrid;
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -159,21 +160,18 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                         {
                             int bagisciId = 0;
                             string eslesmeBilgisi = string.Empty;
-                            NakitBagisci bagisci = new NakitBagisci();
-                            bagisci = bagisci.SelectByTcKimlikno(TCKimlikNo);
+                            NakitBagisciService service = new NakitBagisciService();
+                            NakitBagisci bagisci = service.GetByTcKimlikNo(TCKimlikNo);
                             if (bagisci==null)
                             {
-                                bagisci = new NakitBagisci();
-                                bagisci = bagisci.SelectByAdAndTelefon(adi.Trim(), telefon);
+                                bagisci = service.GetByAdAndTelefon(adi.Trim(), telefon);
 
                                 if (bagisci == null)
                                 {
-                                    bagisci = new NakitBagisci();
-                                    bagisci = bagisci.SelectByTelefon(telefon);
+                                    bagisci = service.GetByTelefon(telefon);
                                     if (bagisci == null)
                                     {
-                                        bagisci = new NakitBagisci();
-                                        bagisci = bagisci.SelectByEposta(eposta);
+                                        bagisci = service.GetByEposta(eposta);
                                         if (bagisci == null)
                                         {
 
