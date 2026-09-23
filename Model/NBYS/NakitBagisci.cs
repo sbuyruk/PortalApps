@@ -197,90 +197,12 @@ namespace Model.NBYS
         }
         public DataTable SelectBagisciGroupByBagisAdediReturnDataTable(decimal bronzMadalyaMiktari)
         {
-            string sqlString = string.Format(
-                @"
-                SELECT  
-                    A.BagisciId AS NakitBagisciId,
-                    COUNT(A.Id) AS Adet,
-                    SUM(A.BagisMiktari) AS Toplam,
-                    MAX(A.BagisTarihi) AS SonBagisTarihi,
-                    B.Adi,
-                    B.Soyadi
-                FROM 
-                    NakitBagisHareket_Table A
-                    LEFT JOIN NakitBagisci_Table B ON B.Id = A.BagisciId
-                    
-                WHERE 
-                    B.Adi NOT Like '%{0}%' 
-                    AND A.BagisTarihi > {1}
-                    
-                GROUP BY 
-                    A.BagisciId,
-                    B.Adi,
-                    B.Soyadi
-                HAVING  
-                    SUM(A.BagisMiktari) >= {2}
-                    AND COUNT(A.Id) > 1
-                    AND MAX(A.BagisTarihi) BETWEEN DATEADD(MONTH, {3}, GETDATE()) 
-                            AND EOMONTH(GETDATE(), -1)
-                    AND NOT EXISTS (
-                        SELECT 1
-                        FROM Armagan_Table C
-                        WHERE C.BagisciId = A.BagisciId
-                            AND C.ArmaganTanimId IN (2, 3, 4)
-                            AND C.BagisciId IS NOT NULL
-                    )
-                ORDER BY 
-                    Toplam DESC,
-                    Adet DESC,
-                    B.Adi
-
-                ", ProjeConstants.NAKITBAGISCI_BILINMEYEN,
-                ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ReturnQuotedValue(),
-                bronzMadalyaMiktari.ToString().Replace(",", "."),ProjeConstants.COKBAGISYAPAN_SONBAGISI_KAC_AY_ONCE_YAPTI
-                );
-            //string sqlString = string.Format(@"
-            //    SELECT  A.BagisciId NakitBagisciId,A.ArmaganId
-            //        ,COUNT(A.Id) Adet, SUM(A.BagisMiktari) Toplam, MAX(A.BagisTarihi) SonBagisTarihi
-            //        ,B.Adi, B.Soyadi
-            //    FROM NakitBagisHareket_Table A
-            //     LEFT JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
-            //    WHERE B.Adi NOT Like '%{0}%' AND A.BagisTarihi > {1}
-            //    Group By A.BagisciId,A.ArmaganId,B.Adi, B.Soyadi 
-            //    HAVING  SUM(A.BagisMiktari) >= {2} AND (A.ArmaganId=0 OR COUNT(A.Id) > 1 )
-            //     AND MAX(A.BagisTarihi) > DATEADD(MONTH, -6, GETDATE())
-            //     Order By SUM(A.BagisMiktari),COUNT(A.Id) Desc,A.BagisciId,B.Adi
-
-            //", ProjeConstants.NAKITBAGISCI_BILINMEYEN,
-            //    ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ReturnQuotedValue(), 
-            //    bronzMadalyaMiktari.ToString().Replace(",", ".").ReturnQuotedValue());
-
-
-            //string sqlString1 = string.Format(@"
-            //    SELECT A.BagisciId NakitBagisciId
-            //        ,COUNT(A.Id) Adet, SUM(A.BagisMiktari) Toplam, MAX(A.BagisTarihi) SonBagisTarihi
-            //        ,B.Adi, B.Soyadi, B.TuzelKisi
-            // FROM NakitBagisHareket_Table A
-            //     LEFT JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
-            //        LEFT JOIN Armagan_Table C ON C.Id=A.ArmaganId AND C.ArmaganTanimId IN ({0})
-            //    WHERE B.Id IS NOT NULL AND C.Id is NULL AND B.Adi!={1}
-            //        AND A.BagisTarihi > {2}
-            //    GROUP BY A.BagisciId,B.Adi, B.Soyadi, B.TuzelKisi
-            //    HAVING SUM(A.BagisMiktari) >= {3} AND COUNT(A.Id) >= 5 AND MAX(A.BagisTarihi) > DATEADD(MONTH, -6, GETDATE())
-            //    ORDER BY COUNT(A.Id) Desc, SUM(A.BagisMiktari)", ProjeConstants.ARMAGAN_ALTINID +","+ ProjeConstants.ARMAGAN_GUMUSID + "," + ProjeConstants.ARMAGAN_BRONZID, 
-            //    ProjeConstants.NAKITBAGISCI_BILINMEYEN.ReturnQuotedValue(),
-            //    ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ReturnQuotedValue(), bronzMadalyaMiktari.ToString().Replace(",",".").ReturnQuotedValue());
-            DataTable dataTable;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-
-                throw;
-            }
-            return dataTable;
+            NakitBagisciReportRepository repository = new NakitBagisciReportRepository();
+            return repository.SelectBagisciGroupByBagisAdedi(
+                bronzMadalyaMiktari,
+                ProjeConstants.NAKITBAGISCI_BILINMEYEN,
+                ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ReturnQuotedValue().ToString(),
+                ProjeConstants.COKBAGISYAPAN_SONBAGISI_KAC_AY_ONCE_YAPTI);
         }
         public NakitBagisci SelectByTcKimlikno(long tcKimlikno)
         {
@@ -341,15 +263,6 @@ namespace Model.NBYS
         {
             NakitBagisciRepository repository = new NakitBagisciRepository();
             return repository.SelectByAd(adi);
-
-        }
-        public List<NakitBagisci> SelectBagisciByEkstreAktarmaId(int ekstreAktarmaId, string telefon1, string telefon2)
-        {
-            NakitBagisciRepository repository = new NakitBagisciRepository();
-            DataTable dataTable = repository.SelectBagisciByEkstreAktarmaId(ekstreAktarmaId, telefon1, telefon2);
-            List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
-
-            return list;
 
         }
         public string SelectByIl(int pIlId, ref List<NakitBagisci> list, ref int rowCount)
@@ -531,120 +444,22 @@ namespace Model.NBYS
         }
         public DataTable SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT()
         {
-            string tarihStr = DateTime.Today.AddYears(-2).ReturnTRDateFormat();
-            string sqlString = string.Format(@"              
-                SELECT DISTINCT(A.Id) KatilimciId, A.Adi, A.Soyadi, 
-					A.Adres,A.Telefon1 Telefon,A.Sag,D.IlceAdi Ilce,C.IlAdi Il,MAX(B.BagisMiktari)
-                FROM NakitBagisci_Table A
-					INNER JOIN Armagan_Table B ON B.BagisciId =A.Id 
-						AND Tarih>{0} AND BagisMiktari >= {1}
-                    LEFT JOIN Il_Table C ON C.Id=A.Ili 
-					LEFT JOIN Ilce_Table D ON D.Id=A.Ilcesi AND D.IlId=A.Ili 
-				WHERE A.Sag=1 AND A.TuzelKisi=0 AND A.Adi IS NOT NULL AND A.Adi!='' AND A.Adi NOT Like '%BILINMEYEN%'
-				GROUP BY  A.Id , A.Adi, A.Soyadi,
-					A.Adres,A.Telefon1,A.Sag,D.IlceAdi,C.IlAdi
-                ORDER BY A.Id
-            ",  tarihStr, ProjeConstants.NAKITBAGISCI_SORGUBAGISTUTARI);
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            return dataTable;
-        }
-        public string SelectDuzenliBagisci(ref List<NakitBagisci> list, ref int rowCount)
-        {
-
-
-            string sqlString = string.Format(@"
-                SELECT A.BagisciId NakitBagisciId,A.BagisciAdi,A.Id AS DuzenliBagisciId, A.ArmaganId,E.Durum
-                    ,ISNULL(B.Adi, 'BAGISÇI BULUNAMADI') AS Adi
-                    ,A.EslesmeBilgisi
-                    ,A.Aciklama AS DuzenliBagisciAciklama
-                    ,TCKimlikNo
-	                ,A.Tutar
-	                ,A.BaslamaTarihi
-                    ,C.IlAdi Ili
-                    ,D.IlceAdi Ilcesi
-                    ,Adres
-                    ,Telefon1 +' - '+ Telefon2+ ' ('+A.Telefon+') ' as Telefon
-                    
-                    ,TuzelKisi
-                    ,Sag
-                    ,Eposta
-                    ,PostaKodu
-                    ,A.Aciklama
-                    ,Ulasilamiyor,BelgeIstemiyor
-                FROM DuzenliNakitBagisci_Table A
-                LEFT JOIN NakitBagisci_Table B ON A.BagisciId = B.Id
-                LEFT OUTER JOIN Il_Table C ON C.Id= B.Ili 
-                LEFT OUTER JOIN Ilce_Table D ON D.Id= B.Ilcesi AND D.IlId=C.Id
-                LEFT JOIN Armagan_Table E ON E.Id=A.ArmaganId
-                WHERE A.Aktif = 1;"
-                );
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                rowCount = dataTable.Rows.Count;
-            }
-            string json = ToJSON(dataTable);
-            return json;
+            NakitBagisciReportRepository repository = new NakitBagisciReportRepository();
+            return repository.SelectSecilmemisKatilimcilar(
+                DateTime.Today.AddYears(-2),
+                ProjeConstants.NAKITBAGISCI_SORGUBAGISTUTARI);
         }
         public DataTable SelectDuzenliBagisci(DateTime bastar,DateTime bittar, string durum)
         {
-            var durumstr = string.Empty;
-            if (durum.Equals(ProjeConstants.DURUM_BELGEOLUSTURULMADI))
-            {
-                durumstr = string.Format("AND  A.ArmaganId=0 ");
-            } else
-            if (!durum.Equals(ProjeConstants.HEPSI)) //eger bos ise query'e hiç eklenmesin
-            {
-                durumstr = string.Format("AND Durum = {0}", durum.ReturnQuotedValue());
-            }
-            string sqlString = string.Format(@"
-                SELECT A.BagisciId aBagisciId,A.BagisciAdi aBagisciAdi
-                    ,A.Id aDuzenliBagisciId
-                    ,A.BaslamaTarihi aBaslamaTarihi
-                    ,A.Tutar aTutar,A.BagisAdedi aBagisAdedi,A.BagisToplami aBagisToplami
-                    ,A.Aktif aAktif
-                    ,A.ArmaganId aArmaganId, A.NakitBagisHareketId aNakitBagisHareketId
-                    ,A.Telefon aTelefon,A.Eposta aEposta
-                    ,A.EslesmeBilgisi aEslesmeBilgisi,A.Aciklama aAciklama                    
-
-                    ,ISNULL(B.Adi, 'BAGISÇI BULUNAMADI') AS bAdi
-                    ,B.TCKimlikNo bTCKimlikNo
-                    ,Adres bAdres
-                    ,Telefon1 bTelefon1
-                    ,Telefon2 bTelefon2
-                    ,TuzelKisi bTuzelKisi
-                    ,Sag bSag
-                    ,B.Eposta bEposta
-                    ,PostaKodu bPostaKodu
-                    ,B.Aciklama bAciklama
-                    ,C.IlAdi bIl
-                    ,D.IlceAdi bIlce
-                    ,Ulasilamiyor bUlasilamiyor
-                    ,BelgeIstemiyor bBelgeIstemiyor
-                    ,E.Durum bDurum,E.KacinciBelge
-                    ,F.KisaAdi bBolgeKisaAdi
-                FROM DuzenliNakitBagisci_Table A
-                LEFT JOIN NakitBagisci_Table B ON A.BagisciId = B.Id
-                LEFT OUTER JOIN Il_Table C ON C.Id= B.Ili 
-                LEFT OUTER JOIN Ilce_Table D ON D.Id= B.Ilcesi AND D.IlId=C.Id
-                LEFT JOIN Armagan_Table E ON E.Id=A.ArmaganId
-                LEFT JOIN Bolge_Table F ON F.Id=C.BolgeId
-                WHERE A.Aktif = 1 AND BaslamaTarihi >= {0} AND BaslamaTarihi < {1}
-                {2};",
-                bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat(), durumstr);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-
-            return dataTable;
+            bool sadeceBelgeOlusturulmadi = durum.Equals(ProjeConstants.DURUM_BELGEOLUSTURULMADI);
+            bool durumFiltrele = !sadeceBelgeOlusturulmadi && !durum.Equals(ProjeConstants.HEPSI);
+            NakitBagisciReportRepository repository = new NakitBagisciReportRepository();
+            return repository.SelectDuzenliBagisci(
+                bastar,
+                bittar,
+                sadeceBelgeOlusturulmadi,
+                durumFiltrele,
+                durum);
         }
     }
 }

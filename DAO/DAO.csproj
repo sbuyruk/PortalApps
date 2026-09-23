@@ -73,6 +73,7 @@
     <Compile Include="Ortak\Global.cs" />
     <Compile Include="Ortak\SqlQuery.cs" />
     <Compile Include="Repositories\NBYS\NakitBagisciRepository.cs" />
+    <Compile Include="Repositories\NBYS\NakitBagisciReportRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

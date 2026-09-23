@@ -93,20 +93,6 @@ namespace DAO.Repositories.NBYS
             return db.SelectFromDb(query, "");
         }
 
-        public DataTable SelectBagisciByEkstreAktarmaId(int ekstreAktarmaId, string telefon1, string telefon2)
-        {
-            SqlQuery query = new SqlQuery(@"
-                SELECT * FROM NakitBagisci_Table A
-                INNER JOIN EkstreAktarma_Table B ON LTRIM(RTRIM(UPPER(B.Adi))) = LTRIM(RTRIM(UPPER(A.Adi)))
-                WHERE B.Id = @EkstreAktarmaId AND A.TCKimlikNo = 0
-                    AND (@Telefon1 = '' OR (A.Telefon1 != @Telefon1 AND A.Telefon2 != @Telefon1))
-                    AND (@Telefon2 = '' OR (A.Telefon1 != @Telefon2 AND A.Telefon2 != @Telefon2))");
-            query.AddParameter("@EkstreAktarmaId", ekstreAktarmaId);
-            query.AddParameter("@Telefon1", telefon1 ?? string.Empty);
-            query.AddParameter("@Telefon2", telefon2 ?? string.Empty);
-            return db.SelectFromDb(query, "");
-        }
-
         public DataTable SelectByIl(int? ilId)
         {
             SqlQuery query = new SqlQuery(@"
