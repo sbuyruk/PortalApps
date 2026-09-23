@@ -497,7 +497,6 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
                 string ili = row["Ili"].ToString();
                 string ilcesi = row["Ilcesi"].ToString();
                 string tuzelKisi = row["TuzelKisi"].ToString();
-                string eposta = row["TuzelKisi"].ToString();
                 bool dergiGonderilmesin = row["DergiGonderilmesin"].ReturnFalseIfNull().ConvertToBool();
 
                 NakitBagisciListItem nakitBagisciItem = new NakitBagisciListItem();
@@ -511,7 +510,7 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
                 nakitBagisciItem.Ilcesi = ilcesi;
                 nakitBagisciItem.Ili = ili;
                 nakitBagisciItem.DergiGonderilmesin = dergiGonderilmesin.ConvertToBool().ToString();
-                nakitBagisciItem.TuzelKisi = tuzelKisi.ConvertToBool().ToString();
+                nakitBagisciItem.TuzelKisi = tuzelKisi.ConvertToBool() ? "Tüzel" : "Özel";
                 nakitBagisciItem.Duzenle = "<a class='btn btn-outline-primary' href=NakitBagisciEdit.aspx?SenderApp=NBAL&NakitBagisciId=" + nakitBagisciId + paramsStr + " >Düzenle</a>";
                 string dergiStr = dergiGonderilmesin ?
                     "<a href=# onclick=CallButtonClick(" + nakitBagisciId + ",'gonder'); class='btn btn-outline-success'>Dergi Gönder</a>" :
