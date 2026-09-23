@@ -4,6 +4,22 @@ using System.Data;
 
 namespace DAO.Repositories.NBYS
 {
+    public class NakitBagisciAdresRaporKriteri
+    {
+        public DateTime BaslangicTarihi { get; set; }
+        public DateTime BitisTarihi { get; set; }
+        public DateTime TLGecisTarihi { get; set; }
+        public int BagisciSayisi { get; set; }
+        public bool BelgeIstemeyenlerHaric { get; set; }
+        public bool AdresiBosOlanlarHaric { get; set; }
+        public bool PostadanIadelerHaric { get; set; }
+        public bool DergiGonderilmesinlerHaric { get; set; }
+        public bool UlasilamayanlarHaric { get; set; }
+        public bool SadeceYeniBagiscilar { get; set; }
+        public string ParaIadeDurumu { get; set; }
+        public string DahaOnceIadeDurumu { get; set; }
+    }
+
     public class NakitBagisciReportRepository
     {
         private readonly DbClass db;
@@ -124,6 +140,107 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@DurumFiltrele", durumFiltrele);
             query.AddParameter("@Durum", durum ?? string.Empty);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectByBagisTarihiBagisSayisi(NakitBagisciAdresRaporKriteri kriter)
+        {
+            SqlQuery query = kriter.SadeceYeniBagiscilar
+                ? CreateYeniBagisciAdresRaporQuery()
+                : CreateBagisciAdresRaporQuery();
+
+            AddAdresRaporParameters(query, kriter);
+            return db.SelectFromDb(query, "");
+        }
+
+        private static SqlQuery CreateYeniBagisciAdresRaporQuery()
+        {
+            return new SqlQuery(@"
+                SELECT TOP (@BagisciSayisi)
+                    SUM(Y.BagisMiktari) BagisMiktariDecimal,
+                    CONVERT(nvarchar, REPLACE(SUM(Y.BagisMiktari),'.',',')) BagisMiktari,
+                    NakitBagisciId, Adi,Adres,Telefon1,Telefon2, Ilcesi, Ili,
+                    DergiGonderilmesin, TuzelKisi, BelgeIstemiyor,Ulasilamiyor
+                FROM
+                (
+                    SELECT A.Id NakitBagisciId, A.Adi,A.Adres,A.Telefon1,A.Telefon2,
+                        G.IlceAdi Ilcesi, F.IlAdi Ili, A.DergiGonderilmesin,
+                        A.TuzelKisi, BelgeIstemiyor,Ulasilamiyor
+                    FROM NakitBagisci_Table A
+                        INNER JOIN Armagan_Table B ON B.BagisciId = A.Id
+                        LEFT JOIN Il_Table F ON F.Id = A.Ili
+                        LEFT JOIN Ilce_Table G ON G.Id = A.Ilcesi AND G.IlId = F.Id
+                    WHERE B.Tarih BETWEEN @BaslangicTarihi AND @BitisTarihi
+                        AND (@PostadanIadelerHaric = 0 OR
+                            (B.Durum != @ParaIadeDurumu AND B.Durum != @DahaOnceIadeDurumu))
+                    GROUP BY A.Id,A.Adi,A.Adres,A.Ili,F.IlAdi,G.IlceAdi,A.Telefon1,A.Telefon2,
+                        A.DergiGonderilmesin,A.TuzelKisi,BelgeIstemiyor,Ulasilamiyor
+
+                    EXCEPT
+
+                    SELECT E.Id NakitBagisciId, E.Adi,E.Adres,E.Telefon1,E.Telefon2,
+                        J.IlceAdi Ilcesi, H.IlAdi Ili,E.DergiGonderilmesin,
+                        E.TuzelKisi, BelgeIstemiyor,Ulasilamiyor
+                    FROM NakitBagisci_Table E
+                        INNER JOIN Armagan_Table F ON F.BagisciId = E.Id
+                        LEFT JOIN Armagan_Table G ON F.BagisciId = G.BagisciId
+                        LEFT JOIN Il_Table H ON H.Id = E.Ili
+                        LEFT JOIN Ilce_Table J ON J.Id = E.Ilcesi AND J.IlId = H.Id
+                    WHERE F.Tarih BETWEEN @BaslangicTarihi AND @BitisTarihi
+                        AND G.Tarih BETWEEN @TLGecisTarihi AND @BaslangicTarihiEksiBirGun
+                        AND (@PostadanIadelerHaric = 0 OR
+                            (F.Durum != @ParaIadeDurumu AND F.Durum != @DahaOnceIadeDurumu))
+                ) Z
+                    INNER JOIN Armagan_Table Y ON Z.NakitBagisciId = Y.BagisciId
+                WHERE Y.Tarih > @BaslangicTarihiEksiBirGun
+                    AND (@BelgeIstemeyenlerHaric = 0 OR Z.BelgeIstemiyor = 0)
+                    AND (@AdresiBosOlanlarHaric = 0 OR ISNULL(LTRIM(RTRIM(Adres)), '') != '')
+                    AND (@DergiGonderilmesinlerHaric = 0 OR Z.DergiGonderilmesin = 0)
+                    AND (@UlasilamayanlarHaric = 0 OR Z.Ulasilamiyor = 0)
+                GROUP BY NakitBagisciId,Adi,Adres,Ili,Ilcesi,Telefon1,Telefon2,
+                    DergiGonderilmesin,TuzelKisi,BelgeIstemiyor,Ulasilamiyor
+                ORDER BY BagisMiktariDecimal DESC, Z.NakitBagisciId DESC");
+        }
+
+        private static SqlQuery CreateBagisciAdresRaporQuery()
+        {
+            return new SqlQuery(@"
+                SELECT TOP (@BagisciSayisi)
+                    SUM(B.BagisMiktari) BagisMiktariDecimal,
+                    CONVERT(nvarchar, REPLACE(SUM(B.BagisMiktari), '.', ',')) BagisMiktari,
+                    A.Id NakitBagisciId, A.Adi, A.Adres, A.Telefon1, A.Telefon2,
+                    G.IlceAdi Ilcesi, F.IlAdi Ili, A.DergiGonderilmesin,
+                    A.TuzelKisi, BelgeIstemiyor, Ulasilamiyor
+                FROM NakitBagisci_Table A
+                    INNER JOIN Armagan_Table B ON B.BagisciId = A.Id
+                    LEFT JOIN Il_Table F ON F.Id = A.Ili
+                    LEFT JOIN Ilce_Table G ON G.Id = A.Ilcesi AND G.IlId = F.Id
+                WHERE B.Tarih BETWEEN @BaslangicTarihi AND @BitisTarihi
+                    AND (@PostadanIadelerHaric = 0 OR
+                        (B.Durum != @ParaIadeDurumu AND B.Durum != @DahaOnceIadeDurumu))
+                    AND (@BelgeIstemeyenlerHaric = 0 OR A.BelgeIstemiyor = 0)
+                    AND (@AdresiBosOlanlarHaric = 0 OR ISNULL(LTRIM(RTRIM(Adres)), '') != '')
+                    AND (@DergiGonderilmesinlerHaric = 0 OR A.DergiGonderilmesin = 0)
+                    AND (@UlasilamayanlarHaric = 0 OR A.Ulasilamiyor = 0)
+                GROUP BY A.Id, A.Adi, A.Adres, A.Ili, F.IlAdi, G.IlceAdi,
+                    A.Telefon1, A.Telefon2, A.DergiGonderilmesin, A.TuzelKisi,
+                    BelgeIstemiyor, Ulasilamiyor
+                ORDER BY BagisMiktariDecimal DESC, A.Id DESC");
+        }
+
+        private static void AddAdresRaporParameters(SqlQuery query, NakitBagisciAdresRaporKriteri kriter)
+        {
+            query.AddParameter("@BagisciSayisi", kriter.BagisciSayisi);
+            query.AddParameter("@BaslangicTarihi", kriter.BaslangicTarihi);
+            query.AddParameter("@BitisTarihi", kriter.BitisTarihi);
+            query.AddParameter("@TLGecisTarihi", kriter.TLGecisTarihi);
+            query.AddParameter("@BaslangicTarihiEksiBirGun", kriter.BaslangicTarihi.AddDays(-1));
+            query.AddParameter("@BelgeIstemeyenlerHaric", kriter.BelgeIstemeyenlerHaric);
+            query.AddParameter("@AdresiBosOlanlarHaric", kriter.AdresiBosOlanlarHaric);
+            query.AddParameter("@PostadanIadelerHaric", kriter.PostadanIadelerHaric);
+            query.AddParameter("@DergiGonderilmesinlerHaric", kriter.DergiGonderilmesinlerHaric);
+            query.AddParameter("@UlasilamayanlarHaric", kriter.UlasilamayanlarHaric);
+            query.AddParameter("@ParaIadeDurumu", kriter.ParaIadeDurumu ?? string.Empty);
+            query.AddParameter("@DahaOnceIadeDurumu", kriter.DahaOnceIadeDurumu ?? string.Empty);
         }
 
         private static object NormalizeLegacyDateParameter(string value)

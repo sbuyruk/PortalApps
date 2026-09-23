@@ -305,126 +305,23 @@ namespace Model.NBYS
         public DataTable SelectByBagisTarihiBagisSayisi(DateTime basTar, DateTime bitTar, int bagisciSayisi, ref int rowCount, bool belgeIsitemeyenlerHaric,
             bool adresiBosOlanlarHaric, bool postadanIadelerHaric, bool dergiGonderilmesinlerHaric, bool ulasilamayanlarHaric, bool sadeceYeniBagiscilar)
         {
-            string TLBasTar = ProjeConstants.TL_GECIS_TARIHI.ReturnTRDateFormat();
-            string basTarEksi1GunStr = basTar.AddDays(-1).ReturnTRDateFormat();
-            //string basBitTarStr = string.Format("AND B.Tarih BETWEEN {0} AND {1} ", basTar.ReturnTRDateFormat(), bitTar.ReturnTRDateFormat());
-            string sadeceYeniBagiscilarstr = string.Format(sadeceYeniBagiscilar ? " AND C.Tarih < {0}" : "", basTar.ReturnTRDateFormat());
-
-            string adresiBosOlanlarStr = string.Empty;
-            if (adresiBosOlanlarHaric)
+            NakitBagisciAdresRaporKriteri kriter = new NakitBagisciAdresRaporKriteri
             {
-                adresiBosOlanlarStr = " AND ISNULL(LTRIM(RTRIM(Adres)), '') != '' ";
-            }
-            string belgeIstemeyenlerHaricStr = string.Empty;
-            string belgeIstemeyenlerHaricAStr = string.Empty;
-            if (belgeIsitemeyenlerHaric)
-            {
-                belgeIstemeyenlerHaricStr = " AND Z.BelgeIstemiyor=0";
-                belgeIstemeyenlerHaricAStr = " AND A.BelgeIstemiyor=0";
-            }
-            string postadanIadelerHaricBStr = string.Empty;
-            string postadanIadelerHaricFStr = string.Empty;
-            if (postadanIadelerHaric)
-            {
-                postadanIadelerHaricBStr = " AND B.Durum!=" + ProjeConstants.DURUM_PARAIADE.ReturnQuotedValue() +
-                    " AND B.Durum!=" + ProjeConstants.DURUM_DAHAONCEIADE.ReturnQuotedValue();
-                postadanIadelerHaricFStr = " AND F.Durum!=" + ProjeConstants.DURUM_PARAIADE.ReturnQuotedValue() +
-                    " AND F.Durum!=" + ProjeConstants.DURUM_DAHAONCEIADE.ReturnQuotedValue();
-            }
-            string dergiGonderilmesinlerHaricStr = string.Empty;
-            string dergiGonderilmesinlerHaricAStr = string.Empty;
-            if (dergiGonderilmesinlerHaric)
-            {
-                dergiGonderilmesinlerHaricStr = " AND Z.DergiGonderilmesin=0 ";
-                dergiGonderilmesinlerHaricAStr = " AND A.DergiGonderilmesin=0 ";
-            }
-            string ulasilamayanlarHaricStr = string.Empty;
-            string ulasilamayanlarHaricAStr = string.Empty;
-            if (ulasilamayanlarHaric)
-            {
-                ulasilamayanlarHaricStr = " AND Z.Ulasilamiyor=0 ";
-                ulasilamayanlarHaricAStr = " AND A.Ulasilamiyor=0 ";
-            }
-            string sqlString = string.Empty;
-            if (sadeceYeniBagiscilar)
-            {
-                sqlString = string.Format(@"
-                SELECT TOP {0} SUM(Y.BagisMiktari) BagisMiktariDecimal, CONVERT(nvarchar, REPLACE(SUM(Y.BagisMiktari),'.',',')) BagisMiktari,
-	                NakitBagisciId, Adi,Adres,Telefon1,Telefon2, Ilcesi,  Ili,DergiGonderilmesin, TuzelKisi, BelgeIstemiyor,Ulasilamiyor
-                FROM
-                (
-                SELECT  
-	                A.Id NakitBagisciId, A.Adi,A.Adres,A.Telefon1,A.Telefon2,G.IlceAdi Ilcesi, F.IlAdi Ili, A.DergiGonderilmesin, A.TuzelKisi , BelgeIstemiyor ,Ulasilamiyor
-                FROM 
-                    NakitBagisci_Table A
-	                    INNER JOIN Armagan_Table B ON B.BagisciId = A.Id
-                        LEFT JOIN Il_Table F ON F.Id=A.Ili
-                        LEFT JOIN Ilce_Table G ON G.Id=A.Ilcesi AND G.IlId=F.Id
-                WHERE 
-                    B.Tarih BETWEEN 
-                        {1} AND {2}
-                    {7} --Armagan tablosunda Durum=  daha önce iade edildi olanlar haric
-                GROUP BY A.Id,A.Adi,A.Adres,A.Ili,F.IlAdi,G.IlceAdi,A.Telefon1,A.Telefon2, A.DergiGonderilmesin,A.TuzelKisi, BelgeIstemiyor,Ulasilamiyor
-                EXCEPT				
-                SELECT	E.Id NakitBagisciId, E.Adi,E.Adres,E.Telefon1,E.Telefon2,J.IlceAdi Ilcesi, H.IlAdi Ili,E.DergiGonderilmesin, E.TuzelKisi, BelgeIstemiyor,Ulasilamiyor
-                FROM NakitBagisci_Table E
-	                INNER JOIN Armagan_Table F ON F.BagisciId = E.Id
-	                LEFT JOIN Armagan_Table G ON F.BagisciId=G.BagisciId 
-	                LEFT JOIN Il_Table H ON H.Id=e.Ili
-	                LEFT JOIN Ilce_Table J ON J.Id=E.Ilcesi AND J.IlId=H.Id
-                WHERE 
-                    F.Tarih BETWEEN 
-                        {1} AND {2} 
-	                AND G.Tarih BETWEEN 
-                        {3} AND {4}
-                    {8} --Armagan tablosunda Durum=  daha önce iade edildi olanlar haric
-	                ) Z
-	                INNER JOIN Armagan_Table Y ON Z.NakitBagisciId=Y.BagisciId
-                WHERE Y.Tarih > {4}
-                    {5} --belge istemiyor
-                    {6} --adresi bos olanlar
-                    {9} --dergi gonderilmesinler
-                    {10} --ulasilamiyor olanlar haric
-                GROUP BY NakitBagisciId,Adi,Adres,Ili,Ilcesi,Telefon1,Telefon2, DergiGonderilmesin,TuzelKisi,BelgeIstemiyor,Ulasilamiyor
-                ORDER BY BagisMiktariDecimal DESC, Z.NakitBagisciId DESC
-                ", bagisciSayisi, basTar.ReturnTRDateFormat(), bitTar.ReturnTRDateFormat(), TLBasTar, basTarEksi1GunStr,
-                belgeIstemeyenlerHaricStr, adresiBosOlanlarStr, postadanIadelerHaricBStr, postadanIadelerHaricFStr,
-                dergiGonderilmesinlerHaricStr, ulasilamayanlarHaricStr);
-            }
-            else
-            {
-                sqlString = string.Format(@"
-                    SELECT TOP {0} SUM(B.BagisMiktari)BagisMiktariDecimal, CONVERT(nvarchar, REPLACE(SUM(B.BagisMiktari), '.', ',')) BagisMiktari,
-                        A.Id NakitBagisciId, A.Adi, A.Adres, A.Telefon1, A.Telefon2, G.IlceAdi Ilcesi, F.IlAdi Ili, A.DergiGonderilmesin, A.TuzelKisi, BelgeIstemiyor, Ulasilamiyor
-                    FROM
-                        NakitBagisci_Table A
-                            INNER JOIN Armagan_Table B ON B.BagisciId = A.Id
-                            LEFT JOIN Il_Table F ON F.Id = A.Ili
-                            LEFT JOIN Ilce_Table G ON G.Id = A.Ilcesi AND G.IlId=F.Id
-                    WHERE
-                        B.Tarih BETWEEN
-                            {1} AND {2}
-                         {3} --durum
-                         {4}--belge istemiyor
-                         {5}--adresi bos olanlar
-                         {6}--dergi gonderilmesinler
-                         {7}--ulasilamayanlar haric
-                    GROUP BY A.Id, A.Adi, A.Adres, A.Ili, F.IlAdi, G.IlceAdi, A.Telefon1, A.Telefon2, A.DergiGonderilmesin, A.TuzelKisi, BelgeIstemiyor, Ulasilamiyor
-                    ORDER BY BagisMiktariDecimal DESC, A.Id DESC
-                    ", bagisciSayisi, basTar.ReturnTRDateFormat(), bitTar.ReturnTRDateFormat(), postadanIadelerHaricBStr,
-                belgeIstemeyenlerHaricAStr, adresiBosOlanlarStr,
-                dergiGonderilmesinlerHaricAStr, ulasilamayanlarHaricAStr);
-            }
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-
-                throw;
-            }
+                BaslangicTarihi = basTar,
+                BitisTarihi = bitTar,
+                TLGecisTarihi = ProjeConstants.TL_GECIS_TARIHI,
+                BagisciSayisi = bagisciSayisi,
+                BelgeIstemeyenlerHaric = belgeIsitemeyenlerHaric,
+                AdresiBosOlanlarHaric = adresiBosOlanlarHaric,
+                PostadanIadelerHaric = postadanIadelerHaric,
+                DergiGonderilmesinlerHaric = dergiGonderilmesinlerHaric,
+                UlasilamayanlarHaric = ulasilamayanlarHaric,
+                SadeceYeniBagiscilar = sadeceYeniBagiscilar,
+                ParaIadeDurumu = ProjeConstants.DURUM_PARAIADE,
+                DahaOnceIadeDurumu = ProjeConstants.DURUM_DAHAONCEIADE
+            };
+            NakitBagisciReportRepository repository = new NakitBagisciReportRepository();
+            DataTable dataTable = repository.SelectByBagisTarihiBagisSayisi(kriter);
             if (dataTable != null)
             {
                 rowCount = dataTable.Rows.Count;
