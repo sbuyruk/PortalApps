@@ -199,8 +199,8 @@ namespace Model.NBYS
         }
         public DataTable SelectByAd(string adi)
         {
-            NakitBagisciRepository repository = new NakitBagisciRepository();
-            return repository.SelectByAd(adi);
+            NakitBagisciService service = new NakitBagisciService();
+            return service.SearchByName(adi);
 
         }
         public string SelectByIl(int pIlId, ref List<NakitBagisci> list, ref int rowCount)
@@ -268,8 +268,8 @@ namespace Model.NBYS
         }
         public DataTable SelectByFilterReturnDataTable(string filter, int eksiId)
         {
-            NakitBagisciRepository repository = new NakitBagisciRepository();
-            return repository.SelectByFilter(filter, eksiId);
+            NakitBagisciService service = new NakitBagisciService();
+            return service.Search(filter, eksiId);
         }
         public string SelectByFilter(string filter, int eksiId)
         {

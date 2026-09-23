@@ -73,6 +73,16 @@ namespace Model.Services.NBYS
             return MapSingle(repository.SelectByEposta(eposta));
         }
 
+        public DataTable SearchByName(string adi)
+        {
+            return repository.SelectByAd(adi);
+        }
+
+        public DataTable Search(string filter, int excludedId)
+        {
+            return repository.SelectByFilter(filter, excludedId);
+        }
+
         public bool Update(NakitBagisci nakitBagisci)
         {
             if (nakitBagisci == null)
