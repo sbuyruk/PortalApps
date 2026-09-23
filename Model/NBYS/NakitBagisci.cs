@@ -33,10 +33,8 @@ namespace Model.NBYS
         public bool DergiGonderilmesin { get; set; }
         public override T Select<T>(int id)
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM NakitBagisci_Table 
-                               WHERE  Id={0}", id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            NakitBagisciRepository repository = new NakitBagisciRepository();
+            DataTable dataTable = repository.SelectById(id);
             List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
             NakitBagisci nakitBagisci = new NakitBagisci();
             nakitBagisci = list.FirstOrDefault();
@@ -125,10 +123,8 @@ namespace Model.NBYS
         }
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM NakitBagisci_Table");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            NakitBagisciRepository repository = new NakitBagisciRepository();
+            DataTable dataTable = repository.SelectAll();
             List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -288,10 +284,8 @@ namespace Model.NBYS
         }
         public NakitBagisci SelectByTcKimlikno(long tcKimlikno)
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM NakitBagisci_Table 
-                               WHERE  TCKimlikNo!=0 AND TCKimlikNo={0}", tcKimlikno);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            NakitBagisciRepository repository = new NakitBagisciRepository();
+            DataTable dataTable = repository.SelectByTcKimlikno(tcKimlikno);
             List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
             NakitBagisci nakitBagisci = new NakitBagisci();
             nakitBagisci = list.FirstOrDefault();
@@ -305,14 +299,8 @@ namespace Model.NBYS
         /// <returns></returns>
         public NakitBagisci SelectBagisiOlmayanBagisciById(int bagisciId)
         {
-            string sqlString = string.Format(@"
-                SELECT A.Id, A.Adi, B.BagisTarihi,B.BagisMiktari
-                FROM NakitBagisci_Table A
-                LEFT JOIN NakitBagisHareket_Table B ON B.BagisciId=A.Id
-                WHERE A.Id={0}
-                    AND  B.BagisciId IS NULL 
-                ORDER BY BagisTarihi DESC ", bagisciId);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            NakitBagisciRepository repository = new NakitBagisciRepository();
+            DataTable dataTable = repository.SelectBagisiOlmayanBagisciById(bagisciId);
             List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
             NakitBagisci nakitBagisci = new NakitBagisci();
             nakitBagisci = list.FirstOrDefault();
@@ -321,35 +309,28 @@ namespace Model.NBYS
         }
         public NakitBagisci SelectByAdAndTelefon(string adi, string telefon)
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM NakitBagisci_Table 
-                               WHERE  Adi={0} AND (Telefon1={1} OR Telefon2={1})", 
-                               adi.ReturnQuotedValue(), telefon.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            NakitBagisciRepository repository = new NakitBagisciRepository();
+            DataTable dataTable = repository.SelectByAdAndTelefon(adi, telefon);
             List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
             NakitBagisci nakitBagisci = new NakitBagisci();
             nakitBagisci = list.FirstOrDefault();
             return nakitBagisci;
 
         }
-        public NakitBagisci SelectByTelefon( string telefon)
+        public NakitBagisci SelectByTelefon(string telefon)
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM NakitBagisci_Table 
-                               WHERE (Telefon1={0} OR Telefon2={0})", telefon.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            NakitBagisciRepository repository = new NakitBagisciRepository();
+            DataTable dataTable = repository.SelectByTelefon(telefon);
             List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
             NakitBagisci nakitBagisci = new NakitBagisci();
             nakitBagisci = list.FirstOrDefault();
             return nakitBagisci;
 
         }
-        public NakitBagisci SelectByEposta( string eposta)
+        public NakitBagisci SelectByEposta(string eposta)
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM NakitBagisci_Table 
-                               WHERE EPosta={0}", eposta.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            NakitBagisciRepository repository = new NakitBagisciRepository();
+            DataTable dataTable = repository.SelectByEposta(eposta);
             List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
             NakitBagisci nakitBagisci = new NakitBagisci();
             nakitBagisci = list.FirstOrDefault();
@@ -358,12 +339,8 @@ namespace Model.NBYS
         }
         public DataTable SelectByAd(string adi)
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM NakitBagisci_Table 
-                               WHERE  Adi LIKE '%{0}%' ", adi);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-
-            return dataTable;
+            NakitBagisciRepository repository = new NakitBagisciRepository();
+            return repository.SelectByAd(adi);
 
         }
         public List<NakitBagisci> SelectBagisciByEkstreAktarmaId(int ekstreAktarmaId, string telefon1, string telefon2)
@@ -654,7 +631,7 @@ namespace Model.NBYS
         }
         public DataTable SelectByFilterReturnDataTable(string filter, int eksiId)
         {
-            NakitBagisciSearchRepository repository = new NakitBagisciSearchRepository();
+            NakitBagisciRepository repository = new NakitBagisciRepository();
             return repository.SelectByFilter(filter, eksiId);
         }
         public string SelectByFilter(string filter, int eksiId)

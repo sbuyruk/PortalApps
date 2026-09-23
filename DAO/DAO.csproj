@@ -72,7 +72,7 @@
     <Compile Include="Ortak\DBProcess.cs" />
     <Compile Include="Ortak\Global.cs" />
     <Compile Include="Ortak\SqlQuery.cs" />
-    <Compile Include="Repositories\NBYS\NakitBagisciSearchRepository.cs" />
+    <Compile Include="Repositories\NBYS\NakitBagisciRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
