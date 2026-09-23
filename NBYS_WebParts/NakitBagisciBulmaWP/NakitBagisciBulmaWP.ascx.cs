@@ -1,8 +1,12 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Globalization;
+using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
@@ -100,10 +104,31 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP
             string json = string.Empty;
             if (!string.IsNullOrEmpty(BagisciAraTxt.Text) && BagisciAraTxt.Text.Trim().Length > 3)
             {
-                NakitBagisci nakitBagisci = new NakitBagisci();
-                json = nakitBagisci.SelectByFilter(BagisciAraTxt.Text.Trim(), 0);
+                NakitBagisciService service = new NakitBagisciService();
+                DataTable dataTable = service.Search(BagisciAraTxt.Text.Trim(), 0);
+                json = ToJson(dataTable);
             }
             return string.IsNullOrEmpty(json) ? "[{}]" : json;
+        }
+        private static string ToJson(DataTable table)
+        {
+            if (table == null)
+                return "[]";
+
+            List<Dictionary<string, object>> rows = new List<Dictionary<string, object>>();
+            foreach (DataRow row in table.Rows)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>();
+                foreach (DataColumn column in table.Columns)
+                {
+                    values.Add(column.ColumnName, row[column]);
+                }
+                rows.Add(values);
+            }
+
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            return serializer.Serialize(rows);
         }
         private void TabloOlustur()
         {
