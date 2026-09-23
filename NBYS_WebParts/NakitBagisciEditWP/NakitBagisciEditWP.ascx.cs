@@ -234,8 +234,8 @@ namespace NBYS_WebParts.NakitBagisciEditWP
             {
                 int nakitBagisciId = NakitBagisciIdQS.ConvertToInt();
 
-                NakitBagisci nakitBagisci = new NakitBagisci();
-                nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
+                NakitBagisciService service = new NakitBagisciService();
+                NakitBagisci nakitBagisci = service.GetById(nakitBagisciId);
                 if (nakitBagisci != null)
                 {
                     IdLbl.Text = nakitBagisciId.ToString();
@@ -293,7 +293,8 @@ namespace NBYS_WebParts.NakitBagisciEditWP
                     }
                     else
                     {
-                        nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
+                        NakitBagisciService service = new NakitBagisciService();
+                        nakitBagisci = service.GetById(nakitBagisciId);
                         isSaved = UpdateNakitBagisci(nakitBagisci);
                     }
 
