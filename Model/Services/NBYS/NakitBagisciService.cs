@@ -50,10 +50,27 @@ namespace Model.Services.NBYS
 
         public NakitBagisci GetById(int id)
         {
-            DataTable dataTable = repository.SelectById(id);
-            NakitBagisci mapper = new NakitBagisci();
-            List<NakitBagisci> list = mapper.ToList<NakitBagisci>(dataTable);
-            return list.FirstOrDefault();
+            return MapSingle(repository.SelectById(id));
+        }
+
+        public NakitBagisci GetByTcKimlikNo(long tcKimlikNo)
+        {
+            return MapSingle(repository.SelectByTcKimlikno(tcKimlikNo));
+        }
+
+        public NakitBagisci GetByAdAndTelefon(string adi, string telefon)
+        {
+            return MapSingle(repository.SelectByAdAndTelefon(adi, telefon));
+        }
+
+        public NakitBagisci GetByTelefon(string telefon)
+        {
+            return MapSingle(repository.SelectByTelefon(telefon));
+        }
+
+        public NakitBagisci GetByEposta(string eposta)
+        {
+            return MapSingle(repository.SelectByEposta(eposta));
         }
 
         public bool Update(NakitBagisci nakitBagisci)
@@ -130,6 +147,13 @@ namespace Model.Services.NBYS
             }
 
             return isDeleted;
+        }
+
+        private static NakitBagisci MapSingle(DataTable dataTable)
+        {
+            NakitBagisci mapper = new NakitBagisci();
+            List<NakitBagisci> list = mapper.ToList<NakitBagisci>(dataTable);
+            return list.FirstOrDefault();
         }
     }
 }

@@ -160,12 +160,8 @@ namespace Model.NBYS
         }
         public NakitBagisci SelectByTcKimlikno(long tcKimlikno)
         {
-            NakitBagisciRepository repository = new NakitBagisciRepository();
-            DataTable dataTable = repository.SelectByTcKimlikno(tcKimlikno);
-            List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
-            NakitBagisci nakitBagisci = new NakitBagisci();
-            nakitBagisci = list.FirstOrDefault();
-            return nakitBagisci;
+            NakitBagisciService service = new NakitBagisciService();
+            return service.GetByTcKimlikNo(tcKimlikno);
 
         }
         /// <summary>
@@ -185,32 +181,20 @@ namespace Model.NBYS
         }
         public NakitBagisci SelectByAdAndTelefon(string adi, string telefon)
         {
-            NakitBagisciRepository repository = new NakitBagisciRepository();
-            DataTable dataTable = repository.SelectByAdAndTelefon(adi, telefon);
-            List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
-            NakitBagisci nakitBagisci = new NakitBagisci();
-            nakitBagisci = list.FirstOrDefault();
-            return nakitBagisci;
+            NakitBagisciService service = new NakitBagisciService();
+            return service.GetByAdAndTelefon(adi, telefon);
 
         }
         public NakitBagisci SelectByTelefon(string telefon)
         {
-            NakitBagisciRepository repository = new NakitBagisciRepository();
-            DataTable dataTable = repository.SelectByTelefon(telefon);
-            List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
-            NakitBagisci nakitBagisci = new NakitBagisci();
-            nakitBagisci = list.FirstOrDefault();
-            return nakitBagisci;
+            NakitBagisciService service = new NakitBagisciService();
+            return service.GetByTelefon(telefon);
 
         }
         public NakitBagisci SelectByEposta(string eposta)
         {
-            NakitBagisciRepository repository = new NakitBagisciRepository();
-            DataTable dataTable = repository.SelectByEposta(eposta);
-            List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
-            NakitBagisci nakitBagisci = new NakitBagisci();
-            nakitBagisci = list.FirstOrDefault();
-            return nakitBagisci;
+            NakitBagisciService service = new NakitBagisciService();
+            return service.GetByEposta(eposta);
 
         }
         public DataTable SelectByAd(string adi)
