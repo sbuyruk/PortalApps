@@ -84,21 +84,6 @@ namespace Model.NBYS
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
 
-        public string GetSelectSQL(string extId)
-        {
-            try
-            {
-                GenericEntity<NakitBagisci> genericEntity = new GenericEntity<NakitBagisci>(ProjeConstants.SQL_INSERT);
-                string sqlString = genericEntity.GetQuery(this, extId);
-
-                return sqlString;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
         public string GetInsertSQL(string extId)
         {
             try
@@ -158,12 +143,6 @@ namespace Model.NBYS
                 ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ReturnQuotedValue().ToString(),
                 ProjeConstants.COKBAGISYAPAN_SONBAGISI_KAC_AY_ONCE_YAPTI);
         }
-        public NakitBagisci SelectByTcKimlikno(long tcKimlikno)
-        {
-            NakitBagisciService service = new NakitBagisciService();
-            return service.GetByTcKimlikNo(tcKimlikno);
-
-        }
         /// <summary>
         /// NakitBagisHareket_Table'da Bagisi olmayan Bagisçiyi bulur
         /// </summary>
@@ -177,24 +156,6 @@ namespace Model.NBYS
             NakitBagisci nakitBagisci = new NakitBagisci();
             nakitBagisci = list.FirstOrDefault();
             return nakitBagisci;
-
-        }
-        public NakitBagisci SelectByAdAndTelefon(string adi, string telefon)
-        {
-            NakitBagisciService service = new NakitBagisciService();
-            return service.GetByAdAndTelefon(adi, telefon);
-
-        }
-        public NakitBagisci SelectByTelefon(string telefon)
-        {
-            NakitBagisciService service = new NakitBagisciService();
-            return service.GetByTelefon(telefon);
-
-        }
-        public NakitBagisci SelectByEposta(string eposta)
-        {
-            NakitBagisciService service = new NakitBagisciService();
-            return service.GetByEposta(eposta);
 
         }
         public DataTable SelectByAd(string adi)
