@@ -345,16 +345,8 @@ namespace Model.NBYS
         }
         public List<NakitBagisci> SelectBagisciByEkstreAktarmaId(int ekstreAktarmaId, string telefon1, string telefon2)
         {
-            string telefon1Str = string.IsNullOrEmpty(telefon1) ? "" : string.Format(" AND (A.Telefon1 !={0} AND A.Telefon2 !={0})", telefon1.ReturnQuotedValue());
-            string telefon2Str = string.IsNullOrEmpty(telefon2) ? "" : string.Format(" AND (A.Telefon1 !={0} AND A.Telefon2 !={0})", telefon2.ReturnQuotedValue());
-            string sqlString = string.Format(@"
-                SELECT * from NakitBagisci_Table A
-                INNER JOIN EkstreAktarma_Table B ON LTRIM(RTRIM(UPPER(B.Adi))) =LTRIM(RTRIM(UPPER(A.Adi)))
-                WHERE B.Id= {0} AND A.TCKimlikNo=0 
-                    {1}
-                    {2} "
-                , ekstreAktarmaId.ReturnQuotedValue(), telefon1Str, telefon2Str);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            NakitBagisciRepository repository = new NakitBagisciRepository();
+            DataTable dataTable = repository.SelectBagisciByEkstreAktarmaId(ekstreAktarmaId, telefon1, telefon2);
             List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
 
             return list;
@@ -362,38 +354,9 @@ namespace Model.NBYS
         }
         public string SelectByIl(int pIlId, ref List<NakitBagisci> list, ref int rowCount)
         {
-            string ilStr = string.Empty;
-            if (pIlId > ProjeConstants.IL_HEPSI)
-            {
-                ilStr = string.Format(" WHERE Ili='{0}'", pIlId);
-            }
-
-            //string sqlString = string.Format(@"SELECT  *
-            //                                  FROM NakitBagisci_Table {0}", ilStr);
-
-            string sqlString = string.Format(@"
-                SELECT A.Id NakitBagisciId
-	                ,ROW_NUMBER() OVER(ORDER BY A.Id) AS Sirano
-                    ,Adi
-                    ,Soyadi
-                    ,TCKimlikNo
-                    ,B.IlAdi Ili
-                    ,C.IlceAdi Ilcesi
-                    ,Adres
-                    ,Telefon1
-                    ,Telefon2
-                    ,TuzelKisi
-                    ,Sag
-                    ,Eposta
-                    ,PostaKodu
-                    ,A.Aciklama
-                    ,Ulasilamiyor,BelgeIstemiyor
-                FROM NakitBagisci_Table A 
-	                LEFT OUTER JOIN Il_Table B ON B.Id= A.Ili 
-	                LEFT OUTER JOIN Ilce_Table C ON C.Id= A.Ilcesi AND C.IlId=B.Id
-                {0}", ilStr);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            int? ilId = pIlId > ProjeConstants.IL_HEPSI ? (int?)pIlId : null;
+            NakitBagisciRepository repository = new NakitBagisciRepository();
+            DataTable dataTable = repository.SelectByIl(ilId);
             if (dataTable != null)
             {
                 rowCount = dataTable.Rows.Count;
@@ -403,34 +366,9 @@ namespace Model.NBYS
         }
         public string SelectByIlBagisTarihi(int pIlId, string bTar, string sTar, ref List<NakitBagisci> list, ref int rowCount)
         {
-            string ilStr = string.Empty;
-            if (pIlId > ProjeConstants.IL_HEPSI)
-            {
-                ilStr = string.Format(" AND A.Ili='{0}'", pIlId);
-            }
-            string sqlString = string.Format(@"
-                SELECT DISTINCT(A.Id) NakitBagisciId
-                    ,Adi,Soyadi,TCKimlikNo,Adres,Telefon1,Telefon2,TuzelKisi
-                    ,Ulasilamiyor,BelgeIstemiyor,Sag,Eposta,PostaKodu,A.Aciklama
-                    ,B.IlAdi Ili
-                    ,C.IlceAdi Ilcesi
-                FROM NakitBagisci_Table A 
-                    LEFT JOIN Il_Table B ON B.Id= A.Ili 
-                    LEFT JOIN Ilce_Table C ON C.Id= A.Ilcesi AND C.IlId=B.Id
-                    INNER JOIN NakitBagisHareket_Table D on D.BagisciId=A.Id
-                WHERE D.BagisTarihi BETWEEN {0} AND {1}
-                {2}
-                ORDER BY NakitBagisciId ", bTar, sTar, ilStr);
-            DataTable dataTable;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-
-                throw;
-            }
+            int? ilId = pIlId > ProjeConstants.IL_HEPSI ? (int?)pIlId : null;
+            NakitBagisciRepository repository = new NakitBagisciRepository();
+            DataTable dataTable = repository.SelectByIlBagisTarihi(ilId, bTar, sTar);
 
             if (dataTable != null)
             {
@@ -441,58 +379,9 @@ namespace Model.NBYS
         }
         public string SelectByIlBagisTarihiYeni(int pIlId, string basTar, string sonTar, ref List<NakitBagisci> list, ref int rowCount)
         {
-            string ilStr = string.Empty;
-            if (pIlId > ProjeConstants.IL_HEPSI)
-            {
-                ilStr = string.Format(" AND N.Ili='{0}'", pIlId);
-            }
-
-            //string sqlString = string.Format(@"select * from NakitBagisci_Table
-            //                                    WHERE Id  IN (SELECT BagisciId from NakitBagisHareket_Table WHERE BagisTarihi BETWEEN {0} and {1})
-            //                                    AND Id NOT IN (SELECT BagisciId from NakitBagisHareket_Table WHERE BagisTarihi <{0})
-            //                                    {2}
-            //                                ORDER BY Id ", basTar,sonTar, ilStr);
-            string sqlString = string.Format(@"
-                SELECT distinct(N.Id) NakitBagisciId
-                    ,Adi
-                    ,Soyadi
-                    ,TCKimlikNo
-                    ,Ili  --,Il_Table.IlAdi Ili
-                    ,Ilcesi --,Ilce_Table.IlceAdi Ilcesi
-                    ,Adres
-                    ,Telefon1
-                    ,Telefon2
-                    ,TuzelKisi
-                    ,N.OlusturmaTarihi
-                    ,N.Olusturan
-                    ,N.DegistirmeTarihi
-                    ,N.Degistiren
-                    ,Sag
-                    ,Eposta
-                    ,PostaKodu
-                    ,N.Aciklama
-                    ,Ulasilamiyor,BelgeIstemiyor
-                FROM NakitBagisci_Table N
-	                LEFT OUTER JOIN Il_Table ON Il_Table.Id= N.Ili 
-	                LEFT OUTER JOIN Ilce_Table ON Ilce_Table.Id= N.Ilcesi AND Ilce_Table.IlId= Il_Table.Id
-                WHERE N.Id  IN (SELECT BagisciId from NakitBagisHareket_Table WHERE BagisTarihi BETWEEN {0} AND {1}) 
-                AND N.Id NOT IN 
-                (SELECT A.BagisciId
-                    FROM NakitBagisHareket_Table B,NakitBagisHareket_Table A 
-                    WHERE A.[BagisTarihi] BETWEEN {0} AND {1} AND B.[BagisTarihi] < {0} AND A.BagisciId=B.BagisciId 
-                )
-                {2}
-                ORDER BY N.Id ", basTar, sonTar, ilStr);
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-
-                throw;
-            }
+            int? ilId = pIlId > ProjeConstants.IL_HEPSI ? (int?)pIlId : null;
+            NakitBagisciRepository repository = new NakitBagisciRepository();
+            DataTable dataTable = repository.SelectByIlBagisTarihiYeni(ilId, basTar, sonTar);
             if (dataTable != null)
             {
                 rowCount = dataTable.Rows.Count;
