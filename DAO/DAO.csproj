@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ortak\DBClass.cs" />
+    <Compile Include="Ortak\CrudQueryBuilder.cs" />
     <Compile Include="Ortak\DBObject.cs" />
     <Compile Include="Ortak\DbParam.cs" />
     <Compile Include="Ortak\DBProcess.cs" />

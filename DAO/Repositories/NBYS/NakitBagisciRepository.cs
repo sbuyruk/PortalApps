@@ -6,7 +6,9 @@ namespace DAO.Repositories.NBYS
 {
     public class NakitBagisciRepository
     {
+        private const string TableName = "NakitBagisci_Table";
         private readonly DbClass db;
+        private readonly CrudQueryBuilder crudQueryBuilder;
 
         public NakitBagisciRepository()
             : this(new DbClass())
@@ -16,6 +18,25 @@ namespace DAO.Repositories.NBYS
         public NakitBagisciRepository(DbClass db)
         {
             this.db = db;
+            crudQueryBuilder = new CrudQueryBuilder();
+        }
+
+        public int Insert<T>(T entity)
+        {
+            SqlQuery query = crudQueryBuilder.BuildInsert(entity, TableName);
+            return db.Insert(query);
+        }
+
+        public bool Update<T>(T entity)
+        {
+            SqlQuery query = crudQueryBuilder.BuildUpdate(entity, TableName);
+            return db.Update2Db(query);
+        }
+
+        public bool Delete(int id)
+        {
+            SqlQuery query = crudQueryBuilder.BuildDelete(TableName, id);
+            return db.DeleteFromDb(query, "");
         }
 
         public DataTable SelectById(int id)

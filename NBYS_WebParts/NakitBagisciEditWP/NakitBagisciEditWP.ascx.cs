@@ -344,7 +344,7 @@ namespace NBYS_WebParts.NakitBagisciEditWP
             nakitBagisci.Degistiren = user;
 
             NakitBagisciService service = new NakitBagisciService();
-            return service.Save(nakitBagisci);
+            return service.Save(nakitBagisci) > 0;
         }
         private bool UpdateNakitBagisci(NakitBagisci nakitBagisci)
         {
