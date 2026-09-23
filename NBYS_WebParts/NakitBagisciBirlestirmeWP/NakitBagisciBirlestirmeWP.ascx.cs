@@ -1,6 +1,7 @@
 using DAO.Ortak;
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -206,8 +207,8 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
             DataTable dataTable = null;
             if (!string.IsNullOrEmpty(AsilBagisciAraTxt.Text) && AsilBagisciAraTxt.Text.Length > 3)
             {
-                NakitBagisci nakitBagisci = new NakitBagisci();
-                dataTable = nakitBagisci.SelectByFilterReturnDataTable(AsilBagisciAraTxt.Text, 0);
+                NakitBagisciService service = new NakitBagisciService();
+                dataTable = service.Search(AsilBagisciAraTxt.Text, 0);
             }
             return dataTable;
         }
@@ -331,8 +332,8 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
             DataTable dataTable = null;
             if (!string.IsNullOrEmpty(BirlesecekBagisciAraTxt.Text) && BirlesecekBagisciAraTxt.Text.Length > 3)
             {
-                NakitBagisci nakitBagisci = new NakitBagisci();
-                dataTable = nakitBagisci.SelectByFilterReturnDataTable(BirlesecekBagisciAraTxt.Text, SecilenAsilBagisciId.ConvertToInt());
+                NakitBagisciService service = new NakitBagisciService();
+                dataTable = service.Search(BirlesecekBagisciAraTxt.Text, SecilenAsilBagisciId.ConvertToInt());
             }
             return dataTable;
         }
