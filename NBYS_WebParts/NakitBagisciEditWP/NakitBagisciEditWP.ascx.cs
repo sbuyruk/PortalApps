@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -319,7 +320,6 @@ namespace NBYS_WebParts.NakitBagisciEditWP
         }
         private bool SaveNakitBagisci(NakitBagisci nakitBagisci)
         {
-            bool isSaved = false;
             nakitBagisci.Adi = AdiTxt.Text.ReturnEmptyIfNull().ToString();
             nakitBagisci.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
             nakitBagisci.Adres = AdresTxt.Text.ReturnEmptyIfNull().ToString();
@@ -343,15 +343,12 @@ namespace NBYS_WebParts.NakitBagisciEditWP
             var user = UtilityHelper.GetCurrentUserLoginName();
             nakitBagisci.Degistiren = user;
 
-            nakitBagisci.Id = nakitBagisci.Save();
-            if (nakitBagisci.Id > 0)
-                isSaved = true;
-            return isSaved;
+            NakitBagisciService service = new NakitBagisciService();
+            return service.Save(nakitBagisci);
         }
         private bool UpdateNakitBagisci(NakitBagisci nakitBagisci)
         {
-            bool statusChanged = false;
-            bool isSaved = false;
+            bool oncekiTuzelKisi = nakitBagisci.TuzelKisi;
             nakitBagisci.Adi = AdiTxt.Text.ReturnEmptyIfNull().ToString();
             nakitBagisci.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
             nakitBagisci.Adres = AdresTxt.Text.ReturnEmptyIfNull().ToString();
@@ -365,7 +362,6 @@ namespace NBYS_WebParts.NakitBagisciEditWP
             if (nakitBagisci.TuzelKisi != TuzelKisiChk.Checked)
             {
                 nakitBagisci.TuzelKisi = TuzelKisiChk.Checked;
-                statusChanged = true;
             }
 
             nakitBagisci.Sag = SagChk.Checked;
@@ -376,18 +372,8 @@ namespace NBYS_WebParts.NakitBagisciEditWP
             var user = UtilityHelper.GetCurrentUserLoginName();
             nakitBagisci.Degistiren = user;
 
-            isSaved = nakitBagisci.Update();
-            if (statusChanged)
-            {
-                Armagan armagan = new Armagan();
-                var armaganList = armagan.SelectByBagisciIdAndDurum(nakitBagisci.Id, ProjeConstants.DURUM_GONDERILMEDI);//bu bagisci üzerinde gönderilmemis armagan ögesi varsa tekrar hesaplanmasi gerekir. Çünkü Tüzel kisi ve özel kisinin armagan araliklari farklidir
-                foreach (Armagan item in armaganList)
-                {
-                    EkstreAktarma.SaveArmagan(item.Tarih, nakitBagisci.TuzelKisi, item.BagisciId, 0, user);
-                }
-
-            }
-            return isSaved;
+            NakitBagisciService service = new NakitBagisciService();
+            return service.Update(nakitBagisci, oncekiTuzelKisi, user);
         }
       
         protected void CloseBtn_Click(object sender, EventArgs e)
