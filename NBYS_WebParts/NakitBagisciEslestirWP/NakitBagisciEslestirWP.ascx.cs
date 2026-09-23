@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -341,8 +342,8 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
             DataTable dataTable = null;
             if (!string.IsNullOrEmpty(BagisciAraTxt.Text) && BagisciAraTxt.Text.Length > 3)
             {
-                NakitBagisci nakitBagisci = new NakitBagisci();
-                dataTable = nakitBagisci.SelectByFilterReturnDataTable(BagisciAraTxt.Text, 0);
+                NakitBagisciService service = new NakitBagisciService();
+                dataTable = service.Search(BagisciAraTxt.Text, 0);
             }
             return dataTable;
         }
