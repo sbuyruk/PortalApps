@@ -1,5 +1,6 @@
 using DAO.Ortak;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -2931,10 +2932,11 @@ namespace Model.NBYS
         private static int SaveNakitBagisciFromEkstre(EkstreAktarma ekstreAktarma, string currentUser)
         {
             var nakitBagisciId = 0;
+            NakitBagisciService service = new NakitBagisciService();
             NakitBagisci nakitBagisci = new NakitBagisci();
             if (ekstreAktarma.Adi != ProjeConstants.NAKITBAGISCI_BILINMEYEN)
             {
-                nakitBagisci = nakitBagisci.SelectByTcKimlikno(ekstreAktarma.TCKimlikNo); //tc kimlik no bagisci tablosunda var mi kontrol ediliyor.
+                nakitBagisci = service.GetByTcKimlikNo(ekstreAktarma.TCKimlikNo); //tc kimlik no bagisci tablosunda var mi kontrol ediliyor.
 
                 if (nakitBagisci != null)//bagisci tablosunda var
                 {
@@ -2953,7 +2955,7 @@ namespace Model.NBYS
                     }
                     else //nakitBagisciId bos veya 0 degil, öyleyse bu bagisçiyi select edelim 22.ocak.2020
                     {
-                        nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
+                        nakitBagisci = service.GetById(nakitBagisciId);
                         nakitBagisciId = SaveBagisciFromEkstreAktarma(nakitBagisci, ekstreAktarma, false, currentUser);
                     }
                 }
@@ -3029,7 +3031,6 @@ namespace Model.NBYS
         private static int GetUserIdByTelefonAndAd(EkstreAktarma ekstreAktarma)
         {
             var nakitBagisciId = 0;
-            var nakitBagisci = new NakitBagisci();
             var adi = ekstreAktarma.Adi;
 
             if (!string.IsNullOrEmpty(adi)) // adi bos ise yeni bagisçi olarak kabul edilecek
@@ -3037,7 +3038,7 @@ namespace Model.NBYS
                 var telefon1 = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString());
                 if (!string.IsNullOrEmpty(telefon1)) //telefon1 bos degil ise ise kontrol ediliyor adi ve telefon1 bulunur ise ayni kisi olarak kabul ediliyor, yeni kayit atilmiyor
                 {
-                    nakitBagisciId = GetUserId(nakitBagisci, adi, telefon1);
+                    nakitBagisciId = GetUserId(adi, telefon1);
                     if (nakitBagisciId != 0)
                     {
                         return nakitBagisciId;
@@ -3048,18 +3049,20 @@ namespace Model.NBYS
                     var telefon2 = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon2.ReturnEmptyIfNull().ToString()); //telefon1 ve adi eslesmedi ise, telefon2 ve adi esleisiyor mu bakiliyor
                     if (!string.IsNullOrEmpty(telefon2))
                     {
-                        nakitBagisciId = telefon2.Length > 3 ? GetUserId(nakitBagisci, adi, telefon2) : 0;
+                        nakitBagisciId = telefon2.Length > 3 ? GetUserId(adi, telefon2) : 0;
                     }
                 }
             }
             return nakitBagisciId;
         }
-        private static int GetUserId(NakitBagisci nakitBagisci, string adi, string telefon)
+        private static int GetUserId(string adi, string telefon)
         {
             var nakitBagisciId = 0;
+            NakitBagisciService service = new NakitBagisciService();
+            NakitBagisci nakitBagisci = null;
             if (telefon.Length > 3)
             {
-                nakitBagisci = nakitBagisci.SelectByAdAndTelefon(adi, telefon);
+                nakitBagisci = service.GetByAdAndTelefon(adi, telefon);
                 if (nakitBagisci == null)
                 {
                     string dokuzlu = telefon.Substring(0, 2);
@@ -3067,21 +3070,18 @@ namespace Model.NBYS
 
                     if (dokuzlu.Equals("90"))
                     {
-                        nakitBagisci = new NakitBagisci();
                         string telefon1 = telefon.Substring(2);
-                        nakitBagisci = nakitBagisci.SelectByAdAndTelefon(adi, telefon1);
+                        nakitBagisci = service.GetByAdAndTelefon(adi, telefon1);
                     }
                     else if (sifirli.Equals("0"))
                     {
-                        nakitBagisci = new NakitBagisci();
                         string telefon1 = telefon.Substring(1);
-                        nakitBagisci = nakitBagisci.SelectByAdAndTelefon(adi, telefon1);
+                        nakitBagisci = service.GetByAdAndTelefon(adi, telefon1);
                     }
                     else
                     {
-                        nakitBagisci = new NakitBagisci();
                         string bosluksuzTelefon = telefon.Replace(" ", "");
-                        nakitBagisci = nakitBagisci.SelectByAdAndTelefon(adi, bosluksuzTelefon);
+                        nakitBagisci = service.GetByAdAndTelefon(adi, bosluksuzTelefon);
                     }
                 }
             };
