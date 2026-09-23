@@ -1,6 +1,7 @@
 using DAO.Ortak;
 using DAO.Repositories.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -45,19 +46,8 @@ namespace Model.NBYS
         {
             try
             {
-                GenericEntity<NakitBagisci> genericEntity = new GenericEntity<NakitBagisci>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                Olusturan = UtilityHelper.GetCurrentUserName();
-                SqlQuery query = genericEntity.GetQueryParametreli(this);
-                int id = dao.Insert(query);
-
-                this.Id = id;
-                if (id > 0 && ProjeConstants.NBYS_SAVE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISCI);
-                }
-                return id;
+                NakitBagisciService service = new NakitBagisciService();
+                return service.Save(this);
             }
             catch (Exception ex)
             {
@@ -66,55 +56,22 @@ namespace Model.NBYS
         }
         public override bool Update()
         {
-            bool isSuccess = false;
             try
             {
-                if (this != null)
-                {
-                    NakitBagisci item = Select<NakitBagisci>(Id);
-                    if (Id != 0)
-                    {
-                        GenericEntity<NakitBagisci> genericEntity = new GenericEntity<NakitBagisci>(ProjeConstants.SQL_UPDATE);
-                        DegistirmeTarihi = DateTime.Now;
-                        Degistiren = UtilityHelper.GetCurrentUserName();
-                        SqlQuery query = genericEntity.GetQueryParametreli(this);
-                        isSuccess = dao.Update2Db(query);
-                    }
-                    if (isSuccess && ProjeConstants.NBYS_UPDATE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISCI);
-                    }
-                }
+                NakitBagisciService service = new NakitBagisciService();
+                return service.Update(this);
             }
             catch (Exception)
             {
                 throw;
             }
-            return isSuccess;
         }
         public override bool Delete()
         {
             try
             {
-                bool isDeleted = false;
-                if (Id != 0)
-                {
-                    GenericEntity<NakitBagisci> genericEntity = new GenericEntity<NakitBagisci>(ProjeConstants.SQL_DELETE);
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    NakitBagisci item = Select<NakitBagisci>(Id);
-                    if (item != null)
-                    {
-                        isDeleted = dao.DeleteFromDb(query, "");
-                    }
-                    else isDeleted = false;
-                    if (isDeleted && ProjeConstants.NBYS_DELETE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISCI);
-                    }
-                }
-                return isDeleted;
+                NakitBagisciService service = new NakitBagisciService();
+                return service.Delete(this);
             }
             catch (Exception ex)
             {
