@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -391,9 +392,9 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
         {
             try
             {
-                NakitBagisci nb = new NakitBagisci();
                 SecilenIdQS = paramNakitBagisciIdLbl.Value;
-                nb = nb.Select<NakitBagisci>(paramNakitBagisciIdLbl.Value.ConvertToInt());
+                NakitBagisciService service = new NakitBagisciService();
+                NakitBagisci nb = service.GetById(paramNakitBagisciIdLbl.Value.ConvertToInt());
                 if (nb != null)
                 {
                     nb.Degistiren = UtilityHelper.GetCurrentUserLoginName();
@@ -581,8 +582,8 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
         }
         private string CreateModalDataTable(string jsonData, int nakitBagisciId)
         {
-            NakitBagisci nb = new NakitBagisci();
-            nb = nb.Select<NakitBagisci>(nakitBagisciId);
+            NakitBagisciService service = new NakitBagisciService();
+            NakitBagisci nb = service.GetById(nakitBagisciId);
             string bagisciAdi = nb != null ? (nb.Adi + nb.Soyadi).ReplaceTrChars() : "Bagisci";
             string filename = bagisciAdi + "-" + DateTime.Today.Day + "-" + DateTime.Today.Month + "-" + DateTime.Today.Year;
             string tableString = @"
@@ -695,8 +696,8 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
             {
                 int nakitBagisciId = nakitBagisciIdStr.ConvertToInt();
 
-                NakitBagisci nakitBagisci = new NakitBagisci();
-                nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
+                NakitBagisciService service = new NakitBagisciService();
+                NakitBagisci nakitBagisci = service.GetById(nakitBagisciId);
                 if (nakitBagisci != null)
                 {
                     //NakitBagisciIdLbl.Text = nakitBagisciId.ToString();

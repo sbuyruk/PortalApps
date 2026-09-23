@@ -34,11 +34,8 @@ namespace Model.NBYS
         public bool DergiGonderilmesin { get; set; }
         public override T Select<T>(int id)
         {
-            NakitBagisciRepository repository = new NakitBagisciRepository();
-            DataTable dataTable = repository.SelectById(id);
-            List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
-            NakitBagisci nakitBagisci = new NakitBagisci();
-            nakitBagisci = list.FirstOrDefault();
+            NakitBagisciService service = new NakitBagisciService();
+            NakitBagisci nakitBagisci = service.GetById(id);
             return (T)Convert.ChangeType(nakitBagisci, typeof(T));
 
         }
