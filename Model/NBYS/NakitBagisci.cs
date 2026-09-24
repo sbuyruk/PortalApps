@@ -156,17 +156,5 @@ namespace Model.NBYS
                 DateTime.Today.AddYears(-2),
                 ProjeConstants.NAKITBAGISCI_SORGUBAGISTUTARI);
         }
-        public DataTable SelectDuzenliBagisci(DateTime bastar,DateTime bittar, string durum)
-        {
-            bool sadeceBelgeOlusturulmadi = durum.Equals(ProjeConstants.DURUM_BELGEOLUSTURULMADI);
-            bool durumFiltrele = !sadeceBelgeOlusturulmadi && !durum.Equals(ProjeConstants.HEPSI);
-            NakitBagisciReportRepository repository = new NakitBagisciReportRepository();
-            return repository.SelectDuzenliBagisci(
-                bastar,
-                bittar,
-                sadeceBelgeOlusturulmadi,
-                durumFiltrele,
-                durum);
-        }
     }
 }
