@@ -61,5 +61,21 @@ namespace Model.Services.NBYS
                 ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ReturnQuotedValue().ToString(),
                 ProjeConstants.COKBAGISYAPAN_SONBAGISI_KAC_AY_ONCE_YAPTI);
         }
+
+        public DataTable GetDuzenliBagiscilar(
+            DateTime baslangicTarihi,
+            DateTime bitisTarihi,
+            string durum)
+        {
+            bool sadeceBelgeOlusturulmadi = durum.Equals(ProjeConstants.DURUM_BELGEOLUSTURULMADI);
+            bool durumFiltrele = !sadeceBelgeOlusturulmadi && !durum.Equals(ProjeConstants.HEPSI);
+
+            return repository.SelectDuzenliBagisci(
+                baslangicTarihi,
+                bitisTarihi,
+                sadeceBelgeOlusturulmadi,
+                durumFiltrele,
+                durum);
+        }
     }
 }

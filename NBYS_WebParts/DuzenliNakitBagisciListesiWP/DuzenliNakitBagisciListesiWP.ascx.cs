@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -311,14 +312,16 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             List<BagisciListItem> list = new List<BagisciListItem>();
-            NakitBagisci nakitBagisci = new NakitBagisci();
+            NakitBagisciReportService reportService = new NakitBagisciReportService();
 
             ArmaganTanim at = new ArmaganTanim();
             at = at.Select<ArmaganTanim>(ProjeConstants.ARMAGAN_BRONZID);
             if (at != null)
             {
-                decimal bronzArmaganLimiti = at.OzelKisiAltLimit;
-                DataTable dataTable = nakitBagisci.SelectDuzenliBagisci(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), DurumDDL.SelectedItem.Text);
+                DataTable dataTable = reportService.GetDuzenliBagiscilar(
+                    SecilenBastarQS.ConvertToDatetime(),
+                    SecilenBittarQS.ConvertToDatetime(),
+                    DurumDDL.SelectedItem.Text);
                 if (dataTable != null)
                 {
                     foreach (DataRow row in dataTable.Rows)
