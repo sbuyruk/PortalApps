@@ -471,14 +471,12 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
                 "&AdresiBosOlanlarHaric=" + AdresiBosOlanlarHaricQS + "&PostadanIadeEdilenlerHaric=" + PostadanIadeEdilenlerHaricQS +
                 "&DergiGonderilmeyeceklerHaric=" + DergiGonderilmeyeceklerHaricQS + "&SadeceYeniBagiscilar=" + SadeceYeniBagiscilarQS + "&SecilenId=" + SecilenIdQS;
 
-            NakitBagisci bagisci = new NakitBagisci();
-            DateTime today = DateTime.Today;
+            NakitBagisciReportService reportService = new NakitBagisciReportService();
             DateTime basTar = BasTarTxt.Text.ConvertToDatetime();
             DateTime bitTar = BitTarTxt.Text.ConvertToDatetime();
             int bagisciSayisi = BagisciSayisiTxt.Text.ConvertToInt();
-            int rowCount = 0;
 
-            DataTable dataTable = bagisci.SelectByBagisTarihiBagisSayisi(basTar, bitTar, bagisciSayisi, ref rowCount,
+            DataTable dataTable = reportService.GetAdresRaporu(basTar, bitTar, bagisciSayisi,
                 BelgeIstemeyenlerHaricChk.Checked, AdresiBosOlanlarHaricChk.Checked, BelgesiPostadanIadeEdilenlerHaricChk.Checked,
                 DergiGonderilmesinlerHaricChk.Checked, UlasilamayanlarHaricChk.Checked, SadeceYeniBagiscilarChk.Checked);
             int SiraNo = 0;
