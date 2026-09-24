@@ -149,12 +149,5 @@ namespace Model.NBYS
             return nakitBagisci;
 
         }
-        public DataTable SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT()
-        {
-            NakitBagisciReportRepository repository = new NakitBagisciReportRepository();
-            return repository.SelectSecilmemisKatilimcilar(
-                DateTime.Today.AddYears(-2),
-                ProjeConstants.NAKITBAGISCI_SORGUBAGISTUTARI);
-        }
     }
 }

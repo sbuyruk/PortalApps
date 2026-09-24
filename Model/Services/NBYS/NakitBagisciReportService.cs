@@ -77,5 +77,12 @@ namespace Model.Services.NBYS
                 durumFiltrele,
                 durum);
         }
+
+        public DataTable GetSecilmemisFaaliyetKatilimcilari()
+        {
+            return repository.SelectSecilmemisKatilimcilar(
+                DateTime.Today.AddYears(-2),
+                ProjeConstants.NAKITBAGISCI_SORGUBAGISTUTARI);
+        }
     }
 }
