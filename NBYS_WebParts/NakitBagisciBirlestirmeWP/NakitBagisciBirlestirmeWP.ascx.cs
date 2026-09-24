@@ -703,8 +703,8 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                     #region Birlestirilen NakitBagisciyi sil
                                     db = new DbClass();
                                     //NakitBagisciDanSil(birlesecekBagisci);
-                                    NakitBagisci silinecekBagisci = new NakitBagisci();
-                                    silinecekBagisci = silinecekBagisci.SelectBagisiOlmayanBagisciById(birlesecekBagisci.Id);
+                                    NakitBagisciService nakitBagisciService = new NakitBagisciService();
+                                    NakitBagisci silinecekBagisci = nakitBagisciService.GetBagisiOlmayanById(birlesecekBagisci.Id);
                                     if (silinecekBagisci != null)
                                     {
 

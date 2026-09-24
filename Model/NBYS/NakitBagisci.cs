@@ -5,7 +5,6 @@ using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
@@ -133,21 +132,6 @@ namespace Model.NBYS
 
                 throw;
             }
-        }
-        /// <summary>
-        /// NakitBagisHareket_Table'da Bagisi olmayan Bagisçiyi bulur
-        /// </summary>
-        /// <param name="bagisciId"></param>
-        /// <returns></returns>
-        public NakitBagisci SelectBagisiOlmayanBagisciById(int bagisciId)
-        {
-            NakitBagisciRepository repository = new NakitBagisciRepository();
-            DataTable dataTable = repository.SelectBagisiOlmayanBagisciById(bagisciId);
-            List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
-            NakitBagisci nakitBagisci = new NakitBagisci();
-            nakitBagisci = list.FirstOrDefault();
-            return nakitBagisci;
-
         }
     }
 }
