@@ -1,6 +1,7 @@
 using DAO.Ortak;
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -450,8 +451,8 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                     if (isBagisSilindi)
                     {
                         //bağış silindi ise bağışçinin da baska bagisi yoksa bağışçiyi da sil
-                        NakitBagisci bagisci = new NakitBagisci();
-                        bagisci = bagisci.SelectBagisiOlmayanBagisciById(nbh.BagisciId);
+                        NakitBagisciService nakitBagisciService = new NakitBagisciService();
+                        NakitBagisci bagisci = nakitBagisciService.GetBagisiOlmayanById(nbh.BagisciId);
                         if (bagisci != null)
                         {
                             //silinen bağışçi bilgilerini silinenKayit_Table'a yaz

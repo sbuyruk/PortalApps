@@ -53,6 +53,11 @@ namespace Model.Services.NBYS
             return MapSingle(repository.SelectById(id));
         }
 
+        public NakitBagisci GetBagisiOlmayanById(int id)
+        {
+            return MapSingle(repository.SelectBagisiOlmayanBagisciById(id));
+        }
+
         public NakitBagisci GetByTcKimlikNo(long tcKimlikNo)
         {
             return MapSingle(repository.SelectByTcKimlikno(tcKimlikNo));
