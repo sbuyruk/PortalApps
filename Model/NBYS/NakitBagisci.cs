@@ -134,15 +134,6 @@ namespace Model.NBYS
                 throw;
             }
         }
-        public DataTable SelectBagisciGroupByBagisAdediReturnDataTable(decimal bronzMadalyaMiktari)
-        {
-            NakitBagisciReportRepository repository = new NakitBagisciReportRepository();
-            return repository.SelectBagisciGroupByBagisAdedi(
-                bronzMadalyaMiktari,
-                ProjeConstants.NAKITBAGISCI_BILINMEYEN,
-                ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ReturnQuotedValue().ToString(),
-                ProjeConstants.COKBAGISYAPAN_SONBAGISI_KAC_AY_ONCE_YAPTI);
-        }
         /// <summary>
         /// NakitBagisHareket_Table'da Bagisi olmayan Bagisçiyi bulur
         /// </summary>

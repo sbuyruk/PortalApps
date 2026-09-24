@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -87,14 +88,14 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             List<BagisciListItem> list = new List<BagisciListItem>();
-            NakitBagisci nakitBagisci = new NakitBagisci();
+            NakitBagisciReportService reportService = new NakitBagisciReportService();
 
             ArmaganTanim at = new ArmaganTanim();
             at = at.Select<ArmaganTanim>(ProjeConstants.ARMAGAN_BRONZID);
             if (at != null)
             {
                 decimal bronzArmaganLimiti = at.OzelKisiAltLimit;
-                DataTable dataTable = nakitBagisci.SelectBagisciGroupByBagisAdediReturnDataTable(bronzArmaganLimiti);
+                DataTable dataTable = reportService.GetCokDefaBagisYapanBagiscilar(bronzArmaganLimiti);
                 if (dataTable != null)
                 {
                     foreach (DataRow row in dataTable.Rows)
