@@ -268,8 +268,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
         }
         private string CreateBagisDataTable(string jsonData, int nakitBagisciId)
         {
-            NakitBagisci nb = new NakitBagisci();
-            nb = nb.Select<NakitBagisci>(nakitBagisciId);
+            NakitBagisci nb = new NakitBagisciService().GetById(nakitBagisciId);
 
             string bagisciIdi = nb == null ? string.Empty : nb.Adi + " " + nb.Soyadi + " ";
             BagisciAdiLbl.Text = bagisciIdi;
