@@ -83,6 +83,33 @@ namespace Model.Services.NBYS
             return repository.SelectByFilter(filter, excludedId);
         }
 
+        public DataTable ListByIl(int ilId)
+        {
+            return repository.SelectByIl(NormalizeIlId(ilId));
+        }
+
+        public DataTable ListByIlAndBagisTarihi(
+            int ilId,
+            string baslangicTarihi,
+            string bitisTarihi)
+        {
+            return repository.SelectByIlBagisTarihi(
+                NormalizeIlId(ilId),
+                baslangicTarihi,
+                bitisTarihi);
+        }
+
+        public DataTable ListNewByIlAndBagisTarihi(
+            int ilId,
+            string baslangicTarihi,
+            string bitisTarihi)
+        {
+            return repository.SelectByIlBagisTarihiYeni(
+                NormalizeIlId(ilId),
+                baslangicTarihi,
+                bitisTarihi);
+        }
+
         public bool Update(NakitBagisci nakitBagisci)
         {
             if (nakitBagisci == null)
@@ -164,6 +191,11 @@ namespace Model.Services.NBYS
             NakitBagisci mapper = new NakitBagisci();
             List<NakitBagisci> list = mapper.ToList<NakitBagisci>(dataTable);
             return list.FirstOrDefault();
+        }
+
+        private static int? NormalizeIlId(int ilId)
+        {
+            return ilId > ProjeConstants.IL_HEPSI ? (int?)ilId : null;
         }
     }
 }
