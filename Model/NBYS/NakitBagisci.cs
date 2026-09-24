@@ -158,43 +158,6 @@ namespace Model.NBYS
             return nakitBagisci;
 
         }
-        public string SelectByIl(int pIlId, ref List<NakitBagisci> list, ref int rowCount)
-        {
-            int? ilId = pIlId > ProjeConstants.IL_HEPSI ? (int?)pIlId : null;
-            NakitBagisciRepository repository = new NakitBagisciRepository();
-            DataTable dataTable = repository.SelectByIl(ilId);
-            if (dataTable != null)
-            {
-                rowCount = dataTable.Rows.Count;
-            }
-            string json = ToJSON(dataTable);
-            return json;
-        }
-        public string SelectByIlBagisTarihi(int pIlId, string bTar, string sTar, ref List<NakitBagisci> list, ref int rowCount)
-        {
-            int? ilId = pIlId > ProjeConstants.IL_HEPSI ? (int?)pIlId : null;
-            NakitBagisciRepository repository = new NakitBagisciRepository();
-            DataTable dataTable = repository.SelectByIlBagisTarihi(ilId, bTar, sTar);
-
-            if (dataTable != null)
-            {
-                rowCount = dataTable.Rows.Count;
-            }
-            string json = ToJSON(dataTable);
-            return json;
-        }
-        public string SelectByIlBagisTarihiYeni(int pIlId, string basTar, string sonTar, ref List<NakitBagisci> list, ref int rowCount)
-        {
-            int? ilId = pIlId > ProjeConstants.IL_HEPSI ? (int?)pIlId : null;
-            NakitBagisciRepository repository = new NakitBagisciRepository();
-            DataTable dataTable = repository.SelectByIlBagisTarihiYeni(ilId, basTar, sonTar);
-            if (dataTable != null)
-            {
-                rowCount = dataTable.Rows.Count;
-            }
-            string json = ToJSON(dataTable);
-            return json;
-        }
         public DataTable SelectByBagisTarihiBagisSayisi(DateTime basTar, DateTime bitTar, int bagisciSayisi, ref int rowCount, bool belgeIsitemeyenlerHaric,
             bool adresiBosOlanlarHaric, bool postadanIadelerHaric, bool dergiGonderilmesinlerHaric, bool ulasilamayanlarHaric, bool sadeceYeniBagiscilar)
         {

@@ -1,10 +1,13 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Globalization;
 using System.IO;
+using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
@@ -158,9 +161,7 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
         }
         private string GetBagisciData()
         {
-            int rowCount = 0;
-            List<NakitBagisci> list = new List<NakitBagisci>();
-            NakitBagisci nakitBagisci = new NakitBagisci();
+            NakitBagisciService service = new NakitBagisciService();
 
             string selectedOption = BagisZamaniDDL.SelectedValue;
 
@@ -171,39 +172,59 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
             {
                 string basTar = new DateTime(today.Year, today.Month, 1).AddMonths(-1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//geçen ayin ilk günü
                 string sonTar = new DateTime(today.Year, today.Month, 1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayin ilk günü
-                json = nakitBagisci.SelectByIlBagisTarihi(SecilenIlQS.ConvertToInt(), basTar, sonTar, ref list, ref rowCount);//nakitBagisci.SelectByIl(SecilenIlQS.ConvertToInt(), ref rowCount);
+                json = ToJson(service.ListByIlAndBagisTarihi(SecilenIlQS.ConvertToInt(), basTar, sonTar));
             }
             else if (selectedOption.Equals("OncekiAyYeni"))
             {
                 string basTar = new DateTime(today.Year, today.Month, 1).AddMonths(-1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//geçen ayin ilk günü
                 string sonTar = new DateTime(today.Year, today.Month, 1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayin ilk günü
-                json = nakitBagisci.SelectByIlBagisTarihiYeni(SecilenIlQS.ConvertToInt(), basTar, sonTar, ref list, ref rowCount);
+                json = ToJson(service.ListNewByIlAndBagisTarihi(SecilenIlQS.ConvertToInt(), basTar, sonTar));
             }
             if (selectedOption.Equals("SonAyTamami"))
             {
                 string basTar = new DateTime(today.Year, today.Month, 1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayin ilk günü
                 string sonTar = new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayin son günü
-                json = nakitBagisci.SelectByIlBagisTarihi(SecilenIlQS.ConvertToInt(), basTar, sonTar, ref list, ref rowCount);//nakitBagisci.SelectByIl(SecilenIlQS.ConvertToInt(), ref rowCount);
+                json = ToJson(service.ListByIlAndBagisTarihi(SecilenIlQS.ConvertToInt(), basTar, sonTar));
             }
             else if (selectedOption.Equals("SonAyYeni"))
             {
                 string basTar = new DateTime(today.Year, today.Month, 1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayin ilk günü
                 string sonTar = new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayin son günü
 
-                json = nakitBagisci.SelectByIlBagisTarihiYeni(SecilenIlQS.ConvertToInt(), basTar, sonTar, ref list, ref rowCount);
+                json = ToJson(service.ListNewByIlAndBagisTarihi(SecilenIlQS.ConvertToInt(), basTar, sonTar));
             }
             else if (selectedOption.Equals("Son5Yil"))
             {
                 string besYilOnce = DateTime.Today.AddYears(-5).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();
                 string sonTar = new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayin son günü
-                json = nakitBagisci.SelectByIlBagisTarihi(SecilenIlQS.ConvertToInt(), besYilOnce, sonTar, ref list, ref rowCount);//nakitBagisci.SelectByIl(SecilenIlQS.ConvertToInt(), ref rowCount);
+                json = ToJson(service.ListByIlAndBagisTarihi(SecilenIlQS.ConvertToInt(), besYilOnce, sonTar));
             }
             else if (selectedOption.Equals("Hepsi"))
             {
-                json = nakitBagisci.SelectByIl(SecilenIlQS.ConvertToInt(), ref list, ref rowCount);
+                json = ToJson(service.ListByIl(SecilenIlQS.ConvertToInt()));
             }
 
             return json;
+        }
+        private static string ToJson(DataTable table)
+        {
+            if (table == null)
+                return "[]";
+
+            List<Dictionary<string, object>> rows = new List<Dictionary<string, object>>();
+            foreach (DataRow row in table.Rows)
+            {
+                Dictionary<string, object> values = new Dictionary<string, object>();
+                foreach (DataColumn column in table.Columns)
+                {
+                    values.Add(column.ColumnName, row[column]);
+                }
+                rows.Add(values);
+            }
+
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            return serializer.Serialize(rows);
         }
         private string CreateDataTable(string jsonData)
         {
