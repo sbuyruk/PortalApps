@@ -136,6 +136,7 @@
     <Compile Include="NBYS\FTKIslem.cs" />
     <Compile Include="NBYS\FTKKisi.cs" />
     <Compile Include="NBYS\NakitBagisci.cs" />
+    <Compile Include="Services\NBYS\NakitBagisciReportService.cs" />
     <Compile Include="Services\NBYS\NakitBagisciService.cs" />
     <Compile Include="NBYS\SMSAylikBagis.cs" />
     <Compile Include="NBYS\NakitBagisHareket.cs" />

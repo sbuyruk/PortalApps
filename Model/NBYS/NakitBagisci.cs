@@ -158,32 +158,6 @@ namespace Model.NBYS
             return nakitBagisci;
 
         }
-        public DataTable SelectByBagisTarihiBagisSayisi(DateTime basTar, DateTime bitTar, int bagisciSayisi, ref int rowCount, bool belgeIsitemeyenlerHaric,
-            bool adresiBosOlanlarHaric, bool postadanIadelerHaric, bool dergiGonderilmesinlerHaric, bool ulasilamayanlarHaric, bool sadeceYeniBagiscilar)
-        {
-            NakitBagisciAdresRaporKriteri kriter = new NakitBagisciAdresRaporKriteri
-            {
-                BaslangicTarihi = basTar,
-                BitisTarihi = bitTar,
-                TLGecisTarihi = ProjeConstants.TL_GECIS_TARIHI,
-                BagisciSayisi = bagisciSayisi,
-                BelgeIstemeyenlerHaric = belgeIsitemeyenlerHaric,
-                AdresiBosOlanlarHaric = adresiBosOlanlarHaric,
-                PostadanIadelerHaric = postadanIadelerHaric,
-                DergiGonderilmesinlerHaric = dergiGonderilmesinlerHaric,
-                UlasilamayanlarHaric = ulasilamayanlarHaric,
-                SadeceYeniBagiscilar = sadeceYeniBagiscilar,
-                ParaIadeDurumu = ProjeConstants.DURUM_PARAIADE,
-                DahaOnceIadeDurumu = ProjeConstants.DURUM_DAHAONCEIADE
-            };
-            NakitBagisciReportRepository repository = new NakitBagisciReportRepository();
-            DataTable dataTable = repository.SelectByBagisTarihiBagisSayisi(kriter);
-            if (dataTable != null)
-            {
-                rowCount = dataTable.Rows.Count;
-            }
-            return dataTable;
-        }
         public DataTable SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT()
         {
             NakitBagisciReportRepository repository = new NakitBagisciReportRepository();
