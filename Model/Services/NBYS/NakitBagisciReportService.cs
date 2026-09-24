@@ -1,6 +1,7 @@
 using DAO.Repositories.NBYS;
 using System;
 using System.Data;
+using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
 namespace Model.Services.NBYS
@@ -50,6 +51,15 @@ namespace Model.Services.NBYS
             };
 
             return repository.SelectByBagisTarihiBagisSayisi(kriter);
+        }
+
+        public DataTable GetCokDefaBagisYapanBagiscilar(decimal minimumBagisMiktari)
+        {
+            return repository.SelectBagisciGroupByBagisAdedi(
+                minimumBagisMiktari,
+                ProjeConstants.NAKITBAGISCI_BILINMEYEN,
+                ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ReturnQuotedValue().ToString(),
+                ProjeConstants.COKBAGISYAPAN_SONBAGISI_KAC_AY_ONCE_YAPTI);
         }
     }
 }
