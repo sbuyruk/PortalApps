@@ -407,7 +407,7 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
                         nb.DergiGonderilmesin = ProjeConstants.DERGI_GONDERILMESIN;
                     }
 
-                    if (nb.Update())
+                    if (service.Update(nb))
                     {
                         MessageHelper.PublishMessage(nb.Adi + " Adlı bağışçıya dergi gönderilmeyecek.", ProjeConstants.MESAJ_BASARILI, 2000);
 
