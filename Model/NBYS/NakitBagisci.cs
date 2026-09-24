@@ -158,12 +158,6 @@ namespace Model.NBYS
             return nakitBagisci;
 
         }
-        public DataTable SelectByAd(string adi)
-        {
-            NakitBagisciService service = new NakitBagisciService();
-            return service.SearchByName(adi);
-
-        }
         public string SelectByIl(int pIlId, ref List<NakitBagisci> list, ref int rowCount)
         {
             int? ilId = pIlId > ProjeConstants.IL_HEPSI ? (int?)pIlId : null;
@@ -226,17 +220,6 @@ namespace Model.NBYS
                 rowCount = dataTable.Rows.Count;
             }
             return dataTable;
-        }
-        public DataTable SelectByFilterReturnDataTable(string filter, int eksiId)
-        {
-            NakitBagisciService service = new NakitBagisciService();
-            return service.Search(filter, eksiId);
-        }
-        public string SelectByFilter(string filter, int eksiId)
-        {
-            DataTable dataTable = SelectByFilterReturnDataTable(filter, eksiId);
-            string json = ToJSON(dataTable);
-            return json;
         }
         public DataTable SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT()
         {
