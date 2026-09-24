@@ -1,5 +1,5 @@
 using Model.MTS;
-using Model.NBYS;
+using Model.Services.NBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -89,8 +89,8 @@ namespace MTS_WebParts.BagisciListesiWP
         }
         private List<BagisciListItem> GetDataList()
         {
-            NakitBagisci nakitBagisci = new NakitBagisci();
-            DataTable dataTableNakit = nakitBagisci.SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT();
+            NakitBagisciReportService reportService = new NakitBagisciReportService();
+            DataTable dataTableNakit = reportService.GetSecilmemisFaaliyetKatilimcilari();
             TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
             DataTable dataTableTasinmaz = tasinmazBagisci.SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT();
 
