@@ -1,6 +1,8 @@
 using DAO.Ortak;
 using System;
 using System.Data;
+using System.Globalization;
+using Utility.ProjeGlobal;
 
 namespace DAO.Repositories.NBYS
 {
@@ -37,6 +39,20 @@ namespace DAO.Repositories.NBYS
         {
             SqlQuery query = crudQueryBuilder.BuildDelete(TableName, id);
             return db.DeleteFromDb(query, "");
+        }
+
+        public DBObject CreateDeleteTransactionObject(int id)
+        {
+            return new DBObject
+            {
+                SQLString = string.Format(
+                    CultureInfo.InvariantCulture,
+                    "DELETE FROM {0} WHERE Id={1}",
+                    TableName,
+                    id),
+                SQLType = ProjeConstants.SQL_DELETE,
+                IsFilled = true
+            };
         }
 
         public DataTable SelectById(int id)

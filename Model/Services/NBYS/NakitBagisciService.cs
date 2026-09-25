@@ -1,3 +1,4 @@
+using DAO.Ortak;
 using DAO.Repositories.NBYS;
 using Model.NBYS;
 using Model.Ortak;
@@ -189,6 +190,11 @@ namespace Model.Services.NBYS
             }
 
             return isDeleted;
+        }
+
+        public DBObject CreateDeleteTransactionObject(int id)
+        {
+            return repository.CreateDeleteTransactionObject(id);
         }
 
         private static NakitBagisci MapSingle(DataTable dataTable)
