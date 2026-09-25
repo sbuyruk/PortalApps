@@ -390,9 +390,8 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
 
         protected void AsilBagisciHiddenBtn_Click(object sender, EventArgs e)
         {
-            NakitBagisci secilenNb = new NakitBagisci();
             int id = paramLbl.Value.ConvertToInt();
-            secilenNb = secilenNb.Select<NakitBagisci>(id);
+            NakitBagisci secilenNb = new NakitBagisciService().GetById(id);
             if (secilenNb != null)
             {
                 SecilenAsilBagisciId = secilenNb.Id.ReturnZeroIfNull().ToString();
@@ -408,9 +407,8 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
         }
         protected void BirlesecekBagisciHiddenBtn_Click(object sender, EventArgs e)
         {
-            NakitBagisci secilenNb = new NakitBagisci();
             int id = paramLbl.Value.ConvertToInt();
-            secilenNb = secilenNb.Select<NakitBagisci>(id);
+            NakitBagisci secilenNb = new NakitBagisciService().GetById(id);
             if (secilenNb != null)
             {
                 //BirlesecekBagisciId = secilenNb.Id.ReturnZeroIfNull().ToString();
@@ -448,8 +446,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
         }
         private void FillSecilenAsilBagisciTable()
         {
-            NakitBagisci secilenBagisci = new NakitBagisci();
-            secilenBagisci = secilenBagisci.Select<NakitBagisci>(SecilenAsilBagisciId.ConvertToInt());
+            NakitBagisci secilenBagisci = new NakitBagisciService().GetById(SecilenAsilBagisciId.ConvertToInt());
             if (secilenBagisci != null)
             {
 
@@ -526,8 +523,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                 int bagisciId = item.ConvertToInt();
                 if (bagisciId > 0)
                 {
-                    NakitBagisci secilenBagisci = new NakitBagisci();
-                    secilenBagisci = secilenBagisci.Select<NakitBagisci>(bagisciId);
+                    NakitBagisci secilenBagisci = new NakitBagisciService().GetById(bagisciId);
                     if (secilenBagisci != null)
                     {
 
@@ -566,8 +562,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
         {
             string currentUser = UtilityHelper.GetCurrentUserLoginName();
             string mesaj1 = string.Empty;
-            NakitBagisci asilBagisci = new NakitBagisci();
-            asilBagisci = asilBagisci.Select<NakitBagisci>(SecilenAsilBagisciId.ConvertToInt());
+            NakitBagisci asilBagisci = new NakitBagisciService().GetById(SecilenAsilBagisciId.ConvertToInt());
             if (asilBagisci == null || SecilenAsilBagisciId.ConvertToInt() == 0)
             {
                 MessageHelper.PublishMessage("Seçtiğiniz Asıl Bağışçı Bulunamadı.", ProjeConstants.MESAJ_HATA);
@@ -581,8 +576,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                 int bagisciId = birlesecekBagisciId.ConvertToInt();
                 if (bagisciId > 0)
                 {
-                    NakitBagisci birlesecekBagisci = new NakitBagisci();
-                    birlesecekBagisci = birlesecekBagisci.Select<NakitBagisci>(bagisciId);
+                    NakitBagisci birlesecekBagisci = new NakitBagisciService().GetById(bagisciId);
                     if (birlesecekBagisci != null)
                     {
                         if (birlesecekBagisci == null || birlesecekBagisciId.ConvertToInt() == 0)
@@ -830,8 +824,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
         }
         private string CreateModalDataTable(string jsonData, int nakitBagisciId)
         {
-            NakitBagisci nb = new NakitBagisci();
-            nb = nb.Select<NakitBagisci>(nakitBagisciId);
+            NakitBagisci nb = new NakitBagisciService().GetById(nakitBagisciId);
             string bagisciAdi = nb != null ? (nb.Adi + nb.Soyadi).ReplaceTrChars() : "Bagisci";
             string filename = bagisciAdi + "-" + DateTime.Today.Day + "-" + DateTime.Today.Month + "-" + DateTime.Today.Year;
             string tableString = @"
@@ -944,8 +937,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
             {
                 int nakitBagisciId = nakitBagisciIdStr.ConvertToInt();
 
-                NakitBagisci nakitBagisci = new NakitBagisci();
-                nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
+                NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisciId);
                 if (nakitBagisci != null)
                 {
                     //NakitBagisciIdLbl.Text = nakitBagisciId.ToString();
