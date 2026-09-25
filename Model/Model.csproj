@@ -145,6 +145,7 @@
     <Compile Include="Ortak\Il.cs" />
     <Compile Include="Ortak\Ilce.cs" />
     <Compile Include="Ortak\OpenXMLHelper.cs" />
+    <Compile Include="Ortak\EntityBase.cs" />
     <Compile Include="Ortak\ParentClass.cs" />
     <Compile Include="Ortak\OrtakParametre.cs" />
     <Compile Include="IKYS\ResmiTatil.cs" />
