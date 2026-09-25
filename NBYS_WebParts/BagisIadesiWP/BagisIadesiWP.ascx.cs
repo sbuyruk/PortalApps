@@ -1,6 +1,7 @@
 using DAO.Ortak;
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -247,8 +248,7 @@ namespace NBYS_WebParts.BagisIadesiWP
             {
                 int nakitBagisciId = nakitBagisciIdStr.ConvertToInt();
 
-                NakitBagisci nakitBagisci = new NakitBagisci();
-                nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
+                NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisciId);
                 if (nakitBagisci != null)
                 {
                     //NakitBagisciIdLbl.Text = nakitBagisciId.ToString();
@@ -385,8 +385,7 @@ namespace NBYS_WebParts.BagisIadesiWP
                 //    || (DateTime.Today.Year == nbh.BagisTarihi.Year && DateTime.Today.Month - 1 == nbh.BagisTarihi.Month);
                 if (isLinkVisible)
                 {
-                    NakitBagisci nb = new NakitBagisci();
-                    nb = nb.Select<NakitBagisci>(nbh.BagisciId);
+                    NakitBagisci nb = new NakitBagisciService().GetById(nbh.BagisciId);
                     string bagisciAdi = nb == null ? "" : nb.Adi + " " + nb.Soyadi + " tarafından bağışlanan ";
                     string iadeMiktariMsg = bagisciAdi + nbh.BagisMiktari.ToString("N", culturInfo) + " " + nbh.DovizCinsi + " iade edilecek. ";
                     Armagan armagan = new Armagan();
@@ -445,8 +444,7 @@ namespace NBYS_WebParts.BagisIadesiWP
 
                 if (nbh != null)
                 {
-                    NakitBagisci nb = new NakitBagisci();
-                    nb = nb.Select<NakitBagisci>(nbh.BagisciId);
+                    NakitBagisci nb = new NakitBagisciService().GetById(nbh.BagisciId);
                     if (nb != null)
                     {
                         nbh.IadeEdildiMi = true;
@@ -534,8 +532,7 @@ namespace NBYS_WebParts.BagisIadesiWP
             if (nbh != null)//bu bagis varsa
             {
 
-                NakitBagisci nb = new NakitBagisci();
-                nb = nb.Select<NakitBagisci>(nbh.BagisciId);
+                NakitBagisci nb = new NakitBagisciService().GetById(nbh.BagisciId);
                 string bagisciAdi = nb == null ? "" : nb.Adi + " " + nb.Soyadi;
 
                 IadeTarihiDegistirTxt.Text = nbh.IadeTarihi.ConvertToDatetimeEmptyIfNull();
@@ -561,8 +558,7 @@ namespace NBYS_WebParts.BagisIadesiWP
 
                 if (nbh != null)
                 {
-                    NakitBagisci nb = new NakitBagisci();
-                    nb = nb.Select<NakitBagisci>(nbh.BagisciId);
+                    NakitBagisci nb = new NakitBagisciService().GetById(nbh.BagisciId);
                     if (nb != null)
                     {
                         nbh.IadeSebebi = IadeSebebiDegistirTxt.Value;

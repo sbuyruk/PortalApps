@@ -331,8 +331,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
             if (nbh != null)//bu bagis varsa
             {
 
-                NakitBagisci nb = new NakitBagisci();
-                nb = nb.Select<NakitBagisci>(nbh.BagisciId);
+                NakitBagisci nb = new NakitBagisciService().GetById(nbh.BagisciId);
                 string bagisciAdi = nb == null ? "" : nb.Adi + " " + nb.Soyadi + " tarafından bağışlanan ";
                 string silmeMsg = bagisciAdi + nbh.BagisMiktari.ToString("N", culturInfo) + " " + nbh.DovizCinsi + " silinecek. (Hatırlatma: Silme yerine 'Bağış İadesi' de yapabilirsiniz.) ";
                 Armagan armagan = new Armagan();
@@ -595,8 +594,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
             {
                 int nakitBagisciId = nakitBagisciIdStr.ConvertToInt();
 
-                NakitBagisci nakitBagisci = new NakitBagisci();
-                nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
+                NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisciId);
                 if (nakitBagisci != null)
                 {
                     //NakitBagisciIdLbl.Text = nakitBagisciId.ToString();

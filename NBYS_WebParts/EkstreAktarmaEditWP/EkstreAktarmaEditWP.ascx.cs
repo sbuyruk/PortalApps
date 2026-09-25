@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -207,8 +208,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                 EkstreAktarma ekstreAktarma = new EkstreAktarma();
                 ekstreAktarma = ekstreAktarma.Select<EkstreAktarma>(EkstreAktarmaIdQS.ConvertToInt());
                 ektreAktarmaTCKimlikNo = ekstreAktarma == null ? 0 : ekstreAktarma.TCKimlikNo.ReturnZeroIfNull().ConvertToInt();
-                NakitBagisci nb = new NakitBagisci();
-                nb = nb.Select<NakitBagisci>(NakitBagisciIdQS.ConvertToInt());
+                NakitBagisci nb = new NakitBagisciService().GetById(NakitBagisciIdQS.ConvertToInt());
                 if (nb != null)
                 {
                     NakitBagisciIdLbl.Text = nb.Id.ToString();
@@ -572,8 +572,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
         }
         protected void NakitBagisciSecildiBtn_Click(object sender, EventArgs e)
         {
-            NakitBagisci nb = new NakitBagisci();
-            nb = nb.Select<NakitBagisci>(NakitBagisciIdQS.ConvertToInt());
+            NakitBagisci nb = new NakitBagisciService().GetById(NakitBagisciIdQS.ConvertToInt());
         }
 
         protected void EkstreListesiBtn_Click(object sender, EventArgs e)
