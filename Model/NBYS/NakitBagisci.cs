@@ -1,10 +1,6 @@
 using DAO.Ortak;
-using DAO.Repositories.NBYS;
 using Model.Ortak;
-using Model.Services.NBYS;
 using System;
-using System.Collections.Generic;
-using System.Data;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
@@ -31,57 +27,6 @@ namespace Model.NBYS
         public bool Ulasilamiyor { get; set; }
         public bool BelgeIstemiyor { get; set; }
         public bool DergiGonderilmesin { get; set; }
-        public T Select<T>(int id)
-        {
-            NakitBagisciService service = new NakitBagisciService();
-            NakitBagisci nakitBagisci = service.GetById(id);
-            return (T)Convert.ChangeType(nakitBagisci, typeof(T));
-
-        }
-        public int Save()
-        {
-            try
-            {
-                NakitBagisciService service = new NakitBagisciService();
-                return service.Save(this);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
-        public bool Update()
-        {
-            try
-            {
-                NakitBagisciService service = new NakitBagisciService();
-                return service.Update(this);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-        public bool Delete()
-        {
-            try
-            {
-                NakitBagisciService service = new NakitBagisciService();
-                return service.Delete(this);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
-        public List<T> SelectAll<T>() where T : class
-        {
-            NakitBagisciRepository repository = new NakitBagisciRepository();
-            DataTable dataTable = repository.SelectAll();
-            List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
-        }
 
         public string GetInsertSQL(string extId)
         {
