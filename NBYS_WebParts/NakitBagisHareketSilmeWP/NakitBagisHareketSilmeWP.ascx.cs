@@ -462,7 +462,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                             skBagisci.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
                             skBagisci.SilinenKayitBilgisi = " #BagisciId=" + bagisci.Id + " #Adi=" + bagisci.Adi + " #TCKimlikNo=" + bagisci.TCKimlikNo + " #Telefon=" + bagisci.Telefon1 + " " + bagisci.Telefon2 + " #Adres=" + bagisci.Adres;
                             skBagisci.Save();
-                            isBagisciSilindi = bagisci.Delete();
+                            isBagisciSilindi = nakitBagisciService.Delete(bagisci);
                         }
                         if (skArmaganDbo.Success)//armagan tablosunda islem oldu mu. //yeniden armagan hesaplanacak
                             isArmaganYenidenHesaplandi = TekrarArmaganHesapla(nbh, UtilityHelper.GetCurrentUserLoginName());
