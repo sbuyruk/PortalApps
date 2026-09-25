@@ -3180,6 +3180,7 @@ namespace Model.NBYS
         private static int SaveBagisciFromEkstreAktarma(NakitBagisci nakitBagisci, EkstreAktarma ekstreAktarma, bool isNew, string currentUser)
         {
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+            NakitBagisciService service = new NakitBagisciService();
             if (nakitBagisci == null)
             {
                 nakitBagisci = new NakitBagisci();
@@ -3209,7 +3210,7 @@ namespace Model.NBYS
                     nakitBagisci.Ulasilamiyor = true;
                 }
 
-                nakitBagisci.Save();
+                service.Save(nakitBagisci);
 
             }//eski bagisci
             else
@@ -3237,7 +3238,7 @@ namespace Model.NBYS
                     nakitBagisci.Ulasilamiyor = true;
                 }
 
-                nakitBagisci.Update();
+                service.Update(nakitBagisci);
             }
 
             return nakitBagisci.Id;
