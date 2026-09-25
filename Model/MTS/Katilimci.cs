@@ -1,4 +1,4 @@
-using Model.Ortak;
+ï»¿using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Utility.ProjeGlobal;
 using Model.IKYS;
 using Model.NBYS;
+using Model.Services.NBYS;
 using Model.TBYS;
 
 namespace Model.MTS
@@ -29,9 +30,9 @@ namespace Model.MTS
         public long TCKimlikNo { get; set; }
         [DisplayName("Kurumu")]
         public string Kurumu { get; set; }
-        [DisplayName("Ünvani")]
+        [DisplayName("Ãœnvani")]
         public string Unvani { get; set; }
-        [DisplayName("Görevi")]
+        [DisplayName("GÃ¶revi")]
         public string Gorevi { get; set; }
         [DisplayName("Telefon 1")]
         public string Telefon1 { get; set; }
@@ -41,13 +42,13 @@ namespace Model.MTS
         [DisplayName("Telefon 3")]
         public string Telefon3 { get; set; }
         
-        [DisplayName("Açiklama 1")]
+        [DisplayName("AÃ§iklama 1")]
         public string TelAciklama1 { get; set; }
         
-        [DisplayName("Açiklama 2")]
+        [DisplayName("AÃ§iklama 2")]
         public string TelAciklama2 { get; set; }
         
-        [DisplayName("Açiklama 3")]
+        [DisplayName("AÃ§iklama 3")]
         public string TelAciklama3 { get; set; }
         
         [DisplayName("Adres")]
@@ -59,7 +60,7 @@ namespace Model.MTS
         [DisplayName("Il")]
         public int Ili { get; set; }
         
-        [DisplayName("Ilçe")]
+        [DisplayName("IlÃ§e")]
         public int Ilcesi { get; set; }
         
         [DisplayName("Dahili Telefon 1")]
@@ -178,8 +179,7 @@ namespace Model.MTS
             }
             else if (katilimciTipi == ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI_INT)
             {
-                NakitBagisci nakitBagisci = new NakitBagisci();
-                nakitBagisci = nakitBagisci.Select<NakitBagisci>(katilimciId);
+                NakitBagisci nakitBagisci = new NakitBagisciService().GetById(katilimciId);
                 if (nakitBagisci != null)
                 {
                     Katilimci katilimci = new Katilimci()

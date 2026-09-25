@@ -2613,8 +2613,7 @@ namespace Model.NBYS
 
                 if (nakitBagisHareket.Id > 0)
                 {
-                    NakitBagisci nakitBagisci = new NakitBagisci();
-                    nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
+                    NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisciId);
                     if (nakitBagisci.Adi.Contains(ProjeConstants.NAKITBAGISCI_BILINMEYEN))// adi bilinmeyen bagisci için eksrteAktarma tablosuna aciklama yaz 
                     {
                         ekstreAktarma.Aciklama += "-NBYS- Adı BİLİNMEYEN bağışçı olduğundan armağan oluşturulmadı ";
@@ -2631,8 +2630,7 @@ namespace Model.NBYS
         {
             ////WriteText("SaveArmagan-0");
             bool isArmaganSaved = false;
-            NakitBagisci nakitBagisci = new NakitBagisci();
-            nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
+            NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisciId);
             if ((nakitBagisci == null) || (nakitBagisci.Adi.Contains(ProjeConstants.NAKITBAGISCI_BILINMEYEN)))//nakit bagisçi nuul veya bilinmeyen ise armagan üretmesin
             {
                 isArmaganSaved = false;
@@ -2785,8 +2783,7 @@ namespace Model.NBYS
         public static bool SaveArmaganYeni(EkstreAktarma ekstreAktarma, ref NakitBagisHareket nakitBagisHareket, string currentUser)
         {
             bool isArmaganSaved = false;
-            NakitBagisci nakitBagisci = new NakitBagisci();
-            nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisHareket.BagisciId);
+            NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisHareket.BagisciId);
             //nakit bagisçi null veya bilinmeyen ise armagan üretmesin
             if ((nakitBagisci == null) || (nakitBagisci.Adi.Contains(ProjeConstants.NAKITBAGISCI_BILINMEYEN)))
             {

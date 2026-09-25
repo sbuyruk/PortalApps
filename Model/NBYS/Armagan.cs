@@ -1,5 +1,6 @@
 using DAO.Ortak;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -197,8 +198,7 @@ namespace Model.NBYS
         private string DurumGetir(int nakitBagisciId)
         {
             string durum = string.Empty;
-            NakitBagisci nakitBagisci = new NakitBagisci();
-            nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
+            NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisciId);
             if (nakitBagisci != null)
             {
                 if (nakitBagisci.Ulasilamiyor)
