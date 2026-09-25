@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -287,8 +288,7 @@ namespace NBYS_WebParts.ArmaganEditWP
             if (armagan != null)
             {
                 IdLbl.Text = armagan.Id.ToString();
-                NakitBagisci nakitBagisci = new NakitBagisci();
-                nakitBagisci = nakitBagisci.Select<NakitBagisci>(armagan.BagisciId);
+                NakitBagisci nakitBagisci = new NakitBagisciService().GetById(armagan.BagisciId);
                 if (nakitBagisci != null)
                 {
                     AdiTxt.Text = nakitBagisci.Adi.ReturnEmptyIfNull().ToString();

@@ -133,8 +133,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
 
             string retval = string.Empty;
             oncelik = 9;
-            NakitBagisci nakitBagisci = new NakitBagisci();
-            nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
+            NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisciId);
             if (nakitBagisci != null)
             {
                 if (nakitBagisci.BelgeIstemiyor)
@@ -229,8 +228,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             //Evetse parametre olarak gelenle ayni mi?
             //Ayni degilse biseyler degisti ne yapmak lazim?
             int armaganId = 0;
-            NakitBagisci nakitBagisci = new NakitBagisci();
-            nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
+            NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisciId);
 
             if (nakitBagisci != null)
             {
@@ -604,8 +602,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
         }
         protected void ArmaganOlusturModalDoldurBtn_Click(object sender, EventArgs e)
         {
-            NakitBagisci nakitBagisci = new NakitBagisci();
-            nakitBagisci = nakitBagisci.Select<NakitBagisci>(hiddenNakitBagisciId.Value.ConvertToInt());
+            NakitBagisci nakitBagisci = new NakitBagisciService().GetById(hiddenNakitBagisciId.Value.ConvertToInt());
             if (nakitBagisci != null)
             {
                 ArmaganTanim armaganTanim = new ArmaganTanim();
@@ -682,8 +679,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             {
                 int nakitBagisciId = nakitBagisciIdStr.ConvertToInt();
 
-                NakitBagisci nakitBagisci = new NakitBagisci();
-                nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
+                NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisciId);
                 if (nakitBagisci != null)
                 {
                     //NakitBagisciIdLbl.Text = nakitBagisciId.ToString();

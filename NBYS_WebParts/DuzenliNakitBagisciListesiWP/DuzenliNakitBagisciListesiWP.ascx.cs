@@ -790,8 +790,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
             {
                 int nakitBagisciId = nakitBagisciIdStr.ConvertToInt();
 
-                NakitBagisci nakitBagisci = new NakitBagisci();
-                nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
+                NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisciId);
                 if (nakitBagisci != null)
                 {
                     //NakitBagisciIdLbl.Text = nakitBagisciId.ToString();
@@ -846,8 +845,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                     nakitBagisciId = Convert.ToInt32(hdnNakitBagisciId.Value);
                 if (!string.IsNullOrEmpty(hdnDuzenliBagisciId.Value))
                     duzenliBagisciId = Convert.ToInt32(hdnDuzenliBagisciId.Value);
-                NakitBagisci nakitBagisci = new NakitBagisci();
-                nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
+                NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisciId);
                 if (nakitBagisci!=null)
                 {
                     DuzenliNakitBagisci duzenliBagisci = new DuzenliNakitBagisci();
