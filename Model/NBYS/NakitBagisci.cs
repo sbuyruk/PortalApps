@@ -11,7 +11,7 @@ using Utility.ProjeGlobal;
 namespace Model.NBYS
 {
     [Serializable]
-    public class NakitBagisci : ParentClass
+    public class NakitBagisci : EntityBase
     {
 
         public string Adi { get; set; }
@@ -31,14 +31,14 @@ namespace Model.NBYS
         public bool Ulasilamiyor { get; set; }
         public bool BelgeIstemiyor { get; set; }
         public bool DergiGonderilmesin { get; set; }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             NakitBagisciService service = new NakitBagisciService();
             NakitBagisci nakitBagisci = service.GetById(id);
             return (T)Convert.ChangeType(nakitBagisci, typeof(T));
 
         }
-        public override int Save()
+        public int Save()
         {
             try
             {
@@ -50,7 +50,7 @@ namespace Model.NBYS
                 throw;
             }
         }
-        public override bool Update()
+        public bool Update()
         {
             try
             {
@@ -62,7 +62,7 @@ namespace Model.NBYS
                 throw;
             }
         }
-        public override bool Delete()
+        public bool Delete()
         {
             try
             {
@@ -74,7 +74,7 @@ namespace Model.NBYS
                 throw;
             }
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>() where T : class
         {
             NakitBagisciRepository repository = new NakitBagisciRepository();
             DataTable dataTable = repository.SelectAll();
