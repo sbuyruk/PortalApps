@@ -1,4 +1,3 @@
-using DAO.Ortak;
 using Model.Ortak;
 using System;
 using Utility.HelperClasses;
@@ -53,21 +52,6 @@ namespace Model.NBYS
                 GenericEntity<NakitBagisci> genericEntity = new GenericEntity<NakitBagisci>(ProjeConstants.SQL_UPDATE);
                 DegistirmeTarihi = DateTime.Now;
                 Degistiren = UtilityHelper.GetCurrentUserName();
-                string sqlString = genericEntity.GetQuery(this, extId);
-
-                return sqlString;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-        public string GetDeleteSQL(string extId)
-        {
-            try
-            {
-                GenericEntity<NakitBagisci> genericEntity = new GenericEntity<NakitBagisci>(ProjeConstants.SQL_DELETE);
                 string sqlString = genericEntity.GetQuery(this, extId);
 
                 return sqlString;

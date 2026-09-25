@@ -702,10 +702,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                     if (silinecekBagisci != null)
                                     {
 
-                                        DBObject nbDbo = new DBObject();
-                                        nbDbo.SQLString = silinecekBagisci.GetDeleteSQL("");
-                                        nbDbo.SQLType = ProjeConstants.SQL_DELETE;
-                                        nbDbo.IsFilled = true;
+                                        DBObject nbDbo = nakitBagisciService.CreateDeleteTransactionObject(silinecekBagisci.Id);
                                         db.DBObjectList.Add(nbDbo);
 
                                         //silinenKayit_Table'a yaz
