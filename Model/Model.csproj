@@ -138,6 +138,7 @@
     <Compile Include="NBYS\NakitBagisci.cs" />
     <Compile Include="Services\NBYS\NakitBagisciReportService.cs" />
     <Compile Include="Services\NBYS\NakitBagisciService.cs" />
+    <Compile Include="Services\NBYS\DuzenliNakitBagisciService.cs" />
     <Compile Include="NBYS\SMSAylikBagis.cs" />
     <Compile Include="NBYS\NakitBagisHareket.cs" />
     <Compile Include="Ortak\GenericEntity.cs" />

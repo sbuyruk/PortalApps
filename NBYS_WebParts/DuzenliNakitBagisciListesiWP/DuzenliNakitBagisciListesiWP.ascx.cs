@@ -276,12 +276,12 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                     if (DuzenliBagisciIdQS.ConvertToInt()>0 && NakitBagisciIdQS.ConvertToInt()>0)
                     {
                         //burada DuzenliNakitBagisci.BagisciId=NakitBagisciIdQS yap ve kaydet
-                        DuzenliNakitBagisci dnb = new DuzenliNakitBagisci();
-                        dnb = dnb.Select<DuzenliNakitBagisci>(DuzenliBagisciIdQS.ConvertToInt());
+                        DuzenliNakitBagisciService duzenliBagisciService = new DuzenliNakitBagisciService();
+                        DuzenliNakitBagisci dnb = duzenliBagisciService.GetById(DuzenliBagisciIdQS.ConvertToInt());
                         if (dnb != null)
                         {
                             dnb.BagisciId = NakitBagisciIdQS.ConvertToInt();
-                            dnb.Update();
+                            duzenliBagisciService.Update(dnb);
                         }
                         SecilenIdQS = DuzenliBagisciIdQS;
                     }
@@ -848,8 +848,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                 NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisciId);
                 if (nakitBagisci!=null)
                 {
-                    DuzenliNakitBagisci duzenliBagisci = new DuzenliNakitBagisci();
-                    duzenliBagisci = duzenliBagisci.Select<DuzenliNakitBagisci>(duzenliBagisciId);
+                    DuzenliNakitBagisci duzenliBagisci = new DuzenliNakitBagisciService().GetById(duzenliBagisciId);
                     if (duzenliBagisci != null)
                     {
                         ArmaganOlustur(duzenliBagisci, nakitBagisci);
@@ -920,7 +919,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                         nakitBagisHareket.ArmaganId = yeniArmaganId;
                         nakitBagisHareket.Update();
                     }
-                    duzenliNakitBagisci.Update();
+                    new DuzenliNakitBagisciService().Update(duzenliNakitBagisci);
                     TabloOlustur();
                 }
 
