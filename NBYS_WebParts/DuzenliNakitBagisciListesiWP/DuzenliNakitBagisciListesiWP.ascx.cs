@@ -875,7 +875,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
             {
                 // Son nakitBagisii bul
                 NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
-                nakitBagisHareket = nakitBagisHareket.SelectBagisByBagisciIdTarih(duzenliNakitBagisci.BagisciId, duzenliNakitBagisci.BaslamaTarihi);
+                nakitBagisHareket = new NakitBagisHareketService().GetLastInYearByBagisciId(duzenliNakitBagisci.BagisciId, duzenliNakitBagisci.BaslamaTarihi);
                 //Armagan Olustur
                 if (nakitBagisHareket != null)
                 {

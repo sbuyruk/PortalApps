@@ -326,7 +326,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
 
 
             NakitBagisHareket nbh = new NakitBagisHareket();
-            nbh = nbh.Select<NakitBagisHareket>(paramBagisHareketIdLbl.Value.ConvertToInt());
+            nbh = new NakitBagisHareketService().GetById(paramBagisHareketIdLbl.Value.ConvertToInt());
 
             if (nbh != null)//bu bagis varsa
             {
@@ -379,7 +379,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
         {
             string currentUser = UtilityHelper.GetCurrentUserLoginName();
             NakitBagisHareket nbh = new NakitBagisHareket();
-            nbh = nbh.Select<NakitBagisHareket>(paramBagisHareketIdLbl.Value.ConvertToInt());
+            nbh = new NakitBagisHareketService().GetById(paramBagisHareketIdLbl.Value.ConvertToInt());
             if (nbh != null)
             {
                 DbClass db = new DbClass();

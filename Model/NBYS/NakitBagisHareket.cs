@@ -1,6 +1,7 @@
 using DAO.Ortak;
 using DocumentFormat.OpenXml.Bibliography;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -70,7 +71,7 @@ namespace Model.NBYS
             {
                 if (this != null)
                 {
-                    NakitBagisHareket item = Select<NakitBagisHareket>(Id);
+                    NakitBagisHareket item = new NakitBagisHareketService().GetById(Id);
                     if (Id != 0)
                     {
                         GenericEntity<NakitBagisHareket> genericEntity = new GenericEntity<NakitBagisHareket>(ProjeConstants.SQL_UPDATE);
@@ -101,7 +102,7 @@ namespace Model.NBYS
                 {
                     GenericEntity<NakitBagisHareket> genericEntity = new GenericEntity<NakitBagisHareket>(ProjeConstants.SQL_DELETE);
                     SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    NakitBagisHareket item = Select<NakitBagisHareket>(Id);
+                    NakitBagisHareket item = new NakitBagisHareketService().GetById(Id);
                     if (item != null)
                     {
                         isDeleted = dao.DeleteFromDb(query, "");
@@ -122,14 +123,7 @@ namespace Model.NBYS
         }
         public override T Select<T>(int id)
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM NakitBagisHareket_Table 
-                               WHERE  Id={0}", id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<NakitBagisHareket> list = ToList<NakitBagisHareket>(dataTable);
-            NakitBagisHareket nakitBagisciHareket = new NakitBagisHareket();
-            nakitBagisciHareket = list.FirstOrDefault();
-            return (T)Convert.ChangeType(nakitBagisciHareket, typeof(T));
+            return (T)Convert.ChangeType(new NakitBagisHareketService().GetById(id), typeof(T));
         }
         public override List<T> SelectAll<T>()
         {
@@ -273,49 +267,19 @@ namespace Model.NBYS
         }
         public List<NakitBagisHareket> SelectByBagisciId(int bagisciId)
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM NakitBagisHareket_Table 
-                               WHERE BagisciId= {0}", bagisciId);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<NakitBagisHareket> list = ToList<NakitBagisHareket>(dataTable);
-
-            return (list);
+            return new NakitBagisHareketService().GetByBagisciId(bagisciId);
         }
         public NakitBagisHareket SelectByEkstreAktarmaId(int ekstreAktarmaId)
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM NakitBagisHareket_Table 
-                               WHERE EkstreAktarmaId= {0}", ekstreAktarmaId);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<NakitBagisHareket> list = ToList<NakitBagisHareket>(dataTable);
-
-            return (list.FirstOrDefault());
+            return new NakitBagisHareketService().GetByEkstreAktarmaId(ekstreAktarmaId);
         }
         public List<NakitBagisHareket> SelectByBagisciIdTarih(int nakitBagisciId, DateTime bastar,DateTime bittar)
         {
-            string sqlString = string.Format(@"SELECT *
-                FROM NakitBagisHareket_Table 
-                WHERE BagisciId={0} and  BagisTarihi between {1} and {2}", nakitBagisciId, bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat());
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<NakitBagisHareket> list = ToList<NakitBagisHareket>(dataTable);
-
-            return (list);
+            return new NakitBagisHareketService().GetByBagisciIdTarih(nakitBagisciId, bastar, bittar);
         }
         public NakitBagisHareket SelectBagisByBagisciIdTarih(int nakitBagisciId, DateTime bastar)
         {
-            string sqlString = string.Format(@"				
-                SELECT TOP 1 *
-                FROM NakitBagisHareket_Table 
-                WHERE BagisciId={0} AND  (BagisTarihi >= {1} AND BagisTarihi<={2})
-				Order By BagisTarihi desc", nakitBagisciId, bastar.ReturnTRDateFormat(), bastar.AddYears(1).ReturnTRDateFormat());
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<NakitBagisHareket> list = ToList<NakitBagisHareket>(dataTable);
-
-            return (list.FirstOrDefault());
+            return new NakitBagisHareketService().GetLastInYearByBagisciId(nakitBagisciId, bastar);
         }
         /**
          * returns Json

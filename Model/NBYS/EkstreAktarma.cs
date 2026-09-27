@@ -2723,7 +2723,7 @@ namespace Model.NBYS
                     //}
                     //isArmaganSaved = armagan.SaveOrUpdate(bastar, bittar, bagisTarihi, nakitBagisciId, nakikbagisHareketId);
                     NakitBagisHareket newNbh = new NakitBagisHareket();
-                    List<NakitBagisHareket> newNbhList = newNbh.SelectByBagisciIdTarih(nakitBagisciId, bastar, bittar);
+                    List<NakitBagisHareket> newNbhList = new NakitBagisHareketService().GetByBagisciIdTarih(nakitBagisciId, bastar, bittar);
                     int armaganId = ArmaganiKaydetVeyaGuncelle(bastar, bittar, nakitBagisciId, bagisTarihi, toplamBagis, hakedilenArmaganTanim.Id, currentUser, nakitBagisci, newNbhList);
                     isArmaganSaved = armaganId > 0;
                 }
@@ -3098,7 +3098,7 @@ namespace Model.NBYS
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
             NakitBagisHareket kayitliNakitBagishareket = new NakitBagisHareket();
-            kayitliNakitBagishareket = kayitliNakitBagishareket.SelectByEkstreAktarmaId(ekstreAktarma.Id);
+            kayitliNakitBagishareket = new NakitBagisHareketService().GetByEkstreAktarmaId(ekstreAktarma.Id);
             int nakitBagisHareketId = 0;
             if (kayitliNakitBagishareket==null)
             {
