@@ -2968,33 +2968,22 @@ namespace Model.NBYS
             DbClass db = new DbClass();
             int yeniId = 0;
             NakitBagisci nbToSave = new NakitBagisci();
-            nbToSave = new NakitBagisci();
-            nbToSave.Olusturan = UtilityHelper.GetCurrentUserLoginName();
+            NakitBagisciService nakitBagisciService = new NakitBagisciService();
 
             //herbir nesne için bir dbo yarat
             //önce nakitbagisçiyi kaydet
-            DBObject nb1Dbo = new DBObject();
-            nb1Dbo.SQLString = nbToSave.GetInsertSQL("");
-            nb1Dbo.SQLType = ProjeConstants.SQL_INSERT;
-            nb1Dbo.IsFilled = true;
+            DBObject nb1Dbo = nakitBagisciService.CreateInsertTransactionObject(nbToSave);
             db.DBObjectList.Add(nb1Dbo);
 
             //simdi update et
-            DBObject nb2Dbo = new DBObject();
-
             //guncellenecek alanlari nesnelerde guncelle
             //sonra Id ile bilinmeyenden Ad üret ve güncelle
             NakitBagisci nbToUpdate = new NakitBagisci();
-            nbToUpdate.Degistiren = UtilityHelper.GetCurrentUserLoginName();
             nbToUpdate.Adi = ProjeConstants.NAKITBAGISCI_BILINMEYEN + "_{0}";
             nbToUpdate.Aciklama = nbToUpdate.Aciklama + ProjeConstants.NAKITBAGISCI_BILINMEYEN + " Bagisçi Id= " + "{0}";
 
             //dbo ayarla
-            nb2Dbo.SQLString = nbToUpdate.GetUpdateSQL("{0}");
-            nb2Dbo.SQLType = ProjeConstants.SQL_UPDATE;
-            nb2Dbo.UseReturnIdAsParam = true;
-            nb2Dbo.DbObjectParamIndex = 0;
-            nb2Dbo.IsFilled = true;
+            DBObject nb2Dbo = nakitBagisciService.CreateUpdateWithGeneratedIdTransactionObject(nbToUpdate, 0);
             db.DBObjectList.Add(nb2Dbo);
 
             //hazirlanan sorgulari çalistir
