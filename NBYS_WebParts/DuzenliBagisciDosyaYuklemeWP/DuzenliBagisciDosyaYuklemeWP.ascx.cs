@@ -208,8 +208,8 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                                 eslesmeBilgisi = " # TCKN ile bulundu";
                             }
 
-                            DuzenliNakitBagisci duzenliNakitBagisci = new DuzenliNakitBagisci();
-                            duzenliNakitBagisci = duzenliNakitBagisci.SelectByBagisciId(bagisciId);
+                            DuzenliNakitBagisciService duzenliBagisciService = new DuzenliNakitBagisciService();
+                            DuzenliNakitBagisci duzenliNakitBagisci = duzenliBagisciService.GetActiveByBagisciId(bagisciId);
                             bool saved = false;
                             bool updated = false;   
 
@@ -229,7 +229,7 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                                 duzenliNakitBagisci.Aciklama = aciklama;
                                 duzenliNakitBagisci.BagisAdedi = bagisadedi;
                                 duzenliNakitBagisci.BagisToplami = toplambagis;
-                                int id = duzenliNakitBagisci.Save();
+                                int id = duzenliBagisciService.Save(duzenliNakitBagisci);
                                 if (id < 1)
                                 {
                                     aciklamaStr= string.IsNullOrEmpty(aciklama) ? " Yeni Düzenli Bağışçı yaratılmadı -> " + adi : aciklama;
@@ -251,7 +251,7 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                                 duzenliNakitBagisci.Aciklama = aciklama;
                                 duzenliNakitBagisci.BagisAdedi = bagisadedi;
                                 duzenliNakitBagisci.BagisToplami = toplambagis;
-                                updated=duzenliNakitBagisci.Update();
+                                updated = duzenliBagisciService.Update(duzenliNakitBagisci);
 
                             }
 
