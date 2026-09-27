@@ -667,7 +667,7 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
             NakitBagisHareket nbh = new NakitBagisHareket();
             int rowCount = 0;
             var json = nbh.SelectByBagisciIdReturnJSon(nakitBagisciId, ref rowCount);
-            decimal toplamTutar = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
+            decimal toplamTutar = new NakitBagisHareketService().GetTotalByBagisciIdDateRange(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
             BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır" :
                 "Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + "TL bağışı bulunmaktadır";

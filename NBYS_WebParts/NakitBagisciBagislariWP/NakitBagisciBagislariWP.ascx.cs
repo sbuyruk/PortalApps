@@ -316,7 +316,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
             int rowCount = 0;
             var json = nbh.SelectByBagisciIdReturnJSon(nakitBagisciId, ref rowCount);
 
-            decimal toplamTutar = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
+            decimal toplamTutar = new NakitBagisHareketService().GetTotalByBagisciIdDateRange(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
 
             BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır." :

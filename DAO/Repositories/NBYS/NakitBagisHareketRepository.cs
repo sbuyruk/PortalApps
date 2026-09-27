@@ -61,6 +61,28 @@ namespace DAO.Repositories.NBYS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectSumByBagisciIdTarih(int bagisciId, DateTime baslangic, DateTime bitis)
+        {
+            SqlQuery query = new SqlQuery(@"SELECT SUM(BagisMiktari) Toplam
+                FROM NakitBagisHareket_Table
+                WHERE BagisciId=@BagisciId AND BagisTarihi BETWEEN @Baslangic AND @Bitis");
+            query.AddParameter("@BagisciId", bagisciId);
+            query.AddParameter("@Baslangic", LegacyDateValue(baslangic));
+            query.AddParameter("@Bitis", LegacyDateValue(bitis));
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectArmaganiOlmayanByBagisciId(int bagisciId)
+        {
+            SqlQuery query = new SqlQuery(@"SELECT A.*
+                FROM NakitBagisHareket_Table A
+                LEFT JOIN Armagan_Table B ON B.Id=A.ArmaganId AND B.ArmaganTanimId IN (2,3,4)
+                WHERE A.BagisciId=@BagisciId AND B.Id IS NULL
+                ORDER BY BagisMiktari DESC");
+            query.AddParameter("@BagisciId", bagisciId);
+            return db.SelectFromDb(query, "");
+        }
+
         // Preserve ReturnTRDateFormat's culture, precision and MinValue semantics.
         // Parameters carry the value without SQL literal quotes.
         private static string LegacyDateValue(DateTime value)

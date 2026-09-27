@@ -2682,7 +2682,7 @@ namespace Model.NBYS
                 bastar = new DateTime(bagisTarihi.Year, bagisTarihi.Month, 1);
                 bittar = bastar.AddMonths(1).AddDays(-1);
                 
-                decimal toplamBagis = nakitBagisHareket.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(bastar, bittar, nakitBagisciId);
+                decimal toplamBagis = new NakitBagisHareketService().GetTotalByBagisciIdDateRange(bastar, bittar, nakitBagisciId);
 
                 ArmaganTanim hakedilenArmaganTanim = new ArmaganTanim();
                 hakedilenArmaganTanim = hakedilenArmaganTanim.SelectByTutar(toplamBagis, tuzelKisiMi); //toplam tutar gidecek
@@ -2806,7 +2806,7 @@ namespace Model.NBYS
                 decimal bagisTutari = nakitBagisHareket.BagisMiktari;
                 //Geçmisten bugüne kadar olan toplam bagis tutarini bul
                 NakitBagisHareket nbh = new NakitBagisHareket();
-                decimal toplamBagis = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
+                decimal toplamBagis = new NakitBagisHareketService().GetTotalByBagisciIdDateRange(
                     ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ConvertToDatetime(), nakitBagisHareket.BagisTarihi, nakitBagisci.Id);
 
                 //Geçmisten bugüne kadar olan toplam bagis tutarina göre Çoklu Bagis armagani hakediyor mu
