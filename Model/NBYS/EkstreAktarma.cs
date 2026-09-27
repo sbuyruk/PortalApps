@@ -2965,35 +2965,15 @@ namespace Model.NBYS
         }
         private static int BilinmeyenBagisciOlusturAtomicId()
         {
-            DbClass db = new DbClass();
-            int yeniId = 0;
-            NakitBagisci nbToSave = new NakitBagisci();
-            NakitBagisciService nakitBagisciService = new NakitBagisciService();
-
-            //herbir nesne için bir dbo yarat
-            //önce nakitbagisçiyi kaydet
-            DBObject nb1Dbo = nakitBagisciService.CreateInsertTransactionObject(nbToSave);
-            db.DBObjectList.Add(nb1Dbo);
-
-            //simdi update et
-            //guncellenecek alanlari nesnelerde guncelle
-            //sonra Id ile bilinmeyenden Ad üret ve güncelle
-            NakitBagisci nbToUpdate = new NakitBagisci();
-            nbToUpdate.Adi = ProjeConstants.NAKITBAGISCI_BILINMEYEN + "_{0}";
-            nbToUpdate.Aciklama = nbToUpdate.Aciklama + ProjeConstants.NAKITBAGISCI_BILINMEYEN + " Bagisçi Id= " + "{0}";
-
-            //dbo ayarla
-            DBObject nb2Dbo = nakitBagisciService.CreateUpdateWithGeneratedIdTransactionObject(nbToUpdate, 0);
-            db.DBObjectList.Add(nb2Dbo);
-
-            //hazirlanan sorgulari çalistir
-            List<DBObject> savedDBOList = db.ExecuteTransaction();
-            if (savedDBOList.Count > 0)
+            try
             {
-                yeniId = nb1Dbo.ReturnId;
+                return new NakitBagisciService().CreateBilinmeyenBagisci();
             }
-            return yeniId;
-
+            catch (Exception ex)
+            {
+                MessageHelper.PublishMessage(ex.Message, ProjeConstants.MESAJ_HATA);
+                throw;
+            }
         }
         //private static int GetBilinmeyenBagisciId()
         //{

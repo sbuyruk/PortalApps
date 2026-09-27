@@ -1,6 +1,7 @@
 using DAO.Ortak;
 using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Globalization;
 using Utility.ProjeGlobal;
 
@@ -55,33 +56,72 @@ namespace DAO.Repositories.NBYS
             };
         }
 
-        public DBObject CreateInsertTransactionObject<T>(T entity)
+        // Both commands use the same connection and transaction; the identity never leaves this operation.
+        public int CreateBilinmeyenBagisci<T>(T entity, string namePrefix, DateTime modifiedAt, string modifiedBy)
         {
-            SqlQuery query = crudQueryBuilder.BuildInsert(entity, TableName);
-            NormalizeLegacyNullStrings(entity, query);
-            query.Sql += ";SELECT SCOPE_IDENTITY()";
+            SqlQuery insert = crudQueryBuilder.BuildInsert(entity, TableName);
+            NormalizeLegacyNullStrings(entity, insert);
+            insert.Sql += ";SELECT SCOPE_IDENTITY()";
+            SqlQuery current = insert;
+            int sqlType = ProjeConstants.SQL_INSERT;
 
-            return new DBObject
+            using (SqlConnection connection = new SqlConnection(DBProcess.getConnectString()))
             {
-                TransactionQuery = query,
-                SQLType = ProjeConstants.SQL_INSERT,
-                IsFilled = true
-            };
-        }
+                connection.Open();
+                using (SqlTransaction transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        int id;
+                        using (SqlCommand command = new SqlCommand(insert.Sql, connection, transaction))
+                        {
+                            command.Parameters.AddRange(insert.Parameters.ToArray());
+                            object result = command.ExecuteScalar();
+                            if (result == null || result == DBNull.Value)
+                                throw new InvalidOperationException("Bilinmeyen bagisci kimligi alinamadi.");
+                            id = Convert.ToInt32(result);
+                            if (id <= 0)
+                                throw new InvalidOperationException("Bilinmeyen bagisci kimligi gecersiz.");
+                        }
+                        if (ProjeConstants.GENEL_SAVE_LOG)
+                            DbClass.SorguyuLogla("INSERT", true, insert.ToLogString(), "Id=" + id);
 
-        public DBObject CreateUpdateWithGeneratedIdTransactionObject<T>(T entity, int insertObjectIndex)
-        {
-            SqlQuery query = crudQueryBuilder.BuildUpdate(entity, TableName);
-            NormalizeLegacyNullStrings(entity, query);
+                        sqlType = ProjeConstants.SQL_UPDATE;
+                        current = new SqlQuery(@"UPDATE NakitBagisci_Table
+                            SET Adi=@Adi, Aciklama=@Aciklama,
+                                DegistirmeTarihi=@DegistirmeTarihi, Degistiren=@Degistiren
+                            WHERE Id=@Id");
+                        string idText = id.ToString(CultureInfo.InvariantCulture);
+                        current.AddParameter("@Id", id);
+                        current.AddParameter("@Adi", namePrefix + "_" + idText);
+                        current.AddParameter("@Aciklama", namePrefix + " Bagisçi Id= " + idText);
+                        current.AddParameter("@DegistirmeTarihi", modifiedAt);
+                        current.AddParameter("@Degistiren", modifiedBy ?? string.Empty);
+                        using (SqlCommand command = new SqlCommand(current.Sql, connection, transaction))
+                        {
+                            command.Parameters.AddRange(current.Parameters.ToArray());
+                            command.ExecuteNonQuery();
+                        }
+                        if (ProjeConstants.GENEL_UPDATE_LOG)
+                            DbClass.SorguyuLogla("UPDATE", true, current.ToLogString(), string.Empty);
 
-            return new DBObject
-            {
-                TransactionQuery = query,
-                SQLType = ProjeConstants.SQL_UPDATE,
-                UseReturnIdAsParam = true,
-                DbObjectParamIndex = insertObjectIndex,
-                IsFilled = true
-            };
+                        transaction.Commit();
+                        return id;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Attempt rollback before logging, even if the logging database is unavailable.
+                        try { transaction.Rollback(); }
+                        catch (Exception) { /* Preserve the original operation error. */ }
+                        try
+                        {
+                            DbClass.SorguyuLogla("SQL_TYPE=" + sqlType, false, current.ToLogString(), ex.Message);
+                        }
+                        catch (Exception) { /* Preserve the original operation error. */ }
+                        throw;
+                    }
+                }
+            }
         }
 
         public DataTable SelectById(int id)
