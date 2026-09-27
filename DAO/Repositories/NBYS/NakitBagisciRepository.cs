@@ -55,6 +55,35 @@ namespace DAO.Repositories.NBYS
             };
         }
 
+        public DBObject CreateInsertTransactionObject<T>(T entity)
+        {
+            SqlQuery query = crudQueryBuilder.BuildInsert(entity, TableName);
+            NormalizeLegacyNullStrings(entity, query);
+            query.Sql += ";SELECT SCOPE_IDENTITY()";
+
+            return new DBObject
+            {
+                TransactionQuery = query,
+                SQLType = ProjeConstants.SQL_INSERT,
+                IsFilled = true
+            };
+        }
+
+        public DBObject CreateUpdateWithGeneratedIdTransactionObject<T>(T entity, int insertObjectIndex)
+        {
+            SqlQuery query = crudQueryBuilder.BuildUpdate(entity, TableName);
+            NormalizeLegacyNullStrings(entity, query);
+
+            return new DBObject
+            {
+                TransactionQuery = query,
+                SQLType = ProjeConstants.SQL_UPDATE,
+                UseReturnIdAsParam = true,
+                DbObjectParamIndex = insertObjectIndex,
+                IsFilled = true
+            };
+        }
+
         public DataTable SelectById(int id)
         {
             SqlQuery query = new SqlQuery(@"SELECT *
@@ -253,6 +282,22 @@ namespace DAO.Repositories.NBYS
                 return value.Substring(1, value.Length - 2);
 
             return value;
+        }
+
+        private static void NormalizeLegacyNullStrings<T>(T entity, SqlQuery query)
+        {
+            Type entityType = entity.GetType();
+            foreach (System.Data.SqlClient.SqlParameter parameter in query.Parameters)
+            {
+                string propertyName = parameter.ParameterName.TrimStart('@');
+                System.Reflection.PropertyInfo property = entityType.GetProperty(propertyName);
+                if (property != null
+                    && property.PropertyType == typeof(string)
+                    && property.GetValue(entity, null) == null)
+                {
+                    parameter.Value = string.Empty;
+                }
+            }
         }
     }
 }
