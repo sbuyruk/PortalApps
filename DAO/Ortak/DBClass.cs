@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
-using System.Globalization;
 using System.Text;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
@@ -422,10 +421,7 @@ namespace DAO.Ortak
 
                         foreach (DBObject item in DBObjectList)
                         {
-                            SqlQuery transactionQuery = item.TransactionQuery;
-                            sqlString = transactionQuery == null
-                                ? item.SQLString.Replace(ProjeConstants.SQL_GENERIC_INT_VALUE.ToString(), "{" + item.SQLStringParamIndex + "}")
-                                : transactionQuery.Sql;
+                            sqlString = item.SQLString.Replace(ProjeConstants.SQL_GENERIC_INT_VALUE.ToString(),"{"+ item.SQLStringParamIndex + "}");
                             sqlType = item.SQLType;
                             switch (sqlType)
                             {
@@ -433,58 +429,48 @@ namespace DAO.Ortak
                                     {
                                         if (item.UseReturnIdAsParam)
                                         {
-                                            int returnId = ((DBObject)DBObjectList[item.DbObjectParamIndex]).ReturnId;
-                                            if (transactionQuery == null)
-                                                sqlString = string.Format(sqlString, returnId.ToString(CultureInfo.InvariantCulture));
-                                            else
-                                                ApplyReturnId(transactionQuery, returnId);
+                                            string pval = ((DBObject)DBObjectList[item.DbObjectParamIndex]).ReturnId.ToString();
+                                            sqlString = string.Format(sqlString, pval);
                                         }
                                         SqlCommand cmd = new SqlCommand(sqlString, dBConnection);
                                         cmd.Transaction = DBTransaction;
-                                        AddTransactionParameters(cmd, transactionQuery);
                                         //cmd.ExecuteNonQuery();
                                         int id = cmd.ExecuteScalar().ConvertToInt();
                                         item.ReturnId = id;
                                         item.Success = true;
                                         if (ProjeConstants.GENEL_SAVE_LOG)
-                                            SorguyuLogla("INSERT", true, GetTransactionLog(transactionQuery, sqlString), "Id=" + id );
+                                            SorguyuLogla("INSERT", true, sqlString, "Id=" + id );
                                         break;
                                     }
                                 case ProjeConstants.SQL_UPDATE:
                                     {
                                         if (item.UseReturnIdAsParam)
                                         {
-                                            int returnId = ((DBObject)DBObjectList[item.DbObjectParamIndex]).ReturnId;
-                                            if (transactionQuery == null)
-                                                sqlString = string.Format(sqlString, returnId.ToString(CultureInfo.InvariantCulture));
-                                            else
-                                                ApplyReturnId(transactionQuery, returnId);
+                                            string pval = ((DBObject)DBObjectList[item.DbObjectParamIndex]).ReturnId.ToString();
+                                            sqlString = string.Format(sqlString, pval);
                                         }
                                         SqlCommand cmd = new SqlCommand(sqlString, dBConnection);
                                         cmd.Transaction = DBTransaction;
-                                        AddTransactionParameters(cmd, transactionQuery);
                                         item.RowsAffected = cmd.ExecuteNonQuery();
                                         item.Success = true;
                                         if (ProjeConstants.GENEL_UPDATE_LOG)
-                                            SorguyuLogla("UPDATE", true, GetTransactionLog(transactionQuery, sqlString), string.Empty);
+                                            SorguyuLogla("UPDATE", true, sqlString, string.Empty);
                                         break;
                                     }
                                 case ProjeConstants.SQL_DELETE:
                                     {
                                         SqlCommand cmd = new SqlCommand(sqlString, dBConnection);
                                         cmd.Transaction = DBTransaction;
-                                        AddTransactionParameters(cmd, transactionQuery);
                                         item.RowsAffected = cmd.ExecuteNonQuery();
                                         item.Success = true;
                                         if (ProjeConstants.GENEL_DELETE_LOG)
-                                            SorguyuLogla("DELETE", true, GetTransactionLog(transactionQuery, sqlString), "RowsAffected="+ item.RowsAffected);
+                                            SorguyuLogla("DELETE", true, sqlString, "RowsAffected="+ item.RowsAffected);
                                         break;
                                     }
                                 case ProjeConstants.SQL_SELECT:
                                     {
                                         SqlCommand cmd = new SqlCommand(sqlString, dBConnection);
                                         cmd.Transaction = DBTransaction;
-                                        AddTransactionParameters(cmd, transactionQuery);
                                         item.RowsAffected = cmd.ExecuteNonQuery();
                                         item.Success = true;
                                         break;
@@ -512,37 +498,6 @@ namespace DAO.Ortak
                 }
                 return DBObjectList;
             }
-        }
-        private static void AddTransactionParameters(SqlCommand command, SqlQuery query)
-        {
-            if (query != null && query.Parameters.Count > 0)
-                command.Parameters.AddRange(query.Parameters.ToArray());
-        }
-
-        private static void ApplyReturnId(SqlQuery query, int returnId)
-        {
-            foreach (SqlParameter parameter in query.Parameters)
-            {
-                if (string.Equals(parameter.ParameterName, "@Id", StringComparison.OrdinalIgnoreCase))
-                {
-                    parameter.Value = returnId;
-                    continue;
-                }
-
-                string value = parameter.Value as string;
-                if (!string.IsNullOrEmpty(value) && value.Contains("{0}"))
-                {
-                    parameter.Value = string.Format(
-                        CultureInfo.InvariantCulture,
-                        value,
-                        returnId);
-                }
-            }
-        }
-
-        private static string GetTransactionLog(SqlQuery query, string sqlString)
-        {
-            return query == null ? sqlString : query.ToLogString();
         }
         //private SqlTransaction DBTransaction {
         //    get;

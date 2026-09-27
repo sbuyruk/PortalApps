@@ -197,28 +197,16 @@ namespace Model.Services.NBYS
             return repository.CreateDeleteTransactionObject(id);
         }
 
-        public DBObject CreateInsertTransactionObject(NakitBagisci nakitBagisci)
+        public int CreateBilinmeyenBagisci()
         {
-            if (nakitBagisci == null)
-                throw new ArgumentNullException("nakitBagisci");
-
-            nakitBagisci.OlusturmaTarihi = DateTime.Now;
-            nakitBagisci.Olusturan = UtilityHelper.GetCurrentUserName();
-            return repository.CreateInsertTransactionObject(nakitBagisci);
-        }
-
-        public DBObject CreateUpdateWithGeneratedIdTransactionObject(
-            NakitBagisci nakitBagisci,
-            int insertObjectIndex)
-        {
-            if (nakitBagisci == null)
-                throw new ArgumentNullException("nakitBagisci");
-
-            nakitBagisci.DegistirmeTarihi = DateTime.Now;
-            nakitBagisci.Degistiren = UtilityHelper.GetCurrentUserName();
-            return repository.CreateUpdateWithGeneratedIdTransactionObject(
-                nakitBagisci,
-                insertObjectIndex);
+            NakitBagisci bagisci = new NakitBagisci();
+            bagisci.OlusturmaTarihi = DateTime.Now;
+            bagisci.Olusturan = UtilityHelper.GetCurrentUserName();
+            return repository.CreateBilinmeyenBagisci(
+                bagisci,
+                ProjeConstants.NAKITBAGISCI_BILINMEYEN,
+                DateTime.Now,
+                UtilityHelper.GetCurrentUserName());
         }
 
         private static NakitBagisci MapSingle(DataTable dataTable)

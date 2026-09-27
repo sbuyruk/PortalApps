@@ -5,7 +5,6 @@ namespace DAO.Ortak
     public class DBObject
     {
         public string SQLString { get; set; }
-        public SqlQuery TransactionQuery { get; set; }
         public int SQLType { get; set; }
         public int ReturnId { get; set; }
         public bool UseReturnIdAsParam { get; set; }
