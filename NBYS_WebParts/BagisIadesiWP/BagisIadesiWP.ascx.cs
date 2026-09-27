@@ -376,7 +376,7 @@ namespace NBYS_WebParts.BagisIadesiWP
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
 
             NakitBagisHareket nbh = new NakitBagisHareket();
-            nbh = nbh.Select<NakitBagisHareket>(paramBagisHareketIdLbl.Value.ConvertToInt());
+            nbh = new NakitBagisHareketService().GetById(paramBagisHareketIdLbl.Value.ConvertToInt());
 
             if (nbh != null)//bu bagis varsa
             {
@@ -438,7 +438,7 @@ namespace NBYS_WebParts.BagisIadesiWP
                 //Armagan kaydini pasif yap
 
                 NakitBagisHareket nbh = new NakitBagisHareket();
-                nbh = nbh.Select<NakitBagisHareket>(paramBagisHareketIdLbl.Value.ConvertToInt());
+                nbh = new NakitBagisHareketService().GetById(paramBagisHareketIdLbl.Value.ConvertToInt());
 
 
 
@@ -527,7 +527,7 @@ namespace NBYS_WebParts.BagisIadesiWP
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
 
             NakitBagisHareket nbh = new NakitBagisHareket();
-            nbh = nbh.Select<NakitBagisHareket>(paramBagisHareketIdLbl.Value.ConvertToInt());
+            nbh = new NakitBagisHareketService().GetById(paramBagisHareketIdLbl.Value.ConvertToInt());
 
             if (nbh != null)//bu bagis varsa
             {
@@ -554,7 +554,7 @@ namespace NBYS_WebParts.BagisIadesiWP
             try
             {
                 NakitBagisHareket nbh = new NakitBagisHareket();
-                nbh = nbh.Select<NakitBagisHareket>(paramBagisHareketIdLbl.Value.ConvertToInt());
+                nbh = new NakitBagisHareketService().GetById(paramBagisHareketIdLbl.Value.ConvertToInt());
 
                 if (nbh != null)
                 {

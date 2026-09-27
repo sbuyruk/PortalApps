@@ -593,7 +593,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                 //NakitBagisHareketiDuzenle();
 
                                 NakitBagisHareket nbhList = new NakitBagisHareket();
-                                List<NakitBagisHareket> listofBagisHareket = nbhList.SelectByBagisciId(birlesecekBagisci.Id);
+                                List<NakitBagisHareket> listofBagisHareket = new NakitBagisHareketService().GetByBagisciId(birlesecekBagisci.Id);
 
                                 string bagiscisiDegisenNbhs = string.Empty;
                                 try
