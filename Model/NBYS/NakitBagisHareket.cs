@@ -330,21 +330,9 @@ namespace Model.NBYS
         {
             return new NakitBagisHareketService().GetByBagisciIdDateRange(basTar, bitTar, nakitBagisciId);
         }
-        public decimal SelectSumBagisMiktariByBagisTarihiBolge(DateTime basTar, DateTime bitTar, int bolgeId, ref int adet)
-        {
-            return new NakitBagisHareketService().GetTotalByTarihBolge(basTar, bitTar, bolgeId, ref adet);
-        }
         public DataTable SelectByFilter(string filter, DateTime? bagisTarihi)
         {
             return new NakitBagisHareketService().Search(filter, bagisTarihi);
-        }
-        public decimal SelectSumBagisMiktariByBagisTarihiBanka(DateTime basTar, DateTime bitTar, string banka, ref int adet)
-        {
-            return new NakitBagisHareketService().GetTotalByTarihBanka(basTar, bitTar, banka, ref adet);
-        }
-        public decimal SelectMaxBagisMiktariByBagisTarihiBanka(DateTime basTar, DateTime bitTar, string banka)
-        {
-            return new NakitBagisHareketService().GetMaximumByTarihBanka(basTar, bitTar, banka);
         }
         public string SelectByDurumTarihReturnJson(string ay, string yil, int ilId)
         {
@@ -384,22 +372,6 @@ namespace Model.NBYS
                 throw;
             }
             return dataTable;
-        }
-        public DataTable SelectCountByBagisTarihiBolge(int yil, int ay)
-        {
-            return new NakitBagisHareketService().GetCountByTarihBolge(yil, ay);
-        }
-        public DataTable SelectCountSumByBagisTarihi(DateTime bastar, DateTime bittar)
-        {
-            return new NakitBagisHareketService().GetCountSumByTarih(bastar, bittar);
-        }
-        public DataTable SelectCountSumByYil_il(int basYil, int bitYil)
-        {
-            return new NakitBagisHareketService().GetCountSumByYilIl(basYil, bitYil);
-        }
-        public DataTable SelectCountSumByBagisBanka(DateTime bastar, DateTime bittar)
-        {
-            return new NakitBagisHareketService().GetCountSumByBanka(bastar, bittar);
         }
         public DataTable SelectByBolgeTarih(int bolgeId, DateTime ilkTarih, DateTime sonTarih)
         {
