@@ -6,9 +6,9 @@
 <%@ Import Namespace="Microsoft.SharePoint" %> 
 <%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BildirimWP.ascx.cs" Inherits="Portal_WebParts.BildirimWP.BildirimWP" %>
-<div>
+<%--<div>
     <button type="button" id="ModalAcBtn" class="btn btn-primary">Modal Aç</button>
-</div>
+</div>--%>
 
 <%-- Bildirim modal --%>
 <div class="modal" id="ModalAcDiv" tabindex="-1" role="dialog" aria-hidden="true">
