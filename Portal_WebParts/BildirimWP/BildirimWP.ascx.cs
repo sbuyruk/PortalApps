@@ -50,6 +50,12 @@ namespace Portal_WebParts.BildirimWP
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!ProjeConstants.AMIRONAYIETKINMI)
+            {
+                Visible = false;
+                return;
+            }
+
             Personel personel = new Personel();// IKYSOrtak.PersonelGetir(CurrentUserName);
             personel = personel.Select(1192);
             //GorevOnay entity'sinde bu GorevOnay.AmirId==personel.Id ile eşleşen ve GorevOnay.AmirOnayi==AmirOnayDurumu.OnayBekliyor olan
