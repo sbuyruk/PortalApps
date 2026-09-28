@@ -31,6 +31,13 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
+        protected override void Render(System.Web.UI.HtmlTextWriter writer)
+        {
+            if (ProjeConstants.AMIRONAYIETKINMI)
+            {
+                base.Render(writer);
+            }
+        }
         private string CurrentUserName
         {
             get
@@ -63,7 +70,6 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
             {
                 if (!ProjeConstants.AMIRONAYIETKINMI)
                 {
-                    Visible = false;
                     return;
                 }
 
