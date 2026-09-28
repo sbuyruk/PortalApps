@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -178,8 +179,8 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
 
             DateTime bastar = BasTarTxt.Value.ConvertToDatetime();
             DateTime bittar = BitTarTxt.Value.ConvertToDatetime();
-            NakitBagisHareket nbh = new NakitBagisHareket();
-            DataTable dataTable = nbh.SelectCountSumByBagisTarihi(bastar, bittar);
+            NakitBagisHareketService nbh = new NakitBagisHareketService();
+            DataTable dataTable = nbh.GetCountSumByTarih(bastar, bittar);
             if (dataTable != null)
             {
                 int eskiAdetToplam1 = 0;
@@ -204,9 +205,9 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
                     tableRow.Controls.Add(bolgeCell);
 
                     int toplamAdet = 0;
-                    NakitBagisHareket nbh1 = new NakitBagisHareket();
+                    NakitBagisHareketService nbh1 = new NakitBagisHareketService();
 
-                    Decimal toplamTutar = nbh1.SelectSumBagisMiktariByBagisTarihiBolge(bastar, bittar, bolgeId, ref toplamAdet);
+                    Decimal toplamTutar = nbh1.GetTotalByTarihBolge(bastar, bittar, bolgeId, ref toplamAdet);
                     toplamAdetToplam += toplamAdet;
                     toplamTutarToplam += toplamTutar;
 

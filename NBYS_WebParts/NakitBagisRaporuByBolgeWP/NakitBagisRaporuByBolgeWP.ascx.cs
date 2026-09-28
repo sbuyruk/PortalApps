@@ -1,4 +1,5 @@
 using Model.NBYS;
+using Model.Services.NBYS;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -99,11 +100,11 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
                 Decimal ErzToplamTutar = 0;
                 int YurtdisiToplamAdet = 0;
                 Decimal YurtdisiToplamTutar = 0;
-                NakitBagisHareket nbh = new NakitBagisHareket();
+                NakitBagisHareketService nbh = new NakitBagisHareketService();
                 for (int i = 1; i <= 12; i++)
                 {
 
-                    DataTable dataTable = nbh.SelectCountByBagisTarihiBolge(yil, i);
+                    DataTable dataTable = nbh.GetCountByTarihBolge(yil, i);
                     if (dataTable != null)
                     {
                         if (dataTable.Rows.Count > 0)

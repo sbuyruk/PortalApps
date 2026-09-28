@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -285,8 +286,8 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP
                 bittar = new DateTime(yil, 12, 31);
             }
 
-            NakitBagisHareket nbh = new NakitBagisHareket();
-            DataTable dataTable = nbh.SelectCountSumByBagisBanka(bastar, bittar);
+            NakitBagisHareketService nbh = new NakitBagisHareketService();
+            DataTable dataTable = nbh.GetCountSumByBanka(bastar, bittar);
             if (dataTable != null)
             {
                 int yeniBagisAdetToplam1 = 0;
@@ -311,9 +312,9 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP
                     tableRow.Controls.Add(bankaCell);
 
                     int eskiBagisAdet1 = 0;
-                    NakitBagisHareket nbh1 = new NakitBagisHareket();
+                    NakitBagisHareketService nbh1 = new NakitBagisHareketService();
 
-                    Decimal eskiBagisTutar1 = nbh1.SelectSumBagisMiktariByBagisTarihiBanka(bastar, bittar, banka, ref eskiBagisAdet1);
+                    Decimal eskiBagisTutar1 = nbh1.GetTotalByTarihBanka(bastar, bittar, banka, ref eskiBagisAdet1);
                     eskiBagisAdetToplam1 += eskiBagisAdet1;
                     eskiBagisTutarToplam1 += eskiBagisTutar1;
 
@@ -357,7 +358,7 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP
                     tableRow.Controls.Add(toplamTutarCell);
 
                     TableCell enYuksekCell = new TableCell();
-                    Decimal enYuksekBagis = nbh1.SelectMaxBagisMiktariByBagisTarihiBanka(bastar, bittar, banka);
+                    Decimal enYuksekBagis = nbh1.GetMaximumByTarihBanka(bastar, bittar, banka);
                     enYuksekCell.Text = enYuksekBagis.ToString("N", culturInfo);
                     tableRow.Controls.Add(enYuksekCell);
 
