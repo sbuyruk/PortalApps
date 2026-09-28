@@ -759,12 +759,12 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             return personel;
         }
 
-        private GorevOnay.AmirOnayDurumu AmirOnayiHesapla()
+        private GorevOnay.AmirOnayDurumu AmirOnayiBelirle()
         {
             int gorevGrubuId = GorevGrubuIdTxt.Text.ConvertToInt();
             if (gorevGrubuId == 1 || gorevGrubuId == 2)
             {
-                return GorevOnay.AmirOnayDurumu.Reddedildi;
+                return GorevOnay.AmirOnayDurumu.OnayGerekmez;
             }
             else if (gorevGrubuId == 3)
             {
@@ -815,7 +815,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 gorevOnay.Sure = SureTxt.Text;
                 gorevOnay.Yevmiye = YevmiyeTxt.Text;
                 gorevOnay.GunlukYevmiye = GunlukYevmiyeTxt.Text;
-                gorevOnay.AmirOnayi = (int)AmirOnayiHesapla();
+                gorevOnay.AmirOnayi = (int)AmirOnayiBelirle();
                 gorevOnay.Id = gorevOnay.Save();
 
             }
@@ -918,7 +918,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 gorevOnay.Sure = SureTxt.Text;
                 gorevOnay.Yevmiye = YevmiyeTxt.Text;
                 gorevOnay.GunlukYevmiye = GunlukYevmiyeTxt.Text;
-                gorevOnay.AmirOnayi = (int)AmirOnayiHesapla();
+                gorevOnay.AmirOnayi = (int)AmirOnayiBelirle();
                 isUpdated = gorevOnay.Update();
             }
             return isUpdated;
