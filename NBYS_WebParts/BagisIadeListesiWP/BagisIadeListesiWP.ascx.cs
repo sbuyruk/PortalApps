@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -95,7 +96,7 @@ namespace NBYS_WebParts.BagisIadeListesiWP
             try
             {
                 NakitBagisHareket nbh = new NakitBagisHareket();
-                jSon = nbh.SelectIadeEdilenBagislarReturnJson(AyDDL.SelectedItem.Value, YilDDL.SelectedItem.Value);
+                jSon = new NakitBagisHareketService().ListIadeEdilenBagislarJson(AyDDL.SelectedItem.Value, YilDDL.SelectedItem.Value);
             }
             catch (Exception exception)
             {
@@ -109,7 +110,7 @@ namespace NBYS_WebParts.BagisIadeListesiWP
         private DataTable GetIadeEdilenBagislarDataTable()
         {
             NakitBagisHareket nbh = new NakitBagisHareket();
-            return nbh.SelectIadeEdilenBagislarReturnDataTable(AyDDL.SelectedItem.Value, YilDDL.SelectedItem.Value);
+            return new NakitBagisHareketService().ListIadeEdilenBagislar(AyDDL.SelectedItem.Value, YilDDL.SelectedItem.Value);
         }
 
         private string CreateDataTable(string jsonData)

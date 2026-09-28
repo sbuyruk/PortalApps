@@ -161,7 +161,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
         private string BagisHareketListesiJson()
         {
             NakitBagisHareket nbh = new NakitBagisHareket();
-            var json = nbh.SelectByDurumTarihReturnJson(AyDDL.SelectedItem.Value, SecilenYilQS, ProjeConstants.IL_HEPSI);
+            var json = new NakitBagisHareketService().ListByDurumTarihJson(AyDDL.SelectedItem.Value, SecilenYilQS, ProjeConstants.IL_HEPSI);
             return json;
         }
         private void TabloOlustur()

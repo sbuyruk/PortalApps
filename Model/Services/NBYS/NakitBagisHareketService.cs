@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
+using Utility.ProjeGlobal;
 
 namespace Model.Services.NBYS
 {
@@ -66,6 +67,35 @@ namespace Model.Services.NBYS
         public List<NakitBagisHareket> GetArmaganiOlmayanByBagisciId(int bagisciId)
         {
             return Map(repository.SelectArmaganiOlmayanByBagisciId(bagisciId));
+        }
+
+        public DataTable Search(string filter, DateTime? bagisTarihi)
+        {
+            // bagisTarihi legacy API'de de sorguya uygulanmiyordu.
+            return repository.SelectByFilter(filter);
+        }
+
+        public DataTable ListByDurumTarih(string ay, string yil, int ilId)
+        {
+            string ayFiltresi = ay == ProjeConstants.HEPSI_INT.ToString() ? null : ay;
+            int? ilFiltresi = ilId > ProjeConstants.IL_HEPSI ? (int?)ilId : null;
+            return repository.SelectByDurumTarih(ayFiltresi, yil, ilFiltresi);
+        }
+
+        public string ListByDurumTarihJson(string ay, string yil, int ilId)
+        {
+            return new NakitBagisHareket().ToJSON(ListByDurumTarih(ay, yil, ilId));
+        }
+
+        public DataTable ListIadeEdilenBagislar(string ay, string yil)
+        {
+            string ayFiltresi = ay == ProjeConstants.HEPSI_INT.ToString() ? null : ay;
+            return repository.SelectIadeEdilenBagislar(ayFiltresi, yil);
+        }
+
+        public string ListIadeEdilenBagislarJson(string ay, string yil)
+        {
+            return new NakitBagisHareket().ToJSON(ListIadeEdilenBagislar(ay, yil));
         }
 
         private static List<NakitBagisHareket> Map(DataTable table)

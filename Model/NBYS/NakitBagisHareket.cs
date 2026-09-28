@@ -356,35 +356,7 @@ namespace Model.NBYS
         }
         public DataTable SelectByFilter(string filter, DateTime? bagisTarihi)
         {
-            string ilStr = string.Empty;
-            string bagisTarihiStr = string.Format(bagisTarihi.HasValue ? " AND A.BagisTarihi>{0} " + bagisTarihi.Value.ReturnTRDateFormat() : string.Empty);
-            string sqlString = string.Format(@"
-                SELECT A.Id BagisHareketId, B.Id ArmaganId, C.Armagan, B.Durum, A.BagisciId, D.Adi BagisciAdi
-				        , A.BagisTarihi ,Convert(nvarchar,replace (A.BagisMiktari,'.',',')) as BagisMiktari, A.DovizCinsi
-						, D.Adres + ' ' + F.IlceAdi +' / '+ E.IlAdi Adres, F.IlAdi Ili, F.IlceAdi Ilcesi
-                        , D.Telefon1 + IIF(ISNULL(D.Telefon1,'')!='' AND ISNULL(D.Telefon2,'')!='',' - ','') + D.Telefon2 Telefon
-                        , A.DovizCinsi, A.ArmaganId, C.Armagan, B.Durum,B.Aciklama,A.IadeEdildiMi, ISNULL(A.IadeMiktari,0) IadeMiktari
-                    FROM NakitBagisHareket_Table A
-                    LEFT OUTER JOIN Armagan_Table B ON B.Id= A.ArmaganId 
-                    LEFT OUTER JOIN ArmaganTanim_Table C ON C.Id= B.ArmaganTanimId
-					INNER JOIN NakitBagisci_Table D ON D.Id= A.BagisciId 
-					LEFT JOIN Il_Table E ON E.Id= D.Ili 
-                    LEFT JOIN Ilce_Table F ON F.Id= D.Ilcesi AND F.IlId=E.Id
-                WHERE D.Adi like '%{1}%'
-	                OR D.TCKimlikNo like '%{1}%'
-	                OR D.Telefon1 like '%{1}%'
-	                OR D.Adres like '%{1}%'
-                ORDER BY A.BagisTarihi DESC  ", bagisTarihiStr, filter);
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            return dataTable;
+            return new NakitBagisHareketService().Search(filter, bagisTarihi);
         }
         public decimal SelectSumBagisMiktariByBagisTarihiBanka(DateTime basTar, DateTime bitTar, string banka, ref int adet)
         {
@@ -436,68 +408,12 @@ namespace Model.NBYS
         }
         public string SelectByDurumTarihReturnJson(string ay, string yil, int ilId)
         {
-            string sqlString = GetSQLSelectByTarih(ay, yil, ilId);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            string json = ToJSON(dataTable);
-            return json;
-        }
-
-        private string GetSQLSelectByTarih(string ay, string yil, int ilId)
-        {
-            string ilStr = string.Empty;
-            if (ilId > ProjeConstants.IL_HEPSI)
-            {
-                ilStr = " AND B.Ili =" + ilId;//E.Id =
-            }
-            string ayStr;
-            if (ay.Equals(ProjeConstants.HEPSI_INT.ToString()))
-            {
-                ayStr = " ";
-            }
-            else
-            {
-                ayStr = " AND MONTH(A.BagisTarihi)=" + ay.ReturnQuotedValue();
-            }
-
-            string sqlString = string.Format(@"
-                SELECT  A.Id NakitBagisHareketId,
-                        A.BagisciId BagisciId, A.Id BagisId,
-                        B.Adi as Adi, B.Adres,
-                        B.TCKimlikNo as TCKimlikNo,	 TRIM(B.Telefon1 +' ' + B.Telefon2) Telefon,               
-                        Convert(nvarchar,replace (A.BagisMiktari,'.',',')) as BagisMiktari,
-                        A.DovizCinsi as DovizCinsi,
-	                    A.BagisTarihi as BagisTarihi,
-                        A.ArmaganId as ArmaganId,
-	                    ISNULL(E.IlAdi,'')  Ili,
-                        D.Durum as Durum,
-	                    C.Banka Banka,
-                        ISNULL(A.Aciklama,'') Aciklama
-                FROM NakitBagisHareket_Table A 
-                INNER JOIN NakitBagisci_Table B ON B.Id= A.BagisciId 
-                INNER JOIN BankaTanim_Table C ON C.Id= A.BankaId
-                LEFT JOIN Armagan_Table D ON D.Id= A.ArmaganId
-			    LEFT JOIN Il_Table E ON E.Id= B.Ili
-                WHERE YEAR(A.BagisTarihi)={0}  
-                {1}
-                {2}
-            ", yil, ayStr, ilStr);
-            return sqlString;
+            return new NakitBagisHareketService().ListByDurumTarihJson(ay, yil, ilId);
         }
 
         public DataTable SelectByDurumTarihReturnDataTable(string ay, string yil, int ilId)
         {
-            string sqlString = GetSQLSelectByTarih(ay, yil, ilId);
-            DataTable dataTable;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                Exception ex = new Exception("sql=" + sqlString, e);
-                throw;
-            }
-            return dataTable;
+            return new NakitBagisHareketService().ListByDurumTarih(ay, yil, ilId);
         }
         public DataTable SelectByIliAndYil(int ilId, DateTime tarih)
         {
@@ -900,63 +816,12 @@ IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış'
 
         public string SelectIadeEdilenBagislarReturnJson(string ay, string yil)
         {
-            string sqlString = GetSQLSelectIadeEdilenBagislar(ay, yil);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            string json = ToJSON(dataTable);
-            return json;
+            return new NakitBagisHareketService().ListIadeEdilenBagislarJson(ay, yil);
         }
 
         public DataTable SelectIadeEdilenBagislarReturnDataTable(string ay, string yil)
         {
-            string sqlString = GetSQLSelectIadeEdilenBagislar(ay, yil);
-            DataTable dataTable;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                Exception ex = new Exception("sql=" + sqlString, e);
-                throw;
-            }
-            return dataTable;
-        }
-
-        private string GetSQLSelectIadeEdilenBagislar(string ay, string yil)
-        {
-            string ayStr;
-            if (ay.Equals(ProjeConstants.HEPSI_INT.ToString()))
-            {
-                ayStr = " ";
-            }
-            else
-            {
-                ayStr = " AND MONTH(A.IadeTarihi)=" + ay.ReturnQuotedValue();
-            }
-
-            string sqlString = string.Format(@"
-                SELECT
-                    A.IadeTarihi,
-                    Convert(nvarchar, replace(ISNULL(A.IadeMiktari,0), '.', ',')) AS IadeMiktari,
-                    ISNULL(A.IadeSebebi,'') AS IadeSebebi,
-                    B.Adi + ' ' + ISNULL(B.Soyadi,'') AS BagisciAdiSoyadi,
-                    A.BagisTarihi,
-                    ISNULL(C.Banka,'') AS Banka,
-                    ISNULL(B.Adres,'') AS Adres,
-                    ISNULL(E.IlAdi,'') AS Ili,
-                    ISNULL(F.IlceAdi,'') AS Ilcesi
-                FROM NakitBagisHareket_Table A
-                INNER JOIN NakitBagisci_Table B ON B.Id = A.BagisciId
-                LEFT JOIN BankaTanim_Table C ON C.Id = A.BankaId
-                LEFT JOIN Il_Table E ON E.Id = B.Ili
-                LEFT JOIN Ilce_Table F ON F.Id = B.Ilcesi
-                WHERE A.IadeEdildiMi = 1
-                  AND YEAR(A.IadeTarihi) = {0}
-                  {1}
-                ORDER BY A.IadeTarihi DESC
-            ", yil, ayStr);
-
-            return sqlString;
+            return new NakitBagisHareketService().ListIadeEdilenBagislar(ay, yil);
         }
 
         public DataTable SelectNakitBagisRaporu(
