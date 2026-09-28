@@ -154,6 +154,124 @@ namespace DAO.Repositories.NBYS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectSumByTarihBolge(DateTime baslangic, DateTime bitis, int? bolgeId)
+        {
+            string bolgeKosulu = bolgeId.HasValue ? " AND B.BolgeId=@BolgeId" : string.Empty;
+            SqlQuery query = new SqlQuery(@"
+                SELECT COUNT(H.Id) Adet, SUM(BagisMiktari) Toplam
+                FROM NakitBagisHareket_Table H
+                LEFT OUTER JOIN NakitBagisci_Table A ON A.Id=H.BagisciId
+                LEFT OUTER JOIN Il_Table B ON B.Id=H.Ili
+                WHERE BagisTarihi BETWEEN @Baslangic AND @Bitis" + bolgeKosulu);
+            query.AddParameter("@Baslangic", LegacyDateValue(baslangic));
+            query.AddParameter("@Bitis", LegacyDateValue(bitis));
+            if (bolgeId.HasValue)
+                query.AddParameter("@BolgeId", bolgeId.Value);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectSumByTarihBanka(DateTime baslangic, DateTime bitis, string banka)
+        {
+            string bankaKosulu = string.IsNullOrEmpty(banka)
+                ? " AND BankaGrup IS NULL"
+                : " AND BankaGrup=@Banka";
+            SqlQuery query = new SqlQuery(@"
+                SELECT COUNT(H.Id) Adet, SUM(BagisMiktari) Toplam
+                FROM NakitBagisHareket_Table H
+                LEFT OUTER JOIN NakitBagisci_Table A ON A.Id=H.BagisciId
+                LEFT OUTER JOIN BankaTanim_Table B ON B.Id=H.BankaId
+                WHERE BagisTarihi BETWEEN @Baslangic AND @Bitis
+                    AND BagisciId IN (
+                        SELECT BagisciId FROM NakitBagisHareket_Table WHERE BagisTarihi < @Baslangic)
+                    " + bankaKosulu);
+            query.AddParameter("@Baslangic", LegacyDateValue(baslangic));
+            query.AddParameter("@Bitis", LegacyDateValue(bitis));
+            if (!string.IsNullOrEmpty(banka))
+                query.AddParameter("@Banka", banka);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectMaxByTarihBanka(DateTime baslangic, DateTime bitis, string banka)
+        {
+            string bankaKosulu = string.IsNullOrEmpty(banka) ? string.Empty : " AND BankaGrup=@Banka";
+            SqlQuery query = new SqlQuery(@"
+                SELECT MAX(BagisMiktari) Toplam
+                FROM NakitBagisHareket_Table H
+                LEFT OUTER JOIN NakitBagisci_Table A ON A.Id=H.BagisciId
+                LEFT OUTER JOIN BankaTanim_Table B ON B.Id=H.BankaId
+                WHERE BagisTarihi BETWEEN @Baslangic AND @Bitis" + bankaKosulu);
+            query.AddParameter("@Baslangic", LegacyDateValue(baslangic));
+            query.AddParameter("@Bitis", LegacyDateValue(bitis));
+            if (!string.IsNullOrEmpty(banka))
+                query.AddParameter("@Banka", banka);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectCountByTarihBolge(int yil, int ay)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT SUM(A.BagisMiktari) Toplam, COUNT(A.Id) Adet,
+                    D.KisaAdi Bolge, MONTH(A.BagisTarihi) Ay
+                FROM NakitBagisHareket_Table A
+                INNER JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
+                INNER JOIN Il_Table C ON C.Id=B.Ili
+                INNER JOIN Bolge_Table D ON D.Id=C.BolgeId
+                WHERE YEAR(A.BagisTarihi)=@Yil AND MONTH(A.BagisTarihi)=@Ay
+                GROUP BY D.KisaAdi, MONTH(A.BagisTarihi)");
+            query.AddParameter("@Yil", yil);
+            query.AddParameter("@Ay", ay);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectCountSumByTarih(DateTime baslangic, DateTime bitis)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT COUNT(H.Id) Adet, SUM(BagisMiktari) Toplam,
+                    D.Id BolgeId, D.KisaAdi Bolge
+                FROM NakitBagisHareket_Table H
+                INNER JOIN NakitBagisci_Table B ON B.Id=H.BagisciId
+                LEFT JOIN Il_Table C ON C.Id=H.Ili
+                LEFT JOIN Bolge_Table D ON D.Id=C.BolgeId
+                WHERE BagisTarihi BETWEEN @Baslangic AND @Bitis
+                    AND BagisciId IN (
+                        SELECT BagisciId FROM NakitBagisHareket_Table WHERE BagisTarihi < @Baslangic)
+                GROUP BY D.Id, D.KisaAdi
+                ORDER BY D.KisaAdi");
+            query.AddParameter("@Baslangic", LegacyDateValue(baslangic));
+            query.AddParameter("@Bitis", LegacyDateValue(bitis));
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectCountSumByYilIl(int baslangicYili, int bitisYili)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT C.Bolge, C.IlAdi, YEAR(A.BagisTarihi) Yil,
+                    SUM(BagisMiktari) Tutar, COUNT(A.Id) Adet
+                FROM NakitBagisHareket_Table A
+                LEFT JOIN Il_Table C ON C.Id=A.Ili
+                WHERE YEAR(A.BagisTarihi) BETWEEN @BaslangicYili AND @BitisYili
+                GROUP BY C.Bolge, C.IlAdi, YEAR(A.BagisTarihi)
+                ORDER BY C.Bolge, C.IlAdi, YEAR(A.BagisTarihi)");
+            query.AddParameter("@BaslangicYili", baslangicYili);
+            query.AddParameter("@BitisYili", bitisYili);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectCountSumByBanka(DateTime baslangic, DateTime bitis)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT COUNT(H.Id) Adet, SUM(BagisMiktari) Toplam, B.BankaGrup Banka
+                FROM NakitBagisHareket_Table H
+                INNER JOIN NakitBagisci_Table A ON A.Id=H.BagisciId
+                INNER JOIN BankaTanim_Table B ON B.Id=H.BankaId
+                WHERE BagisTarihi BETWEEN @Baslangic AND @Bitis
+                GROUP BY B.BankaGrup
+                ORDER BY Toplam DESC, B.BankaGrup");
+            query.AddParameter("@Baslangic", LegacyDateValue(baslangic));
+            query.AddParameter("@Bitis", LegacyDateValue(bitis));
+            return db.SelectFromDb(query, "");
+        }
+
         // Preserve ReturnTRDateFormat's culture, precision and MinValue semantics.
         // Parameters carry the value without SQL literal quotes.
         private static string LegacyDateValue(DateTime value)

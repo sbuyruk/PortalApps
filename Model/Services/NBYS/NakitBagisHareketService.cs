@@ -98,6 +98,55 @@ namespace Model.Services.NBYS
             return new NakitBagisHareket().ToJSON(ListIadeEdilenBagislar(ay, yil));
         }
 
+        public decimal GetTotalByTarihBolge(DateTime baslangic, DateTime bitis, int bolgeId, ref int adet)
+        {
+            int? bolgeFiltresi = bolgeId == ProjeConstants.HEPSI_INT ||
+                bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? (int?)null : bolgeId;
+            return ReadAggregate(repository.SelectSumByTarihBolge(baslangic, bitis, bolgeFiltresi), ref adet);
+        }
+
+        public decimal GetTotalByTarihBanka(DateTime baslangic, DateTime bitis, string banka, ref int adet)
+        {
+            return ReadAggregate(repository.SelectSumByTarihBanka(baslangic, bitis, banka), ref adet);
+        }
+
+        public decimal GetMaximumByTarihBanka(DateTime baslangic, DateTime bitis, string banka)
+        {
+            DataTable table = repository.SelectMaxByTarihBanka(baslangic, bitis, banka);
+            if (table == null || table.Rows.Count == 0)
+                return 0;
+            return table.Rows[0]["Toplam"].ReturnZeroIfNull().ConvertToDecimal();
+        }
+
+        public DataTable GetCountByTarihBolge(int yil, int ay)
+        {
+            return repository.SelectCountByTarihBolge(yil, ay);
+        }
+
+        public DataTable GetCountSumByTarih(DateTime baslangic, DateTime bitis)
+        {
+            return repository.SelectCountSumByTarih(baslangic, bitis);
+        }
+
+        public DataTable GetCountSumByYilIl(int baslangicYili, int bitisYili)
+        {
+            return repository.SelectCountSumByYilIl(baslangicYili, bitisYili);
+        }
+
+        public DataTable GetCountSumByBanka(DateTime baslangic, DateTime bitis)
+        {
+            return repository.SelectCountSumByBanka(baslangic, bitis);
+        }
+
+        private static decimal ReadAggregate(DataTable table, ref int adet)
+        {
+            if (table == null || table.Rows.Count == 0)
+                return 0;
+            DataRow row = table.Rows[0];
+            adet = row["Adet"].ReturnZeroIfNull().ConvertToInt();
+            return row["Toplam"].ReturnZeroIfNull().ConvertToDecimal();
+        }
+
         private static List<NakitBagisHareket> Map(DataTable table)
         {
             return new NakitBagisHareket().ToList<NakitBagisHareket>(table);

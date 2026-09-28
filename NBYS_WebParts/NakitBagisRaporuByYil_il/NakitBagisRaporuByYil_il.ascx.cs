@@ -1,4 +1,5 @@
 using Model.NBYS;
+using Model.Services.NBYS;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -37,9 +38,9 @@ namespace NBYS_WebParts.NakitBagisRaporuByYil_il
             int ilkYil = 2017;
             int sonYil = 2021;
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
+            NakitBagisHareketService nakitBagisHareket = new NakitBagisHareketService();
             RaporTableHeaders(ilkYil, sonYil);
-            DataTable dataTable = nakitBagisHareket.SelectCountSumByYil_il(ilkYil, sonYil);
+            DataTable dataTable = nakitBagisHareket.GetCountSumByYilIl(ilkYil, sonYil);
             int counter = 0;
             try
             {

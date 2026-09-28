@@ -332,27 +332,7 @@ namespace Model.NBYS
         }
         public decimal SelectSumBagisMiktariByBagisTarihiBolge(DateTime basTar, DateTime bitTar, int bolgeId, ref int adet)
         {
-            decimal toplam = 0;
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND B.BolgeId={0} ", bolgeId);
-            string sqlString = string.Format(@"
-                    SELECT COUNT(H.Id) Adet,SUM(BagisMiktari) Toplam FROM NakitBagisHareket_Table H
-                        LEFT OUTER JOIN NakitBagisci_Table A ON A.Id= H.BagisciId
-                        LEFT OUTER JOIN Il_Table B ON B.Id=H.Ili
-                        WHERE BagisTarihi between {0} and {1}
-	                    {2} ", basTar.ReturnQuotedValue(), bitTar.ReturnQuotedValue(), bolgeStr);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                if (dataTable.Rows.Count > 0)
-                {
-                    DataRow row = dataTable.Rows[0];
-                    toplam = Decimal.Parse(row["Toplam"].ToString());
-                    adet = Int32.Parse(row["Adet"].ToString());
-                }
-            }
-
-            return toplam;
+            return new NakitBagisHareketService().GetTotalByTarihBolge(basTar, bitTar, bolgeId, ref adet);
         }
         public DataTable SelectByFilter(string filter, DateTime? bagisTarihi)
         {
@@ -360,51 +340,11 @@ namespace Model.NBYS
         }
         public decimal SelectSumBagisMiktariByBagisTarihiBanka(DateTime basTar, DateTime bitTar, string banka, ref int adet)
         {
-            decimal toplam = 0;
-            string bankaStr = string.IsNullOrEmpty(banka) ? " AND BankaGrup is NULL " : " AND BankaGrup=" + banka.ReturnQuotedValue().ToString();
-            string sqlString = string.Format(@"
-                    SELECT COUNT(H.Id) Adet,SUM(BagisMiktari) Toplam FROM NakitBagisHareket_Table H
-                        LEFT OUTER JOIN NakitBagisci_Table A ON A.Id= H.BagisciId
-						LEFT OUTER JOIN BankaTanim_Table B ON B.Id= H.BankaId
-                        WHERE BagisTarihi between {0} and {1}
-                            AND BagisciId IN (Select BagisciId FROM NakitBagisHareket_Table WHERE BagisTarihi < {0} )
-	                    {2} ", basTar.ReturnQuotedValue(), bitTar.ReturnQuotedValue(), bankaStr);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                if (dataTable.Rows.Count > 0)
-                {
-                    DataRow row = dataTable.Rows[0];
-                    toplam = row["Toplam"].ToString().ConvertToDecimal();
-                    adet = row["Adet"].ToString().ConvertToInt();
-                }
-            }
-
-            return toplam;
+            return new NakitBagisHareketService().GetTotalByTarihBanka(basTar, bitTar, banka, ref adet);
         }
         public decimal SelectMaxBagisMiktariByBagisTarihiBanka(DateTime basTar, DateTime bitTar, string banka)
         {
-            decimal toplam = 0;
-            string bankaStr = string.IsNullOrEmpty(banka) ? "" : " AND BankaGrup=" + banka.ReturnQuotedValue().ToString();
-            string sqlString = string.Format(@"
-                    SELECT MAX(BagisMiktari) Toplam FROM NakitBagisHareket_Table H
-                        LEFT OUTER JOIN NakitBagisci_Table A ON A.Id= H.BagisciId
-						LEFT OUTER JOIN BankaTanim_Table B ON B.Id= H.BankaId
-                        WHERE BagisTarihi BETWEEN {0} AND {1}
-	                    {2} ", basTar.ReturnQuotedValue(), bitTar.ReturnQuotedValue(), bankaStr);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                if (dataTable.Rows.Count > 0)
-                {
-                    DataRow row = dataTable.Rows[0];
-                    toplam = row["Toplam"].ToString().ConvertToDecimal();
-                }
-            }
-
-            return toplam;
+            return new NakitBagisHareketService().GetMaximumByTarihBanka(basTar, bitTar, banka);
         }
         public string SelectByDurumTarihReturnJson(string ay, string yil, int ilId)
         {
@@ -447,76 +387,19 @@ namespace Model.NBYS
         }
         public DataTable SelectCountByBagisTarihiBolge(int yil, int ay)
         {
-            string sqlString = string.Format(@"
-                SELECT  
-                    SUM(A.BagisMiktari) as Toplam,
-                    COUNT(A.Id) as Adet, 
-                    D.KisaAdi as Bolge, 
-                    MONTH(A.BagisTarihi) as Ay 
-                FROM 
-                    NakitBagisHareket_Table A
-                INNER JOIN 
-                    NakitBagisci_Table B on B.Id = A.BagisciId
-                INNER JOIN 
-                    Il_Table C on C.Id = B.Ili
-                INNER JOIN 
-                    Bolge_Table D on D.Id = C.BolgeId
-                WHERE 
-                    YEAR(A.BagisTarihi)={0}
-                    AND MONTH(A.BagisTarihi)={1}
-                GROUP BY 
-                    D.KisaAdi, 
-                    MONTH(A.BagisTarihi);
-            ", yil, ay);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
+            return new NakitBagisHareketService().GetCountByTarihBolge(yil, ay);
         }
         public DataTable SelectCountSumByBagisTarihi(DateTime bastar, DateTime bittar)
         {
-            string sqlString = string.Format(@"        
-                 SELECT 
-	                COUNT(H.Id) As Adet,
-	                SUM(BagisMiktari) As Toplam,
-	                D.Id As BolgeId,
-                    D.KisaAdi As Bolge
-                FROM 
-	                NakitBagisHareket_Table H
-                INNER JOIN 
-	                NakitBagisci_Table B ON B.Id= H.BagisciId
-                LEFT JOIN Il_Table C ON C.Id=H.Ili
-                LEFT JOIN Bolge_Table D ON D.Id=C.BolgeId
-                WHERE BagisTarihi BETWEEN {0} and {1}
-	                AND BagisciId IN (Select BagisciId FROM NakitBagisHareket_Table WHERE BagisTarihi < {0} )
-                GROUP BY D.Id,D.KisaAdi 
-                ORDER BY D.KisaAdi ", bastar.ReturnQuotedValue(), bittar.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
+            return new NakitBagisHareketService().GetCountSumByTarih(bastar, bittar);
         }
         public DataTable SelectCountSumByYil_il(int basYil, int bitYil)
         {
-            string sqlString = string.Format(@"        
-                SELECT C.Bolge,C.IlAdi,YEAR(A.BagisTarihi) Yil, SUM(BagisMiktari) Tutar ,COUNT(A.Id) Adet
-                FROM NakitBagisHareket_Table A
-	                LEFT JOIN Il_Table C ON C.Id= A.Ili
-                WHERE YEAR(A.BagisTarihi) BETWEEN {0} AND {1}  -- AND A.BagisMiktari>0
-                GROUP BY C.Bolge,C.IlAdi,YEAR(A.BagisTarihi)
-                ORDER BY C.Bolge,C.IlAdi,YEAR(A.BagisTarihi) ", basYil, bitYil);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
+            return new NakitBagisHareketService().GetCountSumByYilIl(basYil, bitYil);
         }
         public DataTable SelectCountSumByBagisBanka(DateTime bastar, DateTime bittar)
         {
-            string sqlString = string.Format(@"        
-                                SELECT COUNT(H.Id) Adet,SUM(BagisMiktari) Toplam, B.BankaGrup Banka 
-                                FROM NakitBagisHareket_Table H
-                                    --bu sefer de Vakifta sorun oldu INNER JOIN NakitBagisci_Table A ON A.Id= H.BagisciId    --LEFT OUTER is bankasi toplami hatali çiktigi için degistirildi
-                                    INNER JOIN NakitBagisci_Table A ON A.Id= H.BagisciId --bi daa açtim bakalim hayirlisi
-									INNER JOIN BankaTanim_Table B ON B.Id= H.BankaId        --LEFT OUTER 
-                                WHERE BagisTarihi BETWEEN {0} AND {1}
-                                GROUP BY B.BankaGrup 
-                                ORDER BY Toplam DESC,B.BankaGrup ", bastar.ReturnQuotedValue(), bittar.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
+            return new NakitBagisHareketService().GetCountSumByBanka(bastar, bittar);
         }
         public DataTable SelectByBolgeTarih(int bolgeId, DateTime ilkTarih, DateTime sonTarih)
         {
