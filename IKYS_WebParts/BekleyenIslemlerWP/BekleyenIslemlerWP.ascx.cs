@@ -61,6 +61,12 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
         {
             try
             {
+                if (!ProjeConstants.AMIRONAYIETKINMI)
+                {
+                    Visible = false;
+                    return;
+                }
+
                 if (!Page.IsPostBack)
                 {
                     //publish etmeden önce Burayı değiştirmeyi unutma
@@ -130,6 +136,11 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
         }
         private List<BekleyenIslemListItem> GetDataList()
         {
+            if (!ProjeConstants.AMIRONAYIETKINMI)
+            {
+                return new List<BekleyenIslemListItem>();
+            }
+
             GorevOnay gorevOnay = new GorevOnay();
             DataTable dataTable = gorevOnay.SelectBekleyenAmirOnayiByBirimIdsReturnDataTable(AmirBirimIdList);
 
@@ -261,6 +272,8 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
         }
         protected void ModalOnaylaBtn_Click(object sender, EventArgs e)
         {
+            if (!ProjeConstants.AMIRONAYIETKINMI) return;
+
             try
             {
                 GorevOnay gorevOnay = new GorevOnay();
@@ -284,6 +297,8 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
         }
         protected void ModalReddetBtn_Click(object sender, EventArgs e)
         {
+            if (!ProjeConstants.AMIRONAYIETKINMI) return;
+
             try
             {
                 GorevOnay gorevOnay = new GorevOnay();
@@ -307,6 +322,8 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
         }
         protected void ModalInceleBtn_Click(object sender, EventArgs e)
         {
+            if (!ProjeConstants.AMIRONAYIETKINMI) return;
+
             try
             {
                 GorevOnay gorevOnay = new GorevOnay();
@@ -363,6 +380,8 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
         }
         protected void OnaylaBtn_Click(object sender, EventArgs e)
         {
+            if (!ProjeConstants.AMIRONAYIETKINMI) return;
+
             try
             {
                 GorevOnay gorevOnay = new GorevOnay();
@@ -391,6 +410,8 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
         }
         protected void ReddetBtn_Click(object sender, EventArgs e)
         {
+            if (!ProjeConstants.AMIRONAYIETKINMI) return;
+
             try
             {
                 GorevOnay gorevOnay = new GorevOnay();

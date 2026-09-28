@@ -72,6 +72,7 @@
     var myjsons = [{
         "SecChk": "","AdiSoyadi": "", "GorevinSebebi": "","BaslangicTarihi": "", "BitisTarihi": "", "GorevinYeri": "", "AmirOnayi": "", "RaporAl": "", "Duzenle": ""
     }];
+    var amirOnayiEtkinMi = <%= Utility.ProjeGlobal.ProjeConstants.AMIRONAYIETKINMI.ToString().ToLowerInvariant() %>;
 
     jQuery(document).ready(function () {
         jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
@@ -104,7 +105,7 @@
                 { data: "BaslangicTarihi" },
                 { data: "BitisTarihi" },
                 { data: "GorevinYeri" },
-                { data: "AmirOnayi" },
+                { data: "AmirOnayi", visible: amirOnayiEtkinMi },
                 { data: "RaporAl" },
                 { data: "Duzenle" },
                 { data: 'AmirOnayiInt', visible: false },
@@ -114,7 +115,7 @@
                 if(data.Odendi == 2) {
                     $(row).addClass('table-secondary');
                 } 
-                else if (data.AmirOnayiInt == 2) {
+                else if (amirOnayiEtkinMi && data.AmirOnayiInt == 2) {
                     $(row).addClass('table-danger');
                 }
                 
@@ -135,7 +136,7 @@
             columnDefs: [
                 { type: 'turkish', targets: [1, 2, 5] },
             ],
-            'order': [[3, 'desc'],[10, 'asc']],//sort date desc
+            'order': amirOnayiEtkinMi ? [[3, 'desc'],[10, 'asc']] : [[3, 'desc']],//sort date desc
             "language": {
                 "url": "http://tskgv-portal/OrtakBelgeler/Turkish.txt",
                 "decimal": ",",
