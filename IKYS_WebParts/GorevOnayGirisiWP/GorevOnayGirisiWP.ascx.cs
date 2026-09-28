@@ -295,7 +295,10 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 }
 
                 GorevOnayIdLbl.Text = gorevOnay.Id.ReturnEmptyIfNull().ToString();
-                AmirOnayiLbl.Text = " (" + UtilityHelper.GetEnumDisplayName((GorevOnay.AmirOnayDurumu)gorevOnay.AmirOnayi) + ")";
+                AmirOnayiLbl.Visible = ProjeConstants.AMIRONAYIETKINMI;
+                AmirOnayiLbl.Text = ProjeConstants.AMIRONAYIETKINMI
+                    ? " (" + UtilityHelper.GetEnumDisplayName((GorevOnay.AmirOnayDurumu)gorevOnay.AmirOnayi) + ")"
+                    : string.Empty;
                 Personel personel = PersonelGetir(gorevOnay.PersonelId);
                 if (personel != null)
                 {
@@ -761,6 +764,11 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
 
         private GorevOnay.AmirOnayDurumu AmirOnayiBelirle()
         {
+            if (!ProjeConstants.AMIRONAYIETKINMI)
+            {
+                return GorevOnay.AmirOnayDurumu.OnayGerekmez;
+            }
+
             int gorevGrubuId = GorevGrubuIdTxt.Text.ConvertToInt();
             if (gorevGrubuId == 1 || gorevGrubuId == 2)
             {
@@ -1215,6 +1223,8 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 if (gorevOnay != null)
                 {
 
+                    if (ProjeConstants.AMIRONAYIETKINMI)
+                    {
                         Personel personel = new Personel();
                         personel = personel.Select<Personel>(PersonelIdQS.ReturnZeroIfNull().ConvertToInt());
                         if (personel != null)
@@ -1241,16 +1251,17 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                                 emailList.Add(ib.InternetEPosta);
                             }
 
-                        if (!AuthQS.Equals("IKYS"))
-                        {
-                            //amire mail gönder
-                            //personele  mail gönder
-                            IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Giriş");
-                        }
-                        else
-                        {
-                            //IKYS yetkili birim için mail gönder
-                            IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Giriş",false);
+                            if (!AuthQS.Equals("IKYS"))
+                            {
+                                //amire mail gönder
+                                //personele  mail gönder
+                                IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Giriş");
+                            }
+                            else
+                            {
+                                //IKYS yetkili birim için mail gönder
+                                IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Giriş",false);
+                            }
                         }
                     }
                     RedirectToPage(ProjeConstants.PAGE_GOREVONAY_LIST + "?Mesaj=true" + "&SecilenId=" + gorevOnay.Id + (string.IsNullOrEmpty(AuthQS) ? string.Empty : "&Auth=" + ProjeConstants.IKYS_YETKILI_BIRIM));

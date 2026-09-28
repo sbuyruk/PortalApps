@@ -186,7 +186,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                 int personelId = row["PersonelId"].ConvertToInt();
                 int amirOnayi = row["AmirOnayi"].ConvertToInt();
                 string onayRedAciklama = row["OnayRedAciklama"].ReturnEmptyIfNull().ToString();
-                bool reddedildi = amirOnayi == (int)GorevOnay.AmirOnayDurumu.Reddedildi;
+                bool reddedildi = ProjeConstants.AMIRONAYIETKINMI && amirOnayi == (int)GorevOnay.AmirOnayDurumu.Reddedildi;
                 bool isOdendi = row["Odendi"].ReturnFalseIfNull().ConvertToBool();
 
                 string sure = row["Sure"].ToString();
@@ -226,7 +226,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                     gorevOnayListItem.RaporAl = "<span class='text-success'>Ödendi</span>";
                     gorevOnayListItem.Duzenle = string.Empty;
                 }
-                else if (amirOnayi == (int)GorevOnay.AmirOnayDurumu.OnayBekliyor)
+                else if (ProjeConstants.AMIRONAYIETKINMI && amirOnayi == (int)GorevOnay.AmirOnayDurumu.OnayBekliyor)
                 {
                     gorevOnayListItem.AmirOnayiSiraNo = 0;
                     //Seçim yapılamasın
@@ -235,7 +235,9 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                     gorevOnayListItem.RaporAl = "<span class='text-warning'>Onay Bekliyor</span>";
                     gorevOnayListItem.Duzenle = string.Empty;
                 }
-                else if (amirOnayi == (int)GorevOnay.AmirOnayDurumu.Onaylandi)
+                else if (!ProjeConstants.AMIRONAYIETKINMI ||
+                    amirOnayi == (int)GorevOnay.AmirOnayDurumu.Onaylandi ||
+                    amirOnayi == (int)GorevOnay.AmirOnayDurumu.OnayGerekmez)
                 {
                     gorevOnayListItem.AmirOnayiSiraNo = 1;
                     if (AuthQS.Equals(ProjeConstants.IKYS_YETKILI_BIRIM))
@@ -247,7 +249,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                     {
                         DateTime today = DateTime.Today;
                         int fark = (today - baslangicTarihi.ConvertToDatetime()).Days;
-                        if (amirOnayi == (int)GorevOnay.AmirOnayDurumu.Reddedildi)
+                        if (reddedildi)
                         {
                             gorevOnayListItem.RaporAl = onayRedAciklama;
                             gorevOnayListItem.Duzenle = string.Empty;
