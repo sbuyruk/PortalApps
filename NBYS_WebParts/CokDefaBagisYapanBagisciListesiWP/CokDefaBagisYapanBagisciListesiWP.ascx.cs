@@ -233,7 +233,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             if (nakitBagisci != null)
             {
                 NakitBagisHareket nbhDao = new NakitBagisHareket();
-                List<NakitBagisHareket> nakitBagisHareketListesi = nbhDao.SelectArmaganiOlmayanBagislarByBagisciId(nakitBagisciId);
+                List<NakitBagisHareket> nakitBagisHareketListesi = new NakitBagisHareketService().GetArmaganiOlmayanByBagisciId(nakitBagisciId);
 
                 decimal toplamBagis = 0;
                 if (nakitBagisHareketListesi.Count > 0)
@@ -550,7 +550,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             NakitBagisHareket nbh = new NakitBagisHareket();
             int rowCount = 0;
             var json = nbh.SelectByBagisciIdReturnJSon(nakitBagisciId, ref rowCount);
-            decimal toplamTutar = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
+            decimal toplamTutar = new NakitBagisHareketService().GetTotalByBagisciIdDateRange(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
             BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır" :
                 "Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + " TL bağışı bulunmaktadır";

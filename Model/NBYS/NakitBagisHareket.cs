@@ -247,23 +247,7 @@ namespace Model.NBYS
         }
         public List<NakitBagisHareket> SelectArmaganiOlmayanBagislarByBagisciId(int bagisciId)
         {
-            string sqlString = string.Format(@"
-                SELECT A.* 
-                    --,A.Id NakitBagisHareketId
-	                --,A.ArmaganId AArmaganId ,B.Id BArmaganId
-	                --,B.BagisciId BBagisciId,A.BagisciId ABagisciId
-	                --,B.ArmaganTanimId
-	                --,A.BagisTarihi,A.BagisMiktari
-                FROM NakitBagisHareket_Table A
-	                LEFT JOIN Armagan_Table B ON B.Id=A.ArmaganId AND B.ArmaganTanimId IN (2,3,4)
-                WHERE A.BagisciId = {0}
-	                AND B.Id is NULL
-                ORDER BY BagisMiktari DESC", bagisciId);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<NakitBagisHareket> list = ToList<NakitBagisHareket>(dataTable);
-
-            return (list);
+            return new NakitBagisHareketService().GetArmaganiOlmayanByBagisciId(bagisciId);
         }
         public List<NakitBagisHareket> SelectByBagisciId(int bagisciId)
         {
@@ -340,39 +324,11 @@ namespace Model.NBYS
         }
         public decimal GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(DateTime basTar, DateTime bitTar, int nakitBagisciId)
         {
-            decimal toplam = 0;
-            DateTime ilkTarih = new DateTime(basTar.Year, basTar.Month, basTar.Day);
-            DateTime sonTarih = new DateTime(bitTar.Year, bitTar.Month, bitTar.Day);
-            string sqlString = string.Format(@"SELECT SUM(BagisMiktari) Toplam
-                                             FROM NakitBagisHareket_Table
-                                             WHERE BagisciId={0} and  BagisTarihi between {1} and {2}", nakitBagisciId, ilkTarih.ReturnTRDateFormat(), sonTarih.ReturnTRDateFormat());
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                if (dataTable.Rows.Count > 0)
-                {
-                    DataRow row = dataTable.Rows[0];
-                    toplam = row["Toplam"].ReturnZeroIfNull().ConvertToDecimal();
-                }
-            }
-
-            return toplam;
+            return new NakitBagisHareketService().GetTotalByBagisciIdDateRange(basTar, bitTar, nakitBagisciId);
         }
         public List<NakitBagisHareket> SelectNakitBagisHareketByNakitBagisciIdBetweenBasTarBitTar(DateTime basTar, DateTime bitTar, int nakitBagisciId)
         {
-            List<NakitBagisHareket> result = new List<NakitBagisHareket>();
-            DateTime ilkTarih = new DateTime(basTar.Year, basTar.Month, basTar.Day);
-            DateTime sonTarih = new DateTime(bitTar.Year, bitTar.Month, bitTar.Day);
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM NakitBagisHareket_Table
-                WHERE BagisciId={0} and  BagisTarihi between {1} and {2}", nakitBagisciId, ilkTarih.ReturnTRDateFormat(), sonTarih.ReturnTRDateFormat());
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<NakitBagisHareket> list = ToList<NakitBagisHareket>(dataTable);
-
-            return list;
+            return new NakitBagisHareketService().GetByBagisciIdDateRange(basTar, bitTar, nakitBagisciId);
         }
         public decimal SelectSumBagisMiktariByBagisTarihiBolge(DateTime basTar, DateTime bitTar, int bolgeId, ref int adet)
         {

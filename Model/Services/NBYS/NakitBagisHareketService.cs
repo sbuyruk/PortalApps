@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Utility.HelperClasses;
 
 namespace Model.Services.NBYS
 {
@@ -46,6 +47,25 @@ namespace Model.Services.NBYS
         {
             return Map(repository.SelectLastByBagisciIdTarih(
                 bagisciId, baslangic, baslangic.AddYears(1))).FirstOrDefault();
+        }
+
+        public decimal GetTotalByBagisciIdDateRange(DateTime baslangic, DateTime bitis, int bagisciId)
+        {
+            // Preserve the legacy inclusive range ending at midnight on the end date.
+            DataTable table = repository.SelectSumByBagisciIdTarih(bagisciId, baslangic.Date, bitis.Date);
+            if (table == null || table.Rows.Count == 0)
+                return 0;
+            return table.Rows[0]["Toplam"].ReturnZeroIfNull().ConvertToDecimal();
+        }
+
+        public List<NakitBagisHareket> GetByBagisciIdDateRange(DateTime baslangic, DateTime bitis, int bagisciId)
+        {
+            return Map(repository.SelectByBagisciIdTarih(bagisciId, baslangic.Date, bitis.Date));
+        }
+
+        public List<NakitBagisHareket> GetArmaganiOlmayanByBagisciId(int bagisciId)
+        {
+            return Map(repository.SelectArmaganiOlmayanByBagisciId(bagisciId));
         }
 
         private static List<NakitBagisHareket> Map(DataTable table)
