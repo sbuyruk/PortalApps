@@ -231,9 +231,20 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                     gorevOnayListItem.AmirOnayiSiraNo = 0;
                     //Seçim yapılamasın
                     gorevOnayListItem.SecChk = string.Empty;
-                    //Raporal ve Düzenle butonları görünmesin, sadece Onay Bekliyor yazısı görünsün
+                    //Rapor alınamasın, ancak IKYS yetkilisi veya kayıt sahibi düzenleyebilsin.
                     gorevOnayListItem.RaporAl = "<span class='text-warning'>Onay Bekliyor</span>";
-                    gorevOnayListItem.Duzenle = string.Empty;
+                    if (AuthQS.Equals(ProjeConstants.IKYS_YETKILI_BIRIM))
+                    {
+                        gorevOnayListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVONAY_GIRIS + "?Auth=" + AuthQS + "&GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Düzenle</a>";
+                    }
+                    else if (personel.Id == personelId)
+                    {
+                        gorevOnayListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVONAY_GIRIS + "?GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Düzenle</a>";
+                    }
+                    else
+                    {
+                        gorevOnayListItem.Duzenle = string.Empty;
+                    }
                 }
                 else if (!ProjeConstants.AMIRONAYIETKINMI ||
                     amirOnayi == (int)GorevOnay.AmirOnayDurumu.Onaylandi ||
