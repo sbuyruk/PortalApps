@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -225,7 +226,7 @@ namespace NBYS_WebParts.BagisHareketListesiWP
         {
             NakitBagisHareket nbh = new NakitBagisHareket();
             int ilId = IliDDL.SelectedItem.Value.ConvertToInt();
-            DataTable dt = nbh.SelectByDurumTarihReturnDataTable(AyDDL.SelectedItem.Value, YilDDL.SelectedItem.Value, ilId);
+            DataTable dt = new NakitBagisHareketService().ListByDurumTarih(AyDDL.SelectedItem.Value, YilDDL.SelectedItem.Value, ilId);
             return dt;
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
@@ -270,7 +271,7 @@ namespace NBYS_WebParts.BagisHareketListesiWP
             {
                 NakitBagisHareket nbh = new NakitBagisHareket();
                 int ilId = IliDDL.SelectedItem.Value.ConvertToInt();
-                jSon = nbh.SelectByDurumTarihReturnJson(AyDDL.SelectedItem.Value, YilDDL.SelectedItem.Value, ilId);
+                jSon = new NakitBagisHareketService().ListByDurumTarihJson(AyDDL.SelectedItem.Value, YilDDL.SelectedItem.Value, ilId);
 
             }
             catch (Exception exception)

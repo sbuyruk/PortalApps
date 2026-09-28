@@ -84,7 +84,7 @@ namespace NBYS_WebParts.BagisIadesiWP
             NakitBagisHareket bagisHareketDao = new NakitBagisHareket();
             if (!string.IsNullOrEmpty(BagisAraTxt.Text))
             {
-                DataTable dataTable = bagisHareketDao.SelectByFilter(BagisAraTxt.Text,null);
+                DataTable dataTable = new NakitBagisHareketService().Search(BagisAraTxt.Text, null);
 
                 IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
                 DataView dataView = new DataView(dataTable);
