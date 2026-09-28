@@ -1014,7 +1014,7 @@ namespace Model.NBYS
                                 || islemTipi.Equals("FAST"))
                                 && tutar.ConvertToDecimal() > 0)
                             {
-                                string tarih = row[1].ReturnEmptyIfNull().ToString();
+                                string tarih = row[0].ReturnEmptyIfNull().ToString(); //ilk sütunda bağış tarihi var sonraki Valor tarihi
                                 DateTime bagisTarihi = tarih.Substring(0, 10).ConvertToDatetime();
 
                                 var detay = row[8].ReturnEmptyIfNull().ToString();
