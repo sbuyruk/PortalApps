@@ -1,6 +1,5 @@
 using DAO.Ortak;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
@@ -41,20 +40,6 @@ namespace DAO.Repositories.NBYS
         {
             SqlQuery query = crudQueryBuilder.BuildDelete(TableName, id);
             return db.DeleteFromDb(query, "");
-        }
-
-        public void DeleteWithArchive<TArchive>(int id, TArchive archive)
-        {
-            if ((object)archive == null)
-                throw new ArgumentNullException("archive");
-
-            List<SqlQuery> queries = new List<SqlQuery>
-            {
-                crudQueryBuilder.BuildDelete(TableName, id),
-                crudQueryBuilder.BuildInsert(archive, "SilinenKayit_Table")
-            };
-
-            db.ExecuteTransaction(queries);
         }
 
         // Both commands use the same connection and transaction; the identity never leaves this operation.

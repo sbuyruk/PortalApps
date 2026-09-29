@@ -671,30 +671,23 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                 }
                                 #endregion
 
+                                SilinenKayit skBagisci = new SilinenKayit();
+                                skBagisci.Silen = currentUser;
+                                skBagisci.SilinmeSebebi = ProjeConstants.BAGIS_BIRLESTIRME;
+                                skBagisci.TabloAdi = "NakitBagisci_Table";
+                                skBagisci.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
+                                skBagisci.SilinenKayitBilgisi = " #Bağışçı=" + birlesecekBagisci.Adi + " " + birlesecekBagisci.Soyadi + " #BağışçıId=" + birlesecekBagisci.Id + " numaralı bağışçı silindi.";
+
                                 //transaction lari yap
-                                bool recordsMerged = new NakitBagisHareketService().MergeDonorRecords(
+                                bool recordsMerged = new NakitBagisHareketService().MergeDonor(
                                     listofBagisHareket,
                                     listofBagisHareketArchive,
                                     listofArmagan,
-                                    listofArmaganArchive);
+                                    listofArmaganArchive,
+                                    birlesecekBagisci,
+                                    skBagisci);
                                 if (recordsMerged)
                                 {
-                                    #region Birlestirilen NakitBagisciyi sil
-                                    NakitBagisciService nakitBagisciService = new NakitBagisciService();
-                                    NakitBagisci silinecekBagisci = nakitBagisciService.GetBagisiOlmayanById(birlesecekBagisci.Id);
-                                    if (silinecekBagisci != null)
-                                    {
-                                        //silinenKayit_Table'a yaz
-                                        SilinenKayit skBagisci = new SilinenKayit();
-                                        skBagisci.Silen = currentUser;
-                                        skBagisci.SilinmeSebebi = ProjeConstants.BAGIS_BIRLESTIRME;
-                                        skBagisci.TabloAdi = "NakitBagisci_Table";
-                                        skBagisci.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
-                                        skBagisci.SilinenKayitBilgisi = " #Bağışçı=" + silinecekBagisci.Adi + " " + silinecekBagisci.Soyadi + " #BağışçıId=" + silinecekBagisci.Id + " numaralı bağışçı silindi.";
-                                        nakitBagisciService.DeleteWithArchive(silinecekBagisci, skBagisci);
-                                    }
-                                    #endregion
-
                                     MessageHelper.PublishMessage("Birleştirme Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
                                     ParamQS = AsilBagisciAraTxt.Text;
                                     AsilBagisciTabloOlustur(false);

@@ -191,17 +191,6 @@ namespace Model.Services.NBYS
             return isDeleted;
         }
 
-        public void DeleteWithArchive(NakitBagisci nakitBagisci, SilinenKayit archive)
-        {
-            if (nakitBagisci == null)
-                throw new ArgumentNullException("nakitBagisci");
-            if (archive == null)
-                throw new ArgumentNullException("archive");
-
-            archive.OlusturmaTarihi = DateTime.Now;
-            repository.DeleteWithArchive(nakitBagisci.Id, archive);
-        }
-
         public int CreateBilinmeyenBagisci()
         {
             NakitBagisci bagisci = new NakitBagisci();

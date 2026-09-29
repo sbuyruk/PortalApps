@@ -77,11 +77,13 @@ namespace DAO.Repositories.NBYS
             db.ExecuteTransaction(queries);
         }
 
-        public bool MergeDonorRecords<TDonation, TDonationArchive, TGift, TGiftArchive>(
+        public bool MergeDonor<TDonation, TDonationArchive, TGift, TGiftArchive, TDonorArchive>(
             IList<TDonation> donations,
             IList<TDonationArchive> donationArchives,
             IList<TGift> gifts,
-            IList<TGiftArchive> giftArchives)
+            IList<TGiftArchive> giftArchives,
+            int sourceDonorId,
+            TDonorArchive donorArchive)
         {
             if (donations == null)
                 throw new ArgumentNullException("donations");
@@ -91,6 +93,8 @@ namespace DAO.Repositories.NBYS
                 throw new ArgumentNullException("gifts");
             if (giftArchives == null)
                 throw new ArgumentNullException("giftArchives");
+            if ((object)donorArchive == null)
+                throw new ArgumentNullException("donorArchive");
             if (donations.Count != donationArchives.Count)
                 throw new ArgumentException("Donation and archive counts must match.");
             if (gifts.Count != giftArchives.Count)
@@ -110,6 +114,9 @@ namespace DAO.Repositories.NBYS
 
             if (queries.Count == 0)
                 return false;
+
+            queries.Add(queryBuilder.BuildDelete("NakitBagisci_Table", sourceDonorId));
+            queries.Add(queryBuilder.BuildInsert(donorArchive, "SilinenKayit_Table"));
 
             db.ExecuteTransaction(queries);
             return true;
