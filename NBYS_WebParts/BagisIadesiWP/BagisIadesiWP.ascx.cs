@@ -563,7 +563,7 @@ namespace NBYS_WebParts.BagisIadesiWP
                         nbh.IadeSebebi = IadeSebebiDegistirTxt.Value;
                         nbh.IadeTarihi = IadeTarihiDegistirTxt.Text.ConvertToDatetime();
                         nbh.Aciklama += " İade tarihi ve sebebi güncellenmiştir.";
-                        bool updated = nbh.Update();
+                        bool updated = new NakitBagisHareketService().Update(nbh);
                         if (updated)
                         {
                             RedirectToPage(ProjeConstants.PAGE_BAGISIADE + "?Param=" + BagisAraTxt.Text);

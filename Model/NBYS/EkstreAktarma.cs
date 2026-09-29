@@ -2881,7 +2881,7 @@ namespace Model.NBYS
                     if (armaganId > 0)
                     {
                         nakitBagisHareket.ArmaganId = armaganId;
-                        nakitBagisHareket.Update();
+                        new NakitBagisHareketService().Update(nakitBagisHareket);
                     }
                 }
             }
@@ -3132,7 +3132,7 @@ namespace Model.NBYS
                 nakitBagisHareket.Aciklama = ekstreAktarma.Aciklama;
                 nakitBagisHareket.EkstreAktarmaId = ekstreAktarma.Id;
                 nakitBagisHareket.BagisTipi = ekstreAktarma.BagisTipi;
-                var id = nakitBagisHareket.Save();
+                var id = new NakitBagisHareketService().Save(nakitBagisHareket);
                 if (id != 0)
                 {
 

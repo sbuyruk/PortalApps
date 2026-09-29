@@ -7,7 +7,9 @@ namespace DAO.Repositories.NBYS
 {
     public class NakitBagisHareketRepository
     {
+        private const string TableName = "NakitBagisHareket_Table";
         private readonly DbClass db;
+        private readonly CrudQueryBuilder queryBuilder;
 
         public NakitBagisHareketRepository() : this(new DbClass())
         {
@@ -18,6 +20,22 @@ namespace DAO.Repositories.NBYS
             if (db == null)
                 throw new ArgumentNullException("db");
             this.db = db;
+            queryBuilder = new CrudQueryBuilder();
+        }
+
+        public int Insert<T>(T entity)
+        {
+            return db.Insert(queryBuilder.BuildInsert(entity, TableName));
+        }
+
+        public bool Update<T>(T entity)
+        {
+            return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName));
+        }
+
+        public bool Delete(int id)
+        {
+            return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), "");
         }
 
         public DataTable SelectById(int id)
@@ -25,6 +43,11 @@ namespace DAO.Repositories.NBYS
             SqlQuery query = new SqlQuery("SELECT * FROM NakitBagisHareket_Table WHERE Id=@Id");
             query.AddParameter("@Id", id);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectAll()
+        {
+            return db.SelectFromDb(new SqlQuery("SELECT * FROM NakitBagisHareket_Table"), "");
         }
 
         public DataTable SelectByBagisciId(int bagisciId)
