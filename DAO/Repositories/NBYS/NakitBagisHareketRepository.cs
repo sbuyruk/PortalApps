@@ -385,6 +385,90 @@ namespace DAO.Repositories.NBYS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectDonorDetailRows(int bagisciId)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT A.BagisciId, BagisTarihi,
+                    REPLACE(CONVERT(varchar,A.BagisMiktari),'.',',') + ' ' + A.DovizCinsi BagisTutari,
+                    REPLACE(ISNULL(CONVERT(varchar,B.BagisMiktari),''),'.',',') + ' ' + ISNULL(B.DovizCinsi,'') ArmaganTutari,
+                    CONVERT(nvarchar,REPLACE(A.BagisMiktari,'.',',')) BagisMiktari,
+                    A.DovizCinsi, ArmaganId, ISNULL(C.Armagan,'') Armagan,
+                    ISNULL(B.Durum,'') Durum, ISNULL(B.Aciklama,'') Aciklama,
+                    D.Banka, A.Aciklama NBHAciklama
+                FROM NakitBagisHareket_Table A
+                LEFT JOIN Armagan_Table B ON B.Id=A.ArmaganId
+                LEFT JOIN ArmaganTanim_Table C ON C.Id=B.ArmaganTanimId
+                LEFT JOIN BankaTanim_Table D ON D.Id=A.BankaId
+                WHERE A.BagisciId=@BagisciId
+                ORDER BY BagisTarihi DESC");
+            query.AddParameter("@BagisciId", bagisciId);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectProvinceYearSummary(int? ilId, DateTime tarih)
+        {
+            string ilKosulu = ilId.HasValue ? " AND D.Id=@IlId" : string.Empty;
+            SqlQuery query = new SqlQuery(@"
+                SELECT YEAR(BagisTarihi) Yil, SUM(BagisMiktari) BagisToplam,
+                    COUNT(BagisMiktari) BagisSayisi, D.IlAdi
+                FROM NakitBagisHareket_Table A
+                LEFT JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
+                LEFT JOIN Il_Table D ON D.Id=B.Ili
+                WHERE BagisTarihi>@Tarih" + ilKosulu + @"
+                GROUP BY YEAR(BagisTarihi), D.IlAdi
+                ORDER BY Yil DESC");
+            query.AddParameter("@Tarih", LegacyDateValue(tarih));
+            if (ilId.HasValue)
+                query.AddParameter("@IlId", ilId.Value);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectByRegionDate(int? bolgeId, DateTime baslangic, DateTime bitis)
+        {
+            string bolgeKosulu = bolgeId.HasValue ? " AND C.BolgeId=@BolgeId" : string.Empty;
+            SqlQuery query = new SqlQuery(@"
+                SELECT A.BagisTarihi, A.BagisMiktari,
+                    B.Id NakitBagisciId, B.Adi, B.Soyadi, B.Telefon1, B.Telefon2,
+                    B.Adres, B.BelgeIstemiyor, C.IlAdi Ili, D.IlceAdi Ilcesi,
+                    F.Armagan, E.Durum,
+                    IIF(E.DuzenliBagis=1, 'Düzenli Bağış',
+                        IIF(E.CokluBagis=1, 'Çoklu Bağış', 'Bağış')) CokluBagis
+                FROM NakitBagisHareket_Table A
+                LEFT JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
+                INNER JOIN Il_Table C ON C.Id=B.Ili
+                LEFT JOIN Ilce_Table D ON D.Id=B.Ilcesi
+                LEFT JOIN Armagan_Table E ON E.Id=A.ArmaganId
+                LEFT JOIN ArmaganTanim_Table F ON F.Id=E.ArmaganTanimId
+                WHERE BagisTarihi BETWEEN @Baslangic AND @Bitis" + bolgeKosulu + @"
+                ORDER BY BagisMiktari DESC, Adi, BagisTarihi DESC");
+            query.AddParameter("@Baslangic", LegacyDateValue(baslangic));
+            query.AddParameter("@Bitis", LegacyDateValue(bitis));
+            if (bolgeId.HasValue)
+                query.AddParameter("@BolgeId", bolgeId.Value);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectDonorDonationDetails(int bagisciId)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT A.BagisTarihi, A.BagisMiktari,
+                    B.Id NakitBagisciId, B.Adi, B.Soyadi, B.Telefon1, B.Telefon2,
+                    B.Adres, B.BelgeIstemiyor, C.IlAdi Ili, D.IlceAdi Ilcesi,
+                    F.Armagan, E.Durum,
+                    IIF(E.DuzenliBagis=1, 'Düzenli Bagis',
+                        IIF(E.CokluBagis=1, 'Çoklu Bagis', 'Bagis')) CokluBagis
+                FROM NakitBagisHareket_Table A
+                LEFT JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
+                INNER JOIN Il_Table C ON C.Id=B.Ili
+                LEFT JOIN Ilce_Table D ON D.Id=B.Ilcesi
+                LEFT JOIN Armagan_Table E ON E.Id=A.ArmaganId
+                LEFT JOIN ArmaganTanim_Table F ON F.Id=E.ArmaganTanimId
+                WHERE B.Id=@BagisciId
+                ORDER BY BagisTarihi DESC");
+            query.AddParameter("@BagisciId", bagisciId);
+            return db.SelectFromDb(query, "");
+        }
+
         // Preserve ReturnTRDateFormat's culture, precision and MinValue semantics.
         // Parameters carry the value without SQL literal quotes.
         private static string LegacyDateValue(DateTime value)

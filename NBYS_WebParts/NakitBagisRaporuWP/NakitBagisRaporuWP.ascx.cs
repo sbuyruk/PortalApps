@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -536,8 +537,7 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
         private List<NakitBagisciListItem> GetModalDataList()
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            NakitBagisHareket nakitBagis = new NakitBagisHareket();
-            DataTable dataTable = nakitBagis.SelectByNakitBagisciId(paramNakitBagisciIdLbl.Value.ConvertToInt());
+            DataTable dataTable = new NakitBagisHareketService().GetDonorDonationDetails(paramNakitBagisciIdLbl.Value.ConvertToInt());
 
             List<NakitBagisciListItem> list = new List<NakitBagisciListItem>();
             DataRow row0 = dataTable.Rows[0];

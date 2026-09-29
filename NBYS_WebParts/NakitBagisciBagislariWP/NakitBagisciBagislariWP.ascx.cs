@@ -312,9 +312,8 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
         private string BagisDataJson(string nakitBagisciId)
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            NakitBagisHareket nbh = new NakitBagisHareket();
             int rowCount = 0;
-            var json = nbh.SelectByBagisciIdReturnJSon(nakitBagisciId, ref rowCount);
+            var json = new NakitBagisHareketService().GetDonorDetailJson(nakitBagisciId.ConvertToInt(), ref rowCount);
 
             decimal toplamTutar = new NakitBagisHareketService().GetTotalByBagisciIdDateRange(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());

@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -309,14 +310,13 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
         private List<NakitBagisciListItem> GetDataList()
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            NakitBagisHareket nakitBagis = new NakitBagisHareket();
 
             int ay = AyDDL.SelectedItem.Value.ConvertToInt() == 0 ? 1 : AyDDL.SelectedItem.Value.ConvertToInt();
             int yil = YilDDL.SelectedItem.Value.ConvertToInt();
             DateTime ilkTarih = new DateTime(yil, ay, 1);
             DateTime sonTarih = AyDDL.SelectedItem.Value.ConvertToInt() == 0 ? ilkTarih.AddYears(1).AddDays(-1) :
                 ilkTarih.AddMonths(1).AddDays(-1);
-            DataTable dataTable = nakitBagis.SelectByBolgeTarih(BolgeIdQS, ilkTarih, sonTarih);
+            DataTable dataTable = new NakitBagisHareketService().GetByRegionDate(BolgeIdQS, ilkTarih, sonTarih);
             
             BaslikTH.InnerText = string.Empty;
             List<NakitBagisciListItem> list = new List<NakitBagisciListItem>();
@@ -469,8 +469,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
         private List<NakitBagisciListItem> GetModalDataList()
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            NakitBagisHareket nakitBagis = new NakitBagisHareket();            
-            DataTable dataTable = nakitBagis.SelectByNakitBagisciId(paramNakitBagisciIdLbl.Value.ConvertToInt());
+            DataTable dataTable = new NakitBagisHareketService().GetDonorDonationDetails(paramNakitBagisciIdLbl.Value.ConvertToInt());
 
             List<NakitBagisciListItem> list = new List<NakitBagisciListItem>();
             DataRow row0 = dataTable.Rows[0];

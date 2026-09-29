@@ -215,35 +215,8 @@ namespace Model.NBYS
         }
         public string SelectByBagisciIdReturnJSon(string nakitBagisciId, ref int rowCount)
         {
-            string sqlString = string.Format(@"
-                SELECT A.BagisciId
-		                ,BagisTarihi as BagisTarihi
-		                ,REPLACE(CONVERT(varchar,A.BagisMiktari),'.',',') + ' ' +A.DovizCinsi BagisTutari
-                        ,REPLACE(ISNULL(CONVERT(varchar,B.BagisMiktari),''),'.',',') + ' ' +ISNULL(B.DovizCinsi,'') ArmaganTutari
-		                ,Convert(nvarchar,replace (A.BagisMiktari,'.',',')) as BagisMiktari
-                        ,A.DovizCinsi as DovizCinsi
-		                ,ArmaganId
-		                ,ISNULL(C.Armagan,'') Armagan
-		                ,ISNULL(B.Durum,'') Durum
-		                ,ISNULL(B.Aciklama,'') Aciklama
-						,D.Banka,
-                        A.Aciklama NBHAciklama
-                FROM NakitBagisHareket_Table A
-                LEFT JOIN Armagan_Table B ON B.Id= A.ArmaganId 
-                LEFT JOIN ArmaganTanim_Table C ON C.Id= B.ArmaganTanimId
-				LEFT JOIN BankaTanim_Table D ON D.Id=A.BankaId
-                WHERE A.BagisciId={0}
-				ORDER BY BagisTarihi DESC 
-            ", nakitBagisciId);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                rowCount = dataTable.Rows.Count;
-            }
-
-            string json = ToJSON(dataTable);
-            return json;
+            return new NakitBagisHareketService().GetDonorDetailJson(
+                nakitBagisciId.ConvertToInt(), ref rowCount);
         }
         public List<NakitBagisHareket> SelectArmaganiOlmayanBagislarByBagisciId(int bagisciId)
         {
@@ -345,94 +318,15 @@ namespace Model.NBYS
         }
         public DataTable SelectByIliAndYil(int ilId, DateTime tarih)
         {
-            string sqlString = string.Empty;
-            string ilStr = string.Empty;
-            if (ilId > ProjeConstants.IL_HEPSI)
-            {
-                ilStr = string.Format(" AND (D.Id={0})" , ilId);
-            }
-            sqlString = string.Format(@"
-                SELECT YEAR(BagisTarihi) Yil , SUM(BagisMiktari) BagisToplam, count(BagisMiktari) BagisSayisi , D.IlAdi IlAdi 
-                FROM NakitBagisHareket_Table A
-                LEFT JOIN NakitBagisci_Table B on B.Id= A.BagisciId
-                LEFT JOIN IL_Table D on D.Id= B.Ili
-                WHERE BagisTarihi > {0} 
-                {1}
-                GROUP BY YEAR(BagisTarihi), D.IlAdi
-                ORDER BY Yil DESC
-                ", tarih.ReturnQuotedValue(), ilStr);
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                Exception ex = new Exception("sql=" + sqlString, e);
-                throw;
-            }
-            return dataTable;
+            return new NakitBagisHareketService().GetProvinceYearSummary(ilId, tarih);
         }
         public DataTable SelectByBolgeTarih(int bolgeId, DateTime ilkTarih, DateTime sonTarih)
         {
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND C.BolgeId={0} ", bolgeId);
-            string sqlString = string.Format(@"
-                SELECT A.BagisTarihi, A.BagisMiktari, 
-                    B.Id NakitBagisciId, B.Adi, B.Soyadi, B.Telefon1, B.Telefon2, B.Adres, B.BelgeIstemiyor,
-					C.IlAdi Ili,D.IlceAdi Ilcesi,
-					F.Armagan, E.Durum,
-IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış', 'Bağış')) AS CokluBagis
-                FROM NakitBagisHareket_Table A
-                LEFT JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
-                INNER JOIN Il_Table C ON C.Id=B.Ili
-                LEFT JOIN Ilce_Table D ON D.Id=B.Ilcesi
-                LEFT JOIN Armagan_Table E ON E.Id=A.ArmaganId
-                LEFT JOIN ArmaganTanim_Table F ON F.Id=E.ArmaganTanimId
-                WHERE (BagisTarihi BETWEEN {1} AND {2})
-                    {0} 
-                    --AND E.Durum NOT IN ('Ulasilamiyor', 'Belge Istemiyor') --30.12.2022 Deniz Hanim aradi, Zeki Alb. ve Kemal Alb.. tarafindan bu seklde olmasinin istendigini iletti
-                ORDER BY BagisMiktari DESC,Adi, BagisTarihi DESC
-            ", bolgeStr, ilkTarih.ReturnTRDateFormat(),sonTarih.ReturnTRDateFormat());
-            DataTable dataTable;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                Exception ex = new Exception("sql=" + sqlString, e);
-                throw;
-            }
-            return dataTable;
+            return new NakitBagisHareketService().GetByRegionDate(bolgeId, ilkTarih, sonTarih);
         }
         public DataTable SelectByNakitBagisciId(int nakitBagisciId)
         {
-            string sqlString = string.Format(@"
-                SELECT A.BagisTarihi, A.BagisMiktari, 
-                    B.Id NakitBagisciId, B.Adi, B.Soyadi, B.Telefon1, B.Telefon2, B.Adres, B.BelgeIstemiyor,
-					C.IlAdi Ili,D.IlceAdi Ilcesi,
-					F.Armagan, E.Durum,
-            IIF(E.DuzenliBagis=1, 'Düzenli Bagis', IIF(E.CokluBagis=1, 'Çoklu Bagis', 'Bagis')) AS CokluBagis
-                FROM NakitBagisHareket_Table A
-                LEFT JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
-                INNER JOIN Il_Table C ON C.Id=B.Ili
-                LEFT JOIN Ilce_Table D ON D.Id=B.Ilcesi
-                LEFT JOIN Armagan_Table E ON E.Id=A.ArmaganId
-                LEFT JOIN ArmaganTanim_Table F ON F.Id=E.ArmaganTanimId
-                WHERE B.Id={0}
-                ORDER BY BagisTarihi DESC 
-            ", nakitBagisciId);
-            DataTable dataTable;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                Exception ex = new Exception("sql=" + sqlString, e);
-                throw;
-            }
-            return dataTable;
+            return new NakitBagisHareketService().GetDonorDonationDetails(nakitBagisciId);
         }
         public DataTable SelectByBagisTarihiBankaId(DateTime bagisTarihi, string bankaGrup, string dovizCinsi = "")
         {

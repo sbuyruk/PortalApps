@@ -178,6 +178,37 @@ namespace Model.Services.NBYS
                 baslangic, bitis, bankaGrup, ProjeConstants.DOVIZ_TL);
         }
 
+        public DataTable GetDonorDetailRows(int bagisciId)
+        {
+            return repository.SelectDonorDetailRows(bagisciId);
+        }
+
+        public string GetDonorDetailJson(int bagisciId, ref int rowCount)
+        {
+            DataTable table = GetDonorDetailRows(bagisciId);
+            if (table != null)
+                rowCount = table.Rows.Count;
+            return new NakitBagisHareket().ToJSON(table);
+        }
+
+        public DataTable GetProvinceYearSummary(int ilId, DateTime tarih)
+        {
+            int? ilFiltresi = ilId > ProjeConstants.IL_HEPSI ? (int?)ilId : null;
+            return repository.SelectProvinceYearSummary(ilFiltresi, tarih);
+        }
+
+        public DataTable GetByRegionDate(int bolgeId, DateTime baslangic, DateTime bitis)
+        {
+            int? bolgeFiltresi = bolgeId == ProjeConstants.HEPSI_INT ||
+                bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? (int?)null : bolgeId;
+            return repository.SelectByRegionDate(bolgeFiltresi, baslangic, bitis);
+        }
+
+        public DataTable GetDonorDonationDetails(int bagisciId)
+        {
+            return repository.SelectDonorDonationDetails(bagisciId);
+        }
+
         private static decimal ReadAggregate(DataTable table, ref int adet)
         {
             if (table == null || table.Rows.Count == 0)

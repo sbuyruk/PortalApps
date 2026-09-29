@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -69,10 +70,9 @@ namespace NBYS_WebParts.NakitBagisHaritasiWP
         private void FillData2IlinfoTable(int ilId)
         {
             //createHeaderColumns();
-            NakitBagisHareket nbh = new NakitBagisHareket();
             DateTime now = DateTime.Now.AddYears(-4);
             DateTime sorguTar = new DateTime(now.Year, 1, 1);
-            DataTable dataTable = nbh.SelectByIliAndYil(ilId, sorguTar);
+            DataTable dataTable = new NakitBagisHareketService().GetProvinceYearSummary(ilId, sorguTar);
 
             int SiraNo = 1;
             if (dataTable != null)
