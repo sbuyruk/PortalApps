@@ -2,8 +2,6 @@ using Model.Ortak;
 using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
-using Utility.HelperClasses;
-using Utility.ProjeGlobal;
 
 namespace Model.NBYS
 {
@@ -51,55 +49,6 @@ namespace Model.NBYS
         {
             return (List<T>)Convert.ChangeType(
                 new NakitBagisHareketService().GetAll(), typeof(List<T>));
-        }
-        public string GetInsertSQL(string extId)
-        {
-            try
-            {
-                GenericEntity<NakitBagisHareket> genericEntity = new GenericEntity<NakitBagisHareket>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                Olusturan = UtilityHelper.GetCurrentUserName();
-                string sqlString = genericEntity.GetQuery(this, extId) + " ;SELECT SCOPE_IDENTITY() ";
-
-                return sqlString;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-        public string GetUpdateSQL(string extId)
-        {
-            try
-            {
-                GenericEntity<NakitBagisHareket> genericEntity = new GenericEntity<NakitBagisHareket>(ProjeConstants.SQL_UPDATE);
-                DegistirmeTarihi = DateTime.Now;
-                Degistiren = UtilityHelper.GetCurrentUserName();
-                string sqlString = string.IsNullOrEmpty(extId)?genericEntity.GetQuery(this): genericEntity.GetQuery(this, extId);
-
-                return sqlString;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-        public string GetDeleteSQL(string extId)
-        {
-            try
-            {
-                GenericEntity<NakitBagisHareket> genericEntity = new GenericEntity<NakitBagisHareket>(ProjeConstants.SQL_DELETE);
-                string sqlString = genericEntity.GetQuery(this, extId);
-
-                return sqlString;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
         }
     }
 
