@@ -297,13 +297,13 @@ namespace Model.NBYS
             //}
             if (nakitBagisHareketListesi.Count> 0)
             {
-
+                NakitBagisHareketService nakitBagisHareketService = new NakitBagisHareketService();
                 foreach (NakitBagisHareket item in nakitBagisHareketListesi)
                 {
                     item.ArmaganId = armaganId;
                     try
                     {
-                        item.Update();
+                        nakitBagisHareketService.Update(item);
                     }
                     catch (Exception e)
                     {
