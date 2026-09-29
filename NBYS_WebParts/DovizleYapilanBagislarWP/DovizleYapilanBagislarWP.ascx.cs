@@ -198,8 +198,7 @@ namespace NBYS_WebParts.DovizleYapilanBagislarWP
             {
                 BankaDDL.Items.Clear();
                 BankaDDL.Items.Add(new ListItem("Tüm Bankalar", "0"));
-                BankaTanim pBanka = new BankaTanim();
-                List<string> list = pBanka.SelectByBankaGrup();
+                List<string> list = new BankaTanimService().GetGroups();
                 foreach (string banka in list)
                 {
                     BankaDDL.Items.Add(new ListItem(banka, banka));

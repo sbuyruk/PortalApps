@@ -75,7 +75,9 @@
     <Compile Include="Ortak\SqlQuery.cs" />
     <Compile Include="Repositories\NBYS\ArmaganRepository.cs" />
     <Compile Include="Repositories\NBYS\ArmaganTanimRepository.cs" />
+    <Compile Include="Repositories\NBYS\BankaTanimRepository.cs" />
     <Compile Include="Repositories\NBYS\NakitBagisciRepository.cs" />
+    <Compile Include="Repositories\NBYS\NBYSParametreRepository.cs" />
     <Compile Include="Repositories\NBYS\DuzenliNakitBagisciRepository.cs" />
     <Compile Include="Repositories\NBYS\NakitBagisHareketRepository.cs" />
     <Compile Include="Repositories\NBYS\NakitBagisciReportRepository.cs" />
