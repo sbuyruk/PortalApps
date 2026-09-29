@@ -114,6 +114,43 @@ namespace Model.Services.NBYS
                 armaganArchive);
         }
 
+        public bool MergeDonorRecords(
+            IList<NakitBagisHareket> bagisHareketleri,
+            IList<SilinenKayit> bagisHareketArsivleri,
+            IList<Armagan> armaganlar,
+            IList<SilinenKayit> armaganArsivleri)
+        {
+            if (bagisHareketleri == null)
+                throw new ArgumentNullException("bagisHareketleri");
+            if (bagisHareketArsivleri == null)
+                throw new ArgumentNullException("bagisHareketArsivleri");
+            if (armaganlar == null)
+                throw new ArgumentNullException("armaganlar");
+            if (armaganArsivleri == null)
+                throw new ArgumentNullException("armaganArsivleri");
+
+            DateTime now = DateTime.Now;
+            string currentUser = UtilityHelper.GetCurrentUserName();
+
+            foreach (NakitBagisHareket bagisHareketi in bagisHareketleri)
+            {
+                bagisHareketi.DegistirmeTarihi = now;
+                bagisHareketi.Degistiren = currentUser;
+            }
+            foreach (Armagan armagan in armaganlar)
+                armagan.OlusturmaTarihi = now;
+            foreach (SilinenKayit archive in bagisHareketArsivleri)
+                archive.OlusturmaTarihi = now;
+            foreach (SilinenKayit archive in armaganArsivleri)
+                archive.OlusturmaTarihi = now;
+
+            return repository.MergeDonorRecords(
+                bagisHareketleri,
+                bagisHareketArsivleri,
+                armaganlar,
+                armaganArsivleri);
+        }
+
         public bool Delete(NakitBagisHareket bagisHareket)
         {
             if (bagisHareket == null)

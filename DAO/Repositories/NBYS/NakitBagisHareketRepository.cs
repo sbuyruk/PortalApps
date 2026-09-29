@@ -77,6 +77,44 @@ namespace DAO.Repositories.NBYS
             db.ExecuteTransaction(queries);
         }
 
+        public bool MergeDonorRecords<TDonation, TDonationArchive, TGift, TGiftArchive>(
+            IList<TDonation> donations,
+            IList<TDonationArchive> donationArchives,
+            IList<TGift> gifts,
+            IList<TGiftArchive> giftArchives)
+        {
+            if (donations == null)
+                throw new ArgumentNullException("donations");
+            if (donationArchives == null)
+                throw new ArgumentNullException("donationArchives");
+            if (gifts == null)
+                throw new ArgumentNullException("gifts");
+            if (giftArchives == null)
+                throw new ArgumentNullException("giftArchives");
+            if (donations.Count != donationArchives.Count)
+                throw new ArgumentException("Donation and archive counts must match.");
+            if (gifts.Count != giftArchives.Count)
+                throw new ArgumentException("Gift and archive counts must match.");
+
+            List<SqlQuery> queries = new List<SqlQuery>();
+            for (int i = 0; i < donations.Count; i++)
+            {
+                queries.Add(queryBuilder.BuildUpdate(donations[i], TableName));
+                queries.Add(queryBuilder.BuildInsert(donationArchives[i], "SilinenKayit_Table"));
+            }
+            for (int i = 0; i < gifts.Count; i++)
+            {
+                queries.Add(queryBuilder.BuildUpdate(gifts[i], "Armagan_Table"));
+                queries.Add(queryBuilder.BuildInsert(giftArchives[i], "SilinenKayit_Table"));
+            }
+
+            if (queries.Count == 0)
+                return false;
+
+            db.ExecuteTransaction(queries);
+            return true;
+        }
+
         public bool Delete(int id)
         {
             return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), "");
