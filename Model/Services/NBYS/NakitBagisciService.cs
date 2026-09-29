@@ -147,8 +147,7 @@ namespace Model.Services.NBYS
             bool isSaved = Update(nakitBagisci);
             if (oncekiTuzelKisi != nakitBagisci.TuzelKisi)
             {
-                Armagan armagan = new Armagan();
-                var armaganList = armagan.SelectByBagisciIdAndDurum(
+                var armaganList = new ArmaganService().GetByBagisciIdAndDurum(
                     nakitBagisci.Id,
                     ProjeConstants.DURUM_GONDERILMEDI);
 

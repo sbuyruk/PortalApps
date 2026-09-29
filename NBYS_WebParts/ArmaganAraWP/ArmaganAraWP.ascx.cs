@@ -102,8 +102,7 @@ namespace NBYS_WebParts.ArmaganAraWP
             string json = string.Empty;
             if (!string.IsNullOrEmpty(ArmaganAraTxt.Text) && ArmaganAraTxt.Text.ConvertToInt() > 0)
             {
-                Armagan armagan = new Armagan();
-                json = armagan.SelectByFilter(ArmaganAraTxt.Text.Trim(), 0);
+                json = new ArmaganService().SearchJson(ArmaganAraTxt.Text.Trim(), 0);
             }
             return string.IsNullOrEmpty(json) ? "[]" : json;
         }

@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.SharePoint;
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -322,13 +323,11 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
         }
         private string GetData()
         {
-            Armagan armagan = new Armagan();
-
             int rowCount = 0;
             DateTime bastar = GetBasTar();
             DateTime bittar = GetBitTar();
 
-            var json = armagan.SelectByDurumTarih(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID.ToString(), ref rowCount, BolgeDDL.SelectedItem.Value.ConvertToInt(), ProjeConstants.HEPSI_INT);
+            var json = new ArmaganService().ListByDurumTarihJson(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID.ToString(), ref rowCount, BolgeDDL.SelectedItem.Value.ConvertToInt(), ProjeConstants.HEPSI_INT);
             TableDataLbl.Text = rowCount + " adet Düzenli Bağışçı Belgesi mevcut";
             if (rowCount > 0)
             {
@@ -415,8 +414,7 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
         private void FillDurumValues()
         {
 
-            Armagan armagan = new Armagan();
-            DataTable dataTable = armagan.SelectCountDurumByBolgeTarih(ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID, BolgeDDL.SelectedItem.Value.ConvertToInt(), SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime());
+            DataTable dataTable = new ArmaganService().CountDurumByBolge(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID, BolgeDDL.SelectedItem.Value.ConvertToInt());
             FillTable(dataTable);
 
         }
@@ -623,10 +621,9 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
                 isYaziOlusturuldu = true;
                 if (DurumChk.Checked)
                 {
-                    Armagan armagan = new Armagan();
                     try
                     {
-                        bool isUpdated = armagan.UpdateDurumByBolge(ProjeConstants.DURUM_KONTROLEDILDI, ProjeConstants.DURUM_GONDERILDI, SecilenBastarQS, SecilenBittarQS, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID, ProjeConstants.BOLGE_HEPSI_INT);
+                        bool isUpdated = new ArmaganService().UpdateDurumByBolge(ProjeConstants.DURUM_KONTROLEDILDI, ProjeConstants.DURUM_GONDERILDI, SecilenBastarQS, SecilenBittarQS, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID, ProjeConstants.BOLGE_HEPSI_INT);
                         if (isUpdated)
                         {
                             MessageHelper.PublishMessage("Belgelerin durumu '" + ProjeConstants.DURUM_GONDERILDI + "' olarak değiştirildi.", ProjeConstants.MESAJ_BASARILI, 2000);
@@ -655,8 +652,7 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
             MemoryStream destinationStream = null;
             DateTime bastar = GetBasTar();
             DateTime bittar = GetBitTar();
-            Armagan armagan = new Armagan();
-            DataTable dataTable = armagan.SelectByDurumTarihReturnDT(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID.ToString(), BolgeDDL.SelectedItem.Value.ConvertToInt(), ProjeConstants.HEPSI_INT);
+            DataTable dataTable = new ArmaganService().ListByDurumTarih(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID.ToString(), BolgeDDL.SelectedItem.Value.ConvertToInt(), ProjeConstants.HEPSI_INT);
 
             if (dataTable != null)
             {
@@ -755,8 +751,7 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             DateTime bastar = GetBasTar();
             DateTime bittar = GetBitTar();
-            Armagan armagan = new Armagan();
-            DataTable dataTable = armagan.SelectByDurumTarihReturnDT(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID.ToString(), BolgeDDL.SelectedItem.Value.ConvertToInt(), ProjeConstants.HEPSI_INT);
+            DataTable dataTable = new ArmaganService().ListByDurumTarih(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID.ToString(), BolgeDDL.SelectedItem.Value.ConvertToInt(), ProjeConstants.HEPSI_INT);
             if (dataTable != null)
             {
                 int index = 1;

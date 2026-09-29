@@ -774,8 +774,6 @@ namespace NBYS_WebParts.ArmaganListesiWP
         }
         private string TabloJson()
         {
-            Armagan armagan = new Armagan();
-
             int rowCount = 0;
 
             int ay = AyDDL.SelectedItem.Value.ConvertToInt();
@@ -798,7 +796,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
 
             }
             int ili = SecilenIlQS.ConvertToInt();
-            var json = armagan.SelectByDurumTarih(DurumDDL.SelectedItem.Text, bastar, bittar, ArmaganDDL.SelectedItem.Value, ref rowCount, BolgeIdQS, ili);
+            var json = new ArmaganService().ListByDurumTarihJson(DurumDDL.SelectedItem.Text, bastar, bittar, ArmaganDDL.SelectedItem.Value, ref rowCount, BolgeIdQS, ili);
             return json;
 
         }

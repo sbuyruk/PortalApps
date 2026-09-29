@@ -2739,9 +2739,8 @@ namespace Model.NBYS
             int hakedilenArmaganTanimId, string currentUser, NakitBagisci nakitBagisci, List<NakitBagisHareket> nakitBagisHareketListesi, bool cokluBagis=false)
         {
             int armaganId = 0;
-            Armagan armagan = new Armagan();
             //bagis tarihi ve BagisciId ye göre armagan tablosunu sorgula, bu kisi varsa update yoksa insert etmek için
-            armagan = armagan.SelectByBagisciIdAndBagisTarihi(bastar, bittar, nakitBagisciId);
+            Armagan armagan = new ArmaganService().GetByBagisciIdDateRange(nakitBagisciId, bastar, bittar);
             if (armagan == null)
                 armagan = new Armagan();
             armagan.CokluBagis=cokluBagis;
@@ -2758,8 +2757,7 @@ namespace Model.NBYS
             {
                 armagan.Durum = ProjeConstants.DURUM_EDEVLETTENBELGEGONDERILDI;
             }
-            Armagan iadeEdilmisArmagan = new Armagan();
-            List<Armagan> iadeEdilmisArmaganListesi = iadeEdilmisArmagan.SelectByBagisciIdAndDurum(nakitBagisci.Id, ProjeConstants.DURUM_PARAIADE);
+            List<Armagan> iadeEdilmisArmaganListesi = new ArmaganService().GetByBagisciIdAndDurum(nakitBagisci.Id, ProjeConstants.DURUM_PARAIADE);
             if (iadeEdilmisArmaganListesi.Count > 0)
             {
                 armagan.Durum = ProjeConstants.DURUM_DAHAONCEIADE;
@@ -2770,7 +2768,7 @@ namespace Model.NBYS
                 //yeni hakkettigi armagan tesekkür degilise, eski armagani sorgula, yeni armagani daha önce almis mi, evet ise tesekkür ver
                 DateTime armaganSorgulamaBasTar = new DateTime(2005, 1, 1);
                 DateTime armaganSorgulamaBitTar = bastar;
-                Armagan eskiArmagan = armagan.SelectByBagisciIdBagisTarihi(armagan.BagisciId, hakedilenArmaganTanimId, armaganSorgulamaBasTar, armaganSorgulamaBitTar);
+                Armagan eskiArmagan = new ArmaganService().GetByBagisciIdTanimIdDateRange(armagan.BagisciId, hakedilenArmaganTanimId, armaganSorgulamaBasTar, armaganSorgulamaBitTar);
                 if (eskiArmagan != null)
                     armagan.ArmaganTanimId = ProjeConstants.ARMAGAN_TESEKKURID;
 
@@ -2794,8 +2792,7 @@ namespace Model.NBYS
                 int armaganId = 0;
 
                 //Su ana kadar aldigi ArmaganTanimId leri bul
-                Armagan alinanArmagan = new Armagan();
-                List<Armagan> alinanArmaganListesi = alinanArmagan.SelectByBagisciId(nakitBagisci.Id);
+                List<Armagan> alinanArmaganListesi = new ArmaganService().GetByBagisciId(nakitBagisci.Id);
                 List<int> alinanArmaganTanimIdListesi = new List<int>();
                 foreach (Armagan item in alinanArmaganListesi)
                 {
@@ -2892,7 +2889,7 @@ namespace Model.NBYS
             int hakedilenArmaganTanimId, string currentUser,  bool cokluBagis=false)
         {
             //Armagan_Table'dan bu bagisciId ve hakedilenArmaganTanimId kaç tane armagan aldğını bul
-            int mevcutArmaganSayisi = new Armagan().SelectCountByBagisciIdAndArmaganTanimId(nakitBagisci.Id,hakedilenArmaganTanimId);
+            int mevcutArmaganSayisi = new ArmaganService().CountByBagisciIdAndTanimId(nakitBagisci.Id, hakedilenArmaganTanimId);
 
             int armaganId = 0;
             Armagan armagan = new Armagan();
@@ -2915,8 +2912,7 @@ namespace Model.NBYS
             {
                 armagan.Durum = ProjeConstants.DURUM_EDEVLETTENBELGEGONDERILDI;
             }
-            Armagan iadeEdilmisArmagan = new Armagan();
-            List<Armagan> iadeEdilmisArmaganListesi = iadeEdilmisArmagan.SelectByBagisciIdAndDurum(nakitBagisci.Id, ProjeConstants.DURUM_PARAIADE);
+            List<Armagan> iadeEdilmisArmaganListesi = new ArmaganService().GetByBagisciIdAndDurum(nakitBagisci.Id, ProjeConstants.DURUM_PARAIADE);
             if (iadeEdilmisArmaganListesi.Count > 0)
             {
                 armagan.Durum = ProjeConstants.DURUM_DAHAONCEIADE;
