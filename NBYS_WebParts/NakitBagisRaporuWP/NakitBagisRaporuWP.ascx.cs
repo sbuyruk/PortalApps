@@ -139,8 +139,7 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
             ArmaganDDL.Items.Clear();
             ArmaganDDL.Items.Add(new ListItem("Hepsi", ProjeConstants.HEPSI_INT.ToString()));
 
-            ArmaganTanim armaganTanim = new ArmaganTanim();
-            List<ArmaganTanim> armaganlar = armaganTanim.SelectAktifArmaganTanim().OrderBy(x => x.Armagan).ToList();
+            List<ArmaganTanim> armaganlar = new ArmaganTanimService().GetActive().OrderBy(x => x.Armagan).ToList();
             foreach (var item in armaganlar)
             {
                 ArmaganDDL.Items.Add(new ListItem(item.Armagan, item.Id.ToString()));

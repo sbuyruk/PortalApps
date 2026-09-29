@@ -90,8 +90,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             List<BagisciListItem> list = new List<BagisciListItem>();
             NakitBagisciReportService reportService = new NakitBagisciReportService();
 
-            ArmaganTanim at = new ArmaganTanim();
-            at = at.Select<ArmaganTanim>(ProjeConstants.ARMAGAN_BRONZID);
+            ArmaganTanim at = new ArmaganTanimService().GetById(ProjeConstants.ARMAGAN_BRONZID);
             if (at != null)
             {
                 decimal bronzArmaganLimiti = at.OzelKisiAltLimit;
@@ -145,8 +144,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
 
 
             //madalya hakediyor mu ? hayir: return
-            ArmaganTanim hakedilenArmaganTanim = new ArmaganTanim();
-            hakedilenArmaganTanim = hakedilenArmaganTanim.SelectByTutar(toplamBagisTutari, tuzelKisiMi);
+            ArmaganTanim hakedilenArmaganTanim = new ArmaganTanimService().GetByAmount(toplamBagisTutari, tuzelKisiMi);
             if (hakedilenArmaganTanim != null)
             {
                 //Daha Önce aldigi armaganlar
@@ -238,8 +236,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                 if (nakitBagisHareketListesi.Count > 0)
                 {
                     toplamBagis = nakitBagisHareketListesi.Sum(emp => emp.BagisMiktari);
-                    ArmaganTanim hakedilenArmaganTanim = new ArmaganTanim();
-                    hakedilenArmaganTanim = hakedilenArmaganTanim.SelectByTutar(toplamBagis, nakitBagisci.TuzelKisi);
+                    ArmaganTanim hakedilenArmaganTanim = new ArmaganTanimService().GetByAmount(toplamBagis, nakitBagisci.TuzelKisi);
 
                     if (hakedilenArmaganTanim != null)
                     {
@@ -601,8 +598,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             NakitBagisci nakitBagisci = new NakitBagisciService().GetById(hiddenNakitBagisciId.Value.ConvertToInt());
             if (nakitBagisci != null)
             {
-                ArmaganTanim armaganTanim = new ArmaganTanim();
-                armaganTanim = armaganTanim.Select<ArmaganTanim>(hiddenArmaganTanimId.Value.ConvertToInt());
+                ArmaganTanim armaganTanim = new ArmaganTanimService().GetById(hiddenArmaganTanimId.Value.ConvertToInt());
                 if (armaganTanim != null)
                 {
                     ArmaganOlusturNowBtn.Visible = true;

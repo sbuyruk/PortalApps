@@ -630,8 +630,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
             if (ArmaganDDL.SelectedItem == null)
             {
                 ArmaganDDL.Items.Clear();
-                ArmaganTanim armaganTanim = new ArmaganTanim();
-                List<ArmaganTanim> list = armaganTanim.SelectAll<ArmaganTanim>();
+                List<ArmaganTanim> list = new ArmaganTanimService().GetAll();
                 //Tum armaganlar secenegi
                 ArmaganDDL.Items.Add(new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI));
                 foreach (ArmaganTanim arm in list)
