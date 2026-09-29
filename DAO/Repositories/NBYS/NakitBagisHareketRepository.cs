@@ -272,6 +272,119 @@ namespace DAO.Repositories.NBYS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectDailyTotalsByBank(DateTime bagisTarihi, string bankaGrup, string dovizCinsi)
+        {
+            string bankaKosulu = string.IsNullOrEmpty(bankaGrup) ? string.Empty : " AND BankaGrup=@BankaGrup";
+            string dovizKosulu = string.IsNullOrEmpty(dovizCinsi) ? string.Empty : " AND DovizCinsi=@DovizCinsi";
+            SqlQuery query = new SqlQuery(@"
+                SELECT BagisTarihi, SUM(BagisMiktari) ToplamBagis,
+                    B.HesapKodu, B.HesapAdi, B.BankaGrup Banka
+                FROM NakitBagisHareket_Table A
+                LEFT JOIN BankaTanim_Table B ON B.Id=A.BankaId
+                WHERE BagisTarihi=@BagisTarihi" + bankaKosulu + dovizKosulu + @"
+                GROUP BY BagisTarihi, B.HesapKodu, B.HesapAdi, B.BankaGrup
+                ORDER BY BagisTarihi");
+            query.AddParameter("@BagisTarihi", LegacyDateValue(bagisTarihi));
+            if (!string.IsNullOrEmpty(bankaGrup))
+                query.AddParameter("@BankaGrup", bankaGrup);
+            if (!string.IsNullOrEmpty(dovizCinsi))
+                query.AddParameter("@DovizCinsi", dovizCinsi);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectDailySum(DateTime bagisTarihi, string bankaGrup, string dovizCinsi)
+        {
+            string bankaKosulu = string.IsNullOrEmpty(bankaGrup) ? string.Empty : " AND BankaGrup=@BankaGrup";
+            string dovizKosulu = string.IsNullOrEmpty(dovizCinsi) ? string.Empty : " AND DovizCinsi=@DovizCinsi";
+            SqlQuery query = new SqlQuery(@"
+                SELECT BagisTarihi, SUM(BagisMiktari) Toplam
+                FROM NakitBagisHareket_Table A
+                LEFT JOIN BankaTanim_Table B ON B.Id=A.BankaId
+                WHERE BagisTarihi=@BagisTarihi" + bankaKosulu + dovizKosulu + @"
+                GROUP BY BagisTarihi");
+            query.AddParameter("@BagisTarihi", LegacyDateValue(bagisTarihi));
+            if (!string.IsNullOrEmpty(bankaGrup))
+                query.AddParameter("@BankaGrup", bankaGrup);
+            if (!string.IsNullOrEmpty(dovizCinsi))
+                query.AddParameter("@DovizCinsi", dovizCinsi);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectDailyTlTotalByBankGroup2(DateTime bagisTarihi, string bankaGrup2, string tlDovizCinsi)
+        {
+            string bankaKosulu = string.IsNullOrEmpty(bankaGrup2) ? string.Empty : " AND BankaGrup2=@BankaGrup2";
+            SqlQuery query = new SqlQuery(@"
+                SELECT BagisTarihi, SUM(BagisMiktari + ISNULL(IadeMiktari,0)) ToplamBagis,
+                    B.BankaGrup2 Banka
+                FROM NakitBagisHareket_Table A
+                LEFT JOIN BankaTanim_Table B ON B.Id=A.BankaId
+                WHERE DovizCinsi=@DovizCinsi AND BagisTarihi=@BagisTarihi" + bankaKosulu + @"
+                GROUP BY BagisTarihi, B.BankaGrup2");
+            query.AddParameter("@DovizCinsi", tlDovizCinsi);
+            query.AddParameter("@BagisTarihi", LegacyDateValue(bagisTarihi));
+            if (!string.IsNullOrEmpty(bankaGrup2))
+                query.AddParameter("@BankaGrup2", bankaGrup2);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectCurrencyDonationsByDateBankGroup2(
+            DateTime baslangic, DateTime bitis, string bankaGrup2, string dovizCinsi)
+        {
+            string bankaKosulu = string.IsNullOrEmpty(bankaGrup2) ? string.Empty : " AND BankaGrup2=@BankaGrup2";
+            SqlQuery query = new SqlQuery(@"
+                SELECT BagisTarihi, A.DovizTutari, A.DovizKuru, A.DovizCinsi,
+                    A.BagisMiktari, B.BankaGrup2, B.Banka
+                FROM NakitBagisHareket_Table A
+                LEFT JOIN BankaTanim_Table B ON B.Id=A.BankaId
+                WHERE DovizCinsi=@DovizCinsi
+                    AND BagisTarihi>=@Baslangic AND BagisTarihi<=@Bitis" + bankaKosulu);
+            query.AddParameter("@DovizCinsi", dovizCinsi);
+            query.AddParameter("@Baslangic", LegacyDateValue(baslangic));
+            query.AddParameter("@Bitis", LegacyDateValue(bitis));
+            if (!string.IsNullOrEmpty(bankaGrup2))
+                query.AddParameter("@BankaGrup2", bankaGrup2);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectBankGroup2ByDateCurrency(DateTime baslangic, DateTime bitis, string dovizCinsi)
+        {
+            string dovizKosulu = string.IsNullOrEmpty(dovizCinsi) ? string.Empty : " AND DovizCinsi=@DovizCinsi";
+            SqlQuery query = new SqlQuery(@"
+                SELECT BankaGrup2
+                FROM NakitBagisHareket_Table A
+                INNER JOIN BankaTanim_Table B ON B.Id=A.BankaId
+                WHERE BagisTarihi>=@Baslangic AND BagisTarihi<=@Bitis" + dovizKosulu + @"
+                GROUP BY BankaGrup2");
+            query.AddParameter("@Baslangic", LegacyDateValue(baslangic));
+            query.AddParameter("@Bitis", LegacyDateValue(bitis));
+            if (!string.IsNullOrEmpty(dovizCinsi))
+                query.AddParameter("@DovizCinsi", dovizCinsi);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectCurrencyTotalsByDateBank(
+            DateTime baslangic, DateTime bitis, string bankaGrup, string tlDovizCinsi)
+        {
+            string bankaKosulu = string.IsNullOrEmpty(bankaGrup) || bankaGrup == "0"
+                ? string.Empty
+                : " AND BankaGrup=@BankaGrup";
+            SqlQuery query = new SqlQuery(@"
+                SELECT DovizCinsi, SUM(BagisMiktari) TlKarsiligiToplamBagis,
+                    SUM(DovizTutari) ToplamDovizTutari, B.BankaGrup Banka
+                FROM NakitBagisHareket_Table A
+                LEFT JOIN BankaTanim_Table B ON B.Id=A.BankaId
+                WHERE DovizCinsi!=@TlDovizCinsi
+                    AND BagisTarihi>=@Baslangic AND BagisTarihi<=@Bitis" + bankaKosulu + @"
+                GROUP BY DovizCinsi, B.BankaGrup
+                ORDER BY Banka");
+            query.AddParameter("@TlDovizCinsi", tlDovizCinsi);
+            query.AddParameter("@Baslangic", LegacyDateValue(baslangic));
+            query.AddParameter("@Bitis", LegacyDateValue(bitis));
+            if (!string.IsNullOrEmpty(bankaGrup) && bankaGrup != "0")
+                query.AddParameter("@BankaGrup", bankaGrup);
+            return db.SelectFromDb(query, "");
+        }
+
         // Preserve ReturnTRDateFormat's culture, precision and MinValue semantics.
         // Parameters carry the value without SQL literal quotes.
         private static string LegacyDateValue(DateTime value)
