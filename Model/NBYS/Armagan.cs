@@ -1,10 +1,8 @@
-using DAO.Ortak;
 using Model.Ortak;
 using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
@@ -38,15 +36,7 @@ namespace Model.NBYS
 
         public Armagan SelectByBagisciIdAndBagisTarihi(DateTime basTar, DateTime bitTar, int nakitBagisciId)
         {
-
-            string sqlString = string.Format(@"SELECT * from Armagan_Table
-                              WHERE BelgeGecersizMi!=1 AND BagisciId={0} and Tarih BETWEEN {1} AND {2}",
-                           nakitBagisciId.ReturnQuotedValue(), basTar.ReturnTRDateFormat(), bitTar.ReturnTRDateFormat());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Armagan> list = ToList<Armagan>(dataTable);
-            Armagan armagan = new Armagan();
-            armagan = list.FirstOrDefault();
-            return armagan;
+            return new ArmaganService().GetByBagisciIdDateRange(nakitBagisciId, basTar, bitTar);
         }
         public override int Save()
         {
@@ -63,30 +53,12 @@ namespace Model.NBYS
         
         public Armagan SelectByBagisciIdBagisTarihi(int nakitBagisciId, int armaganId, DateTime basTar, DateTime bitTar)
         {
-            //DateTime ayinIlkGunu = new DateTime(bagisTarihi.Year, bagisTarihi.Month, 1);
-
-            string sqlString = string.Format(@"
-                SELECT * FROM Armagan_Table
-                WHERE BelgeGecersizMi!=1 AND BagisciId={0} 
-                    AND ArmaganTanimId={1} 
-                    AND Tarih  BETWEEN {2} AND {3} ",
-                           nakitBagisciId.ReturnQuotedValue(), armaganId, basTar.ReturnTRDateFormat(), bitTar.ReturnTRDateFormat());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Armagan> list = ToList<Armagan>(dataTable);
-            Armagan armagan = new Armagan();
-            armagan = list.FirstOrDefault();
-            return armagan;
+            return new ArmaganService().GetByBagisciIdTanimIdDateRange(
+                nakitBagisciId, armaganId, basTar, bitTar);
         }
         public List<Armagan> SelectByBagisciId(int nakitBagisciId)
         {
-            string sqlString = string.Format(@"SELECT * from Armagan_Table
-                              WHERE BelgeGecersizMi!=1 AND BagisciId={0} ",
-                           nakitBagisciId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Armagan> list = ToList<Armagan>(dataTable);
-            Armagan armagan = new Armagan();
-            armagan = list.FirstOrDefault();
-            return list;
+            return new ArmaganService().GetByBagisciId(nakitBagisciId);
         }
         private string DurumGetir(int nakitBagisciId)
         {
@@ -208,36 +180,8 @@ namespace Model.NBYS
         }
         public bool UpdateDurumByBolge(string fromdurum, string todurum, string bastar, string bittar, int armaganTanimId, int bolgeId)
         {
-            bool isSuccess = false;
-            string bolgeStr = bolgeId == ProjeConstants.BOLGE_HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : "  AND Il_Table.BolgeId=@BolgeId ";
-
-            SqlQuery query = new SqlQuery(@"UPDATE A
-                                                SET Durum=@ToDurum
-                                                FROM
-                                                    Armagan_Table A
-                                                    INNER JOIN ArmaganTanim_Table
-                                                    ON A.ArmaganTanimId = ArmaganTanim_Table.Id
-                                                    INNER JOIN NakitBagisci_Table
-                                                    ON A.BagisciId = NakitBagisci_Table.Id
-                                                INNER JOIN Il_Table
-                                                    ON Il_Table.Id = NakitBagisci_Table.Ili
-                                                WHERE A.BelgeGecersizMi!=1 AND A.Durum = @FromDurum
-                                                    AND A.Tarih BETWEEN @BasTar AND @BitTar --AND MONTH(A.Tarih)={2} AND YEAR(A.Tarih)={3}
-                                                    AND A.ArmaganTanimId=@ArmaganTanimId " + bolgeStr);
-
-            query.AddParameter("@ToDurum", todurum);
-            query.AddParameter("@FromDurum", fromdurum);
-            query.AddParameter("@BasTar", bastar);
-            query.AddParameter("@BitTar", bittar);
-            query.AddParameter("@ArmaganTanimId", armaganTanimId);
-            if (!string.IsNullOrEmpty(bolgeStr))
-            {
-                query.AddParameter("@BolgeId", bolgeId);
-            }
-
-            isSuccess = dao.Update2Db(query);
-
-            return isSuccess;
+            return new ArmaganService().UpdateDurumByBolge(
+                fromdurum, todurum, bastar, bittar, armaganTanimId, bolgeId);
         }
         public override List<T> SelectAll<T>()
         {
@@ -246,13 +190,7 @@ namespace Model.NBYS
         }
         public List<Armagan> SelectByBagisciIdAndDurum(int nakitBagisciId, string durum)
         {
-
-            string sqlString = string.Format(@"SELECT * from Armagan_Table
-                              Where BagisciId={0} AND Durum='{1}'", nakitBagisciId, durum);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Armagan> list = ToList<Armagan>(dataTable);
-
-            return list;
+            return new ArmaganService().GetByBagisciIdAndDurum(nakitBagisciId, durum);
         }
 
         /// <summary>
@@ -267,96 +205,21 @@ namespace Model.NBYS
         /// <returns></returns>
         public string SelectByDurumTarih(string durum, DateTime bastar, DateTime bittar, string armaganTanimId, ref int rowCount, int bolgeId, int ili)
         {
-            DataTable dataTable = SelectByDurumTarihReturnDT(durum, bastar, bittar, armaganTanimId, bolgeId,ili);
-            if (dataTable != null)
-            {
-                rowCount = dataTable.Rows.Count;
-            }
-            string json = ToJSON(dataTable);
-            return json;
+            return new ArmaganService().ListByDurumTarihJson(
+                durum, bastar, bittar, armaganTanimId, ref rowCount, bolgeId, ili);
         }
         public DataTable SelectByDurumTarihReturnDT(string durum, DateTime bastar, DateTime bittar, string armaganTanimId, int bolgeId, int ili)
         {
-            var durumQuery = string.Empty;
-            if (!durum.Equals(ProjeConstants.HEPSI)) //eger bos ise query'e hiç eklenmesin
-            {
-                durumQuery = string.Format("Durum = '{0}' AND", durum);
-            }
-
-            var armaganTanimIdQuery = string.Empty;
-            if (!armaganTanimId.Equals(ProjeConstants.HEPSI))
-            {
-                armaganTanimIdQuery = string.Format("AND ArmaganTanimId={0}", armaganTanimId);
-            }
-           
-            string bolgeQuery = (bolgeId == ProjeConstants.BOLGE_HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT)?string.Empty
-                :string.Format(@" AND B.Ili IN (SELECT Id FROM Il_Table WHERE BolgeId = '{0}' ) ", bolgeId);
-
-            string ilQuery = string.Empty;
-            if (ili > 0 || ili != ProjeConstants.HEPSI_INT)
-                ilQuery = string.Format(@" AND B.Ili = '{0}' ", ili);
-
-            string sqlString = string.Format(@"
-                SELECT distinct(A.Id) ArmaganId,ROW_NUMBER() OVER(ORDER BY A.Id) AS Sirano
-                    ,B.Id as NakitBagisciId
-                    ,B.Adi as NakitBagisciAdi
-                    ,B.TCKimlikNo as NakitBagisciTC
-					,B.Adres
-                    ,IIF(ISNULL(Telefon1,'')!='',Telefon1, IIF(ISNULL(Telefon2,'')!='',Telefon2,'')) Telefon
-                    ,E.IlAdi,E.Id IlId
-					,F.IlceAdi                    
-                    ,Convert(nvarchar,replace (A.BagisMiktari,'.',',')) as Tutar
-                    --,C.DovizCinsi as DovizCinsi
-                    ,D.Armagan as ArmaganBaslik
-                    ,A.BagisciId
-                    ,ArmaganTanimId
-                    ,Tarih 
-                    ,CONVERT(varchar,FORMAT(Tarih,'dd.MM.yyyy')) ArmaganTarihi
-                    ,FORMAT(A.BagisMiktari, 'N2', 'tr-TR') ArmaganTutari
-                    ,A.Durum
-                    ,ISNULL(BelgedeYazanIsim, '') BelgedeYazanIsim
-                    ,A.BelgeGecersizMi, A.IadeMiktari, A.DovizCinsi,A.BagisMiktariYazmasin, 
-                    --IIF(A.CokluBagis=1,'Çoklu Bagis','Bagis') CokluBagis
-                     IIF(A.DuzenliBagis=1, 'Düzenli Bağış', IIF(A.CokluBagis=1, 'Çoklu Bağış', 'Bağış')) AS CokluBagis
-                FROM Armagan_Table A
-                    INNER JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
-                    LEFT OUTER JOIN ArmaganTanim_Table D ON D.Id=A.ArmaganTanimId
-					LEFT OUTER JOIN Il_Table E ON E.Id= B.Ili 
-                    LEFT OUTER JOIN Ilce_Table F ON F.Id= B.Ilcesi AND F.IlId=E.Id
-                WHERE {0} Tarih between {1} and {2} {3} {4} {5}
-                ORDER BY A.Id
-            ", durumQuery, bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat(), armaganTanimIdQuery, bolgeQuery, ilQuery);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
+            return new ArmaganService().ListByDurumTarih(
+                durum, bastar, bittar, armaganTanimId, bolgeId, ili);
         }
         public DataTable SelectCountDurumByBolgeBasTarBitTar(DateTime basTar, DateTime bitTar, int armaganTanimId, int bolgeId)
         {
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND N.Ili IN (SELECT Id FROM Il_Table WHERE BolgeId={0})", bolgeId);
-
-            //if (!string.IsNullOrEmpty(bolge))
-            //    bolgeStr = string.Format(@" AND N.Ili IN (SELECT Id FROM Il_Table WHERE Bolge = '{0}' ) ", bolge);
-
-            string sqlString = string.Format(@"        
-                                SELECT A.Durum , COUNT(Durum) Adet FROM Armagan_Table A
-                                INNER JOIN NakitBagisci_Table N on N.Id=A.BagisciId
-                                WHERE A.BelgeGecersizMi!=1 AND A.ArmaganTanimId={0} AND A.Tarih BETWEEN {1} AND {2} {3}
-                                GROUP BY Durum ", armaganTanimId, basTar.ReturnTRDateFormat(), bitTar.ReturnTRDateFormat(), bolgeStr);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
+            return new ArmaganService().CountDurumByBolge(basTar, bitTar, armaganTanimId, bolgeId);
         }
         public DataTable SelectCountDurumByBolgeTarih(int armaganTanimId, int bolgeId, DateTime bastar, DateTime bittar)
         {
-            string bolgeStr = (bolgeId == ProjeConstants.BOLGE_HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT) ? string.Empty
-                    :string.Format(@" AND N.Ili IN (SELECT Id FROM Il_Table WHERE BolgeId = '{0}' ) ", bolgeId);
-
-            string sqlString = string.Format(@"        
-                                SELECT A.Durum , COUNT(Durum) Adet FROM Armagan_Table A
-                                INNER JOIN NakitBagisci_Table N on N.Id=A.BagisciId
-                                WHERE A.BelgeGecersizMi!=1 AND A.Tarih BETWEEN {0} AND {1} AND A.ArmaganTanimId={2} " + bolgeStr +
-                                @" GROUP BY Durum ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat(), armaganTanimId);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
+            return new ArmaganService().CountDurumByBolge(bastar, bittar, armaganTanimId, bolgeId);
         }
         /// <summary>
         /// 
@@ -366,17 +229,7 @@ namespace Model.NBYS
         /// <returns></returns>
         public DataTable SelectCountByBagisTarihiBolge(DateTime basTar, DateTime bitTar)
         {
-            string sqlString = string.Format(@"        
-                SELECT  COUNT(A.Id) Adet, D.Id As BolgeId, A.ArmaganTanimId ArmaganTanimId 
-                FROM 
-	                Armagan_Table A
-	                INNER JOIN NakitBagisci_Table B on B.Id=A.BagisciId
-	                INNER JOIN Il_Table C on C.Id=B.Ili
-	                LEFT JOIN Bolge_Table D on D.Id=C.BolgeId
-                WHERE Tarih BETWEEN {0} AND {1} 
-                GROUP BY  D.Id, ArmaganTanimId ", basTar.ReturnTRDateFormat(), bitTar.ReturnTRDateFormat());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
+            return new ArmaganService().CountByBagisTarihiBolge(basTar, bitTar);
         }
 
         /// <summary>
@@ -388,90 +241,22 @@ namespace Model.NBYS
         /// <returns></returns>
         public string SelectByFilter(string filter, int eksiId)
         {
-            string ilStr = string.Empty;
-
-            string sqlString = string.Format(@"
-                SELECT A.Id ArmaganId, B.Armagan, A.Durum, A.Tarih, 
-					CONVERT(varchar,FORMAT(A.Tarih,'dd.MM.yyyy')) BelgeTarihi, A.BagisMiktari, C.Id NakitBagisciId, C.Adi, C.Soyadi, C.TCKimlikNo, D.IlAdi Ili ,E.IlceAdi Ilcesi,Adres,
-	                Telefon1,Telefon2, Telefon1 + IIF(ISNULL(Telefon1,'')!='' AND ISNULL(Telefon2,'')!='',' - ','') + Telefon2 Telefon, 
-                    C.OlusturmaTarihi  ,C.DegistirmeTarihi,C.Degistiren,Sag,Eposta ,PostaKodu, Ulasilamiyor, BelgeIstemiyor                                            
-                FROM Armagan_Table A 
-					LEFT JOIN ArmaganTanim_Table B ON B.Id= A.ArmaganTanimId 
-					INNER JOIN NakitBagisci_Table C ON C.Id= A.BagisciId 
-                    LEFT JOIN Il_Table D ON D.Id= C.Ili 
-                    LEFT JOIN Ilce_Table E ON E.Id= C.Ilcesi  AND E.IlId=D.Id
-                WHERE A.BelgeGecersizMi!=1 AND C.Id!= {0} 
-                    AND A.Id={1} --like '%{1}%'
-                    --AND (C.Adi like '%{1}%'
-	                --OR A.Id like '%{1}%')
-	                --OR C.TCKimlikNo like '%{1}%'
-	                --OR C.Telefon1 like '%{1}%'
-	                --OR C.Adres like '%{1}%'
-	                --OR C.BagisTarihi like '%{1}%'
-	                --OR C.BagisMiktari like '%{1}%'
-	                --OR A.IlAdi like '%{1}%'
-	                --OR B.IlceAdi like '%{1}%'
-                ORDER BY A.Tarih DESC ", eksiId, filter);
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            string json = ToJSON(dataTable);
-            return json;
+            return new ArmaganService().SearchJson(filter, eksiId);
         }
 
         public DataTable SelectVerilenArmaganlarGroupByBagisciReturnList()
         {
-            //Armagan_Table'dan CokliNagis=true olan kayitlari seç
-            string sqlString = string.Format(@"
-                SELECT A.BagisciId,B.Adi, B.Soyadi, D.Armagan, COUNT(C.Id) BagisAdedi, SUM(C.BagisMiktari) ToplamBagis,A.Tarih
-                FROM Armagan_Table A
-                INNER JOIN NakitBagisci_Table B ON A.BagisciId = B.Id
-                INNER JOIN NakitBagisHareket_Table C ON C.ArmaganId = A.Id
-                INNER JOIN ArmaganTanim_Table D ON D.Id = A.ArmaganTanimId
-
-                WHERE A.BelgeGecersizMi!=1 AND A.CokluBagis=1
-                GROUP BY A.BagisciId, B.Adi, B.Soyadi, C.ArmaganId,A.Tarih,D.Armagan
-                ORDER BY Tarih DESC");
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
+            return new ArmaganService().ListVerilenArmaganlarGroupByBagisci();
 
         }
 
         public Armagan SelectByBagisciIdAndArmaganTanimId(int nakitBagisciId, int armaganTanimId)
         {
-
-            string sqlString = string.Format(@"SELECT * from Armagan_Table
-                              WHERE BelgeGecersizMi!=1 AND BagisciId={0} AND ArmaganTanimId={1} ",
-                           nakitBagisciId.ReturnQuotedValue(), armaganTanimId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Armagan> list = ToList<Armagan>(dataTable);
-            Armagan armagan = new Armagan();
-            armagan = list.FirstOrDefault();
-            return armagan;
+            return new ArmaganService().GetByBagisciIdAndTanimId(nakitBagisciId, armaganTanimId);
         }
         public int SelectCountByBagisciIdAndArmaganTanimId(int nakitBagisciId, int armaganTanimId)
         {
-            string sqlString = string.Format(@"SELECT COUNT(*)
-                                      FROM Armagan_Table
-                                      WHERE BelgeGecersizMi!=1
-                                        AND BagisciId={0}
-                                        AND ArmaganTanimId={1}",
-                nakitBagisciId.ReturnQuotedValue(),
-                armaganTanimId.ReturnQuotedValue());
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null && dataTable.Rows.Count > 0)
-            {
-                return Convert.ToInt32(dataTable.Rows[0][0]);
-            }
-
-            return 0;
+            return new ArmaganService().CountByBagisciIdAndTanimId(nakitBagisciId, armaganTanimId);
         }
     }
 }

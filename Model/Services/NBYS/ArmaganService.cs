@@ -35,6 +35,97 @@ namespace Model.Services.NBYS
             return Map(repository.SelectAll());
         }
 
+        public Armagan GetByBagisciIdDateRange(int bagisciId, DateTime baslangic, DateTime bitis)
+        {
+            return Map(repository.SelectByBagisciIdDateRange(bagisciId, baslangic, bitis)).FirstOrDefault();
+        }
+
+        public Armagan GetByBagisciIdTanimIdDateRange(
+            int bagisciId, int armaganTanimId, DateTime baslangic, DateTime bitis)
+        {
+            return Map(repository.SelectByBagisciIdTanimIdDateRange(
+                bagisciId, armaganTanimId, baslangic, bitis)).FirstOrDefault();
+        }
+
+        public List<Armagan> GetByBagisciId(int bagisciId)
+        {
+            return Map(repository.SelectByBagisciId(bagisciId));
+        }
+
+        public List<Armagan> GetByBagisciIdAndDurum(int bagisciId, string durum)
+        {
+            return Map(repository.SelectByBagisciIdAndDurum(bagisciId, durum));
+        }
+
+        public Armagan GetByBagisciIdAndTanimId(int bagisciId, int armaganTanimId)
+        {
+            return Map(repository.SelectByBagisciIdAndTanimId(bagisciId, armaganTanimId)).FirstOrDefault();
+        }
+
+        public int CountByBagisciIdAndTanimId(int bagisciId, int armaganTanimId)
+        {
+            return repository.CountByBagisciIdAndTanimId(bagisciId, armaganTanimId);
+        }
+
+        public bool UpdateDurumByBolge(
+            string fromDurum, string toDurum, string baslangic, string bitis,
+            int armaganTanimId, int bolgeId)
+        {
+            int? bolgeFiltresi = bolgeId == ProjeConstants.BOLGE_HEPSI_INT ||
+                bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? (int?)null : bolgeId;
+            return repository.UpdateDurumByBolge(
+                fromDurum, toDurum, baslangic, bitis, armaganTanimId, bolgeFiltresi);
+        }
+
+        public DataTable ListByDurumTarih(
+            string durum, DateTime baslangic, DateTime bitis, string armaganTanimId,
+            int bolgeId, int ilId)
+        {
+            string durumFiltresi = durum == ProjeConstants.HEPSI ? null : durum;
+            int? tanimFiltresi = armaganTanimId == ProjeConstants.HEPSI
+                ? (int?)null : Convert.ToInt32(armaganTanimId);
+            int? bolgeFiltresi = bolgeId == ProjeConstants.BOLGE_HEPSI_INT ||
+                bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? (int?)null : bolgeId;
+            int? ilFiltresi = ilId == ProjeConstants.HEPSI_INT ? (int?)null : ilId;
+            return repository.SelectByDurumTarih(
+                durumFiltresi, baslangic, bitis, tanimFiltresi, bolgeFiltresi, ilFiltresi);
+        }
+
+        public string ListByDurumTarihJson(
+            string durum, DateTime baslangic, DateTime bitis, string armaganTanimId,
+            ref int rowCount, int bolgeId, int ilId)
+        {
+            DataTable table = ListByDurumTarih(
+                durum, baslangic, bitis, armaganTanimId, bolgeId, ilId);
+            rowCount = table == null ? 0 : table.Rows.Count;
+            return new Armagan().ToJSON(table);
+        }
+
+        public DataTable CountDurumByBolge(
+            DateTime baslangic, DateTime bitis, int armaganTanimId, int bolgeId)
+        {
+            int? bolgeFiltresi = bolgeId == ProjeConstants.HEPSI_INT ||
+                bolgeId == ProjeConstants.BOLGE_HEPSI_INT ||
+                bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? (int?)null : bolgeId;
+            return repository.SelectCountDurumByBolge(
+                baslangic, bitis, armaganTanimId, bolgeFiltresi);
+        }
+
+        public DataTable CountByBagisTarihiBolge(DateTime baslangic, DateTime bitis)
+        {
+            return repository.SelectCountByBagisTarihiBolge(baslangic, bitis);
+        }
+
+        public string SearchJson(string filter, int excludedDonorId)
+        {
+            return new Armagan().ToJSON(repository.SelectByFilter(filter, excludedDonorId));
+        }
+
+        public DataTable ListVerilenArmaganlarGroupByBagisci()
+        {
+            return repository.SelectVerilenArmaganlarGroupByBagisci();
+        }
+
         public int Save(Armagan armagan)
         {
             if (armagan == null)
