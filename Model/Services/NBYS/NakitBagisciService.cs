@@ -1,4 +1,3 @@
-using DAO.Ortak;
 using DAO.Repositories.NBYS;
 using Model.NBYS;
 using Model.Ortak;
@@ -192,9 +191,15 @@ namespace Model.Services.NBYS
             return isDeleted;
         }
 
-        public DBObject CreateDeleteTransactionObject(int id)
+        public void DeleteWithArchive(NakitBagisci nakitBagisci, SilinenKayit archive)
         {
-            return repository.CreateDeleteTransactionObject(id);
+            if (nakitBagisci == null)
+                throw new ArgumentNullException("nakitBagisci");
+            if (archive == null)
+                throw new ArgumentNullException("archive");
+
+            archive.OlusturmaTarihi = DateTime.Now;
+            repository.DeleteWithArchive(nakitBagisci.Id, archive);
         }
 
         public int CreateBilinmeyenBagisci()
