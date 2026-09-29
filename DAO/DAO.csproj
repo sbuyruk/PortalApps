@@ -76,6 +76,7 @@
     <Compile Include="Repositories\NBYS\ArmaganRepository.cs" />
     <Compile Include="Repositories\NBYS\ArmaganTanimRepository.cs" />
     <Compile Include="Repositories\NBYS\BankaTanimRepository.cs" />
+    <Compile Include="Repositories\NBYS\BagisaVesileOlanTesekkurRepository.cs" />
     <Compile Include="Repositories\NBYS\NakitBagisciRepository.cs" />
     <Compile Include="Repositories\NBYS\NBYSParametreRepository.cs" />
     <Compile Include="Repositories\NBYS\DuzenliNakitBagisciRepository.cs" />

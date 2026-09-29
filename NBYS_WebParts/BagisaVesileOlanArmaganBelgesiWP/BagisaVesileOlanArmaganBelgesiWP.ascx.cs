@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.SharePoint;
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -80,8 +81,7 @@ namespace NBYS_WebParts.BagisaVesileOlanArmaganBelgesiWP
         }
         private string GetData()
         {
-            BagisaVesileOlanTesekkur bagisaVesileOlanTesekkur = new BagisaVesileOlanTesekkur();
-            string json = bagisaVesileOlanTesekkur.SelectReturnJson();
+            string json = new BagisaVesileOlanTesekkurService().GetListJson();
             return json;
         }
 
