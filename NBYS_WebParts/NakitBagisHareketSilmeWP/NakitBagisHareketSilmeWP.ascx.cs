@@ -1,9 +1,7 @@
-using DAO.Ortak;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.NBYS;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Web.UI;
@@ -382,15 +380,6 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
             nbh = new NakitBagisHareketService().GetById(paramBagisHareketIdLbl.Value.ConvertToInt());
             if (nbh != null)
             {
-                DbClass db = new DbClass();
-                # region nbh table'dan sil
-                DBObject nbhDbo = new DBObject();
-                nbhDbo.SQLString = nbh.GetDeleteSQL("");
-                nbhDbo.SQLType = ProjeConstants.SQL_DELETE;
-                nbhDbo.IsFilled = true;
-                db.DBObjectList.Add(nbhDbo);
-                #endregion
-
                 #region SilinenKayit_Table'a yaz
                 SilinenKayit skNBH = new SilinenKayit();
                 skNBH.Silen = currentUser;
@@ -398,85 +387,53 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                 skNBH.TabloAdi = "NakitBagisHareket_Table";
                 skNBH.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
                 skNBH.SilinenKayitBilgisi = " #BagisHareketId=" + nbh.Id + " #BagisciId=" + nbh.BagisciId + " #BagisTarihi=" + nbh.BagisTarihi + " #BagisMiktari=" + nbh.BagisMiktari;
-
-                DBObject skNBHDbo = new DBObject();
-                skNBHDbo.SQLString = skNBH.GetInsertSQL("");
-                skNBHDbo.SQLType = ProjeConstants.SQL_INSERT;
-                skNBHDbo.IsFilled = true;
-                db.DBObjectList.Add(skNBHDbo);
                 #endregion
                 #region Armagan_Table dan sil
 
-                DBObject skArmaganDbo = new DBObject();
+                Armagan silinecekArmagan = null;
+                SilinenKayit skArmagan = null;
                 if (nbh.ArmaganId > 0)
                 {
                     Armagan armagan = new Armagan();
                     armagan = armagan.Select<Armagan>(nbh.ArmaganId);
                     if (armagan != null && armagan.Durum.Equals(ProjeConstants.DURUM_GONDERILMEDI))
                     {
-                        #region armagan table'dan sil
-                        DBObject armaganDbo = new DBObject();
-                        armaganDbo.SQLString = armagan.GetDeleteSQL("");
-                        armaganDbo.SQLType = ProjeConstants.SQL_DELETE;
-                        armaganDbo.IsFilled = true;
-                        db.DBObjectList.Add(armaganDbo);
-
                         //silinenKayit_Table'a yaz
-                        SilinenKayit skArmagan = new SilinenKayit();
+                        silinecekArmagan = armagan;
+                        skArmagan = new SilinenKayit();
                         skArmagan.Silen = currentUser;
                         skArmagan.SilinmeSebebi = SilmeSebebiTxt.Value;
                         skArmagan.TabloAdi = "Armagan_Table";
                         skArmagan.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
                         skArmagan.SilinenKayitBilgisi = " #ArmaganId=" + armagan.Id + " #BagisciId=" + armagan.BagisciId + " #BagisHareketId=" + nbh.Id + " #BagisTarihi=" + nbh.BagisTarihi + " #BagisMiktari=" + nbh.BagisMiktari;
-
-
-                        skArmaganDbo.SQLString = skArmagan.GetInsertSQL("");
-                        skArmaganDbo.SQLType = ProjeConstants.SQL_INSERT;
-                        skArmaganDbo.IsFilled = true;
-                        db.DBObjectList.Add(skArmaganDbo);
-                        #endregion
                     }
                 }
 
                 #endregion
-                List<DBObject> savedDBOList = db.ExecuteTransaction();
+                new NakitBagisHareketService().DeleteWithArchive(
+                    nbh, skNBH, silinecekArmagan, skArmagan);
 
-                if (savedDBOList.Count > 0)
+                //bağış silindi ise bağışçinin da baska bagisi yoksa bağışçiyi da sil
+                NakitBagisciService nakitBagisciService = new NakitBagisciService();
+                NakitBagisci bagisci = nakitBagisciService.GetBagisiOlmayanById(nbh.BagisciId);
+                if (bagisci != null)
                 {
-                    bool isArmaganYenidenHesaplandi = false;
-                    bool isBagisSilindi = skNBHDbo.Success;
-                    bool isBagisciSilindi = false;
-                    string mesaj = string.Empty;
-                    if (isBagisSilindi)
-                    {
-                        //bağış silindi ise bağışçinin da baska bagisi yoksa bağışçiyi da sil
-                        NakitBagisciService nakitBagisciService = new NakitBagisciService();
-                        NakitBagisci bagisci = nakitBagisciService.GetBagisiOlmayanById(nbh.BagisciId);
-                        if (bagisci != null)
-                        {
-                            //silinen bağışçi bilgilerini silinenKayit_Table'a yaz
-                            SilinenKayit skBagisci = new SilinenKayit();
-                            skBagisci.Silen = currentUser;
-                            skBagisci.SilinmeSebebi = "Bağış silindiğinden";
-                            skBagisci.TabloAdi = "NakitBagisci_Table";
-                            skBagisci.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
-                            skBagisci.SilinenKayitBilgisi = " #BagisciId=" + bagisci.Id + " #Adi=" + bagisci.Adi + " #TCKimlikNo=" + bagisci.TCKimlikNo + " #Telefon=" + bagisci.Telefon1 + " " + bagisci.Telefon2 + " #Adres=" + bagisci.Adres;
-                            skBagisci.Save();
-                            isBagisciSilindi = nakitBagisciService.Delete(bagisci);
-                        }
-                        if (skArmaganDbo.Success)//armagan tablosunda islem oldu mu. //yeniden armagan hesaplanacak
-                            isArmaganYenidenHesaplandi = TekrarArmaganHesapla(nbh, UtilityHelper.GetCurrentUserLoginName());
-                        UtilityHelper.ScriptCalistir("CloseModal();");
-                        MessageHelper.PublishMessage("Bağış Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
-                        RedirectToPage(ProjeConstants.PAGE_BAGISSIL + "?Mesaj=true");//+ BagisAraTxt.Text);
-                        //KayitGetir();
-                    }
-
+                    //silinen bağışçi bilgilerini silinenKayit_Table'a yaz
+                    SilinenKayit skBagisci = new SilinenKayit();
+                    skBagisci.Silen = currentUser;
+                    skBagisci.SilinmeSebebi = "Bağış silindiğinden";
+                    skBagisci.TabloAdi = "NakitBagisci_Table";
+                    skBagisci.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
+                    skBagisci.SilinenKayitBilgisi = " #BagisciId=" + bagisci.Id + " #Adi=" + bagisci.Adi + " #TCKimlikNo=" + bagisci.TCKimlikNo + " #Telefon=" + bagisci.Telefon1 + " " + bagisci.Telefon2 + " #Adres=" + bagisci.Adres;
+                    skBagisci.Save();
+                    nakitBagisciService.Delete(bagisci);
                 }
-                if (!skNBHDbo.Success)
-                {
-                    MessageHelper.PublishMessage("Bağış Silinemedi", ProjeConstants.MESAJ_HATA);
-                }
+                if (silinecekArmagan != null)//armagan tablosunda islem oldu mu. //yeniden armagan hesaplanacak
+                    TekrarArmaganHesapla(nbh, UtilityHelper.GetCurrentUserLoginName());
+                UtilityHelper.ScriptCalistir("CloseModal();");
+                MessageHelper.PublishMessage("Bağış Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                RedirectToPage(ProjeConstants.PAGE_BAGISSIL + "?Mesaj=true");//+ BagisAraTxt.Text);
+                //KayitGetir();
 
             }
 

@@ -50,6 +50,33 @@ namespace DAO.Repositories.NBYS
             db.ExecuteTransaction(queries);
         }
 
+        public void DeleteWithArchive<TDonationArchive, TGiftArchive>(
+            int donationId,
+            TDonationArchive donationArchive,
+            int? giftId,
+            TGiftArchive giftArchive)
+        {
+            if ((object)donationArchive == null)
+                throw new ArgumentNullException("donationArchive");
+
+            List<SqlQuery> queries = new List<SqlQuery>
+            {
+                queryBuilder.BuildDelete(TableName, donationId),
+                queryBuilder.BuildInsert(donationArchive, "SilinenKayit_Table")
+            };
+
+            if (giftId.HasValue)
+            {
+                if ((object)giftArchive == null)
+                    throw new ArgumentNullException("giftArchive");
+
+                queries.Add(queryBuilder.BuildDelete("Armagan_Table", giftId.Value));
+                queries.Add(queryBuilder.BuildInsert(giftArchive, "SilinenKayit_Table"));
+            }
+
+            db.ExecuteTransaction(queries);
+        }
+
         public bool Delete(int id)
         {
             return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), "");

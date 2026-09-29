@@ -92,6 +92,28 @@ namespace Model.Services.NBYS
             repository.UpdateRefund(bagisHareket, armagan);
         }
 
+        public void DeleteWithArchive(
+            NakitBagisHareket bagisHareket,
+            SilinenKayit bagisHareketArchive,
+            Armagan armagan,
+            SilinenKayit armaganArchive)
+        {
+            if (bagisHareket == null)
+                throw new ArgumentNullException("bagisHareket");
+            if (bagisHareketArchive == null)
+                throw new ArgumentNullException("bagisHareketArchive");
+
+            bagisHareketArchive.OlusturmaTarihi = DateTime.Now;
+            if (armaganArchive != null)
+                armaganArchive.OlusturmaTarihi = DateTime.Now;
+
+            repository.DeleteWithArchive(
+                bagisHareket.Id,
+                bagisHareketArchive,
+                armagan != null ? (int?)armagan.Id : null,
+                armaganArchive);
+        }
+
         public bool Delete(NakitBagisHareket bagisHareket)
         {
             if (bagisHareket == null)
