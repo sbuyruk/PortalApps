@@ -369,8 +369,8 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
             bool? ulasilamiyor = TryParseBool(UlasilamiyorDDL.SelectedItem != null ? (UlasilamiyorDDL.SelectedItem.Value.Equals(ProjeConstants.HEPSI)?null: UlasilamiyorDDL.SelectedItem.Value) : string.Empty);
             bool? tuzelKisi = TryParseBool(TuzelKisiDDL.SelectedItem != null ? (TuzelKisiDDL.SelectedItem.Value.Equals(ProjeConstants.HEPSI)?null: TuzelKisiDDL.SelectedItem.Value) : string.Empty);
 
-            NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
-            DataTable dataTable = nakitBagisHareket.SelectNakitBagisRaporu(
+            NakitBagisHareketService nakitBagisHareket = new NakitBagisHareketService();
+            DataTable dataTable = nakitBagisHareket.GetDonationReport(
                 basTarih, bitTarih,
                 minMiktar, maxMiktar,
                 armaganId, SonBagisTarihi,
