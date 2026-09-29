@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.SharePoint;
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -82,8 +83,7 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurGirisiWP
                 BelgeTarihiTxt.Text = bugun.ToString("dd") + " " + bugun.ToString("MMMM") + " " + bugun.Year;
             }else
             {
-                BagisaVesileOlanTesekkur bagisaVesileOlanTesekkur = new BagisaVesileOlanTesekkur() { Id = secilenId };
-                bagisaVesileOlanTesekkur = bagisaVesileOlanTesekkur.Select<BagisaVesileOlanTesekkur>(secilenId);
+                BagisaVesileOlanTesekkur bagisaVesileOlanTesekkur = new BagisaVesileOlanTesekkurService().GetById(secilenId);
                 if (bagisaVesileOlanTesekkur != null && bagisaVesileOlanTesekkur.Id > 0)
                 {
                     BelgeNoTxt.Text =bagisaVesileOlanTesekkur.Id.ToString();
@@ -141,8 +141,7 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurGirisiWP
         {
             try
             {
-                BagisaVesileOlanTesekkur bagisaVesileOlanTesekkur = new BagisaVesileOlanTesekkur() { Id = SecilenIdQS.ConvertToInt() };
-                bagisaVesileOlanTesekkur = bagisaVesileOlanTesekkur.Select<BagisaVesileOlanTesekkur>(SecilenIdQS.ConvertToInt());
+                BagisaVesileOlanTesekkur bagisaVesileOlanTesekkur = new BagisaVesileOlanTesekkurService().GetById(SecilenIdQS.ConvertToInt());
                 if (bagisaVesileOlanTesekkur == null || bagisaVesileOlanTesekkur.Id < 1)
                 {
                     throw new Exception("Teşekkür belgesi bulunamadı");
@@ -196,14 +195,13 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurGirisiWP
                 TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong(),
                 VerilmeSebebi = VerilmeSebebiTxt.Text,
             };
-            int id = bagisaVesileOlanTesekkur.Save();
+            int id = new BagisaVesileOlanTesekkurService().Save(bagisaVesileOlanTesekkur);
             bagisaVesileOlanTesekkur.Id = id;
             return bagisaVesileOlanTesekkur;
         }
         private BagisaVesileOlanTesekkur BagisaVesileOlanTesekkurGuncelle(int secilenId)
         {
-            BagisaVesileOlanTesekkur bagisaVesileOlanTesekkur = new BagisaVesileOlanTesekkur() { Id = secilenId };
-            bagisaVesileOlanTesekkur = bagisaVesileOlanTesekkur.Select<BagisaVesileOlanTesekkur>(secilenId);
+            BagisaVesileOlanTesekkur bagisaVesileOlanTesekkur = new BagisaVesileOlanTesekkurService().GetById(secilenId);
             if (bagisaVesileOlanTesekkur == null || bagisaVesileOlanTesekkur.Id < 1)
             {
                 throw new Exception("Güncellenecek teşekkür belgesi bulunamadı");
@@ -223,7 +221,7 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurGirisiWP
                 bagisaVesileOlanTesekkur.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
                 bagisaVesileOlanTesekkur.VerilmeSebebi = VerilmeSebebiTxt.Text;
             };
-            bool updated=bagisaVesileOlanTesekkur.Update();
+            bool updated = new BagisaVesileOlanTesekkurService().Update(bagisaVesileOlanTesekkur);
             return bagisaVesileOlanTesekkur;
         }
 

@@ -1,6 +1,7 @@
 using Model.IKYS;
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -83,8 +84,7 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurListesiWP
         private List<BagisaVesileOlanTesekkurListItem> GetData()
         {
             List<BagisaVesileOlanTesekkurListItem> list = new List<BagisaVesileOlanTesekkurListItem>();
-            BagisaVesileOlanTesekkur bagisaVesileOlanTesekkur = new BagisaVesileOlanTesekkur();
-            DataTable dataTable = bagisaVesileOlanTesekkur.SelectReturnDataTable();
+            DataTable dataTable = new BagisaVesileOlanTesekkurService().GetListTable();
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
@@ -121,7 +121,7 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurListesiWP
                     throw new Exception("Silinecek kayıt bulunamadı");
                 }
                 BagisaVesileOlanTesekkur bagisaVesileOlanTesekkur = new BagisaVesileOlanTesekkur() { Id = silId };
-                bool silindi = bagisaVesileOlanTesekkur.Delete();
+                bool silindi = new BagisaVesileOlanTesekkurService().Delete(bagisaVesileOlanTesekkur);
                 if (silindi)
                 {
                     MessageHelper.PublishMessage("Teşekkür belgesi silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
