@@ -333,7 +333,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                 string bagisciAdi = nb == null ? "" : nb.Adi + " " + nb.Soyadi + " tarafından bağışlanan ";
                 string silmeMsg = bagisciAdi + nbh.BagisMiktari.ToString("N", culturInfo) + " " + nbh.DovizCinsi + " silinecek. (Hatırlatma: Silme yerine 'Bağış İadesi' de yapabilirsiniz.) ";
                 Armagan armagan = new Armagan();
-                armagan = armagan.Select<Armagan>(nbh.ArmaganId);
+                armagan = new ArmaganService().GetById(nbh.ArmaganId);
 
                 string armaganiVarMsg = string.Empty;
                 if (armagan != null) //bu armagan varsa
@@ -395,7 +395,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                 if (nbh.ArmaganId > 0)
                 {
                     Armagan armagan = new Armagan();
-                    armagan = armagan.Select<Armagan>(nbh.ArmaganId);
+                    armagan = new ArmaganService().GetById(nbh.ArmaganId);
                     if (armagan != null && armagan.Durum.Equals(ProjeConstants.DURUM_GONDERILMEDI))
                     {
                         //silinenKayit_Table'a yaz

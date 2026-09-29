@@ -290,7 +290,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
                 int armaganId = paramArmaganIdLbl.Value.ConvertToInt();
 
                 Armagan armagan = new Armagan();
-                armagan = armagan.Select<Armagan>(armaganId);
+                armagan = new ArmaganService().GetById(armaganId);
                 if (armagan == null || armagan.Id < 1)
                     return;
                 ModalNakitBagisciFormunuDoldur(armagan);
@@ -707,11 +707,11 @@ namespace NBYS_WebParts.ArmaganListesiWP
             try
             {
                 Armagan armagan = new Armagan();
-                armagan = armagan.Select<Armagan>(paramArmaganIdLbl.Value.ConvertToInt());
+                armagan = new ArmaganService().GetById(paramArmaganIdLbl.Value.ConvertToInt());
                 if (armagan != null)
                 {
                     armagan.Durum = ProjeConstants.DURUM_PARAIADE;
-                    if (armagan.Update())
+                if (new ArmaganService().Update(armagan))
                     {
                         TabloOlustur();
                         MessageHelper.PublishMessage(" Armağan Durumu " + ProjeConstants.DURUM_PARAIADE

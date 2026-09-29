@@ -2721,7 +2721,6 @@ namespace Model.NBYS
                     //        armagan.ArmaganTanimId = ProjeConstants.ARMAGAN_TESEKKURID;
 
                     //}
-                    //isArmaganSaved = armagan.SaveOrUpdate(bastar, bittar, bagisTarihi, nakitBagisciId, nakikbagisHareketId);
                     NakitBagisHareket newNbh = new NakitBagisHareket();
                     List<NakitBagisHareket> newNbhList = new NakitBagisHareketService().GetByBagisciIdTarih(nakitBagisciId, bastar, bittar);
                     int armaganId = ArmaganiKaydetVeyaGuncelle(bastar, bittar, nakitBagisciId, bagisTarihi, toplamBagis, hakedilenArmaganTanim.Id, currentUser, nakitBagisci, newNbhList);
@@ -2776,7 +2775,8 @@ namespace Model.NBYS
                     armagan.ArmaganTanimId = ProjeConstants.ARMAGAN_TESEKKURID;
 
             }
-            armaganId = armagan.SaveOrUpdate(bastar, bittar, bagisTarihi, nakitBagisciId, nakitBagisHareketListesi);
+            armaganId = new ArmaganService().SaveOrUpdate(
+                armagan, bastar, bittar, nakitBagisciId, nakitBagisHareketListesi);
             return armaganId;
         }
 
@@ -2921,7 +2921,7 @@ namespace Model.NBYS
             {
                 armagan.Durum = ProjeConstants.DURUM_DAHAONCEIADE;
             }
-            armaganId = armagan.Save();
+            armaganId = new ArmaganService().Save(armagan);
 
             return armaganId;
         }

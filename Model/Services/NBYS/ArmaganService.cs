@@ -126,6 +126,67 @@ namespace Model.Services.NBYS
             return repository.SelectVerilenArmaganlarGroupByBagisci();
         }
 
+        public int SaveOrUpdate(
+            Armagan armagan, DateTime baslangic, DateTime bitis,
+            int bagisciId, IList<NakitBagisHareket> bagisHareketleri)
+        {
+            if (armagan == null)
+                throw new ArgumentNullException("armagan");
+            if (bagisHareketleri == null)
+                throw new ArgumentNullException("bagisHareketleri");
+
+            try
+            {
+                Armagan existing = GetByBagisciIdDateRange(bagisciId, baslangic, bitis);
+                string durum = GetDonorStatus(bagisciId);
+                if (!string.IsNullOrEmpty(durum))
+                    armagan.Durum = durum;
+
+                int armaganId;
+                if (existing != null)
+                {
+                    // Legacy behavior: an existing period record is retained.
+                    Update(armagan);
+                    armaganId = existing.Id;
+                }
+                else
+                {
+                    armaganId = Save(armagan);
+                }
+
+                NakitBagisHareketService bagisHareketService = new NakitBagisHareketService();
+                foreach (NakitBagisHareket bagisHareketi in bagisHareketleri)
+                {
+                    bagisHareketi.ArmaganId = armaganId;
+                    try
+                    {
+                        bagisHareketService.Update(bagisHareketi);
+                    }
+                    catch (Exception exception)
+                    {
+                        new ExceptionHelper(exception).PublishException();
+                    }
+                }
+                return armaganId;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
+        private static string GetDonorStatus(int bagisciId)
+        {
+            NakitBagisci bagisci = new NakitBagisciService().GetById(bagisciId);
+            if (bagisci == null)
+                return string.Empty;
+            if (bagisci.BelgeIstemiyor)
+                return ProjeConstants.DURUM_BELGE_ISTEMIYOR;
+            if (bagisci.Ulasilamiyor)
+                return ProjeConstants.DURUM_ULASILAMADI;
+            return string.Empty;
+        }
+
         public int Save(Armagan armagan)
         {
             if (armagan == null)
