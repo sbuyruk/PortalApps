@@ -343,9 +343,8 @@ namespace NBYS_WebParts.BagisIadesiWP
         }
         private string GetModalDataJson(string nakitBagisciId)
         {
-            NakitBagisHareket nbh = new NakitBagisHareket();
             int rowCount = 0;
-            var json = nbh.SelectByBagisciIdReturnJSon(nakitBagisciId, ref rowCount);
+            var json = new NakitBagisHareketService().GetDonorDetailJson(nakitBagisciId.ConvertToInt(), ref rowCount);
             return json;
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
