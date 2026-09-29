@@ -1,5 +1,6 @@
-using Model.NBYS;
+﻿using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -94,8 +95,8 @@ namespace NBYS_WebParts.SMSAylikCizelgeReadOnlyWP
         private void SecilenYilVerileriniOlustur()
         {
             int yil = SecilenYilQS.ConvertToInt();
-            SMSAylikBagis sms = new SMSAylikBagis();
-            List<SMSAylikBagis> list = sms.SelectByYilReturnList(SecilenYilQS.ConvertToInt());
+            SMSAylikBagisService smsService = new SMSAylikBagisService();
+            List<SMSAylikBagis> list = smsService.GetByYear(SecilenYilQS.ConvertToInt());
             if (list.Count < 1)
             {
                 for (int i = 1; i < 13; i++)
@@ -112,7 +113,7 @@ namespace NBYS_WebParts.SMSAylikCizelgeReadOnlyWP
                     smsAylikBagis.TurkTelekomSMSAdedi = 0;
                     smsAylikBagis.Yil = SecilenYilQS.ConvertToInt();
                     smsAylikBagis.Aciklama = "";
-                    smsAylikBagis.Save();
+                    smsService.Save(smsAylikBagis);
                 }
             }
         }
@@ -137,8 +138,8 @@ namespace NBYS_WebParts.SMSAylikCizelgeReadOnlyWP
         private void CizelgeyiDoldur(int yil)
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            SMSAylikBagis smsAylikBagisDao = new SMSAylikBagis();
-            List<SMSAylikBagis> list = smsAylikBagisDao.SelectByYilReturnList(yil);
+            SMSAylikBagisService smsAylikBagisService = new SMSAylikBagisService();
+            List<SMSAylikBagis> list = smsAylikBagisService.GetByYear(yil);
 
             foreach (SMSAylikBagis item in list)
             {
@@ -192,15 +193,15 @@ namespace NBYS_WebParts.SMSAylikCizelgeReadOnlyWP
 
 
         /// <summary>
-        /// LinkButton D�zenle excele aktarirken hata verdiginden 
+        /// LinkButton Düzenle excele aktarirken hata verdiginden
         /// CizelgeyiDoldur() metodu ile ayni islemi Linkbutton olmadan yapiyor
         /// </summary>
         /// <param name="yil"></param>
         private void ExcelIcinCizelgeyiDoldur(int yil)
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            SMSAylikBagis smsAylikBagisDao = new SMSAylikBagis();
-            List<SMSAylikBagis> list = smsAylikBagisDao.SelectByYilReturnList(yil);
+            SMSAylikBagisService smsAylikBagisService = new SMSAylikBagisService();
+            List<SMSAylikBagis> list = smsAylikBagisService.GetByYear(yil);
 
             foreach (SMSAylikBagis item in list)
             {
