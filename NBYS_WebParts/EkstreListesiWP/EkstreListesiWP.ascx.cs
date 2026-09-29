@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using Model.TBYS;
 using NBYS_WebParts.EkstreAktarmaEditWP;
 using NBYS_WebParts.NakitBagisciEslestirWP;
@@ -647,8 +648,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                 BankaDDL.Items.Clear();
                 ListItem li = new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString());
                 BankaDDL.Items.Add(li);
-                BankaTanim pBanka = new BankaTanim();
-                List<BankaTanim> list = pBanka.SelectAll<BankaTanim>();
+                List<BankaTanim> list = new BankaTanimService().GetAll();
                 //TextInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true).TextInfo;
                 foreach (BankaTanim banka in list)
                 {

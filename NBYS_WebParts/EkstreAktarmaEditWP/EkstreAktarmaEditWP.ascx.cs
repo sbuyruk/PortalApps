@@ -363,8 +363,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             if (BankaDDL.SelectedItem == null)
             {
                 BankaDDL.Items.Clear();
-                BankaTanim pBanka = new BankaTanim();
-                List<BankaTanim> list = pBanka.SelectAll<BankaTanim>();
+                List<BankaTanim> list = new BankaTanimService().GetAll();
                 //TextInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true).TextInfo;
                 foreach (BankaTanim banka in list)
                 {

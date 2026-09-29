@@ -3095,8 +3095,7 @@ namespace Model.NBYS
             int nakitBagisHareketId = 0;
             if (kayitliNakitBagishareket==null)
             {
-                BankaTanim bankaTanim = new BankaTanim();
-                bankaTanim = bankaTanim.SelectByBankaName(ekstreAktarma.BankaAdi);
+                BankaTanim bankaTanim = new BankaTanimService().GetByName(ekstreAktarma.BankaAdi);
 
                 Ilce ilce = new Ilce();
                 ilce = ilce.SelectByIlNameAndIlceName(ekstreAktarma.Ili, ekstreAktarma.Ilcesi);

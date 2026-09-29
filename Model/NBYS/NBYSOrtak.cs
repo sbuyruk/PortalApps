@@ -1,6 +1,7 @@
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Xml.Linq;
 using Utility.HelperClasses;
@@ -18,8 +19,7 @@ namespace Model.NBYS
         public static string ParametreGetir(string grup,string anahtar)
         {
 
-            NBYSParametre param = new NBYSParametre();
-            param = param.SelectByGrupAnahtar(grup, anahtar);
+            NBYSParametre param = new NBYSParametreService().GetByGroupAndKey(grup, anahtar);
             if (param != null)
             {
                 return param.Deger;
@@ -46,19 +46,19 @@ namespace Model.NBYS
                         string ilstr = il.IlAdi + " ili ";
                         Ilce ilce= new Ilce();
                         ilce=ilce.Select<Ilce>(ilceId);
-                        string ilcestr = ilce==null?string.Empty:ilce.IlceAdi + " ilçesi ";
+                        string ilcestr = ilce==null?string.Empty:ilce.IlceAdi + " ilÃ§esi ";
 
                         if (bolge != null && (bolge.Id != ProjeConstants.BOLGE_HEPSI_INT || bolge.Id != ProjeConstants.BOLGE_GENELMUDURLUK_INT))
                         {
                             userto = UserToGetir(bolge);
                             string from = "dgundur@tskgv.local";
-                            string subject = bolge.KisaAdi + " bölgesi sorumlulugunda bulunan " + ilstr + ilcestr + " FTK listesi olusturulmustur.";
+                            string subject = bolge.KisaAdi + " bÃ¶lgesi sorumlulugunda bulunan " + ilstr + ilcestr + " FTK listesi olusturulmustur.";
                             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                             var ftkListesiUrl = "";
                             ftkListesiUrl = string.Format("{0}?BolgeId={1}&IlId={2}&IlceId={3}", currentUrl + "/" + ProjeConstants.PAGE_FTK_LIST, bolge.Id, ilId, ilceId);
 
-                            string userbody = subject + " <br>ilgili FTK bilgilerine ulasmak için "
-                                + " Ayrintili bilgi için <a href ='" + ftkListesiUrl + "'>FTK Listesi</a> sayfasina gidebilirsiniz.";
+                            string userbody = subject + " <br>ilgili FTK bilgilerine ulasmak iÃ§in "
+                                + " Ayrintili bilgi iÃ§in <a href ='" + ftkListesiUrl + "'>FTK Listesi</a> sayfasina gidebilirsiniz.";
 
                             string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
                             MailHelper.EPostaGonder(from, userto, subject, userbody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);

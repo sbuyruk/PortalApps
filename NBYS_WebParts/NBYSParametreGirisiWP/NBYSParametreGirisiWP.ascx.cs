@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -96,8 +97,7 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
         private void TabloyuGuncelle()
         {
             string parametreGrubu = GrupDDL.SelectedItem.Value;
-            NBYSParametre parametreDao = new NBYSParametre();
-            List<NBYSParametre> parametreList = parametreDao.SelectByGrupReturnList(parametreGrubu);
+            List<NBYSParametre> parametreList = new NBYSParametreService().GetByGroup(parametreGrubu);
 
             GrupLbl.Text = parametreGrubu;
             YeniSiraTxt.Text = parametreList.Count > 0 ? (parametreList.Max(x => x.Sira) + 1).ToString() : "1";
@@ -105,7 +105,7 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
         }
         private void TabloOlustur(List<NBYSParametre> parametreList)
         {
-            var jsonData = TabloJson(parametreList); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(parametreList); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
                 typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
@@ -169,7 +169,7 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
                 pItem.Grup = item.Grup;
                 pItem.Anahtar = item.Anahtar;
                 pItem.Deger = item.Deger;
-                pItem.Duzenle = "<a href='#' class='btn btn-outline-primary' onclick=DuzenleSilModalAc(" + item.Id + "," + ProjeConstants.GUNCELLE.ReturnQuotedValue() + ")>Düzenle</a>";
+                pItem.Duzenle = "<a href='#' class='btn btn-outline-primary' onclick=DuzenleSilModalAc(" + item.Id + "," + ProjeConstants.GUNCELLE.ReturnQuotedValue() + ")>DÃ¼zenle</a>";
                 pItem.Sil = "<a href='#' class='btn btn-outline-danger' onclick=DuzenleSilModalAc(" + item.Id + "," + ProjeConstants.SIL.ReturnQuotedValue() + ")>Sil</a>";
                 parametreListItemList.Add(pItem);
             }
@@ -205,15 +205,14 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
             {
                 if (parametreId > 0)
                 {
-                    NBYSParametre nbysParam = new NBYSParametre();
-                    nbysParam = nbysParam.Select(parametreId);
+                    NBYSParametre nbysParam = new NBYSParametreService().GetById(parametreId);
                     if (nbysParam != null)
                     {
                         AnahtarTxt.Text = nbysParam.Anahtar;
                         AnahtarTxt.Enabled = AuthQS.Equals(ProjeConstants.PARAM_YETKI_ADMIN);
                         DegerTxt.Text = nbysParam.Deger;
                         SiraTxt.Text = nbysParam.Sira.ToString();
-                        ModalLbl.Text = "Parametre Düzenleme";
+                        ModalLbl.Text = "Parametre DÃ¼zenleme";
                         SilDiv.Attributes["style"] = "display:none";
                         DuzenleDiv.Attributes["style"] = "display:block";
                         ModalLbl.CssClass = "col-form-label text-primary fw-bold";
@@ -266,32 +265,31 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
         protected void GuncelleNowBtn_Click(object sender, EventArgs e)
         {
             int parametreId = parametreIdLbl.Value.ConvertToInt();
-            NBYSParametre nbysParametre = new NBYSParametre();
-            nbysParametre = nbysParametre.Select(parametreId);
+            NBYSParametre nbysParametre = new NBYSParametreService().GetById(parametreId);
             if (nbysParametre != null)
             {
                 NBYSParametre param = AyniIsimdeVarMi(nbysParametre.Grup, AnahtarTxt.Text, DegerTxt.Text);
 
-                if (param != null)//ayni Deger'li parametre varsa güncellemesin 
+                if (param != null)//ayni Deger'li parametre varsa gÃ¼ncellemesin
                 {
                     CloseModal();
                     TabloyuGuncelle();
-                    MessageHelper.PublishMessage("Güncellenmedi, ayni isimde parametre zaten var.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("GÃ¼ncellenmedi, ayni isimde parametre zaten var.", ProjeConstants.MESAJ_HATA, 2000);
                 }
                 else
                 {
                     nbysParametre.Anahtar = AnahtarTxt.Text;
                     nbysParametre.Deger = DegerTxt.Text;
                     nbysParametre.Sira = SiraTxt.Text.ConvertToInt();
-                    if (nbysParametre.Update())
+                    if (new NBYSParametreService().Update(nbysParametre))
                     {
                         CloseModal();
-                        MessageHelper.PublishMessage("Parametre güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Parametre gÃ¼ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                         TabloyuGuncelle();
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Parametre güncellenemedi!", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Parametre gÃ¼ncellenemedi!", ProjeConstants.MESAJ_HATA);
                     }
                 }
             }
@@ -309,12 +307,11 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
         protected void SilNowBtn_Click(object sender, EventArgs e)
         {
             int parametreId = parametreIdLbl.Value.ConvertToInt();
-            NBYSParametre toplantiParametre = new NBYSParametre();
-            toplantiParametre = toplantiParametre.Select(parametreId);
+            NBYSParametre toplantiParametre = new NBYSParametreService().GetById(parametreId);
             CloseModal();
             if (toplantiParametre != null)
             {
-                bool silindiMi = toplantiParametre.Delete();
+                bool silindiMi = new NBYSParametreService().Delete(toplantiParametre);
                 if (silindiMi)
                 {
                     TabloyuGuncelle();
@@ -352,7 +349,7 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
                         param.Anahtar = YeniAnahtarTxt.Text;
                         param.Deger = YeniDegerTxt.Text;
                         param.Olusturan = UtilityHelper.GetCurrentUserLoginName();
-                        int id = param.Save();
+                        int id = new NBYSParametreService().Save(param);
                         if (id > 0)
                         {
                             TabloyuGuncelle();
@@ -368,15 +365,14 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Yeni kayit yapabilmek için parametre grubunu seçmelisiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("Yeni kayit yapabilmek iÃ§in parametre grubunu seÃ§melisiniz.", ProjeConstants.MESAJ_BILGI, 2000);
             }
 
         }
 
         private NBYSParametre AyniIsimdeVarMi(string grup, string anahtar, string deger)
         {
-            NBYSParametre parametreDAO = new NBYSParametre();
-            NBYSParametre param = parametreDAO.SelectByGrupAnahtar(grup, anahtar, deger);
+            NBYSParametre param = new NBYSParametreService().GetByGroupKeyAndValue(grup, anahtar, deger);
             return param;
         }
     }

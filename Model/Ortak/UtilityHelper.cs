@@ -1,6 +1,7 @@
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
 using Model.NBYS;
+using Model.Services.NBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -132,7 +133,7 @@ namespace Model.Ortak
         public static void SetControlState<T>(bool isVisible, bool isEnabled, params T[] controls) where T : WebControl
         {
             if (controls == null || controls.Length == 0)
-                return; // Eger hiç kontrol yoksa metottan çik
+                return; // Eger hiÃ§ kontrol yoksa metottan Ã§ik
 
             foreach (var ctrl in controls)
             {
@@ -206,7 +207,7 @@ namespace Model.Ortak
                     {
                         if (!fileBrowser.HasFile)
                         {
-                            Exception exceptionInfo = new Exception(String.Format(fileBrowser.FileName + " : Resim dosyasi seçmediniz."));
+                            Exception exceptionInfo = new Exception(String.Format(fileBrowser.FileName + " : Resim dosyasi seÃ§mediniz."));
                             exceptionHelper.Exceptions.Add(exceptionInfo);
                         }
                         else
@@ -215,7 +216,7 @@ namespace Model.Ortak
                             int fileSize = fileBrowser.PostedFile.ContentLength;
                             if (fileSize > 6000000)
                             {
-                                Exception exceptionInfo = new Exception(String.Format(fileBrowser.FileName + " : Dosya boyutu 4Mb'tan büyük oldugu için kaydedilmedi."));
+                                Exception exceptionInfo = new Exception(String.Format(fileBrowser.FileName + " : Dosya boyutu 4Mb'tan bÃ¼yÃ¼k oldugu iÃ§in kaydedilmedi."));
                                 exceptionHelper.Exceptions.Add(exceptionInfo);
 
                             }
@@ -225,7 +226,7 @@ namespace Model.Ortak
                                 //Check the user has selected a jpg image
                                 if (imageFileExtension == null || imageFileExtension.ToLower() != ".jpg")
                                 {
-                                    Exception exceptionInfo = new Exception(String.Format(fileBrowser.FileName + " : Lütfen .jpg formatinda resim seçiniz."));
+                                    Exception exceptionInfo = new Exception(String.Format(fileBrowser.FileName + " : LÃ¼tfen .jpg formatinda resim seÃ§iniz."));
                                     exceptionHelper.Exceptions.Add(exceptionInfo);
                                 }
                                 else
@@ -429,7 +430,7 @@ namespace Model.Ortak
             if (!string.IsNullOrEmpty(telefon))
             {
 
-                // içinde "+", "(" veya ")" veya "-" veya " " var mi
+                // iÃ§inde "+", "(" veya ")" veya "-" veya " " var mi
                 //  varsa sil
                 formatliTelNo = telefon.Replace("+", string.Empty).Replace("/", string.Empty).Replace("(", string.Empty).Replace(")", string.Empty)
                     .Replace("-", string.Empty).Replace(" ", string.Empty).Replace(".", string.Empty).Replace(",", string.Empty);
@@ -477,7 +478,7 @@ namespace Model.Ortak
 
         public static List<UserPrincipal> GetGroupMembers(string domain, string groupname)
         {
-            //burayi application pool yetkisi ile çalistir
+            //burayi application pool yetkisi ile Ã§alistir
             using (HostingEnvironment.Impersonate())
             {
                 PrincipalContext ctx = new PrincipalContext(ContextType.Domain, domain);
@@ -512,7 +513,7 @@ namespace Model.Ortak
         {
             try
             {
-                //burayi application pool yetkisi ile çalistir
+                //burayi application pool yetkisi ile Ã§alistir
                 using (HostingEnvironment.Impersonate())
                 {
                     // This code runs as the application pool user
@@ -639,7 +640,7 @@ namespace Model.Ortak
             catch (Exception e)
             {
                 ExceptionHelper eh = new ExceptionHelper(e);
-                eh.Exceptions.Add(new Exception("Dosya Yüklenemedi"));
+                eh.Exceptions.Add(new Exception("Dosya YÃ¼klenemedi"));
                 eh.PublishException();
                 isOk = false;
             }
@@ -661,7 +662,7 @@ namespace Model.Ortak
             catch (Exception e)
             {
                 ExceptionHelper eh = new ExceptionHelper(e);
-                eh.Exceptions.Add(new Exception("Dosya Yüklenemedi"));
+                eh.Exceptions.Add(new Exception("Dosya YÃ¼klenemedi"));
                 eh.PublishException();
                 isOk = false;
             }
@@ -776,7 +777,7 @@ namespace Model.Ortak
             bolge = bolge.Select(Il.BolgeId);
             return bolge;
         }
-        // Display adini almak için yardimci fonksiyon
+        // Display adini almak iÃ§in yardimci fonksiyon
         public static string GetEnumDisplayName(Enum enumValue)
         {
             var fieldInfo = enumValue.GetType().GetField(enumValue.ToString());
@@ -788,8 +789,7 @@ namespace Model.Ortak
 
             string url = UtilityHelper.URLGetir();
             string yonergeUrl = url + "/../" + lib + "/yonerge/default.pdf";
-            NBYSParametre param = new NBYSParametre();
-            param = param.SelectByGrupAnahtar(grup, anahtar);
+            NBYSParametre param = new NBYSParametreService().GetByGroupAndKey(grup, anahtar);
             if (param != null)
             {
                 yonergeUrl = url + "/../" + lib + "/yonerge/" + param.Deger;
@@ -803,12 +803,12 @@ namespace Model.Ortak
                 return input;
 
             return input
-                .Replace('ç', 'c').Replace('Ç', 'C')
+                .Replace('Ã§', 'c').Replace('Ã‡', 'C')
                 .Replace('g', 'g').Replace('G', 'G')
                 .Replace('i', 'i').Replace('I', 'I')
-                .Replace('ö', 'o').Replace('Ö', 'O')
+                .Replace('Ã¶', 'o').Replace('Ã–', 'O')
                 .Replace('s', 's').Replace('S', 'S')
-                .Replace('ü', 'u').Replace('Ü', 'U');
+                .Replace('Ã¼', 'u').Replace('Ãœ', 'U');
         }
     }
 }
