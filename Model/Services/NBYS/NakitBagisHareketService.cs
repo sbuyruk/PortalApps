@@ -77,6 +77,21 @@ namespace Model.Services.NBYS
             return updated;
         }
 
+        public void UpdateRefund(NakitBagisHareket bagisHareket, Armagan armagan)
+        {
+            if (bagisHareket == null)
+                throw new ArgumentNullException("bagisHareket");
+
+            bagisHareket.DegistirmeTarihi = DateTime.Now;
+            bagisHareket.Degistiren = UtilityHelper.GetCurrentUserName();
+
+            // Armagan.GetUpdateSQL'in mevcut tarih davranışını koru.
+            if (armagan != null)
+                armagan.OlusturmaTarihi = DateTime.Now;
+
+            repository.UpdateRefund(bagisHareket, armagan);
+        }
+
         public bool Delete(NakitBagisHareket bagisHareket)
         {
             if (bagisHareket == null)
