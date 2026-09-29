@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -47,11 +48,11 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
             var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
-            NakitBagisHareket nbh= new NakitBagisHareket();
+            NakitBagisHareketService nbh = new NakitBagisHareketService();
             DateTime bagisTarihi = BagisTarihiTxt.Text.ConvertToDatetime();
             string dovizCinsi = DovizCinsiDDL.SelectedItem.Value;
             string bankaGrup = BankaDDL.SelectedItem.Value;
-            decimal tltoplam = nbh.SelectSumByBagisTarihi(bagisTarihi,bankaGrup,dovizCinsi);
+            decimal tltoplam = nbh.GetDailyTotal(bagisTarihi, bankaGrup, dovizCinsi);
             ToplamLbl.Text ="Toplam TL : " + tltoplam.ToString("N", culturInfo) + "TL (" + dovizCinsi+")";
         }
         private string TabloJson()
@@ -171,8 +172,8 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
             string bankaGrup = BankaDDL.SelectedItem.Value;
             string dovizCinsi = DovizCinsiDDL.SelectedItem.Value;
             string dovizCinsiText = DovizCinsiDDL.SelectedItem.Text;
-            NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
-            DataTable dataTable = nakitBagisHareket.SelectByBagisTarihiBankaId(bagisTarihi, bankaGrup,dovizCinsi);
+            NakitBagisHareketService nakitBagisHareket = new NakitBagisHareketService();
+            DataTable dataTable = nakitBagisHareket.GetDailyTotalsByBank(bagisTarihi, bankaGrup, dovizCinsi);
 
             List<BagisListItem> list = new List<BagisListItem>();
             

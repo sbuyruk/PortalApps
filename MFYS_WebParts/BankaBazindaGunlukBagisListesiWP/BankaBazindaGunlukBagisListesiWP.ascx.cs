@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -165,8 +166,8 @@ namespace MFYS_WebParts.BankaBazindaGunlukBagisListesiWP
             for (int i = 1; i <= gunSayisi;i++)
             {
                 DateTime tarih = new DateTime(yil,ay,i);
-                NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
-                DataTable dataTable = nakitBagisHareket.SelectTlBagisByTarihBankaGrup2(tarih, banka);
+                NakitBagisHareketService nakitBagisHareket = new NakitBagisHareketService();
+                DataTable dataTable = nakitBagisHareket.GetDailyTlTotalByBankGroup2(tarih, banka);
                 IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
                 
                 string bagisTarihiStr = tarih.ConvertToDatetimeEmptyIfNull();

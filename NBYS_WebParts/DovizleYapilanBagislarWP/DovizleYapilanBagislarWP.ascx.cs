@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -166,8 +167,8 @@ namespace NBYS_WebParts.DovizleYapilanBagislarWP
                 bittar= new DateTime(YilDDL.SelectedItem.Value.ConvertToInt(), 12, 1);
             }
             string bankaGrup = BankaDDL.SelectedItem.Value;
-            NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
-            DataTable dataTable = nakitBagisHareket.SelectDovizleBagisByTarihBankaId(bastar, bittar, bankaGrup);
+            NakitBagisHareketService nakitBagisHareket = new NakitBagisHareketService();
+            DataTable dataTable = nakitBagisHareket.GetCurrencyTotalsByDateBank(bastar, bittar, bankaGrup);
 
             List<DovizleBagisListItem> list = new List<DovizleBagisListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);

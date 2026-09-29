@@ -138,6 +138,46 @@ namespace Model.Services.NBYS
             return repository.SelectCountSumByBanka(baslangic, bitis);
         }
 
+        public DataTable GetDailyTotalsByBank(DateTime bagisTarihi, string bankaGrup, string dovizCinsi)
+        {
+            return repository.SelectDailyTotalsByBank(bagisTarihi, bankaGrup, dovizCinsi);
+        }
+
+        public decimal GetDailyTotal(DateTime bagisTarihi, string bankaGrup, string dovizCinsi)
+        {
+            DataTable table = repository.SelectDailySum(bagisTarihi, bankaGrup, dovizCinsi);
+            if (table == null || table.Rows.Count == 0)
+                return 0;
+            return table.Rows[0]["Toplam"].ReturnZeroIfNull().ConvertToDecimal();
+        }
+
+        public DataTable GetDailyTlTotalByBankGroup2(DateTime bagisTarihi, string bankaGrup2)
+        {
+            return repository.SelectDailyTlTotalByBankGroup2(
+                bagisTarihi, bankaGrup2, ProjeConstants.DOVIZ_TL);
+        }
+
+        public DataTable GetCurrencyDonationsByDateBankGroup2(
+            DateTime baslangic, DateTime bitis, string bankaGrup2, string dovizCinsi)
+        {
+            return repository.SelectCurrencyDonationsByDateBankGroup2(
+                baslangic, bitis, bankaGrup2, dovizCinsi);
+        }
+
+        public List<string> GetBankGroup2ByDateCurrency(DateTime baslangic, DateTime bitis, string dovizCinsi)
+        {
+            DataTable table = repository.SelectBankGroup2ByDateCurrency(baslangic, bitis, dovizCinsi);
+            if (table == null)
+                return new List<string>();
+            return table.AsEnumerable().Select(row => row.Field<string>("BankaGrup2")).ToList();
+        }
+
+        public DataTable GetCurrencyTotalsByDateBank(DateTime baslangic, DateTime bitis, string bankaGrup)
+        {
+            return repository.SelectCurrencyTotalsByDateBank(
+                baslangic, bitis, bankaGrup, ProjeConstants.DOVIZ_TL);
+        }
+
         private static decimal ReadAggregate(DataTable table, ref int adet)
         {
             if (table == null || table.Rows.Count == 0)

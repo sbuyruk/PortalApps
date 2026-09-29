@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -191,8 +192,8 @@ namespace MFYS_WebParts.BankaBazindaGunlukDovizBagisListesiWP
             string secilenBanka = BankaDDL.SelectedItem!=null?BankaDDL.SelectedItem.Text:string.Empty;
             string dovizCinsi = DovizCinsiDDL.SelectedItem.Text;
 
-            NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
-            DataTable dataTable = nakitBagisHareket.SelectDovizBagisByTarihBankaGrup2(bastar,bittar, secilenBanka, dovizCinsi);
+            NakitBagisHareketService nakitBagisHareket = new NakitBagisHareketService();
+            DataTable dataTable = nakitBagisHareket.GetCurrencyDonationsByDateBankGroup2(bastar, bittar, secilenBanka, dovizCinsi);
             if (dataTable != null)
             {
                 decimal toplamTL = 0;
@@ -230,8 +231,8 @@ namespace MFYS_WebParts.BankaBazindaGunlukDovizBagisListesiWP
             DateTime bastar = new DateTime(yil, ay, 1);
             DateTime bittar = bastar.AddMonths(1).AddDays(-1);
 
-            NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
-            List<string> bankaGrup2List = nakitBagisHareket.SelectBankaGrup2ByTarihDovizCinsi(bastar, bittar, dovizCinsi);
+            NakitBagisHareketService nakitBagisHareket = new NakitBagisHareketService();
+            List<string> bankaGrup2List = nakitBagisHareket.GetBankGroup2ByDateCurrency(bastar, bittar, dovizCinsi);
             foreach (var item in bankaGrup2List)
             {
                 BankaDDL.Items.Add(new ListItem(item, item));
