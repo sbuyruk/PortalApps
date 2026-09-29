@@ -1,11 +1,9 @@
 using Model.Ortak;
-using Model.Services.NBYS;
 using System;
-using System.Collections.Generic;
 
 namespace Model.NBYS
 {
-    public class NakitBagisHareket : ParentClass
+    public class NakitBagisHareket : EntityBase
     {
         public DateTime BagisTarihi { get; set; }
         public int BagisciId { get; set; }
@@ -28,28 +26,6 @@ namespace Model.NBYS
         public DateTime KurTarihi { get; set; }
         public int EkstreAktarmaId { get; set; }
         public string BagisTipi { get; set; }
-        //Methods
-        public override int Save()
-        {
-            return new NakitBagisHareketService().Save(this);
-        }
-        public override bool Update()
-        {
-            return new NakitBagisHareketService().Update(this);
-        }
-        public override bool Delete()
-        {
-            return new NakitBagisHareketService().Delete(this);
-        }
-        public override T Select<T>(int id)
-        {
-            return (T)Convert.ChangeType(new NakitBagisHareketService().GetById(id), typeof(T));
-        }
-        public override List<T> SelectAll<T>()
-        {
-            return (List<T>)Convert.ChangeType(
-                new NakitBagisHareketService().GetAll(), typeof(List<T>));
-        }
     }
 
 }
