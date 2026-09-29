@@ -244,7 +244,7 @@ namespace NBYS_WebParts.ArmaganEditWP
                 int armaganId = ArmaganIdQS.ConvertToInt();
 
                 Armagan armagan = new Armagan();
-                armagan = armagan.Select<Armagan>(armaganId);
+                armagan = new ArmaganService().GetById(armaganId);
                 if (armagan != null)
                 {
                     Bolge kullanicininBolgesi = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
@@ -376,14 +376,14 @@ namespace NBYS_WebParts.ArmaganEditWP
                 {
                     int armaganId = ArmaganIdQS.ConvertToInt();
                     Armagan armagan = new Armagan();
-                    armagan = armagan.Select<Armagan>(armaganId);
+                    armagan = new ArmaganService().GetById(armaganId);
                     if (armaganId == 0)
                     {
                         isSaved = saveArmagan(armagan);
                     }
                     else
                     {
-                        armagan = armagan.Select<Armagan>(armaganId);
+                        armagan = new ArmaganService().GetById(armaganId);
                         isSaved = UpdateArmagan(armagan);
                     }
 
@@ -418,7 +418,7 @@ namespace NBYS_WebParts.ArmaganEditWP
             armagan.Olusturan = CurrentUserName;
             armagan.BelgedeYazanIsim = BelgedeYazanIsimTxt.Text.ReturnEmptyIfNull().ToString();
             armagan.BagisMiktariYazmasin = BagisMiktariYazmasinChk.Checked;
-            armagan.Id = armagan.Save();
+            armagan.Id = new ArmaganService().Save(armagan);
             if (armagan.Id > 0)
                 isSaved = true;
             return isSaved;
@@ -434,7 +434,7 @@ namespace NBYS_WebParts.ArmaganEditWP
             armagan.BagisMiktariYazmasin = BagisMiktariYazmasinChk.Checked;
             armagan.Degistiren = CurrentUserName;
 
-            bool isSaved = armagan.Update();
+            bool isSaved = new ArmaganService().Update(armagan);
 
             return isSaved;
         }

@@ -387,7 +387,7 @@ namespace NBYS_WebParts.BagisIadesiWP
                     string bagisciAdi = nb == null ? "" : nb.Adi + " " + nb.Soyadi + " tarafından bağışlanan ";
                     string iadeMiktariMsg = bagisciAdi + nbh.BagisMiktari.ToString("N", culturInfo) + " " + nbh.DovizCinsi + " iade edilecek. ";
                     Armagan armagan = new Armagan();
-                    armagan = armagan.Select<Armagan>(nbh.ArmaganId);
+                    armagan = new ArmaganService().GetById(nbh.ArmaganId);
 
                     string armaganiVarMsg = string.Empty;
                     if (armagan != null) //bu armagan varsa
@@ -456,7 +456,7 @@ namespace NBYS_WebParts.BagisIadesiWP
 
                         //güncellenecek alanları nesnelerde güncelle
                         Armagan armagan = new Armagan();
-                        armagan = armagan.Select<Armagan>(nbh.ArmaganId);
+                        armagan = new ArmaganService().GetById(nbh.ArmaganId);
                         Armagan guncellenecekArmagan = null;
                         if (armagan != null && armagan.Durum.Equals(ProjeConstants.DURUM_GONDERILMEDI))//armağan varsa ve durumu gönderilmedi ise 
                         {
