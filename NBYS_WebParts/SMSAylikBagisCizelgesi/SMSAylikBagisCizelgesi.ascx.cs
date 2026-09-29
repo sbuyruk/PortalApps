@@ -1,6 +1,7 @@
-using DocumentFormat.OpenXml.Spreadsheet;
+ï»¿using DocumentFormat.OpenXml.Spreadsheet;
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -92,9 +93,9 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi
 
         private void SecilenYilVerileriniOlustur()
         {
-            SMSAylikBagis sms = new SMSAylikBagis();
+            SMSAylikBagisService smsService = new SMSAylikBagisService();
             int yil = SecilenYilQS.ConvertToInt();
-            List<SMSAylikBagis> list = sms.SelectByYilReturnList(SecilenYilQS.ConvertToInt());
+            List<SMSAylikBagis> list = smsService.GetByYear(SecilenYilQS.ConvertToInt());
             if (list.Count < 1)
             {
                 for (int i = 1; i < 13; i++)
@@ -111,7 +112,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi
                     smsAylikBagis.TurkTelekomSMSAdedi = 0;
                     smsAylikBagis.Yil = SecilenYilQS.ConvertToInt();
                     smsAylikBagis.Aciklama = "";
-                    smsAylikBagis.Save();
+                    smsService.Save(smsAylikBagis);
                 }
             }
         }
@@ -138,8 +139,8 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi
         private void CizelgeyiDoldur(int yil)
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            SMSAylikBagis smsAylikBagisDao = new SMSAylikBagis();
-            List<SMSAylikBagis> list = smsAylikBagisDao.SelectByYilReturnList(yil);
+            SMSAylikBagisService smsAylikBagisService = new SMSAylikBagisService();
+            List<SMSAylikBagis> list = smsAylikBagisService.GetByYear(yil);
             
             int ToplamTurkcellSMSAdedi = 0;
             decimal ToplamTurkcellSMSTutari = 0;
@@ -202,7 +203,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi
 
                 LinkButton duzenleBtn = new LinkButton();
                 duzenleBtn.CausesValidation = false;
-                duzenleBtn.Text = "Düzenle";
+                duzenleBtn.Text = "DÃ¼zenle";
                 duzenleBtn.CssClass = "btn btn-outline-primary";
                 duzenleBtn.Click += delegate
                 {
@@ -312,15 +313,15 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi
         //}
 
         /// <summary>
-        /// LinkButton Düzenle excele aktarirken hata verdiginden 
+        /// LinkButton DÃ¼zenle excele aktarirken hata verdiginden
         /// CizelgeyiDoldur() metodu ile ayni islemi Linkbutton olmadan yapiyor
         /// </summary>
         /// <param name="yil"></param>
         private void ExcelIcinCizelgeyiDoldur(int yil)
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            SMSAylikBagis smsAylikBagisDao = new SMSAylikBagis();
-            List<SMSAylikBagis> list = smsAylikBagisDao.SelectByYilReturnList(yil);
+            SMSAylikBagisService smsAylikBagisService = new SMSAylikBagisService();
+            List<SMSAylikBagis> list = smsAylikBagisService.GetByYear(yil);
 
             int ToplamTurkcellSMSAdedi = 0;
             decimal ToplamTurkcellSMSTutari = 0;
@@ -383,7 +384,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi
 
                 LinkButton duzenleBtn = new LinkButton();
                 duzenleBtn.CausesValidation = false;
-                duzenleBtn.Text = "Düzenle";
+                duzenleBtn.Text = "DÃ¼zenle";
                 duzenleBtn.CssClass = "btn btn-outline-primary";
                 duzenleBtn.Click += delegate
                 {
@@ -550,16 +551,16 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi
         }
         protected void UpdateBtn_Click(object sender, EventArgs e)
         {
-            SMSAylikBagis smsAylikBagis = new SMSAylikBagis();
+            SMSAylikBagisService smsAylikBagisService = new SMSAylikBagisService();
             int smsAylikBagisId = HiddenSMSAylikBagisId.Value.ConvertToInt();
-            smsAylikBagis = smsAylikBagis.Select<SMSAylikBagis>(smsAylikBagisId);
+            SMSAylikBagis smsAylikBagis = smsAylikBagisService.GetById(smsAylikBagisId);
             if (smsAylikBagis != null)
             {
                 smsAylikBagis.TurkcellSMSAdedi = TurkcellSMSTxt.Text.ConvertToInt();
                 smsAylikBagis.VodafoneSMSAdedi = VodafoneSMSTxt.Text.ConvertToInt();
                 smsAylikBagis.TurkTelekomSMSAdedi = TurkTelekomSMSTxt.Text.ConvertToInt();
                 smsAylikBagis.Degistiren = CurrentUserName;
-                smsAylikBagis.Update();
+                smsAylikBagisService.Update(smsAylikBagis);
                 RedirectToPage(ProjeConstants.PAGE_SMSAYLIKCIZELGE + "?SecilenYil=" + SecilenYilQS);
             }
         }
