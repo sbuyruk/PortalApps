@@ -288,6 +288,23 @@ namespace Model.IKYS
 
             return (dataTable);
         }
+        public DataTable SelectAllByPersonelReturnDT(int personelId)
+        {
+            if (personelId <= 0)
+                throw new ArgumentOutOfRangeException(nameof(personelId));
+
+            SqlQuery query = new SqlQuery(@"
+                SELECT A.Id GorevOnayId, A.PersonelId, P.Adi+' '+P.Soyadi AdiSoyadi,
+                    A.GorevinSebebi, A.BaslangicTarihi, A.BitisTarihi, A.GorevinYeri,
+                    A.AmirOnayi, A.Odendi
+                FROM GorevOnay_Table A
+                    INNER JOIN Personel_Table P ON P.Id=A.PersonelId
+                WHERE A.PersonelId=@PersonelId
+                ORDER BY A.BitisTarihi DESC");
+            query.Parameters.Add(new SqlParameter("@PersonelId", SqlDbType.Int) { Value = personelId });
+            return dao.SelectFromDb(query, "");
+        }
+
         public DataTable SelectByTarihReturnDataTable(DateTime bastar, DateTime bittar)
         {
             string sqlString = string.Format(@"

@@ -1351,7 +1351,10 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         }
         protected void GorevOnayListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_GOREVONAY_LIST + "?SecilenId=" + GorevOnayIdQS + (string.IsNullOrEmpty(AuthQS) ? string.Empty : "&Auth=" + ProjeConstants.IKYS_YETKILI_BIRIM));
+            bool isIkys = string.Equals(AuthQS, ProjeConstants.IKYS_YETKILI_BIRIM, StringComparison.Ordinal);
+            string pageUrl = isIkys ? ProjeConstants.PAGE_GOREVONAY_LIST : "GorevOnayListesiKisisel.aspx";
+            RedirectToPage(pageUrl + "?SecilenId=" + System.Web.HttpUtility.UrlEncode(GorevOnayIdQS)
+                + (isIkys ? "&Auth=" + ProjeConstants.IKYS_YETKILI_BIRIM : string.Empty));
         }
         protected void RaporAlBtn_Click(object sender, EventArgs e)
         {

@@ -184,6 +184,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GorevOnayGirisiWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="GorevOnayListesiKisiselWP\GorevOnayListesiKisiselWP.ascx.cs">
+      <DependentUpon>GorevOnayListesiKisiselWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GorevOnayListesiKisiselWP\GorevOnayListesiKisiselWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GorevOnayListesiKisiselWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="GorevOnayListesiWP\GorevOnayListesiWP.ascx.cs">
       <DependentUpon>GorevOnayListesiWP.ascx</DependentUpon>
     </Compile>
@@ -520,6 +528,10 @@
     <None Include="GorevOnayGirisiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{8b3a2a61-dbc3-418b-b569-b55f8474688c}</SharePointProjectItemId>
     </None>
+    <None Include="GorevOnayListesiKisiselWP\GorevOnayListesiKisiselWP.webpart" />
+    <None Include="GorevOnayListesiKisiselWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{3efc4396-86d0-4854-9923-3bac0f5443f3}</SharePointProjectItemId>
+    </None>
     <None Include="GorevOnayListesiWP\GorevOnayListesiWP.webpart" />
     <None Include="GorevOnayListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{aa4d6daf-dba4-4c14-91c2-7e8d99e26e4a}</SharePointProjectItemId>
@@ -746,6 +758,11 @@
     <Content Include="GorevOnayGirisiWP\GorevOnayGirisiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>GorevOnayGirisiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="GorevOnayListesiKisiselWP\Elements.xml" />
+    <Content Include="GorevOnayListesiKisiselWP\GorevOnayListesiKisiselWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>GorevOnayListesiKisiselWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="GorevOnayListesiWP\Elements.xml" />
     <Content Include="GorevOnayListesiWP\GorevOnayListesiWP.ascx">
