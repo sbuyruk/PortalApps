@@ -2684,8 +2684,7 @@ namespace Model.NBYS
                 
                 decimal toplamBagis = new NakitBagisHareketService().GetTotalByBagisciIdDateRange(bastar, bittar, nakitBagisciId);
 
-                ArmaganTanim hakedilenArmaganTanim = new ArmaganTanim();
-                hakedilenArmaganTanim = hakedilenArmaganTanim.SelectByTutar(toplamBagis, tuzelKisiMi); //toplam tutar gidecek
+                ArmaganTanim hakedilenArmaganTanim = new ArmaganTanimService().GetByAmount(toplamBagis, tuzelKisiMi); //toplam tutar gidecek
 
                 if (hakedilenArmaganTanim != null && hakedilenArmaganTanim.Id != ProjeConstants.ARMAGAN_YOKID)
                 {
@@ -2807,15 +2806,13 @@ namespace Model.NBYS
                     ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ConvertToDatetime(), nakitBagisHareket.BagisTarihi, nakitBagisci.Id);
 
                 //Geçmisten bugüne kadar olan toplam bagis tutarina göre Çoklu Bagis armagani hakediyor mu
-                ArmaganTanim cokluBagisanHakedilenArmaganTanim = new ArmaganTanim();
-                cokluBagisanHakedilenArmaganTanim = cokluBagisanHakedilenArmaganTanim.SelectByTutar(toplamBagis, ekstreAktarma.TuzelKisi);
+                ArmaganTanim cokluBagisanHakedilenArmaganTanim = new ArmaganTanimService().GetByAmount(toplamBagis, ekstreAktarma.TuzelKisi);
 
 
                 bool cokluBagistanArmaganHakediyorMu = cokluBagisanHakedilenArmaganTanim != null 
                     && cokluBagisanHakedilenArmaganTanim.Id != ProjeConstants.ARMAGAN_YOKID;
 
-                ArmaganTanim tekliBagistanHakedilenArmaganTanim = new ArmaganTanim();
-                tekliBagistanHakedilenArmaganTanim = tekliBagistanHakedilenArmaganTanim.SelectByTutar(bagisTutari, ekstreAktarma.TuzelKisi);
+                ArmaganTanim tekliBagistanHakedilenArmaganTanim = new ArmaganTanimService().GetByAmount(bagisTutari, ekstreAktarma.TuzelKisi);
                 bool tekliBagisArmaganHakediyorMu = tekliBagistanHakedilenArmaganTanim != null 
                     && tekliBagistanHakedilenArmaganTanim.Id != ProjeConstants.ARMAGAN_YOKID;
                 

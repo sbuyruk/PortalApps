@@ -328,8 +328,7 @@ namespace NBYS_WebParts.ArmaganEditWP
             if (ArmaganDDL.SelectedItem == null)
             {
                 ArmaganDDL.Items.Clear();
-                ArmaganTanim armaganTanim = new ArmaganTanim();
-                List<ArmaganTanim> list = armaganTanim.SelectAll<ArmaganTanim>();// armaganTanim.SelectAktifArmaganTanim();
+                List<ArmaganTanim> list = new ArmaganTanimService().GetAll();
                 foreach (ArmaganTanim arm in list)
                 {
                     ArmaganDDL.Items.Add(new ListItem(arm.Armagan, arm.Id.ToString()));

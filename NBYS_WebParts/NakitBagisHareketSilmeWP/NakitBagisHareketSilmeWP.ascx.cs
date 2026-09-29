@@ -338,9 +338,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                 string armaganiVarMsg = string.Empty;
                 if (armagan != null) //bu armagan varsa
                 {
-                    ArmaganTanim at = new ArmaganTanim();
-
-                    at = at.Select<ArmaganTanim>(armagan.ArmaganTanimId);
+                    ArmaganTanim at = new ArmaganTanimService().GetById(armagan.ArmaganTanimId);
                     string armaganTanim = at == null ? "" : " Bu bağışa ait " + at.Armagan + " bulunmaktadır.";
                     if (armagan.Durum.Equals(ProjeConstants.DURUM_GONDERILMEDI))
                     {

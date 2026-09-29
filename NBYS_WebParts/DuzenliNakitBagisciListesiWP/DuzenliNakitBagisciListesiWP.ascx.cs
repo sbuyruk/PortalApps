@@ -314,8 +314,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
             List<BagisciListItem> list = new List<BagisciListItem>();
             NakitBagisciReportService reportService = new NakitBagisciReportService();
 
-            ArmaganTanim at = new ArmaganTanim();
-            at = at.Select<ArmaganTanim>(ProjeConstants.ARMAGAN_BRONZID);
+            ArmaganTanim at = new ArmaganTanimService().GetById(ProjeConstants.ARMAGAN_BRONZID);
             if (at != null)
             {
                 DataTable dataTable = reportService.GetDuzenliBagiscilar(

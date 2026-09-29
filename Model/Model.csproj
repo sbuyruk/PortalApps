@@ -138,6 +138,7 @@
     <Compile Include="NBYS\NakitBagisci.cs" />
     <Compile Include="Services\NBYS\NakitBagisciReportService.cs" />
     <Compile Include="Services\NBYS\ArmaganService.cs" />
+    <Compile Include="Services\NBYS\ArmaganTanimService.cs" />
     <Compile Include="Services\NBYS\NakitBagisciService.cs" />
     <Compile Include="Services\NBYS\DuzenliNakitBagisciService.cs" />
     <Compile Include="Services\NBYS\NakitBagisHareketService.cs" />
