@@ -209,6 +209,25 @@ namespace Model.Services.NBYS
             return repository.SelectDonorDonationDetails(bagisciId);
         }
 
+        public DataTable GetDonationReport(
+            DateTime? bagisBasTarihi, DateTime? bagisBitTarihi,
+            decimal? minBagisMiktari, decimal? maxBagisMiktari,
+            int armaganId, DateTime? sonBagisTarihi,
+            int ilId, int ilceId,
+            bool? sag, bool? belgeIstemiyor, bool? ulasilamiyor, bool? tuzelKisi)
+        {
+            int? armaganFiltresi = armaganId > ProjeConstants.HEPSI_INT ? (int?)armaganId : null;
+            int? ilFiltresi = ilId > ProjeConstants.HEPSI_INT ? (int?)ilId : null;
+            int? ilceFiltresi = ilceId > ProjeConstants.HEPSI_INT ? (int?)ilceId : null;
+
+            return repository.SelectDonationReport(
+                bagisBasTarihi, bagisBitTarihi,
+                minBagisMiktari, maxBagisMiktari,
+                armaganFiltresi, sonBagisTarihi,
+                ilFiltresi, ilceFiltresi,
+                sag, belgeIstemiyor, ulasilamiyor, tuzelKisi);
+        }
+
         private static decimal ReadAggregate(DataTable table, ref int adet)
         {
             if (table == null || table.Rows.Count == 0)

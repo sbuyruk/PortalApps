@@ -1,6 +1,7 @@
 using DAO.Ortak;
 using System;
 using System.Data;
+using System.Text;
 
 namespace DAO.Repositories.NBYS
 {
@@ -467,6 +468,96 @@ namespace DAO.Repositories.NBYS
                 ORDER BY BagisTarihi DESC");
             query.AddParameter("@BagisciId", bagisciId);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectDonationReport(
+            DateTime? bagisBasTarihi, DateTime? bagisBitTarihi,
+            decimal? minBagisMiktari, decimal? maxBagisMiktari,
+            int? armaganId, DateTime? sonBagisTarihi,
+            int? ilId, int? ilceId,
+            bool? sag, bool? belgeIstemiyor, bool? ulasilamiyor, bool? tuzelKisi)
+        {
+            StringBuilder where = new StringBuilder(" WHERE 1=1");
+            StringBuilder having = new StringBuilder();
+
+            AppendWhere(where, bagisBasTarihi.HasValue, " AND A.BagisTarihi>=@BagisBasTarihi");
+            AppendWhere(where, bagisBitTarihi.HasValue, " AND A.BagisTarihi<=@BagisBitTarihi");
+            // Legacy behavior: maximum amount filters both individual rows and grouped totals.
+            AppendWhere(where, maxBagisMiktari.HasValue, " AND A.BagisMiktari<=@MaxBagisMiktari");
+            AppendWhere(where, armaganId.HasValue, " AND A.ArmaganId=@ArmaganId");
+            AppendWhere(where, ilId.HasValue, " AND B.Ili=@IlId");
+            AppendWhere(where, ilceId.HasValue, " AND B.Ilcesi=@IlceId");
+            AppendWhere(where, sag.HasValue, " AND B.Sag=@Sag");
+            AppendWhere(where, belgeIstemiyor.HasValue, " AND B.BelgeIstemiyor=@BelgeIstemiyor");
+            AppendWhere(where, ulasilamiyor.HasValue, " AND B.Ulasilamiyor=@Ulasilamiyor");
+            AppendWhere(where, tuzelKisi.HasValue, " AND B.TuzelKisi=@TuzelKisi");
+
+            AppendHaving(having, minBagisMiktari.HasValue, "SUM(A.BagisMiktari)>=@MinBagisMiktari");
+            AppendHaving(having, maxBagisMiktari.HasValue, "SUM(A.BagisMiktari)<=@MaxBagisMiktari");
+            AppendHaving(having, sonBagisTarihi.HasValue, "MAX(A.BagisTarihi)>@SonBagisTarihi");
+
+            string havingSql = having.Length == 0 ? string.Empty : " HAVING " + having;
+            SqlQuery query = new SqlQuery(@"
+                SELECT B.Id NakitBagisciId,
+                    ISNULL(B.Adi,'') + ' ' + ISNULL(B.Soyadi,'') AdiSoyadi,
+                    REPLACE(CONVERT(NVARCHAR,SUM(A.BagisMiktari)),'.',',') + ' ' +
+                        ISNULL(A.DovizCinsi,'TL') ToplamBagisMiktari,
+                    SUM(A.BagisMiktari) ToplamBagisMiktariDecimal,
+                    MAX(A.BagisTarihi) SonBagisTarihi,
+                    ISNULL(E.IlAdi,'') Ili, ISNULL(F.IlceAdi,'') Ilcesi,
+                    TRIM(ISNULL(B.Telefon1,'') + ' ' + ISNULL(B.Telefon2,'')) Telefon,
+                    ISNULL(B.Adres,'') Adres
+                FROM NakitBagisHareket_Table A
+                INNER JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
+                LEFT JOIN Armagan_Table C ON C.Id=A.ArmaganId
+                LEFT JOIN ArmaganTanim_Table D ON D.Id=C.ArmaganTanimId
+                LEFT JOIN Il_Table E ON E.Id=B.Ili
+                LEFT JOIN Ilce_Table F ON F.Id=B.Ilcesi" + where + @"
+                GROUP BY B.Id, B.Adi, B.Soyadi, A.DovizCinsi, E.IlAdi, F.IlceAdi,
+                    B.Telefon1, B.Telefon2, B.Adres" + havingSql + @"
+                ORDER BY SUM(A.BagisMiktari) DESC");
+
+            if (bagisBasTarihi.HasValue)
+                query.AddParameter("@BagisBasTarihi", LegacyDateValue(bagisBasTarihi.Value));
+            if (bagisBitTarihi.HasValue)
+                query.AddParameter("@BagisBitTarihi", LegacyDateValue(bagisBitTarihi.Value));
+            if (minBagisMiktari.HasValue)
+                query.AddParameter("@MinBagisMiktari", minBagisMiktari.Value);
+            if (maxBagisMiktari.HasValue)
+                query.AddParameter("@MaxBagisMiktari", maxBagisMiktari.Value);
+            if (armaganId.HasValue)
+                query.AddParameter("@ArmaganId", armaganId.Value);
+            if (sonBagisTarihi.HasValue)
+                query.AddParameter("@SonBagisTarihi", LegacyDateValue(sonBagisTarihi.Value));
+            if (ilId.HasValue)
+                query.AddParameter("@IlId", ilId.Value);
+            if (ilceId.HasValue)
+                query.AddParameter("@IlceId", ilceId.Value);
+            if (sag.HasValue)
+                query.AddParameter("@Sag", sag.Value ? 1 : 0);
+            if (belgeIstemiyor.HasValue)
+                query.AddParameter("@BelgeIstemiyor", belgeIstemiyor.Value ? 1 : 0);
+            if (ulasilamiyor.HasValue)
+                query.AddParameter("@Ulasilamiyor", ulasilamiyor.Value ? 1 : 0);
+            if (tuzelKisi.HasValue)
+                query.AddParameter("@TuzelKisi", tuzelKisi.Value ? 1 : 0);
+
+            return db.SelectFromDb(query, "");
+        }
+
+        private static void AppendWhere(StringBuilder builder, bool condition, string clause)
+        {
+            if (condition)
+                builder.Append(clause);
+        }
+
+        private static void AppendHaving(StringBuilder builder, bool condition, string clause)
+        {
+            if (!condition)
+                return;
+            if (builder.Length > 0)
+                builder.Append(" AND ");
+            builder.Append(clause);
         }
 
         // Preserve ReturnTRDateFormat's culture, precision and MinValue semantics.
