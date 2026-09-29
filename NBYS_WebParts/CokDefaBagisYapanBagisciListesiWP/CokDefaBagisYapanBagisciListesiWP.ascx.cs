@@ -150,8 +150,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             if (hakedilenArmaganTanim != null)
             {
                 //Daha Önce aldigi armaganlar
-                Armagan aldigiArmagan = new Armagan();
-                List<Armagan> aldigiArmaganlar = aldigiArmagan.SelectByBagisciId(nakitBagisciId);
+                List<Armagan> aldigiArmaganlar = new ArmaganService().GetByBagisciId(nakitBagisciId);
 
                 //Tesekkürse dikkate alma, zaten gönderilmistir.
                 if (hakedilenArmaganTanim.Id == ProjeConstants.ARMAGAN_TESEKKURID)
@@ -368,9 +367,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             List<BagisciListItem> list = new List<BagisciListItem>();
-            Armagan armagan = new Armagan();
-
-            DataTable dataTable = armagan.SelectVerilenArmaganlarGroupByBagisciReturnList();
+            DataTable dataTable = new ArmaganService().ListVerilenArmaganlarGroupByBagisci();
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)

@@ -1,4 +1,5 @@
 using Model.NBYS;
+using Model.Services.NBYS;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -192,8 +193,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP
         {
             try
             {
-                Armagan armagan = new Armagan();
-                DataTable dataTable = armagan.SelectCountByBagisTarihiBolge(bastar, bittar);
+                DataTable dataTable = new ArmaganService().CountByBagisTarihiBolge(bastar, bittar);
                 if (dataTable != null)
                 {
                     if (dataTable.Rows.Count > 0)

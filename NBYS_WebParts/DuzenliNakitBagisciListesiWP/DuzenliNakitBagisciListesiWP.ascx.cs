@@ -880,8 +880,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                 {
                     duzenliNakitBagisci.NakitBagisHareketId = nakitBagisHareket.Id;
                     //Bu bağışçı daha önce Düzenli Bağışçı belgesi almış mı bak
-                    Armagan armagan = new Armagan();
-                    armagan = armagan.SelectByBagisciIdAndArmaganTanimId(bagisci.Id, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID);
+                    Armagan armagan = new ArmaganService().GetByBagisciIdAndTanimId(bagisci.Id, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID);
                     int yeniArmaganId = 0;
                     if (armagan != null)
                     {

@@ -633,8 +633,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                 List<SilinenKayit> listofArmaganArchive = new List<SilinenKayit>();
                                 try
                                 {
-                                    Armagan armaganList = new Armagan();
-                                    listofArmagan = armaganList.SelectByBagisciId(birlesecekBagisci.Id.ConvertToInt());
+                                    listofArmagan = new ArmaganService().GetByBagisciId(birlesecekBagisci.Id.ConvertToInt());
                                     string bagiscisiDegisenArmagans = string.Empty;
                                     foreach (Armagan item in listofArmagan)
                                     {
