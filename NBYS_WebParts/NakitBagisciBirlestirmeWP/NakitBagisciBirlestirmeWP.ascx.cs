@@ -1,4 +1,3 @@
-using DAO.Ortak;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.NBYS;
@@ -681,16 +680,10 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                 if (recordsMerged)
                                 {
                                     #region Birlestirilen NakitBagisciyi sil
-                                    DbClass db = new DbClass();
-                                    //NakitBagisciDanSil(birlesecekBagisci);
                                     NakitBagisciService nakitBagisciService = new NakitBagisciService();
                                     NakitBagisci silinecekBagisci = nakitBagisciService.GetBagisiOlmayanById(birlesecekBagisci.Id);
                                     if (silinecekBagisci != null)
                                     {
-
-                                        DBObject nbDbo = nakitBagisciService.CreateDeleteTransactionObject(silinecekBagisci.Id);
-                                        db.DBObjectList.Add(nbDbo);
-
                                         //silinenKayit_Table'a yaz
                                         SilinenKayit skBagisci = new SilinenKayit();
                                         skBagisci.Silen = currentUser;
@@ -698,8 +691,8 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                         skBagisci.TabloAdi = "NakitBagisci_Table";
                                         skBagisci.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
                                         skBagisci.SilinenKayitBilgisi = " #Bağışçı=" + silinecekBagisci.Adi + " " + silinecekBagisci.Soyadi + " #BağışçıId=" + silinecekBagisci.Id + " numaralı bağışçı silindi.";
+                                        nakitBagisciService.DeleteWithArchive(silinecekBagisci, skBagisci);
                                     }
-                                    List<DBObject> bagisciDBOList = db.ExecuteTransaction();
                                     #endregion
 
                                     MessageHelper.PublishMessage("Birleştirme Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
