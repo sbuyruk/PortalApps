@@ -136,38 +136,6 @@ namespace Model.NBYS
             }
         }
         
-        public string GetUpdateSQL(string extId)
-        {
-            try
-            {
-                GenericEntity<Armagan> genericEntity = new GenericEntity<Armagan>(ProjeConstants.SQL_UPDATE);
-                OlusturmaTarihi = DateTime.Now;
-                string sqlString = string.IsNullOrEmpty(extId) ? genericEntity.GetQuery(this) : genericEntity.GetQuery(this, extId);
-
-                return sqlString;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-        public string GetDeleteSQL(string extId)
-        {
-            try
-            {
-                GenericEntity<Armagan> genericEntity = new GenericEntity<Armagan>(ProjeConstants.SQL_DELETE);
-                string sqlString = genericEntity.GetQuery(this, extId);
-
-                return sqlString;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-
         public Armagan SelectByBagisciIdBagisTarihi(int nakitBagisciId, int armaganId, DateTime basTar, DateTime bitTar)
         {
             //DateTime ayinIlkGunu = new DateTime(bagisTarihi.Year, bagisTarihi.Month, 1);
