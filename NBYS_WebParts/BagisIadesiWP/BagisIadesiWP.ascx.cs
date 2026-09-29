@@ -1,4 +1,3 @@
-using DAO.Ortak;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.NBYS;
@@ -455,20 +454,10 @@ namespace NBYS_WebParts.BagisIadesiWP
                         nbh.BagisMiktari = 0;
                         nbh.IadeEden = UtilityHelper.GetCurrentUserLoginName();
 
-                        DbClass db = new DbClass();
-                        //her bir nesne için bir dbo yarat
-                        //önce nakit bağış hareket
-                        DBObject nbhDbo = new DBObject();
-                        nbhDbo.SQLString = nbh.GetUpdateSQL("");
-                        nbhDbo.SQLType = ProjeConstants.SQL_UPDATE;
-                        nbhDbo.IsFilled = true;
-                        if (nbhDbo.IsFilled)
-                            db.DBObjectList.Add(nbhDbo);
-                        //sonra armağan
-                        DBObject armaganDbo = new DBObject();
                         //güncellenecek alanları nesnelerde güncelle
                         Armagan armagan = new Armagan();
                         armagan = armagan.Select<Armagan>(nbh.ArmaganId);
+                        Armagan guncellenecekArmagan = null;
                         if (armagan != null && armagan.Durum.Equals(ProjeConstants.DURUM_GONDERILMEDI))//armağan varsa ve durumu gönderilmedi ise 
                         {
                             armagan.BelgeGecersizMi = ProjeConstants.TRUE_INT;
@@ -480,25 +469,15 @@ namespace NBYS_WebParts.BagisIadesiWP
                             armagan.IadeMiktari = armagan.IadeMiktari + nbh.IadeMiktari;//iade edilen tutar
                             armagan.BagisMiktari = 0;//bağış miktarını sıfır yap
                             armagan.Aciklama = armagan.Aciklama + nb.Adi + " adlı bağışçıya ait bağış iade edilmiştir. ";
-                            armaganDbo.SQLString = armagan.GetUpdateSQL("");
-                            armaganDbo.SQLType = ProjeConstants.SQL_UPDATE;
-                            armaganDbo.UseReturnIdAsParam = true;
-                            armaganDbo.DbObjectParamIndex = 0;
-                            armaganDbo.IsFilled = true;
+                            guncellenecekArmagan = armagan;
                         }
 
-                        if (armaganDbo.IsFilled)
-                            db.DBObjectList.Add(armaganDbo);
+                        //Bağış ve varsa armağan değişikliklerini tek transaction içinde kaydet.
+                        new NakitBagisHareketService().UpdateRefund(nbh, guncellenecekArmagan);
 
-                        //hazırlanan sorguları çalıştır
-                        List<DBObject> savedDBOList = db.ExecuteTransaction();
-
-                        if (savedDBOList.Count > 0)
-                        {
-                            if (armaganDbo.Success)//armagan tablosunda islem oldu mu. //yeniden armagan hesaplanacak
-                                TekrarArmaganHesapla(nbh, UtilityHelper.GetCurrentUserLoginName());
-                            RedirectToPage(ProjeConstants.PAGE_BAGISIADE + "?Param=" + BagisAraTxt.Text);
-                        }
+                        if (guncellenecekArmagan != null)//armagan tablosunda islem oldu mu. //yeniden armagan hesaplanacak
+                            TekrarArmaganHesapla(nbh, UtilityHelper.GetCurrentUserLoginName());
+                        RedirectToPage(ProjeConstants.PAGE_BAGISIADE + "?Param=" + BagisAraTxt.Text);
                     }
                     else
                     {

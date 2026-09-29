@@ -1,5 +1,6 @@
 using DAO.Ortak;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
@@ -31,6 +32,22 @@ namespace DAO.Repositories.NBYS
         public bool Update<T>(T entity)
         {
             return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName));
+        }
+
+        public void UpdateRefund<TDonation, TGift>(TDonation donation, TGift gift)
+        {
+            if ((object)donation == null)
+                throw new ArgumentNullException("donation");
+
+            List<SqlQuery> queries = new List<SqlQuery>
+            {
+                queryBuilder.BuildUpdate(donation, TableName)
+            };
+
+            if ((object)gift != null)
+                queries.Add(queryBuilder.BuildUpdate(gift, "Armagan_Table"));
+
+            db.ExecuteTransaction(queries);
         }
 
         public bool Delete(int id)
