@@ -76,8 +76,9 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                 if (!Page.IsPostBack)
                 {
                     //publish etmeden önce Burayı değiştirmeyi unutma
-                    Personel personel = new Personel();//PersonelGetir();
-                    personel = personel.Select(1192);
+                    Personel personel = IKYSOrtak.PersonelGetir(CurrentUserName);
+                    //Personel personel = new Personel();//PersonelGetir();
+                    //personel = personel.Select(1192);
                     if (personel != null && personel.Id > 0)
                     {
                         BirimTanim birimTanim = new BirimTanim();

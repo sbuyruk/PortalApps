@@ -61,9 +61,9 @@ namespace Portal_WebParts.BildirimWP
             {
                 return;
             }
-
-            Personel personel = new Personel();// IKYSOrtak.PersonelGetir(CurrentUserName);
-            personel = personel.Select(1192);
+            Personel personel = IKYSOrtak.PersonelGetir(CurrentUserName);
+            //Personel personel = new Personel();// 
+            //personel = personel.Select(1192);
             //GorevOnay entity'sinde bu GorevOnay.AmirId==personel.Id ile eşleşen ve GorevOnay.AmirOnayi==AmirOnayDurumu.OnayBekliyor olan
             //kayıtlar varsa bu kayıtları bir listeye koy
             if (personel != null && personel.Id > 0)
