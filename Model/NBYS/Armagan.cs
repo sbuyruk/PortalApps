@@ -33,14 +33,7 @@ namespace Model.NBYS
         public int KacinciBelge { get; set; }= 0;
         public override T Select<T>(int id)
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM Armagan_Table 
-                               WHERE BelgeGecersizMi!=1 AND Id={0}", id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Armagan> list = ToList<Armagan>(dataTable);
-            Armagan armagan = new Armagan();
-            armagan = list.FirstOrDefault();
-            return (T)Convert.ChangeType(armagan, typeof(T));
+            return (T)Convert.ChangeType(new ArmaganService().GetById(id), typeof(T));
         }
 
         public Armagan SelectByBagisciIdAndBagisTarihi(DateTime basTar, DateTime bitTar, int nakitBagisciId)
@@ -57,83 +50,15 @@ namespace Model.NBYS
         }
         public override int Save()
         {
-            try
-            {
-                GenericEntity<Armagan> genericEntity = new GenericEntity<Armagan>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                Olusturan = UtilityHelper.GetCurrentUserName();
-                SqlQuery query = genericEntity.GetQueryParametreli(this);
-                int id = dao.Insert(query);
-
-                this.Id = id;
-                if (id > 0 && ProjeConstants.NBYS_SAVE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGAN);
-                }
-                return id;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return new ArmaganService().Save(this);
         }
         public override bool Update()
         {
-            bool isSuccess = false;
-            try
-            {
-                if (this != null)
-                {
-                    Armagan item = Select<Armagan>(Id);
-                    if (Id != 0)
-                    {
-                        GenericEntity<Armagan> genericEntity = new GenericEntity<Armagan>(ProjeConstants.SQL_UPDATE);
-                        DegistirmeTarihi = DateTime.Now;
-                        Degistiren=UtilityHelper.GetCurrentUserName();
-                        SqlQuery query = genericEntity.GetQueryParametreli(this);
-                        isSuccess = dao.Update2Db(query);
-                    }
-                    if (isSuccess && ProjeConstants.NBYS_UPDATE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGAN);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
+            return new ArmaganService().Update(this);
         }
         public override bool Delete()
         {
-            try
-            {
-                bool isDeleted = false;
-                if (Id != 0)
-                {
-                    GenericEntity<Armagan> genericEntity = new GenericEntity<Armagan>(ProjeConstants.SQL_DELETE);
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    Armagan item = Select<Armagan>(Id);
-                    if (item != null)
-                    {
-                        isDeleted = dao.DeleteFromDb(query, "");
-                    }
-                    else isDeleted = false;
-                    if (isDeleted && ProjeConstants.NBYS_DELETE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGAN);
-                    }
-                }
-                return isDeleted;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return new ArmaganService().Delete(this);
         }
         
         public Armagan SelectByBagisciIdBagisTarihi(int nakitBagisciId, int armaganId, DateTime basTar, DateTime bitTar)
@@ -316,14 +241,8 @@ namespace Model.NBYS
         }
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM Armagan_Table
-                                WHERE BelgeGecersizMi!=1 ");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Armagan> list = ToList<Armagan>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+            return (List<T>)Convert.ChangeType(
+                new ArmaganService().GetAll(), typeof(List<T>));
         }
         public List<Armagan> SelectByBagisciIdAndDurum(int nakitBagisciId, string durum)
         {
