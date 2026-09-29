@@ -588,12 +588,12 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                         {
                             try
                             {
-                                DbClass db = new DbClass();
                                 #region  birlesecek bagisçiya ait Hareket listesini al
                                 //NakitBagisHareketiDuzenle();
 
                                 NakitBagisHareket nbhList = new NakitBagisHareket();
                                 List<NakitBagisHareket> listofBagisHareket = new NakitBagisHareketService().GetByBagisciId(birlesecekBagisci.Id);
+                                List<SilinenKayit> listofBagisHareketArchive = new List<SilinenKayit>();
 
                                 string bagiscisiDegisenNbhs = string.Empty;
                                 try
@@ -606,12 +606,6 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                         bagiscisiDegisenNbhs += "," + item.Id;
                                         item.Degistiren = UtilityHelper.GetCurrentUserLoginName();
 
-                                        DBObject nbhDbo = new DBObject();
-                                        nbhDbo.SQLString = item.GetUpdateSQL("");
-                                        nbhDbo.SQLType = ProjeConstants.SQL_UPDATE;
-                                        nbhDbo.IsFilled = true;
-                                        db.DBObjectList.Add(nbhDbo);
-
                                         #region SilinenKayit_Table'a yaz
                                         SilinenKayit skNBH = new SilinenKayit();
                                         skNBH.Silen = currentUser;
@@ -622,11 +616,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                             item.Id + " numaralı nakit bağış  ( Bağış Tarihi=" + item.BagisTarihi + " #Bağış Miktarı=" + item.BagisMiktari + ") " +
                                             item.BagisciId + " numaralı bağışçıya birleştirilmiştir.";
 
-                                        DBObject skNBHDbo = new DBObject();
-                                        skNBHDbo.SQLString = skNBH.GetInsertSQL("");
-                                        skNBHDbo.SQLType = ProjeConstants.SQL_INSERT;
-                                        skNBHDbo.IsFilled = true;
-                                        db.DBObjectList.Add(skNBHDbo);
+                                        listofBagisHareketArchive.Add(skNBH);
                                         #endregion
                                     }
                                 }
@@ -640,10 +630,12 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                 #endregion
                                 #region birlesecek bagisçiya ait Armagan listesini al
                                 string mesaj = string.Empty;
+                                List<Armagan> listofArmagan = new List<Armagan>();
+                                List<SilinenKayit> listofArmaganArchive = new List<SilinenKayit>();
                                 try
                                 {
                                     Armagan armaganList = new Armagan();
-                                    List<Armagan> listofArmagan = armaganList.SelectByBagisciId(birlesecekBagisci.Id.ConvertToInt());
+                                    listofArmagan = armaganList.SelectByBagisciId(birlesecekBagisci.Id.ConvertToInt());
                                     string bagiscisiDegisenArmagans = string.Empty;
                                     foreach (Armagan item in listofArmagan)
                                     {
@@ -653,12 +645,6 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                         item.BagisciId = SecilenAsilBagisciId.ConvertToInt();
                                         bagiscisiDegisenArmagans += "," + item.Id;
                                         item.Degistiren = UtilityHelper.GetCurrentUserLoginName();
-                                        DBObject armaganDbo = new DBObject();
-                                        armaganDbo.SQLString = item.GetUpdateSQL("");
-                                        armaganDbo.SQLType = ProjeConstants.SQL_UPDATE;
-                                        armaganDbo.IsFilled = true;
-                                        db.DBObjectList.Add(armaganDbo);
-
                                         #region SilinenKayit_Table'a yaz
                                         SilinenKayit skNBH = new SilinenKayit();
                                         skNBH.Silen = currentUser;
@@ -669,11 +655,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                             item.Id + " numaralı armağan " +
                                             item.BagisciId + " numaralı bağışçıya birleştirilmiştir.";
 
-                                        DBObject skArmaganDbo = new DBObject();
-                                        skArmaganDbo.SQLString = skNBH.GetInsertSQL("");
-                                        skArmaganDbo.SQLType = ProjeConstants.SQL_INSERT;
-                                        skArmaganDbo.IsFilled = true;
-                                        db.DBObjectList.Add(skArmaganDbo);
+                                        listofArmaganArchive.Add(skNBH);
                                         #endregion
 
                                     }
@@ -691,11 +673,15 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                 #endregion
 
                                 //transaction lari yap
-                                List<DBObject> savedDBOList = db.ExecuteTransaction();
-                                if (savedDBOList.Count > 0)
+                                bool recordsMerged = new NakitBagisHareketService().MergeDonorRecords(
+                                    listofBagisHareket,
+                                    listofBagisHareketArchive,
+                                    listofArmagan,
+                                    listofArmaganArchive);
+                                if (recordsMerged)
                                 {
                                     #region Birlestirilen NakitBagisciyi sil
-                                    db = new DbClass();
+                                    DbClass db = new DbClass();
                                     //NakitBagisciDanSil(birlesecekBagisci);
                                     NakitBagisciService nakitBagisciService = new NakitBagisciService();
                                     NakitBagisci silinecekBagisci = nakitBagisciService.GetBagisiOlmayanById(birlesecekBagisci.Id);
