@@ -1,10 +1,7 @@
-using DAO.Ortak;
-using DocumentFormat.OpenXml.Bibliography;
 using Model.Ortak;
 using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
@@ -36,88 +33,15 @@ namespace Model.NBYS
         //Methods
         public override int Save()
         {
-            try
-            {
-                DateTime minTarih = new DateTime(1987, 9, 1);
-                if (BagisTarihi == default(DateTime) || BagisTarihi < minTarih)
-                {
-                    throw new ArgumentException("BagisTarihi boş olamaz ve 01.09.1987 tarihinden önce olamaz.");
-                }
-                GenericEntity<NakitBagisHareket> genericEntity = new GenericEntity<NakitBagisHareket>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                Olusturan = UtilityHelper.GetCurrentUserName();
-                SqlQuery query = genericEntity.GetQueryParametreli(this);
-                int id = dao.Insert(query);
-
-                this.Id = id;
-                if (id > 0 && ProjeConstants.NBYS_SAVE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISHAREKET);
-                }
-                return id;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return new NakitBagisHareketService().Save(this);
         }
         public override bool Update()
         {
-            bool isSuccess = false;
-            try
-            {
-                if (this != null)
-                {
-                    NakitBagisHareket item = new NakitBagisHareketService().GetById(Id);
-                    if (Id != 0)
-                    {
-                        GenericEntity<NakitBagisHareket> genericEntity = new GenericEntity<NakitBagisHareket>(ProjeConstants.SQL_UPDATE);
-                        DegistirmeTarihi = DateTime.Now;
-                        Degistiren = UtilityHelper.GetCurrentUserName();
-                        SqlQuery query = genericEntity.GetQueryParametreli(this);
-                        isSuccess = dao.Update2Db(query);
-                    }
-                    if (isSuccess && ProjeConstants.NBYS_UPDATE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISHAREKET);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
+            return new NakitBagisHareketService().Update(this);
         }
         public override bool Delete()
         {
-            try
-            {
-                bool isDeleted = false;
-                if (Id != 0)
-                {
-                    GenericEntity<NakitBagisHareket> genericEntity = new GenericEntity<NakitBagisHareket>(ProjeConstants.SQL_DELETE);
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    NakitBagisHareket item = new NakitBagisHareketService().GetById(Id);
-                    if (item != null)
-                    {
-                        isDeleted = dao.DeleteFromDb(query, "");
-                    }
-                    else isDeleted = false;
-                    if (isDeleted && ProjeConstants.NBYS_DELETE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISHAREKET);
-                    }
-                }
-                return isDeleted;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return new NakitBagisHareketService().Delete(this);
         }
         public override T Select<T>(int id)
         {
@@ -125,13 +49,8 @@ namespace Model.NBYS
         }
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM NakitBagisHareket_Table");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<NakitBagisHareket> list = ToList<NakitBagisHareket>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+            return (List<T>)Convert.ChangeType(
+                new NakitBagisHareketService().GetAll(), typeof(List<T>));
         }
         public string GetInsertSQL(string extId)
         {

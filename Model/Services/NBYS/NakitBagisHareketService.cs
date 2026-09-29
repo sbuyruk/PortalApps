@@ -1,5 +1,6 @@
 using DAO.Repositories.NBYS;
 using Model.NBYS;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -27,6 +28,73 @@ namespace Model.Services.NBYS
         public NakitBagisHareket GetById(int id)
         {
             return Map(repository.SelectById(id)).FirstOrDefault();
+        }
+
+        public List<NakitBagisHareket> GetAll()
+        {
+            return Map(repository.SelectAll());
+        }
+
+        public int Save(NakitBagisHareket bagisHareket)
+        {
+            if (bagisHareket == null)
+                throw new ArgumentNullException("bagisHareket");
+
+            DateTime minTarih = new DateTime(1987, 9, 1);
+            if (bagisHareket.BagisTarihi == default(DateTime) || bagisHareket.BagisTarihi < minTarih)
+                throw new ArgumentException("BagisTarihi boş olamaz ve 01.09.1987 tarihinden önce olamaz.");
+
+            bagisHareket.OlusturmaTarihi = DateTime.Now;
+            bagisHareket.Olusturan = UtilityHelper.GetCurrentUserName();
+            bagisHareket.Id = repository.Insert(bagisHareket);
+
+            if (bagisHareket.Id > 0 && ProjeConstants.NBYS_SAVE_LOG)
+            {
+                new OlayKayit().GirisOlayKaydet(
+                    bagisHareket, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISHAREKET);
+            }
+            return bagisHareket.Id;
+        }
+
+        public bool Update(NakitBagisHareket bagisHareket)
+        {
+            if (bagisHareket == null)
+                throw new ArgumentNullException("bagisHareket");
+
+            NakitBagisHareket previous = GetById(bagisHareket.Id);
+            bool updated = false;
+            if (bagisHareket.Id != 0)
+            {
+                bagisHareket.DegistirmeTarihi = DateTime.Now;
+                bagisHareket.Degistiren = UtilityHelper.GetCurrentUserName();
+                updated = repository.Update(bagisHareket);
+            }
+            if (updated && ProjeConstants.NBYS_UPDATE_LOG)
+            {
+                new OlayKayit().GuncellemeOlayKaydet(
+                    bagisHareket, previous, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISHAREKET);
+            }
+            return updated;
+        }
+
+        public bool Delete(NakitBagisHareket bagisHareket)
+        {
+            if (bagisHareket == null)
+                throw new ArgumentNullException("bagisHareket");
+            if (bagisHareket.Id == 0)
+                return false;
+
+            NakitBagisHareket previous = GetById(bagisHareket.Id);
+            if (previous == null)
+                return false;
+
+            bool deleted = repository.Delete(bagisHareket.Id);
+            if (deleted && ProjeConstants.NBYS_DELETE_LOG)
+            {
+                new OlayKayit().SilmeOlayKaydet(
+                    previous, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISHAREKET);
+            }
+            return deleted;
         }
 
         public List<NakitBagisHareket> GetByBagisciId(int bagisciId)

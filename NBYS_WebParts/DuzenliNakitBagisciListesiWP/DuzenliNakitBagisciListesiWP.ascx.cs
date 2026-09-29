@@ -916,7 +916,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                     {
                         duzenliNakitBagisci.ArmaganId = yeniArmaganId;
                         nakitBagisHareket.ArmaganId = yeniArmaganId;
-                        nakitBagisHareket.Update();
+                        new NakitBagisHareketService().Update(nakitBagisHareket);
                     }
                     new DuzenliNakitBagisciService().Update(duzenliNakitBagisci);
                     TabloOlustur();
