@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="NBYS bağışçı kartı arayüz prototipi">
+  <title>NBYS · Bağışçı Kartı</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23132836'/%3E%3Cpath d='M32 50S13 39 13 24a10 10 0 0 1 18-6 10 10 0 0 1 20 6c0 15-19 26-19 26Z' fill='%23e8b95d'/%3E%3C/svg%3E">
+  <style>
+    :root{--ink:#132836;--muted:#65727b;--line:#dce3e6;--paper:#fff;--canvas:#f2f5f5;--gold:#d69b32;--gold-soft:#fff5df;--teal:#0d786d;--teal-soft:#e6f5f2;--red:#b64b46;--red-soft:#fff0ee;--shadow:0 14px 40px rgba(19,40,54,.08);--radius:18px}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--canvas);color:var(--ink);font:16px/1.5 Inter,Segoe UI,Arial,sans-serif}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    .topbar{height:64px;background:var(--ink);color:#fff;display:flex;align-items:center;padding:0 max(24px,calc((100vw - 1440px)/2));gap:16px;position:sticky;top:0;z-index:20}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:.02em}.brand-mark{width:32px;height:32px;border:1px solid rgba(255,255,255,.25);border-radius:10px;display:grid;place-items:center;color:#f0c66d}.brand small{font-size:.72rem;font-weight:500;color:#9eb0ba;display:block;letter-spacing:.08em}
+    .top-actions{margin-left:auto;display:flex;gap:9px}.btn{border:1px solid transparent;border-radius:10px;padding:9px 13px;background:#fff;color:var(--ink);font-weight:700;display:inline-flex;align-items:center;gap:7px}.btn:hover{transform:translateY(-1px)}.btn-ghost{background:transparent;border-color:#49606d;color:#fff}.btn-primary{background:var(--gold);color:#172a35}.icon{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+    main{max-width:1440px;margin:auto;padding:28px 24px 56px}.crumbs{color:var(--muted);font-size:.86rem;margin-bottom:16px}.crumbs b{color:var(--ink)}
+    .hero{background:linear-gradient(120deg,#132836 0%,#193d4c 65%,#205d61 100%);border-radius:22px;color:#fff;padding:26px 30px;display:grid;grid-template-columns:1fr auto;gap:24px;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:310px;height:310px;border:1px solid rgba(255,255,255,.08);border-radius:50%;right:-80px;top:-185px}.identity{display:flex;align-items:center;gap:20px;z-index:1}.avatar{width:76px;height:76px;border-radius:20px;background:#f2c86c;color:#172a35;display:grid;place-items:center;font-size:1.45rem;font-weight:900;box-shadow:inset 0 0 0 1px rgba(255,255,255,.35)}h1{font-size:clamp(1.55rem,3vw,2.1rem);line-height:1.15;margin:0 0 8px}.meta{color:#c8d5d9;display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.9rem}.meta span{display:flex;align-items:center;gap:6px}.badges{display:flex;gap:7px;margin-top:13px;flex-wrap:wrap}.badge{padding:5px 9px;border-radius:999px;font-size:.76rem;font-weight:750;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16)}.badge.gold{background:#f0c66d;color:#20343e;border:0}.hero-side{text-align:right;align-self:center;z-index:1}.hero-side small{color:#b8c9ce}.hero-side strong{display:block;font-size:1.7rem;margin:2px 0}.hero-side .sub{color:#c8d5d9;font-size:.86rem}
+    .metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin:16px 0}.metric{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:17px 18px;min-width:0}.metric-label{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:.79rem;font-weight:700}.metric-value{font-size:1.35rem;font-weight:850;margin-top:8px;white-space:nowrap}.metric-note{font-size:.74rem;color:var(--muted);margin-top:3px}.metric.alert{border-color:#efcac6;background:#fffaf9}.metric.alert .metric-value{color:var(--red)}
+    .layout{display:grid;grid-template-columns:330px 1fr;gap:18px}.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 3px 15px rgba(19,40,54,.025)}.card-head{padding:19px 21px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}.card-head h2{font-size:1rem;margin:0}.card-body{padding:20px 21px}.detail-list{display:grid;gap:17px}.detail dt{color:var(--muted);font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.045em;margin-bottom:3px}.detail dd{margin:0;font-weight:650}.muted{color:var(--muted);font-weight:500}.copy{border:0;background:transparent;padding:2px;color:#8b989e;vertical-align:middle}.privacy{border:0;background:#edf2f3;color:var(--ink);border-radius:8px;padding:6px 8px;font-size:.75rem;font-weight:700}.divider{height:1px;background:var(--line);margin:20px 0}.preferences{display:grid;gap:10px}.pref{display:flex;align-items:flex-start;gap:9px;font-size:.86rem}.pref-dot{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;flex:0 0 auto;margin-top:1px;background:var(--teal-soft);color:var(--teal)}.pref.off .pref-dot{background:#eef1f2;color:#89959b}.note{background:#f6f8f8;border-left:3px solid var(--gold);padding:12px 13px;border-radius:6px;font-size:.86rem;color:#475861}
+    .workspace{min-width:0}.tabs{display:flex;gap:3px;padding:6px;background:#e6ebed;border-radius:13px;margin-bottom:14px;overflow:auto}.tab{border:0;background:transparent;padding:10px 15px;border-radius:9px;color:#53636c;font-weight:750;white-space:nowrap}.tab[aria-selected="true"]{background:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(19,40,54,.08)}.count{font-size:.72rem;background:#dce4e6;padding:2px 6px;border-radius:9px;margin-left:5px}.tab[aria-selected="true"] .count{background:var(--gold-soft);color:#8b5c09}.panel{display:none}.panel.active{display:block}
+    .toolbar{display:flex;align-items:center;gap:10px}.search{position:relative;margin-left:auto}.search input{width:230px;border:1px solid var(--line);border-radius:9px;padding:8px 12px 8px 34px;color:var(--ink);outline:none}.search svg{position:absolute;left:10px;top:10px;color:#7d8c93}.search input:focus{border-color:#5d8a8b;box-shadow:0 0 0 3px #e4f1ef}
+    .table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:760px}th{text-align:left;padding:11px 15px;color:#748189;font-size:.73rem;text-transform:uppercase;letter-spacing:.045em;background:#f7f9f9;border-bottom:1px solid var(--line)}td{padding:14px 15px;border-bottom:1px solid #e8edef;font-size:.88rem;vertical-align:middle}tbody tr:hover{background:#fafcfc}tbody tr:last-child td{border-bottom:0}.amount{text-align:right;font-weight:800}.status{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:750;padding:4px 8px;border-radius:999px;background:var(--teal-soft);color:var(--teal)}.status:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}.status.warn{background:var(--gold-soft);color:#9a6810}.status.refund{background:var(--red-soft);color:var(--red)}.row-link{color:#0c6c70;font-weight:750}.empty-search{display:none;text-align:center;padding:36px;color:var(--muted)}
+    .overview-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}.insight{padding:20px}.insight h3{font-size:.95rem;margin:0 0 17px}.bars{display:flex;height:12px;border-radius:8px;overflow:hidden;background:#edf1f2;margin-bottom:12px}.bars span:nth-child(1){width:55%;background:#1b6d70}.bars span:nth-child(2){width:28%;background:#d69b32}.bars span:nth-child(3){width:17%;background:#8aa0aa}.legend{display:grid;gap:9px}.legend div{display:flex;justify-content:space-between;font-size:.82rem}.legend i{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:7px}.timeline{display:grid;gap:0}.event{display:grid;grid-template-columns:21px 1fr;gap:10px;position:relative;padding-bottom:18px}.event:before{content:"";position:absolute;left:5px;top:13px;bottom:-1px;width:1px;background:#dbe3e5}.event:last-child:before{display:none}.event-dot{width:11px;height:11px;border-radius:50%;background:var(--gold);margin-top:5px;z-index:1}.event p{margin:0;font-size:.85rem}.event time{color:var(--muted);font-size:.74rem}.warning-box{display:flex;gap:12px;background:var(--red-soft);border:1px solid #f0cfcb;border-radius:12px;padding:13px 15px;color:#7c3531;margin-bottom:14px}.warning-box strong{display:block;font-size:.86rem}.warning-box span{font-size:.78rem}
+    .footer-note{text-align:center;color:#7a898f;font-size:.76rem;margin-top:20px}.only-print{display:none}
+    @media(max-width:1050px){.metrics{grid-template-columns:repeat(3,1fr)}.layout{grid-template-columns:1fr}.profile-card .card-body{display:grid;grid-template-columns:1fr 1fr;gap:20px}.divider{display:none}.overview-grid{grid-template-columns:1fr}}
+    @media(max-width:700px){.topbar{padding:0 14px}.brand small,.btn-label{display:none}main{padding:18px 12px 40px}.hero{grid-template-columns:1fr;padding:21px}.hero-side{text-align:left;border-top:1px solid rgba(255,255,255,.15);padding-top:15px}.identity{align-items:flex-start}.avatar{width:58px;height:58px;border-radius:16px}.metrics{grid-template-columns:1fr 1fr}.metric:last-child{grid-column:span 2}.profile-card .card-body{display:block}.divider{display:block}.card-head{align-items:flex-start;gap:10px}.toolbar{align-items:stretch;flex-direction:column}.search{margin:0}.search input{width:100%}.overview-grid{grid-template-columns:1fr}}
+    @media print{body{background:#fff}.topbar,.top-actions,.tabs,.privacy,.copy,.search{display:none!important}main{padding:0}.hero{box-shadow:none}.layout{grid-template-columns:290px 1fr}.metrics{grid-template-columns:repeat(5,1fr)}.panel{display:none!important}.panel.active{display:block!important}.card{box-shadow:none}.only-print{display:block}.footer-note{margin-top:10px}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">◆</span><span>NBYS<small>NAKİT BAĞIŞ YÖNETİM SİSTEMİ</small></span></div>
+    <div class="top-actions">
+      <button class="btn btn-ghost" id="printBtn" aria-label="Bağışçı kartını yazdır"><svg class="icon"><use href="#i-print"/></svg><span class="btn-label">Yazdır</span></button>
+      <button class="btn btn-primary" type="button"><svg class="icon"><use href="#i-edit"/></svg><span class="btn-label">Bilgileri düzenle</span></button>
+    </div>
+  </header>
+
+  <main>
+    <div class="crumbs">Bağışçı Yönetimi &nbsp;/&nbsp; <b>Bağışçı Kartı</b></div>
+    <section class="hero" aria-labelledby="donorName">
+      <div class="identity">
+        <div class="avatar" aria-hidden="true">AY</div>
+        <div><h1 id="donorName">Ahmet Yılmaz</h1><div class="meta"><span><svg class="icon"><use href="#i-pin"/></svg>Ankara · Çankaya</span><span><svg class="icon"><use href="#i-id"/></svg>Bağışçı No: 18427</span><span><svg class="icon"><use href="#i-calendar"/></svg>12 yıldır bağışçı</span></div><div class="badges"><span class="badge gold">Düzenli bağışçı</span><span class="badge">Gerçek kişi</span><span class="badge">İletişime açık</span></div></div>
+      </div>
+      <div class="hero-side"><small>Net bağış toplamı</small><strong>₺147.250,00</strong><div class="sub">Son bağış: 18 Eylül 2026</div></div>
+    </section>
+
+    <section class="metrics" aria-label="Bağışçı özeti">
+      <article class="metric"><div class="metric-label"><svg class="icon"><use href="#i-wallet"/></svg>TOPLAM BAĞIŞ</div><div class="metric-value">₺152.750</div><div class="metric-note">24 işlem</div></article>
+      <article class="metric"><div class="metric-label"><svg class="icon"><use href="#i-repeat"/></svg>DÜZENLİ BAĞIŞ</div><div class="metric-value">₺2.500 / ay</div><div class="metric-note">Aktif · 18 ödeme</div></article>
+      <article class="metric"><div class="metric-label"><svg class="icon"><use href="#i-gift"/></svg>ARMAĞAN</div><div class="metric-value">3</div><div class="metric-note">2 teslim · 1 hazırlanıyor</div></article>
+      <article class="metric alert"><div class="metric-label"><svg class="icon"><use href="#i-return"/></svg>İADE</div><div class="metric-value">₺5.500</div><div class="metric-note">1 işlem</div></article>
+      <article class="metric"><div class="metric-label"><svg class="icon"><use href="#i-heart"/></svg>SON 12 AY</div><div class="metric-value">₺36.000</div><div class="metric-note">Önceki yıla göre %20 ↑</div></article>
+    </section>
+
+    <div class="layout">
+      <aside class="card profile-card">
+        <div class="card-head"><h2>Bağışçı Bilgileri</h2><button class="privacy" id="privacyBtn" type="button" aria-pressed="true">Gizliliği kaldır</button></div>
+        <div class="card-body">
+          <dl class="detail-list">
+            <div class="detail"><dt>T.C. Kimlik No</dt><dd><span class="private" data-value="12345678901">123•••••901</span></dd></div>
+            <div class="detail"><dt>Telefon</dt><dd><span class="private" data-value="0532 456 78 90">0532 ••• •• 90</span> <button class="copy" data-copy="0532 456 78 90" aria-label="Telefonu kopyala"><svg class="icon"><use href="#i-copy"/></svg></button></dd></div>
+            <div class="detail"><dt>E-posta</dt><dd><span class="private" data-value="ahmet.yilmaz@example.com">a•••••@example.com</span></dd></div>
+            <div class="detail"><dt>Adres</dt><dd>Mustafa Kemal Mah. <span class="muted">Çankaya / Ankara · 06510</span></dd></div>
+            <div class="detail"><dt>Meslek</dt><dd>Makine Mühendisi</dd></div>
+            <div class="detail"><dt>Telefon 2</dt><dd class="muted">Kayıtlı değil</dd></div>
+          </dl>
+          <div class="divider"></div>
+          <div class="preferences" aria-label="İletişim tercihleri">
+            <div class="pref"><span class="pref-dot">✓</span><span>Belge gönderilebilir</span></div>
+            <div class="pref"><span class="pref-dot">✓</span><span>Dergi gönderilebilir</span></div>
+            <div class="pref"><span class="pref-dot">✓</span><span>Bağışçıya ulaşılabiliyor</span></div>
+            <div class="pref off"><span class="pref-dot">–</span><span>İkinci telefon bulunmuyor</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="detail"><dt>Kayıt bilgisi</dt><dd class="muted">14.03.2014 · nbys.admin<br>Son güncelleme: 22.08.2026</dd></div>
+          <div class="divider"></div>
+          <div class="note"><strong>Not</strong><br>Yıl sonu bağış özeti e-posta ile iletilsin. Armağan teslimleri için hafta içi aranabilir.</div>
+        </div>
+      </aside>
+
+      <section class="workspace">
+        <nav class="tabs" role="tablist" aria-label="Bağışçı kayıtları">
+          <button class="tab" role="tab" aria-selected="true" data-tab="overview">Genel Bakış</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="donations">Bağışlar <span class="count">24</span></button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="gifts">Armağanlar <span class="count">3</span></button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="refunds">İadeler <span class="count">1</span></button>
+        </nav>
+
+        <div class="panel active" id="overview" role="tabpanel">
+          <div class="overview-grid">
+            <article class="card insight"><h3>Bağış dağılımı</h3><div class="bars" aria-label="Bağış dağılımı: düzenli yüzde 55, tek seferlik yüzde 28, döviz yüzde 17"><span></span><span></span><span></span></div><div class="legend"><div><span><i style="background:#1b6d70"></i>Düzenli bağışlar</span><b>₺84.000</b></div><div><span><i style="background:#d69b32"></i>Tek seferlik bağışlar</span><b>₺42.750</b></div><div><span><i style="background:#8aa0aa"></i>Döviz karşılığı</span><b>₺26.000</b></div></div></article>
+            <article class="card insight"><h3>İlişki özeti</h3><div class="timeline"><div class="event"><span class="event-dot"></span><div><p><b>Son bağış alındı</b> · ₺2.500</p><time>18 Eylül 2026</time></div></div><div class="event"><span class="event-dot"></span><div><p>Teşekkür belgesi hazırlanıyor</p><time>19 Eylül 2026</time></div></div><div class="event"><span class="event-dot"></span><div><p>Düzenli bağış talimatı yenilendi</p><time>8 Ocak 2026</time></div></div><div class="event"><span class="event-dot"></span><div><p>İletişim bilgileri güncellendi</p><time>22 Ağustos 2025</time></div></div></div></article>
+          </div>
+          <article class="card" style="margin-top:16px"><div class="card-head"><h2>Son hareketler</h2><button class="btn" data-open-tab="donations">Tüm bağışları gör</button></div><div class="table-wrap"><table><thead><tr><th>Tarih</th><th>Bağış tipi</th><th>Banka</th><th>Armağan</th><th class="amount">Tutar</th><th>Durum</th></tr></thead><tbody><tr><td>18.09.2026</td><td>Düzenli</td><td>Ziraat Bankası</td><td>Teşekkür Belgesi</td><td class="amount">₺2.500,00</td><td><span class="status warn">İşleniyor</span></td></tr><tr><td>18.08.2026</td><td>Düzenli</td><td>Ziraat Bankası</td><td>—</td><td class="amount">₺2.500,00</td><td><span class="status">Tamamlandı</span></td></tr><tr><td>20.07.2026</td><td>Tek seferlik</td><td>VakıfBank</td><td>Gümüş Madalya ve Beratı</td><td class="amount">₺15.000,00</td><td><span class="status">Tamamlandı</span></td></tr></tbody></table></div></article>
+        </div>
+
+        <div class="panel" id="donations" role="tabpanel">
+          <article class="card"><div class="card-head"><h2>Bağış Hareketleri</h2><div class="toolbar"><div class="search"><svg class="icon"><use href="#i-search"/></svg><input type="search" placeholder="Bağışlarda ara" aria-label="Bağışlarda ara" data-search="donationRows"></div></div></div><div class="table-wrap"><table><thead><tr><th>Tarih</th><th>Bağış tipi</th><th>Banka</th><th>Döviz</th><th>Armağan</th><th class="amount">Bağış miktarı</th><th>Durum</th></tr></thead><tbody id="donationRows"><tr><td>18.09.2026</td><td>Düzenli</td><td>Ziraat Bankası</td><td>TRY</td><td>Teşekkür Belgesi</td><td class="amount">₺2.500,00</td><td><span class="status warn">İşleniyor</span></td></tr><tr><td>18.08.2026</td><td>Düzenli</td><td>Ziraat Bankası</td><td>TRY</td><td>—</td><td class="amount">₺2.500,00</td><td><span class="status">Tamamlandı</span></td></tr><tr><td>20.07.2026</td><td>Tek seferlik</td><td>VakıfBank</td><td>TRY</td><td>Gümüş Madalya ve Beratı</td><td class="amount">₺15.000,00</td><td><span class="status">Tamamlandı</span></td></tr><tr><td>18.06.2026</td><td>Düzenli</td><td>Ziraat Bankası</td><td>TRY</td><td>—</td><td class="amount">₺2.500,00</td><td><span class="status">Tamamlandı</span></td></tr><tr><td>04.05.2026</td><td>Tek seferlik</td><td>Halkbank</td><td>EUR · 150</td><td>—</td><td class="amount">₺5.500,00</td><td><span class="status refund">İade edildi</span></td></tr></tbody></table><div class="empty-search">Aramanızla eşleşen bağış bulunamadı.</div></div></article>
+        </div>
+
+        <div class="panel" id="gifts" role="tabpanel">
+          <article class="card"><div class="card-head"><h2>Armağan ve Belgeler</h2></div><div class="table-wrap"><table><thead><tr><th>Tarih</th><th>Armağan</th><th>Belgede yazan isim</th><th class="amount">İlişkili bağış</th><th>Tür</th><th>Durum</th></tr></thead><tbody><tr><td>19.09.2026</td><td><span class="row-link">Teşekkür Belgesi</span></td><td>Ahmet Yılmaz</td><td class="amount">₺2.500</td><td>Düzenli bağış</td><td><span class="status warn">Hazırlanıyor</span></td></tr><tr><td>21.07.2026</td><td><span class="row-link">Gümüş Madalya ve Beratı</span></td><td>Ahmet Yılmaz</td><td class="amount">₺15.000</td><td>Tekli bağış</td><td><span class="status">Teslim edildi</span></td></tr><tr><td>14.03.2024</td><td><span class="row-link">Bronz Madalya ve Beratı</span></td><td>Ahmet Yılmaz</td><td class="amount">₺10.000</td><td>Çoklu bağış</td><td><span class="status">Teslim edildi</span></td></tr></tbody></table></div></article>
+        </div>
+
+        <div class="panel" id="refunds" role="tabpanel">
+          <div class="warning-box"><svg class="icon"><use href="#i-alert"/></svg><div><strong>Bu bağışçıya ait 1 iade işlemi bulunuyor.</strong><span>İade tutarı toplam bağıştan düşülerek net bağış tutarı hesaplanmıştır.</span></div></div>
+          <article class="card"><div class="card-head"><h2>İade Geçmişi</h2></div><div class="table-wrap"><table><thead><tr><th>İade tarihi</th><th>Bağış tarihi</th><th>Banka</th><th>İade sebebi</th><th>İade eden</th><th class="amount">İade miktarı</th><th>Durum</th></tr></thead><tbody><tr><td>08.05.2026</td><td>04.05.2026</td><td>Halkbank</td><td>Mükerrer banka işlemi</td><td>nbys.operator</td><td class="amount">₺5.500,00</td><td><span class="status refund">İade edildi</span></td></tr></tbody></table></div></article>
+        </div>
+      </section>
+    </div>
+    <p class="footer-note">Bu ekran NBYS veri modeline göre hazırlanmış arayüz prototipidir. Gösterilen kişi ve işlemler örnek veridir.</p>
+  </main>
+
+  <svg width="0" height="0" style="position:absolute"><defs>
+    <symbol id="i-print" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v7H6z"/></symbol><symbol id="i-edit" viewBox="0 0 24 24"><path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20ZM13.5 8l3 3"/></symbol><symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol><symbol id="i-id" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M5.5 16c.8-2.2 4.2-2.2 5 0M14 10h4M14 14h4"/></symbol><symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24"><path d="M4 6h15a2 2 0 0 1 2 2v11H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h13"/><path d="M16 11h5v4h-5a2 2 0 0 1 0-4Z"/></symbol><symbol id="i-repeat" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 0 1-3 3H3"/></symbol><symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="1"/><path d="M12 9v12M2 9h20V5H2zM12 5H8.5a2.5 2.5 0 1 1 0-5C12 0 12 5 12 5Zm0 0h3.5a2.5 2.5 0 1 0 0-5C12 0 12 5 12 5Z"/></symbol><symbol id="i-return" viewBox="0 0 24 24"><path d="m9 14-5-5 5-5M4 9h10a6 6 0 0 1 6 6v5"/></symbol><symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></symbol><symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol><symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 3.4 2.2 18a2 2 0 0 0 1.8 3h16a2 2 0 0 0 1.8-3L13.7 3.4a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></symbol>
+  </defs></svg>
+  <script>
+    const tabs=[...document.querySelectorAll('.tab')];
+    function openTab(id){tabs.forEach(t=>t.setAttribute('aria-selected',String(t.dataset.tab===id)));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===id));}
+    tabs.forEach(t=>t.addEventListener('click',()=>openTab(t.dataset.tab)));
+    document.querySelectorAll('[data-open-tab]').forEach(b=>b.addEventListener('click',()=>openTab(b.dataset.openTab)));
+    document.getElementById('printBtn').addEventListener('click',()=>window.print());
+    const privacy=document.getElementById('privacyBtn');let masked=true;
+    privacy.addEventListener('click',()=>{masked=!masked;document.querySelectorAll('.private').forEach((el,i)=>{el.textContent=masked?["123•••••901","0532 ••• •• 90","a•••••@example.com"][i]:el.dataset.value});privacy.textContent=masked?'Gizliliği kaldır':'Bilgileri gizle';privacy.setAttribute('aria-pressed',String(masked));});
+    document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(b.dataset.copy);const old=b.innerHTML;b.textContent='✓';setTimeout(()=>b.innerHTML=old,1200)}catch(e){}}));
+    document.querySelectorAll('[data-search]').forEach(input=>input.addEventListener('input',()=>{const rows=[...document.querySelectorAll(`#${input.dataset.search} tr`)];let shown=0;rows.forEach(r=>{const ok=r.textContent.toLocaleLowerCase('tr').includes(input.value.toLocaleLowerCase('tr'));r.hidden=!ok;if(ok)shown++});input.closest('.card').querySelector('.empty-search').style.display=shown?'none':'block'}));
+  </script>
+</body>
+</html>

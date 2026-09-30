@@ -292,7 +292,7 @@ namespace NBYS_WebParts.EkstreListesiWP
         private void AktarilanBankalariOkLe(DateTime islemTarihi)
         {
 
-            EkstreAktarma ekstreAktarma = new EkstreAktarma();
+            EkstreAktarmaService ekstreAktarma = new EkstreAktarmaService();
             bool isAkbankAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_AKBANK, islemTarihi);
             if (isAkbankAktarildi)
             {
@@ -561,9 +561,9 @@ namespace NBYS_WebParts.EkstreListesiWP
             string currentUser = UtilityHelper.GetCurrentUserLoginName();
             if (!string.IsNullOrEmpty(value))
             {
-                EkstreAktarma eaDao = new EkstreAktarma();
+                EkstreAktarmaService eaDao = new EkstreAktarmaService();
                 int rowCount = 0;
-                List<EkstreAktarma> aktarilmayanlar = eaDao.selectByEkstreIdList(value, ref rowCount);
+                List<EkstreAktarma> aktarilmayanlar = eaDao.GetByIdList(value, false, ref rowCount);
                 if (aktarilmayanlar.Count > 0)
                 {
                     //var numbers = value?.Split(',')?.Select(Int32.Parse)?.ToList();
@@ -603,14 +603,15 @@ namespace NBYS_WebParts.EkstreListesiWP
             {
                 try
                 {
-                    EkstreAktarma eaDao = new EkstreAktarma();
-                    List<EkstreAktarma> silinecekler = eaDao.selectByIdList(value);
+                    EkstreAktarmaService eaDao = new EkstreAktarmaService();
+                    int rowCount = 0;
+                    List<EkstreAktarma> silinecekler = eaDao.GetByIdList(value, true, ref rowCount);
                     string mesaj = string.Empty;
                     int counter = 0;
                     foreach (EkstreAktarma item in silinecekler)
                     {
                         mesaj += " #" + counter + ":" + item.Adi;// + " BagisTarihi:" + item.BagisTarihi + " BagisMiktari:" + item.Tutar + " IslemTarihi:" + item.IslemTarihi.ConvertToDatetimeEmptyIfNull();
-                        item.Delete();
+                        eaDao.Delete(item);
                         counter++; 
                     }
                     SilinenKayit sk = new SilinenKayit();
@@ -667,10 +668,10 @@ namespace NBYS_WebParts.EkstreListesiWP
             {
                 islemTarihiDateTime = DateTime.Today;
             }
-            EkstreAktarma ea = new EkstreAktarma();
+            EkstreAktarmaService ea = new EkstreAktarmaService();
             int rowCount = 0;
             string banka = BankaDDL.SelectedItem.Text;
-            DataTable dataTable = ea.SelectByIslemTarihi(islemTarihiDateTime, ref rowCount, AktarilanlarHaricQS.ConvertToBool(), banka);
+            DataTable dataTable = ea.GetListTable(islemTarihiDateTime, AktarilanlarHaricQS.ConvertToBool(), banka, ref rowCount);
 
             //RowCountLbl.Text = "Kayıt Sayısı : " + rowCount.ToString();
             List<EkstreAktarmaListItem> returnlist = new List<EkstreAktarmaListItem>();

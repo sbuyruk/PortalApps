@@ -1,6 +1,7 @@
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.NBYS;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -205,8 +206,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             if (!string.IsNullOrEmpty(NakitBagisciIdQS))
             {
                 long ektreAktarmaTCKimlikNo = 0;
-                EkstreAktarma ekstreAktarma = new EkstreAktarma();
-                ekstreAktarma = ekstreAktarma.Select<EkstreAktarma>(EkstreAktarmaIdQS.ConvertToInt());
+                EkstreAktarma ekstreAktarma = new EkstreAktarmaService().GetById(EkstreAktarmaIdQS.ConvertToInt());
                 ektreAktarmaTCKimlikNo = ekstreAktarma == null ? 0 : ekstreAktarma.TCKimlikNo.ReturnZeroIfNull().ConvertToInt();
                 NakitBagisci nb = new NakitBagisciService().GetById(NakitBagisciIdQS.ConvertToInt());
                 if (nb != null)
@@ -238,8 +238,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             int ekstreAktarmaId = EkstreAktarmaIdQS.ConvertToInt();
-            EkstreAktarma ekstreAktarma = new EkstreAktarma();
-            ekstreAktarma = ekstreAktarma.Select<EkstreAktarma>(ekstreAktarmaId);
+            EkstreAktarma ekstreAktarma = new EkstreAktarmaService().GetById(ekstreAktarmaId);
 
             NakitBagisciIdLbl.Text = ekstreAktarma.NakitBagisciId.ToString();
             AdiTxt.Text = ekstreAktarma.Adi.ReturnEmptyIfNull().ToString().TrimStart().TrimEnd();
@@ -397,8 +396,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                 else
                 {
                     int ekstreAktarmaId = EkstreAktarmaIdQS.ConvertToInt();
-                    EkstreAktarma ekstreAktarma = new EkstreAktarma();
-                    ekstreAktarma = ekstreAktarma.Select<EkstreAktarma>(ekstreAktarmaId);
+                    EkstreAktarma ekstreAktarma = new EkstreAktarmaService().GetById(ekstreAktarmaId);
                     if (ekstreAktarma == null || ekstreAktarmaId == 0)
                     {
                         isSaved = SaveEkstreAktarma();
@@ -467,7 +465,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             ekstreAktarma.IslemTarihi = IslemTarihiTxt.Text.ConvertToDatetime();
             ekstreAktarma.ElleKayit = true;
             ekstreAktarma.NakitBagisciId = NakitBagisciIdLbl.Text.ConvertToInt();
-            int saveId = ekstreAktarma.Save();
+            int saveId = new EkstreAktarmaService().Save(ekstreAktarma);
             if (saveId > 0)
                 isSaved = true;
             return isSaved;
@@ -500,7 +498,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             ekstreAktarma.BagisTarihi = BagisTarihiTxt.Value.ConvertToDatetime();
             ekstreAktarma.IslemTarihi = IslemTarihiTxt.Text.ConvertToDatetime();
             ekstreAktarma.NakitBagisciId = NakitBagisciIdLbl.Text.ConvertToInt();
-            isSaved = ekstreAktarma.Update();
+            isSaved = new EkstreAktarmaService().Update(ekstreAktarma);
             return isSaved;
         }
         private void RedirectToPage(string pageUrl)
@@ -523,8 +521,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-                EkstreAktarma ekstreAktarma = new EkstreAktarma();
-                ekstreAktarma = ekstreAktarma.Select<EkstreAktarma>(EkstreAktarmaIdQS.ConvertToInt());
+                EkstreAktarma ekstreAktarma = new EkstreAktarmaService().GetById(EkstreAktarmaIdQS.ConvertToInt());
                 if (SenderAppQS.Equals("NBB"))//NakitBagisciBulma'dan geldiyse
                 {
                     newUrl += "/" + ProjeConstants.PAGE_NAKITBAGISCI_BULMA + "?Param=" + ParamQS;

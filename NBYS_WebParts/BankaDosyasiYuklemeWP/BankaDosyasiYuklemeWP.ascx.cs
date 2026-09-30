@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.ComponentModel;
 using System.Web.UI.WebControls.WebParts;
@@ -177,7 +178,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         private void checkSavedFiles(DateTime islemTarihi)
         {
 
-            EkstreAktarma ekstreAktarma = new EkstreAktarma();
+            EkstreAktarmaService ekstreAktarma = new EkstreAktarmaService();
             isAkbankAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_AKBANK, islemTarihi);
             if (isAkbankAktarildi)
             {

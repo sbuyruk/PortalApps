@@ -1,4 +1,3 @@
-using DAO.Ortak;
 using Model.Ortak;
 using Model.Services.NBYS;
 using System;
@@ -7,7 +6,6 @@ using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
@@ -46,201 +44,29 @@ namespace Model.NBYS
         public string BagisTipi { get; set; }
         public override int Save()
         {
-            try
-            {
-                GenericEntity<EkstreAktarma> genericEntity = new GenericEntity<EkstreAktarma>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                Olusturan = UtilityHelper.GetCurrentUserName();
-                SqlQuery query = genericEntity.GetQueryParametreli(this);
-                int id = dao.Insert(query);
-
-                this.Id = id;
-                if (id > 0 && ProjeConstants.NBYS_SAVE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.NBYS, ProjeConstants.NBYS_EKSTREAKTARMA);
-                }
-                return id;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return new EkstreAktarmaService().Save(this);
         }
         public override bool Update()
         {
-            bool isSuccess = false;
-            try
-            {
-                EkstreAktarma item = Select<EkstreAktarma>(Id);
-                if (Id != 0)
-                {
-                    GenericEntity<EkstreAktarma> genericEntity = new GenericEntity<EkstreAktarma>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    Degistiren = UtilityHelper.GetCurrentUserName();
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    isSuccess = dao.Update2Db(query);
-                }
-                if (isSuccess && ProjeConstants.NBYS_UPDATE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.NBYS, ProjeConstants.NBYS_EKSTREAKTARMA);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
+            return new EkstreAktarmaService().Update(this);
         }
         public override bool Delete()
         {
-            try
-            {
-                bool isDeleted = false;
-                if (Id != 0)
-                {
-                    GenericEntity<EkstreAktarma> genericEntity = new GenericEntity<EkstreAktarma>(ProjeConstants.SQL_DELETE);
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    EkstreAktarma item = Select<EkstreAktarma>(Id);
-                    if (item != null)
-                    {
-                        isDeleted = dao.DeleteFromDb(query, "");
-                    }
-                    else isDeleted = false;
-                    if (isDeleted && ProjeConstants.NBYS_DELETE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.NBYS, ProjeConstants.NBYS_EKSTREAKTARMA);
-                    }
-                }
-                return isDeleted;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return new EkstreAktarmaService().Delete(this);
         }
         public override T Select<T>(int id)
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM EkstreAktarma_Table 
-                               WHERE  Id={0}", id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
-            EkstreAktarma ekstreAktarma = new EkstreAktarma();
-            ekstreAktarma = list.FirstOrDefault();
-            return (T)Convert.ChangeType(ekstreAktarma, typeof(T));
+            return (T)Convert.ChangeType(new EkstreAktarmaService().GetById(id), typeof(T));
         }
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM EkstreAktarma_Table");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
-
+            List<EkstreAktarma> list = new EkstreAktarmaService().GetAll();
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
-        public List<EkstreAktarma> SelectByIslemTarihi(DateTime processTime)
-        {
-            string sqlString = string.Format(@"
-                SELECT *,
-                    Telefon1 + IIF(ISNULL(Telefon1,'')!='' AND ISNULL(Telefon2,'')!='',' - ','') + Telefon2 Telefon
-                FROM EkstreAktarma_Table
-                WHERE IslemTarihi={0}
-                ORDER BY AktarildiMi, BagisTarihi desc, Adi
-                ", processTime.ReturnTRDateFormat());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
-
-            return list;
-        }
-
-        public DataTable SelectByIslemTarihi(DateTime islemTarihi, ref int rowCount, bool aktarilanlarHaric, string banka)
-        {
-            string aktarilanlarHaricStr = aktarilanlarHaric ? " AND AktarildiMi=0 " : "";
-            banka = banka.Equals(ProjeConstants.HEPSI) ? string.Empty : banka;//hepsi geldiyse bankastr bos olsun            
-            string bankaStr = string.IsNullOrEmpty(banka) ? "" : " AND BankaAdi= " + banka.ReturnQuotedValue(); 
-            string sqlString = string.Format(@"
-                SELECT Id EkstreAktarmaId, BankaAdi, TCKimlikNo, Adi, Soyadi, ISNULL(Adi,'')  +' ' +ISNULL(Soyadi,'') AdiSoyadi,
-                    BagisTarihi, Tutar, DovizCinsi, DovizTutari, DovizKuru, KurTarihi, AktarildiMi,Adres, Aciklama,Telefon1,Telefon2,
-                    Telefon1 + IIF(ISNULL(Telefon1,'')!='' AND ISNULL(Telefon2,'')!='',' - ','') + Telefon2 Telefon
-                FROM EkstreAktarma_Table
-                WHERE IslemTarihi={0}
-                {1}
-                {2}
-                ORDER BY AktarildiMi,  BagisTarihi desc, Id, Adi
-                ", islemTarihi.ReturnTRDateFormat(), aktarilanlarHaricStr, bankaStr);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            //List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
-            rowCount = dataTable != null ? dataTable.Rows.Count : 0;
-            return dataTable;
-        }
-        public DataTable SelectByIslemTarihiReturnDT(DateTime islemTarihi, bool aktarilanlarHaric, string banka)
-        {
-            string aktarilanlarHaricStr = aktarilanlarHaric ? " AND AktarildiMi=0 " : "";
-            banka = banka.Equals(ProjeConstants.HEPSI) ? string.Empty : banka;//hepsi geldiyse bankastr bos olsun            
-            string bankaStr = string.IsNullOrEmpty(banka) ? "" : " AND BankaAdi= " + banka.ReturnQuotedValue(); ;
-            string sqlString = string.Format(@"
-                SELECT COUNT(A.Id) KayitAdedi, A.Id EkstreAktarmaId, A.BankaAdi, A.TCKimlikNo, A.Adi,A.Soyadi, ISNULL(A.Adi,'')  +' ' +ISNULL(A.Soyadi,'') AdiSoyadi,
-                    A.BagisTarihi, A.Tutar, A.DovizCinsi, A.AktarildiMi,A.Adres, A.Aciklama,
-                    A.Telefon1,A.Telefon2,B.Telefon1 Btelefon1,B.Telefon2 Btelefon2,B.TCKimlikNo BTCKimlikNo,B.Id NBId,
-                    A.Telefon1 + IIF(ISNULL(A.Telefon1,'')!='' AND ISNULL(A.Telefon2,'')!='',' - ','') + A.Telefon2 Telefon
-                FROM EkstreAktarma_Table A
-				LEFT JOIN NakitBagisci_Table b on LTRIM(RTRIM(UPPER(B.Adi))) =LTRIM(RTRIM(UPPER(A.Adi)))
-                WHERE IslemTarihi={0}
-                    {1}
-                    {2}
-                GROUP BY A.Id,A.BankaAdi, A.TCKimlikNo, A.Adi,A.Soyadi, 
-                    A.BagisTarihi, A.Tutar, A.DovizCinsi, A.AktarildiMi,A.Adres, A.Aciklama,
-                    A.Telefon1,A.Telefon2  ,B.Telefon1,B.Telefon2,B.TCKimlikNo,B.Id
-                ORDER BY AktarildiMi, BagisTarihi desc, A.Id, A.Adi
-                ", islemTarihi.ReturnTRDateFormat(), aktarilanlarHaricStr, bankaStr);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            //List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
-            return dataTable;
-        }
-        //public EkstreAktarma SelectByFisNoBanka(string banka, string fisNo )
-        //{
-        //    string sqlString = string.Format(@"
-        //        SELECT *
-        //        FROM EkstreAktarma_Table
-        //        WHERE BankaAdi={0} AND FisNo={1}                
-        //        ", banka.ReturnQuotedValue(), fisNo.ReturnQuotedValue());
-        //    DataTable dataTable = dao.selectFromDb(sqlString, "");
-        //    List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
-        //    EkstreAktarma ea = new EkstreAktarma();
-        //    ea = list.FirstOrDefault();
-        //    return ea;
-        //}
         public List<EkstreAktarma> SelectByFisNoBanka(string bankaLike, string fisNo)
         {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM EkstreAktarma_Table
-                WHERE BankaAdi LIKE '%{0}%' AND FisNo={1}                
-                ", bankaLike, fisNo.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
-            //EkstreAktarma ea = new EkstreAktarma();
-            //ea = list.FirstOrDefault();
-            return list;
+            return new EkstreAktarmaService().GetByBankAndReceipt(bankaLike, fisNo);
         }
-        public EkstreAktarma SelectByTelNoBankaBagisTarihi(string banka, string fisNo)
-        {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM EkstreAktarma_Table
-                WHERE BankaAdi={0} AND FisNo={1}                
-                ", banka.ReturnQuotedValue(), fisNo.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
-            EkstreAktarma ea = new EkstreAktarma();
-            ea = list.FirstOrDefault();
-            return ea;
-        }
-
         public static ExceptionHelper SaveAkBankFile(Stream fileStream, DateTime processTime, string currentUser)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -858,73 +684,6 @@ namespace Model.NBYS
         /// </summary>
         /// <param name="checkedRows"></param>
         /// <returns></returns>
-        public List<EkstreAktarma> selectByIdList(string idListStr)
-        {
-            if (!string.IsNullOrEmpty(idListStr))
-            {
-                string sqlString = string.Format(@"
-                SELECT *
-                FROM EkstreAktarma_Table
-                WHERE Id in ({0})
-                ORDER BY AktarildiMi,Id DESC, BagisTarihi desc, Adi
-                ", idListStr);
-                DataTable dataTable = dao.SelectFromDb(sqlString, "");
-                List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
-
-                return list;
-            }
-            else
-            {
-                return new List<EkstreAktarma>();
-            }
-
-        }
-        public List<EkstreAktarma> selectByEkstreIdList(string idListStr, ref int rowCount)
-        {
-            if (!string.IsNullOrEmpty(idListStr))
-            {
-                string sqlString = string.Format(@"
-                SELECT *
-                FROM EkstreAktarma_Table
-                WHERE Id in ({0})
-                ORDER BY AktarildiMi, BagisTarihi desc, Adi
-                ", idListStr);
-                DataTable dataTable = dao.SelectFromDb(sqlString, "");
-                List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
-                rowCount = dataTable != null ? dataTable.Rows.Count : 0;
-                return list;
-            }
-            else
-            {
-                return new List<EkstreAktarma>();
-            }
-
-        }
-        public List<EkstreAktarma> selectAktarilmayanlarByBankaAdiAndIslemTarihi(string bankaAdi, string islemTarihi)
-        {
-            List<EkstreAktarma> eaList = new List<EkstreAktarma>();
-
-            if (!string.IsNullOrEmpty(bankaAdi))
-            {
-                string sqlString = string.Format(@"
-                SELECT *
-                FROM EkstreAktarma_Table
-                WHERE IslemTarihi='{0}' and AktarildiMi=0 and BankaAdi='{1}'
-                ORDER BY AktarildiMi, BagisTarihi desc, Adi
-                ", islemTarihi, bankaAdi);
-
-                DataTable dataTable = dao.SelectFromDb(sqlString, "");
-                List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
-
-                return list;
-            }
-            else
-            {
-                return new List<EkstreAktarma>();
-            }
-
-        }
-
         public static ExceptionHelper SaveIsBankFile(Stream filePath, DateTime processTime, string currentUser)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -2432,28 +2191,6 @@ namespace Model.NBYS
                 }
             }
             return ilAdi;
-        }
-        public bool CheckIsExistByBankaAdiAndIslemTarihi(string bankaAdi, DateTime islemTarihi)
-        {
-            bool isExist = false;
-            //string sqlString = string.Format(@"SELECT *
-            //                                    FROM EkstreAktarma_Table
-            //                                    WHERE BankaAdi='{0}' AND DATEDIFF(day,IslemTarihi,{1})=0", bankaAdi, islemTarihi.ReturnTRDateFormat());
-            string sqlString = string.Format(@"SELECT *
-                                                FROM EkstreAktarma_Table
-                                                WHERE BankaAdi='{0}' AND IslemTarihi={1} AND ElleKayit != 1", bankaAdi, islemTarihi.ReturnTRDateFormat());
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-
-            if (dataTable != null)
-            {
-                if (dataTable.Rows.Count > 0)
-                {
-                    isExist = true;
-                }
-
-            }
-            return isExist;
         }
         #region ConvertTextToDatetime
         private static DateTime ConvertAkbankTextToDateTime(string value)
