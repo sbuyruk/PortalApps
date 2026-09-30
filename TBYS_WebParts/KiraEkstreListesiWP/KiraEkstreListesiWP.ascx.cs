@@ -470,7 +470,7 @@ namespace TBYS_WebParts.KiraEkstreListesiWP
                     sk.Silen = currentUser;
                     sk.SilinmeSebebi = counter + " adet kayit silindi";
                     sk.TabloAdi = "KiraEkstreAktarma_Table";
-                    sk.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
+                    sk.SilinmeTarihi = DateTime.Now;
                     sk.SilinenKayitBilgisi = mesaj;
                     sk.Save();
 

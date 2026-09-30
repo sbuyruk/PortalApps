@@ -10,7 +10,7 @@ namespace Model.Ortak
         public string TabloAdi { get; set; }
         public string SilinenKayitBilgisi { get; set; }
         public string Silen { get; set; }
-        public string SilinmeTarihi { get; set; }
+        public DateTime SilinmeTarihi { get; set; }
         public string SilinmeSebebi { get; set; }
         public override int Save()
         {

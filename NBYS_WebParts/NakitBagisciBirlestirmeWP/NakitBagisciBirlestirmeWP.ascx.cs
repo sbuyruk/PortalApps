@@ -610,7 +610,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                         skNBH.Silen = currentUser;
                                         skNBH.SilinmeSebebi = "Bağış Birleştirme";
                                         skNBH.TabloAdi = "NakitBagisHareket_Table";
-                                        skNBH.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
+                                        skNBH.SilinmeTarihi = DateTime.Now;
                                         skNBH.SilinenKayitBilgisi = " #BağışçıId=" + bagisciIdOnceki + " numaralı bağışçıya ait " +
                                             item.Id + " numaralı nakit bağış  ( Bağış Tarihi=" + item.BagisTarihi + " #Bağış Miktarı=" + item.BagisMiktari + ") " +
                                             item.BagisciId + " numaralı bağışçıya birleştirilmiştir.";
@@ -648,7 +648,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                         skNBH.Silen = currentUser;
                                         skNBH.SilinmeSebebi = "Bağış Birleştirme";
                                         skNBH.TabloAdi = "Armagan_Table";
-                                        skNBH.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
+                                        skNBH.SilinmeTarihi = DateTime.Now;
                                         skNBH.SilinenKayitBilgisi = " #BağışçıId=" + bagisciIdOnceki + " numaralı bağışçıya ait " +
                                             item.Id + " numaralı armağan " +
                                             item.BagisciId + " numaralı bağışçıya birleştirilmiştir.";
@@ -674,7 +674,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                 skBagisci.Silen = currentUser;
                                 skBagisci.SilinmeSebebi = ProjeConstants.BAGIS_BIRLESTIRME;
                                 skBagisci.TabloAdi = "NakitBagisci_Table";
-                                skBagisci.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
+                                skBagisci.SilinmeTarihi = DateTime.Now;
                                 skBagisci.SilinenKayitBilgisi = " #Bağışçı=" + birlesecekBagisci.Adi + " " + birlesecekBagisci.Soyadi + " #BağışçıId=" + birlesecekBagisci.Id + " numaralı bağışçı silindi.";
 
                                 //transaction lari yap
