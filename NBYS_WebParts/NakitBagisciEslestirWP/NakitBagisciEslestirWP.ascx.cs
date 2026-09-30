@@ -1,6 +1,7 @@
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.NBYS;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -183,8 +184,7 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
                 {
                     if (!string.IsNullOrEmpty(EkstreAktarmaIdQS))
                     {
-                        EkstreAktarma ekstreAktarma = new EkstreAktarma();
-                        ekstreAktarma = ekstreAktarma.Select<EkstreAktarma>(EkstreAktarmaIdQS.ConvertToInt());
+                        EkstreAktarma ekstreAktarma = new EkstreAktarmaService().GetById(EkstreAktarmaIdQS.ConvertToInt());
                         BagisciAraTxt.Text = ekstreAktarma != null ? ekstreAktarma.Adi : "";
 
                     }
@@ -233,8 +233,7 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-                EkstreAktarma ekstreAktarma = new EkstreAktarma();
-                ekstreAktarma = ekstreAktarma.Select<EkstreAktarma>(EkstreAktarmaIdQS.ConvertToInt());
+                EkstreAktarma ekstreAktarma = new EkstreAktarmaService().GetById(EkstreAktarmaIdQS.ConvertToInt());
                 if ((ekstreAktarma != null) && (SenderAppQS.Equals("EkstreListesi")))//ekstrelistesinden'dan geldiyse
                 {
                     newUrl += "/" + ProjeConstants.PAGE_EKSTRE_LIST + "?EkstreAktarmaId=" + EkstreAktarmaIdQS + "&IslemTarihi=" + ekstreAktarma.IslemTarihi.ConvertToDatetimeEmptyIfNull() + "&Banka=" + BankaQS;

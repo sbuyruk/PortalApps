@@ -141,6 +141,7 @@
     <Compile Include="Services\NBYS\ArmaganTanimService.cs" />
     <Compile Include="Services\NBYS\BankaTanimService.cs" />
     <Compile Include="Services\NBYS\BagisaVesileOlanTesekkurService.cs" />
+    <Compile Include="Services\NBYS\EkstreAktarmaService.cs" />
     <Compile Include="Services\NBYS\FTKService.cs" />
     <Compile Include="Services\NBYS\FTKIslemService.cs" />
     <Compile Include="Services\NBYS\FTKKisiService.cs" />
