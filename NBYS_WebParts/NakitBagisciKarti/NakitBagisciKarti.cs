@@ -62,7 +62,7 @@ namespace NBYS_WebParts.NakitBagisciKarti
         {
             base.OnPreRender(e);
             EnsureChildControls();
-            RegisterResources();
+            RegisterStyles();
         }
 
         private void LoadButton_Click(object sender, EventArgs e)
@@ -239,22 +239,8 @@ namespace NBYS_WebParts.NakitBagisciKarti
             return html.Append("</tbody></table></div>").ToString();
         }
 
-        private void RegisterResources()
+        private void RegisterStyles()
         {
-            string modalId = ClientID + "_Modal";
-            string script = string.Format(@"
-window.NakitBagisciKartiAc = function (bagisciId) {{
-    var idField = document.getElementById('{0}');
-    var loadButton = document.getElementById('{1}');
-    var modalElement = document.getElementById('{2}');
-    if (!idField || !loadButton || !modalElement || !bagisciId) return false;
-    idField.value = bagisciId;
-    bootstrap.Modal.getOrCreateInstance(modalElement).show();
-    loadButton.click();
-    return false;
-}};", bagisciIdField.ClientID, loadButton.ClientID, modalId);
-            ScriptManager.RegisterStartupScript(Page, GetType(), ClientID + "_script", script, true);
-
             string css = @"<style>
 .nbk-modal .modal-dialog{max-width:960px}.nbk-header{background:linear-gradient(112deg,#132836,#1b4f57);color:#fff}.nbk-avatar{width:50px;height:50px;border-radius:13px;background:#efc56d;color:#1a303b;display:grid;place-items:center;font-weight:800;margin-right:14px}.nbk-meta{color:#c2d1d5;font-size:.82rem}.nbk-badge{background:#efc56d;color:#20323a;margin-right:12px}.nbk-body{background:#fff}.nbk-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:13px}.nbk-metric{border:1px solid #dce3e6;border-radius:11px;padding:10px 12px}.nbk-metric small{display:block;color:#67757d;font-size:.7rem;font-weight:700;text-transform:uppercase}.nbk-metric strong{display:block;font-size:1.05rem;margin-top:3px}.nbk-refund strong{color:#ad4c47}.nbk-contact{display:grid;grid-template-columns:1fr 1.25fr 1.75fr;border:1px solid #dce3e6;border-radius:11px;background:#f9fbfb;margin-bottom:13px}.nbk-contact-item{padding:9px 12px;border-right:1px solid #dce3e6;min-width:0}.nbk-contact-item:last-child{border:0}.nbk-contact-item small{display:block;color:#67757d;font-weight:700;text-transform:uppercase}.nbk-contact-item span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.nbk-tabs .nav-link{font-weight:700;color:#67757d}.nbk-tabs .nav-link.active{color:#132836}.nbk-info{border:1px solid #dce3e6;border-radius:11px;padding:13px 14px;height:100%}.nbk-info h6{text-transform:uppercase;color:#53636b}.nbk-info-row{display:flex;justify-content:space-between;gap:12px;padding:4px 0;font-size:.86rem}.nbk-info-row span{color:#67757d}.nbk-note{background:#fff4dd;border-left:3px solid #d9a23d}.nbk-table{font-size:.84rem}.nbk-empty{padding:30px;text-align:center;color:#67757d}@media(max-width:700px){.nbk-modal .modal-dialog{margin:0;max-width:none;height:100%}.nbk-modal .modal-content{min-height:100%;border-radius:0}.nbk-metrics{grid-template-columns:1fr 1fr}.nbk-contact{grid-template-columns:1fr}.nbk-contact-item{border-right:0;border-bottom:1px solid #dce3e6}}
 </style>";
@@ -287,6 +273,24 @@ window.NakitBagisciKartiAc = function (bagisciId) {{
             writer.RenderEndTag();
             writer.RenderEndTag();
             writer.RenderEndTag();
+            RenderClientScript(writer);
+        }
+
+        private void RenderClientScript(HtmlTextWriter writer)
+        {
+            string script = string.Format(@"<script type=""text/javascript"">
+window.NakitBagisciKartiAc = function (bagisciId) {{
+    var idField = document.getElementById('{0}');
+    var loadButton = document.getElementById('{1}');
+    var modalElement = document.getElementById('{2}');
+    if (!idField || !loadButton || !modalElement || !bagisciId) return false;
+    idField.value = bagisciId;
+    bootstrap.Modal.getOrCreateInstance(modalElement).show();
+    loadButton.click();
+    return false;
+}};
+</script>", bagisciIdField.ClientID, loadButton.ClientID, ClientID + "_Modal");
+            writer.Write(script);
         }
 
         private string EmptyContent()
