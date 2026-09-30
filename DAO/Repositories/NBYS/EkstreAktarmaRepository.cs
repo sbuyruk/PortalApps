@@ -36,7 +36,7 @@ namespace DAO.Repositories.NBYS
         {
             string filters = excludeTransferred ? " AND AktarildiMi=0" : string.Empty;
             if (!string.IsNullOrEmpty(bankName)) filters += " AND BankaAdi=@BankaAdi";
-            SqlQuery query = new SqlQuery(@"SELECT Id EkstreAktarmaId,BankaAdi,TCKimlikNo,Adi,Soyadi,
+            SqlQuery query = new SqlQuery(@"SELECT Id EkstreAktarmaId,NakitBagisciId,BankaAdi,TCKimlikNo,Adi,Soyadi,
                     ISNULL(Adi,'')+' '+ISNULL(Soyadi,'') AdiSoyadi,BagisTarihi,Tutar,DovizCinsi,
                     DovizTutari,DovizKuru,KurTarihi,AktarildiMi,Adres,Aciklama,Telefon1,Telefon2,
                     Telefon1+IIF(ISNULL(Telefon1,'')<>'' AND ISNULL(Telefon2,'')<>'',' - ','')+Telefon2 Telefon

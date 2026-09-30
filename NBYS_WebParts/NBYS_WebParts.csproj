@@ -408,6 +408,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NakitBagisciListesiWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="NakitBagisciKarti\NakitBagisciKarti.cs" />
     <Compile Include="NakitBagisHareketSilmeWP\NakitBagisHareketSilmeWP.ascx.cs">
       <DependentUpon>NakitBagisHareketSilmeWP.ascx</DependentUpon>
     </Compile>
