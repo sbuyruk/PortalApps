@@ -6,6 +6,7 @@
 <%@ Import Namespace="Microsoft.SharePoint" %>
 <%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="EkstreListesiWP.ascx.cs" Inherits="NBYS_WebParts.EkstreListesiWP.EkstreListesiWP" %>
+<%@ Register TagPrefix="nbys" Namespace="NBYS_WebParts.NakitBagisciKarti" Assembly="$SharePoint.Project.AssemblyFullName$" %>
 
 <style>
     .uyari {
@@ -327,3 +328,4 @@
         </div>
     </div>
 </div>
+<nbys:NakitBagisciKarti ID="NakitBagisciKartiModal" runat="server" />

@@ -682,6 +682,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                     EkstreAktarmaListItem ekstreAktarmaListItem = new EkstreAktarmaListItem();
 
                     ekstreAktarmaListItem.EkstreAktarmaId = dataRow["EkstreAktarmaId"].ToString();
+                    ekstreAktarmaListItem.NakitBagisciId = dataRow["NakitBagisciId"].ConvertToInt();
                     ekstreAktarmaListItem.BankaAdi = dataRow["BankaAdi"].ToString();
                     ekstreAktarmaListItem.TCKimlikNo = dataRow["TCKimlikNo"].ToString();
 
@@ -824,6 +825,7 @@ namespace NBYS_WebParts.EkstreListesiWP
         private class EkstreAktarmaListItem
         {
             public string EkstreAktarmaId { get; set; }
+            public int NakitBagisciId { get; set; }
             public string TCKimlikNo { get; set; }
             public string Telefon { get; set; }
             public string Telefon1 { get; set; }
@@ -948,7 +950,11 @@ namespace NBYS_WebParts.EkstreListesiWP
                             { data: 'EkstreAktarmaId' },
                             { data: 'BankaAdi' },
                             { data: 'TCKimlikNo' },
-                            { data: 'AdiSoyadi' },
+                            { data: 'AdiSoyadi', render:function(data,type,row){
+                                if (type !== 'display' || !row.NakitBagisciId || row.NakitBagisciId < 1) return data;
+                                var guvenliAd = $('<div/>').text(data || '').html();
+                                return '<button type="button" class="btn btn-link p-0 fw-bold" onclick="return NakitBagisciKartiAc(' + row.NakitBagisciId + ');">' + guvenliAd + '</button>';
+                            } },
                             { data: 'Telefon' },
                             { data: 'BagisTarihi' },
                             { data: 'Tutar' },
