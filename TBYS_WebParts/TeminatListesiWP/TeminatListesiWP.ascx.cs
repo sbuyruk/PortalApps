@@ -105,12 +105,12 @@ namespace TBYS_WebParts.TeminatListesiWP
                 {
                     Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
                     BolgeIdQS = bolge == null ? 0 : bolge.Id;
-                    TitleLbl.Text = "Taahhüt Listesi";
+                    TitleLbl.Text = "TaahhÃ¼t Listesi";
                     if (BolgeIdQS != ProjeConstants.BOLGE_HEPSI_INT && BolgeIdQS != ProjeConstants.BOLGE_GENELMUDURLUK_INT)
                     {
                         Bolge bolgeDao = new Bolge();
                         bolgeDao = bolgeDao.Select(bolge.Id);
-                        TitleLbl.Text = bolgeDao == null ? "Teminat Listesi" : "Teminat Listesi" + " (" + bolge.KisaAdi + " Bölgesi )";
+                        TitleLbl.Text = bolgeDao == null ? "Teminat Listesi" : "Teminat Listesi" + " (" + bolge.KisaAdi + " BÃ¶lgesi )";
                     }
                     TabloOlustur();
                 }
@@ -124,7 +124,7 @@ namespace TBYS_WebParts.TeminatListesiWP
         private void TabloOlustur()
         {
             List<Tasinmaz> list = new List<Tasinmaz>();
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -164,6 +164,7 @@ namespace TBYS_WebParts.TeminatListesiWP
                     { data: 'Bolge' },
                     { data: 'TeminatOdemeTarihi' },
                     { data: 'KiraBedeli' },
+                    { data: 'OdemeSekli' },
                     { data: 'TeminatTutari' },
                     { data: 'OdenenTeminatTutari' },
                     { data: 'IadeTeminatTutari' },
@@ -249,6 +250,7 @@ namespace TBYS_WebParts.TeminatListesiWP
                     string teminatOdemeTarihi = row["TeminatOdemeTarihi"].ReturnEmptyIfNull().ConvertToDatetimeEmptyIfNull();
                     string artisAyi = row["ArtisAyi"].ToString();
                     decimal kiraBedeli = row["KiraBedeli"].ConvertToDecimal();
+                    string odemeSekli = row["OdemeSekli"].ToString();
                     decimal teminatTutari = row["TeminatTutari"].ConvertToDecimal();
                     decimal odenenTeminatTutari = row["OdenenTeminatTutari"].ConvertToDecimal();
                     decimal iadeTeminatTutari = row["IadeTeminatTutari"].ConvertToDecimal();
@@ -285,7 +287,9 @@ namespace TBYS_WebParts.TeminatListesiWP
                         teminatItem.Bolge = bolge;
                         teminatItem.SozlesmeTarihi = ilkSozlesmeTar;
                         teminatItem.TeminatOdemeTarihi = teminatOdemeTarihi.ConvertToDatetimeEmptyIfNull();
+                        teminatItem.OdemeSekli = odemeSekli;
                         teminatItem.KiraBedeli = kiraBedeli.ToString("N", culturInfo);
+
                         teminatItem.TeminatTutari = teminatTutari.ToString("N", culturInfo);
                         teminatItem.OdenenTeminatTutari = odenenTeminatTutari.ToString("N", culturInfo);
                         teminatItem.IadeTeminatTutari = iadeTeminatTutari.ToString("N", culturInfo);
@@ -303,7 +307,7 @@ namespace TBYS_WebParts.TeminatListesiWP
 
                         if (!isExcel)
                         {
-                            teminatItem.Sozlesme = "<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + kiraSozlesmeId + " class='btn btn-outline-primary'>Sözlesme</a>";
+                            teminatItem.Sozlesme = "<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + kiraSozlesmeId + " class='btn btn-outline-primary'>SÃ¶zlesme</a>";
                             teminatItem.Teminat = "<a href=" + ProjeConstants.PAGE_TEMINAT_ISLEMLERI + "?KiraSozlesmeId=" + kiraSozlesmeId + " class='btn btn-outline-primary'>Teminat</a>";
                         }
 
@@ -330,6 +334,7 @@ namespace TBYS_WebParts.TeminatListesiWP
             public string Bolge { get; set; }
             public string TeminatOdemeTarihi { get; set; }
             public string KiraBedeli { get; set; }
+            public string OdemeSekli { get; set; }
             public string TeminatTutari { get; set; }
             public string OdenenTeminatTutari { get; set; }
             public string IadeTeminatTutari { get; set; }
