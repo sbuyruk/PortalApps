@@ -1,4 +1,5 @@
 using Model.NBYS;
+using Model.Services.NBYS;
 using System;
 using System.Linq;
 
@@ -9,12 +10,12 @@ namespace ConsoleApplication_Test
         static void Main(string[] args)
         {
 
-            EkstreAktarma eaDao = new EkstreAktarma();
-            eaDao = eaDao.Select<EkstreAktarma>(128780);
-            if (eaDao!=null)
+            EkstreAktarmaService service = new EkstreAktarmaService();
+            EkstreAktarma ekstreAktarma = service.GetById(128780);
+            if (ekstreAktarma != null)
             {
-                bool isDeleted = eaDao.Delete();
-                Console.WriteLine("Silindi="+isDeleted.ToString());
+                bool isDeleted = service.Delete(ekstreAktarma);
+                Console.WriteLine("Silindi=" + isDeleted.ToString());
             }
                        
                        
