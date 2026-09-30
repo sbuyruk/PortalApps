@@ -153,7 +153,7 @@ namespace Model.Services.NBYS
 
                 foreach (Armagan item in armaganList)
                 {
-                    EkstreAktarma.SaveArmagan(
+                    EkstreAktarmaTransferService.SaveArmagan(
                         item.Tarih,
                         nakitBagisci.TuzelKisi,
                         item.BagisciId,

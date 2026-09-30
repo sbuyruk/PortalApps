@@ -887,7 +887,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                         //buna uygun belge oluşturulmalı
                         if (duzenliNakitBagisci.BagisAdedi%12==0)
                         {
-                            yeniArmaganId = EkstreAktarma.ArmaganiKaydet(nakitBagisHareket, bagisci, duzenliNakitBagisci.BagisToplami,
+                            yeniArmaganId = EkstreAktarmaTransferService.ArmaganiKaydet(nakitBagisHareket, bagisci, duzenliNakitBagisci.BagisToplami,
                                 ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID, CurrentUserName);
                         }
                         else
@@ -901,7 +901,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
 
                     else
                     {
-                        yeniArmaganId = EkstreAktarma.ArmaganiKaydet(nakitBagisHareket, bagisci, duzenliNakitBagisci.BagisToplami,
+                        yeniArmaganId = EkstreAktarmaTransferService.ArmaganiKaydet(nakitBagisHareket, bagisci, duzenliNakitBagisci.BagisToplami,
                             ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID, CurrentUserName); 
                     }
                     if (yeniArmaganId < 1)
