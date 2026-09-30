@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -305,8 +306,8 @@ namespace NBYS_WebParts.FTKListesiWP
         private List<FTKListItem> GetDataList()
         {
             List<FTKListItem> ftkList = new List<FTKListItem>();
-            FTK ftkDao = new FTK();
-            DataTable dataTable = ftkDao.SelectSonFTKListesiByIliIlcesiReturnDataTable(BolgeIdQS, IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt(),
+            FTKService ftkService = new FTKService();
+            DataTable dataTable = ftkService.GetLatestTable(BolgeIdQS, IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt(),
                 KurulusTarihiTxt.Text, GuncellemeTarihiTxt.Text);
             int tempIlceId = 999999;
             int tempIlId = 888888;
@@ -551,8 +552,7 @@ namespace NBYS_WebParts.FTKListesiWP
         }
         protected void FTKIslemleriBtn_Click(object sender, EventArgs e)
         {
-            FTKIslem fTKIslem = new FTKIslem();
-            fTKIslem = fTKIslem.SelectByIliIlcesi(IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt());
+            FTKIslem fTKIslem = new FTKIslemService().GetByLocation(IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt());
             string ftkIslemId = fTKIslem == null ? string.Empty : fTKIslem.Id.ToString();
             RedirectToPage(ProjeConstants.PAGE_FTKISLEMLERI + "?FTKIslemId=" + ftkIslemId + "&IliId=" + IliIdQS + "&IlcesiId=" + IlcesiIdQS);
         }

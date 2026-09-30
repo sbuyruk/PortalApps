@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -173,14 +174,14 @@ namespace NBYS_WebParts.FTKIslemleriWP
         }
         private bool KuruluFTKVarMi(int ili, int ilcesi)
         {
-            FTK ftk = new FTK();
-            List<FTK> list = ftk.SelectSonFTKListesiByIliIlcesiReturnList(ili, ilcesi);
+            FTKService ftkService = new FTKService();
+            List<FTK> list = ftkService.GetLatest(ili, ilcesi);
             return list.Count > 0;
         }
         private bool UyeKaydiVarMi(int ili, int ilcesi)
         {
-            FTKKisi ftkKisi = new FTKKisi();
-            List<FTKKisi> list = ftkKisi.SelectFTKUyeleriByIliIlcesiReturnList(ili, ilcesi, 0, true);
+            FTKKisiService ftkKisiService = new FTKKisiService();
+            List<FTKKisi> list = ftkKisiService.GetMembers(ili, ilcesi, 0, true);
             return list.Count > 0;
         }
         private void IlilceBolgeDDLDoldur()
@@ -320,8 +321,8 @@ namespace NBYS_WebParts.FTKIslemleriWP
         {
             int ili = IliDDL.SelectedItem.Value.ConvertToInt();
             int ilcesi = IlcesiDDL.SelectedItem.Value.ConvertToInt();
-            FTKKisi ftkKisiDao = new FTKKisi();
-            DataTable dataTable = ftkKisiDao.SelectFTKUyeleriByIliIlcesiReturnDataTable(ili, ilcesi, FTKIslemIdQS.ConvertToInt(), aktif);
+            FTKKisiService ftkKisiService = new FTKKisiService();
+            DataTable dataTable = ftkKisiService.GetMembersTable(ili, ilcesi, FTKIslemIdQS.ConvertToInt(), aktif);
             List<FTKListItem> list = new List<FTKListItem>();
             if (dataTable != null)
             {
@@ -351,19 +352,6 @@ namespace NBYS_WebParts.FTKIslemleriWP
 
                     katilimciItem.Duzenle = "<a href='#' class='btn btn-outline-primary' onclick=FTKKisiDuzenleBtnClick(" + ftkkisiId + ")>Düzenle</a>";
 
-                    //FTK ftk = new FTK();
-                    //List<FTK> ftkList = ftk.SelectSonFTKListesiByIliIlcesiReturnList(ili, ilcesi);
-                    //if (ftkList.Count > 0)
-                    //{
-                    //    ftk = ftkList[0];
-                    //    bool ayniMi = ftk.Adi.Equals(adi) || ftk.Soyadi.Equals(soyadi) || ftk.FTKGorevi == ftkGoreviId;
-                    //    if (ayniMi)
-                    //    {
-                    //        katilimciItem.Class = "katilimci-degisti";
-                    //    }
-
-
-                    //}
                     katilimciItem.Class = !uyelikDurumu.Equals(ProjeConstants.FTK_UYELIK_DURUMU_AKTIF) ? "aktif-degil" : string.Empty;
 
                     list.Add(katilimciItem);
@@ -415,8 +403,8 @@ namespace NBYS_WebParts.FTKIslemleriWP
             int ili = IliDDL.SelectedItem.Value.ConvertToInt();
             int ilcesi = IlcesiDDL.SelectedItem.Value.ConvertToInt();
 
-            FTKIslem ftkislemleri = new FTKIslem();
-            ftkislemleri = ftkislemleri.SelectByIliIlcesi(ili, ilcesi);
+            FTKIslemService ftkIslemService = new FTKIslemService();
+            FTKIslem ftkislemleri = ftkIslemService.GetByLocation(ili, ilcesi);
 
             if (ftkislemleri == null)
             {
@@ -443,11 +431,11 @@ namespace NBYS_WebParts.FTKIslemleriWP
 
                 AciklamaTxt.Text = ftkislemleri.Aciklama;
 
-                FTK ftk = new FTK();
-                List<FTK> ftkList = ftk.SelectSonFTKListesiByIliIlcesiReturnList(ili, ilcesi);
+                FTKService ftkService = new FTKService();
+                List<FTK> ftkList = ftkService.GetLatest(ili, ilcesi);
                 if (ftkList.Count > 0)
                 {
-                    ftk = ftkList[0];
+                    FTK ftk = ftkList[0];
                     FTKKurulusTarihiTxt.Font.Bold = ftk.KurulusTarihi == ftkislemleri.KurulusTarihi;
                     FTKGuncellemeTarihiTxt.Font.Bold = ftk.GuncellemeTarihi != ftkislemleri.GuncellemeTarihi;
                 }
@@ -461,8 +449,8 @@ namespace NBYS_WebParts.FTKIslemleriWP
             string adiSoyadi = string.Empty;
             if (ili > 0)
             {
-                FTKKisi kisi = new FTKKisi();
-                kisi = kisi.SelectVali(ili);
+                FTKKisiService ftkKisiService = new FTKKisiService();
+                FTKKisi kisi = ftkKisiService.GetGovernor(ili);
 
                 if (kisi == null)
                 {
@@ -487,8 +475,8 @@ namespace NBYS_WebParts.FTKIslemleriWP
 
             if (ili > 0 && ilcesi > 0)
             {
-                FTKKisi kisi = new FTKKisi();
-                kisi = kisi.SelectKaymakam(ili, ilcesi);
+                FTKKisiService ftkKisiService = new FTKKisiService();
+                FTKKisi kisi = ftkKisiService.GetDistrictGovernor(ili, ilcesi);
 
                 if (kisi != null)
                 {
@@ -584,17 +572,17 @@ namespace NBYS_WebParts.FTKIslemleriWP
              ***/
             int ili = IliDDL.SelectedItem.Value.ConvertToInt();
             int ilcesi = IlcesiDDL.SelectedItem.Value.ConvertToInt();
-            FTK ftkDao = new FTK();
-            ftkDao = ftkDao.SelectByIliIlcesi(ili, ilcesi, FTKGuncellemeTarihiTxt.Text.ConvertToDatetime());
-            if ((ftkDao != null)
+            FTKService ftkService = new FTKService();
+            FTK ftk = ftkService.GetByLocationAndUpdateDate(ili, ilcesi, FTKGuncellemeTarihiTxt.Text.ConvertToDatetime());
+            if ((ftk != null)
                 && (!KayitDuzeltmesiChk.Checked))
             {
                 MessageHelper.PublishMessage("Bu FTK " + FTKGuncellemeTarihiTxt.Text + " tarihinde zaten güncellenmiştir. FTK listesinde kayıt düzeltmek istiyorsanız, 'Bu Bir Kayıt Düzeltmesidir' hanesini seçili hale getiriniz.", ProjeConstants.MESAJ_HATA);
             }
             else
             {
-                FTKIslem ftkIslem = new FTKIslem();
-                ftkIslem = ftkIslem.SelectByIliIlcesi(ili, ilcesi);//1
+                FTKIslemService ftkIslemService = new FTKIslemService();
+                FTKIslem ftkIslem = ftkIslemService.GetByLocation(ili, ilcesi);//1
                 if (ftkIslem != null)
                 {
                     //2 ve //4
@@ -631,7 +619,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
                     }
                     else
                     {
-                        bool guncellendiMi = ftkIslemleri.Update();
+                        bool guncellendiMi = new FTKIslemService().Update(ftkIslemleri);
                         if (guncellendiMi)
                         {
                             FTKIslemIdQS = ftkIslemleri.Id.ToString();
@@ -658,8 +646,8 @@ namespace NBYS_WebParts.FTKIslemleriWP
             bool kaydedildiMi = false;
             if (KayitDuzeltmesiChk.Checked)
             {
-                FTK ftkDao = new FTK();
-                List<FTK> list = ftkDao.SelectSonFTKListesiByIliIlcesiReturnList(IliDDL.SelectedItem.Value.ConvertToInt(), IlcesiDDL.SelectedItem.Value.ConvertToInt());
+                FTKService ftkService = new FTKService();
+                List<FTK> list = ftkService.GetLatest(IliDDL.SelectedItem.Value.ConvertToInt(), IlcesiDDL.SelectedItem.Value.ConvertToInt());
 
                 if (list.Count < 1)
                 {
@@ -670,7 +658,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
                     FTK ftk = list[0];
                     int ftkIslemId = ftk.FTKIslemId;
                     int sayac = ftk.Sayac;
-                    if (ftkDao.DeleteByIslemIdSayac(ftkIslemId, sayac))
+                    if (ftkService.DeleteByOperationAndCounter(ftkIslemId, sayac))
                     {
                         kaydedildiMi = FTKTablosunaKaydet(ftkIslem, sayac);
                     }
@@ -685,8 +673,9 @@ namespace NBYS_WebParts.FTKIslemleriWP
         private bool FTKTablosunaKaydet(FTKIslem ftkIslem, int sayac)
         {
             bool kaydedildiMi = false;
-            FTKKisi fTKKisi = new FTKKisi();
-            List<FTKKisi> UyeListesi = fTKKisi.SelectFTKUyeleriByIliIlcesiReturnList(ftkIslem.Ili, ftkIslem.Ilcesi, ftkIslem.Id, true);
+            FTKKisiService ftkKisiService = new FTKKisiService();
+            FTKService ftkService = new FTKService();
+            List<FTKKisi> UyeListesi = ftkKisiService.GetMembers(ftkIslem.Ili, ftkIslem.Ilcesi, ftkIslem.Id, true);
             string aciklama = string.Empty;
             if (sayac > 0)
             {
@@ -717,14 +706,14 @@ namespace NBYS_WebParts.FTKIslemleriWP
                 ftk.KisiId = item.Id;
                 ftk.Olusturan = UtilityHelper.GetCurrentUserLoginName();
                 ftk.Aciklama = ftk.Aciklama + "</br>" + aciklama;
-                kaydedildiMi = ftk.Save() > 0;
+                kaydedildiMi = ftkService.Save(ftk) > 0;
             }
             return kaydedildiMi;
         }
         private int SayacHesapla(int ili, int ilcesi)
         {
-            FTK ftk = new FTK();
-            int sayac = ftk.SelectMaxSayac(ili, ilcesi);
+            FTKService ftkService = new FTKService();
+            int sayac = ftkService.GetMaxCounter(ili, ilcesi);
             return sayac;
         }
         private void FTKIstemleriniKaydet()
@@ -748,7 +737,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
                 }
                 else
                 {
-                    int ftkIslemId = ftkIslemleri.Save();
+                    int ftkIslemId = new FTKIslemService().Save(ftkIslemleri);
                     FTKIslemIdQS = ftkIslemId.ToString();
                     if (ftkIslemId > 0)
                     {
@@ -928,8 +917,8 @@ namespace NBYS_WebParts.FTKIslemleriWP
             idler = idler.Length > 0 ? "(" + idler.Substring(0, idler.Length - 1) + ")" : string.Empty;
             if (!string.IsNullOrEmpty(idler))
             {
-                FTKKisi ftkKisi = new FTKKisi();
-                bool guncellendi = ftkKisi.UpdateAktifByIdList(idler);
+                FTKKisiService ftkKisiService = new FTKKisiService();
+                bool guncellendi = ftkKisiService.DeactivateByIdList(idler);
                 if (guncellendi)
                 {
                     FTKListesiniVeriTabanindanDoldur();

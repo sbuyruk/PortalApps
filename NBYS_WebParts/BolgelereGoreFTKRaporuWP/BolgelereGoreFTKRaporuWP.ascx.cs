@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.ComponentModel;
 using System.Globalization;
@@ -201,44 +202,44 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
         }
         private int KOIlSayisiGetir(int bolgeId)
         {
-            FTK ftk = new FTK();
-            int ilSayisi = ftk.SelectKuruluOlanIlSayisiByBolgeId(bolgeId);
+            FTKService ftkService = new FTKService();
+            int ilSayisi = ftkService.GetEstablishedProvinceCount(bolgeId);
             return ilSayisi;
         }
         private int KOIlceSayisiGetir(int bolgeId)
         {
-            FTK ftk = new FTK();
-            int ilSayisi = ftk.SelectKuruluOlanIlceSayisiByBolgeId(bolgeId);
+            FTKService ftkService = new FTKService();
+            int ilSayisi = ftkService.GetEstablishedDistrictCount(bolgeId);
             return ilSayisi;
         }
         private void GuncellenenIlIlceSayisiniDoldur()
         {
-            FTK ftk = new FTK();
-            ankGuncellenen = ftk.SelectGuncellenenIlIlceSayisiByBolgeId(ProjeConstants.BOLGE_ANKARA_INT, GuncellemeTarihiTxt.Text.ConvertToDatetime());
+            FTKService ftkService = new FTKService();
+            ankGuncellenen = ftkService.GetUpdatedLocationCount(ProjeConstants.BOLGE_ANKARA_INT, GuncellemeTarihiTxt.Text.ConvertToDatetime());
             HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, AnkGuncellenenCell, ankGuncellenen, ProjeConstants.BOLGE_ANKARA_INT, GUNCELLENEN);
-            istGuncellenen = ftk.SelectGuncellenenIlIlceSayisiByBolgeId(ProjeConstants.BOLGE_ISTANBUL_INT, GuncellemeTarihiTxt.Text.ConvertToDatetime());
+            istGuncellenen = ftkService.GetUpdatedLocationCount(ProjeConstants.BOLGE_ISTANBUL_INT, GuncellemeTarihiTxt.Text.ConvertToDatetime());
             HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IstGuncellenenCell, istGuncellenen, ProjeConstants.BOLGE_ISTANBUL_INT, GUNCELLENEN);
-            izmGuncellenen = ftk.SelectGuncellenenIlIlceSayisiByBolgeId(ProjeConstants.BOLGE_IZMIR_INT, GuncellemeTarihiTxt.Text.ConvertToDatetime());
+            izmGuncellenen = ftkService.GetUpdatedLocationCount(ProjeConstants.BOLGE_IZMIR_INT, GuncellemeTarihiTxt.Text.ConvertToDatetime());
             HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IzmGuncellenenCell, izmGuncellenen, ProjeConstants.BOLGE_IZMIR_INT, GUNCELLENEN);
-            merGuncellenen = ftk.SelectGuncellenenIlIlceSayisiByBolgeId(ProjeConstants.BOLGE_MERSIN_INT, GuncellemeTarihiTxt.Text.ConvertToDatetime());
+            merGuncellenen = ftkService.GetUpdatedLocationCount(ProjeConstants.BOLGE_MERSIN_INT, GuncellemeTarihiTxt.Text.ConvertToDatetime());
             HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, MerGuncellenenCell, merGuncellenen, ProjeConstants.BOLGE_MERSIN_INT, GUNCELLENEN);
-            erzGuncellenen = ftk.SelectGuncellenenIlIlceSayisiByBolgeId(ProjeConstants.BOLGE_ERZURUM_INT, GuncellemeTarihiTxt.Text.ConvertToDatetime());
+            erzGuncellenen = ftkService.GetUpdatedLocationCount(ProjeConstants.BOLGE_ERZURUM_INT, GuncellemeTarihiTxt.Text.ConvertToDatetime());
             HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, ErzGuncellenenCell, erzGuncellenen, ProjeConstants.BOLGE_ERZURUM_INT, GUNCELLENEN);
             toplamGuncellenen = ankGuncellenen + istGuncellenen + izmGuncellenen + merGuncellenen + erzGuncellenen ;
             HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, TopGuncellenenCell, toplamGuncellenen, ProjeConstants.BOLGE_HEPSI_INT, GUNCELLENEN);
         }
         private void YeniKurulanIlIlceSayisiniDoldur()
         {
-            FTK ftk = new FTK();
-            ankYeniKurulan = ftk.SelectKuruluIlIlceSayisiByBolgeId(ProjeConstants.BOLGE_ANKARA_INT, KurulusTarihiTxt.Text.ConvertToDatetime());
+            FTKService ftkService = new FTKService();
+            ankYeniKurulan = ftkService.GetEstablishedLocationCount(ProjeConstants.BOLGE_ANKARA_INT, KurulusTarihiTxt.Text.ConvertToDatetime());
             HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, AnkYeniKurulanCell, ankYeniKurulan, ProjeConstants.BOLGE_ANKARA_INT, YENI_KURULAN);
-            istYeniKurulan = ftk.SelectKuruluIlIlceSayisiByBolgeId(ProjeConstants.BOLGE_ISTANBUL_INT, KurulusTarihiTxt.Text.ConvertToDatetime());
+            istYeniKurulan = ftkService.GetEstablishedLocationCount(ProjeConstants.BOLGE_ISTANBUL_INT, KurulusTarihiTxt.Text.ConvertToDatetime());
             HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IstYeniKurulanCell, istYeniKurulan, ProjeConstants.BOLGE_ISTANBUL_INT, YENI_KURULAN);
-            izmYeniKurulan = ftk.SelectKuruluIlIlceSayisiByBolgeId(ProjeConstants.BOLGE_IZMIR_INT, KurulusTarihiTxt.Text.ConvertToDatetime());
+            izmYeniKurulan = ftkService.GetEstablishedLocationCount(ProjeConstants.BOLGE_IZMIR_INT, KurulusTarihiTxt.Text.ConvertToDatetime());
             HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IzmYeniKurulanCell, izmYeniKurulan, ProjeConstants.BOLGE_IZMIR_INT, YENI_KURULAN);
-            merYeniKurulan = ftk.SelectKuruluIlIlceSayisiByBolgeId(ProjeConstants.BOLGE_MERSIN_INT, KurulusTarihiTxt.Text.ConvertToDatetime());
+            merYeniKurulan = ftkService.GetEstablishedLocationCount(ProjeConstants.BOLGE_MERSIN_INT, KurulusTarihiTxt.Text.ConvertToDatetime());
             HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, MerYeniKurulanCell, merYeniKurulan, ProjeConstants.BOLGE_MERSIN_INT, YENI_KURULAN);
-            erzYeniKurulan = ftk.SelectKuruluIlIlceSayisiByBolgeId(ProjeConstants.BOLGE_ERZURUM_INT, KurulusTarihiTxt.Text.ConvertToDatetime());
+            erzYeniKurulan = ftkService.GetEstablishedLocationCount(ProjeConstants.BOLGE_ERZURUM_INT, KurulusTarihiTxt.Text.ConvertToDatetime());
             HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, ErzYeniKurulanCell, erzYeniKurulan, ProjeConstants.BOLGE_ERZURUM_INT, YENI_KURULAN);
             toplamYeniKurulan = ankYeniKurulan + istYeniKurulan + izmYeniKurulan + merYeniKurulan + erzYeniKurulan;
             HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, TopYeniKurulanCell, toplamYeniKurulan, ProjeConstants.BOLGE_HEPSI_INT, YENI_KURULAN);
