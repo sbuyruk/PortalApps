@@ -380,7 +380,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             if (!isAkbankAktarildi && AkbankFU.HasFile)
             {
 
-                var exceptionHelper = EkstreAktarma.SaveAkBankFile(AkbankFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveAkBankFile(AkbankFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
                     AkbankFU.Enabled = true;
@@ -403,7 +403,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             if (!isAkbankEkstreAktarildi && AkbankEkstreFU.HasFile)
             {
 
-                var exceptionHelper = EkstreAktarma.SaveAkBankEkstreFile(AkbankEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveAkBankEkstreFile(AkbankEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
                     AkbankEkstreFU.Enabled = true;
@@ -426,7 +426,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             if (!isFinansbankAktarildi && FinansbankFU.HasFile)
             {
 
-                var exceptionHelper = EkstreAktarma.SaveFinansbankFile(FinansbankFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveFinansbankFile(FinansbankFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
                     FinansbankFU.Enabled = true;
@@ -448,7 +448,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         {
             if (!isFinansbankEkstreAktarildi && FinansbankEkstreFU.HasFile)
             {
-                var exceptionHelper = EkstreAktarma.SaveFinansbankEkstreFile(FinansbankEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveFinansbankEkstreFile(FinansbankEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
 
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
@@ -470,7 +470,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             if (!isGarantiAktarildi && GarantiFU.HasFile)
             {
 
-                var exceptionHelper = EkstreAktarma.SaveGarantiBankFile(GarantiFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveGarantiBankFile(GarantiFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
 
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
@@ -495,7 +495,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             if (!isGarantiEkstreAktarildi && GarantiEkstreFU.HasFile)
             {
 
-                var exceptionHelper = EkstreAktarma.SaveGarantiEkstreFile(GarantiEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveGarantiEkstreFile(GarantiEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
 
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
@@ -520,7 +520,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             if (!isTEBAktarildi && TebFU.HasFile)
             {
 
-                var exceptionHelper = EkstreAktarma.SaveTEBBankFile(TebFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveTEBBankFile(TebFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
 
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
@@ -544,7 +544,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         {
             if (!isHalkBankAktarildi && HalkbankFU.HasFile)
             {
-                var exceptionHelper = EkstreAktarma.SaveHalkbankFile(HalkbankFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveHalkbankFile(HalkbankFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
                     HalkbankFU.Enabled = true;
@@ -565,7 +565,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         {
             if (!isHalkbank2Aktarildi && Halkbank2FU.HasFile)
             {
-                var exceptionHelper = EkstreAktarma.SaveHalkbank2File(Halkbank2FU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveHalkbank2File(Halkbank2FU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
                     Halkbank2FU.Enabled = true;
@@ -585,7 +585,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         {
             if (!isIsbankAktarildi && IsbankFU.HasFile)
             {
-                var exceptionHelper = EkstreAktarma.SaveIsBankFile(IsbankFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveIsBankFile(IsbankFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
 
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
@@ -606,7 +606,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         {
             if (!isIsbankEkstreAktarildi && IsbankEkstreFU.HasFile)
             {
-                var exceptionHelper = EkstreAktarma.SaveIsBankEkstreFile(IsbankEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveIsBankEkstreFile(IsbankEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
 
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
@@ -627,7 +627,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         {
             if (!isYKBEkstreAktarildi && YKBEkstreFU.HasFile)
             {
-                var exceptionHelper = EkstreAktarma.SaveYKBEkstreFile(YKBEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveYKBEkstreFile(YKBEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
 
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
@@ -649,7 +649,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         {
             if (!isVakifBankGunlukAktarildi && VakifbankGunlukFU.HasFile)
             {
-                var exceptionHelper = EkstreAktarma.SaveVakifBankGunlukTextFile(VakifbankGunlukFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveVakifBankGunlukTextFile(VakifbankGunlukFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
                     VakifbankGunlukFU.Enabled = true;
@@ -669,7 +669,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         {
             if (!isVakifBank2Aktarildi && Vakifbank2FU.HasFile)
             {
-                var exceptionHelper = EkstreAktarma.SaveVakifBank2File(Vakifbank2FU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveVakifBank2File(Vakifbank2FU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
                     Vakifbank2FU.Enabled = true;
@@ -690,7 +690,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         {
             if (!isVakifKatilimAktarildi && VakifKatilimFU.HasFile)
             {
-                var exceptionHelper = EkstreAktarma.SaveVakifKatilimFile(VakifKatilimFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveVakifKatilimFile(VakifKatilimFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
                     VakifKatilimFU.Enabled = true;
@@ -710,7 +710,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         {
             if (!isZiraatAktarildi && ZiraatFU.HasFile)
             {
-                var exceptionHelper = EkstreAktarma.SaveZiraatFile(ZiraatFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveZiraatFile(ZiraatFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
 
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
@@ -731,7 +731,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         {
             if (!isZiraatEkstreAktarildi && ZiraatEkstreFU.HasFile)
             {
-                var exceptionHelper = EkstreAktarma.SaveZiraatEkstreFile(ZiraatEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveZiraatEkstreFile(ZiraatEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
 
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
@@ -752,7 +752,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         {
             if (!isZiraatKatilimAktarildi && ZiraatKatilimFU.HasFile)
             {
-                var exceptionHelper = EkstreAktarma.SaveZiraatKatilimFile(ZiraatKatilimFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveZiraatKatilimFile(ZiraatKatilimFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
                     ZiraatKatilimFU.Enabled = true;
@@ -772,7 +772,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         {
             if (!isEDevletAktarildi && EDevletFU.HasFile)
             {
-                var exceptionHelper = EkstreAktarma.SaveEDevletFile(EDevletFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveEDevletFile(EDevletFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
 
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
@@ -793,7 +793,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         {
             if (!isAlbarakaAktarildi && AlbarakaFU.HasFile)
             {
-                var exceptionHelper = EkstreAktarma.SaveAlbarakaFile(AlbarakaFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveAlbarakaFile(AlbarakaFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
 
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
@@ -814,7 +814,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         {
             if (!isSMSVakifAktarildi && SMSVakifFU.HasFile)
             {
-                var exceptionHelper = EkstreAktarma.SaveSMSVakifFile(SMSVakifFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarmaImportService.SaveSMSVakifFile(SMSVakifFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
 
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
