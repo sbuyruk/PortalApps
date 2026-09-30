@@ -1,4 +1,5 @@
 using Model.NBYS;
+using Model.Services.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -58,8 +59,8 @@ namespace NBYS_WebParts.FTKHaritasiWP
         {
             FTKUyeTableHeaders();
 
-            FTK dao = new FTK();
-            List<FTK> list = dao.SelectSonFTKListesiByIliIlcesiReturnList(il.Id, ProjeConstants.VALILIK_INT);
+            FTKService ftkService = new FTKService();
+            List<FTK> list = ftkService.GetLatest(il.Id, ProjeConstants.VALILIK_INT);
             int sira = 1;
             foreach (var item in list)
             {

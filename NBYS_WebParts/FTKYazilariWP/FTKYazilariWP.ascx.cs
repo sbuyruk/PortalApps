@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.SharePoint;
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -286,8 +287,8 @@ namespace NBYS_WebParts.FTKYazilariWP
                 var body = doc.Body;
                 var paras = body.Elements<Paragraph>();
 
-                FTK ftk = new FTK();
-                List<FTK> list = ftk.SelectSonFTKListesiByIliIlcesiReturnList(ilId, ilcesiId);
+                FTKService ftkService = new FTKService();
+                List<FTK> list = ftkService.GetLatest(ilId, ilcesiId);
                 int counter = 0;
                 foreach (var item in list)
                 {

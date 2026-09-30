@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -224,8 +225,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
         }
         private bool FTKKisiFormunuDoldur()
         {
-            FTKKisi ftkkisi = new FTKKisi();
-            ftkkisi = ftkkisi.Select(FTKKisiIdQS.ConvertToInt());
+            FTKKisi ftkkisi = new FTKKisiService().GetById(FTKKisiIdQS.ConvertToInt());
             bool formDolduMu = false;
             try
             {
@@ -339,7 +339,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
                     yeniFTKKisi.UyelikDurumu = UyelikDurumuDDL.SelectedItem.Value;
 
                     yeniFTKKisi.Olusturan = CurrentUserName;
-                    int ftkUyeId = yeniFTKKisi.Save();
+                    int ftkUyeId = new FTKKisiService().Save(yeniFTKKisi);
                     yeniFTKKisi.Id = ftkUyeId;
                     FTKKisiIdQS = yeniFTKKisi.Id.ToString();
                     IliIdQS = yeniFTKKisi.Ili.ToString();
@@ -375,8 +375,8 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
         private bool GuncelleFTKKisiData2Db(ExceptionHelper exceptionHelper)
         {
             bool guncellendiMi = false;
-            FTKKisi ftkKisi = new FTKKisi();
-            ftkKisi = ftkKisi.Select<FTKKisi>(FTKKisiIdQS.ConvertToInt());
+            FTKKisiService ftkKisiService = new FTKKisiService();
+            FTKKisi ftkKisi = ftkKisiService.GetById(FTKKisiIdQS.ConvertToInt());
             if ((ftkKisi.TCKimlikNo != TCKimlikNoTxt.Text.ConvertToLong()) && KayitVarMi(TCKimlikNoTxt.Text.ConvertToLong()))
             {
                 exceptionHelper.Exceptions.Add(new Exception("Bu TCKimlik numaralı bir kayıt zaten var."));
@@ -409,7 +409,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
                     ftkKisi.UyelikDurumu = UyelikDurumuDDL.SelectedItem.Value;
 
                     ftkKisi.Degistiren = CurrentUserName;
-                    guncellendiMi = ftkKisi.Update();
+                    guncellendiMi = ftkKisiService.Update(ftkKisi);
                     FTKKisiIdQS = ftkKisi.Id.ToString();
                     IliIdQS = ftkKisi.Ili.ToString();
                     IlcesiIdQS = ftkKisi.Ilcesi.ToString();
@@ -433,8 +433,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
         }
         private bool AdSoyadVarMi(string adi, string soyadi)
         {
-            FTKKisi uyeDao = new FTKKisi();
-            uyeDao = uyeDao.SelectByAdiSoyadi(adi, soyadi);
+            FTKKisi uyeDao = new FTKKisiService().GetByName(adi, soyadi);
             if (uyeDao == null)
             {
                 return false;
@@ -450,8 +449,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
             }
             else
             {
-                FTKKisi uyeDao = new FTKKisi();
-                uyeDao = uyeDao.SelectByTCKimlikNo(tckimlikno);
+                FTKKisi uyeDao = new FTKKisiService().GetByIdentityNumber(tckimlikno);
                 if (uyeDao == null)
                 {
                     return false;
@@ -492,8 +490,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
         }
         protected void FTKIslemleriBtn_Click(object sender, EventArgs e)
         {
-            FTKIslem fTKIslem = new FTKIslem();
-            fTKIslem = fTKIslem.SelectByIliIlcesi(IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt());
+            FTKIslem fTKIslem = new FTKIslemService().GetByLocation(IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt());
             string ftkIslemId = fTKIslem == null ? string.Empty : fTKIslem.Id.ToString();
             RedirectToPage(ProjeConstants.PAGE_FTKISLEMLERI + "?FTKIslemId=" + ftkIslemId + "&IliId=" + IliIdQS + "&IlcesiId=" + IlcesiIdQS);
         }
@@ -549,8 +546,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
         {
             try
             {
-                FTKKisi ftkkisi = new FTKKisi();
-                ftkkisi = ftkkisi.Select(FTKKisiIdQS.ConvertToInt());
+                FTKKisi ftkkisi = new FTKKisiService().GetById(FTKKisiIdQS.ConvertToInt());
                 if (ftkkisi != null)
                 {
                     SilPopupAc(sender);
@@ -580,14 +576,13 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
             bool silindi = false;
             try
             {
-                FTKKisi ftkkisi = new FTKKisi();
-                ftkkisi = ftkkisi.Select(FTKKisiIdQS.ConvertToInt());
+                FTKKisiService ftkKisiService = new FTKKisiService();
+                FTKKisi ftkkisi = ftkKisiService.GetById(FTKKisiIdQS.ConvertToInt());
 
                 if (ftkkisi != null)
                 {
-                    silindi = ftkkisi.Delete();
-                    FTKIslem fTKIslemleri = new FTKIslem();
-                    fTKIslemleri = fTKIslemleri.SelectByIliIlcesi(IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt());
+                    silindi = ftkKisiService.Delete(ftkkisi);
+                    FTKIslem fTKIslemleri = new FTKIslemService().GetByLocation(IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt());
                     string ftkIslemId = fTKIslemleri == null ? string.Empty : fTKIslemleri.Id.ToString();
                     RedirectToPage(ProjeConstants.PAGE_FTKISLEMLERI + "?FTKIslemId=" + ftkIslemId + "&IliId=" + IliIdQS + "&IlcesiId=" + IlcesiIdQS);
 

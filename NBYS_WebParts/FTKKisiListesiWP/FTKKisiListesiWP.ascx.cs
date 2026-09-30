@@ -1,4 +1,5 @@
 using Model.NBYS;
+using Model.Services.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -89,8 +90,8 @@ namespace NBYS_WebParts.FTKKisiListesiWP
         {
             int SiraNo = 1;
             List<UyeListItem> list = new List<UyeListItem>();
-            FTKKisi ftkKisi = new FTKKisi();
-            DataTable dataTable = ftkKisi.SelectAllReturnDT();
+            FTKKisiService ftkKisiService = new FTKKisiService();
+            DataTable dataTable = ftkKisiService.GetAllTable();
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)

@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -232,8 +233,8 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
         private List<IlIlceItem> GetIlDataList()
         {
             List<IlIlceItem> liste = new List<IlIlceItem>();
-            FTK ftkDao = new FTK();
-            DataTable dataTable = ftkDao.SelectFTKKuruluOlmayanIller(BolgeDDL.SelectedItem.Value.ConvertToInt(), IliDDL.SelectedItem.Value.ConvertToInt());
+            FTKService ftkService = new FTKService();
+            DataTable dataTable = ftkService.GetProvincesWithoutFTK(BolgeDDL.SelectedItem.Value.ConvertToInt(), IliDDL.SelectedItem.Value.ConvertToInt());
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
@@ -261,8 +262,8 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
         private List<IlIlceItem> GetIlceDataList()
         {
             List<IlIlceItem> liste = new List<IlIlceItem>();
-            FTK ftkDao = new FTK();
-            DataTable dataTable = ftkDao.SelectFTKKuruluOlmayanIlceler(BolgeDDL.SelectedItem.Value.ConvertToInt(), IliDDL.SelectedItem.Value.ConvertToInt());
+            FTKService ftkService = new FTKService();
+            DataTable dataTable = ftkService.GetDistrictsWithoutFTK(BolgeDDL.SelectedItem.Value.ConvertToInt(), IliDDL.SelectedItem.Value.ConvertToInt());
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
@@ -422,8 +423,7 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
         }
         protected void FTKIslemleriBtn_Click(object sender, EventArgs e)
         {
-            FTKIslem fTKIslem = new FTKIslem();
-            fTKIslem = fTKIslem.SelectByIliIlcesi(IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt());
+            FTKIslem fTKIslem = new FTKIslemService().GetByLocation(IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt());
             string ftkIslemId = fTKIslem == null ? string.Empty : fTKIslem.Id.ToString();
             RedirectToPage(ProjeConstants.PAGE_FTKISLEMLERI + "?FTKIslemId=" + ftkIslemId + "&IliId=" + IliIdQS + "&IlcesiId=" + IlcesiIdQS);
         }
