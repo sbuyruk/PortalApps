@@ -567,7 +567,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                 if (aktarilmayanlar.Count > 0)
                 {
                     //var numbers = value?.Split(',')?.Select(Int32.Parse)?.ToList();
-                    var exceptionHelper = EkstreAktarma.SaveAll(aktarilmayanlar, currentUser); //seçilenler diğer tablolara dağıtılıyor
+                    var exceptionHelper = EkstreAktarmaTransferService.SaveAll(aktarilmayanlar, currentUser); //seçilenler diğer tablolara dağıtılıyor
                    
                     if (exceptionHelper.Exceptions.Count > 0)
                     {
