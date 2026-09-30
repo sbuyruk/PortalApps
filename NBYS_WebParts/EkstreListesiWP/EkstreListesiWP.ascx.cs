@@ -618,7 +618,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                     sk.Silen = currentUser;
                     sk.SilinmeSebebi = counter + " adet kayit silindi";
                     sk.TabloAdi = "EkstreAktarma_Table";
-                    sk.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
+                    sk.SilinmeTarihi = DateTime.Now;
                     if (mesaj.Length > 2000)
                     {
                         mesaj = mesaj.Substring(0, 1990);

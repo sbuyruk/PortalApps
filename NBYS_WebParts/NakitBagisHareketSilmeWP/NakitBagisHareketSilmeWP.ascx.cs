@@ -383,7 +383,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                 skNBH.Silen = currentUser;
                 skNBH.SilinmeSebebi = SilmeSebebiTxt.Value;
                 skNBH.TabloAdi = "NakitBagisHareket_Table";
-                skNBH.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
+                skNBH.SilinmeTarihi = DateTime.Now;
                 skNBH.SilinenKayitBilgisi = " #BagisHareketId=" + nbh.Id + " #BagisciId=" + nbh.BagisciId + " #BagisTarihi=" + nbh.BagisTarihi + " #BagisMiktari=" + nbh.BagisMiktari;
                 #endregion
                 #region Armagan_Table dan sil
@@ -402,7 +402,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                         skArmagan.Silen = currentUser;
                         skArmagan.SilinmeSebebi = SilmeSebebiTxt.Value;
                         skArmagan.TabloAdi = "Armagan_Table";
-                        skArmagan.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
+                        skArmagan.SilinmeTarihi = DateTime.Now;
                         skArmagan.SilinenKayitBilgisi = " #ArmaganId=" + armagan.Id + " #BagisciId=" + armagan.BagisciId + " #BagisHareketId=" + nbh.Id + " #BagisTarihi=" + nbh.BagisTarihi + " #BagisMiktari=" + nbh.BagisMiktari;
                     }
                 }
@@ -421,7 +421,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                     skBagisci.Silen = currentUser;
                     skBagisci.SilinmeSebebi = "Bağış silindiğinden";
                     skBagisci.TabloAdi = "NakitBagisci_Table";
-                    skBagisci.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
+                    skBagisci.SilinmeTarihi = DateTime.Now;
                     skBagisci.SilinenKayitBilgisi = " #BagisciId=" + bagisci.Id + " #Adi=" + bagisci.Adi + " #TCKimlikNo=" + bagisci.TCKimlikNo + " #Telefon=" + bagisci.Telefon1 + " " + bagisci.Telefon2 + " #Adres=" + bagisci.Adres;
                     skBagisci.Save();
                     nakitBagisciService.Delete(bagisci);
