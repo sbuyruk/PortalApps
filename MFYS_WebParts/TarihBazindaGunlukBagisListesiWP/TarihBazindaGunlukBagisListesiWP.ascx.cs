@@ -205,8 +205,7 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
             {
                 BankaDDL.Items.Clear();
                 BankaDDL.Items.Add(new ListItem("Tüm Bankalar", string.Empty));
-                BankaTanim pBanka = new BankaTanim();
-                List<string> list = pBanka.SelectByBankaGrup();
+                List<string> list = new BankaTanimService().GetGroups();
                 foreach (string bankaGrup in list)
                 {
                     BankaDDL.Items.Add(new ListItem(bankaGrup, bankaGrup));
