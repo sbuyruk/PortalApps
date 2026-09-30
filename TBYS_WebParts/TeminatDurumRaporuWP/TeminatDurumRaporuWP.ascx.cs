@@ -29,6 +29,15 @@ namespace TBYS_WebParts.TeminatDurumRaporuWP
             this.ChromeType = PartChromeType.None;
         }
         private IFormatProvider cultureInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+        private int colToplamAdet = 0;
+        private decimal colToplamTeminat = 0;
+        private decimal colToplamArsa = 0;
+        private decimal colToplamBis = 0;
+        private decimal colToplamIsyeri = 0;
+        private decimal colToplamMesken = 0;
+        private decimal colToplamTarla = 0;
+        private decimal colToplamTesis = 0;
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             TasinmazDurumuTablosunuDoldur();
@@ -44,6 +53,73 @@ namespace TBYS_WebParts.TeminatDurumRaporuWP
             TabloyaBolgeEkle(ProjeConstants.BOLGE_IZMIR, ProjeConstants.BOLGE_IZMIR_INT);
             TabloyaBolgeEkle(ProjeConstants.BOLGE_MERSIN, ProjeConstants.BOLGE_MERSIN_INT);
             TabloyaBolgeEkle(ProjeConstants.BOLGE_ERZURUM, ProjeConstants.BOLGE_ERZURUM_INT);
+            ToplamSatiriEkle();
+        }
+
+        private void ToplamSatiriEkle()
+        {
+            TableRow tableRow = new TableRow();
+            TableCell satirToplamiCell = new TableCell();
+            satirToplamiCell.Text = "Toplam";           
+
+            TableCell sozlesmeAdetToplamiCell = new TableCell();
+            sozlesmeAdetToplamiCell.Text = colToplamAdet.ToString();
+            TableCell sozlesmeTeminatToplamiCell = new TableCell();
+            sozlesmeTeminatToplamiCell.Text = colToplamTeminat.ToString("N", cultureInfo);
+            TableCell arsaToplamiCell = new TableCell();
+            arsaToplamiCell.Text = colToplamArsa.ToString("N", cultureInfo);
+            TableCell bisToplamiCell = new TableCell();
+            bisToplamiCell.Text = colToplamBis.ToString("N", cultureInfo);
+            TableCell isyeriToplamiCell = new TableCell();
+            isyeriToplamiCell.Text = colToplamIsyeri.ToString("N", cultureInfo);
+            TableCell meskenToplamiCell = new TableCell();
+            meskenToplamiCell.Text = colToplamMesken.ToString("N", cultureInfo);
+            TableCell tarlaToplamiCell = new TableCell();
+            tarlaToplamiCell.Text = colToplamTarla.ToString("N", cultureInfo);
+            TableCell tesisToplamiCell = new TableCell();
+            tesisToplamiCell.Text = colToplamTesis.ToString("N", cultureInfo); 
+
+            sozlesmeAdetToplamiCell.HorizontalAlign = HorizontalAlign.Right;
+            sozlesmeTeminatToplamiCell.HorizontalAlign = HorizontalAlign.Right;
+            arsaToplamiCell.HorizontalAlign = HorizontalAlign.Right;
+            bisToplamiCell.HorizontalAlign = HorizontalAlign.Right;
+            isyeriToplamiCell.HorizontalAlign = HorizontalAlign.Right;
+            meskenToplamiCell.HorizontalAlign = HorizontalAlign.Right;
+            tarlaToplamiCell.HorizontalAlign = HorizontalAlign.Right;
+            tesisToplamiCell.HorizontalAlign = HorizontalAlign.Right;
+
+            satirToplamiCell.BorderStyle = BorderStyle.Solid;
+            sozlesmeAdetToplamiCell.BorderStyle = BorderStyle.Solid;
+            sozlesmeTeminatToplamiCell.BorderStyle = BorderStyle.Solid;
+            arsaToplamiCell.BorderStyle = BorderStyle.Solid;
+            bisToplamiCell.BorderStyle = BorderStyle.Solid;
+            isyeriToplamiCell.BorderStyle = BorderStyle.Solid;
+            meskenToplamiCell.BorderStyle = BorderStyle.Solid;
+            tarlaToplamiCell.BorderStyle = BorderStyle.Solid;
+            tesisToplamiCell.BorderStyle = BorderStyle.Solid;
+
+            satirToplamiCell.Font.Bold = true;
+            sozlesmeAdetToplamiCell.Font.Bold = true;
+            sozlesmeTeminatToplamiCell.Font.Bold = true;
+            arsaToplamiCell.Font.Bold = true;
+            bisToplamiCell.Font.Bold = true;
+            isyeriToplamiCell.Font.Bold = true;
+            meskenToplamiCell.Font.Bold = true;
+            tarlaToplamiCell.Font.Bold = true;
+            tesisToplamiCell.Font.Bold = true;
+
+
+            tableRow.Cells.Add(satirToplamiCell);
+            tableRow.Cells.Add(sozlesmeAdetToplamiCell);
+            tableRow.Cells.Add(sozlesmeTeminatToplamiCell);
+            tableRow.Cells.Add(meskenToplamiCell);
+            tableRow.Cells.Add(isyeriToplamiCell);
+            tableRow.Cells.Add(arsaToplamiCell);
+            tableRow.Cells.Add(tarlaToplamiCell);
+            tableRow.Cells.Add(bisToplamiCell);
+            tableRow.Cells.Add(tesisToplamiCell);
+
+            TeminatDurumuTable.Rows.Add(tableRow);
         }
 
         private void TabloyaBolgeEkle(string bolge,int bolgeId)
@@ -61,6 +137,7 @@ namespace TBYS_WebParts.TeminatDurumRaporuWP
             TableCell tarlaCell = new TableCell();
             TableCell tesisCell = new TableCell();
 
+            sozlesmeAdetCell.HorizontalAlign = HorizontalAlign.Right;
             sozlesmeTeminatCell.HorizontalAlign = HorizontalAlign.Right;
             arsaCell.HorizontalAlign = HorizontalAlign.Right;
             bisCell.HorizontalAlign = HorizontalAlign.Right;
@@ -69,16 +146,6 @@ namespace TBYS_WebParts.TeminatDurumRaporuWP
             tarlaCell.HorizontalAlign = HorizontalAlign.Right;
             tesisCell.HorizontalAlign = HorizontalAlign.Right;
 
-
-            //bolgeCell.Attributes["style"] = "border:1px solid black";
-            //sozlesmeAdetCell.Attributes["style"] = "border:1px solid black";
-            //sozlesmeTeminatCell.Attributes["style"] = "border:1px solid black";
-            //arsaCell.Attributes["style"] = "border:1px solid black";
-            //bisCell.Attributes["style"] = "border:1px solid black";
-            //isyeriCell.Attributes["style"] = "border:1px solid black";
-            //meskenCell.Attributes["style"] = "border:1px solid black";
-            //tarlaCell.Attributes["style"] = "border:1px solid black";
-            //tesisCell.Attributes["style"] = "border:1px solid black";
             bolgeCell.BorderStyle = BorderStyle.Solid;
             sozlesmeAdetCell.BorderStyle = BorderStyle.Solid;
             sozlesmeTeminatCell.BorderStyle = BorderStyle.Solid;
@@ -115,37 +182,45 @@ namespace TBYS_WebParts.TeminatDurumRaporuWP
                 bolgeCell.Text = bolge;
 
                 adetToplam += adet;
+                colToplamAdet += adet;
                 teminatToplam += kalanTeminatTutari;
+                colToplamTeminat += kalanTeminatTutari;
                 switch (kiralamaAmaci)
                 {
                     case ProjeConstants.KIRALAMAAMACI_ARSA:
                         {
                             arsaCell.Text = kalanTeminatTutari.ToString("N", cultureInfo);
+                            colToplamArsa += kalanTeminatTutari;
                             break;
                         }
                     case ProjeConstants.KIRALAMAAMACI_BAZISTASYONU:
                         {
                             bisCell.Text = kalanTeminatTutari.ToString("N", cultureInfo);
+                            colToplamBis += kalanTeminatTutari;
                             break;
                         }
                     case ProjeConstants.KIRALAMAAMACI_ISYERI:
                         {
                             isyeriCell.Text = kalanTeminatTutari.ToString("N", cultureInfo);
+                            colToplamIsyeri += kalanTeminatTutari;
                             break;
                         }
                     case ProjeConstants.KIRALAMAAMACI_MESKEN:
                         {
                             meskenCell.Text = kalanTeminatTutari.ToString("N", cultureInfo);
+                            colToplamMesken += kalanTeminatTutari;
                             break;
                         }
                     case ProjeConstants.KIRALAMAAMACI_TARLA:
                         {
                             tarlaCell.Text = kalanTeminatTutari.ToString("N", cultureInfo);
+                            colToplamTarla += kalanTeminatTutari;
                             break;
                         }
                     case ProjeConstants.KIRALAMAAMACI_TESIS:
                         {
                             tesisCell.Text = kalanTeminatTutari.ToString("N", cultureInfo);
+                            colToplamTesis += kalanTeminatTutari;
                             break;
                         }
                     default:
@@ -170,42 +245,42 @@ namespace TBYS_WebParts.TeminatDurumRaporuWP
 
             TableHeaderCell bolgeCell = new TableHeaderCell();
             bolgeCell.RowSpan = 2;
-            bolgeCell.Text = "B�lge";
+            bolgeCell.Text = "Bölge";
             headerRow.Controls.Add(bolgeCell);
 
             TableHeaderCell sozlesmeCell = new TableHeaderCell();
             sozlesmeCell.ColumnSpan = 2;
-            sozlesmeCell.Text = "Sozlesme";
+            sozlesmeCell.Text = "Sözleşme";
             headerRow.Controls.Add(sozlesmeCell);
 
             TableHeaderCell meskenCell = new TableHeaderCell();
             meskenCell.RowSpan = 2;
-            meskenCell.Text = "Mesken";
+            meskenCell.Text = "Mesken (TL)";
             headerRow.Controls.Add(meskenCell);
 
             TableHeaderCell isyeriCell = new TableHeaderCell();
             isyeriCell.RowSpan = 2;
-            isyeriCell.Text = "Isyeri";
+            isyeriCell.Text = "İşyeri (TL)";
             headerRow.Controls.Add(isyeriCell);
 
             TableHeaderCell arsaCell = new TableHeaderCell();
             arsaCell.RowSpan = 2;
-            arsaCell.Text = "Arsa";
+            arsaCell.Text = "Arsa (TL)";
             headerRow.Controls.Add(arsaCell);
 
             TableHeaderCell tarlaCell = new TableHeaderCell();
             tarlaCell.RowSpan = 2;
-            tarlaCell.Text = "Tarla";
+            tarlaCell.Text = "Tarla (TL)";
             headerRow.Controls.Add(tarlaCell);
 
             TableHeaderCell bisCell = new TableHeaderCell();
             bisCell.RowSpan = 2;
-            bisCell.Text = "Baz Istasyonu";
+            bisCell.Text = "Baz İstasyonu (TL)";
             headerRow.Controls.Add(bisCell);
 
             TableHeaderCell tesisCell = new TableHeaderCell();
             tesisCell.RowSpan = 2;
-            tesisCell.Text = "Tesis";
+            tesisCell.Text = "Tesis (TL)";
             headerRow.Controls.Add(tesisCell);
 
             TableHeaderRow headerRow1 = new TableHeaderRow();
@@ -215,7 +290,7 @@ namespace TBYS_WebParts.TeminatDurumRaporuWP
             headerRow1.Controls.Add(adetCell);
 
             TableHeaderCell teminatCell = new TableHeaderCell();
-            teminatCell.Text = "Teminat Tutari";
+            teminatCell.Text = "Teminat Tutarı (TL)";
             headerRow1.Controls.Add(teminatCell);
 
             bolgeCell.BorderStyle = BorderStyle.Solid;
