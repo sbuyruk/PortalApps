@@ -49,6 +49,12 @@ namespace DAO.Repositories.NBYS
                 "SELECT BankaGrup FROM BankaTanim_Table GROUP BY BankaGrup"), "");
         }
 
+        public DataTable SelectGroups2()
+        {
+            return db.SelectFromDb(new SqlQuery(
+                "SELECT BankaGrup2 FROM BankaTanim_Table GROUP BY BankaGrup2"), "");
+        }
+
         public int Insert<T>(T entity)
         {
             return db.Insert(queryBuilder.BuildInsert(entity, TableName));

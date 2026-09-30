@@ -172,7 +172,7 @@ namespace NBYS_WebParts.BagisaVesileOlanArmaganBelgesiWP
                 TCKimlikNo=TCKimlikNoTxt.Text.ConvertToLong(),
                 VerilmeSebebi=VerilmeSebebiTxt.Text,
             };
-            int id=bagisaVesileOlanTesekkur.Save();
+            int id = new BagisaVesileOlanTesekkurService().Save(bagisaVesileOlanTesekkur);
             bagisaVesileOlanTesekkur.Id= id;
             return bagisaVesileOlanTesekkur;
         }
