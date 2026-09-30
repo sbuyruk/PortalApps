@@ -12,6 +12,11 @@ namespace Model.Services.NBYS
 {
     public static class EkstreAktarmaImportService
     {
+        private static int SaveEkstreAktarma(EkstreAktarma item)
+        {
+            return new EkstreAktarmaService().Save(item);
+        }
+
         public static ExceptionHelper SaveAkBankFile(Stream fileStream, DateTime processTime, string currentUser)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -58,7 +63,7 @@ namespace Model.Services.NBYS
                         ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                         ekstreAktarma.Olusturan = currentUser;
                         //ekstreAktarma.FisNo = fisNo;
-                        ekstreAktarma.Save();
+                        SaveEkstreAktarma(ekstreAktarma);
 
                     }
                 }
@@ -111,7 +116,7 @@ namespace Model.Services.NBYS
                                     ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                     ekstreAktarma.Olusturan = currentUser;
                                     ekstreAktarma.FisNo = fisNo;
-                                    ekstreAktarma.Save();
+                                    SaveEkstreAktarma(ekstreAktarma);
                                 }
                             }
                         }
@@ -198,7 +203,7 @@ namespace Model.Services.NBYS
                             ekstreAktarma.IslemTarihi = processTime;
                             ekstreAktarma.Olusturan = currentUser;
 
-                            ekstreAktarma.Save();
+                            SaveEkstreAktarma(ekstreAktarma);
 
                         }
                     }
@@ -334,7 +339,7 @@ namespace Model.Services.NBYS
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
 
-                            ekstreAktarma.Save();
+                            SaveEkstreAktarma(ekstreAktarma);
                         }
                     }
                     catch (Exception ex)
@@ -381,7 +386,7 @@ namespace Model.Services.NBYS
                         ekstreAktarma.IslemTarihi = processTime;
                         ekstreAktarma.Olusturan = currentUser;
                         ekstreAktarma.BelgeIstemiyor = ekstreAktarma.Aciklama.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) || ekstreAktarma.Adres.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) ? true : false;
-                        ekstreAktarma.Save();
+                        SaveEkstreAktarma(ekstreAktarma);
 
                     }
 
@@ -461,7 +466,7 @@ namespace Model.Services.NBYS
                                 ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                 ekstreAktarma.Olusturan = currentUser;
                                 hata = detay;
-                                ekstreAktarma.Save();
+                                SaveEkstreAktarma(ekstreAktarma);
                             }
 
                         }
@@ -532,7 +537,7 @@ namespace Model.Services.NBYS
                     //    ekstreAktarma.Save();
 
                     //}
-                    item.Save();
+                    SaveEkstreAktarma(item);
                 }
                 catch (Exception ex)
                 {
@@ -605,7 +610,7 @@ namespace Model.Services.NBYS
                                     }
                                     else
                                     {
-                                        ekstreAktarma.Save();
+                                        SaveEkstreAktarma(ekstreAktarma);
                                     }
                                 }
 
@@ -668,7 +673,7 @@ namespace Model.Services.NBYS
 
 
 
-                        ekstreAktarma.Save();
+                        SaveEkstreAktarma(ekstreAktarma);
                     }
                     catch (Exception ex)
                     {
@@ -774,7 +779,7 @@ namespace Model.Services.NBYS
                                 ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                 ekstreAktarma.Olusturan = currentUser;
 
-                                ekstreAktarma.Save();
+                                SaveEkstreAktarma(ekstreAktarma);
                             }
                             else
                             {
@@ -908,7 +913,7 @@ namespace Model.Services.NBYS
                             }
                             else
                             {
-                                ekstreAktarma.Save();
+                                SaveEkstreAktarma(ekstreAktarma);
 
                             }
                         }
@@ -1001,7 +1006,7 @@ namespace Model.Services.NBYS
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
 
-                            ekstreAktarma.Save();
+                            SaveEkstreAktarma(ekstreAktarma);
                         }
                         catch (Exception ex)
                         {
@@ -1066,7 +1071,7 @@ namespace Model.Services.NBYS
                         ekstreAktarma.IslemTarihi = processTime;
                         ekstreAktarma.Olusturan = currentUser;
                         ekstreAktarma.BelgeIstemiyor = ekstreAktarma.Aciklama.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) || ekstreAktarma.Adres.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) ? true : false;
-                        ekstreAktarma.Save();
+                        SaveEkstreAktarma(ekstreAktarma);
 
                     }
 
@@ -1165,7 +1170,7 @@ namespace Model.Services.NBYS
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
 
-                            ekstreAktarma.Save();
+                            SaveEkstreAktarma(ekstreAktarma);
                         }
                         catch (Exception ex)
                         {
@@ -1251,7 +1256,7 @@ namespace Model.Services.NBYS
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
 
-                            ekstreAktarma.Save();
+                            SaveEkstreAktarma(ekstreAktarma);
                         }
                         catch (Exception ex)
                         {
@@ -1332,7 +1337,7 @@ namespace Model.Services.NBYS
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
 
-                            ekstreAktarma.Save();
+                            SaveEkstreAktarma(ekstreAktarma);
 
                         }
                     }
@@ -1413,7 +1418,7 @@ namespace Model.Services.NBYS
                         }
                         else
                         {
-                            ekstreAktarma.Save();
+                            SaveEkstreAktarma(ekstreAktarma);
 
                         }
 
@@ -1516,7 +1521,7 @@ namespace Model.Services.NBYS
                                     }
                                     else
                                     {
-                                        ekstreAktarma.Save();
+                                        SaveEkstreAktarma(ekstreAktarma);
                                     }
                                 }
                             }
@@ -1714,7 +1719,7 @@ namespace Model.Services.NBYS
                                 }
                                 else
                                 {
-                                    ekstreAktarma.Save();
+                                    SaveEkstreAktarma(ekstreAktarma);
                                 }
                             }
 
@@ -1736,8 +1741,8 @@ namespace Model.Services.NBYS
         private static bool BuKayitDahaOnceGirilmisMiByFisNo(string bankaLike, string fisNo, string aciklama, DateTime bagisTarihi, decimal tutar)
         {
             bool kaydedilmisMi = false;
-            EkstreAktarma ekstreAktarmaDao = new EkstreAktarma();
-            List<EkstreAktarma> ekstreAktarmaList = ekstreAktarmaDao.SelectByFisNoBanka(bankaLike, fisNo);
+            List<EkstreAktarma> ekstreAktarmaList = new EkstreAktarmaService()
+                .GetByBankAndReceipt(bankaLike, fisNo);
             foreach (var ekstreAktarma in ekstreAktarmaList)
             {
                 if (ekstreAktarma != null)
@@ -1880,7 +1885,7 @@ namespace Model.Services.NBYS
                                                 ekstreAktarma.TCKimlikNo = tcKalan.Split(new char[] { ' ', '/' })[0].ConvertToLong();
                                             }
                                         }
-                                        ekstreAktarma.Save();
+                                        SaveEkstreAktarma(ekstreAktarma);
 
                                     }
                                 }
@@ -1951,7 +1956,7 @@ namespace Model.Services.NBYS
                                 ekstreAktarma.IslemTarihi = processTime;
                                 ekstreAktarma.Olusturan = currentUser;
 
-                                var id = ekstreAktarma.Save();
+                                var id = SaveEkstreAktarma(ekstreAktarma);
                             }
                         }
                     }
@@ -2016,7 +2021,7 @@ namespace Model.Services.NBYS
                                     }
                                     else
                                     {
-                                        ekstreAktarma.Save();
+                                        SaveEkstreAktarma(ekstreAktarma);
                                     }
                                 }
                             }
@@ -2104,7 +2109,7 @@ namespace Model.Services.NBYS
                             ekstreAktarma.IslemTarihi = islemTarihi;
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
-                            ekstreAktarma.Save();
+                            SaveEkstreAktarma(ekstreAktarma);
                         }
                         catch (Exception ex)
                         {
