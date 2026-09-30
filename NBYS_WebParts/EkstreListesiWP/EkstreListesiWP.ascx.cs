@@ -953,7 +953,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                             { data: 'AdiSoyadi', render:function(data,type,row){
                                 if (type !== 'display' || !row.NakitBagisciId || row.NakitBagisciId < 1) return data;
                                 var guvenliAd = $('<div/>').text(data || '').html();
-                                return '<button type="button" class="btn btn-link p-0 fw-bold" onclick="return NakitBagisciKartiAc(' + row.NakitBagisciId + ');">' + guvenliAd + '</button>';
+                                return '<button type=""button"" class=""btn btn-link p-0 fw-bold"" onclick=""return NakitBagisciKartiAc(' + row.NakitBagisciId + ');"">' + guvenliAd + '</button>';
                             } },
                             { data: 'Telefon' },
                             { data: 'BagisTarihi' },
