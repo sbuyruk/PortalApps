@@ -199,8 +199,7 @@ namespace MFYS_WebParts.BankaBazindaGunlukBagisListesiWP
             if (BankaDDL.SelectedItem == null)
             {
                 BankaDDL.Items.Clear();
-                BankaTanim pBanka = new BankaTanim();
-                List<string> list = pBanka.SelectByBankaGrup2();
+                List<string> list = new BankaTanimService().GetGroups2();
                 foreach (string banka in list)
                 {
                     BankaDDL.Items.Add(new ListItem(banka, banka));

@@ -48,6 +48,14 @@ namespace Model.Services.NBYS
                 .ToList();
         }
 
+        public List<string> GetGroups2()
+        {
+            DataTable table = repository.SelectGroups2();
+            return table.AsEnumerable()
+                .Select(row => row.Field<string>("BankaGrup2"))
+                .ToList();
+        }
+
         public int Save(BankaTanim item)
         {
             if (item == null)
