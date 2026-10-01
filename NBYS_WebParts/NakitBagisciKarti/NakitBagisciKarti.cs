@@ -126,7 +126,7 @@ namespace NBYS_WebParts.NakitBagisciKarti
             string initials = Initials(bagisci.Adi, bagisci.Soyadi);
 
             StringBuilder html = new StringBuilder();
-            html.Append("<div class='modal-header nbk-header'>")
+            html.Append("<div class='modal-header nbk-header bg-dark text-white'>")
                 .Append("<div class='nbk-avatar'>").Append(E(initials)).Append("</div>")
                 .Append("<div class='flex-grow-1'><h4 class='modal-title mb-1'>").Append(E(fullName)).Append("</h4>")
                 .Append("<div class='nbk-meta'>").Append(E(JoinLocation(province, district)))
@@ -169,7 +169,7 @@ namespace NBYS_WebParts.NakitBagisciKarti
                 .Append(TabLink("Armağanlar", "armagan" + suffix, false, gifts.Count))
                 .Append(TabLink("İadeler", "iade" + suffix, false, donations.Count(x => x.IadeEdildiMi)))
                 .Append("</ul><div class='tab-content pt-3'>")
-                .Append("<div class='tab-pane fade show active' id='ozet").Append(suffix).Append("' role='tabpanel'>")
+                .Append("<div class='tab-pane show active' id='ozet").Append(suffix).Append("' role='tabpanel'>")
                 .Append("<div class='row g-3'><div class='col-md-6'><div class='nbk-info'><h6>Bağışçı bilgileri</h6>")
                 .Append(Info("Tür", bagisci.TuzelKisi ? "Tüzel kişi" : "Gerçek kişi"))
                 .Append(Info("Meslek", FirstValue(bagisci.Meslek, "Kayıtlı değil")))
@@ -184,11 +184,11 @@ namespace NBYS_WebParts.NakitBagisciKarti
             if (!string.IsNullOrWhiteSpace(bagisci.Aciklama))
                 html.Append("<div class='alert nbk-note mt-3 mb-0'><strong>Not:</strong> ").Append(E(bagisci.Aciklama)).Append("</div>");
             html.Append("</div>")
-                .Append("<div class='tab-pane fade' id='bagis").Append(suffix).Append("' role='tabpanel'>")
+                .Append("<div class='tab-pane' id='bagis").Append(suffix).Append("' role='tabpanel'>")
                 .Append(DonationTable(donations.Take(5), banks)).Append("</div>")
-                .Append("<div class='tab-pane fade' id='armagan").Append(suffix).Append("' role='tabpanel'>")
+                .Append("<div class='tab-pane' id='armagan").Append(suffix).Append("' role='tabpanel'>")
                 .Append(GiftTable(gifts.Take(5), giftNames)).Append("</div>")
-                .Append("<div class='tab-pane fade' id='iade").Append(suffix).Append("' role='tabpanel'>")
+                .Append("<div class='tab-pane' id='iade").Append(suffix).Append("' role='tabpanel'>")
                 .Append(RefundTable(donations.Where(x => x.IadeEdildiMi).Take(5), banks)).Append("</div></div>");
             return html.ToString();
         }
@@ -246,6 +246,18 @@ namespace NBYS_WebParts.NakitBagisciKarti
         {
             string css = @"<style>
 .nbk-modal{z-index:1055 !important;opacity:1 !important;filter:alpha(opacity=100) !important}.nbk-modal.show{display:block !important;opacity:1 !important;transform:none !important}.nbk-modal .modal-dialog{max-width:960px;opacity:1 !important;filter:alpha(opacity=100) !important;transform:none !important}.nbk-header{background:linear-gradient(112deg,#132836,#1b4f57);color:#fff}.nbk-avatar{width:50px;height:50px;border-radius:13px;background:#efc56d;color:#1a303b;display:grid;place-items:center;font-weight:800;margin-right:14px}.nbk-meta{color:#c2d1d5;font-size:.82rem}.nbk-badge{background:#efc56d;color:#20323a;margin-right:12px}.nbk-body{background:#fff}.nbk-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:13px}.nbk-metric{border:1px solid #dce3e6;border-radius:11px;padding:10px 12px}.nbk-metric small{display:block;color:#67757d;font-size:.7rem;font-weight:700;text-transform:uppercase}.nbk-metric strong{display:block;font-size:1.05rem;margin-top:3px}.nbk-refund strong{color:#ad4c47}.nbk-contact{display:grid;grid-template-columns:1fr 1.25fr 1.75fr;border:1px solid #dce3e6;border-radius:11px;background:#f9fbfb;margin-bottom:13px}.nbk-contact-item{padding:9px 12px;border-right:1px solid #dce3e6;min-width:0}.nbk-contact-item:last-child{border:0}.nbk-contact-item small{display:block;color:#67757d;font-weight:700;text-transform:uppercase}.nbk-contact-item span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.nbk-tabs .nav-link{font-weight:700;color:#67757d}.nbk-tabs .nav-link.active{color:#132836}.nbk-info{border:1px solid #dce3e6;border-radius:11px;padding:13px 14px;height:100%}.nbk-info h6{text-transform:uppercase;color:#53636b}.nbk-info-row{display:flex;justify-content:space-between;gap:12px;padding:4px 0;font-size:.86rem}.nbk-info-row span{color:#67757d}.nbk-note{background:#fff4dd;border-left:3px solid #d9a23d}.nbk-table{font-size:.84rem}.nbk-empty{padding:30px;text-align:center;color:#67757d}@media(max-width:700px){.nbk-modal .modal-dialog{margin:0;max-width:none;height:100%}.nbk-modal .modal-content{min-height:100%;border-radius:0}.nbk-metrics{grid-template-columns:1fr 1fr}.nbk-contact{grid-template-columns:1fr}.nbk-contact-item{border-right:0;border-bottom:1px solid #dce3e6}}
+.nbk-modal{font-size:14px;line-height:1.5}
+.nbk-modal .nbk-header{background-image:none;background-color:var(--bs-dark,#212529);color:var(--bs-white,#fff)}
+.nbk-modal .modal-title{font-size:20px;color:inherit}
+.nbk-modal .nbk-avatar,.nbk-modal .nbk-badge{background:var(--bs-light,#f8f9fa);color:var(--bs-dark,#212529)}
+.nbk-modal .nbk-meta{font-size:14px;color:inherit}
+.nbk-modal .nbk-metric small,.nbk-modal .nbk-contact-item small{font-size:13px}
+.nbk-modal .nbk-metric strong{font-size:18px}
+.nbk-modal .nbk-contact-item span,.nbk-modal .nbk-tabs .nav-link,.nbk-modal .nbk-info-row,.nbk-modal .nbk-table,.nbk-modal .modal-footer .small{font-size:14px}
+.nbk-modal .nbk-info h6{font-size:16px}
+.nbk-modal .nbk-tabs .badge,.nbk-modal .nbk-table .badge{font-size:12px}
+.nbk-modal .tab-content>.tab-pane{display:none}
+.nbk-modal .tab-content>.tab-pane.active{display:block;opacity:1;visibility:visible}
 </style>";
             if (Page.Header != null && Page.Header.FindControl("NakitBagisciKartiCss") == null)
             {
@@ -307,14 +319,14 @@ window.NakitBagisciKartiAc = function (bagisciId) {{
 
         private string EmptyContent()
         {
-            return "<div class='modal-header nbk-header'><h4 class='modal-title'>Nakit Bağışçı Kartı</h4>" +
+            return "<div class='modal-header nbk-header bg-dark text-white'><h4 class='modal-title'>Nakit Bağışçı Kartı</h4>" +
                 "<button type='button' class='btn-close btn-close-white' data-bs-dismiss='modal' aria-label='Kapat'></button></div>" +
                 "<div class='modal-body nbk-empty'>Bağışçı bilgileri yükleniyor...</div>";
         }
 
         private string ErrorContent(string message)
         {
-            return "<div class='modal-header nbk-header'><h4 class='modal-title'>Nakit Bağışçı Kartı</h4>" +
+            return "<div class='modal-header nbk-header bg-dark text-white'><h4 class='modal-title'>Nakit Bağışçı Kartı</h4>" +
                 "<button type='button' class='btn-close btn-close-white' data-bs-dismiss='modal' aria-label='Kapat'></button></div>" +
                 "<div class='modal-body'><div class='alert alert-danger mb-0'>" + E(message) + "</div></div>";
         }
