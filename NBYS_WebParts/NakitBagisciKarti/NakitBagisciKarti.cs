@@ -52,8 +52,9 @@ namespace NBYS_WebParts.NakitBagisciKarti
                 UpdateMode = UpdatePanelUpdateMode.Conditional,
                 ChildrenAsTriggers = true
             };
-            updatePanel.ContentTemplateContainer.Controls.Add(bagisciIdField);
-            updatePanel.ContentTemplateContainer.Controls.Add(loadButton);
+            // Postback controls must remain inside the SharePoint server form.
+            Controls.Add(bagisciIdField);
+            Controls.Add(loadButton);
             updatePanel.ContentTemplateContainer.Controls.Add(content);
             Controls.Add(updatePanel);
         }
@@ -63,6 +64,7 @@ namespace NBYS_WebParts.NakitBagisciKarti
             base.OnPreRender(e);
             EnsureChildControls();
             RegisterStyles();
+            ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(loadButton);
         }
 
         private void LoadButton_Click(object sender, EventArgs e)
@@ -71,6 +73,7 @@ namespace NBYS_WebParts.NakitBagisciKarti
             if (!int.TryParse(bagisciIdField.Value, out bagisciId) || bagisciId < 1)
             {
                 content.Text = ErrorContent("Geçerli bir bağışçı seçilemedi.");
+                updatePanel.Update();
                 ShowModal();
                 return;
             }
@@ -260,7 +263,11 @@ namespace NBYS_WebParts.NakitBagisciKarti
         protected override void Render(HtmlTextWriter writer)
         {
             EnsureChildControls();
+            bagisciIdField.RenderControl(writer);
+            loadButton.RenderControl(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "modal fade nbk-modal");
+            writer.AddAttribute("data-nbk-id-field", bagisciIdField.ClientID);
+            writer.AddAttribute("data-nbk-load-button", loadButton.ClientID);
             writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID + "_Modal");
             writer.AddAttribute("tabindex", "-1");
             writer.AddAttribute("aria-hidden", "true");
@@ -269,7 +276,7 @@ namespace NBYS_WebParts.NakitBagisciKarti
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "modal-content");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
-            base.Render(writer);
+            updatePanel.RenderControl(writer);
             writer.RenderEndTag();
             writer.RenderEndTag();
             writer.RenderEndTag();
