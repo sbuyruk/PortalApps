@@ -127,7 +127,7 @@
                 <div class="row">
                     <div class="col">
                         <div class="form-group" style="display: block">
-                            <label class="form-label mr-2 fw-bold" for="IslemTarihiTxt">İşlem TarihiXX</label>
+                            <label class="form-label mr-2 fw-bold" for="IslemTarihiTxt">İşlem Tarihi</label>
                             <asp:TextBox ID="IslemTarihiTxt" runat="server" class="form-control DateTimePickerV1" type="text" AutoPostBack="true" OnTextChanged="IslemTarihiTxt_TextChanged" />
                         </div>
                         <div class="form-group">
