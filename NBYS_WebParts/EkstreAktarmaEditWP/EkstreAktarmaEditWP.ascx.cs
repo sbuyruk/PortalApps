@@ -595,7 +595,12 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
 
         protected void EslestirBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_NAKITBAGISCI_ESLESTIR + "?IslemTarihi=" + IslemTarihiTxt.Text + "&EkstreAktarmaId =" + EkstreAktarmaIdQS + "&Banka=" + BankaQS);
+            EkstreAktarma ekstreAktarma = new EkstreAktarmaService().GetById(EkstreAktarmaIdQS.ConvertToInt()); 
+            ekstreAktarma.NakitBagisciId = NakitBagisciIdLbl.Text.ConvertToInt();
+            EkstreAktarmaService eas = new EkstreAktarmaService();
+            eas.Update(ekstreAktarma);
+
+            RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?IslemTarihi=" + IslemTarihiTxt.Text + "&EkstreAktarmaId =" + EkstreAktarmaIdQS + "&Banka=" + BankaQS);
         }
         protected void DovizCinsiDDLIli_SelectedIndexChanged(object sender, EventArgs e)
         {

@@ -315,7 +315,7 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
                     string ilcesi = row["Ilcesi"].ToString();
                     string telefon = row["Telefon1"].ToString();
                     string adres = row["Adres"].ToString();
-                    string secUrl = !string.IsNullOrEmpty(EkstreAktarmaIdQS) ?"<a href=EkstreListesi.aspx?SenderApp=NBE&EkstreAktarmaId=" + EkstreAktarmaIdQS + "&NakitBagisciId=" + nakitBagisciId + "&Param=" + spaceStr + "class='btn btn-outline-success'>Seç</a>"
+                    string secUrl = !string.IsNullOrEmpty(EkstreAktarmaIdQS) ?"<a href=EkstreAktarmaEdit.aspx?SenderApp=NBE&EkstreAktarmaId=" + EkstreAktarmaIdQS + "&NakitBagisciId=" + nakitBagisciId + "&Param=" + spaceStr + "class='btn btn-outline-success'>Seç</a>"
                         : "<a href=DuzenliNakitBagisciListesi.aspx?SenderApp=NBE&NakitBagisciId=" + nakitBagisciId + "&DuzenliBagisciId=" + DuzenliBagisciIdQS + "&Param=" + spaceStr + "class='btn btn-outline-success'>Seç</a>";
 
 
