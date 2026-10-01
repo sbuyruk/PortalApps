@@ -464,7 +464,11 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             ekstreAktarma.BagisTarihi = BagisTarihiTxt.Value.ConvertToDatetime();
             ekstreAktarma.IslemTarihi = IslemTarihiTxt.Text.ConvertToDatetime();
             ekstreAktarma.ElleKayit = true;
-            ekstreAktarma.NakitBagisciId = NakitBagisciIdLbl.Text.ConvertToInt();
+            int nakitBagisciId = NakitBagisciIdLbl.Text.ConvertToInt();
+            if (nakitBagisciId > 0)
+            {
+                ekstreAktarma.NakitBagisciId = nakitBagisciId;
+            }
             int saveId = new EkstreAktarmaService().Save(ekstreAktarma);
             if (saveId > 0)
                 isSaved = true;
@@ -497,7 +501,11 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             ekstreAktarma.Aciklama = AciklamaTxt.Text;
             ekstreAktarma.BagisTarihi = BagisTarihiTxt.Value.ConvertToDatetime();
             ekstreAktarma.IslemTarihi = IslemTarihiTxt.Text.ConvertToDatetime();
-            ekstreAktarma.NakitBagisciId = NakitBagisciIdLbl.Text.ConvertToInt();
+            int nakitBagisciId = NakitBagisciIdLbl.Text.ConvertToInt();
+            if (nakitBagisciId > 0 && ekstreAktarma.NakitBagisciId<1)
+            {
+                ekstreAktarma.NakitBagisciId = nakitBagisciId;
+            }
             isSaved = new EkstreAktarmaService().Update(ekstreAktarma);
             return isSaved;
         }

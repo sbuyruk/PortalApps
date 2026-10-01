@@ -79,6 +79,11 @@ namespace Model.Services.NBYS
             bool updated = false;
             if (item.Id != 0)
             {
+                // Çağıran taraf NakitBagisciId göndermediyse mevcut pozitif ilişkiyi koru.
+                // Pozitif bir değer gönderildiyse item üzerindeki değer güncellenir.
+                if (item.NakitBagisciId <= 0 && previous != null && previous.NakitBagisciId > 0)
+                    item.NakitBagisciId = previous.NakitBagisciId;
+
                 item.DegistirmeTarihi = DateTime.Now;
                 item.Degistiren = UtilityHelper.GetCurrentUserName();
                 updated = repository.Update(item);

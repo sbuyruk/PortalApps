@@ -101,6 +101,8 @@ namespace Model.Services.NBYS
                     }
 
                     ekstreAktarma.NakitBagisHareketId = nakitBagisHareket.Id;
+                    ekstreAktarma.NakitBagisciId = nakitBagisciId;
+
                     ekstreAktarma.AktarildiMi = true;
                     new EkstreAktarmaService().Update(ekstreAktarma);
                 }
