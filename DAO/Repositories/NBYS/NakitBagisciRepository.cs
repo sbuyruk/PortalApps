@@ -135,6 +135,15 @@ namespace DAO.Repositories.NBYS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectImportCandidates(string fullName)
+        {
+            // Exact names only; phone normalization and uniqueness are checked by the service.
+            SqlQuery query = new SqlQuery(@"SELECT * FROM NakitBagisci_Table
+                WHERE LTRIM(RTRIM(ISNULL(Adi,'') + ' ' + ISNULL(Soyadi,''))) = @FullName");
+            query.AddParameter("@FullName", fullName);
+            return db.SelectFromDb(query, "");
+        }
+
         public DataTable SelectBagisiOlmayanBagisciById(int bagisciId)
         {
             SqlQuery query = new SqlQuery(@"

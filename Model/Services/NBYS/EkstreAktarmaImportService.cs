@@ -15,6 +15,8 @@ namespace Model.Services.NBYS
     {
         private static int SaveEkstreAktarma(EkstreAktarma item)
         {
+            if (item.NakitBagisciId <= 0)
+                item.NakitBagisciId = new EkstreBagisciEslestirmeService().FindDonorId(item);
             return new EkstreAktarmaService().Save(item);
         }
 
