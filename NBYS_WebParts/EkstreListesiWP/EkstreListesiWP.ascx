@@ -115,7 +115,7 @@
                     href="">
                     <i class="fa fa-book" aria-hidden="true"></i>
                 </a>
-                <asp:Label CssClass="form-label text-info fw-bold mb-1" ID="TitleLbl" runat="server" Text="Ekstre Aktarma Listesi"></asp:Label>
+                <asp:Label CssClass="form-label text-info fw-bold mb-1" ID="TitleLbl" runat="server" Text="Ekstre Aktarma ListesiXX"></asp:Label>
                 <asp:Label CssClass="form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>
