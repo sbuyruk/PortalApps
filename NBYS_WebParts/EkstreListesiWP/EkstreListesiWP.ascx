@@ -50,26 +50,6 @@
         $("#ModalOnayDiv").modal('hide');
     }
 
-    function NakitBagisciKartiAc(bagisciId) {
-        var modalElement = document.querySelector('[id$="NakitBagisciKartiModal_Modal"]');
-        if (!modalElement || !bagisciId) {
-            console.error('Nakit bağışçı kartı modalı sayfada bulunamadı.');
-            return false;
-        }
-
-        var idField = modalElement.querySelector('input[type="hidden"][id$="_BagisciId"]');
-        var loadButton = modalElement.querySelector('[id$="_KartYukle"]');
-        if (!idField || !loadButton) {
-            console.error('Nakit bağışçı kartı yükleme alanları bulunamadı.');
-            return false;
-        }
-
-        idField.value = bagisciId;
-        bootstrap.Modal.getOrCreateInstance(modalElement).show();
-        loadButton.click();
-        return false;
-    }
-
     var tabledata = [];
     function EkleCikar(ekstreAktarmaId, isChecked) {
         var index = tabledata.indexOf(ekstreAktarmaId.toString());
