@@ -251,6 +251,11 @@
     <Compile Include="EkstreListesiWP\EkstreListesiWP.ascx.cs">
       <DependentUpon>EkstreListesiWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="EkstreListesiWP\EkstreListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EkstreListesiWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="FTKFahriBaskanListesiWP\FTKFahriBaskanListesiWP.ascx.cs">
       <DependentUpon>FTKFahriBaskanListesiWP.ascx</DependentUpon>
     </Compile>
@@ -904,6 +909,7 @@
     <Content Include="EkstreAktarmaEditWP\Elements.xml" />
     <Content Include="EkstreListesiWP\EkstreListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>EkstreListesiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="EkstreListesiWP\Elements.xml" />
     <Content Include="Features\Feature1\Feature1.Template.xml">
