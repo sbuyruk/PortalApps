@@ -50,6 +50,27 @@
         $("#ModalOnayDiv").modal('hide');
     }
 
+    // SharePoint bazen özel CompositeControl'ün Render çıktısındaki script'i
+    // çalıştırmayabildiği için açma fonksiyonu sayfa script'inde de garanti edilir.
+    window.NakitBagisciKartiAc = function (bagisciId) {
+        var modalElement = document.querySelector('[id$="NakitBagisciKartiModal_Modal"]');
+        if (!modalElement || !bagisciId) return false;
+
+        var idField = modalElement.querySelector('input[type="hidden"][id$="_BagisciId"]');
+        var loadButton = modalElement.querySelector('[id$="_KartYukle"]');
+        if (!idField || !loadButton) return false;
+
+        idField.value = bagisciId;
+        if (typeof window.NakitBagisciKartiHazirla === 'function') {
+            window.NakitBagisciKartiHazirla(modalElement);
+        } else if (modalElement.parentNode !== document.body) {
+            document.body.appendChild(modalElement);
+        }
+        bootstrap.Modal.getOrCreateInstance(modalElement).show();
+        loadButton.click();
+        return false;
+    };
+
     var tabledata = [];
     function EkleCikar(ekstreAktarmaId, isChecked) {
         var index = tabledata.indexOf(ekstreAktarmaId.toString());
