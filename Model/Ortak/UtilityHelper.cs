@@ -589,34 +589,19 @@ namespace Model.Ortak
         #region dosya islemleri pdf
         public static bool DosyaVarMi(string url,string spLibName, string fileName)
         {
-            bool isDosyaBulundu = false;
-
             using (SPSite site = new SPSite(url))
             {
                 using (SPWeb web = site.OpenWeb())
                 {
-                    SPList list = web.Lists[spLibName];
-                    SPQuery query = new SPQuery
-                    {
-                        ViewFields = @"<FieldRef Name='FileLeafRef' />",
-                        Query = @"<Where>
-                          <Eq>
-                            <FieldRef Name='FileLeafRef' />
-                            <Value Type='File'>" + fileName + @"</Value>
-                          </Eq>
-                        </Where>"
-                    };
-                    SPListItemCollection collection = list.GetItems(query);
-
-                    if (collection.Count > 0)
-                    {
-                        isDosyaBulundu = true;
-                    }
+                    // Liste öğelerini sorgulamak yerine dosyayı doğrudan URL'sinden
+                    // kontrol et. SPList.GetItems(...).Count, büyük kütüphanelerde
+                    // SharePoint liste görünümü eşik değerini tetikleyebilir.
+                    string fileUrl = web.Url.TrimEnd('/') + "/" + spLibName + "/" + fileName;
+                    SPFile file = web.GetFile(fileUrl);
+                    return file != null && file.Exists;
                 }
 
             }
-            
-            return isDosyaBulundu;
         }
         public static bool UploadFileToSharePoint(FileUpload fileBrowser, string spLibName, string hedefDosyaAdi)
         {
