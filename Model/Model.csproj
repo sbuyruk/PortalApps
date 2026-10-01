@@ -142,6 +142,7 @@
     <Compile Include="Services\NBYS\BankaTanimService.cs" />
     <Compile Include="Services\NBYS\BagisaVesileOlanTesekkurService.cs" />
     <Compile Include="Services\NBYS\EkstreAktarmaService.cs" />
+    <Compile Include="Services\NBYS\EkstreBagisciEslestirmeService.cs" />
     <Compile Include="Services\NBYS\EkstreAktarmaImportService.cs" />
     <Compile Include="Services\NBYS\EkstreAktarmaTransferService.cs" />
     <Compile Include="Services\NBYS\FTKService.cs" />
