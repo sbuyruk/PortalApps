@@ -633,25 +633,31 @@ namespace Model.Ortak
         }
         public static bool DeleteFileFromSharePointLib(string subSite, string spLibName, string dosyaAdi)
         {
-            bool isOk;
             try
             {
-                SPSite site = new SPSite(RootURLGetir());
-                SPWeb web = site.AllWebs[subSite];
-                SPFolder folder = web.Folders[spLibName];
-                SPFile file = folder.Files[dosyaAdi];
+                using (SPSite site = new SPSite(RootURLGetir()))
+                using (SPWeb web = site.OpenWeb(subSite))
+                {
+                    // folder.Files[fileName] builds an internal urlOfFile value and can
+                    // fail for document libraries in sub-sites. Resolve the file from
+                    // its server-relative URL instead, as in DosyaVarMi.
+                    string fileUrl = web.Url.TrimEnd('/') + "/" + spLibName + "/" + dosyaAdi;
+                    SPFile file = web.GetFile(fileUrl);
 
-                file.Delete();
-                isOk = true;
+                    if (file == null || !file.Exists)
+                        return false;
+
+                    file.Delete();
+                    return true;
+                }
             }
             catch (Exception e)
             {
                 ExceptionHelper eh = new ExceptionHelper(e);
-                eh.Exceptions.Add(new Exception("Dosya Yüklenemedi"));
+                eh.Exceptions.Add(new Exception("Dosya Silinemedi"));
                 eh.PublishException();
-                isOk = false;
+                return false;
             }
-            return isOk;
         }
         public static List<SPFile> GetFileListFromSharePointLib(string subSite, string spLibName, string partialFileName)
         {
