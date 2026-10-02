@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
@@ -71,8 +72,7 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
             IliDDL.Items.Clear();
             IliDDL.Items.Add(new ListItem("Hepsi", ProjeConstants.HEPSI_INT.ToString()));
 
-            Il il = new Il();
-            List<Il> iller = il.SelectAll<Il>().Where(x => !string.IsNullOrWhiteSpace(x.IlAdi)).OrderBy(x => x.IlAdi).ToList();
+            List<Il> iller = new IlService().GetAll().Where(x => !string.IsNullOrWhiteSpace(x.IlAdi)).OrderBy(x => x.IlAdi).ToList();
             foreach (var item in iller)
             {
                 IliDDL.Items.Add(new ListItem(item.IlAdi, item.Id.ToString()));
@@ -87,8 +87,7 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
             int ilId = IliDDL.SelectedItem.Value.ConvertToInt();
             if (ilId <= ProjeConstants.HEPSI_INT) return;
 
-            Ilce ilce = new Ilce();
-            List<Ilce> ilceler = ilce.SelectByIlId(ilId).OrderBy(x => x.IlceAdi).ToList();
+            List<Ilce> ilceler = new IlceService().GetByProvinceId(ilId).OrderBy(x => x.IlceAdi).ToList();
             foreach (var item in ilceler)
             {
                 IlcesiDDL.Items.Add(new ListItem(item.IlceAdi, item.Id.ToString()));

@@ -2,6 +2,7 @@ using DAO.Repositories.Ortak;
 using Model.Ortak;
 using System;
 using System.Data;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Model.Services.Ortak
@@ -24,6 +25,11 @@ namespace Model.Services.Ortak
         public Il GetById(int id)
         {
             return Map(repository.SelectById(id));
+        }
+
+        public List<Il> GetAll()
+        {
+            return new Il().ToList<Il>(repository.SelectAll());
         }
 
         public Il GetByName(string name)

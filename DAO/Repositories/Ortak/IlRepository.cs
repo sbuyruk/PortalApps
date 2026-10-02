@@ -26,6 +26,11 @@ namespace DAO.Repositories.Ortak
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectAll()
+        {
+            return db.SelectFromDb(new SqlQuery("SELECT * FROM Il_Table"), "");
+        }
+
         public DataTable SelectByName(string name)
         {
             SqlQuery query = new SqlQuery(

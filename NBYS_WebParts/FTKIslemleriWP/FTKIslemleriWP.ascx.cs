@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
@@ -187,8 +188,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
         private void IlilceBolgeDDLDoldur()
         {
             IliDDL.Items.Clear();
-            Il newil = new Il();
-            List<Il> list = newil.SelectAll<Il>();
+            List<Il> list = new IlService().GetAll();
             IliDDL.Items.Add(new System.Web.UI.WebControls.ListItem(string.Empty));
             foreach (Il il in list)
             {
@@ -205,9 +205,8 @@ namespace NBYS_WebParts.FTKIslemleriWP
         private void IlceDDLDoldur()
         {
             IlcesiDDL.Items.Clear();
-            Ilce pilce = new Ilce();
 
-            List<Ilce> list = pilce.SelectByIlId(IliDDL.SelectedValue.ConvertToInt());
+            List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt());
             ListItem li0 = new ListItem(ProjeConstants.VALILIK, ProjeConstants.VALILIK_INT.ToString());
             IlcesiDDL.Items.Add(li0);
             foreach (Ilce ilce in list)

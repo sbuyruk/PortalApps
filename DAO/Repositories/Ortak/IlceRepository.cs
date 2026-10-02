@@ -27,6 +27,14 @@ namespace DAO.Repositories.Ortak
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectByProvinceId(int provinceId)
+        {
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM Ilce_Table WHERE IlId=@IlId ORDER BY IlceAdi");
+            query.AddParameter("@IlId", provinceId);
+            return db.SelectFromDb(query, "");
+        }
+
         public DataTable SelectByProvinceAndDistrictName(string provinceName, string districtName)
         {
             SqlQuery query = new SqlQuery(

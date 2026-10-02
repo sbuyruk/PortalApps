@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.Services.NBYS;
 using Model.Services.NBYS;
 using System;
@@ -324,8 +325,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             {
                 IliDDL.Items.Clear();
                 IliDDL.Items.Add(new ListItem("", ProjeConstants.IL_BOS.ToString()));
-                Il pIl = new Il();
-                List<Il> list = pIl.SelectAll<Il>();
+                List<Il> list = new IlService().GetAll();
                 TextInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true).TextInfo;
 
                 foreach (Il il in list)
@@ -344,8 +344,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                 int ilId = IliDDL.SelectedValue.ConvertToInt();
                 IlcesiDDL.Items.Clear();
                 IlcesiDDL.Items.Add(new ListItem("", ProjeConstants.ILCE_BOS.ToString()));
-                Ilce pIlce = new Ilce();
-                List<Ilce> list = pIlce.SelectByIlId(ilId);
+                List<Ilce> list = new IlceService().GetByProvinceId(ilId);
                 TextInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true).TextInfo;
                 foreach (Ilce ilce in list)
                 {
