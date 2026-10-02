@@ -73,6 +73,9 @@
     <Compile Include="Ortak\DBProcess.cs" />
     <Compile Include="Ortak\Global.cs" />
     <Compile Include="Ortak\SqlQuery.cs" />
+    <Compile Include="Repositories\Ortak\BolgeRepository.cs" />
+    <Compile Include="Repositories\Ortak\IlRepository.cs" />
+    <Compile Include="Repositories\Ortak\IlceRepository.cs" />
     <Compile Include="Repositories\NBYS\ArmaganRepository.cs" />
     <Compile Include="Repositories\NBYS\ArmaganTanimRepository.cs" />
     <Compile Include="Repositories\NBYS\BankaTanimRepository.cs" />

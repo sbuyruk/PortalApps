@@ -2,6 +2,7 @@ using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using Model.IKYS;
 using Model.Ortak;
 using Model.Services.NBYS;
+using Model.Services.Ortak;
 using System;
 using System.Xml.Linq;
 using Utility.HelperClasses;
@@ -36,16 +37,13 @@ namespace Model.NBYS
             {
                 if (ilId > 0)
                 {
-                    Il il = new Il();
-                    il = il.Select<Il>(ilId);
+                    Il il = new IlService().GetById(ilId);
                     if (il != null)
                     {
-                        Bolge bolge = new Bolge();
-                        bolge = bolge.Select(il.BolgeId);
+                        Bolge bolge = new BolgeService().GetById(il.BolgeId);
                         string userto = "asbuyruk@tskgv.local";
                         string ilstr = il.IlAdi + " ili ";
-                        Ilce ilce= new Ilce();
-                        ilce=ilce.Select<Ilce>(ilceId);
+                        Ilce ilce = new IlceService().GetById(ilceId);
                         string ilcestr = ilce==null?string.Empty:ilce.IlceAdi + " ilçesi ";
 
                         if (bolge != null && (bolge.Id != ProjeConstants.BOLGE_HEPSI_INT || bolge.Id != ProjeConstants.BOLGE_GENELMUDURLUK_INT))
@@ -100,8 +98,7 @@ namespace Model.NBYS
         }
         public static bool YetkiKontrolu(Bolge kullanicininBolgesi, int nakitbagisciId)
         {
-            Bolge bagiscininBolgesi = new Bolge();
-            bagiscininBolgesi = bagiscininBolgesi.SelectByBagisciId(nakitbagisciId);
+            Bolge bagiscininBolgesi = new BolgeService().GetByDonorId(nakitbagisciId);
             if (bagiscininBolgesi != null)
             {
 

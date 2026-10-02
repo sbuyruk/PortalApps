@@ -137,6 +137,9 @@
     <Compile Include="NBYS\FTKKisi.cs" />
     <Compile Include="NBYS\NakitBagisci.cs" />
     <Compile Include="Services\NBYS\NakitBagisciReportService.cs" />
+    <Compile Include="Services\Ortak\BolgeService.cs" />
+    <Compile Include="Services\Ortak\IlService.cs" />
+    <Compile Include="Services\Ortak\IlceService.cs" />
     <Compile Include="Services\NBYS\ArmaganService.cs" />
     <Compile Include="Services\NBYS\ArmaganTanimService.cs" />
     <Compile Include="Services\NBYS\BankaTanimService.cs" />

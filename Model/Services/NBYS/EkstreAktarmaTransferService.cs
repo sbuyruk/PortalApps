@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -541,8 +542,7 @@ namespace Model.Services.NBYS
             var isInt = Int32.TryParse(value, out ilId);
             if (!isInt)
             {
-                Il il = new Il();
-                il = il.SelectByIlAdi(value);
+                Il il = new IlService().GetByName(value);
                 if (il != null)
                 {
                     ilId = il.Id;
@@ -559,8 +559,7 @@ namespace Model.Services.NBYS
             var isInt = Int32.TryParse(ekstreAktarma.Ilcesi, out ilceId);
             if (isInt)
             {
-                Ilce ilce = new Ilce();
-                ilce = ilce.SelectByIlceId(ilceId);
+                Ilce ilce = new IlceService().GetById(ilceId);
                 if (ilce != null)
                 {
                     ilceId = ilce.Id;
@@ -580,8 +579,8 @@ namespace Model.Services.NBYS
             {
                 BankaTanim bankaTanim = new BankaTanimService().GetByName(ekstreAktarma.BankaAdi);
 
-                Ilce ilce = new Ilce();
-                ilce = ilce.SelectByIlNameAndIlceName(ekstreAktarma.Ili, ekstreAktarma.Ilcesi);
+                Ilce ilce = new IlceService().GetByProvinceAndDistrictName(
+                    ekstreAktarma.Ili, ekstreAktarma.Ilcesi);
 
                 
                 nakitBagisHareket.BagisciId = nakitBagisciId;
@@ -631,8 +630,8 @@ namespace Model.Services.NBYS
             }
             if (isNew)
             {
-                Ilce ilce = new Ilce();
-                ilce = ilce.SelectByIlNameAndIlceName(ekstreAktarma.Ili, ekstreAktarma.Ilcesi);
+                Ilce ilce = new IlceService().GetByProvinceAndDistrictName(
+                    ekstreAktarma.Ili, ekstreAktarma.Ilcesi);
 
                 nakitBagisci.Adi = ekstreAktarma.Adi.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
                 nakitBagisci.Adres = ekstreAktarma.Adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
@@ -659,8 +658,8 @@ namespace Model.Services.NBYS
             }//eski bagisci
             else
             {
-                Ilce ilce = new Ilce();
-                ilce = ilce.SelectByIlNameAndIlceName(ekstreAktarma.Ili, ekstreAktarma.Ilcesi);
+                Ilce ilce = new IlceService().GetByProvinceAndDistrictName(
+                    ekstreAktarma.Ili, ekstreAktarma.Ilcesi);
 
                 nakitBagisci.Adi = string.IsNullOrEmpty(nakitBagisci.Adi) ? ekstreAktarma.Adi.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo) : nakitBagisci.Adi;
                 nakitBagisci.Adres = string.IsNullOrEmpty(nakitBagisci.Adres) ? ekstreAktarma.Adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo) : nakitBagisci.Adres;

@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -2136,8 +2137,7 @@ namespace Model.Services.NBYS
             bool isInteger = Int32.TryParse(ilId, out id);
             if (isInteger)
             {
-                Il il = new Il();
-                il = il.Select<Il>(id);
+                Il il = new IlService().GetById(id);
                 if (il != null)
                 {
                     ilAdi = il.IlAdi;
