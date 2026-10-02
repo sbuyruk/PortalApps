@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.SharePoint;
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
@@ -122,8 +123,7 @@ namespace NBYS_WebParts.FTKYazilariWP
         private void IlDDLDoldur()
         {
             IliDDL.Items.Clear();
-            Il newil = new Il();
-            List<Il> list = newil.SelectFTKKuruluOlanIller();
+            List<Il> list = new IlService().GetWithFTK();
             foreach (Il il in list)
             {
                 if (string.IsNullOrEmpty(il.IlAdi.Trim()))
@@ -134,11 +134,10 @@ namespace NBYS_WebParts.FTKYazilariWP
         private void IlceDDLDoldur()
         {
             IlcesiDDL.Items.Clear();
-            Ilce pilce = new Ilce();
             IlcesiDDL.Items.Add(new System.Web.UI.WebControls.ListItem(ProjeConstants.VALILIK, ProjeConstants.VALILIK_INT.ToString()));
             if (IliDDL.SelectedItem != null)
             {
-                List<Ilce> list = pilce.SelectFTKKuruluOlanIlceler(IliDDL.SelectedValue.ConvertToInt());
+                List<Ilce> list = new IlceService().GetWithFTK(IliDDL.SelectedValue.ConvertToInt());
                 foreach (Ilce ilce in list)
                 {
                     if (ilce.IlceAdi.ToUpper().Equals(ProjeConstants.ILCE_MERKEZ.ToUpper()))
@@ -265,12 +264,10 @@ namespace NBYS_WebParts.FTKYazilariWP
         private string BolgeGetir(string ilAdi)
         {
             string bolgeAdi=string.Empty;
-            Il il = new Il();
-            il = il.SelectByIlAdi(ilAdi);
+            Il il = new IlService().GetByName(ilAdi);
             if (il!=null)
             {
-                Bolge bolge = new Bolge();
-                bolge = bolge.Select(il.BolgeId); 
+                Bolge bolge = new BolgeService().GetSelected(il.BolgeId);
                 bolgeAdi=bolge.KisaAdi;
             }
             return (bolgeAdi);

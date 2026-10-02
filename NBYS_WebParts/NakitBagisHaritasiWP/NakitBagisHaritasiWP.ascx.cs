@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.Services.NBYS;
 using System;
 using System.ComponentModel;
@@ -36,8 +37,7 @@ namespace NBYS_WebParts.NakitBagisHaritasiWP
         protected void KayitGetirBtn_Click(object sender, EventArgs e)
         {
             string ingIlAdi = paramLbl.Value;
-            Il il = new Il();
-            il = il.SelectByIngAdi(ingIlAdi);
+            Il il = new IlService().GetByEnglishName(ingIlAdi);
             FillData2IlinfoTable(il.Id);
 
         }
@@ -121,8 +121,7 @@ namespace NBYS_WebParts.NakitBagisHaritasiWP
         protected void SelectedIlBtn_Click(object sender, EventArgs e)
         {
             string ingIlAdi = paramLbl.Value;
-            Il il = new Il();
-            il = il.SelectByIngAdi(ingIlAdi);
+            Il il = new IlService().GetByEnglishName(ingIlAdi);
             TitleLbl.CssClass = "btn-primary";
             TitleLbl.Text = il.IlAdi + " İli Nakit Bağış Bilgileri ";
 

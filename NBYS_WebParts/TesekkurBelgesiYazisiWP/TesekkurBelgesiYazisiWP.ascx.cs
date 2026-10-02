@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.SharePoint;
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
@@ -217,8 +218,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
         private void BolgeDDLDoldur()
         {
             BolgeDDL.Items.Clear();
-            Bolge bolgeDao = new Bolge();
-            List<Bolge> list = bolgeDao.SelectAktifBolgeler(ProjeConstants.BOLGE_HEPSI_INT);
+            List<Bolge> list = new BolgeService().GetActive(ProjeConstants.BOLGE_HEPSI_INT);
             foreach (Bolge item in list)
             {
                 if (string.IsNullOrEmpty(item.Adi.Trim()))

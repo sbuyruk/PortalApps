@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.Services.NBYS;
 using System;
 using System.ComponentModel;
@@ -142,14 +143,12 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
 
         private int IlSayisiGetir(int bolgeId)
         {
-            Il il = new Il();
-            int ilSayisi = il.SelectCountIlByBolgeId(bolgeId);
+            int ilSayisi = new IlService().CountByRegion(bolgeId);
             return ilSayisi;
         }
         private int IlceSayisiGetir(int bolgeId)
         {
-            Ilce ilce = new Ilce();
-            int ilceSayisi = ilce.SelectCountIlceByBolgeId(bolgeId);
+            int ilceSayisi = new IlceService().CountByRegion(bolgeId);
             return ilceSayisi;
         }
         private void KuruluIlSayilariniDoldur()

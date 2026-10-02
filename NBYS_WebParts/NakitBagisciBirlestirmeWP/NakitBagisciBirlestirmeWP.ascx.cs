@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
@@ -463,14 +464,12 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                 TCKimlikNoCell.Text = secilenBagisci.TCKimlikNo.ReturnEmptyIfNull().ToString();
                 TelefonCell.Text = secilenBagisci.Telefon1 + " " + secilenBagisci.Telefon2;
 
-                Il il = new Il();
-                il = il.Select<Il>(secilenBagisci.Ili.ConvertToInt());
+                Il il = new IlService().GetById(secilenBagisci.Ili.ConvertToInt());
                 if (il != null)
                 {
                     IlIlceCell.Text = il.IlAdi + " ";
                 }
-                Ilce ilce = new Ilce();
-                ilce = ilce.Select<Ilce>(secilenBagisci.Ilcesi.ConvertToInt());
+                Ilce ilce = new IlceService().GetById(secilenBagisci.Ilcesi.ConvertToInt());
                 if (ilce != null)
                 {
                     IlIlceCell.Text += ilce.IlceAdi;
@@ -921,16 +920,14 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                     AdresCell.Text = nakitBagisci.Adres.ReturnEmptyIfNull().ToString();
 
                     int ilId = nakitBagisci.Ili.ConvertToInt();
-                    Il il = new Il();
-                    il = il.Select<Il>(ilId);
+                    Il il = new IlService().GetById(ilId);
                     if (il != null)
                     {
 
                         IlIlceCell.Text = il.IlAdi.ReturnEmptyIfNull().ToString();
                     }
                     int ilceId = nakitBagisci.Ilcesi.ConvertToInt();
-                    Ilce ilce = new Ilce();
-                    ilce = ilce.Select<Ilce>(ilceId);
+                    Ilce ilce = new IlceService().GetById(ilceId);
                     if (ilce != null)
                     {
 

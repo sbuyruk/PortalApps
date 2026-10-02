@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
@@ -443,8 +444,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
                     AdresCell.Text = nakitBagisci.Adres.ReturnEmptyIfNull().ToString();
 
                     int ilId = nakitBagisci.Ili.ConvertToInt();
-                    Il il = new Il();
-                    il = il.Select<Il>(ilId);
+                    Il il = new IlService().GetById(ilId);
                     if (il != null)
                     {
 
@@ -453,8 +453,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
 
 
                     int ilceId = nakitBagisci.Ilcesi.ConvertToInt();
-                    Ilce ilce = new Ilce();
-                    ilce = ilce.Select<Ilce>(ilceId);
+                    Ilce ilce = new IlceService().GetById(ilceId);
                     if (ilce != null)
                     {
 
@@ -542,8 +541,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
             {
                 IliDDL.Items.Clear();
 
-                Il pIl = new Il();
-                List<Il> list = pIl.SelectByBolge(BolgeIdQS.ConvertToInt());
+                List<Il> list = new IlService().GetByRegion(BolgeIdQS.ConvertToInt(), false);
                 IliDDL.Items.Add(new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString()));
                 foreach (Il il in list)
                 {

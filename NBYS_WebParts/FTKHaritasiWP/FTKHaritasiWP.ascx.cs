@@ -1,6 +1,7 @@
 using Model.NBYS;
 using Model.Services.NBYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,8 +36,7 @@ namespace NBYS_WebParts.FTKHaritasiWP
         protected void FTKUyeleriBtn_Click(object sender, EventArgs e)
         {
             string ingIlAdi = paramLbl.Value;
-            Il il = new Il();
-            il = il.SelectByIngAdi(ingIlAdi);
+            Il il = new IlService().GetByEnglishName(ingIlAdi);
             FTKUyeTableDoldur(il);
 
         }
@@ -108,8 +108,7 @@ namespace NBYS_WebParts.FTKHaritasiWP
             try
             {
                 string ingIlAdi = paramLbl.Value;
-                Il il = new Il();
-                il = il.SelectByIngAdi(ingIlAdi);
+                Il il = new IlService().GetByEnglishName(ingIlAdi);
                 FTKUyeTitleLbl.Text = il.IlAdi + " linde Bulunan FTK Üyeleri";
                 FTKUyeTableDoldur(il);
                 //ShowModal("Test");

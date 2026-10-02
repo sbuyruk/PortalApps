@@ -45,5 +45,30 @@ namespace DAO.Repositories.Ortak
             query.AddParameter("@IlAdi", provinceName);
             return db.SelectFromDb(query, "");
         }
+
+        public DataTable SelectCountByRegion(int regionId)
+        {
+            SqlQuery query = new SqlQuery(
+                "SELECT COUNT(A.Id) Adet FROM Ilce_Table A " +
+                "INNER JOIN Il_Table B ON B.Id=A.IlId " +
+                "WHERE B.Id BETWEEN 1 AND 81 AND B.BolgeId=@BolgeId " +
+                "AND IlceAdi!=@Merkez");
+            query.AddParameter("@BolgeId", regionId);
+            query.AddParameter("@Merkez", Utility.ProjeGlobal.ProjeConstants.ILCE_MERKEZ);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectWithFTK(int provinceId)
+        {
+            SqlQuery query = new SqlQuery(
+                "SELECT A.* FROM Ilce_Table A INNER JOIN Il_Table B ON B.Id=A.IlId " +
+                "WHERE A.IlceAdi!=@Merkez AND B.Id BETWEEN 0 AND 81 AND B.IlAdi != '' " +
+                "AND A.Id IN (SELECT Ilcesi FROM FTK_Table WHERE Ilcesi > 0)" +
+                (provinceId < 1 ? "" : " AND B.Id=@IlId") + " ORDER BY A.IlceAdi");
+            query.AddParameter("@Merkez", Utility.ProjeGlobal.ProjeConstants.ILCE_MERKEZ);
+            if (provinceId >= 1)
+                query.AddParameter("@IlId", provinceId);
+            return db.SelectFromDb(query, "");
+        }
     }
 }

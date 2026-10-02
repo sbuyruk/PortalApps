@@ -229,8 +229,7 @@ namespace NBYS_WebParts.FTKListesiWP
         private void BolgeDDLDoldur()
         {
             BolgeDDL.Items.Clear();
-            Bolge bolgeDao = new Bolge();
-            List<Bolge> list = bolgeDao.SelectAktifBolgeler(BolgeIdQS);
+            List<Bolge> list = new BolgeService().GetActive(BolgeIdQS);
             foreach (Bolge item in list)
             {
                 if (string.IsNullOrEmpty(item.Adi.Trim()))
@@ -249,8 +248,7 @@ namespace NBYS_WebParts.FTKListesiWP
 
             int bolgeId = !string.IsNullOrEmpty(BolgeDDL.SelectedItem.Value) ? BolgeDDL.SelectedItem.Value.ConvertToInt() : 0;
 
-            Il newil = new Il();
-            List<Il> list = newil.SelectByBolgeId(bolgeId);
+            List<Il> list = new IlService().GetByRegion(bolgeId, true);
             foreach (Il il in list)
             {
                 if (string.IsNullOrEmpty(il.IlAdi.Trim()))

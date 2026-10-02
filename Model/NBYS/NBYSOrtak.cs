@@ -40,7 +40,7 @@ namespace Model.NBYS
                     Il il = new IlService().GetById(ilId);
                     if (il != null)
                     {
-                        Bolge bolge = new BolgeService().GetById(il.BolgeId);
+                        Bolge bolge = new BolgeService().GetSelected(il.BolgeId);
                         string userto = "asbuyruk@tskgv.local";
                         string ilstr = il.IlAdi + " ili ";
                         Ilce ilce = new IlceService().GetById(ilceId);
