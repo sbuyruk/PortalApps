@@ -1,6 +1,7 @@
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.NBYS;
+using Model.Services.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -120,8 +121,8 @@ namespace NBYS_WebParts.NakitBagisciKarti
             decimal total = donations.Sum(x => x.BagisMiktari);
             decimal refunds = donations.Where(x => x.IadeEdildiMi).Sum(x => x.IadeMiktari);
             decimal net = total - refunds;
-            string province = LocationName<Il>(bagisci.Ili, x => x.IlAdi);
-            string district = LocationName<Ilce>(bagisci.Ilcesi, x => x.IlceAdi);
+            string province = LocationName<Il>(bagisci.Ili, new IlService().GetById, x => x.IlAdi);
+            string district = LocationName<Ilce>(bagisci.Ilcesi, new IlceService().GetById, x => x.IlceAdi);
             string fullName = ((bagisci.Adi ?? string.Empty) + " " + (bagisci.Soyadi ?? string.Empty)).Trim();
             string initials = Initials(bagisci.Adi, bagisci.Soyadi);
 
@@ -405,10 +406,10 @@ window.NakitBagisciKartiAc = function (bagisciId) {{
             return (first + last).ToUpper(new CultureInfo("tr-TR"));
         }
 
-        private static string LocationName<T>(int id, Func<T, string> selector) where T : ParentClass, new()
+        private static string LocationName<T>(int id, Func<int, T> getById, Func<T, string> selector) where T : class
         {
             if (id < 1) return string.Empty;
-            T value = new T().Select<T>(id);
+            T value = getById(id);
             return value == null ? string.Empty : selector(value);
         }
 

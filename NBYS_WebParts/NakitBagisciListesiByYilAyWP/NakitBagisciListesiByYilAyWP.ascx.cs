@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
@@ -323,8 +324,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
            
             if (dataTable != null)
             {
-                Bolge bolge = new Bolge();
-                bolge = bolge.Select<Bolge>(BolgeIdQS);
+                Bolge bolge = new BolgeService().GetById(BolgeIdQS);
                 if (bolge == null || bolge.Id == ProjeConstants.BOLGE_GENELMUDURLUK_INT)
                 {
                     BaslikTH.InnerText = ilkTarih.ToString("dd.MM.yyyy") + " - " + sonTarih.ToString("dd.MM.yyyy") + " Tarihleri Arasi Nakit Bagislar";

@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.SharePoint;
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
@@ -223,8 +224,7 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP
         private void BolgeDDLDoldur()
         {
             BolgeDDL.Items.Clear();
-            Bolge bolgeDao = new Bolge();
-            List<Bolge> list = bolgeDao.SelectAktifBolgeler(ProjeConstants.BOLGE_HEPSI_INT);
+            List<Bolge> list = new BolgeService().GetActive(ProjeConstants.BOLGE_HEPSI_INT);
             foreach (Bolge item in list)
             {
                 if (string.IsNullOrEmpty(item.Adi.Trim()))
@@ -456,8 +456,7 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP
             try
             {
                 // Dosya adları 
-                Bolge bolge = new Bolge();
-                bolge = bolge.Select(SecilenBolgeIdQS);
+                Bolge bolge = new BolgeService().GetSelected(SecilenBolgeIdQS);
                 string zaman = DateTime.Now.ToString("dd-MM-yyyy-HH-mm");
                 string ay_yil = (new DateTime(SecilenYilQS.ConvertToInt(), SecilenAyQS.ConvertToInt(), 1)).ToString("-MM_yyyy");
                 string yaziDosyaAdi = bolge == null ? SecilenBolgeIdQS.ToString() : bolge.KisaAdi + "-" + MadalyaDDL.SelectedItem.Text + ay_yil + "-(" + zaman + ").docx";
@@ -841,8 +840,7 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP
         //Dosya islemleri
         private void DosyaTablosunuDoldur()
         {
-            Bolge bolge= new Bolge();
-            bolge = bolge.Select(SecilenBolgeIdQS);
+            Bolge bolge = new BolgeService().GetSelected(SecilenBolgeIdQS);
             string yaziDosyaAdi = bolge==null?SecilenBolgeIdQS.ToString():bolge.KisaAdi + "-" + MadalyaDDL.SelectedItem.Text;
             yaziDosyaAdi = yaziDosyaAdi.Replace(" ", "-");
             List<SPFile> fileList = DosyaListesiniGetir(ProjeConstants.NBYSBELGELERI_LIB, yaziDosyaAdi);
@@ -862,8 +860,7 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP
                     JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
                     List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
                     Dictionary<string, object> childRow;
-                    Bolge bolge = new Bolge();
-                    bolge = bolge.Select(SecilenBolgeIdQS);
+                    Bolge bolge = new BolgeService().GetSelected(SecilenBolgeIdQS);
                     foreach (var file in fileList)
                     {
                         childRow = new Dictionary<string, object>();

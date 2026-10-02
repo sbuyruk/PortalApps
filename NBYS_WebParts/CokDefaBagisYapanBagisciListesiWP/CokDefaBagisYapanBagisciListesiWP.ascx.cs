@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
@@ -688,16 +689,14 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                     AdresCell.Text = nakitBagisci.Adres.ReturnEmptyIfNull().ToString();
 
                     int ilId = nakitBagisci.Ili.ConvertToInt();
-                    Il il = new Il();
-                    il = il.Select<Il>(ilId);
+                    Il il = new IlService().GetById(ilId);
                     if (il != null)
                     {
 
                         IlIlceCell.Text = il.IlAdi.ReturnEmptyIfNull().ToString();
                     }
                     int ilceId = nakitBagisci.Ilcesi.ConvertToInt();
-                    Ilce ilce = new Ilce();
-                    ilce = ilce.Select<Ilce>(ilceId);
+                    Ilce ilce = new IlceService().GetById(ilceId);
                     if (ilce != null)
                     {
 

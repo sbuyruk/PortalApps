@@ -218,14 +218,12 @@ namespace NBYS_WebParts.FTKIslemleriWP
         }
         private void BolgeTxtDoldur()
         {
-            Il il = new Il();
-            il = il.Select<Il>(IliDDL.SelectedItem.Value.ConvertToInt());
+            Il il = new IlService().GetById(IliDDL.SelectedItem.Value.ConvertToInt());
             if (il != null)
             {
                 
 
-                Bolge bolge = new Bolge();
-                bolge = bolge.Select<Bolge>(il.BolgeId);
+                Bolge bolge = new BolgeService().GetById(il.BolgeId);
                 BolgeIdTxt.Text = bolge==null?string.Empty:bolge.Id.ToString();
                 SorumluBolgeTxt.Text = bolge == null ? string.Empty : bolge.Adi;
             }

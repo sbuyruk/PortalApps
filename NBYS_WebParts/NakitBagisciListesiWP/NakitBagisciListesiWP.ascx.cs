@@ -473,16 +473,14 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
                     AdresCell.Text = nakitBagisci.Adres.ReturnEmptyIfNull().ToString();
 
                     int ilId = nakitBagisci.Ili.ConvertToInt();
-                    Il il = new Il();
-                    il = il.Select<Il>(ilId);
+                    Il il = new IlService().GetById(ilId);
                     if (il != null)
                     {
 
                         IlIlceCell.Text = il.IlAdi.ReturnEmptyIfNull().ToString();
                     }
                     int ilceId = nakitBagisci.Ilcesi.ConvertToInt();
-                    Ilce ilce = new Ilce();
-                    ilce = ilce.Select<Ilce>(ilceId);
+                    Ilce ilce = new IlceService().GetById(ilceId);
                     if (ilce != null)
                     {
 

@@ -36,5 +36,21 @@ namespace DAO.Repositories.Ortak
             query.AddParameter("@BagisciId", donorId);
             return db.SelectFromDb(query, "");
         }
+
+        public DataTable SelectActive(int regionId)
+        {
+            bool all = regionId == Utility.ProjeGlobal.ProjeConstants.HEPSI_INT ||
+                regionId == Utility.ProjeGlobal.ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+            SqlQuery query = new SqlQuery("SELECT * FROM Bolge_Table WHERE Aktif=1" +
+                (all ? "" : " AND Id=@BolgeId"));
+            if (!all)
+                query.AddParameter("@BolgeId", regionId);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectFirst()
+        {
+            return db.SelectFromDb(new SqlQuery("SELECT * FROM Bolge_Table"), "");
+        }
     }
 }

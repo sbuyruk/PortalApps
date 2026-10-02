@@ -37,6 +37,27 @@ namespace Model.Services.Ortak
             return Map(repository.SelectByName(name));
         }
 
+        public Il GetByEnglishName(string name)
+        {
+            return Map(repository.SelectByEnglishName(name));
+        }
+
+        public List<Il> GetByRegion(int regionId, bool orderByName)
+        {
+            return new Il().ToList<Il>(repository.SelectByRegion(regionId, orderByName));
+        }
+
+        public int CountByRegion(int regionId)
+        {
+            DataTable table = repository.SelectCountByRegion(regionId);
+            return table == null || table.Rows.Count == 0 ? 0 : Convert.ToInt32(table.Rows[0]["Adet"]);
+        }
+
+        public List<Il> GetWithFTK()
+        {
+            return new Il().ToList<Il>(repository.SelectWithFTK());
+        }
+
         private static Il Map(DataTable table)
         {
             return new Il().ToList<Il>(table).FirstOrDefault();
