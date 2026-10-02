@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
@@ -160,8 +161,7 @@ namespace NBYS_WebParts.BagisHareketListesiWP
             {
                 IliDDL.Items.Clear();
 
-                Il pIl = new Il();
-                List<Il> list = pIl.SelectAll<Il>();
+                List<Il> list = new IlService().GetAll();
                 IliDDL.Items.Add(new ListItem(ProjeConstants.HEPSI, ProjeConstants.IL_HEPSI.ToString()));
                 foreach (Il il in list)
                 {

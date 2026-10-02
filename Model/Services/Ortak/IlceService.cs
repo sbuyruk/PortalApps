@@ -2,6 +2,7 @@ using DAO.Repositories.Ortak;
 using Model.Ortak;
 using System;
 using System.Data;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Model.Services.Ortak
@@ -24,6 +25,11 @@ namespace Model.Services.Ortak
         public Ilce GetById(int id)
         {
             return Map(repository.SelectById(id));
+        }
+
+        public List<Ilce> GetByProvinceId(int provinceId)
+        {
+            return new Ilce().ToList<Ilce>(repository.SelectByProvinceId(provinceId));
         }
 
         public Ilce GetByProvinceAndDistrictName(string provinceName, string districtName)
