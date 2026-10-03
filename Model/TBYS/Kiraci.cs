@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Model.Services.TBYS;
 
 namespace Model.TBYS
 {
@@ -30,29 +31,13 @@ namespace Model.TBYS
         public string KiralamaAmaci { get; set; }
         public override T Select<T>(int id)
         {
-            SqlQuery query = new SqlQuery(@"SELECT *
-                               FROM Kiraci_Table 
-                               WHERE  Id=@Id");
-            query.AddParameter("@Id", id);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<Kiraci> list = ToList<Kiraci>(dataTable);
-            Kiraci kiraci = new Kiraci();
-            kiraci = list.FirstOrDefault();
-            return (T)Convert.ChangeType(kiraci, typeof(T));
+            return (T)Convert.ChangeType(new KiraciService().GetById(id), typeof(T));
 
         }
         public Kiraci Select(int id)
         {
-            GenericEntity<Kiraci> genericEntity = new GenericEntity<Kiraci>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
             Id = id;
-            SqlQuery query = genericEntity.GetQueryParametreli(this);
-
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<Kiraci> list = ToList<Kiraci>(dataTable);
-            Kiraci kiraci = new Kiraci();
-            kiraci = list.FirstOrDefault();
-            return kiraci;
+            return new KiraciService().GetById(id);
         }
         public override int Save()
         {
@@ -136,27 +121,13 @@ namespace Model.TBYS
         }
         public override List<T> SelectAll<T>()
         {
-            SqlQuery query = new SqlQuery(@"SELECT *
-                               FROM Kiraci_Table");
-
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<Kiraci> list = ToList<Kiraci>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+            return (List<T>)Convert.ChangeType(
+                new KiraciService().GetAll(),
+                typeof(List<T>));
         }
 		public List<Kiraci> SelectAktifKiracilar()
 		{
-			SqlQuery query = new SqlQuery(@"
-				SELECT S.DosyaNo,A.*
-				FROM Kiraci_Table A
-					INNER JOIN KiraSozlesme_Table S On S.KiraciId=A.Id AND S.Aktif=1
-					INNER JOIN OdemePlani_Table O On O.Id=(SELECT Top 1 Id FROM OdemePlani_Table WHERE SozlesmeId=S.Id)
-				ORDER BY CASE WHEN DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(DosyaNo,999999), S.Id, A.Id");
-
-			DataTable dataTable = dao.SelectFromDb(query, "");
-			List<Kiraci> list = ToList<Kiraci>(dataTable);
-
-			return (list);
+			return new KiraciService().GetActiveTenants();
 		}
         public string SelectAllReturnJson()
         {
