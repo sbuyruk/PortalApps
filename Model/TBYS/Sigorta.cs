@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Model.Services.TBYS;
 
 namespace Model.TBYS
 {
@@ -37,14 +38,7 @@ namespace Model.TBYS
         public string KullanimSekli { get; set; }
         public override T Select<T>(int id)
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM Sigorta_Table 
-                               WHERE  Id={0}", id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Sigorta> list = ToList<Sigorta>(dataTable);
-            Sigorta sigorta = new Sigorta();
-            sigorta = list.FirstOrDefault();
-            return (T)Convert.ChangeType(sigorta, typeof(T));
+            return (T)Convert.ChangeType(new SigortaService().GetById(id), typeof(T));
 
         }
         public override int Save()
@@ -129,48 +123,17 @@ namespace Model.TBYS
         }
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM Sigorta_Table");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Sigorta> list = ToList<Sigorta>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+            return (List<T>)Convert.ChangeType(
+                new SigortaService().GetAll(),
+                typeof(List<T>));
         }
         public List<Sigorta> SelectAllByTasinmazId(int tasinmazId)
         {
-            string sqlString = string.Format(@"
-                SELECT *
-                    FROM Sigorta_Table A
-                WHERE TasinmazId={0}
-                ORDER BY TasinmazId", tasinmazId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                List<Sigorta> list = ToList<Sigorta>(dataTable);
-                return list;
-            }
-            else
-            {
-                return null;
-            }
+            return new SigortaService().GetByTasinmazId(tasinmazId);
         }
         public Sigorta SelectByTasinmazId(int tasinmazId)
         {
-            Sigorta sigorta = null;
-            string sqlString = string.Format(@"
-                SELECT *
-                    FROM Sigorta_Table A
-                WHERE TasinmazId={0}
-                ORDER BY SigortaBitTar DESC ", tasinmazId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                List<Sigorta> list = ToList<Sigorta>(dataTable);
-                sigorta = list.FirstOrDefault<Sigorta>();
-            }
-            return sigorta;
-
+            return new SigortaService().GetLatestByTasinmazId(tasinmazId);
         }
         public string SelectAllReturnJson()
         {
@@ -378,16 +341,7 @@ namespace Model.TBYS
 
         public List<Sigorta> selectByTasinmazId(int tasinmazId)
         {
-            string sqlString = string.Format(@"
-                SELECT A.Id SigortaId, A.Id Id, A.TasinmazId,A.SigortaCinsi,A.AdresKodu,A.PoliceNo,A.SigortaBasTar,A.SigortaBitTar,A.YapiTarzi,A.InsaYili,
-                    A.BulunduguKat,A.ToplamKatSayisi, A.BBNetAlan ,A.BBBrutAlan,
-                    A.SigortaBedeli SigortaBedeli, A.Prim Prim,A.DaskPoliceNo
-                FROM Sigorta_Table A
-                INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId
-                WHERE A.TasinmazId={0}", tasinmazId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Sigorta> list = ToList<Sigorta>(dataTable);
-            return list;
+            return new SigortaService().GetByTasinmazId(tasinmazId);
         }
         public decimal SelectSigortaBedeliToplamiBySigorta(string sigorta)
         {
