@@ -231,37 +231,11 @@ namespace Model.TBYS
         }
         public decimal SelectSigortaBedeliToplamiBySigorta(string sigorta)
         {
-            decimal toplam = 0;
-            string sqlString = string.Format(@"
-                SELECT SUM(S.SigortaBedeli) Toplam
-                FROM Sigorta_Table S
-					INNER JOIN Tasinmaz_Table T on T.Id=S.TasinmazId 
-                WHERE T.EnvanterdeMi=1 AND SigortaCinsi= {0}", sigorta.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                toplam = row["Toplam"].ConvertToDecimal();
-
-            }
-            return toplam;
+            return new SigortaService().GetInsuranceValueTotal(sigorta);
         }
         public decimal SelectPirimToplamiBySigorta(string sigorta)
         {
-            decimal toplam = 0;
-            string sqlString = string.Format(@"
-                SELECT SUM(S.Prim) Toplam
-                FROM Sigorta_Table S
-					INNER JOIN Tasinmaz_Table T on T.Id=S.TasinmazId 
-                WHERE T.EnvanterdeMi=1 AND SigortaCinsi= {0}", sigorta.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                toplam = row["Toplam"].ConvertToDecimal();
-
-            }
-            return toplam;
+            return new SigortaService().GetPremiumTotal(sigorta);
         }
         public Sigorta SelectMin()
         {
