@@ -7,6 +7,7 @@ namespace DAO.Repositories.TBYS
     public class SigortaRepository
     {
         private readonly DbClass db;
+        private readonly CrudQueryBuilder queryBuilder;
 
         public SigortaRepository() : this(new DbClass()) { }
 
@@ -14,6 +15,7 @@ namespace DAO.Repositories.TBYS
         {
             if (db == null) throw new ArgumentNullException("db");
             this.db = db;
+            queryBuilder = new CrudQueryBuilder();
         }
 
         public DataTable SelectById(int id)
@@ -36,6 +38,21 @@ namespace DAO.Repositories.TBYS
                 ORDER BY SigortaBitTar DESC");
             query.AddParameter("@TasinmazId", tasinmazId);
             return db.SelectFromDb(query, "");
+        }
+
+        public int Insert<T>(T entity)
+        {
+            return db.Insert(queryBuilder.BuildInsert(entity, "Sigorta_Table"));
+        }
+
+        public bool Update<T>(T entity)
+        {
+            return db.Update2Db(queryBuilder.BuildUpdate(entity, "Sigorta_Table"));
+        }
+
+        public bool Delete(int id)
+        {
+            return db.DeleteFromDb(queryBuilder.BuildDelete("Sigorta_Table", id), "");
         }
     }
 }
