@@ -212,14 +212,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WebPartSearchWP.ascx</DependentUpon>
     </Compile>
-    <Compile Include="YoneticiOzetiWP\YoneticiOzetiWP.ascx.cs">
-      <DependentUpon>YoneticiOzetiWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="YoneticiOzetiWP\YoneticiOzetiWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>YoneticiOzetiWP.ascx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -298,10 +290,6 @@
       <SharePointProjectItemId>{bfe67a2a-5e69-4c84-b335-54cef1fe3de3}</SharePointProjectItemId>
     </None>
     <None Include="WebPartSearchWP\WebPartSearchWP.webpart" />
-    <None Include="YoneticiOzetiWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{358828e8-118b-4de0-af1c-563197f6803f}</SharePointProjectItemId>
-    </None>
-    <None Include="YoneticiOzetiWP\YoneticiOzetiWP.webpart" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="BildirimWP\BildirimWP.ascx">
@@ -386,11 +374,6 @@
     <Content Include="WebPartSearchWP\WebPartSearchWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>WebPartSearchWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="YoneticiOzetiWP\Elements.xml" />
-    <Content Include="YoneticiOzetiWP\YoneticiOzetiWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>YoneticiOzetiWP.ascx.g.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>
