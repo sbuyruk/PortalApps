@@ -76,6 +76,7 @@
     <Compile Include="Repositories\Ortak\BolgeRepository.cs" />
     <Compile Include="Repositories\Ortak\IlRepository.cs" />
     <Compile Include="Repositories\Ortak\IlceRepository.cs" />
+    <Compile Include="Repositories\IKYS\PersonelRepository.cs" />
     <Compile Include="Repositories\MTS\KaynakTanimRepository.cs" />
     <Compile Include="Repositories\NBYS\ArmaganRepository.cs" />
     <Compile Include="Repositories\NBYS\ArmaganTanimRepository.cs" />
