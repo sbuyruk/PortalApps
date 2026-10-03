@@ -8,6 +8,7 @@ using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Model.Services.IKYS;
 
 namespace Model.IKYS
 {
@@ -41,26 +42,13 @@ namespace Model.IKYS
 
         public override T Select<T>(int id)
         {
-            GenericEntity<Personel> genericEntity = new GenericEntity<Personel>(ProjeConstants.SQL_SELECT);
             Id = id;
-            string sqlString = genericEntity.GetQuery(this);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Personel> list = ToList<Personel>(dataTable);
-            Personel personel = new Personel();
-            personel = list.FirstOrDefault();
-            return (T)Convert.ChangeType(personel, typeof(T));
+            return (T)Convert.ChangeType(new PersonelService().GetById(id), typeof(T));
         }
         public Personel Select(int id)
         {
-            GenericEntity<Personel> genericEntity = new GenericEntity<Personel>(ProjeConstants.SQL_SELECT);
             Id = id;
-            string sqlString = genericEntity.GetQuery(this);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Personel> list = ToList<Personel>(dataTable);
-            Personel personel = new Personel();
-            personel = list.FirstOrDefault();
-            return personel;
+            return new PersonelService().GetById(id);
         }
         public override int Save()
         {
@@ -151,31 +139,11 @@ namespace Model.IKYS
         }
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(
-                @"SELECT *
-                FROM Personel_Table ");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Personel> list = ToList<Personel>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+            return (List<T>)Convert.ChangeType(new PersonelService().GetAll(), typeof(List<T>));
         }
         public Personel SelectByUserName(string userName)
         {
-            string sqlString = SelectByUserNameSQL(userName);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Personel> list = ToList<Personel>(dataTable);
-            Personel personel = list.FirstOrDefault();
-            return (personel);
-        }
-        private string SelectByUserNameSQL(string userName)
-        {
-            string sqlstr = string.Format(@" 
-                    SELECT * FROM Personel_Table  
-                    WHERE KullaniciAdi={0}
-                    ORDER BY Id", userName.ReturnQuotedValue());
-            return sqlstr;
+            return new PersonelService().GetByUserName(userName);
         }
         public Personel SelectCalisanPersonel(int personelId)
         {
@@ -414,30 +382,7 @@ namespace Model.IKYS
         }
         public List<Personel> SelectCalisanPersonel()
         {
-
-            string sqlString = string.Format(@"
-                                    SELECT P.Id PersonelId,P.Id Id,P.Adi,Soyadi,P.PerId, P.SicilNo, P.Tahsili, P.KullaniciAdi, P.Asker_sivil,
-								        U.Adi Unvan, G.Adi Gorev, B.Adi BirimSube,I.BirimId
-								    FROM Personel_Table P
-                                    INNER JOIN IsBilgileri_Table I on P.Id=I.PersonelId
-								    Left Outer Join  UnvanTanim_Table U on I.UnvanId=U.Id
-								    Left Outer Join  BirimTanim_Table B on I.BirimId=B.Id
-								    Left Outer Join  GorevTanim_Table G on I.GorevId=G.Id
-                                    WHERE CalismaDurumu=1 AND Tipi={0}
-								    ORDER BY I.ProtokolSiraNo
-                                    ",(int)PersonelTipi.Kadrolu);
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            List<Personel> list = ToList<Personel>(dataTable);
-
-            return list;
+            return new PersonelService().GetActiveEmployees(PersonelTipi.Kadrolu);
         }
         public DataTable SelectCalisanPersonelReturnDT()
         {
