@@ -1,6 +1,7 @@
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
 using Model.NBYS;
+using Model.Services.Ortak;
 using Model.Services.NBYS;
 using Model.TBYS;
 using System;
@@ -749,24 +750,13 @@ namespace Model.Ortak
         public static string BolgeGetir(int ilId)
         {
             string bolgeAdi = string.Empty;
-            Il il = new Il();
-            il = il.Select<Il>(ilId);
+            Il il = new IlService().GetById(ilId);
             if (il != null)
             {
-                Bolge bolge = new Bolge();
-                bolge = bolge.Select(il.BolgeId);
+                Bolge bolge = new BolgeService().GetById(il.BolgeId);
                 bolgeAdi = bolge.KisaAdi;
             }
             return (bolgeAdi);
-        }
-        private static Bolge BolgeGetirByIlId(int ilId)
-        {
-           
-            Il Il = new Il();
-            Il = Il.Select<Il>(ilId);
-            Bolge bolge = new Bolge();
-            bolge = bolge.Select(Il.BolgeId);
-            return bolge;
         }
         // Display adini almak için yardimci fonksiyon
         public static string GetEnumDisplayName(Enum enumValue)
