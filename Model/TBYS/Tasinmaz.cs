@@ -1,5 +1,6 @@
 using Model.Ortak;
 using Model.Services.Ortak;
+using Model.Services.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -149,15 +150,7 @@ namespace Model.TBYS
         }
         public override T Select<T>(int id)
         {
-            SqlQuery query = new SqlQuery(@"SELECT *
-                               FROM Tasinmaz_Table 
-                               WHERE EnvanterdeMi=1 AND Id=@Id");
-            query.AddParameter("@Id", id);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
-            Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = list.FirstOrDefault();
-            return (T)Convert.ChangeType(tasinmaz, typeof(T));
+            return (T)Convert.ChangeType(new TasinmazService().GetInventoryById(id), typeof(T));
 
         }
         public override int Save()
@@ -242,16 +235,7 @@ namespace Model.TBYS
         }
         public Tasinmaz Select(int id)
         {
-            SqlQuery query = new SqlQuery(@"SELECT *
-                               FROM Tasinmaz_Table 
-                               WHERE Id=@Id");
-            query.AddParameter("@Id", id);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
-            Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = list.FirstOrDefault();
-            return tasinmaz;
-
+            return new TasinmazService().GetById(id);
         }
         public string SelectByIdBolumId(int tasinmazId, int bolumId)
         {
@@ -278,16 +262,7 @@ namespace Model.TBYS
         }
         public Tasinmaz SelectById(int id)
         {
-            SqlQuery query = new SqlQuery(@"SELECT *
-                               FROM Tasinmaz_Table 
-                               WHERE Id=@Id");
-            query.AddParameter("@Id", id);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
-            Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = list.FirstOrDefault();
-            return tasinmaz;
-
+            return new TasinmazService().GetById(id);
         }
         public Tasinmaz SelectEnvanterdenCikanTasinmaz(int id)
         {
@@ -336,14 +311,9 @@ namespace Model.TBYS
 		}
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"SELECT *
-                                FROM Tasinmaz_Table
-                                WHERE EnvanterdeMi=1 ");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+            return (List<T>)Convert.ChangeType(
+                new TasinmazService().GetInventory(),
+                typeof(List<T>));
         }
         /// <summary>
         /// Bagisçisi olmayan envanterdeki tasinmazlari getir Ortak bagislar dahil
