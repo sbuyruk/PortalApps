@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Model.Services.IKYS;
 
 namespace Model.IKYS
 {
@@ -20,24 +21,13 @@ namespace Model.IKYS
         public string Adres { get; set; }
         public override T Select<T>(int id)
         {
-            string sqlString = SelectSQL(id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Yoklama> list = ToList<Yoklama>(dataTable);
-            Yoklama yoklama = new Yoklama();
-            yoklama = list.FirstOrDefault();
-            return (T)Convert.ChangeType(yoklama, typeof(T));
+            Id = id;
+            return (T)Convert.ChangeType(new YoklamaService().GetById(id), typeof(T));
         }
         public Yoklama Select(int id)
         {
-            GenericEntity<Yoklama> genericEntity = new GenericEntity<Yoklama>(ProjeConstants.SQL_SELECT);
             Id = id;
-            string sqlString = genericEntity.GetQuery(this);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Yoklama> list = ToList<Yoklama>(dataTable);
-            Yoklama yoklama = new Yoklama();
-            yoklama = list.FirstOrDefault();
-            return yoklama;
+            return new YoklamaService().GetById(id);
         }
         public override int Save()
         {
@@ -128,72 +118,16 @@ namespace Model.IKYS
         }
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM Yoklama_Table");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Yoklama> list = ToList<Yoklama>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+            return (List<T>)Convert.ChangeType(new YoklamaService().GetAll(), typeof(List<T>));
         }
 
-        private string SelectSQL(int id)
-        {
-            string sqlstr = string.Format(@"SELECT *
-                               FROM Yoklama_Table 
-                               WHERE  Id={0}", id);
-            return sqlstr;
-        }
-        private string DeleteSQL()
-        {
-            string sqlString = string.Format(@"
-                            DELETE 
-                            FROM Yoklama_Table
-                            WHERE Id={0}", Id);
-            return sqlString;
-        }
         public string SelectAllReturnJson(int personelId)
         {
-            string sqlString = SelectAllSQL(personelId);
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            string json = ToJSON(dataTable);
-            return json;
+            return new YoklamaService().GetAllByPersonelIdAsJson(personelId);
         }
         public DataTable SelectAllReturnDataTable(int personelId)
         {
-            string sqlString = SelectAllSQL(personelId);
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-
-            return dataTable;
-        }
-        private string SelectAllSQL(int personelId)
-        {
-            string personelIdStr = personelId > 0 ? " WHERE PersonelId=" + personelId : "";
-            string sqlstr = string.Format(@" 
-                    SELECT A.Id YoklamaId, P.Adi+' '+P.Soyadi AdiSoyadi, B.Adi BulunmamaSebebi, A.PersonelId,A.BaslangicTarihi,A.BitisTarihi,
-                           A.Aciklama
-                    FROM Yoklama_Table A
-                        INNER JOIN Personel_Table P On A.PersonelId=P.Id     
-						INNER JOIN BulunmamaSebebi_Table B On B.Id=A.BulunmamaSebebi  
-                    {0}   
-                    ORDER BY A.BaslangicTarihi DESC, A.BitisTarihi DESC ", personelIdStr);
-            return sqlstr;
+            return new YoklamaService().GetAllByPersonelId(personelId);
         }
         public DataTable SelectByTarihReturnDataTable(DateTime bastar, DateTime bittar)
         {
@@ -233,25 +167,7 @@ namespace Model.IKYS
         }
         public List<Yoklama> SelectByPersonelIdTarih(int personelId, DateTime bastar, DateTime bittar)
         {
-            try
-            {
-                string sqlString = string.Format(@"
-                SELECT *
-                FROM Yoklama_Table
-                WHERE PersonelId={0}
-                    AND BulunmamaSebebi=3 --Görevli
-					AND  (BitisTarihi >= {1} AND BaslangicTarihi <= {2}) ", personelId.ToString(), bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat());
-
-                DataTable dataTable = dao.SelectFromDb(sqlString, "");
-                List<Yoklama> list = ToList<Yoklama>(dataTable);
-
-                return list;
-            }
-            catch (Exception e)
-            {
-
-                throw;
-            }
+            return new YoklamaService().GetByPersonelIdAndDate(personelId, bastar, bittar);
         }
     }
 }

@@ -139,6 +139,8 @@
     <Compile Include="Services\NBYS\NakitBagisciReportService.cs" />
     <Compile Include="Services\Ortak\BolgeService.cs" />
     <Compile Include="Services\IKYS\PersonelService.cs" />
+    <Compile Include="Services\IKYS\IzinTalepService.cs" />
+    <Compile Include="Services\IKYS\YoklamaService.cs" />
     <Compile Include="Services\MTS\KaynakTanimService.cs" />
     <Compile Include="Services\Ortak\IlService.cs" />
     <Compile Include="Services\Ortak\IlceService.cs" />

@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Model.Services.IKYS;
 
 namespace Model.IKYS
 {
@@ -33,12 +34,8 @@ namespace Model.IKYS
         public bool EPostaGonder { get; set; }
         public override T Select<T>(int id)
         {
-            string sqlString = SelectSQL(id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<IzinTalep> list = ToList<IzinTalep>(dataTable);
-            IzinTalep izinTalep = new IzinTalep();
-            izinTalep = list.FirstOrDefault();
-            return (T)Convert.ChangeType(izinTalep, typeof(T));
+            Id = id;
+            return (T)Convert.ChangeType(new IzinTalepService().GetById(id), typeof(T));
         }
         public override int Save()
         {
@@ -130,28 +127,7 @@ namespace Model.IKYS
         }
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM IzinTalep_Table");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<IzinTalep> list = ToList<IzinTalep>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
-        }
-        private string SelectSQL(int id)
-        {
-            string sqlstr = string.Format(@"SELECT *
-                               FROM IzinTalep_Table 
-                               WHERE  Id={0}", id);
-            return sqlstr;
-        }
-        private string DeleteSQL()
-        {
-            string sqlString = string.Format(@"
-                            DELETE 
-                            FROM IzinTalep_Table
-                            WHERE Id={0}", Id);
-            return sqlString;
+            return (List<T>)Convert.ChangeType(new IzinTalepService().GetAll(), typeof(List<T>));
         }
         public string SelectIzinTalepleriReturnJson(int personelId, int izinTipi, bool mazeretHaric, bool sadeceGecerliDonemTalepleri)
         {
