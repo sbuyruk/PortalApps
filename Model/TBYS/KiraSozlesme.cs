@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Model.Services.TBYS;
 
 namespace Model.TBYS
 {
@@ -46,27 +47,12 @@ namespace Model.TBYS
 
         public override T Select<T>(int id)
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM KiraSozlesme_Table 
-                               WHERE  Id={0}", id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-            KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = list.FirstOrDefault();
-            return (T)Convert.ChangeType(kiraSozlesme, typeof(T));
+            return (T)Convert.ChangeType(new KiraSozlesmeService().GetById(id), typeof(T));
 
         }
         public KiraSozlesme Select(int kiraSozlesmeId)
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM KiraSozlesme_Table 
-                               WHERE  Id={0}", kiraSozlesmeId);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-            KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = list.FirstOrDefault();
-            return kiraSozlesme;
-
+            return new KiraSozlesmeService().GetById(kiraSozlesmeId);
         }
 
       
@@ -152,30 +138,13 @@ namespace Model.TBYS
         }
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM KiraSozlesme_Table
-                ORDER BY CASE WHEN DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(DosyaNo,999999)
-                ");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+            return (List<T>)Convert.ChangeType(
+                new KiraSozlesmeService().GetAll(),
+                typeof(List<T>));
         }
         public List<KiraSozlesme> SelectAllAktifSozlesme()
         {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM KiraSozlesme_Table
-                WHERE Aktif=1
-                ORDER BY CASE WHEN DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(DosyaNo,999999)
-                ");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-
-            return (list);
+            return new KiraSozlesmeService().GetAllActive();
         }
         public DataTable SelectKiraciSayisiByBolgeTarih(int bolgeId, int ay, int yil)
         {
