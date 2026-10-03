@@ -1,6 +1,7 @@
 using System.Web.UI.WebControls;
 using Model.MTS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -122,8 +123,7 @@ namespace MTS_WebParts.KisiGirisiWP
             if (IliDDL.SelectedItem == null)
             {
                 IliDDL.Items.Clear();
-                Il pIl = new Il();
-                List<Il> list = pIl.SelectAll<Il>();
+                List<Il> list = new IlService().GetAll();
                 foreach (Il il in list)
                 {
                     IliDDL.Items.Add(new ListItem(il.IlAdi, il.Id.ToString()));
@@ -135,8 +135,7 @@ namespace MTS_WebParts.KisiGirisiWP
         private void IlceDDLDoldur()
         {
             IlcesiDDL.Items.Clear();
-            Ilce pIlce = new Ilce();
-            List<Ilce> list = pIlce.SelectByIlId(IliDDL.SelectedValue.ConvertToInt());
+            List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt());
             foreach (Ilce ilce in list)
             {
                 IlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));
@@ -145,9 +144,6 @@ namespace MTS_WebParts.KisiGirisiWP
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             IlceDDLDoldur();
-            string ilAdi = IliDDL.SelectedItem.Text;
-            Il secilenIl = new Il();
-            secilenIl = secilenIl.SelectByIlAdi(ilAdi);
 
         }
         private void FormuDoldur()
