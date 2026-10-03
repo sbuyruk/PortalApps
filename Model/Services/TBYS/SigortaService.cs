@@ -36,6 +36,21 @@ namespace Model.Services.TBYS
             return new Sigorta().ToList<Sigorta>(repository.SelectByTasinmazId(tasinmazId));
         }
 
+        public List<Sigorta> GetByIdList(int id)
+        {
+            return new Sigorta().ToList<Sigorta>(repository.SelectById(id));
+        }
+
+        public DataTable GetInventoryList()
+        {
+            return repository.SelectInventoryList();
+        }
+
+        public string GetInventoryListAsJson()
+        {
+            return new Sigorta().ToJSON(GetInventoryList());
+        }
+
         public Sigorta GetLatestByTasinmazId(int tasinmazId)
         {
             return GetByTasinmazId(tasinmazId).FirstOrDefault();

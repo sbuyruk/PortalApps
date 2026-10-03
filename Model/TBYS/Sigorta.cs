@@ -69,56 +69,14 @@ namespace Model.TBYS
         }
         public string SelectAllReturnJson()
         {
-            string sqlString = SelectAllString();
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            string json = ToJSON(dataTable);
-            return json;
+            return new SigortaService().GetInventoryListAsJson();
         }
 
         public DataTable SelectAllReturnDataTable()
         {
-            string sqlString = SelectAllString();
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            return dataTable;
+            return new SigortaService().GetInventoryList();
 
         }
-        private string SelectAllString()
-        {
-            string sqlString = string.Format(@"
-                SELECT A.Id SigortaId, E.KisaAdi SorumluBolge, A.TasinmazId,B.SorumluBolge,A.SigortaCinsi,A.AdresKodu,A.PoliceNo,A.SigortaBasTar,A.SigortaBitTar,A.YapiTarzi,A.InsaYili,
-                    A.BulunduguKat,A.ToplamKatSayisi, A.BBNetAlan, A.BBBrutAlan, A.SigortaBedeli, A.Prim,A.DaskPoliceNo,
-                    B.Adres+ISNULL(F.BolumNo,'') +' '+ D.IlceAdi +'-'+ C.IlAdi Adres, C.IlAdi,D.IlceAdi, D.IlceAdi +' '+ C.IlAdi IliIlcesi, 
-                    B.KullanimSekli, B.Cinsi, B.PaftaNo,B.AdaNo,B.ParselNo,B.SahifeNo,F.BolumNo,
-                    B.TapuTasinmazNo,
-                    A.TeminatListesi,A.TeminatAciklama,A.Aciklama
-                FROM Sigorta_Table A
-                INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId AND B.EnvanterdeMi=1
-                LEFT JOIN BagimsizBolum_Table F ON F.Id=A.BolumId
-                    LEFT JOIN IL_Table C ON C.Id=B.IlId
-	                LEFT JOIN ILCE_Table D ON D.Id=B.IlceId
-	                LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
-                WHERE 1>0
-                ORDER BY E.Id, B.Ili,B.Ilcesi, A.Id, SigortaBasTar DESC
-                            ");
-            return sqlString;
-        }
-        
         public DataTable SelectByTeminatSigortaCinsiReturnDataTable(string sigortaCinsi, bool vadesiGelenler, bool isDeprem, bool isYangin, bool isMakine100000,
             bool isMakine5000, bool isJenerator, bool isAsansor, bool isKazan, int bolgeId, string auth, DateTime basTarih, DateTime bitTarih)
         {
@@ -196,11 +154,7 @@ namespace Model.TBYS
         }
         public List<Sigorta> SelectBySigortaId(int sigortaId)
         {
-            string sqlString = string.Format(@"SELECT * FROM Sigorta_Table
-                              WHERE Id={0}", sigortaId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Sigorta> list = ToList<Sigorta>(dataTable);
-            return list;
+            return new SigortaService().GetByIdList(sigortaId);
         }
         public Sigorta SelectNext(int sigortaId)
         {
