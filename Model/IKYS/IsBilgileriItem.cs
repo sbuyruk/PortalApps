@@ -1,4 +1,5 @@
 using Model.Ortak;
+using Model.Services.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,9 +55,7 @@ namespace Model.IKYS
         {
             get
             {
-                Bolge bolge = new Bolge();
-                bolge = bolge.Select<Bolge>(_Birim.BolgeId);
-                return bolge;
+                return new BolgeService().GetById(_Birim.BolgeId);
             }
             set
             {

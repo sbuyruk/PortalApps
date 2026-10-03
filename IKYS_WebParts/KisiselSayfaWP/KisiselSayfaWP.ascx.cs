@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -192,7 +193,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                 KimlikR1H3.Text = "Dogum Tarihi";
                 KimlikR1H4.Text = kimlik.DogumTar.ConvertToDatetimeEmptyIfNull();
                 KimlikR1H5.Text = "Dogum Yeri";
-                Ilce ilce = new Ilce(kimlik.DogumYeri.ConvertToInt());
+                Ilce ilce = new IlceService().GetById(kimlik.DogumYeri.ConvertToInt()) ?? new Ilce();
                 KimlikR1H6.Text = ilce.IlceAdi + "/" + ilce.IlAdi;
                 KimlikR1H7.Text = "Sicil No";
                 KimlikR1H8.Text = personel.SicilNo.ReturnEmptyIfNull().ToString();
@@ -290,7 +291,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                 TableCell IlR1H2 = new TableCell();
                 IlR1H1.Font.Bold = true;
                 IlR1H1.Text = "Adres";
-                Ilce ilce = new Ilce(iletisimBilgileri.Ilcesi.ConvertToInt());
+                Ilce ilce = new IlceService().GetById(iletisimBilgileri.Ilcesi.ConvertToInt()) ?? new Ilce();
                 IlR1H2.Text = iletisimBilgileri.Adres.ToString() + " " + iletisimBilgileri.Semt.ToString() +
                     " " + iletisimBilgileri.PostaKodu + ilce.IlceAdi + "/" + ilce.IlAdi;
                 row.Controls.Add(IlR1H1);
