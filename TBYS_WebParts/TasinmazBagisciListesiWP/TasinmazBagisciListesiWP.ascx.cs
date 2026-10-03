@@ -1,5 +1,6 @@
 using Microsoft.SharePoint;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -135,8 +136,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
                     TitleLbl.Text = "Taşınmaz Bağışçı Listesi";
                     if (BolgeIdQS!= ProjeConstants.BOLGE_HEPSI_INT && BolgeIdQS!=ProjeConstants.BOLGE_GENELMUDURLUK_INT)
                     {
-                        Bolge bolgeDao= new Bolge();
-                        bolgeDao = bolgeDao.Select(bolge.Id);
+                        Bolge bolgeDao = new BolgeService().GetSelected(bolge.Id);
                         TitleLbl.Text = bolgeDao==null? "Taşınmaz Bağışçı Listesi" : "Bağışçı Listesi" + " (" + bolge.KisaAdi + " Bölgesi )";
                         YeniKayitBtn.Visible = false;
                     }
@@ -494,8 +494,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
                 row.Controls.Add(AdiSoyadiCell);
 
                 TableCell IliIlcesiCell = new TableCell();
-                Ilce ilce = new Ilce();
-                ilce = ilce.Select<Ilce>(item.Ilcesi);
+                Ilce ilce = new IlceService().GetById(item.Ilcesi);
                 IliIlcesiCell.Text = item.Adres+" "+ ilce != null ? ilce.IlAdi + "/" + ilce.IlceAdi : string.Empty;
                 row.Controls.Add(IliIlcesiCell);
 

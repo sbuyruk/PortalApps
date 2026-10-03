@@ -1,4 +1,5 @@
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -149,12 +150,10 @@ namespace TBYS_WebParts.TasinmazBagisciBilgiListesiWP
         private string BolgeGetir(string ilAdi)
         {
             string bolgeAdi = string.Empty;
-            Il il = new Il();
-            il = il.SelectByIlAdi(ilAdi);
+            Il il = new IlService().GetByName(ilAdi);
             if (il != null)
             {
-                Bolge bolge = new Bolge();
-                bolge = bolge.Select(il.BolgeId);
+                Bolge bolge = new BolgeService().GetSelected(il.BolgeId);
                 bolgeAdi = bolge.KisaAdi;
             }
             return (bolgeAdi);

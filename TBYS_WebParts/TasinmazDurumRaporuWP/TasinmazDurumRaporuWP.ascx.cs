@@ -1,4 +1,5 @@
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.TBYS;
 using System;
 using System.ComponentModel;
@@ -150,8 +151,7 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP
                 Tasinmaz tasinmaz = new Tasinmaz();
 
                 // Get active regions based on user permission/context
-                Bolge bolgeDao = new Bolge();
-                var bolgeList = bolgeDao.SelectAktifBolgeler(BolgeIdQS);
+                var bolgeList = new BolgeService().GetActive(BolgeIdQS);
 
                 // Insert a row per bolge before totals row
                 int insertIndex = headerRows;

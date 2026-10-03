@@ -1,5 +1,6 @@
 using Microsoft.SharePoint;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -262,8 +263,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             if (IliDDL.SelectedItem == null)
             {
                 IliDDL.Items.Clear();
-                Il pIl = new Il();
-                List<Il> list = pIl.SelectAll<Il>();
+                List<Il> list = new IlService().GetAll();
                 foreach (Il il in list)
                 {
                     IliDDL.Items.Add(new ListItem(il.IlAdi, il.Id.ToString()));
@@ -275,8 +275,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
         private void IlceDDLDoldur()
         {
             IlcesiDDL.Items.Clear();
-            Ilce pIlce = new Ilce();
-            List<Ilce> list = pIlce.SelectByIlId(IliDDL.SelectedValue.ConvertToInt());
+            List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt());
             foreach (Ilce ilce in list)
             {
                 IlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));

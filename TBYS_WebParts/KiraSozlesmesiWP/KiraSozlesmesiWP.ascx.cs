@@ -1,4 +1,5 @@
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -792,8 +793,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             Kiraci kiraci = new Kiraci();
             kiraci = kiraci.Select(yeniSozlesme.KiraciId);
             string ili = kiraci == null ? "" : kiraci.Ili;
-            Il il = new Il();
-            il = il.SelectByIlAdi(kiraci.Ili);
+            Il il = new IlService().GetByName(kiraci.Ili);
             int bolgeId = il == null ? 0 : il.BolgeId;
             return bolgeId;
         }

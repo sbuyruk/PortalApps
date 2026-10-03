@@ -1,4 +1,5 @@
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -226,8 +227,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
         {
             IliDDL.Items.Clear();
 
-            Il newil = new Il();
-            List<Il> list = newil.SelectAll<Il>();
+            List<Il> list = new IlService().GetAll();
             foreach (Il il in list)
             {
                 if (string.IsNullOrEmpty(il.IlAdi.Trim()))
@@ -240,9 +240,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
         private void IlceDDLDoldur()
         {
             IlcesiDDL.Items.Clear();
-            Ilce pilce = new Ilce();
-
-            List<Ilce> list = pilce.SelectByIlId(IliDDL.SelectedValue.ConvertToInt());
+            List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt());
             foreach (Ilce ilce in list)
             {
                 IlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));
@@ -473,10 +471,8 @@ namespace TBYS_WebParts.KiraciGirisiWP
         private Bolge BolgeGetir()
         {
             int ilId = IliDDL.SelectedItem.Value.ConvertToInt();
-            Il Il = new Il();
-            Il = Il.Select<Il>(ilId);
-            Bolge bolge = new Bolge();
-            bolge = bolge.Select(Il.BolgeId);
+            Il Il = new IlService().GetById(ilId);
+            Bolge bolge = new BolgeService().GetSelected(Il.BolgeId);
             return bolge;
         }
         protected void SilBtn_Click(object sender, EventArgs e)

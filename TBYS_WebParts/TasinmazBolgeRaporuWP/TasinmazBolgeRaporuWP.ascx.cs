@@ -1,4 +1,5 @@
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -163,8 +164,7 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
         private void TablolariDoldur(int bolgeId)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            Il il = new Il();
-            List<Il> ilList = il.SelectByBolgeId(bolgeId);
+            List<Il> ilList = new IlService().GetByRegion(bolgeId, true);
             int AptTMToplam = 0;
             int AptCMToplam = 0;
             int MeskenTMToplam = 0;

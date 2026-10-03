@@ -1,4 +1,5 @@
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -101,8 +102,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
         {
             IliDDL.Items.Clear();
 
-            Il newil = new Il();
-            List<Il> list = newil.SelectAll<Il>();
+            List<Il> list = new IlService().GetAll();
             foreach (Il il in list)
             {
                 if (string.IsNullOrEmpty(il.IlAdi.Trim()))
@@ -114,8 +114,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
         private void IlceDDLDoldur()
         {
             IlcesiDDL.Items.Clear();
-            Ilce pilce = new Ilce();
-            List<Ilce> list = pilce.SelectByIlId(IliDDL.SelectedValue.ConvertToInt());
+            List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt());
             foreach (Ilce ilce in list)
             {
                 IlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));
@@ -200,8 +199,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                 row.Controls.Add(AdiSoyadiCell);
 
                 TableCell IliIlcesiCell = new TableCell();
-                Ilce ilce = new Ilce();
-                ilce = ilce.Select<Ilce>(item.Ilcesi);
+                Ilce ilce = new IlceService().GetById(item.Ilcesi);
                 IliIlcesiCell.Text = ilce != null ? ilce.IlAdi + "/" + ilce.IlceAdi : string.Empty;
                 row.Controls.Add(IliIlcesiCell);
 
@@ -447,8 +445,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                         yeniTaahhut.Adres = tasinmazBagisci.Adres;
                         yeniTaahhut.BagisciId = tasinmazBagisci.Id;
                         yeniTaahhut.DogumTarihi = tasinmazBagisci.DogumTarihi;
-                        Ilce ilce = new Ilce();
-                        ilce = ilce.SelectByIlAndIlceAdi(tasinmazBagisci.Ilcesi, tasinmazBagisci.Ili);
+                        Ilce ilce = new IlceService().GetByProvinceAndDistrictContains(tasinmazBagisci.Ili, tasinmazBagisci.Ilcesi);
                         if (ilce != null)
                         {
                             yeniTaahhut.Ilcesi = ilce.Id;

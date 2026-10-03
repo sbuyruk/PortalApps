@@ -1,4 +1,5 @@
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -481,8 +482,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
                 row.Controls.Add(AdiSoyadiCell);
 
                 TableCell IliIlcesiCell = new TableCell();
-                Ilce ilce = new Ilce();
-                ilce = ilce.Select<Ilce>(item.Ilcesi);
+                Ilce ilce = new IlceService().GetById(item.Ilcesi);
                 IliIlcesiCell.Text = ilce != null ? ilce.IlAdi + "/" + ilce.IlceAdi : string.Empty;
                 row.Controls.Add(IliIlcesiCell);
 
