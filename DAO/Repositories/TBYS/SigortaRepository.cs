@@ -40,6 +40,24 @@ namespace DAO.Repositories.TBYS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectInventoryList()
+        {
+            return db.SelectFromDb(new SqlQuery(@"
+                SELECT A.Id SigortaId, E.KisaAdi SorumluBolge, A.TasinmazId,B.SorumluBolge,A.SigortaCinsi,A.AdresKodu,A.PoliceNo,A.SigortaBasTar,A.SigortaBitTar,A.YapiTarzi,A.InsaYili,
+                    A.BulunduguKat,A.ToplamKatSayisi, A.BBNetAlan, A.BBBrutAlan, A.SigortaBedeli, A.Prim,A.DaskPoliceNo,
+                    B.Adres+ISNULL(F.BolumNo,'') +' '+ D.IlceAdi +'-'+ C.IlAdi Adres, C.IlAdi,D.IlceAdi, D.IlceAdi +' '+ C.IlAdi IliIlcesi,
+                    B.KullanimSekli, B.Cinsi, B.PaftaNo,B.AdaNo,B.ParselNo,B.SahifeNo,F.BolumNo,
+                    B.TapuTasinmazNo,A.TeminatListesi,A.TeminatAciklama,A.Aciklama
+                FROM Sigorta_Table A
+                INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId AND B.EnvanterdeMi=1
+                LEFT JOIN BagimsizBolum_Table F ON F.Id=A.BolumId
+                LEFT JOIN IL_Table C ON C.Id=B.IlId
+                LEFT JOIN ILCE_Table D ON D.Id=B.IlceId
+                LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
+                WHERE 1>0
+                ORDER BY E.Id, B.Ili,B.Ilcesi, A.Id, SigortaBasTar DESC"), "");
+        }
+
         public int Insert<T>(T entity)
         {
             return db.Insert(queryBuilder.BuildInsert(entity, "Sigorta_Table"));
