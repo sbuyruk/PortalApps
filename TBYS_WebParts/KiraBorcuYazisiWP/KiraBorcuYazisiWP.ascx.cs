@@ -2,6 +2,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.SharePoint;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -166,8 +167,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
         private void BolgeDDLDoldur()
         {
             BolgeDDL.Items.Clear();
-            Bolge bolgeDao = new Bolge();
-            List<Bolge> list = bolgeDao.SelectAktifBolgeler(BolgeIdQS);
+            List<Bolge> list = new BolgeService().GetActive(BolgeIdQS);
             foreach (Bolge item in list)
             {
                 if (string.IsNullOrEmpty(item.Adi.Trim()))

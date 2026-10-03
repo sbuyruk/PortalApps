@@ -1,5 +1,6 @@
 using Model.MTS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -425,17 +426,16 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         private void BolgeDDLDoldur()
         {
             BolgeDDL.Items.Clear();
-            Bolge bolgeDao = new Bolge();
             List<Bolge> list = new List<Bolge>();
             if (BolgeIdQS == ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT)
             {
-                list = bolgeDao.SelectAktifBolgeler(ProjeConstants.BOLGE_HEPSI_INT);
+                list = new BolgeService().GetActive(ProjeConstants.BOLGE_HEPSI_INT);
                 BolgeDDL.Items.Add(new System.Web.UI.WebControls.ListItem(ProjeConstants.BOLGE_HEPSI, ProjeConstants.BOLGE_HEPSI_INT.ToString()));
 
             }
             else
             {
-                list = bolgeDao.SelectAktifBolgeler(BolgeIdQS);
+                list = new BolgeService().GetActive(BolgeIdQS);
             }
             foreach (Bolge item in list)
             {

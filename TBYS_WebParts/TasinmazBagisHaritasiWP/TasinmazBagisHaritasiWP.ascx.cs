@@ -1,4 +1,5 @@
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -38,8 +39,7 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
         protected void BagiscilarBtn_Click(object sender, EventArgs e)
         {
             string ingIlAdi = paramLbl.Value;
-            Il il = new Il();
-            il = il.SelectByIngAdi(ingIlAdi);
+            Il il = new IlService().GetByEnglishName(ingIlAdi);
             BagisciTableDoldur(il.IlAdi);
 
         }
@@ -205,8 +205,7 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
             try
             {
                 string ingIlAdi = paramLbl.Value;
-                Il il = new Il();
-                il = il.SelectByIngAdi(ingIlAdi);
+                Il il = new IlService().GetByEnglishName(ingIlAdi);
                 TasinmazTitleLbl.Text = il.IlAdi + " Ilinde Bulunan Tasinmazlar";
                 BagisciTitleLbl.Text = il.IlAdi + " Ilinde Ikamet Eden Bagisçilar";
                 TasinmazTableDoldur(il.IlAdi);

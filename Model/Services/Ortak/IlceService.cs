@@ -37,6 +37,11 @@ namespace Model.Services.Ortak
             return Map(repository.SelectByProvinceAndDistrictName(provinceName, districtName));
         }
 
+        public Ilce GetByProvinceAndDistrictContains(string provinceName, string districtName)
+        {
+            return Map(repository.SelectByProvinceAndDistrictContains(provinceName, districtName));
+        }
+
         public int CountByRegion(int regionId)
         {
             DataTable table = repository.SelectCountByRegion(regionId);

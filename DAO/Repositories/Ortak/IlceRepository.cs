@@ -46,6 +46,16 @@ namespace DAO.Repositories.Ortak
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectByProvinceAndDistrictContains(string provinceName, string districtName)
+        {
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM Ilce_Table WHERE IlAdi=@IlAdi " +
+                "AND IlceAdi LIKE @IlceAdi ORDER BY IlceAdi");
+            query.AddParameter("@IlAdi", provinceName);
+            query.AddParameter("@IlceAdi", "%" + districtName + "%");
+            return db.SelectFromDb(query, "");
+        }
+
         public DataTable SelectCountByRegion(int regionId)
         {
             SqlQuery query = new SqlQuery(

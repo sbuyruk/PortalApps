@@ -1,4 +1,5 @@
 using Model.Ortak;
+using Model.Services.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -143,8 +144,7 @@ namespace Model.TBYS
 
         private string IliStr() 
         {
-            Il il = new Il();
-            il=il.Select<Il>(Id);
+            Il il = new IlService().GetById(Id);
             return il==null?string.Empty:il.IlAdi;
         }
         public override T Select<T>(int id)

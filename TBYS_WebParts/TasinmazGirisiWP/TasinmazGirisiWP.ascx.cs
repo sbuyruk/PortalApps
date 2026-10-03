@@ -1,6 +1,7 @@
 using DocumentFormat.OpenXml.Drawing;
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -303,8 +304,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             if (IliDDL.SelectedItem == null)
             {
                 IliDDL.Items.Clear();
-                Il newil = new Il();
-                List<Il> list = newil.SelectAll<Il>();
+                List<Il> list = new IlService().GetAll();
                 foreach (Il il in list)
                 {
                     IliDDL.Items.Add(new ListItem(il.IlAdi, il.Id.ToString()));
@@ -317,9 +317,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         private void IlceDDLDoldur()
         {
             IlcesiDDL.Items.Clear();
-            Ilce pilce = new Ilce();
-
-            List<Ilce> list = pilce.SelectByIlId(IliDDL.SelectedValue.ConvertToInt());
+                List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt());
             foreach (Ilce ilce in list)
             {
                 IlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));

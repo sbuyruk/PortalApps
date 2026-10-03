@@ -1,5 +1,6 @@
 using Microsoft.SharePoint;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -230,8 +231,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             if (IliDDL.SelectedItem == null)
             {
                 IliDDL.Items.Clear();
-                Il pIl = new Il();
-                List<Il> list = pIl.SelectAll<Il>();
+                List<Il> list = new IlService().GetAll();
                 foreach (Il il in list)
                 {
                     IliDDL.Items.Add(new ListItem(il.IlAdi, il.Id.ToString()));
@@ -244,8 +244,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         private void IlceDDLDoldur()
         {
             IlcesiDDL.Items.Clear();
-            Ilce pIlce = new Ilce();
-            List<Ilce> list = pIlce.SelectByIlId(IliDDL.SelectedValue.ConvertToInt());
+            List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt());
             foreach (Ilce ilce in list)
             {
                 IlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));
@@ -263,8 +262,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             if (DefinIliDDL.SelectedItem == null)
             {
                 DefinIliDDL.Items.Clear();
-                Il pIl = new Il();
-                List<Il> list = pIl.SelectAll<Il>();
+                List<Il> list = new IlService().GetAll();
                 foreach (Il il in list)
                 {
                     DefinIliDDL.Items.Add(new ListItem(il.IlAdi, il.Id.ToString()));
@@ -276,8 +274,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         private void DefinIlceDDLDoldur()
         {
             DefinIlcesiDDL.Items.Clear();
-            Ilce pIlce = new Ilce();
-            List<Ilce> list = pIlce.SelectByIlId(DefinIliDDL.SelectedValue.ConvertToInt());
+            List<Ilce> list = new IlceService().GetByProvinceId(DefinIliDDL.SelectedValue.ConvertToInt());
             foreach (Ilce ilce in list)
             {
                 DefinIlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));
@@ -312,10 +309,8 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         private Bolge BolgeGetir()
         {
             int ilId = IliDDL.SelectedItem.Value.ConvertToInt();
-            Il Il = new Il();
-            Il = Il.Select<Il>(ilId);
-            Bolge bolge = new Bolge();
-            bolge = bolge.Select(Il.BolgeId);
+            Il Il = new IlService().GetById(ilId);
+            Bolge bolge = new BolgeService().GetSelected(Il.BolgeId);
             return bolge;
         }
         private TasinmazBagisci SaveBagisciData2Db()

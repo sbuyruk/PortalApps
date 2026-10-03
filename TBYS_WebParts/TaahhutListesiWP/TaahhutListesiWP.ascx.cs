@@ -1,4 +1,5 @@
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -134,8 +135,7 @@ namespace TBYS_WebParts.TaahhutListesiWP
                     TitleLbl.Text = "Taahhüt Listesi";
                     if (BolgeIdQS != ProjeConstants.BOLGE_HEPSI_INT && BolgeIdQS != ProjeConstants.BOLGE_GENELMUDURLUK_INT)
                     {
-                        Bolge bolgeDao = new Bolge();
-                        bolgeDao = bolgeDao.Select(bolge.Id);
+                        Bolge bolgeDao = new BolgeService().GetSelected(bolge.Id);
                         TitleLbl.Text = bolgeDao == null ? "Taahhüt Listesi" : "Taahhüt Listesi" + " (" + bolge.KisaAdi + " Bölgesi )";
                     }
  
