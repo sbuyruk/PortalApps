@@ -3,6 +3,7 @@ using Model.IKYS;
 using Model.MTS;
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -89,10 +90,8 @@ namespace MTS_WebParts.KisiKartiWP
                 katilimci.KatilimciId = kisi.Id.ToString() ;
                 katilimci.AdiSoyadi = kisi.Adi + " " + kisi.Soyadi;
                 katilimci.Adresi = kisi.Adres;
-                Il il = new Il();
-                il = il.Select<Il>(kisi.Ili);
-                Ilce ilce = new Ilce();
-                ilce = ilce.Select<Ilce>(kisi.Ilcesi);
+                Il il = new IlService().GetById(kisi.Ili);
+                Ilce ilce = new IlceService().GetById(kisi.Ilcesi);
                 katilimci.IlcesiIli = ilce == null ? "" : ilce.IlceAdi + " " + (il == null ? "" : il.IlAdi.ToUpper());
                 string telefon1 = string.IsNullOrEmpty(kisi.Telefon1.ToString()) ? "" : String.Format("{0:(###) ### ####}", kisi.Telefon1)
                     + (string.IsNullOrEmpty(kisi.Dahili1) ? "" : " /" + kisi.Dahili1.Trim());
