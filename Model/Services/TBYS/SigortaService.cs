@@ -47,6 +47,16 @@ namespace Model.Services.TBYS
             return repository.SelectInventoryList();
         }
 
+        public decimal GetInsuranceValueTotal(string sigortaCinsi)
+        {
+            return ReadTotal(repository.SelectInsuranceValueTotal(sigortaCinsi));
+        }
+
+        public decimal GetPremiumTotal(string sigortaCinsi)
+        {
+            return ReadTotal(repository.SelectPremiumTotal(sigortaCinsi));
+        }
+
         public string GetInventoryListAsJson()
         {
             return new Sigorta().ToJSON(GetInventoryList());
@@ -116,6 +126,14 @@ namespace Model.Services.TBYS
         private static Sigorta Map(DataTable table)
         {
             return new Sigorta().ToList<Sigorta>(table).FirstOrDefault();
+        }
+
+        private static decimal ReadTotal(DataTable table)
+        {
+            if (table == null || table.Rows.Count == 0)
+                return 0;
+
+            return table.Rows[0]["Toplam"].ReturnZeroIfNull().ConvertToDecimal();
         }
     }
 }

@@ -58,6 +58,28 @@ namespace DAO.Repositories.TBYS
                 ORDER BY E.Id, B.Ili,B.Ilcesi, A.Id, SigortaBasTar DESC"), "");
         }
 
+        public DataTable SelectInsuranceValueTotal(string sigortaCinsi)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT SUM(S.SigortaBedeli) Toplam
+                FROM Sigorta_Table S
+                INNER JOIN Tasinmaz_Table T ON T.Id=S.TasinmazId
+                WHERE T.EnvanterdeMi=1 AND SigortaCinsi=@SigortaCinsi");
+            query.AddParameter("@SigortaCinsi", sigortaCinsi);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectPremiumTotal(string sigortaCinsi)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT SUM(S.Prim) Toplam
+                FROM Sigorta_Table S
+                INNER JOIN Tasinmaz_Table T ON T.Id=S.TasinmazId
+                WHERE T.EnvanterdeMi=1 AND SigortaCinsi=@SigortaCinsi");
+            query.AddParameter("@SigortaCinsi", sigortaCinsi);
+            return db.SelectFromDb(query, "");
+        }
+
         public int Insert<T>(T entity)
         {
             return db.Insert(queryBuilder.BuildInsert(entity, "Sigorta_Table"));
