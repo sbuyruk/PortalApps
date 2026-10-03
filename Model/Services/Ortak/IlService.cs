@@ -32,6 +32,11 @@ namespace Model.Services.Ortak
             return new Il().ToList<Il>(repository.SelectAll());
         }
 
+        public List<Il> GetAllOrderByRegion()
+        {
+            return new Il().ToList<Il>(repository.SelectAllOrderByRegion());
+        }
+
         public Il GetByName(string name)
         {
             return Map(repository.SelectByName(name));
@@ -56,6 +61,11 @@ namespace Model.Services.Ortak
         public List<Il> GetWithFTK()
         {
             return new Il().ToList<Il>(repository.SelectWithFTK());
+        }
+
+        public DataTable GetFTKRegions()
+        {
+            return repository.SelectFTKRegions();
         }
 
         private static Il Map(DataTable table)
