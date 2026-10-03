@@ -1,12 +1,9 @@
-using DAO.Ortak;
 using Model.Ortak;
+using Model.Services.MTS;
 using System.Collections.Generic;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Utility.ProjeGlobal;
-using System.Data;
-using System.Linq;
 
 namespace Model.MTS
 {
@@ -18,120 +15,28 @@ namespace Model.MTS
 
         public override int Save()
         {
-            try
-            {
-                GenericEntity<KaynakTanim> genericEntity = new GenericEntity<KaynakTanim>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                Olusturan = UtilityHelper.GetCurrentUserName();
-                SqlQuery query = genericEntity.GetQueryParametreli(this);
-                int id = dao.Insert(query);
-                if (id > 0 && ProjeConstants.MTS_SAVE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.MTS, ProjeConstants.MTS_KAYNAKTANIM
-                        );
-                }
-                this.Id = id;
-                return id;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-
+            return new KaynakTanimService().Save(this);
         }
         public override bool Update()
         {
-            bool isSuccess = false;
-            try
-            {
-                if (this != null)
-                {
-                    KaynakTanim item = Select<KaynakTanim>(Id);
-                    if (Id != 0)
-                    {
-                        GenericEntity<KaynakTanim> genericEntity = new GenericEntity<KaynakTanim>(ProjeConstants.SQL_UPDATE);
-                        DegistirmeTarihi = DateTime.Now;
-                        Degistiren = UtilityHelper.GetCurrentUserName();
-                        SqlQuery query = genericEntity.GetQueryParametreli(this);
-                        isSuccess = dao.Update2Db(query);
-                    }
-                    if (isSuccess && ProjeConstants.MTS_UPDATE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.MTS, ProjeConstants.MTS_KAYNAKTANIM);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
+            return new KaynakTanimService().Update(this);
         }
         public override bool Delete()
         {
-            try
-            {
-                bool isDeleted = false;
-                if (Id != 0)
-                {
-                    GenericEntity<KaynakTanim> genericEntity = new GenericEntity<KaynakTanim>(ProjeConstants.SQL_DELETE);
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    KaynakTanim item = Select<KaynakTanim>(Id);
-                    if (item != null)
-                    {
-                        isDeleted = dao.DeleteFromDb(query, "");
-                    }
-                    else isDeleted = false;
-                    if (isDeleted && ProjeConstants.MTS_DELETE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_KAYNAKTANIM);
-                    }
-                }
-                return isDeleted;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return new KaynakTanimService().Delete(this);
         }
         public KaynakTanim Select(int id)
         {
-            GenericEntity<KaynakTanim> genericEntity = new GenericEntity<KaynakTanim>(ProjeConstants.SQL_SELECT);
             Id = id;
-            string sqlString = genericEntity.GetQuery(this);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<KaynakTanim> list = ToList<KaynakTanim>(dataTable);
-            KaynakTanim item = new KaynakTanim();
-            item = list.FirstOrDefault();
-            return item;
+            return new KaynakTanimService().GetById(id);
         }
         public override T Select<T>(int id)
         {
-            GenericEntity<KaynakTanim> genericEntity = new GenericEntity<KaynakTanim>(ProjeConstants.SQL_SELECT);
-            Id = id;
-            string sqlString = genericEntity.GetQuery(this);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<KaynakTanim> list = ToList<KaynakTanim>(dataTable);
-            KaynakTanim item = new KaynakTanim();
-            item = list.FirstOrDefault();
-            return ((T)Convert.ChangeType(item, typeof(T)));
+            return (T)Convert.ChangeType(Select(id), typeof(T));
         }
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM KaynakTanim_Table ORDER BY Adi 
-                ");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<KaynakTanim> list = ToList<KaynakTanim>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+            return (List<T>)Convert.ChangeType(new KaynakTanimService().GetAll(), typeof(List<T>));
         }
     }
 }
