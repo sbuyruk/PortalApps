@@ -82,6 +82,7 @@
     <Compile Include="Repositories\TBYS\TasinmazRepository.cs" />
     <Compile Include="Repositories\TBYS\KiraSozlesmeRepository.cs" />
     <Compile Include="Repositories\TBYS\KiraciRepository.cs" />
+    <Compile Include="Repositories\TBYS\SigortaRepository.cs" />
     <Compile Include="Repositories\MTS\KaynakTanimRepository.cs" />
     <Compile Include="Repositories\NBYS\ArmaganRepository.cs" />
     <Compile Include="Repositories\NBYS\ArmaganTanimRepository.cs" />
