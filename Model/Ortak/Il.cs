@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Model.Services.Ortak;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
@@ -29,107 +30,38 @@ namespace Model.Ortak
         }
         public override T Select<T>(int id)
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM Il_Table 
-                               WHERE Id={0}", id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Il> list = ToList<Il>(dataTable);
-            Il il = new Il();
-            il = list.FirstOrDefault();
-            return (T)Convert.ChangeType(il, typeof(T));
+            return (T)Convert.ChangeType(new IlService().GetById(id), typeof(T));
         }
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM Il_Table");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Il> list = ToList<Il>(dataTable);
-
+            List<Il> list = new IlService().GetAll();
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
         public List<Il> SelectAllOrderByBolge()
         {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM Il_Table
-                ORDER BY Bolge, IlAdi");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Il> list = ToList<Il>(dataTable);
-
-            return (list);
+            return new IlService().GetAllOrderByRegion();
         }
         public Il SelectByIngAdi(string ingIlAdi)
         {
-            string sqlString = string.Format(@"SELECT *
-                                                FROM Il_Table
-                                                WHERE LOWER(IngIlAdi)=LOWER('{0}')", ingIlAdi);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Il> list = ToList<Il>(dataTable);
-            Il il = new Il();
-            il = list.FirstOrDefault();
-            return il;
+            return new IlService().GetByEnglishName(ingIlAdi);
         }
 
         public int SelectCountIlByBolgeId(int bolgeId= ProjeConstants.BOLGE_HEPSI_INT)
         {
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
-            string sqlString = string.Format(@"
-                SELECT COUNT(Id) Adet
-                FROM Il_Table
-                WHERE Id BETWEEN 1 AND 81 
-                {0}", bolgeStr);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                int adet = row["Adet"].ReturnZeroIfNull().ConvertToInt();
-                return adet;
-            }
-            return 0;
+            return new IlService().CountByRegion(bolgeId);
         }
         public List<Il> SelectByBolge(int bolgeId = ProjeConstants.BOLGE_HEPSI_INT)
         {
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM Il_Table
-                WHERE (Id BETWEEN 1 AND 81)
-                {0}", bolgeStr);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Il> list = ToList<Il>(dataTable);
-            return list;
+            return new IlService().GetByRegion(bolgeId, false);
         }
         public List<Il> SelectByBolgeId(int bolgeId)
         {
-            string bolgeStr = bolgeId==ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM Il_Table
-                WHERE (Id BETWEEN 1 AND 81)
-                {0}
-                ORDER BY IlAdi ", bolgeStr);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Il> list = ToList<Il>(dataTable);
-            return list;
+            return new IlService().GetByRegion(bolgeId, true);
         }
 
         public Il SelectByIlAdi(string ilAdi)
         {
-            string sqlString = string.Format(@"SELECT *
-                                                FROM Il_Table
-                                                WHERE LOWER(IlAdi)=LOWER('{0}')", ilAdi);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Il> list = ToList<Il>(dataTable);
-            Il il = new Il();
-            il = list.FirstOrDefault();
-            return il;
+            return new IlService().GetByName(ilAdi);
         }
         /// <summary>
         /// Valilikte veya en az bir ilcede ftk kurulu olan iller
@@ -138,30 +70,11 @@ namespace Model.Ortak
         /// <returns></returns>
         public List<Il> SelectFTKKuruluOlanIller()
         {
-            //string iliStr = ilId < 1 ? string.Empty : string.Format(" AND A.Id={0}", ilId);
-            string sqlString = string.Format(@"
-                SELECT A.* 
-                FROM Il_Table A 
-                WHERE (A.Id BETWEEN 0 AND 81 AND A.IlAdi != '') 
-                    AND  A.Id IN (SELECT Ili FROM FTK_Table) 
-                ORDER BY A.IlAdi    
-            ");
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Il> list = ToList<Il>(dataTable);
-            return list;
+            return new IlService().GetWithFTK();
         }
         public DataTable SelectFTKKuruluOlanBolgeler()
         {
-            string sqlString = string.Format(@"
-                SELECT A.Bolge 
-                FROM Il_Table A 
-                WHERE (A.Id BETWEEN 0 AND 81 AND A.IlAdi != '') 
-                    AND  A.Id IN (SELECT Ili FROM FTK_Table) 
-                GROUP BY A.Bolge
-				ORDER BY A.Bolge   
-            ");
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
+            return new IlService().GetFTKRegions();
         }
     }
 }

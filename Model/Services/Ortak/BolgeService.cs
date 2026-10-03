@@ -37,6 +37,11 @@ namespace Model.Services.Ortak
             return new Bolge().ToList<Bolge>(repository.SelectActive(regionId));
         }
 
+        public List<Bolge> GetAll()
+        {
+            return new Bolge().ToList<Bolge>(repository.SelectAll());
+        }
+
         // Bolge.Select(int) previously returned the first row for non-positive IDs.
         public Bolge GetSelected(int regionId)
         {

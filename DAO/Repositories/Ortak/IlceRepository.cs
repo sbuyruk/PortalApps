@@ -35,6 +35,28 @@ namespace DAO.Repositories.Ortak
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectAll()
+        {
+            return db.SelectFromDb(new SqlQuery(
+                "SELECT * FROM Ilce_Table ORDER BY IlceAdi"), "");
+        }
+
+        public DataTable SelectByProvinceName(string provinceName)
+        {
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM Ilce_Table WHERE IlAdi=@IlAdi ORDER BY IlceAdi");
+            query.AddParameter("@IlAdi", provinceName);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectDistrictFromLegacyTable(int districtId)
+        {
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM ILCELER WHERE ILCE_ID=@IlceId ORDER BY IlceAdi");
+            query.AddParameter("@IlceId", districtId);
+            return db.SelectFromDb(query, "");
+        }
+
         public DataTable SelectByProvinceAndDistrictName(string provinceName, string districtName)
         {
             SqlQuery query = new SqlQuery(

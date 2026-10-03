@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Model.Services.Ortak;
 
 namespace Model.Ortak
 {
@@ -24,24 +25,11 @@ namespace Model.Ortak
         }
         public override T Select<T>(int id)
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM Ilce_Table 
-                               WHERE Id={0}
-                               ORDER BY IlceAdi ", id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Ilce> list = ToList<Ilce>(dataTable);
-            Ilce ilce = new Ilce();
-            ilce = list.FirstOrDefault();
-            return (T)Convert.ChangeType(ilce, typeof(T));
+            return (T)Convert.ChangeType(new IlceService().GetById(id), typeof(T));
         }
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM Ilce_Table ORDER BY IlceAdi");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Ilce> list = ToList<Ilce>(dataTable);
-
+            List<Ilce> list = new IlceService().GetAll();
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
 
@@ -55,8 +43,7 @@ namespace Model.Ortak
         }
         public Ilce(int ilceId)
         {
-            Ilce ilce = new Ilce();
-            ilce = Select<Ilce>(ilceId);
+            Ilce ilce = new IlceService().GetById(ilceId);
             if (ilce != null)
             {
                 this.IlAdi = ilce.IlAdi;
@@ -67,107 +54,41 @@ namespace Model.Ortak
         }
         public Ilce SelectByIlceId(int ilceId)
         {
-            string sqlString = string.Format(@"SELECT *
-                                                FROM Ilce_Table
-                                                WHERE Id={0} ORDER BY IlceAdi", ilceId);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Ilce> list = ToList<Ilce>(dataTable);
-            Ilce ilce = new Ilce();
-            ilce = list.FirstOrDefault();
-            return ilce;
+            return new IlceService().GetById(ilceId);
         }
 
         public DataTable SelectIlceAdiFromILCELER(int ilceId)
         {
-            string sqlString = string.Format(@"SELECT *
-                                                FROM ILCELER
-                                                WHERE ILCE_ID={0} ORDER BY IlceAdi", ilceId);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-
-            return dataTable;
+            return new IlceService().GetDistrictFromLegacyTable(ilceId);
         }
 
         public Ilce SelectByIlAndIlceAdi(string ilceAdi, string ilAdi)
         {
-            string sqlString = string.Format(@"SELECT *
-                                                FROM Ilce_Table
-                                                WHERE IlAdi='{0}'
-                                                AND IlceAdi LIKE '%{1}%' ORDER BY IlceAdi", ilAdi, ilceAdi);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Ilce> list = ToList<Ilce>(dataTable);
-            Ilce ilce = new Ilce();
-            ilce = list.FirstOrDefault();
-            return ilce;
+            return new IlceService().GetByProvinceAndDistrictContains(ilAdi, ilceAdi);
         }
 
 
         public List<Ilce> SelectByIlAdi(string pIlAdi)
         {
-            string sqlString = string.Format(@"SELECT *
-                                                FROM Ilce_Table
-                                                WHERE IlAdi='{0}' ORDER BY IlceAdi", pIlAdi);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Ilce> list = ToList<Ilce>(dataTable);
-            return list;
+            return new IlceService().GetByProvinceName(pIlAdi);
         }
 
         
         public int SelectCountIlceByBolgeId(int bolgeId)
         {
-            string sqlString = string.Format(@"
-                SELECT COUNT(A.Id) Adet
-                FROM Ilce_Table A
-	                INNER JOIN Il_Table B ON B.Id=A.IlId
-                WHERE B.Id BETWEEN 1 AND 81 AND B.BolgeId={0} AND IlceAdi!={1} ", bolgeId, ProjeConstants.ILCE_MERKEZ.ReturnQuotedValue());
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            DataRow row = dataTable.Rows[0];
-            int adet = row["Adet"].ReturnZeroIfNull().ConvertToInt();
-            return adet;
+            return new IlceService().CountByRegion(bolgeId);
         }
         public List<Ilce> SelectByIlId(int pIlId)
         {
-            string sqlString = string.Format(@"SELECT *
-                                                FROM Ilce_Table
-                                                WHERE IlId={0} ORDER BY IlceAdi", pIlId);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Ilce> list = ToList<Ilce>(dataTable);
-
-            return list;
+            return new IlceService().GetByProvinceId(pIlId);
         }
         public Ilce SelectByIlNameAndIlceName(string ilName, string ilceName)
         {
-            string sqlString = string.Format(@"SELECT *
-                                                FROM Ilce_Table
-                                                WHERE LOWER(IlceAdi)=LOWER('{0}') AND LOWER(IlAdi)=LOWER('{1}') ORDER BY IlceAdi", ilceName, ilName);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Ilce> list = ToList<Ilce>(dataTable);
-            Ilce ilce = new Ilce();
-            ilce = list.FirstOrDefault();
-            return ilce;
+            return new IlceService().GetByProvinceAndDistrictName(ilName, ilceName);
         }
         public List<Ilce> SelectFTKKuruluOlanIlceler(int ilId)
         {
-            string iliStr = ilId < 1 ? string.Empty : string.Format(" AND B.Id={0}", ilId);
-            string sqlString = string.Format(@"
-                SELECT A.* 
-                FROM Ilce_Table A 
-	                INNER JOIN Il_Table B ON B.Id= A.IlId
-                WHERE A.IlceAdi!= {0} 
-                    AND (B.Id BETWEEN 0 AND 81 AND B.IlAdi != '') 
-                    AND  A.Id IN (SELECT Ilcesi FROM FTK_Table WHERE Ilcesi > 0) 
-                    {1}                    
-                ORDER BY A.IlceAdi     
-            ", ProjeConstants.ILCE_MERKEZ.ReturnQuotedValue(), iliStr);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Ilce> list = ToList<Ilce>(dataTable);
-            return list;
+            return new IlceService().GetWithFTK(ilId);
         }
 
     }

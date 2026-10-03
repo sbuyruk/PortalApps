@@ -32,6 +32,21 @@ namespace Model.Services.Ortak
             return new Ilce().ToList<Ilce>(repository.SelectByProvinceId(provinceId));
         }
 
+        public List<Ilce> GetAll()
+        {
+            return new Ilce().ToList<Ilce>(repository.SelectAll());
+        }
+
+        public List<Ilce> GetByProvinceName(string provinceName)
+        {
+            return new Ilce().ToList<Ilce>(repository.SelectByProvinceName(provinceName));
+        }
+
+        public DataTable GetDistrictFromLegacyTable(int districtId)
+        {
+            return repository.SelectDistrictFromLegacyTable(districtId);
+        }
+
         public Ilce GetByProvinceAndDistrictName(string provinceName, string districtName)
         {
             return Map(repository.SelectByProvinceAndDistrictName(provinceName, districtName));

@@ -31,6 +31,12 @@ namespace DAO.Repositories.Ortak
             return db.SelectFromDb(new SqlQuery("SELECT * FROM Il_Table"), "");
         }
 
+        public DataTable SelectAllOrderByRegion()
+        {
+            return db.SelectFromDb(new SqlQuery(
+                "SELECT * FROM Il_Table ORDER BY Bolge, IlAdi"), "");
+        }
+
         public DataTable SelectByName(string name)
         {
             SqlQuery query = new SqlQuery(
@@ -78,6 +84,15 @@ namespace DAO.Repositories.Ortak
                 "SELECT A.* FROM Il_Table A " +
                 "WHERE A.Id BETWEEN 0 AND 81 AND A.IlAdi != '' " +
                 "AND A.Id IN (SELECT Ili FROM FTK_Table) ORDER BY A.IlAdi"), "");
+        }
+
+        public DataTable SelectFTKRegions()
+        {
+            return db.SelectFromDb(new SqlQuery(
+                "SELECT A.Bolge FROM Il_Table A " +
+                "WHERE A.Id BETWEEN 0 AND 81 AND A.IlAdi != '' " +
+                "AND A.Id IN (SELECT Ili FROM FTK_Table) " +
+                "GROUP BY A.Bolge ORDER BY A.Bolge"), "");
         }
     }
 }
