@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -454,12 +455,10 @@ namespace IKYS_WebParts.EskiPersonelWP
             EvlilikTarihiTxt.Value = kimlik.EvlilikTar.ConvertToDatetimeEmptyIfNull();
 
             //Dogum yeri --ilce + il            
-            Ilce ilce = new Ilce();
-            ilce = ilce.Select<Ilce>(kimlik.DogumYeri.ConvertToInt());
+            Ilce ilce = new IlceService().GetById(kimlik.DogumYeri.ConvertToInt());
             if (ilce != null)
             {
-                Il il = new Il();
-                il = il.Select<Il>(ilce.IlId);
+                Il il = new IlService().GetById(ilce.IlId);
                 //il
                 if (DogumIliDDL.Items.FindByText(il.IlAdi.ReturnEmptyIfNull().ToString()) != null)
                     DogumIliDDL.SelectedValue = DogumIliDDL.Items.FindByText(il.IlAdi.ReturnEmptyIfNull().ToString()).Value;
@@ -506,12 +505,10 @@ namespace IKYS_WebParts.EskiPersonelWP
             AdresTxt.Text = iletsimBilgileri.Adres.ReturnEmptyIfNull().ToString();
             SemtTxt.Text = iletsimBilgileri.Semt.ReturnEmptyIfNull().ToString();
             //ikamet yeri --ilce + il            
-            Ilce ilce = new Ilce();
-            ilce = ilce.Select<Ilce>(iletsimBilgileri.Ilcesi.ConvertToInt());
+            Ilce ilce = new IlceService().GetById(iletsimBilgileri.Ilcesi.ConvertToInt());
             if (ilce != null)
             {
-                Il il = new Il();
-                il = il.Select<Il>(ilce.IlId.ConvertToInt());
+                Il il = new IlService().GetById(ilce.IlId.ConvertToInt());
                 //il
                 if (IkametIliDDL.Items.FindByText(il.IlAdi.ReturnEmptyIfNull().ToString()) != null)
                     IkametIliDDL.SelectedValue = IkametIliDDL.Items.FindByText(il.IlAdi.ReturnEmptyIfNull().ToString()).Value;
@@ -1376,8 +1373,7 @@ namespace IKYS_WebParts.EskiPersonelWP
             if (IkametIliDDL.SelectedItem == null)
             {
                 IkametIliDDL.Items.Clear();
-                Il newil = new Il();
-                List<Il> list = newil.SelectAll<Il>();
+                List<Il> list = new IlService().GetAll();
                 foreach (Il il in list)
                 {
                     IkametIliDDL.Items.Add(new ListItem(il.IlAdi, il.Id.ToString()));
@@ -1389,9 +1385,7 @@ namespace IKYS_WebParts.EskiPersonelWP
         private void FillIkametIlceDDL()
         {
             IkametIlcesiDDL.Items.Clear();
-            Ilce pilce = new Ilce();
-
-            List<Ilce> list = pilce.SelectByIlId(IkametIliDDL.SelectedValue.ConvertToInt());
+            List<Ilce> list = new IlceService().GetByProvinceId(IkametIliDDL.SelectedValue.ConvertToInt());
             foreach (Ilce ilce in list)
             {
                 IkametIlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));
@@ -1400,9 +1394,7 @@ namespace IKYS_WebParts.EskiPersonelWP
         private void FillDogumIlceDDL()
         {
             DogumIlceDDL.Items.Clear();
-            Ilce pilce = new Ilce();
-
-            List<Ilce> list = pilce.SelectByIlId(DogumIliDDL.SelectedValue.ConvertToInt());
+            List<Ilce> list = new IlceService().GetByProvinceId(DogumIliDDL.SelectedValue.ConvertToInt());
             foreach (Ilce ilce in list)
             {
                 DogumIlceDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));
@@ -1413,8 +1405,7 @@ namespace IKYS_WebParts.EskiPersonelWP
             if (DogumIliDDL.SelectedItem == null)
             {
                 DogumIliDDL.Items.Clear();
-                Il newil = new Il();
-                List<Il> list = newil.SelectAll<Il>();
+                List<Il> list = new IlService().GetAll();
                 foreach (Il il in list)
                 {
                     DogumIliDDL.Items.Add(new ListItem(il.IlAdi, il.Id.ToString()));
@@ -1449,8 +1440,7 @@ namespace IKYS_WebParts.EskiPersonelWP
             {
                 DogumIliDDL.Items.Clear();
 
-                Il pIl = new Il();
-                List<Il> list = pIl.SelectAll<Il>();
+                List<Il> list = new IlService().GetAll();
                 DogumIliDDL.Items.Add(new ListItem(ProjeConstants.HEPSI, ProjeConstants.IL_HEPSI.ToString()));
                 foreach (Il il in list)
                 {
