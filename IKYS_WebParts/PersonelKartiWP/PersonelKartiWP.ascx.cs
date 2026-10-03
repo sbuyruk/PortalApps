@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -117,7 +118,7 @@ namespace IKYS_WebParts.PersonelKartiWP
             if (kimlik != null)
             {
                 TCKimlikNOCell.Text = kimlik.TCKimlikNo;
-                Ilce dilce = new Ilce(kimlik.DogumYeri.ConvertToInt());
+                Ilce dilce = new IlceService().GetById(kimlik.DogumYeri.ConvertToInt()) ?? new Ilce();
                 DogumYeriCell.Text = dilce.IlceAdi + "/" + dilce.IlAdi;
 
                 DogumTarihiCell.Text = kimlik.DogumTar.ConvertToDatetimeEmptyIfNull();
@@ -167,7 +168,7 @@ namespace IKYS_WebParts.PersonelKartiWP
             #region Iletisim Bilgileri
             IletisimBilgileri ib = new IletisimBilgileri();
             ib = ib.SelectByPersonelId(personel.Id);
-            Ilce ilce = new Ilce(ib.Ilcesi.ConvertToInt());
+            Ilce ilce = new IlceService().GetById(ib.Ilcesi.ConvertToInt()) ?? new Ilce();
             AdresCell.Text = ib.Adres + " " + ilce.IlceAdi + "/" + ilce.IlAdi;
             CepTelCell.Text = ib.CepTelefonu + " " + ib.CepTelefonu2;
             EvTelCell.Text = ib.EvTelefonu;

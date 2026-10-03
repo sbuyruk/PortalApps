@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -958,8 +959,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 ib = ib.SelectByPersonelId(PersonelIdQS.ConvertToInt());
                 if (ib != null)
                 {
-                    Ilce ilce = new Ilce();
-                    ilce = ilce.Select<Ilce>(ib.Ilcesi);
+                    Ilce ilce = new IlceService().GetById(ib.Ilcesi);
                     string ilcestr = ilce.IlceAdi;
                     AdresTxt.Text = ib.Adres + " " + ib.Semt + " " + ilcestr;
                 }
