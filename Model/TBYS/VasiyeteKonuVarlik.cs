@@ -1,10 +1,7 @@
-using DAO.Ortak;
 using Model.Ortak;
+using Model.Services.TBYS;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using Utility.ProjeGlobal;
 
 namespace Model.TBYS
 {
@@ -19,137 +16,39 @@ namespace Model.TBYS
 
         public override int Save()
         {
-            try
-            {
-                GenericEntity<VasiyeteKonuVarlik> genericEntity = new GenericEntity<VasiyeteKonuVarlik>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                Olusturan = UtilityHelper.GetCurrentUserName();
-                SqlQuery query = genericEntity.GetQueryParametreli(this);
-                int id = dao.Insert(query);
-
-                this.Id = id;
-                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_VASIYETEKONUVARLIK);
-                }
-                return id;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return new VasiyeteKonuVarlikService().Save(this);
         }
+
         public override bool Update()
         {
-            bool isSuccess = false;
-            try
-            {
-                if (this != null)
-                {
-                    VasiyeteKonuVarlik item = Select<VasiyeteKonuVarlik>(Id);
-                    if (Id != 0)
-                    {
-                        GenericEntity<VasiyeteKonuVarlik> genericEntity = new GenericEntity<VasiyeteKonuVarlik>(ProjeConstants.SQL_UPDATE);
-                        DegistirmeTarihi = DateTime.Now;
-                        Degistiren = UtilityHelper.GetCurrentUserName();
-                        SqlQuery query = genericEntity.GetQueryParametreli(this);
-                        isSuccess = dao.Update2Db(query);
-                    }
-                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_VASIYETEKONUVARLIK);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
+            return new VasiyeteKonuVarlikService().Update(this);
         }
+
         public override bool Delete()
         {
-            try
-            {
-                bool isDeleted = false;
-                if (Id != 0)
-                {
-                    GenericEntity<VasiyeteKonuVarlik> genericEntity = new GenericEntity<VasiyeteKonuVarlik>(ProjeConstants.SQL_DELETE);
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    VasiyeteKonuVarlik item = Select<VasiyeteKonuVarlik>(Id);
-                    if (item != null)
-                    {
-                        isDeleted = dao.DeleteFromDb(query, "");
-                    }
-                    else isDeleted = false;
-                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_VASIYETEKONUVARLIK);
-                    }
-                }
-                return isDeleted;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return new VasiyeteKonuVarlikService().Delete(this);
         }
+
         public VasiyeteKonuVarlik Select(int id)
         {
-            GenericEntity<VasiyeteKonuVarlik> genericEntity = new GenericEntity<VasiyeteKonuVarlik>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
-            Id = id;
-            string sqlString = genericEntity.GetQuery(this);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<VasiyeteKonuVarlik> list = ToList<VasiyeteKonuVarlik>(dataTable);
-            VasiyeteKonuVarlik item = new VasiyeteKonuVarlik();
-            item = list.FirstOrDefault();
-            return item;
+            return new VasiyeteKonuVarlikService().GetById(id);
         }
 
         public override T Select<T>(int id)
         {
-            GenericEntity<VasiyeteKonuVarlik> genericEntity = new GenericEntity<VasiyeteKonuVarlik>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
-            Id = id;
-            string sqlString = genericEntity.GetQuery(this);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<VasiyeteKonuVarlik> list = ToList<VasiyeteKonuVarlik>(dataTable);
-            VasiyeteKonuVarlik item = new VasiyeteKonuVarlik();
-            item = list.FirstOrDefault();
-            return ((T)Convert.ChangeType(item, typeof(T)));
+            return (T)Convert.ChangeType(new VasiyeteKonuVarlikService().GetById(id), typeof(T));
         }
 
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM VasiyeteKonuVarlik_Table ORDER BY VasiyetciId
-                ");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<VasiyeteKonuVarlik> list = ToList<VasiyeteKonuVarlik>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+            return (List<T>)Convert.ChangeType(
+                new VasiyeteKonuVarlikService().GetAll(),
+                typeof(List<T>));
         }
+
         public List<VasiyeteKonuVarlik> SelectByVasiyetciId(int vasiyetciId)
         {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM VasiyeteKonuVarlik_Table 
-                WHERE VasiyetciId={0}
-                ORDER BY VasiyetciId
-                ", vasiyetciId);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<VasiyeteKonuVarlik> list = ToList<VasiyeteKonuVarlik>(dataTable);
-
-            return list;
+            return new VasiyeteKonuVarlikService().GetByVasiyetciId(vasiyetciId);
         }
-
     }
 }
