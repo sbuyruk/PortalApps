@@ -1,13 +1,8 @@
-using DAO.Ortak;
+using Model.Services.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using Utility.HelperClasses;
-using Utility.ProjeGlobal;
 
 namespace Model.IKYS
 {
@@ -15,23 +10,12 @@ namespace Model.IKYS
     {
         public enum AmirOnayDurumu
         {
-            [Display(Name = "Amirin Onayı Gerekli")]
-            OnayBekliyor = 0,
-
-            [Display(Name = "Onaylandı")]
-            Onaylandi = 1,
-
-            [Display(Name = "Reddedildi")]
-            Reddedildi = 2,
-
-            [Display(Name = "Onay Gerekmiyor")]
-            OnayGerekmez = 3,
-
-            [Display(Name = "Diğer")]
-            Diger = 4
+            [System.ComponentModel.DataAnnotations.Display(Name = "Amirin Onayı Gerekli")] OnayBekliyor = 0,
+            [System.ComponentModel.DataAnnotations.Display(Name = "Onaylandı")] Onaylandi = 1,
+            [System.ComponentModel.DataAnnotations.Display(Name = "Reddedildi")] Reddedildi = 2,
+            [System.ComponentModel.DataAnnotations.Display(Name = "Onay Gerekmiyor")] OnayGerekmez = 3,
+            [System.ComponentModel.DataAnnotations.Display(Name = "Diğer")] Diger = 4
         }
-
-        private DateTime Since = DateTime.Today.AddYears(-1);
 
         public int PersonelId { get; set; }
         public string GorevinSebebi { get; set; }
@@ -60,348 +44,23 @@ namespace Model.IKYS
         public string Transfer { get; set; }
         public string Konaklama { get; set; }
         public string OnayRedAciklama { get; set; }
-        public int OncekiId { get; set; }=0;
-        public override T Select<T>(int id)
-        {
-            GenericEntity<GorevOnay> genericEntity = new GenericEntity<GorevOnay>(ProjeConstants.SQL_SELECT);
-            Id = id;
-            string sqlString = SelectSQL(id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<GorevOnay> list = ToList<GorevOnay>(dataTable);
-            GorevOnay yoklama = new GorevOnay();
-            yoklama = list.FirstOrDefault();
-            return (T)Convert.ChangeType(yoklama, typeof(T));
-        }
-       
-        public GorevOnay Select(int id)
-        {
-            GenericEntity<GorevOnay> genericEntity = new GenericEntity<GorevOnay>(ProjeConstants.SQL_SELECT);
-            Id = id;
-            string sqlString = genericEntity.GetQuery(this);
+        public int OncekiId { get; set; } = 0;
 
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<GorevOnay> list = ToList<GorevOnay>(dataTable);
-            GorevOnay gorevOnay = new GorevOnay();
-            gorevOnay = list.FirstOrDefault();
-            return gorevOnay;
-        }
-        public override int Save()
-        {
-            try
-            {
-
-                GenericEntity<GorevOnay> genericEntity = new GenericEntity<GorevOnay>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                Olusturan = UtilityHelper.GetCurrentUserName();
-                SqlQuery query = genericEntity.GetQueryParametreli(this);
-                int id = dao.Insert(query);
-                if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_GOREVONAY);
-                }
-                this.Id = id;
-                return id;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-
-        }
-
-        public override bool Update()
-        {
-
-            bool isSuccess = false;
-            try
-            {
-                GorevOnay item = Select<GorevOnay>(Id);
-                if (Id != 0)
-                {
-                    GenericEntity<GorevOnay> genericEntity = new GenericEntity<GorevOnay>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    Degistiren = UtilityHelper.GetCurrentUserName();
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    isSuccess = dao.Update2Db(query);
-                }
-                if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.IKYS, ProjeConstants.IKYS_GOREVONAY);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
-        }
-        public override bool Delete()
-        {
-            try
-            {
-                bool isDeleted;
-                if (Id != 0)
-                {
-                    GenericEntity<GorevOnay> genericEntity = new GenericEntity<GorevOnay>(ProjeConstants.SQL_DELETE);
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-
-                    GorevOnay item = Select<GorevOnay>(Id);
-                    if (item != null)
-                    {
-                        isDeleted = dao.DeleteFromDb(query, "");
-                    }
-                    else isDeleted = false;
-                    if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_GOREVONAY);
-                    }
-                    return isDeleted;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-        public override List<T> SelectAll<T>()
-        {
-            string sqlString = string.Format(@"SELECT *
-                               FROM GorevOnay_Table");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<GorevOnay> list = ToList<GorevOnay>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
-        }
-        public bool UpdateAllSecildiToFalse()
-        {
-            string sqlString = string.Format(@"
-                    UPDATE GorevOnay_Table
-                    SET Secildi=0
-                ");
-            return dao.Update2Db(sqlString); ;
-        }
-        public bool UpdateAllSecildiToTrue(string idString)
-        {
-            List<int> ids = ParseIdList(idString);
-            if (ids.Count == 0)
-                return false;
-
-            List<string> idParameters = new List<string>();
-            for (int i = 0; i < ids.Count; i++)
-                idParameters.Add("@Id" + i);
-
-            string sqlString = string.Format(@"
-                    UPDATE GorevOnay_Table
-                    SET Secildi=1
-                    WHERE ID IN ({0})
-                ", string.Join(", ", idParameters));
-            SqlQuery query = new SqlQuery(sqlString);
-            for (int i = 0; i < ids.Count; i++)
-                query.Parameters.Add(new SqlParameter(idParameters[i], ids[i]));
-
-            return dao.Update2Db(query);
-        }
-        public bool UpdateAllOdendiToTrue(string idString)
-        {
-            List<int> ids = ParseIdList(idString);
-            if (ids.Count == 0)
-                return false;
-
-            List<string> idParameters = new List<string>();
-            for (int i = 0; i < ids.Count; i++)
-                idParameters.Add("@Id" + i);
-
-            string sqlString = string.Format(@"
-                    UPDATE GorevOnay_Table
-                    SET Odendi=1
-                    WHERE ID IN ({0})
-                ", string.Join(", ", idParameters));
-            SqlQuery query = new SqlQuery(sqlString);
-            for (int i = 0; i < ids.Count; i++)
-                query.Parameters.Add(new SqlParameter(idParameters[i], ids[i]));
-
-            return dao.Update2Db(query);
-        }
-        private List<int> ParseIdList(string idString)
-        {
-            List<int> ids = new List<int>();
-            if (string.IsNullOrWhiteSpace(idString))
-                return ids;
-
-            string trimmedIdString = idString.Trim();
-            if (trimmedIdString.StartsWith("(") && trimmedIdString.EndsWith(")"))
-                trimmedIdString = trimmedIdString.Substring(1, trimmedIdString.Length - 2);
-
-            string[] idParts = trimmedIdString.Split(',');
-            for (int i = 0; i < idParts.Length; i++)
-            {
-                int id;
-                if (!int.TryParse(idParts[i].Trim(), out id))
-                    throw new ArgumentException("Görev onay ID listesi geçersiz bir değer içeriyor.", "idString");
-
-                ids.Add(id);
-            }
-
-            return ids;
-        }
-
-        private string SelectSQL(int id)
-        {
-            string sqlstr = string.Format(@"SELECT *
-                               FROM GorevOnay_Table 
-                               WHERE  Id={0}", id);
-            return sqlstr;
-        }
-        private string DeleteSQL()
-        {
-            string sqlString = string.Format(@"
-                            DELETE 
-                            FROM GorevOnay_Table
-                            WHERE Id={0}", Id);
-            return sqlString;
-        }
-
-        public DataTable SelectAllReturnDT(int personelId, DateTime since)
-        {
-            string sqlString = SelectAllSQL(personelId, since);
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-
-            return (dataTable);
-        }
-        public DataTable SelectAllByPersonelReturnDT(int personelId)
-        {
-            if (personelId <= 0)
-                throw new ArgumentOutOfRangeException(nameof(personelId));
-
-            SqlQuery query = new SqlQuery(@"
-                SELECT A.Id GorevOnayId, A.PersonelId, P.Adi+' '+P.Soyadi AdiSoyadi,
-                    A.GorevinSebebi, A.BaslangicTarihi, A.BitisTarihi, A.GorevinYeri,
-                    A.AmirOnayi, A.Odendi
-                FROM GorevOnay_Table A
-                    INNER JOIN Personel_Table P ON P.Id=A.PersonelId
-                WHERE A.PersonelId=@PersonelId
-                ORDER BY A.BitisTarihi DESC");
-            query.Parameters.Add(new SqlParameter("@PersonelId", SqlDbType.Int) { Value = personelId });
-            return dao.SelectFromDb(query, "");
-        }
-
-        public DataTable SelectByTarihReturnDataTable(DateTime bastar, DateTime bittar)
-        {
-            string sqlString = string.Format(@"
-                SELECT B.Adi+' ' + B.Soyadi AdiSoyadi, 
-	                A.PersonelId, A.BaslangicTarihi, A.BitisTarihi,A.Sure,A.GorevinYeri GidilecekYer,A.GorevinSebebi,
-                    C.BirimId,D.KisaAdi GorevYeri, D.Vekil
-                FROM GorevOnay_Table A
-	                INNER JOIN Personel_Table B ON B.Id= A.PersonelId
-				    LEFT JOIN IsBilgileri_Table C ON C.PersonelId= A.PersonelId
-				    INNER JOIN GorevTanim_Table D ON D.Id= C.GorevId
-                WHERE --BitisTarihi>GETDATE() AND 
-                    BaslangicTarihi<={0} AND BitisTarihi>={1}
-                ORDER BY ProtokolSiraNo,BitisTarihi, BaslangicTarihi ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat());
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-
-
-            return dataTable;
-        }
-        public GorevOnay SelectByPersonelTarih(int personelId, DateTime bastar, DateTime bittar)
-        {
-            string sqlString = string.Format(@"
-
-                SELECT *
-                FROM GorevOnay_Table A
-                WHERE PersonelId={0} 
-                    AND BaslangicTarihi<={1} AND BitisTarihi>={2}
-                ORDER BY BitisTarihi DESC
-            ", personelId, bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat());
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<GorevOnay> list = ToList<GorevOnay>(dataTable);
-            GorevOnay gorevOnay = new GorevOnay();
-            gorevOnay = list.FirstOrDefault<GorevOnay>();
-            return gorevOnay;
-
-        }
-        private string SelectAllSQL(int personelId, DateTime since)
-        {
-            string personelIdStr = personelId > 0 ? string.Format(" AND PersonelId={0}",personelId):string.Empty;
-            string sqlstr = string.Format(@" 
-                    SELECT A.Id GorevOnayId, P.Adi+' '+P.Soyadi AdiSoyadi, A.Secildi,A.UlasimAraci,
-                        A.PersonelId,A.GorevinSebebi,A.GorevinYeri,A.BaslangicTarihi,A.BitisTarihi,A.Sure,A.Avans,A.Yevmiye,A.ParaBirimi,
-                        A.AracTahsisi,A.AracPlakasi,A.PerSubeImza,A.PerSubeVekil,A.OnayImza,A.OnayMakam,A.OnayMakamVekil,
-                        A.UlasimAraci,A.Transfer,A.Konaklama,
-                        A.AmirOnayi,A.GMImza,A.GMVekil, A.Aciklama, A.OnayRedAciklama,A.Odendi,A.OncekiId
-                    FROM GorevOnay_Table A
-                        INNER JOIN Personel_Table P On A.PersonelId=P.Id 
-                    WHERE A.BitisTarihi>={0}
-                    {1}
-                    ORDER BY A.BaslangicTarihi DESC, A.BitisTarihi DESC ", since.ReturnTRDateFormat(), personelIdStr);
-            return sqlstr;
-        }
-
-        public List<GorevOnay> SelectAllBySecildi(bool secildi)
-        {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM GorevOnay_Table
-                WHERE Secildi={0}",secildi.ReturnQuotedValue());
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<GorevOnay> list = ToList<GorevOnay>(dataTable);
-
-            return list;
-        }
-
-        public DataTable SelectBekleyenAmirOnayiByBirimIdsReturnDataTable(string birimIdListStr)
-        {
-            string sqlString = string.Format(@"
-                SELECT A.Id GorevOnayId, A.PersonelId, P.Adi+' '+P.Soyadi AdiSoyadi,
-                    A.GorevinSebebi, A.GorevinYeri, A.BaslangicTarihi, A.BitisTarihi, A.Sure, A.Aciklama, 
-                    A.UlasimAraci, A.Transfer, A.Konaklama, A.AmirOnayi, A.OnayRedAciklama
-                FROM GorevOnay_Table A
-                    INNER JOIN Personel_Table P ON A.PersonelId=P.Id
-                    INNER JOIN IsBilgileri_Table I ON I.PersonelId=P.Id
-                WHERE (A.AmirOnayi={0} OR A.AmirOnayi={2} OR A.AmirOnayi={3}) AND I.BirimId IN ({1})
-                ORDER BY A.BaslangicTarihi DESC, A.BitisTarihi DESC ",
-                (int)AmirOnayDurumu.OnayBekliyor, birimIdListStr, (int)AmirOnayDurumu.Reddedildi, (int)AmirOnayDurumu.Onaylandi);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-
-            return dataTable;
-        }
-
-        public bool GorevOnayVarMi(int personelId, DateTime basTarih, DateTime bitTarih, int gorevOnayId)
-        {
-           // bu personelId için bu tarihler arasinda onay var mi?
-            string sqlString = string.Format(@"
-                SELECT TOP 1 *
-                FROM GorevOnay_Table
-                WHERE PersonelId={0} AND AmirOnayi!={4}
-                    AND BitisTarihi>={1} AND BaslangicTarihi<={2} AND Id <> {3}",
-                personelId, basTarih.ReturnTRDateFormat(), bitTarih.ReturnTRDateFormat(), gorevOnayId, (int)AmirOnayDurumu.Reddedildi);
-            DataTable dataTable = dao.SelectFromDb(sqlString,"");
-
-            return dataTable!=null;
-        }
+        public override T Select<T>(int id) { Id = id; return (T)Convert.ChangeType(new GorevOnayService().GetById(id), typeof(T)); }
+        public GorevOnay Select(int id) { Id = id; return new GorevOnayService().GetById(id); }
+        public override int Save() { return new GorevOnayService().Save(this); }
+        public override bool Update() { return new GorevOnayService().Update(this); }
+        public override bool Delete() { return new GorevOnayService().Delete(this); }
+        public override List<T> SelectAll<T>() { return (List<T>)Convert.ChangeType(new GorevOnayService().GetAll(), typeof(List<T>)); }
+        public bool UpdateAllSecildiToFalse() { return new GorevOnayService().UpdateAllSecildiToFalse(); }
+        public bool UpdateAllSecildiToTrue(string idString) { return new GorevOnayService().UpdateAllSecildiToTrue(idString); }
+        public bool UpdateAllOdendiToTrue(string idString) { return new GorevOnayService().UpdateAllOdendiToTrue(idString); }
+        public DataTable SelectAllReturnDT(int personelId, DateTime since) { return new GorevOnayService().GetAllReturnDataTable(personelId, since); }
+        public DataTable SelectAllByPersonelReturnDT(int personelId) { return new GorevOnayService().GetAllByPersonelReturnDataTable(personelId); }
+        public DataTable SelectByTarihReturnDataTable(DateTime bastar, DateTime bittar) { return new GorevOnayService().GetByTarihReturnDataTable(bastar, bittar); }
+        public GorevOnay SelectByPersonelTarih(int personelId, DateTime bastar, DateTime bittar) { return new GorevOnayService().GetByPersonelTarih(personelId, bastar, bittar); }
+        public List<GorevOnay> SelectAllBySecildi(bool secildi) { return new GorevOnayService().GetAllBySecildi(secildi); }
+        public DataTable SelectBekleyenAmirOnayiByBirimIdsReturnDataTable(string birimIdListStr) { return new GorevOnayService().GetBekleyenAmirOnayiByBirimIds(birimIdListStr); }
+        public bool GorevOnayVarMi(int personelId, DateTime basTarih, DateTime bitTarih, int gorevOnayId) { return new GorevOnayService().HasDateConflict(personelId, basTarih, bitTarih, gorevOnayId); }
     }
 }
