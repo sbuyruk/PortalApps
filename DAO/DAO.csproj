@@ -86,6 +86,7 @@
     <Compile Include="Repositories\IKYS\HarcirahRepository.cs" />
     <Compile Include="Repositories\IKYS\BirimTanimRepository.cs" />
     <Compile Include="Repositories\IKYS\KimlikRepository.cs" />
+    <Compile Include="Repositories\IKYS\GorevTanimRepository.cs" />
     <Compile Include="Repositories\IKYS\YoklamaRepository.cs" />
     <Compile Include="Repositories\TBYS\TasinmazRepository.cs" />
     <Compile Include="Repositories\TBYS\KiraSozlesmeRepository.cs" />
