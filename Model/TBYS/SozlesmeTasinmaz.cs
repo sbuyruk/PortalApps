@@ -1,13 +1,8 @@
-using DAO.Ortak;
-using DocumentFormat.OpenXml.Spreadsheet;
-using DocumentFormat.OpenXml.Wordprocessing;
 using Model.Ortak;
+using Model.Services.TBYS;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using Utility.HelperClasses;
-using Utility.ProjeGlobal;
 
 namespace Model.TBYS
 {
@@ -20,253 +15,61 @@ namespace Model.TBYS
 
         public override T Select<T>(int id)
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM SozlesmeTasinmaz_Table 
-                               WHERE  Id={0}", id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<SozlesmeTasinmaz> list = ToList<SozlesmeTasinmaz>(dataTable);
-            SozlesmeTasinmaz sozlesmeTasinmaz = new SozlesmeTasinmaz();
-            sozlesmeTasinmaz = list.FirstOrDefault();
-            return (T)Convert.ChangeType(sozlesmeTasinmaz, typeof(T));
+            return (T)Convert.ChangeType(new SozlesmeTasinmazService().GetById(id), typeof(T));
+        }
 
-        }
-        public override int Save()
-        {
-            try
-            {
-                GenericEntity<SozlesmeTasinmaz> genericEntity = new GenericEntity<SozlesmeTasinmaz>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                Olusturan = UtilityHelper.GetCurrentUserName();
-                SqlQuery query = genericEntity.GetQueryParametreli(this);
-                int id = dao.Insert(query);
+        public override int Save() { return new SozlesmeTasinmazService().Save(this); }
+        public override bool Update() { return new SozlesmeTasinmazService().Update(this); }
+        public override bool Delete() { return new SozlesmeTasinmazService().Delete(this); }
 
-                this.Id = id;
-                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_SOZLESMETASINMAZ);
-                }
-                return id;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
-        public override bool Update()
-        {
-            bool isSuccess = false;
-            try
-            {
-                if (this != null)
-                {
-                    SozlesmeTasinmaz item = Select<SozlesmeTasinmaz>(Id);
-                    if (Id != 0)
-                    {
-                        GenericEntity<SozlesmeTasinmaz> genericEntity = new GenericEntity<SozlesmeTasinmaz>(ProjeConstants.SQL_UPDATE);
-                        DegistirmeTarihi = DateTime.Now;
-                        Degistiren = UtilityHelper.GetCurrentUserName();
-                        SqlQuery query = genericEntity.GetQueryParametreli(this);
-                        isSuccess = dao.Update2Db(query);
-                    }
-                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_SOZLESMETASINMAZ);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
-        }
-        public override bool Delete()
-        {
-            try
-            {
-                bool isDeleted = false;
-                if (Id != 0)
-                {
-                    GenericEntity<SozlesmeTasinmaz> genericEntity = new GenericEntity<SozlesmeTasinmaz>(ProjeConstants.SQL_DELETE);
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    SozlesmeTasinmaz item = Select<SozlesmeTasinmaz>(Id);
-                    if (item != null)
-                    {
-                        isDeleted = dao.DeleteFromDb(query, "");
-                    }
-                    else isDeleted = false;
-                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_SOZLESMETASINMAZ);
-                    }
-                }
-                return isDeleted;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
         public bool DeleteBySozlesmeId(int sozlesmeId)
         {
-            SqlQuery query = new SqlQuery(@"DELETE
-                               FROM SozlesmeTasinmaz_Table
-                               WHERE SozlesmeId=@SozlesmeId");
-            query.AddParameter("@SozlesmeId", sozlesmeId);
-
-            bool isDeleted = dao.DeleteFromDb(query, this);
-            if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
-            {
-                OlayKayit olayKayit = new OlayKayit();
-                olayKayit.SilmeOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_SOZLESMETASINMAZ);
-            }
-            return isDeleted;
+            return new SozlesmeTasinmazService().DeleteBySozlesmeId(this, sozlesmeId);
         }
+
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM SozlesmeTasinmaz_Table");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<SozlesmeTasinmaz> list = ToList<SozlesmeTasinmaz>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+            return (List<T>)Convert.ChangeType(new SozlesmeTasinmazService().GetAll(), typeof(List<T>));
         }
 
         public string SelectBySozlesmeIdReturnJson(int sozlesmeId)
         {
-            string sqlString = string.Format(@"
-                SELECT ROW_NUMBER() OVER(ORDER BY B.Id) AS Sirano, B.Id, B.Id TasinmazId,
-                    B.Adres,B.Adres +' '+ ISNULL(C.BolumNo,'')+' '+ B.Ilcesi+'/'+B.Ili AdresBolumNoIliIlcesi,
-                    C.BolumNo,C.Id BolumId
-                FROM SozlesmeTasinmaz_Table A 
-				    LEFT JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId
-                    LEFT JOIN BagimsizBolum_Table C ON C.TasinmazId=B.Id AND C.Id=A.BolumId
-                WHERE --B.EnvanterdeMi=1 AND 
-                    A.SozlesmeId={0}", sozlesmeId.ReturnQuotedValue());
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            string json = ToJSON(dataTable);
-            return json;
+            return new SozlesmeTasinmazService().GetBySozlesmeIdReturnJson(sozlesmeId);
         }
+
         public DataTable SelectBySozlesmeIdReturnDataTable(int sozlesmeId)
         {
-            string sqlString = string.Format(@"
-                SELECT ROW_NUMBER() OVER(ORDER BY B.Id) AS Sirano, B.Id, B.Id TasinmazId,
-                    B.Adres,B.Adres +' '+ ISNULL(C.BolumNo,'')+' '+ B.Ilcesi+'/'+B.Ili AdresBolumNoIliIlcesi,
-                    C.BolumNo,C.Id BolumId
-                FROM SozlesmeTasinmaz_Table A 
-				    LEFT JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId
-                    LEFT JOIN BagimsizBolum_Table C ON C.TasinmazId=B.Id AND C.Id=A.BolumId
-                WHERE --B.EnvanterdeMi=1 AND 
-                    A.SozlesmeId={0}", sozlesmeId.ReturnQuotedValue());
-            DataTable dataTable;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-
-            return dataTable;
+            return new SozlesmeTasinmazService().GetBySozlesmeIdReturnList(sozlesmeId);
         }
 
         public List<SozlesmeTasinmaz> SelectByTasinmazId(int tasinmazId)
         {
-            string sqlString = string.Format(@"SELECT * FROM SozlesmeTasinmaz_Table
-                              WHERE TasinmazId={0}", tasinmazId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<SozlesmeTasinmaz> list = ToList<SozlesmeTasinmaz>(dataTable);
-            return list;
+            return new SozlesmeTasinmazService().GetByTasinmazId(tasinmazId);
         }
+
         public List<SozlesmeTasinmaz> SelectBySozlesmeId(int sozlesmeId)
         {
-            string sqlString = string.Format(@"SELECT * FROM SozlesmeTasinmaz_Table
-                              WHERE SozlesmeId={0}", sozlesmeId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<SozlesmeTasinmaz> list = ToList<SozlesmeTasinmaz>(dataTable);
-            return list;
+            return new SozlesmeTasinmazService().GetBySozlesmeId(sozlesmeId);
         }
 
         public decimal SelectSumMetrekareBySozlesmeId(int sozlesmeId)
         {
-            string sqlString = string.Format(@"
-                SELECT 
-                    A.SozlesmeId, 
-                    SUM(
-                        CASE 
-                            WHEN B.AltBolum = 1 THEN C.BBNetAlan 
-                            WHEN B.AltBolum = 0 THEN B.Metrekare 
-                            --WHEN B.KatMulkiyeti = 0 THEN C.Metrekare 
-                            --WHEN B.KatMulkiyeti = 1 THEN B.Metrekare 
-                            ELSE 0
-                        END
-                    ) AS Metrekare
-                FROM SozlesmeTasinmaz_Table A
-                INNER JOIN Tasinmaz_Table B ON B.Id = A.TasinmazId
-                LEFT JOIN BagimsizBolum_Table C ON C.Id = A.BolumId
-                WHERE A.SozlesmeId = {0}
-                GROUP BY A.SozlesmeId", sozlesmeId.ReturnQuotedValue());
-            //string sqlString = string.Format(
-            //    @"SELECT SozlesmeId, SUM(Metrekare) Metrekare
-            //        FROM SozlesmeTasinmaz_Table A
-            //        INNER JOIN Tasinmaz_Table B ON B.Id = A.TasinmazId
-            //    WHERE SozlesmeId={0}
-            //    GROUP BY SozlesmeId ", sozlesmeId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            decimal metrekare = 0;
-            if (dataTable != null)
-            {
-                if (dataTable.Rows.Count > 0)
-                {
-                    DataRow row = dataTable.Rows[0];
-                    metrekare = row["Metrekare"].ToString().ConvertToDecimal();
-                }
-            }
-            
-            return metrekare;
+            return new SozlesmeTasinmazService().GetSumMetrekareBySozlesmeId(sozlesmeId);
         }
 
         public DataTable SelectBySozlesmeIdReturnDT(int sozlesmeId)
         {
-            string sqlString = string.Format(@"
-                SELECT A.SozlesmeId,A.TasinmazId,A.BolumId, B.Adres, C.BolumNo, '@'+ B.Adres+' '+ISNULL(C.BolumNo,'')+' '+ B.Ili+'/'+B.Ilcesi TasinmazAdresi
-                FROM SozlesmeTasinmaz_Table A
-                    INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId
-                    LEFT JOIN BagimsizBolum_Table C ON C.Id=A.BolumId
-                WHERE SozlesmeId={0}
-                ORDER BY A.SozlesmeId,A.TasinmazId,A.BolumId", sozlesmeId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
+            return new SozlesmeTasinmazService().GetBySozlesmeIdReturnDT(sozlesmeId);
         }
+
         public List<SozlesmeTasinmaz> SelectBySozlesmeIdTasinmazId(int sozlesmeId, int tasinmazId, int bolumId)
         {
-            string sqlString = string.Format(@"
-                SELECT * FROM SozlesmeTasinmaz_Table
-                WHERE SozlesmeId={0} AND TasinmazId={1} AND BolumId={2} ", sozlesmeId.ReturnQuotedValue(), tasinmazId.ReturnQuotedValue(), bolumId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<SozlesmeTasinmaz> list = ToList<SozlesmeTasinmaz>(dataTable);
-            return list;
+            return new SozlesmeTasinmazService().GetBySozlesmeIdTasinmazId(sozlesmeId, tasinmazId, bolumId);
         }
+
         public List<SozlesmeTasinmaz> SelectByBolumId(int bolumId)
         {
-            string sqlString = string.Format(@"SELECT * FROM SozlesmeTasinmaz_Table
-                              WHERE SozlesmeId={0}", bolumId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<SozlesmeTasinmaz> list = ToList<SozlesmeTasinmaz>(dataTable);
-            return list;
+            return new SozlesmeTasinmazService().GetByBolumId(bolumId);
         }
     }
 }
