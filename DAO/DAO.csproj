@@ -78,6 +78,7 @@
     <Compile Include="Repositories\Ortak\IlceRepository.cs" />
     <Compile Include="Repositories\IKYS\PersonelRepository.cs" />
     <Compile Include="Repositories\IKYS\IzinTalepRepository.cs" />
+    <Compile Include="Repositories\IKYS\GorevOnayRepository.cs" />
     <Compile Include="Repositories\IKYS\YoklamaRepository.cs" />
     <Compile Include="Repositories\TBYS\TasinmazRepository.cs" />
     <Compile Include="Repositories\TBYS\KiraSozlesmeRepository.cs" />
