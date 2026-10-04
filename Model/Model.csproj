@@ -148,6 +148,7 @@
     <Compile Include="Services\IKYS\HarcirahService.cs" />
     <Compile Include="Services\IKYS\BirimTanimService.cs" />
     <Compile Include="Services\IKYS\KimlikService.cs" />
+    <Compile Include="Services\IKYS\GorevTanimService.cs" />
     <Compile Include="Services\IKYS\YoklamaService.cs" />
     <Compile Include="Services\TBYS\TasinmazService.cs" />
     <Compile Include="Services\TBYS\KiraSozlesmeService.cs" />
