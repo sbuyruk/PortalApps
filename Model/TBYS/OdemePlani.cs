@@ -1,6 +1,7 @@
 using DAO.Ortak;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Model.Ortak;
+using Model.Services.TBYS;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -56,19 +57,11 @@ namespace Model.TBYS
 
         public DataTable SelectBorcluOdemePlanlariByBolgeTarih(int bolgeId, DateTime ilkTarih, DateTime sonTarih, int aySayisiBas, int aySayisiBit)
         {
-            string sqlString = GetBorcluOdemePlanlariByBolgeTarihSqlScript(bolgeId, ilkTarih, sonTarih, aySayisiBas, aySayisiBit);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
+            return new OdemePlaniRaporService().GetBorcluByBolgeTarih(bolgeId, ilkTarih, sonTarih, aySayisiBas, aySayisiBit);
         }
         public string SelectBorcluOdemePlanlariByBolgeTarihJson(int bolgeId, DateTime ilkTarih, DateTime sonTarih, int aySayisi, int aySayisiBit, ref int kayitSayisi)
         {
-            string sqlString = GetBorcluOdemePlanlariByBolgeTarihSqlScript(bolgeId, ilkTarih, sonTarih, aySayisi, aySayisiBit);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            kayitSayisi = dataTable == null ? 0 : dataTable.Rows.Count;
-            string json = ToJSON(dataTable);
-            return json;
+            return new OdemePlaniRaporService().GetBorcluByBolgeTarihJson(bolgeId, ilkTarih, sonTarih, aySayisi, aySayisiBit, ref kayitSayisi);
 
         }
         private string GetBorcluOdemePlanlariByBolgeTarihSqlScript(int bolgeId, DateTime ilkTarih, DateTime sonTarih, int aySayisiBas, int aySayisiBit)
@@ -130,7 +123,8 @@ namespace Model.TBYS
         }
         public DataTable SelectMevcutOdemePlanlariByTarih(DateTime ilkTarih, DateTime sonTarih, string bolge)
         {
-            string bolgeStr = string.Format(bolge.Equals(ProjeConstants.HEPSI) || string.IsNullOrEmpty(bolge) ? " " : " AND E.Bolge ={0} ", bolge.ReturnQuotedValue());
+            return new OdemePlaniRaporService().GetCurrentByDate(ilkTarih, sonTarih, bolge);
+            /* string bolgeStr = string.Format(bolge.Equals(ProjeConstants.HEPSI) || string.IsNullOrEmpty(bolge) ? " " : " AND E.Bolge ={0} ", bolge.ReturnQuotedValue());
             string sqlString = string.Format(@"
                 SELECT A.Id KiraSozlesmeId, E.Bolge, A.DosyaNo, G.Adi+' '+G.Soyadi Kiraci, D.Adres + ' ' + ISNULL(F.BolumNo,'') Adres, 
                     A.IlkSozlesmeTar, A.SozBasTar, A.SozBitTar, A.ArtisAyi, A.OdemeSekli, 
@@ -151,7 +145,7 @@ namespace Model.TBYS
                 ", ilkTarih.ReturnTRDateFormat(), sonTarih.ReturnTRDateFormat(), bolgeStr);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
+            return dataTable; */
         }
         public List<OdemePlani> SelectBySozlesmeId(int sozlesmeId)
         {
@@ -163,7 +157,8 @@ namespace Model.TBYS
         }
         public DataTable SelectKiraGeliriByBolgeAyYil(int bolgeId, int ay, int yil)
         {
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND C.BolgeId={0} ", bolgeId);
+            return new OdemePlaniRaporService().GetIncomeByRegionMonth(bolgeId, ay, yil);
+            /* string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND C.BolgeId={0} ", bolgeId);
 
             string sqlString = string.Format(@"
 				SELECT H.KisaAdi Bolge,B.kiralamaAmaci, SUM(A.OdenenTutar) ToplamOdemeTutari, COUNT(DISTINCT(C.Id)) ToplamKiraciSayisi
@@ -182,7 +177,7 @@ namespace Model.TBYS
                 
             ", yil, ay, bolgeStr);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
+            return dataTable; */
 
         }
         public OdemePlani SelectBySozlesmeIdOdemeTarihi(int sozlesmeId, DateTime odemeTarihi)
@@ -203,7 +198,8 @@ namespace Model.TBYS
         }
         public DataTable SelectOdemePlaniListByTarihReturnDT(DateTime tarih)
         {
-            string sqlString = string.Format(@"
+            return new OdemePlaniRaporService().GetListByDate(tarih);
+            /* string sqlString = string.Format(@"
                 SELECT A.Id SozlesmeId,A.DosyaNo,B.Adi, B.Soyadi, B.Adi+' '+ B.Soyadi KiraciAdi,
 	                D.Adres, G.BolumNo, F.OdemeBasTar,F.OdemeBitTar,F.KiraBedeli,F.OdenenTutar,F.FaizliBakiye
                 FROM KiraSozlesme_Table A
@@ -225,7 +221,7 @@ namespace Model.TBYS
             {
                 throw;
             }
-            return dataTable;
+            return dataTable; */
         }
         public bool OdemePlaniOlustur(KiraSozlesme kiraSozlesme)
         {
