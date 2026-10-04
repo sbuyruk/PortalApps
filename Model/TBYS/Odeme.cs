@@ -1,5 +1,6 @@
 using DAO.Ortak;
 using Model.Ortak;
+using Model.Services.TBYS;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -22,109 +23,23 @@ namespace Model.TBYS
         public string Aciklama { get; set; }
         public override T Select<T>(int id)
         {
-            SqlQuery query = new SqlQuery(@"SELECT *
-                               FROM Odeme_Table 
-                               WHERE  Id=@Id");
-            query.AddParameter("@Id", id);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<Odeme> list = ToList<Odeme>(dataTable);
-            Odeme odeme = new Odeme();
-            odeme = list.FirstOrDefault();
-            return (T)Convert.ChangeType(odeme, typeof(T));
-
+            return (T)Convert.ChangeType(new OdemeService().GetById(id), typeof(T));
         }
         public Odeme Select(int id)
         {
-            GenericEntity<Odeme> genericEntity = new GenericEntity<Odeme>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
-            Id = id;
-            SqlQuery query = genericEntity.GetQueryParametreli(this);
-
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<Odeme> list = ToList<Odeme>(dataTable);
-            Odeme odeme = new Odeme();
-            odeme = list.FirstOrDefault();
-            return odeme;
+            return new OdemeService().GetById(id);
         }
         public override int Save()
         {
-            try
-            {
-                GenericEntity<Odeme> genericEntity = new GenericEntity<Odeme>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                Olusturan = UtilityHelper.GetCurrentUserName();
-                SqlQuery query = genericEntity.GetQueryParametreli(this);
-                int id = dao.Insert(query);
-
-                this.Id = id;
-                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_ODEME);
-                }
-                return id;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return new OdemeService().Save(this);
         }
         public override bool Update()
         {
-            bool isSuccess = false;
-            try
-            {
-                if (this != null)
-                {
-                    Odeme item = Select<Odeme>(Id);
-                    if (Id != 0)
-                    {
-                        GenericEntity<Odeme> genericEntity = new GenericEntity<Odeme>(ProjeConstants.SQL_UPDATE);
-                        DegistirmeTarihi = DateTime.Now;
-                        Degistiren = UtilityHelper.GetCurrentUserName();
-                        SqlQuery query = genericEntity.GetQueryParametreli(this);
-                        isSuccess = dao.Update2Db(query);
-                    }
-                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_ODEME);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
+            return new OdemeService().Update(this);
         }
         public override bool Delete()
         {
-            try
-            {
-                bool isDeleted = false;
-                if (Id != 0)
-                {
-                    GenericEntity<Odeme> genericEntity = new GenericEntity<Odeme>(ProjeConstants.SQL_DELETE);
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    Odeme item = Select<Odeme>(Id);
-                    if (item != null)
-                    {
-                        isDeleted = dao.DeleteFromDb(query, "");
-                    }
-                    else isDeleted = false;
-                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_ODEME);
-                    }
-                }
-                return isDeleted;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return new OdemeService().Delete(this);
         }
         public string GetInsertSQL(string extId)
         {
@@ -176,47 +91,19 @@ namespace Model.TBYS
         }
         public bool DeleteBySozlesmeId(int sozlesmeId)
         {
-            SqlQuery query = new SqlQuery(@"
-                DELETE Odeme_Table 
-                WHERE SozlesmeId=@SozlesmeId");
-            query.AddParameter("@SozlesmeId", sozlesmeId);
-            bool isSuccess = dao.DeleteFromDb(query, "");
-            return isSuccess;
+            return new OdemeService().DeleteBySozlesmeId(sozlesmeId);
         }
         public override List<T> SelectAll<T>()
         {
-            SqlQuery query = new SqlQuery(@"SELECT *
-                               FROM Odeme_Table");
-
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<Odeme> list = ToList<Odeme>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+            return (List<T>)Convert.ChangeType(new OdemeService().GetAll(), typeof(List<T>));
         }
         public List<Odeme> SelectByKiraciId(int kiraciId)
         {
-            SqlQuery query = new SqlQuery(@"
-                SELECT * FROM Odeme_Table
-                WHERE KiraciId=@KiraciId
-                ORDER BY OdemeTarihi Desc");
-            query.AddParameter("@KiraciId", kiraciId);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<Odeme> list = ToList<Odeme>(dataTable);
-            return list;
-
+            return new OdemeService().GetByKiraciId(kiraciId);
         }
         public List<Odeme> SelectBySozlesmeIdOdemePlaniId(int sozlesmeId, int odemePlaniId)
         {
-            SqlQuery query = new SqlQuery(@"
-                SELECT * FROM Odeme_Table
-                WHERE SozlesmeId=@SozlesmeId AND OdemePlaniId=@OdemePlaniId
-                ORDER BY OdemeTarihi ");
-            query.AddParameter("@SozlesmeId", sozlesmeId);
-            query.AddParameter("@OdemePlaniId", odemePlaniId);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<Odeme> list = ToList<Odeme>(dataTable);
-            return list;
-
+            return new OdemeService().GetBySozlesmeIdOdemePlaniId(sozlesmeId, odemePlaniId);
         }
 		public DataTable SelectByKiraciAyYil(int kiraciId, int ay, int yil)
 		{
