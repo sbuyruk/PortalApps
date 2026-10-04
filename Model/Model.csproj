@@ -157,6 +157,7 @@
     <Compile Include="Services\TBYS\OdemeAyrintiService.cs" />
     <Compile Include="Services\TBYS\TeminatIslemService.cs" />
     <Compile Include="Services\TBYS\OdemePlaniService.cs" />
+    <Compile Include="Services\TBYS\OdemePlaniRaporService.cs" />
     <Compile Include="Services\MTS\KaynakTanimService.cs" />
     <Compile Include="Services\Ortak\IlService.cs" />
     <Compile Include="Services\Ortak\IlceService.cs" />
