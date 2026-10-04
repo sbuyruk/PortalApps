@@ -153,6 +153,7 @@
     <Compile Include="Services\TBYS\VasiyetciService.cs" />
     <Compile Include="Services\TBYS\VasiyeteKonuVarlikService.cs" />
     <Compile Include="Services\TBYS\SozlesmeTasinmazService.cs" />
+    <Compile Include="Services\TBYS\OdemeSebebiTanimService.cs" />
     <Compile Include="Services\MTS\KaynakTanimService.cs" />
     <Compile Include="Services\Ortak\IlService.cs" />
     <Compile Include="Services\Ortak\IlceService.cs" />
