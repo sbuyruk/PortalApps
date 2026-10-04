@@ -225,6 +225,8 @@ namespace Model.TBYS
         }
         public bool OdemePlaniOlustur(KiraSozlesme kiraSozlesme)
         {
+            return new OdemePlaniService().CreatePaymentPlan(kiraSozlesme);
+            /*
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             int taksitSayisi = kiraSozlesme.TaksitSayisi;
             if (taksitSayisi < 1)
@@ -344,6 +346,6 @@ namespace Model.TBYS
             odemePlani.Save();
             return odemePlani;
         }
-
+        */
     }
 }
