@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -95,8 +96,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            BirimTanim birim = new BirimTanim();
-            birim = birim.Select<BirimTanim>(BirimIdQS.ConvertToInt());
+            BirimTanim birim = new BirimTanimService().GetById(BirimIdQS.ConvertToInt());
             if (!Page.IsPostBack)
             {
                 FillUstBirimDDL();
@@ -120,8 +120,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
         }
         private void FillBirimToForm()
         {
-            BirimTanim birim = new BirimTanim();
-            birim = birim.Select<BirimTanim>(BirimIdQS.ConvertToInt());
+            BirimTanim birim = new BirimTanimService().GetById(BirimIdQS.ConvertToInt());
             if (birim != null)
             {
                 AdiTxt.Text = birim.Adi;
@@ -138,8 +137,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
         private void FillUstBirimDDL()
         {
             UstBirimDDL.Items.Clear();
-            BirimTanim birimDao = new BirimTanim();
-            List<BirimTanim> list = birimDao.SelectAll<BirimTanim>();
+            List<BirimTanim> list = new BirimTanimService().GetAll();
             ListItem bosLi = new ListItem("", "0");
             UstBirimDDL.Items.Add(bosLi);
             foreach (BirimTanim gr in list)
@@ -151,8 +149,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
         private void FillAmirDDL()
         {
             AmirDDL.Items.Clear();
-            Personel personel = new Personel();
-            List<Personel> list = personel.SelectCalisanPersonel();
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
             ListItem bosLi = new ListItem("", "0");
             AmirDDL.Items.Add(bosLi);
             foreach (Personel item in list)
@@ -185,7 +182,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
                     birim.Aktif = AktifChk.Checked;
                     birim.BirimKaldirildi = BirimKaldirildiChk.Checked;
                     birim.Degistiren = CurrentUserName;
-                    int id = birim.Save();
+                    int id = new BirimTanimService().Save(birim);
                     if (id > 0)
                     {
                         MessageHelper.PublishMessage("Yeni birim kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
@@ -219,8 +216,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
         {
             try
             {
-                BirimTanim birim = new BirimTanim();
-                birim = birim.Select<BirimTanim>(BirimIdQS.ConvertToInt());
+                BirimTanim birim = new BirimTanimService().GetById(BirimIdQS.ConvertToInt());
                 if (birim != null)
                 {
                     birim.Adi = AdiTxt.Text;
@@ -230,7 +226,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
                     birim.Aktif = AktifChk.Checked;
                     birim.BirimKaldirildi = BirimKaldirildiChk.Checked;
                     birim.Degistiren = CurrentUserName;
-                    bool isupdated = birim.Update();
+                    bool isupdated = new BirimTanimService().Update(birim);
                     if (isupdated)
                         MessageHelper.PublishMessage("Birim Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                     else
