@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -213,9 +214,9 @@ namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
             if (AuthQS.Equals("IKYS"))
             {
                 BirimTanim rootBirimTanim = new BirimTanim();
-                rootBirimTanim = rootBirimTanim.SelectRoot();
+                rootBirimTanim = new BirimTanimService().GetRoot();
                 Personel personel = new Personel();
-                personel = personel.Select<Personel>(rootBirimTanim.AmirId);
+                personel = new PersonelService().GetById(rootBirimTanim.AmirId);
                 birimListesiStr = BirimListesiGetir(personel, rootBirimTanim);
             }
             else
@@ -223,7 +224,7 @@ namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
                 Personel personel = PersonelGetir();
                 birimListesiStr = BirimListesiGetir(personel, null);
             }
-            dataTable = personelDao.SelectCalisanPersonelByBirimReturnDT(birimListesiStr);
+            dataTable = new PersonelService().GetActiveEmployeesByUnitReturnDT(birimListesiStr);
             int birimIdTemp = 0;
             int sira = 0;
             if (dataTable != null)
@@ -281,7 +282,7 @@ namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
                     DateTime raporTarihi = new DateTime(yil, 12, 01);
 
                     DateTime gecerliTarih = now.Year == yil ? now : raporTarihi;
-                    izinDonemi = izinDonemi.SelectByIzinTarihi(personelId, izinTipi, gecerliTarih);
+                    izinDonemi = new IzinDonemService().GetByIzinTarihi(personelId, izinTipi, gecerliTarih);
                     string izinDonemiStr = string.Empty;
                     string izinHakki = string.Empty;
                     string kullanilanIzin = string.Empty;
@@ -343,13 +344,13 @@ namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
 
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
 
             }
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = personel.SelectByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName);
             }
             PersonelIdQS = personel.Id.ToString();
             return personel;
@@ -358,7 +359,7 @@ namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
         {
             string retVal = parentId + ",";
             BirimTanim bt = new BirimTanim();
-            List<BirimTanim> list = bt.SelectByParentId(parentId);
+            List<BirimTanim> list = new BirimTanimService().GetByParentId(parentId);
             foreach (BirimTanim item in list)
             {
                 //retVal += item.Id + ",";
@@ -378,12 +379,12 @@ namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
             if (personel != null)
             {
                 IsBilgileri ib = new IsBilgileri();
-                ib = ib.SelectByPersonelId(personel.Id);
+                ib = new IsBilgileriService().GetByPersonelId(personel.Id);
                 if (ib != null)
                 {
                     int birimId = birimTanim != null ? birimTanim.Id : ib.BirimId;
                     BirimTanim bt = new BirimTanim();
-                    bt = birimTanim != null ? birimTanim : bt.Select<BirimTanim>(birimId);
+                    bt = birimTanim != null ? birimTanim : new BirimTanimService().GetById(birimId);
                     if ((bt != null) && (bt.AmirId == personel.Id))
                     {
                         string birim = parentBirimGetir(birimId);

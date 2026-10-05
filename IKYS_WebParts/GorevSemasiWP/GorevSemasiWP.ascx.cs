@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -81,11 +82,11 @@ namespace IKYS_WebParts.GorevSemasiWP
             csChartConfig += "config,";
 
             BirimTanim birimTanimDao = new BirimTanim();
-            var birimListesi = birimTanimDao.SelectByBirimKaldirildi(false);
+            var birimListesi = new BirimTanimService().GetByBirimKaldirildi(false);
 
             BirimTanim parent = birimListesi.Where(a => a.ParentId == 0).FirstOrDefault<BirimTanim>();
             Personel ilknode = new Personel();
-            ilknode = ilknode.Select<Personel>(parent.AmirId);
+            ilknode = new PersonelService().GetById(parent.AmirId);
             string gmKullaniciAdi = ilknode == null ? "" : ilknode.KullaniciAdi.ReturnEmptyIfNull().ToString();
             string gmAdi = ilknode == null ? "" : ilknode.Adi.ReturnEmptyIfNull().ToString();
             string gmSoyadi = ilknode == null ? "" : ilknode.Soyadi.ReturnEmptyIfNull().ToString();
@@ -112,7 +113,7 @@ namespace IKYS_WebParts.GorevSemasiWP
             foreach (BirimTanim item in birimListesi)
             {
                 Personel birimAmiri = new Personel();
-                birimAmiri = birimAmiri.Select<Personel>(item.AmirId);
+                birimAmiri = new PersonelService().GetById(item.AmirId);
                 if (birimAmiri == null)
                 {
                     birimAmiri=new Personel();
@@ -146,11 +147,11 @@ namespace IKYS_WebParts.GorevSemasiWP
 
                 
                 Personel personelDao = new Personel();
-                List<Personel> personelList = personelDao.SelectCalisanPersonelByBirimId(item.Id);
+                List<Personel> personelList = new PersonelService().GetActiveEmployeesByUnit(item.Id, PersonelTipi.Tumu);
                 foreach (Personel personelItem in personelList)
                 {
                     GorevTanim gorevTanim = new GorevTanim();
-                    gorevTanim = gorevTanim.SelectByPersonelId(personelItem.Id);
+                    gorevTanim = new GorevTanimService().GetByPersonelId(personelItem.Id);
                     if (gorevTanim != null)
                     {
                         string gorevliKullaniciAdi = personelItem == null ? "" : personelItem.KullaniciAdi.ReturnEmptyIfNull().ToString();
