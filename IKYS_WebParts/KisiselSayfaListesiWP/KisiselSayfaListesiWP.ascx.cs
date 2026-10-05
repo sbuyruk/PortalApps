@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -214,17 +215,17 @@ namespace IKYS_WebParts.KisiselSayfaListesiWP
         }
         private Personel PersonelGetir()
         {
-            Personel personel = new Personel();
+            Personel personel;
 
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
 
             }
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = personel.SelectByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName);
             }
             PersonelIdQS = personel.Id.ToString();
             return personel;
@@ -279,8 +280,7 @@ namespace IKYS_WebParts.KisiselSayfaListesiWP
         {
             Personel personel = PersonelGetir();
             string birimListesiStr = IKYSOrtak.BirimListesiGetir(personel);
-            Personel personelDao = new Personel();
-            DataTable dataTable = personelDao.SelectCalisanPersonelByBirimReturnDT(birimListesiStr);
+            DataTable dataTable = new PersonelService().GetActiveEmployeesByUnitReturnDT(birimListesiStr);
             return dataTable;
         }
 
