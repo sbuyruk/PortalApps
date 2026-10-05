@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -120,10 +121,10 @@ namespace IKYS_WebParts.UcretliMahsupWP
         }
         private string GetDataJson()
         {
-            IzinHareket izinHareket = new IzinHareket();
+            IzinHareketService izinHareketService = new IzinHareketService();
             int personelId = PersonelDDL.SelectedItem == null ? 0 : PersonelDDL.SelectedItem.Value.ConvertToInt();
             int donemId = DonemDDL.SelectedItem == null ? 0 : DonemDDL.SelectedItem.Value.ConvertToInt();
-            var json = izinHareket.SelectByPersonelIdDonemIdReturnJson(personelId, donemId, ProjeConstants.IZINTIPI_UCRETLI_INT);
+            var json = izinHareketService.GetByPersonelIdDonemIdReturnJson(personelId, donemId, ProjeConstants.IZINTIPI_UCRETLI_INT);
 
             return json;
         }
@@ -144,8 +145,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
         private void FillPersonelDDL()
         {
             PersonelDDL.Items.Clear();
-            Personel personel = new Personel();
-            List<Personel> list = personel.SelectCalisanPersonel();
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
             ListItem li0 = new ListItem(ProjeConstants.HEPSI, ProjeConstants.IZINTIPI_HEPSI_INT.ToString());
             PersonelDDL.Items.Add(li0);
 
@@ -165,8 +165,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
             DonemDDL.Items.Add(li0);
             if (personelId > 0)
             {
-                IzinDonem izinDonemi = new IzinDonem();
-                List<IzinDonem> list = izinDonemi.SelectByPersonelId(personelId, ProjeConstants.IZINTIPI_UCRETLI_INT);
+                List<IzinDonem> list = new IzinDonemService().GetByPersonelId(personelId, ProjeConstants.IZINTIPI_UCRETLI_INT);
                 foreach (IzinDonem item in list)
                 {
                     ListItem li = new ListItem(item.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + item.BitisTarihi.ConvertToDatetimeEmptyIfNull(), item.Id.ReturnZeroIfNull().ToString());
@@ -179,11 +178,9 @@ namespace IKYS_WebParts.UcretliMahsupWP
             ModalDonemDDL.Items.Clear();
             if (personel.Id > 0)
             {
-                IzinDonem izinDonemi = new IzinDonem();
-                List<IzinDonem> list = izinDonemi.SelectByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
+                List<IzinDonem> list = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
                 int donemSayisi = 0;
-                IzinHareket izinHareket = new IzinHareket();
-                izinHareket = izinHareket.Select<IzinHareket>(izinHareketId);
+                IzinHareket izinHareket = new IzinHareketService().GetById(izinHareketId);
                 int sure = izinHareket.Sure.ConvertToInt();
                 foreach (IzinDonem item in list)
                 {
@@ -204,8 +201,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
         }
         private void FillOnayLbl(Personel personel, bool isUygunDonemVar)
         {
-            IzinHareket izinHareket = new IzinHareket();
-            izinHareket = izinHareket.Select<IzinHareket>(paramIzinHareketIdLbl.Value.ConvertToInt());
+            IzinHareket izinHareket = new IzinHareketService().GetById(paramIzinHareketIdLbl.Value.ConvertToInt());
             if (isUygunDonemVar)
             {
                 OnayLbl.Text = "Onayladiginiz takdirde " + personel.Adi + " " + personel.Soyadi + " Tarafindan " + izinHareket.BaslangicTarihi.ToString("dd.MM.yyyy") + " - "
@@ -224,16 +220,14 @@ namespace IKYS_WebParts.UcretliMahsupWP
         private void FillModalIzinBilgileriTable(Personel personel)
         {
             DateTime today = DateTime.Today;
-            IsBilgileri ib = new IsBilgileri();
-            ib = ib.SelectByPersonelId(personel.Id);
+            IsBilgileri ib = new IsBilgileriService().GetByPersonelId(personel.Id);
             if (ib != null)
             {
 
                 DateTime izinDonemiBasTar = ib.IzinDonemiBasTar;
                 //int izinDonemiSayisi = (today.Year - izinDonemiBasTar.Year);
                 //izinDonemiSayisi = izinDonemiSayisi > 5 ? 5 : izinDonemiSayisi;
-                IzinDonem izinDonem = new IzinDonem();
-                List<IzinDonem> izinDonemiList = izinDonem.SelectByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
+                List<IzinDonem> izinDonemiList = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
 
                 IzinHareket izinHareket = new IzinHareket();
 
@@ -243,8 +237,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
                     TableRow row = new TableRow();
                     TableCell IzinDonemiCell = new TableCell();
 
-                    Mahsup mahsup = new Mahsup();
-                    List<Mahsup> mahsupList = mahsup.SelectByDonemId(izinDonemi.Id);
+                    List<Mahsup> mahsupList = new MahsupService().GetByDonemId(izinDonemi.Id);
                     IzinDonemiCell.Text = izinDonemi.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinDonemi.BitisTarihi.ConvertToDatetimeEmptyIfNull();
                     if (mahsupList.Count > 0)
                         IzinDonemiCell.Text += "(M)";
@@ -321,13 +314,11 @@ namespace IKYS_WebParts.UcretliMahsupWP
             //int personelId = paramPersonelIdLbl.Value.ConvertToInt();
             int izinHareketId = paramIzinHareketIdLbl.Value.ConvertToInt();
             SecilenIdQS = izinHareketId.ToString();
-            IzinHareket izinHareket = new IzinHareket();
-            izinHareket = izinHareket.Select<IzinHareket>(izinHareketId);
+            IzinHareket izinHareket = new IzinHareketService().GetById(izinHareketId);
             if (izinHareket!=null)
             {
                 int personelId = izinHareket.PersonelId;
-                Personel personel = new Personel();
-                personel = personel.Select<Personel>(personelId);
+                Personel personel = new PersonelService().GetById(personelId);
                 if (personel != null)
                 {
                     PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
@@ -356,7 +347,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
             mahsup.MahsupDonemId = mahsupDonemi;
             mahsup.Aciklama = aciklama;
             mahsup.Olusturan = CurrentUserName;
-            int mahsupid = mahsup.Save();
+            int mahsupid = new MahsupService().Save(mahsup);
             return mahsup;
         }
         private bool MahsupIsleminiyap()
@@ -368,14 +359,15 @@ namespace IKYS_WebParts.UcretliMahsupWP
             Mahsup mahsupRB = null;
             
             int izinHareketId = paramIzinHareketIdLbl.Value.ConvertToInt();
-            IzinHareket izinHareket = new IzinHareket();
-            izinHareket = izinHareket.Select<IzinHareket>(izinHareketId);
+            IzinHareketService izinHareketService = new IzinHareketService();
+            IzinDonemService izinDonemService = new IzinDonemService();
+            MahsupService mahsupService = new MahsupService();
+            IzinHareket izinHareket = izinHareketService.GetById(izinHareketId);
 
             if (izinHareket != null)
             {
                 int personelId = izinHareket.PersonelId;
-                Personel personel = new Personel();
-                personel = personel.Select<Personel>(personelId);
+                Personel personel = new PersonelService().GetById(personelId);
                 if (personel != null)
                 {
                     DateTime izinBasTar = izinHareket.BaslangicTarihi;
@@ -386,9 +378,9 @@ namespace IKYS_WebParts.UcretliMahsupWP
                     IzinDonem yeniIzinDonemiRB = new IzinDonem();
                     IzinHareket izinHareketRB = izinHareket;
 
-                    oncekiIzinDonemi = oncekiIzinDonemi.Select<IzinDonem>(izinHareket.IzinDonemId);//oncekiIzinDonemi.SelectByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, izinBasTar);
+                    oncekiIzinDonemi = izinDonemService.GetById(izinHareket.IzinDonemId);//oncekiIzinDonemi.SelectByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, izinBasTar);
                     int yeniIzinDonemiId = ModalDonemDDL.SelectedItem == null ? 0 : ModalDonemDDL.SelectedItem.Value.ConvertToInt();
-                    yeniIzinDonemi = yeniIzinDonemi.Select<IzinDonem>(yeniIzinDonemiId);
+                    yeniIzinDonemi = izinDonemService.GetById(yeniIzinDonemiId);
 
                     if ((oncekiIzinDonemi == null) || (yeniIzinDonemi == null))
                     {
@@ -421,7 +413,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
                             oncekiIzinDonemi.KalanIzin = oncekiKalanIzinInt.ToString();
                             oncekiIzinDonemi.Aciklama += System.Environment.NewLine + "# Tarih=(" + DateTime.Now + ") Mahsup, IzinHareketId=" + izinHareket.Id + " YeniIzinDonemiId=" + yeniIzinDonemi.Id;
                             oncekiIzinDonemi.Degistiren = CurrentUserName;
-                            isOncekiDonemGuncellendi = oncekiIzinDonemi.Update();
+                            isOncekiDonemGuncellendi = izinDonemService.Update(oncekiIzinDonemi);
 
                             //yeni izin dönemi mahsupislemleri
                             int yeniKullanilanIzinInt = yeniIzinDonemi.KullanilanIzin.ConvertToInt() + sure;
@@ -430,24 +422,24 @@ namespace IKYS_WebParts.UcretliMahsupWP
                             yeniIzinDonemi.KalanIzin = yeniKalanIzinInt.ToString();
                             yeniIzinDonemi.Aciklama += System.Environment.NewLine + "# Tarih=(" + DateTime.Now + ") Mahsup, IzinHareketId=" + izinHareket.Id + " OncekiIzinDonemiId=" + oncekiIzinDonemi.Id;
                             yeniIzinDonemi.Degistiren = CurrentUserName;
-                            isYeniIzinDonemiGuncellendi = yeniIzinDonemi.Update();
+                            isYeniIzinDonemiGuncellendi = izinDonemService.Update(yeniIzinDonemi);
 
                             //izin hareket islemleri
                             izinHareket.Aciklama += "# Tarih=(" + DateTime.Now + ") MahsupId=" + mahsup.Id + "; " + AciklamaTxt.Text;
                             izinHareket.Mahsup = true;
                             izinHareket.IzinDonemId = yeniIzinDonemi.Id;
                             izinHareket.Degistiren = CurrentUserName;
-                            isIzinHareketSaved = izinHareket.Update();
+                            isIzinHareketSaved = izinHareketService.Update(izinHareket);
 
                         }
                     }
                     isAllSaved = isIzinHareketSaved && isOncekiDonemGuncellendi && isYeniIzinDonemiGuncellendi;
                     if (!isAllSaved)
                     {
-                        bool isMahsupRB = (mahsupRB == null) ? true : mahsupRB.Delete();
-                        bool isIzinHareketRB = izinHareketRB.Update();
-                        bool isOncekiIzinRB = oncekiIzinDonemiRB.Update();
-                        bool isYeniIzinRB = yeniIzinDonemiRB.Update();
+                        bool isMahsupRB = (mahsupRB == null) ? true : mahsupService.Delete(mahsupRB);
+                        bool isIzinHareketRB = izinHareketService.Update(izinHareketRB);
+                        bool isOncekiIzinRB = izinDonemService.Update(oncekiIzinDonemiRB);
+                        bool isYeniIzinRB = izinDonemService.Update(yeniIzinDonemiRB);
                         string message = " Mahsup sırasında sorunlarla karşılaşıldı. Geri alma işleminde: "
                             + " İzin Hareketi geri alma : " + (isIzinHareketRB ? "Başarılı. " : "Başarısız. ")
                             + " Önceki İzin Dönemi geri alma : " + (isOncekiIzinRB ? "Başarılı. " : " Başarısız")

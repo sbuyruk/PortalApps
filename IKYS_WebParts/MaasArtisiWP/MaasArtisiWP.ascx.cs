@@ -10,6 +10,7 @@ using Model.TBYS;
 using Utility.HelperClasses;
 using Model.Ortak;
 using Model.IKYS;
+using Model.Services.IKYS;
 using System.Web.Security;
 using System.Collections.Generic;
 
@@ -38,9 +39,9 @@ namespace IKYS_WebParts.MaasArtisiWP
         {
             if (!Page.IsPostBack)
             {
-                UcretTanim ucretTanim = new UcretTanim();
-                DateTime maxBitisTarihi = ucretTanim.SelectMaxBitisTarihi();
-                decimal agi = ucretTanim.SelectAgi(maxBitisTarihi);
+                UcretTanimService ucretTanimService = new UcretTanimService();
+                DateTime maxBitisTarihi = ucretTanimService.GetMaxBitisTarihi();
+                decimal agi = ucretTanimService.GetAgi(maxBitisTarihi);
                 AgiTxt.Text = agi.ToString();
                 ArtisYuzdesiTxt.Text = "10,00";
                 DateTime baslangicTarihi = maxBitisTarihi.AddDays(1);
@@ -63,15 +64,15 @@ namespace IKYS_WebParts.MaasArtisiWP
         }
         private void SilModalAc()
         {
-            UcretTanim ucretTanim = new UcretTanim();
+            UcretTanimService ucretTanimService = new UcretTanimService();
 
-            List<UcretTanim> list = ucretTanim.SelectByMaxGrupId();
+            List<UcretTanim> list = ucretTanimService.GetByMaxGrupId();
             if (list.Count <= 1)
             {
                 MessageHelper.PublishMessage("Silinecek bir maaş artışı bulunamadı.", ProjeConstants.MESAJ_BILGI);
                 return;
             }
-            ucretTanim = list[0];
+            UcretTanim ucretTanim = list[0];
             MessageTitleLbl.Text = "Son Maaş Artışı ve bu artışa göre yapılan maaş listesi silinecek";
             MessageTextLbl.Text = ucretTanim.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + " ile " + ucretTanim.BitisTarihi.ConvertToDatetimeEmptyIfNull() + " arasında geçerli olan artış silinsin mi?";
             DeleteNowBtn.Visible = true;
@@ -110,12 +111,12 @@ namespace IKYS_WebParts.MaasArtisiWP
         {
             try
             {
-                UcretTanim ucretTanim = new UcretTanim();
+                UcretTanimService ucretTanimService = new UcretTanimService();
 
                 DateTime yeniBaslangicTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
                 DateTime yeniBitisTarihi = BitisTarihiTxt.Text.ConvertToDatetime();
 
-                List<UcretTanim> list = ucretTanim.SelectByMaxGrupId();
+                List<UcretTanim> list = ucretTanimService.GetByMaxGrupId();
                 decimal artis = ArtisYuzdesiTxt.Text.ConvertToDecimal();
                 foreach (UcretTanim t in list)
                 {
@@ -134,7 +135,7 @@ namespace IKYS_WebParts.MaasArtisiWP
                     yeniUcretTanim.BaslangicTarihi = yeniBaslangicTarihi;
                     yeniUcretTanim.BitisTarihi = yeniBitisTarihi;
                     yeniUcretTanim.GrupId = t.GrupId + 1;
-                    int id = yeniUcretTanim.Save();
+                    int id = ucretTanimService.Save(yeniUcretTanim);
                 }
             MessageHelper.PublishMessage("Tablolar oluşturuldu", ProjeConstants.MESAJ_BASARILI, 2000);
                 RedirectToPage(ProjeConstants.PAGE_MAAS_TABLOLARI );
@@ -149,24 +150,23 @@ namespace IKYS_WebParts.MaasArtisiWP
 
         protected void DeleteNowBtn_Click(object sender, EventArgs e)
         {
-            UcretTanim ucretTanim = new UcretTanim();
+            UcretTanimService ucretTanimService = new UcretTanimService();
 
-            List<UcretTanim> list = ucretTanim.SelectByMaxGrupId();
+            List<UcretTanim> list = ucretTanimService.GetByMaxGrupId();
             if (list.Count <= 1)
             {
                 MessageHelper.PublishMessage("Silinecek bir maaş artışı bulunamadı.", ProjeConstants.MESAJ_BILGI);
                 return;
             }
-            ucretTanim = list[0];
+            UcretTanim ucretTanim = list[0];
             int grupId = ucretTanim.GrupId;
             try
             {
-                bool isDeleted = ucretTanim.DeleteByGrupId(grupId);
+                bool isDeleted = ucretTanimService.DeleteByGrupId(grupId, ucretTanim);
                 if (isDeleted)
                 {
                     //MessageHelper.PublishMessage("Son maas artisi silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
-                    MaasHareket hareket = new MaasHareket();
-                    hareket.DeleteByGrupId(grupId);
+                    new MaasHareketService().DeleteByGrupId(new MaasHareket(), grupId);
                     RedirectToPage(ProjeConstants.PAGE_MAAS_TABLOLARI);
                 }
 
