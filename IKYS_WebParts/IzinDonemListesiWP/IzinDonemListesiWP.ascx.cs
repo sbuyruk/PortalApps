@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -84,8 +85,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                     }
                     FillPersonelDDL();
                 }
-                Personel personel = new Personel();
-                personel = personel.Select<Personel>(PersonelDDL.SelectedItem.Value.ConvertToInt());
+                Personel personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt());
                 if (personel != null)
                 {
                     FillIzinDonemTable();
@@ -136,12 +136,10 @@ namespace IKYS_WebParts.IzinDonemListesiWP
         {
             IzinTableHeaders();
 
-            Personel personel = new Personel();
-            personel = personel.Select<Personel>(PersonelDDL.SelectedItem.Value.ConvertToInt());
+            Personel personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt());
             if (personel != null)
             {
-                IzinDonem izinDonem = new IzinDonem();
-                DataTable dataTable = izinDonem.SelectByPersonelIdReturnDT(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
+                DataTable dataTable = new IzinDonemService().GetByPersonelIdReturnDataTable(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
                 int sira = 0;
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -330,16 +328,14 @@ namespace IKYS_WebParts.IzinDonemListesiWP
         }
         private void FillIzinHareketleriTable(int izinDonemId)
         {
-            IzinDonem izinDonemi = new IzinDonem();
-            izinDonemi = izinDonemi.Select<IzinDonem>(izinDonemId);
+            IzinDonem izinDonemi = new IzinDonemService().GetById(izinDonemId);
             if (izinDonemi == null)
             {
                 MessageHelper.PublishMessage("İzin Dönemi bulunamadı.", ProjeConstants.MESAJ_HATA);
             }
             else
             {
-                IzinHareket izinHareket = new IzinHareket();
-                DataTable dataTable = izinHareket.SelectByIzinDonemiReturnDataTable(izinDonemId, izinDonemi.PersonelId, ProjeConstants.IZINTIPI_UCRETLI_INT);
+                DataTable dataTable = new IzinHareketService().GetByIzinDonemiReturnDataTable(izinDonemId, izinDonemi.PersonelId, ProjeConstants.IZINTIPI_UCRETLI_INT);
                 int SiraNo = 1;
                 if (dataTable == null)
                 {
@@ -415,8 +411,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
         private void FillPersonelDDL()
         {
             PersonelDDL.Items.Clear();
-            Personel personel = new Personel();
-            List<Personel> list = personel.SelectCalisanPersonel();
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
             foreach (Personel item in list)
             {
                 ListItem li = new ListItem(item.Adi.ReturnEmptyIfNull().ToString() + " " + item.Soyadi.ReturnEmptyIfNull().ToString(), item.Id.ReturnZeroIfNull().ToString());
@@ -425,8 +420,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
         }
         protected void PersonelDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Personel personel = new Personel();
-            personel = personel.Select<Personel>(PersonelDDL.SelectedItem.Value.ConvertToInt());
+            Personel personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt());
             if (personel != null)
             {
                 FillIzinDonemTable();
@@ -443,8 +437,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
         protected void UpdateNowBtn_Click(object sender, EventArgs e)
         {
             int izinDonemId = IzinDonemIdLbl.Text.ConvertToInt();
-            IzinDonem izinDonemi = new IzinDonem();
-            izinDonemi = izinDonemi.Select<IzinDonem>(izinDonemId);
+            IzinDonem izinDonemi = new IzinDonemService().GetById(izinDonemId);
             if (izinDonemi != null)
             {
                 try
@@ -464,7 +457,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
 
                     if (validated)
                     {
-                        bool issaved = izinDonemi.Update();
+                        bool issaved = new IzinDonemService().Update(izinDonemi);
                         MessageHelper.PublishMessage("Kayıt Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
                         FillIzinDonemTable();
                     }
@@ -498,8 +491,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
 
             try
             {
-                Personel personel = new Personel();
-                personel = personel.Select<Personel>(PersonelDDL.SelectedItem.Value.ConvertToInt());
+                Personel personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt());
                 if (personel == null)
                 {
                     Exception ex = new Exception("Personel bulunamadı. ");
@@ -517,16 +509,14 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                 ModalSubTitleLbl.Text = string.Empty;
                 ModalTitleLbl.Text = personel.Adi + " " + personel.Soyadi;
 
-                IzinDonem izinDonemi = new IzinDonem();
-                List<IzinDonem> list = izinDonemi.SelectByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
+                List<IzinDonem> list = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
 
                 //modal açilista Dönem basi ve sonunu dolu getirsin en eski dönemden önceki bir yil degerini doldursun
                 izinDonemi = list.FirstOrDefault<IzinDonem>();//en eski dönem (baslangiçTarihine göre sirali oldugundan)
                 if (izinDonemi != null)
                 {
 
-                    IsBilgileri ib = new IsBilgileri();
-                    ib = ib.SelectByPersonelId(personel.Id);
+                    IsBilgileri ib = new IsBilgileriService().GetByPersonelId(personel.Id);
                     if (ib != null)
                     {
                         DateTime iseBaslamaTar = !string.IsNullOrEmpty(ib.IzinDonemiBasTar.ConvertToDatetimeEmptyIfNull()) ? ib.IzinDonemiBasTar : ib.BaslamaTar;
@@ -582,8 +572,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
 
                 if (validated)
                 {
-                    Personel personel = new Personel();
-                    personel = personel.Select<Personel>(PersonelDDL.SelectedItem.Value.ConvertToInt());
+                    Personel personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt());
                     if (personel == null)
                     {
                         Exception ex = new Exception("Personel bulunamadı. ");
@@ -595,13 +584,11 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                     DateTime bastar = DonemBasTarTxt.Value.ConvertToDatetime();
                     DateTime bittar = DonemBitTarTxt.Value.ConvertToDatetime();
 
-                    IsBilgileri ib = new IsBilgileri();
-                    ib = ib.SelectByPersonelId(personel.Id);
+                    IsBilgileri ib = new IsBilgileriService().GetByPersonelId(personel.Id);
                     if (ib != null)
                     {
-                        IzinDonem enEskiIzinDonemi = new IzinDonem();
-                        List<IzinDonem> list = enEskiIzinDonemi.SelectByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
-                        enEskiIzinDonemi = list.LastOrDefault<IzinDonem>();
+                        List<IzinDonem> list = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
+                        IzinDonem enEskiIzinDonemi = list.LastOrDefault();
 
                         DateTime iseBaslamaTar = ib.BaslamaTar != null ? ib.BaslamaTar : ib.IzinDonemiBasTar;
                         if (bastar < iseBaslamaTar)
@@ -621,7 +608,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                     izinDonemi.Adi = bastar.Year + "-" + bittar.Year + " İzin Dönemi";
                     izinDonemi.Aciklama = AciklamaTxt.Text;
                     izinDonemi.Olusturan = CurrentUserName;
-                    izinDonemi.Id = izinDonemi.Save();
+                    izinDonemi.Id = new IzinDonemService().Save(izinDonemi);
                     bool issaved = izinDonemi.Id > 0 ? true : false;
                     MessageHelper.PublishMessage("Kayıt Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
                     FillIzinDonemTable();
