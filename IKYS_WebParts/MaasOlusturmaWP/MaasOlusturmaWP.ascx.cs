@@ -48,19 +48,19 @@ namespace IKYS_WebParts.MaasOlusturmaWP
                 DateTime tarih = DateTime.Today;
                 int ay = tarih.Month;
                 // ay eger Ocak, Nisan, Temmuz ve Ekim aylarindan birine esitse IkramiyeChk.Checked=true; yap
-                IkramiyeChk.Checked = false; // baslangiçta ikramiye seçenegi kapali olacak
+                IkramiyeChk.Checked = false; // baslangiÃ§ta ikramiye seÃ§enegi kapali olacak
                 if (ay == 12 || ay == 3 || ay == 6 || ay == 9)
                 {
-                    IkramiyeChk.Checked = true; //ikramiye ödenecek    
+                    IkramiyeChk.Checked = true; //ikramiye Ã¶denecek
                 }
                 else
                 {
-                    IkramiyeChk.Checked = false; // Diger aylarda ikramiye ödenmeyecek
+                    IkramiyeChk.Checked = false; // Diger aylarda ikramiye Ã¶denmeyecek
                 }
 
                 TarihDDLDoldur();
                 UtilityHelper.SetDDLValue(TarihDDL, tarih.ToString("dd.MM.yyyy"));
-                
+
                 TabloOlustur();
             }
             GorunumuAyarla();
@@ -69,14 +69,14 @@ namespace IKYS_WebParts.MaasOlusturmaWP
 
         private void GorunumuAyarla()
         {
-            //bu tarihe ait kayit MaasHareket_Table'da var mi kontrol et  
+            //bu tarihe ait kayit MaasHareket_Table'da var mi kontrol et
             MaasHareket maasHareket = new MaasHareket();
             maasHareket = maasHareket.SelectByTarih(TarihDDL.SelectedItem == null ? DateTime.Today : TarihDDL.SelectedItem.Value.ConvertToDatetime());
             if (maasHareket != null)
             {
-                //eger varsa, o tarihe ait maas listesi zaten olusturulmus demektir.  
-                //o yüzden bu tarihe ait maas listesi tekrar olusturulmayacak.  
-                // olusturulan kayitlar MaasHareket_Table'dan çekilecek.  
+                //eger varsa, o tarihe ait maas listesi zaten olusturulmus demektir.
+                //o yÃ¼zden bu tarihe ait maas listesi tekrar olusturulmayacak.
+                // olusturulan kayitlar MaasHareket_Table'dan Ã§ekilecek.
                 MaasOlusturBtn.Visible = false;
                 MaasSilBtn.Visible = true;
                 //set background color of TablesDiv to Grey
@@ -96,7 +96,7 @@ namespace IKYS_WebParts.MaasOlusturmaWP
         #region Methods
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -133,14 +133,14 @@ namespace IKYS_WebParts.MaasOlusturmaWP
         {
             UtilityHelper.SetDDLValue(TarihDDL, (string.IsNullOrEmpty(TarihDDL.SelectedItem.Value) ? DateTime.Today.ToString("dd.MM.yyyy") : TarihDDL.SelectedItem.Value));
             DateTime tarih = TarihDDL.SelectedItem.Value.ConvertToDatetime();
-            //ilk olarak bu tarihe ait kayit MaasHareket_Table'da var mi kontrol et  
+            //ilk olarak bu tarihe ait kayit MaasHareket_Table'da var mi kontrol et
             MaasHareket maasHareket = new MaasHareket();
             maasHareket = maasHareket.SelectByTarih(tarih);
             if (maasHareket != null)
             {
-                //eger varsa, o tarihe ait maas listesi zaten olusturulmus demektir.  
-                //o yüzden bu tarihe ait maas listesi tekrar olusturulmayacak.  
-                // olusturulan kayitlar MaasHareket_Table'dan çekilecek.  
+                //eger varsa, o tarihe ait maas listesi zaten olusturulmus demektir.
+                //o yÃ¼zden bu tarihe ait maas listesi tekrar olusturulmayacak.
+                // olusturulan kayitlar MaasHareket_Table'dan Ã§ekilecek.
                 List<MaasHareket> maaslist = maasHareket.SelectMaasListesiByTarih(tarih);
                 List<MaasListItem> hazirliste = new List<MaasListItem>();
                 foreach (MaasHareket item in maaslist)
@@ -200,20 +200,20 @@ namespace IKYS_WebParts.MaasOlusturmaWP
                         listItem.Kademe = kademe;
                         listItem.Ucret = ucret.ToString("N", culturInfo);
                         listItem.Ikramiye = ikramiye.ToString("N", culturInfo);
-                        //DereceKademeIlerlemeTarihi'nin ay'i TarihDDLDen seçilen tarihin ay'i ile ayniysa
-                        //Kademeyi bir artir, kademe 10'dan büyük vey aesitse artirma
+                        //DereceKademeIlerlemeTarihi'nin ay'i TarihDDLDen seÃ§ilen tarihin ay'i ile ayniysa
+                        //Kademeyi bir artir, kademe 10'dan bÃ¼yÃ¼k vey aesitse artirma
                         if (kademe < 10)
                         {
-                            if (dereceKademeIlerlemeTarihi.Month == tarih.Month && dereceKademeIlerlemeTarihi.Year < tarih.Year) // ayni yilda iki kez maas olusturulmayacak, bu yüzden tarih yili kontrolü de yapiliyor
+                            if (dereceKademeIlerlemeTarihi.Month == tarih.Month && dereceKademeIlerlemeTarihi.Year < tarih.Year) // ayni yilda iki kez maas olusturulmayacak, bu yÃ¼zden tarih yili kontrolÃ¼ de yapiliyor
                             {
                                 listItem.DereceKademeIlerlemeTarihi = new DateTime(tarih.Year, tarih.Month, dereceKademeIlerlemeTarihi.Day).ToString("dd.MM.yyyy"); // DereceKademeDegisim'in tarihi, maasin olusturuldugu tarih olacak
                                 listItem.Kademe = kademe + 1; // Kademe'yi 1 artir
                                 Personel personel = new Personel();
                                 personel = personel.Select(personelId);
-                                //maasi yeni kademeye göre bul
+                                //maasi yeni kademeye gÃ¶re bul
                                 UcretTanim ucretTanim = new UcretTanim();
                                 ucret = ucretTanim.SelectUcretByGrupDereceKademe(personel,grupId, derece, listItem.Kademe);
-                                listItem.Ucret = ucret.ToString("N", culturInfo); // Ucret'i güncelle
+                                listItem.Ucret = ucret.ToString("N", culturInfo); // Ucret'i gÃ¼ncelle
                                 listItem.Ikramiye = ucret.ToString("N", culturInfo);
                                 ikramiye = IkramiyeChk.Checked ? ucret : 0;
                             }
@@ -222,8 +222,8 @@ namespace IKYS_WebParts.MaasOlusturmaWP
                         listItem.DereceKademe = listItem.Derece + "/" + listItem.Kademe;
                         listItem.ProtokolSiraNo = protokolSiraNo;
                         listItem.GrupId = grupId;
-                        
-                       
+
+
                         listItem.Agi = agi.ToString("N", culturInfo);
                         listItem.Toplam = (ucret + ikramiye + agi).ToString("N", culturInfo);
                         yeniliste.Add(listItem);
@@ -231,15 +231,15 @@ namespace IKYS_WebParts.MaasOlusturmaWP
                     return yeniliste;
                 }
             }
-            // Ensure all code paths return a value  
+            // Ensure all code paths return a value
             return new List<MaasListItem>();
         }
         private string CreateDataTable(string jsonData)
         {
-            //DataTable için gerekli javascript kodu olusturuluyor
-            // jsonData içinde gelen DereceKademeIlerlemeTarihi'nin ay bölümü TarihDDL.SelectedItem.Value ile ayni ise, tablonun o satirini kirmizi bold yazsin
+            //DataTable iÃ§in gerekli javascript kodu olusturuluyor
+            // jsonData iÃ§inde gelen DereceKademeIlerlemeTarihi'nin ay bÃ¶lÃ¼mÃ¼ TarihDDL.SelectedItem.Value ile ayni ise, tablonun o satirini kirmizi bold yazsin
 
-            // TarihDDL.SelectedItem.Value C# tarafinda, bunu JS'ye geçir
+            // TarihDDL.SelectedItem.Value C# tarafinda, bunu JS'ye geÃ§ir
             string selectedTarih = TarihDDL.SelectedItem != null ? TarihDDL.SelectedItem.Value : DateTime.Today.ToString("dd.MM.yyyy");
             string ikramiyeGorunsun = IkramiyeChk.Checked ? "{ targets:6, visible:true}," : "{ targets:6, visible:false},";
             string tableString = @"
@@ -327,10 +327,10 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
         private void TarihDDLDoldur()
         {
             TarihDDL.Items.Clear();
-            // Tarih DDL'si 1 ay sonrasindan baslayarak, azalarak her ayin son gününü listeye doldurulacak
-            // Baslangiç tarihi olarak bugünün yilinin 1 ay sonrasi alinir
-            // ve her ayin son günü eklenir.
-            // Örnek: Eger bugün 15 Eylül 2023 ise, baslangiç tarihi 1 Ekim 2023 olur ve
+            // Tarih DDL'si 1 ay sonrasindan baslayarak, azalarak her ayin son gÃ¼nÃ¼nÃ¼ listeye doldurulacak
+            // BaslangiÃ§ tarihi olarak bugÃ¼nÃ¼n yilinin 1 ay sonrasi alinir
+            // ve her ayin son gÃ¼nÃ¼ eklenir.
+            // Ã–rnek: Eger bugÃ¼n 15 EylÃ¼l 2023 ise, baslangiÃ§ tarihi 1 Ekim 2023 olur ve
             // 31 Ekim, 30 Kasim, 31 Aralik gibi tarihler eklenir.
 
             DateTime startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).AddMonths(1).AddDays(-1);
@@ -344,7 +344,7 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
                 DateTime bittar = row["BitisTarihi"].ConvertToDatetime();
                 int grupId = row["GrupId"].ConvertToInt();
                 DateTime songun = new DateTime(bittar.Year,bittar.Month,1).AddMonths(1).AddDays(-1);
-                while (songun >= bastar) { 
+                while (songun >= bastar) {
                     if (songun>startDate)
                     {
                         songun = new DateTime(songun.Year,songun.Month,1).AddDays(-1);
@@ -372,25 +372,25 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
                 maasHareket.DereceKademeIlerlemeTarihi = item.DereceKademeIlerlemeTarihiOrj.ConvertToDatetime();
                 if (maasHareket.DereceKademeIlerlemeTarihi.Month == tarih.Month && maasHareket.DereceKademeIlerlemeTarihi.Year < tarih.Year)
                 {
-                    
-                    //Kademeyi bir artir, kademe 10'dan büyük vey aesitse artirma
+
+                    //Kademeyi bir artir, kademe 10'dan bÃ¼yÃ¼k vey aesitse artirma
                     if (item.Kademe < 10)
                     {
-                        // Bunu yapmak için: DereceKademeDegisim_Table'a bu personel için bir kayit ekle
+                        // Bunu yapmak iÃ§in: DereceKademeDegisim_Table'a bu personel iÃ§in bir kayit ekle
                         DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisim();
 
                         dereceKademeDegisim.Derece = item.Derece;
-                        //dereceKademeDegisim.Aciklama alanina içinde bulundugumuz ay/yil maasi olusturulurken otomatik güncellendigini yaz
-                        dereceKademeDegisim.Aciklama = tarih.ToString("MMMM yyyy") + " maasi olusturulurken otomatik güncellendi.";
-                        dereceKademeDegisim.Kademe = item.Kademe; // Kademe getDataList içinde 1 artirildi
-                        dereceKademeDegisim.Derece = item.Derece; 
+                        //dereceKademeDegisim.Aciklama alanina iÃ§inde bulundugumuz ay/yil maasi olusturulurken otomatik gÃ¼ncellendigini yaz
+                    dereceKademeDegisim.Aciklama = tarih.ToString("MMMM yyyy") + " maaÅŸÄ± oluÅŸturulurken otomatik gÃ¼ncellendi.";
+                        dereceKademeDegisim.Kademe = item.Kademe; // Kademe getDataList iÃ§inde 1 artirildi
+                        dereceKademeDegisim.Derece = item.Derece;
                         dereceKademeDegisim.PersonelId = item.PersonelId;
                         dereceKademeDegisim.DegisimTarihi = new DateTime(tarih.Year, tarih.Month, item.DereceKademeIlerlemeTarihi.ConvertToDatetime().Day); // DereceKademeDegisim'in tarihi, maasin olusturuldugu tarih olacak
-                        dereceKademeDegisim.Degisim = "Kademe Yükseltme";
+                        dereceKademeDegisim.Degisim = "Kademe YÃ¼kseltme";
                         dereceKademeDegisim.Derece = item.Derece; // Derece'yi de ayni sekilde al
                         dereceKademeDegisim.Save();
                         maasHareket.DereceKademeIlerlemeTarihi = dereceKademeDegisim.DegisimTarihi;
-                        //IsBligileri_Table'da Derece,Kademe ve DereceKademeIlerlemeTarihi alanlari güncellensin
+                        //IsBligileri_Table'da Derece,Kademe ve DereceKademeIlerlemeTarihi alanlari gÃ¼ncellensin
                         //IsBilgileri personelIsBilgileri = new IsBilgileri();
                         //personelIsBilgileri = personelIsBilgileri.SelectByPersonelId(item.PersonelId);
                         //if (personelIsBilgileri != null)
@@ -422,32 +422,32 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
             maasHareket = maasHareket.SelectByTarih(TarihDDL.SelectedItem.Value.ConvertToDatetime());
             if (maasHareket == null)
             {
-                MessageHelper.PublishMessage("Silinecek bir maas kaydi bulunamadi.", ProjeConstants.MESAJ_BILGI);
+            MessageHelper.PublishMessage("Silinecek bir maaÅŸ kaydÄ± bulunamadÄ±.", ProjeConstants.MESAJ_BILGI);
                 return;
             }
             // Eger varsa, grupId'sini belirle
             int grupId = maasHareket.GrupId;
-            // MaasHareket_Table'dan grupId'ye göre sil
+            // MaasHareket_Table'dan grupId'ye gÃ¶re sil
             bool isDeleted = maasHareket.DeleteByGrupId(grupId);
 
         }
         private void KaydetModalAc()
         {
 
-            MessageTitleLbl.Text = "Maas Olusturma";
-            MessageTextLbl.Text = TarihDDL.SelectedItem.Text + " Maasi kaydedilsin ve sabitlensin mi?";
+            MessageTitleLbl.Text = "MaaÅŸ OluÅŸturma";
+            MessageTextLbl.Text = TarihDDL.SelectedItem.Text + " maaÅŸÄ± kaydedilsin ve sabitlensin mi?";
             KaydetNowBtn.Visible = true;
             SilNowBtn.Visible = true;
             var openPopup = "OpenModal();";
             UtilityHelper.ScriptCalistir(openPopup);
             TabloOlustur();
         }
-        
+
         private void SilModalAc()
         {
 
-            MessageTitleLbl.Text = "Maas Silme";
-            MessageTextLbl.Text = TarihDDL.SelectedItem.Text + " Maasi silinsin mi?";
+            MessageTitleLbl.Text = "MaaÅŸ Silme";
+            MessageTextLbl.Text = TarihDDL.SelectedItem.Text + " maaÅŸÄ± silinsin mi?";
             KaydetNowBtn.Visible = false;
             SilNowBtn.Visible = true;
             var openPopup = "OpenModal();";
@@ -482,7 +482,7 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
             catch (Exception exception)
             {
                 ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Maas kaydedilemedi");
+                Exception exceptionInfo = new Exception("MaaÅŸ kaydedilemedi");
                 exceptionHelper.Exceptions.Add(exceptionInfo);
                 exceptionHelper.PublishException();
             }
@@ -505,7 +505,7 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
             catch (Exception exception)
             {
                 ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Maas kaydedilemedi");
+                Exception exceptionInfo = new Exception("MaaÅŸ kaydedilemedi");
                 exceptionHelper.Exceptions.Add(exceptionInfo);
                 exceptionHelper.PublishException();
             }
@@ -515,14 +515,14 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
             DateTime tarih =TarihDDL.SelectedItem.Value.ConvertToDatetime();
             int ay = tarih.Month;
             // ay eger Ocak, Nisan, Temmuz ve Ekim aylarindan birine esitse IkramiyeChk.Checked=true; yap
-            IkramiyeChk.Checked = false; // baslangiçta ikramiye seçenegi kapali olacak
+            IkramiyeChk.Checked = false; // baslangiÃ§ta ikramiye seÃ§enegi kapali olacak
             if (ay == 12 || ay == 3 || ay == 6 || ay == 9)
             {
-                IkramiyeChk.Checked = true; //ikramiye ödenecek    
+                IkramiyeChk.Checked = true; //ikramiye Ã¶denecek
             }
             else
             {
-                IkramiyeChk.Checked = false; // Diger aylarda ikramiye ödenmeyecek
+                IkramiyeChk.Checked = false; // Diger aylarda ikramiye Ã¶denmeyecek
             }
             TabloOlustur();
             GorunumuAyarla();
@@ -533,14 +533,14 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
             DateTime tarih = TarihDDL.SelectedItem.Value.ConvertToDatetime();
             int ay = tarih.Month;
             // ay eger Ocak, Nisan, Temmuz ve Ekim aylarindan birine esitse IkramiyeChk.Checked=true; yap
-            IkramiyeChk.Checked = false; // baslangiçta ikramiye seçenegi kapali olacak
+            IkramiyeChk.Checked = false; // baslangiÃ§ta ikramiye seÃ§enegi kapali olacak
             if (ay == 12 || ay == 3 || ay == 6 || ay == 9)
             {
-                IkramiyeChk.Checked = true; //ikramiye ödenecek    
+                IkramiyeChk.Checked = true; //ikramiye Ã¶denecek
             }
             else
             {
-                IkramiyeChk.Checked = false; // Diger aylarda ikramiye ödenmeyecek
+                IkramiyeChk.Checked = false; // Diger aylarda ikramiye Ã¶denmeyecek
             }
             TabloOlustur();
             GorunumuAyarla();

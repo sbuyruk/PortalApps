@@ -64,13 +64,13 @@ namespace IKYS_WebParts.ResmiTatillerWP
 
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sira";
+            siraCell.Text = "Sıra";
             TableHeaderCell resmiTarihCell = new TableHeaderCell();
             resmiTarihCell.Text = "Resmi Tatil";
             TableHeaderCell BaslangicTarCell = new TableHeaderCell();
-            BaslangicTarCell.Text = "Baslangi� Tarihi";
+            BaslangicTarCell.Text = "Başlangıç Tarihi";
             TableHeaderCell BitisTarCell = new TableHeaderCell();
-            BitisTarCell.Text = "Bitis Tarihi";
+            BitisTarCell.Text = "Bitiş Tarihi";
 
             th.Controls.Add(siraCell);
             th.Controls.Add(resmiTarihCell);
@@ -111,7 +111,7 @@ namespace IKYS_WebParts.ResmiTatillerWP
 
                     string bassaatstr = string.Empty;
 
-                    
+
                     if (resmiTatil.BaslamaTarihi.Hour > 0)
                     {
                         bassaatstr = resmiTatil.BaslamaTarihi.ToString("HH:mm", culturInfo);
@@ -144,7 +144,7 @@ namespace IKYS_WebParts.ResmiTatillerWP
                 TableRow tr = new TableRow();
                 TableCell tc = new TableCell();
                 tc.ColumnSpan = 7;
-                tc.Text = "Kayitli resmi tatil bulunmamaktadir.";
+                tc.Text = "Kayıtlı resmi tatil bulunmamaktadır.";
                 tr.Controls.Add(tc);
                 ResmiTatilTable.Controls.Add(tr);
             }
@@ -175,7 +175,7 @@ namespace IKYS_WebParts.ResmiTatillerWP
                     {
                         resmiTatil.BitisTarihi = new DateTime(today.AddYears(1).Year, resmiTatil.BitisTarihi.Month, resmiTatil.BitisTarihi.Day);
                     }
-                }                
+                }
             }
         }
 
@@ -192,7 +192,7 @@ namespace IKYS_WebParts.ResmiTatillerWP
             System.IO.StringWriter tw = new System.IO.StringWriter();
             System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
 
-            //Get the HTML for the control.             
+            //Get the HTML for the control.
             MainCardDiv.RenderControl(hw);
             //Write the HTML back to the browser.
             //Response.ContentType = application/vnd.ms-excel;

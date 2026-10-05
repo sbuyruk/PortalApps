@@ -51,8 +51,8 @@ namespace IKYS_WebParts.MaasTablolariWP
 
         private void TablolariDoldur()
         {
-            Table1Title.Text = TarihDDL.SelectedItem.Text + " TARIHLERI ARASI GEÇERLI TSKGV ÜCRET TABLOSU-1";
-            Table2Title.Text = TarihDDL.SelectedItem.Text + " TARIHLERI ARASI GEÇERLI TSKGV ÜCRET TABLOSU-2 (TSK'DAN EMEKLI PERSONEL IÇIN GEÇERLIDIR)";
+            Table1Title.Text = TarihDDL.SelectedItem.Text + " TARIHLERI ARASI GEÃ‡ERLI TSKGV ÃœCRET TABLOSU-1";
+            Table2Title.Text = TarihDDL.SelectedItem.Text + " TARIHLERI ARASI GEÃ‡ERLI TSKGV ÃœCRET TABLOSU-2 (TSK'DAN EMEKLI PERSONEL IÃ‡IN GEÃ‡ERLIDIR)";
             int grupId = TarihDDL.SelectedItem.Value.ConvertToInt();
             UcretTanim ucretTanim = new UcretTanim();
             int derece = 1;
@@ -80,7 +80,7 @@ namespace IKYS_WebParts.MaasTablolariWP
                 string tablo1AltUcret= item.AltUcret.ToString("N", culturInfo);
                 switch (item.Derece)
                 {
-                    case 1: //Genel Müdür
+                    case 1: //Genel MÃ¼dÃ¼r
                         {
                             if (table== UcretTanimTable1)
                             {
@@ -88,7 +88,7 @@ namespace IKYS_WebParts.MaasTablolariWP
 
                                 altUcretCell.Text = tablo1AltUcret;
                                 altUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sag hizalama
-                                row.Controls.Add(altUcretCell); 
+                                row.Controls.Add(altUcretCell);
                             }
 
                             TableCell ustUcretCell = new TableCell();
@@ -96,7 +96,7 @@ namespace IKYS_WebParts.MaasTablolariWP
                             row.Controls.Add(ustUcretCell);
                             break;
                         }
-                    case 2: //Genel Müdür Yard
+                    case 2: //Genel MÃ¼dÃ¼r Yard
                         {
                             if (table == UcretTanimTable1)
                             {
@@ -104,7 +104,7 @@ namespace IKYS_WebParts.MaasTablolariWP
 
                                 altUcretCell.Text = tablo1AltUcret;
                                 altUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sag hizalama
-                                row.Controls.Add(altUcretCell); 
+                                row.Controls.Add(altUcretCell);
                             }
 
                             TableCell ustUcretCell = new TableCell();
@@ -121,7 +121,7 @@ namespace IKYS_WebParts.MaasTablolariWP
 
                                 altUcretCell.Text = tablo1AltUcret;
                                 altUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sag hizalama
-                                row.Controls.Add(altUcretCell); 
+                                row.Controls.Add(altUcretCell);
                             }
 
                             TableCell ustUcretCell = new TableCell();
@@ -161,7 +161,7 @@ namespace IKYS_WebParts.MaasTablolariWP
                             row.Controls.Add(ustUcretCell);
                             break;
                         }
-                    case 8: //Soför Hiz
+                    case 8: //SofÃ¶r Hiz
                         {
 
                             TableCell ustUcretCell = new TableCell();
@@ -205,7 +205,7 @@ namespace IKYS_WebParts.MaasTablolariWP
             HttpContext.Current.Response.ContentEncoding = Encoding.UTF8;
             HttpContext.Current.Response.AddHeader("content-disposition", "attachment;filename=UcretTablosu1.xls");
 
-            // Excel'e stil bilgisi göndermek için <style> blogu ekle
+            // Excel'e stil bilgisi gÃ¶ndermek iÃ§in <style> blogu ekle
             string style = @"
                 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
                 <style>
@@ -225,7 +225,7 @@ namespace IKYS_WebParts.MaasTablolariWP
             // Tabloyu render et
             TablesDiv.RenderControl(hw);
 
-            // HTML + style + tablo içerigini gönder
+            // HTML + style + tablo iÃ§erigini gÃ¶nder
             HttpContext.Current.Response.Write(style + sw.ToString());
             HttpContext.Current.Response.Flush();
             HttpContext.Current.Response.End();
@@ -241,7 +241,7 @@ namespace IKYS_WebParts.MaasTablolariWP
             HttpContext.Current.Response.ContentEncoding = Encoding.UTF8;
             HttpContext.Current.Response.AddHeader("content-disposition", "attachment;filename=UcretTablosu-2.xls");
 
-            // Excel'e stil bilgisi göndermek için <style> blogu ekle
+            // Excel'e stil bilgisi gÃ¶ndermek iÃ§in <style> blogu ekle
             string style = @"
                 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
                 <style>
@@ -261,7 +261,7 @@ namespace IKYS_WebParts.MaasTablolariWP
             // Tabloyu render et
             UcretTanimTable2.RenderControl(hw);
 
-            // HTML + style + tablo içerigini gönder
+            // HTML + style + tablo iÃ§erigini gÃ¶nder
             HttpContext.Current.Response.Write(style + sw.ToString());
             HttpContext.Current.Response.Flush();
             HttpContext.Current.Response.End();

@@ -70,7 +70,7 @@ namespace IKYS_WebParts.IzinHareketListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
         }
         private string TabloJson()
@@ -118,13 +118,13 @@ namespace IKYS_WebParts.IzinHareketListesiWP
                     izinHareketListItem.IzinHareketId = dataRow["IzinHareketId"].ToString();
                     izinHareketListItem.IzinTalepId = dataRow["IzinTalepId"].ToString();
                     izinHareketListItem.IzinTipi = dataRow["IzinTipi"].ToString();
-                    
+
                     izinHareketListItem.YazdirLink = string.Empty;
                     izinHareketListItem.DuzenleLink = string.Empty;
 
-                    string duzenleLinkStr = "<a href="+ProjeConstants.PAGE_IZINHAREKET_EDIT+ "?AUTH=IKYS&IzinHareketId=" + izinHareketListItem.IzinHareketId + 
+                    string duzenleLinkStr = "<a href="+ProjeConstants.PAGE_IZINHAREKET_EDIT+ "?AUTH=IKYS&IzinHareketId=" + izinHareketListItem.IzinHareketId +
                         "&PersonelId=" + izinHareketListItem.PersonelId +
-                        "&IzinTanimId=" + izinHareketListItem.IzinTipiId + " class='btn btn-outline-primary' >Düzenle</a>";
+                        "&IzinTanimId=" + izinHareketListItem.IzinTipiId + " class='btn btn-outline-primary' >DÃ¼zenle</a>";
 
                     izinHareketListItem.DuzenleLink = duzenleLinkStr;
                     if (izinHareketListItem.IzinTipi.Equals(ProjeConstants.IZINTIPI_MAZERET)
@@ -147,12 +147,12 @@ namespace IKYS_WebParts.IzinHareketListesiWP
                             string.IsNullOrEmpty(izinHareketListItem.KalanIzinStr);
 
                         string yazdirLinkStr = linkEmpty ? "" : "<a href=" + belge + "?IzinTalepId=" + izinHareketListItem.IzinTalepId +
-                            "&KalanIzinStr=" + izinHareketListItem.OncekiIzinStr + 
-                            "&SureStr=" + izinHareketListItem.KullanilanIzinStr + 
-                            "&SonIzin=" + izinHareketListItem.KalanIzinStr + " class='btn btn-outline-info' target='_blank'>Yazdir</a>";
+                            "&KalanIzinStr=" + izinHareketListItem.OncekiIzinStr +
+                            "&SureStr=" + izinHareketListItem.KullanilanIzinStr +
+                            "&SonIzin=" + izinHareketListItem.KalanIzinStr + " class='btn btn-outline-info' target='_blank'>YazdÄ±r</a>";
                         izinHareketListItem.YazdirLink = yazdirLinkStr;
 
-                        
+
                     }
                     else if (izinHareketListItem.IzinTipi.Equals(ProjeConstants.IZINTIPI_UCRETLI))
                     {
@@ -163,18 +163,18 @@ namespace IKYS_WebParts.IzinHareketListesiWP
                         string belge = izinHareketListItem.IzinTipi.Equals(ProjeConstants.IZINTIPI_UCRETLI) ? ProjeConstants.RAPOR_UCRETLIIZINBELGESI_URL : string.Empty;
                         bool linkEmpty = string.IsNullOrEmpty(belge);
                         string yazdirLinkStr = linkEmpty ? "" : "<a href=" + belge + "?IzinTalepId=" + izinHareketListItem.IzinTalepId +
-                            "&IzinDonemId=" + izinHareketListItem.IzinDonemiId  + " class='btn btn-outline-info' target='_blank'>Yazdir</a>";
+                            "&IzinDonemId=" + izinHareketListItem.IzinDonemiId  + " class='btn btn-outline-info' target='_blank'>YazdÄ±r</a>";
                         izinHareketListItem.YazdirLink = yazdirLinkStr;
 
                     }
-                    //üstünden N gün geçtiyse yazdir linki olmasin
+                    //Ã¼stÃ¼nden N gÃ¼n geÃ§tiyse yazdir linki olmasin
                     int gunFarki = (DateTime.Today - izinHareketListItem.BitisTarihi.ConvertToDatetime()).Days;
                     if (gunFarki > ProjeConstants.IZINDUZENLEMESURESI_GUN)
                     {
                         izinHareketListItem.YazdirLink = string.Empty;
                          duzenleLinkStr = "<a href=" + ProjeConstants.PAGE_IZINHAREKET_EDIT + "?AUTH=IKYS&IzinHareketId=" + izinHareketListItem.IzinHareketId +
                         "&PersonelId=" + izinHareketListItem.PersonelId +
-                        "&IzinTanimId=" + izinHareketListItem.IzinTipiId + " class='btn btn-outline-warning' >Görüntüle</a>";
+                        "&IzinTanimId=" + izinHareketListItem.IzinTipiId + " class='btn btn-outline-warning' >GÃ¶rÃ¼ntÃ¼le</a>";
 
                         izinHareketListItem.DuzenleLink = duzenleLinkStr;
                     }

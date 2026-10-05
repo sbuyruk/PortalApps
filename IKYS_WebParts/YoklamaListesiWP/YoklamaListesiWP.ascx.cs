@@ -151,7 +151,7 @@ namespace IKYS_WebParts.YoklamaListesiWP
         }
         private void TabloOlustur(int personelId)
         {
-            var jsonData = TabloJson(personelId); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(personelId); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -211,7 +211,7 @@ namespace IKYS_WebParts.YoklamaListesiWP
                 {
                     yoklamaListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_YOKLAMA_GIRIS +
                         "?Auth=IKYS&DestinationApp=YokD&YoklamaId=" + yoklamaId +
-                        "&PersonelId=" + buPersonelId + " class='btn btn-outline-primary'>Düzenle</a>";
+                        "&PersonelId=" + buPersonelId + " class='btn btn-outline-primary'>DÃ¼zenle</a>";
                 }
 
 
@@ -247,7 +247,7 @@ namespace IKYS_WebParts.YoklamaListesiWP
 
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery('#CustomDataTable').DataTable({
-                    'initComplete': function (settings, json) {//tablo yüklendiginde
+                    'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                         var api = this.api();
                         var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                         return data['Secildi'] == true;
@@ -280,7 +280,7 @@ namespace IKYS_WebParts.YoklamaListesiWP
                         'thousands': '.'
                     },
                     responsive: true,
-                    dom: 'frtip',                    
+                    dom: 'frtip',
                 });
             ";
 

@@ -40,7 +40,7 @@ namespace IKYS_WebParts.ProtokolSirasiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -70,7 +70,7 @@ namespace IKYS_WebParts.ProtokolSirasiWP
 $('#CustomDataTable').on( 'draw.dt', function () {
     //alert( 'Table redrawn' );
 } );
-                        jQuery('#CustomDataTable').DataTable({                            
+                        jQuery('#CustomDataTable').DataTable({
                             data: " + jsonData + @",
                             columns: [
                                 { data: 'ProtokolSiraNo' },
@@ -203,11 +203,11 @@ $('#CustomDataTable').on( 'draw.dt', function () {
 
                 }
                 TabloOlustur();
-                MessageHelper.PublishMessage("Siralama kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                MessageHelper.PublishMessage("Sıralama kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
             }
             catch (Exception)
             {
-                MessageHelper.PublishMessage("Siralama kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Sıralama kaydedilemedi", ProjeConstants.MESAJ_HATA);
             }
 
         }

@@ -105,7 +105,7 @@ namespace IKYS_WebParts.PersonelListesiWP
         private void PersonelTipiDDLDoldur()
         {
             PersonelTipiDDL.Items.Clear();
-            // Enum'u Dropdown için listeye dönüstürme
+            // Enum'u Dropdown iÃ§in listeye dÃ¶nÃ¼stÃ¼rme
 
             var personelTipleri = Enum.GetValues(typeof(PersonelTipi))
                            .Cast<PersonelTipi>()
@@ -126,7 +126,7 @@ namespace IKYS_WebParts.PersonelListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -184,7 +184,7 @@ namespace IKYS_WebParts.PersonelListesiWP
                     string sGKSicilNo = row["SGKSicilNo"].ReturnEmptyIfNull().ToString();
                     string vakifOncesiPrimGunSayisi = row["VakifOncesiPrimGunSayisi"].ReturnEmptyIfNull().ToString();
                     string emeklilikTarihi = row["EmeklilikTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
-                    string calismaDurumu = row["CalismaDurumu"].ReturnEmptyIfNull().ConvertToInt() == 0 ? "Ayrildi" : "Çalisiyor";
+                    string calismaDurumu = row["CalismaDurumu"].ReturnEmptyIfNull().ConvertToInt() == 0 ? "Ayrildi" : "Ã‡alisiyor";
                     string ayrilmaTar = row["AyrilmaTar"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
                     string ayrilmaSebebi = row["AyrilmaSebebi"].ReturnEmptyIfNull().ToString();
                     string ceptelefonu = row["CepTelefonu"].ReturnEmptyIfNull().ToString();
@@ -208,8 +208,8 @@ namespace IKYS_WebParts.PersonelListesiWP
                     personelListItem.Secildi = SecilenIdQS.Equals(personelListItem.PersonelId);
 
                     personelListItem.PersonelKarti = "<a href=" + ProjeConstants.PAGE_PERSONEL_KARTI + "?PersonelId=" + personelId + " class='btn btn-outline-primary'>Per.Karti</a>";
-                    personelListItem.KisiselSayfa = "<a href=" + ProjeConstants.PAGE_KISISELSAYFA + "?PersonelId=" + personelId + " class='btn btn-outline-primary'>Kisis.Say.</a>";
-                    personelListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_PERSONEL_EDIT + "?DestinationApp=PerD&PersonelId=" + personelId + " class='btn btn-outline-primary'>Düzenle</a>";
+            personelListItem.KisiselSayfa = "<a href=" + ProjeConstants.PAGE_KISISELSAYFA + "?PersonelId=" + personelId + " class='btn btn-outline-primary'>KiÅŸisel Sayfa</a>";
+                    personelListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_PERSONEL_EDIT + "?DestinationApp=PerD&PersonelId=" + personelId + " class='btn btn-outline-primary'>DÃ¼zenle</a>";
                     //ekleneneler
                     personelListItem.SicilNo = sicilNo;
                     personelListItem.Tahsili = tahsili;
@@ -256,7 +256,7 @@ namespace IKYS_WebParts.PersonelListesiWP
                  jQuery(document).ready(function () {
 
                         jQuery('#CustomDataTable').DataTable({
-                            'initComplete': function (settings, json) {//tablo yüklendiginde
+                            'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                                 var api = this.api();
                                 var row = api.row(function (idx, data, node) { //secilen Id'ye gider
                                     return data['Secildi'] == true;
@@ -268,11 +268,11 @@ namespace IKYS_WebParts.PersonelListesiWP
                                 }
                             },
                             'createdRow': function(row, data, dataIndex) {
-                                var personelTipi = data['PersonelTipi']; 
+                                var personelTipi = data['PersonelTipi'];
 
                                 if (personelTipi == 'Kadrosuz') {
                                     $(row).css('background-color', 'lightyellow'); // lightyellow for Kadrosuz
-                                } 
+                                }
                             },
                             data: " + jsonData + @",
                             columns: [
@@ -368,7 +368,7 @@ namespace IKYS_WebParts.PersonelListesiWP
         private class PersonelListItem
         {
             public string PersonelId { get; set; }
-            
+
             public string Adi { get; set; }
             public string Soyadi { get; set; }
             public string PersonelKarti { get; set; }

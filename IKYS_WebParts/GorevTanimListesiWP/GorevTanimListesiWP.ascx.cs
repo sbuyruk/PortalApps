@@ -102,7 +102,7 @@ namespace IKYS_WebParts.GorevTanimListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -135,7 +135,7 @@ namespace IKYS_WebParts.GorevTanimListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiginde
+                        'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
@@ -153,7 +153,7 @@ namespace IKYS_WebParts.GorevTanimListesiWP
                             { data: 'GorevKisaAdi' },
                             { data: 'Personel' },
                             { data: 'BirimAdi' },
-                            { data: 'Duzenle' },               
+                            { data: 'Duzenle' },
                         ],
                          columnDefs: [
                             { targets: 0, visible: false },
@@ -223,7 +223,7 @@ namespace IKYS_WebParts.GorevTanimListesiWP
                     Personel = personel,
                     BirimAdi = birimAdi,
 
-                    Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVTANIM_EDIT + "?DestinationApp=BirD&GorevTanimId=" + gorevTanimId + " class='btn btn-outline-primary'>Düzenle</a>"
+                    Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVTANIM_EDIT + "?DestinationApp=BirD&GorevTanimId=" + gorevTanimId + " class='btn btn-outline-primary'>DÃ¼zenle</a>"
                 };
                 item.Secildi = SecilenIdQS.Equals(item.GorevTanimId);
                 list.Add(item);

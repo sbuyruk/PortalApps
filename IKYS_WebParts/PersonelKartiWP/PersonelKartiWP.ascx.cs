@@ -137,7 +137,7 @@ namespace IKYS_WebParts.PersonelKartiWP
                 gt = gt.Select<GorevTanim>(isBilgisi.GorevId);
                 if (gt!=null)
                 {
-                    UnvaniCell.Text = gt.Adi; 
+                    UnvaniCell.Text = gt.Adi;
                 }
                 IseGirisTarihiCell.Text = isBilgisi.BaslamaTar.ConvertToDatetimeEmptyIfNull();
             }
@@ -157,7 +157,7 @@ namespace IKYS_WebParts.PersonelKartiWP
                 Meslek meslek = new Meslek();
                 meslek = meslek.Select<Meslek>(item.Meslek);
                 AddRow(sayac++, yakinlikDerecesi, item.Adi, item.Soyadi, item.DogumTar.ConvertToDatetimeEmptyIfNull(), meslek == null ? "" : meslek.Adi);
-                
+
             }
             if (aileList.Count < 1)
             {
@@ -198,7 +198,7 @@ namespace IKYS_WebParts.PersonelKartiWP
                             break;
                         }
 
-                    case "5"://önlisans
+                    case "5"://Ã¶nlisans
                         {
                             onLisansOkul = item.Okul;
                             onLisansMezuniyet = item.MezuniyetTar.ConvertToDatetimeEmptyIfNull();
@@ -390,7 +390,7 @@ namespace IKYS_WebParts.PersonelKartiWP
             System.IO.StringWriter tw = new System.IO.StringWriter();
             System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
 
-            //Get the HTML for the control.             
+            //Get the HTML for the control.
             PersonelTable.RenderControl(hw);
             //Write the HTML back to the browser.
             //Response.ContentType = application/vnd.ms-excel;

@@ -112,7 +112,7 @@ namespace IKYS_WebParts.GorevTanimEditWP
             SaveBtn.Visible = true;
             UpdateBtn.Visible = false;
             DeleteBtn.Visible = false;
-            
+
         }
         private void OpenDuzenle()
         {
@@ -131,7 +131,7 @@ namespace IKYS_WebParts.GorevTanimEditWP
                 KisaAdiTxt.Text = gorev.KisaAdi;
                 UtilityHelper.SetDDLValue(BirimDDL, gorev.BirimId.ReturnZeroIfNull().ToString());
                 UtilityHelper.SetDDLValue(PersonelDDL, gorev.PersonelId.ReturnZeroIfNull().ToString());
-               
+
                 VekilChk.Checked = gorev.Vekil;
                 AktifChk.Checked = gorev.Aktif;
 
@@ -184,7 +184,7 @@ namespace IKYS_WebParts.GorevTanimEditWP
                 int id = gorev.Save();
                 if (id > 0)
                 {
-                    MessageHelper.PublishMessage("Yeni gorev kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Yeni görev kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                     GorevTanimIdQS = id.ToString();
                     SaveBtn.Visible = false;
                     UpdateBtn.Visible = true;
@@ -192,7 +192,7 @@ namespace IKYS_WebParts.GorevTanimEditWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Gorev kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Görev kaydedilemedi", ProjeConstants.MESAJ_HATA);
                     UpdateBtn.Visible = false;
                     SaveBtn.Visible = true;
                 }
@@ -202,7 +202,7 @@ namespace IKYS_WebParts.GorevTanimEditWP
             catch (Exception exception)
             {
                 ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.Exceptions.Add(new Exception("Gorev kaydedilemedi!"));
+                ex.Exceptions.Add(new Exception("Görev kaydedilemedi!"));
                 ex.PublishException();
             }
 
@@ -228,8 +228,8 @@ namespace IKYS_WebParts.GorevTanimEditWP
                 Personel personel = new Personel();
                 personel = personel.Select(isBilgileri.PersonelId);
                 string adi = personel!=null? "(" + personel.Adi + " " + personel.Soyadi +")":string.Empty;
-                MessageHelper.PublishMessage("Bu kadroda tanimli personel bulunmaktadir.\n+" + adi +
-                    " Kadroyu silmek i�in �nce kadroyu bosaltin", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Bu kadroda tanımlı personel bulunmaktadır.\n+" + adi +
+                    " Kadroyu silmek için önce kadroyu bosaltin", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void UpdateBtn_Click(object sender, EventArgs e)
@@ -267,7 +267,7 @@ namespace IKYS_WebParts.GorevTanimEditWP
                             ib.Update();
                         }
 
-                        MessageHelper.PublishMessage("G�ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
 
                 }
