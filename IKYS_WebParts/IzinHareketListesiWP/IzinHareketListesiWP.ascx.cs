@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -94,8 +95,7 @@ namespace IKYS_WebParts.IzinHareketListesiWP
         }
         private List<IzinHareketItemList> GetDataList()
         {
-            IzinHareket izinHareket = new IzinHareket();
-            DataTable dataTable = izinHareket.SelectByIzinDonemiReturnDataTable(0, 0, 0);
+            DataTable dataTable = new IzinHareketService().GetByIzinDonemiReturnDataTable(0, 0, 0);
             List<IzinHareketItemList> returnlist = new List<IzinHareketItemList>();
 
             if (dataTable != null)

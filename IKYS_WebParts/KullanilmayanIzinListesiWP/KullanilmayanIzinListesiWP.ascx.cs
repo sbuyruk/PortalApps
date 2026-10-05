@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -206,15 +207,12 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
             thbaslik.HorizontalAlign = HorizontalAlign.Center;
             thbaslik.Controls.Add(baslikCell);
             IzinTable.Controls.Add(thbaslik);
-            Personel personelDao = new Personel();
             DataTable dataTable = null;
             string birimListesiStr = string.Empty;
             if (AuthQS.Equals("IKYS"))
             {
-                BirimTanim rootBirimTanim = new BirimTanim();
-                rootBirimTanim = rootBirimTanim.SelectRoot();
-                Personel personel = new Personel();
-                personel = personel.Select<Personel>(rootBirimTanim.AmirId);
+                BirimTanim rootBirimTanim = new BirimTanimService().GetRoot();
+                Personel personel = new PersonelService().GetById(rootBirimTanim.AmirId);
                 birimListesiStr = BirimListesiGetir(personel, rootBirimTanim);
             }
             else
@@ -222,7 +220,7 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
                 Personel personel = PersonelGetir();
                 birimListesiStr = BirimListesiGetir(personel, null);
             }
-            dataTable = personelDao.SelectCalisanPersonelByBirimReturnDT(birimListesiStr);
+            dataTable = new PersonelService().GetActiveEmployeesByUnitReturnDT(birimListesiStr);
             int sira = 0;
             if (dataTable != null)
             {
@@ -274,8 +272,7 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
                     kullanilanIzinCell.BorderStyle = BorderStyle.Solid;
                     kalanIzinCell.BorderStyle = BorderStyle.Solid;
 
-                    IzinDonem izinDonemiDao = new IzinDonem();
-                    List<IzinDonem> izinDonemiList = izinDonemiDao.SelectOncekiYillaraAitIzinDonemleri(personelId);
+                    List<IzinDonem> izinDonemiList = new IzinDonemService().GetOncekiYillaraAit(personelId);
                     if (izinDonemiList.Count>0)
                     {
                         int rowspan = izinDonemiList.Count + 2;
@@ -372,17 +369,17 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
 
         private Personel PersonelGetir()
         {
-            Personel personel = new Personel();
+            Personel personel;
 
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
 
             }
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = personel.SelectByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName);
             }
             PersonelIdQS = personel.Id.ToString();
             return personel;
@@ -390,8 +387,7 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
         private string parentBirimGetir(int parentId)
         {
             string retVal = parentId + ",";
-            BirimTanim bt = new BirimTanim();
-            List<BirimTanim> list = bt.SelectByParentId(parentId);
+            List<BirimTanim> list = new BirimTanimService().GetByParentId(parentId);
             foreach (BirimTanim item in list)
             {
                 //retVal += item.Id + ",";
@@ -410,13 +406,11 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
 
             if (personel != null)
             {
-                IsBilgileri ib = new IsBilgileri();
-                ib = ib.SelectByPersonelId(personel.Id);
+                IsBilgileri ib = new IsBilgileriService().GetByPersonelId(personel.Id);
                 if (ib != null)
                 {
                     int birimId = birimTanim != null ? birimTanim.Id : ib.BirimId;
-                    BirimTanim bt = new BirimTanim();
-                    bt = birimTanim != null ? birimTanim : bt.Select<BirimTanim>(birimId);
+                    BirimTanim bt = birimTanim != null ? birimTanim : new BirimTanimService().GetById(birimId);
                     if ((bt != null) && (bt.AmirId == personel.Id))
                     {
                         string birim = parentBirimGetir(birimId);
