@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -114,8 +115,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
         private void FillEgitimSeviyesiDDL()
         {
             OkulSeviyeDDL.Items.Clear();
-            EgitimSeviyesi seviyeDao = new EgitimSeviyesi();
-            List<EgitimSeviyesi> list = seviyeDao.SelectAll<EgitimSeviyesi>();
+            List<EgitimSeviyesi> list = new EgitimSeviyesiService().GetAll();
             foreach (EgitimSeviyesi item in list)
             {
                 ListItem li = new ListItem(item.Adi, item.Id.ReturnZeroIfNull().ToString());
@@ -148,8 +148,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
         }
         private void FillOkulTable(Personel personel)
         {
-            Egitim egitim = new Egitim();
-            List<Egitim> egitimList = egitim.SelectByPersonelId(personel.Id);
+            List<Egitim> egitimList = new EgitimService().GetByPersonelId(personel.Id);
             OkulTableHeaders();
             int SiraNo = 1;
             foreach (Egitim item in egitimList)
@@ -168,8 +167,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
                 int seviyeId = item.Seviye.ConvertToInt();
                 if (seviyeId > 0)
                 {
-                    EgitimSeviyesi es = new EgitimSeviyesi();
-                    es = es.Select<EgitimSeviyesi>(seviyeId);
+                    EgitimSeviyesi es = new EgitimSeviyesiService().GetById(seviyeId);
                     SeviyeCell.Text = es != null ? es.Adi : "";
                 }
 
@@ -194,7 +192,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
 
                     try
                     {
-                        bool isDeleted = item.Delete();
+                        bool isDeleted = new EgitimService().Delete(item);
 
                         if (isDeleted)
                         {
@@ -218,8 +216,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
         }
         private void FillKursTable(Personel personel)
         {
-            Kurs kurs = new Kurs();
-            List<Kurs> kursList = kurs.SelectByPersonelId(personel.Id);
+            List<Kurs> kursList = new KursService().GetByPersonelId(personel.Id);
             KursTableHeaders();
             int SiraNo = 1;
             foreach (Kurs item in kursList)
@@ -257,7 +254,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
 
                     try
                     {
-                        bool isDeleted = item.Delete();
+                        bool isDeleted = new KursService().Delete(item);
 
                         if (isDeleted)
                         {
@@ -281,8 +278,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
         }
         private void FillIsyeriTable(Personel personel)
         {
-            IsTecrube kurs = new IsTecrube();
-            List<IsTecrube> kursList = kurs.SelectByPersonelId(personel.Id);
+            List<IsTecrube> kursList = new IsTecrubeService().GetByPersonelId(personel.Id);
             IsyeriTableHeaders();
             int SiraNo = 1;
             foreach (IsTecrube item in kursList)
@@ -320,7 +316,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
 
                     try
                     {
-                        bool isDeleted = item.Delete();
+                        bool isDeleted = new IsTecrubeService().Delete(item);
 
                         if (isDeleted)
                         {
@@ -349,8 +345,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
             string[] headers = { "Sira", "Yabanci Dil","Sinav Adi","Sinav Notu","Sinav Tarihi","Açiklama" };
             UtilityHelper.SetTableHeaders(YabanciDilTable,headers);
 
-            YabanciDil dilDao = new YabanciDil();
-            List<YabanciDil> yabanciDilList = dilDao.SelectByPersonelId(personel.Id);
+            List<YabanciDil> yabanciDilList = new YabanciDilService().GetByPersonelId(personel.Id);
             int SiraNo = 1;
             foreach (YabanciDil item in yabanciDilList)
             {
@@ -388,7 +383,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
 
                     try
                     {
-                        bool isDeleted = item.Delete();
+                        bool isDeleted = new YabanciDilService().Delete(item);
 
                         if (isDeleted)
                         {
@@ -412,17 +407,17 @@ namespace IKYS_WebParts.EgitimGirisiWP
         }
         private Personel PersonelGetir()
         {
-            Personel personel = new Personel();
+            Personel personel;
 
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
 
             }
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = personel.SelectByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName);
             }
             PersonelIdQS = personel.Id.ToString();
             return personel;
@@ -555,7 +550,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
             egitim.Seviye = OkulSeviyeDDL.SelectedItem.Value;
             egitim.MezuniyetTar = MezuniyetTarTxt.Value.ConvertToDatetime();
             egitim.Aciklama = AciklamaTxt.Text;
-            int egitimId = egitim.Save();
+            int egitimId = new EgitimService().Save(egitim);
             if (egitimId > 0)
                 return true;
             else return false;
@@ -569,7 +564,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
             kurs.Tarih = TarihTxt.Value.ConvertToDatetime();
             kurs.Sure = SureTxt.Text;
             kurs.VerenKurum = VerenKurumTxt.Text;
-            int kursId = kurs.Save();
+            int kursId = new KursService().Save(kurs);
             if (kursId > 0)
                 return true;
             else return false;
@@ -584,7 +579,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
             istecrube.BasTar = BasTarTxt.Value.ConvertToDatetime();
             istecrube.BitTar = BitTarTxt.Value.ConvertToDatetime();
 
-            int isyeriId = istecrube.Save();
+            int isyeriId = new IsTecrubeService().Save(istecrube);
             if (isyeriId > 0)
                 return true;
             else return false;
@@ -599,7 +594,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
             yabanciDil.SinavNotu = SinavNotuTxt.Text;
             yabanciDil.SinavTarihi = SinavTarihiTxt.Value.ConvertToDatetime();
 
-            int id = yabanciDil.Save();
+            int id = new YabanciDilService().Save(yabanciDil);
             if (id > 0)
                 return true;
             else return false;

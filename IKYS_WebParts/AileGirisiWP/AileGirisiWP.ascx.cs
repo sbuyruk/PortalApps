@@ -1,4 +1,5 @@
 using Model.IKYS;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -82,8 +83,7 @@ namespace IKYS_WebParts.AileGirisiWP
                 FillYakinlikDerecesiDDL();
                 FillMeslekDDL();
             }
-            Personel personelDao = new Personel();
-            Personel personel = personelDao.Select<Personel>(PersonelIdQS.ConvertToInt());
+            Personel personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
             if (personel != null)
             {
                 FillAileBilgileriTable(personel);
@@ -108,8 +108,7 @@ namespace IKYS_WebParts.AileGirisiWP
             HeaderCell6.Text = "Telefon";
             HeaderCell6.Visible = true;
 
-            Aile aileDao = new Aile();
-            List<Aile> list = aileDao.SelectByPersonelId(personel.Id);
+            List<Aile> list = new AileService().GetByPersonelId(personel.Id);
             int SiraNo = 1;
             foreach (Aile aile in list)
             {
@@ -143,8 +142,7 @@ namespace IKYS_WebParts.AileGirisiWP
                 row.Controls.Add(OkulCell);
 
                 TableCell MeslekCell = new TableCell();
-                Meslek meslekDao = new Meslek();
-                Meslek meslek = meslekDao.Select<Meslek>(aile.Meslek);
+                Meslek meslek = new MeslekService().GetById(aile.Meslek);
                 MeslekCell.Text = meslek.Adi;
                 row.Controls.Add(MeslekCell);
 
@@ -160,7 +158,7 @@ namespace IKYS_WebParts.AileGirisiWP
                 SilBtn.CssClass = "btn btn-outline-danger";
                 SilBtn.Click += delegate
                 {
-                    aile.Delete();
+                    new AileService().Delete(aile);
                     FillAileBilgileriTable(personel);
                 };
                 SilCell.Controls.Add(SilBtn);
@@ -183,8 +181,7 @@ namespace IKYS_WebParts.AileGirisiWP
         private void FillMeslekDDL()
         {
             YakMeslekDDL.Items.Clear();
-            Meslek meslekDao = new Meslek();
-            List<Meslek> list = meslekDao.SelectAll<Meslek>();
+            List<Meslek> list = new MeslekService().GetAll();
             foreach (Meslek meslek in list)
             {
                 ListItem li = new ListItem(meslek.Adi, meslek.Id.ReturnZeroIfNull().ToString());
@@ -238,9 +235,8 @@ namespace IKYS_WebParts.AileGirisiWP
                 aile.Meslek = YakMeslekDDL.SelectedItem.Value.ConvertToInt();
                 aile.Telefon = YakTelefonTxt.Text;
                 aile.Okul = OkulTxt.Text;
-                aile.Id = aile.Save();
-                Personel personelDao = new Personel();
-                Personel personel = personelDao.Select<Personel>(PersonelIdQS.ConvertToInt());
+                aile.Id = new AileService().Save(aile);
+                Personel personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
                 if (personel != null)
                 {
                     FillAileBilgileriTable(personel);
