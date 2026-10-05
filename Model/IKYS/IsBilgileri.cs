@@ -1,18 +1,14 @@
-
-using DAO.Ortak;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using Utility.HelperClasses;
-using Utility.ProjeGlobal;
 
 namespace Model.IKYS
 {
     public class IsBilgileri : ParentClass
     {
-        public int PersonelId { get; set; }        
+        public int PersonelId { get; set; }
         public int UnvanId { get; set; }
         public int GorevId { get; set; }
         public int BirimId { get; set; }
@@ -28,158 +24,13 @@ namespace Model.IKYS
         public DateTime EmeklilikTarihi { get; set; }
         public string Aciklama { get; set; }
 
-        public override T Select<T>(int id)
-        {
-            GenericEntity<IsBilgileri> genericEntity = new GenericEntity<IsBilgileri>(ProjeConstants.SQL_SELECT);
-            Id = id;
-            string sqlString = genericEntity.GetQuery(this);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<IsBilgileri> list = ToList<IsBilgileri>(dataTable);
-            IsBilgileri isBilgileri = new IsBilgileri();
-            isBilgileri = list.FirstOrDefault();
-            return (T)Convert.ChangeType(isBilgileri, typeof(T));
-        }
-        public override int Save()
-        {
-            try
-            {
-
-                GenericEntity<IsBilgileri> genericEntity = new GenericEntity<IsBilgileri>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                Olusturan = UtilityHelper.GetCurrentUserName();
-                SqlQuery query = genericEntity.GetQueryParametreli(this);
-                int id = dao.Insert(query);
-                if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_ISBILGILERI);
-                }
-                this.Id = id;
-                return id;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-
-        }
-
-        public override bool Update()
-        {
-
-            bool isSuccess = false;
-            try
-            {
-                IsBilgileri item = Select<IsBilgileri>(Id);
-                if (Id != 0)
-                {
-                    GenericEntity<IsBilgileri> genericEntity = new GenericEntity<IsBilgileri>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    Degistiren = UtilityHelper.GetCurrentUserName();
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    isSuccess = dao.Update2Db(query);
-                }
-                if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.IKYS, ProjeConstants.IKYS_ISBILGILERI);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
-        }
-        public override bool Delete()
-        {
-            try
-            {
-                bool isDeleted;
-                if (Id != 0)
-                {
-                    GenericEntity<IsBilgileri> genericEntity = new GenericEntity<IsBilgileri>(ProjeConstants.SQL_DELETE);
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-
-                    IsBilgileri item = Select<IsBilgileri>(Id);
-                    if (item != null)
-                    {
-                        isDeleted = dao.DeleteFromDb(query, "");
-                    }
-                    else isDeleted = false;
-                    if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_ISBILGILERI);
-                    }
-                    return isDeleted;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-
-        public override List<T> SelectAll<T>()
-        {
-            string sqlString = string.Format(@"SELECT *
-                               FROM IsBilgileri_Table");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<IsBilgileri> list = ToList<IsBilgileri>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
-        }
-        public IsBilgileri SelectByPersonelId(int personelId)
-        {
-            string sqlString = SelectByPersonelIdSQL(personelId);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<IsBilgileri> list = ToList<IsBilgileri>(dataTable);
-            IsBilgileri ib = list.FirstOrDefault();
-            return (ib);
-        }
-        public IsBilgileri SelectByGorevId(int gorevId)
-        {
-            string sqlString = string.Format(@" 
-                    SELECT * FROM IsBilgileri_Table  
-                    WHERE GorevId={0}
-                    ORDER BY UnvanId", gorevId);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<IsBilgileri> list = ToList<IsBilgileri>(dataTable);
-            IsBilgileri ib = list.FirstOrDefault();
-            return (ib);
-        }
-        private string SelectByPersonelIdSQL(int pId)
-        {
-            string sqlstr = string.Format(@" 
-                    SELECT * FROM IsBilgileri_Table  
-                    WHERE PersonelId={0}
-                    ORDER BY UnvanId", pId);
-            return sqlstr;
-        }
-        private string SelectSQL(int id)
-        {
-            string sqlstr = string.Format(@"SELECT *
-                               FROM IsBilgileri_Table 
-                               WHERE  Id={0}", id);
-            return sqlstr;
-        }
-        public DataTable SelectAllFromIS_YERI_BILGILERI()
-        {
-            string sqlString = string.Format(@"SELECT *
-                               FROM IS_YERI_BILGILERI");
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return (dataTable);
-        }
+        public override T Select<T>(int id) { return (T)Convert.ChangeType(new IsBilgileriService().GetById(id), typeof(T)); }
+        public override int Save() { return new IsBilgileriService().Save(this); }
+        public override bool Update() { return new IsBilgileriService().Update(this); }
+        public override bool Delete() { return new IsBilgileriService().Delete(this); }
+        public override List<T> SelectAll<T>() { return (List<T>)Convert.ChangeType(new IsBilgileriService().GetAll(), typeof(List<T>)); }
+        public IsBilgileri SelectByPersonelId(int personelId) { return new IsBilgileriService().GetByPersonelId(personelId); }
+        public IsBilgileri SelectByGorevId(int gorevId) { return new IsBilgileriService().GetByGorevId(gorevId); }
+        public DataTable SelectAllFromIS_YERI_BILGILERI() { return new IsBilgileriService().GetAllFromIsYeriBilgileri(); }
     }
 }

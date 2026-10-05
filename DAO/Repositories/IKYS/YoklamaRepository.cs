@@ -7,6 +7,7 @@ namespace DAO.Repositories.IKYS
     public class YoklamaRepository
     {
         private readonly DbClass db;
+        private readonly CrudQueryBuilder queryBuilder;
 
         public YoklamaRepository() : this(new DbClass()) { }
 
@@ -14,7 +15,12 @@ namespace DAO.Repositories.IKYS
         {
             if (db == null) throw new ArgumentNullException("db");
             this.db = db;
+            queryBuilder = new CrudQueryBuilder();
         }
+
+        public int Insert<T>(T item) { return db.Insert(queryBuilder.BuildInsert(item, "Yoklama_Table")); }
+        public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "Yoklama_Table")); }
+        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("Yoklama_Table", id), ""); }
 
         public DataTable SelectById(int id)
         {
@@ -55,6 +61,40 @@ namespace DAO.Repositories.IKYS
                 ORDER BY A.BaslangicTarihi DESC, A.BitisTarihi DESC");
             if (personelId > 0)
                 query.AddParameter("@PersonelId", personelId);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectByTarih(DateTime start, DateTime end)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT B.Adi+' ' + B.Soyadi AdiSoyadi, A.Aciklama,
+                    A.PersonelId, A.BaslangicTarihi, A.BitisTarihi,A.BulunmamaSebebi BulunmamaSebebiId ,C.Adi BulunmamaSebebi,C.Id BulunmamaSebebiInt,
+                    D.BirimId,E.KisaAdi GorevYeri
+                FROM Yoklama_Table A
+                    INNER JOIN Personel_Table B ON B.Id= A.PersonelId
+                    INNER JOIN BulunmamaSebebi_Table C ON C.Id= A.BulunmamaSebebi
+                    LEFT JOIN IsBilgileri_Table D ON D.PersonelId= A.PersonelId
+                    INNER JOIN BirimTanim_Table E ON E.Id= D.BirimId
+                WHERE A.BaslangicTarihi<=@StartDate AND A.BitisTarihi>=@EndDate
+                ORDER BY D.ProtokolSiraNo,A.BaslangicTarihi");
+            query.AddParameter("@StartDate", start); query.AddParameter("@EndDate", end);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectByTarihAndReasons(string reasonIds, DateTime start, DateTime end)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT B.Adi+' ' + B.Soyadi AdiSoyadi, A.Aciklama,
+                    A.BaslangicTarihi, A.BitisTarihi,A.BulunmamaSebebi BulunmamaSebebiId ,C.Adi BulunmamaSebebi,C.Id BulunmamaSebebiInt,
+                    D.BirimId,E.KisaAdi GorevYeri,D.ProtokolSiraNo
+                FROM Yoklama_Table A
+                    INNER JOIN Personel_Table B ON B.Id= A.PersonelId
+                    INNER JOIN BulunmamaSebebi_Table C ON C.Id= A.BulunmamaSebebi
+                    LEFT JOIN IsBilgileri_Table D ON D.PersonelId= A.PersonelId
+                    INNER JOIN BirimTanim_Table E ON E.Id= D.BirimId
+                WHERE A.BulunmamaSebebi in (" + reasonIds + @") AND A.BaslangicTarihi BETWEEN @StartDate AND @EndDate
+                ORDER BY D.ProtokolSiraNo,A.BaslangicTarihi");
+            query.AddParameter("@StartDate", start); query.AddParameter("@EndDate", end);
             return db.SelectFromDb(query, "");
         }
     }

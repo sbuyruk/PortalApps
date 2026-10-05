@@ -165,6 +165,8 @@
     <Compile Include="Services\IKYS\UnvanTanimService.cs" />
     <Compile Include="Services\IKYS\BulunmamaSebebiService.cs" />
     <Compile Include="Services\IKYS\IzinTanimService.cs" />
+    <Compile Include="Services\IKYS\IsBilgileriService.cs" />
+    <Compile Include="Services\IKYS\DereceKademeDegisimService.cs" />
     <Compile Include="Services\TBYS\TasinmazService.cs" />
     <Compile Include="Services\TBYS\KiraSozlesmeService.cs" />
     <Compile Include="Services\TBYS\KiraciService.cs" />
