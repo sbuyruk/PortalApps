@@ -91,6 +91,11 @@
     <Compile Include="Repositories\IKYS\GorevTanimRepository.cs" />
     <Compile Include="Repositories\IKYS\EskiPersonelGorevTanimRepository.cs" />
     <Compile Include="Repositories\IKYS\YoklamaRepository.cs" />
+    <Compile Include="Repositories\IKYS\EgitimRepository.cs" />
+    <Compile Include="Repositories\IKYS\EgitimSeviyesiRepository.cs" />
+    <Compile Include="Repositories\IKYS\KursRepository.cs" />
+    <Compile Include="Repositories\IKYS\IsTecrubeRepository.cs" />
+    <Compile Include="Repositories\IKYS\MeslekRepository.cs" />
     <Compile Include="Repositories\TBYS\TasinmazRepository.cs" />
     <Compile Include="Repositories\TBYS\KiraSozlesmeRepository.cs" />
     <Compile Include="Repositories\TBYS\KiraciRepository.cs" />

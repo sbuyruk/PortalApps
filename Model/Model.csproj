@@ -153,6 +153,11 @@
     <Compile Include="Services\IKYS\GorevTanimService.cs" />
     <Compile Include="Services\IKYS\EskiPersonelGorevTanimService.cs" />
     <Compile Include="Services\IKYS\YoklamaService.cs" />
+    <Compile Include="Services\IKYS\EgitimService.cs" />
+    <Compile Include="Services\IKYS\EgitimSeviyesiService.cs" />
+    <Compile Include="Services\IKYS\KursService.cs" />
+    <Compile Include="Services\IKYS\IsTecrubeService.cs" />
+    <Compile Include="Services\IKYS\MeslekService.cs" />
     <Compile Include="Services\TBYS\TasinmazService.cs" />
     <Compile Include="Services\TBYS\KiraSozlesmeService.cs" />
     <Compile Include="Services\TBYS\KiraciService.cs" />

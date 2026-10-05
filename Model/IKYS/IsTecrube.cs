@@ -1,12 +1,7 @@
-
-using DAO.Ortak;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using Utility.HelperClasses;
-using Utility.ProjeGlobal;
 
 namespace Model.IKYS
 {
@@ -19,172 +14,11 @@ namespace Model.IKYS
         public DateTime BitTar { get; set; }
         public string Adres { get; set; }
 
-
-        public override T Select<T>(int id)
-        {
-            string sqlString = SelectSQL(id);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<IsTecrube> list = ToList<IsTecrube>(dataTable);
-            IsTecrube isyeri = new IsTecrube();
-            isyeri = list.FirstOrDefault();
-            return (T)Convert.ChangeType(isyeri, typeof(T));
-        }
-
-        public override int Save()
-        {
-            try
-            {
-
-                GenericEntity<IsTecrube> genericEntity = new GenericEntity<IsTecrube>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                Olusturan = UtilityHelper.GetCurrentUserName();
-                SqlQuery query = genericEntity.GetQueryParametreli(this);
-                int id = dao.Insert(query);
-                if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_ISTECRUBE);
-                }
-                this.Id = id;
-                return id;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-
-        }
-
-        public override bool Update()
-        {
-
-            bool isSuccess = false;
-            try
-            {
-                IsTecrube item = Select<IsTecrube>(Id);
-                if (Id != 0)
-                {
-                    GenericEntity<IsTecrube> genericEntity = new GenericEntity<IsTecrube>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    Degistiren = UtilityHelper.GetCurrentUserName();
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    isSuccess = dao.Update2Db(query);
-                }
-                if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.IKYS, ProjeConstants.IKYS_ISTECRUBE);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
-        }
-        public override bool Delete()
-        {
-            try
-            {
-                bool isDeleted;
-                if (Id != 0)
-                {
-                    GenericEntity<IsTecrube> genericEntity = new GenericEntity<IsTecrube>(ProjeConstants.SQL_DELETE);
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-
-                    IsTecrube item = Select<IsTecrube>(Id);
-                    if (item != null)
-                    {
-                        isDeleted = dao.DeleteFromDb(query, "");
-                    }
-                    else isDeleted = false;
-                    if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_ISTECRUBE);
-                    }
-                    return isDeleted;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-
-        public override List<T> SelectAll<T>()
-        {
-            string sqlString = string.Format(@"SELECT *
-                               FROM IsTecrube_Table");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<IsTecrube> list = ToList<IsTecrube>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
-        }
-        private string saveSQL()
-        {
-            //Insert  SQL
-            string InsertSQL = string.Format(@" 
-                                    INSERT INTO IsTecrube_Table 
-                                        (PersonelId, Isyeri,Gorevi, Adres,BasTar,BitTar, Olusturan,OlusturmaTarihi)
-                                    VALUES ({0},{1},{2},{3},{4},{5},{6},{7}) ",
-                                        PersonelId.ReturnQuotedValue(), Isyeri.ReturnQuotedValue(), Gorevi.ReturnQuotedValue(),
-                                        Adres.ReturnQuotedValue(), BasTar.ReturnTRDateFormat(), BitTar.ReturnTRDateFormat(), Olusturan.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat());
-            return InsertSQL;
-        }
-        private string UpdateSQL()
-        {
-            //Insert  SQL
-            string sqlSQL = string.Format(@"
-                                    UPDATE IsTecrube_Table 
-                                    SET PersonelId = {0},Isyeri={2}, Gorevi={3}, Adres={4}, BasTar={5},BitTar={1}, 
-                                        Degistiren={6},DegistirmeTarihi={7}
-                                        WHERE Id= {8}", PersonelId.ReturnQuotedValue(), Isyeri.ReturnQuotedValue(),
-                                            Gorevi.ReturnQuotedValue(), Adres.ReturnQuotedValue(), BasTar.ReturnTRDateFormat(), BitTar.ReturnTRDateFormat(),
-                                            Degistiren.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat(), Id);
-            return sqlSQL;
-        }
-
-        private string SelectSQL(int id)
-        {
-            string sqlstr = string.Format(@"SELECT *
-                               FROM IsTecrube_Table 
-                               WHERE  Id={0}", id);
-            return sqlstr;
-        }
-        private string DeleteSQL()
-        {
-            string sqlString = string.Format(@"
-                            DELETE 
-                            FROM IsTecrube_Table
-                            WHERE Id={0}", Id);
-            return sqlString;
-        }
-        public List<IsTecrube> SelectByPersonelId(int personelId)
-        {
-            string sqlString = SelectByPersonelIdSQL(personelId);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<IsTecrube> list = ToList<IsTecrube>(dataTable);
-
-            return (list);
-        }
-        private string SelectByPersonelIdSQL(int pId)
-        {
-            string sqlstr = string.Format(@" 
-                    SELECT * FROM IsTecrube_Table  
-                    WHERE PersonelId={0}
-                    ORDER BY BasTar DESC", pId);
-            return sqlstr;
-        }
-
+        public override T Select<T>(int id) { return (T)Convert.ChangeType(new IsTecrubeService().GetById(id), typeof(T)); }
+        public override int Save() { return new IsTecrubeService().Save(this); }
+        public override bool Update() { return new IsTecrubeService().Update(this); }
+        public override bool Delete() { return new IsTecrubeService().Delete(this); }
+        public override List<T> SelectAll<T>() { return (List<T>)Convert.ChangeType(new IsTecrubeService().GetAll(), typeof(List<T>)); }
+        public List<IsTecrube> SelectByPersonelId(int personelId) { return new IsTecrubeService().GetByPersonelId(personelId); }
     }
 }
