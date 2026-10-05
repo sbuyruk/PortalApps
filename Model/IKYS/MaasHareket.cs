@@ -1,20 +1,14 @@
-using DAO.Ortak;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlTypes;
-using System.Linq;
-using Utility.HelperClasses;
-using Utility.ProjeGlobal;
 
 namespace Model.IKYS
 {
     public class MaasHareket : ParentClass
     {
-
         public int PersonelId { get; set; }
-        public DateTime Tarih{ get; set; }
+        public DateTime Tarih { get; set; }
         public string Adi { get; set; }
         public string Soyadi { get; set; }
         public string Unvan { get; set; }
@@ -27,176 +21,15 @@ namespace Model.IKYS
         public decimal ToplamUcret { get; set; }
         public int GrupId { get; set; }
         public int ProtokolSiraNo { get; set; }
-        public override T Select<T>(int id)
-        {
-            GenericEntity<MaasHareket> genericEntity = new GenericEntity<MaasHareket>(ProjeConstants.SQL_SELECT);
-            Id = id;
-            string sqlString = genericEntity.GetQuery(this);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<MaasHareket> list = ToList<MaasHareket>(dataTable);
-            MaasHareket maasHareket = new MaasHareket();
-            maasHareket = list.FirstOrDefault();
-            return (T)Convert.ChangeType(maasHareket, typeof(T));
-        }
-       
-        public MaasHareket Select(int id)
-        {
-            GenericEntity<MaasHareket> genericEntity = new GenericEntity<MaasHareket>(ProjeConstants.SQL_SELECT);
-            Id = id;
-            string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<MaasHareket> list = ToList<MaasHareket>(dataTable);
-            MaasHareket maasHareket = new MaasHareket();
-            maasHareket = list.FirstOrDefault();
-            return maasHareket;
-        }
-        public override int Save()
-        {
-            try
-            {
-
-                GenericEntity<MaasHareket> genericEntity = new GenericEntity<MaasHareket>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                Olusturan = UtilityHelper.GetCurrentUserName();
-                SqlQuery query = genericEntity.GetQueryParametreli(this);
-                int id = dao.Insert(query);
-                if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_GOREVONAY);
-                }
-                this.Id = id;
-                return id;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-
-        }
-
-        public override bool Update()
-        {
-
-            bool isSuccess = false;
-            try
-            {
-                MaasHareket item = Select<MaasHareket>(Id);
-                if (Id != 0)
-                {
-                    GenericEntity<MaasHareket> genericEntity = new GenericEntity<MaasHareket>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    Degistiren = UtilityHelper.GetCurrentUserName();
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    isSuccess = dao.Update2Db(query);
-                }
-                if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.IKYS, ProjeConstants.IKYS_GOREVONAY);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
-        }
-        public override bool Delete()
-        {
-            try
-            {
-                bool isDeleted;
-                if (Id != 0)
-                {
-                    GenericEntity<MaasHareket> genericEntity = new GenericEntity<MaasHareket>(ProjeConstants.SQL_DELETE);
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-
-                    MaasHareket item = Select<MaasHareket>(Id);
-                    if (item != null)
-                    {
-                        isDeleted = dao.DeleteFromDb(query, "");
-                    }
-                    else isDeleted = false;
-                    if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_GOREVONAY);
-                    }
-                    return isDeleted;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-        public override List<T> SelectAll<T>()
-        {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM MaasHareket_Table 
-                ");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<MaasHareket> list = ToList<MaasHareket>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
-        }
-
-        public MaasHareket SelectByTarih(DateTime tarih)
-        {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM MaasHareket_Table 
-                WHERE Tarih={0}
-                ORDER BY Derece,Kademe
-                ",tarih.ReturnTRDateFormat());
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<MaasHareket> list = ToList<MaasHareket>(dataTable);
-            MaasHareket maasHareket = new MaasHareket();
-            maasHareket = list.FirstOrDefault();
-            return maasHareket;
-        }
-
-        public List<MaasHareket> SelectMaasListesiByTarih(DateTime tarih)
-        {
-            // MaasHareket_Table'dan Tarih'e göre maas listesini seçen SQL sorgusu
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM MaasHareket_Table 
-                WHERE Tarih={0}
-                ORDER BY Derece,Kademe
-                ", tarih.ReturnTRDateFormat());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<MaasHareket> list = ToList<MaasHareket>(dataTable);
-            return list;
-        }
-
-        public bool DeleteByGrupId(int grupId)
-        {
-            // MaasHareket_Table'dan GrupId'ye göre silen SQL sorgusu
-            SqlQuery query = new SqlQuery(@"
-                DELETE FROM MaasHareket_Table 
-                WHERE GrupId=@GrupId
-                ");
-            query.AddParameter("@GrupId", grupId);
-            bool isDeleted = dao.DeleteFromDb(query, "");
-            if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
-            {
-                OlayKayit olayKayit = new OlayKayit();
-                olayKayit.SilmeOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_GOREVONAY);
-            }
-            return isDeleted;
-        }
+        public override T Select<T>(int id) { Id = id; return (T)Convert.ChangeType(new MaasHareketService().GetById(id), typeof(T)); }
+        public MaasHareket Select(int id) { Id = id; return new MaasHareketService().GetById(id); }
+        public override int Save() { return new MaasHareketService().Save(this); }
+        public override bool Update() { return new MaasHareketService().Update(this); }
+        public override bool Delete() { return new MaasHareketService().Delete(this); }
+        public override List<T> SelectAll<T>() { return (List<T>)Convert.ChangeType(new MaasHareketService().GetAll(), typeof(List<T>)); }
+        public MaasHareket SelectByTarih(DateTime tarih) { return new MaasHareketService().GetByTarih(tarih); }
+        public List<MaasHareket> SelectMaasListesiByTarih(DateTime tarih) { return new MaasHareketService().GetMaasListesiByTarih(tarih); }
+        public bool DeleteByGrupId(int grupId) { return new MaasHareketService().DeleteByGrupId(this, grupId); }
     }
 }

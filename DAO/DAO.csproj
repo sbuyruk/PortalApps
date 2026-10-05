@@ -79,6 +79,7 @@
     <Compile Include="Repositories\IKYS\PersonelRepository.cs" />
     <Compile Include="Repositories\IKYS\IzinTalepRepository.cs" />
     <Compile Include="Repositories\IKYS\MahsupRepository.cs" />
+    <Compile Include="Repositories\IKYS\MaasHareketRepository.cs" />
     <Compile Include="Repositories\IKYS\GorevOnayRepository.cs" />
     <Compile Include="Repositories\IKYS\IzinDonemRepository.cs" />
     <Compile Include="Repositories\IKYS\IzinHareketRepository.cs" />
