@@ -27,7 +27,7 @@ namespace DAO.Repositories.TBYS
                 WHERE 1>0" + region + @"
                     AND C.FaizliBakiye < 0 AND C.VadeBitTar BETWEEN @IlkTarih AND @SonTarih
                     AND (((A.TaksitSayisi>1 AND ((ABS(C.FaizliBakiye)-ABS(A.KiraBedeli))/A.KiraBedeli) BETWEEN @AyBas AND @AyBit)
-                        OR (A.TaksitSayisi<2 AND (ABS(FaizliBakiye/A.KiraBedeli)*C.Sira BETWEEN @AyBas AND @AyBit)))
+                        OR (A.TaksitSayisi<2 AND (ABS(FaizliBakiye/A.KiraBedeli)*C.Sira BETWEEN @AyBas AND @AyBit))))
                     AND A.SozBasTar<@SonTarih AND A.SozBitTar>=@IlkTarih
                     AND (A.SozlesmeDurumu='Devam Ediyor'
                         OR (A.SozlesmeDurumu!='Devam Ediyor' AND A.SozlesmeDurumu!='Yenilendi' AND A.DurumDegismeTar BETWEEN @IlkTarih AND @SonTarih)
