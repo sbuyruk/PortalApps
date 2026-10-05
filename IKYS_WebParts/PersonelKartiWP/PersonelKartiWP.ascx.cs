@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using Model.Services.Ortak;
 using System;
 using System.Collections.Generic;
@@ -82,13 +83,13 @@ namespace IKYS_WebParts.PersonelKartiWP
 
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
 
             }
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = personel.SelectByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName);
             }
             PersonelIdQS = personel == null ? "0" : personel.Id.ToString();
             return personel;
@@ -113,8 +114,7 @@ namespace IKYS_WebParts.PersonelKartiWP
             #endregion
 
             #region kimlik bilgileri
-            Kimlik kimlik = new Kimlik();
-            kimlik = kimlik.SelectByPersonelId(personel.Id);
+            Kimlik kimlik = new KimlikService().GetByPersonelId(personel.Id);
             if (kimlik != null)
             {
                 TCKimlikNOCell.Text = kimlik.TCKimlikNo;
@@ -129,12 +129,10 @@ namespace IKYS_WebParts.PersonelKartiWP
             #endregion
 
             #region Is bilgileri
-            IsBilgileri isBilgisi = new IsBilgileri();
-            isBilgisi = isBilgisi.SelectByPersonelId(personel.Id);
+            IsBilgileri isBilgisi = new IsBilgileriService().GetByPersonelId(personel.Id);
             if (isBilgisi != null)
             {
-                GorevTanim gt = new GorevTanim();
-                gt = gt.Select<GorevTanim>(isBilgisi.GorevId);
+                GorevTanim gt = new GorevTanimService().GetById(isBilgisi.GorevId);
                 if (gt!=null)
                 {
                     UnvaniCell.Text = gt.Adi;
@@ -144,8 +142,7 @@ namespace IKYS_WebParts.PersonelKartiWP
             #endregion
 
             #region Aile bilgileri
-            Aile aileDao = new Aile();
-            List<Aile> aileList = aileDao.SelectByPersonelId(personel.Id);
+            List<Aile> aileList = new AileService().GetByPersonelId(personel.Id);
             int sayac = 0;
             foreach (Aile item in aileList)
             {
@@ -154,8 +151,7 @@ namespace IKYS_WebParts.PersonelKartiWP
                     yakinlikDerecesi = ProjeConstants.PER_YAKINLIKDERECESI_ES;
                 else if (yakinlikDerecesi.Equals("2"))
                     yakinlikDerecesi = ProjeConstants.PER_YAKINLIKDERECESI_COCUK;
-                Meslek meslek = new Meslek();
-                meslek = meslek.Select<Meslek>(item.Meslek);
+                Meslek meslek = new MeslekService().GetById(item.Meslek);
                 AddRow(sayac++, yakinlikDerecesi, item.Adi, item.Soyadi, item.DogumTar.ConvertToDatetimeEmptyIfNull(), meslek == null ? "" : meslek.Adi);
 
             }
@@ -166,8 +162,7 @@ namespace IKYS_WebParts.PersonelKartiWP
             #endregion
 
             #region Iletisim Bilgileri
-            IletisimBilgileri ib = new IletisimBilgileri();
-            ib = ib.SelectByPersonelId(personel.Id);
+            IletisimBilgileri ib = new IletisimBilgileriService().GetByPersonelId(personel.Id);
             Ilce ilce = new IlceService().GetById(ib.Ilcesi.ConvertToInt()) ?? new Ilce();
             AdresCell.Text = ib.Adres + " " + ilce.IlceAdi + "/" + ilce.IlAdi;
             CepTelCell.Text = ib.CepTelefonu + " " + ib.CepTelefonu2;
@@ -175,8 +170,7 @@ namespace IKYS_WebParts.PersonelKartiWP
             #endregion
 
             #region Egitim Bilgileri
-            Egitim egitim = new Egitim();
-            List<Egitim> egitimList = egitim.SelectByPersonelId(personel.Id);
+            List<Egitim> egitimList = new EgitimService().GetByPersonelId(personel.Id);
             string liseOkul = string.Empty;
             string liseMezuniyet = string.Empty;
             string lisansOkul = string.Empty;
@@ -238,8 +232,7 @@ namespace IKYS_WebParts.PersonelKartiWP
             #endregion
 
             #region Is Deneyimi
-            IsTecrube isTecrubeDao = new IsTecrube();
-            List<IsTecrube> isTecrubeList = isTecrubeDao.SelectByPersonelId(personel.Id);
+            List<IsTecrube> isTecrubeList = new IsTecrubeService().GetByPersonelId(personel.Id);
             sayac = 0;
             foreach (IsTecrube item in isTecrubeList)
             {
@@ -274,8 +267,7 @@ namespace IKYS_WebParts.PersonelKartiWP
             #endregion
 
             #region Yabanci Dil
-            YabanciDil yabanciDilDao = new YabanciDil();
-            List<YabanciDil> yabanciDilList = yabanciDilDao.SelectByPersonelId(personel.Id);
+            List<YabanciDil> yabanciDilList = new YabanciDilService().GetByPersonelId(personel.Id);
             sayac = 0;
             foreach (YabanciDil item in yabanciDilList)
             {
@@ -378,7 +370,7 @@ namespace IKYS_WebParts.PersonelKartiWP
         protected void ExportToExcel()
         {
             Personel personel = new Personel();
-            personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
+            personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
 
             string filename = "PersonelKarti" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xlsx";
             if (personel != null)
