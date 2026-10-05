@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -79,11 +80,11 @@ namespace IKYS_WebParts.BirimSemasiWP
             csChartConfig += "config,";
 
             BirimTanim birimTanim = new BirimTanim();
-            var birimListesi = birimTanim.SelectByBirimKaldirildi(false);
+            var birimListesi = new BirimTanimService().GetByBirimKaldirildi(false);
 
             BirimTanim parent = birimListesi.Where(a => a.ParentId == 0).FirstOrDefault<BirimTanim>();
             Personel ilknode = new Personel();
-            ilknode = ilknode.Select<Personel>(parent.AmirId);
+            ilknode = new PersonelService().GetById(parent.AmirId);
             string gmKullaniciAdi = ilknode == null ? "" : ilknode.KullaniciAdi.ReturnEmptyIfNull().ToString();
             string gmAdi = ilknode == null ? "" : ilknode.Adi.ReturnEmptyIfNull().ToString();
             string gmSoyadi = ilknode == null ? "" : ilknode.Soyadi.ReturnEmptyIfNull().ToString();
@@ -112,7 +113,7 @@ namespace IKYS_WebParts.BirimSemasiWP
             foreach (BirimTanim item in birimListesi)
             {
                 Personel birimAmiri = new Personel();
-                birimAmiri = birimAmiri.SelectCalisanPersonel(item.AmirId);
+                birimAmiri = new PersonelService().GetActiveEmployee(item.AmirId);
                 string amirKullaniciAdi = birimAmiri == null ? "" : birimAmiri.KullaniciAdi.ReturnEmptyIfNull().ToString();
                 string amirAdi = birimAmiri == null ? "" : birimAmiri.Adi.ReturnEmptyIfNull().ToString();
                 string amirSoyadi = birimAmiri == null ? "" : birimAmiri.Soyadi.ReturnEmptyIfNull().ToString();
