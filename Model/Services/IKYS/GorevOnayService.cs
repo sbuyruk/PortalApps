@@ -107,5 +107,16 @@ namespace Model.Services.IKYS
             }
             return ids;
         }
+
+        public List<GorevOnay> SelectByBirimIdAndDurum(int birimId, GorevOnay.AmirOnayDurumu onayBekliyor)
+        {
+            if (birimId <= 0)
+            {
+                return new List<GorevOnay>();
+            }
+
+            DataTable dataTable = repository.SelectByBirimIdAndDurum(birimId, (int)onayBekliyor);
+            return dataTable == null ? new List<GorevOnay>() : ToList(dataTable);
+        }
     }
 }

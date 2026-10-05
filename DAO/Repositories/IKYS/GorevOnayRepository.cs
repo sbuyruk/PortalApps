@@ -148,6 +148,19 @@ namespace DAO.Repositories.IKYS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectByBirimIdAndDurum(int birimId, int amirOnayi)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT A.*
+                FROM GorevOnay_Table A
+                    INNER JOIN IsBilgileri_Table I ON I.PersonelId = A.PersonelId
+                WHERE I.BirimId=@BirimId AND A.AmirOnayi=@AmirOnayi
+                ORDER BY A.BaslangicTarihi DESC, A.BitisTarihi DESC");
+            query.AddParameter("@BirimId", birimId);
+            query.AddParameter("@AmirOnayi", amirOnayi);
+            return db.SelectFromDb(query, "");
+        }
+
         public DataTable SelectBekleyenAmirOnayiByBirimIds(IList<int> birimIds)
         {
             SqlQuery query = new SqlQuery(@"

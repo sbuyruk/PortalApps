@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,7 +29,7 @@ namespace Portal_WebParts.BildirimWP
         {
             base.OnInit(e);
             InitializeControl();
-            this.ChromeType=PartChromeType.None;
+            this.ChromeType = PartChromeType.None;
         }
         protected override void Render(System.Web.UI.HtmlTextWriter writer)
         {
@@ -70,23 +71,30 @@ namespace Portal_WebParts.BildirimWP
             {
                 BirimTanim birimTanim = new BirimTanim();
                 List<BirimTanim> amirOlduguBirimler = birimTanim.SelectByAmirId(personel.Id);
-                string amirOnayMesaji=string.Empty;
-                if (amirOlduguBirimler != null && amirOlduguBirimler.Count > 0)
+                foreach (var item in amirOlduguBirimler)
                 {
-                    AmirOnayLbl.Text = amirOnayMesaji = "Sizin Onayınızı Bekleyen Görev(ler) Var.";
-                    string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                    string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_BEKLEYENISLEMLER;
-                    amirOnayMesaji += "<br/>Onay Bekleyen Görev Listesi İçin <a href='" + newUrl + "'>Tıklayınız</a>";
+                    List<GorevOnay> gorevOnayListesi = new GorevOnayService().SelectByBirimIdAndDurum(item.Id, AmirOnayDurumu.OnayBekliyor);
+                    if (gorevOnayListesi != null && gorevOnayListesi.Count > 0)
+                    {
+                        string amirOnayMesaji = string.Empty;
+                        if (amirOlduguBirimler != null && amirOlduguBirimler.Count > 0)
+                        {
+                            AmirOnayLbl.Text = amirOnayMesaji = "Sizin Onayınızı Bekleyen Görev(ler) Var.";
+                            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_BEKLEYENISLEMLER;
+                            amirOnayMesaji += "<br/>Onay Bekleyen Görev Listesi İçin <a href='" + newUrl + "'>Tıklayınız</a>";
 
-                    //UtilityHelper.ScriptCalistir("ShowBildirimModal();");
-                    MessageHelper.PublishMessage(amirOnayMesaji, ProjeConstants.MESAJ_BILGI);
+                            //UtilityHelper.ScriptCalistir("ShowBildirimModal();");
+                            MessageHelper.PublishMessage(amirOnayMesaji, ProjeConstants.MESAJ_BILGI);
+                        }
+                    }
+                    else
+                    {
+                        MessageHelper.PublishMessage("Kullanıcı bilgisi alınamadı.", ProjeConstants.MESAJ_BILGI, 2000);
+                    }
+
                 }
             }
-            else
-            {
-                MessageHelper.PublishMessage("Kullanıcı bilgisi alınamadı.", ProjeConstants.MESAJ_BILGI,2000);
-            }
-            
         }
     }
 }
