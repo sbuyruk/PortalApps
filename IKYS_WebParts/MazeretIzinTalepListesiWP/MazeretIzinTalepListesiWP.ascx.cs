@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -91,20 +92,20 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             DateTime today = DateTime.Today;
             DateTime threeMonthsLater = DateTime.Today.AddMonths(3);
             IsBilgileri ib = new IsBilgileri();
-            ib = ib.SelectByPersonelId(personel.Id);
+            ib = new IsBilgileriService().GetByPersonelId(personel.Id);
             if (ib != null)
             {
 
 
                 IzinHareket izinHareket = new IzinHareket();
                 IzinDonem izinDonem = new IzinDonem();
-                izinDonem = izinDonem.SelectByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT, today);
+                izinDonem = new IzinDonemService().GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT, today);
                 if (izinDonem != null)
                 {
                     DateTime izinDonemiBasi = izinDonem != null ? izinDonem.BaslangicTarihi : today.AddYears(-1);
                     DateTime izinDonemiSonu = izinDonem != null ? izinDonem.BitisTarihi : today.AddMonths(1); ;
                     //DataTable dataTable = izinHareket.SelectByIzinDonemiReturnDataTable(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT, izinDonemiBasi, threeMonthsLater);//3 ay içinde yeni izin dönemi basliyor olabilir
-                    DataTable dataTable = izinHareket.SelectByIzinDonemiReturnDataTable(izinDonem.Id, personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT);
+                    DataTable dataTable = new IzinHareketService().GetByIzinDonemiReturnDataTable(izinDonem.Id, personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT);
                     int SiraNo = 1;
                     if (dataTable == null)
                     {
@@ -172,7 +173,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
         {
             DateTime today = DateTime.Today;
             IsBilgileri ib = new IsBilgileri();
-            ib = ib.SelectByPersonelId(personel.Id);
+            ib = new IsBilgileriService().GetByPersonelId(personel.Id);
             if (ib != null)
             {
 
@@ -180,7 +181,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                 //int izinDonemiSayisi = (today.Year - izinDonemiBasTar.Year);
                 //izinDonemiSayisi = izinDonemiSayisi > 5 ? 5 : izinDonemiSayisi;
                 IzinDonem izinDonem = new IzinDonem();
-                List<IzinDonem> izinDonemiList = izinDonem.SelectByPersonelId(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT);
+                List<IzinDonem> izinDonemiList = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT);
 
                 IzinHareket izinHareket = new IzinHareket();
 
@@ -268,12 +269,12 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                 //IzinTalep_Table da onayDurumu hanesini kayitlara islendi yap
                 IzinTalep izinTalep = new IzinTalep();
                 izinTalep.Aciklama = AciklamaTxt.Text;
-                izinTalep = izinTalep.Select<IzinTalep>(paramIzinTalepIdLbl.Value.ConvertToInt());
+                izinTalep = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt());
                 if (izinTalep != null)
                 {
                     izinTalep.OnayDurumu = ProjeConstants.PER_IZINTALEBI_KAYITLARAISLENDI_INT;
                     izinTalep.Degistiren = CurrentUserName;
-                    bool onaylandi = izinTalep.Update();
+                    bool onaylandi = new IzinTalepService().Update(izinTalep);
                     if (onaylandi)
                     {
                         bool izinHareketTablosundaVarMi = IzinHareketTablosundaVarMI(izinTalep.Id);
@@ -298,20 +299,20 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                             ih.Sure = izinTalep.Sure;
                             ih.Birim = izinTalep.Birim;
 
-                            int izinHareketId = ih.Save();
+                            int izinHareketId = new IzinHareketService().Save(ih);
                             if (izinHareketId > 0)
                             {
                                 if (ih.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT)
                                 {
                                     IzinDonem izinDonemi = new IzinDonem();
-                                    izinDonemi = izinDonemi.Select<IzinDonem>(ih.IzinDonemId);
+                                    izinDonemi = new IzinDonemService().GetById(ih.IzinDonemId);
                                     if (izinDonemi != null)
                                     {
                                         ih.OncekiIzinStr = izinDonemi.KalanIzin.ToString();
                                         ih.KullanilanIzinStr = izinTalep.Sure;
                                         izinDonemi.KullanilanIzinGuncelle(izinDonemi, ih.Sure, true, CurrentUserName);
                                         ih.KalanIzinStr = izinDonemi.KalanIzin.ToString();
-                                        ih.Update();//kalan izin hesaplandiktan sonra izinHareket tablosuna yazsin
+                                        new IzinHareketService().Update(ih);//kalan izin hesaplandiktan sonra izinHareket tablosuna yazsin
                                     }
                                 }
                             }
@@ -342,13 +343,13 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             {
                 //IzinTalep_Table da onayDurumu hanesini kontrol edildi yap
                 IzinTalep izinTalep = new IzinTalep();
-                izinTalep = izinTalep.Select<IzinTalep>(paramIzinTalepIdLbl.Value.ConvertToInt());
+                izinTalep = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt());
                 if (izinTalep != null)
                 {
                     izinTalep.OnayDurumu = ProjeConstants.PER_IZINTALEBI_KONTROLEDILDI_INT;
                     izinTalep.Aciklama = AciklamaTxt.Text;
                     izinTalep.Degistiren = CurrentUserName;
-                    bool kabuledildi = izinTalep.Update();
+                    bool kabuledildi = new IzinTalepService().Update(izinTalep);
                     if (kabuledildi)
                     {
                         if (izinTalep.EPostaGonder)
@@ -375,12 +376,12 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             //IzinTalep_Table da onayDurumu hanesini reddedildi 2 yap
             IzinTalep izinTalep = new IzinTalep();
             izinTalep.Aciklama = AciklamaTxt.Text;
-            izinTalep = izinTalep.Select<IzinTalep>(paramIzinTalepIdLbl.Value.ConvertToInt());
+            izinTalep = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt());
             if (izinTalep != null)
             {
                 izinTalep.OnayDurumu = ProjeConstants.PER_IZINTALEBI_REDDEDILDI;
                 izinTalep.Degistiren = CurrentUserName;
-                bool reddedildi = izinTalep.Update();
+                bool reddedildi = new IzinTalepService().Update(izinTalep);
                 if (reddedildi)
                 {
                     if (izinTalep.EPostaGonder)
@@ -396,7 +397,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
         {
             int personelId = paramPersonelIdLbl.Value.ConvertToInt();
             Personel personel = new Personel();
-            personel = personel.Select<Personel>(personelId);
+            personel = new PersonelService().GetById(personelId);
             if (personel != null)
             {
                 PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
@@ -420,10 +421,10 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
         private void FillIzinTalebi(Personel personel)
         {
             IzinTalep it = new IzinTalep();
-            it = it.Select<IzinTalep>(paramIzinTalepIdLbl.Value.ConvertToInt());
+            it = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt());
 
             IzinTanim izinTanim = new IzinTanim();
-            izinTanim = izinTanim.Select<IzinTanim>(it.IzinTipi);
+            izinTanim = new IzinTanimService().GetById(it.IzinTipi);
             string izinTanimStr = izinTanim == null ? "" : izinTanim.Adi;
             IzinTalebiLbl.Text = personel.Adi + " " + personel.Soyadi + " Tarafindan " + it.BaslangicTarihi.ToString("dd.MM.yyyy") + " Tarihinde "
                 + it.BaslangicTarihi.ToString("HH:mm") + " - " + it.BitisTarihi.ToString("HH:mm") + " Saatleri Arasinda "
@@ -433,7 +434,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
         {
             bool kayitVarMi = false;
             IzinHareket ih = new IzinHareket();
-            ih = ih.SelectByIzinTalepId(izinTalepId);
+            ih = new IzinHareketService().GetByIzinTalepId(izinTalepId);
             if (ih == null)
             {
                 kayitVarMi = false;

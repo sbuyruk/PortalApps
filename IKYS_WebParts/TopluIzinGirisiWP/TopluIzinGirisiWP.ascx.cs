@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -263,7 +264,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                    (izinHareket.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT))
                 {
                     IzinDonem izinDonemi = new IzinDonem();
-                    izinDonemi = izinDonemi.SelectByIzinTarihi(personel.Id, izinHareket.IzinTipi, izinHareket.BaslangicTarihi);
+                    izinDonemi = new IzinDonemService().GetByIzinTarihi(personel.Id, izinHareket.IzinTipi, izinHareket.BaslangicTarihi);
                     if (izinDonemi == null)
                     {
                         izinDonemi = new IzinDonem();
@@ -279,7 +280,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                     izinHareket.IzinDonemId = izinDonemi != null ? izinDonemi.Id : 0;
                 }
                 izinHareket.Olusturan = CurrentUserName;
-                int id = izinHareket.Save();
+                int id = new IzinHareketService().Save(izinHareket);
                 if (id > 0)
                     isSaved = true;
             }
@@ -408,7 +409,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
         protected void PersonelDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             Personel personel = new Personel();
-            personel = personel.Select<Personel>(PersonelDDL.SelectedItem.Value.ConvertToInt());
+            personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt());
             if (personel != null)
             {
                 if (!SecilenPersonelList.Contains(personel.Id))
@@ -434,7 +435,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
             foreach (int item in SecilenPersonelList)
             {
                 Personel personel = new Personel();
-                personel = personel.Select<Personel>(item);
+                personel = new PersonelService().GetById(item);
 
                 if (personel != null)
                 {

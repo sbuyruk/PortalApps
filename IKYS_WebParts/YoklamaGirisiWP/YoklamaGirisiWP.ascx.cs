@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using Model.Services.Ortak;
 using System;
 using System.Collections.Generic;
@@ -234,7 +235,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                         BulunmamaSebebiDDL.Enabled = false;
                         TitleLbl.Text = "Uzaktan Çalisma Görev Formu";
                         IletisimBilgileri ib = new IletisimBilgileri();
-                        ib = ib.SelectByPersonelId(PersonelIdQS.ConvertToInt());
+                        ib = new IletisimBilgileriService().GetByPersonelId(PersonelIdQS.ConvertToInt());
                         if (ib != null)
                         {
                             Ilce ilce = new IlceService().GetById(ib.Ilcesi);
@@ -383,7 +384,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                 if (string.IsNullOrEmpty(BirimTanimIdQS))
                 {
                     IsBilgileri ib = new IsBilgileri();
-                    ib = ib.SelectByPersonelId(personel.Id);
+                    ib = new IsBilgileriService().GetByPersonelId(personel.Id);
                     if (ib != null)
                     {
                         int birimId = ib.BirimId;
@@ -394,7 +395,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                 }
 
                 BirimTanim bt = new BirimTanim();
-                bt = bt.Select(BirimTanimIdQS.ConvertToInt());
+                bt = new BirimTanimService().GetById(BirimTanimIdQS.ConvertToInt());
                 if (bt != null)
                 {
                     birimListesiStr = BirimListesiGetir(bt);
@@ -420,7 +421,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
         {
             string retVal = parentId + ",";
             BirimTanim bt = new BirimTanim();
-            List<BirimTanim> list = bt.SelectByParentId(parentId);
+            List<BirimTanim> list = new BirimTanimService().GetByParentId(parentId);
             foreach (BirimTanim item in list)
             {
                 //retVal += item.Id + ",";
@@ -515,7 +516,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
         private void YoklamaFormunuDoldur()
         {
             Yoklama yoklama = new Yoklama();
-            yoklama = yoklama.Select<Yoklama>(YoklamaIdQS.ConvertToInt());
+            yoklama = new YoklamaService().GetById(YoklamaIdQS.ConvertToInt());
             if (yoklama != null)
             {
                 YoklamaIdLbl.Text = yoklama.Id.ReturnEmptyIfNull().ToString();
@@ -561,13 +562,13 @@ namespace IKYS_WebParts.YoklamaGirisiWP
 
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
 
             }
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = personel.SelectByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName);
                 PersonelIdQS = personel.Id.ToString();
             }
 
@@ -668,7 +669,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                     yoklama.Adres = AdresTxt.Text;
                     yoklama.Olusturan = CurrentUserName;
                     yoklama.PersonelId = personel.Id;
-                    yoklama.Id = yoklama.Save();
+                    yoklama.Id = new YoklamaService().Save(yoklama);
                 }
             }
 
@@ -686,7 +687,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
 
             bool cakismaVarMi = false;
             Yoklama yoklama = new Yoklama();
-            List<Yoklama> list = yoklama.SelectByPersonelIdTarih(PersonelIdQS.ConvertToInt(), bastar, bittar);
+            List<Yoklama> list = new YoklamaService().GetByPersonelIdAndDate(PersonelIdQS.ConvertToInt(), bastar, bittar);
             foreach (Yoklama item in list)
             {
                 if (item.Id == current)
@@ -720,7 +721,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
             {
                 if (yoklama != null)
                 {
-                    isSaved = yoklama.Delete();
+                    isSaved = new YoklamaService().Delete(yoklama);
 
                 }
             }
@@ -780,7 +781,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
             else
             {
                 Yoklama yoklama = new Yoklama();
-                yoklama = yoklama.Select<Yoklama>(YoklamaIdQS.ConvertToInt());
+                yoklama = new YoklamaService().GetById(YoklamaIdQS.ConvertToInt());
                 if (yoklama != null)
                 {
                     DateTime bastar = BasTarTxt.Value.ConvertToDatetime();
@@ -798,7 +799,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                     yoklama.Degistiren = CurrentUserName;
                     Personel personel = PersonelGetir();
                     yoklama.PersonelId = personel.Id;
-                    isUpdated = yoklama.Update();
+                    isUpdated = new YoklamaService().Update(yoklama);
                 }
 
             }
@@ -821,7 +822,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
             {
                 PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
                 IletisimBilgileri ib = new IletisimBilgileri();
-                ib = ib.SelectByPersonelId(personel.Id);
+                ib = new IletisimBilgileriService().GetByPersonelId(personel.Id);
                 if (ib != null)
                 {
                     Ilce ilce = new IlceService().GetById(ib.Ilcesi);
@@ -858,7 +859,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
             try
             {
                 Yoklama yoklama = new Yoklama();
-                yoklama = yoklama.Select<Yoklama>(YoklamaIdQS.ConvertToInt());
+                yoklama = new YoklamaService().GetById(YoklamaIdQS.ConvertToInt());
                 if (yoklama != null)
                 {
                     bool isDeleted = YoklamaKaydiSil(yoklama);
