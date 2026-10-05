@@ -73,10 +73,10 @@ namespace Portal_WebParts.BildirimWP
                 string amirOnayMesaji=string.Empty;
                 if (amirOlduguBirimler != null && amirOlduguBirimler.Count > 0)
                 {
-                    AmirOnayLbl.Text = amirOnayMesaji= "Sizin Onayınızı Bekleyen " + amirOlduguBirimler.Count + " Görev Onayı Var.";
+                    AmirOnayLbl.Text = amirOnayMesaji = "Sizin Onayınızı Bekleyen Görev(ler) Var.";
                     string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                     string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_BEKLEYENISLEMLER;
-                    amirOnayMesaji += "<br/>Onay Bekleyen Görev Onayları İçin <a href='" + newUrl + "'>Tıklayınız</a>";
+                    amirOnayMesaji += "<br/>Onay Bekleyen Görev Listesi İçin <a href='" + newUrl + "'>Tıklayınız</a>";
 
                     //UtilityHelper.ScriptCalistir("ShowBildirimModal();");
                     MessageHelper.PublishMessage(amirOnayMesaji, ProjeConstants.MESAJ_BILGI);
