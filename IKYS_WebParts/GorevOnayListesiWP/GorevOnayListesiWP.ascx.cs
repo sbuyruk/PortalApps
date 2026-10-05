@@ -1,6 +1,7 @@
 using Microsoft.SharePoint.JsonUtilities;
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -125,8 +126,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
         {
             try
             {
-                GorevOnay gorevOnay = new GorevOnay();
-                gorevOnay.UpdateAllSecildiToFalse();
+                new GorevOnayService().UpdateAllSecildiToFalse();
             }
             catch (Exception ex)
             {
@@ -164,8 +164,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
         private List<GorevOnayListItem> GetDataList()
         {
             string gorevOnayIdStr = string.Empty;
-            GorevOnay gorevOnay = new GorevOnay();
-            DataTable dataTable = gorevOnay.SelectAllReturnDT(0, DateTime.Today.AddYears(-1));
+            DataTable dataTable = new GorevOnayService().GetAllReturnDataTable(0, DateTime.Today.AddYears(-1));
 
             List<GorevOnayListItem> list = new List<GorevOnayListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -288,8 +287,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
  
         private bool SureVeYevmiyeHesabiDogruMu(int gorevOnayId)
         {
-            GorevOnay gorevOnay = new GorevOnay();
-            gorevOnay = gorevOnay.Select(gorevOnayId);
+            GorevOnay gorevOnay = new GorevOnayService().GetById(gorevOnayId);
             if (gorevOnay != null)
             {
                 var gunlukYevmiye = gorevOnay.GunlukYevmiye.ConvertToDecimal();
@@ -354,8 +352,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             }
 
 
-            GorevOnay gorevOnay = new GorevOnay();
-            bool secilenlerKaydedildi = gorevOnay.UpdateAllSecildiToTrue(idler);
+            bool secilenlerKaydedildi = new GorevOnayService().UpdateAllSecildiToTrue(idler);
         }
 
         protected void OdendiYapBtn_Click(object sender, EventArgs e)
@@ -374,8 +371,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                     return;
                 }
 
-                GorevOnay gorevOnay = new GorevOnay();
-                gorevOnay.UpdateAllOdendiToTrue(idler);
+                new GorevOnayService().UpdateAllOdendiToTrue(idler);
                 TabloOlustur();
             }
             catch (Exception ex)
@@ -387,8 +383,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
 
         private bool SecilenGorevVarMi()
         {
-            GorevOnay gorevOnay = new GorevOnay();
-            List<GorevOnay> liste = gorevOnay.SelectAllBySecildi(true);
+            List<GorevOnay> liste = new GorevOnayService().GetAllBySecildi(true);
             return liste.Count > 0;
         }
 
