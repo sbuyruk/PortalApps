@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -201,7 +202,7 @@ namespace IKYS_WebParts.SonIzinDurumuWP
         private DataTable GetDataTable()
         {
             Personel personel = new Personel();
-            DataTable dataTable = personel.SelectCalisanPersonelListesiReturnDataTable();
+            DataTable dataTable = new PersonelService().GetEmployeeListReturnDataTable(Personel.PersonelTipi.Tumu);
             return dataTable;
         }
         private class PersonelListItem
@@ -226,7 +227,7 @@ namespace IKYS_WebParts.SonIzinDurumuWP
             IzinDonem izinDonemDao = new IzinDonem();
             int kalanIzinToplami = 0;
 
-            DataTable dataTable = izinDonemDao.SelectSUMKalanIzinByPersonelId(personelId, true);
+            DataTable dataTable = new IzinDonemService().GetSumKalanIzinByPersonelId(personelId, true);
             if (dataTable != null)
             {
                 DataRow dataRow = dataTable.Rows[0];
@@ -243,7 +244,7 @@ namespace IKYS_WebParts.SonIzinDurumuWP
 
             DateTime tarih = DateTime.Now;
             DateTime kontrolEdilecekTarih = DateTime.Today;
-            izinDonemi = izinDonemi.SelectByIzinTarihi(personelId, ProjeConstants.IZINTIPI_UCRETLI_INT, kontrolEdilecekTarih);
+            izinDonemi = new IzinDonemService().GetByIzinTarihi(personelId, ProjeConstants.IZINTIPI_UCRETLI_INT, kontrolEdilecekTarih);
 
             int kalanIzinToplami = izinDonemi==null?0:izinDonemi.KalanIzin.ConvertToInt();
 

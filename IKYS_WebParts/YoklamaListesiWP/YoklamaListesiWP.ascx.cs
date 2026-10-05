@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -234,7 +235,7 @@ namespace IKYS_WebParts.YoklamaListesiWP
         private DataTable GetDataTable(int personelId)
         {
             Yoklama yoklama = new Yoklama();
-            DataTable dataTable = yoklama.SelectAllReturnDataTable(personelId);
+            DataTable dataTable = new YoklamaService().GetAllByPersonelId(personelId);
             return dataTable;
         }
         private string CreateDataTable(string jsonData)
@@ -293,13 +294,13 @@ namespace IKYS_WebParts.YoklamaListesiWP
 
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
 
             }
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = personel.SelectByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName);
             }
             PersonelIdQS = personel.Id.ToString();
             return personel;
