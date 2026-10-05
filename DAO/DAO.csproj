@@ -103,6 +103,8 @@
     <Compile Include="Repositories\IKYS\UnvanTanimRepository.cs" />
     <Compile Include="Repositories\IKYS\BulunmamaSebebiRepository.cs" />
     <Compile Include="Repositories\IKYS\IzinTanimRepository.cs" />
+    <Compile Include="Repositories\IKYS\IsBilgileriRepository.cs" />
+    <Compile Include="Repositories\IKYS\DereceKademeDegisimRepository.cs" />
     <Compile Include="Repositories\TBYS\TasinmazRepository.cs" />
     <Compile Include="Repositories\TBYS\KiraSozlesmeRepository.cs" />
     <Compile Include="Repositories\TBYS\KiraciRepository.cs" />
