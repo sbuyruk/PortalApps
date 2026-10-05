@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -86,7 +87,7 @@ namespace IKYS_WebParts.BirimListesiWP
         private DataTable GetData()
         {
             BirimTanim birimTanim = new BirimTanim();
-            DataTable dataTable = birimTanim.SelectAllReturnDataTable();
+            DataTable dataTable = new BirimTanimService().GetAllReturnDataTable();
             return dataTable;
         }
         private void TabloOlustur()
