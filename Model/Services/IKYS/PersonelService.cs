@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using Utility.HelperClasses;
+using Model.Ortak;
 using Utility.ProjeGlobal;
 
 namespace Model.Services.IKYS
@@ -77,7 +77,8 @@ namespace Model.Services.IKYS
         private static List<int> ParseIds(string value)
         {
             List<int> ids = new List<int>(); if (string.IsNullOrWhiteSpace(value) || value.Trim() == "0") return ids;
-            foreach (string part in value.Split(',')) { int id; if (!int.TryParse(part.Trim(), out id)) throw new ArgumentException("Birim ID listesi geçersiz bir değer içeriyor.", "value"); ids.Add(id); } return ids;
+            foreach (string part in value.Split(',')) { int id; if (!int.TryParse(part.Trim(), out id)) throw new ArgumentException("Birim ID listesi geçersiz bir değer içeriyor.", "value"); ids.Add(id); }
+            return ids;
         }
         private static bool IsAllUnits(string value) { return !string.IsNullOrWhiteSpace(value) && value.Trim() == "0"; }
     }

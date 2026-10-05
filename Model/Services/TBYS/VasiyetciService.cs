@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
 namespace Model.Services.TBYS
@@ -46,14 +45,14 @@ namespace Model.Services.TBYS
 
         public DataTable GetAllForDataTable(bool excludeDeceased, ref int rowCount)
         {
-            DataTable table = repository.SelectAllForDataTable(excludeDeceased, ProjeConstants.BAGISCI_SAG_INT);
+            DataTable table = repository.SelectAllForDataTable(excludeDeceased, int.Parse(ProjeConstants.BAGISCI_SAG_INT));
             rowCount = table == null ? 0 : table.Rows.Count;
             return table;
         }
 
         public List<Vasiyetci> GetByFilters(bool onlyAlive, bool fullTcKimlikNo, bool fullBirthDate)
         {
-            return ToList(repository.SelectByFilters(onlyAlive, fullTcKimlikNo, fullBirthDate, ProjeConstants.BAGISCI_VEFAT_INT));
+            return ToList(repository.SelectByFilters(onlyAlive, fullTcKimlikNo, fullBirthDate, int.Parse(ProjeConstants.BAGISCI_VEFAT_INT)));
         }
 
         public int Save(Vasiyetci item)
