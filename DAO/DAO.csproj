@@ -96,6 +96,9 @@
     <Compile Include="Repositories\IKYS\KursRepository.cs" />
     <Compile Include="Repositories\IKYS\IsTecrubeRepository.cs" />
     <Compile Include="Repositories\IKYS\MeslekRepository.cs" />
+    <Compile Include="Repositories\IKYS\AileRepository.cs" />
+    <Compile Include="Repositories\IKYS\IletisimBilgileriRepository.cs" />
+    <Compile Include="Repositories\IKYS\YabanciDilRepository.cs" />
     <Compile Include="Repositories\TBYS\TasinmazRepository.cs" />
     <Compile Include="Repositories\TBYS\KiraSozlesmeRepository.cs" />
     <Compile Include="Repositories\TBYS\KiraciRepository.cs" />

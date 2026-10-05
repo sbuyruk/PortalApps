@@ -158,6 +158,9 @@
     <Compile Include="Services\IKYS\KursService.cs" />
     <Compile Include="Services\IKYS\IsTecrubeService.cs" />
     <Compile Include="Services\IKYS\MeslekService.cs" />
+    <Compile Include="Services\IKYS\AileService.cs" />
+    <Compile Include="Services\IKYS\IletisimBilgileriService.cs" />
+    <Compile Include="Services\IKYS\YabanciDilService.cs" />
     <Compile Include="Services\TBYS\TasinmazService.cs" />
     <Compile Include="Services\TBYS\KiraSozlesmeService.cs" />
     <Compile Include="Services\TBYS\KiraciService.cs" />
