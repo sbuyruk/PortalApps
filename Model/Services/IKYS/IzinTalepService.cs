@@ -1,10 +1,10 @@
 using DAO.Repositories.IKYS;
 using Model.IKYS;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
 namespace Model.Services.IKYS
