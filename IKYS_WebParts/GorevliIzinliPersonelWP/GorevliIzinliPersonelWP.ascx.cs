@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -132,12 +133,11 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
         }
         private void GorevOnayliOlanPersonelTablosunuDoldur()
         {
-            GorevOnay gorevOnay = new GorevOnay();
             DateTime today = DateTime.Today;
             DateTime todaybas = UtilityHelper.TariheSaatEkle(today, "23:59");
             DateTime todaybit = UtilityHelper.TariheSaatEkle(today, "06:00");
 
-            DataTable dataTable = gorevOnay.SelectByTarihReturnDataTable(todaybas, todaybit);
+            DataTable dataTable = new GorevOnayService().GetByTarihReturnDataTable(todaybas, todaybit);
             if (dataTable == null)
             {
                 GorevOnayTable.Rows.Clear();
@@ -276,11 +276,10 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
         }
         private void RaporluGorevliHastanedePersonelTablosunuDoldur()
         {
-            Yoklama yoklama = new Yoklama();
             DateTime today = DateTime.Today;
             DateTime todaybas = UtilityHelper.TariheSaatEkle(today, "23:59");
             DateTime todaybit = UtilityHelper.TariheSaatEkle(today, "06:00");
-            DataTable dataTable = yoklama.SelectByTarihReturnDataTable(todaybas, todaybit);
+            DataTable dataTable = new YoklamaService().GetByTarih(todaybas, todaybit);
             if (dataTable == null)
             {
                 RaporluPerTable.Rows.Clear();
@@ -437,13 +436,12 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
         }
         private void UcretliIzinliPersonelTablosunuDoldur()
         {
-            IzinHareket ih = new IzinHareket();
             DateTime today = DateTime.Today;
 
             DateTime todaybas = UtilityHelper.TariheSaatEkle(today, "17:00");
             DateTime todaybit = UtilityHelper.TariheSaatEkle(today, "07:00");
 
-            DataTable dataTable = ih.SelectByTarihReturnDataTable(todaybas, todaybit);
+            DataTable dataTable = new IzinHareketService().GetByTarihReturnDataTable(todaybas, todaybit);
 
             bool izinTableBos = true;
             if (dataTable != null)
@@ -571,7 +569,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                 bittar = UtilityHelper.TariheSaatEkle(tarih.AddDays(1), "07:00");
             }
 
-            ih = ih.SelectByPersonelTarih(personelId,bastar,bittar);
+            ih = new IzinHareketService().GetByPersonelTarih(personelId, bastar, bittar);
             if (ih != null)
             {
                 return ("(Devaminda izni var. </br>Dönüs tarihi: "+ih.BitisTarihi.AddDays(1).ConvertToDatetimeEmptyIfNull()+")");
@@ -605,7 +603,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                 bittar = UtilityHelper.TariheSaatEkle(tarih.AddDays(1), "07:00");
             }
 
-            gorevOnay = gorevOnay.SelectByPersonelTarih(personelId, bastar, bittar);
+            gorevOnay = new GorevOnayService().GetByPersonelTarih(personelId, bastar, bittar);
             if (gorevOnay != null)
             {
                 return ("(Devaminda görevi var. </br>Görev Bitisi: " + gorevOnay.BitisTarihi.ConvertToDDMMYYYHHmmFormat() + ")");
@@ -624,7 +622,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
 
             DateTime todaybas = UtilityHelper.TariheSaatEkle(today, "00:00");
             DateTime todaybit = UtilityHelper.TariheSaatEkle(today, "17:00");
-            DataTable dataTable = ih.SelectByIzinTipiTarihReturnDataTable(ProjeConstants.IZINTIPI_MAZERET_INT, todaybas, todaybit);
+            DataTable dataTable = new IzinHareketService().GetByIzinTipiTarihReturnDataTable(ProjeConstants.IZINTIPI_MAZERET_INT, todaybas, todaybit);
 
             bool izinTableBos = true;
             if (dataTable != null)
