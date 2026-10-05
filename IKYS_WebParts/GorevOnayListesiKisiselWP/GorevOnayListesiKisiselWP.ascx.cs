@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -59,8 +60,7 @@ namespace IKYS_WebParts.GorevOnayListesiKisiselWP
                 return null;
             }
 
-            GorevOnay gorevOnay = new GorevOnay();
-            return gorevOnay.SelectAllByPersonelReturnDT(personel.Id);
+            return new GorevOnayService().GetAllByPersonelReturnDataTable(personel.Id);
         }
 
         private string GetTableJson(DataTable dataTable)
