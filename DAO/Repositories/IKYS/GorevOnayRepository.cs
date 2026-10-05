@@ -132,6 +132,22 @@ namespace DAO.Repositories.IKYS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectBekleyenAmirOnayi()
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT A.Id GorevOnayId, A.PersonelId, P.Adi+' '+P.Soyadi AdiSoyadi,
+                    A.GorevinSebebi, A.GorevinYeri, A.BaslangicTarihi, A.BitisTarihi, A.Sure, A.Aciklama,
+                    A.UlasimAraci, A.Transfer, A.Konaklama, A.AmirOnayi, A.OnayRedAciklama
+                FROM GorevOnay_Table A
+                    INNER JOIN Personel_Table P ON A.PersonelId=P.Id
+                WHERE (A.AmirOnayi=@OnayBekliyor OR A.AmirOnayi=@Reddedildi OR A.AmirOnayi=@Onaylandi)
+                ORDER BY A.BaslangicTarihi DESC, A.BitisTarihi DESC");
+            query.AddParameter("@OnayBekliyor", 0);
+            query.AddParameter("@Reddedildi", 2);
+            query.AddParameter("@Onaylandi", 1);
+            return db.SelectFromDb(query, "");
+        }
+
         public DataTable SelectBekleyenAmirOnayiByBirimIds(IList<int> birimIds)
         {
             SqlQuery query = new SqlQuery(@"

@@ -49,6 +49,28 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                 return ViewState["CurrentUserName"].ToString();
             }
         }
+        private string AuthQS
+        {
+            get
+            {
+                if (ViewState["Auth"] == null || string.IsNullOrEmpty(ViewState["Auth"].ToString()))
+                {
+                    if (Page.Request.QueryString["Auth"] != null)
+                    {
+                        ViewState["Auth"] = Page.Request.QueryString["Auth"];
+                    }
+                    else
+                    {
+                        ViewState["Auth"] = string.Empty;
+                    }
+                }
+                return ViewState["Auth"].ToString();
+            }
+            set
+            {
+                ViewState["Auth"] = value;
+            }
+        }
         private string AmirBirimIdList
         {
             get
@@ -75,27 +97,34 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
 
                 if (!Page.IsPostBack)
                 {
-                    //publish etmeden önce Burayı değiştirmeyi unutma
-                    Personel personel = IKYSOrtak.PersonelGetir(CurrentUserName);
-                    //Personel personel = new Personel();//PersonelGetir();
-                    //personel = personel.Select(1192);
-                    if (personel != null && personel.Id > 0)
+                    if (AuthQS.Equals("IKYS"))
                     {
-                        BirimTanim birimTanim = new BirimTanim();
-                        List<BirimTanim> amirOlduguBirimler = birimTanim.SelectByAmirId(personel.Id);
-                        if (amirOlduguBirimler != null && amirOlduguBirimler.Count > 0)
+                        TabloOlustur();
+                    }
+                    else
+                    {
+                        //publish etmeden önce Burayı değiştirmeyi unutma
+                        Personel personel = IKYSOrtak.PersonelGetir(CurrentUserName);
+                        //Personel personel = new Personel();//PersonelGetir();
+                        //personel = personel.Select(1192);
+                        if (personel != null && personel.Id > 0)
                         {
-                            AmirBirimIdList = string.Join(",", amirOlduguBirimler.Select(b => b.Id));
-                            TabloOlustur();
+                            BirimTanim birimTanim = new BirimTanim();
+                            List<BirimTanim> amirOlduguBirimler = birimTanim.SelectByAmirId(personel.Id);
+                            if (amirOlduguBirimler != null && amirOlduguBirimler.Count > 0)
+                            {
+                                AmirBirimIdList = string.Join(",", amirOlduguBirimler.Select(b => b.Id));
+                                TabloOlustur();
+                            }
+                            else
+                            {
+                                MesajGoster();
+                            }
                         }
                         else
                         {
                             MesajGoster();
                         }
-                    }
-                    else
-                    {
-                        MesajGoster();
                     }
                 }
             }
@@ -149,7 +178,9 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
             }
 
             GorevOnay gorevOnay = new GorevOnay();
-            DataTable dataTable = gorevOnay.SelectBekleyenAmirOnayiByBirimIdsReturnDataTable(AmirBirimIdList);
+            DataTable dataTable = AuthQS.Equals("IKYS")
+                ? gorevOnay.SelectBekleyenAmirOnayiReturnDataTable()
+                : gorevOnay.SelectBekleyenAmirOnayiByBirimIdsReturnDataTable(AmirBirimIdList);
 
             List<BekleyenIslemListItem> list = new List<BekleyenIslemListItem>();
 

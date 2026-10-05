@@ -75,6 +75,10 @@ namespace Model.Services.IKYS
         public DataTable GetByTarihReturnDataTable(DateTime baslangic, DateTime bitis) { return repository.SelectByTarihReturnDataTable(baslangic, bitis); }
         public GorevOnay GetByPersonelTarih(int personelId, DateTime baslangic, DateTime bitis) { return Map(repository.SelectByPersonelTarih(personelId, baslangic, bitis)); }
         public List<GorevOnay> GetAllBySecildi(bool secildi) { return ToList(repository.SelectAllBySecildi(secildi)); }
+        public DataTable GetBekleyenAmirOnayi()
+        {
+            return repository.SelectBekleyenAmirOnayi();
+        }
         public DataTable GetBekleyenAmirOnayiByBirimIds(string birimIdListStr)
         {
             List<int> ids = ParseIdList(birimIdListStr);

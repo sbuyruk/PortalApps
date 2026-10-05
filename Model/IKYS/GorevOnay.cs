@@ -60,6 +60,7 @@ namespace Model.IKYS
         public DataTable SelectByTarihReturnDataTable(DateTime bastar, DateTime bittar) { return new GorevOnayService().GetByTarihReturnDataTable(bastar, bittar); }
         public GorevOnay SelectByPersonelTarih(int personelId, DateTime bastar, DateTime bittar) { return new GorevOnayService().GetByPersonelTarih(personelId, bastar, bittar); }
         public List<GorevOnay> SelectAllBySecildi(bool secildi) { return new GorevOnayService().GetAllBySecildi(secildi); }
+        public DataTable SelectBekleyenAmirOnayiReturnDataTable() { return new GorevOnayService().GetBekleyenAmirOnayi(); }
         public DataTable SelectBekleyenAmirOnayiByBirimIdsReturnDataTable(string birimIdListStr) { return new GorevOnayService().GetBekleyenAmirOnayiByBirimIds(birimIdListStr); }
         public bool GorevOnayVarMi(int personelId, DateTime basTarih, DateTime bitTarih, int gorevOnayId) { return new GorevOnayService().HasDateConflict(personelId, basTarih, bitTarih, gorevOnayId); }
     }
