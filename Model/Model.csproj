@@ -141,6 +141,7 @@
     <Compile Include="Services\IKYS\PersonelService.cs" />
     <Compile Include="Services\IKYS\IzinTalepService.cs" />
     <Compile Include="Services\IKYS\MahsupService.cs" />
+    <Compile Include="Services\IKYS\MaasHareketService.cs" />
     <Compile Include="Services\IKYS\GorevOnayService.cs" />
     <Compile Include="Services\IKYS\IzinDonemService.cs" />
     <Compile Include="Services\IKYS\IzinHareketService.cs" />
