@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -432,13 +433,12 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP
         private List<AylikYoklamaListItem> YoklamaListesiniDoldur()
         {
             DataTable dataTable = null;
-            Yoklama yoklamaDao = new Yoklama();
             int ay = SecilenAyQS.ConvertToInt();
             int yil = SecilenYilQS.ConvertToInt();
             DateTime basTar = new DateTime(yil, ay, 1);
             DateTime bitTar = basTar.AddMonths(1).AddDays(-1) + ProjeConstants.MESAI_BITIS_SAATI;
             string bulunmamaSebebiIds = "2,3";//hastanede, görevli
-            dataTable = yoklamaDao.SelectByTarihReturnDataTable(bulunmamaSebebiIds, basTar, bitTar);
+            dataTable = new YoklamaService().GetByTarihAndReasons(bulunmamaSebebiIds, basTar, bitTar);
             List<AylikYoklamaListItem> yoklamaList = new List<AylikYoklamaListItem>();
             if (dataTable != null)
             {
@@ -474,8 +474,7 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP
             int yil = SecilenYilQS.ConvertToInt();
             DateTime basTar = new DateTime(yil, ay, 1);
             DateTime bitTar = basTar.AddMonths(1).AddMinutes(-1);
-            IzinHareket izinHarekeDao = new IzinHareket();
-            dataTable = izinHarekeDao.SelectByIzinTipiTarihReturnDataTable(ProjeConstants.IZINTIPI_MAZERET_INT, basTar, bitTar);
+            dataTable = new IzinHareketService().GetByIzinTipiTarihReturnDataTable(ProjeConstants.IZINTIPI_MAZERET_INT, basTar, bitTar);
             List<AylikYoklamaListItem> mazeretList = new List<AylikYoklamaListItem>();
             if (dataTable != null)
             {
