@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -88,7 +89,7 @@ namespace IKYS_WebParts.ResmiTatillerWP
             DateTime bitTar = basTar.AddYears(1);
 
             ResmiTatil resmiTatilDao = new ResmiTatil();
-            List<ResmiTatil> list = resmiTatilDao.SelectByTarih(basTar,bitTar);
+            List<ResmiTatil> list = new ResmiTatilService().GetByTarih(basTar, bitTar);
 
             if (list.Count > 0)
             {

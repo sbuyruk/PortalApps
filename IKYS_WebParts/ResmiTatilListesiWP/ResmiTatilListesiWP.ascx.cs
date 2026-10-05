@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -101,7 +102,7 @@ namespace IKYS_WebParts.ResmiTatilListesiWP
         private DataTable GetData()
         {
             ResmiTatil resmiTatil = new ResmiTatil();
-            DataTable dataTable = resmiTatil.SelectAllReturnDataTable();
+            DataTable dataTable = new ResmiTatilService().GetAllReturnDataTable();
             return dataTable;
         }
         private void TabloOlustur()
