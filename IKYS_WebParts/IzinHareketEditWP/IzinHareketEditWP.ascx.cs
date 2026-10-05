@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -227,13 +228,11 @@ namespace IKYS_WebParts.IzinHareketEditWP
         }
         private void FillIzinHareketForm()
         {
-            IzinHareket izinHareket = new IzinHareket();
-            izinHareket = izinHareket.Select<IzinHareket>(IzinHareketIdQS.ConvertToInt());
+            IzinHareket izinHareket = new IzinHareketService().GetById(IzinHareketIdQS.ConvertToInt());
             if (izinHareket != null)
             {
                 IzinHareketIdLbl.Text = izinHareket.Id.ReturnEmptyIfNull().ToString();
-                IzinTanim it = new IzinTanim();
-                it = it.Select<IzinTanim>(izinHareket.IzinTipi);
+                IzinTanim it = new IzinTanimService().GetById(izinHareket.IzinTipi);
                 IzinTipiIdLbl.Text = it.Id.ToString();
                 IzinTipiLbl.Text = it.Adi;
                 SelectDDLValue(VekilImzaDDL, izinHareket.VekilImza.ToString());
@@ -313,8 +312,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
         private void FillVekilImzaDDL()
         {
             VekilImzaDDL.Items.Clear();
-            Personel personel = new Personel();
-            List<Personel> list = personel.SelectCalisanPersonel();
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
             ListItem bosLi = new ListItem("", "0");
             VekilImzaDDL.Items.Add(bosLi);
             foreach (Personel item in list)
@@ -326,8 +324,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
         private void FillAmirImzaDDL()
         {
             AmirImzaDDL.Items.Clear();
-            Personel personel = new Personel();
-            List<Personel> list = personel.SelectCalisanPersonel();
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
             ListItem bosLi = new ListItem("", "0");
             AmirImzaDDL.Items.Add(bosLi);
             foreach (Personel item in list)
@@ -339,8 +336,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
         private void FillOnayImzaDDL()
         {
             OnayImzaDDL.Items.Clear();
-            Personel personel = new Personel();
-            List<Personel> list = personel.SelectCalisanPersonel();
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
             ListItem bosLi = new ListItem("", "0");
             OnayImzaDDL.Items.Add(bosLi);
             foreach (Personel item in list)
@@ -455,11 +451,9 @@ namespace IKYS_WebParts.IzinHareketEditWP
                         // hayir ise yeni izin onemi zaten var mi bak yoksa yeni izin donemi olustur
                         //       izinhareket de izindonemId yi güncelle
                         // izintalepTabledaki kaydi güncelle
-                        IzinDonem mevutIzinDonemi = new IzinDonem();
-                        mevutIzinDonemi = mevutIzinDonemi.Select<IzinDonem>(izinHareket.IzinDonemId);
+                        IzinDonem mevutIzinDonemi = new IzinDonemService().GetById(izinHareket.IzinDonemId);
 
-                        IzinDonem yeniIzinDonemi = new IzinDonem();
-                        yeniIzinDonemi = yeniIzinDonemi.SelectByIzinTarihi(personel.Id, izinHareket.IzinTipi, izinHareket.BaslangicTarihi);
+                        IzinDonem yeniIzinDonemi = new IzinDonemService().GetByIzinTarihi(personel.Id, izinHareket.IzinTipi, izinHareket.BaslangicTarihi);
 
                         if (yeniIzinDonemi == null)
                         {
@@ -500,7 +494,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
                     izinHareket.Degistiren = CurrentUserName;
 
                     
-                    isSaved = izinHareket.Update();
+                    isSaved = new IzinHareketService().Update(izinHareket);
 
                 }
             }
@@ -559,8 +553,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
                         //mevcut izin dönemini bul
                         // izin doneminden kullanilan izni çikar, kalan izne ekle, 
                         // izintalepTabledaki kaydi güncelle
-                        IzinDonem mevutIzinDonemi = new IzinDonem();
-                        mevutIzinDonemi = mevutIzinDonemi.Select<IzinDonem>(izinHareket.IzinDonemId);
+                        IzinDonem mevutIzinDonemi = new IzinDonemService().GetById(izinHareket.IzinDonemId);
                         if (mevutIzinDonemi != null)
                         {
                             mevutIzinDonemi.KullanilanIzinGuncelle(mevutIzinDonemi, izinSuresiOnceki, false, CurrentUserName);// dönemden düs
@@ -568,7 +561,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
                         }
                     }
 
-                    isSaved = izinHareket.Delete();
+                    isSaved = new IzinHareketService().Delete(izinHareket);
 
                 }
             }
@@ -586,13 +579,13 @@ namespace IKYS_WebParts.IzinHareketEditWP
 
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
 
             }
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = personel.SelectByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName);
             }
             PersonelIdQS = personel.Id.ToString();
             return personel;
@@ -605,8 +598,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
         {
             try
             {
-                IzinHareket izinHareket = new IzinHareket();
-                izinHareket = izinHareket.Select<IzinHareket>(IzinHareketIdQS.ConvertToInt());
+                IzinHareket izinHareket = new IzinHareketService().GetById(IzinHareketIdQS.ConvertToInt());
                 if (izinHareket != null)
                 {
                     bool isSaved = IzinHareketGuncelle(izinHareket);
@@ -630,8 +622,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
         {
             try
             {
-                IzinTalep izinTalep = new IzinTalep();
-                izinTalep = izinTalep.Select<IzinTalep>(izinTalepId);
+                IzinTalep izinTalep = new IzinTalepService().GetById(izinTalepId);
                 if (izinTalep != null)
                 {
 
@@ -647,7 +638,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
                     izinTalep.Sure = izinHareket.Sure;
                     izinTalep.VekilImza = izinHareket.VekilImza;
                     izinTalep.Degistiren = CurrentUserName;
-                    izinTalep.Update();
+                    new IzinTalepService().Update(izinTalep);
                 }
             }
             catch (Exception exception)
@@ -694,8 +685,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
         {
             try
             {
-                IzinHareket izinHareket = new IzinHareket();
-                izinHareket = izinHareket.Select<IzinHareket>(IzinHareketIdQS.ConvertToInt());
+                IzinHareket izinHareket = new IzinHareketService().GetById(IzinHareketIdQS.ConvertToInt());
                 if (izinHareket != null)
                 {
                     bool isSaved = IzinHareketSil(izinHareket);
@@ -722,11 +712,10 @@ namespace IKYS_WebParts.IzinHareketEditWP
         {
             try
             {
-                IzinTalep izinTalep = new IzinTalep();
-                izinTalep = izinTalep.Select<IzinTalep>(izinTalepId);
+                IzinTalep izinTalep = new IzinTalepService().GetById(izinTalepId);
                 if (izinTalep != null)
                 {
-                    izinTalep.Delete();
+                    new IzinTalepService().Delete(izinTalep);
                 }
             }
             catch (Exception exception)
@@ -757,8 +746,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             {
                 string yeniIzinBasTar = IzinBasTarTxt.Value.ConvertToDatetimeEmptyIfNull();
                 string yeniIzinBitTar = IzinBitTarTxt.Value.ConvertToDatetimeEmptyIfNull();
-                IzinHareket izinHareket = new IzinHareket();
-                izinHareket = izinHareket.Select<IzinHareket>(IzinHareketIdQS.ConvertToInt());
+                IzinHareket izinHareket = new IzinHareketService().GetById(IzinHareketIdQS.ConvertToInt());
                 if (izinHareket != null)
                 {
                     var fullUrl = string.Format("{0}?IzinHareketId={1}&AmirId={2}&OnaylayanId={3}&YeniIzinBasTar={4}&YeniIzinBitTar={5}",
@@ -780,8 +768,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
 
             try
             {
-                IzinHareket izinHareket = new IzinHareket();
-                izinHareket = izinHareket.Select<IzinHareket>(IzinHareketIdQS.ConvertToInt());
+                IzinHareket izinHareket = new IzinHareketService().GetById(IzinHareketIdQS.ConvertToInt());
                 if (izinHareket != null)
                 {
                     var fullUrl = string.Format("{0}?IzinHareketId={1}&AmirId={2}&OnaylayanId={3}",
