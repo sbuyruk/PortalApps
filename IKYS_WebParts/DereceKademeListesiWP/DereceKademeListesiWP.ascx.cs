@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -119,8 +120,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
         private void FillPersonelDDL()
         {
             PersonelDDL.Items.Clear();
-            Personel personel = new Personel();
-            List<Personel> list = personel.SelectCalisanPersonel();
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
 
             foreach (Personel item in list)
             {
@@ -130,21 +130,18 @@ namespace IKYS_WebParts.DereceKademeListesiWP
         }
         private Personel PersonelGetir()
         {
-            Personel personel = new Personel();
-
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
+                return new PersonelService().GetById(PersonelIdQS.ConvertToInt());
 
             }
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = personel.SelectByUserName(userName);
+                Personel personel = new PersonelService().GetByUserName(userName);
                 PersonelIdQS = personel.Id.ToString();
+                return personel;
             }
-
-            return personel;
         }
         #endregion
         #region DereceKademe Listesi
@@ -215,8 +212,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             else
             {
                 List<DereceKademeListItem> list = new List<DereceKademeListItem>();
-                DereceKademeDegisim dereceKademe = new DereceKademeDegisim();
-                DataTable dataTable = dereceKademe.SelectAllByPersonelIdReturnDT(personel.Id);
+                DataTable dataTable = new DereceKademeDegisimService().GetAllByPersonelIdReturnDataTable(personel.Id);
                 string adSoyad = (personel.Adi + " " + personel.Soyadi).Trim();
                 if (dataTable!=null)
                 {
@@ -271,8 +267,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             }
             else
             {
-                DereceKademeDegisim dereceKademe = new DereceKademeDegisim();
-                dereceKademe = dereceKademe.SelectByPersonelId(personel.Id);
+                DereceKademeDegisim dereceKademe = new DereceKademeDegisimService().GetByPersonelId(personel.Id);
                 GecerliDereceTxt.Text = dereceKademe?.Derece.ToString() ?? "Bulunamadı";
                 GecerliKademeTxt.Text = dereceKademe?.Kademe.ToString() ?? "Bulunamadı";
             }
@@ -304,7 +299,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                     Aciklama = aciklama,
                 };
 
-                dereceKademeDegisim.Save();
+                new DereceKademeDegisimService().Save(dereceKademeDegisim);
                 MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Kaydedildi.", ProjeConstants.MESAJ_BASARILI);
             }
             catch (Exception)
@@ -318,8 +313,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             try
             {
                 // Bu kismi kendi veritabani ya da SharePoint listesi güncelleme kodu ile tamamlayin
-                DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisim();
-                dereceKademeDegisim = dereceKademeDegisim.Select(id);
+                DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisimService().GetById(id);
                 if (dereceKademeDegisim == null)
                 {
                     MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Bulunamadı.", ProjeConstants.MESAJ_HATA);
@@ -330,7 +324,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                 dereceKademeDegisim.Derece = derece;
                 dereceKademeDegisim.Kademe = kademe;
                 dereceKademeDegisim.Aciklama = aciklama;
-                dereceKademeDegisim.Update();
+                new DereceKademeDegisimService().Update(dereceKademeDegisim);
                 MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Güncellendi.", ProjeConstants.MESAJ_BASARILI);
             }
             catch (Exception)
@@ -344,15 +338,14 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             try
             {
                 // Bu kismi kendi veritabani ya da SharePoint listesi güncelleme kodu ile tamamlayin
-                DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisim();
-                dereceKademeDegisim = dereceKademeDegisim.Select(id);
+                DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisimService().GetById(id);
                 if (dereceKademeDegisim == null)
                 {
                     MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Bulunamadı.", ProjeConstants.MESAJ_HATA);
                     return;
                 }
 
-                dereceKademeDegisim.Delete();
+                new DereceKademeDegisimService().Delete(dereceKademeDegisim);
                 MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Silindi.", ProjeConstants.MESAJ_BASARILI);
             }
             catch (Exception)
@@ -364,8 +357,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
         {
             int gecerliDerece=GecerliDereceTxt.Text.ConvertToInt();
             DereceDDL.Items.Clear();
-            UcretTanim ucretTanim = new UcretTanim();
-            DataTable dataTable = ucretTanim.SelectDerece();
+            DataTable dataTable = new UcretTanimService().GetDerece();
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
@@ -384,9 +376,8 @@ namespace IKYS_WebParts.DereceKademeListesiWP
         {
             int gecerlikademe= GecerliKademeTxt.Text.ConvertToInt();
             KademeDDL.Items.Clear();
-            UcretTanim ucretTanim = new UcretTanim();
             int derece = DereceDDL.SelectedItem.Value.ConvertToInt();
-            DataTable dataTable = ucretTanim.SelectKademe(derece, 1);
+            DataTable dataTable = new UcretTanimService().GetKademe(derece, 1);
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
@@ -465,8 +456,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
 
         private void BilgileriDoldur()
         {
-            Personel personel = new Personel();
-            personel = personel.Select<Personel>(PersonelDDL.SelectedItem.Value.ConvertToInt());
+            Personel personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt());
             if (personel != null)
             {
                 PersonelIdQS = personel.Id.ToString();
