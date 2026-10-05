@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -134,8 +135,7 @@ $('#CustomDataTable').on( 'draw.dt', function () {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             DateTime islemTarihiDateTime = new DateTime(2020, 1, 9);
 
-            Personel personelDao = new Personel();
-            DataTable dataTable = personelDao.SelectCalisanPersonelReturnDataTable(PersonelTipi.Kadrolu);
+            DataTable dataTable = new PersonelService().GetActiveEmployeesReturnDataTable(Personel.PersonelTipi.Kadrolu);
 
             List<PersonelListItem> returnlist = new List<PersonelListItem>();
             if (dataTable != null)
@@ -195,10 +195,9 @@ $('#CustomDataTable').on( 'draw.dt', function () {
                     int personelId = item.ConvertToInt();
                     if (personelId > 0)
                     {
-                        IsBilgileri isb = new IsBilgileri();
-                        isb = isb.SelectByPersonelId(personelId);
+                        IsBilgileri isb = new IsBilgileriService().GetByPersonelId(personelId);
                         isb.ProtokolSiraNo = sira++;
-                        isb.Update();
+                        new IsBilgileriService().Update(isb);
                     }
 
                 }
