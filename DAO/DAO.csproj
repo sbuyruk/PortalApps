@@ -123,6 +123,9 @@
     <Compile Include="Repositories\TBYS\OdemePlaniRepository.cs" />
     <Compile Include="Repositories\TBYS\OdemePlaniRaporRepository.cs" />
     <Compile Include="Repositories\TBYS\OdemeRepository.cs" />
+    <Compile Include="Repositories\TBYS\BagisciYakinlariRepository.cs" />
+    <Compile Include="Repositories\TBYS\BagisciBagisRepository.cs" />
+    <Compile Include="Repositories\TBYS\BagisciTalepleriRepository.cs" />
     <Compile Include="Repositories\MTS\KaynakTanimRepository.cs" />
     <Compile Include="Repositories\NBYS\ArmaganRepository.cs" />
     <Compile Include="Repositories\NBYS\ArmaganTanimRepository.cs" />
