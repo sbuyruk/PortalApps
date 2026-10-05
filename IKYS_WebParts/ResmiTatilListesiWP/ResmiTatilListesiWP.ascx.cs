@@ -106,7 +106,7 @@ namespace IKYS_WebParts.ResmiTatilListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
         }
         private string TabloJson()
@@ -143,7 +143,7 @@ namespace IKYS_WebParts.ResmiTatilListesiWP
 
                     resmiTatilListItem.Tatil = dataRow["Tatil"].ToString();
                     resmiTatilListItem.ResimiTatilId = dataRow["ResimiTatilId"].ToString();
-                    
+
                     DateTime baslamaTarihi= dataRow["BaslamaTarihi"].ConvertToDatetime();
                     string baslamaTarihiStr = baslamaTarihi.Year < 1900 ? baslamaTarihi.ToString("dd.MM.")+ "YYYY": baslamaTarihi.ConvertToDatetimeEmptyIfNull();
                     string baslamaSaatiStr= baslamaTarihi.ToString("HH:mm").Equals("00:00")?string.Empty: baslamaTarihi.ToString("HH:mm");
@@ -163,12 +163,12 @@ namespace IKYS_WebParts.ResmiTatilListesiWP
                     resmiTatilListItem.IlanTarihi= dataRow["IlanTarihi"].ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
                     resmiTatilListItem.IptalTarihi= dataRow["IptalTarihi"].ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
                     string yilStr = dataRow["Yil"].ToString();
-                    resmiTatilListItem.Yil = yilStr.Equals("0")?"Sürekli":yilStr;
+                    resmiTatilListItem.Yil = yilStr.Equals("0")?"SÃ¼rekli":yilStr;
 
                     resmiTatilListItem.Duzenle = string.Empty;
 
-                    string duzenleLinkStr = "<a href=" + ProjeConstants.PAGE_RESMITATIL_GIRIS + "?SenderApp=RTL&DestinationApp=RTD&ResmiTatilId=" + 
-                        resmiTatilListItem.ResimiTatilId + " class='btn btn-outline-primary' >Düzenle</a>";
+                    string duzenleLinkStr = "<a href=" + ProjeConstants.PAGE_RESMITATIL_GIRIS + "?SenderApp=RTL&DestinationApp=RTD&ResmiTatilId=" +
+                        resmiTatilListItem.ResimiTatilId + " class='btn btn-outline-primary' >DÃ¼zenle</a>";
                     resmiTatilListItem.Duzenle = duzenleLinkStr;
 
 

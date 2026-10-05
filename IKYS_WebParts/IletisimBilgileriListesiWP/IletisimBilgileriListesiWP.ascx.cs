@@ -257,11 +257,11 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
             TableHeaderRow th = new TableHeaderRow();
             th.CssClass = "sticky-top";
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sira";
+            siraCell.Text = "S覺ra";
             TableHeaderCell adiSoyadiCell = new TableHeaderCell();
-            adiSoyadiCell.Text = "Adi Soyadi";
+            adiSoyadiCell.Text = "Ad覺 Soyad覺";
             TableHeaderCell goreviCell = new TableHeaderCell();
-            goreviCell.Text = "G顤evi";
+            goreviCell.Text = "G繹revi";
             TableHeaderCell dahiliTelCell = new TableHeaderCell();
             dahiliTelCell.Text = "Dahili Tel.";
             TableHeaderCell evtTelCell = new TableHeaderCell();
@@ -271,7 +271,7 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
             TableHeaderCell kurumEPostaCell = new TableHeaderCell();
             kurumEPostaCell.Text = "Kurum E-Posta";
             TableHeaderCell plakaCell = new TableHeaderCell();
-            plakaCell.Text = "Ara蔩lakasi";
+            plakaCell.Text = "Ara癟 Plakas覺";
 
             th.Controls.Add(siraCell);
             th.Controls.Add(adiSoyadiCell);
@@ -369,7 +369,7 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
             System.IO.StringWriter tw = new System.IO.StringWriter();
             System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
 
-            //Get the HTML for the control.             
+            //Get the HTML for the control.
             IletisimTable.RenderControl(hw);
             //Write the HTML back to the browser.
             //Response.ContentType = application/vnd.ms-excel;

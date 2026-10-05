@@ -78,7 +78,7 @@ namespace IKYS_WebParts.SonIzinDurumuWP
             {
                 if (!Page.IsPostBack)
                 {
-                    TitleLbl.Text = "Son Izin Durumu ("+ DateTime.Now.ConvertToDDMMYYYHHmmFormat()+")";
+            TitleLbl.Text = "Son Ä°zin Durumu ("+ DateTime.Now.ConvertToDDMMYYYHHmmFormat()+")";
                     TabloOlustur();
                 }
             }
@@ -90,7 +90,7 @@ namespace IKYS_WebParts.SonIzinDurumuWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -157,9 +157,9 @@ namespace IKYS_WebParts.SonIzinDurumuWP
                             ],
                             columnDefs: [
                                 { type: 'turkish', targets:[1,2] },
-                                
+
                             ],
-                           
+
                             'language': {
                                 'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                                 'decimal': ',',
@@ -244,13 +244,13 @@ namespace IKYS_WebParts.SonIzinDurumuWP
             DateTime tarih = DateTime.Now;
             DateTime kontrolEdilecekTarih = DateTime.Today;
             izinDonemi = izinDonemi.SelectByIzinTarihi(personelId, ProjeConstants.IZINTIPI_UCRETLI_INT, kontrolEdilecekTarih);
-            
+
             int kalanIzinToplami = izinDonemi==null?0:izinDonemi.KalanIzin.ConvertToInt();
 
-           
+
 
             return kalanIzinToplami;
         }
-          
+
     }
 }

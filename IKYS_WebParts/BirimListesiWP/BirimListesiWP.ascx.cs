@@ -91,7 +91,7 @@ namespace IKYS_WebParts.BirimListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -125,7 +125,7 @@ namespace IKYS_WebParts.BirimListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     var table=jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiginde
+                        'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
@@ -143,7 +143,7 @@ namespace IKYS_WebParts.BirimListesiWP
                             { data: 'BirimKisaAdi' },
                             { data: 'BirimAmiri' },
                             { data: 'UstBirim' },
-                            { data: 'Duzenle' },               
+                            { data: 'Duzenle' },
                         ],
                          columnDefs: [
                             { targets: 0, visible: false },
@@ -213,7 +213,7 @@ namespace IKYS_WebParts.BirimListesiWP
                     BirimAmiri = birimAmiri,
                     UstBirim = ustBirim,
 
-                    Duzenle = "<a href=" + ProjeConstants.PAGE_BIRIM_EDIT + "?DestinationApp=BirD&BirimId=" + birimId + " class='btn btn-outline-primary'>Düzenle</a>"
+                    Duzenle = "<a href=" + ProjeConstants.PAGE_BIRIM_EDIT + "?DestinationApp=BirD&BirimId=" + birimId + " class='btn btn-outline-primary'>DÃ¼zenle</a>"
                 };
                 item.Secildi = SecilenIdQS.Equals(item.BirimId);
                 list.Add(item);

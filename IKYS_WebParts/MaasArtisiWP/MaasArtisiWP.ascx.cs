@@ -45,7 +45,7 @@ namespace IKYS_WebParts.MaasArtisiWP
                 ArtisYuzdesiTxt.Text = "10,00";
                 DateTime baslangicTarihi = maxBitisTarihi.AddDays(1);
                 BaslangicTarihiTxt.Text = baslangicTarihi.ConvertToDatetimeEmptyIfNull();
-                BitisTarihiTxt.Text = baslangicTarihi.AddMonths(6).AddDays(-1).ConvertToDatetimeEmptyIfNull(); 
+                BitisTarihiTxt.Text = baslangicTarihi.AddMonths(6).AddDays(-1).ConvertToDatetimeEmptyIfNull();
             }
         }
 
@@ -54,8 +54,8 @@ namespace IKYS_WebParts.MaasArtisiWP
         private void KaydetModalAc()
         {
 
-            MessageTitleLbl.Text = "Maas Artisi";
-            MessageTextLbl.Text = BaslangicTarihiTxt.Text + " ile " + BitisTarihiTxt.Text + " arasinda ge�erli olacak ve %" +ArtisYuzdesiTxt.Text+" artis yapilacak sekilde maas tablolari kaydedilsin mi?";
+            MessageTitleLbl.Text = "Maaş Artışı";
+            MessageTextLbl.Text = BaslangicTarihiTxt.Text + " ile " + BitisTarihiTxt.Text + " arasında geçerli olacak ve %" + ArtisYuzdesiTxt.Text + " artış yapılacak şekilde maaş tabloları kaydedilsin mi?";
             DeleteNowBtn.Visible = false;
             KaydetNowBtn.Visible = true;
             var openPopup = "OpenModal();";
@@ -68,12 +68,12 @@ namespace IKYS_WebParts.MaasArtisiWP
             List<UcretTanim> list = ucretTanim.SelectByMaxGrupId();
             if (list.Count <= 1)
             {
-                MessageHelper.PublishMessage("Silinecek bir maas artisi bulunamadi.", ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("Silinecek bir maaş artışı bulunamadı.", ProjeConstants.MESAJ_BILGI);
                 return;
             }
             ucretTanim = list[0];
-            MessageTitleLbl.Text = "Son Maas Artisi Ve Bu artisa g�re yapilan Maas Listesi Silinecek";
-            MessageTextLbl.Text = ucretTanim.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + " ile " + ucretTanim.BitisTarihi.ConvertToDatetimeEmptyIfNull() + " arasinda ge�erli olan artis silinsin mi?";
+            MessageTitleLbl.Text = "Son Maaş Artışı ve bu artışa göre yapılan maaş listesi silinecek";
+            MessageTextLbl.Text = ucretTanim.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + " ile " + ucretTanim.BitisTarihi.ConvertToDatetimeEmptyIfNull() + " arasında geçerli olan artış silinsin mi?";
             DeleteNowBtn.Visible = true;
             KaydetNowBtn.Visible = false;
             var openPopup = "OpenModal();";
@@ -136,17 +136,17 @@ namespace IKYS_WebParts.MaasArtisiWP
                     yeniUcretTanim.GrupId = t.GrupId + 1;
                     int id = yeniUcretTanim.Save();
                 }
-                MessageHelper.PublishMessage("Tablolar olusturuldu", ProjeConstants.MESAJ_BASARILI, 2000);
+            MessageHelper.PublishMessage("Tablolar oluşturuldu", ProjeConstants.MESAJ_BASARILI, 2000);
                 RedirectToPage(ProjeConstants.PAGE_MAAS_TABLOLARI );
             }
             catch (Exception ex)
             {
-                MessageHelper.PublishMessage("Tablolar kaydedilirken hata olustu" + ex.Message, ProjeConstants.MESAJ_HATA);
+            MessageHelper.PublishMessage("Tablolar kaydedilirken hata oluştu" + ex.Message, ProjeConstants.MESAJ_HATA);
                 throw;
             }
 
         }
-      
+
         protected void DeleteNowBtn_Click(object sender, EventArgs e)
         {
             UcretTanim ucretTanim = new UcretTanim();
@@ -154,7 +154,7 @@ namespace IKYS_WebParts.MaasArtisiWP
             List<UcretTanim> list = ucretTanim.SelectByMaxGrupId();
             if (list.Count <= 1)
             {
-                MessageHelper.PublishMessage("Silinecek bir maas artisi bulunamadi.", ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("Silinecek bir maaş artışı bulunamadı.", ProjeConstants.MESAJ_BILGI);
                 return;
             }
             ucretTanim = list[0];

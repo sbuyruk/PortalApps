@@ -226,12 +226,12 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
                         else
                         {
                             int eskiDonemlerdenKalanIzin= IKYSOrtak.KalanIzinToplamiGetir(personelId, true) ;//
-                        
+
                             izinHakki = izinDonemi.IzinHakki +
                                 " " + izinDonemi.Birim +
-                                (eskiDonemlerdenKalanIzin > 0 ? " ( +" + eskiDonemlerdenKalanIzin + " " + izinDonemi.Birim + ") " 
+                                (eskiDonemlerdenKalanIzin > 0 ? " ( +" + eskiDonemlerdenKalanIzin + " " + izinDonemi.Birim + ") "
                                 : (eskiDonemlerdenKalanIzin < 0 ? "<strong style = 'color:red;'> ("  + eskiDonemlerdenKalanIzin + " " +izinDonemi.Birim + ") </strong>" : string.Empty));
-                               
+
                             kullanilanIzin = izinDonemi.KullanilanIzin + " " + izinDonemi.Birim;
                             kalanIzin = IKYSOrtak.KalanIzinToplamiGetir(personelId, false) + " " + izinDonemi.Birim; //izinDonemi.KalanIzin + " " + izinDonemi.Birim;
                         }
@@ -348,21 +348,21 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
 
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sira";
+            siraCell.Text = "Sıra";
             TableHeaderCell adiSoyadiCell = new TableHeaderCell();
-            adiSoyadiCell.Text = "Adi Soyadi";
+            adiSoyadiCell.Text = "Adı Soyadı";
             TableHeaderCell goreviCell = new TableHeaderCell();
-            goreviCell.Text = "G�revi";
+            goreviCell.Text = "Görevi";
             TableHeaderCell izinBasTarCell = new TableHeaderCell();
-            izinBasTarCell.Text = "Ise Giris Tarihi";
+            izinBasTarCell.Text = "İşe Giriş Tarihi";
             TableHeaderCell izinDonemiCell = new TableHeaderCell();
-            izinDonemiCell.Text = "Izin D�nemi";
+            izinDonemiCell.Text = "İzin Dönemi";
             TableHeaderCell izinHakkiCell = new TableHeaderCell();
-            izinHakkiCell.Text = "Izin Hakki";
+            izinHakkiCell.Text = "İzin Hakkı";
             TableHeaderCell kullanilanIzinCell = new TableHeaderCell();
-            kullanilanIzinCell.Text = "Kullanilan Izin";
+            kullanilanIzinCell.Text = "Kullanılan İzin";
             TableHeaderCell kalanIzinCell = new TableHeaderCell();
-            kalanIzinCell.Text = "Kalan Izin";
+            kalanIzinCell.Text = "Kalan İzin";
 
             th.Controls.Add(siraCell);
             th.Controls.Add(adiSoyadiCell);
@@ -380,7 +380,7 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
 
             IzinTable.Controls.Add(th);
         }
-        private void FillIzinTanim()//sadece �cretli ve mazeret izinleri i�in �alissin
+        private void FillIzinTanim()//sadece Ücretli ve mazeret izinleri için çalissin
         {
             IzinTanimDDL.Items.Clear();
             IzinTanim izinTanim = new IzinTanim();
@@ -411,7 +411,7 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
             System.IO.StringWriter tw = new System.IO.StringWriter();
             System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
 
-            //Get the HTML for the control.             
+            //Get the HTML for the control.
             IzinTable.RenderControl(hw);
             //Write the HTML back to the browser.
             //Response.ContentType = application/vnd.ms-excel;
