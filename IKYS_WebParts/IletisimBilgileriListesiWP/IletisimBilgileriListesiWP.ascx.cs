@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -192,8 +193,7 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
         private void FillBirimDDL()
         {
             BirimDDL.Items.Clear();
-            BirimTanim birimDao = new BirimTanim();
-            List<BirimTanim> list = birimDao.SelectAll<BirimTanim>();
+            List<BirimTanim> list = new BirimTanimService().GetAll();
             //ListItem bosLi = new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString());
             //BirimDDL.Items.Add(bosLi);
             foreach (BirimTanim gr in list)
@@ -204,26 +204,25 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
         }
         private Personel PersonelGetir()
         {
-            Personel personel = new Personel();
-
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
+                Personel personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
+                PersonelIdQS = personel.Id.ToString();
+                return personel;
 
             }
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = personel.SelectByUserName(userName);
+                Personel personel = new PersonelService().GetByUserName(userName);
+                PersonelIdQS = personel.Id.ToString();
+                return personel;
             }
-            PersonelIdQS = personel.Id.ToString();
-            return personel;
         }
         private string parentBirimGetir(int parentId)
         {
             string retVal = parentId + ",";
-            BirimTanim bt = new BirimTanim();
-            List<BirimTanim> list = bt.SelectByParentId(parentId);
+            List<BirimTanim> list = new BirimTanimService().GetByParentId(parentId);
             foreach (BirimTanim item in list)
             {
                 //retVal += item.Id + ",";
@@ -239,8 +238,7 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
         private string BirimListesiGetir(int birimId)
         {
             string birimIdStr = string.Empty;
-            BirimTanim bt = new BirimTanim();
-            bt = bt.Select<BirimTanim>(birimId);
+            BirimTanim bt = new BirimTanimService().GetById(birimId);
             if (bt != null)
             {
                 string birim = parentBirimGetir(birimId);
@@ -289,9 +287,8 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
         private void FillIletisimTable(int birimId)
         {
             IletisimTableHeaders();
-            Personel personelDao = new Personel();
             string birimListesiStr = BirimListesiGetir(birimId);
-            DataTable dataTable = personelDao.SelectCalisanPersonelByBirimReturnDT(birimListesiStr);
+            DataTable dataTable = new PersonelService().GetActiveEmployeesByUnitReturnDT(birimListesiStr);
 
             int birimIdTemp = 0;
             int sira = 0;
