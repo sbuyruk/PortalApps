@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -187,8 +188,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
         }
         private DataTable GetDataTable()
         {
-            IzinTalep izinTalep = new IzinTalep();
-            DataTable dataTable = izinTalep.SelectIzinTalepleriReturnDT(0, ProjeConstants.IZINTIPI_UCRETLI_INT, true, false);
+            DataTable dataTable = new IzinTalepService().GetIzinTalepleriReturnDataTable(0, ProjeConstants.IZINTIPI_UCRETLI_INT, true, false);
             return dataTable;
         }
        
@@ -266,20 +266,17 @@ namespace IKYS_WebParts.IzinTalepListesiWP
         {
             DateTime today = DateTime.Today;
             DateTime threeMonthsLater = DateTime.Today.AddMonths(3);
-            IsBilgileri ib = new IsBilgileri();
-            ib = ib.SelectByPersonelId(personel.Id);
+            IsBilgileri ib = new IsBilgileriService().GetByPersonelId(personel.Id);
             if (ib != null)
             {
 
 
-                IzinHareket izinHareket = new IzinHareket();
-                IzinDonem izinDonem = new IzinDonem();
-                izinDonem = izinDonem.SelectByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, today);
+                IzinDonem izinDonem = new IzinDonemService().GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, today);
                 if (izinDonem != null)
                 {
                     DateTime izinDonemiSonu = izinDonem != null ? izinDonem.BitisTarihi : today.AddMonths(1);
                     //DataTable dataTable = izinHareket.SelectByIzinDonemiReturnDataTable(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, izinDonemiBasi, threeMonthsLater);//3 ay içinde yeni izin dönemi basliyor olabilir
-                    DataTable dataTable = izinHareket.SelectByIzinDonemiReturnDataTable(izinDonem.Id, personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
+                    DataTable dataTable = new IzinHareketService().GetByIzinDonemiReturnDataTable(izinDonem.Id, personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
                     int SiraNo = 1;
                     if (dataTable == null)
                     {
@@ -352,18 +349,15 @@ namespace IKYS_WebParts.IzinTalepListesiWP
         private void FillIzinBilgileriTable(Personel personel)
         {
             DateTime today = DateTime.Today;
-            IsBilgileri ib = new IsBilgileri();
-            ib = ib.SelectByPersonelId(personel.Id);
+            IsBilgileri ib = new IsBilgileriService().GetByPersonelId(personel.Id);
             if (ib != null)
             {
 
                 DateTime izinDonemiBasTar = ib.IzinDonemiBasTar;
                 //int izinDonemiSayisi = (today.Year - izinDonemiBasTar.Year);
                 //izinDonemiSayisi = izinDonemiSayisi > 5 ? 5 : izinDonemiSayisi;
-                IzinDonem izinDonem = new IzinDonem();
-                List<IzinDonem> izinDonemiList = izinDonem.SelectByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
+                List<IzinDonem> izinDonemiList = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
 
-                IzinHareket izinHareket = new IzinHareket();
 
                 IzinBilgileriTableHeaders();
                 foreach (IzinDonem izinDonemi in izinDonemiList)
@@ -447,14 +441,13 @@ namespace IKYS_WebParts.IzinTalepListesiWP
             try
             {
                 //IzinTalep_Table da onayDurumu hanesini kayitlara islendi yap
-                IzinTalep izinTalep = new IzinTalep();
-                izinTalep.Aciklama = string.IsNullOrEmpty(AciklamaTxt.Text) ? izinTalep.Aciklama : AciklamaTxt.Text;
-                izinTalep = izinTalep.Select<IzinTalep>(paramIzinTalepIdLbl.Value.ConvertToInt());
+                IzinTalep izinTalep = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt());
                 if (izinTalep != null)
                 {
+                    izinTalep.Aciklama = string.IsNullOrEmpty(AciklamaTxt.Text) ? izinTalep.Aciklama : AciklamaTxt.Text;
                     izinTalep.OnayDurumu = ProjeConstants.PER_IZINTALEBI_KAYITLARAISLENDI_INT;
                     izinTalep.Degistiren = CurrentUserName;
-                    bool kayitlaraIslendi = izinTalep.Update();
+                    bool kayitlaraIslendi = new IzinTalepService().Update(izinTalep);
                     if (kayitlaraIslendi)
                     {
                         bool izinHareketTablosundaVarMi = IzinHareketTablosundaVarMI(izinTalep.Id);
@@ -479,36 +472,33 @@ namespace IKYS_WebParts.IzinTalepListesiWP
                             ih.Sure = izinTalep.Sure;
                             ih.Birim = izinTalep.Birim;
                             
-                            int izinHareketId = ih.Save();
+                            int izinHareketId = new IzinHareketService().Save(ih);
                             if (izinHareketId > 0)
                             {
                                 if (ih.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT) 
                                 {
-                                    IzinDonem izinDonemi = new IzinDonem();
-                                    izinDonemi = izinDonemi.Select<IzinDonem>(ih.IzinDonemId);
+                                    IzinDonem izinDonemi = new IzinDonemService().GetById(ih.IzinDonemId);
                                     if (izinDonemi != null)
                                     {
                                         ih.OncekiIzinStr = izinDonemi.KalanIzin.ToString();
                                         ih.OncekiIzinStr = izinDonemi.KalanIzin.ToString();
                                         ih.KullanilanIzinStr = izinTalep.Sure;
-                                        izinDonemi.KullanilanIzinGuncelle(izinDonemi, ih.Sure, true, CurrentUserName);
+                                        new IzinDonemService().UpdateUsedLeave(izinDonemi, ih.Sure, true, CurrentUserName);
                                         ih.KalanIzinStr = izinDonemi.KalanIzin.ToString();
-                                        ih.Update();//kalan izin hesaplandiktan sonra izinHareket tablosuna yazsin
+                                        new IzinHareketService().Update(ih);//kalan izin hesaplandiktan sonra izinHareket tablosuna yazsin
                                     }
                                 }
                                 if (ih.IzinTipi == ProjeConstants.IZINTIPI_UCRETSIZ_INT)
                                 {
 
-                                    IsBilgileri ib = new IsBilgileri();
-                                    ib = ib.Select<IsBilgileri>(ih.PersonelId);
+                                    IsBilgileri ib = new IsBilgileriService().GetById(ih.PersonelId);
                                     string baslamaTarStr = ib == null ? "" : ib.BaslamaTar.ConvertToDatetimeEmptyIfNull();
                                     string izinDonemiBasTarStr = ib == null ? "" : ib.IzinDonemiBasTar.ConvertToDatetimeEmptyIfNull();
 
                                     izinDonemiBasTarStr = string.IsNullOrEmpty(izinDonemiBasTarStr) ? baslamaTarStr : izinDonemiBasTarStr;
                                     if (!string.IsNullOrEmpty(izinDonemiBasTarStr))
                                     {
-                                        Personel personel = new Personel();
-                                        personel = personel.Select<Personel>(ih.PersonelId);
+                                        Personel personel = new PersonelService().GetById(ih.PersonelId);
                                         if ((personel != null) && (!personel.Asker_sivil.Equals(ProjeConstants.PER_ASKER_INT)))//asker degilse islem yap
                                         {
 
@@ -518,7 +508,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
                                             ib.IzinDonemiBasTar = yeniIzinDonemiBastar;
                                             try
                                             {
-                                                bool issaved = ib.Update();
+                                                bool issaved = new IsBilgileriService().Update(ib);
                                                 if (issaved)
                                                 {
 
@@ -562,8 +552,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
         private bool IzinHareketTablosundaVarMI(int izinTalepId)
         {
             bool kayitVarMi = false;
-            IzinHareket ih = new IzinHareket();
-            ih = ih.SelectByIzinTalepId(izinTalepId);
+            IzinHareket ih = new IzinHareketService().GetByIzinTalepId(izinTalepId);
             if (ih == null)
             {
                 kayitVarMi = false;
@@ -579,14 +568,13 @@ namespace IKYS_WebParts.IzinTalepListesiWP
             try
             {
                 //IzinTalep_Table da onayDurumu hanesini kontrol edildi yap
-                IzinTalep izinTalep = new IzinTalep();
-                izinTalep = izinTalep.Select<IzinTalep>(paramIzinTalepIdLbl.Value.ConvertToInt());
+                IzinTalep izinTalep = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt());
                 if (izinTalep != null)
                 {
                     izinTalep.OnayDurumu = ProjeConstants.PER_IZINTALEBI_KONTROLEDILDI_INT;
                     izinTalep.Aciklama = string.IsNullOrEmpty(AciklamaTxt.Text) ? izinTalep.Aciklama : AciklamaTxt.Text;
                     izinTalep.Degistiren = CurrentUserName;
-                    bool kontroledildi = izinTalep.Update();
+                    bool kontroledildi = new IzinTalepService().Update(izinTalep);
                     if (kontroledildi)
                     {
                         if (izinTalep.EPostaGonder)
@@ -611,14 +599,13 @@ namespace IKYS_WebParts.IzinTalepListesiWP
         protected void ReddetBtn_Click(object sender, EventArgs e)
         {
             //IzinTalep_Table da onayDurumu hanesini reddedildi 2 yap
-            IzinTalep izinTalep = new IzinTalep();
-            izinTalep.Aciklama = string.IsNullOrEmpty(AciklamaTxt.Text) ? izinTalep.Aciklama : AciklamaTxt.Text;
-            izinTalep = izinTalep.Select<IzinTalep>(paramIzinTalepIdLbl.Value.ConvertToInt());
+            IzinTalep izinTalep = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt());
             if (izinTalep != null)
             {
+                izinTalep.Aciklama = string.IsNullOrEmpty(AciklamaTxt.Text) ? izinTalep.Aciklama : AciklamaTxt.Text;
                 izinTalep.OnayDurumu = ProjeConstants.PER_IZINTALEBI_REDDEDILDI;
                 izinTalep.Degistiren = CurrentUserName;
-                bool reddedildi = izinTalep.Update();
+                bool reddedildi = new IzinTalepService().Update(izinTalep);
                 if (reddedildi)
                 {
                     if (izinTalep.EPostaGonder)
@@ -644,8 +631,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
         protected void IzinHareketleriBtn_Click(object sender, EventArgs e)
         {
             int personelId = paramPersonelIdLbl.Value.ConvertToInt();
-            Personel personel = new Personel();
-            personel = personel.Select<Personel>(personelId);
+            Personel personel = new PersonelService().GetById(personelId);
             if (personel != null)
             {
                 PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
@@ -667,12 +653,10 @@ namespace IKYS_WebParts.IzinTalepListesiWP
 
         private void FillIzinTalebi(Personel personel)
         {
-            IzinTalep izinTalebi = new IzinTalep();
-            izinTalebi = izinTalebi.Select<IzinTalep>(paramIzinTalepIdLbl.Value.ConvertToInt());
+            IzinTalep izinTalebi = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt());
             if (izinTalebi != null)
             {
-                IzinTanim izinTanim = new IzinTanim();
-                izinTanim = izinTanim.Select<IzinTanim>(izinTalebi.IzinTipi);
+                IzinTanim izinTanim = new IzinTanimService().GetById(izinTalebi.IzinTipi);
                 string izinTanimStr = izinTanim == null ? "" : izinTanim.Adi;
                 AciklamaTxt.Text = izinTalebi.Aciklama;
                 AdresLbl.Text = "Izin Adresi : " + izinTalebi.Adres;
