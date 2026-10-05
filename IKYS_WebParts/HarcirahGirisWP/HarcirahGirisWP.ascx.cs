@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -143,8 +144,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
         {
             ddl.Items.Clear();
 
-            Harcirah harcirahDao = new Harcirah();
-            DataTable dt = harcirahDao.SelectAllReturnDataTable();
+            DataTable dt = new HarcirahService().GetAllReturnDataTable();
             if (dt == null || dt.Rows.Count == 0)
             {
                 ddl.Items.Add(new ListItem(ProjeConstants.BOS, ProjeConstants.BOS_INT.ToString()));
@@ -195,8 +195,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
 
                 DateTime baslangicTarihi = YeniBaslangicTarihiTxt.Text.ConvertToDatetime();
 
-                Harcirah harcirahDao = new Harcirah();
-                List<Harcirah> mevcutKayitlar = harcirahDao.SelectAll<Harcirah>();
+                List<Harcirah> mevcutKayitlar = new HarcirahService().GetAll();
 
                 List<Harcirah> seciliUlkeKayitlari = mevcutKayitlar
                     .Where(x => string.Equals((x.Ulke ?? string.Empty).Trim(), seciliUlke.Trim(), StringComparison.OrdinalIgnoreCase))
@@ -217,7 +216,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
                     {
                         eski.BitisTarihi = oncekiBitis;
                         eski.Degistiren = CurrentUserName;
-                        eski.Update();
+                        new HarcirahService().Update(eski);
                     }
                 }
 
@@ -268,7 +267,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
                         Olusturan = CurrentUserName
                     };
 
-                    int id = yeni.Save();
+                    int id = new HarcirahService().Save(yeni);
                     if (id > 0)
                     {
                         eklendi++;
@@ -305,8 +304,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
 
             AyrintiTable.Rows.Add(headerRow);
 
-            Harcirah harcirahDao = new Harcirah();
-            List<Harcirah> list = harcirahDao.SelectAll<Harcirah>();
+            List<Harcirah> list = new HarcirahService().GetAll();
 
             if (!string.IsNullOrWhiteSpace(SelectedUlkeFilter))
             {
@@ -390,7 +388,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
                         item.Aciklama = aciklamaTxt.Text;
                         item.Degistiren = CurrentUserName;
 
-                        if (item.Update())
+                        if (new HarcirahService().Update(item))
                         {
                             MessageHelper.PublishMessage("Güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
                             RedirectToSelf();
@@ -419,7 +417,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
                     {
                         item.Degistiren = CurrentUserName;
 
-                        if (item.Delete())
+                        if (new HarcirahService().Delete(item))
                         {
                             MessageHelper.PublishMessage("Silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
                             RedirectToSelf();
