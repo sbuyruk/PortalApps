@@ -437,8 +437,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
         private void FillBulunmamaSebebiDDL()
         {
             BulunmamaSebebiDDL.Items.Clear();
-            BulunmamaSebebi bs = new BulunmamaSebebi();
-            List<BulunmamaSebebi> list = bs.SelectAll<BulunmamaSebebi>();
+            List<BulunmamaSebebi> list = new BulunmamaSebebiService().GetAll();
 
             foreach (BulunmamaSebebi item in list)
             {

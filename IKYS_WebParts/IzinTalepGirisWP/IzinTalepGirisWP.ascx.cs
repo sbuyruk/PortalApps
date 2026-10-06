@@ -816,8 +816,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
         private void FillIzinTanim()
         {
             IzinTanimDDL.Items.Clear();
-            IzinTanim izinTanim = new IzinTanim();
-            List<IzinTanim> list = izinTanim.SelectAll<IzinTanim>();
+            List<IzinTanim> list = new IzinTanimService().GetAll();
             foreach (IzinTanim item in list)
             {
                 ListItem li = new ListItem(item.Adi.ReturnEmptyIfNull().ToString(), item.Id.ReturnZeroIfNull().ToString());

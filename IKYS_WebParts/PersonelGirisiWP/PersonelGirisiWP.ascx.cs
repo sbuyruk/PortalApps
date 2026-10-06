@@ -1320,8 +1320,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
         private void FillUnvanTanimDDL()
         {
             UnvanTanimDDL.Items.Clear();
-            UnvanTanim unvanDao = new UnvanTanim();
-            List<UnvanTanim> list = unvanDao.SelectAll<UnvanTanim>();
+            List<UnvanTanim> list = new UnvanTanimService().GetAll();
             foreach (UnvanTanim un in list)
             {
                 ListItem li = new ListItem(un.Adi.ReturnEmptyIfNull().ToString(), un.Id.ReturnZeroIfNull().ToString());
@@ -1456,8 +1455,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
         {
             TahsiliDDL.Items.Clear();
 
-            TahsilTanim tahsilTanim = new TahsilTanim();
-            List<TahsilTanim> list = tahsilTanim.SelectAll<TahsilTanim>();
+            List<TahsilTanim> list = new TahsilTanimService().GetAll();
             foreach (TahsilTanim item in list)
             {
                 TahsiliDDL.Items.Add(new ListItem(item.TahsilDurumu, item.Id.ToString()));

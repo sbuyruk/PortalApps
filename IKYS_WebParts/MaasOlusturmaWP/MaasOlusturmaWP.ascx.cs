@@ -142,7 +142,7 @@ namespace IKYS_WebParts.MaasOlusturmaWP
                 //eger varsa, o tarihe ait maas listesi zaten olusturulmus demektir.
                 //o yüzden bu tarihe ait maas listesi tekrar olusturulmayacak.
                 // olusturulan kayitlar MaasHareket_Table'dan çekilecek.
-                List<MaasHareket> maaslist = maasHareket.SelectMaasListesiByTarih(tarih);
+                List<MaasHareket> maaslist = new MaasHareketService().GetMaasListesiByTarih(tarih);
                 List<MaasListItem> hazirliste = new List<MaasListItem>();
                 foreach (MaasHareket item in maaslist)
                 {
@@ -429,7 +429,7 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
             // Eger varsa, grupId'sini belirle
             int grupId = maasHareket.GrupId;
             // MaasHareket_Table'dan grupId'ye göre sil
-            bool isDeleted = maasHareket.DeleteByGrupId(grupId);
+            bool isDeleted = new MaasHareketService().DeleteByGrupId(new MaasHareket(), grupId);
 
         }
         private void KaydetModalAc()

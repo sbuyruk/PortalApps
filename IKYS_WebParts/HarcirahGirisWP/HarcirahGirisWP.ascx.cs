@@ -539,8 +539,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
                 return;
             }
 
-            Harcirah harcirahDao = new Harcirah();
-            List<Harcirah> list = harcirahDao.SelectAll<Harcirah>();
+            List<Harcirah> list = new HarcirahService().GetAll();
 
             list = list
                 .Where(x => x.SeriId > 0)

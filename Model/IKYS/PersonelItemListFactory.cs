@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model.Services.IKYS;
 using Utility.ProjeGlobal;
 
 namespace Model.IKYS
@@ -83,8 +84,7 @@ namespace Model.IKYS
             _CalisanPersonelItemList = new List<PersonelItem>();
             _AyrilanPersonelItemList = new List<PersonelItem>();
 
-            Personel personelDao = new Personel();
-            List<Personel> PersonelList = personelDao.SelectAll<Personel>();
+            List<Personel> PersonelList = new PersonelService().GetAll();
             foreach (var item in PersonelList)
             {
                 PersonelItem personelItem = new PersonelItem();
