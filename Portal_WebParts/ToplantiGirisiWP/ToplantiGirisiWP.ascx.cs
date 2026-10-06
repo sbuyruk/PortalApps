@@ -671,7 +671,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
 
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
 
             }
             else

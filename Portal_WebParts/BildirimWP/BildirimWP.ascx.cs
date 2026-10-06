@@ -69,8 +69,7 @@ namespace Portal_WebParts.BildirimWP
             //kayıtlar varsa bu kayıtları bir listeye koy
             if (personel != null && personel.Id > 0)
             {
-                BirimTanim birimTanim = new BirimTanim();
-                List<BirimTanim> amirOlduguBirimler = birimTanim.SelectByAmirId(personel.Id);
+                List<BirimTanim> amirOlduguBirimler = new BirimTanimService().GetByAmirId(personel.Id);
                 foreach (var item in amirOlduguBirimler)
                 {
                     List<GorevOnay> gorevOnayListesi = new GorevOnayService().SelectByBirimIdAndDurum(item.Id, AmirOnayDurumu.OnayBekliyor);

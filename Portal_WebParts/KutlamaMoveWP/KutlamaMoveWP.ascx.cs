@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -119,10 +120,10 @@ namespace Portal_WebParts.KutlamaMoveWP
             do
             {
 
-                List<Personel> dogumGunuKutlanacaklar = personelDao.SelectByDogumGunu(tarih.Day, tarih.Month);
+                List<Personel> dogumGunuKutlanacaklar = new PersonelService().GetByBirthday(tarih.Day, tarih.Month);
                 dogumGunuKutlanacakPersonel.AddRange(dogumGunuKutlanacaklar);
 
-                List<Personel> evlilikYildonumuGunuKutlanacaklar = personelDao.SelectByEvlilikTar(tarih.Day, tarih.Month);
+                List<Personel> evlilikYildonumuGunuKutlanacaklar = new PersonelService().GetByMarriageDate(tarih.Day, tarih.Month);
                 evlilikYildonumuKutlanacakPersonel.AddRange(evlilikYildonumuGunuKutlanacaklar);
 
                 tarih =tarih.AddDays(1);

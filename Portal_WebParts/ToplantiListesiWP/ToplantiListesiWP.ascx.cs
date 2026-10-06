@@ -1,4 +1,5 @@
 using Model.IKYS;
+using Model.Services.IKYS;
 using Model.Portal;
 using Model.Ortak;
 using System;
@@ -384,13 +385,13 @@ namespace Portal_WebParts.ToplantiListesiWP
 
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
 
             }
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = personel.SelectByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName);
                 if (personel != null)
                     PersonelIdQS = personel.Id.ToString();
                 else
@@ -458,8 +459,7 @@ namespace Portal_WebParts.ToplantiListesiWP
         private string ParseKoordinator(int koordinator, int yetkili)
         {
             string koordinatorStr = string.Empty;
-            BirimTanim birimTanim = new BirimTanim();
-            birimTanim = birimTanim.Select<BirimTanim>(koordinator);
+            BirimTanim birimTanim = new BirimTanimService().GetById(koordinator);
             if (birimTanim != null)
             {
                 koordinatorStr = birimTanim.KisaAdi;
