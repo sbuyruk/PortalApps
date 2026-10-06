@@ -264,8 +264,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
             Personel personel = IKYSOrtak.PersonelGetir(CurrentUserName);
             if (personel != null)
             {
-                IsBilgileri isBilgileri = new IsBilgileri();
-                isBilgileri = isBilgileri.Select<IsBilgileri>(personel.Id);
+                IsBilgileri isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id);
                 if (isBilgileri != null)
                 {
                     BirimTanim birimTanim = new BirimTanimService().GetById(isBilgileri.BirimId);

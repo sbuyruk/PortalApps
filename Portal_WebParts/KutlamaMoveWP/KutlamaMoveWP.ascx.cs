@@ -57,7 +57,7 @@ namespace Portal_WebParts.KutlamaMoveWP
             gt = new GorevTanimService().GetByGorevId(ProjeConstants.GOREV_GENELMUDUR_INT);
             if (gt != null)
             {
-                genelMudur = genelMudur.Select<Personel>(gt.PersonelId);
+                genelMudur = new PersonelService().GetById(gt.PersonelId);
                 if (genelMudur != null)
                 {
                     GenelMudur = genelMudur.Adi + " " + genelMudur.Soyadi;

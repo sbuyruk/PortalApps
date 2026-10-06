@@ -1,6 +1,7 @@
 using Model.Ortak;
 using Model.Services.Ortak;
 using Model.TBYS;
+using Model.Services.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -110,7 +111,7 @@ namespace TBYS_WebParts.TasinmazBagisciBilgiListesiWP
 
                 string talepler = string.Empty;
                 BagisciTalepleri bagisciTalepleridao = new BagisciTalepleri();
-                List<BagisciTalepleri> talepList = bagisciTalepleridao.SelectByBagisciId(tasinmazBagisci.Id);
+                List<BagisciTalepleri> talepList = new BagisciTalepleriService().GetByBagisciId(tasinmazBagisci.Id);
            
                 foreach (BagisciTalepleri talep in talepList)
                 {
