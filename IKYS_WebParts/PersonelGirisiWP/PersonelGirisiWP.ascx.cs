@@ -432,7 +432,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
         {
             BirimDDL.Items.Clear();
             BirimTanim birimDao = new BirimTanim();
-            List<BirimTanim> list = birimDao.SelectAll<BirimTanim>();
+            List<BirimTanim> list = new BirimTanimService().GetAll();
             ListItem bosLi = new ListItem("", "0");
             BirimDDL.Items.Add(bosLi);
             foreach (BirimTanim gr in list)
@@ -445,7 +445,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
         {
             KadrosuzBirimDDL.Items.Clear();
             BirimTanim birimDao = new BirimTanim();
-            List<BirimTanim> list = birimDao.SelectAll<BirimTanim>();
+            List<BirimTanim> list = new BirimTanimService().GetAll();
             ListItem bosLi = new ListItem("", "0");
             KadrosuzBirimDDL.Items.Add(bosLi);
             foreach (BirimTanim gr in list)

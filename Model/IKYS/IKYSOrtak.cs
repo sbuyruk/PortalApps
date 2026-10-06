@@ -2,6 +2,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
 using Model.IKYS;
+using Model.Services.IKYS;
 using Model.Portal;
 using Model.TBYS;
 using System;
@@ -412,7 +413,7 @@ namespace Model.Ortak
             else
             {
                 GorevOnay gorevOnay = new GorevOnay();
-                gorevOnay = gorevOnay.Select<GorevOnay>(gorevOnayId);
+                gorevOnay = new GorevOnayService().GetById(gorevOnayId);
                 if (gorevOnay != null)
                 {
                     string bastarBittar = gorevOnay.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + gorevOnay.BitisTarihi.ConvertToDatetimeEmptyIfNull();
@@ -598,8 +599,7 @@ namespace Model.Ortak
         private static string UstBirimGetir(int parentId)
         {
             string retVal = parentId + ",";
-            BirimTanim bt = new BirimTanim();
-            List<BirimTanim> list = bt.SelectByParentId(parentId);
+            List<BirimTanim> list = new BirimTanimService().GetByParentId(parentId);
             foreach (BirimTanim item in list)
             {
                 //retVal += item.Id + ",";
@@ -623,8 +623,7 @@ namespace Model.Ortak
                 if (ib != null)
                 {
                     int birimId = ib.BirimId;
-                    BirimTanim bt = new BirimTanim();
-                    bt = bt.Select<BirimTanim>(birimId);
+                    BirimTanim bt = new BirimTanimService().GetById(birimId);
                     if ((bt != null) && (bt.AmirId == personel.Id))
                     {
                         string birim = UstBirimGetir(birimId);

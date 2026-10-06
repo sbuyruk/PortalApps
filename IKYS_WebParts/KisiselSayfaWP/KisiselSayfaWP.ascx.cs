@@ -1339,7 +1339,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
             {
                 string gorevOnayIdStr = string.Empty;
                 GorevOnay gorevOnay = new GorevOnay();
-                DataTable dataTable = gorevOnay.SelectAllReturnDT(personel.Id, DateTime.Today.AddYears(-5));// PersonelIdQS.ConvertToInt());
+                DataTable dataTable = new GorevOnayService().GetAllReturnDataTable(personel.Id, DateTime.Today.AddYears(-5));// PersonelIdQS.ConvertToInt());
 
                 List<GorevOnayListItem> list = new List<GorevOnayListItem>();
 
@@ -1460,7 +1460,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
             {
                 List<DereceKademeListItem> list = new List<DereceKademeListItem>();
                 DereceKademeDegisim dereceKademe = new DereceKademeDegisim();
-                DataTable dataTable = dereceKademe.SelectAllByPersonelIdReturnDT(personel.Id);
+                DataTable dataTable = new DereceKademeDegisimService().GetAllByPersonelIdReturnDataTable(personel.Id);
                 foreach (DataRow row in dataTable.Rows)
                 {
                     string derece = row["Derece"].ReturnEmptyIfNull().ToString();
