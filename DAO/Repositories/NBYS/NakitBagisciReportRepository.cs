@@ -96,7 +96,8 @@ namespace DAO.Repositories.NBYS
             DateTime bitisTarihi,
             bool sadeceBelgeOlusturulmadi,
             bool durumFiltrele,
-            string durum)
+            string durum,
+            int duzenliBagisciBelgesiId)
         {
             SqlQuery query = new SqlQuery(@"
                 SELECT A.BagisciId aBagisciId,A.BagisciAdi aBagisciAdi
@@ -104,7 +105,7 @@ namespace DAO.Repositories.NBYS
                     ,A.BaslamaTarihi aBaslamaTarihi
                     ,A.Tutar aTutar,A.BagisAdedi aBagisAdedi,A.BagisToplami aBagisToplami
                     ,A.Aktif aAktif
-                    ,A.ArmaganId aArmaganId, A.NakitBagisHareketId aNakitBagisHareketId
+                    ,ISNULL(E.Id, 0) aArmaganId, A.NakitBagisHareketId aNakitBagisHareketId
                     ,A.Telefon aTelefon,A.Eposta aEposta
                     ,A.EslesmeBilgisi aEslesmeBilgisi,A.Aciklama aAciklama
                     ,ISNULL(B.Adi, 'BAGISÇI BULUNAMADI') AS bAdi
@@ -127,19 +128,37 @@ namespace DAO.Repositories.NBYS
                     LEFT JOIN NakitBagisci_Table B ON A.BagisciId = B.Id
                     LEFT OUTER JOIN Il_Table C ON C.Id = B.Ili
                     LEFT OUTER JOIN Ilce_Table D ON D.Id = B.Ilcesi AND D.IlId = C.Id
-                    LEFT JOIN Armagan_Table E ON E.Id = A.ArmaganId
+                    OUTER APPLY (
+                        SELECT TOP 1 G.Id, G.Durum, G.KacinciBelge
+                        FROM Armagan_Table G
+                        WHERE G.BagisciId = A.BagisciId
+                            AND G.ArmaganTanimId = @DuzenliBagisciBelgesiId
+                            AND ISNULL(G.BelgeGecersizMi, 0) != 1
+                            AND A.BagisAdedi >= 12
+                            AND ISNULL(NULLIF(G.KacinciBelge, 0), 1) = A.BagisAdedi / 12
+                        ORDER BY G.Id DESC
+                    ) E
                     LEFT JOIN Bolge_Table F ON F.Id = C.BolgeId
                 WHERE A.Aktif = 1
                     AND BaslamaTarihi >= @BaslangicTarihi
                     AND BaslamaTarihi < @BitisTarihi
-                    AND (@SadeceBelgeOlusturulmadi = 0 OR A.ArmaganId = 0)
+                    AND (@SadeceBelgeOlusturulmadi = 0 OR E.Id IS NULL)
                     AND (@DurumFiltrele = 0 OR E.Durum = @Durum)");
+            query.AddParameter("@DuzenliBagisciBelgesiId", duzenliBagisciBelgesiId);
             query.AddParameter("@BaslangicTarihi", baslangicTarihi);
             query.AddParameter("@BitisTarihi", bitisTarihi);
             query.AddParameter("@SadeceBelgeOlusturulmadi", sadeceBelgeOlusturulmadi);
             query.AddParameter("@DurumFiltrele", durumFiltrele);
             query.AddParameter("@Durum", durum ?? string.Empty);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectDuzenliBagisBelgeEsikleri()
+        {
+            return db.SelectFromDb(new SqlQuery(@"SELECT 12 BagisAdedi UNION SELECT 24 UNION SELECT 36
+                UNION SELECT BagisAdedi FROM DuzenliNakitBagisci_Table
+                    WHERE Aktif=1 AND BagisAdedi>0 AND BagisAdedi%12=0
+                ORDER BY BagisAdedi"), "");
         }
 
         public DataTable SelectByBagisTarihiBagisSayisi(NakitBagisciAdresRaporKriteri kriter)

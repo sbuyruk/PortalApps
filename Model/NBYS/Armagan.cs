@@ -23,6 +23,7 @@ namespace Model.NBYS
         public bool BagisMiktariYazmasin { get; set; }
         public bool CokluBagis { get; set; }
         public bool DuzenliBagis { get; set; }= false;
+        // Düzenli bağışta hak kazanılan 12 bağışlık yıl: 12 => 1, 24 => 2, 36 => 3.
         public int KacinciBelge { get; set; }= 0;
     }
 }

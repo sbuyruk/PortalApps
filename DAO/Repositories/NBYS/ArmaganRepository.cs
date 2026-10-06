@@ -99,6 +99,42 @@ namespace DAO.Repositories.NBYS
             return table.Rows.Count == 0 ? 0 : Convert.ToInt32(table.Rows[0][0]);
         }
 
+        public DataTable SelectByBagisciIdTanimIdBelgeSirasi(int bagisciId, int armaganTanimId, int belgeSirasi)
+        {
+            SqlQuery query = new SqlQuery(@"SELECT TOP 1 * FROM Armagan_Table
+                WHERE ISNULL(BelgeGecersizMi, 0)!=1 AND BagisciId=@BagisciId
+                    AND ArmaganTanimId=@ArmaganTanimId
+                    AND ISNULL(NULLIF(KacinciBelge, 0), 1)=@BelgeSirasi
+                ORDER BY Id DESC");
+            query.AddParameter("@BagisciId", bagisciId);
+            query.AddParameter("@ArmaganTanimId", armaganTanimId);
+            query.AddParameter("@BelgeSirasi", belgeSirasi);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable InsertDuzenliBagisIfMissing<T>(T entity)
+        {
+            SqlQuery query = queryBuilder.BuildInsert(entity, TableName);
+            // Aynı bağış yılına gelen eşzamanlı istekler de mevcut belgeyi kullanır.
+            query.Sql = @"SET XACT_ABORT ON;
+                BEGIN TRANSACTION;
+                DECLARE @MevcutId int, @Olusturuldu bit = 0;
+                SELECT TOP 1 @MevcutId=Id FROM Armagan_Table WITH (UPDLOCK, HOLDLOCK)
+                WHERE BagisciId=@BagisciId AND ArmaganTanimId=@ArmaganTanimId
+                    AND ISNULL(BelgeGecersizMi, 0)!=1
+                    AND ISNULL(NULLIF(KacinciBelge, 0), 1)=@KacinciBelge
+                ORDER BY Id DESC;
+                IF @MevcutId IS NULL
+                BEGIN
+                    " + query.Sql + @";
+                    SET @MevcutId=CONVERT(int, SCOPE_IDENTITY());
+                    SET @Olusturuldu=1;
+                END;
+                COMMIT TRANSACTION;
+                SELECT @MevcutId Id, @Olusturuldu Olusturuldu;";
+            return db.SelectFromDb(query, "");
+        }
+
         public bool UpdateDurumByBolge(
             string fromDurum, string toDurum, string baslangic, string bitis,
             int armaganTanimId, int? bolgeId)

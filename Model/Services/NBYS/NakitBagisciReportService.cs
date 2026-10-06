@@ -75,7 +75,13 @@ namespace Model.Services.NBYS
                 bitisTarihi,
                 sadeceBelgeOlusturulmadi,
                 durumFiltrele,
-                durum);
+                durum,
+                ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID);
+        }
+
+        public DataTable GetDuzenliBagisBelgeEsikleri()
+        {
+            return repository.SelectDuzenliBagisBelgeEsikleri();
         }
 
         public DataTable GetSecilmemisFaaliyetKatilimcilari()

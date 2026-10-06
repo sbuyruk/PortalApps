@@ -204,6 +204,32 @@ namespace Model.Services.NBYS
             return armagan.Id;
         }
 
+        public Armagan GetDuzenliBagisByBelgeSirasi(int bagisciId, int belgeSirasi)
+        {
+            return Map(repository.SelectByBagisciIdTanimIdBelgeSirasi(
+                bagisciId, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID, belgeSirasi)).FirstOrDefault();
+        }
+
+        public int SaveDuzenliBagisIfMissing(Armagan armagan)
+        {
+            if (armagan == null)
+                throw new ArgumentNullException("armagan");
+            if (!armagan.DuzenliBagis || armagan.KacinciBelge < 1
+                || armagan.ArmaganTanimId != ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID)
+                throw new ArgumentException("Geçerli bir düzenli bağış yılı belirtilmelidir.", "armagan");
+
+            armagan.OlusturmaTarihi = DateTime.Now;
+            armagan.Olusturan = UtilityHelper.GetCurrentUserName();
+            DataTable result = repository.InsertDuzenliBagisIfMissing(armagan);
+            armagan.Id = Convert.ToInt32(result.Rows[0]["Id"]);
+            if (Convert.ToBoolean(result.Rows[0]["Olusturuldu"]) && ProjeConstants.NBYS_SAVE_LOG)
+            {
+                new OlayKayit().GirisOlayKaydet(
+                    armagan, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGAN);
+            }
+            return armagan.Id;
+        }
+
         public bool Update(Armagan armagan)
         {
             if (armagan == null)
