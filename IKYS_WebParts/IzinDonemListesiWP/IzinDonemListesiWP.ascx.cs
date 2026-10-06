@@ -510,6 +510,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                 ModalTitleLbl.Text = personel.Adi + " " + personel.Soyadi;
 
                 List<IzinDonem> list = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
+                IzinDonem izinDonemi = null;
 
                 //modal açilista Dönem basi ve sonunu dolu getirsin en eski dönemden önceki bir yil degerini doldursun
                 izinDonemi = list.FirstOrDefault<IzinDonem>();//en eski dönem (baslangiçTarihine göre sirali oldugundan)

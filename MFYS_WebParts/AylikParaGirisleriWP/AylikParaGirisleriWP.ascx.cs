@@ -1,6 +1,7 @@
 using Model.NBYS;
 using Model.Ortak;
 using Model.TBYS;
+using Model.Services.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -221,7 +222,7 @@ namespace MFYS_WebParts.AylikParaGirisleriWP
                 IslemDDL.Items.Clear();
                 IslemDDL.Items.Add(new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString()));
                 OdemeSebebiTanim odemeSebebiTanim = new OdemeSebebiTanim();
-                List<OdemeSebebiTanim> list = odemeSebebiTanim.SelectAll<OdemeSebebiTanim>();
+                List<OdemeSebebiTanim> list = new OdemeSebebiTanimService().GetAll();
                 foreach (OdemeSebebiTanim item in list)
                 {
                     IslemDDL.Items.Add(new ListItem(item.OdemeSebebi, item.Id.ToString()));

@@ -691,7 +691,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
             if (personel != null)
             {
                 IsBilgileri ib = new IsBilgileri();
-                ib = ib.SelectByPersonelId(personel.Id);
+                ib = new IsBilgileriService().GetByPersonelId(personel.Id);
 
                 if (ib != null)
                 {

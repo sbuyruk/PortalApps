@@ -956,7 +956,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 AciklamaTxt.Text = "Süt İzni (Günde 1 Buçuk saat)";
                 KullanilmayanLbl.Text = "Not: Süt izni girdiğiniz saatten başlayarak günlük 1 buçuk saat olarak uygulanır.";
                 IletisimBilgileri ib = new IletisimBilgileri();
-                ib = new IsBilgileriService().GetByPersonelId(PersonelIdQS.ConvertToInt());
+                ib = new IletisimBilgileriService().GetByPersonelId(PersonelIdQS.ConvertToInt());
                 if (ib != null)
                 {
                     Ilce ilce = new IlceService().GetById(ib.Ilcesi);
@@ -1305,7 +1305,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             int izinTipi = IzinTanimDDL.SelectedItem.Value.ConvertToInt();
 
             IzinTalep izinTalep = new IzinTalep();
-            izinTalep = izinTalep.SelectIslemiDevamEdenIzinTalebiVarMi(personelId, izinTipi);
+            izinTalep = new IzinTalepService().GetIslemiDevamEden(personelId, izinTipi);
             if (izinTalep != null)
             {
                 izinTalebiVarMi = true;

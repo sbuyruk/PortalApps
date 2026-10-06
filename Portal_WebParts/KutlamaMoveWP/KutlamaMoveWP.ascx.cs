@@ -54,7 +54,7 @@ namespace Portal_WebParts.KutlamaMoveWP
             GenelMudurUnvani = ProjeConstants.GOREV_GENELMUDUR;
 
             GorevTanim gt = new GorevTanim();
-            gt = gt.SelectByGorevId(ProjeConstants.GOREV_GENELMUDUR_INT);
+            gt = new GorevTanimService().GetByGorevId(ProjeConstants.GOREV_GENELMUDUR_INT);
             if (gt != null)
             {
                 genelMudur = genelMudur.Select<Personel>(gt.PersonelId);
@@ -144,7 +144,7 @@ namespace Portal_WebParts.KutlamaMoveWP
             else
             {
                 ResmiTatil resmiTatil = new ResmiTatil();
-                return resmiTatil.ResmiTatilMi(tarih);
+                return new ResmiTatilService().IsResmiTatil(tarih);
             }
                 
         }
@@ -182,7 +182,7 @@ namespace Portal_WebParts.KutlamaMoveWP
                 {
 
                     Kimlik kimlik = new Kimlik();
-                    kimlik = kimlik.SelectByPersonelId(personel.Id);
+                    kimlik = new KimlikService().GetByPersonelId(personel.Id);
                     string tarih = string.Empty;
                     if (kimlik != null)
                     {
@@ -205,7 +205,7 @@ namespace Portal_WebParts.KutlamaMoveWP
                 else
                 {
                     Kimlik kimlik = new Kimlik();
-                    kimlik = kimlik.SelectByPersonelId(personel.Id);
+                    kimlik = new KimlikService().GetByPersonelId(personel.Id);
                     string tarih = string.Empty;
                     if (kimlik != null)
                     {

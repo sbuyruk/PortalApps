@@ -350,14 +350,14 @@ namespace Portal_WebParts.ToplantiListesiWP
                         {
 
                             IsBilgileri ib = new IsBilgileri();
-                            ib = ib.SelectByPersonelId(personel.Id);
+                            ib = new IsBilgileriService().GetByPersonelId(personel.Id);
 
                             if (ib != null)
                             {
                                 goruntuleyenininBirimi = ib.BirimId;
                             }
 
-                            ib = ib.SelectByPersonelId(toplantiYetkilisi);
+                            ib = new IsBilgileriService().GetByPersonelId(toplantiYetkilisi);
 
                             if (ib != null)
                             {
