@@ -175,7 +175,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
 
         private void DuyuruDuzenlemeyiAc()
         {
-            TitleLbl.Text = "Duyuru Düzenleme";
+            TitleLbl.Text = "Duyuru DÃ¼zenleme";
             TitleLbl.CssClass = "col-form-label text-primary fw-bold mb-1";
             BaslangicSaatiDDLDoldur();
             BitisSaatiDDLDoldur();
@@ -262,7 +262,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 BitisSaatiDDLDoldur();
 
                 TekrarlaDDLDoldur();
-                TümPersoneliSecilenmeyenPersonelListesieEkle();
+                TÃ¼mPersoneliSecilenmeyenPersonelListesieEkle();
                 PersonelDDLDoldur();
             }
 
@@ -337,7 +337,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 PersonelDDL.Items.Add(li);
             }
         }
-        private void TümPersoneliSecilenPersonelListesineEkle()
+        private void TÃ¼mPersoneliSecilenPersonelListesineEkle()
         {
             SecilmeyenPersonelList.Clear();
             SecilenPersonelList.Clear();
@@ -354,7 +354,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 SecilenPersonelList.Add(pI);
             }
         }
-        private void TümPersoneliSecilenmeyenPersonelListesieEkle()
+        private void TÃ¼mPersoneliSecilenmeyenPersonelListesieEkle()
         {
             SecilenPersonelList.Clear();
 
@@ -388,7 +388,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
 
                     TableCell SilCell = new TableCell();
                     LinkButton SilBtn = new LinkButton();
-                    SilBtn.Text = "Çikar";
+                    SilBtn.Text = "Ã‡ikar";
 
                     SilBtn.ID = "SilBtn" + SiraNo++;
                     TableUpdatePanel.ContentTemplateContainer.Controls.Add(SilBtn);
@@ -480,7 +480,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Lütfen Duyuru bilgilerini tamamladiktan sonra kaydedin.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("LÃ¼tfen Duyuru bilgilerini tamamladiktan sonra kaydedin.", ProjeConstants.MESAJ_HATA, 2000);
                 }
             }
             catch (Exception ex)
@@ -505,7 +505,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Lütfen Duyuru bilgilerini tamamladiktan sonra kaydedin.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("LÃ¼tfen Duyuru bilgilerini tamamladiktan sonra kaydedin.", ProjeConstants.MESAJ_HATA, 2000);
                 }
             }
             catch (Exception ex)
@@ -520,7 +520,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
             try
             {
 
-                SilLbl.Text = "Lütfen Dikkat: Duyuru Silinecek";
+                SilLbl.Text = "LÃ¼tfen Dikkat: Duyuru Silinecek";
                 SilmeMesajiLbl.Text = "Duyuruyu Silmek Istediginizden Emin misiniz?";
                 DeleteNowBtn.Visible = true;
                 var openPopup = "OpenModal();";
@@ -565,7 +565,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
             }
             else
             {                
-                MessageHelper.PublishMessage("Islem Tamamlandi.Resim yüklendi.", ProjeConstants.MESAJ_BASARILI);
+                MessageHelper.PublishMessage("Islem Tamamlandi.Resim yÃ¼klendi.", ProjeConstants.MESAJ_BASARILI);
                 return fotoFile;
             }
         }
@@ -651,11 +651,11 @@ namespace Portal_WebParts.DuyuruGirisiWP
                             duyuruGosterim.SaveDuyuru(duyuru);
                             
                         }
-                        MessageHelper.PublishMessage("Duyuru güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Duyuru gÃ¼ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Duyuru güncellenemedi", ProjeConstants.MESAJ_HATA, 5000);
+                        MessageHelper.PublishMessage("Duyuru gÃ¼ncellenemedi", ProjeConstants.MESAJ_HATA, 5000);
                     }
                 }
 
@@ -663,7 +663,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
             catch (Exception ex)
             {
                 ExceptionHelper exhelper = new ExceptionHelper(ex);
-                exhelper.Exceptions.Add(new Exception("Duyuru güncellenemedi."));
+                exhelper.Exceptions.Add(new Exception("Duyuru gÃ¼ncellenemedi."));
                 exhelper.PublishException();
             }
             return guncellendiMi;
@@ -776,14 +776,14 @@ namespace Portal_WebParts.DuyuruGirisiWP
         }
         protected void HepsiniEkleBtn_Click(object sender, EventArgs e)
         {
-            TümPersoneliSecilenPersonelListesineEkle();
+            TÃ¼mPersoneliSecilenPersonelListesineEkle();
             SecilenPersonelTablosunuDoldur();
             PersonelDDLDoldur();
         }
 
         protected void HepsiniCikarBtn_Click(object sender, EventArgs e)
         {
-            TümPersoneliSecilenmeyenPersonelListesieEkle();
+            TÃ¼mPersoneliSecilenmeyenPersonelListesieEkle();
             SecilenPersonelTablosunuDoldur();
             PersonelDDLDoldur();
         }

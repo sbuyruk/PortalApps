@@ -117,7 +117,7 @@ namespace Portal_WebParts.ToplantiListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -252,7 +252,7 @@ namespace Portal_WebParts.ToplantiListesiWP
 
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery('#CustomDataTable').DataTable({
-                    'initComplete': function (settings, json) {//tablo yüklendiginde
+                    'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                         var api = this.api();
                         var row = api.row(function(idx, data, node) { //secilen toplantiya gider
                             return data['SecilenToplanti'] == true;
@@ -324,7 +324,7 @@ namespace Portal_WebParts.ToplantiListesiWP
             int toplantiYetkilisiBirimi = 0;
             if (currentuser.Equals(olusturan))
             {
-                sonuc = "<a href=" + ProjeConstants.PAGE_TOPLANTI_GIRIS + "?ToplantiId=" + toplantiId + " class='btn btn-outline-primary'>Düzenle</a>";
+                sonuc = "<a href=" + ProjeConstants.PAGE_TOPLANTI_GIRIS + "?ToplantiId=" + toplantiId + " class='btn btn-outline-primary'>DÃ¼zenle</a>";
             }
             else
             {
@@ -362,7 +362,7 @@ namespace Portal_WebParts.ToplantiListesiWP
                             {
                                 toplantiYetkilisiBirimi = ib.BirimId;
                             }
-                            ///sonuc = "<a href=" + ProjeConstants.PAGE_TOPLANTI_GIRIS + "?ToplantiId=" + toplantiId + " class='btn btn-outline-primary'>Düzenle</a>"; 
+                            ///sonuc = "<a href=" + ProjeConstants.PAGE_TOPLANTI_GIRIS + "?ToplantiId=" + toplantiId + " class='btn btn-outline-primary'>DÃ¼zenle</a>"; 
                         }
                     }
 
@@ -372,7 +372,7 @@ namespace Portal_WebParts.ToplantiListesiWP
                 if ((toplantiYetkilisiBirimi != 0 && goruntuleyenininBirimi != 0 && toplantiYetkilisiBirimi == goruntuleyenininBirimi) ||
                      toplantiYoneticisi)
                 {
-                    sonuc = "<a href=" + ProjeConstants.PAGE_TOPLANTI_GIRIS + "?ToplantiId=" + toplantiId + " class='btn btn-outline-primary'>Düzenle</a>";
+                    sonuc = "<a href=" + ProjeConstants.PAGE_TOPLANTI_GIRIS + "?ToplantiId=" + toplantiId + " class='btn btn-outline-primary'>DÃ¼zenle</a>";
                 }
 
             }
