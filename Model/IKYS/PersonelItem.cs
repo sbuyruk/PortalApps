@@ -1,4 +1,5 @@
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,9 +59,7 @@ namespace Model.IKYS
         {
             get
             {
-                IletisimBilgileri iletisimBilgileri = new IletisimBilgileri();
-                iletisimBilgileri = iletisimBilgileri.SelectByPersonelId(PersonelId);
-                return iletisimBilgileri;
+                return new IletisimBilgileriService().GetByPersonelId(PersonelId);
             }
             set
             {
@@ -71,9 +70,7 @@ namespace Model.IKYS
         {
             get
             {
-                Aile aile = new Aile();
-                List<Aile> list = aile.SelectByPersonelId(PersonelId);
-                return list;
+                return new AileService().GetByPersonelId(PersonelId);
             }
             set
             {
