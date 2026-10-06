@@ -2,14 +2,11 @@ using Model.Ortak;
 using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Model.IKYS
 {
     [Serializable]
-    public class PersonelItem : ParentClass
+    public class PersonelItem : EntityBase
     {
         public PersonelItem()
         {
@@ -20,9 +17,7 @@ namespace Model.IKYS
         {
             get
             {
-                Personel personel = new Personel();
-                personel = personel.Select(PersonelId);
-                return personel;
+                return new PersonelService().GetById(PersonelId);
             }
             set
             {
@@ -33,9 +28,7 @@ namespace Model.IKYS
         {
             get
             {
-                Kimlik kimlik = new Kimlik();
-                kimlik = kimlik.Select(PersonelId);
-                return kimlik;
+                return new KimlikService().GetById(PersonelId);
             }
             set
             {
@@ -108,25 +101,5 @@ namespace Model.IKYS
         //public string Baglanti1 { get; set; }
         //public string Baglanti2 { get; set; }
 
-        public override bool Delete()
-        {
-            throw new NotImplementedException();
-        }
-        public override int Save()
-        {
-            throw new NotImplementedException();
-        }
-        public override T Select<T>(int id)
-        {
-            throw new NotImplementedException();
-        }
-        public override List<T> SelectAll<T>()
-        {
-            throw new NotImplementedException();
-        }
-        public override bool Update()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
