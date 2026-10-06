@@ -7,6 +7,7 @@ namespace DAO.Repositories.TBYS
     public class TasinmazRepository
     {
         private readonly DbClass db;
+        private readonly CrudQueryBuilder queryBuilder;
 
         public TasinmazRepository() : this(new DbClass()) { }
 
@@ -14,6 +15,7 @@ namespace DAO.Repositories.TBYS
         {
             if (db == null) throw new ArgumentNullException("db");
             this.db = db;
+            queryBuilder = new CrudQueryBuilder();
         }
 
         public DataTable SelectById(int id)
@@ -36,5 +38,9 @@ namespace DAO.Repositories.TBYS
             return db.SelectFromDb(new SqlQuery(
                 "SELECT * FROM Tasinmaz_Table WHERE EnvanterdeMi=1"), "");
         }
+
+        public int Insert<T>(T item) { return db.Insert(queryBuilder.BuildInsert(item, "Tasinmaz_Table")); }
+        public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "Tasinmaz_Table")); }
+        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("Tasinmaz_Table", id), ""); }
     }
 }
