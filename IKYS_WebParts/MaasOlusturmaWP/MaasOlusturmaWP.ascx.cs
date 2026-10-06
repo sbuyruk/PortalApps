@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Text;
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System.Data;
 using System.Web.UI.WebControls;
 using System.Collections.Generic;
@@ -71,7 +72,7 @@ namespace IKYS_WebParts.MaasOlusturmaWP
         {
             //bu tarihe ait kayit MaasHareket_Table'da var mi kontrol et
             MaasHareket maasHareket = new MaasHareket();
-            maasHareket = maasHareket.SelectByTarih(TarihDDL.SelectedItem == null ? DateTime.Today : TarihDDL.SelectedItem.Value.ConvertToDatetime());
+            maasHareket = new MaasHareketService().GetByTarih(TarihDDL.SelectedItem == null ? DateTime.Today : TarihDDL.SelectedItem.Value.ConvertToDatetime());
             if (maasHareket != null)
             {
                 //eger varsa, o tarihe ait maas listesi zaten olusturulmus demektir.
@@ -135,7 +136,7 @@ namespace IKYS_WebParts.MaasOlusturmaWP
             DateTime tarih = TarihDDL.SelectedItem.Value.ConvertToDatetime();
             //ilk olarak bu tarihe ait kayit MaasHareket_Table'da var mi kontrol et
             MaasHareket maasHareket = new MaasHareket();
-            maasHareket = maasHareket.SelectByTarih(tarih);
+            maasHareket = new MaasHareketService().GetByTarih(tarih);
             if (maasHareket != null)
             {
                 //eger varsa, o tarihe ait maas listesi zaten olusturulmus demektir.
@@ -337,7 +338,7 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
 
 
             UcretTanim ucretTanim = new UcretTanim();
-            DataTable dataTable = ucretTanim.SelectByGrup();
+            DataTable dataTable = new UcretTanimService().GetByGrup();
             foreach (DataRow row in dataTable.Rows)
             {
                 DateTime bastar = row["BaslangicTarihi"].ConvertToDatetime();
@@ -388,7 +389,7 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
                         dereceKademeDegisim.DegisimTarihi = new DateTime(tarih.Year, tarih.Month, item.DereceKademeIlerlemeTarihi.ConvertToDatetime().Day); // DereceKademeDegisim'in tarihi, maasin olusturuldugu tarih olacak
                         dereceKademeDegisim.Degisim = "Kademe Yükseltme";
                         dereceKademeDegisim.Derece = item.Derece; // Derece'yi de ayni sekilde al
-                        dereceKademeDegisim.Save();
+                        new DereceKademeDegisimService().Save(dereceKademeDegisim);
                         maasHareket.DereceKademeIlerlemeTarihi = dereceKademeDegisim.DegisimTarihi;
                         //IsBligileri_Table'da Derece,Kademe ve DereceKademeIlerlemeTarihi alanlari güncellensin
                         //IsBilgileri personelIsBilgileri = new IsBilgileri();
@@ -411,7 +412,7 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
                 maasHareket.ProtokolSiraNo = item.ProtokolSiraNo;
                 maasHareket.GrupId = item.GrupId;
                 maasHareket.Tarih = TarihDDL.SelectedItem.Value.ConvertToDatetime();
-                maasHareket.Save();
+                new MaasHareketService().Save(maasHareket);
             }
         }
 
@@ -419,7 +420,7 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
         {
             MaasHareket maasHareket = new MaasHareket();
             // ilk olarak bu tarihe ait kayit MaasHareket_Table'da var mi kontrol et
-            maasHareket = maasHareket.SelectByTarih(TarihDDL.SelectedItem.Value.ConvertToDatetime());
+            maasHareket = new MaasHareketService().GetByTarih(TarihDDL.SelectedItem.Value.ConvertToDatetime());
             if (maasHareket == null)
             {
             MessageHelper.PublishMessage("Silinecek bir maaş kaydı bulunamadı.", ProjeConstants.MESAJ_BILGI);
@@ -471,7 +472,7 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
                 DateTime tarih = TarihDDL.SelectedItem.Value.ConvertToDatetime();
 
                 MaasHareket maasHareket = new MaasHareket();
-                maasHareket = maasHareket.SelectByTarih(tarih);
+                maasHareket = new MaasHareketService().GetByTarih(tarih);
                 if (maasHareket == null)
                 {
                     TabloyuKaydet();
@@ -494,7 +495,7 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
                 DateTime tarih = TarihDDL.SelectedItem.Value.ConvertToDatetime();
 
                 MaasHareket maasHareket = new MaasHareket();
-                maasHareket = maasHareket.SelectByTarih(tarih);
+                maasHareket = new MaasHareketService().GetByTarih(tarih);
                 if (maasHareket != null)
                 {
                     TabloyuSil();
