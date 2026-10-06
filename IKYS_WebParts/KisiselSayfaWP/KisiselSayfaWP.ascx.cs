@@ -437,7 +437,6 @@ namespace IKYS_WebParts.KisiselSayfaWP
                 row.Controls.Add(OkulCell);
 
                 TableCell MeslekCell = new TableCell();
-                Meslek meslekDao = new Meslek();
                 Meslek meslek = new MeslekService().GetById(aile.Meslek);
                 MeslekCell.Text = meslek.Adi.ReturnEmptyIfNull().ToString();
                 row.Controls.Add(MeslekCell);

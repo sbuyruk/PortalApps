@@ -580,7 +580,6 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 row.Controls.Add(OkulCell);
 
                 TableCell MeslekCell = new TableCell();
-                Meslek meslekDao = new Meslek();
                 Meslek meslek = new MeslekService().GetById(aile.Meslek);
                 MeslekCell.Text = meslek.Adi.ReturnEmptyIfNull().ToString();
                 row.Controls.Add(MeslekCell);
@@ -595,7 +594,6 @@ namespace IKYS_WebParts.PersonelGirisiWP
         }
         private void FillOkulBilgileri(Personel personel)
         {
-            Egitim egitim = new Egitim();
             List<Egitim> egitimList = new EgitimService().GetByPersonelId(personel.Id);
             OkulTableHeaders();
             int SiraNo = 1;
@@ -615,8 +613,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 int seviyeId = item.Seviye.ConvertToInt();
                 if (seviyeId > 0)
                 {
-                    EgitimSeviyesi es = new EgitimSeviyesi();
-                    es = new EgitimSeviyesiService().GetById(seviyeId);
+                    EgitimSeviyesi es = new EgitimSeviyesiService().GetById(seviyeId);
                     SeviyeCell.Text = es != null ? es.Adi : "";
                 }
 
@@ -634,7 +631,6 @@ namespace IKYS_WebParts.PersonelGirisiWP
         }
         private void FillKursBilgileri(Personel personel)
         {
-            Kurs kurs = new Kurs();
             List<Kurs> kursList = new KursService().GetByPersonelId(personel.Id);
             KursTableHeaders();
             int SiraNo = 1;
@@ -667,7 +663,6 @@ namespace IKYS_WebParts.PersonelGirisiWP
         }
         private void FillIsTecrubesi(Personel personel)
         {
-            IsTecrube isTecrubesi = new IsTecrube();
             List<IsTecrube> kursList = new IsTecrubeService().GetByPersonelId(personel.Id);
             IsyeriTableHeaders();
             int SiraNo = 1;
