@@ -1379,9 +1379,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 UyariLbl.Text = string.Empty;
                 UcretliIzinDilekceBtn.Visible = false;
 
-                Aile aile = new Aile();
-
-                aile = aile.SelectEnGencCocukByPersonelId(personel.Id);
+                Aile aile = new AileService().GetEnGencCocukByPersonelId(personel.Id);
 
                 if (aile != null)
                 {
