@@ -126,8 +126,8 @@ namespace IKYS_WebParts.MaasOlusturmaWP
             DateTime tarih = TarihDDL.SelectedItem.Value.ConvertToDatetime();
 
             UcretTanim ucretTanim = new UcretTanim();
-            int grupId= ucretTanim.SelectGrupIdByTarih(tarih);
-            DataTable dataTable = ucretTanim.SelectMaasListesi(grupId,tarih);
+            int grupId= new UcretTanimService().GetGrupIdByTarih(tarih);
+            DataTable dataTable = new UcretTanimService().GetMaasListesi(grupId,tarih);
             return dataTable;
         }
         private List<MaasListItem> GetDataList()
@@ -213,7 +213,7 @@ namespace IKYS_WebParts.MaasOlusturmaWP
                                 personel = personel.Select(personelId);
                                 //maasi yeni kademeye göre bul
                                 UcretTanim ucretTanim = new UcretTanim();
-                                ucret = ucretTanim.SelectUcretByGrupDereceKademe(personel,grupId, derece, listItem.Kademe);
+                                ucret = new UcretTanimService().GetUcretByGrupDereceKademe(personel,grupId, derece, listItem.Kademe);
                                 listItem.Ucret = ucret.ToString("N", culturInfo); // Ucret'i güncelle
                                 listItem.Ikramiye = ucret.ToString("N", culturInfo);
                                 ikramiye = IkramiyeChk.Checked ? ucret : 0;
