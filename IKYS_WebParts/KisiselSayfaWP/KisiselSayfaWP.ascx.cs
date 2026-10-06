@@ -967,7 +967,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
             DigerIzinlerTableHeaders();
             IzinHareket izinHareket = new IzinHareket();
 
-            List<IzinHareket> list = izinHareket.SelectDigerIzinlerByPersonelIdReturnJson(personel.Id);
+            List<IzinHareket> list = new IzinHareketService().GetDigerByPersonelId(personel.Id);
             int SiraNo = 1;
             foreach (var item in list)
             {
@@ -1010,7 +1010,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
         {
 
             IzinTalep izinTalep = new IzinTalep();
-            DataTable dataTable = izinTalep.SelectIzinTalepleriReturnDT(personel.Id, 0, false, true);
+            DataTable dataTable = new IzinTalepService().GetIzinTalepleriReturnDataTable(personel.Id, 0, false, true);
             int SiraNo = 1;
             if (dataTable == null)
             {

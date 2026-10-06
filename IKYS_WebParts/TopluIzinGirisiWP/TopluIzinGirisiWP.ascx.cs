@@ -268,14 +268,14 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                     if (izinDonemi == null)
                     {
                         izinDonemi = new IzinDonem();
-                        izinDonemi = izinDonemi.IzinDonemiOlustur(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName);
+                        izinDonemi = new IzinDonemService().CreateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName);
                     }
                     else
                     {
-                        izinDonemi = izinDonemi.IzinDonemiGuncelle(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName);
+                        izinDonemi = new IzinDonemService().UpdateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName);
                     }
                     string yeniSure = IKYSOrtak.IzinSuresiHesapla(izinHareket.IzinTipi, izinHareket.BaslangicTarihi, izinHareket.BitisTarihi);
-                    izinDonemi.KullanilanIzinGuncelle(izinDonemi, yeniSure, true, CurrentUserName);//kullanilan izni düs
+                    new IzinDonemService().UpdateUsedLeave(izinDonemi, yeniSure, true, CurrentUserName);//kullanilan izni düs
 
                     izinHareket.IzinDonemId = izinDonemi != null ? izinDonemi.Id : 0;
                 }

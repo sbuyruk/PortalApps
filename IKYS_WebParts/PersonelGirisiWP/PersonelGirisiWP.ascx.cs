@@ -772,7 +772,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 if (izinDonem == null)
                 {
                     izinDonem = new IzinDonem();
-                    izinDonem.IzinDonemiOlustur(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName);
+                    new IzinDonemService().CreateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName);
                 } else if (izinDonem != null)
                 {
                     //DateTime izinDonemiBasi = izinDonem != null ? izinDonem.BaslangicTarihi : today.AddYears(-1);
@@ -869,7 +869,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 if (izinDonem == null)
                 {
                     izinDonem = new IzinDonem();
-                    izinDonem.IzinDonemiOlustur(personel, ProjeConstants.IZINTIPI_MAZERET_INT, today, CurrentUserName);
+                    new IzinDonemService().CreateForPersonel(personel, ProjeConstants.IZINTIPI_MAZERET_INT, today, CurrentUserName);
                 }
                 if (izinDonem != null)
                 {
@@ -950,7 +950,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             DigerIzinlerTableHeaders();
             IzinHareket izinHareket = new IzinHareket();
 
-            List<IzinHareket> list = izinHareket.SelectDigerIzinlerByPersonelIdReturnJson(personel.Id);
+            List<IzinHareket> list = new IzinHareketService().GetDigerByPersonelId(personel.Id);
             int SiraNo = 1;
             foreach (var item in list)
             {
@@ -1041,7 +1041,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
         {
 
             IzinTalep izinTalep = new IzinTalep();
-            DataTable dataTable = izinTalep.SelectIzinTalepleriReturnDT(personel.Id, 0, false, true);
+            DataTable dataTable = new IzinTalepService().GetIzinTalepleriReturnDataTable(personel.Id, 0, false, true);
             int SiraNo = 1;
             if (dataTable == null)
             {
@@ -1850,11 +1850,11 @@ namespace IKYS_WebParts.PersonelGirisiWP
             if (izinDonemi == null)
             {
                 izinDonemi = new IzinDonem();
-                izinDonemi = izinDonemi.IzinDonemiOlustur(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName);
+                izinDonemi = new IzinDonemService().CreateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName);
             }
             else
             {
-                izinDonemi = izinDonemi.IzinDonemiGuncelle(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName);
+                izinDonemi = new IzinDonemService().UpdateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName);
             }
         }
         private IletisimBilgileri IletisimBilgileriSave(Personel personel)

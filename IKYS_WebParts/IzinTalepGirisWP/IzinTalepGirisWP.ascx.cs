@@ -310,7 +310,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             if (personel != null)
             {
                 IzinTalep izinTalep = new IzinTalep();
-                DataTable dataTable = izinTalep.SelectIzinTalepleriReturnDT(personel.Id, IzinTanimIdQS.ConvertToInt(), false, true);
+                DataTable dataTable = new IzinTalepService().GetIzinTalepleriReturnDataTable(personel.Id, IzinTanimIdQS.ConvertToInt(), false, true);
                 int siraNo = 1;
                 if (dataTable == null)
                 {
@@ -1069,11 +1069,11 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     if (izinDonemi == null)
                     {
                         izinDonemi = new IzinDonem();
-                        izinDonemi = izinDonemi.IzinDonemiOlustur(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName);
+                        izinDonemi = new IzinDonemService().CreateForPersonel(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName);
                     }
                     else
                     {
-                        izinDonemi = izinDonemi.IzinDonemiGuncelle(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName);
+                        izinDonemi = new IzinDonemService().UpdateForPersonel(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName);
                     }
                     izinTalep.IzinDonemId = izinDonemi != null ? izinDonemi.Id : 0;
                 }
@@ -1153,11 +1153,11 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                         if (izinDonemi == null)
                         {
                             izinDonemi = new IzinDonem();
-                            izinDonemi = izinDonemi.IzinDonemiOlustur(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName);
+                            izinDonemi = new IzinDonemService().CreateForPersonel(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName);
                         }
                         else
                         {
-                            izinDonemi = izinDonemi.IzinDonemiGuncelle(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName);
+                            izinDonemi = new IzinDonemService().UpdateForPersonel(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName);
                         }
                         izinTalep.IzinDonemId = izinDonemi != null ? izinDonemi.Id : 0;
                     }
@@ -1435,7 +1435,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 if (izinDonemi == null)
                 {
                     izinDonemi = new IzinDonem();
-                    izinDonemi = izinDonemi.IzinDonemiOlustur(personel, izinTipi, kontrolEdilecekTarih, CurrentUserName);
+                    izinDonemi = new IzinDonemService().CreateForPersonel(personel, izinTipi, kontrolEdilecekTarih, CurrentUserName);
                 }
 
                 if (izinTipi == ProjeConstants.IZINTIPI_MAZERET_INT)

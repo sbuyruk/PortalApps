@@ -217,7 +217,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
 
                     if (ucretliIzinDonemi == null)
                     {
-                        ucretliIzinDonemi = ucretliIzinDonemi.IzinDonemiOlustur(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName);
+                        ucretliIzinDonemi = izinDonemService.CreateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName);
                     }
                     if (ucretliIzinDonemi != null)
                     {
@@ -362,12 +362,12 @@ namespace IKYS_WebParts.MazereteMahsupWP
                 if (ucretliIzinDonemi == null)
                 {
                     ucretliIzinDonemi = new IzinDonem();
-                    ucretliIzinDonemi.IzinDonemiOlustur(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, now, CurrentUserName);
+                    ucretliIzinDonemi = izinDonemService.CreateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, now, CurrentUserName);
                 }
                 if (mazeretIzinDonemi == null)
                 {
                     mazeretIzinDonemi = new IzinDonem();
-                    mazeretIzinDonemi.IzinDonemiOlustur(personel, ProjeConstants.IZINTIPI_MAZERET_INT, now, CurrentUserName);
+                    mazeretIzinDonemi = izinDonemService.CreateForPersonel(personel, ProjeConstants.IZINTIPI_MAZERET_INT, now, CurrentUserName);
                 }
 
                 string ucretliIzinDonemiStr = string.Empty;

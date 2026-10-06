@@ -310,7 +310,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                                     {
                                         ih.OncekiIzinStr = izinDonemi.KalanIzin.ToString();
                                         ih.KullanilanIzinStr = izinTalep.Sure;
-                                        izinDonemi.KullanilanIzinGuncelle(izinDonemi, ih.Sure, true, CurrentUserName);
+                                        new IzinDonemService().UpdateUsedLeave(izinDonemi, ih.Sure, true, CurrentUserName);
                                         ih.KalanIzinStr = izinDonemi.KalanIzin.ToString();
                                         new IzinHareketService().Update(ih);//kalan izin hesaplandiktan sonra izinHareket tablosuna yazsin
                                     }
@@ -537,7 +537,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
         private DataTable GetDataTable()
         {
             IzinTalep izinTalep = new IzinTalep();
-            DataTable dataTable = izinTalep.SelectIzinTalepleriReturnDT(0, ProjeConstants.IZINTIPI_MAZERET_INT, false, false);
+            DataTable dataTable = new IzinTalepService().GetIzinTalepleriReturnDataTable(0, ProjeConstants.IZINTIPI_MAZERET_INT, false, false);
             return dataTable;
         }
 

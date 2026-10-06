@@ -458,26 +458,26 @@ namespace IKYS_WebParts.IzinHareketEditWP
                         if (yeniIzinDonemi == null)
                         {
                             yeniIzinDonemi = new IzinDonem();
-                            yeniIzinDonemi = yeniIzinDonemi.IzinDonemiOlustur(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName);
+                            yeniIzinDonemi = new IzinDonemService().CreateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName);
                         }
                         else
                         {
-                            yeniIzinDonemi = yeniIzinDonemi.IzinDonemiGuncelle(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName);
+                            yeniIzinDonemi = new IzinDonemService().UpdateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName);
                         }
                         string yeniSure = string.Empty;
                         if (yeniIzinDonemi.Id != mevutIzinDonemi.Id)
                         {
-                            mevutIzinDonemi.KullanilanIzinGuncelle(mevutIzinDonemi, izinSuresiOnceki, false, CurrentUserName);//önceki dönemden düs
+                            new IzinDonemService().UpdateUsedLeave(mevutIzinDonemi, izinSuresiOnceki, false, CurrentUserName);//önceki dönemden düs
                             yeniSure = IKYSOrtak.IzinSuresiHesapla(izinHareket.IzinTipi, izinHareket.BaslangicTarihi, izinHareket.BitisTarihi);
 
-                            yeniIzinDonemi.KullanilanIzinGuncelle(yeniIzinDonemi, yeniSure, true, CurrentUserName);//sonraki döneme ekle
+                            new IzinDonemService().UpdateUsedLeave(yeniIzinDonemi, yeniSure, true, CurrentUserName);//sonraki döneme ekle
                         }
                         else
                         {
-                            yeniIzinDonemi.KullanilanIzinGuncelle(yeniIzinDonemi, izinSuresiOnceki, false, CurrentUserName);// dönemden düs
+                            new IzinDonemService().UpdateUsedLeave(yeniIzinDonemi, izinSuresiOnceki, false, CurrentUserName);// dönemden düs
                             yeniSure = IKYSOrtak.IzinSuresiHesapla(izinHareket.IzinTipi, izinHareket.BaslangicTarihi, izinHareket.BitisTarihi);
 
-                            yeniIzinDonemi.KullanilanIzinGuncelle(yeniIzinDonemi, yeniSure, true, CurrentUserName);//sonraki döneme ekle
+                            new IzinDonemService().UpdateUsedLeave(yeniIzinDonemi, yeniSure, true, CurrentUserName);//sonraki döneme ekle
                         }
 
                         izinHareket.IzinDonemId = yeniIzinDonemi != null ? yeniIzinDonemi.Id : 0;
@@ -556,7 +556,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
                         IzinDonem mevutIzinDonemi = new IzinDonemService().GetById(izinHareket.IzinDonemId);
                         if (mevutIzinDonemi != null)
                         {
-                            mevutIzinDonemi.KullanilanIzinGuncelle(mevutIzinDonemi, izinSuresiOnceki, false, CurrentUserName);// dönemden düs
+                            new IzinDonemService().UpdateUsedLeave(mevutIzinDonemi, izinSuresiOnceki, false, CurrentUserName);// dönemden düs
 
                         }
                     }
