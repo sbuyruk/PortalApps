@@ -179,7 +179,7 @@ namespace DAO.Repositories.NBYS
                     FORMAT(A.BagisMiktari,'N2','tr-TR') ArmaganTutari,
                     A.Durum, ISNULL(BelgedeYazanIsim,'') BelgedeYazanIsim,
                     A.BelgeGecersizMi, A.IadeMiktari, A.DovizCinsi,
-                    A.BagisMiktariYazmasin,
+                    A.BagisMiktariYazmasin, A.KacinciBelge,
                     IIF(A.DuzenliBagis=1,'Düzenli Bağış',IIF(A.CokluBagis=1,'Çoklu Bağış','Bağış')) CokluBagis
                 FROM Armagan_Table A
                 INNER JOIN NakitBagisci_Table B ON B.Id=A.BagisciId

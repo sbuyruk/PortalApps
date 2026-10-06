@@ -664,6 +664,7 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
                     string belgeNo = row["ArmaganId"].ToString();
                     string nakitBagisciTC = row["NakitBagisciTC"].ToString();
                     DateTime tarih = row["Tarih"].ConvertToDatetime();
+                    int kacinciBelge = row["KacinciBelge"].ReturnZeroIfNull().ConvertToInt();
 
                     decimal tutar = row["Tutar"].ConvertToDecimal();
                     string tutarStr = bagisMiktariYazmasin ? string.Empty : tutar.ToString("N", culturInfo) + " TL'lik";
@@ -676,6 +677,7 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
                     keyValues.Add("BagisciAdiVar", string.IsNullOrEmpty(belgedeYazanIsim) ? nakitBagisciAdi : belgedeYazanIsim);
                     keyValues.Add("BagisTarihiVar", tarih.ToString("dd MMMM yyyy"));
                     keyValues.Add("TutarVar", tutarStr);
+                    keyValues.Add("YilVar", BelgeYilMetniGetir(kacinciBelge));
 
                     keyValues.Add("ImzaVar", ImzalayanTxt.Text);
                     keyValues.Add("UnvanVar", ImzalayanUnvanTxt.Text);
@@ -693,6 +695,39 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
 
 
             return destinationStream;
+        }
+
+        private static string BelgeYilMetniGetir(int kacinciBelge)
+        {
+            // Eski kayıtlardaki boş/0 belge sırası ilk bağış yılına aittir.
+            string yilMetni = SayiyiYaziyaCevir(Math.Max(1, kacinciBelge));
+            return char.ToUpper(yilMetni[0], CultureInfo.GetCultureInfo("tr-TR"))
+                + yilMetni.Substring(1) + " yıl";
+        }
+
+        private static string SayiyiYaziyaCevir(int sayi)
+        {
+            string[] birler = { "", "bir", "iki", "üç", "dört", "beş", "altı", "yedi", "sekiz", "dokuz" };
+            string[] onlar = { "", "on", "yirmi", "otuz", "kırk", "elli", "altmış", "yetmiş", "seksen", "doksan" };
+            int[] basamaklar = { 1000000000, 1000000, 1000, 100 };
+            string[] basamakAdlari = { "milyar", "milyon", "bin", "yüz" };
+
+            for (int i = 0; i < basamaklar.Length; i++)
+            {
+                int basamak = basamaklar[i];
+                if (sayi < basamak)
+                    continue;
+
+                int adet = sayi / basamak;
+                string onEk = adet == 1 && basamak <= 1000 ? string.Empty : SayiyiYaziyaCevir(adet) + " ";
+                string kalan = sayi % basamak == 0 ? string.Empty : " " + SayiyiYaziyaCevir(sayi % basamak);
+                return onEk + basamakAdlari[i] + kalan;
+            }
+
+            if (sayi >= 10)
+                return onlar[sayi / 10] + (sayi % 10 == 0 ? string.Empty : " " + birler[sayi % 10]);
+
+            return birler[sayi];
         }
 
         private MemoryStream AddParagraph2DestinationStream(MemoryStream destinationStream, IEnumerable<Paragraph> templateParagraphs)
