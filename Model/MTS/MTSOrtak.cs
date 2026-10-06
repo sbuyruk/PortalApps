@@ -479,7 +479,7 @@ namespace Model.Ortak
 
                 int toplantiYetkilisiId = toplanti.ToplantiYetkilisi;
                 Personel toplantiYetkilisi = new Personel();
-                toplantiYetkilisi = toplantiYetkilisi.Select(toplantiYetkilisiId);
+                toplantiYetkilisi = new PersonelService().GetById(toplantiYetkilisiId);
                 
                 if (toplantiYetkilisi != null)
                 {
