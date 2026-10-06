@@ -1,24 +1,19 @@
 using Model.Ortak;
 using Model.Services.Ortak;
+using Model.Services.IKYS;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Model.IKYS
 {
     [Serializable]
-    public class IsBilgileriItem : ParentClass
+    public class IsBilgileriItem : EntityBase
     {
         public int PersonelId { get; set; }
         private IsBilgileri _IsBilgileri
         {
             get
             {
-                IsBilgileri isBilgileri = new IsBilgileri();
-                isBilgileri = isBilgileri.SelectByPersonelId(PersonelId);
-                return isBilgileri;
+                return new IsBilgileriService().GetByPersonelId(PersonelId);
             }
             set
             {
@@ -29,9 +24,7 @@ namespace Model.IKYS
         {
             get
             {
-                UnvanTanim unvan = new UnvanTanim();
-                unvan = unvan.Select<UnvanTanim>(_IsBilgileri.UnvanId);
-                return unvan;
+                return new UnvanTanimService().GetById(_IsBilgileri.UnvanId);
             }
             set
             {
@@ -42,9 +35,7 @@ namespace Model.IKYS
         {
             get
             {
-                BirimTanim birim = new BirimTanim();
-                birim = birim.Select<BirimTanim>(_IsBilgileri.BirimId);
-                return birim;
+                return new BirimTanimService().GetById(_IsBilgileri.BirimId);
             }
             set
             {
@@ -81,30 +72,6 @@ namespace Model.IKYS
         {
             get { return _Bolge; }
             set { _Bolge = value; }
-        }
-        public override bool Delete()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override int Save()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override T Select<T>(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override List<T> SelectAll<T>()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool Update()
-        {
-            throw new NotImplementedException();
         }
     }
 }
