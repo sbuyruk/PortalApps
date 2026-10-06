@@ -210,7 +210,7 @@ namespace IKYS_WebParts.MaasOlusturmaWP
                                 listItem.DereceKademeIlerlemeTarihi = new DateTime(tarih.Year, tarih.Month, dereceKademeIlerlemeTarihi.Day).ToString("dd.MM.yyyy"); // DereceKademeDegisim'in tarihi, maasin olusturuldugu tarih olacak
                                 listItem.Kademe = kademe + 1; // Kademe'yi 1 artir
                                 Personel personel = new Personel();
-                                personel = personel.Select(personelId);
+                                personel = new PersonelService().GetById(personelId);
                                 //maasi yeni kademeye göre bul
                                 UcretTanim ucretTanim = new UcretTanim();
                                 ucret = new UcretTanimService().GetUcretByGrupDereceKademe(personel,grupId, derece, listItem.Kademe);
