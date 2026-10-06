@@ -201,7 +201,7 @@ namespace Model.Ortak
         {
             string sonuctaKalanIzin = string.Empty;
             IzinDonem izinDonemi = new IzinDonem();
-            izinDonemi = izinDonemi.Select<IzinDonem>(izinDonemId);
+            izinDonemi = new IzinDonemService().GetById(izinDonemId);
             if (izinDonemi != null)
             {
                 if (izinDonemi.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT)
@@ -233,7 +233,7 @@ namespace Model.Ortak
             if (personel != null)
             {
                 IzinTalep izinTalep = new IzinTalep();
-                izinTalep = izinTalep.Select<IzinTalep>(izinTalepId);
+                izinTalep = new IzinTalepService().GetById(izinTalepId);
                 if (izinTalep != null)
                 {
                     string userto = personel.KullaniciAdi + "@tskgv.local";
@@ -241,7 +241,7 @@ namespace Model.Ortak
                     string bastarBittar = izinTalep.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinTalep.BitisTarihi.ConvertToDatetimeEmptyIfNull();
                     //  string izintipi=izinTalep.IzinTipi?Pr
                     IzinTanim izintipi = new IzinTanim();
-                    izintipi = izintipi.Select<IzinTanim>(izinTalep.IzinTipi);
+                    izintipi = new IzinTanimService().GetById(izinTalep.IzinTipi);
                     string izintipiStr = izintipi == null ? "" : izintipi.Adi;
 
                     string subject = bastarBittar + " tarihleri arasindaki " + izintipiStr + " Izin talebiniz.";
@@ -271,7 +271,7 @@ namespace Model.Ortak
                     else if (izinTalep.IzinTipi.Equals(ProjeConstants.IZINTIPI_MAZERET_INT))
                     {
                         IzinDonem id = new IzinDonem();
-                        id = id.Select<IzinDonem>(izinTalep.IzinDonemId);
+                        id = new IzinDonemService().GetById(izinTalep.IzinDonemId);
                         string kalanIzin = string.Empty;
                         if (id != null)
                         {
@@ -331,7 +331,7 @@ namespace Model.Ortak
         public static void IzinTalepOlusturmaEPostasiGonder(Personel personel, int izinTalepId)
         {
             IzinTalep izinTalep = new IzinTalep();
-            izinTalep = izinTalep.Select<IzinTalep>(izinTalepId);
+            izinTalep = new IzinTalepService().GetById(izinTalepId);
             if (izinTalep != null)
             {
                 //EPostayi hazirla
@@ -340,7 +340,7 @@ namespace Model.Ortak
                 string bastarBittar = izinTalep.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinTalep.BitisTarihi.ConvertToDatetimeEmptyIfNull();
                 //  string izintipi=izinTalep.IzinTipi?Pr
                 IzinTanim izintipi = new IzinTanim();
-                izintipi = izintipi.Select<IzinTanim>(izinTalep.IzinTipi);
+                izintipi = new IzinTanimService().GetById(izinTalep.IzinTipi);
                 string izintipiStr = izintipi == null ? "" : izintipi.Adi;
 
                 string subject = bastarBittar + " tarihleri arasindaki " + izintipiStr + " Izin talebiniz. ";
@@ -397,7 +397,7 @@ namespace Model.Ortak
             if (tip.Equals("SehirIci"))
             {
                 Yoklama yoklama = new Yoklama();
-                yoklama = yoklama.Select<Yoklama>(gorevOnayId);
+                yoklama = new YoklamaService().GetById(gorevOnayId);
                 if (yoklama != null)
                 {
                     string bastarBittar = yoklama.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + yoklama.BitisTarihi.ConvertToDatetimeEmptyIfNull();
@@ -701,7 +701,7 @@ namespace Model.Ortak
             IzinDonem izinDonemDao = new IzinDonem();
             int kalanIzinToplami = 0;
 
-            DataTable dataTable = izinDonemDao.SelectSUMKalanIzinByPersonelId(personelId, sadeceEskiDonemler);
+            DataTable dataTable = new IzinDonemService().GetSumKalanIzinByPersonelId(personelId, sadeceEskiDonemler);
             if (dataTable != null)
             {
                 DataRow dataRow = dataTable.Rows[0];
