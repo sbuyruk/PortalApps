@@ -1,4 +1,5 @@
 using Model.IKYS;
+using Model.Services.IKYS;
 using Model.MTS;
 using Model.Portal;
 using System;
@@ -98,7 +99,7 @@ namespace Portal_WebParts.ToplantiKatilimTutanagiWP
 
                     siraNoCell.Text = (++siraNo).ToString();
                     Personel personel = new Personel();
-                    DataTable dataTable = personel.SelectPersonelReturnDataTable(item.KatilimciId);
+                    DataTable dataTable = new PersonelService().GetPersonelReturnDataTable(item.KatilimciId);
                     if (dataTable != null)
                     {
                         adiSoyadiCell.Text = dataTable.Rows[0]["Adi"].ReturnEmptyIfNull().ToString() + " " + dataTable.Rows[0]["Soyadi"].ReturnEmptyIfNull().ToString();
