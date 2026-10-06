@@ -869,7 +869,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     basTarih = UtilityHelper.TariheSaatEkle(basTarih, basSaat);
                     string bitSaat = BitSaatDDL.SelectedItem.Text;
                     bitTarih = UtilityHelper.TariheSaatEkle(bitTarih, bitSaat);
-                    isDateUsed = gorevOnay.GorevOnayVarMi(personelId, basTarih, bitTarih, gorevOnayId);
+                    isDateUsed = new GorevOnayService().HasDateConflict(personelId, basTarih, bitTarih, gorevOnayId);
                     if (isDateUsed)
                     {
                         MessageHelper.PublishMessage("Bu tarihlerde başka bir görev kaydı bulunmaktadır.", ProjeConstants.MESAJ_HATA);

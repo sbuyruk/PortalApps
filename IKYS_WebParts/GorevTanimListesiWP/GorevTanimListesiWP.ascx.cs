@@ -256,7 +256,7 @@ namespace IKYS_WebParts.GorevTanimListesiWP
         private DataTable GetData()
         {
             GorevTanim gorevTanim = new GorevTanim();
-            DataTable dataTable = gorevTanim.SelectAllReturnDataTable(PersonelTipi.Kadrolu);
+            DataTable dataTable = new GorevTanimService().GetAllReturnDataTable(PersonelTipi.Kadrolu);
             return dataTable;
         }
         protected void ExportToExcel()
