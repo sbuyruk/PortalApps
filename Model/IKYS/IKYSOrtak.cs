@@ -75,7 +75,7 @@ namespace Model.Ortak
                     //Cumartesi ve Pazar Günlerini izinden sayma
                     if (!date.DayOfWeek.Equals(DayOfWeek.Sunday) && !date.DayOfWeek.Equals(DayOfWeek.Saturday))
                     {
-                        bool tatil = resmiTatil.ResmiTatilMi(date);
+                        bool tatil = new ResmiTatilService().IsResmiTatil(date);
                         if (!tatil)
                             sure++;
 
@@ -639,7 +639,7 @@ namespace Model.Ortak
             Personel personel = new Personel();
             {
                 string userName = currentUserName.Substring(currentUserName.LastIndexOf("\\") + 1, currentUserName.Length - currentUserName.LastIndexOf("\\") - 1);
-                personel = personel.SelectByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName);
             }
             return personel;
         }

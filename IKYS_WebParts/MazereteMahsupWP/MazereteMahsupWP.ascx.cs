@@ -229,7 +229,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
                         while (resmiTatilMi)
                         {
                             izinBastar = izinBastar.AddDays(1);
-                            resmiTatilMi = resmiTatil.ResmiTatilMi(izinBastar);
+                            resmiTatilMi = new ResmiTatilService().IsResmiTatil(izinBastar);
                         }
                         izinHareket.BaslangicTarihi = izinBastar;
                         izinHareket.BitisTarihi = izinBastar;
