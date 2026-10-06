@@ -367,17 +367,18 @@ namespace Model.Services.NBYS
             return isArmaganSaved;
         }
         public static int ArmaganiKaydet(NakitBagisHareket nakitBagisHareket, NakitBagisci nakitBagisci, decimal bagisTutari,
-            int hakedilenArmaganTanimId, string currentUser,  bool cokluBagis=false)
+            int hakedilenArmaganTanimId, string currentUser, bool cokluBagis=false, int duzenliBagisBelgeSirasi=0)
         {
             //Armagan_Table'dan bu bagisciId ve hakedilenArmaganTanimId kaç tane armagan aldğını bul
-            int mevcutArmaganSayisi = new ArmaganService().CountByBagisciIdAndTanimId(nakitBagisci.Id, hakedilenArmaganTanimId);
+            int mevcutArmaganSayisi = duzenliBagisBelgeSirasi > 0 ? 0
+                : new ArmaganService().CountByBagisciIdAndTanimId(nakitBagisci.Id, hakedilenArmaganTanimId);
 
             int armaganId = 0;
             Armagan armagan = new Armagan();
 
             armagan.CokluBagis=cokluBagis;
             armagan.DuzenliBagis = hakedilenArmaganTanimId==ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID;
-            armagan.KacinciBelge = mevcutArmaganSayisi + 1;
+            armagan.KacinciBelge = duzenliBagisBelgeSirasi > 0 ? duzenliBagisBelgeSirasi : mevcutArmaganSayisi + 1;
             armagan.BagisciId = nakitBagisci.Id;
             //armagan.BagisId = nakitBagisHareketId;
             armagan.BagisMiktari = bagisTutari;
@@ -398,7 +399,9 @@ namespace Model.Services.NBYS
             {
                 armagan.Durum = ProjeConstants.DURUM_DAHAONCEIADE;
             }
-            armaganId = new ArmaganService().Save(armagan);
+            armaganId = duzenliBagisBelgeSirasi > 0
+                ? new ArmaganService().SaveDuzenliBagisIfMissing(armagan)
+                : new ArmaganService().Save(armagan);
 
             return armaganId;
         }

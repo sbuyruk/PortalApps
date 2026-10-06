@@ -22,5 +22,10 @@ namespace Model.NBYS
         public string EPosta { get; set; }
         public string EslesmeBilgisi { get; set; }
         public string Aciklama { get; set; }
+
+        public static int GetHakedilenBelgeSirasi(int bagisAdedi)
+        {
+            return bagisAdedi > 0 && bagisAdedi % 12 == 0 ? bagisAdedi / 12 : 0;
+        }
     }
 }

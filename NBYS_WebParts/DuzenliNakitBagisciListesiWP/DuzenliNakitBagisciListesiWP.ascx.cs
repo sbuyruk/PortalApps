@@ -454,87 +454,31 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
 
         private string DuzenliBagisciBelgesiLinkiGetir(int aBagisciId, int aArmaganId, DateTime aBaslamaTarihi, bool bBelgeIstemiyor, string bDurum, int aDuzenliBagisciId, int aBagisAdedi, int kacinciBelge)
         {
+            if (aBagisciId < 1)
+                return "Bağışçı bulunamadı";
+            if (bBelgeIstemiyor)
+                return "Belge İstemiyor";
 
-            //string bDurum = this.bDurum;
-            string link = string.Empty;
-            if (aBagisciId == -1)
+            int belgeSirasi = DuzenliNakitBagisci.GetHakedilenBelgeSirasi(aBagisAdedi);
+            int mevcutBelgeSirasi = kacinciBelge > 0 ? kacinciBelge : 1;
+            if (belgeSirasi > 0 && (aArmaganId < 1 || mevcutBelgeSirasi < belgeSirasi))
             {
-                link = "Bağışçı bulunamadı";
-            }
-            else if (bBelgeIstemiyor == true)
-            {
-                link = "Belge İstemiyor";
-            }
-            else 
-            {
-                ////Duzenli bagisçi belgesi olusturulmus mu, Armagan_Table'dan kontrol et
-                //Armagan armagan = new Armagan();
-                //armagan = armagan.SelectByBagisciIdAndArmaganTanimId(aBagisciId, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID);
-                //if (armagan != null)
-                //{
-                //    aArmaganId = armagan.Id;
-                //    bDurum = armagan.Durum;
-                //}
-
-                if (aArmaganId > 0)
-                {
-                    if (bDurum == ProjeConstants.DURUM_GONDERILDI)
-                    {
-                        link = "<a class='fw-bold text-success'>" + ProjeConstants.DURUM_GONDERILDI + "</a>";
-                    }
-                    else
-                    {
-                        
-                        if (aBagisAdedi == 12) //birinci yıl dolmuş düzenli bağış belgesi alır
-                        {
-                            var baslamaTarihi = aBaslamaTarihi.AddMonths(12);
-                            var secilenAy = baslamaTarihi.Month;
-                            var secilenYil = baslamaTarihi.Year;
-                            var queryStr = "&SecilenAy=" + secilenAy + "&SecilenYil=" + secilenYil + "&SecilenArmaganTanimId=" + ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID
-                                + "&DuzenliBagisciId=" + aDuzenliBagisciId;
-                            link = "<a href='" + ProjeConstants.PAGE_ARMAGAN_EDIT + "?ArmaganId=" + aArmaganId + "&NakitBagisciId=" + aBagisciId + queryStr + "' class='btn btn-outline-success' >Düzenle</a> </br>" + "(" + bDurum + ")";
-                        }
-                        else if (aBagisAdedi == 24)
-                        {
-                            var baslamaTarihi = aBaslamaTarihi.AddMonths(24);
-                            var secilenAy = baslamaTarihi.Month;
-                            var secilenYil = baslamaTarihi.Year;
-                            var queryStr = "&SecilenAy=" + secilenAy + "&SecilenYil=" + secilenYil + "&SecilenArmaganTanimId=" + ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID
-                                + "&DuzenliBagisciId=" + aDuzenliBagisciId;
-                            if (kacinciBelge>0)
-                            {
-                                link = "<button type=button class='btn btn-primary' onclick=showDuzenliBagisOnay(" + aBagisciId + "," + aDuzenliBagisciId + ")>Düzenli Bağışçı Belgesi oluştur</button>";
-                            }
-                            else
-                            {
-                                link = "<a href='" + ProjeConstants.PAGE_ARMAGAN_EDIT + "?ArmaganId=" + aArmaganId + "&NakitBagisciId=" + aBagisciId + queryStr + "' class='btn btn-outline-primary' >Düzenle</a> </br>" + "(" + bDurum + ")";
-                            }
-                        }
-                        else
-                        {
-                            link = "Bağışçı " + aBagisAdedi + " defa bağış yapmış.";
-                        }
-                    }
-                }
-                else
-                {
-                    if (aBagisAdedi == 12) //birinci yıl dolmuş düzenli bağış belgesi alır
-                    {
-                        link = "<button type=button class='btn btn-success' onclick=showDuzenliBagisOnay(" + aBagisciId + "," + aDuzenliBagisciId + ")>Düzenli Bağışçı Belgesi oluştur</button>";
-
-                    }
-                    else if (aBagisAdedi == 24)
-                    {
-                        link = "<button type=button class='btn btn-primary' onclick=showDuzenliBagisOnay(" + aBagisciId + "," + aDuzenliBagisciId + ")>Düzenli Bağışçı Belgesi oluştur</button>";
-                    }
-                    else 
-                    {
-                        link = "Bağışçı " + aBagisAdedi + " defa bağış yapmış.";
-                    }
-                }
+                return "<button type=button class='btn btn-success' onclick=showDuzenliBagisOnay(" + aBagisciId + "," + aDuzenliBagisciId + ")>Düzenli Bağışçı Belgesi oluştur</button>";
             }
 
-            return link;
+            if (aArmaganId > 0)
+            {
+                if (bDurum == ProjeConstants.DURUM_GONDERILDI)
+                    return "<a class='fw-bold text-success'>" + ProjeConstants.DURUM_GONDERILDI + "</a>";
+
+                // Liste başlangıç tarihine göre filtrelendiğinden dönüş bağlantısı da aynı dönemi korur.
+                var queryStr = "&SecilenAy=" + aBaslamaTarihi.Month + "&SecilenYil=" + aBaslamaTarihi.Year
+                    + "&SecilenArmaganTanimId=" + ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID
+                    + "&DuzenliBagisciId=" + aDuzenliBagisciId;
+                return "<a href='" + ProjeConstants.PAGE_ARMAGAN_EDIT + "?ArmaganId=" + aArmaganId + "&NakitBagisciId=" + aBagisciId + queryStr + "' class='btn btn-outline-success' >Düzenle</a> </br>(" + bDurum + ")";
+            }
+
+            return "Bağışçı " + aBagisAdedi + " defa bağış yapmış.";
         }
         
 
@@ -848,7 +792,9 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                     DuzenliNakitBagisci duzenliBagisci = new DuzenliNakitBagisciService().GetById(duzenliBagisciId);
                     if (duzenliBagisci != null)
                     {
-                        ArmaganOlustur(duzenliBagisci, nakitBagisci);
+                        ExceptionHelper result = ArmaganOlustur(duzenliBagisci, nakitBagisci);
+                        if (result.Exceptions.Count > 0)
+                            result.PublishException();
                     }
                 }
                 else
@@ -870,55 +816,46 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
             ExceptionHelper exceptionHelper = new ExceptionHelper();
             try
             {
-                // Son nakitBagisii bul
-                NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
-                nakitBagisHareket = new NakitBagisHareketService().GetLastInYearByBagisciId(duzenliNakitBagisci.BagisciId, duzenliNakitBagisci.BaslamaTarihi);
-                //Armagan Olustur
-                if (nakitBagisHareket != null)
-                {
-                    duzenliNakitBagisci.NakitBagisHareketId = nakitBagisHareket.Id;
-                    //Bu bağışçı daha önce Düzenli Bağışçı belgesi almış mı bak
-                    Armagan armagan = new ArmaganService().GetByBagisciIdAndTanimId(bagisci.Id, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID);
-                    int yeniArmaganId = 0;
-                    if (armagan != null)
-                    {
-                        //daha önce Düzenli Bağışçı Belgesi almış, ama BagisAdedi 24 ise ikinci yılı da dolmuş demektir, teşekkür belgesi alabilir.
-                        //buna uygun belge oluşturulmalı
-                        if (duzenliNakitBagisci.BagisAdedi%12==0)
-                        {
-                            yeniArmaganId = EkstreAktarmaTransferService.ArmaganiKaydet(nakitBagisHareket, bagisci, duzenliNakitBagisci.BagisToplami,
-                                ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID, CurrentUserName);
-                        }
-                        else
-                        {
-                            string aciklamaStr = string.IsNullOrEmpty(duzenliNakitBagisci.Aciklama) ? " Daha önce Düzenli Bağışçı Belgesi almış -> " + duzenliNakitBagisci.BagisciAdi : duzenliNakitBagisci.Aciklama;
-                            Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} -> Bu bağışçı daha önce Düzenli Bağışçı Belgesi almış.", ProjeConstants.PAGE_DUZENLIBAGISCI_YUKLEME, aciklamaStr));
-                            exceptionHelper.Exceptions.Add(exception);
-                            return exceptionHelper;
-                        }
-                    }
+                if (duzenliNakitBagisci == null || !duzenliNakitBagisci.Aktif || bagisci == null
+                    || duzenliNakitBagisci.BagisciId != bagisci.Id || bagisci.Id < 1)
+                    throw new InvalidOperationException("Düzenli bağışçı eşleştirmesi geçersiz.");
+                if (bagisci.BelgeIstemiyor)
+                    throw new InvalidOperationException("Bağışçı belge istemiyor.");
 
-                    else
-                    {
-                        yeniArmaganId = EkstreAktarmaTransferService.ArmaganiKaydet(nakitBagisHareket, bagisci, duzenliNakitBagisci.BagisToplami,
-                            ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID, CurrentUserName); 
-                    }
-                    if (yeniArmaganId < 1)
-                    {
-                        string aciklamaStr = string.IsNullOrEmpty(duzenliNakitBagisci.Aciklama) ? " Armağan kaydı oluşturulamadı -> " + duzenliNakitBagisci.BagisciAdi : duzenliNakitBagisci.Aciklama;
-                        Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} -> Armağan kaydı oluşturulamadı.", ProjeConstants.PAGE_DUZENLIBAGISCI_YUKLEME, aciklamaStr));
-                        exceptionHelper.Exceptions.Add(exception);
-                    }
-                    else
-                    {
-                        duzenliNakitBagisci.ArmaganId = yeniArmaganId;
-                        nakitBagisHareket.ArmaganId = yeniArmaganId;
-                        new NakitBagisHareketService().Update(nakitBagisHareket);
-                    }
+                int belgeSirasi = DuzenliNakitBagisci.GetHakedilenBelgeSirasi(duzenliNakitBagisci.BagisAdedi);
+                if (belgeSirasi < 1)
+                    throw new InvalidOperationException("Belge yalnızca 12 bağış ve katlarında oluşturulabilir.");
+
+                ArmaganService armaganService = new ArmaganService();
+                Armagan mevcutBelge = armaganService.GetDuzenliBagisByBelgeSirasi(bagisci.Id, belgeSirasi);
+                if (mevcutBelge != null)
+                {
+                    // Dosya tekrar yüklense veya buton tekrar tıklansa da aynı yılın belgesi korunur.
+                    duzenliNakitBagisci.ArmaganId = mevcutBelge.Id;
                     new DuzenliNakitBagisciService().Update(duzenliNakitBagisci);
                     TabloOlustur();
+                    return exceptionHelper;
                 }
 
+                DateTime donemBaslangici = duzenliNakitBagisci.BaslamaTarihi.AddMonths((belgeSirasi - 1) * 12);
+                NakitBagisHareket nakitBagisHareket = new NakitBagisHareketService()
+                    .GetLastInYearByBagisciId(bagisci.Id, donemBaslangici);
+                if (nakitBagisHareket == null)
+                    throw new InvalidOperationException("Belgeye ait bağış yılında nakit bağış hareketi bulunamadı.");
+
+                int yeniArmaganId = EkstreAktarmaTransferService.ArmaganiKaydet(
+                    nakitBagisHareket, bagisci, duzenliNakitBagisci.BagisToplami,
+                    ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID, CurrentUserName,
+                    duzenliBagisBelgeSirasi: belgeSirasi);
+                if (yeniArmaganId < 1)
+                    throw new InvalidOperationException("Armağan kaydı oluşturulamadı.");
+
+                duzenliNakitBagisci.ArmaganId = yeniArmaganId;
+                duzenliNakitBagisci.NakitBagisHareketId = nakitBagisHareket.Id;
+                nakitBagisHareket.ArmaganId = yeniArmaganId;
+                new NakitBagisHareketService().Update(nakitBagisHareket);
+                new DuzenliNakitBagisciService().Update(duzenliNakitBagisci);
+                TabloOlustur();
             }
             catch (Exception ex)
             {
@@ -1008,8 +945,12 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
         {
             BagisAyiDDL.Items.Clear();
             BagisAyiDDL.Items.Add(new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString()));
-            BagisAyiDDL.Items.Add(new ListItem("12", "12"));
-            BagisAyiDDL.Items.Add(new ListItem("24", "24"));
+            DataTable esikler = new NakitBagisciReportService().GetDuzenliBagisBelgeEsikleri();
+            foreach (DataRow row in esikler.Rows)
+            {
+                string bagisAdedi = row["BagisAdedi"].ToString();
+                BagisAyiDDL.Items.Add(new ListItem(bagisAdedi, bagisAdedi));
+            }
 
             ListItem bagisAyiItem = BagisAyiDDL.Items.FindByValue(SecilenBagisAyiQS);
             if (bagisAyiItem != null)
