@@ -143,7 +143,7 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
         private DataTable GetDataTable()
         {
             Personel personel = new Personel();
-            DataTable dataTable = personel.SelectAyrilanPersonelListesiReturnDataTable();
+            DataTable dataTable = new PersonelService().GetFormerEmployeeListReturnDataTable();
             return dataTable;
         }
 

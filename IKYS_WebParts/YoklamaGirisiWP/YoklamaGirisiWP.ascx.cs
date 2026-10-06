@@ -342,7 +342,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
             if (AuthQS.Equals("IKYS"))
             {
                 Personel perdao = new Personel();
-                list = perdao.SelectCalisanPersonel();
+                list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
             }
             else if (AuthQS.Equals("BIRIM"))
             {
@@ -401,7 +401,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                     birimListesiStr = BirimListesiGetir(bt);
                 }
                 Personel perdao = new Personel();
-                list = perdao.SelectCalisanPersonelByBirimReturnList(birimListesiStr);
+                list = new PersonelService().GetActiveEmployeesByUnitReturnList(birimListesiStr);
             }
             return list;
         }

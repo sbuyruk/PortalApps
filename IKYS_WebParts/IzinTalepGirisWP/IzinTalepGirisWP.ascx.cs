@@ -737,7 +737,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
         {
             PersonelDDL.Items.Clear();
             Personel personel = new Personel();
-            List<Personel> list = personel.SelectCalisanPersonel();
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
 
             foreach (Personel item in list)
             {
@@ -760,7 +760,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
         {
             VekilImzaDDL.Items.Clear();
             Personel personel = new Personel();
-            List<Personel> list = personel.SelectCalisanPersonel();
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
             ListItem bosLi = new ListItem(ProjeConstants.BOS, ProjeConstants.BOS_INT.ToString());
             VekilImzaDDL.Items.Add(bosLi);
             foreach (Personel item in list)
@@ -780,7 +780,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
         {
             AmirImzaDDL.Items.Clear();
             Personel personel = new Personel();
-            List<Personel> list = personel.SelectCalisanPersonel();
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
             ListItem bosLi = new ListItem(ProjeConstants.BOS, ProjeConstants.BOS_INT.ToString());
             AmirImzaDDL.Items.Add(bosLi);
             foreach (Personel item in list)

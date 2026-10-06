@@ -115,7 +115,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
         {
             PersonelDDL.Items.Clear();
             Personel personel = new Personel();
-            List<Personel> list = personel.SelectCalisanPersonel();
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
 
             foreach (Personel item in list)
             {
@@ -367,7 +367,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
             if (UygulanacakGrupRL.SelectedValue.Equals("Tum"))
             {
                 Personel personelDao = new Personel();
-                List<Personel> tumCalisanPersonelList = personelDao.SelectCalisanPersonel();
+                List<Personel> tumCalisanPersonelList = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
                 foreach (Personel personel in tumCalisanPersonelList)
                 {
                     if (SecilenPersonelList.Contains(personel.Id))
@@ -384,7 +384,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
             else if (UygulanacakGrupRL.SelectedValue.Equals("Secilen"))
             {
                 Personel personelDao = new Personel();
-                List<Personel> tumCalisanPersonelList = personelDao.SelectCalisanPersonel();
+                List<Personel> tumCalisanPersonelList = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
                 foreach (Personel personel in tumCalisanPersonelList)
                 {
                     if (SecilenPersonelList.Contains(personel.Id))

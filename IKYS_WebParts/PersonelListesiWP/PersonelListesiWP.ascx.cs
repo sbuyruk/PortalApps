@@ -362,7 +362,7 @@ namespace IKYS_WebParts.PersonelListesiWP
         {
             PersonelTipi personelTipi = (PersonelTipi)PersonelTipiDDL.SelectedItem.Value.ConvertToInt();
             Personel personel = new Personel();
-            DataTable dataTable = personel.SelectCalisanPersonelListesiReturnDataTable(personelTipi);
+            DataTable dataTable = new PersonelService().GetEmployeeListReturnDataTable(personelTipi);
             return dataTable;
         }
         private class PersonelListItem

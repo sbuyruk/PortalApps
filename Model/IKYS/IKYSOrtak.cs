@@ -228,7 +228,7 @@ namespace Model.Ortak
         public static void IzinKabulRedOnayEPostasiGonder(int personelId, int izinTalepId, string kabulRedOnay)
         {
             Personel personel = new Personel();
-            personel = personel.Select<Personel>(personelId);
+            personel = new PersonelService().GetById(personelId);
 
             if (personel != null)
             {
