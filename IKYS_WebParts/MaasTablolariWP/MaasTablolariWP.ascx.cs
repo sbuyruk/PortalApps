@@ -57,7 +57,7 @@ namespace IKYS_WebParts.MaasTablolariWP
             int grupId = TarihDDL.SelectedItem.Value.ConvertToInt();
             UcretTanim ucretTanim = new UcretTanim();
             int derece = 1;
-            DataTable dataTable = ucretTanim.SelectKademe(derece, grupId);
+            DataTable dataTable = new UcretTanimService().GetKademe(derece, grupId);
             for (int i = 1; i <= dataTable.Rows.Count; i++)
             {
 
