@@ -3,6 +3,7 @@ using Model.IKYS;
 using Model.Ortak;
 using Model.Services.Ortak;
 using Model.TBYS;
+using Model.Services.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -1480,7 +1481,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             {
                 List<SerhBeyanIrtifakListItem> list = new List<SerhBeyanIrtifakListItem>();
                 SerhBeyanIrtifak sbiDao = new SerhBeyanIrtifak();
-                List<SerhBeyanIrtifak> sbiList= sbiDao.SelectByTasinmazId(tasinmaz.Id);
+                List<SerhBeyanIrtifak> sbiList = new SerhBeyanIrtifakService().GetByTasinmazId(tasinmaz.Id);
                 foreach (var sbi in sbiList)
                 {
                     int serhBeyanIrtifakId = sbi.Id; // örnek id
@@ -1539,7 +1540,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
                     //Seçilen Şerh Beyan ve İrtifak kaydini getir
                     SerhBeyanIrtifak sbi = new SerhBeyanIrtifak();
-                    sbi = sbi.Select<SerhBeyanIrtifak>(serhBeyanIrtifakId);
+                    sbi = new SerhBeyanIrtifakService().GetById(serhBeyanIrtifakId);
                     if (sbi != null)
                     {
                         MalikLehtarTxt.Text = sbi.MalikLehtar;
@@ -1617,7 +1618,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             sbi.Yevmiye = YevmiyeTxt.Text;
             sbi.TerkinSebebi = TerkinSebebiTxt.Text;
             sbi.Olusturan = CurrentUserName;
-            int sbiId = sbi.Save();
+            int sbiId = new SerhBeyanIrtifakService().Save(sbi);
             if (sbiId > 0)
             {
                 //SerhBeyanIrtifak tablosunu güncelle
@@ -1643,10 +1644,10 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             int parametreId = parametreIdLbl.Value.ConvertToInt();
             // SerhBeyanIrtifak tablosundan Id= parametreId olan kaydi güncelle
             SerhBeyanIrtifak sbi = new SerhBeyanIrtifak();
-            sbi = sbi.Select<SerhBeyanIrtifak>(parametreId);
+            sbi = new SerhBeyanIrtifakService().GetById(parametreId);
             if (sbi != null)
             {
-                if (sbi.Delete())
+                if (new SerhBeyanIrtifakService().Delete(sbi))
                 {
                     //SerhBeyanIrtifak tablosunu güncelle
                     Tasinmaz tasinmaz = new Tasinmaz();
@@ -1672,7 +1673,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             int parametreId = parametreIdLbl.Value.ConvertToInt();
             // SerhBeyanIrtifak tablosundan Id= parametreId olan kaydi güncelle
             SerhBeyanIrtifak sbi = new SerhBeyanIrtifak();
-            sbi = sbi.Select<SerhBeyanIrtifak>(parametreId);
+            sbi = new SerhBeyanIrtifakService().GetById(parametreId);
             if (sbi != null)
             {
                 sbi.SBI = SerhBeyanIrtifakDDL.SelectedValue;
@@ -1683,7 +1684,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 sbi.Yevmiye = YevmiyeTxt.Text;
                 sbi.TerkinSebebi = TerkinSebebiTxt.Text;
                 sbi.Degistiren = CurrentUserName;
-                if (sbi.Update())
+                if (new SerhBeyanIrtifakService().Update(sbi))
                 {
                     //SerhBeyanIrtifak tablosunu güncelle
                     Tasinmaz tasinmaz = new Tasinmaz();

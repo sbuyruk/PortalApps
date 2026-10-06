@@ -1,4 +1,5 @@
 using Model.TBYS;
+using Model.Services.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -137,7 +138,7 @@ namespace TBYS_WebParts.BagisciYakinlariWP
             //Column headers
             BagisciYakinlariTableHeaders();
             BagisciYakinlari bt = new BagisciYakinlari();
-            List<BagisciYakinlari> list = bt.SelectByBagisciId(bagisci.Id);
+            List<BagisciYakinlari> list = new BagisciYakinlariService().GetByBagisciId(bagisci.Id);
             int SiraNo = 1;
             foreach (BagisciYakinlari bagisciYakini in list)
             {
@@ -166,7 +167,7 @@ namespace TBYS_WebParts.BagisciYakinlariWP
                 SilBtn.CssClass = "btn btn-outline-danger";
                 SilBtn.Click += delegate
                 {
-                    bagisciYakini.Delete();
+                    new BagisciYakinlariService().Delete(bagisciYakini);
                     string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                     int queryIndex = newUrl.IndexOf("?");
                     if (queryIndex > 0)
@@ -215,7 +216,7 @@ namespace TBYS_WebParts.BagisciYakinlariWP
             bagisciYakinlari.Telefon = TelefonTxt.Text;
             bagisciYakinlari.YakinlikDerecesi = YakinlikDerecesiTxt.Text;
             bagisciYakinlari.BagisciId = BagisciIdQS.ConvertToInt();
-            int id = bagisciYakinlari.Save();
+            int id = new BagisciYakinlariService().Save(bagisciYakinlari);
             bagisciYakinlari.Id = id;
             string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             int queryIndex = newUrl.IndexOf("?");

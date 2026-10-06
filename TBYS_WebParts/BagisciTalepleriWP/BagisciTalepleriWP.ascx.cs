@@ -1,5 +1,6 @@
 using Model.Ortak;
 using Model.TBYS;
+using Model.Services.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -107,7 +108,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP
             //Column headers
             BagisciTalepleriTableHeaders();
             BagisciTalepleri bt = new BagisciTalepleri();
-            List<BagisciTalepleri> list = bt.SelectByBagisciId(bagisci.Id);
+            List<BagisciTalepleri> list = new BagisciTalepleriService().GetByBagisciId(bagisci.Id);
             int SiraNo = 1;
             foreach (BagisciTalepleri item in list)
             {
@@ -173,7 +174,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP
             TalepGuncelleBtn.Visible = false;
             int talepId = ParamTalepIdLbl.Value.ConvertToInt();
             BagisciTalepleri bt = new BagisciTalepleri();
-            bt = bt.Select<BagisciTalepleri>(talepId);
+            bt = new BagisciTalepleriService().GetById(talepId);
             if (bt != null)
             {
                 TalepTxt.Text = bt.Talep;
@@ -205,7 +206,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP
                 bt.Talep = TalepTxt.Text;
                 bt.Tarih = TarihTxt.Text;
 
-                int id = bt.Save();
+                int id = new BagisciTalepleriService().Save(bt);
                 if (id > 0)
                     MessageHelper.PublishMessage("Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                 RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TALEPLERI + "?BagisciId=" + BagisciIdQS);
@@ -225,7 +226,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP
 
                 int talepId = ParamTalepIdLbl.Value.ConvertToInt();
                 BagisciTalepleri bt = new BagisciTalepleri();
-                bt = bt.Select<BagisciTalepleri>(talepId);
+                bt = new BagisciTalepleriService().GetById(talepId);
                 if (bt != null)
                 {
                     bt.Aciklama = TalepAciklamaTxt.Text;
@@ -234,7 +235,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP
                     bt.Irtibat = IrtibatTxt.Text;
                     bt.Talep = TalepTxt.Text;
                     bt.Tarih = TarihTxt.Text;
-                    if (bt.Update())
+                    if (new BagisciTalepleriService().Update(bt))
                         MessageHelper.PublishMessage("Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                     else
                         MessageHelper.PublishMessage("Kaydedilemedi", ProjeConstants.MESAJ_HATA);
@@ -270,10 +271,10 @@ namespace TBYS_WebParts.BagisciTalepleriWP
         {
             int talepId = ParamTalepIdLbl.Value.ConvertToInt();
             BagisciTalepleri bt = new BagisciTalepleri();
-            bt = bt.Select<BagisciTalepleri>(talepId);
+            bt = new BagisciTalepleriService().GetById(talepId);
             if (bt != null)
             {
-                if (bt.Delete())
+                if (new BagisciTalepleriService().Delete(bt))
                     RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TALEPLERI + "?BagisciId=" + BagisciIdQS);
 
             }

@@ -1,6 +1,7 @@
 using Model.Ortak;
 using Model.Services.Ortak;
 using Model.TBYS;
+using Model.Services.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -328,7 +329,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
         private void BagisciTalepleriniDoldur(TasinmazBagisci bagisci)
         {
             BagisciTalepleri bt = new BagisciTalepleri();
-            List<BagisciTalepleri> bagisciListesi = bt.SelectByBagisciId(bagisci.Id);
+            List<BagisciTalepleri> bagisciListesi = new BagisciTalepleriService().GetByBagisciId(bagisci.Id);
             BagisciTalepleriTable.Rows.Clear();
             BagisciTalepleriTable.BorderWidth = 2;
             TableHeaderRow headerRow = new TableHeaderRow();
@@ -384,7 +385,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
         private void BagisciYakinlariniDoldur(TasinmazBagisci bagisci)
         {
             BagisciYakinlari bt = new BagisciYakinlari();
-            List<BagisciYakinlari> bagisciListesi = bt.SelectByBagisciId(bagisci.Id);
+            List<BagisciYakinlari> bagisciListesi = new BagisciYakinlariService().GetByBagisciId(bagisci.Id);
             BagisciYakinlariTable.Rows.Clear();
             BagisciYakinlariTable.BorderWidth = 2;
             TableHeaderRow headerRow = new TableHeaderRow();

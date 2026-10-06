@@ -465,7 +465,7 @@ namespace Portal_WebParts.ToplantiListesiWP
                 koordinatorStr = birimTanim.KisaAdi;
             }
             Personel yetkiliPer = new Personel();
-            yetkiliPer = yetkiliPer.Select(yetkili);
+            yetkiliPer = new PersonelService().GetById(yetkili);
             string yetkiliPerAdiSoyadi = yetkiliPer != null ? " </br> (" + yetkiliPer.Adi + " " + yetkiliPer.Soyadi + ")" : string.Empty;
 
             return koordinatorStr + yetkiliPerAdiSoyadi;

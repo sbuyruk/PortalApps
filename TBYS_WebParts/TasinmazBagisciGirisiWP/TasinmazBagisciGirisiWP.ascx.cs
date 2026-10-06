@@ -2,6 +2,7 @@ using Microsoft.SharePoint;
 using Model.Ortak;
 using Model.Services.Ortak;
 using Model.TBYS;
+using Model.Services.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -483,13 +484,13 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         {
 
             BagisciTalepleri bagisciTalepleri = new BagisciTalepleri();
-            List<BagisciTalepleri> list = bagisciTalepleri.SelectByBagisciId(bagisci.Id);
+            List<BagisciTalepleri> list = new BagisciTalepleriService().GetByBagisciId(bagisci.Id);
             return list.Count > 0;
         }
         private bool BagisciYakiniVarmi(TasinmazBagisci bagisci)
         {
             BagisciYakinlari bagisciYakinlari = new BagisciYakinlari();
-            List<BagisciYakinlari> list = bagisciYakinlari.SelectByBagisciId(bagisci.Id);
+            List<BagisciYakinlari> list = new BagisciYakinlariService().GetByBagisciId(bagisci.Id);
 
             return list.Count > 0;
         }
