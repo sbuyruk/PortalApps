@@ -67,57 +67,19 @@ namespace Model.TBYS
         }
         public List<TasinmazBagisci> SelectAllSagBagiscilar(string sag)
         {
-            string sagVefatStr = sag.Equals(ProjeConstants.HEPSI) ? string.Empty :string.Format( " WHERE Sag_vefat ={0} ", sag.ReturnQuotedValue());
-            
-            string sqlString = string.Format(@"
-                SELECT  *
-                FROM TasinmazBagisci_Table 
-                {0} ", sagVefatStr);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<TasinmazBagisci> list = ToList<TasinmazBagisci>(dataTable);
-
-            return (list);
+            return Service.GetAllBySagVefat(sag);
         }        
         public List<TasinmazBagisci> SelectByBolge(int bolgeId)
         {
-            string bolgeStr = bolgeId == ProjeConstants.BOLGE_HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" WHERE BolgeId={0} ", bolgeId);
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM TasinmazBagisci_Table A
-                    LEFT JOIN Il_Table B ON B.IlAdi = A.Ili
-                {0}", bolgeStr);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<TasinmazBagisci> list = ToList<TasinmazBagisci>(dataTable);
-
-            return (list);
+            return Service.GetByBolge(bolgeId);
         }
         public List<TasinmazBagisci> SelectByFilters(bool isSagVefat, bool isCiplakMulkiyet, bool isTCKimlikNoFull, bool isDogumTarihiFull)
         {
-            string TCKimlikNoStr = isTCKimlikNoFull ? string.Format(" AND TCKimlikNo IS NOT NULL AND TCKimlikNo > 0 ") : string.Empty;
-            string dogumTarihiStr = isDogumTarihiFull ? string.Format(" AND DogumTarihi IS NOT NULL AND DogumTarihi!='' AND DogumTarihi>'01.01.1900' ") : string.Empty;
-            string sagVefatStr = isSagVefat ? string.Format(" AND Sag_vefat={0}", ProjeConstants.BAGISCI_SAG.ReturnQuotedValue()) : string.Empty;
-            string ciplakMulkiyetStr = isCiplakMulkiyet ? string.Format("AND A.Id in (SELECT B.BagisciId FROM Bagis_Table B INNER JOIN Tasinmaz_Table C ON C.Id= B.TasinmazId AND C.MulkiyetSekli={0} )", ProjeConstants.MULKIYETSEKLI_CM.ReturnQuotedValue()) : string.Empty;//string.Format(" AND MulkiyetSekli={0}", ProjeConstants.MULKIYETSEKLI_CM.ReturnQuotedValue()) : string.Empty;
-            string whereStr = TCKimlikNoStr + dogumTarihiStr + sagVefatStr + ciplakMulkiyetStr;
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM TasinmazBagisci_Table A
-                WHERE 1>0
-                {0}", whereStr);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<TasinmazBagisci> list = ToList<TasinmazBagisci>(dataTable);
-
-            return (list);
+            return Service.GetByFilters(isSagVefat, isCiplakMulkiyet, isTCKimlikNoFull, isDogumTarihiFull);
         }
         public List<TasinmazBagisci> SelectByIlAdi(string ilAdi)
         {
-            string sqlString = string.Format(@"SELECT * FROM TasinmazBagisci_Table
-                              WHERE Ili={0}", ilAdi.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<TasinmazBagisci> list = ToList<TasinmazBagisci>(dataTable);
-            return list;
+            return Service.GetByIlAdi(ilAdi);
         }
         public DataTable SelectAllCountBagisAdediReturnDataTable(bool vefatEdenBagiscilarHaric, bool gizliBagiscilarHaric)
         {
