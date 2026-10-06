@@ -440,7 +440,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
             if (personel != null)
             {
                 IsBilgileri ib = new IsBilgileri();
-                ib = ib.SelectByPersonelId(personel.Id);
+                ib = new IsBilgileriService().GetByPersonelId(personel.Id);
                 if (ib != null)
                 {
                     PersonelItem pI = SecilmeyenPersonelList.Where(t => t.Id == personel.Id).FirstOrDefault();

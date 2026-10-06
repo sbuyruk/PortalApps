@@ -359,7 +359,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP
             DateTime basTar = new DateTime(DateTime.Today.AddYears(-1).Year, 1, 1);
             DateTime bitTar = new DateTime(DateTime.Today.AddYears(1).Year, 12, 31);
             ResmiTatil resmiTatil = new ResmiTatil();
-            string json = resmiTatil.SelectAllReturnJson(basTar, bitTar);
+            string json = new ResmiTatilService().GetAllReturnJson(basTar, bitTar);
             return json;
         }
 
