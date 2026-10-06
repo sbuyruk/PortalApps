@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Utility.ProjeGlobal;
 using Model.IKYS;
+using Model.Services.IKYS;
 using Model.NBYS;
 using Model.Services.NBYS;
 using Model.TBYS;
@@ -147,7 +148,7 @@ namespace Model.MTS
             else if (katilimciTipi == ProjeConstants.FAALIYET_KATILIMCI_IC_INT)
             {
                 Personel personel = new Personel();
-                personel = personel.Select(katilimciId);
+                personel = new PersonelService().GetById(katilimciId);
                 if (personel != null)
                 {
                     IletisimBilgileri iletisimBilgileriDao = new IletisimBilgileri();

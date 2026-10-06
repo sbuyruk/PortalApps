@@ -1,4 +1,5 @@
 using Model.IKYS;
+using Model.Services.IKYS;
 using Model.MTS;
 using Model.Portal;
 using System;
@@ -187,7 +188,7 @@ namespace MTS_WebParts.HaftalikGorunumWP
         private string PersonelDogumGunuListesiniGetir()
         {
             Personel personel = new Personel();
-            DataTable dataTable = personel.SelectCalisanPersonelListesiReturnDataTable();
+            DataTable dataTable = new PersonelService().GetEmployeeListReturnDataTable(Personel.PersonelTipi.Kadrolu);
             List<CalendarEvent> eventItems = new List<CalendarEvent>();
             Faaliyet randevu = new Faaliyet();
 
@@ -438,14 +439,14 @@ headerToolbar: {
                 DisKatilimcilarCell.Text = toplanti.DisKatilimcilar.Replace(",", "</br>");
 
                 Personel personel = new Personel();
-                List<Personel> list = personel.SelectKatilimcilarByToplantiIdList(toplanti.Id);
+                List<Personel> list = new PersonelService().GetMeetingParticipants(toplanti.Id, false);
 
                 foreach (var item in list)
                 {
                     IcKatilimcilarCell.Text += item.Adi + " " + item.Soyadi + "</br>";
                 }
 
-                list = personel.SelectBilgiVerilenlerByToplantiIdList(toplanti.Id);
+                list = new PersonelService().GetMeetingParticipants(toplanti.Id, true);
                 foreach (var item in list)
                 {
                     BilgiCell.Text += item.Adi + " " + item.Soyadi + "</br>";
@@ -482,8 +483,7 @@ headerToolbar: {
         private string ParseKoordinator(int koordinator)
         {
             string koordinatorStr = string.Empty;
-            BirimTanim birimTanim = new BirimTanim();
-            birimTanim = birimTanim.Select<BirimTanim>(koordinator);
+            BirimTanim birimTanim = new BirimTanimService().GetById(koordinator);
             if (birimTanim != null)
             {
                 koordinatorStr = birimTanim.KisaAdi;
@@ -494,7 +494,7 @@ headerToolbar: {
         {
             string yetkiliStr = string.Empty;
             Personel personel = new Personel();
-            personel = personel.Select(toplantiYetkilisi);
+            personel = new PersonelService().GetById(toplantiYetkilisi);
             if (personel != null)
             {
                 yetkiliStr = personel.Adi + " " + personel.Soyadi;

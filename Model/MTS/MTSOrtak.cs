@@ -1,4 +1,5 @@
 using Model.IKYS;
+using Model.Services.IKYS;
 using Model.Portal;
 using System;
 using System.Collections.Generic;
@@ -77,7 +78,7 @@ namespace Model.Ortak
                     if (string.IsNullOrEmpty(userto))
                     {
                         Personel personel = new Personel();
-                        personel = personel.Select(personelId);
+                        personel = new PersonelService().GetById(personelId);
                         if (personel != null)
                         {
 
@@ -92,7 +93,7 @@ namespace Model.Ortak
                         if (!EpostaGonderilenlerList.Contains(userto))
                         {
                             Personel personel = new Personel();
-                            personel = personel.Select(personelId);
+                            personel = new PersonelService().GetById(personelId);
                             if (personel != null)
                             {
                                 tabloSB.Append("Sayin " + personel.Adi + " " + personel.Soyadi + ",<br/><br/>");
@@ -410,7 +411,7 @@ namespace Model.Ortak
                     string userto = iletisimBilgisi.IntranetEPosta;
 
                     Personel personel = new Personel();
-                    personel = personel.Select(personelId);
+                    personel = new PersonelService().GetById(personelId);
 
                     if (personel != null)
                     {
@@ -607,7 +608,7 @@ namespace Model.Ortak
         {
             string icKatilimcilarStr = string.Empty;
             Personel personel = new Personel();
-            List<Personel> list = personel.SelectKatilimcilarByToplantiIdList(toplantiId);
+            List<Personel> list = new PersonelService().GetMeetingParticipants(toplantiId, false);
             foreach (var item in list)
             {
                 icKatilimcilarStr += item.Adi + " " + item.Soyadi + "</br>";
@@ -618,7 +619,7 @@ namespace Model.Ortak
         {
             string icKatilimcilarStr = string.Empty;
             Personel personel = new Personel();
-            List<Personel> list = personel.SelectBilgiVerilenlerByToplantiIdList(toplantiId);
+            List<Personel> list = new PersonelService().GetMeetingParticipants(toplantiId, true);
             foreach (var item in list)
             {
                 icKatilimcilarStr += item.Adi + " " + item.Soyadi + "</br>";
@@ -647,8 +648,7 @@ namespace Model.Ortak
         private static string ParseKoordinator(int koordinator)
         {
             string koordinatorStr = string.Empty;
-            BirimTanim birimTanim = new BirimTanim();
-            birimTanim = birimTanim.Select<BirimTanim>(koordinator);
+            BirimTanim birimTanim = new BirimTanimService().GetById(koordinator);
             if (birimTanim != null)
             {
                 koordinatorStr = birimTanim.KisaAdi;
@@ -659,7 +659,7 @@ namespace Model.Ortak
         {
             string yetkiliStr = string.Empty;
             Personel personel = new Personel();
-            personel = personel.Select(toplantiYetkilisi);
+            personel = new PersonelService().GetById(toplantiYetkilisi);
             if (personel != null)
             {
                 yetkiliStr = personel.Adi + " " + personel.Soyadi;

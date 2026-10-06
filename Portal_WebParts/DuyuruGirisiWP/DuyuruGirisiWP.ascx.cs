@@ -1,5 +1,6 @@
 using Microsoft.SharePoint;
 using Model.IKYS;
+using Model.Services.IKYS;
 using Model.Ortak;
 using Model.Portal;
 using System;
@@ -190,7 +191,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
             SecilmeyenPersonelList.Clear();
             SecilenPersonelList.Clear();
             Personel personelDao = new Personel();
-            List<Personel> list = personelDao.SelectCalisanPersonel();
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
 
             Duyuru duyuru = new Duyuru();
             duyuru = duyuru.Select<Duyuru>(DuyuruIdQS.ConvertToInt());
@@ -342,7 +343,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
             SecilmeyenPersonelList.Clear();
             SecilenPersonelList.Clear();
             Personel personelDao = new Personel();
-            List<Personel> list = personelDao.SelectCalisanPersonel();
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
             int sirano = 1;
             foreach (Personel personel in list)
             {
@@ -360,7 +361,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
 
             SecilmeyenPersonelList.Clear();
             Personel personelDao = new Personel();
-            List<Personel> list = personelDao.SelectCalisanPersonel();
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
             int sirano = 1;
             foreach (Personel personel in list)
             {
@@ -435,7 +436,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
         {
 
             Personel personel = new Personel();
-            personel = personel.Select<Personel>(PersonelDDL.SelectedItem.Value.ConvertToInt());
+            personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt());
             if (personel != null)
             {
                 IsBilgileri ib = new IsBilgileri();

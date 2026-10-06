@@ -2,6 +2,7 @@ using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using Model.IKYS;
 using Model.Ortak;
 using Model.Services.NBYS;
+using Model.Services.IKYS;
 using Model.Services.Ortak;
 using System;
 using System.Xml.Linq;
@@ -84,7 +85,7 @@ namespace Model.NBYS
             {
                 
                 Personel personelDao= new Personel();
-                var bolgePersonelList= personelDao.SelectByBolgeId(bolge.Id);
+                var bolgePersonelList= new PersonelService().GetActiveEmployeesByRegion(bolge.Id);
                 foreach (var item in bolgePersonelList)
                 {
                     IletisimBilgileri iletisimBilgileri = new IletisimBilgileri();

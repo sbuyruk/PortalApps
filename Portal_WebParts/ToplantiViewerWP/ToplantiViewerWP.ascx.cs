@@ -215,8 +215,7 @@ namespace Portal_WebParts.ToplantiViewerWP
         private string ParseKoordinator(int koordinator)
         {
             string koordinatorStr = string.Empty;
-            BirimTanim birimTanim = new BirimTanim();
-            birimTanim = birimTanim.Select<BirimTanim>(koordinator);
+            BirimTanim birimTanim = new BirimTanimService().GetById(koordinator);
             if (birimTanim != null)
             {
                 koordinatorStr = birimTanim.KisaAdi;
@@ -227,7 +226,7 @@ namespace Portal_WebParts.ToplantiViewerWP
         {
             string yetkiliStr = string.Empty;
             Personel personel = new Personel();
-            personel = personel.Select(toplantiYetkilisi);
+            personel = new PersonelService().GetById(toplantiYetkilisi);
             if (personel != null)
             {
                 yetkiliStr = personel.Adi + " " + personel.Soyadi;

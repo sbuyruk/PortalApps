@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -267,8 +268,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                 isBilgileri = isBilgileri.Select<IsBilgileri>(personel.Id);
                 if (isBilgileri != null)
                 {
-                    BirimTanim birimTanim = new BirimTanim();
-                    birimTanim = birimTanim.Select(isBilgileri.BirimId);
+                    BirimTanim birimTanim = new BirimTanimService().GetById(isBilgileri.BirimId);
                     birim = birimTanim.Adi;
                 }
             }
