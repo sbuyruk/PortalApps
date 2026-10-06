@@ -260,16 +260,16 @@ namespace MTS_WebParts.FaaliyetViewerWP
             foreach (var item in kisiListesi)
             {
 
-                for (int i = -1; i < 2; i++)//geçen yil, bu yil ve gelecek yil için d.günü göster
+                for (int i = -1; i < 2; i++)//geÃ§en yil, bu yil ve gelecek yil iÃ§in d.gÃ¼nÃ¼ gÃ¶ster
                 {
                     DateTime dogumGunu = item.DogumTarihi;
                     DateTime dogumGunuBuYil = new DateTime(DateTime.Today.Year + i, dogumGunu.Month, dogumGunu.Day);
 
                     CalendarEvent dogumGunuitem = new CalendarEvent();
                     dogumGunuitem.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
-                    dogumGunuitem.id = 999;//999 önemli tasinamayan event
+                    dogumGunuitem.id = 999;//999 Ã¶nemli tasinamayan event
                     dogumGunuitem.purpose = ProjeConstants.FAALIYET_AMACI_DOGUMGUNU_INT;
-                    dogumGunuitem.title = "D.Günü :" + item.Adi + " " + item.Soyadi;
+                    dogumGunuitem.title = "D.GÃ¼nÃ¼ :" + item.Adi + " " + item.Soyadi;
                     dogumGunuitem.start = string.Format("{0:s}", dogumGunuBuYil);
                     dogumGunuitem.end = string.Format("{0:s}", dogumGunuBuYil);
 
@@ -298,7 +298,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
             {
                 foreach (DataRow row in dataTable.Rows)
                 {
-                    for (int i = -1; i < 2; i++)//geçen yil, bu yil ve gelecek yil için d.günü göster
+                    for (int i = -1; i < 2; i++)//geÃ§en yil, bu yil ve gelecek yil iÃ§in d.gÃ¼nÃ¼ gÃ¶ster
                     {
                         string adi = row["Adi"].ToString();
                         string soyadi = row["Soyadi"].ToString();
@@ -315,9 +315,9 @@ namespace MTS_WebParts.FaaliyetViewerWP
                         {
                             CalendarEvent dogumGunuitem = new CalendarEvent();
                             dogumGunuitem.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
-                            dogumGunuitem.id = 999;//999 önemli tasinamayan event
+                            dogumGunuitem.id = 999;//999 Ã¶nemli tasinamayan event
                             dogumGunuitem.purpose = ProjeConstants.FAALIYET_AMACI_DOGUMGUNU_INT;
-                            dogumGunuitem.title = "D.Günü :" + adi + " " + soyadi;
+                            dogumGunuitem.title = "D.GÃ¼nÃ¼ :" + adi + " " + soyadi;
                             dogumGunuitem.start = string.Format("{0:s}", dogumGunuBuYil);
                             dogumGunuitem.end = string.Format("{0:s}", dogumGunuBuYil);
                             dogumGunuitem.url = "";
@@ -332,9 +332,9 @@ namespace MTS_WebParts.FaaliyetViewerWP
                         {
                             CalendarEvent evlilikYildonumuItem = new CalendarEvent();
                             evlilikYildonumuItem.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
-                            evlilikYildonumuItem.id = 999;//999 önemli tasinamayan event
+                            evlilikYildonumuItem.id = 999;//999 Ã¶nemli tasinamayan event
                             evlilikYildonumuItem.purpose = ProjeConstants.FAALIYET_AMACI_YILDONUMU_INT;
-                            evlilikYildonumuItem.title = "Evl.Yild. :" + adi + " " + soyadi;
+                            evlilikYildonumuItem.title = "Evl.YÄ±ld. :" + adi + " " + soyadi;
                             evlilikYildonumuItem.start = string.Format("{0:s}", evlilikTarBuYil);
                             evlilikYildonumuItem.end = string.Format("{0:s}", evlilikTarBuYil);
                             evlilikYildonumuItem.url = "";
@@ -388,7 +388,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
                     right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                     },
                     editable: true,
-                    eventAllow: function(dropLocation, draggedEvent) { //resmi tatillerin draggable olmamasi için
+                    eventAllow: function(dropLocation, draggedEvent) { //resmi tatillerin draggable olmamasi iÃ§in
                         if (draggedEvent.id === '999') {
                             return false; // a boolean
                         }
@@ -549,7 +549,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
             }
             else
             {
-                MessageHelper.PublishMessage("Özel kalem takvimine islenmedi", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("Ã–zel kalem takvimine iÅŸlenmedi", ProjeConstants.MESAJ_BILGI, 2000);
             }
         }
         private void RedirectToPage(string pageUrl)
