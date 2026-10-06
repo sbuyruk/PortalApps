@@ -89,7 +89,7 @@ namespace Model.NBYS
                 foreach (var item in bolgePersonelList)
                 {
                     IletisimBilgileri iletisimBilgileri = new IletisimBilgileri();
-                    iletisimBilgileri=iletisimBilgileri.SelectByPersonelId(item.Id);
+                    iletisimBilgileri = new IletisimBilgileriService().GetByPersonelId(item.Id);
                     string eposta = iletisimBilgileri == null ? string.Empty : iletisimBilgileri.IntranetEPosta;
                     userTo += ";"+ eposta ;
                 }
