@@ -1,4 +1,5 @@
 using Model.IKYS;
+using Model.Services.IKYS;
 using Model.Ortak;
 using Model.Portal;
 using System;
@@ -122,7 +123,7 @@ namespace Portal_WebParts.DuyuruPopupWP
                 {
                     Personel personel = new Personel();
                     string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                    personel = personel.SelectByUserName(userName);
+                    personel = new PersonelService().GetByUserName(userName);
                     if (personel != null)
                         foreach (Duyuru duyuru in duyuruListesi)
                         {
@@ -152,7 +153,7 @@ namespace Portal_WebParts.DuyuruPopupWP
 
             Personel personel = new Personel();
             string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-            personel = personel.SelectByUserName(userName);
+            personel = new PersonelService().GetByUserName(userName);
             if (personel != null)
             {
                 string personelIdStr = personel.Id.ToString();
@@ -378,7 +379,7 @@ namespace Portal_WebParts.DuyuruPopupWP
                     duyuruOkuma.OkumaTarihi = DateTime.Now;
                     Personel personel = new Personel();
                     string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                    personel = personel.SelectByUserName(userName);
+                    personel = new PersonelService().GetByUserName(userName);
                     duyuruOkuma.PersonelId = personel == null ? 0 : personel.Id;
                     duyuruOkuma.DuyuruId = dg.DuyuruId;
                     duyuruOkuma.DuyuruGosterimId = dg.Id;

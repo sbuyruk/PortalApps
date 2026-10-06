@@ -1,4 +1,5 @@
 using Model.IKYS;
+using Model.Services.IKYS;
 using Model.MTS;
 using Model.Ortak;
 using Model.Portal;
@@ -676,7 +677,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = personel.SelectByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName);
                 PersonelIdQS = personel.Id.ToString();
             }
 
@@ -1245,7 +1246,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
             {
                 Personel personelDao = new Personel();
 
-                DataTable dataTable = personelDao.SelectPersonelReturnDataTable(katilimciId);
+            DataTable dataTable = new PersonelService().GetPersonelReturnDataTable(katilimciId);
                 if (dataTable != null)
                 {
                     string adiSoyadi = dataTable.Rows[0]["Adi"].ReturnEmptyIfNull().ToString() + " " + dataTable.Rows[0]["Soyadi"].ReturnEmptyIfNull().ToString();
@@ -1271,7 +1272,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
         private List<KatilimciListItem> GetModalDataList()
         {
             Personel personel = new Personel();
-            DataTable dataTableModal = personel.SelectSecilmemisIcKatilimcilarByToplantiIdReturnDT(ToplantiIdQS.ConvertToInt());
+            DataTable dataTableModal = new PersonelService().GetUnselectedMeetingParticipants(ToplantiIdQS.ConvertToInt());
 
             int SiraNo = 1;
             List<KatilimciListItem> list = new List<KatilimciListItem>();

@@ -1,4 +1,5 @@
 using Model.IKYS;
+using Model.Services.IKYS;
 using Model.Portal;
 using System;
 using System.Collections.Generic;
@@ -173,12 +174,12 @@ namespace Portal_WebParts.ToplantiViewerWP
                 DisKatilimcilarCell.Text = toplanti.DisKatilimcilar.Replace(",", "</br>");
 
                 Personel personel = new Personel();
-                List<Personel> list = personel.SelectKatilimcilarByToplantiIdList(toplanti.Id);
+                List<Personel> list = new PersonelService().GetMeetingParticipants(toplanti.Id, false);
                 foreach (var item in list)
                 {
                     IcKatilimcilarCell.Text += item.Adi + " " + item.Soyadi + "</br>";
                 }
-                list = personel.SelectBilgiVerilenlerByToplantiIdList(toplanti.Id);
+                list = new PersonelService().GetMeetingParticipants(toplanti.Id, true);
                 foreach (var item in list)
                 {
                     BilgiCell.Text += item.Adi + " " + item.Soyadi + "</br>";
