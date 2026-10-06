@@ -354,10 +354,11 @@ namespace IKYS_WebParts.MazereteMahsupWP
                 //izin dönemleri yoksa olustur
                 IzinDonem mazeretIzinDonemi = new IzinDonem();
                 DateTime now = DateTime.Now;
-                mazeretIzinDonemi = new IzinDonemService().GetByIzinTarihi(personelId, ProjeConstants.IZINTIPI_MAZERET_INT, now);
+                IzinDonemService izinDonemService = new IzinDonemService();
+                mazeretIzinDonemi = izinDonemService.GetByIzinTarihi(personelId, ProjeConstants.IZINTIPI_MAZERET_INT, now);
 
                 IzinDonem ucretliIzinDonemi = new IzinDonem();
-                ucretliIzinDonemi = new IzinDonemService().GetByIzinTarihi(personelId, ProjeConstants.IZINTIPI_UCRETLI_INT, now);
+                ucretliIzinDonemi = izinDonemService.GetByIzinTarihi(personelId, ProjeConstants.IZINTIPI_UCRETLI_INT, now);
 
                 if (ucretliIzinDonemi == null)
                 {
