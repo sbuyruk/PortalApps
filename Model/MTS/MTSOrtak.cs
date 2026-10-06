@@ -73,7 +73,7 @@ namespace Model.Ortak
                     }
                     int personelId = item.KatilimciId;
                     IletisimBilgileri iletisimBilgisi = new IletisimBilgileri();
-                    iletisimBilgisi = iletisimBilgisi.SelectByPersonelId(personelId);
+                    iletisimBilgisi = new IletisimBilgileriService().GetByPersonelId(personelId);
                     string userto = iletisimBilgisi.IntranetEPosta;
                     if (string.IsNullOrEmpty(userto))
                     {
@@ -407,7 +407,7 @@ namespace Model.Ortak
                 {
                     int personelId = item;
                     IletisimBilgileri iletisimBilgisi = new IletisimBilgileri();
-                    iletisimBilgisi = iletisimBilgisi.SelectByPersonelId(personelId);
+                    iletisimBilgisi = new IletisimBilgileriService().GetByPersonelId(personelId);
                     string userto = iletisimBilgisi.IntranetEPosta;
 
                     Personel personel = new Personel();
@@ -484,7 +484,7 @@ namespace Model.Ortak
                 if (toplantiYetkilisi != null)
                 {
                     IletisimBilgileri ib = new IletisimBilgileri();
-                    ib = ib.SelectByPersonelId(toplantiYetkilisiId);
+                    ib = new IletisimBilgileriService().GetByPersonelId(toplantiYetkilisiId);
                     string userto = ib.IntranetEPosta;
 
                     if (!EpostaGonderilenlerList.Contains(userto))

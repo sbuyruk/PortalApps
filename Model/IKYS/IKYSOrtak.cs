@@ -142,7 +142,7 @@ namespace Model.Ortak
                     {
                         //izinDonemiBasi'ndan ise baslamatar cikararak calistigi yil suresini bul
                         IsBilgileri ib = new IsBilgileri();
-                        ib = ib.SelectByPersonelId(personel.Id);
+                        ib = new IsBilgileriService().GetByPersonelId(personel.Id);
                         if (ib != null)
                         {
 
@@ -308,7 +308,7 @@ namespace Model.Ortak
                             " kayitlara islenmistir.";
                     }
                     IletisimBilgileri ib = new IletisimBilgileri();
-                    ib = ib.SelectByPersonelId(personel.Id);
+                    ib = new IletisimBilgileriService().GetByPersonelId(personel.Id);
                     if (ib != null)
                     {
                         userto = ib.IntranetEPosta;
@@ -349,7 +349,7 @@ namespace Model.Ortak
                 string body = izintipiStr + " Izin talebiniz olusturulmustur. <br>Lütfen " + userurl + " talebinizin durumunu takip ediniz.";
 
                 IletisimBilgileri ib = new IletisimBilgileri();
-                ib = ib.SelectByPersonelId(personel.Id);
+                ib = new IletisimBilgileriService().GetByPersonelId(personel.Id);
                 if (ib != null)
                 {
                     to = ib.IntranetEPosta;
@@ -619,7 +619,7 @@ namespace Model.Ortak
             if (personel != null)
             {
                 IsBilgileri ib = new IsBilgileri();
-                ib = ib.SelectByPersonelId(personel.Id);
+                ib = new IsBilgileriService().GetByPersonelId(personel.Id);
                 if (ib != null)
                 {
                     int birimId = ib.BirimId;

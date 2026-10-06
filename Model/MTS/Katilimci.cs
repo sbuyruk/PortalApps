@@ -152,7 +152,7 @@ namespace Model.MTS
                 if (personel != null)
                 {
                     IletisimBilgileri iletisimBilgileriDao = new IletisimBilgileri();
-                    IletisimBilgileri iletsimBilgileri = iletisimBilgileriDao.SelectByPersonelId(personel.Id);
+                    IletisimBilgileri iletsimBilgileri = new IletisimBilgileriService().GetByPersonelId(personel.Id);
                     string ePosta=iletsimBilgileri!=null?iletsimBilgileri.InternetEPosta:string.Empty;
 
                     Katilimci katilimci = new Katilimci()
