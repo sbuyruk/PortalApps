@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -69,7 +70,7 @@ namespace IKYS_WebParts.MaasTablolariWP
         {
             int sira = 1;
             UcretTanim ucretTanim = new UcretTanim();
-            List<UcretTanim> list = ucretTanim.SelectByKademe(grupId, kademe);
+            List<UcretTanim> list = new UcretTanimService().GetByKademe(grupId, kademe);
             TableRow row = new TableRow();
             TableCell kademeCell = new TableCell();
             kademeCell.Text = kademe.ToString();
@@ -182,7 +183,7 @@ namespace IKYS_WebParts.MaasTablolariWP
         {
             TarihDDL.Items.Clear();
             UcretTanim ucretTanim = new UcretTanim();
-            DataTable dataTable = ucretTanim.SelectByGrup();
+            DataTable dataTable = new UcretTanimService().GetByGrup();
             foreach (DataRow row in dataTable.Rows)
             {
                 DateTime bastar = row["BaslangicTarihi"].ConvertToDatetime();

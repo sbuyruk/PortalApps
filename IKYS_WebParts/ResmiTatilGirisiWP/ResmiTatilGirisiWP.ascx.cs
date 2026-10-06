@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.ComponentModel;
 using System.Web.UI.WebControls;
@@ -171,7 +172,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
         {
 
             ResmiTatil resmiTatil = new ResmiTatil();
-            resmiTatil = resmiTatil.Select<ResmiTatil>(ResmiTatilIdQS.ConvertToInt());
+            resmiTatil = new ResmiTatilService().GetById(ResmiTatilIdQS.ConvertToInt());
             if (resmiTatil != null)
             {
                 ResmiTatilIdLbl.Text = resmiTatil.Id.ReturnEmptyIfNull().ToString();
@@ -268,7 +269,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
 
             resmiTatil.IlanTarihi = IlanTarihiTxt.Text.ConvertToDatetime();
             resmiTatil.IptalTarihi = IptalTarihiTxt.Text.ConvertToDatetime();
-            int tatilId = resmiTatil.Save();
+            int tatilId = new ResmiTatilService().Save(resmiTatil);
             isSaved = tatilId > 0 ? true : false;
             return isSaved;
         }
@@ -276,7 +277,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
         {
             bool isSaved = false;
             ResmiTatil resmiTatil = new ResmiTatil();
-            resmiTatil = resmiTatil.Select<ResmiTatil>(ResmiTatilIdQS.ConvertToInt());
+            resmiTatil = new ResmiTatilService().GetById(ResmiTatilIdQS.ConvertToInt());
             if (resmiTatil != null)
             {
                 string gecerlilik = GecerlilikDDL.SelectedItem.Value;
@@ -324,7 +325,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
 
                 resmiTatil.IlanTarihi = IlanTarihiTxt.Text.ConvertToDatetime();
                 resmiTatil.IptalTarihi = IptalTarihiTxt.Text.ConvertToDatetime();
-                isSaved = resmiTatil.Update();
+                isSaved = new ResmiTatilService().Update(resmiTatil);
             }
 
             return isSaved;
@@ -336,7 +337,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             {
                 if (resmiTatil != null)
                 {
-                    isSaved = resmiTatil.Delete();
+                    isSaved = new ResmiTatilService().Delete(resmiTatil);
 
                 }
             }
@@ -500,7 +501,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             try
             {
                 ResmiTatil resmiTatil = new ResmiTatil();
-                resmiTatil = resmiTatil.Select<ResmiTatil>(ResmiTatilIdQS.ConvertToInt());
+                resmiTatil = new ResmiTatilService().GetById(ResmiTatilIdQS.ConvertToInt());
                 if (resmiTatil != null)
                 {
                     bool isDeleted = ResmiTatiliSil(resmiTatil);
