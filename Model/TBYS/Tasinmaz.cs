@@ -197,83 +197,11 @@ namespace Model.TBYS
         /// <returns></returns>
 		public DataTable SelectBagiscisiOlmayanTasinmazlarByBagsciIdReturnDT()
 		{
-			string[] sebepler = SatisVsDahilEnvanterdenCikmaSebepleri;
-			string[] sebepParamAdlari = sebepler
-				.Select((sebep, index) => "@Sebep" + index)
-				.ToArray();
-			string sebepInClause = string.Join(",", sebepParamAdlari);
-
-			SqlQuery query = new SqlQuery($@"
-				SELECT A.Id TasinmazId,
-					A.Id TasinmazId,A.MulkiyetSekli,A.KullanimSekli,A.Ili,A.Ilcesi,A.Adres,A.EnvanterdeMi
-				FROM Tasinmaz_Table A
-					LEFT JOIN Bagis_Table B ON B.TasinmazId= A.Id
-				WHERE (B.BagisciId IS NULL OR B.BagisciId=0)
-					AND (
-						A.EnvanterdeMi=1
-						OR (A.EnvanterdeMi=0 AND A.EnvanterdenCikmaSebebi IN ({sebepInClause}))
-					)
-				");
-			for (int i = 0; i < sebepler.Length; i++)
-			{
-				query.AddParameter(sebepParamAdlari[i], sebepler[i]);
-			}
-
-			DataTable dataTable = null;
-			try
-			{
-				dataTable = dao.SelectFromDb(query, "");
-			}
-			catch (Exception e)
-			{
-				throw;
-			}
-			return dataTable;
+			return new TasinmazService().GetWithoutDonor(SatisVsDahilEnvanterdenCikmaSebepleri);
 		}
         public string SelectTasinmazBolumNoReturnJson(int envanterde, string kirayaUygunluk)
         {
-			SqlQuery query = new SqlQuery(@"
-				SELECT 
-					A.Id, A.Id TasinmazId,A.Cinsi, A.Ili, A.Ilcesi, A.Ili+'/'+A.Ilcesi IliIlcesi, 
-										A.SigortaDurumu, A.Adres,A.Adres+' '+A.Ili+'/'+A.Ilcesi AdresIliIlcesi,
-										A.MulkiyetSekli, A.KiraDurumu, A.KatMulkiyeti, A.SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
-										A.EmlakBeyanDegeri, A.TahminiRayicDegeri, A.TapuTarihi, A.AdaNo, A.ParselNo, A.PaftaNo, A.Yuzolcumu, A.ArsaPayi, A.VakifHissesi,
-										A.YevmiyeNo,A.CiltNo, A.SahifeNo, A.KullanimSekli, A.TasinmazFoto, A.TasinmazFoto1, A.TasinmazFoto2, A.TapuFoto, A.KrokiFoto, A.TahkikatFoto,
-										A.Nitelik,A.BulunduguKat, A.Aciklama,A.EnvantereGirisTarihi, 
-										B.BolumNo,B.Id BolumId
-
-					FROM Tasinmaz_Table A
-						LEFT JOIN BagimsizBolum_Table B On B.TasinmazId = A.Id
-						LEFT JOIN KiraSozlesme_Table D ON D.Aktif=1 AND D.Id IN (SELECT SozlesmeId FROM SozlesmeTasinmaz_Table where TasinmazId= A.Id AND (BolumId IS NULL OR BolumId=0 OR BolumId=B.Id))
-					WHERE A.EnvanterdeMi=@Envanterde AND A.KirayaUygunluk=@KirayaUygunluk
-						AND D.Id IS NULL
-					ORDER BY A.Id 
-				");
-			query.AddParameter("@Envanterde", envanterde);
-			query.AddParameter("@KirayaUygunluk", kirayaUygunluk);
-            //string sqlString = string.Format(@"
-            //    SELECT ROW_NUMBER() OVER(ORDER BY A.Id) AS Sirano, A.Id, A.Id TasinmazId,A.Cinsi, A.Ili, A.Ilcesi, A.Ili+'/'+A.Ilcesi IliIlcesi, 
-            //        A.SigortaDurumu, A.Adres,A.Adres+' '+A.Ili+'/'+A.Ilcesi AdresIliIlcesi,
-            //        A.MulkiyetSekli, A.KiraDurumu, A.KatMulkiyeti, A.SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
-            //        A.EmlakBeyanDegeri, A.TahminiRayicDegeri, A.TapuTarihi, A.AdaNo, A.ParselNo, A.PaftaNo, A.Yuzolcumu, A.ArsaPayi, A.VakifHissesi,
-            //        A.YevmiyeNo,A.CiltNo, A.SahifeNo, A.KullanimSekli, A.TasinmazFoto, A.TasinmazFoto1, A.TasinmazFoto2, A.TapuFoto, A.KrokiFoto, A.TahkikatFoto,
-            //        A.Nitelik,A.BulunduguKat, A.Aciklama,A.EnvantereGirisTarihi, 
-            //        B.BolumNo,B.Id BolumId
-            //    FROM Tasinmaz_Table A
-            //        LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId=A.Id
-            //    WHERE A.EnvanterdeMi=1 
-            //    ");
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(query, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            string json = ToJSON(dataTable);
-            return json;
+            return new TasinmazService().GetSectionNumbersAsJson(envanterde, kirayaUygunluk);
         }
         public string SelectEnvanterdeOlmayanTasinmazReturnJson()
         {

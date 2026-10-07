@@ -1,6 +1,7 @@
 using DAO.Ortak;
 using System;
 using System.Data;
+using System.Linq;
 
 namespace DAO.Repositories.TBYS
 {
@@ -50,6 +51,36 @@ namespace DAO.Repositories.TBYS
                     LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
                 WHERE T.EnvanterdeMi=1" + regionFilter);
             if (!string.IsNullOrEmpty(regionFilter)) query.AddParameter("@BolgeId", bolgeId);
+            return db.SelectFromDb(query, "");
+        }
+        public DataTable SelectWithoutDonor(string[] exitReasons)
+        {
+            string[] parameters = exitReasons.Select((reason, index) => "@Sebep" + index).ToArray();
+            SqlQuery query = new SqlQuery(@"
+                SELECT A.Id TasinmazId, A.Id TasinmazId, A.MulkiyetSekli,A.KullanimSekli,A.Ili,A.Ilcesi,A.Adres,A.EnvanterdeMi
+                FROM Tasinmaz_Table A
+                    LEFT JOIN Bagis_Table B ON B.TasinmazId=A.Id
+                WHERE (B.BagisciId IS NULL OR B.BagisciId=0)
+                    AND (A.EnvanterdeMi=1 OR (A.EnvanterdeMi=0 AND A.EnvanterdenCikmaSebebi IN (" + string.Join(",", parameters) + ")))" );
+            for (int i = 0; i < exitReasons.Length; i++) query.AddParameter(parameters[i], exitReasons[i]);
+            return db.SelectFromDb(query, "");
+        }
+        public DataTable SelectSectionNumbers(int inventoryState, string rentalEligibility)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT A.Id, A.Id TasinmazId,A.Cinsi, A.Ili, A.Ilcesi, A.Ili+'/'+A.Ilcesi IliIlcesi,
+                    A.SigortaDurumu, A.Adres,A.Adres+' '+A.Ili+'/'+A.Ilcesi AdresIliIlcesi,
+                    A.MulkiyetSekli, A.KiraDurumu, A.KatMulkiyeti, A.SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
+                    A.EmlakBeyanDegeri, A.TahminiRayicDegeri, A.TapuTarihi, A.AdaNo, A.ParselNo, A.PaftaNo, A.Yuzolcumu, A.ArsaPayi, A.VakifHissesi,
+                    A.YevmiyeNo,A.CiltNo, A.SahifeNo, A.KullanimSekli, A.TasinmazFoto, A.TasinmazFoto1, A.TasinmazFoto2, A.TapuFoto, A.KrokiFoto, A.TahkikatFoto,
+                    A.Nitelik,A.BulunduguKat, A.Aciklama,A.EnvantereGirisTarihi, B.BolumNo,B.Id BolumId
+                FROM Tasinmaz_Table A
+                    LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId = A.Id
+                    LEFT JOIN KiraSozlesme_Table D ON D.Aktif=1 AND D.Id IN (SELECT SozlesmeId FROM SozlesmeTasinmaz_Table WHERE TasinmazId=A.Id AND (BolumId IS NULL OR BolumId=0 OR BolumId=B.Id))
+                WHERE A.EnvanterdeMi=@Envanterde AND A.KirayaUygunluk=@KirayaUygunluk AND D.Id IS NULL
+                ORDER BY A.Id");
+            query.AddParameter("@Envanterde", inventoryState);
+            query.AddParameter("@KirayaUygunluk", rentalEligibility);
             return db.SelectFromDb(query, "");
         }
 

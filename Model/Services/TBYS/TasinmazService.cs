@@ -36,6 +36,14 @@ namespace Model.Services.TBYS
         {
             return repository.SelectByBolge(bolgeId, ProjeConstants.HEPSI_INT, ProjeConstants.BOLGE_GENELMUDURLUK_INT);
         }
+        public DataTable GetWithoutDonor(string[] exitReasons)
+        {
+            return repository.SelectWithoutDonor(exitReasons);
+        }
+        public string GetSectionNumbersAsJson(int inventoryState, string rentalEligibility)
+        {
+            return new Tasinmaz().ToJSON(repository.SelectSectionNumbers(inventoryState, rentalEligibility));
+        }
 
         public Tasinmaz GetInventoryById(int id)
         {
