@@ -593,28 +593,7 @@ namespace Model.TBYS
         }
         public int SelectTasinmazAdetByBolgeMulkiyetSekli(int bolgeId, string mulkiyetSekli)
         {
-            bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
-            string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
-            int Adet = 0;
-            SqlQuery query = new SqlQuery(string.Format(@"
-                SELECT COUNT(MulkiyetSekli) Adet 
-                FROM Tasinmaz_Table A
-                LEFT JOIN Il_Table B ON B.Id=A.IlId
-                LEFT JOIN Bolge_Table D ON D.Id=B.BolgeId 
-                WHERE EnvanterdeMi=1 
-                    {0}
-                    AND MulkiyetSekli =@MulkiyetSekli", bolgeStr));
-            if (bolgeFiltresiVar)
-                query.AddParameter("@BolgeId", bolgeId);
-            query.AddParameter("@MulkiyetSekli", mulkiyetSekli);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                Adet = row["Adet"].ConvertToInt();
-
-            }
-            return Adet;
+            return new TasinmazService().GetCountByBolgeMulkiyet(bolgeId, mulkiyetSekli);
         }
         public int SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(int bolgeId, string kullanimSekli, string kiraDurumu, string mülkiyetSekli, string kirayaUygunluk = null)
         {
@@ -852,45 +831,11 @@ namespace Model.TBYS
         }
         public int SelectTasinmazAdetByIliMulkiyetSekliKullanimSekli(string ilAdi, string mulkiyetSekli, string kullanimSekli)
         {
-            int Adet = 0;
-            SqlQuery query = new SqlQuery(@"
-                SELECT COUNT(KullanimSekli) Adet 
-                FROM Tasinmaz_Table 
-                WHERE EnvanterdeMi=1 
-                    AND Ili =@IlAdi
-                    AND MulkiyetSekli =@MulkiyetSekli
-                    AND KullanimSekli =@KullanimSekli");
-            query.AddParameter("@IlAdi", ilAdi);
-            query.AddParameter("@MulkiyetSekli", mulkiyetSekli);
-            query.AddParameter("@KullanimSekli", kullanimSekli);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                Adet = row["Adet"].ConvertToInt();
-            }
-            return Adet;
+            return new TasinmazService().GetCountByIlKullanim(ilAdi, mulkiyetSekli, kullanimSekli);
         }
         public int SelectTasinmazAdetByIliMulkiyetSekliCinsi(string ilAdi, string mulkiyetSekli, string cinsi)
         {
-            int Adet = 0;
-            SqlQuery query = new SqlQuery(@"
-                SELECT COUNT(Cinsi) Adet 
-                FROM Tasinmaz_Table 
-                WHERE EnvanterdeMi=1 
-                    AND Ili =@IlAdi
-                    AND MulkiyetSekli =@MulkiyetSekli
-                    AND Cinsi =@Cinsi");
-            query.AddParameter("@IlAdi", ilAdi);
-            query.AddParameter("@MulkiyetSekli", mulkiyetSekli);
-            query.AddParameter("@Cinsi", cinsi);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                Adet = row["Adet"].ConvertToInt();
-            }
-            return Adet;
+            return new TasinmazService().GetCountByIlCinsi(ilAdi, mulkiyetSekli, cinsi);
         }
         public int SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(int bolgeId, string mulkiyetSekli, string sigorta)
         {

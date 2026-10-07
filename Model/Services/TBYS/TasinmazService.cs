@@ -47,6 +47,18 @@ namespace Model.Services.TBYS
         public decimal GetTahminiRayicBySigorta(string value) { return GetFilteredValueTotal("TahminiRayicDegeri", "SigortaDurumu", value); }
         public decimal GetTahminiRayicByKirayaUygunluk(string value) { return GetFilteredValueTotal("TahminiRayicDegeri", "KirayaUygunluk", value); }
         public decimal GetEmlakBeyanByKirayaUygunluk(string value) { return GetFilteredValueTotal("EmlakBeyanDegeri", "KirayaUygunluk", value); }
+        public int GetCountByIl(string countColumn, string ilAdi, string mulkiyetSekli, string value, string valueColumn)
+        {
+            DataTable table = repository.SelectCountByIl(countColumn, ilAdi, mulkiyetSekli, value, valueColumn);
+            return table != null && table.Rows.Count > 0 ? table.Rows[0]["Adet"].ToString().ConvertToInt() : 0;
+        }
+        public int GetCountByIlKullanim(string ilAdi, string mulkiyetSekli, string kullanimSekli) { return GetCountByIl("KullanimSekli", ilAdi, mulkiyetSekli, kullanimSekli, "KullanimSekli"); }
+        public int GetCountByIlCinsi(string ilAdi, string mulkiyetSekli, string cinsi) { return GetCountByIl("Cinsi", ilAdi, mulkiyetSekli, cinsi, "Cinsi"); }
+        public int GetCountByBolgeMulkiyet(int bolgeId, string mulkiyetSekli)
+        {
+            DataTable table = repository.SelectCountByBolge("MulkiyetSekli", bolgeId, mulkiyetSekli, "MulkiyetSekli", ProjeConstants.HEPSI_INT, ProjeConstants.BOLGE_GENELMUDURLUK_INT);
+            return table != null && table.Rows.Count > 0 ? table.Rows[0]["Adet"].ToString().ConvertToInt() : 0;
+        }
         public Tasinmaz GetNext(int id) { return Map(repository.SelectNext(id)) ?? GetMin(); }
         public Tasinmaz GetPrev(int id) { return Map(repository.SelectPrev(id)) ?? GetMax(); }
         public Tasinmaz GetMax() { return GetExtreme(true); }
