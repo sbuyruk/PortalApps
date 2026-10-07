@@ -1,5 +1,6 @@
 using Model.NBYS;
 using Model.Ortak;
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -184,7 +185,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
         private DataTable GetDataListDT()
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            DataTable dataTable = tasinmaz.SelectAllReturnDataTable();
+            DataTable dataTable = new TasinmazService().SelectAllReturnDataTable();
             SatisPlaniKolonunuDisplayAdinaCevir(dataTable);
             return dataTable;
         }
@@ -214,7 +215,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
         }
         private string CreateDataTable(string jsonData)
         {
-            string duzenleGorunsun = string.IsNullOrEmpty(AuthQS) || !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM) || 
+            string duzenleGorunsun = string.IsNullOrEmpty(AuthQS) || !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM) ||
                 (BolgeIdQS != ProjeConstants.HEPSI_INT && BolgeIdQS != ProjeConstants.BOLGE_GENELMUDURLUK_INT )
                 ? "{ targets:11, visible:false},"
                 : "{ targets:11, visible:true},";
@@ -242,7 +243,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                         data: " + jsonData + @",
                         columns: [
                             { data: 'Id'},
-                            { data: 'Bolge'},                            
+                            { data: 'Bolge'},
                             { data: 'Bagisci' },
                             { data: 'Adres',},
                             { data: 'Ili',},
@@ -366,10 +367,10 @@ namespace TBYS_WebParts.TasinmazListesiWP
         private List<TasinmazListesiListItem> GetDataList()
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            DataTable dataTable = tasinmaz.SelectByBolgeReturnJson(BolgeIdQS);
+            DataTable dataTable = new TasinmazService().SelectByBolgeReturnJson(BolgeIdQS);
 
             List<TasinmazListesiListItem> list = new List<TasinmazListesiListItem>();
-            
+
 
             foreach (DataRow row in dataTable.Rows)
             {
@@ -429,7 +430,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                     (BolgeIdQS != ProjeConstants.HEPSI_INT && BolgeIdQS != ProjeConstants.BOLGE_GENELMUDURLUK_INT);
                 if (duzenleGorunsunMu)
                 {
-                    tasinmazListesiListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZ_GIRIS + "?DestinationApp=TD&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Düzenle</a>"; 
+                    tasinmazListesiListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZ_GIRIS + "?DestinationApp=TD&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Düzenle</a>";
                 }
                 else
                 {
@@ -506,7 +507,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
         private string CreateModalDataTable(string jsonData)
         {
             string tableString = @"
-                
+
                 if ( jQuery.fn.DataTable.isDataTable('#CustomModalDataTable') ) {
                     jQuery('#CustomModalDataTable').DataTable().destroy();
                 }
@@ -555,7 +556,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
         {
             Tasinmaz tasinmaz = new Tasinmaz();
 
-            DataTable dataTable = tasinmaz.SelectBolumByTasinmazId(paramTasinmazIdLbl.Value.ConvertToInt());
+            DataTable dataTable = new TasinmazService().SelectBolumByTasinmazId(paramTasinmazIdLbl.Value.ConvertToInt());
 
             List<BagimsizBolumListItem> list = new List<BagimsizBolumListItem>();
 
@@ -567,7 +568,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 string ilce = row0["Ilcesi"].ReturnEmptyIfNull().ToString();
                 string adi0 = row0["Adi"].ToString();
                 string soyadi0 = row0["Soyadi"].ToString();
-                
+
                 BagisciLbl.Text = "Bağışçı : "+ (adi0 + " " + soyadi0).Trim() ;
                 AdresLbl.Text = "Adres : "+ adres +" " +ilce+"/"+il ;
                 foreach (DataRow row in dataTable.Rows)
@@ -675,7 +676,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
             public string TasinmazKarti { get; set; }
             public string Resimler { get; set; }
             public string Duzenle { get; set; }
-            
+
             public string Bolge { get; set; }
             public string EmlakSicilNo { get; set; }
             public string YevmiyeNo { get; set; }

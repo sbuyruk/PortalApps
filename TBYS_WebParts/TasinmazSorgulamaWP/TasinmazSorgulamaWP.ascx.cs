@@ -1,3 +1,4 @@
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -47,7 +48,7 @@ namespace TBYS_WebParts.TasinmazSorgulamaWP
         private void TabloOlustur()
         {
             List<Tasinmaz> list = new List<Tasinmaz>();
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             //var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
                 typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "setDataSet(" + jsonData + ");", true);
@@ -74,7 +75,7 @@ namespace TBYS_WebParts.TasinmazSorgulamaWP
         {
 
             Tasinmaz tasinmaz = new Tasinmaz();
-            DataTable dataTable = tasinmaz.SelectAllReturnDataTable();
+            DataTable dataTable = new TasinmazService().SelectAllReturnDataTable();
 
 
 
@@ -136,7 +137,7 @@ namespace TBYS_WebParts.TasinmazSorgulamaWP
         {
             //Get the data from database into datatable
             Tasinmaz tasinmaz = new Tasinmaz();
-            DataTable dt = tasinmaz.SelectAllReturnDataTable();
+            DataTable dt = new TasinmazService().SelectAllReturnDataTable();
 
 
             //Create a dummy GridView

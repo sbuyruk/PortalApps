@@ -1,4 +1,5 @@
 using Model.Ortak;
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.ComponentModel;
@@ -123,10 +124,10 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                 if (String.IsNullOrEmpty(DestinationAppQS) || String.Equals(DestinationAppQS, ""))
                 {
                     tasinmaz = new Tasinmaz();
-                    tasinmaz = tasinmaz.Select<Tasinmaz>(TasinmazIdQS.ConvertToInt());
+                    tasinmaz = new TasinmazService().GetById(TasinmazIdQS.ConvertToInt());
                     if (tasinmaz != null)
                     {
-                        //envanterden çikar btn yi visible yap
+                        //envanterden ÃƒÂ§ikar btn yi visible yap
                         //
                         UpdateBtn.Visible = false;
                         EnvanterdenCikarBtn.Visible = true;
@@ -135,7 +136,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                 else if (String.Equals(DestinationAppQS, "ECD"))
                 {
                     tasinmaz = new Tasinmaz();
-                    tasinmaz = tasinmaz.SelectEnvanterdenCikanTasinmaz(TasinmazIdQS.ConvertToInt());
+                    tasinmaz = new TasinmazService().SelectEnvanterdenCikanTasinmaz(TasinmazIdQS.ConvertToInt());
                     if (tasinmaz != null)
                     {
                         UpdateBtn.Visible = true;
@@ -245,7 +246,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
 
             try
             {
-                //Onay Popup Aç
+                //Onay Popup AÃƒÂ§
 
                 EnvanterdenCikarNowBtn.Visible = true;
                 var openPopup = "OpenModal();";
@@ -263,7 +264,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
             try
             {
                 Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = tasinmaz.SelectEnvanterdenCikanTasinmaz(TasinmazIdQS.ConvertToInt());
+                tasinmaz = new TasinmazService().SelectEnvanterdenCikanTasinmaz(TasinmazIdQS.ConvertToInt());
                 tasinmaz.EnvanterdeMi = ProjeConstants.TASINMAZ_ENVANTERDEN_CIKTI;//
                 tasinmaz.EnvanterdenCikmaSebebi = CikarmaSebebiDDL.SelectedItem.Value;
                 tasinmaz.EnvanterdenCikmaBedeli = BedelTxt.Value.ConvertToDecimal();
@@ -280,13 +281,13 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                 {
                     UpdateBtn.Visible = true;
                     EnvanterdenCikarBtn.Visible = false;
-                    MessageHelper.PublishMessage("(Envanterde olmayan) Tasinmaz Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("(Envanterde olmayan) Tasinmaz GÃƒÂ¼ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
             }
             catch (Exception ex)
             {
                 ExceptionHelper exHelper = new ExceptionHelper(ex);
-                Exception guncellemeExc = new Exception("(Envanterde olmayan) Tasinmaz Güncellenemedi1");
+                Exception guncellemeExc = new Exception("(Envanterde olmayan) Tasinmaz GÃƒÂ¼ncellenemedi1");
                 exHelper.PublishException();
             }
             finally {
@@ -298,13 +299,13 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
         {
             //tasinmaz.EnvanterdeMi=0 yap
             //EnvanterdenCikarmaWP'i reload et SenderApp
-            //envanterden çikarildi mesaji ver
+            //envanterden ÃƒÂ§ikarildi mesaji ver
             bool envanterdenCikarildiMi = false;
             bool bagisGuncellendiMi = false;
             try
             {
                 Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = tasinmaz.Select<Tasinmaz>(TasinmazIdQS.ConvertToInt());
+                tasinmaz = new TasinmazService().GetById(TasinmazIdQS.ConvertToInt());
                 tasinmaz.EnvanterdeMi = ProjeConstants.TASINMAZ_ENVANTERDEN_CIKTI;//false;
                 tasinmaz.EnvanterdenCikmaSebebi = CikarmaSebebiDDL.SelectedItem.Value;
                 tasinmaz.EnvanterdenCikmaBedeli = BedelTxt.Value.ConvertToDecimal();
@@ -317,7 +318,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                     tasinmaz.BagisciId = bagis.BagisciId;
                     bagis.Envanterde = ProjeConstants.ENVANTERDEN_CIKTI;
                     bagis.Degistiren = UtilityHelper.GetCurrentUserLoginName();
-                    
+
                 }
                 tasinmaz.Aciklama = AciklamaTxt.Text;
                 envanterdenCikarildiMi = tasinmaz.Update();
@@ -332,7 +333,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Envanterden çikarma islemi basarisiz oldu", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("Envanterden ÃƒÂ§ikarma islemi basarisiz oldu", ProjeConstants.MESAJ_HATA, 2000);
                 }
             }
             catch (Exception ex)

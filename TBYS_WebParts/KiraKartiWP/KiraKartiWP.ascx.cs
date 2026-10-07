@@ -1,3 +1,4 @@
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -149,12 +150,12 @@ namespace TBYS_WebParts.KiraKartiWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Kira Sözleşmesi Bulunamadı", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Kira SÃ¶zleÅŸmesi BulunamadÄ±", ProjeConstants.MESAJ_HATA);
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("KiracÄ± BulunamadÄ±", ProjeConstants.MESAJ_HATA);
                 }
             }
 
@@ -204,7 +205,7 @@ namespace TBYS_WebParts.KiraKartiWP
                 string ilcesi = string.Empty;
                 int tasinmazId = item.TasinmazId;
                 Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = tasinmaz.Select(tasinmazId);
+                tasinmaz = new TasinmazService().Select(tasinmazId);
                 if (tasinmaz != null)
                 {
                     ili = tasinmaz.Ili;
@@ -215,7 +216,7 @@ namespace TBYS_WebParts.KiraKartiWP
                         bagimsizBolum = bagimsizBolum.Select<BagimsizBolum>(item.BolumId);
                         if (bagimsizBolum == null)
                         {
-                            MessageHelper.PublishMessage("Bağımsız bölüm bulunamadı. Sözleşmeden bağımsız bölüm kaydını düzeltmeniz gerekmektedir.",ProjeConstants.MESAJ_HATA);
+                            MessageHelper.PublishMessage("BaÄŸÄ±msÄ±z bÃ¶lÃ¼m bulunamadÄ±. SÃ¶zleÅŸmeden baÄŸÄ±msÄ±z bÃ¶lÃ¼m kaydÄ±nÄ± dÃ¼zeltmeniz gerekmektedir.",ProjeConstants.MESAJ_HATA);
                         }
                         else
                         {
@@ -392,13 +393,13 @@ namespace TBYS_WebParts.KiraKartiWP
         {
             TableHeaderRow baslikRow = new TableHeaderRow();
             TableHeaderCell donemCell = new TableHeaderCell();
-            donemCell.Text = "DÖNEM";
+            donemCell.Text = "DÃ–NEM";
             TableHeaderCell kiraTutariCell = new TableHeaderCell();
             kiraTutariCell.Text = "KIRA TUTARI";
             TableHeaderCell odenenTarCell = new TableHeaderCell();
-            odenenTarCell.Text = "ÖDENEN TARIH";
+            odenenTarCell.Text = "Ã–DENEN TARIH";
             TableHeaderCell odenenTutarCell = new TableHeaderCell();
-            odenenTutarCell.Text = "ÖDENEN TUTAR";
+            odenenTutarCell.Text = "Ã–DENEN TUTAR";
             TableHeaderCell kalanAnaParaCell = new TableHeaderCell();
             kalanAnaParaCell.Text = "KALAN ANAPARA";
             TableHeaderCell gecikmeFaiziCell = new TableHeaderCell();
@@ -406,7 +407,7 @@ namespace TBYS_WebParts.KiraKartiWP
             TableHeaderCell faizliBakiyeCell = new TableHeaderCell();
             faizliBakiyeCell.Text = "FAIZLI BAKIYE";
             TableHeaderCell aciklamaCell = new TableHeaderCell();
-            aciklamaCell.Text = "AÇIKLAMA";
+            aciklamaCell.Text = "AÃ‡IKLAMA";
 
             donemCell.Width = new Unit("10%");
             kiraTutariCell.Width = new Unit("10%");

@@ -1,5 +1,6 @@
 using Model.Ortak;
 using Model.Services.Ortak;
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -94,7 +95,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
             }
             if (bagisci.TCKimlikNo == 0)
             {
-                MessageHelper.PublishMessage("Bağışçının TC Kimlik Numarası girilmemiş.", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("BaÄŸÄ±ÅŸÃ§Ä±nÄ±n TC Kimlik NumarasÄ± girilmemiÅŸ.", ProjeConstants.MESAJ_BILGI, 2000);
             }
         }
 
@@ -157,15 +158,15 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
             TableHeaderCell siraCell = new TableHeaderCell();
             siraCell.Text = "Sira";
             TableHeaderCell AdiSoyadiCell = new TableHeaderCell();
-            AdiSoyadiCell.Text = "Adı Soyadı";
+            AdiSoyadiCell.Text = "AdÄ± SoyadÄ±";
             TableHeaderCell IliIlcesiCell = new TableHeaderCell();
-            IliIlcesiCell.Text = "İl-İlçesi";
+            IliIlcesiCell.Text = "Ä°l-Ä°lÃ§esi";
             TableHeaderCell TasinmazCell = new TableHeaderCell();
-            TasinmazCell.Text = "Taşınmaz";
+            TasinmazCell.Text = "TaÅŸÄ±nmaz";
             TableHeaderCell AciklamaCell = new TableHeaderCell();
-            AciklamaCell.Text = "Taahhüt Açıklama";
+            AciklamaCell.Text = "TaahhÃ¼t AÃ§Ä±klama";
             TableHeaderCell DuzenleCell = new TableHeaderCell();
-            DuzenleCell.Text = "Düzenle";
+            DuzenleCell.Text = "DÃ¼zenle";
             TableHeaderCell SilCell = new TableHeaderCell();
             SilCell.Text = "Sil";
 
@@ -205,7 +206,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
 
                 TableCell TasinmazCell = new TableCell();
                 Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = tasinmaz.Select<Tasinmaz>(item.TasinmazId);
+                tasinmaz = new TasinmazService().GetById(item.TasinmazId);
                 TasinmazCell.Text = tasinmaz != null ? tasinmaz.Adres + " " + tasinmaz.Ilcesi + "/" + tasinmaz.Ili : string.Empty;
                 row.Controls.Add(TasinmazCell);
 
@@ -215,7 +216,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                 row.Controls.Add(AciklamaCell);
 
                 TableCell DuzenleCell = new TableCell();
-                string duzenleLink = "<a href=# onclick=OpenModalTaahhut(" + item.Id + "); class=\'btn btn-outline-primary \'> Düzenle</a>";
+                string duzenleLink = "<a href=# onclick=OpenModalTaahhut(" + item.Id + "); class=\'btn btn-outline-primary \'> DÃ¼zenle</a>";
                 DuzenleCell.Text = duzenleLink;
                 row.Controls.Add(DuzenleCell);
 
@@ -293,7 +294,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                     VefatTarihiDiv.Attributes["style"] = "display:block";
                 }
 
-                TaahhutAciklamaTxt.Text = string.IsNullOrEmpty(tasinmazTaahhut.TaahhutAciklama)? "Vakıf tarafından taahhütname verilmiştir.": tasinmazTaahhut.TaahhutAciklama;
+                TaahhutAciklamaTxt.Text = string.IsNullOrEmpty(tasinmazTaahhut.TaahhutAciklama)? "VakÄ±f tarafÄ±ndan taahhÃ¼tname verilmiÅŸtir.": tasinmazTaahhut.TaahhutAciklama;
 
                 TaahhutGuncelleBtn.Visible = true;
 
@@ -306,7 +307,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
             {
                 AdiTxt.Text = SoyadiTxt.Text = TCKimlikNoTxt.Text = DogumTarihiTxt.Text = TelefonTxt.Text =
                     AdresTxt.Text = EvrakTarihiTxt.Text = EvrakSayisiTxt.Text = string.Empty;
-                TaahhutAciklamaTxt.Text = "Vakıf tarafından taahhütname verilmiştir.";
+                TaahhutAciklamaTxt.Text = "VakÄ±f tarafÄ±ndan taahhÃ¼tname verilmiÅŸtir.";
 
                 TaahhutKaydetBtn.Visible = true;
             }
@@ -426,7 +427,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
 
             }
             else
-                MessageHelper.PublishMessage("Taahhüt bulunamadı", ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("TaahhÃ¼t bulunamadÄ±", ProjeConstants.MESAJ_BILGI);
         }
         protected void BagisciyiTaahhutListesineEkleBtn_Click(object sender, EventArgs e)
         {
@@ -454,7 +455,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                         yeniTaahhut.Olusturan = UtilityHelper.GetCurrentUserLoginName();
                         yeniTaahhut.Sag_vefat = tasinmazBagisci.Sag_vefat;
                         yeniTaahhut.Soyadi = tasinmazBagisci.Soyadi;
-                        yeniTaahhut.TaahhutAciklama = "Bağışçıya taahhüt verilmiştir.";
+                        yeniTaahhut.TaahhutAciklama = "BaÄŸÄ±ÅŸÃ§Ä±ya taahhÃ¼t verilmiÅŸtir.";
                         yeniTaahhut.TasinmazId = TasinmazDDL.SelectedItem.Value.ConvertToInt();
                         yeniTaahhut.TCKimlikNo = tasinmazBagisci.TCKimlikNo;
                         yeniTaahhut.Telefon = tasinmazBagisci.Telefon1;
@@ -469,12 +470,12 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Bağışçı zaten listede var.",ProjeConstants.MESAJ_BILGI, 2000);
+                        MessageHelper.PublishMessage("BaÄŸÄ±ÅŸÃ§Ä± zaten listede var.",ProjeConstants.MESAJ_BILGI, 2000);
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Bağışçı bulunamadı.", ProjeConstants.MESAJ_BILGI, 2000);
+                    MessageHelper.PublishMessage("BaÄŸÄ±ÅŸÃ§Ä± bulunamadÄ±.", ProjeConstants.MESAJ_BILGI, 2000);
                 }
             }
             catch (Exception ex)
@@ -483,7 +484,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                 exceptionHelper.PublishException();
             }
 
-            
+
         }
     }
 }
