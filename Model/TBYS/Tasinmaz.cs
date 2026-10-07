@@ -559,97 +559,21 @@ namespace Model.TBYS
         }
 		public decimal SelectTahminiRayicToplami(int bolgeId)
 		{
-			bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
-			string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
-			decimal toplam = 0;
-			SqlQuery query = new SqlQuery(string.Format(@"
-				SELECT SUM(TahminiRayicDegeri) Toplam 
-				FROM Tasinmaz_Table T
-					LEFT JOIN IL_Table C ON C.Id=T.IlId
-					LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
-					LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
-				WHERE T.EnvanterdeMi=1 
-				 {0}", bolgeStr));
-			if (bolgeFiltresiVar)
-				query.AddParameter("@BolgeId", bolgeId);
-			DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                toplam = row["Toplam"].ConvertToDecimal();
-
-            }
-            return toplam;
-        }
+			return new TasinmazService().GetTahminiRayicToplami(bolgeId);
+		}
 		public decimal SelectEmlakBeyanDegeriToplami(int bolgeId)
 		{
-			bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
-			string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
-			decimal toplam = 0;
-			SqlQuery query = new SqlQuery(string.Format(@"
-				SELECT SUM(EmlakBeyanDegeri) Toplam 
-				FROM Tasinmaz_Table T
-					LEFT JOIN IL_Table C ON C.Id=T.IlId
-					LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
-					LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
-				WHERE T.EnvanterdeMi=1  {0}", bolgeStr));
-			if (bolgeFiltresiVar)
-				query.AddParameter("@BolgeId", bolgeId);
-			DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                toplam = row["Toplam"].ConvertToDecimal();
-
-            }
-            return toplam;
-        }
+			return new TasinmazService().GetEmlakBeyanDegeriToplami(bolgeId);
+		}
 		public decimal SelectMuhasebeyeKayitliDegerToplami(int bolgeId)
 		{
-			bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
-			string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
-			decimal toplam = 0;
-			SqlQuery query = new SqlQuery(string.Format(@"
-				SELECT SUM(MuhasebeyeKayitliDeger) Toplam 
-				FROM Tasinmaz_Table T
-					LEFT JOIN IL_Table C ON C.Id=T.IlId
-					LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
-					LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
-				WHERE T.EnvanterdeMi=1  {0}", bolgeStr));
-			if (bolgeFiltresiVar)
-				query.AddParameter("@BolgeId", bolgeId);
-			DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                toplam = row["Toplam"].ConvertToDecimal();
-
-            }
-            return toplam;
-        }
+			return new TasinmazService().GetMuhasebeyeKayitliDegerToplami(bolgeId);
+		}
 		public decimal SelectYaklasikPiyasaToplami(int bolgeId)
 		{
-			bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
-			string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
-			decimal toplam = 0;
-			SqlQuery query = new SqlQuery(string.Format(@"
-				SELECT SUM(YaklasikPiyasaDegeri) Toplam 
-				FROM Tasinmaz_Table T
-					LEFT JOIN IL_Table C ON C.Id=T.IlId
-					LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
-					LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
-				WHERE T.EnvanterdeMi=1  {0}", bolgeStr));
-			if (bolgeFiltresiVar)
-				query.AddParameter("@BolgeId", bolgeId);
-			DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                toplam = row["Toplam"].ConvertToDecimal();
+			return new TasinmazService().GetYaklasikPiyasaToplami(bolgeId);
+		}
 
-            }
-            return toplam;
-        }
         public decimal SelectEmlakBeyanDegeriToplamiBySigorta(string sigorta)
         {
             decimal toplam = 0;
