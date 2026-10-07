@@ -35,6 +35,8 @@ namespace Model.Services.TBYS
         {
             return new Tasinmaz().ToList<Tasinmaz>(repository.SelectInventory());
         }
+        public List<Tasinmaz> GetInventoryByIlAdi(string ilAdi) { return new Tasinmaz().ToList<Tasinmaz>(repository.SelectInventoryByIlAdi(ilAdi)); }
+        public Tasinmaz GetOutOfInventoryById(int id) { return Map(repository.SelectOutOfInventoryById(id)); }
 
         public int Save(Tasinmaz item)
         {

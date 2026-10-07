@@ -198,18 +198,7 @@ namespace Model.TBYS
         }
         public Tasinmaz SelectEnvanterdenCikanTasinmaz(int id)
         {
-            SqlQuery query = new SqlQuery(@"
-                SELECT *,Convert(nvarchar,replace (EnvanterdenCikmaBedeli,'.',',')) as EnvanterdenCikmaBedeli
-                FROM Tasinmaz_Table 
-                WHERE EnvanterdeMi=0 AND Id=@Id ");
-            query.AddParameter("@Id", id);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-
-            List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
-            Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = list.FirstOrDefault();
-            return tasinmaz;
-
+            return new TasinmazService().GetOutOfInventoryById(id);
         }
 		public DataTable SelectByBolgeReturnJson(int bolgeId)
 		{
@@ -518,13 +507,7 @@ namespace Model.TBYS
         }
         public List<Tasinmaz> SelectByIlAdi(string ilAdi)
         {
-            SqlQuery query = new SqlQuery(@"
-                SELECT * FROM Tasinmaz_Table
-                WHERE EnvanterdeMi=1 AND Ili=@IlAdi");
-            query.AddParameter("@IlAdi", ilAdi);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
-            return list;
+            return new TasinmazService().GetInventoryByIlAdi(ilAdi);
         }
         public Tasinmaz SelectNext(int tasinmazId)
         {
