@@ -45,7 +45,7 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
             NakitBagisHareketService nbh = new NakitBagisHareketService();
@@ -84,7 +84,7 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiginde
+                        'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
@@ -129,7 +129,7 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
                             },
                             {
                                 extend: 'excel',
-                                title: 'Tarih Bazinda Günlük Bagislar',
+                                title: 'Tarih Bazinda GÃ¼nlÃ¼k Bagislar',
                                 filename: function(){
                                     var d = new Date();
                                     var n = d.getTime();
@@ -141,7 +141,7 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
                             },
                             {
                                 extend: 'pdf',
-                                title: 'Tarih Bazinda Günlük Bagislar',
+                                title: 'Tarih Bazinda GÃ¼nlÃ¼k Bagislar',
                                 filename: function(){
                                     var d = new Date();
                                     var n = d.getTime();
@@ -204,7 +204,7 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
             if (BankaDDL.SelectedItem == null)
             {
                 BankaDDL.Items.Clear();
-                BankaDDL.Items.Add(new ListItem("Tüm Bankalar", string.Empty));
+                BankaDDL.Items.Add(new ListItem("TÃ¼m Bankalar", string.Empty));
                 List<string> list = new BankaTanimService().GetGroups();
                 foreach (string bankaGrup in list)
                 {

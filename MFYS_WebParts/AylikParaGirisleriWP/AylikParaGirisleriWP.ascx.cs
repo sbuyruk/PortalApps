@@ -45,7 +45,7 @@ namespace MFYS_WebParts.AylikParaGirisleriWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -78,7 +78,7 @@ namespace MFYS_WebParts.AylikParaGirisleriWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiginde
+                        'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen kayda gider
                                 return data['Secildi'] == true;
@@ -240,7 +240,7 @@ namespace MFYS_WebParts.AylikParaGirisleriWP
                 ListItem li = new ListItem(tarih.ToString("MMMM"), tarih.ToString("MM"));
                 AyDDL.Items.Add(li);
             }
-            AyDDL.Items.Add(new ListItem("Tüm Aylar", "0"));
+            AyDDL.Items.Add(new ListItem("TÃ¼m Aylar", "0"));
         }
         private void YilDDLDoldur()
         {
