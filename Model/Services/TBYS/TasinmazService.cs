@@ -42,6 +42,11 @@ namespace Model.Services.TBYS
         public decimal GetEmlakBeyanDegeriToplami(int bolgeId) { return GetInventoryValueTotal("EmlakBeyanDegeri", bolgeId); }
         public decimal GetMuhasebeyeKayitliDegerToplami(int bolgeId) { return GetInventoryValueTotal("MuhasebeyeKayitliDeger", bolgeId); }
         public decimal GetYaklasikPiyasaToplami(int bolgeId) { return GetInventoryValueTotal("YaklasikPiyasaDegeri", bolgeId); }
+        public decimal GetFilteredValueTotal(string column, string filterColumn, string value) { DataTable table = repository.SelectFilteredValueTotal(column, filterColumn, value); return table != null && table.Rows.Count > 0 ? table.Rows[0]["Toplam"].ToString().ConvertToDecimal() : 0; }
+        public decimal GetEmlakBeyanBySigorta(string value) { return GetFilteredValueTotal("EmlakBeyanDegeri", "SigortaDurumu", value); }
+        public decimal GetTahminiRayicBySigorta(string value) { return GetFilteredValueTotal("TahminiRayicDegeri", "SigortaDurumu", value); }
+        public decimal GetTahminiRayicByKirayaUygunluk(string value) { return GetFilteredValueTotal("TahminiRayicDegeri", "KirayaUygunluk", value); }
+        public decimal GetEmlakBeyanByKirayaUygunluk(string value) { return GetFilteredValueTotal("EmlakBeyanDegeri", "KirayaUygunluk", value); }
         public Tasinmaz GetNext(int id) { return Map(repository.SelectNext(id)) ?? GetMin(); }
         public Tasinmaz GetPrev(int id) { return Map(repository.SelectPrev(id)) ?? GetMax(); }
         public Tasinmaz GetMax() { return GetExtreme(true); }
