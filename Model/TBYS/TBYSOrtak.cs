@@ -41,8 +41,8 @@ namespace Model.Ortak
 
         /// <summary>
         /// KiraSozlesmesini parametre olarak alir.
-        /// Bu KSnin ödeme planinda;
-        ///     Gecikme varsa geciken her ayin KiraBedeli'ne islem yapilan güne kadar yasal FaizOranina Göre faizTutari olusturur
+        /// Bu KSnin Ã¶deme planinda;
+        ///     Gecikme varsa geciken her ayin KiraBedeli'ne islem yapilan gÃ¼ne kadar yasal FaizOranina GÃ¶re faizTutari olusturur
         ///     Faiz tutarini Faizlibakiyeye ekler
         ///     AnaPara gecikmesine faiz olusturur, eski faizlere tekrar faiz uygulamaz
         /// Fesih durumunda vadesi gelmeyen alarin hesaplanan degerlerini 0 yapar
@@ -75,23 +75,23 @@ namespace Model.Ortak
             }
 
             #endregion
-            DateTime islemTarihi = kiraSozlesme.SozBitTar;//today; SB 24.02.2021 Sözlesmenin son ayina kadar faiz hesabini yapsin  Zekayi Bey ileriye dönük simülasyon gibi kullanmak istiyor 
+            DateTime islemTarihi = kiraSozlesme.SozBitTar;//today; SB 24.02.2021 SÃ¶zlesmenin son ayina kadar faiz hesabini yapsin  Zekayi Bey ileriye dÃ¶nÃ¼k simÃ¼lasyon gibi kullanmak istiyor 
             foreach (OdemePlani odemePlani in list)
             {
                 if (odemePlani.Sira == 0)
                 {
-                    continue;//devir satiri için hesap yapma
+                    continue;//devir satiri iÃ§in hesap yapma
                 }
                 else
                 {
                     DateTime vadeBasTar = odemePlani.VadeBasTar;//vade tarihinden itibaren
-                    #region Yasal Faiz Kontrolü
+                    #region Yasal Faiz KontrolÃ¼
                     YasalFaiz yasalFaiz = new YasalFaiz();
                     yasalFaiz = yasalFaiz.SelectByYilAy(vadeBasTar.Year, vadeBasTar.Month);
                     if (yasalFaiz == null)
                     {
-                        Exception ex1 = new Exception(vadeBasTar.Month + "/" + vadeBasTar.Year + " Ayi için Yasal Faiz Orani girilmediginden Faiz Hesaplanamiyor.");
-                        Exception ex2 = new Exception("Yasal faiz menusunden " + vadeBasTar.Year + " yili için faiz orani girdikten sonra tekrar deneyiniz");
+                        Exception ex1 = new Exception(vadeBasTar.Month + "/" + vadeBasTar.Year + " Ayi iÃ§in Yasal Faiz Orani girilmediginden Faiz Hesaplanamiyor.");
+                        Exception ex2 = new Exception("Yasal faiz menusunden " + vadeBasTar.Year + " yili iÃ§in faiz orani girdikten sonra tekrar deneyiniz");
                         ExceptionHelper exhelper = new ExceptionHelper();
                         exhelper.Exceptions.Add(ex1);
                         exhelper.Exceptions.Add(ex2);
@@ -118,7 +118,7 @@ namespace Model.Ortak
                             decimal faizTutari = 0;
                             faizTutari = Math.Round(anaParaToplami * faizOrani / 100);
 
-                            if (islemTarihi.AddMonths(-1) < vadeBasTar && islemTarihi >= vadeBasTar) // islem tarihi  önceki vadeBastarihinden büyük ve simdiki vade tarihinden küçük esitse // 
+                            if (islemTarihi.AddMonths(-1) < vadeBasTar && islemTarihi >= vadeBasTar) // islem tarihi  Ã¶nceki vadeBastarihinden bÃ¼yÃ¼k ve simdiki vade tarihinden kÃ¼Ã§Ã¼k esitse // 
                             {
 
                                 faizTutari = 0;
@@ -137,7 +137,7 @@ namespace Model.Ortak
                             #region OdemePlaniTablosunuGuncelle
                             if (odemePlani.Sira == 0)
                             {
-                                //devir satirini güncellemesin
+                                //devir satirini gÃ¼ncellemesin
                             }
                             else
                             {
@@ -145,21 +145,21 @@ namespace Model.Ortak
                                 if (anaParaToplami > 0 && faizToplami < 0)
                                 {
                                     decimal fark = anaParaToplami + faizToplami;
-                                    if (fark > 0)//anaparadan faiz çikinca artan miktar var
+                                    if (fark > 0)//anaparadan faiz Ã§ikinca artan miktar var
                                     {
 
                                         anaParaToplami = anaParaToplami + faizToplami;
                                         anaParaToplami = anaParaToplami < 0 ? 0 : anaParaToplami;
                                         faizToplami = 0;
                                     }
-                                    else if (fark < 0)//anaparadan faiz çikinca hala faiz borcu var var 
+                                    else if (fark < 0)//anaparadan faiz Ã§ikinca hala faiz borcu var var 
                                     {
 
                                         faizToplami = anaParaToplami + faizToplami;
                                         faizToplami = faizToplami > 0 ? 0 : faizToplami;
                                         anaParaToplami = 0;
                                     }
-                                    else if (fark == 0)//anaparadan faiz çikinca kalan 0
+                                    else if (fark == 0)//anaparadan faiz Ã§ikinca kalan 0
                                     {
                                         anaParaToplami = 0;
                                         faizToplami = 0;
@@ -202,7 +202,7 @@ namespace Model.Ortak
             OdemeAyrinti odemeAyrinti = new OdemeAyrinti();
             odemeAyrinti.DeleteBySozlesmeId(kiraSozlesme.Id);
 
-            //bu kiraciya ait tüm ödeme planlarini al tarih sirali
+            //bu kiraciya ait tÃ¼m Ã¶deme planlarini al tarih sirali
             OdemePlani op = new OdemePlani();
             List<OdemePlani> opList = op.SelectBySozlesmeId(kiraSozlesme.Id);
             var faizToplami = 0m;
@@ -234,21 +234,21 @@ namespace Model.Ortak
                 if (anaParaToplami > 0 && faizToplami < 0)
                 {
                     decimal fark = anaParaToplami + faizToplami;
-                    if (fark > 0)//anaparadan faiz çikinca artan miktar var
+                    if (fark > 0)//anaparadan faiz Ã§ikinca artan miktar var
                     {
 
                         anaParaToplami = anaParaToplami + faizToplami;
                         anaParaToplami = anaParaToplami < 0 ? 0 : anaParaToplami;
                         faizToplami = 0;
                     }
-                    else if (fark < 0)//anaparadan faiz çikinca hala faiz borcu var var 
+                    else if (fark < 0)//anaparadan faiz Ã§ikinca hala faiz borcu var var 
                     {
 
                         faizToplami = anaParaToplami + faizToplami;
                         faizToplami = faizToplami > 0 ? 0 : faizToplami;
                         anaParaToplami = 0;
                     }
-                    else if (fark == 0)//anaparadan faiz çikinca kalan 0
+                    else if (fark == 0)//anaparadan faiz Ã§ikinca kalan 0
                     {
                         anaParaToplami = 0;
                         faizToplami = 0;
@@ -261,7 +261,7 @@ namespace Model.Ortak
                 odemePlani.FaizliBakiye = anaParaToplami+faizToplami;// anaParaToplami + gecikmeZammiTutari +devirFaiz ;
                 odemePlani.FaizOrani = gecikmeZammiOrani;
 
-                //ödeme plani Id ye ve sozId ye göre al
+                //Ã¶deme plani Id ye ve sozId ye gÃ¶re al
                 Odeme odemeDao = new Odeme();
                 var odenenTutar = odemeDao.SelectSumBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlani.Id);
                 odemePlani.OdenenTutar = odenenTutar;
@@ -326,12 +326,12 @@ namespace Model.Ortak
             {
                 foreach (var gecikmeZammi in gzList) //gecikme zammi dongusu
                 {
-                    // bu sürede ödeme var mi
+                    // bu sÃ¼rede Ã¶deme var mi
                     Odeme odemeDao = new Odeme();
                     List<Odeme> odemeList = odemeDao.SelectByKiraciVadeBasTarVadeBitTar(kiraSozlesme.Id, kiraSozlesme.KiraciId, ilkTarih, ikinciTarih);
                     if (odemeList.Count > 0)//odeme var
                     {
-                        //ödeme yapilan tarihe kadarki olusan faizler
+                        //Ã¶deme yapilan tarihe kadarki olusan faizler
                         foreach (var odeme1 in odemeList)//odeme dongusu
                         {
                             ikinciTarih = odeme1.OdemeTarihi;
@@ -345,7 +345,7 @@ namespace Model.Ortak
                             GecikmeZammiHesabi(kiraSozlesme, odemePlani, ilkTarih, ikinciTarih, odeme1, aySayisi, kalangunSayisi, gecikmeZammi, ref anaPara);
                             ilkTarih = odeme1.OdemeTarihi.AddDays(1);
                         }
-                        //son ödemeden vade bitimine kadar kalan anaparanin faizi
+                        //son Ã¶demeden vade bitimine kadar kalan anaparanin faizi
                         ilkTarih = ikinciTarih.AddDays(1);
                         ikinciTarih = gecikmeZammi.BitisTarihi > ProjeConstants.NULL_TARIH ? gecikmeZammi.BitisTarihi : odemePlani.VadeBitTar;
                         
@@ -354,7 +354,7 @@ namespace Model.Ortak
                         GecikmeZammiHesabi(kiraSozlesme, odemePlani, ilkTarih, ikinciTarih, null, 0, gunSayisi, gecikmeZammi, ref anaPara);
                         
                     }
-                    else // hiç ödeme yok
+                    else // hiÃ§ Ã¶deme yok
                     {
                         int aySayisi = (ikinciTarih - ilkTarih).Days >= (odemePlani.VadeBitTar - odemePlani.VadeBasTar).Days ? 1 : 0;
                         int gunSayisi = 0;
@@ -370,23 +370,23 @@ namespace Model.Ortak
             }
             else //gecikme zammi listesi bos
             {
-                MessageHelper.PublishMessage("Gecikme zammi orani bulunamadi, islem yapabilmek için Gecikme Zammi Oranlarini giriniz.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Gecikme zammi orani bulunamadi, islem yapabilmek iÃ§in Gecikme Zammi Oranlarini giriniz.", ProjeConstants.MESAJ_HATA);
             }
         }
         //public static void GunlukGecikmeZammiHesaplaRecursive(KiraSozlesme kiraSozlesme, OdemePlani odemePlani, DateTime ilkTarih, DateTime ikinciTarih,
         //    ref decimal anaPara, ref decimal faizliBakiyeToplami, ref int sayac)
         //{
-        //    // eger recursif fonksiyondan çikmazsa diye
+        //    // eger recursif fonksiyondan Ã§ikmazsa diye
         //    if (sayac++ > 31)
         //    {
         //        MessageHelper.PublishMessage("OdemePlaniId=" + odemePlani.Id + " olan ve " + odemePlani.Ay + " Ayina ait gecikme zammi hesabinda hata olustu.", ProjeConstants.MESAJ_HATA);
-        //        //TODO burada ödeme planinin degerleri bos gözüksün
+        //        //TODO burada Ã¶deme planinin degerleri bos gÃ¶zÃ¼ksÃ¼n
         //        return;
         //    }
         //    IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         //    GecikmeZammi gzDao = new GecikmeZammi();
         //    List<GecikmeZammi> gzList = gzDao.SelectByBaslangicTarihi(ilkTarih);
-        //    if ((gzList.Count == 0) || (ikinciTarih == ilkTarih)) //ikinciTarih == ilkTarih olursa ayin son günü yapilan ödemeyi dikkate almiyor
+        //    if ((gzList.Count == 0) || (ikinciTarih == ilkTarih)) //ikinciTarih == ilkTarih olursa ayin son gÃ¼nÃ¼ yapilan Ã¶demeyi dikkate almiyor
         //    {
         //        return;
         //    }
@@ -460,14 +460,14 @@ namespace Model.Ortak
             DateTime odemeTarihi = odeme == null ? new DateTime() : odeme.OdemeTarihi;
             if (odemePlani.Sira > 0)
             {
-                var kalanAnaPara = anaPara + odenenTutar;// + çünkü ana para - geliyor
+                var kalanAnaPara = anaPara + odenenTutar;// + Ã§Ã¼nkÃ¼ ana para - geliyor
                 ayZamTutari = anaPara * aySayisi * zamOrani / 100;
                 gunZamTutari = anaPara * gunSayisi * (zamOrani / 30) / 100;
 
                 var gecikmeZammiTutari = (ayZamTutari + gunZamTutari);
 
                 var ayAciklama = (anaPara).ToString("N", culturInfo) + "TL x " + aySayisi.ToString() + "ay x " + zamOrani.ToString("N", culturInfo) + "/100 ";
-                var gunAciklama = (anaPara).ToString("N", culturInfo) + "TL x " + gunSayisi.ToString() + "gün x (" + zamOrani.ToString("N", culturInfo) + "/30)/100 ";
+                var gunAciklama = (anaPara).ToString("N", culturInfo) + "TL x " + gunSayisi.ToString() + "gÃ¼n x (" + zamOrani.ToString("N", culturInfo) + "/30)/100 ";
                 var aciklama = ayZamTutari < 0 ? ayAciklama : gunZamTutari < 0 ? gunAciklama : "";
 
                 gecikmeZammiTutari = gecikmeZammiTutari > 0 ? 0 : gecikmeZammiTutari;// +faiz olmasin
@@ -496,7 +496,7 @@ namespace Model.Ortak
                     {
                         OdemePlani odemePlani = list[1];//ilk taksit, lits[0] da devir kaydi var
 
-                        if (odemeTarihi < odemePlani.OdemeBasTar)// ödeme baslama tarihinden önce ödeme yapilmis
+                        if (odemeTarihi < odemePlani.OdemeBasTar)// Ã¶deme baslama tarihinden Ã¶nce Ã¶deme yapilmis
                         {
                             odemePlani = odemePlani.SelectIlkOdemePlaniBySozlesmeId(kiraSozlesme.Id);//odemeyi ilk OdemePlanina kaydet 
                             Odeme odeme = new Odeme();
@@ -504,11 +504,11 @@ namespace Model.Ortak
                             odemeYapildiMi = true;
                             odemeId = odeme.Id;
                         }
-                        else if (odemeTarihi > odemePlani.OdemeBitTar)//ödeme bitis tarihinden sonra ödeme yapilmis
+                        else if (odemeTarihi > odemePlani.OdemeBitTar)//Ã¶deme bitis tarihinden sonra Ã¶deme yapilmis
                         {
                             //
                             // Taksit SB
-                            // sözlesme yilliksa ve ödeme sözlesme bitmeden yapilmissa
+                            // sÃ¶zlesme yilliksa ve Ã¶deme sÃ¶zlesme bitmeden yapilmissa
                             if ((kiraSozlesme.OdemeSekli == ProjeConstants.KIRA_ODMSEKLI_YILLIK) &&
                                 odemeTarihi < kiraSozlesme.SozBitTar)
                             {
@@ -516,12 +516,12 @@ namespace Model.Ortak
                                 {
                                     odemePlani = odemePlani.SelectBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi);
                                 }
-                                else //1 taksitte ödenenlerde odemem plani tarihe göre bulunanamayabiliyor o yüzden son takside eklesin
+                                else //1 taksitte Ã¶denenlerde odemem plani tarihe gÃ¶re bulunanamayabiliyor o yÃ¼zden son takside eklesin
                                 {
                                     odemePlani = odemePlani.SelectSonOdemePlaniBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet   
                                 }
                                 if (odemePlani == null)
-                                    throw (new Exception("Ödeme Plani mevcut degil."));
+                                    throw (new Exception("Ã–deme Plani mevcut degil."));
                                 else
                                 {
                                     Odeme odeme = new Odeme();
@@ -533,7 +533,7 @@ namespace Model.Ortak
                             else
 
                             {
-                                //throw (new Exception("Ödeme Tarihi Sözlesme bitisinden sonra olamaz."));
+                                //throw (new Exception("Ã–deme Tarihi SÃ¶zlesme bitisinden sonra olamaz."));
                                 odemePlani = odemePlani.SelectSonOdemePlaniBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet   
                                 if (odemePlani != null)
                                 {
@@ -544,7 +544,7 @@ namespace Model.Ortak
                                 }
                                 else
                                 {
-                                    throw (new Exception("Ödeme Plani Bulunamadi."));
+                                    throw (new Exception("Ã–deme Plani Bulunamadi."));
                                 }
 
                             }
@@ -558,7 +558,7 @@ namespace Model.Ortak
                                 odemePlani = odemePlani.SelectSonOdemePlaniBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet   
                             }
                             if (odemePlani == null)
-                                throw (new Exception("Ödeme Plani mevcut degil."));
+                                throw (new Exception("Ã–deme Plani mevcut degil."));
                             else
                             {
                                 Odeme odeme = new Odeme();
@@ -570,15 +570,15 @@ namespace Model.Ortak
 
                     }
                     else //odemePlani listesi bos
-                        throw (new Exception("Ödeme Plani mevcut degil."));
+                        throw (new Exception("Ã–deme Plani mevcut degil."));
                 }
                 else //kiraSozlesme null
-                    throw (new Exception("Kira Sözlesmesi mevcut degil."));
+                    throw (new Exception("Kira SÃ¶zlesmesi mevcut degil."));
             }
             catch (Exception ex)
             {
                 ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.Exceptions.Add(new Exception("Ödeme Yapilamadi."));
+                exHelper.Exceptions.Add(new Exception("Ã–deme Yapilamadi."));
                 exHelper.PublishException();
             }
             return odemeYapildiMi;

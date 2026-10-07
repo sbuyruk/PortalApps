@@ -264,7 +264,7 @@ namespace Utility.HelperClasses
             }
             else
             {
-                value = "'" + value.ToString().Replace('\'', ' ') + "'"; //string içinde ' karakteri geçiyorsa hata aliniyor. O nedenle ' karakteri bosluk ile degistiriliyor.
+                value = "'" + value.ToString().Replace('\'', ' ') + "'"; //string iÃ§inde ' karakteri geÃ§iyorsa hata aliniyor. O nedenle ' karakteri bosluk ile degistiriliyor.
             }
             return value;
         }
@@ -277,7 +277,7 @@ namespace Utility.HelperClasses
             }
             else
             {
-                value = "\"" + value.ToString().Replace('\'', ' ') + "\""; //string içinde ' karakteri geçiyorsa hata aliniyor. O nedenle ' karakteri bosluk ile degistiriliyor.
+                value = "\"" + value.ToString().Replace('\'', ' ') + "\""; //string iÃ§inde ' karakteri geÃ§iyorsa hata aliniyor. O nedenle ' karakteri bosluk ile degistiriliyor.
             }
             return value;
         }
@@ -587,18 +587,18 @@ namespace Utility.HelperClasses
             string newValue = value.ReturnZeroIfNull().ToString();
             //DateTime dt = DateTime.Today;
             newValue = newValue.Replace(" ", "");
-            newValue = newValue.Replace("Ç", "C");
-            newValue = newValue.Replace("ç", "c");
+            newValue = newValue.Replace("Ã‡", "C");
+            newValue = newValue.Replace("Ã§", "c");
             newValue = newValue.Replace("G", "G");
             newValue = newValue.Replace("g", "g");
             newValue = newValue.Replace("I", "I");
             newValue = newValue.Replace("i", "i");
-            newValue = newValue.Replace("Ö", "O");
-            newValue = newValue.Replace("ö", "o");
+            newValue = newValue.Replace("Ã–", "O");
+            newValue = newValue.Replace("Ã¶", "o");
             newValue = newValue.Replace("S", "S");
             newValue = newValue.Replace("s", "s");
-            newValue = newValue.Replace("Ü", "U");
-            newValue = newValue.Replace("ü", "u");
+            newValue = newValue.Replace("Ãœ", "U");
+            newValue = newValue.Replace("Ã¼", "u");
             return newValue;
         }
     }
