@@ -83,6 +83,51 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@KirayaUygunluk", rentalEligibility);
             return db.SelectFromDb(query, "");
         }
+        public DataTable SelectCountBySigorta(int bolgeId, string countColumn, string propertyColumn, string propertyValue, string sigortaValue, bool includeOutOfInventory, int allRegion, int headquarters)
+        {
+            string regionFilter = bolgeId == allRegion || bolgeId == headquarters ? string.Empty : " AND C.BolgeId=@BolgeId";
+            string inventoryFilter = includeOutOfInventory ? " AND (B.EnvanterdeMi=1 OR B.EnvanterdeMi=2)" : " AND B.EnvanterdeMi=1";
+            SqlQuery query = new SqlQuery("SELECT COUNT(" + (propertyColumn == "KullanimSekli" && includeOutOfInventory ? "A." : "B.") + countColumn + ") Adet FROM Sigorta_Table A INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId INNER JOIN Il_Table C ON C.Id=B.IlId WHERE 1=1" + inventoryFilter + regionFilter + " AND " + (propertyColumn == "KullanimSekli" && includeOutOfInventory ? "A." : "B.") + propertyColumn + "=@PropertyValue AND B.SigortaDurumu=@Sigorta");
+            if (!string.IsNullOrEmpty(regionFilter)) query.AddParameter("@BolgeId", bolgeId);
+            query.AddParameter("@PropertyValue", propertyValue);
+            query.AddParameter("@Sigorta", sigortaValue);
+            return db.SelectFromDb(query, "");
+        }
+        public DataTable SelectSectionsByTasinmazId(int tasinmazId)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT A.KatMulkiyeti, A.KullanimSekli,A.Cinsi,A.MulkiyetSekli,D.Adi,D.Soyadi, A.Adres,A.Ilcesi,A.Ili,
+                    A.AdaNo,A.ParselNo,A.Yuzolcumu,A.ArsaPayi,A.EnvanterdeMi,A.KullanimSekli,
+                    B.Id BolumId,B.BolumNo, B.Aciklama,B.Nitelik, B.Metrekare, B.KullanimAmaci
+                FROM Tasinmaz_Table A
+                    LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId=A.Id
+                    LEFT JOIN Bagis_Table C ON C.TasinmazId=A.Id
+                    LEFT JOIN TasinmazBagisci_Table D ON D.Id=C.BagisciId
+                WHERE A.Id=@TasinmazId AND A.EnvanterdeMi=1 AND A.KatMulkiyeti=0");
+            query.AddParameter("@TasinmazId", tasinmazId);
+            return db.SelectFromDb(query, "");
+        }
+        public DataTable SelectTotalByOwnership()
+        {
+            return db.SelectFromDb(new SqlQuery("SELECT MulkiyetSekli, Count(Id) Adet FROM Tasinmaz_Table WHERE EnvanterdeMi=1 GROUP BY MulkiyetSekli"), "");
+        }
+        public DataTable SelectRentalEligibleTotals()
+        {
+            return db.SelectFromDb(new SqlQuery(@"
+                SELECT EnvanterdeMi,COUNT(DISTINCT(A.Id)) AnaTasinmaz, Count(B.Id) AltBolum,COUNT(A.Id) ToplamKiralanabilir
+                FROM Tasinmaz_Table A
+                    LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId=A.Id AND AltBolum=1
+                WHERE EnvanterdeMi in (1,2) AND KirayaUygunluk='Kiraya Uygun'
+                GROUP BY EnvanterdeMi"), "");
+        }
+        public DataTable SelectOutOfInventoryList(bool includeRegionNames)
+        {
+            string regionColumns = includeRegionNames ? "C.IlAdi Ili, D.IlceAdi Ilcesi, C.IlAdi+'/'+D.IlceAdi IliIlcesi, E.KisaAdi SorumluBolge" : "A.Ili Ili, A.Ilcesi Ilcesi, A.Ili+'/'+A.Ilcesi IliIlcesi, A.SorumluBolge";
+            string addressColumns = includeRegionNames ? "A.Adres+' '+C.IlAdi+'/'+D.IlceAdi AdresIliIlcesi" : "A.Adres+' '+A.Ili+'/'+A.Ilcesi AdresIliIlcesi";
+            string joins = includeRegionNames ? "LEFT JOIN IL_Table C ON C.Id=A.IlId LEFT JOIN ILCE_Table D ON D.Id=A.IlceId LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId" : string.Empty;
+            SqlQuery query = new SqlQuery("SELECT ROW_NUMBER() OVER(ORDER BY A.Id) AS Sirano, A.Id, A.Id TasinmazId,A.Cinsi," + regionColumns + ", A.SigortaDurumu, A.Adres," + addressColumns + ", A.MulkiyetSekli, A.KiraDurumu, A.KatMulkiyeti, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo, A.EmlakBeyanDegeri, A.TahminiRayicDegeri, A.TapuTarihi, A.AdaNo, A.ParselNo, A.PaftaNo, A.Yuzolcumu, A.ArsaPayi, A.VakifHissesi, A.YevmiyeNo,A.CiltNo, A.SahifeNo, A.KullanimSekli, A.TasinmazFoto, A.TasinmazFoto1, A.TasinmazFoto2, A.TapuFoto, A.KrokiFoto, A.TahkikatFoto, A.Nitelik,A.BulunduguKat,A.Aciklama,A.EnvantereGirisTarihi, B.BolumNo,B.Id BolumId FROM Tasinmaz_Table A LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId=A.Id " + joins + " WHERE A.EnvanterdeMi=2");
+            return db.SelectFromDb(query, "");
+        }
 
         public DataTable SelectInventoryById(int id)
         {

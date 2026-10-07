@@ -205,58 +205,11 @@ namespace Model.TBYS
         }
         public string SelectEnvanterdeOlmayanTasinmazReturnJson()
         {
-            string sqlString = string.Format(@"
-                SELECT ROW_NUMBER() OVER(ORDER BY A.Id) AS Sirano, A.Id, A.Id TasinmazId,A.Cinsi, A.Ili, A.Ilcesi, A.Ili+'/'+A.Ilcesi IliIlcesi, 
-                    A.SigortaDurumu, A.Adres,A.Adres+' '+A.Ili+'/'+A.Ilcesi AdresIliIlcesi,
-                    A.MulkiyetSekli, A.KiraDurumu, A.KatMulkiyeti, A.SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
-                    A.EmlakBeyanDegeri, A.TahminiRayicDegeri, A.TapuTarihi, A.AdaNo, A.ParselNo, A.PaftaNo, A.Yuzolcumu, A.ArsaPayi, A.VakifHissesi,
-                    A.YevmiyeNo,A.CiltNo, A.SahifeNo, A.KullanimSekli, A.TasinmazFoto, A.TasinmazFoto1, A.TasinmazFoto2, A.TapuFoto, A.KrokiFoto, A.TahkikatFoto,
-                    A.Nitelik,A.BulunduguKat,A.Aciklama,A.EnvantereGirisTarihi, 
-                    B.BolumNo,B.Id BolumId
-                FROM Tasinmaz_Table A
-                    LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId=A.Id
-                WHERE A.EnvanterdeMi=2 
-                ");
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            string json = ToJSON(dataTable);
-            return json;
+            return new TasinmazService().GetOutOfInventoryListAsJson();
         }
         public DataTable SelectEnvanterdeOlmayanTasinmazReturnDataTable()
         {
-            string sqlString = string.Format(@"
-                SELECT ROW_NUMBER() OVER(ORDER BY A.Id) AS Sirano, A.Id, A.Id TasinmazId,A.Cinsi, C.IlAdi Ili, D.IlceAdi Ilcesi, C.IlAdi+'/'+D.IlceAdi IliIlcesi, 
-                    A.SigortaDurumu, A.Adres,A.Adres+' '+C.IlAdi+'/'+D.IlceAdi AdresIliIlcesi,
-                    A.MulkiyetSekli, A.KiraDurumu, A.KatMulkiyeti, E.KisaAdi SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
-                    A.EmlakBeyanDegeri, A.TahminiRayicDegeri, A.TapuTarihi, A.AdaNo, A.ParselNo, A.PaftaNo, A.Yuzolcumu, A.ArsaPayi, A.VakifHissesi,
-                    A.YevmiyeNo,A.CiltNo, A.SahifeNo, A.KullanimSekli, A.TasinmazFoto, A.TasinmazFoto1, A.TasinmazFoto2, A.TapuFoto, A.KrokiFoto, A.TahkikatFoto,
-                    A.Nitelik,A.BulunduguKat,A.Aciklama,A.EnvantereGirisTarihi, 
-                    B.BolumNo,B.Id BolumId
-                FROM Tasinmaz_Table A
-                    LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId=A.Id
-					LEFT JOIN IL_Table C ON C.Id=A.IlId
-					LEFT JOIN ILCE_Table D ON D.Id=A.IlceId
-					LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
-                WHERE A.EnvanterdeMi=2 
-                ");
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-
-            return dataTable;
+            return new TasinmazService().GetOutOfInventoryList();
         }
         public DataTable SelectAllReturnDataTable()
         {
@@ -480,127 +433,29 @@ namespace Model.TBYS
         }
         public int SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(int bolgeId, string mulkiyetSekli, string sigorta)
         {
-            int Adet = 0;
-            bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
-            string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
-            SqlQuery query = new SqlQuery(string.Format(@"
-                SELECT COUNT(MulkiyetSekli) Adet 
-                FROM Sigorta_Table A
-                    INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId
-                    INNER JOIN Il_Table C ON C.Id=B.IlId
-                WHERE EnvanterdeMi=1 
-                    {0}
-                    AND MulkiyetSekli =@MulkiyetSekli
-                    AND SigortaDurumu =@Sigorta", bolgeStr));
-            if (bolgeFiltresiVar)
-                query.AddParameter("@BolgeId", bolgeId);
-            query.AddParameter("@MulkiyetSekli", mulkiyetSekli);
-            query.AddParameter("@Sigorta", sigorta);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                Adet = row["Adet"].ConvertToInt();
-            }
-            return Adet;
+            return new TasinmazService().GetCountBySigorta(bolgeId, "MulkiyetSekli", "MulkiyetSekli", mulkiyetSekli, sigorta, false);
         }
         public int SelectTasinmazAdetByBolgeKullanimSekliSigorta(int bolgeId, string kullanimSekli, string sigorta)
         {
-            bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
-            string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
-            int Adet = 0;
-            SqlQuery query = new SqlQuery(string.Format(@"
-                SELECT COUNT(KullanimSekli) Adet 
-                FROM Sigorta_Table A
-                    INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId
-                    INNER JOIN Il_Table C ON C.Id=B.IlId
-                WHERE EnvanterdeMi=1 
-                    {0}
-                    AND KullanimSekli =@KullanimSekli
-                    AND SigortaDurumu =@Sigorta", bolgeStr));
-            if (bolgeFiltresiVar)
-                query.AddParameter("@BolgeId", bolgeId);
-            query.AddParameter("@KullanimSekli", kullanimSekli);
-            query.AddParameter("@Sigorta", sigorta);
-
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                Adet = row["Adet"].ConvertToInt();
-            }
-            return Adet;
+            return new TasinmazService().GetCountBySigorta(bolgeId, "KullanimSekli", "KullanimSekli", kullanimSekli, sigorta, false);
         }
         public int SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(int bolgeId, string kullanimSekli, string sigorta)
         {
-            bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
-            string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
-            int Adet = 0;
-            SqlQuery query = new SqlQuery(string.Format(@"
-                SELECT COUNT(A.KullanimSekli) Adet 
-                FROM Sigorta_Table A
-                    --INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId
-                    INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId AND (B.EnvanterdeMi=1 OR B.EnvanterdeMi=2) 
-                    LEFT JOIN BagimsizBolum_Table F ON F.Id=A.BolumId AND F.TasinmazId=B.Id
-                    INNER JOIN Il_Table C ON C.Id=B.IlId
-                WHERE 1>0 
-                    {0}
-                    AND A.KullanimSekli =@KullanimSekli
-                    AND SigortaDurumu =@Sigorta", bolgeStr));
-            if (bolgeFiltresiVar)
-                query.AddParameter("@BolgeId", bolgeId);
-            query.AddParameter("@KullanimSekli", kullanimSekli);
-            query.AddParameter("@Sigorta", sigorta);
-
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                Adet = row["Adet"].ConvertToInt();
-            }
-            return Adet;
+            return new TasinmazService().GetCountBySigorta(bolgeId, "KullanimSekli", "KullanimSekli", kullanimSekli, sigorta, true);
         }
 		public DataTable SelectBolumByTasinmazId(int tasinmazId)
 		{
-			SqlQuery query = new SqlQuery(@"
-				SELECT  A.KatMulkiyeti, A.KullanimSekli,A.Cinsi,A.MulkiyetSekli,D.Adi,D.Soyadi, A.Adres,A.Ilcesi,A.Ili, 
-					A.AdaNo,A.ParselNo,A.Yuzolcumu,A.ArsaPayi ,A.EnvanterdeMi,A.KullanimSekli,
-					B.Id BolumId,B.BolumNo, B.Aciklama,B.Nitelik, B.Metrekare, B.KullanimAmaci
-				FROM Tasinmaz_Table A
-					Left Join BagimsizBolum_Table B ON B.TasinmazId=A.Id
-					Left Join Bagis_Table C ON C.TasinmazId=A.Id
-					Left Join TasinmazBagisci_Table D ON D.Id=C.BagisciId
-				WHERE A.Id=@TasinmazId AND EnvanterdeMi=1 AND A.KatMulkiyeti=0");
-			query.AddParameter("@TasinmazId", tasinmazId);
-			DataTable dataTable = dao.SelectFromDb(query, "");
-			return dataTable;
+			return new TasinmazService().GetSectionsByTasinmazId(tasinmazId);
 		}
 
         public DataTable ToplamTasinmazAdediGetir()
         {
-            string sqlString = string.Format(@"
-                Select MulkiyetSekli, Count(Id) Adet From Tasinmaz_Table
-                Where EnvanterdeMi=1
-                Group By MulkiyetSekli
-                ");
-            int toplamTasinmazAdedi = 0;
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
+            return new TasinmazService().GetTotalByOwnership();
         }
 
         public DataTable SelectKirayaUygunTumTasinmazlar()
         {
-            string sqlString = string.Format(@"
-                SELECT EnvanterdeMi,COUNT(DISTINCT(A.Id)) AnaTasinmaz, Count(B.Id) AltBolum,COUNT(A.Id) ToplamKiralanabilir
-                FROM Tasinmaz_Table A
-                    LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId=A.Id AND AltBolum=1
-                WHERE EnvanterdeMi in (1,2) AND KirayaUygunluk='Kiraya Uygun'
-                GROUP BY EnvanterdeMi
-
-                ");
-            int toplamTasinmazAdedi = 0;
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
+            return new TasinmazService().GetRentalEligibleTotals();
         }
     }
 }

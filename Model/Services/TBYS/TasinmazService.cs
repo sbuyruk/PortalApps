@@ -44,6 +44,16 @@ namespace Model.Services.TBYS
         {
             return new Tasinmaz().ToJSON(repository.SelectSectionNumbers(inventoryState, rentalEligibility));
         }
+        public int GetCountBySigorta(int bolgeId, string countColumn, string propertyColumn, string propertyValue, string sigortaValue, bool includeOutOfInventory)
+        {
+            DataTable table = repository.SelectCountBySigorta(bolgeId, countColumn, propertyColumn, propertyValue, sigortaValue, includeOutOfInventory, ProjeConstants.HEPSI_INT, ProjeConstants.BOLGE_GENELMUDURLUK_INT);
+            return table != null && table.Rows.Count > 0 ? table.Rows[0]["Adet"].ToString().ConvertToInt() : 0;
+        }
+        public DataTable GetSectionsByTasinmazId(int tasinmazId) { return repository.SelectSectionsByTasinmazId(tasinmazId); }
+        public DataTable GetTotalByOwnership() { return repository.SelectTotalByOwnership(); }
+        public DataTable GetRentalEligibleTotals() { return repository.SelectRentalEligibleTotals(); }
+        public string GetOutOfInventoryListAsJson() { return new Tasinmaz().ToJSON(repository.SelectOutOfInventoryList(false)); }
+        public DataTable GetOutOfInventoryList() { return repository.SelectOutOfInventoryList(true); }
 
         public Tasinmaz GetInventoryById(int id)
         {
