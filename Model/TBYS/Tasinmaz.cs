@@ -171,26 +171,7 @@ namespace Model.TBYS
         }
         public string SelectByIdBolumId(int tasinmazId, int bolumId)
         {
-            string retVal = string.Empty;
-            SqlQuery query = new SqlQuery(@"
-                SELECT A.Adres, A.Ili, A.Ilcesi, B.BolumNo 
-                FROM Tasinmaz_Table A
-                LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId=A.Id AND B.Id=@BolumId
-                WHERE A.Id=@TasinmazId");
-            query.AddParameter("@BolumId", bolumId);
-            query.AddParameter("@TasinmazId", tasinmazId);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                string adres = row["Adres"].ReturnEmptyIfNull().ToString();
-                string il = row["Ili"].ReturnEmptyIfNull().ToString();
-                string ilce = row["Ilcesi"].ReturnEmptyIfNull().ToString();
-                string bolumNo = row["BolumNo"].ReturnEmptyIfNull().ToString();
-                retVal = adres + " " + bolumNo + " " + ilce + "/" + il;
-            }
-            return retVal;
-
+            return new TasinmazService().GetAddressByBolumId(tasinmazId, bolumId);
         }
         public Tasinmaz SelectById(int id)
         {
@@ -202,33 +183,7 @@ namespace Model.TBYS
         }
 		public DataTable SelectByBolgeReturnJson(int bolgeId)
 		{
-			bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
-			string bolgeStr = bolgeFiltresiVar ? " AND E.Id=@BolgeId " : string.Empty;
-
-			SqlQuery query = new SqlQuery(string.Format(@"
-				SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId,  D.IlceAdi +'/'+C.IlAdi IliIlcesi,E.KisaAdi Bolge,
-					T.*,
-					B.Adi+' '+B.Soyadi Bagisci, B.Id BagisciId, B.Sag_vefat                    
-				FROM Tasinmaz_Table T
-					LEFT JOIN Bagis_Table A ON A.TasinmazId=T.Id
-					LEFT JOIN TasinmazBagisci_Table B ON B.Id=A.BagisciId
-					LEFT JOIN IL_Table C ON C.Id=T.IlId
-					LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
-					LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
-				WHERE T.EnvanterdeMi=1 
-					{0}", bolgeStr));
-			if (bolgeFiltresiVar)
-				query.AddParameter("@BolgeId", bolgeId);
-			DataTable dataTable = null;
-			try
-			{
-				dataTable = dao.SelectFromDb(query, "");
-			}
-			catch (Exception e)
-			{
-				throw;
-			}
-			return dataTable;
+			return new TasinmazService().GetByBolge(bolgeId);
 		}
         public override List<T> SelectAll<T>()
         {

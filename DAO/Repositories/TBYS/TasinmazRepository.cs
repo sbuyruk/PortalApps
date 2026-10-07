@@ -24,6 +24,34 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@Id", id);
             return db.SelectFromDb(query, "");
         }
+        public DataTable SelectAddressByBolumId(int tasinmazId, int bolumId)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT A.Adres, A.Ili, A.Ilcesi, B.BolumNo
+                FROM Tasinmaz_Table A
+                LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId=A.Id AND B.Id=@BolumId
+                WHERE A.Id=@TasinmazId");
+            query.AddParameter("@BolumId", bolumId);
+            query.AddParameter("@TasinmazId", tasinmazId);
+            return db.SelectFromDb(query, "");
+        }
+        public DataTable SelectByBolge(int bolgeId, int allRegion, int headquarters)
+        {
+            string regionFilter = bolgeId == allRegion || bolgeId == headquarters ? string.Empty : " AND E.Id=@BolgeId ";
+            SqlQuery query = new SqlQuery(@"
+                SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId, D.IlceAdi +'/'+C.IlAdi IliIlcesi,E.KisaAdi Bolge,
+                    T.*,
+                    B.Adi+' '+B.Soyadi Bagisci, B.Id BagisciId, B.Sag_vefat
+                FROM Tasinmaz_Table T
+                    LEFT JOIN Bagis_Table A ON A.TasinmazId=T.Id
+                    LEFT JOIN TasinmazBagisci_Table B ON B.Id=A.BagisciId
+                    LEFT JOIN IL_Table C ON C.Id=T.IlId
+                    LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
+                    LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
+                WHERE T.EnvanterdeMi=1" + regionFilter);
+            if (!string.IsNullOrEmpty(regionFilter)) query.AddParameter("@BolgeId", bolgeId);
+            return db.SelectFromDb(query, "");
+        }
 
         public DataTable SelectInventoryById(int id)
         {
