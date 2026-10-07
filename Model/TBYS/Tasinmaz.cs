@@ -574,78 +574,22 @@ namespace Model.TBYS
 			return new TasinmazService().GetYaklasikPiyasaToplami(bolgeId);
 		}
 
-        public decimal SelectEmlakBeyanDegeriToplamiBySigorta(string sigorta)
+		public decimal SelectEmlakBeyanDegeriToplamiBySigorta(string sigorta)
         {
-            decimal toplam = 0;
-            SqlQuery query = new SqlQuery(@"
-                SELECT SUM(EmlakBeyanDegeri) Toplam 
-                FROM Tasinmaz_Table 
-                WHERE EnvanterdeMi=1
-                    AND SigortaDurumu=@Sigorta");
-            query.AddParameter("@Sigorta", sigorta);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                toplam = row["Toplam"].ConvertToDecimal();
-
-            }
-            return toplam;
+            return new TasinmazService().GetEmlakBeyanBySigorta(sigorta);
         }
         public decimal SelectTahminiRayicToplamiBySigorta(string sigorta)
         {
-            decimal toplam = 0;
-            SqlQuery query = new SqlQuery(@"
-                SELECT SUM(TahminiRayicDegeri) Toplam 
-                FROM Tasinmaz_Table 
-                WHERE EnvanterdeMi=1
-                    AND SigortaDurumu=@Sigorta");
-            query.AddParameter("@Sigorta", sigorta);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                toplam = row["Toplam"].ConvertToDecimal();
-
-            }
-            return toplam;
+            return new TasinmazService().GetTahminiRayicBySigorta(sigorta);
         }
         
         public decimal SelectTahminiRayicToplamiByKirayaUygunluk(string kirayaUygunluk)
         {
-            decimal toplam = 0;
-            SqlQuery query = new SqlQuery(@"
-                SELECT SUM(TahminiRayicDegeri) Toplam 
-                FROM Tasinmaz_Table 
-                WHERE EnvanterdeMi=1 AND KirayaUygunluk=@KirayaUygunluk ");
-            query.AddParameter("@KirayaUygunluk", kirayaUygunluk);
-
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                toplam = row["Toplam"].ConvertToDecimal();
-
-            }
-            return toplam;
+            return new TasinmazService().GetTahminiRayicByKirayaUygunluk(kirayaUygunluk);
         }
         public decimal SelectEmlakBeyanToplamiByKirayaUygunluk(string kirayaUygunluk)
         {
-            decimal toplam = 0;
-            SqlQuery query = new SqlQuery(@"
-                SELECT SUM(EmlakBeyanDegeri) Toplam 
-                FROM Tasinmaz_Table 
-                WHERE EnvanterdeMi=1 AND KirayaUygunluk=@KirayaUygunluk");
-            query.AddParameter("@KirayaUygunluk", kirayaUygunluk);
-
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                toplam = row["Toplam"].ConvertToDecimal();
-
-            }
-            return toplam;
+            return new TasinmazService().GetEmlakBeyanByKirayaUygunluk(kirayaUygunluk);
         }
         public int SelectTasinmazAdetByBolgeMulkiyetSekli(int bolgeId, string mulkiyetSekli)
         {

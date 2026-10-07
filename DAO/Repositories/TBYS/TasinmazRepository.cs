@@ -47,6 +47,12 @@ namespace DAO.Repositories.TBYS
             if (!string.IsNullOrEmpty(filter)) q.AddParameter("@BolgeId", bolgeId);
             return db.SelectFromDb(q, "");
         }
+        public DataTable SelectFilteredValueTotal(string column, string filterColumn, string filterValue)
+        {
+            SqlQuery q = new SqlQuery("SELECT SUM(" + column + ") Toplam FROM Tasinmaz_Table WHERE EnvanterdeMi=1 AND " + filterColumn + "=@FilterValue");
+            q.AddParameter("@FilterValue", filterValue);
+            return db.SelectFromDb(q, "");
+        }
         public DataTable SelectNext(int id) { SqlQuery q = new SqlQuery("SELECT * FROM Tasinmaz_Table WHERE EnvanterdeMi=1 AND Id>@Id ORDER BY Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, ""); }
         public DataTable SelectPrev(int id) { SqlQuery q = new SqlQuery("SELECT * FROM Tasinmaz_Table WHERE EnvanterdeMi=1 AND Id<@Id ORDER BY Id DESC"); q.AddParameter("@Id", id); return db.SelectFromDb(q, ""); }
         public DataTable SelectExtreme(bool max) { return db.SelectFromDb(new SqlQuery("SELECT " + (max ? "MAX" : "MIN") + "(Id) Id FROM Tasinmaz_Table WHERE EnvanterdeMi=1"), ""); }
