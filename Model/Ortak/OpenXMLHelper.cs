@@ -78,7 +78,7 @@ namespace Model.Ortak
             Run run4 = paragraph3.GetFirstChild<Run>();
 
             Text text4 = run4.GetFirstChild<Text>();
-            text4.Text = " Kizilay-Çankaya/Ankara";
+            text4.Text = " Kizilay-Ã‡ankaya/Ankara";
 
 
             Run run5 = paragraph4.Elements<Run>().ElementAt(2);
