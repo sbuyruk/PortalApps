@@ -54,6 +54,8 @@ namespace Model.Services.TBYS
         public DataTable GetRentalEligibleTotals() { return repository.SelectRentalEligibleTotals(); }
         public string GetOutOfInventoryListAsJson() { return new Tasinmaz().ToJSON(repository.SelectOutOfInventoryList(false)); }
         public DataTable GetOutOfInventoryList() { return repository.SelectOutOfInventoryList(true); }
+        public DataTable GetAllInventoryReport() { return repository.SelectAllInventoryReport(); }
+        public DataTable GetAllOutOfInventoryReport() { return repository.SelectAllOutOfInventoryReport(); }
 
         public Tasinmaz GetInventoryById(int id)
         {
