@@ -147,12 +147,12 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                 Image7.ImageUrl = imgUrl7;
                 Image8.ImageUrl = imgUrl8;
 
-                // onerror iÃ§in base URL'i client-side'a gÃ¶nder
+                // onerror için base URL'i client-side'a gönder
                 TasinmazResimBaseUrl.Value = newUrl;
 
                 PDFGoster(tasinmaz.Id);
-                GuncellemeTarihiLbl.Text = tasinmaz.DegistirmeTarihi != null ? "Son GÃ¼ncelleme: " + tasinmaz.DegistirmeTarihi.ToString("dd.MM.yyyy HH:mm") : string.Empty;
-                GuncelleyenLbl.Text = tasinmaz.Degistiren != null ? "Son GÃ¼ncelleyen: " + tasinmaz.Degistiren : string.Empty;
+                GuncellemeTarihiLbl.Text = tasinmaz.DegistirmeTarihi != null ? "Son Güncelleme: " + tasinmaz.DegistirmeTarihi.ToString("dd.MM.yyyy HH:mm") : string.Empty;
+                GuncelleyenLbl.Text = tasinmaz.Degistiren != null ? "Son Güncelleyen: " + tasinmaz.Degistiren : string.Empty;
             }
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
@@ -265,7 +265,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             isSaved = tasinmaz.Update();
             if (!isSaved)
             {
-                Exception exception = new Exception("Resim Veri TabanÄ±na KayÄ±t edilemedi");
+                Exception exception = new Exception("Resim Veri Tabanına Kayıt edilemedi");
                 exhelper.Exceptions.Add(exception);
             }
             return exhelper;
@@ -282,8 +282,8 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                 exhelper = UtilityHelper.uploadFile2SP(FotoFileBrowser, "", fotoFile + "", SPImageListName, exhelper, ProjeConstants.RESIM_DIGER_EN, ProjeConstants.RESIM_DIGER_BOY, tbysWebUrl);
 
                 string aciklama = "<p> <strong>" + tasinmaz.Adres + " " + tasinmaz.Ili + "/" + tasinmaz.Ilcesi + "</strong> adresinde bulunan "
-                    + "" + "Tasinmaz Id: <b>" + tasinmaz.Id + "</b> numaralÄ± taÅŸÄ±nmazÄ±n resimler sayfasÄ±nda "+  fotoFile  +
-                    " dosyasÄ± gÃ¼ncellenmiÅŸtir.</p>";
+                    + "" + "Taşınmaz Id: <b>" + tasinmaz.Id + "</b> numaralı taşınmazın resimler sayfasında "+  fotoFile  +
+                    " dosyası güncellenmiştir.</p>";
 
                 BildirimEPostasiGonder(": <b>" + aciklama + "</b>");
             }
@@ -311,7 +311,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
         }
 
         /// <summary>
-        /// Tasinmaz resim/belge islemleri iÃ§in bildirim e-postasi gÃ¶nderir
+        /// Tasinmaz resim/belge islemleri için bildirim e-postasi gönderir
         /// </summary>
         private void BildirimEPostasiGonder(string islemAciklamasi)
         {
@@ -324,12 +324,12 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                 {
                     if (to.Equals(currentUser + "@tskgv.org.tr"))
                     {
-                        return; //zcalis 'e kendi islemi iÃ§in mail gitmesin
+                        return; //zcalis 'e kendi islemi için mail gitmesin
                     }
                 }
-                string subject = "Tasinmaz Resim/Belge Islemi - Tasinmaz Id: " + TasinmazIdQS;
-                string body = "<p>Tasinmaz Id: <b>" + TasinmazIdQS + "</b> numaralÄ± taÅŸÄ±nmazda "
-                    + "<strong>" + currentUser + "</strong> tarafÄ±ndan aÅŸaÄŸÄ±daki iÅŸlem gerÃ§ekleÅŸtirilmiÅŸtir:</p>"
+                string subject = "Taşınmaz Resim/Belge İşlemi - Taşınmaz Id: " + TasinmazIdQS;
+                string body = "<p>Taşınmaz Id: <b>" + TasinmazIdQS + "</b> numaralı taşınmazda "
+                    + "<strong>" + currentUser + "</strong> tarafından aşağıdaki işlem gerçekleştirilmiştir:</p>"
                     + "<p>" + islemAciklamasi + "</p>" ;
                 string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
                 MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
@@ -462,15 +462,15 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                     if (isOk)
                     {
                         EmlakBeyaniDosyaLnk.Visible = true;
-                        MessageHelper.PublishMessage("Emlak Beyan Formu YÃ¼klendi", ProjeConstants.MESAJ_BASARILI, 2000);
-                        BildirimEPostasiGonder("Emlak Beyan Formu yÃ¼klendi. Dosya: <b>" + hedefDosyaAdi + "</b>");
+                        MessageHelper.PublishMessage("Emlak Beyan Formu Yüklendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        BildirimEPostasiGonder("Emlak Beyan Formu yüklendi. Dosya: <b>" + hedefDosyaAdi + "</b>");
                     }
                 }
                 else
                 {
                     EmlakBeyaniDosyaLnk.Visible = false;
                     EmlakBeyaniSilBtn.Visible = false;
-                    MessageHelper.PublishMessage("LÃ¼tfen Emlak Beyan Formu yÃ¼kleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                    MessageHelper.PublishMessage("Lütfen Emlak Beyan Formu yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                 }
                 if (YapiKayitYukleFU.HasFile)
                 {
@@ -479,15 +479,15 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                     if (isOk)
                     {
                         YapiKayitDosyaLnk.Visible = true;
-                        MessageHelper.PublishMessage("YapÄ± KayÄ±t Belgesi YÃ¼klendi", ProjeConstants.MESAJ_BASARILI, 2000);
-                        BildirimEPostasiGonder("YapÄ± KayÄ±t Belgesi yÃ¼klendi. Dosya: <b>" + hedefDosyaAdi + "</b>");
+                        MessageHelper.PublishMessage("Yapı Kayıt Belgesi Yüklendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        BildirimEPostasiGonder("Yapı Kayıt Belgesi yüklendi. Dosya: <b>" + hedefDosyaAdi + "</b>");
                     }
                 }
                 else
                 {
                     YapiKayitDosyaLnk.Visible = false;
                     YapiKayitSilBtn.Visible = false;
-                    MessageHelper.PublishMessage("LÃ¼tfen YapÄ± KayÄ±t Belgesi yÃ¼kleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                    MessageHelper.PublishMessage("Lütfen Yapı Kayıt Belgesi yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                 }
                 if (TapuKayitYukleFU.HasFile)
                 {
@@ -496,15 +496,15 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                     if (isOk)
                     {
                         TapuKayitDosyaLnk.Visible = true;
-                        MessageHelper.PublishMessage("Tapu KayÄ±t Belgesi YÃ¼klendi", ProjeConstants.MESAJ_BASARILI, 2000);
-                        BildirimEPostasiGonder("Tapu KayÄ±t Belgesi yÃ¼klendi. Dosya: <b>" + hedefDosyaAdi + "</b>");
+                        MessageHelper.PublishMessage("Tapu Kayıt Belgesi Yüklendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        BildirimEPostasiGonder("Tapu Kayıt Belgesi yüklendi. Dosya: <b>" + hedefDosyaAdi + "</b>");
                     }
                 }
                 else
                 {
                     TapuKayitDosyaLnk.Visible = false;
                     TapuKayitSilBtn.Visible = false;
-                    MessageHelper.PublishMessage("LÃ¼tfen Tapu KayÄ±t Belgesi yÃ¼kleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                    MessageHelper.PublishMessage("Lütfen Tapu Kayıt Belgesi yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                 }
                 if (ImarDurumuYukleFU.HasFile)
                 {
@@ -513,15 +513,15 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                     if (isOk)
                     {
                         ImarDurumuDosyaLnk.Visible = true;
-                        MessageHelper.PublishMessage("Ä°mar Durumu Belgesi YÃ¼klendi", ProjeConstants.MESAJ_BASARILI, 2000);
-                        BildirimEPostasiGonder("Ä°mar Durumu Belgesi yÃ¼klendi. Dosya: <b>" + hedefDosyaAdi + "</b>");
+                        MessageHelper.PublishMessage("İmar Durumu Belgesi Yüklendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        BildirimEPostasiGonder("İmar Durumu Belgesi yüklendi. Dosya: <b>" + hedefDosyaAdi + "</b>");
                     }
                 }
                 else
                 {
                     ImarDurumuDosyaLnk.Visible = false;
                     ImarDurumuSilBtn.Visible = false;
-                    MessageHelper.PublishMessage("LÃ¼tfen Ä°mar Durumu Belgesi yÃ¼kleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                    MessageHelper.PublishMessage("Lütfen İmar Durumu Belgesi yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                 }
                 if (TasinmazRaporuYukleFU.HasFile)
                 {
@@ -530,20 +530,20 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                     if (isOk)
                     {
                         TasinmazRaporuDosyaLnk.Visible = true;
-                        MessageHelper.PublishMessage("TaÅŸÄ±nmaz Raporu YÃ¼klendi", ProjeConstants.MESAJ_BASARILI, 2000);
-                        BildirimEPostasiGonder("TaÅŸÄ±nmaz Raporu yÃ¼klendi. Dosya: <b>" + hedefDosyaAdi + "</b>");
+                        MessageHelper.PublishMessage("Taşınmaz Raporu Yüklendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        BildirimEPostasiGonder("Taşınmaz Raporu yüklendi. Dosya: <b>" + hedefDosyaAdi + "</b>");
                     }
                 }
                 else
                 {
                     ImarDurumuDosyaLnk.Visible = false;
                     ImarDurumuSilBtn.Visible = false;
-                    MessageHelper.PublishMessage("LÃ¼tfen Ä°mar Durumu Belgesi yÃ¼kleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                    MessageHelper.PublishMessage("Lütfen İmar Durumu Belgesi yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                 }
             }
             catch (Exception exception)
             {
-                Exception ex = new Exception("Dosya YÃ¼klenemedi");
+                Exception ex = new Exception("Dosya Yüklenemedi");
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
                 exhelper.Exceptions.Add(ex);
                 exhelper.PublishException();
@@ -560,7 +560,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                     bool emlakBeyaniDosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, emlakBeyaniDosyaAdi);
                     if (emlakBeyaniDosyaVarMi)
                     {
-                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + emlakBeyaniDosyaUrl + @"> Belge GÃ¶rÃ¼ntÃ¼le </a>'";
+                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + emlakBeyaniDosyaUrl + @"> Belge Görüntüle </a>'";
 
                         EmlakBeyaniDosyaLnk.Target = "_blank";
                         EmlakBeyaniDosyaLnk.HRef = emlakBeyaniDosyaUrl;
@@ -574,7 +574,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                         EmlakBeyaniDosyaLnk.Visible = false;
                         EmlakBeyaniSilBtn.Visible = false;
                         EmlakBeyaniYukleFU.Visible = true;
-                        MessageHelper.PublishMessage("LÃ¼tfen Emlak Beyan Formunu pdf olarak yÃ¼kleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                        MessageHelper.PublishMessage("Lütfen Emlak Beyan Formunu pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                     }
 
                     string yapiKayitDosyaAdi = ProjeConstants.DOSYA_YAPIKAYIT_BELGESI + tasinmazId + ".pdf";
@@ -582,7 +582,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                     bool yapiKayitdosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, yapiKayitDosyaAdi);
                     if (yapiKayitdosyaVarMi)
                     {
-                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + yapiKayitDosyaUrl + @"> Belge GÃ¶rÃ¼ntÃ¼le </a>'";
+                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + yapiKayitDosyaUrl + @"> Belge Görüntüle </a>'";
 
                         YapiKayitDosyaLnk.Target = "_blank";
                         YapiKayitDosyaLnk.HRef = yapiKayitDosyaUrl;
@@ -596,14 +596,14 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                         YapiKayitDosyaLnk.Visible = false;
                         YapiKayitSilBtn.Visible = false;
                         YapiKayitYukleFU.Visible = true;
-                        MessageHelper.PublishMessage("LÃ¼tfen YapÄ± KayÄ±t Belgesini pdf olarak yÃ¼kleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                        MessageHelper.PublishMessage("Lütfen Yapı Kayıt Belgesini pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                     }
                     string tapuKayitDosyaAdi = ProjeConstants.DOSYA_TAPUKAYIT_BELGESI + tasinmazId + ".pdf";
                     string tapuKayitDosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + tapuKayitDosyaAdi;
                     bool tapuKayitdosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, tapuKayitDosyaAdi);
                     if (tapuKayitdosyaVarMi)
                     {
-                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + tapuKayitDosyaUrl + @"> Belge GÃ¶rÃ¼ntÃ¼le </a>'";
+                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + tapuKayitDosyaUrl + @"> Belge Görüntüle </a>'";
 
                         TapuKayitDosyaLnk.Target = "_blank";
                         TapuKayitDosyaLnk.HRef = tapuKayitDosyaUrl;
@@ -617,14 +617,14 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                         TapuKayitDosyaLnk.Visible = false;
                         TapuKayitSilBtn.Visible = false;
                         TapuKayitYukleFU.Visible = true;
-                        MessageHelper.PublishMessage("LÃ¼tfen Tapu KayÄ±t Belgesini pdf olarak yÃ¼kleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                        MessageHelper.PublishMessage("Lütfen Tapu Kayıt Belgesini pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                     }
                     string imarDurumuDosyaAdi = ProjeConstants.DOSYA_IMARDURUMU_BELGESI + tasinmazId + ".pdf";
                     string imarDurumuDosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + imarDurumuDosyaAdi;
                     bool imarDurumudosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, imarDurumuDosyaAdi);
                     if (imarDurumudosyaVarMi)
                     {
-                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + imarDurumuDosyaUrl + @"> Belge GÃ¶rÃ¼ntÃ¼le </a>'";
+                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + imarDurumuDosyaUrl + @"> Belge Görüntüle </a>'";
 
                         ImarDurumuDosyaLnk.Target = "_blank";
                         ImarDurumuDosyaLnk.HRef = imarDurumuDosyaUrl;
@@ -638,14 +638,14 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                         ImarDurumuDosyaLnk.Visible = false;
                         ImarDurumuSilBtn.Visible = false;
                         ImarDurumuYukleFU.Visible = true;
-                        MessageHelper.PublishMessage("LÃ¼tfen Imar Durumu Belgesini pdf olarak yÃ¼kleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                        MessageHelper.PublishMessage("Lütfen Imar Durumu Belgesini pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                     }
                     string tasinmazRaporuDosyaAdi = ProjeConstants.DOSYA_TASINMAZ_RAPORU + tasinmazId + ".pdf";
                     string tasinmazRaporuDosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + tasinmazRaporuDosyaAdi;
                     bool tasinmazRaporudosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, tasinmazRaporuDosyaAdi);
                     if (tasinmazRaporudosyaVarMi)
                     {
-                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + tasinmazRaporuDosyaUrl + @"> Belge GÃ¶rÃ¼ntÃ¼le </a>'";
+                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + tasinmazRaporuDosyaUrl + @"> Belge Görüntüle </a>'";
 
                         TasinmazRaporuDosyaLnk.Target = "_blank";
                         TasinmazRaporuDosyaLnk.HRef = tasinmazRaporuDosyaUrl;
@@ -659,18 +659,18 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                         TasinmazRaporuDosyaLnk.Visible = false;
                         TasinmazRaporuSilBtn.Visible = false;
                         TasinmazRaporuYukleFU.Visible = true;
-                        MessageHelper.PublishMessage("LÃ¼tfen TaÅŸÄ±nmaz Raporu Belgesini pdf olarak yÃ¼kleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                        MessageHelper.PublishMessage("Lütfen Taşınmaz Raporu Belgesini pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("BaÄŸÄ±ÅŸÃ§Ä± bulunamadÄ±.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Bağışçı bulunamadı.", ProjeConstants.MESAJ_HATA);
                 }
 
             }
             catch (Exception exception)
             {
-                Exception ex = new Exception("PDF YÃ¼klenemedi");
+                Exception ex = new Exception("PDF Yüklenemedi");
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
                 exhelper.Exceptions.Add(ex);
                 exhelper.PublishException();
@@ -712,7 +712,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                     YapiKayitSilBtn.Visible = false;
                     YapiKayitDosyaLnk.Visible = false;
                     YapiKayitYukleFU.Visible = true;
-                    BildirimEPostasiGonder("YapÄ± KayÄ±t Belgesi silindi. Dosya: <b>" + dosyaAdi + "</b>");
+                    BildirimEPostasiGonder("Yapı Kayıt Belgesi silindi. Dosya: <b>" + dosyaAdi + "</b>");
                 }
                 else
                 {
@@ -736,7 +736,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                     TapuKayitSilBtn.Visible = false;
                     TapuKayitDosyaLnk.Visible = false;
                     TapuKayitYukleFU.Visible = true;
-                    BildirimEPostasiGonder("Tapu KayÄ±t Belgesi silindi. Dosya: <b>" + dosyaAdi + "</b>");
+                    BildirimEPostasiGonder("Tapu Kayıt Belgesi silindi. Dosya: <b>" + dosyaAdi + "</b>");
                 }
                 else
                 {
@@ -760,7 +760,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                     ImarDurumuSilBtn.Visible = false;
                     ImarDurumuDosyaLnk.Visible = false;
                     ImarDurumuYukleFU.Visible = true;
-                    BildirimEPostasiGonder("Ä°mar Durumu Belgesi silindi. Dosya: <b>" + dosyaAdi + "</b>");
+                    BildirimEPostasiGonder("İmar Durumu Belgesi silindi. Dosya: <b>" + dosyaAdi + "</b>");
                 }
                 else
                 {
@@ -784,7 +784,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                     TasinmazRaporuSilBtn.Visible = false;
                     TasinmazRaporuDosyaLnk.Visible = false;
                     TasinmazRaporuYukleFU.Visible = true;
-                    BildirimEPostasiGonder("TaÅŸÄ±nmaz Raporu silindi. Dosya: <b>" + dosyaAdi + "</b>");
+                    BildirimEPostasiGonder("Taşınmaz Raporu silindi. Dosya: <b>" + dosyaAdi + "</b>");
                 }
                 else
                 {

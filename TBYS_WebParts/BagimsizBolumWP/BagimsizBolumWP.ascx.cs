@@ -99,27 +99,27 @@ namespace TBYS_WebParts.BagimsizBolumWP
             TableHeaderCell AdresCell = new TableHeaderCell();
             AdresCell.Text = "Adres";
             TableHeaderCell BolumCell = new TableHeaderCell();
-            BolumCell.Text = "BÃ¶lÃ¼m No";
+            BolumCell.Text = "Bölüm No";
             TableHeaderCell NitelikCell = new TableHeaderCell();
             NitelikCell.Text = "Nitelik";
             TableHeaderCell BBBrutAlanCell = new TableHeaderCell();
-            BBBrutAlanCell.Text = "BrÃ¼t Alan";
+            BBBrutAlanCell.Text = "Brüt Alan";
             TableHeaderCell BBNetAlanCell = new TableHeaderCell();
             BBNetAlanCell.Text = "Net Alan";
             TableHeaderCell KullanimAmaciCell = new TableHeaderCell();
-            KullanimAmaciCell.Text = "KullanÄ±m Åekli";
+            KullanimAmaciCell.Text = "Kullanım Şekli";
             TableHeaderCell AciklamaCell = new TableHeaderCell();
-            AciklamaCell.Text = "AÃ§iklama";
+            AciklamaCell.Text = "Açiklama";
             TableHeaderCell MuhasebeyeKayitliDegerCell = new TableHeaderCell();
-            MuhasebeyeKayitliDegerCell.Text = "Muhasebeye Kayitli Deger";
+            MuhasebeyeKayitliDegerCell.Text = "Muhasebeye Kayıtlı Değer";
             TableHeaderCell TahminiRayicDegeriCell = new TableHeaderCell();
-            TahminiRayicDegeriCell.Text = "Tahmini Rayic Degeri";
+            TahminiRayicDegeriCell.Text = "Tahmini Rayiç Değeri";
             TableHeaderCell EmlakBeyanDegeriCell = new TableHeaderCell();
-            EmlakBeyanDegeriCell.Text = "Emlak Beyan Degeri";
+            EmlakBeyanDegeriCell.Text = "Emlak Beyan Değeri";
             TableHeaderCell YaklasikPiyasaDegeriCell = new TableHeaderCell();
-            YaklasikPiyasaDegeriCell.Text = "Yaklasik Piyasa Degeri";
+            YaklasikPiyasaDegeriCell.Text = "Yaklaşık Piyasa Değeri";
             TableHeaderCell DuzenleCell = new TableHeaderCell();
-            DuzenleCell.Text = "DÃ¼zenle";
+            DuzenleCell.Text = "Düzenle";
             TableHeaderCell SilCell = new TableHeaderCell();
             SilCell.Text = "Sil";
 
@@ -142,7 +142,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
         }
         private void BagimsizBolumTablosunuDoldur(Tasinmaz tasinmaz)
         {
-            AdiLbl.Text = " Tasinmaz : " + tasinmaz.KullanimSekli + " " + tasinmaz.Ili + " " + tasinmaz.Ilcesi;
+            AdiLbl.Text = " Taşınmaz : " + tasinmaz.KullanimSekli + " " + tasinmaz.Ili + " " + tasinmaz.Ilcesi;
             IdLbl.Text = tasinmaz.Id + "";
             //Column headers
             BagimsizBolumTableHeaders();
@@ -209,7 +209,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
                 //DuzenleButonu ve Cell ekle
                 TableCell DuzenleCell = new TableCell();
                 LinkButton DuzenleBtn = new LinkButton();
-                DuzenleBtn.Text = "DÃ¼zenle";
+                DuzenleBtn.Text = "Düzenle";
                 DuzenleBtn.CssClass = "btn btn-outline-primary";
                 DuzenleBtn.Click += delegate
                 {
@@ -277,7 +277,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
         private void BagimsizBolumEkleModalAc(Tasinmaz tasinmaz)
         {
             KullanimAmaciDDLDoldur();
-            BagimsizBolumHeaderLbl.InnerText = "Bagimsiz BÃ¶lÃ¼m Ekleme";
+            BagimsizBolumHeaderLbl.InnerText = "Bağımsız Bölüm Ekleme";
             AdresTxt.Text = tasinmaz.Adres;
             BolumNoTxt.Text = string.Empty;
             BBBrutAlanTxt.Text = string.Empty;
@@ -298,7 +298,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
         private void BagimsizBolumDuzenleModalAc(Tasinmaz tasinmaz, BagimsizBolum bagimsizBolum)
         {
             KullanimAmaciDDLDoldur();
-            BagimsizBolumHeaderLbl.InnerText = "Bagimsiz BÃ¶lÃ¼m DÃ¼zenleme";
+            BagimsizBolumHeaderLbl.InnerText = "Bağımsız Bölüm Düzenleme";
             ParamBagimsizBolumIdLbl.Text = bagimsizBolum.Id.ToString();
             AdresTxt.Text = tasinmaz.Adres;
             BolumNoTxt.Text = bagimsizBolum.BolumNo;
@@ -336,7 +336,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
 
         private void BagimsizBolumSilModalAc(Tasinmaz tasinmaz, BagimsizBolum bagimsizBolum)
         {
-            BagimsizBolumHeaderLbl.InnerText = "Bagimsiz BÃ¶lÃ¼m Silme";
+            BagimsizBolumHeaderLbl.InnerText = "Bağımsız Bölüm Silme";
             ParamBagimsizBolumIdLbl.Text = bagimsizBolum.Id.ToString();
             AdresTxt.Text = tasinmaz.Adres;
             BolumNoTxt.Text = bagimsizBolum.BolumNo;
@@ -356,19 +356,19 @@ namespace TBYS_WebParts.BagimsizBolumWP
             KaydetBtn.Visible = false;
             GuncelleBtn.Visible = false;
 
-            MessageLbl.Text = "Bagimsiz BÃ¶lÃ¼m silinecek. Onayliyor musunuz?";
+            MessageLbl.Text = "Bağımsız Bölüm silinecek. Onaylıyor musunuz?";
             MessageLbl.CssClass = "col-form-label text-danger fw-bold";
             MessageLbl.Visible = true;
 
             if (BagimsizBolumSilinebilirMi(bagimsizBolum))
             {
                 SilBtn.Visible = true;
-                SilBtn.Text = "Bagimsiz BÃ¶lÃ¼mÃ¼ Sil";
+                SilBtn.Text = "Bağımsız Bölümü Sil";
                 SilBtn.CssClass = "btn btn-outline-danger";
             }
             else
             {
-                MessageLbl.Text = "Bu Bagimsiz BÃ¶lÃ¼m ile iliskilendirilmis bir SÃ¶zlesme bulunmaktadir. Bagimsiz BÃ¶lÃ¼m kaydi silinemez.";
+                MessageLbl.Text = "Bu Bağımsız Bölüm ile ilişkilendirilmiş bir Sözleşme bulunmaktadır. Bağımsız Bölüm kaydı silinemez.";
                 MessageLbl.CssClass = "col-form-label text-danger fw-bold";
                 MessageLbl.Visible = true;
                 SilBtn.Visible = false;
@@ -436,7 +436,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
                     {
                         BagimsizBolumTablosunuDoldur(tasinmaz);
                     }
-                    MessageHelper.PublishMessage("Bagimsiz BÃ¶lÃ¼m gÃ¼ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Bağımsız Bölüm güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                     string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                     int queryIndex = newUrl.IndexOf("?");
                     if (queryIndex > 0)
@@ -446,12 +446,12 @@ namespace TBYS_WebParts.BagimsizBolumWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Bagimsiz BÃ¶lÃ¼m gÃ¼ncellenemedi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Bağımsız Bölüm güncellenemedi", ProjeConstants.MESAJ_HATA);
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("Bagimsiz BÃ¶lÃ¼m bulunamadi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Bağımsız Bölüm bulunamadı", ProjeConstants.MESAJ_HATA);
             }
 
         }
@@ -470,7 +470,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
                     {
                         BagimsizBolumTablosunuDoldur(tasinmaz);
                     }
-                    MessageHelper.PublishMessage("Bagimsiz BÃ¶lÃ¼m silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Bağımsız Bölüm silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                     string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                     int queryIndex = newUrl.IndexOf("?");
                     if (queryIndex > 0)
@@ -482,7 +482,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
             }
             else
             {
-                MessageHelper.PublishMessage("Bagimsiz BÃ¶lÃ¼m silinemedi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Bağımsız Bölüm silinemedi", ProjeConstants.MESAJ_HATA);
             }
         }
     }

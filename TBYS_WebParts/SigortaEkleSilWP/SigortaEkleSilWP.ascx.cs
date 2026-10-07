@@ -229,7 +229,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP
         }
         private void SigortaTablosunuDoldur(Tasinmaz tasinmaz)
         {
-            AdiLbl.Text = " Tasinmaz : " + tasinmaz.Adres + " - " + tasinmaz.Ili + " / " + tasinmaz.Ilcesi;
+            AdiLbl.Text = " Taşınmaz : " + tasinmaz.Adres + " - " + tasinmaz.Ili + " / " + tasinmaz.Ilcesi;
             IdLbl.Text = tasinmaz.Id + "";
             //Column headers
             HeaderCell0.Text = "Sigorta Cinsi";
@@ -242,13 +242,13 @@ namespace TBYS_WebParts.SigortaEkleSilWP
             HeaderCell3.Visible = true;
             HeaderCell4.Text = "AdresKodu";
             HeaderCell4.Visible = true;
-            HeaderCell5.Text = "PoliÃ§e No";
+            HeaderCell5.Text = "Poliçe No";
             HeaderCell5.Visible = true;
             HeaderCell6.Text = "Sig.Bedeli";
             HeaderCell6.Visible = true;
             HeaderCell7.Text = "Prim";
             HeaderCell7.Visible = true;
-            HeaderCell8.Text = "DÃ¼zenle";
+            HeaderCell8.Text = "Düzenle";
             HeaderCell8.Visible = true;
             HeaderCell9.Text = "Sil";
             HeaderCell9.Visible = true;
@@ -295,7 +295,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP
                 TableCell DuzenleCell = new TableCell();
 
                 LinkButton DuzenleBtn = new LinkButton();
-                DuzenleBtn.Text = "DÃ¼zenle";
+                DuzenleBtn.Text = "Düzenle";
                 DuzenleBtn.CssClass = "btn btn-outline-primary";
                 DuzenleBtn.Click += delegate
                 {
