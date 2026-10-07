@@ -25,6 +25,17 @@ namespace Model.Services.TBYS
         {
             return Map(repository.SelectById(id));
         }
+        public string GetAddressByBolumId(int tasinmazId, int bolumId)
+        {
+            DataTable table = repository.SelectAddressByBolumId(tasinmazId, bolumId);
+            if (table == null || table.Rows.Count == 0) return string.Empty;
+            DataRow row = table.Rows[0];
+            return row["Adres"].ReturnEmptyIfNull() + " " + row["BolumNo"].ReturnEmptyIfNull() + " " + row["Ilcesi"].ReturnEmptyIfNull() + "/" + row["Ili"].ReturnEmptyIfNull();
+        }
+        public DataTable GetByBolge(int bolgeId)
+        {
+            return repository.SelectByBolge(bolgeId, ProjeConstants.HEPSI_INT, ProjeConstants.BOLGE_GENELMUDURLUK_INT);
+        }
 
         public Tasinmaz GetInventoryById(int id)
         {
