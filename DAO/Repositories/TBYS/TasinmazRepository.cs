@@ -40,6 +40,13 @@ namespace DAO.Repositories.TBYS
         }
         public DataTable SelectInventoryByIlAdi(string ilAdi) { SqlQuery q = new SqlQuery("SELECT * FROM Tasinmaz_Table WHERE EnvanterdeMi=1 AND Ili=@IlAdi"); q.AddParameter("@IlAdi", ilAdi); return db.SelectFromDb(q, ""); }
         public DataTable SelectOutOfInventoryById(int id) { SqlQuery q = new SqlQuery("SELECT *,Convert(nvarchar,replace (EnvanterdenCikmaBedeli,'.',',')) as EnvanterdenCikmaBedeli FROM Tasinmaz_Table WHERE EnvanterdeMi=0 AND Id=@Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, ""); }
+        public DataTable SelectInventoryValueTotal(string column, int bolgeId, int allRegion, int headquarters)
+        {
+            string filter = bolgeId == allRegion || bolgeId == headquarters ? string.Empty : " AND E.Id=@BolgeId";
+            SqlQuery q = new SqlQuery("SELECT SUM(T." + column + ") Toplam FROM Tasinmaz_Table T LEFT JOIN Il_Table C ON C.Id=T.IlId LEFT JOIN Ilce_Table D ON D.Id=T.IlceId LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId WHERE T.EnvanterdeMi=1" + filter);
+            if (!string.IsNullOrEmpty(filter)) q.AddParameter("@BolgeId", bolgeId);
+            return db.SelectFromDb(q, "");
+        }
         public DataTable SelectNext(int id) { SqlQuery q = new SqlQuery("SELECT * FROM Tasinmaz_Table WHERE EnvanterdeMi=1 AND Id>@Id ORDER BY Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, ""); }
         public DataTable SelectPrev(int id) { SqlQuery q = new SqlQuery("SELECT * FROM Tasinmaz_Table WHERE EnvanterdeMi=1 AND Id<@Id ORDER BY Id DESC"); q.AddParameter("@Id", id); return db.SelectFromDb(q, ""); }
         public DataTable SelectExtreme(bool max) { return db.SelectFromDb(new SqlQuery("SELECT " + (max ? "MAX" : "MIN") + "(Id) Id FROM Tasinmaz_Table WHERE EnvanterdeMi=1"), ""); }
