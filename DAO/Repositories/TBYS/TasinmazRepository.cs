@@ -78,8 +78,9 @@ namespace DAO.Repositories.TBYS
             if (!string.IsNullOrEmpty(mulkiyetSekli)) { optionalFilters += " AND MulkiyetSekli=@MulkiyetSekli"; q.AddParameter("@MulkiyetSekli", mulkiyetSekli); }
             if (!string.IsNullOrEmpty(kirayaUygunluk)) { optionalFilters += " AND KirayaUygunluk=@KirayaUygunluk"; q.AddParameter("@KirayaUygunluk", kirayaUygunluk); }
             if (!string.IsNullOrEmpty(regionFilter)) q.AddParameter("@BolgeId", bolgeId);
-            q.AddParameter("@PrimaryValue", primaryValue);
-            q.Sql = "SELECT COUNT(" + countColumn + ") Adet FROM Tasinmaz_Table A LEFT JOIN Il_Table B ON B.Id=A.IlId LEFT JOIN Bolge_Table D ON D.Id=B.BolgeId WHERE A.EnvanterdeMi=1" + regionFilter + " AND " + primaryColumn + "=@PrimaryValue" + optionalFilters;
+            string primaryFilter = string.IsNullOrEmpty(primaryColumn) ? string.Empty : " AND " + primaryColumn + "=@PrimaryValue";
+            if (!string.IsNullOrEmpty(primaryFilter)) q.AddParameter("@PrimaryValue", primaryValue);
+            q.Sql = "SELECT COUNT(" + countColumn + ") Adet FROM Tasinmaz_Table A LEFT JOIN Il_Table B ON B.Id=A.IlId LEFT JOIN Bolge_Table D ON D.Id=B.BolgeId WHERE A.EnvanterdeMi=1" + regionFilter + primaryFilter + optionalFilters;
             return db.SelectFromDb(q, "");
         }
         public DataTable SelectNext(int id) { SqlQuery q = new SqlQuery("SELECT * FROM Tasinmaz_Table WHERE EnvanterdeMi=1 AND Id>@Id ORDER BY Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, ""); }
