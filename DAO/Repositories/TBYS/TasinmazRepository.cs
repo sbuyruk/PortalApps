@@ -128,6 +128,43 @@ namespace DAO.Repositories.TBYS
             SqlQuery query = new SqlQuery("SELECT ROW_NUMBER() OVER(ORDER BY A.Id) AS Sirano, A.Id, A.Id TasinmazId,A.Cinsi," + regionColumns + ", A.SigortaDurumu, A.Adres," + addressColumns + ", A.MulkiyetSekli, A.KiraDurumu, A.KatMulkiyeti, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo, A.EmlakBeyanDegeri, A.TahminiRayicDegeri, A.TapuTarihi, A.AdaNo, A.ParselNo, A.PaftaNo, A.Yuzolcumu, A.ArsaPayi, A.VakifHissesi, A.YevmiyeNo,A.CiltNo, A.SahifeNo, A.KullanimSekli, A.TasinmazFoto, A.TasinmazFoto1, A.TasinmazFoto2, A.TapuFoto, A.KrokiFoto, A.TahkikatFoto, A.Nitelik,A.BulunduguKat,A.Aciklama,A.EnvantereGirisTarihi, B.BolumNo,B.Id BolumId FROM Tasinmaz_Table A LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId=A.Id " + joins + " WHERE A.EnvanterdeMi=2");
             return db.SelectFromDb(query, "");
         }
+        public DataTable SelectAllInventoryReport()
+        {
+            return db.SelectFromDb(new SqlQuery(@"
+                SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano,E.KisaAdi AS SorumluBolge,B.Adi+' '+B.Soyadi AS Bagisci,B.Sag_vefat,
+                    T.Adres,D.IlceAdi AS Ilcesi,C.IlAdi AS Ili,T.Mahalle,T.Koy,T.Cadde,T.Sokak,T.Mevki,T.Giris,T.Blok,
+                    T.AdaNo,T.ParselNo,T.PaftaNo,T.Yuzolcumu,T.ArsaPayi,T.VakifHissesi,T.YevmiyeNo,T.CiltNo,T.SahifeNo,
+                    T.KullanimSekli,T.AnaTasinmazNitelik,T.BBNitelik,T.TapuTasinmazNo,T.Cinsi,T.MulkiyetSekli,T.KirayaUygunluk,T.KiraDurumu,
+                    T.EdinmeSekli,T.BagisYili,T.Nitelik,T.BulunduguKat,T.BagimsizBolumNo,T.TamHisse,T.HisseMiktariPay,T.HisseMiktariPayda,
+                    T.ToplamKatSayisi,T.InsaYili,T.Metrekare,T.ToplamMetrekare,T.ProjeM2,T.ZeminTipi,T.ZeminHisse,T.BBBrutAlan,T.BBNetAlan,T.EnvantereGirisTarihi,
+                    IIF(T.KatMulkiyeti=1,'Kat Mülkiyeti Var','Kat Mülkiyeti Yok') KatMulkiyeti,
+                    IIF(T.KatIrtifaki=1,'Kat Irtifaki Var','Kat Irtifaki Yok') KatIrtifaki,
+                    IIF(T.AltBolum=1,'Kat Alt Bölüm Var','Kat Alt Bölüm Yok') AltBolum,
+                    T.TapuTarihi,T.TapuIslemTarihi,T.EmlakSicilNo,T.SigortaDurumu,T.Aciklama,T.EmlakBeyanDegeri,T.TahminiRayicDegeri,
+                    T.YaklasikPiyasaDegeri,T.MuhasebeyeKayitliDeger,T.MalikSayisi,T.BagimsizBolumSayisi,T.YapiTarzi,T.InsaatinSinifi,T.ArazininCinsi,
+                    T.Id TasinmazId,G.Id SozlesmeId,H.Adi,G.IlkSozlesmeTar,G.SozBasTar BaslamaTarihi,H.KiralamaAmaci,H.Adres KiraciAdresi,H.Ili,H.Ilcesi,
+                    G.OdemeSekli,G.KiraBedeli,G.ArtisAyi,YEAR(G.SozBasTar)-YEAR(G.IlkSozlesmeTar) KiraSuresi,T.SatisPlani,T.SatisPlaniAciklama
+                FROM Tasinmaz_Table T
+                    LEFT OUTER JOIN Bagis_Table A ON A.TasinmazId=T.Id
+                    LEFT OUTER JOIN TasinmazBagisci_Table B ON B.Id=A.BagisciId
+                    LEFT JOIN IL_Table C ON C.Id=T.IlId LEFT JOIN ILCE_Table D ON D.Id=T.IlceId LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
+                    OUTER APPLY (SELECT TOP 1 * FROM SozlesmeTasinmaz_Table F WHERE F.TasinmazId=T.Id ORDER BY F.SozlesmeId DESC) F
+                    LEFT JOIN KiraSozlesme_Table G ON G.Id=F.SozlesmeId LEFT JOIN Kiraci_Table H ON H.Id=G.KiraciId
+                WHERE T.EnvanterdeMi=1"), "");
+        }
+        public DataTable SelectAllOutOfInventoryReport()
+        {
+            return db.SelectFromDb(new SqlQuery(@"
+                SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano,T.Id,T.Id TasinmazId,B.Adi+' '+B.Soyadi Bagisci,B.Id BagisciId,T.BagisYili,
+                    T.Cinsi,T.Ili,T.Ilcesi,T.Ili+'/'+T.Ilcesi IliIlcesi,T.SigortaDurumu,T.Adres,T.Adres+' '+T.Ili+'/'+T.Ilcesi AdresIlIlce,
+                    T.MulkiyetSekli,T.KiraDurumu,IIF(T.KatMulkiyeti=1,'Kat Mülkiyeti Var','Kat Mülkiyeti Yok') KatMulkiyeti,
+                    T.SorumluBolge,T.EdinmeSekli,T.BagisYili,T.EmlakSicilNo,T.EmlakBeyanDegeri,T.TahminiRayicDegeri,T.TapuTarihi,
+                    T.AdaNo,T.ParselNo,T.PaftaNo,T.Yuzolcumu,T.ArsaPayi,T.VakifHissesi,T.YevmiyeNo,T.CiltNo,T.SahifeNo,T.KullanimSekli,
+                    T.TasinmazFoto,T.TasinmazFoto1,T.TasinmazFoto2,T.TapuFoto,T.KrokiFoto,T.TahkikatFoto,T.Nitelik,T.BulunduguKat,T.Aciklama,
+                    T.EnvantereGirisTarihi,YEAR(T.EnvanterdenCikmaTarihi) EnvanterdenCikmaYili,T.EnvanterdenCikmaTarihi,T.EnvanterdenCikmaSebebi,T.EnvanterdenCikmaBedeli
+                FROM Tasinmaz_Table T LEFT JOIN Bagis_Table A ON A.TasinmazId=T.Id LEFT JOIN TasinmazBagisci_Table B ON B.Id=A.BagisciId
+                WHERE T.EnvanterdeMi=0"), "");
+        }
 
         public DataTable SelectInventoryById(int id)
         {

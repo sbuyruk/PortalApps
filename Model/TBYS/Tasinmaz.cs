@@ -213,7 +213,8 @@ namespace Model.TBYS
         }
         public DataTable SelectAllReturnDataTable()
         {
-            string sqlString = string.Format(@"
+            return new TasinmazService().GetAllInventoryReport();
+            /*string sqlString = string.Format(@"
                 SELECT 
                     ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano,
                     E.KisaAdi AS SorumluBolge,
@@ -283,22 +284,12 @@ namespace Model.TBYS
             {
                 throw;
             }
-            return dataTable;
+            return dataTable;*/
         }
 
         public DataTable SelectAllEnvanterdenCikanReturnDataTable()
         {
-            string sqlString = SelectAllEnvanterdenCikanSQL();
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            return dataTable;
+            return new TasinmazService().GetAllOutOfInventoryReport();
         }
         private string SelectAllEnvanterdenCikanSQL()
         {
