@@ -1,5 +1,6 @@
 using Model.Ortak;
 using Model.Services.Ortak;
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -151,12 +152,12 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 DDLleriDoldur();
                 if (String.IsNullOrEmpty(DestinationAppQS) || String.Equals(DestinationAppQS, ""))
                 {
-                    //TasinmazGirisi açilacak TG
+                    //TasinmazGirisi aÃƒÂ§ilacak TG
                     TasinmazGirisi();
                 }
                 else if (String.Equals(DestinationAppQS, "TD"))
                 {
-                    //TasinmazDuzenle açilacak
+                    //TasinmazDuzenle aÃƒÂ§ilacak
                     TasinmazDuzenle();
                 }
                 GorunumAyarlariniYap();
@@ -178,7 +179,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 BackBtn.Visible = true;
                 //CardHeader.Attributes["Class"] = "bg-info";
                 TitleLbl.CssClass = "col-form-label fw-bold mb-1 text-primary";
-                TitleLbl.Text = "Mülkiyeti Olmayan Taşınmaz Bilgi Güncelleme";
+                TitleLbl.Text = "MÃƒÂ¼lkiyeti Olmayan TaÃ…Å¸Ã„Â±nmaz Bilgi GÃƒÂ¼ncelleme";
                 IdLbl.Visible = true;
             }
             else
@@ -192,7 +193,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 IdLbl.Visible = false;
                 //CardHeader.Attributes["Class"] = "bg-success";
                 TitleLbl.CssClass = "col-form-label fw-bold mb-1 text-danger";
-                TitleLbl.Text = "Mülkiyeti Olmayan Taşınmaz Girişi";
+                TitleLbl.Text = "MÃƒÂ¼lkiyeti Olmayan TaÃ…Å¸Ã„Â±nmaz GiriÃ…Å¸i";
             }
 
             if (SigortaDDL.SelectedValue == ProjeConstants.SIGORTA_YOK)
@@ -215,7 +216,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             int tasinmazId = (TasinmazIdQS.ConvertToInt());
 
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = tasinmaz.Select(tasinmazId);
+            tasinmaz = new TasinmazService().Select(tasinmazId);
             if (tasinmaz != null)
             {
                 tasinmazBulunamadi = false;
@@ -223,7 +224,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 TasinmazFormunuDoldur(tasinmaz);
             }
             if (tasinmazBulunamadi)
-                MessageHelper.PublishMessage("Taşınmaz Bulunamadı!", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("TaÃ…Å¸Ã„Â±nmaz BulunamadÃ„Â±!", ProjeConstants.MESAJ_HATA);
         }
         private void DDLleriDoldur()
         {
@@ -327,7 +328,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 UtilityHelper.SetDDLValue(KiraDurumuDDL, tasinmaz.KiraDurumu);
                 UtilityHelper.SetDDLValue(KullanimSekliDDL, tasinmaz.KullanimSekli);
                 UtilityHelper.SetDDLValue(SigortaDDL, tasinmaz.SigortaDurumu);
-               
+
                 UtilityHelper.SetDDLValue(KirayaUygunlukDDL, tasinmaz.KirayaUygunluk);
                 AdresTxt.Text = tasinmaz.Adres;
 
@@ -348,7 +349,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             catch (Exception ex)
             {
                 ExceptionHelper exhelper = new ExceptionHelper();
-                Exception message = new Exception("Taşınmaz ekrana getirilemedi");
+                Exception message = new Exception("TaÃ…Å¸Ã„Â±nmaz ekrana getirilemedi");
                 exhelper.Exceptions.Add(message);
                 exhelper.Exceptions.Add(ex);
                 exhelper.PublishException();
@@ -415,7 +416,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
         {
             bool isSaved = false;
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = tasinmaz.Select(tId);
+            tasinmaz = new TasinmazService().Select(tId);
             //tasinmaz.Id = tId;
             if (tasinmaz != null)
             {
@@ -478,24 +479,24 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 if (queryIndex > 0)
                     newUrl = newUrl.Substring(0, queryIndex);
                 newUrl = newUrl + "?DestinationApp=TD&TasinmazId=" + tasinmaz.Id + "&EnvanterdeMi=" + EnvanterdeMiQS;
-                //+ "&tasinmazFoto=" + tasinmaz.TasinmazFoto //kaydesttikten sonra tasinmaz resimleri görünsün
+                //+ "&tasinmazFoto=" + tasinmaz.TasinmazFoto //kaydesttikten sonra tasinmaz resimleri gÃƒÂ¶rÃƒÂ¼nsÃƒÂ¼n
                 //+ "&tasinmazFoto1=" + tasinmaz.TasinmazFoto1 + "&tasinmazFoto2=" + tasinmaz.TasinmazFoto2
                 //+ "&tapuFoto=" + tasinmaz.TapuFoto + "&krokiFoto=" + tasinmaz.KrokiFoto + "&tahkikatFoto=" + tasinmaz.TahkikatFoto;
                 Page.Response.Redirect(newUrl, true);
             }
             else
-                MessageHelper.PublishMessage("Taşınmaz Kaydı başarısız oldu.-TS001", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("TaÃ…Å¸Ã„Â±nmaz KaydÃ„Â± baÃ…Å¸arÃ„Â±sÃ„Â±z oldu.-TS001", ProjeConstants.MESAJ_HATA);
         }
         protected void UpdateBtn_Click(object sender, EventArgs e)
         {
             if (updateTasinmazData2Db(TasinmazIdQS.ConvertToInt()))
             {
                 SigortaBtn.Visible = true;
-                MessageHelper.PublishMessage("Taşınmaz kaydı güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                MessageHelper.PublishMessage("TaÃ…Å¸Ã„Â±nmaz kaydÃ„Â± gÃƒÂ¼ncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
             }
             else
             {
-                MessageHelper.PublishMessage("Taşınmaz Güncellenemedi.-TS001", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("TaÃ…Å¸Ã„Â±nmaz GÃƒÂ¼ncellenemedi.-TS001", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void TasinmazKartiBtn_Click(object sender, EventArgs e)
@@ -527,7 +528,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             }
             //else
             //{
-            //    MessageHelper.PublishMessage("Bu tasinmazin Sigortasi Bulunamadi. Lütfen sigorta Durumunu seçip kaydettikten sonra tekrar deneyiniz.", ProjeConstants.MESAJ_HATA);
+            //    MessageHelper.PublishMessage("Bu tasinmazin Sigortasi Bulunamadi. LÃƒÂ¼tfen sigorta Durumunu seÃƒÂ§ip kaydettikten sonra tekrar deneyiniz.", ProjeConstants.MESAJ_HATA);
             //}
 
         }
@@ -560,8 +561,8 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
         protected void DeleteBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = tasinmaz.Select(TasinmazIdQS.ConvertToInt());
-            if (tasinmaz != null) //sildikten sonra önceki sayfaya dön
+            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+            if (tasinmaz != null) //sildikten sonra ÃƒÂ¶nceki sayfaya dÃƒÂ¶n
             {
                 if (tasinmaz.Delete())
                 {
@@ -579,7 +580,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
         protected void ResimlerBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = tasinmaz.Select(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
             if (tasinmaz != null)
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -600,7 +601,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
 
             if (bagis == null)
             {
-                MessageHelper.PublishMessage("Bağışçı Bulunamadı. Bu taşınmaz henüz bir bağışçıyla ilişkilendirilmemiş. Lütfen Bağışçı sayfasından bağışçı ataması yapınız.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("BaÃ„Å¸Ã„Â±Ã…Å¸ÃƒÂ§Ã„Â± BulunamadÃ„Â±. Bu taÃ…Å¸Ã„Â±nmaz henÃƒÂ¼z bir baÃ„Å¸Ã„Â±Ã…Å¸ÃƒÂ§Ã„Â±yla iliÃ…Å¸kilendirilmemiÃ…Å¸. LÃƒÂ¼tfen BaÃ„Å¸Ã„Â±Ã…Å¸ÃƒÂ§Ã„Â± sayfasÃ„Â±ndan baÃ„Å¸Ã„Â±Ã…Å¸ÃƒÂ§Ã„Â± atamasÃ„Â± yapÃ„Â±nÃ„Â±z.", ProjeConstants.MESAJ_HATA);
             }
             else
             {
@@ -608,7 +609,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 bagisci = bagisci.Select<TasinmazBagisci>(bagis.BagisciId);
                 if (bagisci == null)
                 {
-                    MessageHelper.PublishMessage("Bağışçı Bulunamadı. Bu taşınmazın ilişkilendirildiği bağışçı bulunamadı. Lütfen Bağışçı sayfasından bağışçı ataması yapınız.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("BaÃ„Å¸Ã„Â±Ã…Å¸ÃƒÂ§Ã„Â± BulunamadÃ„Â±. Bu taÃ…Å¸Ã„Â±nmazÃ„Â±n iliÃ…Å¸kilendirildiÃ„Å¸i baÃ„Å¸Ã„Â±Ã…Å¸ÃƒÂ§Ã„Â± bulunamadÃ„Â±. LÃƒÂ¼tfen BaÃ„Å¸Ã„Â±Ã…Å¸ÃƒÂ§Ã„Â± sayfasÃ„Â±ndan baÃ„Å¸Ã„Â±Ã…Å¸ÃƒÂ§Ã„Â± atamasÃ„Â± yapÃ„Â±nÃ„Â±z.", ProjeConstants.MESAJ_HATA);
                 }
                 else
                 {
@@ -631,8 +632,8 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
         protected void NextBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = tasinmaz.Select<Tasinmaz>(TasinmazIdQS.ConvertToInt());
-            Tasinmaz sonrakiTasinmaz = tasinmaz.SelectNext(tasinmaz.Id);
+            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+            Tasinmaz sonrakiTasinmaz = new TasinmazService().SelectNext(tasinmaz.Id);
             string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             int queryIndex = newUrl.IndexOf("?");
             if (queryIndex > 0)
@@ -643,8 +644,8 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
         protected void PrevBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = tasinmaz.Select<Tasinmaz>(TasinmazIdQS.ConvertToInt());
-            Tasinmaz oncekiTasinmaz = tasinmaz.SelectPrev(tasinmaz.Id);
+            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+            Tasinmaz oncekiTasinmaz = new TasinmazService().SelectPrev(tasinmaz.Id);
             string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             int queryIndex = newUrl.IndexOf("?");
             if (queryIndex > 0)
@@ -652,7 +653,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             newUrl = newUrl + "?DestinationApp=TD&TasinmazId=" + oncekiTasinmaz.Id  + "&EnvanterdeMi=" + EnvanterdeMiQS;
             Page.Response.Redirect(newUrl, true);
         }
-        
+
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             IlceDDLDoldur();

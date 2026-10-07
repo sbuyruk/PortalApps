@@ -1,5 +1,6 @@
 using Model.Ortak;
 using Model.Services.Ortak;
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.ComponentModel;
@@ -85,29 +86,29 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP
         private decimal TahminiRayicToplaminiBul()
         {
             decimal toplam = 0;
-            Tasinmaz tasinmaz = new Tasinmaz();
-            toplam = tasinmaz.SelectTahminiRayicToplami(BolgeIdQS);
+            TasinmazService tasinmazService = new TasinmazService();
+            toplam = tasinmazService.SelectTahminiRayicToplami(BolgeIdQS);
             return toplam;
         }
         private decimal MuhasebeyeKayitliToplaminiBul()
         {
             decimal toplam = 0;
-            Tasinmaz tasinmaz = new Tasinmaz();
-            toplam = tasinmaz.SelectMuhasebeyeKayitliDegerToplami(BolgeIdQS);
+            TasinmazService tasinmazService = new TasinmazService();
+            toplam = tasinmazService.SelectMuhasebeyeKayitliDegerToplami(BolgeIdQS);
             return toplam;
         }
         private decimal EmlakBeyanDegeriToplaminiBul()
         {
             decimal toplam = 0;
-            Tasinmaz tasinmaz = new Tasinmaz();
-            toplam = tasinmaz.SelectEmlakBeyanDegeriToplami(BolgeIdQS);
+            TasinmazService tasinmazService = new TasinmazService();
+            toplam = tasinmazService.SelectEmlakBeyanDegeriToplami(BolgeIdQS);
             return toplam;
         }
         private decimal YaklasikPiyasaToplaminiBul()
         {
             decimal toplam = 0;
-            Tasinmaz tasinmaz = new Tasinmaz();
-            toplam = tasinmaz.SelectYaklasikPiyasaToplami(BolgeIdQS);
+            TasinmazService tasinmazService = new TasinmazService();
+            toplam = tasinmazService.SelectYaklasikPiyasaToplami(BolgeIdQS);
             return toplam;
         }
         protected void TasinmazDurumuTablosunuDoldur()
@@ -148,7 +149,7 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP
                 int totalArs = 0;
                 int totalTar = 0;
 
-                Tasinmaz tasinmaz = new Tasinmaz();
+                TasinmazService tasinmazService = new TasinmazService();
 
                 // Get active regions based on user permission/context
                 var bolgeList = new BolgeService().GetActive(BolgeIdQS);
@@ -160,17 +161,17 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP
                     if (bolge.Id == ProjeConstants.BOLGE_GENELMUDURLUK_INT ||
                         bolge.Id == ProjeConstants.BOLGE_YURTDISI_INT)
                         continue;
-                    int ankTM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekli(bolge.Id, ProjeConstants.MULKIYETSEKLI_TM);
-                    int ankCM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekli(bolge.Id, ProjeConstants.MULKIYETSEKLI_CM);
+                    int ankTM = tasinmazService.SelectTasinmazAdetByBolgeMulkiyetSekli(bolge.Id, ProjeConstants.MULKIYETSEKLI_TM);
+                    int ankCM = tasinmazService.SelectTasinmazAdetByBolgeMulkiyetSekli(bolge.Id, ProjeConstants.MULKIYETSEKLI_CM);
 
                     // usage counts (APT includes ISHANI)
                     string kiraDurumuStr = string.Empty;
-                    int apt = tasinmaz.SelectTasinmazAdetByBolgeCinsiKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-                    int ishani = tasinmaz.SelectTasinmazAdetByBolgeCinsiKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-                    int mes = tasinmaz.SelectTasinmazAdetByBolgeCinsiKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-                    int isy = tasinmaz.SelectTasinmazAdetByBolgeCinsiKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-                    int ars = tasinmaz.SelectTasinmazAdetByBolgeCinsiKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-                    int tar = tasinmaz.SelectTasinmazAdetByBolgeCinsiKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                    int apt = tasinmazService.SelectTasinmazAdetByBolgeCinsiKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                    int ishani = tasinmazService.SelectTasinmazAdetByBolgeCinsiKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                    int mes = tasinmazService.SelectTasinmazAdetByBolgeCinsiKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                    int isy = tasinmazService.SelectTasinmazAdetByBolgeCinsiKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                    int ars = tasinmazService.SelectTasinmazAdetByBolgeCinsiKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                    int tar = tasinmazService.SelectTasinmazAdetByBolgeCinsiKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
 
                     int tm = ankTM;
                     int cm = ankCM;
@@ -250,7 +251,7 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP
             System.IO.StringWriter tw = new System.IO.StringWriter();
             System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
 
-            //Get the HTML for the control.             
+            //Get the HTML for the control.
             TasDurTable.RenderControl(hw);
             //Write the HTML back to the browser.
             //Response.ContentType = application/vnd.ms-excel;

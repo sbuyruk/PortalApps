@@ -1,3 +1,4 @@
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.ComponentModel;
@@ -107,7 +108,7 @@ namespace NBYS_WebParts.TasinmazArmaganWP
 
                 }
                 Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = tasinmaz.Select<Tasinmaz>(bagis.TasinmazId);
+                tasinmaz = new TasinmazService().GetById(bagis.TasinmazId);
                 if (tasinmaz != null)
                 {
                     TasinmazCinsiTxt.Text = tasinmaz.Cinsi;

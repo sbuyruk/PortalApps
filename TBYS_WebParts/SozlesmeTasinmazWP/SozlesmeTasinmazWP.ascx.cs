@@ -1,4 +1,5 @@
 using Model.Ortak;
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -171,7 +172,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         }
         private void SozlesmeTasinmazTablosunuDoldur(KiraSozlesme kiraSozlesme)
         {
-            //�nce tabloyu temizle
+            //Ã¶nce tabloyu temizle
             PopUpTable.Rows.Clear();
 
             SozlesmeTasinmaz st = new SozlesmeTasinmaz();
@@ -188,7 +189,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 PupUpCell0.Text = siraNo++ + "";
                 row.Controls.Add(PupUpCell0);
 
-                //tabloya kira s�zlesme Id ekle
+                //tabloya kira sÃ¶zlesme Id ekle
                 TableCell SozlesmeIdCell = new TableCell();
                 SozlesmeIdCell.Text = kiraSozlesme.Id.ToString();
                 row.Controls.Add(SozlesmeIdCell);
@@ -207,7 +208,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 BagimsizBolumIdCell.Visible = false;
 
                 Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = tasinmaz.SelectById(sozlesmeTasinmaz.TasinmazId);
+                tasinmaz = new TasinmazService().SelectById(sozlesmeTasinmaz.TasinmazId);
                 string adres = string.Empty;
                 if (tasinmaz != null)
                 {
@@ -250,7 +251,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
 
                 TableCell cikarCell = new TableCell();
                 LinkButton cikarBtn = new LinkButton();
-                cikarBtn.Text = "�ikar";
+                cikarBtn.Text = "Ã‡ikar";
                 cikarBtn.CssClass = "btn btn-xs btn-danger";
                 cikarBtn.Click += delegate
                 {
@@ -277,13 +278,13 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 if (tasinmazId > 0)
                 {
                     Tasinmaz tasinmaz = new Tasinmaz();
-                    tasinmaz = tasinmaz.SelectById(tasinmazId);
+                    tasinmaz = new TasinmazService().SelectById(tasinmazId);
                     if (tasinmaz != null)
                     {
 
                         BagimsizBolum babo = new BagimsizBolum();
                         babo = babo.Select<BagimsizBolum>(BolumIdQS.ConvertToInt());
-                        //BagimsizBolum bol�m varsa
+                        //BagimsizBolum bolÃ¼m varsa
                         if (babo != null)
                         {
                             SozlesmeTasinmaz st = new SozlesmeTasinmaz();
@@ -297,7 +298,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                             }
                         }
 
-                        else //bagimsiz bolum parametre olarak gelmediyse 
+                        else //bagimsiz bolum parametre olarak gelmediyse
                         {
                             SozlesmeTasinmaz st = new SozlesmeTasinmaz();
                             List<SozlesmeTasinmaz> list = st.SelectBySozlesmeIdTasinmazId(kiraSozlesme.Id, tasinmaz.Id, 0);
@@ -308,7 +309,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                                 st.BolumId = 0;
                                 st.Save();
                             }//if list.count
-                        }// else bagimsiz bolum parametre olarak gelmediyse 
+                        }// else bagimsiz bolum parametre olarak gelmediyse
 
                     }//if tasinmaz != null
                 }//if !string.IsNullOrEmpty(tasinmazId)
@@ -379,7 +380,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         private void TasinmazSecimiModalShow()
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            var jsonData = tasinmaz.SelectTasinmazBolumNoReturnJson(ProjeConstants.TASINMAZ_ENVANTERDE, ProjeConstants.KIRADURUMU_KIRAYAUYGUN);
+            var jsonData = new TasinmazService().SelectTasinmazBolumNoReturnJson(ProjeConstants.TASINMAZ_ENVANTERDE, ProjeConstants.KIRADURUMU_KIRAYAUYGUN);
             var jsString = CreateTasinmazModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
             UtilityHelper.ScriptCalistir("TasinmazSecimiModal();");
@@ -414,7 +415,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 columnDefs:[
                     {targets:5, render:function(data, type, row, meta){
                         var linkEkle='<a href=" + ProjeConstants.PAGE_KIRASOZLESME_TASINMAZ + @"?KiraSozlesmeId=" + KiraSozlesmeIdQS +
-                            @"&EnvanterdeMi=1&DestinationApp=TD&TasinmazId=' + row.TasinmazId + '&BolumId=' + row.BolumId + ' class=\'btn btn-outline-primary \'>S�zlesmeye Ekle</a>'
+                            @"&EnvanterdeMi=1&DestinationApp=TD&TasinmazId=' + row.TasinmazId + '&BolumId=' + row.BolumId + ' class=\'btn btn-outline-primary \'>SÃ¶zlesmeye Ekle</a>'
                         return linkEkle;
                     }},
                 ],
@@ -426,7 +427,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         ";
             return tableString;
         }
-       
+
         private void KiraciSecimiModalShow()
         {
             Kiraci kiraci = new Kiraci();
@@ -464,7 +465,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 columnDefs:[
                     {targets:3, render:function(data, type, row, meta){
                         var linkEkle='<a href=" + ProjeConstants.PAGE_KIRASOZLESME_TASINMAZ + @"?KiraSozlesmeId=" + KiraSozlesmeIdQS +
-                            @"&DestinationApp=ST&KiraciId=' + row.KiraciId + ' class=\'btn btn-outline-primary \'>Kiraciyi Se�</a>'
+                            @"&DestinationApp=ST&KiraciId=' + row.KiraciId + ' class=\'btn btn-outline-primary \'>Kiraciyi SeÃ§</a>'
                         return linkEkle;
                     }},
                 ],
@@ -479,7 +480,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         private void EnvanterdeOlmayanTasinmazSecimiModalShow()
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            var jsonData = tasinmaz.SelectEnvanterdeOlmayanTasinmazReturnJson();
+            var jsonData = new TasinmazService().SelectEnvanterdeOlmayanTasinmazReturnJson();
             var jsString = CreateEnvanterdeOlmayanTasinmazModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
             UtilityHelper.ScriptCalistir("EnvanterdeOlmayanTasinmazSecimiModal();");
@@ -512,7 +513,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 columnDefs:[
                     {targets:3, render:function(data, type, row, meta){
                         var linkEkle='<a href=" + ProjeConstants.PAGE_KIRASOZLESME_TASINMAZ + @"?KiraSozlesmeId=" + KiraSozlesmeIdQS +
-                            @"&EnvanterdeMi=1&DestinationApp=TD&TasinmazId=' + row.TasinmazId + ' class=\'btn btn-outline-primary \'>S�zlesmeye Ekle</a>'
+                            @"&EnvanterdeMi=1&DestinationApp=TD&TasinmazId=' + row.TasinmazId + ' class=\'btn btn-outline-primary \'>SÃ¶zlesmeye Ekle</a>'
                         return linkEkle;
                     }},
                 ],

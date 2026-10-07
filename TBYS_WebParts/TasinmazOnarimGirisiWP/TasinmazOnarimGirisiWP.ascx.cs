@@ -1,4 +1,5 @@
 using Model.Ortak;
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -124,7 +125,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP
             if (!string.IsNullOrEmpty(TasinmazIdQS))
             {
                 Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = tasinmaz.Select<Tasinmaz>(TasinmazIdQS.ConvertToInt());
+                tasinmaz = new TasinmazService().GetById(TasinmazIdQS.ConvertToInt());
                 if (tasinmaz != null)
                 {
                     OnarimFormunuDoldur(tasinmaz);
@@ -163,7 +164,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP
         protected void BackBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = tasinmaz.Select<Tasinmaz>(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService().GetById(TasinmazIdQS.ConvertToInt());
             if (SenderAppQS.Equals("TD"))
             {
                 //Page.Response.Redirect("/pages/TasinmazGirisi.aspx?visible=TD&tId=" + tasinmazId);
@@ -194,13 +195,13 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP
             //Column headers
             HeaderCell1.Text = "Yapilan Is";
             HeaderCell1.Visible = true;
-            HeaderCell2.Text = "Harcama Usulü";
+            HeaderCell2.Text = "Harcama UsulÃ¼";
             HeaderCell2.Visible = true;
             HeaderCell3.Text = "Onay Tarihi";
             HeaderCell3.Visible = true;
             HeaderCell4.Text = "Tutar";
             HeaderCell4.Visible = true;
-            HeaderCell5.Text = "Açiklama";
+            HeaderCell5.Text = "AÃ§iklama";
             HeaderCell5.Visible = true;
 
             List<Onarim> list = new Onarim().SelectOnarimByTasinmazId(tasinmaz.Id);

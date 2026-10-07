@@ -1,5 +1,6 @@
 using Model.Ortak;
 using Model.Services.Ortak;
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -143,27 +144,27 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
                 default:
                     break;
             }
-            
+
             TahminiRayicTopTxt.Value = TahminiRayicToplaminiBul().ToString();
             EmlakBeyanTopTxt.Value = EmlakBeyanToplaminiBul().ToString();
         }
         private decimal TahminiRayicToplaminiBul()
         {
             decimal toplam = 0;
-            Tasinmaz tasinmaz = new Tasinmaz();
-            toplam = tasinmaz.SelectTahminiRayicToplami(BolgeIdQS);
+            TasinmazService tasinmazService = new TasinmazService();
+            toplam = tasinmazService.SelectTahminiRayicToplami(BolgeIdQS);
             return toplam;
         }
         private decimal EmlakBeyanToplaminiBul()
         {
             decimal toplam = 0;
-            Tasinmaz tasinmaz = new Tasinmaz();
-            toplam = tasinmaz.SelectEmlakBeyanDegeriToplami(BolgeIdQS);
+            TasinmazService tasinmazService = new TasinmazService();
+            toplam = tasinmazService.SelectEmlakBeyanDegeriToplami(BolgeIdQS);
             return toplam;
         }
         private void TablolariDoldur(int bolgeId)
         {
-            Tasinmaz tasinmaz = new Tasinmaz();
+            TasinmazService tasinmazService = new TasinmazService();
             List<Il> ilList = new IlService().GetByRegion(bolgeId, true);
             int AptTMToplam = 0;
             int AptCMToplam = 0;
@@ -189,33 +190,33 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
                     row.HorizontalAlign = HorizontalAlign.Center;
                     row.BorderWidth = 1;
 
-                    int AptTMadet = tasinmaz.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.KULLANIMSEKLI_APT);
-                    int IshaniTMadet = tasinmaz.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.KULLANIMSEKLI_ISHANI);
+                    int AptTMadet = tasinmazService.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.KULLANIMSEKLI_APT);
+                    int IshaniTMadet = tasinmazService.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.KULLANIMSEKLI_ISHANI);
                     AptTMadet += IshaniTMadet;
                     AptTMToplam += AptTMadet;
-                    int AptCMadet = tasinmaz.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.KULLANIMSEKLI_APT);
-                    int IshaniCMadet = tasinmaz.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.KULLANIMSEKLI_ISHANI);
+                    int AptCMadet = tasinmazService.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.KULLANIMSEKLI_APT);
+                    int IshaniCMadet = tasinmazService.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.KULLANIMSEKLI_ISHANI);
                     AptCMadet += IshaniCMadet;
                     AptCMToplam += AptCMadet;
-                    int MeskenTMadet = tasinmaz.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.KULLANIMSEKLI_MESKEN);
+                    int MeskenTMadet = tasinmazService.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.KULLANIMSEKLI_MESKEN);
                     MeskenTMToplam += MeskenTMadet;
-                    int MeskenCMadet = tasinmaz.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.KULLANIMSEKLI_MESKEN);
+                    int MeskenCMadet = tasinmazService.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.KULLANIMSEKLI_MESKEN);
                     MeskenCMToplam += MeskenCMadet;
-                    int MevTMadet = tasinmaz.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.KULLANIMSEKLI_MEV);
+                    int MevTMadet = tasinmazService.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.KULLANIMSEKLI_MEV);
                     MevTMToplam += MevTMadet;
-                    int MevCMadet = tasinmaz.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.KULLANIMSEKLI_MEV);
+                    int MevCMadet = tasinmazService.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.KULLANIMSEKLI_MEV);
                     MevCMToplam += MevCMadet;
-                    int IsyeriTMadet = tasinmaz.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.KULLANIMSEKLI_ISYERI);
+                    int IsyeriTMadet = tasinmazService.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.KULLANIMSEKLI_ISYERI);
                     IsyeriTMToplam += IsyeriTMadet;
-                    int IsyeriCMadet = tasinmaz.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.KULLANIMSEKLI_ISYERI);
+                    int IsyeriCMadet = tasinmazService.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.KULLANIMSEKLI_ISYERI);
                     IsyeriCMToplam += IsyeriCMadet;
-                    int ArsaTMadet = tasinmaz.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.KULLANIMSEKLI_ARSA);
+                    int ArsaTMadet = tasinmazService.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.KULLANIMSEKLI_ARSA);
                     ArsaTMToplam += ArsaTMadet;
-                    int ArsaCMadet = tasinmaz.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.KULLANIMSEKLI_ARSA);
+                    int ArsaCMadet = tasinmazService.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.KULLANIMSEKLI_ARSA);
                     ArsaCMToplam += ArsaCMadet;
-                    int TarlaTMadet = tasinmaz.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.KULLANIMSEKLI_TARLA);
+                    int TarlaTMadet = tasinmazService.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.KULLANIMSEKLI_TARLA);
                     TarlaTMToplam += TarlaTMadet;
-                    int TarlaCMadet = tasinmaz.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.KULLANIMSEKLI_TARLA);
+                    int TarlaCMadet = tasinmazService.SelectTasinmazAdetByIliMulkiyetSekliCinsi(nIl.IlAdi, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.KULLANIMSEKLI_TARLA);
                     TarlaCMToplam += TarlaCMadet;
 
                     int TMToplam = AptTMadet + MeskenTMadet + MevTMadet + IsyeriTMadet + ArsaTMadet + TarlaTMadet;
@@ -486,7 +487,7 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
             System.IO.StringWriter tw = new System.IO.StringWriter();
             System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
 
-            //Get the HTML for the control.             
+            //Get the HTML for the control.
             AnkTable.RenderControl(hw);
             IstTable.RenderControl(hw);
             IzmTable.RenderControl(hw);

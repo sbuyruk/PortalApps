@@ -1,6 +1,7 @@
 using Microsoft.SharePoint;
 using Model.Ortak;
 using Model.Services.Ortak;
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -28,8 +29,8 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
         public TasinmazBagisciListesiWP()
         {
         }
-        
-       
+
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -133,14 +134,14 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
                 {
                     Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
                     BolgeIdQS = bolge == null ? 0 : bolge.Id;
-                    TitleLbl.Text = "Taşınmaz Bağışçı Listesi";
+                    TitleLbl.Text = "TaÅŸÄ±nmaz BaÄŸÄ±ÅŸÃ§Ä± Listesi";
                     if (BolgeIdQS!= ProjeConstants.BOLGE_HEPSI_INT && BolgeIdQS!=ProjeConstants.BOLGE_GENELMUDURLUK_INT)
                     {
                         Bolge bolgeDao = new BolgeService().GetSelected(bolge.Id);
-                        TitleLbl.Text = bolgeDao==null? "Taşınmaz Bağışçı Listesi" : "Bağışçı Listesi" + " (" + bolge.KisaAdi + " Bölgesi )";
+                        TitleLbl.Text = bolgeDao==null? "TaÅŸÄ±nmaz BaÄŸÄ±ÅŸÃ§Ä± Listesi" : "BaÄŸÄ±ÅŸÃ§Ä± Listesi" + " (" + bolge.KisaAdi + " BÃ¶lgesi )";
                         YeniKayitBtn.Visible = false;
                     }
-                    TabloOlustur(); 
+                    TabloOlustur();
                 }
             }
             catch (Exception ex)
@@ -164,7 +165,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -189,7 +190,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
 
         private List<TasinmazBagisciListItem> GetDataList()
         {
-            
+
             DataTable dataTable = GetBagisciData();
             List<string> bagisciBilgiFormuDosyalari = UtilityHelper.GetFileNameListFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, ProjeConstants.DOSYA_BAGISBILGIVETALEP_FORMU);
             List<string> bagisciTaahhutFormuDosyalari = UtilityHelper.GetFileNameListFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, ProjeConstants.DOSYA_TAAHHUT_FORMU);
@@ -205,8 +206,8 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
                 string ilIlce = row["IlIlce"].ToString();
 
                 string pageUrl = ProjeConstants.PAGE_TASINMAZBAGISCI_GIRIS;
-                bool isEditable = BolgeIdQS == ProjeConstants.BOLGE_HEPSI_INT 
-                    || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT 
+                bool isEditable = BolgeIdQS == ProjeConstants.BOLGE_HEPSI_INT
+                    || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT
                     || BolgeIdQS == bolgeId;
                 TasinmazBagisciListItem tasinmazBagisciListItem = new TasinmazBagisciListItem();
                 tasinmazBagisciListItem.TasinmazBagisciId = tasinmazBagisciId;
@@ -216,16 +217,16 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
                 tasinmazBagisciListItem.Bolge = bolge;
                 tasinmazBagisciListItem.IlIlce = ilIlce.Trim();
 
-                tasinmazBagisciListItem.TasinmazBagisciKarti = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZBAGISCI_KARTI + "?SenderApp=TBL&BagisciId=" + tasinmazBagisciId + " class='btn btn-outline-info'>Bağışçı Kartı</a>";
+                tasinmazBagisciListItem.TasinmazBagisciKarti = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZBAGISCI_KARTI + "?SenderApp=TBL&BagisciId=" + tasinmazBagisciId + " class='btn btn-outline-info'>BaÄŸÄ±ÅŸÃ§Ä± KartÄ±</a>";
 
-                tasinmazBagisciListItem.BagisciBilgiFormu = FormLinkiGetir(bagisciBilgiFormuDosyalari, ProjeConstants.DOSYA_BAGISBILGIVETALEP_FORMU,tasinmazBagisciId.ToString(), "Bağışçı Bilgi ve Talep Formu", "btn btn-outline-secondary");
-                tasinmazBagisciListItem.TaahhutFormu = FormLinkiGetir(bagisciTaahhutFormuDosyalari, ProjeConstants.DOSYA_TAAHHUT_FORMU,tasinmazBagisciId.ToString(), "Taahhüt Formu", "btn btn-outline-secondary");
+                tasinmazBagisciListItem.BagisciBilgiFormu = FormLinkiGetir(bagisciBilgiFormuDosyalari, ProjeConstants.DOSYA_BAGISBILGIVETALEP_FORMU,tasinmazBagisciId.ToString(), "BaÄŸÄ±ÅŸÃ§Ä± Bilgi ve Talep Formu", "btn btn-outline-secondary");
+                tasinmazBagisciListItem.TaahhutFormu = FormLinkiGetir(bagisciTaahhutFormuDosyalari, ProjeConstants.DOSYA_TAAHHUT_FORMU,tasinmazBagisciId.ToString(), "TaahhÃ¼t Formu", "btn btn-outline-secondary");
 
                 tasinmazBagisciListItem.Taahhutler = TaahhutModalGoster(tasinmazBagisciId);
-                
+
                 if (isEditable)
                 {
-                    tasinmazBagisciListItem.Duzenle = "<a href=" + pageUrl + @"?DestinationApp=TBD&BagisciId=" + tasinmazBagisciId + "  class='btn btn-outline-primary'>Düzenle</a>";
+                    tasinmazBagisciListItem.Duzenle = "<a href=" + pageUrl + @"?DestinationApp=TBD&BagisciId=" + tasinmazBagisciId + "  class='btn btn-outline-primary'>DÃ¼zenle</a>";
                 }
                 tasinmazBagisciListItem.Secildi = SecilenIdQS.Equals(tasinmazBagisciListItem.TasinmazBagisciId);
                 list.Add(tasinmazBagisciListItem);
@@ -233,19 +234,19 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
             return list;
         }
 
-        
+
 
         private string CreateDataTable(string jsonData)
         {
             //string duzenleGorunsun = BolgeIdQS==ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT
-            //    ? "{ targets:10, visible:true}," 
+            //    ? "{ targets:10, visible:true},"
             //    : "{ targets:10, visible:false},";
 
             string tableString = @"
             jQuery(document).ready(function() {
 
                 jQuery('#CustomDataTable').DataTable({
-                    'initComplete': function(settings, json) {//tablo yüklendiginde
+                    'initComplete': function(settings, json) {//tablo yÃ¼klendiginde
                         var api = this.api();
                         var row = api.row(function(idx, data, node) { //secilen Id'ye gider
                             return data['Secildi'] == true;
@@ -341,7 +342,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
         //    bool dosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir() , ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi);
         //    if (dosyaVarMi)
         //    {
-        //        belgePdfLink = @"<a class='btn btn-outline-secondary' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @">Bağışçı Bilgi ve Talep Formu</a>";
+        //        belgePdfLink = @"<a class='btn btn-outline-secondary' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @">BaÄŸÄ±ÅŸÃ§Ä± Bilgi ve Talep Formu</a>";
         //    }
         //    return belgePdfLink;
         //}
@@ -354,7 +355,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
             bool dosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir() , ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi);
             if (dosyaVarMi)
             {
-                belgePdfLink = @"<a class='btn btn-outline-secondary' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @">Taahhüt Formu</a>";
+                belgePdfLink = @"<a class='btn btn-outline-secondary' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @">TaahhÃ¼t Formu</a>";
             }
             return belgePdfLink;
         }
@@ -446,13 +447,13 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
         #region Modal
         private string TaahhutModalGoster(int bagisciId)
         {
-            
+
             string retval = string.Empty;
             TasinmazTaahhut tt = new TasinmazTaahhut();
             List<TasinmazTaahhut> ttlist = tt.SelectByBagisciId(bagisciId);
             if (ttlist.Count > 0)
             {
-                retval = "<a href=# onclick=OpenModalTaahhut(" + bagisciId + "); class=\'btn btn-outline-secondary \'> Taahhütler</a>";
+                retval = "<a href=# onclick=OpenModalTaahhut(" + bagisciId + "); class=\'btn btn-outline-secondary \'> TaahhÃ¼tler</a>";
             }
             return retval;
         }
@@ -462,16 +463,16 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
             TableHeaderRow th = new TableHeaderRow();
 
             TableHeaderCell AdiSoyadiCell = new TableHeaderCell();
-            AdiSoyadiCell.Text = "Adı Soyadı";
+            AdiSoyadiCell.Text = "AdÄ± SoyadÄ±";
             TableHeaderCell IliIlcesiCell = new TableHeaderCell();
-            IliIlcesiCell.Text = "İkamet adresi";
+            IliIlcesiCell.Text = "Ä°kamet adresi";
             TableHeaderCell TelefonCell = new TableHeaderCell();
             TelefonCell.Text = "Telefon";
             TableHeaderCell TasinmazCell = new TableHeaderCell();
-            TasinmazCell.Text = "Taşınmaz";
+            TasinmazCell.Text = "TaÅŸÄ±nmaz";
             TableHeaderCell AciklamaCell = new TableHeaderCell();
-            AciklamaCell.Text = "Taahhüt Açıklama";
-            
+            AciklamaCell.Text = "TaahhÃ¼t AÃ§Ä±klama";
+
             th.Controls.Add(AdiSoyadiCell);
             th.Controls.Add(IliIlcesiCell);
             th.Controls.Add(TelefonCell);
@@ -504,7 +505,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
 
                 TableCell TasinmazCell = new TableCell();
                 Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = tasinmaz.Select<Tasinmaz>(item.TasinmazId);
+                tasinmaz = new TasinmazService().GetById(item.TasinmazId);
                 TasinmazCell.Text = tasinmaz != null ? tasinmaz.Adres + " " + tasinmaz.Ilcesi + "/" + tasinmaz.Ili : string.Empty;
                 row.Controls.Add(TasinmazCell);
 

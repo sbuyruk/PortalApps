@@ -143,7 +143,7 @@ namespace Model.TBYS
         public string InsaatinSinifi { get; set; }
         public string ArazininCinsi { get; set; }
 
-        private string IliStr() 
+        private string IliStr()
         {
             Il il = new IlService().GetById(Id);
             return il==null?string.Empty:il.IlAdi;
@@ -165,176 +165,11 @@ namespace Model.TBYS
         {
             return new TasinmazService().Delete(this);
         }
-        public Tasinmaz Select(int id)
-        {
-            return new TasinmazService().GetById(id);
-        }
-        public string SelectByIdBolumId(int tasinmazId, int bolumId)
-        {
-            return new TasinmazService().GetAddressByBolumId(tasinmazId, bolumId);
-        }
-        public Tasinmaz SelectById(int id)
-        {
-            return new TasinmazService().GetById(id);
-        }
-        public Tasinmaz SelectEnvanterdenCikanTasinmaz(int id)
-        {
-            return new TasinmazService().GetOutOfInventoryById(id);
-        }
-		public DataTable SelectByBolgeReturnJson(int bolgeId)
-		{
-			return new TasinmazService().GetByBolge(bolgeId);
-		}
         public override List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(
                 new TasinmazService().GetInventory(),
                 typeof(List<T>));
-        }
-        /// <summary>
-        /// Bagisçisi olmayan envanterdeki tasinmazlari getir Ortak bagislar dahil
-        /// </summary>
-        /// <returns></returns>
-		public DataTable SelectBagiscisiOlmayanTasinmazlarByBagsciIdReturnDT()
-		{
-			return new TasinmazService().GetWithoutDonor(SatisVsDahilEnvanterdenCikmaSebepleri);
-		}
-        public string SelectTasinmazBolumNoReturnJson(int envanterde, string kirayaUygunluk)
-        {
-            return new TasinmazService().GetSectionNumbersAsJson(envanterde, kirayaUygunluk);
-        }
-        public string SelectEnvanterdeOlmayanTasinmazReturnJson()
-        {
-            return new TasinmazService().GetOutOfInventoryListAsJson();
-        }
-        public DataTable SelectEnvanterdeOlmayanTasinmazReturnDataTable()
-        {
-            return new TasinmazService().GetOutOfInventoryList();
-        }
-        public DataTable SelectAllReturnDataTable()
-        {
-            return new TasinmazService().GetAllInventoryReport();
-        }
-
-        public DataTable SelectAllEnvanterdenCikanReturnDataTable()
-        {
-            return new TasinmazService().GetAllOutOfInventoryReport();
-        }
-        public List<Tasinmaz> SelectByIlAdi(string ilAdi)
-        {
-            return new TasinmazService().GetInventoryByIlAdi(ilAdi);
-        }
-        public Tasinmaz SelectNext(int tasinmazId)
-        {
-            return new TasinmazService().GetNext(tasinmazId);
-        }
-        public Tasinmaz SelectPrev(int tasinmazId)
-        {
-            return new TasinmazService().GetPrev(tasinmazId);
-        }
-        public Tasinmaz SelectMax()
-        {
-            return new TasinmazService().GetMax();
-        }
-        public Tasinmaz SelectMin()
-        {
-            return new TasinmazService().GetMin();
-        }
-		public decimal SelectTahminiRayicToplami(int bolgeId)
-		{
-			return new TasinmazService().GetTahminiRayicToplami(bolgeId);
-		}
-		public decimal SelectEmlakBeyanDegeriToplami(int bolgeId)
-		{
-			return new TasinmazService().GetEmlakBeyanDegeriToplami(bolgeId);
-		}
-		public decimal SelectMuhasebeyeKayitliDegerToplami(int bolgeId)
-		{
-			return new TasinmazService().GetMuhasebeyeKayitliDegerToplami(bolgeId);
-		}
-		public decimal SelectYaklasikPiyasaToplami(int bolgeId)
-		{
-			return new TasinmazService().GetYaklasikPiyasaToplami(bolgeId);
-		}
-
-		public decimal SelectEmlakBeyanDegeriToplamiBySigorta(string sigorta)
-        {
-            return new TasinmazService().GetEmlakBeyanBySigorta(sigorta);
-        }
-        public decimal SelectTahminiRayicToplamiBySigorta(string sigorta)
-        {
-            return new TasinmazService().GetTahminiRayicBySigorta(sigorta);
-        }
-        
-        public decimal SelectTahminiRayicToplamiByKirayaUygunluk(string kirayaUygunluk)
-        {
-            return new TasinmazService().GetTahminiRayicByKirayaUygunluk(kirayaUygunluk);
-        }
-        public decimal SelectEmlakBeyanToplamiByKirayaUygunluk(string kirayaUygunluk)
-        {
-            return new TasinmazService().GetEmlakBeyanByKirayaUygunluk(kirayaUygunluk);
-        }
-        public int SelectTasinmazAdetByBolgeMulkiyetSekli(int bolgeId, string mulkiyetSekli)
-        {
-            return new TasinmazService().GetCountByBolgeMulkiyet(bolgeId, mulkiyetSekli);
-        }
-        public int SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(int bolgeId, string kullanimSekli, string kiraDurumu, string mülkiyetSekli, string kirayaUygunluk = null)
-        {
-            return new TasinmazService().GetCountByBolgeFilters("KullanimSekli", "KullanimSekli", kullanimSekli, kiraDurumu, mülkiyetSekli, kirayaUygunluk, bolgeId);
-        }
-        public int SelectTasinmazAdetByBolgeCinsiKiraDurumu(int bolgeId, string cinsi, string kiraDurumu, string mülkiyetSekli, string kirayaUygunluk = null)
-        {
-            return new TasinmazService().GetCountByBolgeFilters("KullanimSekli", "Cinsi", cinsi, kiraDurumu, mülkiyetSekli, kirayaUygunluk, bolgeId);
-        }
-        public int SelectTasinmazAdetByBolgeKullanimSekliKirayaUygunluk(int bolgeId, string kullanimSekli, string kirayaUygunluk, string mülkiyetSekli)
-        {
-            return new TasinmazService().GetCountByBolgeFilters("KullanimSekli", "KullanimSekli", kullanimSekli, null, mülkiyetSekli, kirayaUygunluk, bolgeId);
-        }
-        public int SelectTasinmazAdetByBolgeCinsiKirayaUygunluk(int bolgeId, string cinsi, string kirayaUygunluk, string mülkiyetSekli)
-        {
-            return new TasinmazService().GetCountByBolgeFilters("Cinsi", "Cinsi", cinsi, null, mülkiyetSekli, kirayaUygunluk, bolgeId);
-        }
-        public int SelectTasinmazAdetByBolgeKirayaUygunluk(int bolgeId, string kirayaUygunluk, string mulkiyetSekli)
-        {
-            return new TasinmazService().GetCountByBolgeFilters("KullanimSekli", null, null, null, mulkiyetSekli, kirayaUygunluk, bolgeId);
-        }
-        public int SelectTasinmazAdetByBolgeKirayaUygunlukCinsi(int bolgeId, string kirayaUygunluk, string mulkiyetSekli)
-        {
-            return new TasinmazService().GetCountByBolgeFilters("Cinsi", null, null, null, mulkiyetSekli, kirayaUygunluk, bolgeId);
-        }
-        public int SelectTasinmazAdetByIliMulkiyetSekliKullanimSekli(string ilAdi, string mulkiyetSekli, string kullanimSekli)
-        {
-            return new TasinmazService().GetCountByIlKullanim(ilAdi, mulkiyetSekli, kullanimSekli);
-        }
-        public int SelectTasinmazAdetByIliMulkiyetSekliCinsi(string ilAdi, string mulkiyetSekli, string cinsi)
-        {
-            return new TasinmazService().GetCountByIlCinsi(ilAdi, mulkiyetSekli, cinsi);
-        }
-        public int SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(int bolgeId, string mulkiyetSekli, string sigorta)
-        {
-            return new TasinmazService().GetCountBySigorta(bolgeId, "MulkiyetSekli", "MulkiyetSekli", mulkiyetSekli, sigorta, false);
-        }
-        public int SelectTasinmazAdetByBolgeKullanimSekliSigorta(int bolgeId, string kullanimSekli, string sigorta)
-        {
-            return new TasinmazService().GetCountBySigorta(bolgeId, "KullanimSekli", "KullanimSekli", kullanimSekli, sigorta, false);
-        }
-        public int SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(int bolgeId, string kullanimSekli, string sigorta)
-        {
-            return new TasinmazService().GetCountBySigorta(bolgeId, "KullanimSekli", "KullanimSekli", kullanimSekli, sigorta, true);
-        }
-		public DataTable SelectBolumByTasinmazId(int tasinmazId)
-		{
-			return new TasinmazService().GetSectionsByTasinmazId(tasinmazId);
-		}
-
-        public DataTable ToplamTasinmazAdediGetir()
-        {
-            return new TasinmazService().GetTotalByOwnership();
-        }
-
-        public DataTable SelectKirayaUygunTumTasinmazlar()
-        {
-            return new TasinmazService().GetRentalEligibleTotals();
         }
     }
 }

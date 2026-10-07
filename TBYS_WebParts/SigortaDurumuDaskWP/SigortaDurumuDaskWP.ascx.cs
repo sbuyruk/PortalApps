@@ -1,3 +1,4 @@
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.ComponentModel;
@@ -34,18 +35,18 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
         }
         protected void TabloyuDoldur()
         {
-            Tasinmaz tasinmaz = new Tasinmaz();
-            int AnkTM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.SIGORTA_DASK);
-            int AnkCM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.SIGORTA_DASK);
-            int IstTM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.SIGORTA_DASK);
-            int IstCM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.SIGORTA_DASK);
-            int IzmTM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.SIGORTA_DASK);
-            int IzmCM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.SIGORTA_DASK);
-            int MerTM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.SIGORTA_DASK);
-            int MerCM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.SIGORTA_DASK);
+            TasinmazService tasinmazService = new TasinmazService();
+            int AnkTM = tasinmazService.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.SIGORTA_DASK);
+            int AnkCM = tasinmazService.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.SIGORTA_DASK);
+            int IstTM = tasinmazService.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.SIGORTA_DASK);
+            int IstCM = tasinmazService.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.SIGORTA_DASK);
+            int IzmTM = tasinmazService.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.SIGORTA_DASK);
+            int IzmCM = tasinmazService.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.SIGORTA_DASK);
+            int MerTM = tasinmazService.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.SIGORTA_DASK);
+            int MerCM = tasinmazService.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.SIGORTA_DASK);
 
-            int ErzTM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.SIGORTA_DASK);
-            int ErzCM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.SIGORTA_DASK);
+            int ErzTM = tasinmazService.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.SIGORTA_DASK);
+            int ErzCM = tasinmazService.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.SIGORTA_DASK);
 
             AnkTMCell.Text = (AnkTM).ToString();
             AnkCMCell.Text = (AnkCM).ToString();
@@ -68,12 +69,12 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
             TopCMCell.Text = (TopCM).ToString();
             TopTMCMTopCell.Text = (TopTM + TopCM).ToString();
 
-            int AnkIshani = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, ProjeConstants.SIGORTA_DASK);
-            int AnkApt = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_APT, ProjeConstants.SIGORTA_DASK);
-            int AnkMes = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, ProjeConstants.SIGORTA_DASK);
-            int AnkIsy = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, ProjeConstants.SIGORTA_DASK);
-            int AnkArs = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_ARSA, ProjeConstants.SIGORTA_DASK);
-            int AnkTar = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_TARLA, ProjeConstants.SIGORTA_DASK);
+            int AnkIshani = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, ProjeConstants.SIGORTA_DASK);
+            int AnkApt = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_APT, ProjeConstants.SIGORTA_DASK);
+            int AnkMes = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, ProjeConstants.SIGORTA_DASK);
+            int AnkIsy = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, ProjeConstants.SIGORTA_DASK);
+            int AnkArs = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_ARSA, ProjeConstants.SIGORTA_DASK);
+            int AnkTar = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_TARLA, ProjeConstants.SIGORTA_DASK);
 
             AnkAptCell.Text = (AnkApt + AnkIshani).ToString();
             AnkMesCell.Text = (AnkMes).ToString();
@@ -81,12 +82,12 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
             AnkArsCell.Text = (AnkArs).ToString();
             AnkTarCell.Text = (AnkTar).ToString();
 
-            int IstIshani = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, ProjeConstants.SIGORTA_DASK);
-            int IstApt = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_APT, ProjeConstants.SIGORTA_DASK);
-            int IstMes = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, ProjeConstants.SIGORTA_DASK);
-            int IstIsy = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, ProjeConstants.SIGORTA_DASK);
-            int IstArs = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_ARSA, ProjeConstants.SIGORTA_DASK);
-            int IstTar = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_TARLA, ProjeConstants.SIGORTA_DASK);
+            int IstIshani = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, ProjeConstants.SIGORTA_DASK);
+            int IstApt = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_APT, ProjeConstants.SIGORTA_DASK);
+            int IstMes = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, ProjeConstants.SIGORTA_DASK);
+            int IstIsy = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, ProjeConstants.SIGORTA_DASK);
+            int IstArs = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_ARSA, ProjeConstants.SIGORTA_DASK);
+            int IstTar = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_TARLA, ProjeConstants.SIGORTA_DASK);
 
             IstAptCell.Text = (IstApt + IstIshani).ToString();
             IstMesCell.Text = (IstMes).ToString();
@@ -94,12 +95,12 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
             IstArsCell.Text = (IstArs).ToString();
             IstTarCell.Text = (IstTar).ToString();
 
-            int IzmIshani = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, ProjeConstants.SIGORTA_DASK);
-            int IzmApt = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_APT, ProjeConstants.SIGORTA_DASK);
-            int IzmMes = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, ProjeConstants.SIGORTA_DASK);
-            int IzmIsy = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, ProjeConstants.SIGORTA_DASK);
-            int IzmArs = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_ARSA, ProjeConstants.SIGORTA_DASK);
-            int IzmTar = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_TARLA, ProjeConstants.SIGORTA_DASK);
+            int IzmIshani = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, ProjeConstants.SIGORTA_DASK);
+            int IzmApt = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_APT, ProjeConstants.SIGORTA_DASK);
+            int IzmMes = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, ProjeConstants.SIGORTA_DASK);
+            int IzmIsy = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, ProjeConstants.SIGORTA_DASK);
+            int IzmArs = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_ARSA, ProjeConstants.SIGORTA_DASK);
+            int IzmTar = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_TARLA, ProjeConstants.SIGORTA_DASK);
 
             IzmAptCell.Text = (IzmApt + IzmIshani).ToString();
             IzmMesCell.Text = (IzmMes).ToString();
@@ -107,12 +108,12 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
             IzmArsCell.Text = (IzmArs).ToString();
             IzmTarCell.Text = (IzmTar).ToString();
 
-            int MerIshani = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, ProjeConstants.SIGORTA_DASK);
-            int MerApt = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_APT, ProjeConstants.SIGORTA_DASK);
-            int MerMes = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, ProjeConstants.SIGORTA_DASK);
-            int MerIsy = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, ProjeConstants.SIGORTA_DASK);
-            int MerArs = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_ARSA, ProjeConstants.SIGORTA_DASK);
-            int MerTar = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_TARLA, ProjeConstants.SIGORTA_DASK);
+            int MerIshani = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, ProjeConstants.SIGORTA_DASK);
+            int MerApt = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_APT, ProjeConstants.SIGORTA_DASK);
+            int MerMes = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, ProjeConstants.SIGORTA_DASK);
+            int MerIsy = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, ProjeConstants.SIGORTA_DASK);
+            int MerArs = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_ARSA, ProjeConstants.SIGORTA_DASK);
+            int MerTar = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_TARLA, ProjeConstants.SIGORTA_DASK);
 
             MerAptCell.Text = (MerApt + MerIshani).ToString();
             MerMesCell.Text = (MerMes).ToString();
@@ -120,12 +121,12 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
             MerArsCell.Text = (MerArs).ToString();
             MerTarCell.Text = (MerTar).ToString();
 
-            int ErzIshani = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, ProjeConstants.SIGORTA_DASK);
-            int ErzApt = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_APT, ProjeConstants.SIGORTA_DASK);
-            int ErzMes = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, ProjeConstants.SIGORTA_DASK);
-            int ErzIsy = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, ProjeConstants.SIGORTA_DASK);
-            int ErzArs = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ARSA, ProjeConstants.SIGORTA_DASK);
-            int ErzTar = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_TARLA, ProjeConstants.SIGORTA_DASK);
+            int ErzIshani = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, ProjeConstants.SIGORTA_DASK);
+            int ErzApt = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_APT, ProjeConstants.SIGORTA_DASK);
+            int ErzMes = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, ProjeConstants.SIGORTA_DASK);
+            int ErzIsy = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, ProjeConstants.SIGORTA_DASK);
+            int ErzArs = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ARSA, ProjeConstants.SIGORTA_DASK);
+            int ErzTar = tasinmazService.SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_TARLA, ProjeConstants.SIGORTA_DASK);
 
             ErzAptCell.Text = (ErzApt + ErzIshani).ToString();
             ErzMesCell.Text = (ErzMes).ToString();
@@ -142,8 +143,8 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
         private decimal TahminiRayicToplaminiBul()
         {
             decimal toplam = 0;
-            Tasinmaz tasinmaz = new Tasinmaz();
-            toplam = tasinmaz.SelectTahminiRayicToplamiBySigorta(ProjeConstants.SIGORTA_DASK);
+            TasinmazService tasinmazService = new TasinmazService();
+            toplam = tasinmazService.SelectTahminiRayicToplamiBySigorta(ProjeConstants.SIGORTA_DASK);
             return toplam;
         }
         private decimal SigortaBedeliToplaminiBul()
@@ -163,8 +164,8 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
         private decimal EmlakBeyanDegeriToplaminiBul()
         {
             decimal toplam = 0;
-            Tasinmaz tasinmaz = new Tasinmaz();
-            toplam = tasinmaz.SelectEmlakBeyanDegeriToplamiBySigorta(ProjeConstants.SIGORTA_DASK);
+            TasinmazService tasinmazService = new TasinmazService();
+            toplam = tasinmazService.SelectEmlakBeyanDegeriToplamiBySigorta(ProjeConstants.SIGORTA_DASK);
             return toplam;
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
@@ -181,7 +182,7 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
             System.IO.StringWriter tw = new System.IO.StringWriter();
             System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
 
-            //Get the HTML for the control.             
+            //Get the HTML for the control.
             TasDurTable.RenderControl(hw);
 
             Page.Response.ContentType = "application/vnd.ms-excel";

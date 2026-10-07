@@ -1,4 +1,5 @@
 using Model.Ortak;
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -146,7 +147,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP
         protected void Page_Load(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = tasinmaz.Select(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
             if (tasinmaz != null)
             {
                 SigortaTablosunuDoldur(tasinmaz);
@@ -210,7 +211,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP
         protected void BackBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = tasinmaz.Select<Tasinmaz>(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
             if (EnvanterdeMiQS.Equals("2"))
                 RedirectToPage(ProjeConstants.PAGE_PAGE_MULKIYETIOLMAYANTASINMAZ_LIST);
 
@@ -241,13 +242,13 @@ namespace TBYS_WebParts.SigortaEkleSilWP
             HeaderCell3.Visible = true;
             HeaderCell4.Text = "AdresKodu";
             HeaderCell4.Visible = true;
-            HeaderCell5.Text = "Poliçe No";
+            HeaderCell5.Text = "PoliÃ§e No";
             HeaderCell5.Visible = true;
             HeaderCell6.Text = "Sig.Bedeli";
             HeaderCell6.Visible = true;
             HeaderCell7.Text = "Prim";
             HeaderCell7.Visible = true;
-            HeaderCell8.Text = "Düzenle";
+            HeaderCell8.Text = "DÃ¼zenle";
             HeaderCell8.Visible = true;
             HeaderCell9.Text = "Sil";
             HeaderCell9.Visible = true;
@@ -294,7 +295,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP
                 TableCell DuzenleCell = new TableCell();
 
                 LinkButton DuzenleBtn = new LinkButton();
-                DuzenleBtn.Text = "Düzenle";
+                DuzenleBtn.Text = "DÃ¼zenle";
                 DuzenleBtn.CssClass = "btn btn-outline-primary";
                 DuzenleBtn.Click += delegate
                 {

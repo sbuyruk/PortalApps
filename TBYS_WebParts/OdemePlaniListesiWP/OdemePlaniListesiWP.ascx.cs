@@ -1,3 +1,4 @@
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -72,7 +73,7 @@ namespace TBYS_WebParts.OdemePlaniListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             //var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
                 typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "setDataSet(" + jsonData + ");", true);
@@ -122,7 +123,7 @@ namespace TBYS_WebParts.OdemePlaniListesiWP
                 {
                     int tasinmazId = item.TasinmazId;
                     Tasinmaz tasinmaz = new Tasinmaz();
-                    tasinmaz = tasinmaz.SelectById(tasinmazId);
+                    tasinmaz = new TasinmazService().SelectById(tasinmazId);
                     if (tasinmaz != null)
                     {
                         string ili = tasinmaz.Ili;
@@ -152,7 +153,7 @@ namespace TBYS_WebParts.OdemePlaniListesiWP
                 odemePlaniItem.OdenenTutar = odenenTutar.ToString("N", culturInfo);
                 odemePlaniItem.FaizliBakiye = faizliBakiye.ToString("N", culturInfo);
 
-                odemePlaniItem.Duzenle = "<a href=" + ProjeConstants.PAGE_ODEMEPLANI + "?DestinationApp=OPE&SenderApp=OPL&KiraSozlesmeId=" + kiraSozlesmeId + " class='btn btn-outline-primary'>Düzenle</a>";
+                odemePlaniItem.Duzenle = "<a href=" + ProjeConstants.PAGE_ODEMEPLANI + "?DestinationApp=OPE&SenderApp=OPL&KiraSozlesmeId=" + kiraSozlesmeId + " class='btn btn-outline-primary'>DÃ¼zenle</a>";
                 list.Add(odemePlaniItem);
             }
 

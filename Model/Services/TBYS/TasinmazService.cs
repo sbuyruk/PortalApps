@@ -101,6 +101,45 @@ namespace Model.Services.TBYS
         public Tasinmaz GetMin() { return GetExtreme(false); }
         private Tasinmaz GetExtreme(bool max) { DataTable table = repository.SelectExtreme(max); if (table == null || table.Rows.Count == 0) return null; return GetById(Convert.ToInt32(table.Rows[0]["Id"])); }
 
+        // Legacy report operations are exposed here while their Model wrappers are removed.
+        public decimal SelectTahminiRayicToplami(int bolgeId) { return GetTahminiRayicToplami(bolgeId); }
+        public decimal SelectEmlakBeyanDegeriToplami(int bolgeId) { return GetEmlakBeyanDegeriToplami(bolgeId); }
+        public decimal SelectMuhasebeyeKayitliDegerToplami(int bolgeId) { return GetMuhasebeyeKayitliDegerToplami(bolgeId); }
+        public decimal SelectYaklasikPiyasaToplami(int bolgeId) { return GetYaklasikPiyasaToplami(bolgeId); }
+        public decimal SelectEmlakBeyanDegeriToplamiBySigorta(string sigorta) { return GetEmlakBeyanBySigorta(sigorta); }
+        public decimal SelectTahminiRayicToplamiBySigorta(string sigorta) { return GetTahminiRayicBySigorta(sigorta); }
+        public decimal SelectTahminiRayicToplamiByKirayaUygunluk(string kirayaUygunluk) { return GetTahminiRayicByKirayaUygunluk(kirayaUygunluk); }
+        public decimal SelectEmlakBeyanToplamiByKirayaUygunluk(string kirayaUygunluk) { return GetEmlakBeyanByKirayaUygunluk(kirayaUygunluk); }
+        public int SelectTasinmazAdetByBolgeMulkiyetSekli(int bolgeId, string mulkiyetSekli) { return GetCountByBolgeMulkiyet(bolgeId, mulkiyetSekli); }
+        public int SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(int bolgeId, string kullanimSekli, string kiraDurumu, string mulkiyetSekli, string kirayaUygunluk = null) { return GetCountByBolgeFilters("KullanimSekli", "KullanimSekli", kullanimSekli, kiraDurumu, mulkiyetSekli, kirayaUygunluk, bolgeId); }
+        public int SelectTasinmazAdetByBolgeCinsiKiraDurumu(int bolgeId, string cinsi, string kiraDurumu, string mulkiyetSekli, string kirayaUygunluk = null) { return GetCountByBolgeFilters("KullanimSekli", "Cinsi", cinsi, kiraDurumu, mulkiyetSekli, kirayaUygunluk, bolgeId); }
+        public int SelectTasinmazAdetByBolgeKullanimSekliKirayaUygunluk(int bolgeId, string kullanimSekli, string kirayaUygunluk, string mulkiyetSekli) { return GetCountByBolgeFilters("KullanimSekli", "KullanimSekli", kullanimSekli, null, mulkiyetSekli, kirayaUygunluk, bolgeId); }
+        public int SelectTasinmazAdetByBolgeCinsiKirayaUygunluk(int bolgeId, string cinsi, string kirayaUygunluk, string mulkiyetSekli) { return GetCountByBolgeFilters("Cinsi", "Cinsi", cinsi, null, mulkiyetSekli, kirayaUygunluk, bolgeId); }
+        public int SelectTasinmazAdetByBolgeKirayaUygunluk(int bolgeId, string kirayaUygunluk, string mulkiyetSekli) { return GetCountByBolgeFilters("KullanimSekli", null, null, null, mulkiyetSekli, kirayaUygunluk, bolgeId); }
+        public int SelectTasinmazAdetByBolgeKirayaUygunlukCinsi(int bolgeId, string kirayaUygunluk, string mulkiyetSekli) { return GetCountByBolgeFilters("Cinsi", null, null, null, mulkiyetSekli, kirayaUygunluk, bolgeId); }
+        public int SelectTasinmazAdetByIliMulkiyetSekliKullanimSekli(string ilAdi, string mulkiyetSekli, string kullanimSekli) { return GetCountByIlKullanim(ilAdi, mulkiyetSekli, kullanimSekli); }
+        public int SelectTasinmazAdetByIliMulkiyetSekliCinsi(string ilAdi, string mulkiyetSekli, string cinsi) { return GetCountByIlCinsi(ilAdi, mulkiyetSekli, cinsi); }
+        public int SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(int bolgeId, string mulkiyetSekli, string sigorta) { return GetCountBySigorta(bolgeId, "MulkiyetSekli", "MulkiyetSekli", mulkiyetSekli, sigorta, false); }
+        public int SelectTasinmazAdetByBolgeKullanimSekliSigorta(int bolgeId, string kullanimSekli, string sigorta) { return GetCountBySigorta(bolgeId, "KullanimSekli", "KullanimSekli", kullanimSekli, sigorta, false); }
+        public int SelectTasinmazAdetByBolgeKullanimSekliSigortaYeni(int bolgeId, string kullanimSekli, string sigorta) { return GetCountBySigorta(bolgeId, "KullanimSekli", "KullanimSekli", kullanimSekli, sigorta, true); }
+        public DataTable SelectByBolgeReturnJson(int bolgeId) { return GetByBolge(bolgeId); }
+        public string SelectByIdBolumId(int tasinmazId, int bolumId) { return GetAddressByBolumId(tasinmazId, bolumId); }
+        public DataTable SelectBagiscisiOlmayanTasinmazlarByBagsciIdReturnDT() { return GetWithoutDonor(Tasinmaz.SatisVsDahilEnvanterdenCikmaSebepleri); }
+        public string SelectTasinmazBolumNoReturnJson(int envanterde, string kirayaUygunluk) { return GetSectionNumbersAsJson(envanterde, kirayaUygunluk); }
+        public string SelectEnvanterdeOlmayanTasinmazReturnJson() { return GetOutOfInventoryListAsJson(); }
+        public DataTable SelectEnvanterdeOlmayanTasinmazReturnDataTable() { return GetOutOfInventoryList(); }
+        public DataTable SelectAllReturnDataTable() { return GetAllInventoryReport(); }
+        public DataTable SelectAllEnvanterdenCikanReturnDataTable() { return GetAllOutOfInventoryReport(); }
+        public DataTable SelectBolumByTasinmazId(int tasinmazId) { return GetSectionsByTasinmazId(tasinmazId); }
+        public Tasinmaz Select(int id) { return GetById(id); }
+        public Tasinmaz SelectById(int id) { return GetById(id); }
+        public Tasinmaz SelectEnvanterdenCikanTasinmaz(int id) { return GetOutOfInventoryById(id); }
+        public List<Tasinmaz> SelectByIlAdi(string ilAdi) { return GetInventoryByIlAdi(ilAdi); }
+        public Tasinmaz SelectNext(int id) { return GetNext(id); }
+        public Tasinmaz SelectPrev(int id) { return GetPrev(id); }
+        public Tasinmaz SelectMax() { return GetMax(); }
+        public Tasinmaz SelectMin() { return GetMin(); }
+
         public int Save(Tasinmaz item)
         {
             if (item == null) throw new ArgumentNullException("item");

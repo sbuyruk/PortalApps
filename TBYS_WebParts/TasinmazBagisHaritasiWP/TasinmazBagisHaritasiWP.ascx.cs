@@ -1,5 +1,6 @@
 using Model.Ortak;
 using Model.Services.Ortak;
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -54,11 +55,11 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
             TasinmazTableHeader.Controls.Add(cinsiCell);
 
             TableCell ilcesiCell = new TableCell();
-            ilcesiCell.Text = "Ilçe";
+            ilcesiCell.Text = "IlÃ§e";
             TasinmazTableHeader.Controls.Add(ilcesiCell);
 
             TableCell mulkiyetCell = new TableCell();
-            mulkiyetCell.Text = "Mülk. Sekli";
+            mulkiyetCell.Text = "MÃ¼lk. Sekli";
             TasinmazTableHeader.Controls.Add(mulkiyetCell);
 
             TableCell kullanimCell = new TableCell();
@@ -70,7 +71,7 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
             TasinmazTableHeader.Controls.Add(EmlakBeyanDegeriCell);
 
             TableCell TahminiRayicDegeriCell = new TableCell();
-            TahminiRayicDegeriCell.Text = "Tahmini Rayiç Degeri";
+            TahminiRayicDegeriCell.Text = "Tahmini RayiÃ§ Degeri";
             TasinmazTableHeader.Controls.Add(TahminiRayicDegeriCell);
 
         }
@@ -126,7 +127,7 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
             BagisciTableHeader.Controls.Add(adiSoyadiCell);
 
             TableCell ilcesiCell = new TableCell();
-            ilcesiCell.Text = "Ilçe";
+            ilcesiCell.Text = "IlÃ§e";
             BagisciTableHeader.Controls.Add(ilcesiCell);
 
             TableCell telefonCell = new TableCell();
@@ -196,7 +197,7 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
         private List<Tasinmaz> GetTasinmazData(string ilAdi)
         {
             Tasinmaz dao = new Tasinmaz();
-            List<Tasinmaz> list = dao.SelectByIlAdi(ilAdi);
+            List<Tasinmaz> list = new TasinmazService().SelectByIlAdi(ilAdi);
 
             return list;
         }
@@ -207,7 +208,7 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
                 string ingIlAdi = paramLbl.Value;
                 Il il = new IlService().GetByEnglishName(ingIlAdi);
                 TasinmazTitleLbl.Text = il.IlAdi + " Ilinde Bulunan Tasinmazlar";
-                BagisciTitleLbl.Text = il.IlAdi + " Ilinde Ikamet Eden Bagisçilar";
+                BagisciTitleLbl.Text = il.IlAdi + " Ilinde Ikamet Eden BagisÃ§ilar";
                 TasinmazTableDoldur(il.IlAdi);
                 BagisciTableDoldur(il.IlAdi);
                 //ShowModal("Test");
