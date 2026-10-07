@@ -474,43 +474,11 @@ namespace Model.TBYS
         }
         public Tasinmaz SelectMax()
         {
-            string sqlString = string.Format(@"
-                SELECT MAX(Id) Id  
-                FROM Tasinmaz_Table 
-                WHERE EnvanterdeMi=1 ");
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                int tasinmazId = row["Id"].ConvertToInt();
-                Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = tasinmaz.Select<Tasinmaz>(tasinmazId);
-                return tasinmaz;
-            }
-            else
-            {
-                return null;
-            }
+            return new TasinmazService().GetMax();
         }
         public Tasinmaz SelectMin()
         {
-            string sqlString = string.Format(@"
-                SELECT MIN(Id) Id  
-                FROM Tasinmaz_Table 
-                WHERE EnvanterdeMi=1 ");
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                int tasinmazId = row["Id"].ConvertToInt();
-                Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = tasinmaz.Select<Tasinmaz>(tasinmazId);
-                return tasinmaz;
-            }
-            else
-            {
-                return null;
-            }
+            return new TasinmazService().GetMin();
         }
 		public decimal SelectTahminiRayicToplami(int bolgeId)
 		{
