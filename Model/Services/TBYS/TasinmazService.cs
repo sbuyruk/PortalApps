@@ -59,6 +59,11 @@ namespace Model.Services.TBYS
             DataTable table = repository.SelectCountByBolge("MulkiyetSekli", bolgeId, mulkiyetSekli, "MulkiyetSekli", ProjeConstants.HEPSI_INT, ProjeConstants.BOLGE_GENELMUDURLUK_INT);
             return table != null && table.Rows.Count > 0 ? table.Rows[0]["Adet"].ToString().ConvertToInt() : 0;
         }
+        public int GetCountByBolgeFilters(string countColumn, string primaryColumn, string primaryValue, string kiraDurumu, string mulkiyetSekli, string kirayaUygunluk, int bolgeId)
+        {
+            DataTable table = repository.SelectCountByBolgeFilters(countColumn, primaryColumn, primaryValue, kiraDurumu, mulkiyetSekli, kirayaUygunluk, bolgeId, ProjeConstants.HEPSI_INT, ProjeConstants.BOLGE_GENELMUDURLUK_INT);
+            return table != null && table.Rows.Count > 0 ? table.Rows[0]["Adet"].ToString().ConvertToInt() : 0;
+        }
         public Tasinmaz GetNext(int id) { return Map(repository.SelectNext(id)) ?? GetMin(); }
         public Tasinmaz GetPrev(int id) { return Map(repository.SelectPrev(id)) ?? GetMax(); }
         public Tasinmaz GetMax() { return GetExtreme(true); }

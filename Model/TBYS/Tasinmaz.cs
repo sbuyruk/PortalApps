@@ -597,46 +597,7 @@ namespace Model.TBYS
         }
         public int SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(int bolgeId, string kullanimSekli, string kiraDurumu, string mülkiyetSekli, string kirayaUygunluk = null)
         {
-            SqlQuery query = new SqlQuery();
-            string whereStr = string.Empty;
-            if (!string.IsNullOrEmpty(kiraDurumu))
-            {
-                whereStr = " AND KiraDurumu = @KiraDurumu";
-                query.AddParameter("@KiraDurumu", kiraDurumu);
-            }
-            if (!string.IsNullOrEmpty(mülkiyetSekli))
-            {
-                whereStr += " AND MulkiyetSekli = @MulkiyetSekli";
-                query.AddParameter("@MulkiyetSekli", mülkiyetSekli);
-            }
-            if (!string.IsNullOrEmpty(kirayaUygunluk))
-            {
-                whereStr += " AND KirayaUygunluk = @KirayaUygunluk";
-                query.AddParameter("@KirayaUygunluk", kirayaUygunluk);
-            }
-            bool bolgeFiltresiVar = bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT;
-            string bolgeStr = bolgeFiltresiVar ? " AND BolgeId=@BolgeId " : string.Empty;
-            if (bolgeFiltresiVar)
-                query.AddParameter("@BolgeId", bolgeId);
-            int Adet = 0;
-            query.Sql = string.Format(@"
-                SELECT COUNT(KullanimSekli) Adet 
-                FROM Tasinmaz_Table A
-                LEFT JOIN Il_Table B ON B.Id=A.IlId
-                LEFT JOIN Bolge_Table D ON D.Id=B.BolgeId
-                WHERE EnvanterdeMi=1 
-                    {0}
-                    AND KullanimSekli =@KullanimSekli
-                    {1}", bolgeStr, whereStr);
-            query.AddParameter("@KullanimSekli", kullanimSekli);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                Adet = row["Adet"].ConvertToInt();
-
-            }
-            return Adet;
+            return new TasinmazService().GetCountByBolgeFilters("KullanimSekli", "KullanimSekli", kullanimSekli, kiraDurumu, mülkiyetSekli, kirayaUygunluk, bolgeId);
         }
         public int SelectTasinmazAdetByBolgeCinsiKiraDurumu(int bolgeId, string cinsi, string kiraDurumu, string mülkiyetSekli, string kirayaUygunluk = null)
         {
