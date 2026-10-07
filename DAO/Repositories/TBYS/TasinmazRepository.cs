@@ -53,6 +53,22 @@ namespace DAO.Repositories.TBYS
             q.AddParameter("@FilterValue", filterValue);
             return db.SelectFromDb(q, "");
         }
+        public DataTable SelectCountByIl(string countColumn, string ilAdi, string mulkiyetSekli, string value, string valueColumn)
+        {
+            SqlQuery q = new SqlQuery("SELECT COUNT(" + countColumn + ") Adet FROM Tasinmaz_Table WHERE EnvanterdeMi=1 AND Ili=@IlAdi AND MulkiyetSekli=@MulkiyetSekli AND " + valueColumn + "=@Value");
+            q.AddParameter("@IlAdi", ilAdi);
+            q.AddParameter("@MulkiyetSekli", mulkiyetSekli);
+            q.AddParameter("@Value", value);
+            return db.SelectFromDb(q, "");
+        }
+        public DataTable SelectCountByBolge(string countColumn, int bolgeId, string value, string valueColumn, int allRegion, int headquarters)
+        {
+            string regionFilter = bolgeId == allRegion || bolgeId == headquarters ? string.Empty : " AND D.Id=@BolgeId";
+            SqlQuery q = new SqlQuery("SELECT COUNT(" + countColumn + ") Adet FROM Tasinmaz_Table A LEFT JOIN Il_Table B ON B.Id=A.IlId LEFT JOIN Bolge_Table D ON D.Id=B.BolgeId WHERE A.EnvanterdeMi=1" + regionFilter + " AND " + valueColumn + "=@Value");
+            if (!string.IsNullOrEmpty(regionFilter)) q.AddParameter("@BolgeId", bolgeId);
+            q.AddParameter("@Value", value);
+            return db.SelectFromDb(q, "");
+        }
         public DataTable SelectNext(int id) { SqlQuery q = new SqlQuery("SELECT * FROM Tasinmaz_Table WHERE EnvanterdeMi=1 AND Id>@Id ORDER BY Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, ""); }
         public DataTable SelectPrev(int id) { SqlQuery q = new SqlQuery("SELECT * FROM Tasinmaz_Table WHERE EnvanterdeMi=1 AND Id<@Id ORDER BY Id DESC"); q.AddParameter("@Id", id); return db.SelectFromDb(q, ""); }
         public DataTable SelectExtreme(bool max) { return db.SelectFromDb(new SqlQuery("SELECT " + (max ? "MAX" : "MIN") + "(Id) Id FROM Tasinmaz_Table WHERE EnvanterdeMi=1"), ""); }
