@@ -80,77 +80,8 @@ namespace Model.TBYS
         public DataTable SelectByTeminatSigortaCinsiReturnDataTable(string sigortaCinsi, bool vadesiGelenler, bool isDeprem, bool isYangin, bool isMakine100000,
             bool isMakine5000, bool isJenerator, bool isAsansor, bool isKazan, int bolgeId, string auth, DateTime basTarih, DateTime bitTarih)
         {
-            string bolgeStr = string.Empty;
-            
-            string sqlString = SelectByTeminatSigortaCinsiSQL(sigortaCinsi, vadesiGelenler, isDeprem, isYangin, isMakine100000, isMakine5000, isJenerator, 
-                isAsansor, isKazan, bolgeId,auth, basTarih, bitTarih);
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            return dataTable;
-
-        }
-        private string SelectByTeminatSigortaCinsiSQL(string sigortaCinsi, bool vadesiGelenler, bool isDeprem, bool isYangin, bool isMakine100000, bool isMakine5000, 
-            bool isJenerator, bool isAsansor, bool isKazan, int bolgeId, string auth, DateTime basTarih, DateTime bitTarih)
-        {
-            string tarStr = string.Format(@"
-                    AND A.SigortaBasTar >= {0} AND A.SigortaBasTar <= {1}", basTarih.ReturnQuotedValue(), bitTarih.ReturnQuotedValue());
-            string bolgeStr = bolgeId == ProjeConstants.BOLGE_HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format("  AND E.Id={0} ", bolgeId);
-
-
-            string sigortaCinsiStr = string.IsNullOrEmpty(sigortaCinsi) || sigortaCinsi.Equals(ProjeConstants.HEPSI) ? " AND SigortaCinsi is not null " : " AND SigortaCinsi = " + sigortaCinsi.ReturnQuotedValue();
-            string depremStr = isDeprem ? string.Format(" TeminatListesi Like '%{0}%'", "1") : "";
-            string yanginStr = isYangin ? string.Format(" TeminatListesi Like '%{0}%'", "2") : "";
-            string makine100000Str = isMakine100000 ? string.Format(" TeminatListesi Like '%{0}%'", "3") : "";
-            string makine5000Str = isMakine5000 ? string.Format(" TeminatListesi Like '%{0}%'", "4") : "";
-            string jeneratorStr = isJenerator ? string.Format(" TeminatListesi Like '%{0}%'", "5") : "";
-            string asansorStr = isAsansor ? string.Format(" TeminatListesi Like '%{0}%'", "6") : "";
-            string kazanStr = isKazan ? string.Format(" TeminatListesi Like '%{0}%'", "7") : "";
-
-            string andStr = isDeprem || isYangin || isMakine100000 || isMakine5000 || isJenerator || isAsansor || isKazan ? " AND ( " : "";
-            string teminatStr = depremStr;
-            teminatStr += (!string.IsNullOrEmpty(teminatStr) && !string.IsNullOrEmpty(yanginStr) ? " OR " + yanginStr : yanginStr);
-            teminatStr += (!string.IsNullOrEmpty(teminatStr) && !string.IsNullOrEmpty(makine100000Str) ? " OR " + makine100000Str : makine100000Str);
-            teminatStr += (!string.IsNullOrEmpty(teminatStr) && !string.IsNullOrEmpty(makine5000Str) ? " OR " + makine5000Str : makine5000Str);
-            teminatStr += (!string.IsNullOrEmpty(teminatStr) && !string.IsNullOrEmpty(jeneratorStr) ? " OR " + jeneratorStr : jeneratorStr);
-            teminatStr += (!string.IsNullOrEmpty(teminatStr) && !string.IsNullOrEmpty(asansorStr) ? " OR " + asansorStr : asansorStr);
-            teminatStr += (!string.IsNullOrEmpty(teminatStr) && !string.IsNullOrEmpty(kazanStr) ? " OR " + kazanStr : kazanStr);
-
-            teminatStr = andStr + teminatStr + (isDeprem || isYangin || isMakine100000 || isMakine5000 || isJenerator || isAsansor || isKazan ? " ) " : "");
-
-            DateTime sonGun = new DateTime(DateTime.Today.AddMonths(2).Year, DateTime.Today.AddMonths(2).Month, 1);
-            string vadeStr = vadesiGelenler?string.Format(" AND SigortaBitTar <{0}", sonGun.ReturnTRDateFormat()):string.Empty;
-            
-            string sqlString = string.Format(@"
-                SELECT A.Id SigortaId, B.SorumluBolge,E.KisaAdi Bolge, A.TasinmazId,B.SorumluBolge,A.SigortaCinsi,A.AdresKodu,A.PoliceNo,A.SigortaBasTar,A.SigortaBitTar,
-	                A.YapiTarzi,A.InsaYili, A.BulunduguKat,B.BulunduguKat, A.ToplamKatSayisi,B.ToplamKatSayisi, A.BBNetAlan, B.BBNetAlan ,A.BBBrutAlan, B.BBBrutAlan,
-	                A.SigortaBedeli, A.Prim,A.DaskPoliceNo,A.BagimsizBolumNo,A.PDFDosyasi,A.Prim,
-                    B.Adres+ISNULL(F.BolumNo,'') Adres, B.Ili,B.Ilcesi, B.Ilcesi +' '+ B.Ili IliIlcesi, B.KullanimSekli TasinmazKullanimSekli, B.Cinsi, B.PaftaNo,B.AdaNo,B.ParselNo,B.SahifeNo,F.BolumNo,
-                    A.TeminatListesi,A.TeminatAciklama,A.Aciklama,B.EnvanterdeMi,
-                    B.Adres+ISNULL(F.BolumNo,'') +' '+ B.Ilcesi+'-'+ B.Ili TamAdres,
-                    B.KatMulkiyeti,A.KullanimSekli SigortaKullanimSekli,B.TapuTasinmazNo,
-	                E.KisaAdi Bolge
-                FROM Sigorta_Table A
-                    INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId AND (B.EnvanterdeMi=1 OR B.EnvanterdeMi=2) 
-                    LEFT JOIN BagimsizBolum_Table F ON F.Id=A.BolumId AND F.TasinmazId=B.Id
-                    LEFT JOIN IL_Table C ON C.Id=B.IlId
-	                LEFT JOIN ILCE_Table D ON D.Id=B.IlceId
-	                LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
-                WHERE 1>0
-                    {0}
-                    {1} 
-                    {2}
-                    {3}
-                    {4}
-                ORDER BY B.SorumluBolge, B.Ili,B.Ilcesi, A.Id, SigortaBasTar DESC
-                            ", sigortaCinsiStr, teminatStr,vadeStr, bolgeStr,tarStr);
-            return sqlString;
+            return new SigortaService().GetByTeminatSigortaCinsi(sigortaCinsi, vadesiGelenler, isDeprem, isYangin, isMakine100000,
+                isMakine5000, isJenerator, isAsansor, isKazan, bolgeId, basTarih, bitTarih);
         }
         public List<Sigorta> SelectBySigortaId(int sigortaId)
         {
@@ -158,71 +89,15 @@ namespace Model.TBYS
         }
         public Sigorta SelectNext(int sigortaId)
         {
-            Sigorta sigorta = new Sigorta();
-            string sqlString = string.Format(@"
-                SELECT * FROM Sigorta_Table A
-                INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId AND B.EnvanterdeMi=1
-                --WHERE A.Id > {0}
-                ORDER BY B.SorumluBolge, B.Ili,B.Ilcesi, A.Id, SigortaBasTar DESC ", sigortaId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                List<Sigorta> list = ToList<Sigorta>(dataTable);
-                int index = list.FindIndex(s => s.Id == sigortaId);
-                if (index < list.Count - 1)
-                {
-                    sigorta = list[index + 1];
-                }
-                else
-                {
-                    sigorta = list[list.Count - 1];
-                }
-
-            }
-
-            return sigorta;
+            return new SigortaService().GetNext(sigortaId);
         }
         public Sigorta SelectPrev(int sigortaId)
         {
-            Sigorta sigorta = new Sigorta();
-            string sqlString = string.Format(@"
-                SELECT * FROM Sigorta_Table A
-                INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId AND B.EnvanterdeMi=1
-                --WHERE A.Id < {0}
-                ORDER BY B.SorumluBolge, B.Ili,B.Ilcesi, A.Id, SigortaBasTar DESC ", sigortaId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                List<Sigorta> list = ToList<Sigorta>(dataTable);
-                int index = list.FindIndex(s => s.Id == sigortaId);
-                if (index > 0)
-                {
-                    sigorta = list[index - 1];
-                }
-                else
-                {
-                    sigorta = list[0];
-                }
-
-            }
-            return sigorta;
+            return new SigortaService().GetPrev(sigortaId);
         }
         public Sigorta SelectMax()
         {
-            string sqlString = string.Format(@"SELECT MAX(Id) Id  FROM Sigorta_Table ");
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                int sigortaId = row["Id"].ConvertToInt();
-                Sigorta sigorta = new Sigorta();
-                sigorta = sigorta.Select<Sigorta>(sigortaId);
-                return sigorta;
-            }
-            else
-            {
-                return null;
-            }
+            return new SigortaService().GetMax();
         }
 
         public List<Sigorta> selectByTasinmazId(int tasinmazId)
@@ -239,20 +114,7 @@ namespace Model.TBYS
         }
         public Sigorta SelectMin()
         {
-            string sqlString = string.Format(@"SELECT MIN(Id) Id  FROM Sigorta_Table ");
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                int sigortaId = row["Id"].ConvertToInt();
-                Sigorta sigorta = new Sigorta();
-                sigorta = sigorta.Select<Sigorta>(sigortaId);
-                return sigorta;
-            }
-            else
-            {
-                return null;
-            }
+            return new SigortaService().GetMin();
         }
     }
 }

@@ -57,6 +57,39 @@ namespace Model.Services.TBYS
             return ReadTotal(repository.SelectPremiumTotal(sigortaCinsi));
         }
 
+        public DataTable GetByTeminatSigortaCinsi(string sigortaCinsi, bool vadesiGelenler, bool isDeprem, bool isYangin, bool isMakine100000,
+            bool isMakine5000, bool isJenerator, bool isAsansor, bool isKazan, int bolgeId, DateTime basTarih, DateTime bitTarih)
+        {
+            return repository.SelectByTeminatSigortaCinsi(sigortaCinsi, vadesiGelenler, isDeprem, isYangin, isMakine100000,
+                isMakine5000, isJenerator, isAsansor, isKazan, bolgeId, basTarih, bitTarih);
+        }
+
+        public Sigorta GetNext(int sigortaId)
+        {
+            List<Sigorta> list = new Sigorta().ToList<Sigorta>(repository.SelectNavigationList());
+            int index = list.FindIndex(s => s.Id == sigortaId);
+            if (index < 0 || list.Count == 0) return new Sigorta();
+            return index < list.Count - 1 ? list[index + 1] : list[list.Count - 1];
+        }
+
+        public Sigorta GetPrev(int sigortaId)
+        {
+            List<Sigorta> list = new Sigorta().ToList<Sigorta>(repository.SelectNavigationList());
+            int index = list.FindIndex(s => s.Id == sigortaId);
+            if (index < 0 || list.Count == 0) return new Sigorta();
+            return index > 0 ? list[index - 1] : list[0];
+        }
+
+        public Sigorta GetMax()
+        {
+            return GetById(ReadId(repository.SelectMaxId()));
+        }
+
+        public Sigorta GetMin()
+        {
+            return GetById(ReadId(repository.SelectMinId()));
+        }
+
         public string GetInventoryListAsJson()
         {
             return new Sigorta().ToJSON(GetInventoryList());
@@ -134,6 +167,14 @@ namespace Model.Services.TBYS
                 return 0;
 
             return table.Rows[0]["Toplam"].ReturnZeroIfNull().ConvertToDecimal();
+        }
+
+        private static int ReadId(DataTable table)
+        {
+            if (table == null || table.Rows.Count == 0)
+                return 0;
+
+            return table.Rows[0]["Id"].ConvertToInt();
         }
     }
 }
