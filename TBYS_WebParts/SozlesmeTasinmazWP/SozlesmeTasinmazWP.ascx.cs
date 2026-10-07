@@ -172,7 +172,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         }
         private void SozlesmeTasinmazTablosunuDoldur(KiraSozlesme kiraSozlesme)
         {
-            //Ã¶nce tabloyu temizle
+            //önce tabloyu temizle
             PopUpTable.Rows.Clear();
 
             SozlesmeTasinmaz st = new SozlesmeTasinmaz();
@@ -189,7 +189,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 PupUpCell0.Text = siraNo++ + "";
                 row.Controls.Add(PupUpCell0);
 
-                //tabloya kira sÃ¶zlesme Id ekle
+                //tabloya kira sözlesme Id ekle
                 TableCell SozlesmeIdCell = new TableCell();
                 SozlesmeIdCell.Text = kiraSozlesme.Id.ToString();
                 row.Controls.Add(SozlesmeIdCell);
@@ -251,7 +251,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
 
                 TableCell cikarCell = new TableCell();
                 LinkButton cikarBtn = new LinkButton();
-                cikarBtn.Text = "Ã‡ikar";
+                cikarBtn.Text = "Çikar";
                 cikarBtn.CssClass = "btn btn-xs btn-danger";
                 cikarBtn.Click += delegate
                 {
@@ -284,7 +284,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
 
                         BagimsizBolum babo = new BagimsizBolum();
                         babo = babo.Select<BagimsizBolum>(BolumIdQS.ConvertToInt());
-                        //BagimsizBolum bolÃ¼m varsa
+                        //BagimsizBolum bolüm varsa
                         if (babo != null)
                         {
                             SozlesmeTasinmaz st = new SozlesmeTasinmaz();
@@ -415,7 +415,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 columnDefs:[
                     {targets:5, render:function(data, type, row, meta){
                         var linkEkle='<a href=" + ProjeConstants.PAGE_KIRASOZLESME_TASINMAZ + @"?KiraSozlesmeId=" + KiraSozlesmeIdQS +
-                            @"&EnvanterdeMi=1&DestinationApp=TD&TasinmazId=' + row.TasinmazId + '&BolumId=' + row.BolumId + ' class=\'btn btn-outline-primary \'>SÃ¶zlesmeye Ekle</a>'
+                            @"&EnvanterdeMi=1&DestinationApp=TD&TasinmazId=' + row.TasinmazId + '&BolumId=' + row.BolumId + ' class=\'btn btn-outline-primary \'>Sözleşmeye Ekle</a>'
                         return linkEkle;
                     }},
                 ],
@@ -465,7 +465,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 columnDefs:[
                     {targets:3, render:function(data, type, row, meta){
                         var linkEkle='<a href=" + ProjeConstants.PAGE_KIRASOZLESME_TASINMAZ + @"?KiraSozlesmeId=" + KiraSozlesmeIdQS +
-                            @"&DestinationApp=ST&KiraciId=' + row.KiraciId + ' class=\'btn btn-outline-primary \'>Kiraciyi SeÃ§</a>'
+                            @"&DestinationApp=ST&KiraciId=' + row.KiraciId + ' class=\'btn btn-outline-primary \'>Kiraciyi Seç</a>'
                         return linkEkle;
                     }},
                 ],
@@ -513,7 +513,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 columnDefs:[
                     {targets:3, render:function(data, type, row, meta){
                         var linkEkle='<a href=" + ProjeConstants.PAGE_KIRASOZLESME_TASINMAZ + @"?KiraSozlesmeId=" + KiraSozlesmeIdQS +
-                            @"&EnvanterdeMi=1&DestinationApp=TD&TasinmazId=' + row.TasinmazId + ' class=\'btn btn-outline-primary \'>SÃ¶zlesmeye Ekle</a>'
+                            @"&EnvanterdeMi=1&DestinationApp=TD&TasinmazId=' + row.TasinmazId + ' class=\'btn btn-outline-primary \'>Sözleşmeye Ekle</a>'
                         return linkEkle;
                     }},
                 ],

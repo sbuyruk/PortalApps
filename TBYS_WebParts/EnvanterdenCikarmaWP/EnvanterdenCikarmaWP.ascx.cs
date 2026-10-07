@@ -127,7 +127,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                     tasinmaz = new TasinmazService().GetById(TasinmazIdQS.ConvertToInt());
                     if (tasinmaz != null)
                     {
-                        //envanterden ÃƒÂ§ikar btn yi visible yap
+                        //envanterden çikar btn yi visible yap
                         //
                         UpdateBtn.Visible = false;
                         EnvanterdenCikarBtn.Visible = true;
@@ -246,7 +246,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
 
             try
             {
-                //Onay Popup AÃƒÂ§
+                //Onay Popup Aç
 
                 EnvanterdenCikarNowBtn.Visible = true;
                 var openPopup = "OpenModal();";
@@ -281,13 +281,13 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                 {
                     UpdateBtn.Visible = true;
                     EnvanterdenCikarBtn.Visible = false;
-                    MessageHelper.PublishMessage("(Envanterde olmayan) Tasinmaz GÃƒÂ¼ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("(Envanterde olmayan) Taşınmaz Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
             }
             catch (Exception ex)
             {
                 ExceptionHelper exHelper = new ExceptionHelper(ex);
-                Exception guncellemeExc = new Exception("(Envanterde olmayan) Tasinmaz GÃƒÂ¼ncellenemedi1");
+                Exception guncellemeExc = new Exception("(Envanterde olmayan) Taşınmaz Güncellenemedi1");
                 exHelper.PublishException();
             }
             finally {
@@ -299,7 +299,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
         {
             //tasinmaz.EnvanterdeMi=0 yap
             //EnvanterdenCikarmaWP'i reload et SenderApp
-            //envanterden ÃƒÂ§ikarildi mesaji ver
+            //envanterden çikarildi mesaji ver
             bool envanterdenCikarildiMi = false;
             bool bagisGuncellendiMi = false;
             try
@@ -333,7 +333,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Envanterden ÃƒÂ§ikarma islemi basarisiz oldu", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("Envanterden çikarma islemi basarisiz oldu", ProjeConstants.MESAJ_HATA, 2000);
                 }
             }
             catch (Exception ex)
