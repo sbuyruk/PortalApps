@@ -511,45 +511,11 @@ namespace Model.TBYS
         }
         public Tasinmaz SelectNext(int tasinmazId)
         {
-            Tasinmaz tasinmaz = new Tasinmaz();
-            SqlQuery query = new SqlQuery(@"
-                SELECT * FROM Tasinmaz_Table
-                WHERE EnvanterdeMi=1 AND Id > @TasinmazId
-                ORDER BY Id ");
-            query.AddParameter("@TasinmazId", tasinmazId);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
-                tasinmaz = list.FirstOrDefault();
-            }
-            else
-            {
-                tasinmaz = SelectMin();
-
-            }
-            return tasinmaz;
+            return new TasinmazService().GetNext(tasinmazId);
         }
         public Tasinmaz SelectPrev(int tasinmazId)
         {
-            Tasinmaz tasinmaz = new Tasinmaz();
-            SqlQuery query = new SqlQuery(@"
-                SELECT * FROM Tasinmaz_Table
-                WHERE EnvanterdeMi=1 AND Id < @TasinmazId
-                ORDER BY Id DESC ");
-            query.AddParameter("@TasinmazId", tasinmazId);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
-                tasinmaz = list.FirstOrDefault();
-            }
-            else
-            {
-                tasinmaz = SelectMax();
-
-            }
-            return tasinmaz;
+            return new TasinmazService().GetPrev(tasinmazId);
         }
         public Tasinmaz SelectMax()
         {
