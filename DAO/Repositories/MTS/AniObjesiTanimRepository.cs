@@ -34,5 +34,18 @@ namespace DAO.Repositories.MTS
         public int Insert<T>(T entity) { return db.Insert(queryBuilder.BuildInsert(entity, TableName)); }
         public bool Update<T>(T entity) { return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName)); }
         public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), ""); }
+
+        public DataTable SelectStokluAniObjeleri(string stokluMu)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT A.Id AniObjesiId, A.Adi, SUM(B.SonAdet) Toplam
+                FROM AniObjesiTanim_Table A
+                INNER JOIN DepoStok_Table B ON B.AniObjesiId = A.Id AND B.SonAdet > 0
+                WHERE A.StokluMu = @StokluMu
+                GROUP BY A.Id, A.Adi
+                ORDER BY A.Adi");
+            query.AddParameter("@StokluMu", stokluMu);
+            return db.SelectFromDb(query, "");
+        }
     }
 }

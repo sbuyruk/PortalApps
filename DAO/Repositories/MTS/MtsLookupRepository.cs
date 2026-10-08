@@ -228,8 +228,6 @@ namespace DAO.Repositories.MTS
                 query.AddParameter("@StokluMu", stokluMu);
             if (mode == "kisi" && !string.Equals(verilenGetirilen, ProjeConstants.ANIOBJESI_VERILENGETIRILEN))
                 query.AddParameter("@VerilenAlinan", verilenGetirilen);
-            if (mode == "katilimciFaaliyet")
-                query.AddParameter("@StokluMu", stokluMu);
             if (mode == "single")
                 query.AddParameter("@AniObjesiId", aniObjesiId);
             return db.SelectFromDb(query, "");
