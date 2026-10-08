@@ -191,5 +191,66 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@KiraciId", kiraciId);
             return db.SelectFromDb(query, "");
         }
+        public DataTable SelectNearestByKiraciIdAndDate(int kiraciId, string tarih)
+        {
+            string sql = string.Format("SELECT * FROM KiraSozlesme_Table WHERE KiraciId={0} AND SozBitTar >= {1} ORDER BY SozBasTar", kiraciId.ReturnQuotedValue(), tarih);
+            DataTable table = db.SelectFromDb(sql, "");
+            if (table != null) return table;
+            sql = string.Format("SELECT * FROM KiraSozlesme_Table WHERE KiraciId={0} AND SozBasTar < {1} ORDER BY SozBasTar DESC", kiraciId.ReturnQuotedValue(), tarih);
+            return db.SelectFromDb(sql, "");
+        }
+        public DataTable SelectByTasinmazId(int tasinmazId)
+        {
+            string sql = string.Format(@"
+                SELECT A.*
+                FROM KiraSozlesme_Table A
+                    LEFT OUTER JOIN SozlesmeTasinmaz_Table B ON B.SozlesmeId=A.Id
+                    LEFT OUTER JOIN Bagis_Table C ON C.TasinmazId=B.TasinmazId
+                WHERE A.Aktif=1 AND B.TasinmazId={0}
+                ORDER BY B.TasinmazId", tasinmazId.ReturnQuotedValue());
+            return db.SelectFromDb(sql, "");
+        }
+        public DataTable SelectAddressById(int sozlesmeId)
+        {
+            string sql = string.Format(@"
+                SELECT A.Id,C.Adres,C.Ili,C.Ilcesi
+                FROM KiraSozlesme_Table A
+                    LEFT JOIN SozlesmeTasinmaz_Table B On B.SozlesmeId=A.Id
+                    LEFT JOIN Tasinmaz_Table C On C.Id=B.TasinmazId
+                WHERE A.Id= {0}", sozlesmeId.ReturnQuotedValue());
+            return db.SelectFromDb(sql, "");
+        }
+        public DataTable SelectSecurityDepositSummaryByRegionAndPurpose(int bolgeId, string kiralamaAmaci)
+        {
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND A.BolgeId={0} ", bolgeId);
+            string purposeStr = string.IsNullOrEmpty(kiralamaAmaci) || kiralamaAmaci.Equals(ProjeConstants.HEPSI) ? "" : " AND KiralamaAmaci=" + kiralamaAmaci.ReturnQuotedValue();
+            string sql = string.Format(@"
+                SELECT BolgeId, B.KiralamaAmaci, COUNT(A.Id) Adet, SUM(TeminatTutari) TeminatTutari, SUM(KalanTeminatTutari) KalanTeminatTutari
+                FROM KiraSozlesme_Table A
+                    INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId
+                WHERE A.Aktif=1 {0} {1}
+                GROUP BY A.BolgeId, B.KiralamaAmaci
+                ORDER BY BolgeId", bolgeStr, purposeStr);
+            return db.SelectFromDb(sql, "");
+        }
+        public DataTable SelectTenantCountAndRentTotal(int bolgeId, int ay, int yil)
+        {
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND C.BolgeId={0} ", bolgeId);
+            string sql = string.Format(@"
+                SELECT H.KisaAdi Bolge,B.KiralamaAmaci,
+                    SUM(D.KiraBedeli) + (SUM(D.FaizTutari)*-1) Tahakkuk,
+                    SUM(A.OdenenTutar) Tahsil,
+                    COUNT(DISTINCT(C.ID)) KiraciSayisi,
+                    COUNT(DISTINCT(A.KiraciId)) OdeyenKiraci
+                FROM Odeme_Table A
+                    INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId
+                    INNER JOIN KiraSozlesme_Table C ON C.Id=A.SozlesmeId
+                    INNER JOIN OdemePlani_Table D ON D.Id=A.OdemePlaniId
+                    LEFT JOIN TeminatIslem_Table E ON E.OdemeId=A.Id
+                    LEFT JOIN Bolge_Table H ON H.Id=C.BolgeId
+                WHERE YEAR(A.OdemeTarihi) ={0} AND MONTH(A.OdemeTarihi) ={1} {2}
+                GROUP BY H.KisaAdi,B.KiralamaAmaci", yil, ay, bolgeStr);
+            return db.SelectFromDb(sql, "");
+        }
     }
 }
