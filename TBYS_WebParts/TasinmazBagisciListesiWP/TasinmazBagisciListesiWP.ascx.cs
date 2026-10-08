@@ -201,7 +201,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
                 string adiSoyadi = row["AdiSoyadi"].ToString();
                 string toplamBagisAdedi = row["ToplamBagisAdedi"].ToString();
                 string sagVefat = row["Sag_vefat"].ToString();
-                string bolge = row["Bölge"].ToString();
+                string bolge = row["Bolge"].ToString();
                 int bolgeId = row["BagisciBolgeId"].ReturnZeroIfNull().ConvertToInt();
                 string ilIlce = row["IlIlce"].ToString();
 
