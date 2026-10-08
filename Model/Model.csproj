@@ -237,13 +237,10 @@
     <Compile Include="Services\NBYS\NakitBagisHareketService.cs" />
     <Compile Include="NBYS\SMSAylikBagis.cs" />
     <Compile Include="NBYS\NakitBagisHareket.cs" />
-    <Compile Include="Ortak\GenericEntity.cs" />
-    <Compile Include="Ortak\ICRUDInterface.cs" />
     <Compile Include="Ortak\Il.cs" />
     <Compile Include="Ortak\Ilce.cs" />
     <Compile Include="Ortak\OpenXMLHelper.cs" />
     <Compile Include="Ortak\EntityBase.cs" />
-    <Compile Include="Ortak\ParentClass.cs" />
     <Compile Include="Ortak\OrtakParametre.cs" />
     <Compile Include="IKYS\ResmiTatil.cs" />
     <Compile Include="Ortak\SilinenKayit.cs" />
