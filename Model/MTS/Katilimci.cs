@@ -115,10 +115,9 @@ namespace Model.MTS
                 kisi = kisi.Select(katilimciId);
                 if (kisi != null)
                 {
-                    MTSKurumGorev kurumGorev = new MTSKurumGorev();
                     string kurum = string.Empty;
                     string gorev = string.Empty;
-                    string kurumGorevStr = kurumGorev.SelectByKisiIdReturnKurumGorev(katilimciId, ref kurum, ref gorev);
+                    string kurumGorevStr = new Model.Services.MTS.MTSKurumGorevService().GetByKisiId(katilimciId, ref kurum, ref gorev);
                    
                     Katilimci katilimci = new Katilimci()
                     {

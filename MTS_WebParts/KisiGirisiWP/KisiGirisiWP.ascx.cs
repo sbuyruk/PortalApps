@@ -190,10 +190,9 @@ namespace MTS_WebParts.KisiGirisiWP
 
                     AdresTxt.Text = kisi.Adres;
                     AciklamaTxt.Text = kisi.Aciklama;
-                    MTSKurumGorev kurumGorev = new MTSKurumGorev();
                     string kurum = string.Empty;
                     string gorev = string.Empty;
-                    string kurumGorevStr = kurumGorev.SelectByKisiIdReturnKurumGorev(kisi.Id,ref kurum,ref gorev);
+                    string kurumGorevStr = new Model.Services.MTS.MTSKurumGorevService().GetByKisiId(kisi.Id, ref kurum, ref gorev);
                     if (string.IsNullOrEmpty(kurumGorevStr))
                     {
                         MTSKurumTanimTxt.Text = kisi.Kurumu;

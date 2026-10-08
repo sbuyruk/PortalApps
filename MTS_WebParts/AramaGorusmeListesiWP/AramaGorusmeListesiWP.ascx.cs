@@ -104,10 +104,9 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
             kisi = kisi.Select(ArayanIdQS.ConvertToInt());
             if (kisi != null)
             {
-                MTSKurumGorev kurumGorev = new MTSKurumGorev();
                 string kurum = string.Empty;
                 string gorev = string.Empty;
-                string kurumGorevStr = kurumGorev.SelectByKisiIdReturnKurumGorev(kisi.Id, ref kurum, ref gorev);
+                string kurumGorevStr = new Model.Services.MTS.MTSKurumGorevService().GetByKisiId(kisi.Id, ref kurum, ref gorev);
                 if (string.IsNullOrEmpty(kurumGorevStr))
                 {
                     kurumGorevStr = kisi.Kurumu + " / " + kisi.Gorevi;
