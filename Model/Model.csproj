@@ -45,6 +45,7 @@
     <AssemblyOriginatorKeyFile>modelkey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Services\Portal\ToplantiService.cs" />
     <Compile Include="Services\Portal\ToplantiKatilimService.cs" />
     <Compile Include="Services\Portal\ToplantiParametreService.cs" />
     <Compile Include="Services\Portal\DuyuruGosterimService.cs" />
