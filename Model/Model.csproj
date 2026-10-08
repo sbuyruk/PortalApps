@@ -213,6 +213,9 @@
     <Compile Include="Services\MTS\DepoTanimService.cs" />
     <Compile Include="Services\MTS\DepoStokService.cs" />
     <Compile Include="Services\MTS\FaaliyetKatilimService.cs" />
+    <Compile Include="Services\MTS\AramaGorusmeService.cs" />
+    <Compile Include="Services\MTS\AniObjesiDagitimService.cs" />
+    <Compile Include="Services\MTS\FaaliyetService.cs" />
     <Compile Include="Services\Ortak\IlService.cs" />
     <Compile Include="Services\Ortak\IlceService.cs" />
     <Compile Include="Services\NBYS\ArmaganService.cs" />
