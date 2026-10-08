@@ -5,14 +5,14 @@ using Utility.ProjeGlobal;
 
 namespace Model.Ortak
 {
-    public class SilinenKayit : ParentClass
+    public class SilinenKayit : EntityBase
     {
         public string TabloAdi { get; set; }
         public string SilinenKayitBilgisi { get; set; }
         public string Silen { get; set; }
         public DateTime SilinmeTarihi { get; set; }
         public string SilinmeSebebi { get; set; }
-        public override int Save()
+        public int Save()
         {
             try
             {
@@ -40,7 +40,7 @@ namespace Model.Ortak
             //this.Id = id;
             //return id;
         }
-        public override bool Update()
+        public bool Update()
         {
             bool isSuccess = false;
             try
@@ -59,11 +59,11 @@ namespace Model.Ortak
             }
             return isSuccess;
         }
-        public override bool Delete()
+        public bool Delete()
         {
             throw new NotImplementedException();
         }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             throw new NotImplementedException();
         }
@@ -115,7 +115,7 @@ namespace Model.Ortak
                 throw;
             }
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             throw new NotImplementedException();
         }

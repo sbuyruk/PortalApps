@@ -8,7 +8,7 @@ using TSKGV_Utility.ProjeGlobal;
 
 namespace Model.Ortak
 {
-    public class Duyuru : ParentClass
+    public class Duyuru : EntityBase
     {
         public string Baslik { get; set; }
         public string Metin { get; set; }
@@ -17,7 +17,7 @@ namespace Model.Ortak
         public string Tekrar { get; set; }
         public string DuyuruAlicilari { get; set; }
         public string Aciklama { get; set; }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             string sqlString = string.Format(@"SELECT *
                                FROM Duyuru_Table 
@@ -42,7 +42,7 @@ namespace Model.Ortak
             duyuru = list.FirstOrDefault();
             return duyuru;
         }
-        public override int Save()
+        public int Save()
         {
             try
             {
@@ -62,7 +62,7 @@ namespace Model.Ortak
 
             
         }        
-        public override bool Update()
+        public bool Update()
         {
             bool isSuccess = false;
             try
@@ -81,7 +81,7 @@ namespace Model.Ortak
             }
             return isSuccess;
         }
-        public override bool Delete()
+        public bool Delete()
         {
             GenericEntity<Duyuru> genericEntity =
                 new GenericEntity<Duyuru>(ProjeConstants.SQL_DELETE);
@@ -91,7 +91,7 @@ namespace Model.Ortak
 
             return isSuccess;
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"SELECT *
                                FROM Duyuru_Table");
