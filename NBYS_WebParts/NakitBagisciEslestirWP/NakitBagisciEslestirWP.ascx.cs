@@ -2,7 +2,6 @@ using Model.NBYS;
 using Model.Ortak;
 using Model.Services.Ortak;
 using Model.Services.NBYS;
-using Model.Services.NBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

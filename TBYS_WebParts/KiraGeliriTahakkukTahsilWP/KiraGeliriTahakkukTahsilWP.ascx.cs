@@ -77,22 +77,16 @@ namespace TBYS_WebParts.KiraGeliriTahakkukTahsilWP
                     int odeyenKiraciSayisiToplam = 0;
                     decimal meskenTahakkukToplam = 0;
                     decimal meskenTahsilToplam = 0;
-                    decimal meskenOranToplam = 0;
                     decimal isyeriTahakkukToplam = 0;
                     decimal isyeriTahsilToplam = 0;
-                    decimal isyeriOranToplam = 0;
                     decimal arsaTahakkukToplam = 0;
                     decimal arsaTahsilToplam = 0;
-                    decimal arsaOranToplam = 0;
                     decimal tarlaTahakkukToplam = 0;
                     decimal tarlaTahsilToplam = 0;
-                    decimal tarlaOranToplam = 0;
                     decimal bisTahakkukToplam = 0;
                     decimal bisTahsilToplam = 0;
-                    decimal bisOranToplam = 0;
                     decimal tesisTahakkukToplam = 0;
                     decimal tesisTahsilToplam = 0;
-                    decimal tesisOranToplam = 0;
 
                     int kiraciSayisi = 0;
                     int odeyenKiraciSayisi = 0;

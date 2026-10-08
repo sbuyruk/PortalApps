@@ -694,9 +694,8 @@ namespace Portal_WebParts.DuyuruGirisiWP
                     !string.IsNullOrEmpty(YayinBasTarTxt.Value) ||
                     !string.IsNullOrEmpty(YayinBitTarTxt.Value);
             }
-            catch (Exception ex)
+            catch
             {
-
                 throw;
             }
             return isGecerli;

@@ -210,7 +210,6 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
 
                             DuzenliNakitBagisciService duzenliBagisciService = new DuzenliNakitBagisciService();
                             DuzenliNakitBagisci duzenliNakitBagisci = duzenliBagisciService.GetActiveByBagisciId(bagisciId);
-                            bool saved = false;
                             bool updated = false;   
 
                             //Aktif düzenli bağışçı kaydı yoksa

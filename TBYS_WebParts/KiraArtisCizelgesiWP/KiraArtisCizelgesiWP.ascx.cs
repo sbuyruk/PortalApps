@@ -120,7 +120,6 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
         }
         private string CreateDataTable(string jsonData)
         {
-            string a= "$(\"row c[r^='E']\", sheet)";
             string tableString = @"
                 if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
                     jQuery('#CustomDataTable').DataTable().destroy();
