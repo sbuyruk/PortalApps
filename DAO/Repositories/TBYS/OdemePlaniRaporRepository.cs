@@ -87,7 +87,7 @@ namespace DAO.Repositories.TBYS
                 LEFT JOIN BagimsizBolum_Table G ON G.Id=C.BolumId
                 LEFT JOIN Il_Table E ON E.IlAdi=D.Ili
                 LEFT JOIN OdemePlani_Table F ON F.Id=(SELECT MAX(Id) FROM OdemePlani_Table WHERE SozlesmeId=A.Id AND VadeBasTar<@Tarih)
-                WHERE Aktif=1
+                WHERE A.Aktif=1
                 ORDER BY CASE WHEN A.DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(A.DosyaNo,999999),ISNULL(A.BolgeId,0),A.Id");
             q.AddParameter("@Tarih", tarih); return db.SelectFromDb(q, "");
         }
