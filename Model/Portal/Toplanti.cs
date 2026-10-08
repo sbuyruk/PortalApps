@@ -8,7 +8,7 @@ using System.Web.Script.Serialization;
 
 namespace Model.Portal
 {
-    public class Toplanti : ParentClass
+    public class Toplanti : EntityBase
     {
         public Guid UniqueId { get; set; }
         public string ToplantiKonusu { get; set; }
@@ -26,27 +26,27 @@ namespace Model.Portal
         public string IkramMalzemesi { get; set; }
         public string Aciklama { get; set; }
 
-        public override int Save()
+        public int Save()
         {
             return new ToplantiService().Save(this);
         }
 
-        public override bool Update()
+        public bool Update()
         {
             return new ToplantiService().Update(this);
         }
 
-        public override bool Delete()
+        public bool Delete()
         {
             return new ToplantiService().Delete(this);
         }
 
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new ToplantiService().GetById(id), typeof(T));
         }
 
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(new ToplantiService().GetAll(), typeof(List<T>));
         }

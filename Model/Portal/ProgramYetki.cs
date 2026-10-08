@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Model.Portal
 {
-    public class ProgramYetki : ParentClass
+    public class ProgramYetki : EntityBase
     {
         public int BirimId { get; set; }
         public string Program { get; set; }
@@ -13,27 +13,27 @@ namespace Model.Portal
         public string Kosul { get; set; }
         public bool Deger { get; set; }
 
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new ProgramYetkiService().GetById(id), typeof(T));
         }
 
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(new ProgramYetkiService().GetAll(), typeof(List<T>));
         }
 
-        public override int Save()
+        public int Save()
         {
             return new ProgramYetkiService().Save(this);
         }
 
-        public override bool Update()
+        public bool Update()
         {
             return new ProgramYetkiService().Update(this);
         }
 
-        public override bool Delete()
+        public bool Delete()
         {
             return new ProgramYetkiService().Delete(this);
         }

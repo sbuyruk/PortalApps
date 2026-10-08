@@ -5,14 +5,14 @@ using System.Collections.Generic;
 
 namespace Model.Portal
 {
-    public class DuyuruOkuma : ParentClass
+    public class DuyuruOkuma : EntityBase
     {
         public int DuyuruId { get; set; }
         public int DuyuruGosterimId { get; set; }
         public int PersonelId { get; set; }
         public DateTime OkumaTarihi { get; set; }
 
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new DuyuruOkumaService().GetById(id), typeof(T));
         }
@@ -22,22 +22,22 @@ namespace Model.Portal
             return new DuyuruOkumaService().GetById(id);
         }
 
-        public override int Save()
+        public int Save()
         {
             return new DuyuruOkumaService().Save(this);
         }
 
-        public override bool Update()
+        public bool Update()
         {
             return new DuyuruOkumaService().Update(this);
         }
 
-        public override bool Delete()
+        public bool Delete()
         {
             return new DuyuruOkumaService().Delete(this);
         }
 
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(new DuyuruOkumaService().GetAll(), typeof(List<T>));
         }
