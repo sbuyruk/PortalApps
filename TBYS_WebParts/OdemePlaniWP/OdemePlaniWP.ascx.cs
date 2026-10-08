@@ -656,7 +656,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             //            {
             //                odemePlani = new Model.Services.TBYS.OdemePlaniService().GetFirstBySozlesmeId(kiraSozlesme.Id);//odemeyi ilk OdemePlanina kaydet
             //                Odeme odeme = new Odeme();
-            //                odeme = odeme.OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, OdemeTarihiTxt.Value.ConvertToDatetime(), OdenenTutarTxt.Value.ConvertToDecimal(), AciklamaTxt.Text, CurrentUserName);
+            //                odeme = new Model.Services.TBYS.OdemeService().OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, OdemeTarihiTxt.Value.ConvertToDatetime(), OdenenTutarTxt.Value.ConvertToDecimal(), AciklamaTxt.Text, CurrentUserName);
             //                RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + kiraSozlesme.Id);
             //            }
             //            else if (odemeTarihi > odemePlani.OdemeBitTar)//ödeme bitis tarihinden sonra ödeme yapilmis
@@ -680,7 +680,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             //                    else
             //                    {
             //                        Odeme odeme = new Odeme();
-            //                        odeme = odeme.OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, OdemeTarihiTxt.Value.ConvertToDatetime(), OdenenTutarTxt.Value.ConvertToDecimal(), AciklamaTxt.Text, CurrentUserName);
+            //                        odeme = new Model.Services.TBYS.OdemeService().OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, OdemeTarihiTxt.Value.ConvertToDatetime(), OdenenTutarTxt.Value.ConvertToDecimal(), AciklamaTxt.Text, CurrentUserName);
             //                        RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + kiraSozlesme.Id);
 
             //                    }
@@ -693,7 +693,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             //                    if (odemePlani != null)
             //                    {
             //                        Odeme odeme = new Odeme();
-            //                        odeme = odeme.OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, OdemeTarihiTxt.Value.ConvertToDatetime(), OdenenTutarTxt.Value.ConvertToDecimal(), AciklamaTxt.Text, CurrentUserName);
+            //                        odeme = new Model.Services.TBYS.OdemeService().OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, OdemeTarihiTxt.Value.ConvertToDatetime(), OdenenTutarTxt.Value.ConvertToDecimal(), AciklamaTxt.Text, CurrentUserName);
             //                        RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + kiraSozlesme.Id);
             //                    }
             //                    else
@@ -716,7 +716,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             //                else
             //                {
             //                    Odeme odeme = new Odeme();
-            //                    odeme = odeme.OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, OdemeTarihiTxt.Value.ConvertToDatetime(), OdenenTutarTxt.Value.ConvertToDecimal(), AciklamaTxt.Text, CurrentUserName);
+            //                    odeme = new Model.Services.TBYS.OdemeService().OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, OdemeTarihiTxt.Value.ConvertToDatetime(), OdenenTutarTxt.Value.ConvertToDecimal(), AciklamaTxt.Text, CurrentUserName);
             //                    RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + kiraSozlesme.Id);
 
             //                }
@@ -745,7 +745,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             int SiraNo = 1;
 
             Odeme odemeDao = new Odeme();
-            List<Odeme> list = odemeDao.SelectBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlaniId);
+            List<Odeme> list = new Model.Services.TBYS.OdemeService().GetBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlaniId);
             foreach (Odeme odeme in list)
             {
                 TableRow row = new TableRow();

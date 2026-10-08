@@ -92,7 +92,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                 if (DestinationAppQS.Equals("Duzenle"))
                 {
 
-                    vasiyetci = vasiyetci.Select(VasiyetciIdQS.ConvertToInt());
+                    vasiyetci = new Model.Services.TBYS.VasiyetciService().GetById(VasiyetciIdQS.ConvertToInt());
                     IdLbl.Text = vasiyetci.Id.ToString();
                     VarlikDiv.Attributes["style"] = "display:block";
                     BelgeYukleDiv.Attributes["style"] = "display:block";
@@ -201,7 +201,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             {
 
                 Vasiyetci vasiyetci = new Vasiyetci();
-                vasiyetci = vasiyetci.Select<Vasiyetci>(VasiyetciIdQS.ConvertToInt());
+                vasiyetci = new Model.Services.TBYS.VasiyetciService().GetById(VasiyetciIdQS.ConvertToInt());
                 if (vasiyetci != null)
                 {
                     AdiTxt.Text = vasiyetci.Adi;
@@ -376,7 +376,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                 }
                 else
                 {
-                    int yeniId = yeniVasiyetci.Save();
+                    int yeniId = new Model.Services.TBYS.VasiyetciService().Save(yeniVasiyetci);
                     if (yeniId > 0)
                     {
                         VasiyetciIdQS = yeniId.ToString();
@@ -416,7 +416,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             try
             {
                 Vasiyetci vasiyetci = new Vasiyetci();
-                vasiyetci = vasiyetci.Select<Vasiyetci>(VasiyetciIdQS.ConvertToInt());
+                vasiyetci = new Model.Services.TBYS.VasiyetciService().GetById(VasiyetciIdQS.ConvertToInt());
                 if (vasiyetci != null)
                 {
                     vasiyetci.Adi = AdiTxt.Text;
@@ -457,7 +457,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                 }
                 else
                 {
-                    bool guncellendiMi = vasiyetci.Update();
+                    bool guncellendiMi = new Model.Services.TBYS.VasiyetciService().Update(vasiyetci);
                     if (guncellendiMi)
                     {
                         MessageHelper.PublishMessage("Vasiyetçi Güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
@@ -646,7 +646,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             try
             {
                 Vasiyetci vasiyetci = new Vasiyetci();
-                vasiyetci = vasiyetci.Select(VasiyetciIdQS.ConvertToInt());
+                vasiyetci = new Model.Services.TBYS.VasiyetciService().GetById(VasiyetciIdQS.ConvertToInt());
                 if (vasiyetci != null)
                 {
                     VasiyeteKonuVarlik vkv = new VasiyeteKonuVarlik();
@@ -676,10 +676,10 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             try
             {
                 Vasiyetci vasiyetci = new Vasiyetci();
-                vasiyetci = vasiyetci.Select(VasiyetciIdQS.ConvertToInt());
+                vasiyetci = new Model.Services.TBYS.VasiyetciService().GetById(VasiyetciIdQS.ConvertToInt());
                 if (vasiyetci != null)
                 {
-                    silindi = vasiyetci.Delete();
+                    silindi = new Model.Services.TBYS.VasiyetciService().Delete(vasiyetci);
                     RedirectToPage(ProjeConstants.PAGE_VASIYETCI_LISTESI);
                 }
                 if (!silindi)

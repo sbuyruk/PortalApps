@@ -131,7 +131,7 @@ namespace TBYS_WebParts.KPSSorguListesiWP
             {
                 Vasiyetci vasiyetciDao = new Vasiyetci();
 
-                List<Vasiyetci> vasiyetcilist = vasiyetciDao.SelectByFilters(SagVefatChk.Checked,
+                List<Vasiyetci> vasiyetcilist = new Model.Services.TBYS.VasiyetciService().GetByFilters(SagVefatChk.Checked,
                     TCKimlikChk.Checked, DogumTarihiChk.Checked);
                 sorgulanacakVasiyetcitList = vasiyetcilist.Select(a => new SorgulanacakKisi()
                 {

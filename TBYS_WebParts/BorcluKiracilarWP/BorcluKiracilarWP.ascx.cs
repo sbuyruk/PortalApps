@@ -600,7 +600,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
         private string OdemeGetir(KiraSozlesme kiraSozlesme, OdemePlani odemePlani)
         {
             Odeme odeme = new Odeme();
-            List<Odeme> odemeler = odeme.SelectBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlani.Id) ;
+            List<Odeme> odemeler = new Model.Services.TBYS.OdemeService().GetBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlani.Id) ;
             string sonuc=string.Empty;
             foreach (Odeme item in odemeler)
             {

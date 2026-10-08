@@ -327,7 +327,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             try
             {
                 Odeme odeme = new Odeme();
-                odeme = odeme.Select(OdemeIdQS.ConvertToInt());
+                odeme = new Model.Services.TBYS.OdemeService().GetById(OdemeIdQS.ConvertToInt());
                 if (odeme != null)
                 {
                     KiraciIdQS = odeme.KiraciId.ToString();
@@ -552,7 +552,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                         decimal yeniOdemeTutari = OdemeTutariTxt.Text.ConvertToDecimal();
 
                         Odeme odemeDao = new Odeme();
-                        bool guncellendiMi = odemeDao.OdemeyiVeOdemePlaniniGuncelle(kiraSozlesme.Id, oncekiOdeme.OdemePlaniId, yeniOdemePlaniId,
+                        bool guncellendiMi = new Model.Services.TBYS.OdemeService().OdemeyiVeOdemePlaniniGuncelle(kiraSozlesme.Id, oncekiOdeme.OdemePlaniId, yeniOdemePlaniId,
                             oncekiOdeme.Id, odemeTarihi, yeniOdemeTutari, AciklamaTxt.Text, CurrentUserName);
                         if (guncellendiMi)
                         {
@@ -567,10 +567,10 @@ namespace TBYS_WebParts.OdemeGirisWP
                     if (kiraSozlesme != null)
                     {
                         Odeme silinecekOdeme = new Odeme();
-                        silinecekOdeme = silinecekOdeme.Select(OdemeIdQS.ConvertToInt());
+                        silinecekOdeme = new Model.Services.TBYS.OdemeService().GetById(OdemeIdQS.ConvertToInt());
 
                         Odeme odemeDao = new Odeme();
-                        bool silindiMi = odemeDao.OdemeyiSilOdemePlaniniGuncelle(silinecekOdeme.Id, string.Empty, silinecekOdeme.OdemePlaniId, CurrentUserName);
+                        bool silindiMi = new Model.Services.TBYS.OdemeService().OdemeyiSilOdemePlaniniGuncelle(silinecekOdeme.Id, string.Empty, silinecekOdeme.OdemePlaniId, CurrentUserName);
                         if (silindiMi)
                         {
                             RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?KiraciId=" + KiraciIdQS + "&Bastar=" + BastarQS+ "&Bittar=" + BittarQS);

@@ -584,7 +584,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                     if (sozlesmeSilindi)
                     {
                         Odeme odeme = new Odeme();
-                        odemeSilindi = odeme.DeleteBySozlesmeId(kiraSozlesmeId);
+                        odemeSilindi = new Model.Services.TBYS.OdemeService().DeleteBySozlesmeId(kiraSozlesmeId);
                         OdemeAyrinti odemeAyrintiDao = new OdemeAyrinti();
                         List<OdemeAyrinti> odemeAyrintiListesi = new Model.Services.TBYS.OdemeAyrintiService().GetBySozlesmeId(kiraSozlesme.Id);
                         if (odemeAyrintiListesi.Count > 0)
