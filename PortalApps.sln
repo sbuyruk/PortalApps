@@ -39,8 +39,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFYS_WebParts", "MFYS_WebPa
 		{84F644D0-0931-4536-9EDC-CBE7A773F546} = {84F644D0-0931-4536-9EDC-CBE7A773F546}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileEncodingScanner", "FileEncodingScanner\FileEncodingScanner.csproj", "{6A35FB6C-BFE2-4173-821B-82657AEEADA7}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{0E6EEB74-B26E-4458-8636-E1EDDFC4DFFE}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\..\Documents\14082026.xlsx = ..\..\..\Documents\14082026.xlsx
@@ -177,18 +175,6 @@ Global
 		{5F4F5384-E3A9-489D-863C-860BE07F36D3}.Release|x64.Build.0 = Release|Any CPU
 		{5F4F5384-E3A9-489D-863C-860BE07F36D3}.Release|x86.ActiveCfg = Release|Any CPU
 		{5F4F5384-E3A9-489D-863C-860BE07F36D3}.Release|x86.Build.0 = Release|Any CPU
-		{6A35FB6C-BFE2-4173-821B-82657AEEADA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6A35FB6C-BFE2-4173-821B-82657AEEADA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6A35FB6C-BFE2-4173-821B-82657AEEADA7}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{6A35FB6C-BFE2-4173-821B-82657AEEADA7}.Debug|x64.Build.0 = Debug|Any CPU
-		{6A35FB6C-BFE2-4173-821B-82657AEEADA7}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6A35FB6C-BFE2-4173-821B-82657AEEADA7}.Debug|x86.Build.0 = Debug|Any CPU
-		{6A35FB6C-BFE2-4173-821B-82657AEEADA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6A35FB6C-BFE2-4173-821B-82657AEEADA7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6A35FB6C-BFE2-4173-821B-82657AEEADA7}.Release|x64.ActiveCfg = Release|Any CPU
-		{6A35FB6C-BFE2-4173-821B-82657AEEADA7}.Release|x64.Build.0 = Release|Any CPU
-		{6A35FB6C-BFE2-4173-821B-82657AEEADA7}.Release|x86.ActiveCfg = Release|Any CPU
-		{6A35FB6C-BFE2-4173-821B-82657AEEADA7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
