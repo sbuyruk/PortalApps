@@ -1,6 +1,7 @@
 using Model.IKYS;
 using Model.Ortak;
 using Model.Services.IKYS;
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -426,10 +427,10 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
 
         private string OncekiTakipleriGetir(int kiraSozlesmeId)
         {
-            KiraBorcuTakip kiraBorcuTakip = new KiraBorcuTakip();
-            int uyariAdet = kiraBorcuTakip.SelectCountBySozlesmeId(kiraSozlesmeId, ProjeConstants.KIRABORCU_UYARI);
-            int yaziliIhtarAdet = kiraBorcuTakip.SelectCountBySozlesmeId(kiraSozlesmeId, ProjeConstants.KIRABORCU_YAZILIIHTAR);
-            int icraTakibiAdet = kiraBorcuTakip.SelectCountBySozlesmeId(kiraSozlesmeId, ProjeConstants.KIRABORCU_ICRATAKIBI);
+            KiraBorcuTakipService kiraBorcuTakipService = new KiraBorcuTakipService();
+            int uyariAdet = kiraBorcuTakipService.GetCountBySozlesmeId(kiraSozlesmeId, ProjeConstants.KIRABORCU_UYARI);
+            int yaziliIhtarAdet = kiraBorcuTakipService.GetCountBySozlesmeId(kiraSozlesmeId, ProjeConstants.KIRABORCU_YAZILIIHTAR);
+            int icraTakibiAdet = kiraBorcuTakipService.GetCountBySozlesmeId(kiraSozlesmeId, ProjeConstants.KIRABORCU_ICRATAKIBI);
 
             string retval = " Bu sözlesme yili içinde " +
                 (icraTakibiAdet > 0 ? icraTakibiAdet + " defa " + ProjeConstants.KIRABORCU_ICRATAKIBI : string.Empty) +
@@ -442,8 +443,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
         private string TakipIslemiURLGetir(int kiraciId, int kiraSozlesmeId, int odemePlaniId , string kiraBedeli,string toplamBorcu, int borcluAyAdedi, string bolge, string birim)
         {
             string retval = string.Empty;
-            KiraBorcuTakip kiraBorcuTakip = new KiraBorcuTakip();
-            kiraBorcuTakip = kiraBorcuTakip.SelectByKiraciIdAyYil(kiraciId);
+            KiraBorcuTakip kiraBorcuTakip = new KiraBorcuTakipService().GetByKiraciIdAyYil(kiraciId);
             string takipIslemi = borcluAyAdedi == 1 ? ProjeConstants.KIRABORCU_UYARI :
                 (borcluAyAdedi == 2 ? ProjeConstants.KIRABORCU_YAZILIIHTAR :
                  borcluAyAdedi > 2 ? ProjeConstants.KIRABORCU_ICRATAKIBI : string.Empty);
@@ -814,7 +814,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
         {
             int kiraBorcuTakipId = paramKiraBorcuTakipIdLbl.Value.ConvertToInt();
             KiraBorcuTakip kiraBorcuTakip = new KiraBorcuTakip();
-            kiraBorcuTakip = kiraBorcuTakip.Select(kiraBorcuTakipId);
+            kiraBorcuTakip = new KiraBorcuTakipService().GetById(kiraBorcuTakipId);
             if (kiraBorcuTakip != null)
             {
                 BaslikLbl.CssClass = "col-form-label text-primary fw-bold";
@@ -924,7 +924,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                     kiraBorcuTakip.IslemTarihi = UtilityHelper.TariheSaatEkle(IslemTarihiTxt.Text.ConvertToDatetime(), string.IsNullOrEmpty(IslemSaatiDDL.SelectedItem.Text) ? "00:00" : IslemSaatiDDL.SelectedItem.Text); 
                 }
                 kiraBorcuTakip.TakipIslemi=  takipIslemi ;
-                kiraBorcuTakip.Save();
+                new KiraBorcuTakipService().Save(kiraBorcuTakip);
                 UtilityHelper.ScriptCalistir("CloseKiraBocuTakibiModal();");
                 BorcluKiraclariTabloyaDoldur();
                 MessageHelper.PublishMessage("Takip islemi kaydedildi",ProjeConstants.MESAJ_BASARILI,2000);
@@ -943,7 +943,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
             {
                 int kiraBorcuTakipId = paramKiraBorcuTakipIdLbl.Value.ConvertToInt();
                 KiraBorcuTakip kiraBorcuTakip = new KiraBorcuTakip();
-                kiraBorcuTakip = kiraBorcuTakip.Select(kiraBorcuTakipId);
+                kiraBorcuTakip = new KiraBorcuTakipService().GetById(kiraBorcuTakipId);
                 if (kiraBorcuTakip != null)
                 {
                     kiraBorcuTakip.IslemAyi = DateTime.Today.Month;
@@ -957,7 +957,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                     {
                         kiraBorcuTakip.IslemTarihi = UtilityHelper.TariheSaatEkle(IslemTarihiTxt.Text.ConvertToDatetime(), string.IsNullOrEmpty(IslemSaatiDDL.SelectedItem.Text) ? "00:00" : IslemSaatiDDL.SelectedItem.Text);
                     }
-                    kiraBorcuTakip.Update();
+                    new KiraBorcuTakipService().Update(kiraBorcuTakip);
                     BorcluKiraclariTabloyaDoldur();
                     UtilityHelper.ScriptCalistir("CloseKiraBocuTakibiModal();");
                     MessageHelper.PublishMessage("Takip islemi güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);

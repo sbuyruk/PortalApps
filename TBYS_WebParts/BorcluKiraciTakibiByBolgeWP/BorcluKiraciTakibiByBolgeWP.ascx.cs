@@ -1,4 +1,5 @@
 using Model.Ortak;
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.ComponentModel;
@@ -142,21 +143,21 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             GenelBaslikCell.Text = AyDDL.SelectedItem.Text + " " + YilDDL.SelectedItem.Text + " Itibari Ile  Yapilan Takip Islemleri";
 
-            KiraBorcuTakip kiraBorcuTakip = new KiraBorcuTakip();
+            KiraBorcuTakipService kiraBorcuTakipService = new KiraBorcuTakipService();
 
             //Ank 
-            int AnkUyariAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_UYARI, ProjeConstants.BOLGE_ANKARA, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
-            int AnkYaziliIhtarAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_YAZILIIHTAR, ProjeConstants.BOLGE_ANKARA, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
-            int AnkIcraTakibiAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_ICRATAKIBI, ProjeConstants.BOLGE_ANKARA, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int AnkUyariAdet = kiraBorcuTakipService.GetCountByFilters(ProjeConstants.KIRABORCU_UYARI, ProjeConstants.BOLGE_ANKARA, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int AnkYaziliIhtarAdet = kiraBorcuTakipService.GetCountByFilters(ProjeConstants.KIRABORCU_YAZILIIHTAR, ProjeConstants.BOLGE_ANKARA, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int AnkIcraTakibiAdet = kiraBorcuTakipService.GetCountByFilters(ProjeConstants.KIRABORCU_ICRATAKIBI, ProjeConstants.BOLGE_ANKARA, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
             int AnkToplamAdet = AnkUyariAdet + AnkYaziliIhtarAdet + AnkIcraTakibiAdet;
             AnkUyariCell.Text = AnkUyariAdet.ToString();
             AnkYaziliIhtarCell.Text = AnkYaziliIhtarAdet.ToString();
             AnkIcraTakibiCell.Text = AnkIcraTakibiAdet.ToString();
             AnkTopCell.Text = AnkToplamAdet.ToString();
             //Ist 
-            int IstUyariAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_UYARI, ProjeConstants.BOLGE_ISTANBUL, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
-            int IstYaziliIhtarAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_YAZILIIHTAR, ProjeConstants.BOLGE_ISTANBUL, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
-            int IstIcraTakibiAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_ICRATAKIBI, ProjeConstants.BOLGE_ISTANBUL, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int IstUyariAdet = kiraBorcuTakipService.GetCountByFilters(ProjeConstants.KIRABORCU_UYARI, ProjeConstants.BOLGE_ISTANBUL, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int IstYaziliIhtarAdet = kiraBorcuTakipService.GetCountByFilters(ProjeConstants.KIRABORCU_YAZILIIHTAR, ProjeConstants.BOLGE_ISTANBUL, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int IstIcraTakibiAdet = kiraBorcuTakipService.GetCountByFilters(ProjeConstants.KIRABORCU_ICRATAKIBI, ProjeConstants.BOLGE_ISTANBUL, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
             int IstToplamAdet = IstUyariAdet + IstYaziliIhtarAdet + IstIcraTakibiAdet;
             IstUyariCell.Text = IstUyariAdet.ToString();
             IstYaziliIhtarCell.Text = IstYaziliIhtarAdet.ToString();
@@ -164,9 +165,9 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
             IstTopCell.Text = IstToplamAdet.ToString();
 
             //Izm 
-            int IzmUyariAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_UYARI, ProjeConstants.BOLGE_IZMIR, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
-            int IzmYaziliIhtarAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_YAZILIIHTAR, ProjeConstants.BOLGE_IZMIR, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
-            int IzmIcraTakibiAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_ICRATAKIBI, ProjeConstants.BOLGE_IZMIR, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int IzmUyariAdet = kiraBorcuTakipService.GetCountByFilters(ProjeConstants.KIRABORCU_UYARI, ProjeConstants.BOLGE_IZMIR, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int IzmYaziliIhtarAdet = kiraBorcuTakipService.GetCountByFilters(ProjeConstants.KIRABORCU_YAZILIIHTAR, ProjeConstants.BOLGE_IZMIR, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int IzmIcraTakibiAdet = kiraBorcuTakipService.GetCountByFilters(ProjeConstants.KIRABORCU_ICRATAKIBI, ProjeConstants.BOLGE_IZMIR, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
             int IzmToplamAdet = IzmUyariAdet + IzmYaziliIhtarAdet + IzmIcraTakibiAdet;
             IzmUyariCell.Text = IzmUyariAdet.ToString();
             IzmYaziliIhtarCell.Text = IzmYaziliIhtarAdet.ToString();
@@ -174,9 +175,9 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
             IzmTopCell.Text = IzmToplamAdet.ToString();
 
             //Mer 
-            int MerUyariAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_UYARI, ProjeConstants.BOLGE_IZMIR, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
-            int MerYaziliIhtarAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_YAZILIIHTAR, ProjeConstants.BOLGE_IZMIR, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
-            int MerIcraTakibiAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_ICRATAKIBI, ProjeConstants.BOLGE_IZMIR, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int MerUyariAdet = kiraBorcuTakipService.GetCountByFilters(ProjeConstants.KIRABORCU_UYARI, ProjeConstants.BOLGE_IZMIR, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int MerYaziliIhtarAdet = kiraBorcuTakipService.GetCountByFilters(ProjeConstants.KIRABORCU_YAZILIIHTAR, ProjeConstants.BOLGE_IZMIR, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int MerIcraTakibiAdet = kiraBorcuTakipService.GetCountByFilters(ProjeConstants.KIRABORCU_ICRATAKIBI, ProjeConstants.BOLGE_IZMIR, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
             int MerToplamAdet = MerUyariAdet + MerYaziliIhtarAdet + MerIcraTakibiAdet;
             MerUyariCell.Text = MerUyariAdet.ToString();
             MerYaziliIhtarCell.Text = MerYaziliIhtarAdet.ToString();
@@ -184,9 +185,9 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
             MerTopCell.Text = MerToplamAdet.ToString();
 
             //Erz 
-            int ErzUyariAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_UYARI, ProjeConstants.BOLGE_ERZURUM, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
-            int ErzYaziliIhtarAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_YAZILIIHTAR, ProjeConstants.BOLGE_ERZURUM, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
-            int ErzIcraTakibiAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_ICRATAKIBI, ProjeConstants.BOLGE_ERZURUM, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int ErzUyariAdet = kiraBorcuTakipService.GetCountByFilters(ProjeConstants.KIRABORCU_UYARI, ProjeConstants.BOLGE_ERZURUM, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int ErzYaziliIhtarAdet = kiraBorcuTakipService.GetCountByFilters(ProjeConstants.KIRABORCU_YAZILIIHTAR, ProjeConstants.BOLGE_ERZURUM, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int ErzIcraTakibiAdet = kiraBorcuTakipService.GetCountByFilters(ProjeConstants.KIRABORCU_ICRATAKIBI, ProjeConstants.BOLGE_ERZURUM, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
             int ErzToplamAdet = ErzUyariAdet + ErzYaziliIhtarAdet + ErzIcraTakibiAdet;
             ErzUyariCell.Text = ErzUyariAdet.ToString();
             ErzYaziliIhtarCell.Text = ErzYaziliIhtarAdet.ToString();
