@@ -159,7 +159,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
                     OdemePlaniGoruntuleBtn.Visible = false;
                     OdemeYapBtn.Visible = false;
                     OdemePlani odemePlani = new OdemePlani();
-                    bool odemePlaniVarMi = odemePlani.OdemePlaniVarMi(kiraSozlesme.Id);
+                    bool odemePlaniVarMi = new Model.Services.TBYS.OdemePlaniService().Exists(kiraSozlesme.Id);
                     if (odemePlaniVarMi)
                     {
                         OdemePlaniGoruntuleBtn.Visible = true;
@@ -508,7 +508,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
                     OdemePlani odemePlani = new OdemePlani();
-                    bool odemePlaniVarMi = odemePlani.OdemePlaniVarMi(kiraSozlesme.Id);
+                    bool odemePlaniVarMi = new Model.Services.TBYS.OdemePlaniService().Exists(kiraSozlesme.Id);
                     if (odemePlani != null)
                     {
                         OdemePlaniGoruntule(kiraSozlesme, kiraci);
@@ -523,7 +523,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
 
             OdemePlani odemePlaniDao = new OdemePlani();
-            List<OdemePlani> list = odemePlaniDao.SelectBySozlesmeId(kiraSozlesme.Id);
+            List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
             if (list.Count > 0)
             {
                 DevirLbl.Text = "Devir Anapara : " + kiraSozlesme.DevirAnaPara.ToString("N", culturInfo) + "      "

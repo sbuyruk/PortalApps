@@ -176,7 +176,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                     OdemePlaniGoruntuleBtn.Visible = false;
                     OdemePlaniBtn.Visible = false;
                     OdemePlani odemePlani = new OdemePlani();
-                    bool odemePlaniVarMi = odemePlani.OdemePlaniVarMi(kiraSozlesme.Id);
+                    bool odemePlaniVarMi = new Model.Services.TBYS.OdemePlaniService().Exists(kiraSozlesme.Id);
                     if (odemePlaniVarMi)
                     {
                         OdemePlaniGoruntuleBtn.Visible = true;
@@ -214,7 +214,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                     if (oncekiKiraSozlesmesi != null)
                     {
                         OdemePlani odemePlaniDao = new OdemePlani();
-                        List<OdemePlani> odemePlaniList = odemePlaniDao.SelectBySozlesmeId(oncekiKiraSozlesmesi.Id);
+                        List<OdemePlani> odemePlaniList = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(oncekiKiraSozlesmesi.Id);
                         if (odemePlaniList.Count>0)
                         {
                             OdemePlani odemePlani = odemePlaniList[odemePlaniList.Count - 1];
@@ -343,7 +343,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
                     OdemePlani odemePlani = new OdemePlani();
-                    bool odemePlaniVarMi = odemePlani.OdemePlaniVarMi(kiraSozlesme.Id);
+                    bool odemePlaniVarMi = new Model.Services.TBYS.OdemePlaniService().Exists(kiraSozlesme.Id);
                     if (odemePlani != null)
                     {
                         OdemePlaniGoruntule(kiraSozlesme);
@@ -361,7 +361,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
 
             OdemePlani odemePlaniDao = new OdemePlani();
-            List<OdemePlani> list = odemePlaniDao.SelectBySozlesmeId(kiraSozlesme.Id);
+            List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
             if (list.Count > 0)
             {
                 DevirLbl.Text = "Devir Anapara : " + kiraSozlesme.DevirAnaPara.ToString("N", culturInfo) + "      "
@@ -416,7 +416,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                 {
                     //önceki ödeme planının son satırındaki anapara, faiztutari, faizlibakiye alanlarını al, sözleşmenin devir alanlarına koy
                     OdemePlani odemePlaniDao = new OdemePlani();
-                    List<OdemePlani> oncekiOdemePlaniList = odemePlaniDao.SelectBySozlesmeId(oncekiKiraSozlesmesi.Id);
+                    List<OdemePlani> oncekiOdemePlaniList = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(oncekiKiraSozlesmesi.Id);
                     OdemePlani oncekiOdemePlani = oncekiOdemePlaniList[oncekiOdemePlaniList.Count - 1];
                     kiraSozlesme.DevirAnaPara = oncekiOdemePlani.AnaPara;
                     kiraSozlesme.DevirFaizliBakiye = oncekiOdemePlani.FaizliBakiye;
@@ -425,7 +425,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                     if (devirAlanlariGuncellendi)
                     {
                         //Ödeme Planında devir satırını güncelle 0ncı satır
-                        List<OdemePlani> odemePlaniList= odemePlaniDao.SelectBySozlesmeId(kiraSozlesme.Id);
+                        List<OdemePlani> odemePlaniList= new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
                         OdemePlani odemePlani = odemePlaniList[0];//devir satiri
                         if (odemePlani != null)
                         {

@@ -338,7 +338,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
             //DateTime sonTarih = secilenTarih.AddMonths(1).AddDays(-1); //AddDays(-1);
             OdemePlani opl = new OdemePlani();
             int kayitSayisi = 0;
-            string json = opl.SelectBorcluOdemePlanlariByBolgeTarihJson(bolgeId, vadeBastar, vadeBittar, 2, 2, ref kayitSayisi);
+            string json = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarihJson(bolgeId, vadeBastar, vadeBittar, 2, 2, ref kayitSayisi);
             TableDataLbl.Text = "Toplam " + kayitSayisi + " kayit bulundu";
             return json;
         }
@@ -481,7 +481,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
             //DateTime ilkTarih = secilenTarih;//.AddDays(1);
             //DateTime sonTarih = secilenTarih.AddMonths(1).AddDays(-1); //AddDays(-1);
             OdemePlani opl = new OdemePlani();
-            DataTable dataTable = opl.SelectBorcluOdemePlanlariByBolgeTarih(bolgeId, vadeBastar, vadeBittar, 2, 2);
+            DataTable dataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(bolgeId, vadeBastar, vadeBittar, 2, 2);
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
@@ -549,7 +549,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
             //DateTime ilkTarih = secilenTarih;//.AddDays(1);
             //DateTime sonTarih = secilenTarih.AddMonths(1).AddDays(-1); //AddDays(-1);
             OdemePlani opl = new OdemePlani();
-            DataTable dataTable = opl.SelectBorcluOdemePlanlariByBolgeTarih(BolgeIdQS, vadeBastar, vadeBittar, 2, 2);
+            DataTable dataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(BolgeIdQS, vadeBastar, vadeBittar, 2, 2);
             if (dataTable != null)
             {
                 int index = 1;

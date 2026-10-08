@@ -177,7 +177,7 @@ namespace TBYS_WebParts.OdemePlaniWP
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             OdemePlani opl = new OdemePlani();
-            List<OdemePlani> odemePlaniListesi = opl.SelectBySozlesmeId(kiraSozlesme.Id);
+            List<OdemePlani> odemePlaniListesi = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
             //if (odemePlaniListesi.Count > 0)
             //{
             //    OdemeYapDiv.Attributes["style"] = "display:block";
@@ -516,7 +516,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                 if (!OdemePlaniVarMi(kiraSozlesme))
                 {
                     OdemePlani op = new OdemePlani();
-                    isSaved = op.OdemePlaniOlustur(kiraSozlesme);
+                    isSaved = new Model.Services.TBYS.OdemePlaniService().CreatePaymentPlan(kiraSozlesme);
                 }
                 else// odeme plani var
                 {
@@ -535,7 +535,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             bool retval = false;
 
             OdemePlani odemePlaniDao = new OdemePlani();
-            List<OdemePlani> list = odemePlaniDao.SelectBySozlesmeId(kiraSozlesme.Id);
+            List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
             if (list.Count > 0)
             {
                 retval = true;
@@ -548,12 +548,12 @@ namespace TBYS_WebParts.OdemePlaniWP
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
 
             OdemePlani odemePlani = new OdemePlani();
-            odemePlani = odemePlani.Select<OdemePlani>(odemePlaniId);
+            odemePlani = new Model.Services.TBYS.OdemePlaniService().GetById(odemePlaniId);
 
             if (odemePlani != null)
             {
                 OdemeAyrinti odemeAyrinti = new OdemeAyrinti();
-                List<OdemeAyrinti> odemeAyrintiList = odemeAyrinti.Select(odemePlani);
+                List<OdemeAyrinti> odemeAyrintiList = new Model.Services.TBYS.OdemeAyrintiService().GetByPlan(odemePlani);
                 foreach (OdemeAyrinti item in odemeAyrintiList)
                 {
                     TableRow row = new TableRow();
@@ -647,14 +647,14 @@ namespace TBYS_WebParts.OdemePlaniWP
             //        int ay = odemeTarihi.Month;
 
             //        OdemePlani odemePlaniDao = new OdemePlani();
-            //        List<OdemePlani> list = odemePlaniDao.SelectBySozlesmeId(kiraSozlesme.Id);
+            //        List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
             //        if (list.Count > 0)
             //        {
             //            OdemePlani odemePlani = list[1];//ilk taksit, lits[0] da devir kaydi var
 
             //            if (odemeTarihi < odemePlani.OdemeBasTar)// ödeme baslama tarihinden önce ödeme yapilmis
             //            {
-            //                odemePlani = odemePlani.SelectIlkOdemePlaniBySozlesmeId(kiraSozlesme.Id);//odemeyi ilk OdemePlanina kaydet 
+            //                odemePlani = new Model.Services.TBYS.OdemePlaniService().GetFirstBySozlesmeId(kiraSozlesme.Id);//odemeyi ilk OdemePlanina kaydet
             //                Odeme odeme = new Odeme();
             //                odeme = odeme.OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, OdemeTarihiTxt.Value.ConvertToDatetime(), OdenenTutarTxt.Value.ConvertToDecimal(), AciklamaTxt.Text, CurrentUserName);
             //                RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + kiraSozlesme.Id);
@@ -669,11 +669,11 @@ namespace TBYS_WebParts.OdemePlaniWP
             //                {
             //                    if (kiraSozlesme.SozBitTar >= odemeTarihi)
             //                    {
-            //                        odemePlani = odemePlani.SelectBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, OdemeTarihiTxt.Value.ConvertToDatetime());
+            //                        odemePlani = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, OdemeTarihiTxt.Value.ConvertToDatetime());
             //                    }
             //                    else //1 taksitte ödenenlerde odemem plani tarihe göre bulunanamayabiliyor o yüzden son takside eklesin
             //                    {
-            //                        odemePlani = odemePlani.SelectSonOdemePlaniBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet   
+            //                        odemePlani = new Model.Services.TBYS.OdemePlaniService().GetLastBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet
             //                    }
             //                    if (odemePlani == null)
             //                        throw (new Exception("Ödeme Plani mevcut degil."));
@@ -689,7 +689,7 @@ namespace TBYS_WebParts.OdemePlaniWP
 
             //                {
             //                    //throw (new Exception("Ödeme Tarihi Sözlesme bitisinden sonra olamaz."));
-            //                    odemePlani = odemePlani.SelectSonOdemePlaniBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet   
+            //                    odemePlani = new Model.Services.TBYS.OdemePlaniService().GetLastBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet
             //                    if (odemePlani != null)
             //                    {
             //                        Odeme odeme = new Odeme();
@@ -706,10 +706,10 @@ namespace TBYS_WebParts.OdemePlaniWP
             //            }
             //            else //odeme bas- bit arasinda yapilmis
             //            {
-            //                odemePlani = odemePlani.SelectBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, OdemeTarihiTxt.Value.ConvertToDatetime()); 
+            //                odemePlani = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, OdemeTarihiTxt.Value.ConvertToDatetime());
             //                if (odemePlani == null)
             //                {
-            //                    odemePlani = odemePlani.SelectSonOdemePlaniBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet   
+            //                    odemePlani = new Model.Services.TBYS.OdemePlaniService().GetLastBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet
             //                }
             //                if (odemePlani == null)
             //                    throw (new Exception("Ödeme Plani mevcut degil."));
@@ -779,7 +779,7 @@ namespace TBYS_WebParts.OdemePlaniWP
         {
             bool silindi = false;
             OdemePlani odemePlaniDao = new OdemePlani();
-            List<OdemePlani> list = odemePlaniDao.SelectBySozlesmeId(kiraSozlesme.Id);
+            List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
             if (list.Count > 0)
             {
                 OdemePlani op = list[0];
@@ -796,7 +796,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                         //    odemeDao.DeleteBySozlesmeId(kiraSozlesme.Id);
                         //}
                         OdemeAyrinti odemeAyrintiDao = new OdemeAyrinti();
-                        List<OdemeAyrinti> odemeAyrintiListesi = odemeAyrintiDao.SelectBySozlesmeId(kiraSozlesme.Id);
+                        List<OdemeAyrinti> odemeAyrintiListesi = new Model.Services.TBYS.OdemeAyrintiService().GetBySozlesmeId(kiraSozlesme.Id);
                         if (odemeAyrintiListesi.Count > 0)
                         {
                             odemeAyrintiDao.DeleteBySozlesmeId(kiraSozlesme.Id);
@@ -874,7 +874,7 @@ namespace TBYS_WebParts.OdemePlaniWP
         protected void KiraBedeliniDegistirBtn_Click(object sender, EventArgs e)
         {
             OdemePlani odemePlani = new OdemePlani();
-            odemePlani = odemePlani.Select<OdemePlani>(HiddenOdemePlaniId.Value.ConvertToInt());
+            odemePlani = new Model.Services.TBYS.OdemePlaniService().GetById(HiddenOdemePlaniId.Value.ConvertToInt());
             if (odemePlani != null)
             {
                 odemePlani.KiraBedeli = YeniKiraBedeliTxt.Text.ConvertToDecimal();
@@ -910,7 +910,7 @@ namespace TBYS_WebParts.OdemePlaniWP
         protected void VadeDegistirBtn_Click(object sender, EventArgs e)
         {
             OdemePlani odemePlani = new OdemePlani();
-            odemePlani = odemePlani.Select<OdemePlani>(HiddenOdemePlaniId.Value.ConvertToInt());
+            odemePlani = new Model.Services.TBYS.OdemePlaniService().GetById(HiddenOdemePlaniId.Value.ConvertToInt());
             if (odemePlani != null)
             {
                 odemePlani.VadeBasTar = VadeBasTarTxt.Value.ConvertToDatetime();

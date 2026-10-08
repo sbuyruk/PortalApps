@@ -64,7 +64,7 @@ namespace Model.Ortak
 
             # region devir eden anapara ve faiz varsa dikkate al
             OdemePlani odemePlaniDao = new OdemePlani();
-            List<OdemePlani> list = odemePlaniDao.SelectBySozlesmeId(kiraSozlesme.Id);
+            List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
             if (list.Count > 0)
             {
                 OdemePlani odemePlaniDevir = list[0];
@@ -205,7 +205,7 @@ namespace Model.Ortak
 
             //bu kiraciya ait tüm ödeme planlarini al tarih sirali
             OdemePlani op = new OdemePlani();
-            List<OdemePlani> opList = op.SelectBySozlesmeId(kiraSozlesme.Id);
+            List<OdemePlani> opList = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
             var faizToplami = 0m;
             var faizTutari = 0m;
             var anaParaToplami = 0m;
@@ -225,8 +225,8 @@ namespace Model.Ortak
                 
                 GunlukGecikmeZammiHesaplaRecursiveDegil(kiraSozlesme, odemePlani, ref anaParaToplami);
                 anaParaToplami = anaParaToplami - odemePlani.KiraBedeli;
-                var gecikmeZammiTutari = odemeAyrintiDao.SelectSumGecikmeZammiTutariByOdemePlaniId(odemePlani.Id);
-                var gecikmeZammiOrani = odemeAyrintiDao.SelectSonGecikmeZammiTutariByOdemePlaniId(odemePlani.Id);
+                var gecikmeZammiTutari = new Model.Services.TBYS.OdemeAyrintiService().GetSumDelayAmount(odemePlani.Id);
+                var gecikmeZammiOrani = new Model.Services.TBYS.OdemeAyrintiService().GetLastDelayRate(odemePlani.Id);
 
                 faizToplami += gecikmeZammiTutari + devirFaiz;
                 devirFaiz = 0;//devirFaiz bir kere eklensin;
@@ -281,7 +281,7 @@ namespace Model.Ortak
             string saveOrUpdate = "update";
 
             OdemeAyrinti odemeAyrinti = new OdemeAyrinti();
-            odemeAyrinti = odemeAyrinti.Select(kiraSozlesme, odemePlani.Id, gz.Id, odemeId);
+            odemeAyrinti = new Model.Services.TBYS.OdemeAyrintiService().GetByPlanAndDelay(kiraSozlesme, odemePlani.Id, gz.Id, odemeId);
             if (odemeAyrinti == null)
             {
                 odemeAyrinti = new OdemeAyrinti();
@@ -492,14 +492,14 @@ namespace Model.Ortak
                     int ay = odemeTarihi.Month;
 
                     OdemePlani odemePlaniDao = new OdemePlani();
-                    List<OdemePlani> list = odemePlaniDao.SelectBySozlesmeId(kiraSozlesme.Id);
+                    List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
                     if (list.Count > 0)
                     {
                         OdemePlani odemePlani = list[1];//ilk taksit, lits[0] da devir kaydi var
 
                         if (odemeTarihi < odemePlani.OdemeBasTar)// ödeme baslama tarihinden önce ödeme yapilmis
                         {
-                            odemePlani = odemePlani.SelectIlkOdemePlaniBySozlesmeId(kiraSozlesme.Id);//odemeyi ilk OdemePlanina kaydet 
+                            odemePlani = new Model.Services.TBYS.OdemePlaniService().GetFirstBySozlesmeId(kiraSozlesme.Id);//odemeyi ilk OdemePlanina kaydet
                             Odeme odeme = new Odeme();
                             odeme = odeme.OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
                             odemeYapildiMi = true;
@@ -515,11 +515,11 @@ namespace Model.Ortak
                             {
                                 if (kiraSozlesme.SozBitTar >= odemeTarihi)
                                 {
-                                    odemePlani = odemePlani.SelectBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi);
+                                    odemePlani = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi);
                                 }
                                 else //1 taksitte ödenenlerde odemem plani tarihe göre bulunanamayabiliyor o yüzden son takside eklesin
                                 {
-                                    odemePlani = odemePlani.SelectSonOdemePlaniBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet   
+                                    odemePlani = new Model.Services.TBYS.OdemePlaniService().GetLastBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet
                                 }
                                 if (odemePlani == null)
                                     throw (new Exception("Ödeme Plani mevcut degil."));
@@ -535,7 +535,7 @@ namespace Model.Ortak
 
                             {
                                 //throw (new Exception("Ödeme Tarihi Sözlesme bitisinden sonra olamaz."));
-                                odemePlani = odemePlani.SelectSonOdemePlaniBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet   
+                                odemePlani = new Model.Services.TBYS.OdemePlaniService().GetLastBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet
                                 if (odemePlani != null)
                                 {
                                     Odeme odeme = new Odeme();
@@ -553,10 +553,10 @@ namespace Model.Ortak
                         }
                         else //odeme bas- bit arasinda yapilmis
                         {
-                            odemePlani = odemePlani.SelectBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi);
+                            odemePlani = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi);
                             if (odemePlani == null)
                             {
-                                odemePlani = odemePlani.SelectSonOdemePlaniBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet   
+                                odemePlani = new Model.Services.TBYS.OdemePlaniService().GetLastBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet
                             }
                             if (odemePlani == null)
                                 throw (new Exception("Ödeme Plani mevcut degil."));
@@ -590,7 +590,7 @@ namespace Model.Ortak
             decimal toplamOdeme = 0m;
             decimal toplamIade = 0m;
             TeminatIslem teminatIslemDao = new TeminatIslem();
-            DataTable dataTable = teminatIslemDao.SelectSumIslemTutariByKiraciIdGroupByIslemTipi(kiraSozlesme.KiraciId);
+            DataTable dataTable = new Model.Services.TBYS.TeminatIslemService().GetSumByKiraciIdGroupByType(kiraSozlesme.KiraciId);
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)

@@ -139,14 +139,14 @@ namespace Model.TBYS
                 if (silindiMi)
                 {
                     OdemeAyrinti odemeAyrintiDao = new OdemeAyrinti();
-                    List<OdemeAyrinti> odemeAyrintiListesi = odemeAyrintiDao.SelectByOdemeIdOdemePlaniId(odemeId, odemePlaniId);
+                    List<OdemeAyrinti> odemeAyrintiListesi = new Model.Services.TBYS.OdemeAyrintiService().GetByOdemeIdOdemePlaniId(odemeId, odemePlaniId);
                     if (odemeAyrintiListesi.Count > 0)
                     {
                         odemeAyrintiDao.DeleteByOdemeIdOdemePlaniId(odemeId, odemePlaniId);
                     }
 
                     OdemePlani odemePlani = new OdemePlani();
-                    odemePlani = odemePlani.Select<OdemePlani>(odemePlaniId);
+                    odemePlani = new Model.Services.TBYS.OdemePlaniService().GetById(odemePlaniId);
                     Odeme odemeDao = new Odeme();
                     decimal toplamOdenen = odemeDao.SelectSumBySozlesmeIdOdemePlaniId(odemePlani.SozlesmeId, odemePlani.Id);
                     odemePlani.OdenenTutar = toplamOdenen;
@@ -175,24 +175,24 @@ namespace Model.TBYS
             {
                 
                 OdemePlani oncekiOdemePlani = new OdemePlani();
-                oncekiOdemePlani = oncekiOdemePlani.Select<OdemePlani>(oncekiOdemePlaniId);
+                oncekiOdemePlani = new Model.Services.TBYS.OdemePlaniService().GetById(oncekiOdemePlaniId);
                 
                 Odeme odeme = new Odeme();
                 bool guncellendiMi = false;
                 OdemePlani yeniOdemePlani = new OdemePlani();
 
-                yeniOdemePlani = yeniOdemePlani.Select<OdemePlani>(yeniOdemePlaniId);//SelectBySozlesmeIdOdemeTarihi(sozlesmeId, odemeTarihi);
+                yeniOdemePlani = new Model.Services.TBYS.OdemePlaniService().GetById(yeniOdemePlaniId);//SelectBySozlesmeIdOdemeTarihi(sozlesmeId, odemeTarihi);
 
                 if (yeniOdemePlani == null)
                 {
                     yeniOdemePlani = new OdemePlani();
                     if (odemeTarihi <= oncekiOdemePlani.OdemeBasTar)
                     {
-                        yeniOdemePlani = yeniOdemePlani.SelectIlkOdemePlaniBySozlesmeId(sozlesmeId);
+                        yeniOdemePlani = new Model.Services.TBYS.OdemePlaniService().GetFirstBySozlesmeId(sozlesmeId);
                     }
                     else if (odemeTarihi >= oncekiOdemePlani.OdemeBitTar)
                     {
-                        yeniOdemePlani = yeniOdemePlani.SelectSonOdemePlaniBySozlesmeId(sozlesmeId);
+                        yeniOdemePlani = new Model.Services.TBYS.OdemePlaniService().GetLastBySozlesmeId(sozlesmeId);
                     }
                     else
                     {

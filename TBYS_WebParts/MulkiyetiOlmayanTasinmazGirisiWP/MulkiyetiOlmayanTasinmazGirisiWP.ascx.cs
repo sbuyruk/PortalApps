@@ -391,7 +391,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 if (id > 0)
                 {
                     Sigorta sigorta = new Sigorta();
-                    sigorta = sigorta.SelectByTasinmazId(tasinmaz.Id);
+                    sigorta = new Model.Services.TBYS.SigortaService().GetLatestByTasinmazId(tasinmaz.Id);
                     if (sigorta == null)//henuz sigorta kaydi yok yeni sigorta yarat
                     {
                         sigorta = new Sigorta();
@@ -449,7 +449,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 {
                     isSaved = new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
                     Sigorta sigorta = new Sigorta();
-                    sigorta = sigorta.SelectByTasinmazId(tasinmaz.Id);
+                    sigorta = new Model.Services.TBYS.SigortaService().GetLatestByTasinmazId(tasinmaz.Id);
                     if (sigorta == null)//henuz sigorta kaydi yok yeni sigorta yarat
                     {
                         sigorta = new Sigorta();

@@ -164,7 +164,7 @@ namespace TBYS_WebParts.OdemePlaniListesiWP
         {
             DateTime bugun = DateTime.Today;
             OdemePlani odemePlani = new OdemePlani();
-            DataTable dataTable = odemePlani.SelectOdemePlaniListByTarihReturnDT(bugun);
+            DataTable dataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetListByDate(bugun);
             return dataTable;
         }
 

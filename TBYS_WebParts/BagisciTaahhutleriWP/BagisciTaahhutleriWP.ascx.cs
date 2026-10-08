@@ -88,7 +88,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
             BagisciyiTaahhutListesineEkleBtn.Visible = false;
 
             TasinmazTaahhut tt = new TasinmazTaahhut();
-            tt = tt.SelectByTCKimlikNo(bagisci.TCKimlikNo);
+            tt = new Model.Services.TBYS.TasinmazTaahhutService().GetByTcKimlikNo(bagisci.TCKimlikNo);
             if (tt == null || tt.TCKimlikNo == 0)
             {
                 BagisciyiTaahhutListesineEkleBtn.Visible = true;
@@ -184,7 +184,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
             //Column headers
             TaahhutTableHeaders();
             TasinmazTaahhut tt = new TasinmazTaahhut();
-            List<TasinmazTaahhut> list = tt.SelectByBagisciId(bagisci.Id);
+            List<TasinmazTaahhut> list = new Model.Services.TBYS.TasinmazTaahhutService().GetByBagisciId(bagisci.Id);
             int SiraNo = 1;
             foreach (TasinmazTaahhut item in list)
             {
@@ -271,7 +271,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
 
             int taahhutId = ParamTaahhutIdLbl.Value.ConvertToInt();
             TasinmazTaahhut tasinmazTaahhut = new TasinmazTaahhut();
-            tasinmazTaahhut = tasinmazTaahhut.Select<TasinmazTaahhut>(taahhutId);
+            tasinmazTaahhut = new Model.Services.TBYS.TasinmazTaahhutService().GetById(taahhutId);
             if (tasinmazTaahhut != null)
             {
                 AdiTxt.Text = tasinmazTaahhut.Adi;
@@ -357,7 +357,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
             {
                 int taahhutId = ParamTaahhutIdLbl.Value.ConvertToInt();
                 TasinmazTaahhut tt = new TasinmazTaahhut();
-                tt = tt.Select<TasinmazTaahhut>(taahhutId);
+                tt = new Model.Services.TBYS.TasinmazTaahhutService().GetById(taahhutId);
                 if (tt != null)
                 {
                     tt.Adi = AdiTxt.Text;
@@ -419,7 +419,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
         {
             int taahhutId = ParamTaahhutIdLbl.Value.ConvertToInt();
             TasinmazTaahhut tt = new TasinmazTaahhut();
-            tt = tt.Select<TasinmazTaahhut>(taahhutId);
+            tt = new Model.Services.TBYS.TasinmazTaahhutService().GetById(taahhutId);
             if (tt != null)
             {
                 if (tt.Delete())
@@ -438,7 +438,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                 if (tasinmazBagisci != null )
                 {
                     TasinmazTaahhut tt = new TasinmazTaahhut();
-                    tt = tt.SelectByTCKimlikNo(tasinmazBagisci.TCKimlikNo);
+                    tt = new Model.Services.TBYS.TasinmazTaahhutService().GetByTcKimlikNo(tasinmazBagisci.TCKimlikNo);
                     if (tt == null || tasinmazBagisci.TCKimlikNo == 0)
                     {
                         TasinmazTaahhut yeniTaahhut = new TasinmazTaahhut();

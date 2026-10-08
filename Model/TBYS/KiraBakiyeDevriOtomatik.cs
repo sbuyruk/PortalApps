@@ -88,7 +88,7 @@ namespace Model.TBYS
 
             OdemePlani odemePlaniDao = new OdemePlani();
 
-            List<OdemePlani> oncekiOdemePlaniList = odemePlaniDao.SelectBySozlesmeId(oncekiKiraSozlesmesi.Id);
+            List<OdemePlani> oncekiOdemePlaniList = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(oncekiKiraSozlesmesi.Id);
             if (oncekiOdemePlaniList == null || oncekiOdemePlaniList.Count == 0)
             {
                 return false;
@@ -121,7 +121,7 @@ namespace Model.TBYS
                 return false;
             }
 
-            List<OdemePlani> odemePlaniList = odemePlaniDao.SelectBySozlesmeId(kiraSozlesme.Id);
+            List<OdemePlani> odemePlaniList = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
             if (odemePlaniList == null || odemePlaniList.Count == 0)
             {
                 return false;

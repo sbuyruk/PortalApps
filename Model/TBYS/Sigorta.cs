@@ -36,11 +36,6 @@ namespace Model.TBYS
         public string PDFDosyasi { get; set; }
         public string Aciklama { get; set; }
         public string KullanimSekli { get; set; }
-        public T Select<T>(int id)
-        {
-            return (T)Convert.ChangeType(new SigortaService().GetById(id), typeof(T));
-
-        }
         public int Save()
         {
             return new SigortaService().Save(this);
@@ -52,69 +47,6 @@ namespace Model.TBYS
         public bool Delete()
         {
             return new SigortaService().Delete(this);
-        }
-        public List<T> SelectAll<T>()
-        {
-            return (List<T>)Convert.ChangeType(
-                new SigortaService().GetAll(),
-                typeof(List<T>));
-        }
-        public List<Sigorta> SelectAllByTasinmazId(int tasinmazId)
-        {
-            return new SigortaService().GetByTasinmazId(tasinmazId);
-        }
-        public Sigorta SelectByTasinmazId(int tasinmazId)
-        {
-            return new SigortaService().GetLatestByTasinmazId(tasinmazId);
-        }
-        public string SelectAllReturnJson()
-        {
-            return new SigortaService().GetInventoryListAsJson();
-        }
-
-        public DataTable SelectAllReturnDataTable()
-        {
-            return new SigortaService().GetInventoryList();
-
-        }
-        public DataTable SelectByTeminatSigortaCinsiReturnDataTable(string sigortaCinsi, bool vadesiGelenler, bool isDeprem, bool isYangin, bool isMakine100000,
-            bool isMakine5000, bool isJenerator, bool isAsansor, bool isKazan, int bolgeId, string auth, DateTime basTarih, DateTime bitTarih)
-        {
-            return new SigortaService().GetByTeminatSigortaCinsi(sigortaCinsi, vadesiGelenler, isDeprem, isYangin, isMakine100000,
-                isMakine5000, isJenerator, isAsansor, isKazan, bolgeId, basTarih, bitTarih);
-        }
-        public List<Sigorta> SelectBySigortaId(int sigortaId)
-        {
-            return new SigortaService().GetByIdList(sigortaId);
-        }
-        public Sigorta SelectNext(int sigortaId)
-        {
-            return new SigortaService().GetNext(sigortaId);
-        }
-        public Sigorta SelectPrev(int sigortaId)
-        {
-            return new SigortaService().GetPrev(sigortaId);
-        }
-        public Sigorta SelectMax()
-        {
-            return new SigortaService().GetMax();
-        }
-
-        public List<Sigorta> selectByTasinmazId(int tasinmazId)
-        {
-            return new SigortaService().GetByTasinmazId(tasinmazId);
-        }
-        public decimal SelectSigortaBedeliToplamiBySigorta(string sigorta)
-        {
-            return new SigortaService().GetInsuranceValueTotal(sigorta);
-        }
-        public decimal SelectPirimToplamiBySigorta(string sigorta)
-        {
-            return new SigortaService().GetPremiumTotal(sigorta);
-        }
-        public Sigorta SelectMin()
-        {
-            return new SigortaService().GetMin();
         }
     }
 }

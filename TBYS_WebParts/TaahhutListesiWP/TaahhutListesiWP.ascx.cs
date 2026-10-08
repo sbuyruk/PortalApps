@@ -189,7 +189,7 @@ namespace TBYS_WebParts.TaahhutListesiWP
         private List<TasinmazTaahhut> GetBagisciData()
         {
             TasinmazTaahhut ttDao = new TasinmazTaahhut();
-            List<TasinmazTaahhut> ttlist = ttDao.SelectByFilters(false, false, false,BolgeIdQS);
+            List<TasinmazTaahhut> ttlist = new Model.Services.TBYS.TasinmazTaahhutService().GetByFilters(false, false, false,BolgeIdQS);
             return ttlist;
         }
         private List<TasinmazTaahhutListItem> GetDataList()

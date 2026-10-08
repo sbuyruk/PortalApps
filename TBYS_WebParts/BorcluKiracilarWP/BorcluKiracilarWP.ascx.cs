@@ -259,7 +259,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
 
 
             OdemePlani opl = new OdemePlani();
-            DataTable dataTable = opl.SelectBorcluOdemePlanlariByBolgeTarih(BolgeIdQS, vadeBastar, vadeBittar, AySayisiBasQS.ConvertToInt(), AySayisiBitQS.ConvertToInt());
+            DataTable dataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(BolgeIdQS, vadeBastar, vadeBittar, AySayisiBasQS.ConvertToInt(), AySayisiBitQS.ConvertToInt());
 
             if (dataTable != null)
             {
@@ -527,7 +527,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
                     OdemePlani odemePlani = new OdemePlani();
-                    bool odemePlaniVarMi = odemePlani.OdemePlaniVarMi(kiraSozlesme.Id);
+                    bool odemePlaniVarMi = new Model.Services.TBYS.OdemePlaniService().Exists(kiraSozlesme.Id);
                     if (odemePlaniVarMi)
                     {
                         OdemePlaniGoruntule(kiraSozlesme);
@@ -547,7 +547,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
             }
             
             OdemePlani odemePlaniDao = new OdemePlani();
-            List<OdemePlani> list = odemePlaniDao.SelectBySozlesmeId(kiraSozlesme.Id);
+            List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
             if (list.Count > 0)
             {
                 DevirLbl.Text = "Devir Anapara : " + kiraSozlesme.DevirAnaPara.ToString("N", culturInfo) + "      "

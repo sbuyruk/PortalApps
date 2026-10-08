@@ -253,7 +253,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP
             HeaderCell9.Text = "Sil";
             HeaderCell9.Visible = true;
 
-            List<Sigorta> list = new Sigorta().selectByTasinmazId(tasinmaz.Id);
+            List<Sigorta> list = new Model.Services.TBYS.SigortaService().GetByTasinmazId(tasinmaz.Id);
             foreach (Sigorta sigorta in list)
             {
                 TableRow row = new TableRow();
