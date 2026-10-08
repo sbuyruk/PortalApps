@@ -5,14 +5,14 @@ using System.Collections.Generic;
 
 namespace Model.Portal
 {
-    public class ToplantiKatilim : ParentClass
+    public class ToplantiKatilim : EntityBase
     {
         public int ToplantiId { get; set; }
         public int KatilimciId { get; set; }
         public bool Bilgi { get; set; }
         public string Aciklama { get; set; }
 
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new ToplantiKatilimService().GetById(id), typeof(T));
         }
@@ -27,22 +27,22 @@ namespace Model.Portal
             return new ToplantiKatilimService().GetByParticipantMeeting(k, t);
         }
 
-        public override int Save()
+        public int Save()
         {
             return new ToplantiKatilimService().Save(this);
         }
 
-        public override bool Update()
+        public bool Update()
         {
             return new ToplantiKatilimService().Update(this);
         }
 
-        public override bool Delete()
+        public bool Delete()
         {
             return new ToplantiKatilimService().Delete(this);
         }
 
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(new ToplantiKatilimService().GetAll(), typeof(List<T>));
         }

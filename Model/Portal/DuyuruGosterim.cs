@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Model.Portal
 {
-    public class DuyuruGosterim : ParentClass
+    public class DuyuruGosterim : EntityBase
     {
         public int DuyuruId { get; set; }
         public DateTime GosterildigiTarih { get; set; }
@@ -20,7 +20,7 @@ namespace Model.Portal
         public bool Aktif { get; set; }
         public bool Popup { get; set; }
 
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new DuyuruGosterimService().GetById(id), typeof(T));
         }
@@ -30,22 +30,22 @@ namespace Model.Portal
             return new DuyuruGosterimService().GetById(id);
         }
 
-        public override int Save()
+        public int Save()
         {
             return new DuyuruGosterimService().Save(this);
         }
 
-        public override bool Update()
+        public bool Update()
         {
             return new DuyuruGosterimService().Update(this);
         }
 
-        public override bool Delete()
+        public bool Delete()
         {
             return new DuyuruGosterimService().Delete(this);
         }
 
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(new DuyuruGosterimService().GetAll(), typeof(List<T>));
         }

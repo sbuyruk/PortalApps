@@ -6,13 +6,13 @@ using System.Data;
 
 namespace Model.Portal
 {
-    public class ToplantiParametre : ParentClass
+    public class ToplantiParametre : EntityBase
     {
         public string Grup { get; set; }
         public string Deger { get; set; }
         public int Sira { get; set; }
 
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new ToplantiParametreService().GetById(id), typeof(T));
         }
@@ -22,22 +22,22 @@ namespace Model.Portal
             return new ToplantiParametreService().GetById(id);
         }
 
-        public override int Save()
+        public int Save()
         {
             return new ToplantiParametreService().Save(this);
         }
 
-        public override bool Update()
+        public bool Update()
         {
             return new ToplantiParametreService().Update(this);
         }
 
-        public override bool Delete()
+        public bool Delete()
         {
             return new ToplantiParametreService().Delete(this);
         }
 
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(new ToplantiParametreService().GetAll(), typeof(List<T>));
         }
