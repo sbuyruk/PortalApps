@@ -208,6 +208,11 @@
     <Compile Include="Services\MTS\MTSUnvanTanimService.cs" />
     <Compile Include="Services\MTS\MTSGorevTanimService.cs" />
     <Compile Include="Services\MTS\MTSKurumTanimService.cs" />
+    <Compile Include="Services\MTS\MTSKurumGorevService.cs" />
+    <Compile Include="Services\MTS\AniObjesiTanimService.cs" />
+    <Compile Include="Services\MTS\DepoTanimService.cs" />
+    <Compile Include="Services\MTS\DepoStokService.cs" />
+    <Compile Include="Services\MTS\FaaliyetKatilimService.cs" />
     <Compile Include="Services\Ortak\IlService.cs" />
     <Compile Include="Services\Ortak\IlceService.cs" />
     <Compile Include="Services\NBYS\ArmaganService.cs" />
