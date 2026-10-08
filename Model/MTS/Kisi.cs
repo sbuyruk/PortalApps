@@ -9,7 +9,7 @@ using Utility.ProjeGlobal;
 
 namespace Model.MTS
 {
-    public class Kisi : ParentClass
+    public class Kisi : EntityBase
     {
         public string Adi { get; set; }
         public string Soyadi { get; set; }
@@ -37,7 +37,7 @@ namespace Model.MTS
         public bool Kutlama { get; set; }
         public bool RandevuKisiti { get; set; }
 
-        public override int Save()
+        public int Save()
         {
             
             try
@@ -62,7 +62,7 @@ namespace Model.MTS
             }
 
         }
-        public override bool Update()
+        public bool Update()
         {
             bool updateLog = ProjeConstants.MTS_UPDATE_LOG;
             bool isSuccess = false;
@@ -92,7 +92,7 @@ namespace Model.MTS
             }
             return isSuccess;
         }
-        public override bool Delete()
+        public bool Delete()
         {
             try
             {
@@ -132,7 +132,7 @@ namespace Model.MTS
             item = list.FirstOrDefault();
             return item;
         }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             GenericEntity<Kisi> genericEntity = new GenericEntity<Kisi>(ProjeConstants.SQL_SELECT);
             Id = id;
@@ -143,7 +143,7 @@ namespace Model.MTS
             item = list.FirstOrDefault();
             return ((T)Convert.ChangeType(item, typeof(T)));
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"
                 SELECT *

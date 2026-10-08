@@ -10,7 +10,7 @@ using Utility.ProjeGlobal;
 
 namespace Model.MTS
 {
-    public class FaaliyetKatilim : ParentClass
+    public class FaaliyetKatilim : EntityBase
     {
         public int FaaliyetId { get; set; }
         public int KatilimciId { get; set; }
@@ -19,7 +19,7 @@ namespace Model.MTS
         public string TakvimDaveti { get; set; }
         public string Aciklama { get; set; }
 
-        public override int Save()
+        public int Save()
         {
             try
             {
@@ -43,7 +43,7 @@ namespace Model.MTS
             }
 
         }
-        public override bool Update()
+        public bool Update()
         {
             bool isSuccess = false;
             try
@@ -72,7 +72,7 @@ namespace Model.MTS
             }
             return isSuccess;
         }
-        public override bool Delete()
+        public bool Delete()
         {
             try
             {
@@ -154,7 +154,7 @@ namespace Model.MTS
 
             return list;
         }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             GenericEntity<FaaliyetKatilim> genericEntity = new GenericEntity<FaaliyetKatilim>(ProjeConstants.SQL_SELECT);
             Id = id;
@@ -165,7 +165,7 @@ namespace Model.MTS
             item = list.FirstOrDefault();
             return ((T)Convert.ChangeType(item, typeof(T)));
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"
                 SELECT *

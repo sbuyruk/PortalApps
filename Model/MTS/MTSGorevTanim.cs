@@ -10,14 +10,14 @@ using System.Linq;
 
 namespace Model.MTS
 {
-    public class MTSGorevTanim : ParentClass
+    public class MTSGorevTanim : EntityBase
     {
         [Required]
         [DisplayName("Kurum Adi")]
         public string Adi { get; set; }
         [DisplayName("Kisa Adi")]
         public string KisaAdi { get; set; }
-        public override int Save()
+        public int Save()
         {
             try
             {
@@ -42,7 +42,7 @@ namespace Model.MTS
             }
 
         }
-        public override bool Update()
+        public bool Update()
         {
             bool isSuccess = false;
             try
@@ -71,7 +71,7 @@ namespace Model.MTS
             }
             return isSuccess;
         }
-        public override bool Delete()
+        public bool Delete()
         {
             try
             {
@@ -111,7 +111,7 @@ namespace Model.MTS
             item = list.FirstOrDefault();
             return item;
         }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             GenericEntity<MTSGorevTanim> genericEntity = new GenericEntity<MTSGorevTanim>(ProjeConstants.SQL_SELECT);
             Id = id;
@@ -122,7 +122,7 @@ namespace Model.MTS
             item = list.FirstOrDefault();
             return ((T)Convert.ChangeType(item, typeof(T)));
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"
                 SELECT *

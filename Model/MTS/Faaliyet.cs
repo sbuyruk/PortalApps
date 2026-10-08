@@ -12,7 +12,7 @@ using Utility.ProjeGlobal;
 namespace Model.MTS
 {
     [Serializable]
-    public class Faaliyet : ParentClass
+    public class Faaliyet : EntityBase
     {
         public Faaliyet()
         {
@@ -57,7 +57,7 @@ namespace Model.MTS
 
             return true;
         }
-        public override int Save()
+        public int Save()
         {
             try
             {
@@ -82,7 +82,7 @@ namespace Model.MTS
             }
 
         }
-        public override bool Update()
+        public bool Update()
         {
             bool isSuccess = false;
             try
@@ -111,7 +111,7 @@ namespace Model.MTS
             }
             return isSuccess;
         }
-        public override bool Delete()
+        public bool Delete()
         {
             try
             {
@@ -151,7 +151,7 @@ namespace Model.MTS
             item = list.FirstOrDefault();
             return item;
         }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             GenericEntity<Faaliyet> genericEntity = new GenericEntity<Faaliyet>(ProjeConstants.SQL_SELECT);
             Id = id;
@@ -162,7 +162,7 @@ namespace Model.MTS
             item = list.FirstOrDefault();
             return ((T)Convert.ChangeType(item, typeof(T)));
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"
                 SELECT *

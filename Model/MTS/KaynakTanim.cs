@@ -7,21 +7,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Model.MTS
 {
-    public class KaynakTanim : ParentClass
+    public class KaynakTanim : EntityBase
     {
         [Required]
         [DisplayName("Ani Objesi Kaynagi")]
         public string Adi { get; set; }
 
-        public override int Save()
+        public int Save()
         {
             return new KaynakTanimService().Save(this);
         }
-        public override bool Update()
+        public bool Update()
         {
             return new KaynakTanimService().Update(this);
         }
-        public override bool Delete()
+        public bool Delete()
         {
             return new KaynakTanimService().Delete(this);
         }
@@ -30,11 +30,11 @@ namespace Model.MTS
             Id = id;
             return new KaynakTanimService().GetById(id);
         }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(Select(id), typeof(T));
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(new KaynakTanimService().GetAll(), typeof(List<T>));
         }
