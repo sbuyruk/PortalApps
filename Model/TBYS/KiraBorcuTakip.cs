@@ -31,211 +31,44 @@ namespace Model.TBYS
 
         public override T Select<T>(int id)
         {
-            SqlQuery query = new SqlQuery(@"SELECT *
-                               FROM KiraBorcuTakip_Table 
-                               WHERE  Id=@Id");
-            query.AddParameter("@Id", id);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<KiraBorcuTakip> list = ToList<KiraBorcuTakip>(dataTable);
-            KiraBorcuTakip kiraBorcuTakip = new KiraBorcuTakip();
-            kiraBorcuTakip = list.FirstOrDefault();
-            return (T)Convert.ChangeType(kiraBorcuTakip, typeof(T));
+            return (T)Convert.ChangeType(new KiraBorcuTakipService().GetById(id), typeof(T));
 
         }
         public KiraBorcuTakip Select(int kiraBorcuTakipId)
         {
-            SqlQuery query = new SqlQuery(@"SELECT *
-                               FROM KiraBorcuTakip_Table 
-                               WHERE  Id=@Id");
-            query.AddParameter("@Id", kiraBorcuTakipId);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<KiraBorcuTakip> list = ToList<KiraBorcuTakip>(dataTable);
-            KiraBorcuTakip kiraBorcuTakip = new KiraBorcuTakip();
-            kiraBorcuTakip = list.FirstOrDefault();
-            return kiraBorcuTakip;
+            return new KiraBorcuTakipService().GetById(kiraBorcuTakipId);
 
         }
 
         public override int Save()
         {
-            try
-            {
-                GenericEntity<KiraBorcuTakip> genericEntity = new GenericEntity<KiraBorcuTakip>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                Olusturan = UtilityHelper.GetCurrentUserName();
-                SqlQuery query = genericEntity.GetQueryParametreli(this);
-                int id = dao.Insert(query);
-
-                this.Id = id;
-                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRABORCUTAKIP);
-                }
-                return id;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return new KiraBorcuTakipService().Save(this);
         }
         public override bool Update()
         {
-            bool isSuccess = false;
-            try
-            {
-                if (this != null)
-                {
-                    KiraBorcuTakip item = Select<KiraBorcuTakip>(Id);
-                    if (Id != 0)
-                    {
-                        GenericEntity<KiraBorcuTakip> genericEntity = new GenericEntity<KiraBorcuTakip>(ProjeConstants.SQL_UPDATE);
-                        DegistirmeTarihi = DateTime.Now;
-                        Degistiren = UtilityHelper.GetCurrentUserName();
-                        SqlQuery query = genericEntity.GetQueryParametreli(this);
-                        isSuccess = dao.Update2Db(query);
-                    }
-                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRASOZLESME);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
+            return new KiraBorcuTakipService().Update(this);
         }
         public override bool Delete()
         {
-            try
-            {
-                bool isDeleted = false;
-                if (Id != 0)
-                {
-                    GenericEntity<KiraBorcuTakip> genericEntity = new GenericEntity<KiraBorcuTakip>(ProjeConstants.SQL_DELETE);
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    KiraBorcuTakip item = Select<KiraBorcuTakip>(Id);
-                    if (item != null)
-                    {
-                        isDeleted = dao.DeleteFromDb(query, "");
-                    }
-                    else isDeleted = false;
-                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRASOZLESME);
-                    }
-                }
-                return isDeleted;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return new KiraBorcuTakipService().Delete(this);
         }
         public override List<T> SelectAll<T>()
         {
-            SqlQuery query = new SqlQuery(@"
-                SELECT *
-                FROM KiraBorcuTakip_Table
-                ORDER BY CASE WHEN DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(DosyaNo,999999)");
-
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<KiraBorcuTakip> list = ToList<KiraBorcuTakip>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+            return (List<T>)Convert.ChangeType(new KiraBorcuTakipService().GetAll(), typeof(List<T>));
         }
 
         public KiraBorcuTakip SelectByKiraciIdAyYil(int kiraciId)
         {
-            SqlQuery query = new SqlQuery(@"
-                SELECT  *
-                FROM KiraBorcuTakip_Table
-                WHERE KiraciId=@KiraciId
-                    AND IslemAyi=@IslemAyi
-                    AND IslemYili=@IslemYili");
-            query.AddParameter("@KiraciId", kiraciId);
-            query.AddParameter("@IslemAyi", DateTime.Today.Month);
-            query.AddParameter("@IslemYili", DateTime.Today.Year);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                List<KiraBorcuTakip> list = ToList<KiraBorcuTakip>(dataTable);
-                KiraBorcuTakip kiraBorcuTakip = list.FirstOrDefault();
-                return kiraBorcuTakip;
-            }
-            else
-            {
-                return null;
-            }
+            return new KiraBorcuTakipService().GetByKiraciIdAyYil(kiraciId);
         }
         public int SelectCountAdetByTakipIslemiBolge(string takipIslemi, string bolge, int ay, int yil)
         {
-            StringBuilder sb = new StringBuilder(@"
-                Select COUNT(Id) Adet FROM KiraBorcuTakip_Table                
-                WHERE 1=1 ");
-            SqlQuery query = new SqlQuery();
-            if (!string.IsNullOrEmpty(takipIslemi))
-            {
-                sb.Append(" AND TakipIslemi=@TakipIslemi ");
-                query.AddParameter("@TakipIslemi", takipIslemi);
-            }
-            if (!string.IsNullOrEmpty(bolge))
-            {
-                sb.Append(" AND Bolge=@Bolge ");
-                query.AddParameter("@Bolge", bolge);
-            }
-            if (ay >= 1)
-            {
-                sb.Append(" AND IslemAyi=@IslemAyi ");
-                query.AddParameter("@IslemAyi", ay);
-            }
-            if (yil >= 2005)
-            {
-                sb.Append(" AND IslemYili=@IslemYili ");
-                query.AddParameter("@IslemYili", yil);
-            }
-            query.Sql = sb.ToString();
-            int adet = 0;
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                if (dataTable.Rows.Count > 0)
-                {
-                    DataRow row = dataTable.Rows[0];
-                    adet = row["Adet"].ToString().ConvertToInt();
-                }
-            }
-            return adet;
+            return new KiraBorcuTakipService().GetCountByFilters(takipIslemi, bolge, ay, yil);
 
         }
         public int SelectCountBySozlesmeId(int kiraSozlesmeId, string takipIslemi)
         {
-            StringBuilder sb = new StringBuilder(@"
-                Select COUNT(Id) Adet FROM KiraBorcuTakip_Table                
-                WHERE KiraSozlesmeId=@KiraSozlesmeId ");
-            SqlQuery query = new SqlQuery();
-            query.AddParameter("@KiraSozlesmeId", kiraSozlesmeId);
-            if (!string.IsNullOrEmpty(takipIslemi))
-            {
-                sb.Append(" AND TakipIslemi=@TakipIslemi ");
-                query.AddParameter("@TakipIslemi", takipIslemi);
-            }
-            query.Sql = sb.ToString();
-            int adet = 0;
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                if (dataTable.Rows.Count > 0)
-                {
-                    DataRow row = dataTable.Rows[0];
-                    adet = row["Adet"].ToString().ConvertToInt();
-                }
-            }
-            return adet;
+            return new KiraBorcuTakipService().GetCountBySozlesmeId(kiraSozlesmeId, takipIslemi);
 
         }
     }
