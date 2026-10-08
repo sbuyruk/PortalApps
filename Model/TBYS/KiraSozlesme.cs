@@ -101,15 +101,7 @@ namespace Model.TBYS
         }
         public bool UpdateByKiraciId(int bolgeId, int kiraciId)
         {
-            bool isUpdated = false;
-            SqlQuery query = new SqlQuery(@"
-                Update KiraSozlesme_Table
-                Set BolgeId= @BolgeId
-                Where KiraciId=@KiraciId");
-            query.AddParameter("@BolgeId", bolgeId);
-            query.AddParameter("@KiraciId", kiraciId);
-            isUpdated = dao.Update2Db(query);
-            return isUpdated;
+            return new KiraSozlesmeService().UpdateByKiraciId(bolgeId, kiraciId);
         }
 
         public DataTable SelectSozlesmeListByYilReturnDT(int yil)
@@ -152,24 +144,7 @@ namespace Model.TBYS
         }
         public bool UpdateAktifDurum(string durum, string degistirmeTar, bool aktif)
         {
-            Degistiren = UtilityHelper.GetCurrentUserName();
-            DegistirmeTarihi = DateTime.Now;
-            string durumDegistirmeTar = string.IsNullOrEmpty(degistirmeTar) ? DateTime.Now.ConvertToTimeSpanReturnInHHmm() : degistirmeTar;
-            SqlQuery query = new SqlQuery(@" UPDATE KiraSozlesme_Table
-                                SET Aktif=@Aktif,
-                                    SozlesmeDurumu=@Durum,
-                                    DurumDegismeTar=@DurumDegismeTar,
-                                    Degistiren=@Degistiren,
-                                    DegistirmeTarihi=@DegistirmeTarihi
-                                WHERE  Aktif=1 AND Id=@Id");
-            query.AddParameter("@Aktif", aktif);
-            query.AddParameter("@Durum", durum);
-            query.AddParameter("@DurumDegismeTar", durumDegistirmeTar);
-            query.AddParameter("@Degistiren", Degistiren);
-            query.AddParameter("@DegistirmeTarihi", DegistirmeTarihi);
-            query.AddParameter("@Id", Id);
-            bool isSaved = dao.Update2Db(query);
-            return isSaved;
+            return new KiraSozlesmeService().UpdateActiveStatus(this, durum, degistirmeTar, aktif);
         }
         public List<KiraSozlesme> SelectByTasinmazId(int tasinmazId)
         {
