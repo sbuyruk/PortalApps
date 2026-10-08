@@ -98,5 +98,63 @@ namespace Model.TBYS
         public static Onarim SelectMax(this Onarim item) { return new OnarimService().GetMax(); }
         public static List<Onarim> SelectOnarimByTasinmazId(this Onarim item, int id) { return new OnarimService().GetByTasinmazIdWithAddress(id); }
         public static Onarim SelectMin(this Onarim item) { return new OnarimService().GetMin(); }
+
+        public static T Select<T>(this BagimsizBolum item, int id) { return (T)Convert.ChangeType(new BagimsizBolumService().GetById(id), typeof(T)); }
+        public static int Save(this BagimsizBolum item) { return new BagimsizBolumService().Save(item); }
+        public static bool Update(this BagimsizBolum item) { return new BagimsizBolumService().Update(item); }
+        public static bool Delete(this BagimsizBolum item) { return new BagimsizBolumService().Delete(item); }
+        public static List<T> SelectAll<T>(this BagimsizBolum item) { return (List<T>)Convert.ChangeType(new BagimsizBolumService().GetAll(), typeof(List<T>)); }
+        public static List<BagimsizBolum> SelectByTasinmazId(this BagimsizBolum item, int id) { return new BagimsizBolumService().GetByTasinmazId(id); }
+        public static List<BagimsizBolum> SelectByBolumNO(this BagimsizBolum item, string bolumNo) { return new BagimsizBolumService().GetByBolumNo(bolumNo); }
+        public static BagimsizBolum SelectByBolumId(this BagimsizBolum item, int id) { return new BagimsizBolumService().GetByBolumId(id); }
+
+        public static T Select<T>(this Bagis item, int id) { return (T)Convert.ChangeType(new BagisService().GetById(id), typeof(T)); }
+        public static Bagis Select(this Bagis item, int id) { return new BagisService().GetById(id); }
+        public static int Save(this Bagis item) { return new BagisService().Save(item); }
+        public static bool Update(this Bagis item) { return new BagisService().Update(item); }
+        public static bool Delete(this Bagis item) { return new BagisService().Delete(item); }
+        public static List<T> SelectAll<T>(this Bagis item) { return (List<T>)Convert.ChangeType(new BagisService().GetAll(), typeof(List<T>)); }
+        public static List<Bagis> SelectByBagisciId(this Bagis item, int id) { return new BagisService().GetByBagisciId(id); }
+        public static DataTable SelectByBagisciIdGroupByKullanimSekli(this Bagis item, int id) { return new BagisService().GetByBagisciIdGroupByKullanimSekli(id); }
+        public static string SelectByBagisciIdReturnJson(this Bagis item, int id) { return new BagisService().GetByBagisciIdAsJson(id); }
+        public static Bagis SelectByTasinmazId(this Bagis item, int id) { return new BagisService().GetByTasinmazId(id); }
+        public static string SelectTasinmazByBagisciIdReturnJson(this Bagis item, int id) { return new BagisService().GetTasinmazByBagisciIdAsJson(id); }
+        public static DataTable SelectTasinmazByBagisciIdReturnDT(this Bagis item, int id) { return new BagisService().GetTasinmazByBagisciId(id); }
+        public static DataTable SelectSatisVsDahilTasinmazByBagisciIdReturnDT(this Bagis item, int id) { return new BagisService().GetSatisVsDahilTasinmazByBagisciId(id); }
+        public static decimal SelectSumTahminiRayicByBagisciId(this Bagis item, int id) { return new BagisService().GetSumTahminiRayicByBagisciId(id); }
+
+        public static T Select<T>(this GecikmeZammi item, int id) { return (T)Convert.ChangeType(new GecikmeZammiService().GetById(id), typeof(T)); }
+        public static int Save(this GecikmeZammi item) { return new GecikmeZammiService().Save(item); }
+        public static bool Update(this GecikmeZammi item) { return new GecikmeZammiService().Update(item); }
+        public static bool Delete(this GecikmeZammi item) { return new GecikmeZammiService().Delete(item); }
+        public static List<T> SelectAll<T>(this GecikmeZammi item) { return (List<T>)Convert.ChangeType(new GecikmeZammiService().GetAll(), typeof(List<T>)); }
+        public static List<GecikmeZammi> SelectBuAyIcindeDegisen(this GecikmeZammi item, DateTime ilkTarih, DateTime sonTarih) { return new GecikmeZammiService().GetChangedBetween(ilkTarih, sonTarih); }
+        public static List<GecikmeZammi> SelectByBaslangicTarihi(this GecikmeZammi item, DateTime baslangicTarihi) { return new GecikmeZammiService().GetByStartDate(baslangicTarihi); }
+        public static List<GecikmeZammi> SelectByBaslangicTarihi(this GecikmeZammi item, DateTime ilkTarih, DateTime sonTarih) { return new GecikmeZammiService().GetByDateRange(ilkTarih, sonTarih); }
+        public static GecikmeZammi SelectSonDegisenByTarih(this GecikmeZammi item, DateTime tarih) { return new GecikmeZammiService().GetLatestByDate(tarih); }
+        public static GecikmeZammi SelectOncekiGecikmeZammi(this GecikmeZammi item, DateTime tarih) { return new GecikmeZammiService().GetPrevious(tarih); }
+        public static GecikmeZammi SelectSonrakiGecikmeZammi(this GecikmeZammi item, DateTime tarih) { return new GecikmeZammiService().GetNext(tarih); }
+        public static List<GecikmeZammi> SelectByTarih(this GecikmeZammi item, DateTime ilkTarih, DateTime sonTarih) { return new GecikmeZammiService().GetByDate(ilkTarih, sonTarih); }
+        public static GecikmeZammi SelectSonrakiGecikmeZammi(this GecikmeZammi item) { return new GecikmeZammiService().GetLatest(); }
+
+        public static T Select<T>(this HukukiTakip item, int id) { return (T)Convert.ChangeType(new HukukiTakipService().GetById(id), typeof(T)); }
+        public static int Save(this HukukiTakip item) { return new HukukiTakipService().Save(item); }
+        public static bool Update(this HukukiTakip item) { return new HukukiTakipService().Update(item); }
+        public static bool Delete(this HukukiTakip item) { return new HukukiTakipService().Delete(item); }
+        public static bool DeleteBySozlesmeId(this HukukiTakip item, int id) { return new HukukiTakipService().DeleteBySozlesmeId(id); }
+        public static string SelectAllReturnJson(this HukukiTakip item) { return new HukukiTakipService().GetActiveListAsJson(); }
+        public static DataTable SelectAllReturnDataTable(this HukukiTakip item) { return new HukukiTakipService().GetActiveList(); }
+        public static List<T> SelectAll<T>(this HukukiTakip item) { return (List<T>)Convert.ChangeType(new HukukiTakipService().GetAll(), typeof(List<T>)); }
+        public static HukukiTakip SelectBySozlesmeId(this HukukiTakip item, int id) { return new HukukiTakipService().GetBySozlesmeId(id); }
+
+        public static T Select<T>(this KiraBorcuTakip item, int id) { return (T)Convert.ChangeType(new KiraBorcuTakipService().GetById(id), typeof(T)); }
+        public static KiraBorcuTakip Select(this KiraBorcuTakip item, int id) { return new KiraBorcuTakipService().GetById(id); }
+        public static int Save(this KiraBorcuTakip item) { return new KiraBorcuTakipService().Save(item); }
+        public static bool Update(this KiraBorcuTakip item) { return new KiraBorcuTakipService().Update(item); }
+        public static bool Delete(this KiraBorcuTakip item) { return new KiraBorcuTakipService().Delete(item); }
+        public static List<T> SelectAll<T>(this KiraBorcuTakip item) { return (List<T>)Convert.ChangeType(new KiraBorcuTakipService().GetAll(), typeof(List<T>)); }
+        public static KiraBorcuTakip SelectByKiraciIdAyYil(this KiraBorcuTakip item, int id) { return new KiraBorcuTakipService().GetByKiraciIdAyYil(id); }
+        public static int SelectCountAdetByTakipIslemiBolge(this KiraBorcuTakip item, string takipIslemi, string bolge, int ay, int yil) { return new KiraBorcuTakipService().GetCountByFilters(takipIslemi, bolge, ay, yil); }
+        public static int SelectCountBySozlesmeId(this KiraBorcuTakip item, int id, string takipIslemi) { return new KiraBorcuTakipService().GetCountBySozlesmeId(id, takipIslemi); }
     }
 }

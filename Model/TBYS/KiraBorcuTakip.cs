@@ -1,12 +1,5 @@
-using DAO.Ortak;
 using Model.Ortak;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using Utility.HelperClasses;
-using Utility.ProjeGlobal;
 
 namespace Model.TBYS
 {
@@ -28,48 +21,5 @@ namespace Model.TBYS
         public DateTime TebligTarihi { get; set; }
         public string Bolge { get; set; }
         public string Aciklama { get; set; }
-
-        public T Select<T>(int id)
-        {
-            return (T)Convert.ChangeType(new KiraBorcuTakipService().GetById(id), typeof(T));
-
-        }
-        public KiraBorcuTakip Select(int kiraBorcuTakipId)
-        {
-            return new KiraBorcuTakipService().GetById(kiraBorcuTakipId);
-
-        }
-
-        public int Save()
-        {
-            return new KiraBorcuTakipService().Save(this);
-        }
-        public bool Update()
-        {
-            return new KiraBorcuTakipService().Update(this);
-        }
-        public bool Delete()
-        {
-            return new KiraBorcuTakipService().Delete(this);
-        }
-        public List<T> SelectAll<T>()
-        {
-            return (List<T>)Convert.ChangeType(new KiraBorcuTakipService().GetAll(), typeof(List<T>));
-        }
-
-        public KiraBorcuTakip SelectByKiraciIdAyYil(int kiraciId)
-        {
-            return new KiraBorcuTakipService().GetByKiraciIdAyYil(kiraciId);
-        }
-        public int SelectCountAdetByTakipIslemiBolge(string takipIslemi, string bolge, int ay, int yil)
-        {
-            return new KiraBorcuTakipService().GetCountByFilters(takipIslemi, bolge, ay, yil);
-
-        }
-        public int SelectCountBySozlesmeId(int kiraSozlesmeId, string takipIslemi)
-        {
-            return new KiraBorcuTakipService().GetCountBySozlesmeId(kiraSozlesmeId, takipIslemi);
-
-        }
     }
 }
