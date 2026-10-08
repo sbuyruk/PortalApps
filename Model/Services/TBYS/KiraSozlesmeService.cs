@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
+using Utility.HelperClasses;
 
 namespace Model.Services.TBYS
 {
@@ -54,6 +55,11 @@ namespace Model.Services.TBYS
         }
         public DataTable GetListByYear(int yil) { return repository.SelectListByYear(yil); }
         public DataTable GetCompletedListByYear(int yil) { return repository.SelectCompletedListByYear(yil); }
+        public KiraSozlesme GetActiveByKiraciId(int kiraciId) { return Map(repository.SelectActiveByKiraciId(kiraciId)); }
+        public KiraSozlesme GetByKiraciId(int kiraciId) { return Map(repository.SelectByKiraciId(kiraciId)); }
+        public List<KiraSozlesme> GetAllByKiraciId(int kiraciId) { return new KiraSozlesme().ToList<KiraSozlesme>(repository.SelectAllByKiraciId(kiraciId)); }
+        public KiraSozlesme GetByKiraciIdAndDate(int kiraciId, DateTime tarih) { return Map(repository.SelectByKiraciIdAndDate(kiraciId, tarih.ReturnTRDateFormat())); }
+        public KiraSozlesme GetCompletedByKiraciId(int kiraciId) { return Map(repository.SelectCompletedByKiraciId(kiraciId)); }
 
         private static KiraSozlesme Map(DataTable table)
         {
