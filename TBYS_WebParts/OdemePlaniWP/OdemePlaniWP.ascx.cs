@@ -785,7 +785,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                 OdemePlani op = list[0];
                 if (op.SozlesmeId == kiraSozlesme.Id)
                 {
-                    silindi = op.DeleteBySozlesmeId(kiraSozlesme.Id);
+                    silindi = new Model.Services.TBYS.OdemePlaniService().DeleteBySozlesmeId(op, kiraSozlesme.Id);
                     if (silindi)
                     {
                         //Odemeler de silinsin
@@ -799,7 +799,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                         List<OdemeAyrinti> odemeAyrintiListesi = new Model.Services.TBYS.OdemeAyrintiService().GetBySozlesmeId(kiraSozlesme.Id);
                         if (odemeAyrintiListesi.Count > 0)
                         {
-                            odemeAyrintiDao.DeleteBySozlesmeId(kiraSozlesme.Id);
+                            new Model.Services.TBYS.OdemeAyrintiService().DeleteBySozlesmeId(kiraSozlesme.Id);
                         }
                     }
                 }
@@ -878,7 +878,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             if (odemePlani != null)
             {
                 odemePlani.KiraBedeli = YeniKiraBedeliTxt.Text.ConvertToDecimal();
-                odemePlani.Update();
+                new Model.Services.TBYS.OdemePlaniService().Update(odemePlani);
                 RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + KiraSozlesmeIdQS);
             }
         }
@@ -915,7 +915,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             {
                 odemePlani.VadeBasTar = VadeBasTarTxt.Value.ConvertToDatetime();
                 odemePlani.VadeBitTar = VadeBitTarTxt.Value.ConvertToDatetime();
-                odemePlani.Update();
+                new Model.Services.TBYS.OdemePlaniService().Update(odemePlani);
                 RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + KiraSozlesmeIdQS);
             }
         }

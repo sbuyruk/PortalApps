@@ -111,7 +111,7 @@ namespace Model.TBYS
                     odemePlani.OdenenTutar = toplamOdenen;
                     odemePlani.Aciklama += aciklama + System.Environment.NewLine;
                     odemePlani.Degistiren = kullanici;
-                    kaydedildiMi = odemePlani.Update();
+                    kaydedildiMi = new Model.Services.TBYS.OdemePlaniService().Update(odemePlani);
                 }
             }
             catch (Exception exception1)
@@ -142,7 +142,7 @@ namespace Model.TBYS
                     List<OdemeAyrinti> odemeAyrintiListesi = new Model.Services.TBYS.OdemeAyrintiService().GetByOdemeIdOdemePlaniId(odemeId, odemePlaniId);
                     if (odemeAyrintiListesi.Count > 0)
                     {
-                        odemeAyrintiDao.DeleteByOdemeIdOdemePlaniId(odemeId, odemePlaniId);
+                        new Model.Services.TBYS.OdemeAyrintiService().DeleteByOdemeIdOdemePlaniId(odemeId, odemePlaniId);
                     }
 
                     OdemePlani odemePlani = new OdemePlani();
@@ -153,7 +153,7 @@ namespace Model.TBYS
                     odemePlani.Aciklama += aciklama + System.Environment.NewLine +
                         " *" + odeme.OdemeTarihi.ConvertToDatetimeEmptyIfNull() + " tarihli " + odeme.OdenenTutar.ToString("N", culturInfo) + " ödeme silindi." + System.Environment.NewLine;
                     odemePlani.Degistiren = kullanici;
-                    odemePlani.Update();
+                    new Model.Services.TBYS.OdemePlaniService().Update(odemePlani);
                 }
 
             }
@@ -225,7 +225,7 @@ namespace Model.TBYS
                         decimal toplamOdenen = odemeDao.SelectSumBySozlesmeIdOdemePlaniId(oncekiOdemePlani.SozlesmeId, oncekiOdemePlani.Id);
                         oncekiOdemePlani.OdenenTutar = toplamOdenen;
                         oncekiOdemePlani.Degistiren = kullanici;
-                        oncekiOdemePlani.Update();
+                        new Model.Services.TBYS.OdemePlaniService().Update(oncekiOdemePlani);
                     }
                     //yeni Odeme planini güncelle
                     if (yeniOdemePlani != null)
@@ -235,7 +235,7 @@ namespace Model.TBYS
                         yeniOdemePlani.OdenenTutar = yeniToplamOdenen;
                         yeniOdemePlani.Aciklama = aciklama;
                         yeniOdemePlani.Degistiren = kullanici;
-                        odemeVeOdemePlaniGuncellendiMi = yeniOdemePlani.Update();
+                        odemeVeOdemePlaniGuncellendiMi = new Model.Services.TBYS.OdemePlaniService().Update(yeniOdemePlani);
                     }
                         
                 }

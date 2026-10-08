@@ -338,7 +338,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                 tt.TasinmazId = TasinmazDDL.SelectedItem.Value.ConvertToInt();
                 tt.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
                 tt.Telefon = TelefonTxt.Text;
-                int id = tt.Save();
+                int id = new Model.Services.TBYS.TasinmazTaahhutService().Save(tt);
                 if (id > 0)
                     MessageHelper.PublishMessage("Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                 RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TAAHHUTLERI+ "?BagisciId=" + BagisciIdQS);
@@ -384,7 +384,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                     tt.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
                     tt.Telefon = TelefonTxt.Text;
                     //tt.TaahhutPdfAdi = TaahhutPdfAdi.Text;
-                    if (tt.Update())
+                    if (new Model.Services.TBYS.TasinmazTaahhutService().Update(tt))
                         MessageHelper.PublishMessage("Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                     else
                         MessageHelper.PublishMessage("Kaydedilemedi", ProjeConstants.MESAJ_HATA);
@@ -422,7 +422,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
             tt = new Model.Services.TBYS.TasinmazTaahhutService().GetById(taahhutId);
             if (tt != null)
             {
-                if (tt.Delete())
+                if (new Model.Services.TBYS.TasinmazTaahhutService().Delete(tt))
                     RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TAAHHUTLERI + "?BagisciId=" + BagisciIdQS);
 
             }
@@ -463,7 +463,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                         {
                             yeniTaahhut.VefatTarihi = tasinmazBagisci.VefatTarihi;
                         }
-                        if (yeniTaahhut.Save() > 0)
+                        if (new Model.Services.TBYS.TasinmazTaahhutService().Save(yeniTaahhut) > 0)
                         {
                             RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TAAHHUTLERI + "?BagisciId=" + BagisciIdQS);
                         }

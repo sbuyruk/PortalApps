@@ -1,13 +1,5 @@
-using DAO.Ortak;
 using Model.Ortak;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using Utility.HelperClasses;
-using Utility.ProjeGlobal;
-using Model.Services.TBYS;
 
 namespace Model.TBYS
 {
@@ -36,17 +28,5 @@ namespace Model.TBYS
         public string PDFDosyasi { get; set; }
         public string Aciklama { get; set; }
         public string KullanimSekli { get; set; }
-        public int Save()
-        {
-            return new SigortaService().Save(this);
-        }
-        public bool Update()
-        {
-            return new SigortaService().Update(this);
-        }
-        public bool Delete()
-        {
-            return new SigortaService().Delete(this);
-        }
     }
 }

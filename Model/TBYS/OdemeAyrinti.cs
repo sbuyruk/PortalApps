@@ -1,7 +1,5 @@
 using Model.Ortak;
-using Model.Services.TBYS;
 using System;
-using System.Collections.Generic;
 
 namespace Model.TBYS
 {
@@ -27,10 +25,5 @@ namespace Model.TBYS
         public decimal KalanAnaPara { get; set; }
         public decimal GecikmeZammiTutari { get; set; }
         public string Aciklama { get; set; }
-        public int Save() { return new OdemeAyrintiService().Save(this); }
-        public bool Update() { return new OdemeAyrintiService().Update(this); }
-        public bool Delete() { return new OdemeAyrintiService().Delete(this); }
-        public bool DeleteBySozlesmeId(int id) { return new OdemeAyrintiService().DeleteBySozlesmeId(id); }
-        public bool DeleteByOdemeIdOdemePlaniId(int odemeId, int planId) { return new OdemeAyrintiService().DeleteByOdemeIdOdemePlaniId(odemeId, planId); }
     }
 }

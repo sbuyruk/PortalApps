@@ -200,7 +200,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP
             sigorta.InsaYili = InsaYiliTxt.Text;
             sigorta.Olusturan = CurrentUserName;
             sigorta.BolumId = BagimsizBolumDDL.SelectedItem.Value.ConvertToInt();
-            int sigortaId = sigorta.Save();
+            int sigortaId = new Model.Services.TBYS.SigortaService().Save(sigorta);
             string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             int queryIndex = newUrl.IndexOf("?");
             if (queryIndex > 0)
@@ -311,7 +311,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP
                 SilBtn.Click += delegate
                 {
                     int tasinmazId = sigorta.TasinmazId;
-                    sigorta.Delete();
+                    new Model.Services.TBYS.SigortaService().Delete(sigorta);
                     string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                     int queryIndex = newUrl.IndexOf("?");
                     if (queryIndex > 0)

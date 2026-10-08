@@ -507,7 +507,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 teminatIslem.IslemTipi = IslemTipiDDL.SelectedValue;
                 teminatIslem.IslemTutari = IslemTutariTxt.Value.ConvertToDecimal();
                 teminatIslem.Olusturan = UtilityHelper.GetCurrentUserLoginName();
-                int teminatIslemId = teminatIslem.Save();
+                int teminatIslemId = new Model.Services.TBYS.TeminatIslemService().Save(teminatIslem);
                 if (teminatIslemId > 0)
                 {
                     if (teminatIslem.IslemTipi.Equals(ProjeConstants.TEMINAT_KIRAYAMAHSUP))
@@ -524,7 +524,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                             int odemeId = 0;
                             TBYSOrtak.OdemeYap(mahsupEdilecekKiraSozlesme, teminatIslem.IslemTarihi, teminatIslem.IslemTutari, teminatIslem.Aciklama, ref odemeId);
                             teminatIslem.OdemeId = odemeId;
-                            teminatIslem.Update();
+                            new Model.Services.TBYS.TeminatIslemService().Update(teminatIslem);
                         }
                     }
                     TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme);
@@ -551,7 +551,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 teminatIslem.IslemTipi = IslemTipiDDL.SelectedValue;
                 teminatIslem.IslemTutari = IslemTutariTxt.Value.ConvertToDecimal();
                 teminatIslem.Degistiren = UtilityHelper.GetCurrentUserLoginName();
-                if (teminatIslem.Update())
+                if (new Model.Services.TBYS.TeminatIslemService().Update(teminatIslem))
                 {
                     KiraSozlesme kiraSozlesme = new KiraSozlesme();
                     kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
@@ -593,7 +593,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             teminatIslem = new Model.Services.TBYS.TeminatIslemService().GetById(teminatId);
             if (teminatIslem != null)
             {
-                bool silindiMi = teminatIslem.Delete();
+                bool silindiMi = new Model.Services.TBYS.TeminatIslemService().Delete(teminatIslem);
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
                 kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
                 if (kiraSozlesme != null)
