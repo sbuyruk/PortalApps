@@ -91,8 +91,7 @@ namespace MTS_WebParts.MtsOlayListesiWP
         }
         private List<Olay> GetDataList(DateTime tarih)
         {
-            Olay olayDao = new Olay();
-            List<Olay> list = olayDao.SelectByTarihReturnList(tarih, ProjeConstants.MTS);
+            List<Olay> list = new Model.Services.Ortak.OlayService().GetByDateAndProgram(tarih, ProjeConstants.MTS);
             return list;
         }
         private List<OlayListItem> OlayListItemDoldur(List<Olay> list)

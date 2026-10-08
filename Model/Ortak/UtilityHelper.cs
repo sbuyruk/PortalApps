@@ -465,8 +465,7 @@ namespace Model.Ortak
             {
                 if (!string.IsNullOrEmpty(parametreAdi))
                 {
-                    OrtakParametre ortakParametre = new OrtakParametre();
-                    ortakParametre = ortakParametre.SelectByAnahtar(parametreAdi);
+                    OrtakParametre ortakParametre = new OrtakParametreService().GetByKey(parametreAdi);
                     deger = ortakParametre?.Deger;
                 }
             }
