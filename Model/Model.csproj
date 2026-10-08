@@ -146,6 +146,7 @@
     <Compile Include="Services\NBYS\NakitBagisciReportService.cs" />
     <Compile Include="Services\Ortak\BolgeService.cs" />
     <Compile Include="Services\Ortak\OlayService.cs" />
+    <Compile Include="Services\Ortak\OrtakParametreService.cs" />
     <Compile Include="Services\IKYS\PersonelService.cs" />
     <Compile Include="Services\IKYS\IzinTalepService.cs" />
     <Compile Include="Services\IKYS\MahsupService.cs" />

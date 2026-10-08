@@ -84,6 +84,7 @@
     <Compile Include="Repositories\Ortak\IlRepository.cs" />
     <Compile Include="Repositories\Ortak\IlceRepository.cs" />
     <Compile Include="Repositories\Ortak\OlayRepository.cs" />
+    <Compile Include="Repositories\Ortak\OrtakParametreRepository.cs" />
     <Compile Include="Repositories\IKYS\PersonelRepository.cs" />
     <Compile Include="Repositories\IKYS\IzinTalepRepository.cs" />
     <Compile Include="Repositories\IKYS\MahsupRepository.cs" />
