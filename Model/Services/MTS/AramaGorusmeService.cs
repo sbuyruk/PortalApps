@@ -13,21 +13,14 @@ namespace Model.Services.MTS
     public class AramaGorusmeService
     {
         private readonly AramaGorusmeRepository repository;
-        private readonly MtsLookupRepository lookupRepository;
 
-        public AramaGorusmeService() : this(new AramaGorusmeRepository(), new MtsLookupRepository())
+        public AramaGorusmeService() : this(new AramaGorusmeRepository())
         {
         }
 
-        public AramaGorusmeService(AramaGorusmeRepository repository, MtsLookupRepository lookupRepository)
+        public AramaGorusmeService(AramaGorusmeRepository repository)
         {
             this.repository = repository ?? throw new ArgumentNullException("repository");
-            this.lookupRepository = lookupRepository ?? throw new ArgumentNullException("lookupRepository");
-        }
-
-        public AramaGorusmeService(MtsLookupRepository lookupRepository)
-            : this(new AramaGorusmeRepository(), lookupRepository)
-        {
         }
 
         public AramaGorusme GetById(int id)
@@ -42,12 +35,12 @@ namespace Model.Services.MTS
 
         public AramaGorusme GetByFaaliyetId(int faaliyetId)
         {
-            return Map(lookupRepository.SelectAramaGorusmeByFaaliyetId(faaliyetId));
+            return Map(repository.SelectByFaaliyetId(faaliyetId));
         }
 
         public List<AramaGorusme> GetByArayanId(int arayanId)
         {
-            return ToList(lookupRepository.SelectAramaGorusmeByArayanId(arayanId));
+            return ToList(repository.SelectByArayanId(arayanId));
         }
 
         public DataTable GetByFilter(int arayanId, string gorusmeSekli, DateTime basTar, DateTime bitTar)
@@ -58,7 +51,7 @@ namespace Model.Services.MTS
             if (string.IsNullOrEmpty(gorusmeSekli) || gorusmeSekli.Equals(ProjeConstants.HEPSI))
                 gorusmeSekli = string.Empty;
 
-            return lookupRepository.SelectAramaGorusmeByFilter(
+            return repository.SelectByFilter(
                 arayanId,
                 gorusmeSekli,
                 basTar,

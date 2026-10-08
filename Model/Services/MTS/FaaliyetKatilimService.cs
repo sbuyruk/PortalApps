@@ -13,21 +13,14 @@ namespace Model.Services.MTS
     public class FaaliyetKatilimService
     {
         private readonly FaaliyetKatilimRepository repository;
-        private readonly MtsLookupRepository lookupRepository;
 
-        public FaaliyetKatilimService() : this(new FaaliyetKatilimRepository(), new MtsLookupRepository())
+        public FaaliyetKatilimService() : this(new FaaliyetKatilimRepository())
         {
         }
 
-        public FaaliyetKatilimService(FaaliyetKatilimRepository repository, MtsLookupRepository lookupRepository)
+        public FaaliyetKatilimService(FaaliyetKatilimRepository repository)
         {
             this.repository = repository ?? throw new ArgumentNullException("repository");
-            this.lookupRepository = lookupRepository ?? throw new ArgumentNullException("lookupRepository");
-        }
-
-        public FaaliyetKatilimService(MtsLookupRepository lookupRepository)
-            : this(new FaaliyetKatilimRepository(), lookupRepository)
-        {
         }
 
         public FaaliyetKatilim GetById(int id)
@@ -72,17 +65,17 @@ namespace Model.Services.MTS
 
         public List<FaaliyetKatilim> GetByFaaliyetAndKatilimci(int faaliyetId, int katilimciId)
         {
-            return ToList(lookupRepository.SelectFaaliyetKatilim(faaliyetId, katilimciId));
+            return ToList(repository.SelectByFaaliyetAndKatilimci(faaliyetId, katilimciId));
         }
 
         public List<FaaliyetKatilim> GetByKatilimciId(int katilimciId)
         {
-            return ToList(lookupRepository.SelectFaaliyetKatilimByKatilimciId(katilimciId));
+            return ToList(repository.SelectByKatilimciId(katilimciId));
         }
 
         public List<FaaliyetKatilim> GetByFaaliyetId(int faaliyetId)
         {
-            return ToList(lookupRepository.SelectFaaliyetKatilimByFaaliyetId(faaliyetId));
+            return ToList(repository.SelectByFaaliyetId(faaliyetId));
         }
 
         private static List<FaaliyetKatilim> ToList(DataTable table)
