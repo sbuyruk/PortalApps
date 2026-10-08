@@ -1,5 +1,4 @@
 using Model.Ortak;
-using Model.Services.MTS;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -56,87 +55,6 @@ namespace Model.MTS
                 return false;
 
             return true;
-        }
-        public int Save()
-        {
-            return new FaaliyetService().Save(this);
-        }
-        public bool Update()
-        {
-            return new FaaliyetService().Update(this);
-        }
-        public bool Delete()
-        {
-            return new FaaliyetService().Delete(this);
-        }
-        public Faaliyet Select(int id)
-        {
-            Id = id;
-            return new FaaliyetService().GetById(id);
-        }
-        public T Select<T>(int id)
-        {
-            Id = id;
-            return (T)Convert.ChangeType(new FaaliyetService().GetById(id), typeof(T));
-        }
-        public List<T> SelectAll<T>()
-        {
-            return (List<T>)Convert.ChangeType(new FaaliyetService().GetAll(), typeof(List<T>));
-        }
-        public string SelectAllReturnJson(string acikTarih)
-        {
-            DataTable dataTable = new FaaliyetService().GetAllData(acikTarih);
-
-            List<CalendarEvent> eventItems = new List<CalendarEvent>();
-            if (dataTable!=null)
-            {
-                foreach (DataRow dataRow in dataTable.Rows)
-                {
-
-                    CalendarEvent item = new CalendarEvent();
-                    item.state = dataRow["FaaliyetDurumu"].ToString();
-
-                    item.id = int.Parse(dataRow["Id"].ToString());
-                    int faaliyetAmaci= dataRow["FaaliyetAmaciId"].ReturnZeroIfNull().ConvertToInt();
-                    item.purpose = faaliyetAmaci.ToString();
-                    item.title = dataRow["FaaliyetKonusu"].ToString();
-                    //item.description = item.title;
-                    item.start = string.Format("{0:s}", dataRow["BaslangicTarihi"]);
-                    item.end = string.Format("{0:s}", dataRow["BitisTarihi"]);
-                    string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                    string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_FAALIYET_GIRIS;
-                    item.url = newUrl+ "?DestinationApp=Duzenle&FaaliyetId=" + item.id;
-                    item.allDay = dataRow["TumGun"].ReturnFalseIfNull().ConvertToBool();
-                    item.startEditable = true;
-                    RenkBelirle(item);
-                    if (item.state.Equals(ProjeConstants.FAALIYET_DURUMU_IPTALEDILDI_INT.ToString()))
-                    {
-                        item.color = Color.Red.Name;
-                        item.textColor = Color.Black.Name;
-                        item.className = "iptal-edildi";
-                    }
-                    //item.className = "iptal-edildi";
-                    eventItems.Add(item);
-                }
-            }
-            string json = ToJSON(eventItems);
-            return json;
-        }
-        public List<Faaliyet> SelectAllReturnList(string acikTarih)
-        {
-            return new FaaliyetService().GetAll(acikTarih);
-        }
-        public List<Faaliyet> SelectByTarihReturnList(DateTime tarih)
-        {
-            return new FaaliyetService().GetByDate(tarih);
-        }
-        public DataTable SelectAllByKatilimciFaaliyetReturnDataTable( int faaliyetId, int monthBefore, string acikTarihli, DateTime bastar, DateTime bittar,string faaliyetAmaci)
-        {
-            return new FaaliyetService().GetParticipantList(faaliyetId, monthBefore, acikTarihli, bastar, bittar, faaliyetAmaci);
-        }
-        public DataTable SelectByKatilimciReturnDataTable(int katilimciId, int faaliyetId)
-        {
-            return new FaaliyetService().GetByParticipant(katilimciId, faaliyetId);
         }
         public void RenkBelirle(CalendarEvent item)
         {
@@ -293,11 +211,6 @@ namespace Model.MTS
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Aciklama);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(YoneticiNotu);
             return hashCode;
-        }
-
-        public List<string> SelectAllDistinctFaaliyetYeri()
-        {
-            return new FaaliyetService().GetDistinctPlaces();
         }
 
         public static bool operator ==(Faaliyet left, Faaliyet right)

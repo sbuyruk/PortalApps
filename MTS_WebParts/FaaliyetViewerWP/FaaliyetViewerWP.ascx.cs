@@ -353,8 +353,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
         }
         private string FaaliyetListesiniGetir()
         {
-            Faaliyet randevu = new Faaliyet();
-            string json = randevu.SelectAllReturnJson(ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL);
+            string json = new Model.Services.MTS.FaaliyetService().GetCalendarJson(ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL);
             return json;
         }
         private string ResmiTatilListesiniGetir()
@@ -515,7 +514,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
             if (faaliyetId > 0)
             {
                 Faaliyet faaliyet = new Faaliyet();
-                faaliyet = faaliyet.Select(faaliyetId);
+                faaliyet = new Model.Services.MTS.FaaliyetService().GetById(faaliyetId);
                 if (faaliyet != null)
                 {
                     faaliyet.BaslangicTarihi = basTar;
@@ -523,7 +522,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
                     faaliyet.BitisTarihi = bitTar;
                     faaliyet.BitisSaati = bitTar.ToString("HH:mm");
                     faaliyet.AcikTarih = ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL.ConvertToBool();
-                    if (faaliyet.Update())
+                    if (new Model.Services.MTS.FaaliyetService().Update(faaliyet))
                     {
                         OzelKalemTakvimineIsle(faaliyet, ProjeConstants.KAYDET);
                         RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM + "?CalendarView=" + CalendarViewQS + "&InitialDate=" + InitialDateQS);

@@ -246,8 +246,7 @@ namespace MTS_WebParts.HaftalikGorunumWP
         }
         private string FaaliyetListesiniGetir()
         {
-            Faaliyet randevu = new Faaliyet();
-            string json = randevu.SelectAllReturnJson(ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL);
+            string json = new Model.Services.MTS.FaaliyetService().GetCalendarJson(ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL);
             return json;
         }
         private string ResmiTatilListesiniGetir()

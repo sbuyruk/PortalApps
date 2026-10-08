@@ -351,7 +351,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP
         private string FaaliyetListesiniGetir()
         {
             Faaliyet faaliyet = new Faaliyet();
-            string json = faaliyet.SelectAllReturnJson(ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL);
+            string json = new Model.Services.MTS.FaaliyetService().GetCalendarJson(ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL);
             return json;
         }
         private string ResmiTatilListesiniGetir()
@@ -431,7 +431,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP
         private void AcikTarihliFaaliyetListesiniGetir()
         {
             Faaliyet faaliyet = new Faaliyet();
-            List<Faaliyet> list = faaliyet.SelectAllReturnList(ProjeConstants.FAALIYET_ACIKTARIHLI);
+            List<Faaliyet> list = new Model.Services.MTS.FaaliyetService().GetAll(ProjeConstants.FAALIYET_ACIKTARIHLI);
             foreach (var item in list)
             {
                 CreateDiv(item.Id.ToString(), item.FaaliyetKonusu);
@@ -537,7 +537,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP
         {
             int faaliyetId = paramFaaliyetIdLbl.Text.ConvertToInt();
             Faaliyet faaliyet = new Faaliyet();
-            faaliyet = faaliyet.Select(faaliyetId);
+            faaliyet = new Model.Services.MTS.FaaliyetService().GetById(faaliyetId);
             if (faaliyet != null)
             {
                 FaaliyetIdLbl.Text = " ( Faaliyet No: " + faaliyet.Id.ToString() + " )";
@@ -562,7 +562,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP
         private string GetDataList(int faaliyetId)
         {
             Faaliyet faaliyetDao = new Faaliyet();
-            System.Data.DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(faaliyetId,3,ProjeConstants.HEPSI, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH, ProjeConstants.HEPSI);
+            System.Data.DataTable dataTable = new Model.Services.MTS.FaaliyetService().GetParticipantList(faaliyetId, 3, ProjeConstants.HEPSI, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH, ProjeConstants.HEPSI);
             StringBuilder sb = new StringBuilder();
             int sirano = 1;
             if (dataTable != null)

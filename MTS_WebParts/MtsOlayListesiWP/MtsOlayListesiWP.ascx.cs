@@ -142,7 +142,7 @@ namespace MTS_WebParts.MtsOlayListesiWP
             if (faaliyetId > 0)
             {
                 faaliyet = new Faaliyet();
-                faaliyet = faaliyet.Select(faaliyetId);
+                faaliyet = new Model.Services.MTS.FaaliyetService().GetById(faaliyetId);
             }
             if (katilimciId > 0)
             {

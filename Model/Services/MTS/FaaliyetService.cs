@@ -44,6 +44,45 @@ namespace Model.Services.MTS
             return repository.SelectFaaliyetByAcikTarih(acikTarih);
         }
 
+        public string GetCalendarJson(string acikTarih)
+        {
+            DataTable dataTable = GetAllData(acikTarih);
+            List<CalendarEvent> eventItems = new List<CalendarEvent>();
+            if (dataTable != null)
+            {
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    CalendarEvent item = new CalendarEvent
+                    {
+                        state = dataRow["FaaliyetDurumu"].ToString(),
+                        id = int.Parse(dataRow["Id"].ToString()),
+                        purpose = dataRow["FaaliyetAmaciId"].ReturnZeroIfNull().ConvertToInt().ToString(),
+                        title = dataRow["FaaliyetKonusu"].ToString(),
+                        start = string.Format("{0:s}", dataRow["BaslangicTarihi"]),
+                        end = string.Format("{0:s}", dataRow["BitisTarihi"]),
+                        allDay = dataRow["TumGun"].ReturnFalseIfNull().ConvertToBool(),
+                        startEditable = true
+                    };
+
+                    string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                    string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_FAALIYET_GIRIS;
+                    item.url = newUrl + "?DestinationApp=Duzenle&FaaliyetId=" + item.id;
+                    new Faaliyet().RenkBelirle(item);
+
+                    if (item.state.Equals(ProjeConstants.FAALIYET_DURUMU_IPTALEDILDI_INT.ToString()))
+                    {
+                        item.color = Color.Red.Name;
+                        item.textColor = Color.Black.Name;
+                        item.className = "iptal-edildi";
+                    }
+
+                    eventItems.Add(item);
+                }
+            }
+
+            return new Faaliyet().ToJSON(eventItems);
+        }
+
         public List<Faaliyet> GetByDate(DateTime tarih)
         {
             DateTime baslangic = new DateTime(tarih.Year, tarih.Month, tarih.Day);
