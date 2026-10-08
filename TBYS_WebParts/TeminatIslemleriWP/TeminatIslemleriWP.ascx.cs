@@ -196,7 +196,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     TableCell siraCell = new TableCell();
                     siraCell.Text = (++sira).ToString();
                     TableCell adresCell = new TableCell();
-                    adresCell.Text = row["AdresBolumNoIliIlcesi"].ReturnEmptyIfNull().ToString();
+                    adresCell.Text = row["TasinmazAdresi"].ReturnEmptyIfNull().ToString();
                     tableRow.Controls.Add(siraCell);
                     tableRow.Controls.Add(adresCell);
                     TasinmazAdresTable.Rows.Add(tableRow);

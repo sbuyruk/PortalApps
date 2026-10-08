@@ -345,7 +345,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                     TableCell siraCell = new TableCell();
                     siraCell.Text = (++sira).ToString();
                     TableCell adresCell = new TableCell();  
-                    adresCell.Text = row["AdresBolumNoIliIlcesi"].ReturnEmptyIfNull().ToString();
+                    adresCell.Text = row["TasinmazAdresi"].ReturnEmptyIfNull().ToString();
                     tableRow.Controls.Add(siraCell);
                     tableRow.Controls.Add(adresCell);
                     KiralikTable.Rows.Add(tableRow);
