@@ -70,6 +70,10 @@ namespace Model.Services.TBYS
         public KiraSozlesme GetPrevious(int id, int dosyaNo) { return Map(repository.SelectPrevious(id, dosyaNo)) ?? GetMax(); }
         public KiraSozlesme GetMax() { return Map(repository.SelectMax()); }
         public KiraSozlesme GetMin() { return Map(repository.SelectMin()); }
+        public KiraSozlesme GetNextCompleted(int id, int dosyaNo) { return Map(repository.SelectNextCompleted(id, dosyaNo)) ?? GetMinCompleted(); }
+        public KiraSozlesme GetPreviousCompleted(int id, int dosyaNo) { return Map(repository.SelectPreviousCompleted(id, dosyaNo)) ?? GetMaxCompleted(); }
+        public KiraSozlesme GetMaxCompleted() { return Map(repository.SelectMaxCompleted()); }
+        public KiraSozlesme GetMinCompleted() { return Map(repository.SelectMinCompleted()); }
 
         private static List<KiraSozlesme> ToList(DataTable table)
         {
