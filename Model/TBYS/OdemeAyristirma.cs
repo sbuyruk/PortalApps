@@ -50,53 +50,5 @@ namespace Model.TBYS
         {
             return new OdemeAyristirmaService().GetByKiraEkstreAktarmaId(kiraEkstreAktarmaId);
         }
-        public string GetInsertSQL(string extId)
-        {
-            try
-            {
-                GenericEntity<OdemeAyristirma> genericEntity = new GenericEntity<OdemeAyristirma>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                string sqlString = genericEntity.GetQuery(this, extId) + " ;SELECT SCOPE_IDENTITY() ";
-
-                return sqlString;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-        public string GetUpdateSQL(string extId)
-        {
-            try
-            {
-                GenericEntity<OdemeAyristirma> genericEntity = new GenericEntity<OdemeAyristirma>(ProjeConstants.SQL_UPDATE);
-                OlusturmaTarihi = DateTime.Now;
-                string sqlString = genericEntity.GetQuery(this, extId);
-
-                return sqlString;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-        public string GetDeleteSQL(string extId)
-        {
-            try
-            {
-                GenericEntity<OdemeAyristirma> genericEntity = new GenericEntity<OdemeAyristirma>(ProjeConstants.SQL_DELETE);
-                OlusturmaTarihi = DateTime.Now;
-                string sqlString = genericEntity.GetQuery(this, extId);
-
-                return sqlString;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
     }
 }

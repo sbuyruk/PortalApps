@@ -1,4 +1,3 @@
-using DAO.Ortak;
 using Model.Ortak;
 using Model.Services.TBYS;
 using System;
@@ -39,54 +38,6 @@ namespace Model.TBYS
         public bool Delete()
         {
             return new OdemeService().Delete(this);
-        }
-        public string GetInsertSQL(string extId)
-        {
-            try
-            {
-                GenericEntity<Odeme> genericEntity = new GenericEntity<Odeme>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                string sqlString = genericEntity.GetQuery(this, extId) + " ;SELECT SCOPE_IDENTITY() ";
-
-                return sqlString;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-        public string GetUpdateSQL(string extId)
-        {
-            try
-            {
-                GenericEntity<Odeme> genericEntity = new GenericEntity<Odeme>(ProjeConstants.SQL_UPDATE);
-                OlusturmaTarihi = DateTime.Now;
-                string sqlString = genericEntity.GetQuery(this, extId);
-
-                return sqlString;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-        public string GetDeleteSQL(string extId)
-        {
-            try
-            {
-                GenericEntity<Odeme> genericEntity = new GenericEntity<Odeme>(ProjeConstants.SQL_DELETE);
-                OlusturmaTarihi = DateTime.Now;
-                string sqlString = genericEntity.GetQuery(this, extId);
-
-                return sqlString;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
         }
         public bool DeleteBySozlesmeId(int sozlesmeId)
         {
