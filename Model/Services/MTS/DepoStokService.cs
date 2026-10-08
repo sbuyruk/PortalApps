@@ -12,21 +12,14 @@ namespace Model.Services.MTS
     public class DepoStokService
     {
         private readonly DepoStokRepository repository;
-        private readonly MtsLookupRepository lookupRepository;
 
-        public DepoStokService() : this(new DepoStokRepository(), new MtsLookupRepository())
+        public DepoStokService() : this(new DepoStokRepository())
         {
         }
 
-        public DepoStokService(DepoStokRepository repository, MtsLookupRepository lookupRepository)
+        public DepoStokService(DepoStokRepository repository)
         {
             this.repository = repository ?? throw new ArgumentNullException("repository");
-            this.lookupRepository = lookupRepository ?? throw new ArgumentNullException("lookupRepository");
-        }
-
-        public DepoStokService(MtsLookupRepository lookupRepository)
-            : this(new DepoStokRepository(), lookupRepository)
-        {
         }
 
         public DepoStok GetById(int id)
@@ -71,7 +64,7 @@ namespace Model.Services.MTS
 
         public DepoStok GetByDepoIdAniObjesiId(int depoId, int aniObjesiId, string stokluMu)
         {
-            return ToList(lookupRepository.SelectDepoStok(depoId, aniObjesiId, stokluMu)).FirstOrDefault();
+            return ToList(repository.SelectDepoStok(depoId, aniObjesiId, stokluMu)).FirstOrDefault();
         }
 
         private static List<DepoStok> ToList(System.Data.DataTable table)

@@ -13,21 +13,14 @@ namespace Model.Services.MTS
     public class AniObjesiTanimService
     {
         private readonly AniObjesiTanimRepository repository;
-        private readonly MtsLookupRepository lookupRepository;
 
-        public AniObjesiTanimService() : this(new AniObjesiTanimRepository(), new MtsLookupRepository())
+        public AniObjesiTanimService() : this(new AniObjesiTanimRepository())
         {
         }
 
-        public AniObjesiTanimService(AniObjesiTanimRepository repository, MtsLookupRepository lookupRepository)
+        public AniObjesiTanimService(AniObjesiTanimRepository repository)
         {
             this.repository = repository ?? throw new ArgumentNullException("repository");
-            this.lookupRepository = lookupRepository ?? throw new ArgumentNullException("lookupRepository");
-        }
-
-        public AniObjesiTanimService(MtsLookupRepository lookupRepository)
-            : this(new AniObjesiTanimRepository(), lookupRepository)
-        {
         }
 
         public AniObjesiTanim GetById(int id)
@@ -72,7 +65,7 @@ namespace Model.Services.MTS
 
         public DataTable GetStokluAniObjesiList()
         {
-            return lookupRepository.SelectStokluAniObjeleri(ProjeConstants.MTS_ANIOBJESISTOKLU);
+            return repository.SelectStokluAniObjeleri(ProjeConstants.MTS_ANIOBJESISTOKLU);
         }
 
         private static List<AniObjesiTanim> ToList(DataTable table)
