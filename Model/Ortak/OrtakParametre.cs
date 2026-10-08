@@ -1,11 +1,7 @@
-using DAO.Ortak;
-using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using Utility.HelperClasses;
-using Utility.ProjeGlobal;
+using Model.Services.Ortak;
 
 namespace Model.Ortak
 {
@@ -18,175 +14,50 @@ namespace Model.Ortak
         public int Sira { get; set; }
         public bool Delete()
         {
-            try
-            {
-                if (Id != 0)
-                {
-                    GenericEntity<OrtakParametre> genericEntity = new GenericEntity<OrtakParametre>(ProjeConstants.SQL_DELETE);
-                    OlusturmaTarihi = DateTime.Now;
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    bool isDeleted = dao.DeleteFromDb(query, "");
-                    return isDeleted;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            return new OrtakParametreService().Delete(this);
         }
         public int Save()
         {
-            try
-            {
-                GenericEntity<OrtakParametre> genericEntity = new GenericEntity<OrtakParametre>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                SqlQuery query = genericEntity.GetQueryParametreli(this);
-                int id = dao.Insert(query);
-
-                this.Id = id;
-                return id;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-
+            return new OrtakParametreService().Save(this);
         }
         public OrtakParametre Select(int id)
         {
-            GenericEntity<OrtakParametre> genericEntity = new GenericEntity<OrtakParametre>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
             Id = id;
-            string sqlString = genericEntity.GetQuery(this);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<OrtakParametre> list = ToList<OrtakParametre>(dataTable);
-            _ = new OrtakParametre();
-            OrtakParametre item = list.FirstOrDefault();
-            return item;
+            return new OrtakParametreService().GetById(id);
         }
         public T Select<T>(int id)
         {
-            GenericEntity<OrtakParametre> genericEntity = new GenericEntity<OrtakParametre>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
             Id = id;
-            string sqlString = genericEntity.GetQuery(this);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<OrtakParametre> list = ToList<OrtakParametre>(dataTable);
-            OrtakParametre item = new OrtakParametre();
-            item = list.FirstOrDefault();
-            return ((T)Convert.ChangeType(item, typeof(T)));
+            return (T)Convert.ChangeType(new OrtakParametreService().GetById(id), typeof(T));
         }
         public List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM OrtakParametre_Table ORDER BY Sira,Deger
-                ");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<OrtakParametre> list = ToList<OrtakParametre>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+            return (List<T>)Convert.ChangeType(new OrtakParametreService().GetAll(), typeof(List<T>));
         }
         public bool Update()
         {
-            bool isSuccess = false;
-            try
-            {
-                if (Id != 0)
-                {
-                    GenericEntity<OrtakParametre> genericEntity = new GenericEntity<OrtakParametre>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    isSuccess = dao.Update2Db(query);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
+            return new OrtakParametreService().Update(this);
         }
         public OrtakParametre SelectByAnahtar(string anahtar)
         {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM OrtakParametre_Table 
-                WHERE Anahtar={0}
-                ORDER BY Sira, Deger
-                ", anahtar.ReturnQuotedValue());
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<OrtakParametre> list = ToList<OrtakParametre>(dataTable);
-            _ = new OrtakParametre();
-            OrtakParametre item = list.FirstOrDefault();
-            return item;
+            return new OrtakParametreService().GetByKey(anahtar);
         }
         public List<OrtakParametre> SelectByGrupReturnList(string parametreGrubu)
         {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM OrtakParametre_Table 
-                WHERE Grup={0}
-                ORDER BY Sira, Deger
-                ",parametreGrubu.ReturnQuotedValue());
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<OrtakParametre> list = ToList<OrtakParametre>(dataTable);
-
-            return (list);
+            return new OrtakParametreService().GetByGroup(parametreGrubu);
         }
         public DataTable SelectAllReturnDT()
         {
-            string sqlString = string.Format(@"
-                SELECT * FROM OrtakParametre_Table 
-                ORDER BY Sira,Deger
-                ");
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-
-            return dataTable;
+            return new OrtakParametreService().GetAllData();
         }
         public string SelectAllReturnJson()
         {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM OrtakParametre_Table 
-                ORDER BY Sira, Deger");
-            DataTable dataTable;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            string json = ToJSON(dataTable);
-            return json;
+            return new OrtakParametreService().GetAllJson();
         }
 
         public List<OrtakParametre> SelectByGrupDeger(string grup, string deger)
         {
-            string sqlString = string.Format(@"
-                SELECT * 
-                FROM OrtakParametre_Table 
-                WHERE Grup={0} AND Deger={1}
-                ORDER BY Sira, Deger
-                ", grup.ReturnQuotedValue(),deger.ReturnQuotedValue());
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<OrtakParametre> list = ToList<OrtakParametre>(dataTable);
-
-            return list;
+            return new OrtakParametreService().GetByGroupValue(grup, deger);
         }
     }
 }
