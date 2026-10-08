@@ -379,7 +379,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
         {
             bool silinebilirMi = false;
             SozlesmeTasinmaz sozlesmeTasinmaz = new SozlesmeTasinmaz();
-            List<SozlesmeTasinmaz> list = sozlesmeTasinmaz.SelectByBolumId(bagimsizBolum.Id);
+            List<SozlesmeTasinmaz> list = new SozlesmeTasinmazService().GetByBolumId(bagimsizBolum.Id);
             if (list.Count < 1)
             {
                 silinebilirMi = true;

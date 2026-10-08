@@ -62,14 +62,6 @@ namespace Model.TBYS
         public static bool DeleteBySozlesmeId(this SozlesmeTasinmaz item, int id) { return new SozlesmeTasinmazService().DeleteBySozlesmeId(item, id); }
         public static List<T> SelectAll<T>(this SozlesmeTasinmaz item) { return (List<T>)Convert.ChangeType(new SozlesmeTasinmazService().GetAll(), typeof(List<T>)); }
         public static string SelectBySozlesmeIdReturnJson(this SozlesmeTasinmaz item, int id) { return new SozlesmeTasinmazService().GetBySozlesmeIdReturnJson(id); }
-        public static DataTable SelectBySozlesmeIdReturnDataTable(this SozlesmeTasinmaz item, int id) { return new SozlesmeTasinmazService().GetBySozlesmeIdReturnList(id); }
-        public static List<SozlesmeTasinmaz> SelectByTasinmazId(this SozlesmeTasinmaz item, int id) { return new SozlesmeTasinmazService().GetByTasinmazId(id); }
-        public static List<SozlesmeTasinmaz> SelectBySozlesmeId(this SozlesmeTasinmaz item, int id) { return new SozlesmeTasinmazService().GetBySozlesmeId(id); }
-        public static decimal SelectSumMetrekareBySozlesmeId(this SozlesmeTasinmaz item, int id) { return new SozlesmeTasinmazService().GetSumMetrekareBySozlesmeId(id); }
-        public static DataTable SelectBySozlesmeIdReturnDT(this SozlesmeTasinmaz item, int id) { return new SozlesmeTasinmazService().GetBySozlesmeIdReturnDT(id); }
-        public static List<SozlesmeTasinmaz> SelectBySozlesmeIdTasinmazId(this SozlesmeTasinmaz item, int sozlesmeId, int tasinmazId, int bolumId) { return new SozlesmeTasinmazService().GetBySozlesmeIdTasinmazId(sozlesmeId, tasinmazId, bolumId); }
-        public static List<SozlesmeTasinmaz> SelectByBolumId(this SozlesmeTasinmaz item, int id) { return new SozlesmeTasinmazService().GetByBolumId(id); }
-
         public static T Select<T>(this KiraEkstreAktarma item, int id) { return (T)Convert.ChangeType(new KiraEkstreAktarmaService().GetById(id), typeof(T)); }
         public static int Save(this KiraEkstreAktarma item) { return new KiraEkstreAktarmaService().Save(item); }
         public static bool Update(this KiraEkstreAktarma item) { return new KiraEkstreAktarmaService().Update(item); }
@@ -96,7 +88,6 @@ namespace Model.TBYS
         public static Onarim SelectNext(this Onarim item, int id) { return new OnarimService().GetNext(id); }
         public static Onarim SelectPrev(this Onarim item, int id) { return new OnarimService().GetPrevious(id); }
         public static Onarim SelectMax(this Onarim item) { return new OnarimService().GetMax(); }
-        public static List<Onarim> SelectOnarimByTasinmazId(this Onarim item, int id) { return new OnarimService().GetByTasinmazIdWithAddress(id); }
         public static Onarim SelectMin(this Onarim item) { return new OnarimService().GetMin(); }
 
         public static T Select<T>(this Bagis item, int id) { return (T)Convert.ChangeType(new BagisService().GetById(id), typeof(T)); }

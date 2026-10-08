@@ -204,7 +204,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP
             HeaderCell5.Text = "Açiklama";
             HeaderCell5.Visible = true;
 
-            List<Onarim> list = new Onarim().SelectOnarimByTasinmazId(tasinmaz.Id);
+            List<Onarim> list = new OnarimService().GetByTasinmazIdWithAddress(tasinmaz.Id);
             int SiraNo = 1;
             foreach (Onarim onarim in list)
             {

@@ -288,7 +288,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                         if (babo != null)
                         {
                             SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-                            List<SozlesmeTasinmaz> list = st.SelectBySozlesmeIdTasinmazId(kiraSozlesme.Id, tasinmaz.Id, babo.Id);
+                            List<SozlesmeTasinmaz> list = new SozlesmeTasinmazService().GetBySozlesmeIdTasinmazId(kiraSozlesme.Id, tasinmaz.Id, babo.Id);
                             if (list.Count < 1)// bu bagimsizbolum  vt'da yoksa insert et varsa bisey yapma varsa
                             {
                                 st.SozlesmeId = kiraSozlesme.Id;
@@ -301,7 +301,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                         else //bagimsiz bolum parametre olarak gelmediyse
                         {
                             SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-                            List<SozlesmeTasinmaz> list = st.SelectBySozlesmeIdTasinmazId(kiraSozlesme.Id, tasinmaz.Id, 0);
+                            List<SozlesmeTasinmaz> list = new SozlesmeTasinmazService().GetBySozlesmeIdTasinmazId(kiraSozlesme.Id, tasinmaz.Id, 0);
                             if (list.Count < 1)
                             {
                                 st.SozlesmeId = kiraSozlesme.Id;
