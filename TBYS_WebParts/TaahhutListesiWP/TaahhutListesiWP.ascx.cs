@@ -199,7 +199,7 @@ namespace TBYS_WebParts.TaahhutListesiWP
             List<string> bagisciTaahhutFormuDosyalari = UtilityHelper.GetFileNameListFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, ProjeConstants.DOSYA_TAAHHUT_FORMU);
             bool isEditable = BolgeIdQS == ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? true : false;
             TasinmazBagisci tb= new TasinmazBagisci();
-            List<TasinmazBagisci> tblist =  tb.SelectByBolge(BolgeIdQS);
+            List<TasinmazBagisci> tblist =  new Model.Services.TBYS.TasinmazBagisciService().GetByBolge(BolgeIdQS);
             foreach (var item in tblist)
             {
                 string dosyaAdi = ProjeConstants.DOSYA_TAAHHUT_FORMU + item.Id + ".pdf";
@@ -265,7 +265,7 @@ namespace TBYS_WebParts.TaahhutListesiWP
         private string BagisciBilgisiGetir(int bagisciId)
         {
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            bagisci=bagisci.Select<TasinmazBagisci>(bagisciId);
+            bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(bagisciId);
             return bagisci != null ? (bagisci.Adi + " " + bagisci.Soyadi).Trim() : string.Empty;
         }
 

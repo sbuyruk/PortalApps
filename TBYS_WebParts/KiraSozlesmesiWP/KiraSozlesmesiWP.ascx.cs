@@ -220,7 +220,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
                     IdLbl.Text = "Sözleşme No: " + kiraSozlesme.Id.ToString() ;
                     EskiDosyaNoLbl.Text = kiraSozlesme.DosyaNo.ToString();
                     Kiraci kiraci = new Kiraci();
-                    kiraci = kiraci.Select<Kiraci>(kiraSozlesme.KiraciId);
+                    kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
                     if (kiraci != null)
                     {
                         KiraciIdQS = kiraSozlesme.KiraciId.ToString();
@@ -288,7 +288,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 {
                     IdLbl.Text = "Sözleşme No: " + kiraSozlesme.Id.ToString() ;
                     Kiraci kiraci = new Kiraci();
-                    kiraci = kiraci.Select<Kiraci>(kiraSozlesme.KiraciId);
+                    kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
                     if (kiraci != null)
                     {
                         KiraciIdQS = kiraSozlesme.KiraciId.ToString();
@@ -792,7 +792,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
         private int BolgeIdGetir(KiraSozlesme yeniSozlesme)
         {
             Kiraci kiraci = new Kiraci();
-            kiraci = kiraci.Select(yeniSozlesme.KiraciId);
+            kiraci = new Model.Services.TBYS.KiraciService().GetById(yeniSozlesme.KiraciId);
             string ili = kiraci == null ? "" : kiraci.Ili;
             Il il = new IlService().GetByName(kiraci.Ili);
             int bolgeId = il == null ? 0 : il.BolgeId;
@@ -854,11 +854,11 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
         {
             decimal yeniKiraBedeli = kiraSozlesme.KiraBedeli;
             YasalFaiz yasalFaiz = new YasalFaiz();
-            yasalFaiz = yasalFaiz.SelectByYilAy(yenibastar.Year, yenibastar.Month);
+            yasalFaiz = new Model.Services.TBYS.YasalFaizService().GetByYearMonth(yenibastar.Year, yenibastar.Month);
             if (yasalFaiz != null)
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = kiraci.Select(kiraSozlesme.KiraciId);
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
                 if ((yenibastar >= ProjeConstants.SINIRLIKIRAARTISI_BASLAMATARIHI) &&
                     (yenibastar <= ProjeConstants.SINIRLIKIRAARTISI_BITISTARIHI) &&
                     kiraci.KiralamaAmaci.Equals(ProjeConstants.SINIRLIKIRAARTISI_UYGULANACAKTASINMAZCINSI))
@@ -1077,7 +1077,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 DateTime bastar = string.IsNullOrEmpty(kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull()) ? DateTime.Today : kiraSozlesme.SozBasTar;
                 DateTime yenibastar = bastar.AddYears(1);
                 Kiraci kiraci = new Kiraci();
-                kiraci = kiraci.Select(kiraSozlesme.KiraciId);
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
                 if ((yenibastar >= ProjeConstants.SINIRLIKIRAARTISI_BASLAMATARIHI) &&
                     (yenibastar <= ProjeConstants.SINIRLIKIRAARTISI_BITISTARIHI) &&
                     kiraci.KiralamaAmaci.Equals(ProjeConstants.SINIRLIKIRAARTISI_UYGULANACAKTASINMAZCINSI))
@@ -1091,7 +1091,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 {
                     YasalFaiz yasalFaiz = new YasalFaiz();
 
-                    yasalFaiz = yasalFaiz.SelectByYilAy(yenibastar.Year, yenibastar.Month);
+                    yasalFaiz = new Model.Services.TBYS.YasalFaizService().GetByYearMonth(yenibastar.Year, yenibastar.Month);
                     if (yasalFaiz != null)
                     {
                         decimal tufe = yasalFaiz.Tufe;

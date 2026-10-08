@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -210,7 +210,7 @@ namespace Model.MTS
             {
                 TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
                 tasinmazBagisci= new TasinmazBagisci();
-                tasinmazBagisci = tasinmazBagisci.Select<TasinmazBagisci>(katilimciId);
+                tasinmazBagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(katilimciId);
                 if (tasinmazBagisci != null)
                 {
 

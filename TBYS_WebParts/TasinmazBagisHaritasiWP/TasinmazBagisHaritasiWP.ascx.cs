@@ -190,7 +190,7 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
         {
 
             TasinmazBagisci dao = new TasinmazBagisci();
-            List<TasinmazBagisci> list = dao.SelectByIlAdi(ilAdi);
+            List<TasinmazBagisci> list = new Model.Services.TBYS.TasinmazBagisciService().GetByIlAdi(ilAdi);
 
             return list;
         }

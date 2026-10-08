@@ -88,7 +88,7 @@ namespace Model.Ortak
                     DateTime vadeBasTar = odemePlani.VadeBasTar;//vade tarihinden itibaren
                     #region Yasal Faiz Kontrolü
                     YasalFaiz yasalFaiz = new YasalFaiz();
-                    yasalFaiz = yasalFaiz.SelectByYilAy(vadeBasTar.Year, vadeBasTar.Month);
+                    yasalFaiz = new Model.Services.TBYS.YasalFaizService().GetByYearMonth(vadeBasTar.Year, vadeBasTar.Month);
                     if (yasalFaiz == null)
                     {
                         Exception ex1 = new Exception(vadeBasTar.Month + "/" + vadeBasTar.Year + " Ayi için Yasal Faiz Orani girilmediginden Faiz Hesaplanamiyor.");

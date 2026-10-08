@@ -165,7 +165,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
 
                 SecilenKiraciyiKaydet(kiraSozlesme);
                 Kiraci kiraci = new Kiraci();
-                kiraci = kiraci.Select<Kiraci>(kiraSozlesme.KiraciId);
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
                 AdiLbl.Text = kiraci.Adi + " " + kiraci.Soyadi + " (" + kiraci.Id + ")";
                 KiraciAdiSoyadiLbl.Text = kiraci.Adi + " " + kiraci.Soyadi + " (" + kiraci.Adres + ")";
             }
@@ -324,7 +324,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 if (kiraciId > 0)
                 {
                     Kiraci kiraci = new Kiraci();
-                    kiraci = kiraci.Select<Kiraci>(kiraciId);
+                    kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraciId);
                     if (kiraci != null)
                     {
                         kiraSozlesme.KiraciId = kiraci.Id;
@@ -431,7 +431,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         private void KiraciSecimiModalShow()
         {
             Kiraci kiraci = new Kiraci();
-            var jsonData = kiraci.SelectAllReturnJson();
+            var jsonData = new Model.Services.TBYS.KiraciService().GetAllReturnJson();
             var jsString = CreateKiraciModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
             UtilityHelper.ScriptCalistir("KiraciSecimiModal();");

@@ -162,7 +162,7 @@ namespace TBYS_WebParts.OdemePlaniWP
         private string KiraciGetir(int kiraciId)
         {
             Kiraci kiraci = new Kiraci();
-            kiraci = kiraci.Select(kiraciId);
+            kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraciId);
             if (kiraci != null)
             {
                 return kiraci.Adi + " " + kiraci.Soyadi;
@@ -378,7 +378,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             if (kiraSozlesme != null)
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = kiraci.Select<Kiraci>(kiraSozlesme.KiraciId);
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
                 if (kiraci != null)
                 {
                     RedirectToPage(ProjeConstants.PAGE_KIRAKARTI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + kiraSozlesme.Id + "&KiraciId=" + kiraci.Id);
@@ -400,7 +400,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             if (kiraSozlesme != null)
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = kiraci.Select<Kiraci>(kiraSozlesme.KiraciId);
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
                 if (kiraci != null)
                 {
                     RedirectToPage(ProjeConstants.PAGE_KIRACI_GIRIS + "?DestinationApp=KD&SenderApp=KL&KiraciId=" + KiraciIdQS);
@@ -738,7 +738,7 @@ namespace TBYS_WebParts.OdemePlaniWP
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             Kiraci kiraci = new Kiraci();
-            kiraci = kiraci.Select<Kiraci>(kiraSozlesme.KiraciId);
+            kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
             BaslikLbl.Text = "Kiracı: " + kiraci.Adi + " " + kiraci.Soyadi;
             DateTime tarih = new DateTime(yil, ay, 1);
             TarihLbl.Text = "(" + tarih.ToString("MMMM") + " " + yil + ")";

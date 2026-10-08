@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -110,11 +110,11 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
             if (!Page.IsPostBack)
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = kiraci.Select<Kiraci>(KiraciIdQS.ConvertToInt());
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
                 if (kiraci==null)
                 {
                     kiraci = new Kiraci();
-                    kiraci = kiraci.SelectMin();    
+                    kiraci = new Model.Services.TBYS.KiraciService().GetMin();
                 }
                 
                 if (kiraci != null)
@@ -164,7 +164,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
         private void EnableOdemeSozlesmeBtns(string kiraciId)
         {
             Kiraci kiraci = new Kiraci();
-            kiraci = kiraci.Select<Kiraci>(KiraciIdQS.ConvertToInt());
+            kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
             if (kiraci != null)//bu kiraci varsa
             {
 
@@ -335,7 +335,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
         protected void OdemePlaniGoruntuleBtn_Click(object sender, EventArgs e)
         {
             Kiraci kiraci = new Kiraci();
-            kiraci = kiraci.Select<Kiraci>(KiraciIdQS.ConvertToInt());
+            kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
             if (kiraci != null)//bu kiraci varsa
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
@@ -355,7 +355,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
         private void OdemePlaniGoruntule(KiraSozlesme kiraSozlesme)
         {
             Kiraci kiraci = new Kiraci();
-            kiraci = kiraci.Select<Kiraci>(kiraSozlesme.KiraciId);
+            kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
             TitleLbl.Text = " Kiracı : " + kiraci.Adi + " " + kiraci.Soyadi;
 
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -453,7 +453,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
         protected void KiraKartiBtn_Click(object sender, EventArgs e)
         {
             Kiraci kiraci = new Kiraci();
-            kiraci = kiraci.Select<Kiraci>(KiraciIdQS.ConvertToInt());
+            kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
             if (kiraci != null)//bu kiraci varsa
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -468,7 +468,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
             try
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = kiraci.Select<Kiraci>(KiraciIdQS.ConvertToInt());
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
                 if (kiraci != null)
                 {
                     KiraSozlesme kiraSozlesme = new KiraSozlesme();
@@ -498,8 +498,8 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
             try
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = kiraci.Select<Kiraci>(KiraciIdQS.ConvertToInt());
-                Kiraci oncekiKiraci = kiraci.SelectPrev();
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+                Kiraci oncekiKiraci = new Model.Services.TBYS.KiraciService().GetPrevious(kiraci.Id);
                 if (oncekiKiraci != null)
                 {
                     RedirectToPage(ProjeConstants.PAGE_KIRA_BAKIYEDEVRI + "?KiraciId=" + oncekiKiraci.Id);
@@ -516,8 +516,8 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
             try
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = kiraci.Select<Kiraci>(KiraciIdQS.ConvertToInt());
-                Kiraci sonrakiKiraci = kiraci.SelectNext();
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+                Kiraci sonrakiKiraci = new Model.Services.TBYS.KiraciService().GetNext(kiraci.Id);
                 if (sonrakiKiraci != null)
                 {
                     RedirectToPage(ProjeConstants.PAGE_KIRA_BAKIYEDEVRI + "?KiraciId=" + sonrakiKiraci.Id);

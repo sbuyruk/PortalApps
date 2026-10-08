@@ -363,7 +363,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
         private DataTable GetBagisciData()
         {
             TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-            DataTable dataTable = tasinmazBagisci.SelectAllCountBagisAdediReturnDataTable(BolgeIdQS);
+            DataTable dataTable = new Model.Services.TBYS.TasinmazBagisciReportService().GetAllCountBagisAdediByBolge(BolgeIdQS);
             return dataTable;
         }
         protected void YeniKayitBtn_Click(object sender, EventArgs e)
@@ -524,7 +524,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
         {
             int bagisciId= ParamBagisciIdLbl.Value.ConvertToInt();
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            bagisci = bagisci.Select<TasinmazBagisci>(bagisciId);
+            bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(bagisciId);
             if (bagisci != null)
             {
                 TaahhutTablosunuDoldur(bagisci);

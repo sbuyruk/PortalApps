@@ -324,7 +324,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             YasalFaiz yasalFaiz = new YasalFaiz();
             //tarih = tarih.AddMonths(1);//bir önceki ay geliyor
             //DateTime gelecekAy = DateTime.Today.AddMonths(1);
-            yasalFaiz = yasalFaiz.SelectByYilAy(tarih.Year, tarih.Month);
+            yasalFaiz = new Model.Services.TBYS.YasalFaizService().GetByYearMonth(tarih.Year, tarih.Month);
             if (yasalFaiz != null)
             {
                 tufe = yasalFaiz.Tufe;

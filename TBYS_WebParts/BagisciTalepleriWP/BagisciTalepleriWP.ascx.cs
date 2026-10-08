@@ -60,7 +60,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP
                 if (!Page.IsPostBack)
                 {
                     TasinmazBagisci bagisci = new TasinmazBagisci();
-                    bagisci = bagisci.Select<TasinmazBagisci>(BagisciIdQS.ConvertToInt());
+                    bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
                     if (bagisci != null)
                     {
                         BagisciTalepleriTablosunuDoldur(bagisci);

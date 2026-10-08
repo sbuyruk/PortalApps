@@ -94,9 +94,9 @@ namespace TBYS_WebParts.YasalFaizWP
                 if (yil > 0)
                 {
                     YasalFaiz yasalFaizDbo = new YasalFaiz();
-                    decimal sonFaizOrani = yasalFaizDbo.SelectSonFaizOrani();
-                    decimal sonTufe = yasalFaizDbo.SelectSonTufe();
-                    decimal sonUfe = yasalFaizDbo.SelectSonUfe();
+                    decimal sonFaizOrani = new Model.Services.TBYS.YasalFaizService().GetLatestRate();
+                    decimal sonTufe = new Model.Services.TBYS.YasalFaizService().GetLatestTufe();
+                    decimal sonUfe = new Model.Services.TBYS.YasalFaizService().GetLatestUfe();
                     for (int i = 1; i < 13; i++)
                     {
                         YasalFaiz yasalFaiz = new YasalFaiz();
@@ -108,7 +108,7 @@ namespace TBYS_WebParts.YasalFaizWP
                         yasalFaiz.Tufe = sonTufe;// TufeTxt.Text.ConvertToDecimal();
                         yasalFaiz.Ufe = sonUfe;// UfeTxt.Text.ConvertToDecimal();
                         yasalFaiz.Aciklama = "";// yil + " yili " + yasalFaiz.AyAdi + " faiz orani";
-                        yasalFaiz.Save();
+                        new Model.Services.TBYS.YasalFaizService().Save(yasalFaiz);
                     }
 
                 }
@@ -124,7 +124,7 @@ namespace TBYS_WebParts.YasalFaizWP
             bool buYilinTablosuVarMi = false;
             int yil = YilDDL.SelectedItem.Value.ConvertToInt();
             YasalFaiz yasalFaizDao = new YasalFaiz();
-            List<YasalFaiz> list = yasalFaizDao.SelectByYil(yil);
+            List<YasalFaiz> list = new Model.Services.TBYS.YasalFaizService().GetByYear(yil);
             if (list.Count > 0)
             {
                 buYilinTablosuVarMi = true;
@@ -166,7 +166,7 @@ namespace TBYS_WebParts.YasalFaizWP
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             int buyil = YilDDL.SelectedItem.Value.ConvertToInt();
             YasalFaiz yasalFaizDao = new YasalFaiz();
-            List<YasalFaiz> list = yasalFaizDao.SelectByYil(buyil);
+            List<YasalFaiz> list = new Model.Services.TBYS.YasalFaizService().GetByYear(buyil);
             if (list.Count > 0)
             {
                 int sira = 1;
@@ -449,7 +449,7 @@ namespace TBYS_WebParts.YasalFaizWP
         //                    {
         //                        yasalFaiz.FaizOrani = faizOrani.ConvertToDecimal();
         //                        yasalFaiz.Degistiren = CurrentUserName;
-        //                        if (yasalFaiz.Update())
+        //                        if (new Model.Services.TBYS.YasalFaizService().Update(yasalFaiz))
         //                        {
         //                            MessageHelper.PublishMessage("Kayit Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
         //                            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -525,13 +525,13 @@ namespace TBYS_WebParts.YasalFaizWP
                     string aciklamaTxtStr = "Aciklama" + i + "Txt";
                     string aciklama = ((TextBox)this.FindControl(aciklamaTxtStr)).Text;
                     YasalFaiz yasalFaiz = new YasalFaiz();
-                    yasalFaiz = yasalFaiz.SelectByYilAy(yil.ConvertToInt(), ay.ConvertToInt());
+                    yasalFaiz = new Model.Services.TBYS.YasalFaizService().GetByYearMonth(yil.ConvertToInt(), ay.ConvertToInt());
                     yasalFaiz.FaizOrani = faizOranix.ConvertToDecimal();
                     yasalFaiz.Tufe = tufex.ConvertToDecimal();
                     yasalFaiz.Ufe = ufex.ConvertToDecimal();
                     yasalFaiz.Degistiren = CurrentUserName;
                     yasalFaiz.Aciklama = aciklama;
-                    yasalFaiz.Update();
+                    new Model.Services.TBYS.YasalFaizService().Update(yasalFaiz);
                 }
             }
             catch (Exception)
@@ -545,9 +545,9 @@ namespace TBYS_WebParts.YasalFaizWP
             int button = 0;
 
             YasalFaiz yasalFaizDbo = new YasalFaiz();
-            decimal sonFaizOrani = yasalFaizDbo.SelectSonFaizOrani();
-            decimal sonTufe = yasalFaizDbo.SelectSonTufe();
-            decimal sonUfe = yasalFaizDbo.SelectSonUfe();
+            decimal sonFaizOrani = new Model.Services.TBYS.YasalFaizService().GetLatestRate();
+            decimal sonTufe = new Model.Services.TBYS.YasalFaizService().GetLatestTufe();
+            decimal sonUfe = new Model.Services.TBYS.YasalFaizService().GetLatestUfe();
 
             string faizOrani = sonFaizOrani.ToString();
             string tufe = sonTufe.ToString();
@@ -651,13 +651,13 @@ namespace TBYS_WebParts.YasalFaizWP
                         string aciklamaTxtStr = "Açıklama" + i + "Txt";
                         string aciklama = ((TextBox)this.FindControl(aciklamaTxtStr)).Text;
                         YasalFaiz yasalFaiz = new YasalFaiz();
-                        yasalFaiz = yasalFaiz.SelectByYilAy(yil.ConvertToInt(), ay.ConvertToInt());
+                        yasalFaiz = new Model.Services.TBYS.YasalFaizService().GetByYearMonth(yil.ConvertToInt(), ay.ConvertToInt());
                         yasalFaiz.FaizOrani = faizOranix.ConvertToDecimal();
                         yasalFaiz.Tufe = tufex.ConvertToDecimal();
                         yasalFaiz.Ufe = ufex.ConvertToDecimal();
                         yasalFaiz.Degistiren = CurrentUserName;
                         yasalFaiz.Aciklama = aciklama;
-                        yasalFaiz.Update();
+                        new Model.Services.TBYS.YasalFaizService().Update(yasalFaiz);
                     }
                 }
                 else
@@ -674,13 +674,13 @@ namespace TBYS_WebParts.YasalFaizWP
 
                     //string faizOrani = ((TextBox)this.FindControl(tboxname)).Text;
                     YasalFaiz yasalFaiz = new YasalFaiz();
-                    yasalFaiz = yasalFaiz.SelectByYilAy(yil.ConvertToInt(), ay.ConvertToInt());
+                    yasalFaiz = new Model.Services.TBYS.YasalFaizService().GetByYearMonth(yil.ConvertToInt(), ay.ConvertToInt());
                     yasalFaiz.FaizOrani = faizOrani.ConvertToDecimal();
                     yasalFaiz.Tufe = tufe.ConvertToDecimal();
                     yasalFaiz.Ufe = ufe.ConvertToDecimal();
                     yasalFaiz.Aciklama = aciklama;
                     yasalFaiz.Degistiren = CurrentUserName;
-                    kaydedildi = yasalFaiz.Update();
+                    kaydedildi = new Model.Services.TBYS.YasalFaizService().Update(yasalFaiz);
                 }
                 if (kaydedildi)
                 {

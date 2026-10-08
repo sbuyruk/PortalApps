@@ -133,7 +133,7 @@ namespace TBYS_WebParts.KiraKartiWP
             if (!Page.IsPostBack)
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = kiraci.Select<Kiraci>(KiraciIdQS.ConvertToInt());
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
                 if (kiraci != null)
                 {
                     KiraSozlesme kiraSozlesme = new KiraSozlesme();

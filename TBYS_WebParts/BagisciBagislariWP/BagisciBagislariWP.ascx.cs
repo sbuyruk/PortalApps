@@ -134,7 +134,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
                     MesajQS = string.Empty;
                 }
                 TasinmazBagisci bagisci = new TasinmazBagisci();
-                bagisci = bagisci.Select<TasinmazBagisci>(BagisciIdQS.ConvertToInt());
+                bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
                 if (bagisci != null)
                 {
                     BagisciTasinmazlarTablosunuDoldur(bagisci);
@@ -364,7 +364,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
                     if (isDeleted)
                     {
                         TasinmazBagisci bagisci = new TasinmazBagisci();
-                        bagisci = bagisci.Select<TasinmazBagisci>(BagisciIdQS.ConvertToInt());
+                        bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
                         if (bagisci != null)
                         {
                             BagisciTasinmazlarTablosunuDoldur(bagisci);
