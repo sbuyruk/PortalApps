@@ -283,5 +283,31 @@ namespace DAO.Repositories.TBYS
                 SELECT * FROM KiraSozlesme_Table
                 WHERE DosyaNo=(SELECT MIN(DosyaNo) FROM KiraSozlesme_Table WHERE Aktif=1 AND DosyaNo>0)"), "");
         }
+        public DataTable SelectNextCompleted(int id, int dosyaNo)
+        {
+            string sql = dosyaNo > 0
+                ? string.Format("SELECT * FROM KiraSozlesme_Table WHERE Aktif=0 AND DosyaNo > {0} ORDER BY DosyaNo,Id", dosyaNo.ReturnQuotedValue())
+                : string.Format("SELECT * FROM KiraSozlesme_Table WHERE Aktif=0 AND DosyaNo IS NULL AND Id > {0} ORDER BY DosyaNo,Id", id.ReturnQuotedValue());
+            return db.SelectFromDb(sql, "");
+        }
+        public DataTable SelectPreviousCompleted(int id, int dosyaNo)
+        {
+            string sql = dosyaNo > 0
+                ? string.Format("SELECT * FROM KiraSozlesme_Table WHERE Aktif=0 AND DosyaNo < {0} ORDER BY DosyaNo DESC,Id DESC", dosyaNo.ReturnQuotedValue())
+                : string.Format("SELECT * FROM KiraSozlesme_Table WHERE Aktif=0 AND DosyaNo IS NULL AND Id < {0} ORDER BY DosyaNo DESC,Id DESC", id.ReturnQuotedValue());
+            return db.SelectFromDb(sql, "");
+        }
+        public DataTable SelectMaxCompleted()
+        {
+            return db.SelectFromDb(new SqlQuery(@"
+                SELECT * FROM KiraSozlesme_Table
+                WHERE DosyaNo=(SELECT MAX(DosyaNo) FROM KiraSozlesme_Table WHERE Aktif=0)"), "");
+        }
+        public DataTable SelectMinCompleted()
+        {
+            return db.SelectFromDb(new SqlQuery(@"
+                SELECT * FROM KiraSozlesme_Table
+                WHERE DosyaNo=(SELECT MIN(DosyaNo) FROM KiraSozlesme_Table WHERE Aktif=0 AND DosyaNo>0)"), "");
+        }
     }
 }
