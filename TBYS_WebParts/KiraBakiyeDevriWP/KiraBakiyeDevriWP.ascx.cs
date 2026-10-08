@@ -1,4 +1,4 @@
-﻿﻿using Model.Ortak;
+﻿using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
