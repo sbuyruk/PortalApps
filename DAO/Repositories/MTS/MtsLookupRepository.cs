@@ -175,9 +175,9 @@ namespace DAO.Repositories.MTS
             }
 
             if (filters.Count > 0)
-                query.CommandText += " WHERE " + string.Join(" AND ", filters);
+                query.Sql += " WHERE " + string.Join(" AND ", filters);
 
-            query.CommandText += " ORDER BY A.Tarih DESC";
+            query.Sql += " ORDER BY A.Tarih DESC";
             return db.SelectFromDb(query, "");
         }
 
@@ -225,7 +225,7 @@ namespace DAO.Repositories.MTS
                         AND B.KatilimciId = @KatilimciId
                     WHERE 1 > 0");
                 if (!string.Equals(verilenGetirilen, ProjeConstants.ANIOBJESI_VERILENGETIRILEN))
-                    query.CommandText += " AND B.VerilenAlinan = @VerilenAlinan";
+                    query.Sql += " AND B.VerilenAlinan = @VerilenAlinan";
             }
             else if (mode == "katilimciFaaliyet")
             {
@@ -236,7 +236,7 @@ namespace DAO.Repositories.MTS
                     INNER JOIN AniObjesiTanim_Table B ON B.Id = A.AniObjesiId
                     WHERE A.KatilimciId = @KatilimciId AND A.FaaliyetId = @FaaliyetId");
                 if (!string.IsNullOrEmpty(stokluMu))
-                    query.CommandText += " AND B.StokluMu = @StokluMu";
+                    query.Sql += " AND B.StokluMu = @StokluMu";
             }
             else if (mode == "activity")
             {
@@ -302,10 +302,10 @@ namespace DAO.Repositories.MTS
             {
                 string parameter = "@AniObjesiId" + i;
                 parameters.Add(parameter);
-                selectQuery.CommandText += (i == 0 ? " AND AniObjesiId IN (" : ", ") + parameter;
+                selectQuery.Sql += (i == 0 ? " AND AniObjesiId IN (" : ", ") + parameter;
                 selectQuery.AddParameter(parameter, aniObjesiIds[i]);
             }
-            selectQuery.CommandText += ")";
+            selectQuery.Sql += ")";
             deletedItems = db.SelectFromDb(selectQuery, "");
             if (deletedItems == null || deletedItems.Rows.Count == 0)
                 return 0;
@@ -387,10 +387,10 @@ namespace DAO.Repositories.MTS
                 query.AddParameter("@BitTar", bitTar);
             }
             if (!string.IsNullOrEmpty(faaliyetAmaci) && faaliyetAmaci != ProjeConstants.HEPSI)
-                query.CommandText += " WHERE " + string.Join(" AND ", filters) + " AND B.FaaliyetAmaciId IN " + faaliyetAmaci;
+                query.Sql += " WHERE " + string.Join(" AND ", filters) + " AND B.FaaliyetAmaciId IN " + faaliyetAmaci;
             else
-                query.CommandText += " WHERE " + string.Join(" AND ", filters);
-            query.CommandText += " ORDER BY B.BaslangicTarihi DESC, C.KatilimciTipi, C.Adi, C.Soyadi";
+                query.Sql += " WHERE " + string.Join(" AND ", filters);
+            query.Sql += " ORDER BY B.BaslangicTarihi DESC, C.KatilimciTipi, C.Adi, C.Soyadi";
             return db.SelectFromDb(query, "");
         }
 
@@ -420,8 +420,8 @@ namespace DAO.Repositories.MTS
                 filters.Add("A.FaaliyetId = @FaaliyetId");
                 query.AddParameter("@FaaliyetId", faaliyetId);
             }
-            query.CommandText += " WHERE " + string.Join(" AND ", filters);
-            query.CommandText += " ORDER BY B.BaslangicTarihi DESC, C.KatilimciTipi, C.Adi, C.Soyadi";
+            query.Sql += " WHERE " + string.Join(" AND ", filters);
+            query.Sql += " ORDER BY B.BaslangicTarihi DESC, C.KatilimciTipi, C.Adi, C.Soyadi";
             return db.SelectFromDb(query, "");
         }
 
