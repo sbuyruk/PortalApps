@@ -1,5 +1,6 @@
 using Model.Ortak;
 using Model.Services.Ortak;
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -802,15 +803,15 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             bool islemBaslatildi = false;
             try
             {
-                HukukiTakip hukukiTakip = new HukukiTakip();
-                hukukiTakip = hukukiTakip.SelectBySozlesmeId(kiraSozlesme.Id);
+                HukukiTakipService hukukiTakipService = new HukukiTakipService();
+                HukukiTakip hukukiTakip = hukukiTakipService.GetBySozlesmeId(kiraSozlesme.Id);
                 if (hukukiTakip != null)
                 {
                     hukukiTakip.IslemTarihi = DateTime.Today;
                     hukukiTakip.Aktif = false;
                     hukukiTakip.Aciklama = ProjeConstants.KIRASOZLESME_DURUMU_TAKIPSONUCLANDI;
                     hukukiTakip.Olusturan = CurrentUserName;
-                    int hukukitakipId = hukukiTakip.Save();
+                    int hukukitakipId = hukukiTakipService.Save(hukukiTakip);
                     islemBaslatildi = hukukitakipId > 0;
                 }
 
@@ -829,6 +830,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             try
             {
                 HukukiTakip hukukiTakip = new HukukiTakip();
+                HukukiTakipService hukukiTakipService = new HukukiTakipService();
                 hukukiTakip.SozlesmeId = kiraSozlesme.Id;
                 hukukiTakip.KiraciId = kiraSozlesme.KiraciId;
                 hukukiTakip.BorcAnaPara = DevirAnaParaHesapla(kiraSozlesme);
@@ -837,7 +839,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 hukukiTakip.Aktif = true;
                 hukukiTakip.Aciklama = ProjeConstants.KIRASOZLESME_DURUMU_TAKIP;
                 hukukiTakip.Olusturan = CurrentUserName;
-                int hukukitakipId = hukukiTakip.Save();
+                int hukukitakipId = hukukiTakipService.Save(hukukiTakip);
                 islemBaslatildi = hukukitakipId > 0;
             }
             catch (Exception e)
@@ -1360,6 +1362,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
             try
             {
                 HukukiTakip hukukiTakip = new HukukiTakip();
+                HukukiTakipService hukukiTakipService = new HukukiTakipService();
                 hukukiTakip.SozlesmeId = kiraSozlesme.Id;
                 hukukiTakip.KiraciId = kiraSozlesme.KiraciId;
                 hukukiTakip.BorcAnaPara = DevirAnaParaHesapla(kiraSozlesme);
@@ -1368,7 +1371,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                 hukukiTakip.Aktif = true;
                 hukukiTakip.Aciklama = "Takip başlatıldı.";
                 hukukiTakip.Olusturan = CurrentUserName;
-                int hukukitakipId = hukukiTakip.Save();
+                int hukukitakipId = hukukiTakipService.Save(hukukiTakip);
                 islemBaslatildi = hukukitakipId > 0;
             }
             catch (Exception e)
