@@ -271,7 +271,7 @@ namespace TBYS_WebParts.MevcutKiracilarWP
         private decimal MetrekareToplami(int kiraSozlesmeId)
         {
             SozlesmeTasinmaz sozlesmeTasinmaz = new SozlesmeTasinmaz();
-            decimal metrekare = sozlesmeTasinmaz.SelectSumMetrekareBySozlesmeId(kiraSozlesmeId);
+            decimal metrekare = new SozlesmeTasinmazService().GetSumMetrekareBySozlesmeId(kiraSozlesmeId);
             return metrekare;
         }
 

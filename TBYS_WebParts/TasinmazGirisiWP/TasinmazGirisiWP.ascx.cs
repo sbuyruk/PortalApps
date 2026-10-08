@@ -1280,8 +1280,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 #endregion
                 #region Onarim
                 //Onarim verilerini de aktar
-                Onarim onarimDao = new Onarim();
-                List<Onarim> onarimList = onarimDao.SelectOnarimByTasinmazId(envanterdencikmisTasinmazId);
+                List<Onarim> onarimList = new OnarimService().GetByTasinmazIdWithAddress(envanterdencikmisTasinmazId);
                 foreach (Onarim item in onarimList)
                 {
                     if (item != null)

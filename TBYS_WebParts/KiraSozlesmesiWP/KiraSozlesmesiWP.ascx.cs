@@ -335,7 +335,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             string[] headers = { "Sıra", "Adres" };
             UtilityHelper.SetTableHeaders(KiralikTable,headers);
             SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-            DataTable dataTable = st.SelectBySozlesmeIdReturnDataTable(kiraSozlesme.Id);
+            DataTable dataTable = new SozlesmeTasinmazService().GetBySozlesmeIdReturnDataTable(kiraSozlesme.Id);
             if (dataTable!=null)
             {
                 int sira=0;
