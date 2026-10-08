@@ -295,7 +295,7 @@ namespace MTS_WebParts.KisiKartiWP
         {
             List<FaaliyetListItem> faaliyetList = new List<FaaliyetListItem>();
             Faaliyet faaliyetDao = new Faaliyet();
-            DataTable dataTable = faaliyetDao.SelectByKatilimciReturnDataTable(KatilimciIdQS.ConvertToInt(), ProjeConstants.HEPSI_INT);
+            DataTable dataTable = new Model.Services.MTS.FaaliyetService().GetByParticipant(KatilimciIdQS.ConvertToInt(), ProjeConstants.HEPSI_INT);
 
             if (dataTable != null)
             {
@@ -471,7 +471,7 @@ namespace MTS_WebParts.KisiKartiWP
                 if (item.FaaliyetId > 0)
                 {
                     Faaliyet faaliyet = new Faaliyet();
-                    faaliyet = faaliyet.Select(item.FaaliyetId);
+                    faaliyet = new Model.Services.MTS.FaaliyetService().GetById(item.FaaliyetId);
                     if (faaliyet != null)
                     {
                         string faaliyetTarihiStr = faaliyet.BaslangicTarihi.Year == faaliyet.BitisTarihi.Year &&

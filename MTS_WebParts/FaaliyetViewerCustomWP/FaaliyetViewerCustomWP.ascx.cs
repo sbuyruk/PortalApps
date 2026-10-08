@@ -88,7 +88,7 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
             {
                 text = "<h2 align='right'>" + date.Day.ToString() + "</h2> ";
                 Faaliyet faaliyet = new Faaliyet();
-                List<Faaliyet> faaliyetListesi = faaliyet.SelectByTarihReturnList(date);
+                List<Faaliyet> faaliyetListesi = new Model.Services.MTS.FaaliyetService().GetByDate(date);
                 foreach (var item in faaliyetListesi)
                 {
                     FaaliyetListItem gunlukFaaliyet = new FaaliyetListItem

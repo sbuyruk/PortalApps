@@ -206,7 +206,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                     BaslangicSaatiDDLDoldur();
                     BitisSaatiDDLDoldur();
                     Faaliyet faaliyet = new Faaliyet();
-                    faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+                    faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
                     if (faaliyet == null)
                     {
                         GirisiAc();
@@ -385,7 +385,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 else
                 {
 
-                    faaliyetId = faaliyet.Id = faaliyet.Save();
+                    faaliyetId = faaliyet.Id = new Model.Services.MTS.FaaliyetService().Save(faaliyet);
                     if (faaliyetId > 0)
                     {
                         FaaliyetIdQS = faaliyetId.ToString();
@@ -460,8 +460,8 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             {
 
                 Faaliyet faaliyet = new Faaliyet();
-                faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
-                Faaliyet faaliyetIlkHali = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+                faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
+                Faaliyet faaliyetIlkHali = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
                 faaliyet.Degistiren = UtilityHelper.GetCurrentUserName();
                 if (faaliyet == null)
                 {
@@ -489,7 +489,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                     faaliyet.TakvimeIslendi = OzelKalemTakvimiChk.Checked;
                     faaliyet.DisIrtibatId = DisIrtibatIdQS.ConvertToInt();
                     faaliyet.Degistiren = UtilityHelper.GetCurrentUserName();
-                    guncellendiMi = faaliyet.Update();
+                    guncellendiMi = new Model.Services.MTS.FaaliyetService().Update(faaliyet);
 
                     if (guncellendiMi)
                     {
@@ -531,7 +531,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         protected void FaaliyetSilBtn_Click(object sender, EventArgs e)
         {
             Faaliyet faaliyet = new Faaliyet();
-            faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+            faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
             if (faaliyet != null)
             {
                 if (!BaglantisiVarMi(faaliyet))
@@ -636,13 +636,13 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             try
             {
                 Faaliyet faaliyet = new Faaliyet();
-                faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+                faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
                 if (faaliyet != null)
                 {
                     //baglantisi yoksa sil
                     if (!BaglantisiVarMi(faaliyet))
                     {
-                        silindi = faaliyet.Delete();
+                        silindi = new Model.Services.MTS.FaaliyetService().Delete(faaliyet);
                     }
 
                     if (silindi)
@@ -717,7 +717,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         private void FaaliyetYeriDoldur()
         {
             Faaliyet faaliyetDdo = new Faaliyet();
-            List<string> list = faaliyetDdo.SelectAllDistinctFaaliyetYeri();
+            List<string> list = new Model.Services.MTS.FaaliyetService().GetDistinctPlaces();
 
             var fyerleristr = "\"" + string.Join("\", \"", list) + "\"";
             StringBuilder fyerleri = new StringBuilder();
@@ -802,11 +802,11 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             if (katilimciId > 0)
             {
                 faaliyet = new Faaliyet();
-                faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+                faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
                 if (faaliyet != null)
                 {
                     faaliyet.DisIrtibatId = katilimciId;
-                    faaliyet.Update();
+                    new Model.Services.MTS.FaaliyetService().Update(faaliyet);
                 }
             }
 
@@ -902,7 +902,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         {
 
             Faaliyet faaliyetDao = new Faaliyet();
-            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(FaaliyetIdQS.ConvertToInt(), ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH, ProjeConstants.HEPSI);
+            DataTable dataTable = new Model.Services.MTS.FaaliyetService().GetParticipantList(FaaliyetIdQS.ConvertToInt(), ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH, ProjeConstants.HEPSI);
             int SiraNo = 1;
             List<KatilimciListItem> list = new List<KatilimciListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -982,7 +982,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         private void AcikTarihliKontrolu()
         {
             Faaliyet faaliyet = new Faaliyet();
-            faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+            faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
             if (faaliyet == null && AcikTarihChk.Checked)
             {
                 OzelKalemTakvimiChk.Checked = false;
@@ -1034,7 +1034,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 MessageHelper.PublishMessage("Katilimci Bulunamadi", ProjeConstants.MESAJ_HATA);
             }
             Faaliyet faaliyet = new Faaliyet();
-            faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+            faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
             if (faaliyet != null)
             {
                 KatilimciBilgileriniDoldur(faaliyet, true);
@@ -1201,7 +1201,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 MessageHelper.PublishMessage("Katilimci Bulunamadi", ProjeConstants.MESAJ_HATA);
             }
             Faaliyet faaliyet = new Faaliyet();
-            faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+            faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
             if (faaliyet != null)
             {
                 KatilimciBilgileriniDoldur(faaliyet, true);
@@ -1597,7 +1597,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 MessageHelper.PublishMessage("Hiç kayit seçilmedi. Devam etmek için en az bir kayit seçiniz.", ProjeConstants.MESAJ_BILGI);
             }
             Faaliyet faaliyet = new Faaliyet();
-            faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+            faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
             if (faaliyet != null)
             {
                 KatilimciBilgileriniDoldur(faaliyet, true);
@@ -1612,7 +1612,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             GetirilenAniObjesiKaydet(faaliyetId, katilimciId);
 
             Faaliyet faaliyet = new Faaliyet();
-            faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+            faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
             if (faaliyet != null)
             {
                 KatilimciBilgileriniDoldur(faaliyet, true);
@@ -1699,7 +1699,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 }
             }
             Faaliyet faaliyet = new Faaliyet();
-            faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+            faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
             if (faaliyet != null)
             {
                 KatilimciBilgileriniDoldur(faaliyet, true);
@@ -1777,7 +1777,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
 
                 }
                 Faaliyet faaliyet = new Faaliyet();
-                faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+                faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
                 if (faaliyet != null)
                 {
                     KatilimciBilgileriniDoldur(faaliyet, true);
@@ -1893,11 +1893,11 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         protected void DisIrtibatCikarBtn_Click(object sender, EventArgs e)
         {
             Faaliyet faaliyet = new Faaliyet();
-            faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+            faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
             if (faaliyet != null)
             {
                 faaliyet.DisIrtibatId = 0;
-                faaliyet.Update();
+                new Model.Services.MTS.FaaliyetService().Update(faaliyet);
                 DisIrtibatLbl.Text = string.Empty;
                 DisIrtibatCikarBtn.Visible = false;
                 KatilimciBilgileriniDoldur(faaliyet, true);
@@ -1934,7 +1934,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         {
             bool gonderildi = false;
             Faaliyet faaliyet = new Faaliyet();
-            faaliyet = faaliyet.Select(faaliyetId);
+            faaliyet = new Model.Services.MTS.FaaliyetService().GetById(faaliyetId);
             if (faaliyet != null)
             {
                 string from = ProjeConstants.PARAM_MTSMAILADRESI;
@@ -2063,7 +2063,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         {
 
             Faaliyet sonHali = new Faaliyet();
-            sonHali = sonHali.Select(FaaliyetIdQS.ConvertToInt());
+            sonHali = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
             if (sonHali != null)
             {
                 TempFaaliyet tempFaaliyetSonHali = new TempFaaliyet(sonHali);

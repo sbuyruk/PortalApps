@@ -1,11 +1,7 @@
 using Model.Ortak;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Utility.ProjeGlobal;
 using Model.IKYS;
 using Model.Services.IKYS;
@@ -81,30 +77,6 @@ namespace Model.MTS
         [DisplayName("Randevu Kisiti")]
         public bool RandevuKisiti { get; set; } = false;
 
-        public bool Delete()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Save()
-        {
-            throw new NotImplementedException();
-        }
-
-        public T Select<T>(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<T> SelectAll<T>()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Update()
-        {
-            throw new NotImplementedException();
-        }
         public Katilimci GetKatilimci(int katilimciId, int katilimciTipi)
         {
             Katilimci retVal = new Katilimci();

@@ -600,7 +600,7 @@ namespace MTS_WebParts.KisiGirisiWP
                     if (IrtibatPersoneliChk.Checked)
                         faaliyet.DisIrtibatId = KisiIdQS.ConvertToInt();
                     faaliyet.Olusturan = UtilityHelper.GetCurrentUserName();
-                    faaliyet.Id = faaliyet.Save();
+                    faaliyet.Id = new Model.Services.MTS.FaaliyetService().Save(faaliyet);
                     if (faaliyet.Id > 0)
                     {
                         if (FaaliyetKatilimciChk.Checked)
