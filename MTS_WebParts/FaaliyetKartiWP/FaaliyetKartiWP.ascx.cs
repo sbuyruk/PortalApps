@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Model.Services.MTS;
 
 namespace MTS_WebParts.FaaliyetKartiWP
 {
@@ -68,8 +69,8 @@ namespace MTS_WebParts.FaaliyetKartiWP
             /***
              * FaaliyetKatilim_Table'dan Bu Faaliyetya katilanlari getir
              * **/
-            FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
-            List<FaaliyetKatilim> liste = faaliyetKatilim.SelectByFaaliyetId(FaaliyetIdQS.ConvertToInt());
+            FaaliyetKatilimService faaliyetKatilimService = new FaaliyetKatilimService();
+            List<FaaliyetKatilim> liste = faaliyetKatilimService.GetByFaaliyetId(FaaliyetIdQS.ConvertToInt());
             foreach (var item in liste)
             {
                 TableRow tableRow = new TableRow();
@@ -86,8 +87,8 @@ namespace MTS_WebParts.FaaliyetKartiWP
                     kurumuCell.Text = item.KurumGorev;
 
                     //Burada verilen ani objeleri aliniyor
-                    AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-                    DataTable dataTable = aniObjesiDagitim.SelectReturnDT(FaaliyetIdQS.ConvertToInt(), kisi.Id);
+                    AniObjesiDagitimService aniObjesiDagitimService = new AniObjesiDagitimService();
+                    DataTable dataTable = aniObjesiDagitimService.GetDistributionTable(FaaliyetIdQS.ConvertToInt(), kisi.Id);
                     if (dataTable != null)
                     {
                         string objeStr = string.Empty;
@@ -105,8 +106,7 @@ namespace MTS_WebParts.FaaliyetKartiWP
                     }
 
                     //Getirilen Ani Objeleri ayrica aliniyor
-                    AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
-                    getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(FaaliyetIdQS.ConvertToInt(), kisi.Id);
+                    AniObjesiDagitim getirilenAniObjesi = aniObjesiDagitimService.GetGetirilen(FaaliyetIdQS.ConvertToInt(), kisi.Id);
                     if (getirilenAniObjesi != null)
                     {
                         getirilenAniObjesiCell.Text = getirilenAniObjesi.GetirilenAniObjesi;
@@ -127,8 +127,7 @@ namespace MTS_WebParts.FaaliyetKartiWP
         }
         private void FaaliyetBilgileriniDoldur()
         {
-            Faaliyet faaliyet = new Faaliyet();
-            faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+            Faaliyet faaliyet = new FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
 
 
             if (faaliyet != null)
@@ -251,8 +250,7 @@ namespace MTS_WebParts.FaaliyetKartiWP
         }
         protected void FaaliyetTakvimiBtn_Click(object sender, EventArgs e)
         {
-            Faaliyet faaliyet = new Faaliyet();
-            faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+            Faaliyet faaliyet = new FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
             RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM + "?InitialDate=" + faaliyet.BaslangicTarihi.ToString("yyyy-MM-dd"));
         }
         private void RedirectToPage(string pageUrl)

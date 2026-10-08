@@ -14,6 +14,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Model.Services.MTS;
 
 namespace MTS_WebParts.AramaGirisiWP
 {
@@ -164,8 +165,7 @@ namespace MTS_WebParts.AramaGirisiWP
             GuncelleBtn.Visible = false;
             SilBtn.Visible = false;
             KatilimciSecBtn.Visible = false;
-            AramaGorusme aramaGorusme = new AramaGorusme();
-            aramaGorusme = aramaGorusme.Select(AramaGorusmeIdQS.ConvertToInt());
+            AramaGorusme aramaGorusme = new AramaGorusmeService().GetById(AramaGorusmeIdQS.ConvertToInt());
             if (aramaGorusme != null)
             {
                 FaaliyetIdQS = aramaGorusme.FaaliyetId.ToString();
@@ -314,7 +314,7 @@ namespace MTS_WebParts.AramaGirisiWP
             string saat = string.IsNullOrEmpty(SaatTxt.Text) ? DateTime.Now.ToString("HH:mm") : SaatTxt.Text;
             DateTime tarihDT = UtilityHelper.TariheSaatEkle(tarih, SaatTxt.Text);
             aramaGorusme.Tarih = tarihDT;
-            int aramaGorusmeId = aramaGorusme.Save();
+            int aramaGorusmeId = new AramaGorusmeService().Save(aramaGorusme);
 
             if (string.IsNullOrEmpty(KonuTxt.Text))
             {
@@ -330,8 +330,7 @@ namespace MTS_WebParts.AramaGirisiWP
         }
         protected void GuncelleBtn_Click(object sender, EventArgs e)
         {
-            AramaGorusme aramaGorusme = new AramaGorusme();
-            aramaGorusme = aramaGorusme.Select(AramaGorusmeIdQS.ConvertToInt());
+            AramaGorusme aramaGorusme = new AramaGorusmeService().GetById(AramaGorusmeIdQS.ConvertToInt());
             if (aramaGorusme != null)
             {
                 aramaGorusme.Aciklama = AciklamaTxt.Text;
@@ -346,7 +345,7 @@ namespace MTS_WebParts.AramaGirisiWP
                 string saat = string.IsNullOrEmpty(SaatTxt.Text) ? DateTime.Now.ToString("HH:mm") : SaatTxt.Text;
                 DateTime tarihDT = UtilityHelper.TariheSaatEkle(tarih, SaatTxt.Text);
                 aramaGorusme.Tarih = tarihDT;
-                bool guncellendiMi = aramaGorusme.Update();
+                bool guncellendiMi = new AramaGorusmeService().Update(aramaGorusme);
                 if (guncellendiMi)
                 {
                     FaaliyetBtnEnable();
@@ -358,16 +357,14 @@ namespace MTS_WebParts.AramaGirisiWP
         }
         protected void SilBtn_Click(object sender, EventArgs e)
         {
-            AramaGorusme aramaGorusme = new AramaGorusme();
-            aramaGorusme = aramaGorusme.Select(AramaGorusmeIdQS.ConvertToInt());
+            AramaGorusme aramaGorusme = new AramaGorusmeService().GetById(AramaGorusmeIdQS.ConvertToInt());
             if (aramaGorusme != null)
             {
                 ModalLbl.Text = "Arama/Görüsme Kaydi Silinecek";
                 ModalLbl.CssClass = "col-form-label text-danger fw-bold";
                 if (aramaGorusme.FaaliyetId > 0)
                 {
-                    Faaliyet faaliyet = new Faaliyet();
-                    faaliyet = faaliyet.Select(aramaGorusme.FaaliyetId);
+                    Faaliyet faaliyet = new FaaliyetService().GetById(aramaGorusme.FaaliyetId);
                     if (faaliyet != null)
                     {
                         MessageLbl.Text = "Bu arama/görüsme ile iliskilendirilmis bir faaliyet bulunmaktadir. Arama kaydini silseniz de Faaliyet silinmeyecektir.";
@@ -392,22 +389,20 @@ namespace MTS_WebParts.AramaGirisiWP
         {
             if (AramaGorusmeIdQS.ConvertToInt() > 0)
             {
-                AramaGorusme aramaGorusme = new AramaGorusme();
-                aramaGorusme = aramaGorusme.Select(AramaGorusmeIdQS.ConvertToInt());
+                AramaGorusme aramaGorusme = new AramaGorusmeService().GetById(AramaGorusmeIdQS.ConvertToInt());
                 if (aramaGorusme != null)
                 {
-                    Faaliyet faaliyet = new Faaliyet();
-                    faaliyet = faaliyet.Select(aramaGorusme.FaaliyetId);
+                    Faaliyet faaliyet = new FaaliyetService().GetById(aramaGorusme.FaaliyetId);
                     if (faaliyet == null)
                     {
                         aramaGorusme.FaaliyetId = 0;
-                        aramaGorusme.Update();
+                        new AramaGorusmeService().Update(aramaGorusme);
                     }
                     FaaliyetIdQS = aramaGorusme.FaaliyetId.ToString();
                     if (FaaliyetIdQS.ConvertToInt() > 0)
                     {
                         aramaGorusme.RandevuIstendi = true;
-                        aramaGorusme.Update();
+                        new AramaGorusmeService().Update(aramaGorusme);
                         FaaliyetBtn.Text = "Ilgili Faaliyet";
                         FaaliyetBtn.CssClass = "btn btn-outline-primary";
                         FaaliyetBtn.Visible = true;
@@ -436,8 +431,7 @@ namespace MTS_WebParts.AramaGirisiWP
         {
             if (AramaGorusmeIdQS.ConvertToInt() > 0)
             {
-                AramaGorusme aramaGorusme = new AramaGorusme();
-                aramaGorusme = aramaGorusme.Select(AramaGorusmeIdQS.ConvertToInt());
+                AramaGorusme aramaGorusme = new AramaGorusmeService().GetById(AramaGorusmeIdQS.ConvertToInt());
                 if (aramaGorusme != null)
                 {
                     if (kaydetGuncelleSilHdn.Value.Equals(ProjeConstants.YENI))
@@ -469,12 +463,12 @@ namespace MTS_WebParts.AramaGirisiWP
                         faaliyet.DisIrtibatId = aramaGorusme.ArayanId;
 
                         faaliyet.Olusturan = UtilityHelper.GetCurrentUserName();
-                        faaliyet.Id = faaliyet.Save();
+                        faaliyet.Id = new FaaliyetService().Save(faaliyet);
                         if (faaliyet.Id > 0)
                         {
                             FaaliyetIdQS = faaliyet.Id.ToString();
                             aramaGorusme.FaaliyetId = faaliyet.Id;
-                            aramaGorusme.Update();
+                            new AramaGorusmeService().Update(aramaGorusme);
                             RedirectToPage(ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + faaliyet.Id);
                         }
                     }
@@ -487,7 +481,7 @@ namespace MTS_WebParts.AramaGirisiWP
                         if (aramaGorusme != null)
                         {
 
-                            bool silindiMi = aramaGorusme.Delete();
+                            bool silindiMi = new AramaGorusmeService().Delete(aramaGorusme);
                             if (silindiMi)
                             {
                                 RedirectToPage(ProjeConstants.PAGE_ARAMAGORUSME_LIST + "?KisiId=" + aramaGorusme.ArayanId);
@@ -649,8 +643,7 @@ namespace MTS_WebParts.AramaGirisiWP
 
         protected void RandevuIstendiChk_CheckedChanged(object sender, EventArgs e)
         {
-            AramaGorusme aramaGorusme = new AramaGorusme();
-            aramaGorusme = aramaGorusme.Select(AramaGorusmeIdQS.ConvertToInt());
+            AramaGorusme aramaGorusme = new AramaGorusmeService().GetById(AramaGorusmeIdQS.ConvertToInt());
             if (aramaGorusme != null)
             {
                 if (aramaGorusme.RandevuIstendi && RandevuIstendiChk.Checked)
