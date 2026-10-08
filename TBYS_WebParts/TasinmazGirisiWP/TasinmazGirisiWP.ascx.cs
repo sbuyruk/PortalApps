@@ -582,7 +582,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 if (bagis != null)
                 {
                     TasinmazBagisci bagisci = new TasinmazBagisci();
-                    bagisci = bagisci.Select<TasinmazBagisci>(bagis.BagisciId);
+                    bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(bagis.BagisciId);
                     if (bagisci != null)
                     {
                         tasinmaz.BagisciId = bagisci.Id;
@@ -703,7 +703,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                     if (bagis != null)
                     {
                         TasinmazBagisci bagisci = new TasinmazBagisci();
-                        bagisci = bagisci.Select<TasinmazBagisci>(bagis.BagisciId);
+                        bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(bagis.BagisciId);
                         if (bagisci != null)
                         {
                             tasinmaz.BagisciId = bagisci.Id;
@@ -1144,7 +1144,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             else
             {
                 TasinmazBagisci bagisci = new TasinmazBagisci();
-                bagisci = bagisci.Select<TasinmazBagisci>(bagis.BagisciId);
+                bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(bagis.BagisciId);
                 if (bagisci == null)
                 {
                     MessageHelper.PublishMessage("Bağışçı Bulunamadı. Bu taşınmazın ilişkilendirildiği bağışçı bulunamadı. Lütfen Bağışçı sayfasından bağışçı ataması yapınız.", ProjeConstants.MESAJ_HATA);

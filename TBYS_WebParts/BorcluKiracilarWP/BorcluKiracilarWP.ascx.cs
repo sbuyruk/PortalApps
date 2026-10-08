@@ -540,7 +540,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
             
 
             Kiraci kiraci = new Kiraci();
-            kiraci = kiraci.Select(kiraSozlesme.KiraciId);
+            kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
             if (kiraci != null)
             {
                 KiraciTitleLbl.Text = kiraci.Adi + " " + kiraci.Soyadi;

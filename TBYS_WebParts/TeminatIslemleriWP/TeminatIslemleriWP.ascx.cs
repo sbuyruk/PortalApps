@@ -136,7 +136,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     if (KiraSozlesmeIdQS.ConvertToInt() > 0)
                     {
                         Kiraci kiraci = new Kiraci();
-                        kiraci = kiraci.Select(kiraSozlesme.KiraciId);
+                        kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
                         if (kiraci != null)
                         {
                             KiraciIdQS = kiraci.Id.ToString();
@@ -658,7 +658,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         protected void KiraKartiBtn_Click(object sender, EventArgs e)
         {
             Kiraci kiraci = new Kiraci();
-            kiraci = kiraci.Select<Kiraci>(KiraciIdQS.ConvertToInt());
+            kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
             if (kiraci != null)//bu kiraci varsa
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -718,8 +718,8 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             try
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = kiraci.Select<Kiraci>(KiraciIdQS.ConvertToInt());
-                Kiraci oncekiKiraci = kiraci.SelectNext();
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+                Kiraci oncekiKiraci = new Model.Services.TBYS.KiraciService().GetNext(kiraci.Id);
                 if (oncekiKiraci != null)
                 {
                     RedirectToPage(ProjeConstants.PAGE_KIRACI_GIRIS + "?DestinationApp=KD&KiraciId=" + oncekiKiraci.Id);
@@ -736,8 +736,8 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             try
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = kiraci.Select<Kiraci>(KiraciIdQS.ConvertToInt());
-                Kiraci sonrakiKiraci = kiraci.SelectNext();
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+                Kiraci sonrakiKiraci = new Model.Services.TBYS.KiraciService().GetNext(kiraci.Id);
                 if (sonrakiKiraci != null)
                 {
                     RedirectToPage(ProjeConstants.PAGE_KIRACI_GIRIS + "?DestinationApp=KD&KiraciId=" + sonrakiKiraci.Id);
@@ -774,7 +774,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             try
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = kiraci.Select<Kiraci>(KiraciIdQS.ConvertToInt());
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
                 if (kiraci != null)
                 {
                     RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?KiraciId=" + KiraciIdQS + "&SecilenAy=0&SecilenYil=0");

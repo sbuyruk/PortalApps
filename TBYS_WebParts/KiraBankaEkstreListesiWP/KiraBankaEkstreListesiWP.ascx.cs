@@ -703,7 +703,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
             int kiraciId = ParamKiraciIdLbl.Value.ConvertToInt();
             DateTime odemeTarihi = ParamOdemeTarihiLbl.Value.ConvertToDatetime();
             Kiraci kiraci = new Kiraci();
-            kiraci = kiraci.Select<Kiraci>(kiraciId);
+            kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraciId);
             if (kiraci != null)//bu kiraci varsa
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();

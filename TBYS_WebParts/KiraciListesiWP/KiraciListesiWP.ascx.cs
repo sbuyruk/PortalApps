@@ -290,11 +290,11 @@ namespace TBYS_WebParts.KiraciListesiWP
             DataTable dataTable;
             if (KiraciSecimiDDL.SelectedItem.Value.ConvertToInt()==ProjeConstants.KIRASOZLESME_AKTIF_DEGIL_INT)
             {
-                dataTable = kiraci.SelectAktifSozlesmesiOlmayanKiracilarReturnDT(BolgeIdQS);
+                dataTable = new Model.Services.TBYS.KiraciService().GetWithoutActiveContract(BolgeIdQS);
             }
             else
             {
-                dataTable = kiraci.SelectAllReturnDT(kiraciSecimi, BolgeIdQS); 
+                dataTable = new Model.Services.TBYS.KiraciService().GetAllReturnDataTable(kiraciSecimi, BolgeIdQS);
             }
             int SiraNo = 1;
 
@@ -369,7 +369,7 @@ namespace TBYS_WebParts.KiraciListesiWP
             GridView GridView1 = new GridView();
             GridView1.AllowPaging = false;
             Kiraci kiraci = new Kiraci();
-            GridView1.DataSource = kiraci.SelectAllReturnDT(KiraciSecimiDDL.SelectedItem.Value,ProjeConstants.BOLGE_HEPSI_INT);
+            GridView1.DataSource = new Model.Services.TBYS.KiraciService().GetAllReturnDataTable(KiraciSecimiDDL.SelectedItem.Value,ProjeConstants.BOLGE_HEPSI_INT);
             GridView1.DataBind();
 
             Page.Response.Clear();

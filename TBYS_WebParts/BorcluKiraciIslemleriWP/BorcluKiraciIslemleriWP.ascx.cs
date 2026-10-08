@@ -634,7 +634,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
 
 
             Kiraci kiraci = new Kiraci();
-            kiraci = kiraci.Select(kiraSozlesme.KiraciId);
+            kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
             if (kiraci != null)
             {
                 KiraciTitleLbl.Text = kiraci.Adi + " " + kiraci.Soyadi;
@@ -739,7 +739,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
             int kiraSozlesmeId = paramKiraSozlesmeIdLbl.Value.ConvertToInt();
             string takipIslemi = paramTakipIslemi.Value;
             Kiraci kiraci= new Kiraci();
-            kiraci = kiraci.Select(kiraciId);
+            kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraciId);
             if (kiraci != null)
             {
                 BaslikLbl.CssClass = "col-form-label text-success fw-bold";
@@ -822,7 +822,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                 int kiraSozlesmeId = kiraBorcuTakip.KiraSozlesmeId;
                 string takipIslemi = kiraBorcuTakip.TakipIslemi;
                 Kiraci kiraci = new Kiraci();
-                kiraci = kiraci.Select(kiraBorcuTakip.KiraciId);
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraBorcuTakip.KiraciId);
                 if (kiraci != null)
                 {
                     IslemTarihiTxt.Text = kiraBorcuTakip.IslemTarihi.ConvertToDatetimeEmptyIfNull();

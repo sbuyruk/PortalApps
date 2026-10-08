@@ -105,7 +105,7 @@ namespace TBYS_WebParts.BagisciYakinlariWP
             //önceki sayfayi tut, geri tusuna basildiginda gerekli
 
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            bagisci = bagisci.Select<TasinmazBagisci>(BagisciIdQS.ConvertToInt());
+            bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
             if (bagisci != null)
             {
                 FillBagisciYakinlari2Table(bagisci);

@@ -1,8 +1,5 @@
 using Model.Ortak;
-using Model.Services.TBYS;
 using System;
-using System.Collections.Generic;
-using System.Data;
 
 namespace Model.TBYS
 {
@@ -34,21 +31,5 @@ namespace Model.TBYS
         public string Aciklama { get; set; }
         public bool Gizli { get; set; }
         public string Tahsil { get; set; }
-        private static TasinmazBagisciService Service { get { return new TasinmazBagisciService(); } }
-        private static TasinmazBagisciReportService Reports { get { return new TasinmazBagisciReportService(); } }
-        public T Select<T>(int id) { return (T)Convert.ChangeType(Service.GetById(id), typeof(T)); }
-        public int Save() { return Service.Save(this); }
-        public bool Update() { return Service.Update(this); }
-        public bool Delete() { return Service.Delete(this); }
-        public List<T> SelectAll<T>() { return (List<T>)Convert.ChangeType(Service.GetAll(), typeof(List<T>)); }
-        public List<TasinmazBagisci> SelectAllSagBagiscilar(string sag) { return Service.GetAllBySagVefat(sag); }
-        public List<TasinmazBagisci> SelectByBolge(int bolgeId) { return Service.GetByBolge(bolgeId); }
-        public List<TasinmazBagisci> SelectByFilters(bool a, bool b, bool c, bool d) { return Service.GetByFilters(a,b,c,d); }
-        public List<TasinmazBagisci> SelectByIlAdi(string ilAdi) { return Service.GetByIlAdi(ilAdi); }
-        public DataTable SelectAllCountBagisAdediReturnDataTable(bool a, bool b) { return Reports.GetAllCountBagisAdedi(a,b); }
-        public DataTable SelectAllCountBagisAdediReturnDataTable_Deprecated(string bolge) { return Reports.GetDeprecatedByBolge(bolge); }
-        public DataTable SelectAllCountBagisAdediReturnDataTable(int bolgeId) { return Reports.GetAllCountBagisAdediByBolge(bolgeId); }
-        public DataTable SelectTasinmazBagisciReturnDataTable(bool gizli) { return Reports.GetTasinmazBagisci(gizli); }
-        public DataTable SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT() { return Reports.GetUnselectedParticipants(); }
     }
 }

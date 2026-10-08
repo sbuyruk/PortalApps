@@ -171,7 +171,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                     BitisTarihiTxt.Text = BittarQS.ConvertToDatetimeEmptyIfNull();
                 }
                 Kiraci kiraci = new Kiraci();
-                kiraci = kiraci.Select<Kiraci>(KiraciIdQS.ConvertToInt());
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
                 if (kiraci != null || string.IsNullOrEmpty(KiraciIdQS) || KiraciIdQS.Equals(ProjeConstants.HEPSI_INT.ToString()))
                 {
                     KiraciTxt.Text = kiraci == null ? "Hepsi" : kiraci.Adi + " " + kiraci.Soyadi;
@@ -338,7 +338,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         {
 
             Kiraci kiraci = new Kiraci();
-            kiraci = kiraci.Select(KiraciIdQS.ConvertToInt());
+            kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
             if (kiraci != null)
             {
                 RedirectToPage(ProjeConstants.PAGE_KIRACI_GIRIS + "?DestinationApp=KD&SenderApp=KL&KiraciId=" + KiraciIdQS);
@@ -504,7 +504,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         private string GetKiraciData()
         {
             Kiraci kiraci = new Kiraci();
-            string json = kiraci.SelectAllReturnJson();
+            string json = new Model.Services.TBYS.KiraciService().GetAllReturnJson();
 
             return json;
         }

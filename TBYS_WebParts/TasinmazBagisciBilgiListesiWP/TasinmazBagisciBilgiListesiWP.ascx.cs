@@ -87,7 +87,7 @@ namespace TBYS_WebParts.TasinmazBagisciBilgiListesiWP
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             TasinmazBagisci tasinmazBagisciDao = new TasinmazBagisci();
             List<BagisciListItem> returnList = new List<BagisciListItem>();
-            List<TasinmazBagisci> bagisciListesi = tasinmazBagisciDao.SelectAllSagBagiscilar(SagVefatDDL.SelectedItem.Text);
+            List<TasinmazBagisci> bagisciListesi = new Model.Services.TBYS.TasinmazBagisciService().GetAllBySagVefat(SagVefatDDL.SelectedItem.Text);
             int SiraNo = 1;
 
 

@@ -272,7 +272,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             try
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = kiraci.Select(KiraciIdQS.ConvertToInt());
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
                 if (kiraci != null)
                 {
                     KiraciAdiLbl.Text = kiraci.Adi + kiraci.Soyadi;
@@ -332,7 +332,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                 {
                     KiraciIdQS = odeme.KiraciId.ToString();
                     Kiraci kiraci = new Kiraci();
-                    kiraci = kiraci.Select(odeme.KiraciId);
+                    kiraci = new Model.Services.TBYS.KiraciService().GetById(odeme.KiraciId);
                     if (kiraci != null)
                     {
                         KiraciAdiLbl.Text = kiraci.Adi + kiraci.Soyadi;
@@ -650,7 +650,7 @@ namespace TBYS_WebParts.OdemeGirisWP
         private string GetKiraciData()
         {
             Kiraci kiraci = new Kiraci();
-            string json = kiraci.SelectAllReturnJson();
+            string json = new Model.Services.TBYS.KiraciService().GetAllReturnJson();
 
             return json;
         }
@@ -677,7 +677,7 @@ namespace TBYS_WebParts.OdemeGirisWP
         {
 
             Kiraci kiraci = new Kiraci();
-            kiraci = kiraci.Select(KiraciIdQS.ConvertToInt());
+            kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
             if (kiraci != null)
             {
                 RedirectToPage(ProjeConstants.PAGE_KIRACI_GIRIS + "?DestinationApp=KD&SenderApp=KL&KiraciId=" + KiraciIdQS + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS);

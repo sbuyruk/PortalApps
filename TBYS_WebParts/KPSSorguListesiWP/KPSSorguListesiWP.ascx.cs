@@ -92,7 +92,7 @@ namespace TBYS_WebParts.KPSSorguListesiWP
         {
             TasinmazBagisci bagisciDao = new TasinmazBagisci();
 
-            List<TasinmazBagisci> list = bagisciDao.SelectByFilters(SagVefatChk.Checked, CiplakMukiyetChk.Checked,
+            List<TasinmazBagisci> list = new Model.Services.TBYS.TasinmazBagisciService().GetByFilters(SagVefatChk.Checked, CiplakMukiyetChk.Checked,
                 TCKimlikChk.Checked, DogumTarihiChk.Checked);
             List<SorgulanacakKisi> SorgulanacakBagisciListesi = list.Select(a => new SorgulanacakKisi()
             {

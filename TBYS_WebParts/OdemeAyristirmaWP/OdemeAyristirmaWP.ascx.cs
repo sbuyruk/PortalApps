@@ -117,7 +117,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                     if (kiraEkstreAktarma!=null)
                     {
                         Kiraci kiraci = new Kiraci();
-                        kiraci = kiraci.Select(kiraEkstreAktarma.KiraciId);
+                        kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraEkstreAktarma.KiraciId);
                         if (kiraci != null)
                         {
                             AdiLbl.Text = kiraci == null ? "" : kiraci.Adi + " " + kiraci.Soyadi;
@@ -204,7 +204,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
         private void OdemeAyristirmaTabledanDoldur(KiraEkstreAktarma kiraEkstreAktarma)
         {
             OdemeAyristirma odemeAyristirma = new OdemeAyristirma();
-            DataTable dataTable = odemeAyristirma.SelectByKiraEkstreAktarmaId(kiraEkstreAktarma.Id);
+            DataTable dataTable = new Model.Services.TBYS.OdemeAyristirmaService().GetByKiraEkstreAktarmaId(kiraEkstreAktarma.Id);
             if (dataTable != null)
             {
                 OdemeAyristirmaListQS.Clear();
@@ -471,7 +471,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                 string kiraciSoyadi = string.Empty;
                 if (kiraEkstreAktarma.KiraciId > 0)
                 {
-                    kiraci = kiraci.Select(kiraEkstreAktarma.KiraciId);
+                    kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraEkstreAktarma.KiraciId);
                     if (kiraci != null)
                     {
                         kiraciAdi = kiraci.Adi.Trim();// (kiraci.Adi + " " + kiraci.Soyadi).Trim();
@@ -487,7 +487,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                 string ekstredekiKiraciSoyadi = kiraEkstreAktarma.Soyadi;
                 if (!string.IsNullOrEmpty(ekstredekiKiraciAdi) || !string.IsNullOrEmpty(kiraciAdi))
                 {
-                    List<Kiraci> kiraciList = kiraciDao.SelectByAdi(string.IsNullOrEmpty(kiraciAdi) ? ekstredekiKiraciAdi : kiraciAdi, string.IsNullOrEmpty(kiraciSoyadi) ? ekstredekiKiraciSoyadi : kiraciSoyadi);
+                    List<Kiraci> kiraciList = new Model.Services.TBYS.KiraciService().GetByName(string.IsNullOrEmpty(kiraciAdi) ? ekstredekiKiraciAdi : kiraciAdi, string.IsNullOrEmpty(kiraciSoyadi) ? ekstredekiKiraciSoyadi : kiraciSoyadi);
                     if (kiraciList.Count > 0)
                     {
 
@@ -551,7 +551,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                     OdemeListItem odemeListItem = new OdemeListItem();
                     int kiraciId = KiraciDDL.Items.Count > 0 ? KiraciDDL.SelectedItem.Value.ConvertToInt() : KiraciIdLbl.Text.ConvertToInt();
                     Kiraci kiraci = new Kiraci();
-                    kiraci = kiraci.Select(kiraciId);
+                    kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraciId);
                     if (kiraci != null)
                     {
                         odemeListItem.KiraciId = kiraci.Id;

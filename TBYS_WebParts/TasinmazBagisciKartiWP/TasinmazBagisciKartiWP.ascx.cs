@@ -108,7 +108,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
         protected void Page_Load(object sender, EventArgs e)
         {
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            bagisci = bagisci.Select<TasinmazBagisci>(BagisciIdQS.ConvertToInt());
+            bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
             if (bagisci != null)
             {
                 BagisciBilgileriniDoldur(bagisci);
@@ -502,7 +502,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
         protected void ExportToExcel()
         {
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            bagisci = bagisci.Select<TasinmazBagisci>(BagisciIdQS.ConvertToInt());
+            bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
             string filename = "TasinmazBagisciKarti" + bagisci.Adi.ReplaceTrChars() + bagisci.Soyadi.ReplaceTrChars() + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls";
             Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
             Page.Response.Charset = "windows-1254";//ISO-8859-9
@@ -558,7 +558,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            bagisci = bagisci.Select<TasinmazBagisci>(BagisciIdQS.ConvertToInt());
+            bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
             BagisciBilgileriniDoldur(bagisci);
             TasinmazListesiniDoldur(bagisci);
             BagisciTalepleriniDoldur(bagisci);

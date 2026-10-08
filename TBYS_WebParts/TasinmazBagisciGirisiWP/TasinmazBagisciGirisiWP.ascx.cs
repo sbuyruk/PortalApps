@@ -140,7 +140,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             IdLbl.Visible = true;
             IdLbl.Text = bagisciId;
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            bagisci = bagisci.Select<TasinmazBagisci>(BagisciIdQS.ConvertToInt());
+            bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
             if (bagisci != null)
             {
                 
@@ -349,7 +349,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             definil.IlAdi = definIlItem.Text;
             bagisci.DefinIli = definil.IlAdi;
 
-            int tasinmazBagisciId = bagisci.Save();
+            int tasinmazBagisciId = new Model.Services.TBYS.TasinmazBagisciService().Save(bagisci);
             bagisci.Id = tasinmazBagisciId;
             if (tasinmazBagisciId > 0)
                 return bagisci;
@@ -359,7 +359,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         private TasinmazBagisci UpdateBagisciData2Db()
         {
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            bagisci = bagisci.Select<TasinmazBagisci>(BagisciIdQS.ConvertToInt());
+            bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
             bagisci.Adi = AdiTxt.Text;
             bagisci.Adres = AdresTxt.Text;
             bagisci.Aciklama = AciklamaTxt.Text;
@@ -391,7 +391,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             definil.Id = Convert.ToInt16(definIlItem.Value);
             definil.IlAdi = definIlItem.Text;
             bagisci.DefinIli = definil.IlAdi;
-            bagisci.Update();
+            new Model.Services.TBYS.TasinmazBagisciService().Update(bagisci);
             return bagisci;
         }
         private void RedirectToPage(string pageUrl)
@@ -442,7 +442,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         protected void DeleteBtn_Click(object sender, EventArgs e)
         {
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            bagisci = bagisci.Select<TasinmazBagisci>(BagisciIdQS.ConvertToInt());
+            bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
             if (bagisci != null) //sildikten sonra önceki sayfaya dön
             {
                 //Bagisçi talebi var mi
@@ -462,7 +462,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                 }
                 else
                 {
-                    bagisci.Delete();
+                    new Model.Services.TBYS.TasinmazBagisciService().Delete(bagisci);
                     string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                     string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
                     newUrl += "/" + ProjeConstants.PAGE_TASINMAZBAGISCI_LIST;
@@ -758,7 +758,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         protected void BagislariBtn_Click(object sender, EventArgs e)
         {
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            bagisci = bagisci.Select<TasinmazBagisci>(BagisciIdQS.ConvertToInt());
+            bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
             if (bagisci != null) 
             {
                 RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_BAGISLARI + "?DestinationApp=TBD&BagisciId=" + bagisci.Id);
@@ -767,7 +767,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         protected void YakinlariBtn_Click(object sender, EventArgs e)
         {
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            bagisci = bagisci.Select<TasinmazBagisci>(BagisciIdQS.ConvertToInt());
+            bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
             if (bagisci != null) 
             {                
                 RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_YAKINLARI + "?DestinationApp=TBD&BagisciId=" + bagisci.Id);
@@ -777,7 +777,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         {
 
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            bagisci = bagisci.Select<TasinmazBagisci>(BagisciIdQS.ConvertToInt());
+            bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
             if (bagisci != null) 
             {
                 RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TALEPLERI + "?DestinationApp=TBD&BagisciId=" + bagisci.Id);
@@ -788,7 +788,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         protected void TaahhutleriBtn_Click(object sender, EventArgs e)
         {
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            bagisci = bagisci.Select<TasinmazBagisci>(BagisciIdQS.ConvertToInt());
+            bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
             if (bagisci != null)
             {
                 RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TAAHHUTLERI  + "?DestinationApp=TBD&BagisciId=" + bagisci.Id);
