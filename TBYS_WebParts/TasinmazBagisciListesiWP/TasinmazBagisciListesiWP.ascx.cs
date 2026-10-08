@@ -363,7 +363,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
         private DataTable GetBagisciData()
         {
             TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-            DataTable dataTable = new Model.Services.TBYS.TasinmazBagisciReportService().GetAllCountBagisAdediByBolge(BolgeIdQS);
+            DataTable dataTable = new TasinmazBagisciReportService().GetAllCountBagisAdediByBolge(BolgeIdQS);
             return dataTable;
         }
         protected void YeniKayitBtn_Click(object sender, EventArgs e)

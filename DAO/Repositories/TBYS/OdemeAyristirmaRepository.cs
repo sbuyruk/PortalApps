@@ -9,7 +9,11 @@ namespace DAO.Repositories.TBYS
         private readonly DbClass db;
         private readonly CrudQueryBuilder queryBuilder;
 
-        public OdemeAyristirmaRepository() : this(new DbClass()) { }
+        public OdemeAyristirmaRepository()
+            : this(new DbClass())
+        {
+        }
+
         public OdemeAyristirmaRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
@@ -17,8 +21,18 @@ namespace DAO.Repositories.TBYS
             queryBuilder = new CrudQueryBuilder();
         }
 
-        public DataTable SelectById(int id) { SqlQuery q = new SqlQuery("SELECT * FROM OdemeAyristirma_Table WHERE Id=@Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, ""); }
-        public DataTable SelectAll() { return db.SelectFromDb(new SqlQuery("SELECT * FROM OdemeAyristirma_Table"), ""); }
+        public DataTable SelectById(int id)
+        {
+            SqlQuery q = new SqlQuery("SELECT * FROM OdemeAyristirma_Table WHERE Id=@Id");
+            q.AddParameter("@Id", id);
+            return db.SelectFromDb(q, "");
+        }
+
+        public DataTable SelectAll()
+        {
+            return db.SelectFromDb(new SqlQuery("SELECT * FROM OdemeAyristirma_Table"), "");
+        }
+
         public DataTable SelectByKiraEkstreAktarmaId(int kiraEkstreAktarmaId)
         {
             SqlQuery q = new SqlQuery(@"
@@ -30,8 +44,20 @@ namespace DAO.Repositories.TBYS
             q.AddParameter("@KiraEkstreAktarmaId", kiraEkstreAktarmaId);
             return db.SelectFromDb(q, "");
         }
-        public int Insert<T>(T entity) { return db.Insert(queryBuilder.BuildInsert(entity, "OdemeAyristirma_Table")); }
-        public bool Update<T>(T entity) { return db.Update2Db(queryBuilder.BuildUpdate(entity, "OdemeAyristirma_Table")); }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("OdemeAyristirma_Table", id), ""); }
+
+        public int Insert<T>(T entity)
+        {
+            return db.Insert(queryBuilder.BuildInsert(entity, "OdemeAyristirma_Table"));
+        }
+
+        public bool Update<T>(T entity)
+        {
+            return db.Update2Db(queryBuilder.BuildUpdate(entity, "OdemeAyristirma_Table"));
+        }
+
+        public bool Delete(int id)
+        {
+            return db.DeleteFromDb(queryBuilder.BuildDelete("OdemeAyristirma_Table", id), "");
+        }
     }
 }

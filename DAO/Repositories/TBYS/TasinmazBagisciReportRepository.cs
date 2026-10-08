@@ -7,8 +7,18 @@ namespace DAO.Repositories.TBYS
     public class TasinmazBagisciReportRepository
     {
         private readonly DbClass db;
-        public TasinmazBagisciReportRepository() : this(new DbClass()) { }
-        public TasinmazBagisciReportRepository(DbClass db) { if (db == null) throw new ArgumentNullException("db"); this.db = db; }
+
+        public TasinmazBagisciReportRepository()
+            : this(new DbClass())
+        {
+        }
+
+        public TasinmazBagisciReportRepository(DbClass db)
+        {
+            if (db == null) throw new ArgumentNullException("db");
+            this.db = db;
+        }
+
         public DataTable SelectAllCountBagisAdedi(bool excludeDeceased, bool excludeHidden, string sagValue)
         {
             string deceased = excludeDeceased ? " WHERE SAG_VEFAT=@SagVefat " : string.Empty;
@@ -17,6 +27,7 @@ namespace DAO.Repositories.TBYS
             if (excludeDeceased) q.AddParameter("@SagVefat", sagValue);
             return db.SelectFromDb(q, "");
         }
+
         public DataTable SelectAllCountBagisAdediByBolge(int bolgeId, int allRegion, int headquarters)
         {
             string filter = bolgeId == allRegion || bolgeId == headquarters ? string.Empty : " WHERE E.Id=@BolgeId ";
@@ -24,6 +35,7 @@ namespace DAO.Repositories.TBYS
             if (!string.IsNullOrEmpty(filter)) q.AddParameter("@BolgeId", bolgeId);
             return db.SelectFromDb(q, "");
         }
+
         public DataTable SelectTasinmazBagisci(bool excludeHidden, string edinmeSekli)
         {
             string hidden = excludeHidden ? " AND (A.Gizli IS NULL OR A.Gizli=0) " : string.Empty;
@@ -31,7 +43,12 @@ namespace DAO.Repositories.TBYS
             q.AddParameter("@EdinmeSekli", edinmeSekli);
             return db.SelectFromDb(q, "");
         }
-        public DataTable SelectUnselectedParticipants() { return db.SelectFromDb(new SqlQuery("SELECT A.Id KatilimciId,A.Adi,A.Soyadi,A.Adres,A.Telefon1 Telefon,A.Sag_vefat,A.Ilcesi Ilce,A.Ili Il FROM TasinmazBagisci_Table A WHERE Sag_vefat='Sag' ORDER BY A.Adi"), ""); }
+
+        public DataTable SelectUnselectedParticipants()
+        {
+            return db.SelectFromDb(new SqlQuery("SELECT A.Id KatilimciId,A.Adi,A.Soyadi,A.Adres,A.Telefon1 Telefon,A.Sag_vefat,A.Ilcesi Ilce,A.Ili Il FROM TasinmazBagisci_Table A WHERE Sag_vefat='Sag' ORDER BY A.Adi"), "");
+        }
+
         public DataTable SelectDeprecatedByBolge(string bolge, string allRegion, string authorizedUnit)
         {
             string filter = string.IsNullOrEmpty(bolge) || bolge.Equals(allRegion) || bolge.Equals(authorizedUnit) ? string.Empty : " WHERE E.Bolge=@Bolge ";

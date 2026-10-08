@@ -9,12 +9,46 @@ namespace DAO.Repositories.TBYS
     {
         private readonly DbClass db;
         private readonly CrudQueryBuilder queryBuilder;
-        public OdemeRepository() : this(new DbClass()) { }
-        public OdemeRepository(DbClass db) { if (db == null) throw new ArgumentNullException("db"); this.db = db; queryBuilder = new CrudQueryBuilder(); }
-        public DataTable SelectById(int id) { SqlQuery q = new SqlQuery("SELECT * FROM Odeme_Table WHERE Id=@Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, ""); }
-        public DataTable SelectAll() { return db.SelectFromDb(new SqlQuery("SELECT * FROM Odeme_Table"), ""); }
-        public DataTable SelectByKiraciId(int id) { SqlQuery q = new SqlQuery("SELECT * FROM Odeme_Table WHERE KiraciId=@KiraciId ORDER BY OdemeTarihi DESC"); q.AddParameter("@KiraciId", id); return db.SelectFromDb(q, ""); }
-        public DataTable SelectBySozlesmeIdOdemePlaniId(int sozlesmeId, int planId) { SqlQuery q = new SqlQuery("SELECT * FROM Odeme_Table WHERE SozlesmeId=@SozlesmeId AND OdemePlaniId=@OdemePlaniId ORDER BY OdemeTarihi"); q.AddParameter("@SozlesmeId", sozlesmeId); q.AddParameter("@OdemePlaniId", planId); return db.SelectFromDb(q, ""); }
+
+        public OdemeRepository()
+            : this(new DbClass())
+        {
+        }
+
+        public OdemeRepository(DbClass db)
+        {
+            if (db == null) throw new ArgumentNullException("db");
+            this.db = db;
+            queryBuilder = new CrudQueryBuilder();
+        }
+
+        public DataTable SelectById(int id)
+        {
+            SqlQuery q = new SqlQuery("SELECT * FROM Odeme_Table WHERE Id=@Id");
+            q.AddParameter("@Id", id);
+            return db.SelectFromDb(q, "");
+        }
+
+        public DataTable SelectAll()
+        {
+            return db.SelectFromDb(new SqlQuery("SELECT * FROM Odeme_Table"), "");
+        }
+
+        public DataTable SelectByKiraciId(int id)
+        {
+            SqlQuery q = new SqlQuery("SELECT * FROM Odeme_Table WHERE KiraciId=@KiraciId ORDER BY OdemeTarihi DESC");
+            q.AddParameter("@KiraciId", id);
+            return db.SelectFromDb(q, "");
+        }
+
+        public DataTable SelectBySozlesmeIdOdemePlaniId(int sozlesmeId, int planId)
+        {
+            SqlQuery q = new SqlQuery("SELECT * FROM Odeme_Table WHERE SozlesmeId=@SozlesmeId AND OdemePlaniId=@OdemePlaniId ORDER BY OdemeTarihi");
+            q.AddParameter("@SozlesmeId", sozlesmeId);
+            q.AddParameter("@OdemePlaniId", planId);
+            return db.SelectFromDb(q, "");
+        }
+
         public DataTable SelectByKiraciAyYil(int kiraciId, int ay, int yil)
         {
             StringBuilder sql = new StringBuilder(@"
@@ -53,6 +87,7 @@ namespace DAO.Repositories.TBYS
             query.Sql = sql.ToString();
             return db.SelectFromDb(query, "");
         }
+
         public DataTable SelectByKiraciAyYilReturnDataTable(int bolgeId, int kiraciId, DateTime basTarih, DateTime bitTarih)
         {
             StringBuilder sql = new StringBuilder(@"
@@ -87,6 +122,7 @@ namespace DAO.Repositories.TBYS
             query.Sql = sql.ToString();
             return db.SelectFromDb(query, "");
         }
+
         public DataTable SelectByAyYilReturnDataTable(int ay, int yil)
         {
             StringBuilder sql = new StringBuilder(@"
@@ -119,6 +155,7 @@ namespace DAO.Repositories.TBYS
             query.Sql = sql.ToString();
             return db.SelectFromDb(query, "");
         }
+
         public DataTable SelectByKiraciVadeBasTarVadeBitTar(int sozlesmeId, int kiraciId, DateTime basTarih, DateTime bitTarih)
         {
             SqlQuery query = new SqlQuery(@"
@@ -133,6 +170,7 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@BitTarih", bitTarih);
             return db.SelectFromDb(query, "");
         }
+
         public DataTable SelectSumBySozlesmeIdOdemePlaniId(int sozlesmeId, int odemePlaniId)
         {
             SqlQuery query = new SqlQuery(@"
@@ -143,9 +181,27 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@OdemePlaniId", odemePlaniId);
             return db.SelectFromDb(query, "");
         }
-        public bool DeleteBySozlesmeId(int id) { SqlQuery q = new SqlQuery("DELETE Odeme_Table WHERE SozlesmeId=@SozlesmeId"); q.AddParameter("@SozlesmeId", id); return db.DeleteFromDb(q, ""); }
-        public int Insert<T>(T entity) { return db.Insert(queryBuilder.BuildInsert(entity, "Odeme_Table")); }
-        public bool Update<T>(T entity) { return db.Update2Db(queryBuilder.BuildUpdate(entity, "Odeme_Table")); }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("Odeme_Table", id), ""); }
+
+        public bool DeleteBySozlesmeId(int id)
+        {
+            SqlQuery q = new SqlQuery("DELETE Odeme_Table WHERE SozlesmeId=@SozlesmeId");
+            q.AddParameter("@SozlesmeId", id);
+            return db.DeleteFromDb(q, "");
+        }
+
+        public int Insert<T>(T entity)
+        {
+            return db.Insert(queryBuilder.BuildInsert(entity, "Odeme_Table"));
+        }
+
+        public bool Update<T>(T entity)
+        {
+            return db.Update2Db(queryBuilder.BuildUpdate(entity, "Odeme_Table"));
+        }
+
+        public bool Delete(int id)
+        {
+            return db.DeleteFromDb(queryBuilder.BuildDelete("Odeme_Table", id), "");
+        }
     }
 }
