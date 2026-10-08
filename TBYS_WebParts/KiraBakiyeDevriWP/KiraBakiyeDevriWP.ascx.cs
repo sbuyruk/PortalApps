@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+﻿﻿using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -169,7 +169,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
             {
 
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.SelectAktifSozlesmeByKiraciId(kiraci.Id);
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(kiraci.Id);
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
                     KiraKartiBtn.Visible = true;
@@ -195,7 +195,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
           
             
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-            List<KiraSozlesme> sozlesmeListesi = kiraSozlesmeDao.SelectByKiraciIdReturnList(kiraciId);
+            List<KiraSozlesme> sozlesmeListesi = new Model.Services.TBYS.KiraSozlesmeService().GetAllByKiraciId(kiraciId);
             foreach (var kiraSozlesme in sozlesmeListesi)
             {
                 if (kiraSozlesme != null)
@@ -210,7 +210,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                     decimal sonFaizliBakiye = 0;
                     decimal sonFaizTutari = 0;
                     kiraSozlesmeListItem.FarkVarMi = false;
-                    KiraSozlesme oncekiKiraSozlesmesi = kiraSozlesme.SelectOncekiKiraSozlesme();
+                    KiraSozlesme oncekiKiraSozlesmesi = new Model.Services.TBYS.KiraSozlesmeService().GetPreviousByTenant(kiraSozlesme.KiraciId, kiraSozlesme.SozBasTar);
                     if (oncekiKiraSozlesmesi != null)
                     {
                         OdemePlani odemePlaniDao = new OdemePlani();
@@ -244,7 +244,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
         private void OdemeleriHesaplaOdemePlaniniGuncelle(int kiraciId)
         {
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-            List<KiraSozlesme> sozlesmeListesi = kiraSozlesmeDao.SelectByKiraciIdReturnList(kiraciId);
+            List<KiraSozlesme> sozlesmeListesi = new Model.Services.TBYS.KiraSozlesmeService().GetAllByKiraciId(kiraciId);
             sozlesmeListesi = sozlesmeListesi.OrderBy(x => x.SozBasTar).ToList();
             foreach (var kiraSozlesme in sozlesmeListesi)
             {
@@ -339,7 +339,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
             if (kiraci != null)//bu kiraci varsa
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.SelectAktifSozlesmeByKiraciId(kiraci.Id);
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(kiraci.Id);
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
                     OdemePlani odemePlani = new OdemePlani();
@@ -411,7 +411,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
             kiraSozlesme = kiraSozlesme.Select(paramSozlesmeIdLbl.Value.ConvertToInt());
             if (kiraSozlesme != null)
             {
-                KiraSozlesme oncekiKiraSozlesmesi = kiraSozlesme.SelectOncekiKiraSozlesme();
+                KiraSozlesme oncekiKiraSozlesmesi = new Model.Services.TBYS.KiraSozlesmeService().GetPreviousByTenant(kiraSozlesme.KiraciId, kiraSozlesme.SozBasTar);
                 if (oncekiKiraSozlesmesi != null)
                 {
                     //önceki ödeme planının son satırındaki anapara, faiztutari, faizlibakiye alanlarını al, sözleşmenin devir alanlarına koy
@@ -472,7 +472,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                 if (kiraci != null)
                 {
                     KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                    kiraSozlesme = kiraSozlesme.SelectAktifSozlesmeByKiraciId(kiraci.Id);
+                    kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(kiraci.Id);
                     if (kiraSozlesme != null) //bu sozlesme varsa
                     {
                         OdemePlani odemePlani = new OdemePlani();

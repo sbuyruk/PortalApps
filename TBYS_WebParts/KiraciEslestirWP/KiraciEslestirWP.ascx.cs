@@ -255,11 +255,11 @@ namespace TBYS_WebParts.KiraciEslestirWP
 
                     if (!aktif)
                     {
-                        ks = ks.SelectBitenSozlesmeByKiraciId(kiraciId.ConvertToInt());
+                        ks = new Model.Services.TBYS.KiraSozlesmeService().GetCompletedByKiraciId(kiraciId.ConvertToInt());
                     }
                     else
                     {
-                        ks = ks.SelectAktifSozlesmeByKiraciId(kiraciId.ConvertToInt());
+                        ks = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(kiraciId.ConvertToInt());
                     }
 
                     int sonSozlesmeId = ks != null ? ks.Id : sozlesmeId.ConvertToInt();

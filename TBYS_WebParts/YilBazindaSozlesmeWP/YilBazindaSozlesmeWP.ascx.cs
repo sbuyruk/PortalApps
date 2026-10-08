@@ -315,8 +315,8 @@ namespace TBYS_WebParts.YilBazindaSozlesmeWP
 
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
 
-            DataTable dataTableSozlesme = kiraSozlesme.SelectSozlesmeListByYilReturnDT(YilDDL.SelectedItem.Value.ConvertToInt());
-            DataTable dataTableTahliye = kiraSozlesme.SelectBitenSozlesmeListByYilReturnDT(YilDDL.SelectedItem.Value.ConvertToInt());
+            DataTable dataTableSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetListByYear(YilDDL.SelectedItem.Value.ConvertToInt());
+            DataTable dataTableTahliye = new Model.Services.TBYS.KiraSozlesmeService().GetCompletedListByYear(YilDDL.SelectedItem.Value.ConvertToInt());
             DataTable dataTable = sozlesmeTahliye.Equals("Sözlesme") ? dataTableSozlesme : dataTableTahliye;
 
             int SiraNo = 1;

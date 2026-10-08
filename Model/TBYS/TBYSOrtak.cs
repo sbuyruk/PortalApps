@@ -188,7 +188,7 @@ namespace Model.Ortak
         {
             DateTime saat = DateTime.Now;
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-            List<KiraSozlesme> kiraSozlesmeListesi = kiraSozlesmeDao.SelectAllAktifSozlesme();
+            List<KiraSozlesme> kiraSozlesmeListesi = new Model.Services.TBYS.KiraSozlesmeService().GetAllActive();
             DateTime saat1 = DateTime.Now;
             foreach (KiraSozlesme kiraSozlesme in kiraSozlesmeListesi)
             {

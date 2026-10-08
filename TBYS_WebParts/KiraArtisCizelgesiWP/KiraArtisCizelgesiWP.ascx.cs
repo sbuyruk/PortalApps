@@ -264,7 +264,7 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
 
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
 
-            DataTable dataTable = kiraSozlesmeDao.SelectKiraArtisiGelenSozlesmelerReturnDT(BolgeIdQS, tarih);
+            DataTable dataTable = new Model.Services.TBYS.KiraSozlesmeService().GetRentIncreaseDue(BolgeIdQS, tarih);
             int SiraNo = 1;
 
             List<KiraArtisListItem> list = new List<KiraArtisListItem>();
@@ -292,7 +292,7 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
                 //if (sozlesmeYenilendiMi)
                 //{
                 //    KiraSozlesme oncekiKiraSozlesme = new KiraSozlesme();
-                //    oncekiKiraSozlesme = oncekiKiraSozlesme.SelectByKiraciIdTarih(kiraciId.ConvertToInt(), sozBitTar.ConvertToDatetime().AddMonths(-1));
+                //    oncekiKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetByKiraciIdAndDate(kiraciId.ConvertToInt(), sozBitTar.ConvertToDatetime().AddMonths(-1));
                 //    if (oncekiKiraSozlesme != null)
                 //    {
                 //        kiraBedeli = oncekiKiraSozlesme.KiraBedeli;

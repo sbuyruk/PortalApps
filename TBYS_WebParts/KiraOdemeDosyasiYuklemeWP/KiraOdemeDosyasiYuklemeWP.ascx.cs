@@ -246,7 +246,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
 
                             //işlem numarası varsa kaydı atla
                             KiraEkstreAktarma keaDao = new KiraEkstreAktarma();
-                            List<KiraEkstreAktarma> bulunanIslemNolar = keaDao.SelectByIslemNo(islemno);
+                            List<KiraEkstreAktarma> bulunanIslemNolar = new Model.Services.TBYS.KiraEkstreAktarmaService().GetByIslemNo(islemno);
                             if (bulunanIslemNolar.Count > 0)
                             {
                                 Exception kayitVar = new Exception("İşlem Numarası Çakışıyor. (" + adi + ", " + tutar + "TL, " + hareketTar);
@@ -456,7 +456,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
             {
                 //kiraEkstreAktarma Listesinde kiraciId>0 olan kayıtları ada göre sorgulasın 
                 KiraEkstreAktarma keaDao = new KiraEkstreAktarma();
-                List<KiraEkstreAktarma> keaList = keaDao.SelectKiraciIdByAdi(adi);
+                List<KiraEkstreAktarma> keaList = new Model.Services.TBYS.KiraEkstreAktarmaService().GetByKiraciAdi(adi);
                 foreach (var item in keaList)
                 {
                     if (item.KiraciId > 0)
@@ -506,7 +506,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
             {
                 //kiraSozlesme tablosundaki kayıtları isme göre sorgulasın
                 KiraSozlesme kirasozlesmeDao = new KiraSozlesme();
-                List<KiraSozlesme> sozlesmeList = kirasozlesmeDao.SelectByKiraciAdi(adi);
+                List<KiraSozlesme> sozlesmeList = new Model.Services.TBYS.KiraSozlesmeService().GetByKiraciAdi(adi);
                 if (sozlesmeList.Count > 1)
                 {
                     varMi = true;

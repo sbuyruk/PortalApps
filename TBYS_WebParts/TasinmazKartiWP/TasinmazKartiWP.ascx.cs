@@ -578,7 +578,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
             OnarimTable.Controls.Add(headerRow1);
 
             Onarim onarim = new Onarim();
-            List<Onarim> onarimListesi = onarim.SelectByTasinmazId(tasinmazId);
+            List<Onarim> onarimListesi = new Model.Services.TBYS.OnarimService().GetByTasinmazId(tasinmazId);
             if (onarimListesi == null)
             {
                 TableHeaderCell cell1 = new TableHeaderCell();

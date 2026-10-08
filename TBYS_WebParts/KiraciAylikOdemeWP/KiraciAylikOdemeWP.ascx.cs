@@ -353,14 +353,14 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         protected void SozlesmeBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.SelectAktifSozlesmeByKiraciId(KiraciIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(KiraciIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 RedirectToPage(ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + kiraSozlesme.Id);
             }
             else
             {
-                kiraSozlesme = kiraSozlesme.SelectBitenSozlesmeByKiraciId(KiraciIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetCompletedByKiraciId(KiraciIdQS.ConvertToInt());
 
                 if (kiraSozlesme == null)
                     MessageHelper.PublishMessage("Kiracıya ait bir Kira Sözleşmesi bulunamadı.", ProjeConstants.MESAJ_HATA);
@@ -369,7 +369,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         protected void SozlesmeListBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme sozlesme = new KiraSozlesme();
-            sozlesme = sozlesme.SelectAktifSozlesmeByKiraciId(KiraciIdQS.ConvertToInt());
+            sozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(KiraciIdQS.ConvertToInt());
             if (sozlesme == null)
                 RedirectToPage(ProjeConstants.PAGE_BITENKIRASOZLESME_LIST);
             else
@@ -401,7 +401,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         protected void OdemePlaniBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.SelectAktifSozlesmeByKiraciId(KiraciIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(KiraciIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 if (kiraSozlesme != null)
@@ -670,7 +670,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         private string TasinmazAdresGetir(int sozlesmeId)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            DataTable dataTable = kiraSozlesme.SelectBySozlesmeId(sozlesmeId);
+            DataTable dataTable = new Model.Services.TBYS.KiraSozlesmeService().GetAddressById(sozlesmeId);
             string adres = string.Empty;
             if (dataTable != null)
             {

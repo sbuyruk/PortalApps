@@ -494,7 +494,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                         foreach (var item in kiraciList)
                         {
                             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                            kiraSozlesme = kiraSozlesme.SelectEnYakinTarihliSozlesmeByKiraciIdTarih(item.Id, OdemeTarihiLbl.Text.ConvertToDatetime());
+                            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetNearestByKiraciIdAndDate(item.Id, OdemeTarihiLbl.Text.ConvertToDatetime());
                             if (kiraSozlesme != null)
                             {
                                 KiraciDDL.Enabled = true;
@@ -597,7 +597,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
         {
             int sozlesmeId = 0;
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.SelectEnYakinTarihliSozlesmeByKiraciIdTarih(kiraciId, odemeTarihi);
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetNearestByKiraciIdAndDate(kiraciId, odemeTarihi);
             if (kiraSozlesme != null)
             {
                 sozlesmeId=kiraSozlesme.Id;

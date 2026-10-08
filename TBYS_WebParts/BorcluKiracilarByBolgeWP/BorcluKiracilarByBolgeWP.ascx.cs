@@ -108,11 +108,11 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
 
-            DataTable ankDataTable = kiraSozlesme.SelectKiraciSayisiByBolgeTarih(ProjeConstants.BOLGE_ANKARA_INT, ay, yil);
-            DataTable istDataTable = kiraSozlesme.SelectKiraciSayisiByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL_INT, ay, yil);
-            DataTable izmDataTable = kiraSozlesme.SelectKiraciSayisiByBolgeTarih(ProjeConstants.BOLGE_IZMIR_INT, ay, yil);
-            DataTable merDataTable = kiraSozlesme.SelectKiraciSayisiByBolgeTarih(ProjeConstants.BOLGE_MERSIN_INT, ay, yil);
-            DataTable erzDataTable = kiraSozlesme.SelectKiraciSayisiByBolgeTarih(ProjeConstants.BOLGE_ERZURUM_INT, ay, yil);
+            DataTable ankDataTable = new Model.Services.TBYS.KiraSozlesmeService().GetTenantCountByRegionAndDate(ProjeConstants.BOLGE_ANKARA_INT, ay, yil);
+            DataTable istDataTable = new Model.Services.TBYS.KiraSozlesmeService().GetTenantCountByRegionAndDate(ProjeConstants.BOLGE_ISTANBUL_INT, ay, yil);
+            DataTable izmDataTable = new Model.Services.TBYS.KiraSozlesmeService().GetTenantCountByRegionAndDate(ProjeConstants.BOLGE_IZMIR_INT, ay, yil);
+            DataTable merDataTable = new Model.Services.TBYS.KiraSozlesmeService().GetTenantCountByRegionAndDate(ProjeConstants.BOLGE_MERSIN_INT, ay, yil);
+            DataTable erzDataTable = new Model.Services.TBYS.KiraSozlesmeService().GetTenantCountByRegionAndDate(ProjeConstants.BOLGE_ERZURUM_INT, ay, yil);
 
             int adetAnk = ankDataTable == null ? 0 : ankDataTable.Rows.Count;
             int adetIst = istDataTable == null ? 0 : istDataTable.Rows.Count;

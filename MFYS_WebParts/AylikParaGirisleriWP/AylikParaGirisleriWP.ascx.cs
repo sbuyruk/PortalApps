@@ -169,7 +169,7 @@ namespace MFYS_WebParts.AylikParaGirisleriWP
             {
                 DateTime tarih = new DateTime(yil, ay, i);
                 KiraEkstreAktarma kiraEkstreAktarma = new KiraEkstreAktarma();
-                DataTable dataTable = kiraEkstreAktarma.SelectTarihOdemeSebebi(tarih, odemeSebebiId);
+                DataTable dataTable = new Model.Services.TBYS.KiraEkstreAktarmaService().GetByDateAndPaymentReason(tarih, odemeSebebiId);
                 
 
                 if (dataTable != null)

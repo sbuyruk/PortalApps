@@ -29,7 +29,7 @@ namespace Model.TBYS
             KiraBakiyeDevriSonuc sonuc = new KiraBakiyeDevriSonuc();
 
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-            List<KiraSozlesme> aktifSozlesmeler = kiraSozlesmeDao.SelectAllAktifSozlesme();
+            List<KiraSozlesme> aktifSozlesmeler = new Model.Services.TBYS.KiraSozlesmeService().GetAllActive();
 
             foreach (KiraSozlesme kiraSozlesme in aktifSozlesmeler)
             {
@@ -80,7 +80,7 @@ namespace Model.TBYS
                 return false;
             }
 
-            KiraSozlesme oncekiKiraSozlesmesi = kiraSozlesme.SelectOncekiKiraSozlesme();
+            KiraSozlesme oncekiKiraSozlesmesi = new Model.Services.TBYS.KiraSozlesmeService().GetPreviousByTenant(kiraSozlesme.KiraciId, kiraSozlesme.SozBasTar);
             if (oncekiKiraSozlesmesi == null)
             {
                 return false;
@@ -161,7 +161,7 @@ namespace Model.TBYS
         private void OdemeleriHesaplaOdemePlaniniGuncelle(int kiraciId)
         {
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-            List<KiraSozlesme> sozlesmeListesi = kiraSozlesmeDao.SelectByKiraciIdReturnList(kiraciId);
+            List<KiraSozlesme> sozlesmeListesi = new Model.Services.TBYS.KiraSozlesmeService().GetAllByKiraciId(kiraciId);
             sozlesmeListesi = sozlesmeListesi.OrderBy(x => x.SozBasTar).ToList();
             foreach (KiraSozlesme kiraSozlesme in sozlesmeListesi)
             {

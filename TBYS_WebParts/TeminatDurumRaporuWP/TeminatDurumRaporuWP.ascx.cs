@@ -169,7 +169,7 @@ namespace TBYS_WebParts.TeminatDurumRaporuWP
             TeminatDurumuTable.Rows.Add(tableRow);
 
             KiraSozlesme ksDao = new KiraSozlesme();
-            DataTable dataTable = ksDao.SelectSUMTeminatByBolgeKiralamaAmaciReturnDT(bolgeId, ProjeConstants.HEPSI);
+            DataTable dataTable = new Model.Services.TBYS.KiraSozlesmeService().GetSecurityDepositSummaryByRegionAndPurpose(bolgeId, ProjeConstants.HEPSI);
             int adetToplam = 0;
             decimal teminatToplam = 0;
             foreach (DataRow row in dataTable.Rows)

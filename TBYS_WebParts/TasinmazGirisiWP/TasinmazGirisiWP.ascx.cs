@@ -1062,7 +1062,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
                 //Onarım planı var mı
                 Onarim onarim = new Onarim();
-                List<Onarim> onarimList = onarim.SelectByTasinmazId(silinecekTasinmaz.Id);
+                List<Onarim> onarimList = new Model.Services.TBYS.OnarimService().GetByTasinmazId(silinecekTasinmaz.Id);
                 if (onarimList!=null && onarimList.Count > 0)
                 {
                     MessageHelper.PublishMessage("Taşınmaza ait onarım bulunmaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
