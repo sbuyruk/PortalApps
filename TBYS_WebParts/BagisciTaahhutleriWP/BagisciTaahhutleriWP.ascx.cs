@@ -125,7 +125,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
         {
             TasinmazDDL.Items.Clear();
             Bagis bagis = new Bagis();
-            DataTable dataTable = bagis.SelectTasinmazByBagisciIdReturnDT(bagisci.Id);
+            DataTable dataTable = new BagisService().GetTasinmazByBagisciId(bagisci.Id);
             if (dataTable != null)
             {
                 foreach (DataRow dataRow in dataTable.Rows)

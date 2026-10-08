@@ -255,7 +255,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             TitleLbl.Text = bagisci.Adi + " " + bagisci.Soyadi + " Bağışçı Bilgileri";
 
             Bagis bagis = new Bagis();
-            DataTable dataTable = bagis.SelectSatisVsDahilTasinmazByBagisciIdReturnDT(bagisci.Id);
+            DataTable dataTable = new BagisService().GetSatisVsDahilTasinmazByBagisciId(bagisci.Id);
             if (dataTable != null)
             {
                 TasinmazTable.Rows.Clear();
@@ -321,7 +321,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
                 footerRow.CssClass = "table-dark";
                 TableCell tahminiRayicCell = new TableCell();
                 tahminiRayicCell.ColumnSpan = 4;
-                tahminiRayicCell.Text = "Tahmini Rayiç Bedelleri Toplamı : " + bagis.SelectSumTahminiRayicByBagisciId(bagisci.Id).ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
+            tahminiRayicCell.Text = "Tahmini Rayiç Bedelleri Toplamı : " + new BagisService().GetSumTahminiRayicByBagisciId(bagisci.Id).ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
                 footerRow.Controls.Add(tahminiRayicCell);
                 TasinmazTable.Controls.Add(footerRow);
             }

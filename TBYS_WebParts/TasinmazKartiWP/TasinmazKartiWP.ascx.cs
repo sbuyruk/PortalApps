@@ -180,7 +180,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
         {
             TasinmazBilgileriniDoldur(tasinmaz);
             Bagis bagis = new Bagis();
-            bagis = bagis.SelectByTasinmazId(tasinmaz.Id);
+            bagis = new BagisService().GetByTasinmazId(tasinmaz.Id);
             if (bagis != null)
             {
                 TasinmazBagisci bagisci = new TasinmazBagisci();

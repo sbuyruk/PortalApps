@@ -205,7 +205,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
             TitleLbl.Text = bagisci.Adi + " " + bagisci.Soyadi + " Tarafından Yapılan Bağışlar";
 
             Bagis bagis = new Bagis();
-            DataTable dataTable = bagis.SelectSatisVsDahilTasinmazByBagisciIdReturnDT(bagisci.Id);
+            DataTable dataTable = new BagisService().GetSatisVsDahilTasinmazByBagisciId(bagisci.Id);
             if (dataTable != null)
             {
                 BagisTasinmazLarTable.Rows.Clear();
@@ -490,7 +490,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
                 using (TransactionScope scope = new TransactionScope())
                 {
                     bagis = new Bagis();
-                    bagis = bagis.SelectByTasinmazId(tasinmazId);
+                    bagis = new BagisService().GetByTasinmazId(tasinmazId);
                     if (bagis == null)
                     {
                         bagis = new Bagis();
