@@ -53,7 +53,7 @@
                         </asp:Table>
                     </div>
                     <div id="AlinanFaaliyetDiv" class="table">
-                        <asp:Table ID="AlınanFaaliyetBilgileriTable" runat="server" CssClass="table table-sm table-hover table-striped table-bordered" BorderStyle="Solid">
+                        <asp:Table ID="AlinanFaaliyetBilgileriTable" runat="server" CssClass="table table-sm table-hover table-striped table-bordered" BorderStyle="Solid">
                             <asp:TableHeaderRow>
                                 <asp:TableHeaderCell ColumnSpan="8" BackColor="Silver">Faaliyet Bilgileri (Gidilenler)</asp:TableHeaderCell>
                             </asp:TableHeaderRow>
