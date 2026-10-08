@@ -11,7 +11,7 @@ using Utility.HelperClasses;
 
 namespace Model.MTS
 {
-    public class MTSKurumGorev : ParentClass
+    public class MTSKurumGorev : EntityBase
     {
         [Required]
         public int MTSKurumTanimId { get; set; }
@@ -29,7 +29,7 @@ namespace Model.MTS
         public string AyrilmaSebebi { get; set; } = ProjeConstants.MTSAYRILMASEBEBI_BOS;
         public string KisaAdi { get; set; }
 
-        public override int Save()
+        public int Save()
         {
             try
             {
@@ -54,7 +54,7 @@ namespace Model.MTS
             }
 
         }
-        public override bool Update()
+        public bool Update()
         {
             bool isSuccess = false;
             try
@@ -83,7 +83,7 @@ namespace Model.MTS
             }
             return isSuccess;
         }
-        public override bool Delete()
+        public bool Delete()
         {
             try
             {
@@ -123,7 +123,7 @@ namespace Model.MTS
             item = list.FirstOrDefault();
             return item;
         }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             GenericEntity<MTSKurumGorev> genericEntity = new GenericEntity<MTSKurumGorev>(ProjeConstants.SQL_SELECT);
             Id = id;
@@ -134,7 +134,7 @@ namespace Model.MTS
             item = list.FirstOrDefault();
             return ((T)Convert.ChangeType(item, typeof(T)));
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"
                 SELECT *

@@ -13,7 +13,7 @@ using Utility.ProjeGlobal;
 
 namespace Model.MTS
 {
-    public class AniObjesiDagitim : ParentClass
+    public class AniObjesiDagitim : EntityBase
     {
         public int AniObjesiId { get; set; }
         public int Adet { get; set; }
@@ -26,7 +26,7 @@ namespace Model.MTS
         public string Aciklama { get; set; }
         public DateTime VerilisTarihi { get; set; }
         
-        public override int Save()
+        public int Save()
         {
             try
             {
@@ -50,7 +50,7 @@ namespace Model.MTS
             }
 
         }
-        public override bool Update()
+        public bool Update()
         {
             bool isSuccess = false;
             try
@@ -79,7 +79,7 @@ namespace Model.MTS
             }
             return isSuccess;
         }
-        public override bool Delete()
+        public bool Delete()
         {
             try
             {
@@ -176,7 +176,7 @@ namespace Model.MTS
 
             return deleted;
         }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             GenericEntity<AniObjesiDagitim> genericEntity = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_SELECT);
             Id = id;
@@ -187,7 +187,7 @@ namespace Model.MTS
             item = list.FirstOrDefault();
             return ((T)Convert.ChangeType(item, typeof(T)));
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"
                 SELECT *

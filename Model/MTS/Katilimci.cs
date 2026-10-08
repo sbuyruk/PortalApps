@@ -15,7 +15,7 @@ using Model.TBYS;
 
 namespace Model.MTS
 {
-    public class Katilimci : ParentClass
+    public class Katilimci : EntityBase
     {
         [Required]
         [DisplayName("Katilimci Tipi")]
@@ -81,27 +81,27 @@ namespace Model.MTS
         [DisplayName("Randevu Kisiti")]
         public bool RandevuKisiti { get; set; } = false;
 
-        public override bool Delete()
+        public bool Delete()
         {
             throw new NotImplementedException();
         }
 
-        public override int Save()
+        public int Save()
         {
             throw new NotImplementedException();
         }
 
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             throw new NotImplementedException();
         }
 
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             throw new NotImplementedException();
         }
 
-        public override bool Update()
+        public bool Update()
         {
             throw new NotImplementedException();
         }
