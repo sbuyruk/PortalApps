@@ -33,6 +33,14 @@ namespace Model.Services.TBYS
         {
             return new KiraSozlesme().ToList<KiraSozlesme>(repository.SelectAllActive());
         }
+        public DataTable GetListReturnDataTable(int kiraciId, int aktif, int bolgeId)
+        {
+            return repository.SelectListReturnDataTable(kiraciId, aktif, bolgeId);
+        }
+        public List<KiraSozlesme> GetList(int kiraciId, int aktif, int bolgeId)
+        {
+            return new KiraSozlesme().ToList<KiraSozlesme>(repository.SelectList(kiraciId, aktif, bolgeId));
+        }
 
         private static KiraSozlesme Map(DataTable table)
         {
