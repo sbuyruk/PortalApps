@@ -1,6 +1,7 @@
 using DAO.Ortak;
 using System;
 using System.Data;
+using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
 namespace DAO.Repositories.TBYS
@@ -160,6 +161,35 @@ namespace DAO.Repositories.TBYS
                     AND S.SozlesmeDurumu in ({1},{2})
                 ORDER BY DosyaNo", yil, ProjeConstants.KIRASOZLESME_DURUMU_BITTI.ReturnQuotedValue(), ProjeConstants.KIRASOZLESME_DURUMU_FESIH.ReturnQuotedValue());
             return db.SelectFromDb(sql, "");
+        }
+        public DataTable SelectActiveByKiraciId(int kiraciId)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM KiraSozlesme_Table WHERE Aktif=1 AND KiraciId=@KiraciId ORDER BY SozBastar DESC");
+            query.AddParameter("@KiraciId", kiraciId);
+            return db.SelectFromDb(query, "");
+        }
+        public DataTable SelectByKiraciId(int kiraciId)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM KiraSozlesme_Table WHERE KiraciId=@KiraciId");
+            query.AddParameter("@KiraciId", kiraciId);
+            return db.SelectFromDb(query, "");
+        }
+        public DataTable SelectAllByKiraciId(int kiraciId)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM KiraSozlesme_Table WHERE KiraciId=@KiraciId ORDER BY SozBasTar DESC, DosyaNo");
+            query.AddParameter("@KiraciId", kiraciId);
+            return db.SelectFromDb(query, "");
+        }
+        public DataTable SelectByKiraciIdAndDate(int kiraciId, string tarih)
+        {
+            string sql = string.Format("SELECT * FROM KiraSozlesme_Table WHERE KiraciId={0} AND ({1} >= SozBasTar AND {1} < SozBitTar)", kiraciId.ReturnQuotedValue(), tarih);
+            return db.SelectFromDb(sql, "");
+        }
+        public DataTable SelectCompletedByKiraciId(int kiraciId)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM KiraSozlesme_Table WHERE Aktif=0 AND KiraciId=@KiraciId ORDER BY SozBastar DESC");
+            query.AddParameter("@KiraciId", kiraciId);
+            return db.SelectFromDb(query, "");
         }
     }
 }

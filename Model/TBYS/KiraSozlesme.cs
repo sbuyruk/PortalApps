@@ -264,76 +264,19 @@ namespace Model.TBYS
 
         public KiraSozlesme SelectAktifSozlesmeByKiraciId(int kiraciId)
         {
-            string sqlString = string.Format(@"
-                SELECT  *
-                FROM KiraSozlesme_Table
-                WHERE Aktif=1 AND KiraciId={0}
-                ORDER BY SozBastar DESC", kiraciId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-                KiraSozlesme kiraSozlesme = list.FirstOrDefault();
-                return kiraSozlesme;
-            }
-            else
-            {
-                return null;
-            }
-
+            return new KiraSozlesmeService().GetActiveByKiraciId(kiraciId);
         }
         public KiraSozlesme SelectSozlesmeByKiraciId(int kiraciId)
         {
-            string sqlString = string.Format(@"
-                                SELECT  *
-                                FROM KiraSozlesme_Table
-                                WHERE KiraciId={0}", kiraciId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-                KiraSozlesme kiraSozlesme = list.FirstOrDefault();
-                return kiraSozlesme;
-            }
-            else
-            {
-                return null;
-            }
-
+            return new KiraSozlesmeService().GetByKiraciId(kiraciId);
         }
         public List<KiraSozlesme> SelectByKiraciIdReturnList(int kiraciId)
         {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM KiraSozlesme_Table
-                WHERE KiraciId={0}
-                ORDER BY SozBasTar DESC, DosyaNo
-                ", kiraciId);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-
-            return (list);
+            return new KiraSozlesmeService().GetAllByKiraciId(kiraciId);
         }
         public KiraSozlesme SelectByKiraciIdTarih(int kiraciId, DateTime tarih)
         {
-            string sqlString = string.Format(@"
-                SELECT  *
-                FROM KiraSozlesme_Table
-                WHERE KiraciId={0} AND ({1} >= SozBasTar AND {1} < SozBitTar)", kiraciId.ReturnQuotedValue(), tarih.ReturnTRDateFormat());
-            //WHERE KiraciId={0} AND ({1} BETWEEN SozBasTar AND SozBitTar)", kiraciId.ReturnQuotedValue(),tarih.ReturnTRDateFormat());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-                KiraSozlesme kiraSozlesme = list.FirstOrDefault();
-                return kiraSozlesme;
-            }
-            else
-            {
-                return null;
-            }
-
+            return new KiraSozlesmeService().GetByKiraciIdAndDate(kiraciId, tarih);
         }
         public KiraSozlesme SelectEnYakinTarihliSozlesmeByKiraciIdTarih(int kiraciId, DateTime tarih)
         {
@@ -371,23 +314,7 @@ namespace Model.TBYS
         }
         public KiraSozlesme SelectBitenSozlesmeByKiraciId(int kiraciId)
         {
-            string sqlString = string.Format(@"
-                SELECT  *
-                FROM KiraSozlesme_Table
-                WHERE Aktif=0 AND KiraciId={0}
-                ORDER BY SozBastar DESC", kiraciId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-                KiraSozlesme kiraSozlesme = list.FirstOrDefault();
-                return kiraSozlesme;
-            }
-            else
-            {
-                return null;
-            }
-
+            return new KiraSozlesmeService().GetCompletedByKiraciId(kiraciId);
         }
         public bool UpdateAktifDurum(string durum, string degistirmeTar, bool aktif)
         {
