@@ -615,7 +615,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             try
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.SelectByKiraciIdTarih(KiraciIdQS.ConvertToInt(), OdemeTarihiTxt.Value.ConvertToDatetime());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetByKiraciIdAndDate(KiraciIdQS.ConvertToInt(), OdemeTarihiTxt.Value.ConvertToDatetime());
                 if (kiraSozlesme != null)
                 {
                     DateTime odemeTarihi = OdemeTarihiTxt.Value.ConvertToDatetime();
@@ -835,10 +835,10 @@ namespace TBYS_WebParts.OdemePlaniWP
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
                 kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
-                KiraSozlesme oncekiKiraSozlesme = kiraSozlesme.SelectPrev();
+                KiraSozlesme oncekiKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetPrevious(kiraSozlesme.Id, kiraSozlesme.DosyaNo);
                 if (!kiraSozlesme.Aktif)
                 {
-                    oncekiKiraSozlesme = kiraSozlesme.SelectPrevBiten();
+                    oncekiKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetPreviousCompleted(kiraSozlesme.Id, kiraSozlesme.DosyaNo);
                 }
 
 
@@ -858,10 +858,10 @@ namespace TBYS_WebParts.OdemePlaniWP
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
                 kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
-                KiraSozlesme sonrakiKiraSozlesme = kiraSozlesme.SelectNext();
+                KiraSozlesme sonrakiKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetNext(kiraSozlesme.Id, kiraSozlesme.DosyaNo);
                 if (!kiraSozlesme.Aktif)
                 {
-                    sonrakiKiraSozlesme = kiraSozlesme.SelectNextBiten();
+                    sonrakiKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetNextCompleted(kiraSozlesme.Id, kiraSozlesme.DosyaNo);
                 }
                 RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + sonrakiKiraSozlesme.Id);
             }

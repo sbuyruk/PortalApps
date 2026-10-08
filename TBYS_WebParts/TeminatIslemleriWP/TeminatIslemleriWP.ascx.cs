@@ -513,11 +513,11 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     if (teminatIslem.IslemTipi.Equals(ProjeConstants.TEMINAT_KIRAYAMAHSUP))
                     {
                         KiraSozlesme mahsupEdilecekKiraSozlesme = new KiraSozlesme();
-                        mahsupEdilecekKiraSozlesme = mahsupEdilecekKiraSozlesme.SelectByKiraciIdTarih (kiraSozlesme.KiraciId, IslemTarihiTxt.Value.ConvertToDatetime());
+                        mahsupEdilecekKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetByKiraciIdAndDate(kiraSozlesme.KiraciId, IslemTarihiTxt.Value.ConvertToDatetime());
                         if (mahsupEdilecekKiraSozlesme == null)
                         {
                             mahsupEdilecekKiraSozlesme = new KiraSozlesme();
-                            mahsupEdilecekKiraSozlesme = mahsupEdilecekKiraSozlesme.SelectEnYakinTarihliSozlesmeByKiraciIdTarih(kiraSozlesme.KiraciId, IslemTarihiTxt.Value.ConvertToDatetime());
+                            mahsupEdilecekKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetNearestByKiraciIdAndDate(kiraSozlesme.KiraciId, IslemTarihiTxt.Value.ConvertToDatetime());
                         }
                         if (mahsupEdilecekKiraSozlesme != null)
                         {
@@ -558,7 +558,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     if (kiraSozlesme != null)
                     {
                         KiraSozlesme mahsupEdilecekKiraSozlesme = new KiraSozlesme();
-                        mahsupEdilecekKiraSozlesme = mahsupEdilecekKiraSozlesme.SelectEnYakinTarihliSozlesmeByKiraciIdTarih(kiraSozlesme.KiraciId, IslemTarihiTxt.Value.ConvertToDatetime());
+                        mahsupEdilecekKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetNearestByKiraciIdAndDate(kiraSozlesme.KiraciId, IslemTarihiTxt.Value.ConvertToDatetime());
 
                         if (mahsupEdilecekKiraSozlesme != null)
                         {

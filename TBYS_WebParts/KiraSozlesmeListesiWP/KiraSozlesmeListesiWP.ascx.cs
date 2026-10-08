@@ -304,7 +304,7 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
             }
 
             kiraSozlesme = new KiraSozlesme();
-            dataTable = kiraSozlesme.SelectKiraSozlesmeListReturnDT(0, AktifQS.ConvertToInt(),BolgeIdQS);
+            dataTable = new Model.Services.TBYS.KiraSozlesmeService().GetListReturnDataTable(0, AktifQS.ConvertToInt(),BolgeIdQS);
 
             int SiraNo = 1;
             KiraSozlesmeListItem tempSozlesmeItem = null;

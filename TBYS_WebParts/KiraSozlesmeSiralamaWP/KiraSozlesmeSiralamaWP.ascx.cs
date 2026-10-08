@@ -126,7 +126,7 @@ $('#CustomDataTable').on( 'draw.dt', function () {
         {
 
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            DataTable dataTable = kiraSozlesme.SelectKiraSozlesmeListReturnDT(0, ProjeConstants.KIRASOZLESME_AKTIF_INT,ProjeConstants.BOLGE_HEPSI_INT);
+            DataTable dataTable = new Model.Services.TBYS.KiraSozlesmeService().GetListReturnDataTable(0, ProjeConstants.KIRASOZLESME_AKTIF_INT,ProjeConstants.BOLGE_HEPSI_INT);
             string tempIli = string.Empty;
             string tempIlcesi = string.Empty;
             string tempAdres = string.Empty;

@@ -137,7 +137,7 @@ namespace TBYS_WebParts.KiraKartiWP
                 if (kiraci != null)
                 {
                     KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                    kiraSozlesme = kiraSozlesme.SelectSozlesmeByKiraciId(kiraci.Id);
+                    kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetByKiraciId(kiraci.Id);
 
                     if (kiraSozlesme != null)
                     {
@@ -171,7 +171,7 @@ namespace TBYS_WebParts.KiraKartiWP
                 KiraciBilgileriniTabloyaYaz(kiraci);
 
                 KiraSozlesme aktifSozlesme = new KiraSozlesme();
-                aktifSozlesme = aktifSozlesme.SelectAktifSozlesmeByKiraciId(kiraci.Id);
+                aktifSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(kiraci.Id);
                 if (aktifSozlesme != null)
                 {
                     KiraSozlesmeIdQS = aktifSozlesme.Id.ToString();
@@ -265,7 +265,7 @@ namespace TBYS_WebParts.KiraKartiWP
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
 
-            var kiraSozlesmeList = kiraSozlesmeDao.SelectByKiraciIdReturnList(KiraciIdQS.ConvertToInt());
+            var kiraSozlesmeList = new Model.Services.TBYS.KiraSozlesmeService().GetAllByKiraciId(KiraciIdQS.ConvertToInt());
             Color color = System.Drawing.Color.White;
 
             int tempKirasozlesmeId = 0;

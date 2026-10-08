@@ -174,7 +174,7 @@ namespace TBYS_WebParts.MevcutKiracilarWP
             int ay = SecilenAyQS.ConvertToInt();
             int yil = SecilenYilQS.ConvertToInt();
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-            DataTable dataTable = kiraSozlesmeDao.SelectKiraciSayisiByBolgeTarih(BolgeIdQS, ay, yil);
+            DataTable dataTable = new Model.Services.TBYS.KiraSozlesmeService().GetTenantCountByRegionAndDate(BolgeIdQS, ay, yil);
             TableTitleCell.Text = (new DateTime(SecilenYilQS.ConvertToInt(), SecilenAyQS.ConvertToInt(), 1)).ToString("MMMM yyyy", culturInfo) + " Itibari ile Kiraci Listesi";
             if (dataTable != null)
             {

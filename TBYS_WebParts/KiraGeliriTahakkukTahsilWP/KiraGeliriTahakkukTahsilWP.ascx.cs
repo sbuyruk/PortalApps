@@ -67,11 +67,11 @@ namespace TBYS_WebParts.KiraGeliriTahakkukTahsilWP
                 {
 
                     KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-                    DataTable dataTableANK = kiraSozlesmeDao.SelectKiraciSayisiVeToplamKiraBedeli(ProjeConstants.BOLGE_ANKARA_INT, ay, yil);
-                    DataTable dataTableIST = kiraSozlesmeDao.SelectKiraciSayisiVeToplamKiraBedeli(ProjeConstants.BOLGE_ISTANBUL_INT, ay, yil);
-                    DataTable dataTableIZM = kiraSozlesmeDao.SelectKiraciSayisiVeToplamKiraBedeli(ProjeConstants.BOLGE_IZMIR_INT, ay, yil);
-                    DataTable dataTableMER = kiraSozlesmeDao.SelectKiraciSayisiVeToplamKiraBedeli(ProjeConstants.BOLGE_MERSIN_INT, ay, yil);
-                    DataTable dataTableERZ = kiraSozlesmeDao.SelectKiraciSayisiVeToplamKiraBedeli(ProjeConstants.BOLGE_ERZURUM_INT, ay, yil);
+                    DataTable dataTableANK = new Model.Services.TBYS.KiraSozlesmeService().GetTenantCountAndRentTotal(ProjeConstants.BOLGE_ANKARA_INT, ay, yil);
+                    DataTable dataTableIST = new Model.Services.TBYS.KiraSozlesmeService().GetTenantCountAndRentTotal(ProjeConstants.BOLGE_ISTANBUL_INT, ay, yil);
+                    DataTable dataTableIZM = new Model.Services.TBYS.KiraSozlesmeService().GetTenantCountAndRentTotal(ProjeConstants.BOLGE_IZMIR_INT, ay, yil);
+                    DataTable dataTableMER = new Model.Services.TBYS.KiraSozlesmeService().GetTenantCountAndRentTotal(ProjeConstants.BOLGE_MERSIN_INT, ay, yil);
+                    DataTable dataTableERZ = new Model.Services.TBYS.KiraSozlesmeService().GetTenantCountAndRentTotal(ProjeConstants.BOLGE_ERZURUM_INT, ay, yil);
 
                     int kiraciSayisiToplam = 0;
                     int odeyenKiraciSayisiToplam = 0;

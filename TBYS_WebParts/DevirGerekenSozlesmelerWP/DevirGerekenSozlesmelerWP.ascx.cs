@@ -52,7 +52,7 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
             List<DevirGerekenSozlesmeItem> itemListesi = new List<DevirGerekenSozlesmeItem>();
 
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-            System.Data.DataTable dt = kiraSozlesmeDao.SelectDevirGerekenAktifSozlesmelerReturnDT();
+            System.Data.DataTable dt = new Model.Services.TBYS.KiraSozlesmeService().GetTransferRequiredActiveContracts();
 
             if (dt != null)
             {

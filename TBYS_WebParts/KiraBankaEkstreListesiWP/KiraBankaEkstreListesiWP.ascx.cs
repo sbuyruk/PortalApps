@@ -251,7 +251,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
             {
                 KiraEkstreAktarma eaDao = new KiraEkstreAktarma();
                 int rowCount = 0;
-                List<KiraEkstreAktarma> aktarilmayanlar = eaDao.SelectByEkstreIdList(value, ref rowCount);
+                List<KiraEkstreAktarma> aktarilmayanlar = new Model.Services.TBYS.KiraEkstreAktarmaService().GetByEkstreIdList(value, ref rowCount);
                 if (aktarilmayanlar.Count > 0)
                 {
                     var exceptionHelper = OdemeIslemleriniYap(aktarilmayanlar, currentUser); //seçilenler diğer tablolara dağıtılıyor
@@ -285,11 +285,11 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
                     decimal odemeTutari = ekstreAktarma.Tutar;
 
                     KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                    kiraSozlesme = kiraSozlesme.SelectByKiraciIdTarih(ekstreAktarma.KiraciId, odemeTarihi);
+                    kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetByKiraciIdAndDate(ekstreAktarma.KiraciId, odemeTarihi);
                     if (kiraSozlesme == null)
                     {
                         kiraSozlesme = new KiraSozlesme();
-                        kiraSozlesme = kiraSozlesme.SelectEnYakinTarihliSozlesmeByKiraciIdTarih(ekstreAktarma.KiraciId, odemeTarihi);
+                        kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetNearestByKiraciIdAndDate(ekstreAktarma.KiraciId, odemeTarihi);
 
                     }
                     if (kiraSozlesme != null)
@@ -331,7 +331,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
 
             KiraEkstreAktarma ea = new KiraEkstreAktarma();
             int rowCount = 0;
-            DataTable dataTable = ea.SelectYuklenenKayit(ref rowCount, AktarilanlarHaricQS.ConvertToBool(), KiraTeminatDigerQS.ConvertToBool());
+            DataTable dataTable = new Model.Services.TBYS.KiraEkstreAktarmaService().GetUploadedRecords(ref rowCount, AktarilanlarHaricQS.ConvertToBool(), KiraTeminatDigerQS.ConvertToBool());
 
             RowCountLbl.Text = "Kayıt Sayısı : " + rowCount.ToString();
             List<KiraEkstreAktarmaListItem> returnlist = new List<KiraEkstreAktarmaListItem>();
@@ -544,7 +544,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
             bool isConflict = false;
 
             KiraEkstreAktarma keDao = new KiraEkstreAktarma();
-            List<KiraEkstreAktarma> list = keDao.SelectByIslemNo(ekstreAktarmaListItem.IslemNo);
+            List<KiraEkstreAktarma> list = new Model.Services.TBYS.KiraEkstreAktarmaService().GetByIslemNo(ekstreAktarmaListItem.IslemNo);
             if (list.Count > 1)
             {
                 isConflict = true;
@@ -552,7 +552,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
             }
             else
             {
-                list = keDao.SelectByColumns(ekstreAktarmaListItem.Adi, ekstreAktarmaListItem.Soyadi, tutar, odemeTarihi);
+                list = new Model.Services.TBYS.KiraEkstreAktarmaService().GetByColumns(ekstreAktarmaListItem.Adi, ekstreAktarmaListItem.Soyadi, tutar, odemeTarihi);
                 if (list.Count > 1) // TC Kimlik numarası var konflict yok.. // TCKİMLİKNO geçerli mi diye kontrol etmek gerekir mi?
                 {
                     isConflict = true;
@@ -707,7 +707,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
             if (kiraci != null)//bu kiraci varsa
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.SelectEnYakinTarihliSozlesmeByKiraciIdTarih(kiraci.Id, odemeTarihi);
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetNearestByKiraciIdAndDate(kiraci.Id, odemeTarihi);
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
                     OdemePlani odemePlani = new OdemePlani();

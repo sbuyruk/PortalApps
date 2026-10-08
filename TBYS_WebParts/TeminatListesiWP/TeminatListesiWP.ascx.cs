@@ -323,7 +323,7 @@ namespace TBYS_WebParts.TeminatListesiWP
         private DataTable GetData()
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            DataTable dataTable = kiraSozlesme.SelectKiraSozlesmeListReturnDT(KiraciIdQS.ConvertToInt(), ProjeConstants.KIRASOZLESME_AKTIF_INT,BolgeIdQS);
+            DataTable dataTable = new Model.Services.TBYS.KiraSozlesmeService().GetListReturnDataTable(KiraciIdQS.ConvertToInt(), ProjeConstants.KIRASOZLESME_AKTIF_INT,BolgeIdQS);
             return dataTable;
         }
 

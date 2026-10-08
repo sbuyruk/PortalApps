@@ -152,7 +152,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             {
                 BitenSozlesmeOlusturBtn.Visible = true;
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.SelectAktifSozlesmeByKiraciId(kiraci.Id);
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(kiraci.Id);
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
                     KiraKartiBtn.Visible = true;
@@ -341,7 +341,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
 
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             List<KiraSozlesmeListItem> list = new List<KiraSozlesmeListItem>();
-            DataTable dataTable = kiraSozlesme.SelectKiraSozlesmeListReturnDT(KiraciIdQS.ConvertToInt(), ProjeConstants.KIRASOZLESME_AKTIF_HEPSI_INT, ProjeConstants.BOLGE_HEPSI_INT);
+            DataTable dataTable = new Model.Services.TBYS.KiraSozlesmeService().GetListReturnDataTable(KiraciIdQS.ConvertToInt(), ProjeConstants.KIRASOZLESME_AKTIF_HEPSI_INT, ProjeConstants.BOLGE_HEPSI_INT);
             if (dataTable != null)
             {
                 int SiraNo = 1;
@@ -459,7 +459,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             {
                 KiraSozlesme ks = new KiraSozlesme();
                 Bolge bolge = BolgeGetir();
-                bool ksUpdateed = ks.UpdateByKiraciId(bolge.Id, kiraci.Id);
+                bool ksUpdateed = new Model.Services.TBYS.KiraSozlesmeService().UpdateByKiraciId(bolge.Id, kiraci.Id);
                 SozlesmelerTablosunuDoldur(kiraci.Id);
                 MessageHelper.PublishMessage("Kiraci Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
             }
@@ -482,7 +482,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             if (kiraci != null)//bu kiraci varsa
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.SelectSozlesmeByKiraciId(kiraci.Id);
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetByKiraciId(kiraci.Id);
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
                     WarnDiv.Attributes["style"] = "display : block";
@@ -504,7 +504,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             if (kiraci != null)//bu kiraci varsa
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.SelectAktifSozlesmeByKiraciId(kiraci.Id);
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(kiraci.Id);
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
                     OdemePlani odemePlani = new OdemePlani();
@@ -575,7 +575,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             if (kiraci != null)//bu kiraci varsa
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.SelectAktifSozlesmeByKiraciId(kiraci.Id);
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(kiraci.Id);
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
                     MessageHelper.PublishMessage("Zaten Bir kira sözlesmesi mevcut", ProjeConstants.MESAJ_HATA);
@@ -612,9 +612,9 @@ namespace TBYS_WebParts.KiraciGirisiWP
         protected void BitenSozlesmeOnayBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme bitenKiraSozlesmeDao = new KiraSozlesme();
-            bitenKiraSozlesmeDao = bitenKiraSozlesmeDao.SelectBitenSozlesmeByKiraciId(KiraciIdQS.ConvertToInt());
+            bitenKiraSozlesmeDao = new Model.Services.TBYS.KiraSozlesmeService().GetCompletedByKiraciId(KiraciIdQS.ConvertToInt());
             KiraSozlesme aktifKiraSozlesme = new KiraSozlesme();
-            aktifKiraSozlesme = aktifKiraSozlesme.SelectAktifSozlesmeByKiraciId(KiraciIdQS.ConvertToInt());
+            aktifKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(KiraciIdQS.ConvertToInt());
 
             KiraSozlesme masterKs = new KiraSozlesme();
             masterKs = aktifKiraSozlesme != null ? aktifKiraSozlesme : bitenKiraSozlesmeDao;// != null ? bitenKiraSozlesmeDao : new KiraSozlesme();
@@ -714,7 +714,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 if (kiraci != null)
                 {
                     KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                    kiraSozlesme = kiraSozlesme.SelectAktifSozlesmeByKiraciId(kiraci.Id);
+                    kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(kiraci.Id);
                     if (kiraSozlesme != null) //bu sozlesme varsa
                     {
                         OdemePlani odemePlani = new OdemePlani();
@@ -916,7 +916,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
         {
             bool sozlesmesiVarMi = true;
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.SelectSozlesmeByKiraciId(kiraci.Id);
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetByKiraciId(kiraci.Id);
             if (kiraSozlesme == null)
             {
                 sozlesmesiVarMi = false;
