@@ -80,5 +80,41 @@ namespace DAO.Repositories.TBYS
                 ORDER BY DosyaNo, S.Id", aktifStr, kiraciStr, bolgeStr);
             return db.SelectFromDb(sql, "");
         }
+        public DataTable SelectRentIncreaseDue(int bolgeId, string tarih)
+        {
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND S.BolgeId={0} ", bolgeId);
+            string sql = string.Format(@"
+                SELECT S.Id KiraSozlesmeId, K.Adres, K.Ili,K.Ilcesi,K.Semt,H.KisaAdi Bolge,S.BolgeId,
+                    IlkSozlesmeTar,SozBasTar,SozBitTar,S.ArtisAyi,
+                    S.KiraBedeli KiraBedeli, S.Aktif, S.OdemeSekli,
+                    S.KiraciId, K.Adi KiraciAdi, K.Soyadi KiraciSoyadi,K.KiralamaAmaci
+                FROM KiraSozlesme_Table S
+                    LEFT JOIN Kiraci_Table K on K.Id= S.KiraciId
+                    INNER JOIN Bolge_Table H ON H.Id=S.BolgeId
+                WHERE 1>0 AND S.Aktif = 1
+                    {0}
+                    AND (CONVERT(int,ArtisAyi) = DATEPART(MM,{1}) AND YEAR(SozBitTar)=DATEPART(YYYY,{1}))
+                ORDER BY S.BolgeId, SozBitTar", bolgeStr, tarih);
+            return db.SelectFromDb(sql, "");
+        }
+        public DataTable SelectRealizedRentIncreases(int bolgeId, string baslangic, string bitis)
+        {
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND A.BolgeId={0} ", bolgeId);
+            string sql = string.Format(@"
+                SELECT A.Id KiraSozlesmeId, C.Adres, C.Ili,C.Ilcesi,C.Semt,E.KisaAdi Bolge,A.BolgeId,
+                    A.IlkSozlesmeTar, A.SozBasTar, A.SozBitTar,
+                    B.SozBasTar OncekiSozBasTar, B.SozBitTar OncekiSozBitTar,
+                    A.ArtisAyi, A.KiraBedeli, B.KiraBedeli OncekiKiraBedeli,
+                    A.Aktif, A.OdemeSekli, A.KiraciId, C.Adi KiraciAdi, C.Soyadi KiraciSoyadi,C.KiralamaAmaci,
+                    A.OdemeSekli
+                FROM KiraSozlesme_Table A
+                    LEFT JOIN KiraSozlesme_Table B ON A.KiraciId=B.KiraciId AND B.SozBitTar=A.SozBasTar AND B.Aktif=0
+                    LEFT JOIN Kiraci_Table C on C.Id= A.KiraciId
+                    LEFT JOIN Bolge_Table E ON E.Id=A.BolgeId
+                WHERE A.Aktif=1 AND A.SozBasTar >={0} AND A.SozBasTar<{1}
+                    {2}
+                ORDER BY A.BolgeId, SozBitTar DESC", baslangic, bitis, bolgeStr);
+            return db.SelectFromDb(sql, "");
+        }
     }
 }

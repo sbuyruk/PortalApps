@@ -218,73 +218,11 @@ namespace Model.TBYS
         }
         public DataTable SelectKiraArtisiGelenSozlesmelerReturnDT(int bolgeId, DateTime tarih)
         {
-         
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND S.BolgeId={0} ", bolgeId);
-            string tarihStr = tarih.ReturnTRDateFormat();
-            string sqlString = string.Format(@"
-                SELECT S.Id KiraSozlesmeId, K.Adres, K.Ili,K.Ilcesi,K.Semt,H.KisaAdi Bolge,S.BolgeId,
-                    IlkSozlesmeTar,SozBasTar,SozBitTar,S.ArtisAyi,
-	                S.KiraBedeli KiraBedeli, S.Aktif, S.OdemeSekli,               
-	                S.KiraciId, K.Adi KiraciAdi, K.Soyadi KiraciSoyadi,K.KiralamaAmaci
-                FROM KiraSozlesme_Table S
-	                LEFT JOIN Kiraci_Table K on K.Id= S.KiraciId
-                    INNER JOIN Bolge_Table H ON H.Id=S.BolgeId
-	                WHERE 1>0 AND S.Aktif = 1 
-                        {0}
-                        --AND (CONVERT(int,ArtisAyi) = DATEPART(MM,DATEADD(mm,1, {1})) AND YEAR(SozBitTar)=DATEPART(YYYY,DATEADD(mm,1, {1})))
-                        AND (CONVERT(int,ArtisAyi) = DATEPART(MM,{1}) AND YEAR(SozBitTar)=DATEPART(YYYY,{1}))
-	                ORDER BY S.BolgeId, SozBitTar
-            ", bolgeStr,tarihStr);
-            DataTable dataTable;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            return dataTable;
+            return new KiraSozlesmeService().GetRentIncreaseDue(bolgeId, tarih);
         }
         public DataTable SelectGerceklesenKiraArtislariReturnDT(int bolgeId)
         {
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND A.BolgeId={0} ", bolgeId);
-
-            DateTime bastar = new DateTime(DateTime.Today.Year,1,1);
-            DateTime bittar = new DateTime(DateTime.Today.AddYears(1).Year,12,31);
-
-            string sqlString = string.Format(@"
-                SELECT A.Id KiraSozlesmeId, C.Adres, C.Ili,C.Ilcesi,C.Semt,E.KisaAdi Bolge,A.BolgeId,
-                    A.IlkSozlesmeTar,
-	                A.SozBasTar ,
-	                A.SozBitTar ,
-	                B.SozBasTar OncekiSozBasTar,
-	                B.SozBitTar OncekiSozBitTar,
-	                A.ArtisAyi,
-	                A.KiraBedeli,
-	                B.KiraBedeli OncekiKiraBedeli,
-	                A.Aktif, A.OdemeSekli,               
-	                A.KiraciId, C.Adi KiraciAdi, C.Soyadi KiraciSoyadi,C.KiralamaAmaci,
-                    A.OdemeSekli
-                FROM KiraSozlesme_Table A
-                LEFT JOIN KiraSozlesme_Table B ON A.KiraciId=B.KiraciId AND B.SozBitTar=A.SozBasTar AND B.Aktif=0
-	                LEFT JOIN Kiraci_Table C on C.Id= A.KiraciId
-                    LEFT JOIN Bolge_Table E ON E.Id=A.BolgeId
-	            WHERE A.Aktif=1 AND A.SozBasTar >={0} AND A.SozBasTar<{1} 
-                    {2}
-                ORDER BY A.BolgeId, SozBitTar DESC
-
-            ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat(), bolgeStr);//sinirliKiraArtisiBastar.ReturnTRDateFormat(),buAyBasi.ReturnTRDateFormat());
-            DataTable dataTable;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            return dataTable;
+            return new KiraSozlesmeService().GetRealizedRentIncreases(bolgeId);
         }
         public bool UpdateByKiraciId(int bolgeId, int kiraciId)
         {
