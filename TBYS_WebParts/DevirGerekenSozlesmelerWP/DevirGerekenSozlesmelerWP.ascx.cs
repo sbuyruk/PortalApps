@@ -45,7 +45,7 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
         }
 
         /// <summary>
-        /// Devir tutari farkli olan aktif sözlesmeleri tek SQL sorgusuyla getirir ve tabloya basar.
+        /// Devir tutari farkli olan aktif sÃ¶zlesmeleri tek SQL sorgusuyla getirir ve tabloya basar.
         /// </summary>
         private void TablosunuDoldur()
         {
@@ -84,7 +84,7 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
                 }
             }
 
-            TitleLbl.Text = "Devir Gereken Sözlesmeler (" + itemListesi.Count + " adet)";
+            TitleLbl.Text = "Devir Gereken SÃ¶zlesmeler (" + itemListesi.Count + " adet)";
 
             var serializer = new JavaScriptSerializer();
             string jsonData = serializer.Serialize(itemListesi);
@@ -129,7 +129,7 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
                             {
                                 targets: [8],
                                 render: function (data, type, row) {
-                                    return '<a href=""" + ProjeConstants.PAGE_KIRASOZLESMESI + @"?DestinationApp=KS&SenderApp=DGS&KiraSozlesmeId=' + row.SozlesmeId + '&KiraciId=' + row.KiraciId + '"" class=""btn btn-outline-primary btn-sm"">Sözlesme</a>';
+                                    return '<a href=""" + ProjeConstants.PAGE_KIRASOZLESMESI + @"?DestinationApp=KS&SenderApp=DGS&KiraSozlesmeId=' + row.SozlesmeId + '&KiraciId=' + row.KiraciId + '"" class=""btn btn-outline-primary btn-sm"">SÃ¶zlesme</a>';
                                 },
                                 className: 'text-center'
                             }
@@ -155,7 +155,7 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
                 kiraSozlesme = kiraSozlesme.Select(HiddenSecilenId.Value.ConvertToInt());
                 if (kiraSozlesme == null)
                 {
-                    MessageHelper.PublishMessage("Sözlesme bulunamadi!", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("SÃ¶zlesme bulunamadi!", ProjeConstants.MESAJ_HATA);
                     return;
                 }
 
@@ -205,7 +205,7 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
             try
             {
                 TBYSOrtak.AktifSozleslemelerinBakiyeBorcunuHesapla();
-                MessageHelper.PublishMessage("Ödeme planlari güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                MessageHelper.PublishMessage("Ã–deme planlari gÃ¼ncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
                 TablosunuDoldur();
             }
             catch (Exception ex)

@@ -116,7 +116,7 @@ namespace Portal_WebParts.KutlamaMoveWP
             List<Personel> dogumGunuKutlanacakPersonel = new List<Personel>();
             List<Personel> evlilikYildonumuKutlanacakPersonel = new List<Personel>();
             DateTime tarih = DateTime.Today;
-            //ertesi gün tatil ise bugunden kutlamayi gostersin
+            //ertesi gÃ¼n tatil ise bugunden kutlamayi gostersin
             do
             {
 
@@ -194,12 +194,12 @@ namespace Portal_WebParts.KutlamaMoveWP
                     }
                     if (GMKutlanacakMi)
                     {
-                        kutlama.Metin = string.Format("{0} gününüzü kutlar, mutlu yillar dileriz.", tarih);
-                        GenelMudur = "TSKGV Çalisanlari";
+                        kutlama.Metin = string.Format("{0} gÃ¼nÃ¼nÃ¼zÃ¼ kutlar, mutlu yillar dileriz.", tarih);
+                        GenelMudur = "TSKGV Ã‡alisanlari";
                         GenelMudurUnvani = string.Empty;
                     }
                     else
-                        kutlama.Metin = string.Format("{0} gününüzü kutlar, mutlu yillar dilerim.", tarih);
+                        kutlama.Metin = string.Format("{0} gÃ¼nÃ¼nÃ¼zÃ¼ kutlar, mutlu yillar dilerim.", tarih);
                     listDogum.Add(kutlama);
                 }
                 else
@@ -216,12 +216,12 @@ namespace Portal_WebParts.KutlamaMoveWP
                     }
                     if (GMKutlanacakMi)
                     {
-                        kutlama.Metin = string.Format("{0} yildönümünüzü kutlar, ömür boyu mutluluklar dileriz.", tarih);
-                        GenelMudur = "TSKGV Çalisanlari";
+                        kutlama.Metin = string.Format("{0} yildÃ¶nÃ¼mÃ¼nÃ¼zÃ¼ kutlar, Ã¶mÃ¼r boyu mutluluklar dileriz.", tarih);
+                        GenelMudur = "TSKGV Ã‡alisanlari";
                         GenelMudurUnvani = string.Empty;
                     }
                     else
-                        kutlama.Metin = string.Format("{0} yildönümünüzü kutlar, ömür boyu mutluluklar dilerim.", tarih);
+                        kutlama.Metin = string.Format("{0} yildÃ¶nÃ¼mÃ¼nÃ¼zÃ¼ kutlar, Ã¶mÃ¼r boyu mutluluklar dilerim.", tarih);
                     listEvlilik.Add(kutlama);
                 }
 

@@ -50,7 +50,7 @@ namespace TBYS_WebParts.HukukiTakipListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -65,7 +65,7 @@ namespace TBYS_WebParts.HukukiTakipListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiginde
+                        'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen kayda gider
                                 return data['Secildi'] == true;
@@ -160,17 +160,17 @@ namespace TBYS_WebParts.HukukiTakipListesiWP
                             },
                 columns: [
                     { field: 'DosyaNo', headerText: 'Dos.No',filter: true,sortable:true,headerStyle:'width: 8%' },
-                    { field: 'SozlesmeId', headerText: 'Söz.No',filter: true,sortable:true,headerStyle:'width:8%',content: function (rowData)
+                    { field: 'SozlesmeId', headerText: 'SÃ¶z.No',filter: true,sortable:true,headerStyle:'width:8%',content: function (rowData)
                         { 
                             return $('<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + @"?DestinationApp=KS&SenderApp=KSL&KiraSozlesmeId='+rowData.SozlesmeId +'\'>'+rowData.SozlesmeId+'</a>')
                         }
                     },
                     { field: 'KiraciAdiSoyadi', headerText: 'Kiraci',sortable:true,headerStyle:'width: 24%' },
-                    { field: 'IlkSozlesmeTar', headerText: 'Ilk Söz.Tar.',headerStyle:'width: 10%' },
-                    { field: 'BorcAnaPara', headerText: 'Borç (Anapara)',headerStyle:'width: 10%' },                    
-                    { field: 'BorcFaiz', headerText: 'Borç (Faiz)',sortable:true,headerStyle:'width: 10%' },
+                    { field: 'IlkSozlesmeTar', headerText: 'Ilk SÃ¶z.Tar.',headerStyle:'width: 10%' },
+                    { field: 'BorcAnaPara', headerText: 'BorÃ§ (Anapara)',headerStyle:'width: 10%' },                    
+Â Â Â Â Â Â Â Â             { field: 'BorcFaiz', headerText: 'BorÃ§ (Faiz)',sortable:true,headerStyle:'width: 10%' },
                     { field: 'IslemTarihi', headerText: 'Islem Tarihi',filter: true,bodyClass:'text-end',headerStyle:'width: 10%' },
-                    { field: 'Aciklama', headerText: 'Açiklama',headerStyle:'width: 20%' }
+                    { field: 'Aciklama', headerText: 'AÃ§iklama',headerStyle:'width: 20%' }
                 ],
                 datasource:" + jsonData + @",
                 resizableColumns: true,

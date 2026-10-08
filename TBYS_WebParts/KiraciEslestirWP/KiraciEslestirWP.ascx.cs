@@ -156,7 +156,7 @@ namespace TBYS_WebParts.KiraciEslestirWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiginde
+                        'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen kayda gider
                                 return data['Secildi'] == true;
@@ -214,7 +214,7 @@ namespace TBYS_WebParts.KiraciEslestirWP
             kea = kea.Select<KiraEkstreAktarma>(KiraEkstreAktarmaIdQS.ConvertToInt());
             if (kea != null)
             {
-                GelenOdemeLbl.Text = "Ödenen Tutar :" + kea.Tutar.ToString("N", culturInfo) + " TL";
+                GelenOdemeLbl.Text = "Ã–denen Tutar :" + kea.Tutar.ToString("N", culturInfo) + " TL";
             }
             
             Kiraci kiraci = new Kiraci();
@@ -263,7 +263,7 @@ namespace TBYS_WebParts.KiraciEslestirWP
                     }
 
                     int sonSozlesmeId = ks != null ? ks.Id : sozlesmeId.ConvertToInt();
-                    kiraciItem.Sec = "<a href=# onclick=KiraciSec(" + kiraciId + ","+sozlesmeId+"); class='btn btn-outline-primary \'>Seç</a>";
+                    kiraciItem.Sec = "<a href=# onclick=KiraciSec(" + kiraciId + ","+sozlesmeId+"); class='btn btn-outline-primary \'>SeÃ§</a>";
 
                     kiraciItem.Aktif = aktif;
                     list.Add(kiraciItem);

@@ -155,7 +155,7 @@ namespace TBYS_WebParts.KiraEkstreListesiWP
         {
             if (!SayfaGirisKontrolu())
             {
-                RedirectToPage(ProjeConstants.PAGE_HOME + "?Mesaj=true&Text=Sayfada düzenleme yapilmaktadir.Lütfen daha sonra tekrar deneyiniz.");
+                RedirectToPage(ProjeConstants.PAGE_HOME + "?Mesaj=true&Text=Sayfada dÃ¼zenleme yapilmaktadir.LÃ¼tfen daha sonra tekrar deneyiniz.");
             }
             else
             {
@@ -205,7 +205,7 @@ namespace TBYS_WebParts.KiraEkstreListesiWP
         private void KayitGetir()
         {
             List<TasinmazBagisci> list = new List<TasinmazBagisci>();
-            var jsonData = KiraEkstreAktarmaJson(); //veri çekilip json a çeviriliyor
+            var jsonData = KiraEkstreAktarmaJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateJsString(jsonData); //javascript kodu hazirlaniyor.
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
         }
@@ -226,7 +226,7 @@ namespace TBYS_WebParts.KiraEkstreListesiWP
 
             string ekstretablestr = @" 
                 var counter=1;
-                //tabloda modal açilirken seçili olan pagination degerini pageIndex degiskeninde saklar ve modal açildiktan sonra pageload sirasinda sayfayi pageIndex degerine getirir
+                //tabloda modal aÃ§ilirken seÃ§ili olan pagination degerini pageIndex degiskeninde saklar ve modal aÃ§ildiktan sonra pageload sirasinda sayfayi pageIndex degerine getirir
                 $(document).on('click','.ui-paginator-element',function(){
                     pageIndex= currentPage;
                 });
@@ -239,7 +239,7 @@ namespace TBYS_WebParts.KiraEkstreListesiWP
                             },
                 columns: [
                                 {
-                field: 'KiraEkstreAktarmaId', headerText: 'Seç Kaydet', headerStyle: 'width: 5%',content: function(rowData)
+                field: 'KiraEkstreAktarmaId', headerText: 'SeÃ§ Kaydet', headerStyle: 'width: 5%',content: function(rowData)
                         {
                             if (rowData.AktarildiMi == 'True')
                             {
@@ -290,7 +290,7 @@ namespace TBYS_WebParts.KiraEkstreListesiWP
                         }
                     },
 
-                    { field: 'OdemeTarihi', headerText: 'Ödeme Tarihi', sortable:true,headerStyle:'width: 10%',content: function (rowData)
+                    { field: 'OdemeTarihi', headerText: 'Ã–deme Tarihi', sortable:true,headerStyle:'width: 10%',content: function (rowData)
                         { 
                             if (rowData.AktarildiMi=='True')
                             {
@@ -357,7 +357,7 @@ namespace TBYS_WebParts.KiraEkstreListesiWP
                             }
                         }
                     },
-                    { field: 'Aciklama', headerText: 'Açiklama', sortable:true,filter: true,headerStyle:'width: 32%',bodyClass:'small-font',content: function (rowData)
+                    { field: 'Aciklama', headerText: 'AÃ§iklama', sortable:true,filter: true,headerStyle:'width: 32%',bodyClass:'small-font',content: function (rowData)
                         { 
                             if (rowData.AktarildiMi=='True')
                             {
@@ -387,7 +387,7 @@ namespace TBYS_WebParts.KiraEkstreListesiWP
                             }
                         }
                     },
-                    {field: 'KiraEkstreAktarmaId', headerText: 'Seç Sil', headerStyle: 'width: 5%',content: function(rowData)
+                    {field: 'KiraEkstreAktarmaId', headerText: 'SeÃ§ Sil', headerStyle: 'width: 5%',content: function(rowData)
                         {
                             if (rowData.AktarildiMi == 'True')
                             {
@@ -425,7 +425,7 @@ namespace TBYS_WebParts.KiraEkstreListesiWP
                 List<KiraEkstreAktarma> aktarilmayanlar = eaDao.SelectByEkstreIdList(value, ref rowCount);
                 if (aktarilmayanlar.Count > 0)
                 {
-                    var exceptionHelper = OdemeIslemleriniYap(aktarilmayanlar, currentUser); //seçilenler diger tablolara dagitiliyor
+                    var exceptionHelper = OdemeIslemleriniYap(aktarilmayanlar, currentUser); //seÃ§ilenler diger tablolara dagitiliyor
                     if (exceptionHelper.Exceptions.Count > 0)
                     {
                         ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "CloseModalOnay();", true);
@@ -439,7 +439,7 @@ namespace TBYS_WebParts.KiraEkstreListesiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Hiç kayit seçilmedi. Devam etmek için en az bir kayit seçiniz.", ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("HiÃ§ kayit seÃ§ilmedi. Devam etmek iÃ§in en az bir kayit seÃ§iniz.", ProjeConstants.MESAJ_BILGI);
             }
         }
         protected void SecilenListeyiSil()
@@ -485,7 +485,7 @@ namespace TBYS_WebParts.KiraEkstreListesiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Hiç kayit seçilmedi. Devam etmek için en az bir kayit seçiniz.", ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("HiÃ§ kayit seÃ§ilmedi. Devam etmek iÃ§in en az bir kayit seÃ§iniz.", ProjeConstants.MESAJ_BILGI);
             }
         }
         public ExceptionHelper OdemeIslemleriniYap(List<KiraEkstreAktarma> listEkstreAktarma, string currentUser)
@@ -522,7 +522,7 @@ namespace TBYS_WebParts.KiraEkstreListesiWP
                     }
                     else
                     {
-                        throw new Exception("Sözlesme Bulunamadi");
+                        throw new Exception("SÃ¶zlesme Bulunamadi");
                     }
                        
                 }
@@ -648,7 +648,7 @@ namespace TBYS_WebParts.KiraEkstreListesiWP
             else
             {
                 list = keDao.SelectByColumns(ekstreAktarmaListItem.Adi, ekstreAktarmaListItem.Soyadi, tutar, odemeTarihi);
-                if (list.Count > 1) // TC Kimlik numarasi var konflict yok.. // TCKIMLIKNO geçerli mi diye kontrol etmek gerekir mi?
+                if (list.Count > 1) // TC Kimlik numarasi var konflict yok.. // TCKIMLIKNO geÃ§erli mi diye kontrol etmek gerekir mi?
                 {
                     isConflict = true;
                 }
@@ -758,13 +758,13 @@ namespace TBYS_WebParts.KiraEkstreListesiWP
 
             if (idList.Length < 1)
             {
-                MessageHelper.PublishMessage("Kaydetmek için kayit seçiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("Kaydetmek iÃ§in kayit seÃ§iniz.", ProjeConstants.MESAJ_BILGI, 2000);
             }
             else
             {
-                ModalTitleLbl.Text = "Seçilen Kayitlar Aktarilacak";
-                ModalSubTitleLbl.Text = idList.Length + " Adet satiri kaydetmek için seçtiniz.";
-                UyariMesajiLbl.Text = "Lütfen kaydetmeden önce dikkatle inceleyiniz.";
+                ModalTitleLbl.Text = "SeÃ§ilen Kayitlar Aktarilacak";
+                ModalSubTitleLbl.Text = idList.Length + " Adet satiri kaydetmek iÃ§in seÃ§tiniz.";
+                UyariMesajiLbl.Text = "LÃ¼tfen kaydetmeden Ã¶nce dikkatle inceleyiniz.";
                 SilNowBtn.Visible = false;
                 KaydetNowBtn.Visible = true;
                 var openPopup = "OpenModalOnay();";
@@ -778,13 +778,13 @@ namespace TBYS_WebParts.KiraEkstreListesiWP
             string[] idList = value.Split(',');
             if (idList.Length < 1)
             {
-                MessageHelper.PublishMessage("Silmek için kayit seçiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("Silmek iÃ§in kayit seÃ§iniz.", ProjeConstants.MESAJ_BILGI, 2000);
             }
             else
             {
-                ModalTitleLbl.Text = "Seçilen Kayitlar Silinecek";
-                ModalSubTitleLbl.Text = idList.Length + " Adet kaydi silmek için seçtiniz.";
-                UyariMesajiLbl.Text = "Lütfen silmeden önce dikkatle inceleyiniz.";
+                ModalTitleLbl.Text = "SeÃ§ilen Kayitlar Silinecek";
+                ModalSubTitleLbl.Text = idList.Length + " Adet kaydi silmek iÃ§in seÃ§tiniz.";
+                UyariMesajiLbl.Text = "LÃ¼tfen silmeden Ã¶nce dikkatle inceleyiniz.";
                 SilNowBtn.Visible = true;
                 KaydetNowBtn.Visible = false;
                 var openPopup = "OpenModalOnay();";

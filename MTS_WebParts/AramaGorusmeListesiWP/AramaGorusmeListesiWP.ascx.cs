@@ -183,14 +183,14 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = GetJson(); //veri çekilip json a çeviriliyor
+            var jsonData = GetJson(); //veri Ã§ekilip json a Ã§eviriliyor
             UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
         }
         private List<AramaListItem> GetDataList()
         {
             DateTime bitis = BitisTarihiTxt.Text.ConvertToDatetime();
             bitis = UtilityHelper.TariheSaatEkle(bitis, "23:59");
-            BaslikLbl.InnerText = BaslangicTarihiTxt.Text + " - " + BitisTarihiTxt.Text + "Tarihleri Arasinda Yapilan Arama/Görüsmeler";
+            BaslikLbl.InnerText = BaslangicTarihiTxt.Text + " - " + BitisTarihiTxt.Text + "Tarihleri Arasinda Yapilan Arama/GÃ¶rÃ¼smeler";
             AramaGorusme arama = new AramaGorusme();
 
             DataTable dataTable = arama.SelectAllReturnDT(ArayanIdQS.ConvertToInt(), GorusmeSekliDDL.SelectedItem.Value,
@@ -233,7 +233,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
                         faaliyet = faaliyet.Select(faaliyetId);
                         if (faaliyet != null)
                         {
-                            string acikTarihli = faaliyet.AcikTarih ? " (Açik)" : string.Empty;
+                            string acikTarihli = faaliyet.AcikTarih ? " (AÃ§ik)" : string.Empty;
                             aramaItem.Faaliyet = "<a target=_blank href=" + ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + faaliyetId + " class='btn btn-outline-secondary'>Faaliyet"+acikTarihli+"</a>";
                         }
                         else
@@ -248,7 +248,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
                         aramaItem.Faaliyet = "Istendi";
                     }
 
-                    aramaItem.Duzenle = "<a href=" + ProjeConstants.PAGE_ARAMAGORUSME_GIRIS + "?AramaGorusmeId=" + aramaId + "&ArayanId=" + arayanId + " class='btn btn-outline-success'>Arama/Görüsme</a>";
+                    aramaItem.Duzenle = "<a href=" + ProjeConstants.PAGE_ARAMAGORUSME_GIRIS + "?AramaGorusmeId=" + aramaId + "&ArayanId=" + arayanId + " class='btn btn-outline-success'>Arama/GÃ¶rÃ¼sme</a>";
                     aramaItem.Secildi = SecilenIdQS.Equals(aramaItem.AramaId);
                     list.Add(aramaItem);
                 }
@@ -313,7 +313,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
         {
             RedirectToPage(ProjeConstants.PAGE_ARAMAGORUSME_GIRIS);
         }
-        #region Katilimci Seçimi
+        #region Katilimci SeÃ§imi
         protected void KatilimciSecBtn_Click(object sender, EventArgs e)
         {
             KatilimciModalAc();
@@ -325,7 +325,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
         }
         private void TabloModalOlustur()
         {
-            var jsonData = TabloModalJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloModalJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
                 typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
@@ -414,7 +414,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
                     katilimciItem.Kurumu = kurumu;
                     katilimciItem.KatilimciTipi = katilimciTipi.ToString();
 
-                    katilimciItem.KatilimciSec = "<a href='#' class='btn btn-outline-primary' onclick=KatilimciSecildiBtnClick(" + katilimciId + ")>SEÇ</a>";
+                    katilimciItem.KatilimciSec = "<a href='#' class='btn btn-outline-primary' onclick=KatilimciSecildiBtnClick(" + katilimciId + ")>SEÃ‡</a>";
 
                     list.Add(katilimciItem);
                 }

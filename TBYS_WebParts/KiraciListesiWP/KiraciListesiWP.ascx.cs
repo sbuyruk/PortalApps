@@ -161,7 +161,7 @@ namespace TBYS_WebParts.KiraciListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -198,7 +198,7 @@ namespace TBYS_WebParts.KiraciListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiginde
+                        'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
@@ -337,13 +337,13 @@ namespace TBYS_WebParts.KiraciListesiWP
                 bool duzenleGorunsunMu = !string.IsNullOrEmpty(AuthQS) && AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM);
                 if (duzenleGorunsunMu)
                 {
-                    kiraciItem.Sozlesme = ks != null ? ("<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + sonSozlesmeId + " class='btn btn-outline-secondary'>Sözlesme</a>")
+                    kiraciItem.Sozlesme = ks != null ? ("<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + sonSozlesmeId + " class='btn btn-outline-secondary'>SÃ¶zlesme</a>")
                     : string.Empty;
                     kiraciItem.Teminat = ks != null ? ("<a  target='_blank' href=" + ProjeConstants.PAGE_TEMINAT_ISLEMLERI + "?KiraSozlesmeId=" + sonSozlesmeId + " class='btn btn-outline-secondary'>Teminat</a>")
                         : string.Empty;
                     kiraciItem.Bakiye = "<a  target='_blank' href=" + ProjeConstants.PAGE_KIRA_BAKIYEDEVRI + "?KiraciId=" + kiraciId + " class='btn btn-outline-secondary'>Bakiye Devri</a>";
 
-                    kiraciItem.Duzenle = "<a href=" + ProjeConstants.PAGE_KIRACI_GIRIS + "?DestinationApp=KD&SenderApp=KL&KiraciId=" + kiraciId + " class='btn btn-outline-primary'>Düzenle</a>";
+                    kiraciItem.Duzenle = "<a href=" + ProjeConstants.PAGE_KIRACI_GIRIS + "?DestinationApp=KD&SenderApp=KL&KiraciId=" + kiraciId + " class='btn btn-outline-primary'>DÃ¼zenle</a>";
                 }
 
                 kiraciItem.Secildi = SecilenIdQS.Equals(kiraciItem.KiraciId);

@@ -68,7 +68,7 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             UtilityHelper.ScriptCalistir( "setDataSet(" + jsonData + ");");
         }
         private string TabloJson()
@@ -163,7 +163,7 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP
                         faaliyetListItem.OlusturmaTarihi = olusturmaTarihi;
 
                         faaliyetListItem.Katilimci += katilimci + "; ";
-                        faaliyetListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + faaliyetId + " class='btn btn-outline-primary'>Düzenle</a>";
+                        faaliyetListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + faaliyetId + " class='btn btn-outline-primary'>DÃ¼zenle</a>";
                         faaliyetListItem.Secildi = SecilenIdQS.Equals(faaliyetListItem.FaaliyetId.ToString());
                         tempFaaliyetListItem = faaliyetListItem;
                         faaliyetList.Add(tempFaaliyetListItem);

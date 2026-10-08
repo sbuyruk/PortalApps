@@ -28,7 +28,7 @@ namespace Portal_WebParts.GunlukNobetcilerMoveWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            TitelLbl.Text = "Bugün Görevli Personel";
+            TitelLbl.Text = "BugÃ¼n GÃ¶revli Personel";
             GunlukNobetciGetir(NobetciRepeater);
             GunlukNobetciGetir(PopupRepeater);
         }
@@ -43,7 +43,7 @@ namespace Portal_WebParts.GunlukNobetcilerMoveWP
                     {
                         if (web != null)
                         {
-                            SPList docLib = web.Lists["Günlük Görevli Personel"];
+                            SPList docLib = web.Lists["GÃ¼nlÃ¼k GÃ¶revli Personel"];
                             SPQuery sorgu = new SPQuery();
 
                             sorgu.Query = "<Where><Eq><FieldRef Name='G_x00f6_rev_x0020_Tarihi' /><Value Type='DateTime'>" + DateTime.Now.ToString("yyyy-MM-dd") + "</Value></Eq></Where><OrderBy><FieldRef Name='Created' /></OrderBy>";
@@ -61,9 +61,9 @@ namespace Portal_WebParts.GunlukNobetcilerMoveWP
                                 dt.Columns.Add("KullaniciAdi", typeof(String));
                                 dt.Columns.Add("PersonelResimleri", typeof(String));
 
-                                if (gorev["Görevli Personel Mali Isl. ve Ist. Grp. Bsk. ligi (18:00-19:00)"] != null)
+                                if (gorev["GÃ¶revli Personel Mali Isl. ve Ist. Grp. Bsk. ligi (18:00-19:00)"] != null)
                                 {
-                                    SPFieldUserValue urs = new SPFieldUserValue(web, Convert.ToString(gorev["Görevli Personel Mali Isl. ve Ist. Grp. Bsk. ligi (18:00-19:00)"]));
+                                    SPFieldUserValue urs = new SPFieldUserValue(web, Convert.ToString(gorev["GÃ¶revli Personel Mali Isl. ve Ist. Grp. Bsk. ligi (18:00-19:00)"]));
                                     if (urs != null)
                                     {
                                         DataRow row = dt.NewRow();
@@ -74,7 +74,7 @@ namespace Portal_WebParts.GunlukNobetcilerMoveWP
                                         dt.Rows.Add(row);
                                     }
 
-                                    //MaliIsler = Convert.ToString(gorev["Görevli Personel Mali Isl. ve Ist. Grp. Bsk. ligi (18:00-19:00)"]).Split('|')[1];
+                                    //MaliIsler = Convert.ToString(gorev["GÃ¶revli Personel Mali Isl. ve Ist. Grp. Bsk. ligi (18:00-19:00)"]).Split('|')[1];
                                     //DataRow row = dt.NewRow();
                                     //row["Bolum"] = "Mali Isl. ve Ist. Grp. Bsk. ligi";
                                     //UserProfile profile_mali = Utilities.Classes.Utilities.GetUserInfoFromProfile(MaliIsler,false);
@@ -82,10 +82,10 @@ namespace Portal_WebParts.GunlukNobetcilerMoveWP
                                     //row["KullaniciAdi"] = MaliIsler.Split('\\')[1];
                                     //dt.Rows.Add(row);
                                 }
-                                //Muh Dir. ayri nöbet tutarsa asagisi açilacak
-                                //if (gorev["Görevli Personel Muh. ve Fins.Dir.lügü"] != null)
+                                //Muh Dir. ayri nÃ¶bet tutarsa asagisi aÃ§ilacak
+                                //if (gorev["GÃ¶revli Personel Muh. ve Fins.Dir.lÃ¼gÃ¼"] != null)
                                 //{
-                                //    SPFieldUserValue urs = new SPFieldUserValue(web, Convert.ToString(gorev["Görevli Personel Muh. ve Fins.Dir.lügü"]));
+                                //    SPFieldUserValue urs = new SPFieldUserValue(web, Convert.ToString(gorev["GÃ¶revli Personel Muh. ve Fins.Dir.lÃ¼gÃ¼"]));
                                 //    if (urs != null)
                                 //    {
                                 //        DataRow row = dt.NewRow();
@@ -97,9 +97,9 @@ namespace Portal_WebParts.GunlukNobetcilerMoveWP
 
                                 //}
 
-                                if (gorev["Görevli Personel Vakif Hiz. Grp. Bsk. ligi (18:00-19:00)"] != null)
+                                if (gorev["GÃ¶revli Personel Vakif Hiz. Grp. Bsk. ligi (18:00-19:00)"] != null)
                                 {
-                                    SPFieldUserValue urs = new SPFieldUserValue(web, Convert.ToString(gorev["Görevli Personel Vakif Hiz. Grp. Bsk. ligi (18:00-19:00)"]));
+                                    SPFieldUserValue urs = new SPFieldUserValue(web, Convert.ToString(gorev["GÃ¶revli Personel Vakif Hiz. Grp. Bsk. ligi (18:00-19:00)"]));
                                     if (urs != null)
                                     {
                                         DataRow row = dt.NewRow();
@@ -109,7 +109,7 @@ namespace Portal_WebParts.GunlukNobetcilerMoveWP
                                         row["PersonelResimleri"] = ProjeConstants.PATH_RESIMLER_PERSONEL;
                                         dt.Rows.Add(row);
                                     }
-                                    //VakifHizmetleri = Convert.ToString(gorev["Görevli Personel Vakif Hiz. Grp. Bsk. ligi (18:00-19:00)"]).Split('|')[1];
+                                    //VakifHizmetleri = Convert.ToString(gorev["GÃ¶revli Personel Vakif Hiz. Grp. Bsk. ligi (18:00-19:00)"]).Split('|')[1];
                                     //DataRow row1 = dt.NewRow();
                                     //row1["Bolum"] = "Vakif Hiz. Grp. Bsk. ligi";
                                     //UserProfile profile_vakif = Utilities.Classes.Utilities.GetUserInfoFromProfile(VakifHizmetleri,false);
@@ -118,21 +118,21 @@ namespace Portal_WebParts.GunlukNobetcilerMoveWP
                                     //dt.Rows.Add(row1);
                                 }
 
-                                if (gorev["Görevli Personel Per. ve Id. Isl. S. Md.lügü (18:00-19:00)"] != null)
+                                if (gorev["GÃ¶revli Personel Per. ve Id. Isl. S. Md.lÃ¼gÃ¼ (18:00-19:00)"] != null)
                                 {
-                                    SPFieldUserValue urs = new SPFieldUserValue(web, Convert.ToString(gorev["Görevli Personel Per. ve Id. Isl. S. Md.lügü (18:00-19:00)"]));
+                                    SPFieldUserValue urs = new SPFieldUserValue(web, Convert.ToString(gorev["GÃ¶revli Personel Per. ve Id. Isl. S. Md.lÃ¼gÃ¼ (18:00-19:00)"]));
                                     if (urs != null)
                                     {
                                         DataRow row = dt.NewRow();
-                                        row["Bolum"] = "Ins.Kay. ve Id. Isl. S. Md.lügü";
+                                        row["Bolum"] = "Ins.Kay. ve Id. Isl. S. Md.lÃ¼gÃ¼";
                                         row["Isim"] = Convert.ToString(urs.LookupValue);
                                         row["KullaniciAdi"] = urs.LoginName.Split('\\')[1];
                                         row["PersonelResimleri"] = ProjeConstants.PATH_RESIMLER_PERSONEL;
                                         dt.Rows.Add(row);
                                     }
-                                    //PersonelIdariIsler = Convert.ToString(gorev["Görevli Personel Per. ve Id. Isl. S. Md.lügü (18:00-19:00)"]).Split('|')[1];
+                                    //PersonelIdariIsler = Convert.ToString(gorev["GÃ¶revli Personel Per. ve Id. Isl. S. Md.lÃ¼gÃ¼ (18:00-19:00)"]).Split('|')[1];
                                     //DataRow row2 = dt.NewRow();
-                                    //row2["Bolum"] = "Per. ve Id. Isl. S. Md.lügü";
+                                    //row2["Bolum"] = "Per. ve Id. Isl. S. Md.lÃ¼gÃ¼";
                                     //UserProfile profile_personel = Utilities.Classes.Utilities.GetUserInfoFromProfile(PersonelIdariIsler,false);
                                     //row2["Isim"] = Convert.ToString(profile_personel.DisplayName);
                                     //row2["KullaniciAdi"] = PersonelIdariIsler.Split('\\')[1];

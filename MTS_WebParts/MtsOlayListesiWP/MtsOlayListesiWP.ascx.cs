@@ -64,7 +64,7 @@ namespace MTS_WebParts.MtsOlayListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -195,7 +195,7 @@ namespace MTS_WebParts.MtsOlayListesiWP
                 (string.IsNullOrEmpty(getirilenAniObjesiStr) ? string.Empty : "- Getirilen Ani Objesi : " + getirilenAniObjesiStr);
             string retval = "(" + olay.IslemTarihi.ConvertToDDMMYYYHHmmFormat() + ") -" +
                faaliyetStr + "  <strong>" +
-               olay.IslemKonusu + "</strong> bölümünde " +
+               olay.IslemKonusu + "</strong> bÃ¶lÃ¼mÃ¼nde " +
                olay.IslemYapan + " tarafindan  <strong> " +
                olay.IslemTipi + "</strong> islemi yapilmistir." + ayrintiStr;
             return retval;

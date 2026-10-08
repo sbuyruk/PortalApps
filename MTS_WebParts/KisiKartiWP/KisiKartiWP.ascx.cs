@@ -204,13 +204,13 @@ namespace MTS_WebParts.KisiKartiWP
             row3.Controls.Add(r3c4);
 
 
-            r1c1.Text = "Ünvani : " + katilimci.Unvani;
-            r2c1.Text = "Görevi : " + katilimci.Gorevi;
+            r1c1.Text = "Ãœnvani : " + katilimci.Unvani;
+            r2c1.Text = "GÃ¶revi : " + katilimci.Gorevi;
             r3c1.Text = "";
 
             r1c2.Text = "Kurumu : " + katilimci.Kurumu;
             r2c2.Text = "Adresi : " + katilimci.Adresi;
-            r3c2.Text = "Ilçe/Il :" + katilimci.IlcesiIli;
+            r3c2.Text = "IlÃ§e/Il :" + katilimci.IlcesiIli;
 
             r1c3.Text = katilimci.Telefon;
 

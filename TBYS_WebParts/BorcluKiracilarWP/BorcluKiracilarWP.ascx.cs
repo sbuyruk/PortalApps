@@ -197,7 +197,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
             if (!Page.IsPostBack)
             {
                 AdiLbl.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
-                TitleLbl.Text = "Borçlu Kiraci Listesi";
+                TitleLbl.Text = "BorÃ§lu Kiraci Listesi";
                 try
                 {
 
@@ -206,7 +206,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
                     {
                         Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
                         BolgeIdQS = bolge == null ? 0 : bolge.Id;
-                        TitleLbl.Text = "Borçlu Kiraci Listesi" + " (" + bolge.KisaAdi + " Bölgesi)";
+                        TitleLbl.Text = "BorÃ§lu Kiraci Listesi" + " (" + bolge.KisaAdi + " BÃ¶lgesi)";
                     }
 
                     bool yetkiliMi = !string.IsNullOrEmpty(AuthQS) && AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM);
@@ -246,8 +246,8 @@ namespace TBYS_WebParts.BorcluKiracilarWP
         private void BorcluKiraclariTabloyaDoldur()
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            //SB 10.08.2020 secilentarih ayin 1'ii yerine bugün 
-            //** SB üstteki Iptal 16.09.2020
+            //SB 10.08.2020 secilentarih ayin 1'ii yerine bugÃ¼n 
+            //** SB Ã¼stteki Iptal 16.09.2020
 
             int ay = SecilenAyQS.ConvertToInt();
             int yil = SecilenYilQS.ConvertToInt();
@@ -301,7 +301,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
                         {
                             if (!ilkKayit)
                             {
-                                TabloyaFooterEkle(tempBolge + " Bölge Toplami", bolgeAnaParaToplami.ToString("N", culturInfo), bolgeFaizliBakiyeToplami.ToString("N", culturInfo));
+                                TabloyaFooterEkle(tempBolge + " BÃ¶lge Toplami", bolgeAnaParaToplami.ToString("N", culturInfo), bolgeFaizliBakiyeToplami.ToString("N", culturInfo));
                                 bolgeAnaParaToplami = 0;
                                 bolgeFaizliBakiyeToplami = 0;
                             }
@@ -309,7 +309,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
                             TableHeaderCell bolgeCell = new TableHeaderCell();
                             bolgeCell.ColumnSpan = BolgeColumnSpan;
                             bolgeCell.Attributes.Add("style", "text-align:center;");
-                            bolgeCell.Text = bolge + " Bölgesi ";
+                            bolgeCell.Text = bolge + " BÃ¶lgesi ";
                             bolgeCell.BackColor = System.Drawing.Color.Gray;
                             bolgeCell.ForeColor = System.Drawing.Color.White;
                             bolgeRow.Controls.Add(bolgeCell);
@@ -345,7 +345,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
                         }
                         else
                         {
-                            //görüntüleyenler için
+                            //gÃ¶rÃ¼ntÃ¼leyenler iÃ§in
                             kiraciCell.Text = "<a href=# onclick=OpenModal(" + kiraSozlesmeId + "); type=button class=\'btn btn-link fw-bold\'>" + kiraci + "</a>";
                         }
                             
@@ -392,7 +392,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
                         bool sonKayit = ++counter == toplamKayitSayisi;
                         if (sonKayit)
                         {
-                            TabloyaFooterEkle(tempBolge + " Bölge Toplami", bolgeAnaParaToplami.ToString("N", culturInfo), bolgeFaizliBakiyeToplami.ToString("N", culturInfo));
+                            TabloyaFooterEkle(tempBolge + " BÃ¶lge Toplami", bolgeAnaParaToplami.ToString("N", culturInfo), bolgeFaizliBakiyeToplami.ToString("N", culturInfo));
                         }
                         ilkKayit = false;
                     }
@@ -402,7 +402,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
             }
             else
             {
-                MessageHelper.PublishMessage("Borçlu Kiraci bulunamadi", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("BorÃ§lu Kiraci bulunamadi", ProjeConstants.MESAJ_BILGI, 2000);
             }
 
         }
@@ -437,9 +437,9 @@ namespace TBYS_WebParts.BorcluKiracilarWP
             TableHeaderCell tableTitleCell = new TableHeaderCell();
 
             // int sureAy = string.IsNullOrEmpty(AySayisiBitQS) ? 0 : AySayisiBitQS.ConvertToInt();
-            //string baslikAy = sureAy < icraAySayisi ? AySayisiBitQS + " Ay Borçlu Kiracilar" : " Hukuki Isleme Tabi Kiracilar";
+            //string baslikAy = sureAy < icraAySayisi ? AySayisiBitQS + " Ay BorÃ§lu Kiracilar" : " Hukuki Isleme Tabi Kiracilar";
 
-            tableTitleCell.Text = (new DateTime(SecilenYilQS.ConvertToInt(), SecilenAyQS.ConvertToInt(), 1)).ToString("MMMM yyyy", culturInfo) + " Itibari Ile Borçlu Kiracilar ";
+            tableTitleCell.Text = (new DateTime(SecilenYilQS.ConvertToInt(), SecilenAyQS.ConvertToInt(), 1)).ToString("MMMM yyyy", culturInfo) + " Itibari Ile BorÃ§lu Kiracilar ";
 
             tableTitleCell.ColumnSpan = BolgeColumnSpan;
             tableTitleRow.Controls.Add(tableTitleCell);
@@ -469,9 +469,9 @@ namespace TBYS_WebParts.BorcluKiracilarWP
             siraNoCell.Text = "S.No";
             dosyaNoCell.Text = "D.No";
             kiraciCell.Text = "Kiracinin Adi ve Soyadi";
-            sozlesmeTarihiCell.Text = "Ilk Sözlesme Tarihi";
+            sozlesmeTarihiCell.Text = "Ilk SÃ¶zlesme Tarihi";
             kiraBedeliCell.Text = "Kira Bedeli (TL/Ay)";
-            borcMiktariCell.Text = "Borç Miktari (TL)";
+            borcMiktariCell.Text = "BorÃ§ Miktari (TL)";
             faizliBakiyeCell.Text = "Faizli Bakiye (TL)";
             borcAdediCell.Text = "Kira Borcu (Ay)";
 
