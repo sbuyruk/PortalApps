@@ -1181,10 +1181,9 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                         katilimci = katilimci.Select(katilimciId);
                         if (katilimci != null)
                         {
-                            MTSKurumGorev kurumGorev = new MTSKurumGorev();
                             string kurum = string.Empty;
                             string gorev = string.Empty;
-                            kurumGorevStr = kurumGorev.SelectByKisiIdReturnKurumGorev(katilimci.Id, ref kurum, ref gorev);
+                            kurumGorevStr = new Model.Services.MTS.MTSKurumGorevService().GetByKisiId(katilimci.Id, ref kurum, ref gorev);
                             if (string.IsNullOrEmpty(kurumGorevStr))
                             {
                                 kurumGorevStr = katilimci.Kurumu + " / " + katilimci.Gorevi;
