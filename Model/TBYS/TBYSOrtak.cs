@@ -168,7 +168,7 @@ namespace Model.Ortak
                                 }
 
                                 Odeme odemeDao = new Odeme();
-                                var odenenTutar = odemeDao.SelectSumBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlani.Id);
+                                var odenenTutar = new Model.Services.TBYS.OdemeService().GetSumBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlani.Id);
                                 odemePlani.OdenenTutar = odenenTutar;
                                 odemePlani.FaizliBakiye = faizliBakiye;
                                 odemePlani.FaizOrani = faizOrani;
@@ -264,7 +264,7 @@ namespace Model.Ortak
 
                 //ödeme plani Id ye ve sozId ye göre al
                 Odeme odemeDao = new Odeme();
-                var odenenTutar = odemeDao.SelectSumBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlani.Id);
+                var odenenTutar = new Model.Services.TBYS.OdemeService().GetSumBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlani.Id);
                 odemePlani.OdenenTutar = odenenTutar;
                 new Model.Services.TBYS.OdemePlaniService().Update(odemePlani);
                 //if ((DateTime.Today > odemePlani.VadeBasTar) && (DateTime.Today < odemePlani.VadeBitTar))
@@ -329,7 +329,7 @@ namespace Model.Ortak
                 {
                     // bu sürede ödeme var mi
                     Odeme odemeDao = new Odeme();
-                    List<Odeme> odemeList = odemeDao.SelectByKiraciVadeBasTarVadeBitTar(kiraSozlesme.Id, kiraSozlesme.KiraciId, ilkTarih, ikinciTarih);
+                    List<Odeme> odemeList = new Model.Services.TBYS.OdemeService().GetByKiraciVadeBasTarVadeBitTar(kiraSozlesme.Id, kiraSozlesme.KiraciId, ilkTarih, ikinciTarih);
                     if (odemeList.Count > 0)//odeme var
                     {
                         //ödeme yapilan tarihe kadarki olusan faizler
@@ -398,7 +398,7 @@ namespace Model.Ortak
         //        ikinciTarih = gecikmeZammi.BitisTarihi > ProjeConstants.NULL_TARIH ? (gecikmeZammi.BitisTarihi < odemePlani.VadeBitTar ? gecikmeZammi.BitisTarihi : odemePlani.VadeBitTar) : odemePlani.VadeBitTar;
 
         //        Odeme odemeDao = new Odeme();
-        //        List<Odeme> odemeList = odemeDao.SelectByKiraciVadeBasTarVadeBitTar(kiraSozlesme.Id, kiraSozlesme.KiraciId, ilkTarih, ikinciTarih);
+        //        List<Odeme> odemeList = new Model.Services.TBYS.OdemeService().GetByKiraciVadeBasTarVadeBitTar(kiraSozlesme.Id, kiraSozlesme.KiraciId, ilkTarih, ikinciTarih);
         //        if (odemeList.Count >= 1)
         //        {
         //            Odeme odeme = odemeList[0];
@@ -501,7 +501,7 @@ namespace Model.Ortak
                         {
                             odemePlani = new Model.Services.TBYS.OdemePlaniService().GetFirstBySozlesmeId(kiraSozlesme.Id);//odemeyi ilk OdemePlanina kaydet
                             Odeme odeme = new Odeme();
-                            odeme = odeme.OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
+                            odeme = new Model.Services.TBYS.OdemeService().OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
                             odemeYapildiMi = true;
                             odemeId = odeme.Id;
                         }
@@ -526,7 +526,7 @@ namespace Model.Ortak
                                 else
                                 {
                                     Odeme odeme = new Odeme();
-                                    odeme = odeme.OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
+                                    odeme = new Model.Services.TBYS.OdemeService().OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
                                     odemeYapildiMi = true;
                                     odemeId = odeme.Id;
                                 }
@@ -539,7 +539,7 @@ namespace Model.Ortak
                                 if (odemePlani != null)
                                 {
                                     Odeme odeme = new Odeme();
-                                    odeme = odeme.OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
+                                    odeme = new Model.Services.TBYS.OdemeService().OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
                                     odemeYapildiMi = true;
                                     odemeId = odeme.Id;
                                 }
@@ -563,7 +563,7 @@ namespace Model.Ortak
                             else
                             {
                                 Odeme odeme = new Odeme();
-                                odeme = odeme.OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
+                                odeme = new Model.Services.TBYS.OdemeService().OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
                                 odemeYapildiMi = true;
                                 odemeId = odeme.Id;
                             }

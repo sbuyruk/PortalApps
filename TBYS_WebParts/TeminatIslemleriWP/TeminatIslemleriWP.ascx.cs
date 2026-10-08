@@ -421,13 +421,13 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             if (kiraSozlesme != null)
             {
                 Odeme odeme = new Odeme();
-                odeme = odeme.Select(odemeId);
+                odeme = new Model.Services.TBYS.OdemeService().GetById(odemeId);
                 if (odeme != null)
                 {
                     OdemePlani opl = new OdemePlani();
                     opl = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi);
                     int yeniOdemePlaniId = opl != null ? opl.Id : odeme.OdemePlaniId;
-                    guncellendiMi = odeme.OdemeyiVeOdemePlaniniGuncelle(kiraSozlesme.Id, odeme.OdemePlaniId, yeniOdemePlaniId,
+                    guncellendiMi = new Model.Services.TBYS.OdemeService().OdemeyiVeOdemePlaniniGuncelle(kiraSozlesme.Id, odeme.OdemePlaniId, yeniOdemePlaniId,
                     odemeId, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
                 }
 
@@ -601,10 +601,10 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     if (teminatIslem.IslemTipi.Equals(ProjeConstants.TEMINAT_KIRAYAMAHSUP) && silindiMi)
                     {
                         Odeme odeme = new Odeme();
-                        odeme = odeme.Select(teminatIslem.OdemeId);
+                        odeme = new Model.Services.TBYS.OdemeService().GetById(teminatIslem.OdemeId);
                         if (odeme != null)
                         {
-                            bool odemeSilindiMi = odeme.Delete();
+                            bool odemeSilindiMi = new Model.Services.TBYS.OdemeService().Delete(odeme);
                         }
 
                     }

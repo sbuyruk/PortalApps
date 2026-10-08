@@ -328,7 +328,7 @@ namespace TBYS_WebParts.KiraKartiWP
                         if (op.OdenenTutar > 0)
                         {
                             Odeme odemeDao = new Odeme();
-                            List<Odeme> odemeList = odemeDao.SelectBySozlesmeIdOdemePlaniId(op.SozlesmeId, op.Id);
+                            List<Odeme> odemeList = new Model.Services.TBYS.OdemeService().GetBySozlesmeIdOdemePlaniId(op.SozlesmeId, op.Id);
                             foreach (Odeme item in odemeList)
                             {
                                 odenenler += item.OdemeTarihi.ReturnTRDateFormat() + " (" + item.OdenenTutar.ToString("N", culturInfo) + ")" + System.Environment.NewLine;
