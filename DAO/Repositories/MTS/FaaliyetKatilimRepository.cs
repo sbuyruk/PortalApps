@@ -27,5 +27,30 @@ namespace DAO.Repositories.MTS
         public int Insert<T>(T entity) { return db.Insert(queryBuilder.BuildInsert(entity, TableName)); }
         public bool Update<T>(T entity) { return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName)); }
         public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), ""); }
+
+        public DataTable SelectByFaaliyetAndKatilimci(int faaliyetId, int katilimciId)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT *
+                FROM FaaliyetKatilim_Table
+                WHERE FaaliyetId = @FaaliyetId AND KatilimciId = @KatilimciId");
+            query.AddParameter("@FaaliyetId", faaliyetId);
+            query.AddParameter("@KatilimciId", katilimciId);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectByKatilimciId(int katilimciId)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM FaaliyetKatilim_Table WHERE KatilimciId = @KatilimciId");
+            query.AddParameter("@KatilimciId", katilimciId);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectByFaaliyetId(int faaliyetId)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM FaaliyetKatilim_Table WHERE FaaliyetId = @FaaliyetId");
+            query.AddParameter("@FaaliyetId", faaliyetId);
+            return db.SelectFromDb(query, "");
+        }
     }
 }
