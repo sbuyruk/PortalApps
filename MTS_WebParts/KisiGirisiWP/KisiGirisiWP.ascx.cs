@@ -460,8 +460,7 @@ namespace MTS_WebParts.KisiGirisiWP
             }
             
 
-            FaaliyetKatilim faaliyetKatilimDao = new FaaliyetKatilim();
-            List<FaaliyetKatilim> list = faaliyetKatilimDao.SelectByKatilimciId(KisiIdQS.ConvertToInt());
+            List<FaaliyetKatilim> list = new Model.Services.MTS.FaaliyetKatilimService().GetByKatilimciId(KisiIdQS.ConvertToInt());
 
             if (list.Count > 0)
             {
@@ -471,8 +470,7 @@ namespace MTS_WebParts.KisiGirisiWP
 
 
             }
-            AramaGorusme aramaGorusmeDao = new AramaGorusme();
-            List<AramaGorusme> aramalistlist = aramaGorusmeDao.SelectAllByArayanIdReturnList(KisiIdQS.ConvertToInt());
+            List<AramaGorusme> aramalistlist = new Model.Services.MTS.AramaGorusmeService().GetByArayanId(KisiIdQS.ConvertToInt());
 
             if (aramalistlist.Count > 0)
             {
@@ -634,7 +632,7 @@ namespace MTS_WebParts.KisiGirisiWP
                             faaliyetKatilim.KatilimciId = KisiIdQS.ConvertToInt();
                             faaliyetKatilim.KurumGorev = kurumGorevStr;
                             faaliyetKatilim.Olusturan = UtilityHelper.GetCurrentUserName();
-                            int faaliyetKatilimId = faaliyetKatilim.Save();
+                            int faaliyetKatilimId = new Model.Services.MTS.FaaliyetKatilimService().Save(faaliyetKatilim);
                             if (faaliyetKatilimId > 0)
                             {
                                 RedirectToPage(ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + faaliyet.Id);

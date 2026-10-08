@@ -569,11 +569,9 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             bool baglantisiVar = false;
             ExceptionHelper eh = new ExceptionHelper();
 
-            AramaGorusme aramaGorusme = new AramaGorusme();
-            aramaGorusme = aramaGorusme.SelectByFaaliyetId(faaliyet.Id);
+            AramaGorusme aramaGorusme = new Model.Services.MTS.AramaGorusmeService().GetByFaaliyetId(faaliyet.Id);
 
-            FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
-            List<FaaliyetKatilim> faaliyetKatilimList = faaliyetKatilim.SelectByFaaliyetId(faaliyet.Id);
+            List<FaaliyetKatilim> faaliyetKatilimList = new Model.Services.MTS.FaaliyetKatilimService().GetByFaaliyetId(faaliyet.Id);
             AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
             List<AniObjesiDagitim> aniObjesiDagitimList = aniObjesiDagitim.SelectByFaaliyetId(faaliyet.Id);
             if (aramaGorusme != null)
@@ -732,8 +730,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         private void StokluAniObjesiDDLDoldur()
         {
             StokluAniObjesiDDL.Items.Clear();
-            AniObjesiTanim aniObjesiTanim = new AniObjesiTanim();
-            DataTable dataTable = aniObjesiTanim.SelectStokluAniObjesiList();
+            DataTable dataTable = new Model.Services.MTS.AniObjesiTanimService().GetStokluAniObjesiList();
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
@@ -752,8 +749,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         {
             DepoDDL.Items.Clear();
             int secilenAniObjesiId = StokluAniObjesiDDL != null && StokluAniObjesiDDL.SelectedItem != null ? StokluAniObjesiDDL.SelectedItem.Value.ConvertToInt() : 0;
-            DepoTanim depoTanim = new DepoTanim();
-            DataTable dataTable = depoTanim.SelectStokluAniObjesiList(secilenAniObjesiId);
+            DataTable dataTable = new Model.Services.MTS.DepoTanimService().GetStokluAniObjesiList(secilenAniObjesiId);
             if (dataTable != null)
             {
                 int i = 0;
@@ -1011,14 +1007,14 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             if (faaliyetkatilimId > 0)
             {
                 FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
-                faaliyetKatilim = faaliyetKatilim.Select(faaliyetkatilimId);
+                faaliyetKatilim = new Model.Services.MTS.FaaliyetKatilimService().GetById(faaliyetkatilimId);
                 if (faaliyetKatilim != null)
                 {
                     AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
                     DataTable dataTable = aniObjesiDagitim.SelectByKatilimcidFaaliyetId(faaliyetKatilim.KatilimciId, faaliyetKatilim.FaaliyetId,string.Empty);
                     if (dataTable == null)
                     {
-                        if (faaliyetKatilim.Delete())
+                        if (new Model.Services.MTS.FaaliyetKatilimService().Delete(faaliyetKatilim))
                         {
                             MessageHelper.PublishMessage("Katilimci faaliyetten çikarildi", ProjeConstants.MESAJ_BASARILI,2000);
                         }
@@ -1172,7 +1168,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
 
                 FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
 
-                List<FaaliyetKatilim> list = faaliyetKatilim.Select(faaliyetId, katilimciId);
+                List<FaaliyetKatilim> list = new Model.Services.MTS.FaaliyetKatilimService().GetByFaaliyetAndKatilimci(faaliyetId, katilimciId);
                 if (list.Count < 1)
                 {
                     string kurumGorevStr = string.Empty;
@@ -1196,7 +1192,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                     faaliyetKatilim.KatilimciId = katilimciId;
                     faaliyetKatilim.FaaliyetId = faaliyetId;
                     faaliyetKatilim.KurumGorev = kurumGorevStr;
-                    int faaliyetKatilimId=faaliyetKatilim.Save();
+                    int faaliyetKatilimId = new Model.Services.MTS.FaaliyetKatilimService().Save(faaliyetKatilim);
                     
                 }
             }
@@ -1235,8 +1231,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         #region Arama/Gorusme bilgileri
         private void AramaGorusmeBilgileriniDoldur(Faaliyet faaliyet)
         {
-            AramaGorusme aramaGorusme = new AramaGorusme();
-            aramaGorusme = aramaGorusme.SelectByFaaliyetId(faaliyet.Id);
+            AramaGorusme aramaGorusme = new Model.Services.MTS.AramaGorusmeService().GetByFaaliyetId(faaliyet.Id);
             if (aramaGorusme != null)
             {
                 AramaGorusmeIdQS = aramaGorusme.Id.ToString();
@@ -1303,7 +1298,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 {
                     IadeEdilecekAdetTxt.Text = aniObjesiDagitim.Adet.ToString();
                     AniObjesiTanim aniObjesiTanim = new AniObjesiTanim();
-                    aniObjesiTanim = aniObjesiTanim.Select(aniObjesiDagitim.AniObjesiId);
+                    aniObjesiTanim = new Model.Services.MTS.AniObjesiTanimService().GetById(aniObjesiDagitim.AniObjesiId);
                     if (aniObjesiTanim != null)
                     {
                         IadeEdilecekAniObjesiTxt.Text = aniObjesiTanim.Adi;// + " (" + stokAdet +")";
@@ -1315,7 +1310,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                         MessageHelper.PublishMessage("Ani Objesi Tanimi bulunamadi", ProjeConstants.MESAJ_HATA);
                     }
                     DepoTanim depoTanim = new DepoTanim();
-                    depoTanim = depoTanim.Select(aniObjesiDagitim.CikisDepoId);
+                    depoTanim = new Model.Services.MTS.DepoTanimService().GetById(aniObjesiDagitim.CikisDepoId);
                     if (depoTanim != null)
                     {
                         IadeEdilecekDepoTxt.Text = depoTanim.Adi;
@@ -1642,7 +1637,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
 
                 //seçilen depoda adet kadar mevcut var mi?
                 DepoStok depoStok = new DepoStok();
-                depoStok = depoStok.SelectByDepoIdAniObjesiId(depoId, aniObjesiId, ProjeConstants.MTS_ANIOBJESISTOKLU);
+                depoStok = new Model.Services.MTS.DepoStokService().GetByDepoIdAniObjesiId(depoId, aniObjesiId, ProjeConstants.MTS_ANIOBJESISTOKLU);
                 if (depoStok != null)
                 {
                     if (depoStok.SonAdet >= adet)
@@ -1668,7 +1663,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                             depoStok.SonAdet -= adet;
                             //depoStok.Aciklama+=adet+" adet verildi FaaliyetID=" + aniObjesiDagitim.FaaliyetId;
                             depoStok.SonIslemYapan = UtilityHelper.GetCurrentUserName();
-                            depoStok.Update();
+                            new Model.Services.MTS.DepoStokService().Update(depoStok);
                         }
                         else
                         {
@@ -1686,7 +1681,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                             depoStok.SonAdet -= adet;
                             depoStok.Aciklama = adet + " adet verildi FaaliyetID=" + aniObjesiDagitim.FaaliyetId;
                             depoStok.SonIslemYapan = UtilityHelper.GetCurrentUserName();
-                            depoStok.Update();
+                            new Model.Services.MTS.DepoStokService().Update(depoStok);
                         }
                     }
                     else if (depoStok.SonAdet == 0)
@@ -1754,7 +1749,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
 
                         //DepoStok a ekle
                         DepoStok depoStok = new DepoStok();
-                        depoStok = depoStok.SelectByDepoIdAniObjesiId(depoId, aniObjesiId, ProjeConstants.MTS_ANIOBJESISTOKLU);
+                        depoStok = new Model.Services.MTS.DepoStokService().GetByDepoIdAniObjesiId(depoId, aniObjesiId, ProjeConstants.MTS_ANIOBJESISTOKLU);
                         if (depoStok == null)
                         {
                             depoStok = new DepoStok();
@@ -1768,7 +1763,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                         depoStok.SonAdet += adet;
                         depoStok.Aciklama = adet + " adet verildi FaaliyetID=" + aniObjesiDagitim.FaaliyetId;
                         depoStok.SonIslemYapan = UtilityHelper.GetCurrentUserName();
-                        depoStok.Update();
+                        new Model.Services.MTS.DepoStokService().Update(depoStok);
                         if (aniObjesiDagitim.Adet > 0)
                         {
                             aniObjesiDagitim.Update();
@@ -1916,7 +1911,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             if (!string.IsNullOrEmpty(eposta))
             {
                 FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
-                faaliyetKatilim = faaliyetKatilim.Select(katilimId);
+                faaliyetKatilim = new Model.Services.MTS.FaaliyetKatilimService().GetById(katilimId);
                 if (faaliyetKatilim != null && faaliyetKatilim.TakvimDaveti.Equals(ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILDI))
                 {
                     btn =  ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILDI;
@@ -2024,12 +2019,12 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                     try
                     {
                         FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
-                        faaliyetKatilim = faaliyetKatilim.Select(katilimId);
+                        faaliyetKatilim = new Model.Services.MTS.FaaliyetKatilimService().GetById(katilimId);
                         if (faaliyetKatilim != null)
                         {
                             TakvimDavetiGonder(faaliyetKatilim, faaliyetId, epostaAdresi, islemTipi);
                             faaliyetKatilim.TakvimDaveti = ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILDI;
-                            faaliyetKatilim.Update();
+                            new Model.Services.MTS.FaaliyetKatilimService().Update(faaliyetKatilim);
                         }
 
                     }
@@ -2047,8 +2042,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
 
         private void KatilimcilaraTakvimDavetiGonder(Faaliyet faaliyet)
         {
-            FaaliyetKatilim faaliyetKatilimDao = new FaaliyetKatilim();
-            List<FaaliyetKatilim> list= faaliyetKatilimDao.SelectByFaaliyetId(faaliyet.Id);
+            List<FaaliyetKatilim> list = new Model.Services.MTS.FaaliyetKatilimService().GetByFaaliyetId(faaliyet.Id);
             foreach (var item in list)
             {
                 if (string.IsNullOrEmpty(item.TakvimDaveti) || item.TakvimDaveti.Equals(ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILMEDI))
