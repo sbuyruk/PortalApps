@@ -500,13 +500,13 @@ namespace MTS_WebParts.KisiGirisiWP
         private bool VerilenAniObjesiVarMi(int kisiId)
         {
             AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-            List<AniObjesiDagitim> aniObjesiDagitimList =  aniObjesiDagitim.SelectByKisiIdReturnList(kisiId, ProjeConstants.ANIOBJESI_VERILEN_INT.ToString());
+            List<AniObjesiDagitim> aniObjesiDagitimList = new Model.Services.MTS.AniObjesiDagitimService().GetByParticipant(kisiId, ProjeConstants.ANIOBJESI_VERILEN_INT.ToString());
             return aniObjesiDagitimList.Count > 0;
         }
         private bool GetirilenAniObjesiVarMi(int kisiId)
         {
             AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-            List<AniObjesiDagitim> aniObjesiDagitimList = aniObjesiDagitim.SelectByKisiIdReturnList(kisiId, ProjeConstants.ANIOBJESI_GETIRILEN_INT.ToString());
+            List<AniObjesiDagitim> aniObjesiDagitimList = new Model.Services.MTS.AniObjesiDagitimService().GetByParticipant(kisiId, ProjeConstants.ANIOBJESI_GETIRILEN_INT.ToString());
             return aniObjesiDagitimList.Count > 0;
         }
         protected void KisiSilNowBtn_Click(object sender, EventArgs e)

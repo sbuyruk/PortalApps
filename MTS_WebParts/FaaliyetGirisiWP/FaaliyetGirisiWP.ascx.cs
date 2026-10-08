@@ -573,7 +573,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
 
             List<FaaliyetKatilim> faaliyetKatilimList = new Model.Services.MTS.FaaliyetKatilimService().GetByFaaliyetId(faaliyet.Id);
             AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-            List<AniObjesiDagitim> aniObjesiDagitimList = aniObjesiDagitim.SelectByFaaliyetId(faaliyet.Id);
+            List<AniObjesiDagitim> aniObjesiDagitimList = new Model.Services.MTS.AniObjesiDagitimService().GetByFaaliyetId(faaliyet.Id);
             if (aramaGorusme != null)
             {
                 Exception ex = new Exception("Faaliyetin baglantili oldugu Arama/Görüsme bulunmaktadir.");
@@ -1011,7 +1011,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 if (faaliyetKatilim != null)
                 {
                     AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-                    DataTable dataTable = aniObjesiDagitim.SelectByKatilimcidFaaliyetId(faaliyetKatilim.KatilimciId, faaliyetKatilim.FaaliyetId,string.Empty);
+                    DataTable dataTable = new Model.Services.MTS.AniObjesiDagitimService().GetByParticipantActivity(faaliyetKatilim.KatilimciId, faaliyetKatilim.FaaliyetId, string.Empty);
                     if (dataTable == null)
                     {
                         if (new Model.Services.MTS.FaaliyetKatilimService().Delete(faaliyetKatilim))
@@ -1293,7 +1293,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             {
                 bool isOk;
                 AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-                aniObjesiDagitim = aniObjesiDagitim.Select(aniObjesiDagitimId);
+                aniObjesiDagitim = new Model.Services.MTS.AniObjesiDagitimService().GetById(aniObjesiDagitimId);
                 if (aniObjesiDagitim != null)
                 {
                     IadeEdilecekAdetTxt.Text = aniObjesiDagitim.Adet.ToString();
@@ -1397,7 +1397,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             paramFaaliyetKatilimciIdLbl.Value = katilimciId.ToString();
 
             AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
-            getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(faaliyetId, katilimciId);
+            getirilenAniObjesi = new Model.Services.MTS.AniObjesiDagitimService().GetGetirilen(faaliyetId, katilimciId);
             if (getirilenAniObjesi != null)
             {
                 GetirilenAniObjesiTxt.Text = getirilenAniObjesi.GetirilenAniObjesi;
@@ -1420,7 +1420,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             paramFaaliyetKatilimciIdLbl.Value = katilimciId.ToString();
 
             AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-            DataTable dataTable = aniObjesiDagitim.SelectByFaaliyetIdKatilimciIdStokReturnDT(faaliyetId, katilimciId, ProjeConstants.MTS_ANIOBJESISTOKSUZ);
+            DataTable dataTable = new Model.Services.MTS.AniObjesiDagitimService().GetDistributionTable(faaliyetId, katilimciId, ProjeConstants.MTS_ANIOBJESISTOKSUZ);
             if (dataTable != null)
             {
                 //CheckBox[] aniObjesiChk = new CheckBox[AniObjesiList.Count];
@@ -1546,7 +1546,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             KaldirilanlariSil(idList, faaliyetId, katilimciId);
 
             AniObjesiDagitim aniObjesiDagitimDao = new AniObjesiDagitim();
-            List<AniObjesiDagitim> objeList = aniObjesiDagitimDao.SelectStoksuzAniObjeleriReturnList(faaliyetId, katilimciId);
+            List<AniObjesiDagitim> objeList = new Model.Services.MTS.AniObjesiDagitimService().GetStoksuz(faaliyetId, katilimciId);
             foreach (var item in objeList)
             {
                 int index = idList.FindIndex(a => a == item.AniObjesiId.ToString());
@@ -1645,7 +1645,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                         AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
                         int katilimciId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
                         int faaliyetId = paramFaaliyetIdLbl.Value.ConvertToInt();
-                        aniObjesiDagitim = aniObjesiDagitim.Select(faaliyetId, katilimciId, aniObjesiId);
+                        aniObjesiDagitim = new Model.Services.MTS.AniObjesiDagitimService().GetByActivityParticipantObject(faaliyetId, katilimciId, aniObjesiId);
                         if (aniObjesiDagitim == null)
                         {
                             aniObjesiDagitim = new AniObjesiDagitim();
@@ -1657,7 +1657,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                             aniObjesiDagitim.FaaliyetId = paramFaaliyetIdLbl.Value.ConvertToInt();
                             aniObjesiDagitim.VerilisTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
                             aniObjesiDagitim.VerilenAlinan = ProjeConstants.ANIOBJESI_VERILEN_INT;
-                            aniObjesiDagitim.Save();
+                            new Model.Services.MTS.AniObjesiDagitimService().Save(aniObjesiDagitim);
                             //DepoStoktan düs
 
                             depoStok.SonAdet -= adet;
@@ -1675,7 +1675,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                             aniObjesiDagitim.FaaliyetId = paramFaaliyetIdLbl.Value.ConvertToInt();
                             aniObjesiDagitim.VerilisTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
                             aniObjesiDagitim.VerilenAlinan = ProjeConstants.ANIOBJESI_VERILEN_INT;
-                            aniObjesiDagitim.Update();
+                            new Model.Services.MTS.AniObjesiDagitimService().Update(aniObjesiDagitim);
                             //DepoStoktan düs
 
                             depoStok.SonAdet -= adet;
@@ -1711,7 +1711,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         {
             int aniObjesiDagitimId = paramStokluAniObjesiDagitimIdLbl.Value.ConvertToInt();
             AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-            aniObjesiDagitim = aniObjesiDagitim.Select(aniObjesiDagitimId);
+            aniObjesiDagitim = new Model.Services.MTS.AniObjesiDagitimService().GetById(aniObjesiDagitimId);
             if (aniObjesiDagitim != null)
             {
 
@@ -1766,11 +1766,11 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                         new Model.Services.MTS.DepoStokService().Update(depoStok);
                         if (aniObjesiDagitim.Adet > 0)
                         {
-                            aniObjesiDagitim.Update();
+                        new Model.Services.MTS.AniObjesiDagitimService().Update(aniObjesiDagitim);
                         }
                         else
                         {
-                            aniObjesiDagitim.Delete();
+                        new Model.Services.MTS.AniObjesiDagitimService().Delete(aniObjesiDagitim);
                         }
                     }
 
@@ -1812,7 +1812,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         private void GetirilenAniObjesiKaydet(int faaliyetId, int katilimciId)
         {
             AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-            aniObjesiDagitim = aniObjesiDagitim.SelectGetirilenAniObjesi(faaliyetId, katilimciId);
+            aniObjesiDagitim = new Model.Services.MTS.AniObjesiDagitimService().GetGetirilen(faaliyetId, katilimciId);
 
             if (aniObjesiDagitim == null)
             {
@@ -1825,21 +1825,21 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 aniObjesiDagitim.VerilenAlinan = ProjeConstants.ANIOBJESI_GETIRILEN_INT;
                 aniObjesiDagitim.VerilisTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
                 aniObjesiDagitim.Olusturan = UtilityHelper.GetCurrentUserName();
-                aniObjesiDagitim.Save();
+                new Model.Services.MTS.AniObjesiDagitimService().Save(aniObjesiDagitim);
 
             }
             else if (aniObjesiDagitim != null)
             {
                 aniObjesiDagitim.GetirilenAniObjesi = GetirilenAniObjesiTxt.Text;
                 aniObjesiDagitim.Degistiren = UtilityHelper.GetCurrentUserName();
-                aniObjesiDagitim.Update();
+                new Model.Services.MTS.AniObjesiDagitimService().Update(aniObjesiDagitim);
             }
 
         }
         private void KaldirilanlariSil(List<string> idList, int faaliyetId, int katilimciId)
         {
             AniObjesiDagitim aniObjesiDagitimDao = new AniObjesiDagitim();
-            List<AniObjesiDagitim> objeList = aniObjesiDagitimDao.SelectStoksuzAniObjeleriReturnList(faaliyetId, katilimciId);
+                List<AniObjesiDagitim> objeList = new Model.Services.MTS.AniObjesiDagitimService().GetStoksuz(faaliyetId, katilimciId);
 
             List<string> idList1 = objeList.Select(l => l.AniObjesiId.ToString()).ToList();
             var firstNotSecond = idList1.Except(idList).ToList();
@@ -1849,12 +1849,12 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         {
             string joined = string.Join(",", list.ToArray());
             AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-            aniObjesiDagitim.Delete(faaliyetId, katilimciId, joined);
+            new Model.Services.MTS.AniObjesiDagitimService().DeleteByActivityAndParticipant(faaliyetId, katilimciId, joined);
         }
         private string AniObjeleriniGetir(int katilimciId, int faaliyetId, string stokluMu)
         {
             AniObjesiDagitim aniobjesiDagitim = new AniObjesiDagitim();
-            DataTable dataTable = aniobjesiDagitim.SelectByKatilimcidFaaliyetId(katilimciId, faaliyetId, stokluMu);
+            DataTable dataTable = new Model.Services.MTS.AniObjesiDagitimService().GetByParticipantActivity(katilimciId, faaliyetId, stokluMu);
             string aniObjeleri = string.Empty;
 
             if (dataTable != null)
@@ -1886,7 +1886,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         private string GetirilenAniObjeleriniGetir(int katilimciId, int faaliyetId)
         {
             AniObjesiDagitim aniobjesiDagitim = new AniObjesiDagitim();
-            string aniObjeleri = aniobjesiDagitim.SelectGetirilenByKatilimcidFaaliyetId(katilimciId, faaliyetId);
+            string aniObjeleri = new Model.Services.MTS.AniObjesiDagitimService().GetGetirilenText(katilimciId, faaliyetId);
             return (aniObjeleri);
         }
 
