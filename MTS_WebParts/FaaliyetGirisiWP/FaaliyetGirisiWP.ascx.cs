@@ -2004,8 +2004,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
 
         private void TakvimDavetiHazirla(int faaliyetId,int katilimId, int katilimciId, string islemTipi)
         {
-            Katilimci katilimci = new Katilimci();
-            katilimci = katilimci.GetKatilimci(katilimciId, ProjeConstants.FAALIYET_KATILIMCI_DIS_INT);
+            Katilimci katilimci = new Model.Services.MTS.KatilimciService().GetKatilimci(katilimciId, ProjeConstants.FAALIYET_KATILIMCI_DIS_INT);
             if (katilimci != null)
             {
                 string epostaAdresi = katilimci != null ? katilimci.EPosta : string.Empty;
