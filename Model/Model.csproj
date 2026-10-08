@@ -170,6 +170,7 @@
     <Compile Include="Services\TBYS\TasinmazService.cs" />
     <Compile Include="Services\TBYS\KiraSozlesmeService.cs" />
     <Compile Include="Services\TBYS\KiraciService.cs" />
+    <Compile Include="Services\TBYS\OdemeAyristirmaService.cs" />
     <Compile Include="Services\TBYS\YasalFaizService.cs" />
     <Compile Include="Services\TBYS\SigortaService.cs" />
     <Compile Include="Services\TBYS\HukukiTakipService.cs" />
