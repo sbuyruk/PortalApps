@@ -252,5 +252,36 @@ namespace DAO.Repositories.TBYS
                 GROUP BY H.KisaAdi,B.KiralamaAmaci", yil, ay, bolgeStr);
             return db.SelectFromDb(sql, "");
         }
+        public DataTable SelectNext(int id, int dosyaNo)
+        {
+            string sql = dosyaNo > 0
+                ? string.Format("SELECT * FROM KiraSozlesme_Table WHERE Aktif=1 AND DosyaNo > {0} ORDER BY DosyaNo,Id", dosyaNo.ReturnQuotedValue())
+                : string.Format("SELECT * FROM KiraSozlesme_Table WHERE Aktif=1 AND DosyaNo IS NULL AND Id > {0} ORDER BY DosyaNo,Id", id.ReturnQuotedValue());
+            return db.SelectFromDb(sql, "");
+        }
+        public DataTable SelectPreviousByTenant(int kiraciId, string sozBasTar)
+        {
+            string sql = string.Format("SELECT * FROM KiraSozlesme_Table WHERE KiraciId={0} AND SozBastar < {1} ORDER BY SozBasTar DESC", kiraciId.ReturnQuotedValue(), sozBasTar);
+            return db.SelectFromDb(sql, "");
+        }
+        public DataTable SelectPrevious(int id, int dosyaNo)
+        {
+            string sql = dosyaNo > 0
+                ? string.Format("SELECT * FROM KiraSozlesme_Table WHERE Aktif=1 AND DosyaNo < {0} ORDER BY DosyaNo DESC,Id DESC", dosyaNo.ReturnQuotedValue())
+                : string.Format("SELECT * FROM KiraSozlesme_Table WHERE Aktif=1 AND DosyaNo IS NULL AND Id < {0} ORDER BY DosyaNo DESC,Id DESC", id.ReturnQuotedValue());
+            return db.SelectFromDb(sql, "");
+        }
+        public DataTable SelectMax()
+        {
+            return db.SelectFromDb(new SqlQuery(@"
+                SELECT * FROM KiraSozlesme_Table
+                WHERE DosyaNo=(SELECT MAX(DosyaNo) FROM KiraSozlesme_Table WHERE Aktif=1)"), "");
+        }
+        public DataTable SelectMin()
+        {
+            return db.SelectFromDb(new SqlQuery(@"
+                SELECT * FROM KiraSozlesme_Table
+                WHERE DosyaNo=(SELECT MIN(DosyaNo) FROM KiraSozlesme_Table WHERE Aktif=1 AND DosyaNo>0)"), "");
+        }
     }
 }

@@ -65,6 +65,11 @@ namespace Model.Services.TBYS
         public DataTable GetAddressById(int sozlesmeId) { return repository.SelectAddressById(sozlesmeId); }
         public DataTable GetSecurityDepositSummaryByRegionAndPurpose(int bolgeId, string kiralamaAmaci) { return repository.SelectSecurityDepositSummaryByRegionAndPurpose(bolgeId, kiralamaAmaci); }
         public DataTable GetTenantCountAndRentTotal(int bolgeId, int ay, int yil) { return repository.SelectTenantCountAndRentTotal(bolgeId, ay, yil); }
+        public KiraSozlesme GetNext(int id, int dosyaNo) { return Map(repository.SelectNext(id, dosyaNo)) ?? GetMin(); }
+        public KiraSozlesme GetPreviousByTenant(int kiraciId, DateTime sozBasTar) { return Map(repository.SelectPreviousByTenant(kiraciId, sozBasTar.ReturnTRDateFormat())); }
+        public KiraSozlesme GetPrevious(int id, int dosyaNo) { return Map(repository.SelectPrevious(id, dosyaNo)) ?? GetMax(); }
+        public KiraSozlesme GetMax() { return Map(repository.SelectMax()); }
+        public KiraSozlesme GetMin() { return Map(repository.SelectMin()); }
 
         private static List<KiraSozlesme> ToList(DataTable table)
         {
