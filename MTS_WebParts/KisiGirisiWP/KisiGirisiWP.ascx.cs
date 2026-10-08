@@ -68,7 +68,7 @@ namespace MTS_WebParts.KisiGirisiWP
                 if (KisiIdQS.ConvertToInt()>0)
                 {
                     Kisi kisi = new Kisi();
-                    kisi = kisi.Select(KisiIdQS.ConvertToInt());
+                    kisi = new Model.Services.MTS.KisiService().GetById(KisiIdQS.ConvertToInt());
                     if (kisi != null)
                     {
 
@@ -152,7 +152,7 @@ namespace MTS_WebParts.KisiGirisiWP
             {
 
                 Kisi kisi = new Kisi();
-                kisi = kisi.Select<Kisi>(KisiIdQS.ConvertToInt());
+                kisi = new Model.Services.MTS.KisiService().GetById(KisiIdQS.ConvertToInt());
                 if (kisi != null)
                 {
                     AdiTxt.Text = kisi.Adi;
@@ -285,7 +285,7 @@ namespace MTS_WebParts.KisiGirisiWP
         private bool AdSoyadVarMi(string adi, string soyadi)
         {
             Kisi kisiDao = new Kisi();
-            kisiDao = kisiDao.SelectByAdiSoyadi(adi,soyadi);
+            kisiDao = new Model.Services.MTS.KisiService().GetByName(adi, soyadi);
             if (kisiDao == null)
             {
                 return false;
@@ -303,7 +303,7 @@ namespace MTS_WebParts.KisiGirisiWP
             else
             {
                 Kisi kisiDao = new Kisi();
-                kisiDao = kisiDao.SelectByTCKimlikNo(tckimlikno);
+                kisiDao = new Model.Services.MTS.KisiService().GetByTcKimlikNo(tckimlikno);
                 if (kisiDao == null)
                 {
                     return false;
@@ -333,7 +333,7 @@ namespace MTS_WebParts.KisiGirisiWP
             try
             {
                 Kisi kisi = new Kisi();
-                kisi = kisi.Select<Kisi>(KisiIdQS.ConvertToInt());
+                kisi = new Model.Services.MTS.KisiService().GetById(KisiIdQS.ConvertToInt());
                 if (kisi != null)
                 {
                     kisi.Adi = AdiTxt.Text;
@@ -377,7 +377,7 @@ namespace MTS_WebParts.KisiGirisiWP
                 }
                 else
                 {
-                    bool guncellendiMi = kisi.Update();
+                    bool guncellendiMi = new Model.Services.MTS.KisiService().Update(kisi);
                     if (guncellendiMi)
                     {
                         RedirectToPage(ProjeConstants.PAGE_KISI_LIST+"?SecilenId="+kisi.Id);
@@ -416,7 +416,7 @@ namespace MTS_WebParts.KisiGirisiWP
             try
             {
                 Kisi kisi = new Kisi();
-                kisi = kisi.Select(KisiIdQS.ConvertToInt());
+                kisi = new Model.Services.MTS.KisiService().GetById(KisiIdQS.ConvertToInt());
                 if (kisi != null)
                 {
                     KisiyiSilPopupAc(sender, kisi);
@@ -515,10 +515,10 @@ namespace MTS_WebParts.KisiGirisiWP
             try
             {
                 Kisi kisi = new Kisi();
-                kisi = kisi.Select(KisiIdQS.ConvertToInt());
+                kisi = new Model.Services.MTS.KisiService().GetById(KisiIdQS.ConvertToInt());
                 if (kisi != null)
                 {
-                    silindi = kisi.Delete();
+                    silindi = new Model.Services.MTS.KisiService().Delete(kisi);
                     RedirectToPage(ProjeConstants.PAGE_KISI_LIST);
                 }
                 if (!silindi)
@@ -540,7 +540,7 @@ namespace MTS_WebParts.KisiGirisiWP
             try
             {
                 Kisi kisi = new Kisi();
-                kisi = kisi.Select(KisiIdQS.ConvertToInt());
+                kisi = new Model.Services.MTS.KisiService().GetById(KisiIdQS.ConvertToInt());
                 if (kisi != null)
                 {
                     FaaliyetGirisiPopupAc(sender);
@@ -607,7 +607,7 @@ namespace MTS_WebParts.KisiGirisiWP
                         {
                             string kurumGorevStr = string.Empty;
                             Kisi kisi = new Kisi();
-                            kisi = kisi.Select(KisiIdQS.ConvertToInt());
+                            kisi = new Model.Services.MTS.KisiService().GetById(KisiIdQS.ConvertToInt());
                             if (kisi != null)
                             {
                                 MTSKurumGorev kurumGorev = new MTSKurumGorev();

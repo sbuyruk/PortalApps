@@ -114,7 +114,7 @@ namespace MTS_WebParts.KisiListesiWP
 
             Kisi kisi = new Kisi();
 
-            System.Data.DataTable dataTable = kisi.SelectAllReturnDT();
+            System.Data.DataTable dataTable = new Model.Services.MTS.KisiService().GetAllData();
             int SiraNo = 1;
 
             List<KisiListItem> list = new List<KisiListItem>();

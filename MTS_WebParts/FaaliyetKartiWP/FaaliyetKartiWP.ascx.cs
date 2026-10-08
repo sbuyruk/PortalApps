@@ -80,7 +80,7 @@ namespace MTS_WebParts.FaaliyetKartiWP
                 TableCell getirilenAniObjesiCell = new TableCell();
                 ////////////////
                 Kisi kisi = new Kisi();
-                kisi = kisi.Select<Kisi>(item.KatilimciId);
+                kisi = new Model.Services.MTS.KisiService().GetById(item.KatilimciId);
                 if (kisi != null)
                 {
                     katilimciAdiSoyadiCell.Text = kisi.Adi + " " + kisi.Soyadi;
