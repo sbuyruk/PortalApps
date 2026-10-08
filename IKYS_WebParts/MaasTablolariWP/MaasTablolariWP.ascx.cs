@@ -68,7 +68,6 @@ namespace IKYS_WebParts.MaasTablolariWP
         #region Methods
         private void UcretTanimTablosunuDoldur(int grupId,int kademe, Table table)
         {
-            int sira = 1;
             UcretTanim ucretTanim = new UcretTanim();
             List<UcretTanim> list = new UcretTanimService().GetByKademe(grupId, kademe);
             TableRow row = new TableRow();

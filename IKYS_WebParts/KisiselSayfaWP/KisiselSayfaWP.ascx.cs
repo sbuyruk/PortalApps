@@ -495,7 +495,6 @@ namespace IKYS_WebParts.KisiselSayfaWP
 
                 UcretliIzinDonemleriTableHeaders();
                 bool printOnce = !AuthQS.Equals("IKYS");
-                bool printed = false;
                 foreach (IzinDonem izinDonemi in izinDonemiList)
                 {
                     //if (printOnce && printed)//standart kullanici ise sadece ilk dönemi bas

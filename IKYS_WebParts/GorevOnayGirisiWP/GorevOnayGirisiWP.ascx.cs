@@ -1013,7 +1013,6 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     //ikinci serinin harcirah hesabini yap
                     int gun2 = 0;
                     int saat2 = 0;
-                    int dakika2 = 0;
                     DateTime basTar2 = bitisHarcirah.BaslangicTarihi;
                     DateTime bitTar2 = BitisTarihiTxt.Text.ConvertToDatetime();
 

@@ -9,7 +9,6 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace IKYS_WebParts.HarcirahGirisWP
