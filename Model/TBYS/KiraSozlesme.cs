@@ -148,64 +148,7 @@ namespace Model.TBYS
         }
         public DataTable SelectKiraciSayisiByBolgeTarih(int bolgeId, int ay, int yil)
         {
-            DateTime ayinIlkGunu = new DateTime(yil, ay, 1);
-            DateTime ayinSonGunu = ayinIlkGunu.AddMonths(1).AddDays(-1);
-
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND A.BolgeId={0} ", bolgeId);
-
-
-            string odemePlaniStr = string.Format(@"
-                (
-                    C.Id in 
-                    (
-                        SELECT Id FROM OdemePlani_Table WHERE A.TaksitSayisi>1 AND VadeBitTar BETWEEN {0} AND {1}
-                    )
-					OR 
-                    C.Id in
-				    (
-					   SELECT Id FROM OdemePlani_Table 
-                        WHERE A.TaksitSayisi < 2 
-                            AND 
-                            (
-                                (C.VadeBitTar BETWEEN {0} AND {1} )
-						        AND 
-                                (ABS(FaizliBakiye/A.KiraBedeli)*C.Sira >= 0.5 )
-                            )
-					)
-				)
-                ", ayinIlkGunu.ReturnTRDateFormat(), ayinSonGunu.ReturnDDMMYYYFormat());
-            string sqlString = string.Format(@"
-                SELECT --COUNT(A.Id) Adet
-                    A.Id KiraSozlesmeId,H.KisaAdi Bolge,A.BolgeId,  A.DosyaNo, B.Adi+' '+B.Soyadi Kiraci, E.Adres + ' ' + ISNULL(F.BolumNo,'') Adres, 
-                    A.IlkSozlesmeTar, A.SozBasTar, A.SozBitTar, A.ArtisAyi, A.OdemeSekli, 
-                    A.KiraBedeli, C.AnaPara AnaPara,C.FaizTutari, C.FaizliBakiye, C.VadeBasTar, C.VadeBitTar, 
-                    E.KullanimSekli,E.Ili,E.Ilcesi,
-                    A.TeminatOdemeTarihi, A.TeminatTutari, A.OdenenTeminatTutari, A.IadeTeminatTutari, A.KalanTeminatTutari,
-                    ABS(FaizliBakiye/(A.KiraBedeli/12))*C.Sira/(A.KiraBedeli/12) AySayisi, A.TaksitSayisi, A.OdemeSekli,B.KiralamaAmaci
-                FROM KiraSozlesme_Table A
-                    INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId
-                    INNER JOIN Bolge_Table H ON H.Id=A.BolgeId
-                    LEFT JOIN OdemePlani_Table C ON C.SozlesmeId=A.Id AND {3} 
-                    LEFT JOIN SozlesmeTasinmaz_Table D On D.SozlesmeId=A.Id AND D.Id = (Select top 1 Id from SozlesmeTasinmaz_Table where SozlesmeId = A.Id) 
-                    LEFT JOIN Tasinmaz_Table E On E.Id=D.TasinmazId
-                    LEFT JOIN BagimsizBolum_Table F On F.Id=D.BolumId
-                WHERE 1>0
-	                {0}    
-                    AND ( 
-                        A.SozBasTar<{2} AND A.SozBitTar >= {1} 
-						AND 
-							(
-								A.SozlesmeDurumu = 'Devam Ediyor' --hala devam edenler
-								OR
-								(A.SozlesmeDurumu != 'Devam Ediyor' AND A.SozlesmeDurumu != 'Yenilendi' AND A.DurumDegismeTar BETWEEN {1} AND {2}) --bu ay durumu degismis olanlar
-        						OR 
-		        				(A.SozlesmeDurumu='Yenilendi' AND A.SozBitTar>{2}) --sonOdemeTar dan sonra (önündeki aylarda) yenilenenler.. aslinda A.SozlesmeDurumu != 'Devam Ediyor' daha dogru olabilir
-					        )
-                    )
-                ORDER BY A.BolgeId,A.DosyaNo,B.Adi
-                ", bolgeStr, ayinIlkGunu.ConvertToDatetimeEmptyIfNull().ReturnQuotedValue(), ayinSonGunu.ConvertToDatetimeEmptyIfNull().ReturnQuotedValue(),odemePlaniStr);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
+            return new KiraSozlesmeService().GetTenantCountByRegionAndDate(bolgeId, ay, yil);
 
         }
         public DataTable SelectKiraSozlesmeListReturnDT(int kiraciId, int aktif, int bolgeId)
@@ -248,18 +191,7 @@ namespace Model.TBYS
 
         public List<KiraSozlesme> SelectByKiraciAdi(string adi)
         {
-            string sqlString = string.Format(@"	
-                SELECT DosyaNo, Adi + Soyadi, COUNT(Adi + Soyadi)
-                FROM KiraSozlesme_Table A
-	                INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId
-                WHERE A.KiraciId > 0 AND B.Adi ={0}
-                GROUP BY DosyaNo, Adi + Soyadi
-                HAVING COUNT(Adi + Soyadi)>1
-                ", adi.ReturnQuotedValue());
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-            return list;
+            return new KiraSozlesmeService().GetByKiraciAdi(adi);
         }
 
         public KiraSozlesme SelectAktifSozlesmeByKiraciId(int kiraciId)
@@ -373,42 +305,7 @@ namespace Model.TBYS
         /// </summary>
         public DataTable SelectDevirGerekenAktifSozlesmelerReturnDT()
         {
-            string sqlString = @"
-                SELECT
-                    A.Id            AS SozlesmeId,
-                    A.DosyaNo,
-                    A.KiraciId,
-                    K.Adi + ' ' + K.Soyadi AS KiraciAdi,
-                    A.SozBasTar,
-                    A.SozBitTar,
-                    A.KiraBedeli,
-                    A.DevirAnaPara,
-                    A.DevirFaizTutari,
-                    A.DevirFaizliBakiye,
-                    OP.AnaPara      AS SonAnaPara,
-                    OP.FaizliBakiye AS SonFaizliBakiye
-                FROM KiraSozlesme_Table A
-                INNER JOIN Kiraci_Table K ON K.Id = A.KiraciId
-                -- Önceki sözlesme: ayni kiraciya ait, baslangiç tarihi daha eski
-                CROSS APPLY (
-                    SELECT TOP 1 Id
-                    FROM KiraSozlesme_Table
-                    WHERE KiraciId = A.KiraciId
-                      AND SozBasTar < A.SozBasTar
-                    ORDER BY SozBasTar DESC
-                ) AS OncekiSoz
-                -- Önceki sözlesmenin MAX(Sira) ödeme plani satiri
-                CROSS APPLY (
-                    SELECT TOP 1 AnaPara, FaizliBakiye
-                    FROM OdemePlani_Table
-                    WHERE SozlesmeId = OncekiSoz.Id
-                    ORDER BY Sira DESC
-                ) AS OP
-                WHERE A.Aktif = 1
-                  AND (OP.AnaPara != A.DevirAnaPara OR OP.FaizliBakiye != A.DevirFaizliBakiye)
-                ORDER BY A.DosyaNo, A.Id";
-
-            return dao.SelectFromDb(sqlString, "");
+            return new KiraSozlesmeService().GetTransferRequiredActiveContracts();
         }
 
     }
