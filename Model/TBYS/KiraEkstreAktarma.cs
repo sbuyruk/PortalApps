@@ -41,105 +41,23 @@ namespace Model.TBYS
 
         public override int Save()
         {
-            try
-            {
-                GenericEntity<KiraEkstreAktarma> genericEntity = new GenericEntity<KiraEkstreAktarma>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                Olusturan = UtilityHelper.GetCurrentUserName();
-                SqlQuery query = genericEntity.GetQueryParametreli(this);
-                int id = dao.Insert(query);
-
-                this.Id = id;
-                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRAEKSTREAKTARMA);
-                }
-                return id;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return new KiraEkstreAktarmaService().Save(this);
         }
         public override bool Update()
         {
-            bool isSuccess = false;
-            try
-            {
-                if (this != null)
-                {
-                    KiraEkstreAktarma item = Select<KiraEkstreAktarma>(Id);
-                    if (Id != 0)
-                    {
-                        GenericEntity<KiraEkstreAktarma> genericEntity = new GenericEntity<KiraEkstreAktarma>(ProjeConstants.SQL_UPDATE);
-                        DegistirmeTarihi = DateTime.Now;
-                        Degistiren = UtilityHelper.GetCurrentUserName();
-                        SqlQuery query = genericEntity.GetQueryParametreli(this);
-                        isSuccess = dao.Update2Db(query);
-                    }
-                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRAEKSTREAKTARMA);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
+            return new KiraEkstreAktarmaService().Update(this);
         }
         public override bool Delete()
         {
-            try
-            {
-                bool isDeleted = false;
-                if (Id != 0)
-                {
-                    GenericEntity<KiraEkstreAktarma> genericEntity = new GenericEntity<KiraEkstreAktarma>(ProjeConstants.SQL_DELETE);
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    KiraEkstreAktarma item = Select<KiraEkstreAktarma>(Id);
-                    if (item != null)
-                    {
-                        isDeleted = dao.DeleteFromDb(query, "");
-                    }
-                    else isDeleted = false;
-                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRAEKSTREAKTARMA);
-                    }
-                }
-                return isDeleted;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return new KiraEkstreAktarmaService().Delete(this);
         }
         public override T Select<T>(int id)
         {
-            SqlQuery query = new SqlQuery(@"SELECT *
-                               FROM KiraEkstreAktarma_Table 
-                               WHERE  Id=@Id");
-            query.AddParameter("@Id", id);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<KiraEkstreAktarma> list = ToList<KiraEkstreAktarma>(dataTable);
-            KiraEkstreAktarma kiraEkstreAktarma = new KiraEkstreAktarma();
-            kiraEkstreAktarma = list.FirstOrDefault();
-            return (T)Convert.ChangeType(kiraEkstreAktarma, typeof(T));
+            return (T)Convert.ChangeType(new KiraEkstreAktarmaService().GetById(id), typeof(T));
         }
         public override List<T> SelectAll<T>()
         {
-            SqlQuery query = new SqlQuery(@"SELECT *
-                               FROM KiraEkstreAktarma_Table");
-
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<KiraEkstreAktarma> list = ToList<KiraEkstreAktarma>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+            return (List<T>)Convert.ChangeType(new KiraEkstreAktarmaService().GetAll(), typeof(List<T>));
         }
         public string GetInsertSQL(string extId)
         {
@@ -191,14 +109,7 @@ namespace Model.TBYS
         }
         public List<KiraEkstreAktarma> SelectKiraciIdByAdi(string adi)
         {
-            SqlQuery query = new SqlQuery(@"
-                SELECT *
-                FROM KiraEkstreAktarma_Table 
-                WHERE  KiraciId > 0 AND Adi = @Adi");
-            query.AddParameter("@Adi", adi);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<KiraEkstreAktarma> list = ToList<KiraEkstreAktarma>(dataTable);
-            return (list);
+            return new KiraEkstreAktarmaService().GetByKiraciAdi(adi);
         }
         public List<KiraEkstreAktarma> SelectByIdList(string idListStr)
         {
@@ -230,30 +141,11 @@ namespace Model.TBYS
         }
         public List<KiraEkstreAktarma> SelectByIslemNo(string islemNo)
         {
-            SqlQuery query = new SqlQuery(@"SELECT *
-                               FROM KiraEkstreAktarma_Table 
-                               WHERE  IslemNo=@IslemNo");
-            query.AddParameter("@IslemNo", islemNo);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<KiraEkstreAktarma> list = ToList<KiraEkstreAktarma>(dataTable);
-            return (list);
+            return new KiraEkstreAktarmaService().GetByIslemNo(islemNo);
         }
         public List<KiraEkstreAktarma> SelectByColumns(string adi, string soyadi, decimal tutar, DateTime odemeTarihi)
         {
-            SqlQuery query = new SqlQuery(@"
-                SELECT *
-                FROM KiraEkstreAktarma_Table 
-                WHERE  Adi=@Adi 
-                    AND Soyadi=@Soyadi
-                    AND Tutar=@Tutar
-                    AND OdemeTarihi=@OdemeTarihi");
-            query.AddParameter("@Adi", adi);
-            query.AddParameter("@Soyadi", soyadi);
-            query.AddParameter("@Tutar", tutar);
-            query.AddParameter("@OdemeTarihi", odemeTarihi);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<KiraEkstreAktarma> list = ToList<KiraEkstreAktarma>(dataTable);
-            return (list);
+            return new KiraEkstreAktarmaService().GetByColumns(adi, soyadi, tutar, odemeTarihi);
         }
         public List<KiraEkstreAktarma> SelectByEkstreIdList(string idListStr, ref int rowCount)
         {
