@@ -13,6 +13,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Model.Services.MTS;
 
 namespace MTS_WebParts.AramaGorusmeListesiWP
 {
@@ -191,9 +192,9 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
             DateTime bitis = BitisTarihiTxt.Text.ConvertToDatetime();
             bitis = UtilityHelper.TariheSaatEkle(bitis, "23:59");
             BaslikLbl.InnerText = BaslangicTarihiTxt.Text + " - " + BitisTarihiTxt.Text + "Tarihleri Arasinda Yapilan Arama/Görüsmeler";
-            AramaGorusme arama = new AramaGorusme();
+            AramaGorusmeService aramaService = new AramaGorusmeService();
 
-            DataTable dataTable = arama.SelectAllReturnDT(ArayanIdQS.ConvertToInt(), GorusmeSekliDDL.SelectedItem.Value,
+            DataTable dataTable = aramaService.GetByFilter(ArayanIdQS.ConvertToInt(), GorusmeSekliDDL.SelectedItem.Value,
                 BaslangicTarihiTxt.Text.ConvertToDatetime(), bitis);
 
             List<AramaListItem> list = new List<AramaListItem>();
@@ -229,8 +230,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
                     if (faaliyetId > 0)
                     {
                         aramaItem.FaaliyetId = faaliyetId.ToString();
-                        Faaliyet faaliyet = new Faaliyet();
-                        faaliyet = faaliyet.Select(faaliyetId);
+                        Faaliyet faaliyet = new FaaliyetService().GetById(faaliyetId);
                         if (faaliyet != null)
                         {
                             string acikTarihli = faaliyet.AcikTarih ? " (Açik)" : string.Empty;

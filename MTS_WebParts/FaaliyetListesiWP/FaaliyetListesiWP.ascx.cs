@@ -11,6 +11,7 @@ using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 using Model.Ortak;
+using Model.Services.MTS;
 
 namespace MTS_WebParts.FaaliyetListesiWP
 {
@@ -102,9 +103,9 @@ namespace MTS_WebParts.FaaliyetListesiWP
             DateTime bastar = BaslangicTarihiTxt.Text.ConvertToDatetime();
             DateTime bittar = BitisTarihiTxt.Text.ConvertToDatetime();
             List<FaaliyetListItem> faaliyetList = new List<FaaliyetListItem>();
-            Faaliyet faaliyetDao = new Faaliyet();
+            FaaliyetService faaliyetService = new FaaliyetService();
             string acikTarihli = AcikTarhliChk.Checked ? ProjeConstants.HEPSI : ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL;
-            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT, acikTarihli, bastar,bittar, ProjeConstants.HEPSI);
+            DataTable dataTable = faaliyetService.GetParticipantList(ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT, acikTarihli, bastar, bittar, ProjeConstants.HEPSI);
 
             if (dataTable != null)
             {

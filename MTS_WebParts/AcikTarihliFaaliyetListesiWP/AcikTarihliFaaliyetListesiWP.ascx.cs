@@ -11,6 +11,7 @@ using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 using Model.Ortak;
+using Model.Services.MTS;
 
 namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP
 {
@@ -116,8 +117,8 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP
 
             faaliyetAmaciIdStr =string.IsNullOrEmpty(faaliyetAmaciIdStr)?string.Empty:"("+ faaliyetAmaciIdStr +")";
             List<FaaliyetListItem> faaliyetList = new List<FaaliyetListItem>();
-            Faaliyet faaliyetDao = new Faaliyet();
-            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT, ProjeConstants.FAALIYET_ACIKTARIHLI,ProjeConstants.NULL_TARIH,ProjeConstants.NULL_TARIH, faaliyetAmaciIdStr);
+            FaaliyetService faaliyetService = new FaaliyetService();
+            DataTable dataTable = faaliyetService.GetParticipantList(ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT, ProjeConstants.FAALIYET_ACIKTARIHLI, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH, faaliyetAmaciIdStr);
 
             if (dataTable != null)
             {
