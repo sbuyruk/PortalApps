@@ -9,6 +9,7 @@ namespace DAO.Repositories.TBYS
     public class KiraSozlesmeRepository
     {
         private readonly DbClass db;
+        private readonly CrudQueryBuilder queryBuilder;
 
         public KiraSozlesmeRepository() : this(new DbClass()) { }
 
@@ -16,6 +17,7 @@ namespace DAO.Repositories.TBYS
         {
             if (db == null) throw new ArgumentNullException("db");
             this.db = db;
+            queryBuilder = new CrudQueryBuilder();
         }
 
         public DataTable SelectById(int id)
@@ -39,6 +41,9 @@ namespace DAO.Repositories.TBYS
                 WHERE Aktif=1
                 ORDER BY CASE WHEN DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(DosyaNo,999999)"), "");
         }
+        public int Insert<T>(T entity) { return db.Insert(queryBuilder.BuildInsert(entity, "KiraSozlesme_Table")); }
+        public bool Update<T>(T entity) { return db.Update2Db(queryBuilder.BuildUpdate(entity, "KiraSozlesme_Table")); }
+        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("KiraSozlesme_Table", id), ""); }
         public DataTable SelectListReturnDataTable(int kiraciId, int aktif, int bolgeId)
         {
             string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND S.BolgeId={0} ", bolgeId);

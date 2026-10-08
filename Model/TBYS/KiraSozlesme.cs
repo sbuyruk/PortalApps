@@ -58,83 +58,15 @@ namespace Model.TBYS
       
         public override int Save()
         {
-            try
-            {
-                GenericEntity<KiraSozlesme> genericEntity = new GenericEntity<KiraSozlesme>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                Olusturan = UtilityHelper.GetCurrentUserName();
-                SqlQuery query = genericEntity.GetQueryParametreli(this);
-                int id = dao.Insert(query);
-
-                this.Id = id;
-                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRASOZLESME);
-                }
-                return id;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return new KiraSozlesmeService().Save(this);
         }
         public override bool Update()
         {
-            bool isSuccess = false;
-            try
-            {
-                if (this != null)
-                {
-                    KiraSozlesme item = Select<KiraSozlesme>(Id);
-                    if (Id != 0)
-                    {
-                        GenericEntity<KiraSozlesme> genericEntity = new GenericEntity<KiraSozlesme>(ProjeConstants.SQL_UPDATE);
-                        DegistirmeTarihi = DateTime.Now;
-                        Degistiren = UtilityHelper.GetCurrentUserName();
-                        SqlQuery query = genericEntity.GetQueryParametreli(this);
-                        isSuccess = dao.Update2Db(query);
-                    }
-                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRASOZLESME);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
+            return new KiraSozlesmeService().Update(this);
         }
         public override bool Delete()
         {
-            try
-            {
-                bool isDeleted = false;
-                if (Id != 0)
-                {
-                    GenericEntity<KiraSozlesme> genericEntity = new GenericEntity<KiraSozlesme>(ProjeConstants.SQL_DELETE);
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    KiraSozlesme item = Select<KiraSozlesme>(Id);
-                    if (item != null)
-                    {
-                        isDeleted = dao.DeleteFromDb(query, "");
-                    }
-                    else isDeleted = false;
-                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRASOZLESME);
-                    }
-                }
-                return isDeleted;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return new KiraSozlesmeService().Delete(this);
         }
         public override List<T> SelectAll<T>()
         {
