@@ -271,7 +271,6 @@
     <Compile Include="TBYS\Onarim.cs" />
     <Compile Include="TBYS\Sigorta.cs" />
     <Compile Include="TBYS\SozlesmeTasinmaz.cs" />
-    <Compile Include="TBYS\TBYSModelCompatibilityExtensions.cs" />
     <Compile Include="TBYS\Tasinmaz.cs" />
     <Compile Include="TBYS\TasinmazBagisci.cs" />
     <Compile Include="TBYS\TBYSOrtak.cs" />
