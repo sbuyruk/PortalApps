@@ -280,37 +280,7 @@ namespace Model.TBYS
         }
         public KiraSozlesme SelectEnYakinTarihliSozlesmeByKiraciIdTarih(int kiraciId, DateTime tarih)
         {
-            //ödeme tarihinden sonra yapilmis bir sözlesme var mi
-            KiraSozlesme kiraSozlesme = null;
-            string sqlString = string.Format(@"
-                SELECT  *
-                FROM KiraSozlesme_Table
-                WHERE KiraciId={0} AND SozBitTar >= {1} 
-                ORDER BY SozBasTar ", kiraciId.ReturnQuotedValue(), tarih.ReturnTRDateFormat());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-                KiraSozlesme sonrakiIlkKiraSozlesmesi = list.FirstOrDefault();
-                kiraSozlesme= sonrakiIlkKiraSozlesmesi;
-            }
-            else //ödeme tarihinden önce yapilmis bir sözlesme var mi
-            {
-                sqlString = string.Format(@"
-                SELECT  *
-                FROM KiraSozlesme_Table
-                WHERE KiraciId={0} AND SozBasTar < {1} 
-                ORDER BY SozBasTar DESC ", kiraciId.ReturnQuotedValue(), tarih.ReturnTRDateFormat());
-                dataTable = dao.SelectFromDb(sqlString, "");
-                if (dataTable != null)
-                {
-                    List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-                    KiraSozlesme oncekiIlkKiraSozlesmesi = list.FirstOrDefault();
-                    kiraSozlesme= oncekiIlkKiraSozlesmesi;
-                }
-                    
-            }
-            return kiraSozlesme;
+            return new KiraSozlesmeService().GetNearestByKiraciIdAndDate(kiraciId, tarih);
         }
         public KiraSozlesme SelectBitenSozlesmeByKiraciId(int kiraciId)
         {
@@ -339,93 +309,19 @@ namespace Model.TBYS
         }
         public List<KiraSozlesme> SelectByTasinmazId(int tasinmazId)
         {
-            string sqlString = string.Format(@"
-                SELECT A.*
-                    FROM KiraSozlesme_Table A
-                    LEFT OUTER JOIN SozlesmeTasinmaz_Table B ON B.SozlesmeId=A.Id
-                    LEFT OUTER JOIN Bagis_Table C ON C.TasinmazId=B.TasinmazId
-                WHERE A.Aktif=1 AND B.TasinmazId={0}
-                ORDER BY B.TasinmazId", tasinmazId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-                return list;
-            }
-            else
-            {
-                return null;
-            }
-
+            return new KiraSozlesmeService().GetByTasinmazId(tasinmazId);
         }
         public DataTable SelectBySozlesmeId(int sozlesmeId)
         {
-            string sqlString = string.Format(@"
-                SELECT A.Id,C.Adres,C.Ili,C.Ilcesi
-                FROM KiraSozlesme_Table A
-	                LEFT JOIN SozlesmeTasinmaz_Table B On B.SozlesmeId=A.Id
-	                LEFT JOIN Tasinmaz_Table C On C.Id=B.TasinmazId
-                WHERE A.Id= {0}
-                ", sozlesmeId.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
-
+            return new KiraSozlesmeService().GetAddressById(sozlesmeId);
         }
         public DataTable SelectSUMTeminatByBolgeKiralamaAmaciReturnDT(int bolgeId, string kiralamaAmaci)
         {
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND A.BolgeId={0} ", bolgeId);
-
-            string kiralamaAmaciStr = string.IsNullOrEmpty(kiralamaAmaci) || kiralamaAmaci.Equals(ProjeConstants.HEPSI) ? "" : " AND KiralamaAmaci=" + kiralamaAmaci.ReturnQuotedValue();
-            string sqlString = string.Format(@"				
-				SELECT BolgeId,  B.KiralamaAmaci, COUNT(A.Id) Adet, SUM(TeminatTutari) TeminatTutari, SUM(KalanTeminatTutari) KalanTeminatTutari
-                FROM KiraSozlesme_Table A
-					INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId
-                WHERE A.Aktif=1
-                    {0}
-                    {1}
-                GROUP BY A.BolgeId, B.KiralamaAmaci
-                ORDER BY BolgeId", bolgeStr, kiralamaAmaciStr);
-
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            return dataTable;
+            return new KiraSozlesmeService().GetSecurityDepositSummaryByRegionAndPurpose(bolgeId, kiralamaAmaci);
         }
         public DataTable SelectKiraciSayisiVeToplamKiraBedeli(int bolgeId, int ay, int yil)
         {
-            DateTime ayinIlkGunu = new DateTime(yil, ay, 1);
-            DateTime ayinSonGunu = ayinIlkGunu.AddMonths(1).AddDays(-1);
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND C.BolgeId={0} ", bolgeId);
-
-            string sqlString = string.Format(@"
-				SELECT H.KisaAdi Bolge,B.KiralamaAmaci,
-                    SUM(D.KiraBedeli) + (SUM(D.FaizTutari)*-1) Tahakkuk, --FaizliTahakkuk, 
-                    --SUM(D.KiraBedeli) + (SUM(D.Anapara)*-1) + (SUM(D.FaizTutari)*-1) Tahakkuk, --FaizliTahakkuk, 
-                    --SUM(D.KiraBedeli) + (SUM(IIF(D.FaizTutari>0,0,D.FaizTutari))*-1)  + (SUM(IIF(D.AnaPara>0,0,D.Anapara))*-1) Tahakkuk, --FaizliTahakkuk, 
-                    SUM(A.OdenenTutar) Tahsil, 
-                    COUNT(DISTINCT(C.ID)) KiraciSayisi , 
-                    COUNT(DISTINCT(A.KiraciId)) OdeyenKiraci
-				FROM Odeme_Table A
-					INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId 
-					INNER JOIN KiraSozlesme_Table C ON C.Id=A.SozlesmeId
-					INNER JOIN OdemePlani_Table D ON D.Id=A.OdemePlaniId
-					LEFT JOIN TeminatIslem_Table E ON E.OdemeId=A.Id
-					LEFT JOIN Bolge_Table H ON H.Id=C.BolgeId
-                WHERE  
-                    YEAR(A.OdemeTarihi) ={0}
-                    AND MONTH(A.OdemeTarihi) ={1}
-                    {4}
-                Group By H.KisaAdi,B.KiralamaAmaci
-            ", yil, ay, ayinIlkGunu.ReturnTRDateFormat(), ayinSonGunu.ReturnTRDateFormat(), bolgeStr);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable;
+            return new KiraSozlesmeService().GetTenantCountAndRentTotal(bolgeId, ay, yil);
 
         }
         public KiraSozlesme SelectNext()

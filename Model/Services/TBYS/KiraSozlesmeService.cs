@@ -60,7 +60,16 @@ namespace Model.Services.TBYS
         public List<KiraSozlesme> GetAllByKiraciId(int kiraciId) { return new KiraSozlesme().ToList<KiraSozlesme>(repository.SelectAllByKiraciId(kiraciId)); }
         public KiraSozlesme GetByKiraciIdAndDate(int kiraciId, DateTime tarih) { return Map(repository.SelectByKiraciIdAndDate(kiraciId, tarih.ReturnTRDateFormat())); }
         public KiraSozlesme GetCompletedByKiraciId(int kiraciId) { return Map(repository.SelectCompletedByKiraciId(kiraciId)); }
+        public KiraSozlesme GetNearestByKiraciIdAndDate(int kiraciId, DateTime tarih) { return Map(repository.SelectNearestByKiraciIdAndDate(kiraciId, tarih.ReturnTRDateFormat())); }
+        public List<KiraSozlesme> GetByTasinmazId(int tasinmazId) { return ToList(repository.SelectByTasinmazId(tasinmazId)); }
+        public DataTable GetAddressById(int sozlesmeId) { return repository.SelectAddressById(sozlesmeId); }
+        public DataTable GetSecurityDepositSummaryByRegionAndPurpose(int bolgeId, string kiralamaAmaci) { return repository.SelectSecurityDepositSummaryByRegionAndPurpose(bolgeId, kiralamaAmaci); }
+        public DataTable GetTenantCountAndRentTotal(int bolgeId, int ay, int yil) { return repository.SelectTenantCountAndRentTotal(bolgeId, ay, yil); }
 
+        private static List<KiraSozlesme> ToList(DataTable table)
+        {
+            return new KiraSozlesme().ToList<KiraSozlesme>(table);
+        }
         private static KiraSozlesme Map(DataTable table)
         {
             return new KiraSozlesme().ToList<KiraSozlesme>(table).FirstOrDefault();
