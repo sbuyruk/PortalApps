@@ -52,6 +52,8 @@ namespace Model.Services.TBYS
             DateTime bitis = new DateTime(DateTime.Today.AddYears(1).Year, 12, 31);
             return repository.SelectRealizedRentIncreases(bolgeId, baslangic.ReturnTRDateFormat(), bitis.ReturnTRDateFormat());
         }
+        public DataTable GetListByYear(int yil) { return repository.SelectListByYear(yil); }
+        public DataTable GetCompletedListByYear(int yil) { return repository.SelectCompletedListByYear(yil); }
 
         private static KiraSozlesme Map(DataTable table)
         {
