@@ -26,135 +26,36 @@ namespace Model.TBYS
 
         public override T Select<T>(int id)
         {
-            SqlQuery query = new SqlQuery(@"SELECT *
-                               FROM BagimsizBolum_Table 
-                               WHERE  Id=@Id");
-            query.AddParameter("@Id", id);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<BagimsizBolum> list = ToList<BagimsizBolum>(dataTable);
-            BagimsizBolum bagimsizBolum = new BagimsizBolum();
-            bagimsizBolum = list.FirstOrDefault();
-            return (T)Convert.ChangeType(bagimsizBolum, typeof(T));
+            return (T)Convert.ChangeType(new BagimsizBolumService().GetById(id), typeof(T));
 
         }
         public override int Save()
         {
-            try
-            {
-                GenericEntity<BagimsizBolum> genericEntity = new GenericEntity<BagimsizBolum>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                Olusturan = UtilityHelper.GetCurrentUserName();
-                SqlQuery query = genericEntity.GetQueryParametreli(this);
-                int id = dao.Insert(query);
-
-                this.Id = id;
-                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
-                {
-                    OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_BAGIMSIZBOLUM);
-                }
-                return id;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return new BagimsizBolumService().Save(this);
         }
         public override bool Update()
         {
-            bool isSuccess = false;
-            try
-            {
-                if (this != null)
-                {
-                    BagimsizBolum item = Select<BagimsizBolum>(Id);
-                    if (Id != 0)
-                    {
-                        GenericEntity<BagimsizBolum> genericEntity = new GenericEntity<BagimsizBolum>(ProjeConstants.SQL_UPDATE);
-                        DegistirmeTarihi = DateTime.Now;
-                        Degistiren = UtilityHelper.GetCurrentUserName();
-                        SqlQuery query = genericEntity.GetQueryParametreli(this);
-                        isSuccess = dao.Update2Db(query);
-                    }
-                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_BAGIMSIZBOLUM);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
+            return new BagimsizBolumService().Update(this);
         }
         public override bool Delete()
         {
-            try
-            {
-                bool isDeleted = false;
-                if (Id != 0)
-                {
-                    GenericEntity<BagimsizBolum> genericEntity = new GenericEntity<BagimsizBolum>(ProjeConstants.SQL_DELETE);
-                    SqlQuery query = genericEntity.GetQueryParametreli(this);
-                    BagimsizBolum item = Select<BagimsizBolum>(Id);
-                    if (item != null)
-                    {
-                        isDeleted = dao.DeleteFromDb(query, "");
-                    }
-                    else isDeleted = false;
-                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_BAGIMSIZBOLUM);
-                    }
-                }
-                return isDeleted;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return new BagimsizBolumService().Delete(this);
         }
         public override List<T> SelectAll<T>()
         {
-            SqlQuery query = new SqlQuery(@"SELECT *
-                               FROM BagimsizBolum_Table");
-
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<BagimsizBolum> list = ToList<BagimsizBolum>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+            return (List<T>)Convert.ChangeType(new BagimsizBolumService().GetAll(), typeof(List<T>));
         }
         public List<BagimsizBolum> SelectByTasinmazId(int tasinmazId)
         {
-            SqlQuery query = new SqlQuery(@"SELECT * FROM BagimsizBolum_Table
-                              WHERE TasinmazId=@TasinmazId");
-            query.AddParameter("@TasinmazId", tasinmazId);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<BagimsizBolum> list = ToList<BagimsizBolum>(dataTable);
-            return list;
+            return new BagimsizBolumService().GetByTasinmazId(tasinmazId);
         }
         public List<BagimsizBolum> SelectByBolumNO(string bolumNo)
         {
-            SqlQuery query = new SqlQuery(@"SELECT * FROM BagimsizBolum_Table
-                              WHERE bolumNo=@BolumNo");
-            query.AddParameter("@BolumNo", bolumNo);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<BagimsizBolum> list = ToList<BagimsizBolum>(dataTable);
-            return list;
+            return new BagimsizBolumService().GetByBolumNo(bolumNo);
         }
         public BagimsizBolum SelectByBolumId(int bolumId)
         {
-            SqlQuery query = new SqlQuery(@"SELECT * FROM BagimsizBolum_Table
-                              WHERE bolumId=@BolumId");
-            query.AddParameter("@BolumId", bolumId);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            List<BagimsizBolum> list = ToList<BagimsizBolum>(dataTable);
-            BagimsizBolum bolum = new BagimsizBolum();
-            bolum = list.FirstOrDefault();
-            return bolum;
+            return new BagimsizBolumService().GetByBolumId(bolumId);
         }
     }
 }
