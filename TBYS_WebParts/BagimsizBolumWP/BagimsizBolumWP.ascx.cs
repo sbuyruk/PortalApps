@@ -401,7 +401,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
             bagimsizBolum.EmlakBeyanDegeri = EmlakBeyanDegeriTxt.Text.ConvertToDecimal();
             bagimsizBolum.YaklasikPiyasaDegeri = YaklasikPiyasaDegeriTxt.Text.ConvertToDecimal();
 
-            int bagimsizBolumId = bagimsizBolum.Save();
+            int bagimsizBolumId = new BagimsizBolumService().Save(bagimsizBolum);
             bagimsizBolum.Id = bagimsizBolumId;
             string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             int queryIndex = newUrl.IndexOf("?");
@@ -428,7 +428,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
                 bagimsizBolum.TahminiRayicDegeri = TahminiRayicDegeriTxt.Text.ConvertToDecimal();
                 bagimsizBolum.EmlakBeyanDegeri = EmlakBeyanDegeriTxt.Text.ConvertToDecimal();
                 bagimsizBolum.YaklasikPiyasaDegeri = YaklasikPiyasaDegeriTxt.Text.ConvertToDecimal();
-                if (bagimsizBolum.Update())
+                if (new BagimsizBolumService().Update(bagimsizBolum))
                 {
                     Tasinmaz tasinmaz = new Tasinmaz();
                     tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
@@ -462,7 +462,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
             bagimsizBolum = new BagimsizBolumService().GetById(ParamBagimsizBolumIdLbl.Text.ConvertToInt());
             if (bagimsizBolum != null)
             {
-                if (bagimsizBolum.Delete())
+                if (new BagimsizBolumService().Delete(bagimsizBolum))
                 {
                     Tasinmaz tasinmaz = new Tasinmaz();
             tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());

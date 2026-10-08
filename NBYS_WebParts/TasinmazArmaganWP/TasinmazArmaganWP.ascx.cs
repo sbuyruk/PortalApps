@@ -89,7 +89,7 @@ namespace NBYS_WebParts.TasinmazArmaganWP
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             Bagis bagis = new Bagis();
-            bagis = bagis.Select(BagisIdQS.ConvertToInt());
+            bagis = new Model.Services.TBYS.BagisService().GetById(BagisIdQS.ConvertToInt());
             if (bagis != null)
             {
                 ArmaganIdTxt.Text = string.IsNullOrEmpty(bagis.ArmaganId) ? "" : bagis.ArmaganId.ToString();
@@ -161,14 +161,14 @@ namespace NBYS_WebParts.TasinmazArmaganWP
         protected void KaydetBtn_Click(object sender, EventArgs e)
         {
             Bagis bagis = new Bagis();
-            bagis = bagis.Select(BagisIdQS.ConvertToInt());
+            bagis = new Model.Services.TBYS.BagisService().GetById(BagisIdQS.ConvertToInt());
             if (bagis != null)
             {
                 bagis.ArmaganId = ArmaganIdTxt.Text;
                 bagis.ArmaganDurumu = DurumDDL.SelectedItem.Value;
                 bagis.ArmaganTarihi = ArmaganTarihiTxt.Value.ConvertToDatetime();
                 bagis.ArmaganAciklama = AciklamaTxt.Text;
-                if (bagis.Update())
+                if (new Model.Services.TBYS.BagisService().Update(bagis))
                 {
                     RedirectToPage(ProjeConstants.PAGE_TASINMAZARMAGAN_LIST + "?ArmaganId=" + bagis.ArmaganId);
                 }

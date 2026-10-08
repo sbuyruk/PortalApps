@@ -259,7 +259,7 @@ namespace MTS_WebParts.KisiGirisiWP
 
                         yeniKisi.Aciklama = AciklamaTxt.Text;
                         yeniKisi.Olusturan = UtilityHelper.GetCurrentUserName();
-                        int yeniId = yeniKisi.Save();
+                        int yeniId = new Model.Services.MTS.KisiService().Save(yeniKisi);
                         if (yeniId > 0)
                         {
                             KisiIdQS = yeniId.ToString();
@@ -613,7 +613,7 @@ namespace MTS_WebParts.KisiGirisiWP
                                 MTSKurumGorev kurumGorev = new MTSKurumGorev();
                                 string kurum = string.Empty;
                                 string gorev = string.Empty;
-                                kurumGorevStr = kurumGorev.SelectByKisiIdReturnKurumGorev(kisi.Id, ref kurum, ref gorev);
+                                kurumGorevStr = new Model.Services.MTS.MTSKurumGorevService().GetByKisiId(kisi.Id, ref kurum, ref gorev);
                                 if (string.IsNullOrEmpty(kurumGorevStr))
                                 {
                                     MTSKurumTanimTxt.Text = kisi.Kurumu;

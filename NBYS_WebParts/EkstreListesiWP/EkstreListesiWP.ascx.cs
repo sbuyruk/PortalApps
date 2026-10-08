@@ -624,7 +624,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                         mesaj = mesaj.Substring(0, 1990);
                     }
                     sk.SilinenKayitBilgisi = mesaj;
-                    sk.Save();
+                    new SilinenKayitService().Save(sk);
 
                     RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?IslemTarihi=" + IslemTarihiQS + "&AktarilanlarHaric=" + AktarilanlarHaricQS + "&Banka=" + BankaQS + "&Mesaj=true&Islem=Silme&Basarili=true");
                 }

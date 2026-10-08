@@ -267,7 +267,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
         private void ToplantiFormunuDoldur()
         {
             Toplanti toplanti = new Toplanti();
-            toplanti = toplanti.Select(ToplantiIdQS.ConvertToInt());
+            toplanti = new Model.Services.Portal.ToplantiService().GetById(ToplantiIdQS.ConvertToInt());
             if (toplanti != null)
             {
                 TitleLbl.Text = "Toplantı Düzenleme";
@@ -518,7 +518,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                         {
                             DateTime bitisTarihi = UtilityHelper.TariheSaatEkle(BitisTarihiTxt.Text.ConvertToDatetime(), bittarStr);
                             Toplanti toplanti = new Toplanti();
-                            toplanti = toplanti.SelectByBitisTarihi(ToplantiYeriDDL.SelectedItem.Value.ConvertToInt(), bitisTarihi);
+                        toplanti = new Model.Services.Portal.ToplantiService().GetByEnd(ToplantiYeriDDL.SelectedItem.Value.ConvertToInt(), bitisTarihi);
 
                             if ((toplanti != null) && (toplanti.ToplantiYeri != ProjeConstants.PARAM_DIGER_INT))
                             {
@@ -556,10 +556,10 @@ namespace Portal_WebParts.ToplantiGirisiWP
                     {
                         ToplantiKatilim silinecekToplantiKatilim = new ToplantiKatilim();
 
-                        silinecekToplantiKatilim = silinecekToplantiKatilim.Select(katilimciId, toplantiId);
+                        silinecekToplantiKatilim = new Model.Services.Portal.ToplantiKatilimService().GetByParticipantMeeting(katilimciId, toplantiId);
                         if (silinecekToplantiKatilim != null)
                         {
-                            silinecekToplantiKatilim.Delete();
+                            new Model.Services.Portal.ToplantiKatilimService().Delete(silinecekToplantiKatilim);
                         }
                     }
                 }
@@ -569,7 +569,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                     {
                         ToplantiKatilim toplantiKatilim = new ToplantiKatilim();
 
-                        toplantiKatilim = toplantiKatilim.Select(katilimciId, toplantiId);
+                        toplantiKatilim = new Model.Services.Portal.ToplantiKatilimService().GetByParticipantMeeting(katilimciId, toplantiId);
                         if (toplantiKatilim == null)
                         {
                             toplantiKatilim = new ToplantiKatilim
@@ -578,12 +578,12 @@ namespace Portal_WebParts.ToplantiGirisiWP
                                 ToplantiId = toplantiId,
                                 Bilgi = BilgiIdListQS.Contains(katilimciId)
                             };
-                            toplantiKatilim.Save();
+                            new Model.Services.Portal.ToplantiKatilimService().Save(toplantiKatilim);
                         }
                         else
                         {
                             toplantiKatilim.Bilgi = BilgiIdListQS.Contains(katilimciId);
-                            toplantiKatilim.Update();
+                            new Model.Services.Portal.ToplantiKatilimService().Update(toplantiKatilim);
 
                         }
                     }
@@ -790,7 +790,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                 }
                 else
                 {
-                    toplantiId = toplanti.Id = toplanti.Save();
+                    toplantiId = toplanti.Id = new Model.Services.Portal.ToplantiService().Save(toplanti);
                     if (toplantiId > 0)
                     {
                         ToplantiKatilim toplantiKatilim = new ToplantiKatilim();
@@ -840,7 +840,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
             try
             {
                 Toplanti toplanti = new Toplanti();
-                toplanti = toplanti.Select(ToplantiIdQS.ConvertToInt());
+                toplanti = new Model.Services.Portal.ToplantiService().GetById(ToplantiIdQS.ConvertToInt());
                 toplanti.Degistiren = UtilityHelper.GetCurrentUserName();
                 if (toplanti == null)
                 {
@@ -877,7 +877,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                         if (ToplantiDegistiMi(toplanti))
                         {
                             tar3 = DateTime.Now;
-                            guncellendiMi = toplanti.Update();
+                            guncellendiMi = new Model.Services.Portal.ToplantiService().Update(toplanti);
                             if (guncellendiMi)
                             {
                                 tar4 = DateTime.Now;
@@ -940,7 +940,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
             try
             {
                 Toplanti toplanti = new Toplanti();
-                toplanti = toplanti.Select(ToplantiIdQS.ConvertToInt());
+                toplanti = new Model.Services.Portal.ToplantiService().GetById(ToplantiIdQS.ConvertToInt());
                 if (toplanti != null)
                 {
                     ToplantiSilPopupAc(sender);
@@ -961,14 +961,14 @@ namespace Portal_WebParts.ToplantiGirisiWP
             try
             {
                 Toplanti toplanti = new Toplanti();
-                toplanti = toplanti.Select(ToplantiIdQS.ConvertToInt());
+                toplanti = new Model.Services.Portal.ToplantiService().GetById(ToplantiIdQS.ConvertToInt());
 
                 Toplanti kopyaToplanti = new Toplanti();
                 UtilityHelper.CopyProperties(toplanti, kopyaToplanti);
 
                 if (toplanti != null)
                 {
-                    silindi = toplanti.Delete();
+                    silindi = new Model.Services.Portal.ToplantiService().Delete(toplanti);
                     if (silindi)
                     {
                         ToplantiKatilim toplantiKatilim = new ToplantiKatilim();
@@ -1053,7 +1053,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                 if (!CikanKatilimciIdListQS.Contains(katilimciId))
                 {
                     ToplantiKatilim toplantiKatilim = new ToplantiKatilim();
-                    toplantiKatilim = toplantiKatilim.Select(katilimciId, ToplantiIdQS.ConvertToInt());
+                    toplantiKatilim = new Model.Services.Portal.ToplantiKatilimService().GetByParticipantMeeting(katilimciId, ToplantiIdQS.ConvertToInt());
                     if (toplantiKatilim != null)
                         CikanKatilimciIdListQS.Add(katilimciId);
                 }
