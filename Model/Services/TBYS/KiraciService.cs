@@ -74,6 +74,7 @@ namespace Model.Services.TBYS
         public Kiraci GetMax() { DataTable table = repository.SelectMax(); return table == null ? null : Map(table); }
         public Kiraci GetMin() { DataTable table = repository.SelectMin(); return table == null ? null : Map(table); }
         public List<Kiraci> GetByName(string adi, string soyadi) { return ToList(repository.SelectByName(adi, soyadi)); }
+        public List<Kiraci> GetByName(string adi) { return GetByName(adi, string.Empty); }
 
         private static Kiraci Map(DataTable table)
         {

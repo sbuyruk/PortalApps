@@ -270,7 +270,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                 tasinmaz.EnvanterdenCikmaBedeli = BedelTxt.Value.ConvertToDecimal();
                 tasinmaz.EnvanterdenCikmaTarihi = EnvanterdenCikmaTarTxt.Value.ConvertToDatetime();
                 Bagis bagis = new Bagis();
-                bagis = bagis.SelectByTasinmazId(tasinmaz.Id);
+                bagis = new Model.Services.TBYS.BagisService().GetByTasinmazId(tasinmaz.Id);
                 if (bagis != null)
                 {
                     tasinmaz.BagisciId = bagis.BagisciId;
@@ -312,7 +312,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                 tasinmaz.EnvanterdenCikmaTarihi = EnvanterdenCikmaTarTxt.Value.ConvertToDatetime();
                 tasinmaz.Degistiren = UtilityHelper.GetCurrentUserLoginName();
                 Bagis bagis = new Bagis();
-                bagis = bagis.SelectByTasinmazId(tasinmaz.Id);
+                bagis = new Model.Services.TBYS.BagisService().GetByTasinmazId(tasinmaz.Id);
                 if (bagis != null)
                 {
                     tasinmaz.BagisciId = bagis.BagisciId;

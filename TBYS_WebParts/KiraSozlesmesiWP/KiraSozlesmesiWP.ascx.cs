@@ -922,7 +922,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                     yeniSozlesme.Id = yeniId;
                     //eski sözlesme tasinmaz bilgilerini al
                     SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-                    List<SozlesmeTasinmaz> stlist = st.SelectBySozlesmeId(eskiKiraSozlesmeId);
+                    List<SozlesmeTasinmaz> stlist = new Model.Services.TBYS.SozlesmeTasinmazService().GetBySozlesmeId(eskiKiraSozlesmeId);
                     //yeni sözlesmeye aktar ve kaydet
                     foreach (SozlesmeTasinmaz item in stlist)
                     {
@@ -1352,7 +1352,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                     item.FaizTutari = 0;
                     item.FaizliBakiye = 0;
                     item.FaizOrani = 0;
-                    item.Update();
+                    new Model.Services.TBYS.OdemePlaniService().Update(item);
                 }
             }
         }
@@ -1495,7 +1495,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                         foreach (KiraSozlesme item in list)
                         {
                             item.DosyaNo = yeniDosyaNo;
-                            item.Update();
+                            new Model.Services.TBYS.KiraSozlesmeService().Update(item);
                         }
                         scope.Complete();
                         DosyaNoTxt.Text= YeniDosyaNoDDL.SelectedValue;

@@ -1,4 +1,3 @@
-using DAO.Ortak;
 using Model.Ortak;
 using Model.TBYS;
 using System;
@@ -10,6 +9,7 @@ using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
+using System.Transactions;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
@@ -305,112 +305,71 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
         {
             try
             {
-                DbClass db = new DbClass();
-                List<OdemeAyristirma> odemeAyristirmaList = new List<OdemeAyristirma>();
-                foreach (OdemeListItem item in OdemeAyristirmaListQS)
+                int savedCount = 0;
+                using (TransactionScope scope = new TransactionScope())
                 {
-                    DBObject odemeDbo = new DBObject();
-                    DBObject teminatDbo = new DBObject();
-                    DBObject odemeAyristirmaInsertDbo = new DBObject();
-                    OdemeAyristirma odemeAyristirma = new OdemeAyristirma();
-                    if (item.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_KIRA_INT)
+                    foreach (OdemeListItem item in OdemeAyristirmaListQS)
                     {
-                        #region Kira Ödemesi
-                        Odeme kiraOdemesi = new Odeme();
-                        kiraOdemesi.Aciklama = item.Aciklama;
-                        kiraOdemesi.KiraciId = item.KiraciId;
-                        kiraOdemesi.SozlesmeId = item.KiraSozlesmeId;
-                        kiraOdemesi.OdemePlaniId = OdemePlaniGetir(item.KiraSozlesmeId, item.OdemeTarihi.ConvertToDatetime());
-                        kiraOdemesi.OdemeTarihi = item.OdemeTarihi.ConvertToDatetime();
-                        kiraOdemesi.OdenenTutar = item.Tutar;
-                        kiraOdemesi.Olusturan = UtilityHelper.GetCurrentUserName();
-                       
-                        odemeDbo.SQLString = kiraOdemesi.GetInsertSQL("{0}");
-                        odemeDbo.SQLType = ProjeConstants.SQL_INSERT;
-                        odemeDbo.UseReturnIdAsParam = false;
-                        odemeDbo.IsFilled = true;
-                        db.DBObjectList.Add(odemeDbo);
-                        odemeAyristirma.OdemeId = ProjeConstants.SQL_GENERIC_INT_VALUE;
-                        odemeAyristirmaInsertDbo.DbObjectParamIndex = db.DBObjectList.IndexOf(odemeDbo);
-                        #endregion
-
-                    }
-                    else if ((item.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT)||
-                        (item.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_GECICITEMINAT_INT))
-                    {
-                        KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                        kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(item.KiraSozlesmeId);
-                        if (kiraSozlesme != null)
+                        OdemeAyristirma odemeAyristirma = new OdemeAyristirma
                         {
+                            KiraEkstreAktarmaId = item.KiraEkstreAktarmaId,
+                            KiraciId = item.KiraciId,
+                            SozlesmeId = item.KiraSozlesmeId,
+                            DovizCinsi = item.DovizCinsi,
+                            OdemeSebebiId = item.OdemeSebebiId,
+                            OdemeTarihi = item.OdemeTarihi.ConvertToDatetime(),
+                            OdemeSaati = item.OdemeSaati,
+                            Tutar = item.Tutar,
+                            Aciklama = item.Aciklama
+                        };
 
-                            TeminatIslem teminatIslem = new TeminatIslem();
-                            teminatIslem.KiraciId = kiraSozlesme.KiraciId;
-                            teminatIslem.Aciklama = item.Aciklama;
-                            teminatIslem.DovizCinsi = ProjeConstants.DOVIZ_TL;
-                            teminatIslem.IslemTarihi = item.OdemeTarihi.ConvertToDatetime();
-                            teminatIslem.IslemTipi = item.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT ? ProjeConstants.TEMINAT_ODEMESI : ProjeConstants.TEMINAT_GECICITEMINATODEMESI;
-                            teminatIslem.IslemTutari = item.Tutar;
-                            teminatIslem.Olusturan = UtilityHelper.GetCurrentUserName();
-
-                            
-                            teminatDbo.SQLString = teminatIslem.GetInsertSQL("{0}");
-                            teminatDbo.SQLType = ProjeConstants.SQL_INSERT;
-                            teminatDbo.UseReturnIdAsParam = false;
-                            teminatDbo.IsFilled = true;
-                            db.DBObjectList.Add(teminatDbo);
-                            odemeAyristirma.TeminatIslemId = ProjeConstants.SQL_GENERIC_INT_VALUE;
-                            odemeAyristirmaInsertDbo.DbObjectParamIndex = db.DBObjectList.IndexOf(teminatDbo);
+                        if (item.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_KIRA_INT)
+                        {
+                            Odeme kiraOdemesi = new Odeme
+                            {
+                                Aciklama = item.Aciklama,
+                                KiraciId = item.KiraciId,
+                                SozlesmeId = item.KiraSozlesmeId,
+                                OdemePlaniId = OdemePlaniGetir(item.KiraSozlesmeId, item.OdemeTarihi.ConvertToDatetime()),
+                                OdemeTarihi = item.OdemeTarihi.ConvertToDatetime(),
+                                OdenenTutar = item.Tutar
+                            };
+                            odemeAyristirma.OdemeId = new Model.Services.TBYS.OdemeService().Save(kiraOdemesi);
                         }
+                        else if (item.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT ||
+                                 item.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_GECICITEMINAT_INT)
+                        {
+                            KiraSozlesme kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(item.KiraSozlesmeId);
+                            if (kiraSozlesme != null)
+                            {
+                                TeminatIslem teminatIslem = new TeminatIslem
+                                {
+                                    KiraciId = kiraSozlesme.KiraciId,
+                                    Aciklama = item.Aciklama,
+                                    DovizCinsi = ProjeConstants.DOVIZ_TL,
+                                    IslemTarihi = item.OdemeTarihi.ConvertToDatetime(),
+                                    IslemTipi = item.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT ? ProjeConstants.TEMINAT_ODEMESI : ProjeConstants.TEMINAT_GECICITEMINATODEMESI,
+                                    IslemTutari = item.Tutar
+                                };
+                                odemeAyristirma.TeminatIslemId = new Model.Services.TBYS.TeminatIslemService().Save(teminatIslem);
+                            }
+                        }
+
+                        if (new Model.Services.TBYS.OdemeAyristirmaService().Save(odemeAyristirma) > 0)
+                            savedCount++;
                     }
-                    #region odemeAyristirma
-                    
-                    odemeAyristirma.KiraEkstreAktarmaId = item.KiraEkstreAktarmaId;
-                    odemeAyristirma.KiraciId = item.KiraciId;
-                    odemeAyristirma.SozlesmeId = item.KiraSozlesmeId;
-                    odemeAyristirma.DovizCinsi = item.DovizCinsi;
-                    odemeAyristirma.OdemeSebebiId = item.OdemeSebebiId;
-                    
-                    
-                    
-                    odemeAyristirma.OdemeTarihi = item.OdemeTarihi.ConvertToDatetime();
-                    odemeAyristirma.OdemeSaati = item.OdemeSaati;
-                    odemeAyristirma.Tutar = item.Tutar;
-                    odemeAyristirma.Aciklama = item.Aciklama;
-                    odemeAyristirma.Olusturan = UtilityHelper.GetCurrentUserName();
 
-                    
-                    odemeAyristirmaInsertDbo.SQLString = odemeAyristirma.GetInsertSQL("{0}");
-                    odemeAyristirmaInsertDbo.SQLType = ProjeConstants.SQL_INSERT;
-                    odemeAyristirmaInsertDbo.UseReturnIdAsParam = true;
-                    
+                    if (kiraEkstreAktarma != null)
+                    {
+                        kiraEkstreAktarma.Aciklama += "--Ödeme Ayristirildi--";
+                        kiraEkstreAktarma.AktarildiMi = true;
+                        kiraEkstreAktarma.Degistiren = UtilityHelper.GetCurrentUserName();
+                        new Model.Services.TBYS.KiraEkstreAktarmaService().Update(kiraEkstreAktarma);
+                    }
 
-                    odemeAyristirmaInsertDbo.IsFilled = true;
-                    db.DBObjectList.Add(odemeAyristirmaInsertDbo);
-
-                    #endregion
-
-
-
-
+                    scope.Complete();
                 }
-                #region update KiraEkstreAktarildiMi=true 
-                
-                if (kiraEkstreAktarma != null)
-                {
-                    kiraEkstreAktarma.Aciklama += "--Ödeme Ayristirildi--";
-                    kiraEkstreAktarma.AktarildiMi = true;
-                    kiraEkstreAktarma.Degistiren = UtilityHelper.GetCurrentUserName();
-
-                    DBObject kiraEkstreAktarmaDbo = new DBObject();
-                    kiraEkstreAktarmaDbo.SQLString = kiraEkstreAktarma.GetUpdateSQL(kiraEkstreAktarma.Id.ToString());
-                    kiraEkstreAktarmaDbo.SQLType = ProjeConstants.SQL_UPDATE;
-                    kiraEkstreAktarmaDbo.IsFilled = true;
-                    db.DBObjectList.Add(kiraEkstreAktarmaDbo);
-
-                }
-
-                List<DBObject> savedDBOList = db.ExecuteTransaction();
-                if (savedDBOList.Count > 0)
+                if (savedCount > 0)
                 {
                     MessageHelper.PublishMessage("Ödeme Bilgileri Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
@@ -418,8 +377,6 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                 {
                     MessageHelper.PublishMessage("Ödeme Bilgileri Kaydedilemedi", ProjeConstants.MESAJ_HATA);
                 }
-                #endregion
-                
             }
             catch (Exception ex)
             {

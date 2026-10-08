@@ -597,7 +597,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
         protected void BagisciBtn_Click(object sender, EventArgs e)
         {
             Bagis bagis = new Bagis();
-            bagis = bagis.SelectByTasinmazId(TasinmazIdQS.ConvertToInt());
+            bagis = new Model.Services.TBYS.BagisService().GetByTasinmazId(TasinmazIdQS.ConvertToInt());
 
             if (bagis == null)
             {

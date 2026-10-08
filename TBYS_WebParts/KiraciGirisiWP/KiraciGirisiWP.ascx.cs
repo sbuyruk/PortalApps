@@ -668,7 +668,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 if (birSozlesmeId > 0)
                 {
                     SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-                    List<SozlesmeTasinmaz> stList = st.SelectBySozlesmeId(birSozlesmeId);
+                    List<SozlesmeTasinmaz> stList = new Model.Services.TBYS.SozlesmeTasinmazService().GetBySozlesmeId(birSozlesmeId);
                     foreach (SozlesmeTasinmaz item in stList)
                     {
                         SozlesmeTasinmaz ekST = new SozlesmeTasinmaz();

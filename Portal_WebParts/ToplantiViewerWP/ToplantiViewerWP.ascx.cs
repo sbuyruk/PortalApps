@@ -116,7 +116,7 @@ namespace Portal_WebParts.ToplantiViewerWP
         private string ToplantiListesiniGetir()
         {
             Toplanti toplanti = new Toplanti();
-            string json = toplanti.SelectAllReturnJson();
+            string json = new Model.Services.Portal.ToplantiService().GetCalendarJson();
             return json;
         }
         private string CreateJsString(string jsonData)

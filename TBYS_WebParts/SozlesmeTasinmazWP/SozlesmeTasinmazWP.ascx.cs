@@ -160,7 +160,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 SecileniKaydet(kiraSozlesme);
                 SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
                 SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-                List<SozlesmeTasinmaz> list = st.SelectBySozlesmeId(kiraSozlesme.Id);
+                List<SozlesmeTasinmaz> list = new Model.Services.TBYS.SozlesmeTasinmazService().GetBySozlesmeId(kiraSozlesme.Id);
                 TamamBtn.Visible = list.Count > 0;
 
                 SecilenKiraciyiKaydet(kiraSozlesme);
@@ -176,7 +176,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
             PopUpTable.Rows.Clear();
 
             SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-            List<SozlesmeTasinmaz> list = st.SelectBySozlesmeId(kiraSozlesme.Id);
+            List<SozlesmeTasinmaz> list = new Model.Services.TBYS.SozlesmeTasinmazService().GetBySozlesmeId(kiraSozlesme.Id);
             SiraNoCell.Text = "Sira";
             AdresCell.Text = "Adres";
             int siraNo = 1;

@@ -200,7 +200,7 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
                     case ProjeConstants.PARAM_TOPLANTIYERI:
                         {
                             Toplanti toplanti = new Toplanti();
-                            List<Toplanti> list = toplanti.SelectByToplantiYeri(parametreId);
+                            List<Toplanti> list = new Model.Services.Portal.ToplantiService().GetByYeri(parametreId);
                             silinebilirMi = list.Count < 1;
                             break;
                         }

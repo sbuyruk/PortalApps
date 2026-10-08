@@ -197,7 +197,7 @@ namespace TBYS_WebParts.KiraKartiWP
         private void TasinmazBilgileriniTabloyaYaz(KiraSozlesme ks)
         {
             SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-            List<SozlesmeTasinmaz> stList = st.SelectBySozlesmeId(ks.Id);
+            List<SozlesmeTasinmaz> stList = new Model.Services.TBYS.SozlesmeTasinmazService().GetBySozlesmeId(ks.Id);
             foreach (SozlesmeTasinmaz item in stList)
             {
                 string adres = string.Empty;

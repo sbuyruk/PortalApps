@@ -739,7 +739,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         private bool SozlesmesiVarMi(Tasinmaz tasinmaz)
         {
             SozlesmeTasinmaz sozlesmeTasinmaz = new SozlesmeTasinmaz();
-            List<SozlesmeTasinmaz> liste = sozlesmeTasinmaz.SelectByTasinmazId(tasinmaz.Id);
+                            List<SozlesmeTasinmaz> liste = new Model.Services.TBYS.SozlesmeTasinmazService().GetByTasinmazId(tasinmaz.Id);
             return (liste.Count > 1);
         }
 
@@ -1045,7 +1045,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 }
                 //sözleşmesi var mı
                 SozlesmeTasinmaz sozlesmeTasinmaz = new SozlesmeTasinmaz();
-                List<SozlesmeTasinmaz> sozlesmeListesi = sozlesmeTasinmaz.SelectByTasinmazId(silinecekTasinmaz.Id);
+                List<SozlesmeTasinmaz> sozlesmeListesi = new Model.Services.TBYS.SozlesmeTasinmazService().GetByTasinmazId(silinecekTasinmaz.Id);
                 if (sozlesmeListesi!=null && sozlesmeListesi.Count > 0)
                 {
                     MessageHelper.PublishMessage("Taşınmaza ait sözleşmeler bulunmaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
@@ -1053,7 +1053,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 }
                 //SozlesmeTasinmaz_Table'da TasinmazId olan var mi
                 SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-                List<SozlesmeTasinmaz> stList = st.SelectByTasinmazId(silinecekTasinmaz.Id);
+                List<SozlesmeTasinmaz> stList = new Model.Services.TBYS.SozlesmeTasinmazService().GetByTasinmazId(silinecekTasinmaz.Id);
                 if (stList!=null && stList.Count > 0)
                 {
                     MessageHelper.PublishMessage("Taşınmaza ait sözleşme bulunmaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
@@ -1286,7 +1286,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                     if (item != null)
                     {
                         item.TasinmazId = tasinmazId;
-                        item.Update();
+                        new Model.Services.TBYS.OnarimService().Update(item);
                     }
                 }
                 #endregion
@@ -1294,11 +1294,11 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 //SozlesmeTasinmaz_Table'da KiraSozlesmesi Aktif olan ve TasinmazId=EnvanterdenCikanTasinmazId olan var mi
                 //Varsa SozlesmeTasinmaz_Table'da tasinmaz Id'sini yeni tasinmazId ile degistir.
                 SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-                List<SozlesmeTasinmaz> stList = st.SelectByTasinmazId(envanterdencikmisTasinmazId);
+            List<SozlesmeTasinmaz> stList = new Model.Services.TBYS.SozlesmeTasinmazService().GetByTasinmazId(envanterdencikmisTasinmazId);
                 foreach (var item in stList)
                 {
                     item.TasinmazId = tasinmazId;
-                    item.Update();
+                    new Model.Services.TBYS.SozlesmeTasinmazService().Update(item);
                 }
                 #endregion
                 string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
