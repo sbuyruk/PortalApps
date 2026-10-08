@@ -117,6 +117,9 @@
     <Compile Include="Repositories\IKYS\DereceKademeDegisimRepository.cs" />
     <Compile Include="Repositories\TBYS\TasinmazRepository.cs" />
     <Compile Include="Repositories\TBYS\KiraSozlesmeRepository.cs" />
+    <Compile Include="Repositories\TBYS\KiraEkstreAktarmaRepository.cs" />
+    <Compile Include="Repositories\TBYS\KiraBorcuTakipRepository.cs" />
+    <Compile Include="Repositories\TBYS\BagimsizBolumRepository.cs" />
     <Compile Include="Repositories\TBYS\KiraciRepository.cs" />
     <Compile Include="Repositories\TBYS\OdemeAyristirmaRepository.cs" />
     <Compile Include="Repositories\TBYS\YasalFaizRepository.cs" />
