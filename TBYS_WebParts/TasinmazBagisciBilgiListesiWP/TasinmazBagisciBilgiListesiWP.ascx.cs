@@ -123,7 +123,7 @@ namespace TBYS_WebParts.TasinmazBagisciBilgiListesiWP
                 bagisciListItem.Talepleri = talepler;
                 string bagislari = string.Empty;
                 decimal tahminiRayicToplami = 0m;
-                DataTable dataTable = bagisdao.SelectByBagisciIdGroupByKullanimSekli(tasinmazBagisci.Id);
+                DataTable dataTable = new BagisService().GetByBagisciIdGroupByKullanimSekli(tasinmazBagisci.Id);
                 if (dataTable!=null)
                 {
                     foreach (DataRow row in dataTable.Rows)

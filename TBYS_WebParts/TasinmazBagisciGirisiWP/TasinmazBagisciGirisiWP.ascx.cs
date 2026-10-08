@@ -476,7 +476,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         private bool BagisVarmi(TasinmazBagisci bagisci)
         {
             Bagis bagis=new Bagis();
-            List<Bagis> bagisList = bagis.SelectByBagisciId(bagisci.Id);
+            List<Bagis> bagisList = new BagisService().GetByBagisciId(bagisci.Id);
             
             return bagisList.Count > 0;
         }

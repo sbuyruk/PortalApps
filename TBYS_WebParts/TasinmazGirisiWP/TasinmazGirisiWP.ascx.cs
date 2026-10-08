@@ -578,7 +578,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 tasinmaz.Id = id;
                 //tasinmaz tablosundaki Bagisci alani her kaydedildiginde Ad+soyad olarak güncellesin
                 Bagis bagis = new Bagis();
-                bagis = bagis.SelectByTasinmazId(id);
+                bagis = new BagisService().GetByTasinmazId(id);
                 if (bagis != null)
                 {
                     TasinmazBagisci bagisci = new TasinmazBagisci();
@@ -699,7 +699,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                     isSaved = tasinmaz.Update();
 
                     Bagis bagis = new Bagis();
-                    bagis = bagis.SelectByTasinmazId(tasinmaz.Id);
+                    bagis = new BagisService().GetByTasinmazId(tasinmaz.Id);
                     if (bagis != null)
                     {
                         TasinmazBagisci bagisci = new TasinmazBagisci();
@@ -1037,7 +1037,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 }
                 //Bağışçısı var mı
                 Bagis bagis = new Bagis();
-                bagis = bagis.SelectByTasinmazId(silinecekTasinmaz.Id);
+                bagis = new BagisService().GetByTasinmazId(silinecekTasinmaz.Id);
                 if (bagis != null)
                 {
                     MessageHelper.PublishMessage("Taşınmaza ait bağışçı bulunmaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
@@ -1135,7 +1135,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         protected void BagisciBtn_Click(object sender, EventArgs e)
         {
             Bagis bagis = new Bagis();
-            bagis = bagis.SelectByTasinmazId(TasinmazIdQS.ConvertToInt());
+            bagis = new BagisService().GetByTasinmazId(TasinmazIdQS.ConvertToInt());
 
             if (bagis == null)
             {
@@ -1254,7 +1254,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 //BagisciId sini gir
                 //Bagis nesnesini kaydet
                 Bagis eskibagis = new Bagis();
-                eskibagis = eskibagis.SelectByTasinmazId(envanterdencikmisTasinmazId);
+                eskibagis = new BagisService().GetByTasinmazId(envanterdencikmisTasinmazId);
                 if (eskibagis != null)
                 {
                     Bagis bagis = new Bagis();

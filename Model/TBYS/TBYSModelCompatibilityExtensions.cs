@@ -105,14 +105,5 @@ namespace Model.TBYS
         public static bool Update(this Bagis item) { return new BagisService().Update(item); }
         public static bool Delete(this Bagis item) { return new BagisService().Delete(item); }
         public static List<T> SelectAll<T>(this Bagis item) { return (List<T>)Convert.ChangeType(new BagisService().GetAll(), typeof(List<T>)); }
-        public static List<Bagis> SelectByBagisciId(this Bagis item, int id) { return new BagisService().GetByBagisciId(id); }
-        public static DataTable SelectByBagisciIdGroupByKullanimSekli(this Bagis item, int id) { return new BagisService().GetByBagisciIdGroupByKullanimSekli(id); }
-        public static string SelectByBagisciIdReturnJson(this Bagis item, int id) { return new BagisService().GetByBagisciIdAsJson(id); }
-        public static Bagis SelectByTasinmazId(this Bagis item, int id) { return new BagisService().GetByTasinmazId(id); }
-        public static string SelectTasinmazByBagisciIdReturnJson(this Bagis item, int id) { return new BagisService().GetTasinmazByBagisciIdAsJson(id); }
-        public static DataTable SelectTasinmazByBagisciIdReturnDT(this Bagis item, int id) { return new BagisService().GetTasinmazByBagisciId(id); }
-        public static DataTable SelectSatisVsDahilTasinmazByBagisciIdReturnDT(this Bagis item, int id) { return new BagisService().GetSatisVsDahilTasinmazByBagisciId(id); }
-        public static decimal SelectSumTahminiRayicByBagisciId(this Bagis item, int id) { return new BagisService().GetSumTahminiRayicByBagisciId(id); }
-
     }
 }
