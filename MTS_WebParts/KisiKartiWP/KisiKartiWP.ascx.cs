@@ -507,11 +507,10 @@ namespace MTS_WebParts.KisiKartiWP
         }
         private List<AramaGorusme> GetAramaDataList()
         {
-            AramaGorusme aramaDao = new AramaGorusme();
             List<AramaGorusme> aramaList = new List<AramaGorusme>();
             if (KatilimciIdQS.ConvertToInt() > 0)
             {
-                aramaList = aramaDao.SelectAllByArayanIdReturnList(KatilimciIdQS.ConvertToInt());
+                    aramaList = new Model.Services.MTS.AramaGorusmeService().GetByArayanId(KatilimciIdQS.ConvertToInt());
             }
 
             return aramaList;
