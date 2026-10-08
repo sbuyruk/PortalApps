@@ -178,7 +178,7 @@ namespace Portal_WebParts.OlayListesiWP
             {
 
                 Kisi kisi = new Kisi();
-                kisi = kisi.Select<Kisi>(katilimciId);
+                kisi = new Model.Services.IKYS.KisiService().GetById(katilimciId);
                 if (kisi != null)
                 {
                     katilimci = kisi.Adi + " " + kisi.Soyadi;

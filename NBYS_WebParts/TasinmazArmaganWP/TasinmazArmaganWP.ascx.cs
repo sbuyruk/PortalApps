@@ -98,7 +98,7 @@ namespace NBYS_WebParts.TasinmazArmaganWP
                 BagisTarihiTxt.Text = bagis.BagisTarihi.ConvertToDatetimeEmptyIfNull();
                 DurumDDL.SelectedValue = bagis.ArmaganDurumu;
                 TasinmazBagisci bagisci = new TasinmazBagisci();
-                bagisci = bagisci.Select<TasinmazBagisci>(bagis.BagisciId);
+                bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(bagis.BagisciId);
                 if (bagisci != null)
                 {
                     AdiSoyadiTxt.Text = bagisci.Adi + " " + bagisci.Soyadi;

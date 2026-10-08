@@ -194,7 +194,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
             List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
 
             Duyuru duyuru = new Duyuru();
-            duyuru = duyuru.Select<Duyuru>(DuyuruIdQS.ConvertToInt());
+            duyuru = new Model.Services.Portal.DuyuruService().GetById(DuyuruIdQS.ConvertToInt());
             if (duyuru != null)
             {
                 int sirano = 1;
@@ -227,7 +227,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
         private void DuyuruFormunuDoldur()
         {
             Duyuru duyuru = new Duyuru();
-            duyuru = duyuru.Select<Duyuru>(DuyuruIdQS.ConvertToInt());
+            duyuru = new Model.Services.Portal.DuyuruService().GetById(DuyuruIdQS.ConvertToInt());
             BaslikTxt.Text = duyuru.Baslik;
             MetinTxt.Text= duyuru.Metin;
             DateTime basTar = duyuru.YayinBasTar;
@@ -599,7 +599,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
                     if (duyuru != null)
                     {
                         DuyuruGosterim dg = new DuyuruGosterim();
-                        dg.SaveDuyuru(duyuru);
+                        new Model.Services.Portal.DuyuruGosterimService().SaveDuyuru(dg, duyuru);
                     }
                 }
                 return duyuru;
@@ -620,7 +620,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
             {
 
                 Duyuru duyuru = new Duyuru();
-                duyuru = duyuru.Select<Duyuru>(DuyuruIdQS.ConvertToInt());
+                duyuru = new Model.Services.Portal.DuyuruService().GetById(DuyuruIdQS.ConvertToInt());
                 if (duyuru == null)
                 {
                     MessageHelper.PublishMessage("Duyuru bulunamadi", ProjeConstants.MESAJ_HATA, 5000);
@@ -649,7 +649,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
                         {
                             ResmiKaydet(duyuru);
                             DuyuruGosterim duyuruGosterim = new DuyuruGosterim();
-                            duyuruGosterim.SaveDuyuru(duyuru);
+                            new Model.Services.Portal.DuyuruGosterimService().SaveDuyuru(duyuruGosterim, duyuru);
                             
                         }
                         MessageHelper.PublishMessage("Duyuru güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);

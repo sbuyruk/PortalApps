@@ -199,7 +199,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
                 int tasinmazBagisciId = tasinmazBagisciIdStr.ConvertToInt();
 
                 TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-                tasinmazBagisci = tasinmazBagisci.Select<TasinmazBagisci>(tasinmazBagisciId);
+                tasinmazBagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(tasinmazBagisciId);
                 if (tasinmazBagisci != null)
                 {
                     TableRow row = new TableRow();
@@ -522,7 +522,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
         private DataTable GetDataTable()
         {
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            DataTable dataTable = bagisci.SelectAllCountBagisAdediReturnDataTable(VefatEdenlerHaricChk.Checked, GizliBagislarHaricChk.Checked);
+            DataTable dataTable = new Model.Services.TBYS.TasinmazBagisciReportService().GetAllCountBagisAdedi(VefatEdenlerHaricChk.Checked, GizliBagislarHaricChk.Checked);
             return dataTable;
         }
         protected void ExportToExcel()
@@ -608,7 +608,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
             try
             {
                 Bagis bagis = new Bagis();
-                jSon = bagis.SelectTasinmazByBagisciIdReturnJson(tasinmazBagisciId);
+                jSon = new Model.Services.TBYS.BagisService().GetTasinmazByBagisciIdAsJson(tasinmazBagisciId);
 
             }
             catch (Exception exception)

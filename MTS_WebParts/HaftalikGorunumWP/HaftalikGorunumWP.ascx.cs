@@ -144,7 +144,7 @@ namespace MTS_WebParts.HaftalikGorunumWP
                 }
             }
 
-            string json = toplantiDao.ToJSON(eventItems);
+            string json = new Faaliyet().ToJSON(eventItems);
             return json;
         }
         private string KisiDogumGunuListesiniGetir()

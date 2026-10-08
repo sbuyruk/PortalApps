@@ -244,7 +244,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP
                 }
             }
 
-            string json = toplantiDao.ToJSON(eventItems);
+            string json = new Faaliyet().ToJSON(eventItems);
             return json;
         }
         private string PersonelDogumGunuListesiniGetir()
