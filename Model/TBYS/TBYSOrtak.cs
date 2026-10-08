@@ -174,7 +174,7 @@ namespace Model.Ortak
                                 odemePlani.FaizOrani = faizOrani;
                                 odemePlani.FaizTutari = faizTutari;
                                 odemePlani.AnaPara = anaParaToplami;
-                                odemePlani.Update();
+                                new Model.Services.TBYS.OdemePlaniService().Update(odemePlani);
                             }
                             #endregion
                         }
@@ -201,7 +201,7 @@ namespace Model.Ortak
         public static void BakiyeBorcHesaplaGunlukGecikmeZammi(KiraSozlesme kiraSozlesme)
         {
             OdemeAyrinti odemeAyrinti = new OdemeAyrinti();
-            odemeAyrinti.DeleteBySozlesmeId(kiraSozlesme.Id);
+            new Model.Services.TBYS.OdemeAyrintiService().DeleteBySozlesmeId(kiraSozlesme.Id);
 
             //bu kiraciya ait tüm ödeme planlarini al tarih sirali
             OdemePlani op = new OdemePlani();
@@ -266,7 +266,7 @@ namespace Model.Ortak
                 Odeme odemeDao = new Odeme();
                 var odenenTutar = odemeDao.SelectSumBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlani.Id);
                 odemePlani.OdenenTutar = odenenTutar;
-                odemePlani.Update();
+                new Model.Services.TBYS.OdemePlaniService().Update(odemePlani);
                 //if ((DateTime.Today > odemePlani.VadeBasTar) && (DateTime.Today < odemePlani.VadeBitTar))
                 if (odemePlani.VadeBitTar >= DateTime.Today ) // vade dolmadiysa hesaplama yapma
                 {
@@ -308,11 +308,11 @@ namespace Model.Ortak
             odemeAyrinti.Aciklama = aciklama;
             if (saveOrUpdate.Equals("save"))
             {
-                odemeAyrinti.Save();
+                new Model.Services.TBYS.OdemeAyrintiService().Save(odemeAyrinti);
             }
             else
             {
-                odemeAyrinti.Update();
+                new Model.Services.TBYS.OdemeAyrintiService().Update(odemeAyrinti);
             }
 
         }

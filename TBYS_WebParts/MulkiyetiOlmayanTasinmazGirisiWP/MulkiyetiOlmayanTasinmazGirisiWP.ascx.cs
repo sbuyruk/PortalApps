@@ -397,13 +397,13 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                         sigorta = new Sigorta();
                         sigorta.TasinmazId = tasinmaz.Id;
                         sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                        int sigortaid = sigorta.Save();
+                        int sigortaid = new Model.Services.TBYS.SigortaService().Save(sigorta);
                         sigorta.Id = sigortaid;
                     }
                     else
                     {
                         sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                        sigorta.Update();
+                        new Model.Services.TBYS.SigortaService().Update(sigorta);
                     }
                     scope.Complete();
                     return tasinmaz;
@@ -455,12 +455,12 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                         sigorta = new Sigorta();
                         sigorta.TasinmazId = tasinmaz.Id;
                         sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                        sigorta.Save();
+                        new Model.Services.TBYS.SigortaService().Save(sigorta);
                     }
                     else
                     {
                         sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                        sigorta.Update();
+                        new Model.Services.TBYS.SigortaService().Update(sigorta);
                     }
                     scope.Complete();
                 }

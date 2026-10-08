@@ -542,7 +542,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                         odemePlani.AnaPara = devirAnaPara;
                         odemePlani.FaizTutari = devirFaizTutari;
                         odemePlani.FaizliBakiye = devirAnaPara + devirFaizTutari;
-                        odemePlani.Update();
+                        new Model.Services.TBYS.OdemePlaniService().Update(odemePlani);
                         if ((kiraSozlesme.Aktif)&&(kiraSozlesme.SozlesmeDurumu.Equals(ProjeConstants.KIRASOZLESME_DURUMU_TAKIP)))
                         {
                             HukukiiIslemlereEkle(kiraSozlesme);
@@ -589,7 +589,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                         List<OdemeAyrinti> odemeAyrintiListesi = new Model.Services.TBYS.OdemeAyrintiService().GetBySozlesmeId(kiraSozlesme.Id);
                         if (odemeAyrintiListesi.Count > 0)
                         {
-                            odemeAyrintiDao.DeleteBySozlesmeId(kiraSozlesme.Id);
+                            new Model.Services.TBYS.OdemeAyrintiService().DeleteBySozlesmeId(kiraSozlesme.Id);
                         }
 
                     }
@@ -644,7 +644,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 OdemePlani op = list[0];
                 if (op.SozlesmeId == kiraSozlesme.Id)
                 {
-                    silindi = op.DeleteBySozlesmeId(kiraSozlesme.Id);
+                    silindi = new Model.Services.TBYS.OdemePlaniService().DeleteBySozlesmeId(op, kiraSozlesme.Id);
                     if (silindi)
                     {
                         //Odeme odemeDao = new Odeme();
@@ -657,7 +657,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                         List<OdemeAyrinti> odemeAyrintiListesi = new Model.Services.TBYS.OdemeAyrintiService().GetBySozlesmeId(kiraSozlesme.Id);
                         if (odemeAyrintiListesi.Count > 0)
                         {
-                            odemeAyrintiDao.DeleteBySozlesmeId(kiraSozlesme.Id);
+                            new Model.Services.TBYS.OdemeAyrintiService().DeleteBySozlesmeId(kiraSozlesme.Id);
                         }
                     }
                 }

@@ -436,7 +436,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                                 odemePlani.AnaPara = kiraSozlesme.DevirAnaPara;
                                 odemePlani.FaizTutari = kiraSozlesme.DevirFaizTutari;
                                 odemePlani.FaizliBakiye = kiraSozlesme.DevirFaizliBakiye;
-                                if (odemePlani.Update())
+                                if (new Model.Services.TBYS.OdemePlaniService().Update(odemePlani))
                                 {
                                     OdemeleriHesaplaOdemePlaniniGuncelle(kiraSozlesme.KiraciId);
                                     SozlesmelerTablosunuDoldur(kiraSozlesme.KiraciId);

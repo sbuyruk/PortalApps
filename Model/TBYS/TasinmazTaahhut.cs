@@ -1,8 +1,5 @@
 using Model.Ortak;
-using Model.Services.TBYS;
 using System;
-using System.Collections.Generic;
-using System.Data;
 
 namespace Model.TBYS
 {
@@ -26,20 +23,6 @@ namespace Model.TBYS
         public DateTime VefatTarihi { get; set; }
 
 
-        public int Save()
-        {
-            return new TasinmazTaahhutService().Save(this);
-        }
-
-        public bool Update()
-        {
-            return new TasinmazTaahhutService().Update(this);
-        }
-
-        public bool Delete()
-        {
-            return new TasinmazTaahhutService().Delete(this);
-        }
 
     }
 }

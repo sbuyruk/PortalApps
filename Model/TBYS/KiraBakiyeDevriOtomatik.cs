@@ -145,7 +145,7 @@ namespace Model.TBYS
             odemePlani.FaizTutari = kiraSozlesme.DevirFaizTutari;
             odemePlani.FaizliBakiye = kiraSozlesme.DevirFaizliBakiye;
 
-            if (!odemePlani.Update())
+            if (!new Model.Services.TBYS.OdemePlaniService().Update(odemePlani))
             {
                 return false;
             }

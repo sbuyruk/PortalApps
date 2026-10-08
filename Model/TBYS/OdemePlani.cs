@@ -1,13 +1,5 @@
-using DocumentFormat.OpenXml.Wordprocessing;
 using Model.Ortak;
-using Model.Services.TBYS;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.Linq;
-using Utility.HelperClasses;
-using Utility.ProjeGlobal;
 
 namespace Model.TBYS
 {
@@ -29,26 +21,7 @@ namespace Model.TBYS
         public DateTime OdemeBitTar { get; set; }
         public int Sira { get; set; }
         public string Aciklama { get; set; }
-        public int Save()
-        {
-            return new OdemePlaniService().Save(this);
-        }
-        public bool Update()
-        {
-            return new OdemePlaniService().Update(this);
-        }
-        public bool Delete()
-        {
-            return new OdemePlaniService().Delete(this);
-        }
-        public bool DeleteBySozlesmeId(int sozlesmeId)
-        {
-            return new OdemePlaniService().DeleteBySozlesmeId(this, sozlesmeId);
-        }
-        public bool OdemePlaniOlustur(KiraSozlesme kiraSozlesme)
-        {
-            return new OdemePlaniService().CreatePaymentPlan(kiraSozlesme);
-            /*
+        /*
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             int taksitSayisi = kiraSozlesme.TaksitSayisi;
             if (taksitSayisi < 1)
@@ -145,7 +118,7 @@ namespace Model.TBYS
             odemePlani.OdemeBitTar = pOdemeBitTar;
             odemePlani.Sira = sira;
             odemePlani.Aciklama = "";
-            odemePlani.Save();
+            new Model.Services.TBYS.OdemePlaniService().Save(odemePlani);
             return odemePlani;
         }
         private OdemePlani SaveDevir(KiraSozlesme kiraSozlesme, decimal devirAnaPara, decimal devirFaizTutari, string aciklama, int sira)
@@ -165,10 +138,9 @@ namespace Model.TBYS
             odemePlani.OdenenTutar = 0;
             odemePlani.Aciklama = aciklama;
             odemePlani.Sira = sira;
-            odemePlani.Save();
+            new Model.Services.TBYS.OdemePlaniService().Save(odemePlani);
             return odemePlani;
         }
         */
-        }
     }
 }

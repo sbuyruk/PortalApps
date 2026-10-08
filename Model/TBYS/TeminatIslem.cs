@@ -1,9 +1,5 @@
 using Model.Ortak;
-using Model.Services.TBYS;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using Utility.ProjeGlobal;
 
 namespace Model.TBYS
 {
@@ -19,10 +15,6 @@ namespace Model.TBYS
         public string Aciklama { get; set; }
         public int OdemeId { get; set; }
 
-        public int Save() { return new TeminatIslemService().Save(this); }
-        public bool Update() { return new TeminatIslemService().Update(this); }
-        public bool Delete() { return new TeminatIslemService().Delete(this); }
-        public bool DeleteBySozlesmeId(int id) { return new TeminatIslemService().DeleteBySozlesmeId(id); }
 
     }
 }

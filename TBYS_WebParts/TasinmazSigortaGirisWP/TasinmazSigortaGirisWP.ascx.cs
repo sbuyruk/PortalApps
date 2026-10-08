@@ -459,7 +459,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 sigorta.BagimsizBolumNo = BagimsizBolumNoTxt.Text;
                 sigorta.Aciklama = AciklamaTxt.Text;
                 sigorta.KullanimSekli = KullanimAmaciTxt.Text;
-                guncellendiMi = sigorta.Update();
+                guncellendiMi = new Model.Services.TBYS.SigortaService().Update(sigorta);
                 if (guncellendiMi)
                 {
                     Tasinmaz tasinmaz = new Tasinmaz();
@@ -499,7 +499,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             sigorta.BagimsizBolumNo = BagimsizBolumNoTxt.Text;
             sigorta.Aciklama = AciklamaTxt.Text;
             sigorta.KullanimSekli = KullanimAmaciTxt.Text;
-            int sigortaId = sigorta.Save();
+            int sigortaId = new Model.Services.TBYS.SigortaService().Save(sigorta);
             sigorta.Id = sigortaId;
             if (sigortaId > 0)
             {
@@ -660,7 +660,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 sigorta = new Model.Services.TBYS.SigortaService().GetById(SigortaIdQS.ConvertToInt());
                 if (sigorta != null)
                 {
-                    silindi = sigorta.Delete();
+                    silindi = new Model.Services.TBYS.SigortaService().Delete(sigorta);
                 }
                 ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "CloseModal();", true);
                 if (silindi)
@@ -807,7 +807,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                     if (isOk)
                     {
                         sigorta.PDFDosyasi = (hedefDosyaAdi).Trim();
-                        sigorta.Update();
+                        new Model.Services.TBYS.SigortaService().Update(sigorta);
                         DosyaLnk.Visible = true;
                         BelgeSilBtn.Visible = true;
                         BelgeYukleFU.Visible = false;
