@@ -6,34 +6,34 @@ using System.Collections.Generic;
 namespace Model.TBYS
 {
     [Serializable]
-    public class GecikmeZammi : ParentClass
+    public class GecikmeZammi : EntityBase
     {
         public DateTime BaslangicTarihi { get; set; }
         public DateTime BitisTarihi { get; set; }
         public decimal ZamOrani { get; set; }
         public string Aciklama { get; set; }
 
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new GecikmeZammiService().GetById(id), typeof(T));
         }
 
-        public override int Save()
+        public int Save()
         {
             return new GecikmeZammiService().Save(this);
         }
 
-        public override bool Update()
+        public bool Update()
         {
             return new GecikmeZammiService().Update(this);
         }
 
-        public override bool Delete()
+        public bool Delete()
         {
             return new GecikmeZammiService().Delete(this);
         }
 
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(
                 new GecikmeZammiService().GetAll(),

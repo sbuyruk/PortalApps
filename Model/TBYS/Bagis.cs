@@ -7,7 +7,7 @@ using System.Data;
 namespace Model.TBYS
 {
     [Serializable]
-    public class Bagis : ParentClass
+    public class Bagis : EntityBase
     {
         public int BagisciId { get; set; }
         public int TasinmazId { get; set; }
@@ -21,12 +21,12 @@ namespace Model.TBYS
 
         private static BagisService Service { get { return new BagisService(); } }
 
-        public override T Select<T>(int id) { return (T)Convert.ChangeType(Service.GetById(id), typeof(T)); }
+        public T Select<T>(int id) { return (T)Convert.ChangeType(Service.GetById(id), typeof(T)); }
         public Bagis Select(int id) { return Service.GetById(id); }
-        public override int Save() { return Service.Save(this); }
-        public override bool Update() { return Service.Update(this); }
-        public override bool Delete() { return Service.Delete(this); }
-        public override List<T> SelectAll<T>() { return (List<T>)Convert.ChangeType(Service.GetAll(), typeof(List<T>)); }
+        public int Save() { return Service.Save(this); }
+        public bool Update() { return Service.Update(this); }
+        public bool Delete() { return Service.Delete(this); }
+        public List<T> SelectAll<T>() { return (List<T>)Convert.ChangeType(Service.GetAll(), typeof(List<T>)); }
         public List<Bagis> SelectByBagisciId(int bagisciId) { return Service.GetByBagisciId(bagisciId); }
         public DataTable SelectByBagisciIdGroupByKullanimSekli(int bagisciId) { return Service.GetByBagisciIdGroupByKullanimSekli(bagisciId); }
         public string SelectByBagisciIdReturnJson(int bagisciId) { return Service.GetByBagisciIdAsJson(bagisciId); }
