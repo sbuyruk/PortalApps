@@ -322,13 +322,13 @@ namespace NBYS_WebParts.FTKListesiWP
 
                     if (GrupDDL.SelectedItem.Value.ConvertToInt() == ProjeConstants.FTK_GRUPLAMA_IL_ILCEYE_GORE_INT)
                     {
-                        if ((IlcesiIdQS.ConvertToInt() == ProjeConstants.VALILIK_INT) && (iliId == tempIlId))// sadece il se�ili ise
+                        if ((IlcesiIdQS.ConvertToInt() == ProjeConstants.VALILIK_INT) && (iliId == tempIlId))// sadece il seçili ise
                         {
                             tempIlceId = ilcesiId;
                             tempIlId = iliId;
                             continue;
                         }
-                        if ((iliId == tempIlId) && (ilcesiId == tempIlceId))//sadece il�e se�ili ise
+                        if ((iliId == tempIlId) && (ilcesiId == tempIlceId))//sadece ilçe seçili ise
                         {
                             tempIlceId = ilcesiId;
                             tempIlId = iliId;
