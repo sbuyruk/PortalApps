@@ -138,7 +138,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
                 ListItem li = new ListItem(tarih.ToString("MMMM"), tarih.ToString("MM"));
                 AyDDL.Items.Add(li);
             }
-            AyDDL.Items.Add(new ListItem("Tüm Aylar", "0"));
+            AyDDL.Items.Add(new ListItem("TÃ¼m Aylar", "0"));
         }
         private void YilDDLDoldur()
         {
@@ -204,7 +204,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
         private void TabloOlustur()
         {
             
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -411,7 +411,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
         private void ModalTabloOlustur()
         {
 
-            var jsonData = ModalTabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = ModalTabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }

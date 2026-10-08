@@ -51,8 +51,8 @@ namespace NBYS_WebParts.HomeWP
             if (!string.IsNullOrEmpty(MesajQS))
             {
                 ExceptionHelper eh = new ExceptionHelper();
-                eh.Exceptions.Add(new Exception("Sayfada Düzenleme Yapilmaktadir."));
-                eh.Exceptions.Add(new Exception("Lütfen daha sonra tekrar deneyiniz."));
+                eh.Exceptions.Add(new Exception("Sayfada DÃ¼zenleme Yapilmaktadir."));
+                eh.Exceptions.Add(new Exception("LÃ¼tfen daha sonra tekrar deneyiniz."));
 
                 MesajQS = string.Empty;
             }
