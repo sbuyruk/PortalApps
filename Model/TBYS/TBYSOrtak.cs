@@ -1,6 +1,7 @@
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
 using Model.IKYS;
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -320,8 +321,8 @@ namespace Model.Ortak
         {
             DateTime ilkTarih = odemePlani.VadeBasTar;
             DateTime ikinciTarih = odemePlani.VadeBitTar;
-            GecikmeZammi gzDao = new GecikmeZammi();
-            List<GecikmeZammi> gzList = gzDao.SelectByBaslangicTarihi(ilkTarih,ikinciTarih);
+            GecikmeZammiService gecikmeZammiService = new GecikmeZammiService();
+            List<GecikmeZammi> gzList = gecikmeZammiService.GetByDateRange(ilkTarih, ikinciTarih);
             if (gzList.Count >= 1)
             {
                 foreach (var gecikmeZammi in gzList) //gecikme zammi dongusu

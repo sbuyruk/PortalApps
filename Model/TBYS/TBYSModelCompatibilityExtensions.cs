@@ -123,30 +123,6 @@ namespace Model.TBYS
         public static DataTable SelectSatisVsDahilTasinmazByBagisciIdReturnDT(this Bagis item, int id) { return new BagisService().GetSatisVsDahilTasinmazByBagisciId(id); }
         public static decimal SelectSumTahminiRayicByBagisciId(this Bagis item, int id) { return new BagisService().GetSumTahminiRayicByBagisciId(id); }
 
-        public static T Select<T>(this GecikmeZammi item, int id) { return (T)Convert.ChangeType(new GecikmeZammiService().GetById(id), typeof(T)); }
-        public static int Save(this GecikmeZammi item) { return new GecikmeZammiService().Save(item); }
-        public static bool Update(this GecikmeZammi item) { return new GecikmeZammiService().Update(item); }
-        public static bool Delete(this GecikmeZammi item) { return new GecikmeZammiService().Delete(item); }
-        public static List<T> SelectAll<T>(this GecikmeZammi item) { return (List<T>)Convert.ChangeType(new GecikmeZammiService().GetAll(), typeof(List<T>)); }
-        public static List<GecikmeZammi> SelectBuAyIcindeDegisen(this GecikmeZammi item, DateTime ilkTarih, DateTime sonTarih) { return new GecikmeZammiService().GetChangedBetween(ilkTarih, sonTarih); }
-        public static List<GecikmeZammi> SelectByBaslangicTarihi(this GecikmeZammi item, DateTime baslangicTarihi) { return new GecikmeZammiService().GetByStartDate(baslangicTarihi); }
-        public static List<GecikmeZammi> SelectByBaslangicTarihi(this GecikmeZammi item, DateTime ilkTarih, DateTime sonTarih) { return new GecikmeZammiService().GetByDateRange(ilkTarih, sonTarih); }
-        public static GecikmeZammi SelectSonDegisenByTarih(this GecikmeZammi item, DateTime tarih) { return new GecikmeZammiService().GetLatestByDate(tarih); }
-        public static GecikmeZammi SelectOncekiGecikmeZammi(this GecikmeZammi item, DateTime tarih) { return new GecikmeZammiService().GetPrevious(tarih); }
-        public static GecikmeZammi SelectSonrakiGecikmeZammi(this GecikmeZammi item, DateTime tarih) { return new GecikmeZammiService().GetNext(tarih); }
-        public static List<GecikmeZammi> SelectByTarih(this GecikmeZammi item, DateTime ilkTarih, DateTime sonTarih) { return new GecikmeZammiService().GetByDate(ilkTarih, sonTarih); }
-        public static GecikmeZammi SelectSonrakiGecikmeZammi(this GecikmeZammi item) { return new GecikmeZammiService().GetLatest(); }
-
-        public static T Select<T>(this HukukiTakip item, int id) { return (T)Convert.ChangeType(new HukukiTakipService().GetById(id), typeof(T)); }
-        public static int Save(this HukukiTakip item) { return new HukukiTakipService().Save(item); }
-        public static bool Update(this HukukiTakip item) { return new HukukiTakipService().Update(item); }
-        public static bool Delete(this HukukiTakip item) { return new HukukiTakipService().Delete(item); }
-        public static bool DeleteBySozlesmeId(this HukukiTakip item, int id) { return new HukukiTakipService().DeleteBySozlesmeId(id); }
-        public static string SelectAllReturnJson(this HukukiTakip item) { return new HukukiTakipService().GetActiveListAsJson(); }
-        public static DataTable SelectAllReturnDataTable(this HukukiTakip item) { return new HukukiTakipService().GetActiveList(); }
-        public static List<T> SelectAll<T>(this HukukiTakip item) { return (List<T>)Convert.ChangeType(new HukukiTakipService().GetAll(), typeof(List<T>)); }
-        public static HukukiTakip SelectBySozlesmeId(this HukukiTakip item, int id) { return new HukukiTakipService().GetBySozlesmeId(id); }
-
         public static T Select<T>(this KiraBorcuTakip item, int id) { return (T)Convert.ChangeType(new KiraBorcuTakipService().GetById(id), typeof(T)); }
         public static KiraBorcuTakip Select(this KiraBorcuTakip item, int id) { return new KiraBorcuTakipService().GetById(id); }
         public static int Save(this KiraBorcuTakip item) { return new KiraBorcuTakipService().Save(item); }

@@ -1,4 +1,5 @@
 using Model.Ortak;
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -56,8 +57,8 @@ namespace TBYS_WebParts.GecikmeZammiWP
         private void GecikmeZammiiTablosunuDoldur()
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            GecikmeZammi faizOranDao = new GecikmeZammi();
-            List<GecikmeZammi> list = faizOranDao.SelectAll<GecikmeZammi>();
+            GecikmeZammiService faizOranService = new GecikmeZammiService();
+            List<GecikmeZammi> list = faizOranService.GetAll();
             int sira = 1;
             foreach (GecikmeZammi item in list)
             {
@@ -112,25 +113,24 @@ namespace TBYS_WebParts.GecikmeZammiWP
                         item.Aciklama = AciklamaTxt.Text;
                         item.Degistiren = CurrentUserName;
 
-                        GecikmeZammi oncekiTarihliFO = new GecikmeZammi();
-                        oncekiTarihliFO = oncekiTarihliFO.SelectOncekiGecikmeZammi(item.BaslangicTarihi);
+                        GecikmeZammiService gecikmeZammiService = new GecikmeZammiService();
+                        GecikmeZammi oncekiTarihliFO = gecikmeZammiService.GetPrevious(item.BaslangicTarihi);
 
                         if (oncekiTarihliFO != null)
                         {
                             oncekiTarihliFO.BitisTarihi = item.BaslangicTarihi.AddDays(-1);
                             oncekiTarihliFO.Degistiren = CurrentUserName;
-                            oncekiTarihliFO.Update();
+                            gecikmeZammiService.Update(oncekiTarihliFO);
                         }
 
-                        GecikmeZammi sonrakiTarihliFO = new GecikmeZammi();
-                        sonrakiTarihliFO = sonrakiTarihliFO.SelectSonrakiGecikmeZammi(item.BaslangicTarihi);
+                        GecikmeZammi sonrakiTarihliFO = gecikmeZammiService.GetNext(item.BaslangicTarihi);
 
                         if (sonrakiTarihliFO != null)
                         {
                             item.BitisTarihi = sonrakiTarihliFO.BaslangicTarihi.AddDays(-1);
                         }
 
-                        if (item.Update())
+                        if (gecikmeZammiService.Update(item))
                         {
                             MessageHelper.PublishMessage("Kayıt Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -157,17 +157,17 @@ namespace TBYS_WebParts.GecikmeZammiWP
                 {
                     try
                     {
-                        GecikmeZammi oncekiTarihliFO = new GecikmeZammi();
-                        oncekiTarihliFO = oncekiTarihliFO.SelectOncekiGecikmeZammi(item.BaslangicTarihi);
+                        GecikmeZammiService gecikmeZammiService = new GecikmeZammiService();
+                        GecikmeZammi oncekiTarihliFO = gecikmeZammiService.GetPrevious(item.BaslangicTarihi);
 
                         if (oncekiTarihliFO != null)
                         {
                             oncekiTarihliFO.BitisTarihi = item.BitisTarihi;
                             oncekiTarihliFO.Degistiren = CurrentUserName;
-                            oncekiTarihliFO.Update();
+                            gecikmeZammiService.Update(oncekiTarihliFO);
                         }
 
-                        if (item.Delete())
+                        if (gecikmeZammiService.Delete(item))
                         {
                             MessageHelper.PublishMessage("Kayıt Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -225,24 +225,23 @@ namespace TBYS_WebParts.GecikmeZammiWP
             yeni.Aciklama = YeniAciklamaTxt.Value;
             yeni.Olusturan = CurrentUserName;
 
-            GecikmeZammi oncekiTarihliFO = new GecikmeZammi();
-            oncekiTarihliFO = oncekiTarihliFO.SelectOncekiGecikmeZammi(YeniBaslangicTarihiTxt.Value.ConvertToDatetime());
+            GecikmeZammiService gecikmeZammiService = new GecikmeZammiService();
+            GecikmeZammi oncekiTarihliFO = gecikmeZammiService.GetPrevious(YeniBaslangicTarihiTxt.Value.ConvertToDatetime());
             //öncekinin biti tarihini degistir
             if (oncekiTarihliFO != null)
             {
                 oncekiTarihliFO.BitisTarihi = YeniBaslangicTarihiTxt.Value.ConvertToDatetime().AddDays(-1);
                 oncekiTarihliFO.Degistiren = CurrentUserName;
-                oncekiTarihliFO.Update();
+                gecikmeZammiService.Update(oncekiTarihliFO);
             }
 
-            GecikmeZammi sonrakiTarihliFO = new GecikmeZammi();
-            sonrakiTarihliFO = sonrakiTarihliFO.SelectSonrakiGecikmeZammi(yeni.BaslangicTarihi);
+            GecikmeZammi sonrakiTarihliFO = gecikmeZammiService.GetNext(yeni.BaslangicTarihi);
             //yeninin bitis tarihini sonrakinin baslama tarihi yap
             if (sonrakiTarihliFO != null)
             {
                 yeni.BitisTarihi = sonrakiTarihliFO.BaslangicTarihi.AddDays(-1);
             }
-            yeni.Save();
+            gecikmeZammiService.Save(yeni);
 
             MessageHelper.PublishMessage("Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();

@@ -1,4 +1,5 @@
 using Model.Ortak;
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -182,16 +183,16 @@ namespace TBYS_WebParts.HukukiTakipListesiWP
         }
         private string TabloJson()
         {
-            HukukiTakip hukukiTakip = new HukukiTakip();
-            string json = hukukiTakip.SelectAllReturnJson();
+            HukukiTakipService hukukiTakipService = new HukukiTakipService();
+            string json = hukukiTakipService.GetActiveListAsJson();
 
             return json;
 
         }
         private DataTable HukukiTakipDataTable()
         {
-            HukukiTakip hukukiTakip = new HukukiTakip();
-            DataTable dataTable = hukukiTakip.SelectAllReturnDataTable();
+            HukukiTakipService hukukiTakipService = new HukukiTakipService();
+            DataTable dataTable = hukukiTakipService.GetActiveList();
 
             return dataTable;
 
