@@ -174,7 +174,7 @@ namespace MTS_WebParts.FaaliyetKartiWP
                 r2c3.Text = "Faaliyet Durumu : " + MTSOrtak.ParseFaaliyetDurumu(faaliyet.FaaliyetDurumu.ConvertToInt());
 
                 r3c1.Text = "Faaliyet Konusu : " + faaliyet.FaaliyetKonusu;
-                r3c2.Text = "Açiklama : " + faaliyet.Aciklama;
+                r3c2.Text = "AÃ§iklama : " + faaliyet.Aciklama;
                 r3c2.ColumnSpan = 2;
 
                 BorderEkle(row1);

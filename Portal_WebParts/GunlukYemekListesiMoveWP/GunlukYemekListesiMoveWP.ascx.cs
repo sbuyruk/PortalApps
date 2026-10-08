@@ -141,7 +141,7 @@ namespace Portal_WebParts.GunlukYemekListesiMoveWP
             {
                 YokDiv.Attributes["style"] = "display : block";
                 TabloDiv.Attributes["style"] = "display : none";
-                YokLbl.Text = DateTime.Now.ConvertToDatetimeEmptyIfNull() + " tarihi için tanimlanmis yemek menüsü bulunamamistir.";
+                YokLbl.Text = DateTime.Now.ConvertToDatetimeEmptyIfNull() + " tarihi iÃ§in tanimlanmis yemek menÃ¼sÃ¼ bulunamamistir.";
 
             }
 

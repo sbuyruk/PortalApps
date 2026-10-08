@@ -200,7 +200,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
             if (!Page.IsPostBack)
             {
                 AdiLbl.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
-                TitleLbl.Text = "Borçlu Kiraci Listesi";
+                TitleLbl.Text = "BorÃ§lu Kiraci Listesi";
                 
                 try
                 {
@@ -210,7 +210,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                     Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
                     BolgeIdQS = bolge == null ? 0 : bolge.Id;
                     if (bolge!=null)
-                        TitleLbl.Text = "Borçlu Kiraci Listesi" + " (" + bolge.KisaAdi + " Bölgesi)";
+                        TitleLbl.Text = "BorÃ§lu Kiraci Listesi" + " (" + bolge.KisaAdi + " BÃ¶lgesi)";
 
                     
                     bool yetkiliMi = !string.IsNullOrEmpty(AuthQS) && AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM);
@@ -249,8 +249,8 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
         private void BorcluKiraclariTabloyaDoldur()
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            //SB 10.08.2020 secilentarih ayin 1'ii yerine bugün 
-            //** SB üstteki Iptal 16.09.2020
+            //SB 10.08.2020 secilentarih ayin 1'ii yerine bugÃ¼n 
+            //** SB Ã¼stteki Iptal 16.09.2020
 
             int ay = SecilenAyQS.ConvertToInt();
             int yil = SecilenYilQS.ConvertToInt();
@@ -312,7 +312,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                     {
                         if (!ilkKayit)
                         {
-                            TabloyaFooterEkle(tempBolge + " Bölge Toplami", bolgeAnaParaToplami.ToString("N", culturInfo), bolgeFaizliBakiyeToplami.ToString("N", culturInfo));
+                            TabloyaFooterEkle(tempBolge + " BÃ¶lge Toplami", bolgeAnaParaToplami.ToString("N", culturInfo), bolgeFaizliBakiyeToplami.ToString("N", culturInfo));
                             bolgeAnaParaToplami = 0;
                             bolgeFaizliBakiyeToplami = 0;
                         }
@@ -320,7 +320,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                         TableHeaderCell bolgeCell = new TableHeaderCell();
                         bolgeCell.ColumnSpan = BolgeColumnSpan;
                         bolgeCell.Attributes.Add("style", "text-align:center;");
-                        bolgeCell.Text = bolge + " Bölgesi ";
+                        bolgeCell.Text = bolge + " BÃ¶lgesi ";
                         bolgeCell.BackColor = System.Drawing.Color.Gray;
                         bolgeCell.ForeColor = System.Drawing.Color.White;
                         bolgeRow.Controls.Add(bolgeCell);
@@ -354,7 +354,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                     }
                     else
                     {
-                        //görüntüleyenler için
+                        //gÃ¶rÃ¼ntÃ¼leyenler iÃ§in
                         kiraciCell.Text = "<a href=# onclick=OpenModal(" + kiraSozlesmeId + "); type=button class=\'btn btn-link fw-bold\'>" + kiraci + "</a>";
                     }
 
@@ -409,7 +409,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                     bool sonKayit = ++counter == toplamKayitSayisi;
                     if (sonKayit)
                     {
-                        TabloyaFooterEkle(tempBolge + " Bölge Toplami", bolgeAnaParaToplami.ToString("N", culturInfo), bolgeFaizliBakiyeToplami.ToString("N", culturInfo));
+                        TabloyaFooterEkle(tempBolge + " BÃ¶lge Toplami", bolgeAnaParaToplami.ToString("N", culturInfo), bolgeFaizliBakiyeToplami.ToString("N", culturInfo));
                     }
                     ilkKayit = false;
 
@@ -419,7 +419,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
             }
             else
             {
-                MessageHelper.PublishMessage("Borçlu Kiraci bulunamadi", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("BorÃ§lu Kiraci bulunamadi", ProjeConstants.MESAJ_BILGI, 2000);
             }
 
         }
@@ -431,7 +431,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
             int yaziliIhtarAdet = kiraBorcuTakip.SelectCountBySozlesmeId(kiraSozlesmeId, ProjeConstants.KIRABORCU_YAZILIIHTAR);
             int icraTakibiAdet = kiraBorcuTakip.SelectCountBySozlesmeId(kiraSozlesmeId, ProjeConstants.KIRABORCU_ICRATAKIBI);
 
-            string retval = " Bu sözlesme yili içinde " +
+            string retval = " Bu sÃ¶zlesme yili iÃ§inde " +
                 (icraTakibiAdet > 0 ? icraTakibiAdet + " defa " + ProjeConstants.KIRABORCU_ICRATAKIBI : string.Empty) +
                 (yaziliIhtarAdet > 0 ? yaziliIhtarAdet + " defa " + ProjeConstants.KIRABORCU_YAZILIIHTAR : string.Empty) +
                 (uyariAdet > 0 ? uyariAdet + " defa " + ProjeConstants.KIRABORCU_UYARI : string.Empty) + " takip islemi yapilmistir.";
@@ -477,22 +477,22 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                 string islemTarihi =takipIslemi.Equals(ProjeConstants.KIRABORCU_UYARI)? kiraBorcuTakip.IslemTarihi.ConvertToDDMMYYYHHmmFormat(): kiraBorcuTakip.IslemTarihi.ConvertToDatetimeEmptyIfNull();
                 string url = "<p class='text-success fw-bold'>" +islemYapan +" tarafindan " + 
                     takipIslemi+ (takipIslemi.Equals(ProjeConstants.KIRABORCU_ICRATAKIBI) ? " baslatildi." : 
-                    (takipIslemi.Equals(ProjeConstants.KIRABORCU_YAZILIIHTAR) ? " gönderildi." : " yapildi.") )
+                    (takipIslemi.Equals(ProjeConstants.KIRABORCU_YAZILIIHTAR) ? " gÃ¶nderildi." : " yapildi.") )
                     +" (Tarih:"+islemTarihi+")</p>";
                 string duzenle=string.Empty;
 
                 
                 if (string.IsNullOrEmpty(birim) || birim.Contains(ProjeConstants.BIRIM_INSAATEMLAK))
                 {
-                    duzenle = "<a href=# onclick=OpenTakipIslemiModalDuzenle(" + kiraBorcuTakip.Id + "); " + btnClass + ">Düzenle</a>";
+                    duzenle = "<a href=# onclick=OpenTakipIslemiModalDuzenle(" + kiraBorcuTakip.Id + "); " + btnClass + ">DÃ¼zenle</a>";
                 }
                 else if (takipIslemi.Equals(ProjeConstants.KIRABORCU_ICRATAKIBI) && (birim.Contains(ProjeConstants.BIRIM_HUKUK)))
                 {
-                    duzenle = "<a href=# onclick=OpenTakipIslemiModalDuzenle(" + kiraBorcuTakip.Id + "); " + btnClass + ">Düzenle</a>";
+                    duzenle = "<a href=# onclick=OpenTakipIslemiModalDuzenle(" + kiraBorcuTakip.Id + "); " + btnClass + ">DÃ¼zenle</a>";
                 }
                 else if (takipIslemi.Equals(ProjeConstants.KIRABORCU_UYARI) && (birim.Contains(ProjeConstants.BIRIM_BOLGETEMSILCILIGI)))
                 {
-                    duzenle = "<a href=# onclick=OpenTakipIslemiModalDuzenle(" + kiraBorcuTakip.Id + "); " + btnClass + ">Düzenle</a>";
+                    duzenle = "<a href=# onclick=OpenTakipIslemiModalDuzenle(" + kiraBorcuTakip.Id + "); " + btnClass + ">DÃ¼zenle</a>";
                 }
 
 
@@ -531,9 +531,9 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
             TableHeaderCell tableTitleCell = new TableHeaderCell();
 
             // int sureAy = string.IsNullOrEmpty(AySayisiBitQS) ? 0 : AySayisiBitQS.ConvertToInt();
-            //string baslikAy = sureAy < icraAySayisi ? AySayisiBitQS + " Ay Borçlu Kiracilar" : " Hukuki Isleme Tabi Kiracilar";
+            //string baslikAy = sureAy < icraAySayisi ? AySayisiBitQS + " Ay BorÃ§lu Kiracilar" : " Hukuki Isleme Tabi Kiracilar";
 
-            tableTitleCell.Text = (new DateTime(SecilenYilQS.ConvertToInt(), SecilenAyQS.ConvertToInt(), 1)).ToString("MMMM yyyy", culturInfo) + " Itibari Ile Borçlu Kiracilar ";
+            tableTitleCell.Text = (new DateTime(SecilenYilQS.ConvertToInt(), SecilenAyQS.ConvertToInt(), 1)).ToString("MMMM yyyy", culturInfo) + " Itibari Ile BorÃ§lu Kiracilar ";
 
             tableTitleCell.ColumnSpan = BolgeColumnSpan;
             tableTitleRow.Controls.Add(tableTitleCell);
@@ -564,13 +564,13 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
 
             siraNoCell.Text = "S.No";
             kiraciCell.Text = "Kiracinin Adi ve Soyadi";
-            sozlesmeTarihiCell.Text = "Ilk Sözlesme Tarihi";
+            sozlesmeTarihiCell.Text = "Ilk SÃ¶zlesme Tarihi";
             kiraBedeliCell.Text = "Kira Bedeli (TL/Ay)";
-            borcMiktariCell.Text = "Borç Miktari (TL)";
+            borcMiktariCell.Text = "BorÃ§ Miktari (TL)";
             faizliBakiyeCell.Text = "Faizli Bakiye (TL)";
             borcAdediCell.Text = "Kira Borcu (Ay)";
             takipIslemiCell.Text = "Takip Islemi";
-            oncekiTakipIslemleriCell.Text = "Sözlesme Yili Içindeki Takip Islemleri";
+            oncekiTakipIslemleriCell.Text = "SÃ¶zlesme Yili IÃ§indeki Takip Islemleri";
 
             headerRow.Controls.Add(siraNoCell);
             headerRow.Controls.Add(kiraciCell);
@@ -755,16 +755,16 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                 KiraciAdiLbl.Text= "<strong> Kiraci</strong> : " + (kiraci.Adi + " " + kiraci.Soyadi).Trim();
                 KiraSozlesme kiraSozlesme= new KiraSozlesme();
                 kiraSozlesme = kiraSozlesme.Select(kiraSozlesmeId);
-                SozlesmeLbl.Text = kiraSozlesme != null ? "<strong>Sözlesme : </strong>" + kiraSozlesme.Id + " numarali ve " + kiraSozlesme.SozBasTar + " - " + kiraSozlesme.SozBitTar + " tarihli sözlesme":string.Empty;
+                SozlesmeLbl.Text = kiraSozlesme != null ? "<strong>SÃ¶zlesme : </strong>" + kiraSozlesme.Id + " numarali ve " + kiraSozlesme.SozBasTar + " - " + kiraSozlesme.SozBitTar + " tarihli sÃ¶zlesme":string.Empty;
                 AciklamaTxt.Text = string.Empty;
                 TakipIslemTxt.Text= string.Empty;
                 if (takipIslemi.Equals(ProjeConstants.KIRABORCU_UYARI))
                 {
                     
-                    TakipIslemTxt.Attributes["placeholder"] = "Görüsme ile ilgili kisa bilgi giriniz";
-                    AciklamaTxt.Attributes["placeholder"] = "Görüsme ile ilgili ayrintili bilgi giriniz, kim görüstü, kiminle görüsüldü, telefonla/yüzyüze görüsüldü vb.";
-                    IslemTarihiLbl.Text = "Görüsme Tarihi";
-                    IslemSaatiLbl.Text = "Görüsme Saati";
+                    TakipIslemTxt.Attributes["placeholder"] = "GÃ¶rÃ¼sme ile ilgili kisa bilgi giriniz";
+                    AciklamaTxt.Attributes["placeholder"] = "GÃ¶rÃ¼sme ile ilgili ayrintili bilgi giriniz, kim gÃ¶rÃ¼stÃ¼, kiminle gÃ¶rÃ¼sÃ¼ldÃ¼, telefonla/yÃ¼zyÃ¼ze gÃ¶rÃ¼sÃ¼ldÃ¼ vb.";
+                    IslemTarihiLbl.Text = "GÃ¶rÃ¼sme Tarihi";
+                    IslemSaatiLbl.Text = "GÃ¶rÃ¼sme Saati";
                     IslemSaatiLbl.Visible = true;
                     IslemSaatiDDL.Visible = true;                    
                     TebligEdilenKisiLbl.Visible = false;
@@ -777,8 +777,8 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                 {
                     TakipIslemTxt.Attributes["placeholder"] = "Yazinin dosya numarasini giriniz";
                     AciklamaTxt.Attributes["placeholder"] = "Yazinin tarih, saat, konu vb. bilgilerini giriniz";
-                    IslemTarihiLbl.Text = "Gönderme Tarihi";
-                    IslemSaatiLbl.Text = "Gönderme Saati";
+                    IslemTarihiLbl.Text = "GÃ¶nderme Tarihi";
+                    IslemSaatiLbl.Text = "GÃ¶nderme Saati";
                     IslemSaatiLbl.Visible=false;
                     IslemSaatiDDL.Visible=false;
                     TebligEdilenKisiLbl.Visible = true;
@@ -831,20 +831,20 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                     UtilityHelper.SetDDLValue (IslemSaatiDDL,kiraBorcuTakip.IslemTarihi.ToString("HH:mm"));
                     //IslemSaatiTxt.Text = kiraBorcuTakip.IslemTarihi.ToString("HH:mm");
 
-                    BaslikLbl.Text = "Takip Islemi : " + takipIslemi + " Düzenleme";
+                    BaslikLbl.Text = "Takip Islemi : " + takipIslemi + " DÃ¼zenleme";
                     KiraciAdiLbl.Text = "<strong> Kiraci</strong> : " + (kiraci.Adi + " " + kiraci.Soyadi).Trim();
                     KiraSozlesme kiraSozlesme = new KiraSozlesme();
                     kiraSozlesme = kiraSozlesme.Select(kiraSozlesmeId);
-                    SozlesmeLbl.Text = kiraSozlesme != null ? "<strong>Sözlesme : </strong>" + kiraSozlesme.Id + " numarali ve " + kiraSozlesme.SozBasTar + " - " + kiraSozlesme.SozBitTar + " tarihli sözlesme" : string.Empty;
+                    SozlesmeLbl.Text = kiraSozlesme != null ? "<strong>SÃ¶zlesme : </strong>" + kiraSozlesme.Id + " numarali ve " + kiraSozlesme.SozBasTar + " - " + kiraSozlesme.SozBitTar + " tarihli sÃ¶zlesme" : string.Empty;
                     AciklamaTxt.Text = kiraBorcuTakip.Aciklama;
                     TakipIslemTxt.Text = takipIslemi;
                     if (takipIslemi.Equals(ProjeConstants.KIRABORCU_UYARI))
                     {
 
-                        TakipIslemTxt.Attributes["placeholder"] = "Görüsme ile ilgili kisa bilgi giriniz";
-                        AciklamaTxt.Attributes["placeholder"] = "Görüsme ile ilgili ayrintili bilgi giriniz, kim görüstü, kiminle görüsüldü, telefonla/yüzyüze görüsüldü vb.";
-                        IslemTarihiLbl.Text = "Görüsme Tarihi";
-                        IslemSaatiLbl.Text = "Görüsme Saati";
+                        TakipIslemTxt.Attributes["placeholder"] = "GÃ¶rÃ¼sme ile ilgili kisa bilgi giriniz";
+                        AciklamaTxt.Attributes["placeholder"] = "GÃ¶rÃ¼sme ile ilgili ayrintili bilgi giriniz, kim gÃ¶rÃ¼stÃ¼, kiminle gÃ¶rÃ¼sÃ¼ldÃ¼, telefonla/yÃ¼zyÃ¼ze gÃ¶rÃ¼sÃ¼ldÃ¼ vb.";
+                        IslemTarihiLbl.Text = "GÃ¶rÃ¼sme Tarihi";
+                        IslemSaatiLbl.Text = "GÃ¶rÃ¼sme Saati";
                         IslemSaatiLbl.Visible = true;
                         IslemSaatiDDL.Visible = true;
                         TebligEdilenKisiLbl.Visible = false;
@@ -856,8 +856,8 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                     {
                         TakipIslemTxt.Attributes["placeholder"] = "Yazinin dosya numarasini giriniz";
                         AciklamaTxt.Attributes["placeholder"] = "Yazinin tarih, saat, konu vb. bilgilerini giriniz";
-                        IslemTarihiLbl.Text = "Gönderme Tarihi";
-                        IslemSaatiLbl.Text = "Gönderme Saati";
+                        IslemTarihiLbl.Text = "GÃ¶nderme Tarihi";
+                        IslemSaatiLbl.Text = "GÃ¶nderme Saati";
                         IslemSaatiDDL.Visible = false;
                         IslemSaatiLbl.Visible = false;
                         TebligEdilenKisiLbl.Visible = true;
@@ -880,7 +880,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                         TebligTarihiTxt.Visible = false;
                     }
 
-                    MesajLbl.Text = "<strong> " + (kiraci.Adi + " " + kiraci.Soyadi).Trim() + "</strong> adli kiracinin <strong>" + takipIslemi + "</strong> islemi güncellenecek, onayliyor munuz?";
+                    MesajLbl.Text = "<strong> " + (kiraci.Adi + " " + kiraci.Soyadi).Trim() + "</strong> adli kiracinin <strong>" + takipIslemi + "</strong> islemi gÃ¼ncellenecek, onayliyor munuz?";
                     TakipIslemiYapNowBtn.Visible = false;
                     TakipIslemiGuncelleNowBtn.Visible = true;
                 }
@@ -960,7 +960,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                     kiraBorcuTakip.Update();
                     BorcluKiraclariTabloyaDoldur();
                     UtilityHelper.ScriptCalistir("CloseKiraBocuTakibiModal();");
-                    MessageHelper.PublishMessage("Takip islemi güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Takip islemi gÃ¼ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
             }
             catch (Exception exception)

@@ -58,7 +58,7 @@ namespace MTS_WebParts.KisiGirisiWP
         
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)// sayfa ilk kez açiliyorsa (bu sayfanin içindeki butona basilma ani hariç)
+            if (!Page.IsPostBack)// sayfa ilk kez aÃ§iliyorsa (bu sayfanin iÃ§indeki butona basilma ani hariÃ§)
             {
                 
                 MTSUnvanDDLDoldur();
@@ -77,7 +77,7 @@ namespace MTS_WebParts.KisiGirisiWP
                         GuncelleBtn.Visible = true;
                         //KisiyiSilBtn.Visible = true;
                         FaaliyetGirBtn.Visible = true;
-                        TitleLbl.Text = "Kisi Düzenle";
+                        TitleLbl.Text = "Kisi DÃ¼zenle";
                         TitleLbl.CssClass = "col-form-label text-primary fw-bold mb-1";
                         FormuDoldur();
                     }
@@ -382,11 +382,11 @@ namespace MTS_WebParts.KisiGirisiWP
                     if (guncellendiMi)
                     {
                         RedirectToPage(ProjeConstants.PAGE_KISI_LIST+"?SecilenId="+kisi.Id);
-                        MessageHelper.PublishMessage("Kisi Güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Kisi GÃ¼ncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Kisi Güncellenmedi.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Kisi GÃ¼ncellenmedi.", ProjeConstants.MESAJ_HATA);
                     }
                 }
 
@@ -451,13 +451,13 @@ namespace MTS_WebParts.KisiGirisiWP
             if (averilenAniObjesiVarmi)
             {
                 silinebilirMi = false;
-                OnayMesajiLbl.Text += " Seçtiginiz kisiye verilen ani objesi kaydi bulunmaktadir." + "</br>";
+                OnayMesajiLbl.Text += " SeÃ§tiginiz kisiye verilen ani objesi kaydi bulunmaktadir." + "</br>";
             }
             bool getirilenAniObjesiVarmi = GetirilenAniObjesiVarMi(KisiIdQS.ConvertToInt());
             if (getirilenAniObjesiVarmi)
             {
                 silinebilirMi = false;
-                OnayMesajiLbl.Text += " Seçtiginiz kisinin getirdigi ani objesi kaydi bulunmaktadir." + "</br>";
+                OnayMesajiLbl.Text += " SeÃ§tiginiz kisinin getirdigi ani objesi kaydi bulunmaktadir." + "</br>";
             }
             
 
@@ -468,7 +468,7 @@ namespace MTS_WebParts.KisiGirisiWP
             {
                 silinebilirMi = false;
                 
-                OnayMesajiLbl.Text += "Seçtiginiz kisinin katildigi faaliyet bulunmaktadir." + "</br>";
+                OnayMesajiLbl.Text += "SeÃ§tiginiz kisinin katildigi faaliyet bulunmaktadir." + "</br>";
 
 
             }
@@ -479,7 +479,7 @@ namespace MTS_WebParts.KisiGirisiWP
             {
                 silinebilirMi = false;
 
-                OnayMesajiLbl.Text += "Seçtiginiz kisinin arama/görüsme kaydi bulunmaktadir." + "</br>";
+                OnayMesajiLbl.Text += "SeÃ§tiginiz kisinin arama/gÃ¶rÃ¼sme kaydi bulunmaktadir." + "</br>";
 
 
             }
@@ -565,7 +565,7 @@ namespace MTS_WebParts.KisiGirisiWP
             string openModal = "OpenModalOnay();";
             kaydetGuncelleSilHdn.Value = ProjeConstants.YENI;
             OnayMesajiLbl.Visible = true;
-            OnayMesajiLbl.Text = "Yeni faaliyet kaydi açilmasinin onayliyor musunuz?";
+            OnayMesajiLbl.Text = "Yeni faaliyet kaydi aÃ§ilmasinin onayliyor musunuz?";
             ModalBaslikLbl.Text = "Yeni Faaliyet Olusturulacak";
             KisiSilNowBtn.Visible = false;
             OnaylaBtn.Visible = true;
@@ -685,7 +685,7 @@ namespace MTS_WebParts.KisiGirisiWP
         {
             if (AdSoyadVarMi(AdiTxt.Text, SoyadiTxt.Text))
             {
-                MessageHelper.PublishMessage("Bu AD ve SOYADI içeren bir kayit zaten var. Lütfen kaydetmeden önce kontrol ediniz ", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Bu AD ve SOYADI iÃ§eren bir kayit zaten var. LÃ¼tfen kaydetmeden Ã¶nce kontrol ediniz ", ProjeConstants.MESAJ_HATA);
             }
         }
     }

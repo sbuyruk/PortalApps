@@ -74,7 +74,7 @@ namespace MTS_WebParts.TestWP
             string from = "Makam Takip Sistemi <mts@tskgv.local>";
             string userto = "asbuyruk@tskgv.org.tr";
             string baslik = "Deneme Randevu Degisti";
-            string yer = "Öbür Oda";
+            string yer = "Ã–bÃ¼r Oda";
             DateTime bastar = toplanti.BaslangicTarihi.AddDays(1);
             DateTime bittar = toplanti.BitisTarihi.AddDays(1);
             MailHelper.TakvimdenSil(toplanti.UniqueId, from, userto, baslik, bastar, bittar, yer, toplanti.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);

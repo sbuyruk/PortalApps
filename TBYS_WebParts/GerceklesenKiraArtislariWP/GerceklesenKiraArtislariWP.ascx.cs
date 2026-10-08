@@ -89,7 +89,7 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             //var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
         }
@@ -128,7 +128,7 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP
         {
             TabloOlustur();
             string filename = "GerceklesenKiraArtisCizelgesi.xls";// + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls";
-            //Türkçe sorunu yok
+            //TÃ¼rkÃ§e sorunu yok
             Page.Response.Clear();
             Page.Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
             Page.Response.ContentType = "application/ms-excel";
@@ -193,7 +193,7 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP
                 DateTime bugun = DateTime.Today;
                 decimal yasalOranaGoreKiraBedeli = oncekiKiraBedeli>0? oncekiKiraBedeli + Math.Round(oncekiKiraBedeli * tufe / 100):0;
                 
-                string yasalArtisOrani = "%" + tufe.ToString("N", culturInfo) + " (TÜFE)";
+                string yasalArtisOrani = "%" + tufe.ToString("N", culturInfo) + " (TÃœFE)";
                 DateTime bastar = string.IsNullOrEmpty(sozBasTar.ConvertToDatetimeEmptyIfNull()) ? DateTime.Today : sozBasTar.ConvertToDatetime();
                 if ((bastar >= ProjeConstants.SINIRLIKIRAARTISI_BASLAMATARIHI) &&
                    (bastar <= ProjeConstants.SINIRLIKIRAARTISI_BITISTARIHI) &&

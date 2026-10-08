@@ -181,7 +181,7 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
             bolgeCell.HorizontalAlign = HorizontalAlign.Center;
             bolgeCell.Attributes["style"] = "vertical-align:middle";
             bolgeCell.Font.Bold = true;
-            bolgeCell.Text = "BÖLGE";
+            bolgeCell.Text = "BÃ–LGE";
 
             TableHeaderCell kiraciSayisiCell = new TableHeaderCell();
             kiraciSayisiCell.RowSpan = 2;
@@ -201,7 +201,7 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
             tasinmazTuruCell.HorizontalAlign = HorizontalAlign.Center;
             tasinmazTuruCell.Attributes["style"] = "vertical-align:middle";
             tasinmazTuruCell.Font.Bold = true;
-            tasinmazTuruCell.Text = "KIRA ELDE EDILEN TASINMAZIN TÜRÜ";
+            tasinmazTuruCell.Text = "KIRA ELDE EDILEN TASINMAZIN TÃœRÃœ";
 
             TableHeaderCell kiraGeliriCell = new TableHeaderCell();
             kiraGeliriCell.RowSpan = 2;

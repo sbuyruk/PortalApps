@@ -166,7 +166,7 @@ namespace Portal_WebParts.DuyuruListesiWP
         }
         private void KayitGetirModal(int duyuruId)
         {
-            var jsonData = OkuyanlarListesiJson(duyuruId); //veri çekilip json a çeviriliyor
+            var jsonData = OkuyanlarListesiJson(duyuruId); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -213,7 +213,7 @@ namespace Portal_WebParts.DuyuruListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -246,7 +246,7 @@ namespace Portal_WebParts.DuyuruListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiginde
+                        'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;

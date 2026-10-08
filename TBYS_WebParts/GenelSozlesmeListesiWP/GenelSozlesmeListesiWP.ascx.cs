@@ -200,7 +200,7 @@ namespace TBYS_WebParts.GenelSozlesmeListesiWP
                     string teminatOdemeTar = row == null ? "" : row["TeminatOdemeTarihi"].ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
                     string teminatTutari = row == null ? "" : row["TeminatTutari"].ConvertToDecimal().ToString("N", culturInfo);
 
-                    int borcluAyAdedi = (int)(Math.Abs(faizliBakiyeDec) / kiraBedeliDec) - 1;// -1 çünkü içinde bulundugumu ayi ödenmemis kabul etmemeli, henuz vade bitmedi
+                    int borcluAyAdedi = (int)(Math.Abs(faizliBakiyeDec) / kiraBedeliDec) - 1;// -1 Ã§Ã¼nkÃ¼ iÃ§inde bulundugumu ayi Ã¶denmemis kabul etmemeli, henuz vade bitmedi
                     //string BolumNo = row["BolumNo"].ToString();
                     adres = row["Adres"].ToString();// + " " + BolumNo;
 
@@ -247,14 +247,14 @@ namespace TBYS_WebParts.GenelSozlesmeListesiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Borçlu Kiraci bulunamadi", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("BorÃ§lu Kiraci bulunamadi", ProjeConstants.MESAJ_BILGI, 2000);
             }
             return list;
         }
 
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -269,7 +269,7 @@ namespace TBYS_WebParts.GenelSozlesmeListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiginde
+                        'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen kayda gider
                                 return data['Secildi'] == true;

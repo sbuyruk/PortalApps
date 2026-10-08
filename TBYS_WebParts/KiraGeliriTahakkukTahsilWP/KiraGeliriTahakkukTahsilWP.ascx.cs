@@ -277,7 +277,7 @@ namespace TBYS_WebParts.KiraGeliriTahakkukTahsilWP
             bolgeCell.HorizontalAlign = HorizontalAlign.Center;
             bolgeCell.Attributes["style"] = "vertical-align:middle";
             bolgeCell.Font.Bold = true;
-            bolgeCell.Text = "BÖLGE";
+            bolgeCell.Text = "BÃ–LGE";
 
             TableHeaderCell kiraciSayisiCell = new TableHeaderCell();
             kiraciSayisiCell.RowSpan = 3;
@@ -298,7 +298,7 @@ namespace TBYS_WebParts.KiraGeliriTahakkukTahsilWP
             tasinmazTuruCell.HorizontalAlign = HorizontalAlign.Center;
             tasinmazTuruCell.Attributes["style"] = "vertical-align:middle";
             tasinmazTuruCell.Font.Bold = true;
-            tasinmazTuruCell.Text = "KIRA ELDE EDILEN TASINMAZIN TÜRÜ";
+            tasinmazTuruCell.Text = "KIRA ELDE EDILEN TASINMAZIN TÃœRÃœ";
 
             TableHeaderCell kiraGeliriCell = new TableHeaderCell();
             kiraGeliriCell.RowSpan = 2;
@@ -388,7 +388,7 @@ namespace TBYS_WebParts.KiraGeliriTahakkukTahsilWP
             //kiraciOdeyenCell.BorderColor = System.Drawing.Color.Black;
             //kiraciOdeyenCell.HorizontalAlign = HorizontalAlign.Center;
             //kiraciOdeyenCell.Font.Bold = true;
-            //kiraciOdeyenCell.Text = "Ödeyen Sayisi";
+            //kiraciOdeyenCell.Text = "Ã–deyen Sayisi";
 
             TableHeaderCell meskenTahakkukCell = new TableHeaderCell();
             meskenTahakkukCell.BorderStyle = BorderStyle.Solid;
@@ -1201,7 +1201,7 @@ namespace TBYS_WebParts.KiraGeliriTahakkukTahsilWP
                 tableRow.Controls.Add(siraCell);
                 tableRow.Controls.Add(ayCell);
             }
-            //sifira bölme hatasi olmamasi için
+            //sifira bÃ¶lme hatasi olmamasi iÃ§in
             decimal arsaTahakkuk0 = arsaTahakkuk == 0 ? 1 : arsaTahakkuk;
             decimal bisTahakkuk0 = bisTahakkuk == 0 ? 1 : bisTahakkuk;
             decimal isyeriTahakkuk0 = isyeriTahakkuk == 0 ? 1 : isyeriTahakkuk;
