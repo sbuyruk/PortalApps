@@ -326,125 +326,25 @@ namespace Model.TBYS
         }
         public KiraSozlesme SelectNext()
         {
-            KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            string sqlString = string.Empty;
-            if (DosyaNo > 0)
-            {
-                sqlString = string.Format(@"
-                    SELECT * FROM KiraSozlesme_Table
-                    WHERE Aktif=1 AND DosyaNo > {0}
-                    ORDER BY DosyaNo,Id ", DosyaNo.ReturnQuotedValue());
-            }
-            else
-            {
-                sqlString = string.Format(@"
-                    SELECT * FROM KiraSozlesme_Table
-                    WHERE Aktif=1 AND DosyaNo IS NULL AND Id > {0}
-                    ORDER BY DosyaNo,Id ", Id.ReturnQuotedValue());
-            }
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-                kiraSozlesme = list.FirstOrDefault();
-            }
-            else
-            {
-                kiraSozlesme = SelectMin();
-
-            }
-            return kiraSozlesme;
+            return new KiraSozlesmeService().GetNext(Id, DosyaNo);
         }
 
         public KiraSozlesme SelectOncekiKiraSozlesme()
         {
-            KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            string sqlString = string.Empty;
-            sqlString = string.Format(@"
-                    SELECT * FROM KiraSozlesme_Table
-                    WHERE KiraciId={0} AND SozBastar < {1}
-                    ORDER BY SozBasTar DESC", KiraciId.ReturnQuotedValue(), SozBasTar.ReturnTRDateFormat());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-                kiraSozlesme = list.FirstOrDefault();
-            }
-            else
-            {
-                kiraSozlesme = null;
-            }
-            return kiraSozlesme;
+            return new KiraSozlesmeService().GetPreviousByTenant(KiraciId, SozBasTar);
         }
 
         public KiraSozlesme SelectPrev()
         {
-            KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            string sqlString = string.Empty;
-            if (DosyaNo > 0)
-            {
-                sqlString = string.Format(@"
-                    SELECT * FROM KiraSozlesme_Table
-                    WHERE Aktif=1 AND DosyaNo < {0}
-                    ORDER BY DosyaNo DESC ,Id DESC", DosyaNo.ReturnQuotedValue());
-            }
-            else
-            {
-                sqlString = string.Format(@"
-                    SELECT * FROM KiraSozlesme_Table
-                    WHERE Aktif=1 AND DosyaNo IS NULL AND Id < {0}
-                    ORDER BY DosyaNo DESC,Id DESC ", Id.ReturnQuotedValue());
-            }
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-                kiraSozlesme = list.FirstOrDefault();
-            }
-            else
-            {
-                kiraSozlesme = SelectMax();
-
-            }
-            return kiraSozlesme;
+            return new KiraSozlesmeService().GetPrevious(Id, DosyaNo);
         }
         public KiraSozlesme SelectMax()
         {
-            KiraSozlesme kiraSozlesme = null;
-            string sqlString = string.Format(@"
-                SELECT * FROM KiraSozlesme_Table
-                WHERE DosyaNo=(
-                    SELECT MAX(DosyaNo) 
-                    FROM KiraSozlesme_Table
-                    WHERE Aktif=1  
-                    ) ");
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-                kiraSozlesme = list.FirstOrDefault();
-            }
-            return kiraSozlesme;
+            return new KiraSozlesmeService().GetMax();
         }
         public KiraSozlesme SelectMin()
         {
-            KiraSozlesme kiraSozlesme = null;
-            string sqlString = string.Format(@"
-                SELECT * FROM KiraSozlesme_Table
-                WHERE DosyaNo=(
-                    SELECT MIN(DosyaNo) 
-                    FROM KiraSozlesme_Table
-                    WHERE Aktif=1 AND DosyaNo>0
-                    ) ");
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-                kiraSozlesme = list.FirstOrDefault();
-            }
-            return kiraSozlesme;
+            return new KiraSozlesmeService().GetMin();
         }
 
         public KiraSozlesme SelectNextBiten()
