@@ -44,6 +44,27 @@ namespace DAO.Repositories.TBYS
         public int Insert<T>(T entity) { return db.Insert(queryBuilder.BuildInsert(entity, "KiraSozlesme_Table")); }
         public bool Update<T>(T entity) { return db.Update2Db(queryBuilder.BuildUpdate(entity, "KiraSozlesme_Table")); }
         public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("KiraSozlesme_Table", id), ""); }
+        public bool UpdateByKiraciId(int bolgeId, int kiraciId)
+        {
+            SqlQuery query = new SqlQuery("UPDATE KiraSozlesme_Table SET BolgeId=@BolgeId WHERE KiraciId=@KiraciId");
+            query.AddParameter("@BolgeId", bolgeId);
+            query.AddParameter("@KiraciId", kiraciId);
+            return db.Update2Db(query);
+        }
+        public bool UpdateActiveStatus(int id, bool aktif, string durum, string durumDegistirmeTar, string degistiren, DateTime degistirmeTarihi)
+        {
+            SqlQuery query = new SqlQuery(@"UPDATE KiraSozlesme_Table
+                SET Aktif=@Aktif, SozlesmeDurumu=@Durum, DurumDegismeTar=@DurumDegismeTar,
+                    Degistiren=@Degistiren, DegistirmeTarihi=@DegistirmeTarihi
+                WHERE Aktif=1 AND Id=@Id");
+            query.AddParameter("@Aktif", aktif);
+            query.AddParameter("@Durum", durum);
+            query.AddParameter("@DurumDegismeTar", durumDegistirmeTar);
+            query.AddParameter("@Degistiren", degistiren);
+            query.AddParameter("@DegistirmeTarihi", degistirmeTarihi);
+            query.AddParameter("@Id", id);
+            return db.Update2Db(query);
+        }
         public DataTable SelectListReturnDataTable(int kiraciId, int aktif, int bolgeId)
         {
             string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND S.BolgeId={0} ", bolgeId);

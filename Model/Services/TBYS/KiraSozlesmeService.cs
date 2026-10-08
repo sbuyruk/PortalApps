@@ -58,6 +58,15 @@ namespace Model.Services.TBYS
             if (ok && ProjeConstants.TBYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRASOZLESME);
             return ok;
         }
+        public bool UpdateByKiraciId(int bolgeId, int kiraciId) { return repository.UpdateByKiraciId(bolgeId, kiraciId); }
+        public bool UpdateActiveStatus(KiraSozlesme item, string durum, string degistirmeTar, bool aktif)
+        {
+            if (item == null) return false;
+            item.Degistiren = UtilityHelper.GetCurrentUserName();
+            item.DegistirmeTarihi = DateTime.Now;
+            string durumDegistirmeTar = string.IsNullOrEmpty(degistirmeTar) ? DateTime.Now.ConvertToTimeSpanReturnInHHmm() : degistirmeTar;
+            return repository.UpdateActiveStatus(item.Id, aktif, durum, durumDegistirmeTar, item.Degistiren, item.DegistirmeTarihi);
+        }
 
         public List<KiraSozlesme> GetAll()
         {
