@@ -2,6 +2,7 @@ using DAO.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using Utility.ProjeGlobal;
 
 namespace DAO.Repositories.MTS
 {
