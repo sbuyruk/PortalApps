@@ -12,33 +12,39 @@ namespace Model.Services.MTS
 {
     public class DepoTanimService
     {
-        private const string TableName = "DepoTanim_Table";
-        private readonly MtsLookupRepository repository;
+        private readonly DepoTanimRepository repository;
+        private readonly MtsLookupRepository lookupRepository;
 
-        public DepoTanimService() : this(new MtsLookupRepository())
+        public DepoTanimService() : this(new DepoTanimRepository(), new MtsLookupRepository())
         {
         }
 
-        public DepoTanimService(MtsLookupRepository repository)
+        public DepoTanimService(DepoTanimRepository repository, MtsLookupRepository lookupRepository)
         {
             this.repository = repository ?? throw new ArgumentNullException("repository");
+            this.lookupRepository = lookupRepository ?? throw new ArgumentNullException("lookupRepository");
+        }
+
+        public DepoTanimService(MtsLookupRepository lookupRepository)
+            : this(new DepoTanimRepository(), lookupRepository)
+        {
         }
 
         public DepoTanim GetById(int id)
         {
-            return Map(repository.SelectById(TableName, id));
+            return Map(repository.SelectById(id));
         }
 
         public List<DepoTanim> GetAll()
         {
-            return ToList(repository.SelectAll(TableName));
+            return ToList(repository.SelectAll());
         }
 
         public int Save(DepoTanim item)
         {
             item.OlusturmaTarihi = DateTime.Now;
             item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(TableName, item);
+            item.Id = repository.Insert(item);
             if (item.Id > 0 && ProjeConstants.MTS_SAVE_LOG)
                 new OlayKayit().GirisOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_DEPOTANIM);
             return item.Id;
@@ -49,7 +55,7 @@ namespace Model.Services.MTS
             DepoTanim old = GetById(item.Id);
             item.DegistirmeTarihi = DateTime.Now;
             item.Degistiren = UtilityHelper.GetCurrentUserName();
-            bool updated = item.Id != 0 && repository.Update(TableName, item);
+            bool updated = item.Id != 0 && repository.Update(item);
             if (updated && ProjeConstants.MTS_UPDATE_LOG)
                 new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.MTS, ProjeConstants.MTS_DEPOTANIM);
             return updated;
@@ -58,7 +64,7 @@ namespace Model.Services.MTS
         public bool Delete(DepoTanim item)
         {
             DepoTanim old = GetById(item.Id);
-            bool deleted = item.Id != 0 && old != null && repository.Delete(TableName, item.Id);
+            bool deleted = item.Id != 0 && old != null && repository.Delete(item.Id);
             if (deleted && ProjeConstants.MTS_DELETE_LOG)
                 new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.MTS, ProjeConstants.MTS_DEPOTANIM);
             return deleted;
@@ -66,7 +72,7 @@ namespace Model.Services.MTS
 
         public DataTable GetStokluAniObjesiList(int aniObjesiId)
         {
-            return repository.SelectStokluAniObjesiDepolari(ProjeConstants.MTS_ANIOBJESISTOKLU, aniObjesiId);
+            return lookupRepository.SelectStokluAniObjesiDepolari(ProjeConstants.MTS_ANIOBJESISTOKLU, aniObjesiId);
         }
 
         private static List<DepoTanim> ToList(DataTable table)

@@ -12,36 +12,42 @@ namespace Model.Services.MTS
 {
     public class AramaGorusmeService
     {
-        private const string TableName = "AramaGorusme_Table";
-        private readonly MtsLookupRepository repository;
+        private readonly AramaGorusmeRepository repository;
+        private readonly MtsLookupRepository lookupRepository;
 
-        public AramaGorusmeService() : this(new MtsLookupRepository())
+        public AramaGorusmeService() : this(new AramaGorusmeRepository(), new MtsLookupRepository())
         {
         }
 
-        public AramaGorusmeService(MtsLookupRepository repository)
+        public AramaGorusmeService(AramaGorusmeRepository repository, MtsLookupRepository lookupRepository)
         {
             this.repository = repository ?? throw new ArgumentNullException("repository");
+            this.lookupRepository = lookupRepository ?? throw new ArgumentNullException("lookupRepository");
+        }
+
+        public AramaGorusmeService(MtsLookupRepository lookupRepository)
+            : this(new AramaGorusmeRepository(), lookupRepository)
+        {
         }
 
         public AramaGorusme GetById(int id)
         {
-            return Map(repository.SelectById(TableName, id));
+            return Map(repository.SelectById(id));
         }
 
         public List<AramaGorusme> GetAll()
         {
-            return ToList(repository.SelectAll(TableName));
+            return ToList(repository.SelectAll());
         }
 
         public AramaGorusme GetByFaaliyetId(int faaliyetId)
         {
-            return Map(repository.SelectAramaGorusmeByFaaliyetId(faaliyetId));
+            return Map(lookupRepository.SelectAramaGorusmeByFaaliyetId(faaliyetId));
         }
 
         public List<AramaGorusme> GetByArayanId(int arayanId)
         {
-            return ToList(repository.SelectAramaGorusmeByArayanId(arayanId));
+            return ToList(lookupRepository.SelectAramaGorusmeByArayanId(arayanId));
         }
 
         public DataTable GetByFilter(int arayanId, string gorusmeSekli, DateTime basTar, DateTime bitTar)
@@ -52,7 +58,7 @@ namespace Model.Services.MTS
             if (string.IsNullOrEmpty(gorusmeSekli) || gorusmeSekli.Equals(ProjeConstants.HEPSI))
                 gorusmeSekli = string.Empty;
 
-            return repository.SelectAramaGorusmeByFilter(
+            return lookupRepository.SelectAramaGorusmeByFilter(
                 arayanId,
                 gorusmeSekli,
                 basTar,
@@ -65,7 +71,7 @@ namespace Model.Services.MTS
         {
             item.OlusturmaTarihi = DateTime.Now;
             item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(TableName, item);
+            item.Id = repository.Insert(item);
             if (item.Id > 0 && ProjeConstants.MTS_SAVE_LOG)
                 new OlayKayit().GirisOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_ARAMAGORUSME);
             return item.Id;
@@ -76,7 +82,7 @@ namespace Model.Services.MTS
             AramaGorusme old = GetById(item.Id);
             item.DegistirmeTarihi = DateTime.Now;
             item.Degistiren = UtilityHelper.GetCurrentUserName();
-            bool updated = item.Id != 0 && repository.Update(TableName, item);
+            bool updated = item.Id != 0 && repository.Update(item);
             if (updated && ProjeConstants.MTS_UPDATE_LOG)
                 new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.MTS, ProjeConstants.MTS_ARAMAGORUSME);
             return updated;
@@ -85,7 +91,7 @@ namespace Model.Services.MTS
         public bool Delete(AramaGorusme item)
         {
             AramaGorusme old = GetById(item.Id);
-            bool deleted = item.Id != 0 && old != null && repository.Delete(TableName, item.Id);
+            bool deleted = item.Id != 0 && old != null && repository.Delete(item.Id);
             if (deleted && ProjeConstants.MTS_DELETE_LOG)
                 new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.MTS, ProjeConstants.MTS_ARAMAGORUSME);
             return deleted;

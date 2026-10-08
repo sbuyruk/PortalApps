@@ -11,15 +11,14 @@ namespace Model.Services.MTS
 {
     public class MTSKurumTanimService
     {
-        private const string TableName = "MTSKurumTanim_Table";
-        private readonly MtsLookupRepository repository;
+        private readonly MTSKurumTanimRepository repository;
 
         public MTSKurumTanimService()
-            : this(new MtsLookupRepository())
+            : this(new MTSKurumTanimRepository())
         {
         }
 
-        public MTSKurumTanimService(MtsLookupRepository repository)
+        public MTSKurumTanimService(MTSKurumTanimRepository repository)
         {
             if (repository == null)
                 throw new ArgumentNullException("repository");
@@ -29,19 +28,19 @@ namespace Model.Services.MTS
 
         public MTSKurumTanim GetById(int id)
         {
-            return Map(repository.SelectById(TableName, id));
+            return Map(repository.SelectById(id));
         }
 
         public List<MTSKurumTanim> GetAll()
         {
-            return ToList(repository.SelectAll(TableName));
+            return ToList(repository.SelectAll());
         }
 
         public int Save(MTSKurumTanim item)
         {
             item.OlusturmaTarihi = DateTime.Now;
             item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(TableName, item);
+            item.Id = repository.Insert(item);
 
             if (item.Id > 0 && ProjeConstants.MTS_SAVE_LOG)
                 new OlayKayit().GirisOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_KURUMTANIM);
@@ -54,7 +53,7 @@ namespace Model.Services.MTS
             MTSKurumTanim old = GetById(item.Id);
             item.DegistirmeTarihi = DateTime.Now;
             item.Degistiren = UtilityHelper.GetCurrentUserName();
-            bool updated = item.Id != 0 && repository.Update(TableName, item);
+            bool updated = item.Id != 0 && repository.Update(item);
 
             if (updated && ProjeConstants.MTS_UPDATE_LOG)
                 new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.MTS, ProjeConstants.MTS_KURUMTANIM);
@@ -65,7 +64,7 @@ namespace Model.Services.MTS
         public bool Delete(MTSKurumTanim item)
         {
             MTSKurumTanim old = GetById(item.Id);
-            bool deleted = item.Id != 0 && old != null && repository.Delete(TableName, item.Id);
+            bool deleted = item.Id != 0 && old != null && repository.Delete(item.Id);
 
             if (deleted && ProjeConstants.MTS_DELETE_LOG)
                 new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.MTS, ProjeConstants.MTS_KURUMTANIM);
