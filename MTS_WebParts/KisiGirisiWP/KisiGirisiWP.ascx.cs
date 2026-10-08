@@ -2,6 +2,7 @@ using System.Web.UI.WebControls;
 using Model.MTS;
 using Model.Ortak;
 using Model.Services.Ortak;
+using Model.Services.MTS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -106,8 +107,7 @@ namespace MTS_WebParts.KisiGirisiWP
             if (MTSUnvanTanimDDL.SelectedItem == null)
             {
                 MTSUnvanTanimDDL.Items.Clear();
-                MTSUnvanTanim mTSGorevTanim = new MTSUnvanTanim();
-                List<MTSUnvanTanim> list = mTSGorevTanim.SelectAll<MTSUnvanTanim>();
+                List<MTSUnvanTanim> list = new MTSUnvanTanimService().GetAll();
                 MTSUnvanTanimDDL.Items.Add(new ListItem("", ""));
                 foreach (MTSUnvanTanim item in list)
                 {
