@@ -1,2 +1,116 @@
-using Model.Ortak; using Model.Services.Portal; using System; using System.Collections.Generic;
-namespace Model.Portal { public class DuyuruGosterim:ParentClass { public int DuyuruId{get;set;} public DateTime GosterildigiTarih{get;set;} public string Baslik{get;set;} public string Metin{get;set;} public DateTime YayinBasTar{get;set;} public DateTime YayinBitTar{get;set;} public string Tekrar{get;set;} public string DuyuruAlicilari{get;set;} public string Resim{get;set;} public string Aciklama{get;set;} public bool Aktif{get;set;} public bool Popup{get;set;} public override T Select<T>(int id){return (T)Convert.ChangeType(new DuyuruGosterimService().GetById(id),typeof(T));} public DuyuruGosterim Select(int id){return new DuyuruGosterimService().GetById(id);} public override int Save(){return new DuyuruGosterimService().Save(this);} public override bool Update(){return new DuyuruGosterimService().Update(this);} public override bool Delete(){return new DuyuruGosterimService().Delete(this);} public override List<T> SelectAll<T>(){return (List<T>)Convert.ChangeType(new DuyuruGosterimService().GetAll(),typeof(List<T>));} public DuyuruGosterim SelectByDuyuruId(int id){return new DuyuruGosterimService().GetByDuyuruId(id);} public void SaveDuyuru(Duyuru d){new DuyuruGosterimService().SaveDuyuru(this,d);} } }
+using Model.Ortak;
+using Model.Services.Portal;
+using System;
+using System.Collections.Generic;
+
+namespace Model.Portal
+{
+    public class DuyuruGosterim : ParentClass
+    {
+        public int DuyuruId { get; set; }
+        public DateTime GosterildigiTarih { get; set; }
+        public string Baslik { get; set; }
+        public string Metin { get; set; }
+        public DateTime YayinBasTar { get; set; }
+        public DateTime YayinBitTar { get; set; }
+        public string Tekrar { get; set; }
+        public string DuyuruAlicilari { get; set; }
+        public string Resim { get; set; }
+        public string Aciklama { get; set; }
+        public bool Aktif { get; set; }
+        public bool Popup { get; set; }
+
+        public override T Select<T>(int id)
+        {
+            return (T)Convert.ChangeType(new DuyuruGosterimService().GetById(id), typeof(T));
+        }
+
+        public DuyuruGosterim Select(int id)
+        {
+            return new DuyuruGosterimService().GetById(id);
+        }
+
+        public override int Save()
+        {
+            return new DuyuruGosterimService().Save(this);
+        }
+
+        public override bool Update()
+        {
+            return new DuyuruGosterimService().Update(this);
+        }
+
+        public override bool Delete()
+        {
+            return new DuyuruGosterimService().Delete(this);
+        }
+
+        public override List<T> SelectAll<T>()
+        {
+            return (List<T>)Convert.ChangeType(new DuyuruGosterimService().GetAll(), typeof(List<T>));
+        }
+
+        public DuyuruGosterim SelectByDuyuruId(int id)
+        {
+            return new DuyuruGosterimService().GetByDuyuruId(id);
+        }
+
+        public void SaveDuyuru(Duyuru d)
+        {
+            new DuyuruGosterimService().SaveDuyuru(this, d);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
