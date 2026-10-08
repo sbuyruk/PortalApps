@@ -1622,8 +1622,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             int aniObjesiId = StokluAniObjesiDDL.SelectedItem.Value.ConvertToInt();
             int depoId = DepoDDL.SelectedItem.Value.ConvertToInt();
             int adet = StokluAdetTxt.Text.ConvertToInt();
-            AniObjesiTanim aniObjesiTanim = new AniObjesiTanim();
-            aniObjesiTanim = aniObjesiTanim.Select<AniObjesiTanim>(aniObjesiId);
+            AniObjesiTanim aniObjesiTanim = new Model.Services.MTS.AniObjesiTanimService().GetById(aniObjesiId);
 
             if (aniObjesiTanim == null) // ani objesi var mi, yoksa
             {
@@ -1714,8 +1713,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             {
 
                 int aniObjesiId = aniObjesiDagitim.AniObjesiId;
-                AniObjesiTanim aniObjesiTanim = new AniObjesiTanim();
-                aniObjesiTanim = aniObjesiTanim.Select<AniObjesiTanim>(aniObjesiId);
+                AniObjesiTanim aniObjesiTanim = new Model.Services.MTS.AniObjesiTanimService().GetById(aniObjesiId);
 
                 if (aniObjesiTanim == null) // ani objesi var mi, yoksa
                 {

@@ -286,7 +286,7 @@ namespace MTS_WebParts.KisiKartiWP
                 }
                 else
                 {
-                    AlinanFaaliyetBilgileriTable.Rows.Add(row);
+                    AlınanFaaliyetBilgileriTable.Rows.Add(row);
                 }
 
             }

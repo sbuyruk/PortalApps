@@ -1,6 +1,7 @@
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.NBYS;
+using Model.Services.Ortak;
 using Model.TBYS;
 using NBYS_WebParts.EkstreAktarmaEditWP;
 using NBYS_WebParts.NakitBagisciEslestirWP;

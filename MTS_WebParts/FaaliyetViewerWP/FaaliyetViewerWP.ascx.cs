@@ -223,8 +223,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
         }
         private string ToplantiListesiniGetir()
         {
-            Toplanti toplantiDao = new Toplanti();
-            DataTable dataTable = toplantiDao.SelectAllByKatilimci(ProjeConstants.GENELMUDUR_PERSONELID);
+            DataTable dataTable = new Model.Services.Portal.ToplantiService().GetByParticipant(ProjeConstants.GENELMUDUR_PERSONELID);
 
             List<CalendarEvent> eventItems = new List<CalendarEvent>();
             if (dataTable != null)
