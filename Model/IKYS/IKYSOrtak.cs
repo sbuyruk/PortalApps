@@ -379,20 +379,23 @@ namespace Model.Ortak
         public static void GorevOnayEPostasiGonder(Personel personel, int gorevOnayId, string tip, List<string> ekEpostaAdresleri, string durum,bool isAddMailGrubuToAdress=true)
         {
             string from = "ikys@tskgv.local";
-            string to = isAddMailGrubuToAdress?"gorevonaymailgrubu@tskgv.org.tr;":string.Empty;
-            if (ekEpostaAdresleri != null && ekEpostaAdresleri.Count > 0)
+            string personelEposta = new IletisimBilgileriService().GetByPersonelId(personel.Id)?.InternetEPosta;
+            List<string> personelEpostaAdresleri = new List<string>();
+            List<string> amirEpostaAdresleri = new List<string>();
+            if (ekEpostaAdresleri != null)
             {
-                string ekAdresler = string.Join(";", ekEpostaAdresleri
-                    .Where(a => !string.IsNullOrWhiteSpace(a))
-                    .Select(a => a));
-                if (!string.IsNullOrEmpty(ekAdresler))
+                foreach (string eposta in ekEpostaAdresleri.Where(a => !string.IsNullOrWhiteSpace(a)).Distinct(StringComparer.OrdinalIgnoreCase))
                 {
-                    to +=  ekAdresler + ";";
+                    if (!string.IsNullOrWhiteSpace(personelEposta) && eposta.Equals(personelEposta, StringComparison.OrdinalIgnoreCase))
+                        personelEpostaAdresleri.Add(eposta);
+                    else
+                        amirEpostaAdresleri.Add(eposta);
                 }
             }
-            string url = string.Empty;
-            string body = string.Empty;
             string subject = string.Empty;
+            string rootUrl = UtilityHelper.RootURLGetir();
+            string personelSayfa = isAddMailGrubuToAdress ? "GorevOnayListesiKisisel.aspx" : ProjeConstants.PAGE_GOREVONAY_LIST;
+            string amirSayfa = isAddMailGrubuToAdress ? ProjeConstants.PAGE_BEKLEYENISLEMLER : ProjeConstants.PAGE_GOREVONAY_LIST;
             string durumStr= durum.Equals("Onay") ? "onaylanmistir." : durum.Equals("Red") ? "reddedilmistir." : "girilmiştir.";
             if (tip.Equals("SehirIci"))
             {
@@ -402,11 +405,17 @@ namespace Model.Ortak
                 {
                     string bastarBittar = yoklama.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + yoklama.BitisTarihi.ConvertToDatetimeEmptyIfNull();
                     subject = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Sehir Içi Görev " + durumStr;
-                    url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/YoklamaListesi.aspx'>Yoklama Listesi </a>";
-                    body = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Sehir Içi Görev " + durumStr + " <br>Yoklama islemlerini " + url + " sayfasindan yapabilirsiniz.";
+                    string personelUrl = string.Format("<a href = '{0}/KullaniciUygulamalari/Sayfalar/{1}'>Görev onay listesi </a>", rootUrl, personelSayfa);
+                    string amirUrl = string.Format("<a href = '{0}/KullaniciUygulamalari/Sayfalar/{1}'>Görev onay işlemleri </a>", rootUrl, amirSayfa);
+                    string personelBody = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Sehir Içi Görev " + durumStr + " <br>Görev durumunu " + personelUrl + " üzerinden takip edebilirsiniz.";
+                    string amirBody = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Sehir Içi Görev " + durumStr + " <br>Yoklama islemlerini " + amirUrl + " üzerinden yapabilirsiniz.";
 
                     string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
-                    MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
+                    string amirTo = (isAddMailGrubuToAdress ? "gorevonaymailgrubu@tskgv.org.tr;" : string.Empty) + string.Join(";", amirEpostaAdresleri);
+                    if (personelEpostaAdresleri.Count > 0)
+                        MailHelper.EPostaGonder(from, string.Join(";", personelEpostaAdresleri), subject, personelBody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
+                    if (!string.IsNullOrEmpty(amirTo))
+                        MailHelper.EPostaGonder(from, amirTo, subject, amirBody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
 
                 }
             }
@@ -418,12 +427,19 @@ namespace Model.Ortak
                 {
                     string bastarBittar = gorevOnay.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + gorevOnay.BitisTarihi.ConvertToDatetimeEmptyIfNull();
                     subject = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Yurt Içi/Yurt Disi Görev " + durumStr;
-                    url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/GorevOnayListesi.aspx'>Görev Onay Listesi </a>";
-                    body = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Yurt Içi/Yurt Disi Görev " + durumStr + " <br>Görev onay islemlerini " + url + " sayfasindan yapabilirsiniz.";
+                    string personelUrl = string.Format("<a href = '{0}/KullaniciUygulamalari/Sayfalar/{1}'>Görev onay listesi </a>", rootUrl, personelSayfa);
+                    string amirUrl = string.Format("<a href = '{0}/KullaniciUygulamalari/Sayfalar/{1}'>Görev onay işlemleri </a>", rootUrl, amirSayfa);
+                    string personelBody = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Yurt Içi/Yurt Disi Görev " + durumStr + " <br>Görev durumunu " + personelUrl + " üzerinden takip edebilirsiniz.";
+                    string amirBody = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Yurt Içi/Yurt Disi Görev " + durumStr + " <br>Görev onay islemlerini " + amirUrl + " üzerinden yapabilirsiniz.";
                     StringBuilder tabloSB = EpostaTablosunuOlustur(gorevOnay);
-                    body += "</br>" + tabloSB.ToString();
+                    personelBody += "</br>" + tabloSB.ToString();
+                    amirBody += "</br>" + tabloSB.ToString();
                     string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
-                    MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
+                    string amirTo = (isAddMailGrubuToAdress ? "gorevonaymailgrubu@tskgv.org.tr;" : string.Empty) + string.Join(";", amirEpostaAdresleri);
+                    if (personelEpostaAdresleri.Count > 0)
+                        MailHelper.EPostaGonder(from, string.Join(";", personelEpostaAdresleri), subject, personelBody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
+                    if (!string.IsNullOrEmpty(amirTo))
+                        MailHelper.EPostaGonder(from, amirTo, subject, amirBody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
                 }
             }
         }
