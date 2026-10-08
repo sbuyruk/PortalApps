@@ -10,13 +10,13 @@ using Utility.ProjeGlobal;
 namespace Model.Ortak
 {
     [Serializable]
-    public class OrtakParametre : ParentClass
+    public class OrtakParametre : EntityBase
     {
         public string Grup { get; set; }
         public string Anahtar { get; set; }
         public string Deger { get; set; }
         public int Sira { get; set; }
-        public override bool Delete()
+        public bool Delete()
         {
             try
             {
@@ -40,7 +40,7 @@ namespace Model.Ortak
                 throw;
             }
         }
-        public override int Save()
+        public int Save()
         {
             try
             {
@@ -72,7 +72,7 @@ namespace Model.Ortak
             OrtakParametre item = list.FirstOrDefault();
             return item;
         }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             GenericEntity<OrtakParametre> genericEntity = new GenericEntity<OrtakParametre>(ProjeConstants.SQL_SELECT);
             OlusturmaTarihi = DateTime.Now;
@@ -84,7 +84,7 @@ namespace Model.Ortak
             item = list.FirstOrDefault();
             return ((T)Convert.ChangeType(item, typeof(T)));
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"
                 SELECT *
@@ -96,7 +96,7 @@ namespace Model.Ortak
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
-        public override bool Update()
+        public bool Update()
         {
             bool isSuccess = false;
             try

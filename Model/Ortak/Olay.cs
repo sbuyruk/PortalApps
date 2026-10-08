@@ -9,7 +9,7 @@ using Utility.ProjeGlobal;
 namespace Model.Ortak
 {
     [Serializable]
-    public class Olay : ParentClass
+    public class Olay : EntityBase
     {
         public string Program { get; set; }
         public string IslemTipi { get; set; } //Giris-düzeltme-silme
@@ -18,7 +18,7 @@ namespace Model.Ortak
         public string IslemYapan { get; set; }
         public string Aciklama { get; set; }
         
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             GenericEntity<Olay> genericEntity = new GenericEntity<Olay>(ProjeConstants.SQL_SELECT);
             OlusturmaTarihi = DateTime.Now;
@@ -47,7 +47,7 @@ namespace Model.Ortak
             olay = list.FirstOrDefault();
             return olay;
         }
-        public override int Save()
+        public int Save()
         {
             try
             {
@@ -94,7 +94,7 @@ namespace Model.Ortak
 
             return list;
         }
-        public override bool Update()
+        public bool Update()
         {
             bool isSuccess = false;
             try
@@ -113,7 +113,7 @@ namespace Model.Ortak
             }
             return isSuccess;
         }
-        public override bool Delete()
+        public bool Delete()
         {
             GenericEntity<Olay> genericEntity = new GenericEntity<Olay>(ProjeConstants.SQL_DELETE);
             SqlQuery query = genericEntity.GetQueryParametreli(this);
@@ -122,7 +122,7 @@ namespace Model.Ortak
 
             return isSuccess;
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"
                 SELECT *
