@@ -485,11 +485,13 @@
     </Compile>
     <Compile Include="TasinmazBagisciBilgiListesiWP\TasinmazBagisciBilgiListesiWP.ascx.cs">
       <DependentUpon>TasinmazBagisciBilgiListesiWP.ascx</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="TasinmazBagisciBilgiListesiWP\TasinmazBagisciBilgiListesiWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>TasinmazBagisciBilgiListesiWP.ascx</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="TasinmazBagisciGirisiWP\TasinmazBagisciGirisiWP.ascx.cs">
       <DependentUpon>TasinmazBagisciGirisiWP.ascx</DependentUpon>

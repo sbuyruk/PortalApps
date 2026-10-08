@@ -2008,19 +2008,19 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
                     "odal() {\r\n        var myModalEl = document.getElementById(\'OnayModal\');\r\n       " +
                     " var modalInstance = bootstrap.Modal.getInstance(myModalEl);\r\n        if (modalI" +
                     "nstance) {\r\n            modalInstance.hide();\r\n        }\r\n    }\r\n    function Cl" +
-                    "oseModalDosyaNo() {\n        var myModalEl = document.getElementById(\'DosyaNoDegi" +
-                    "stirModalDiv\');\n        var modalInstance = bootstrap.Modal.getInstance(myModalE" +
-                    "l);\n        if (modalInstance) {\n            modalInstance.hide();\n        }\n\n  " +
-                    "      // Fallback: Postback sonrası backdrop\'un DOM\'da kalmasını önle\n        se" +
-                    "tTimeout(function () {\n            document.querySelectorAll(\'.modal-backdrop\')." +
-                    "forEach(function (el) {\n                el.parentNode.removeChild(el);\n         " +
-                    "   });\n            document.body.classList.remove(\'modal-open\');\n            doc" +
-                    "ument.body.style.removeProperty(\'overflow\');\n            document.body.style.rem" +
-                    "oveProperty(\'padding-right\');\n        }, 300);\n    }\r\n    function DosyaNoDegist" +
-                    "irModalAc() {\r\n        var myModalInstance = bootstrap.Modal.getOrCreateInstance" +
-                    "(document.getElementById(\'DosyaNoDegistirModalDiv\'));\r\n        myModalInstance.s" +
-                    "how();\r\n    }\r\n    function FaizTutariHesapla() {\r\n        var devirAnaPara = $(" +
-                    "\'#");
+                    "oseModalDosyaNo() {\r\n        var myModalEl = document.getElementById(\'DosyaNoDeg" +
+                    "istirModalDiv\');\r\n        var modalInstance = bootstrap.Modal.getInstance(myModa" +
+                    "lEl);\r\n        if (modalInstance) {\r\n            modalInstance.hide();\r\n        " +
+                    "}\r\n\r\n        // Fallback: Postback sonrası backdrop\'un DOM\'da kalmasını önle\r\n  " +
+                    "      setTimeout(function () {\r\n            document.querySelectorAll(\'.modal-ba" +
+                    "ckdrop\').forEach(function (el) {\r\n                el.parentNode.removeChild(el);" +
+                    "\r\n            });\r\n            document.body.classList.remove(\'modal-open\');\r\n  " +
+                    "          document.body.style.removeProperty(\'overflow\');\r\n            document." +
+                    "body.style.removeProperty(\'padding-right\');\r\n        }, 300);\r\n    }\r\n    functi" +
+                    "on DosyaNoDegistirModalAc() {\r\n        var myModalInstance = bootstrap.Modal.get" +
+                    "OrCreateInstance(document.getElementById(\'DosyaNoDegistirModalDiv\'));\r\n        m" +
+                    "yModalInstance.show();\r\n    }\r\n    function FaizTutariHesapla() {\r\n        var d" +
+                    "evirAnaPara = $(\'#");
                        @__w.Write( DevirAnaParaTxt.ClientID);
 
             @__w.Write("\').val().replace(/\\./g, \"\").replace(\",\", \".\");\r\n        var devirFaizliBakiye = $" +
