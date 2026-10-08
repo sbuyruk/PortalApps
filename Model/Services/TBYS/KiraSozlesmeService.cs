@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Utility.HelperClasses;
 
 namespace Model.Services.TBYS
 {
@@ -40,6 +41,16 @@ namespace Model.Services.TBYS
         public List<KiraSozlesme> GetList(int kiraciId, int aktif, int bolgeId)
         {
             return new KiraSozlesme().ToList<KiraSozlesme>(repository.SelectList(kiraciId, aktif, bolgeId));
+        }
+        public DataTable GetRentIncreaseDue(int bolgeId, DateTime tarih)
+        {
+            return repository.SelectRentIncreaseDue(bolgeId, tarih.ReturnTRDateFormat());
+        }
+        public DataTable GetRealizedRentIncreases(int bolgeId)
+        {
+            DateTime baslangic = new DateTime(DateTime.Today.Year, 1, 1);
+            DateTime bitis = new DateTime(DateTime.Today.AddYears(1).Year, 12, 31);
+            return repository.SelectRealizedRentIncreases(bolgeId, baslangic.ReturnTRDateFormat(), bitis.ReturnTRDateFormat());
         }
 
         private static KiraSozlesme Map(DataTable table)
