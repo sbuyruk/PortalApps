@@ -162,7 +162,7 @@ namespace Portal_WebParts.ToplantiViewerWP
             BilgiCell.Text = string.Empty;
             int toplantiId = string.IsNullOrEmpty(paramToplantiIdLbl.Text) ? ToplantiIdQS.ConvertToInt() : paramToplantiIdLbl.Text.ConvertToInt();
             Toplanti toplanti = new Toplanti();
-            toplanti = toplanti.Select(toplantiId);
+            toplanti = new Model.Services.Portal.ToplantiService().GetById(toplantiId);
             if (toplanti != null)
             {
                 IdLbl.Text = " ( Toplanti No: " + toplanti.Id.ToString() + " )";
@@ -197,7 +197,7 @@ namespace Portal_WebParts.ToplantiViewerWP
         {
             string yeriStr = string.Empty;
             ToplantiParametre toplantiParametre = new ToplantiParametre();
-            toplantiParametre = toplantiParametre.Select(yeri);
+            toplantiParametre = new Model.Services.Portal.ToplantiParametreService().GetById(yeri);
             if (toplantiParametre != null)
             {
                 if (toplantiParametre.Deger.Equals(ProjeConstants.PARAM_DIGER))

@@ -44,8 +44,7 @@ namespace MTS_WebParts.TestWP
 
         protected void TakvimeEkleBtn_Click(object sender, EventArgs e)
         {
-            Toplanti toplanti= new Toplanti();
-            toplanti = toplanti.Select(1773);
+            Toplanti toplanti = new Model.Services.Portal.ToplantiService().GetById(1773);
 
             string from = "Makam Takip Sistemi <mts@tskgv.local>";
             string userto = "asbuyruk@tskgv.org.tr";
@@ -55,8 +54,7 @@ namespace MTS_WebParts.TestWP
         }
         protected void TakvimDegistirBtn_Click(object sender, EventArgs e)
         {
-            Toplanti toplanti = new Toplanti();
-            toplanti = toplanti.Select(1773);
+            Toplanti toplanti = new Model.Services.Portal.ToplantiService().GetById(1773);
 
             string from = "Makam Takip Sistemi <mts@tskgv.local>";
             string userto = "asbuyruk@tskgv.org.tr";
@@ -68,8 +66,7 @@ namespace MTS_WebParts.TestWP
         }
         protected void TakvimSilBtn_Click(object sender, EventArgs e)
         {
-            Toplanti toplanti = new Toplanti();
-            toplanti = toplanti.Select(1773);
+            Toplanti toplanti = new Model.Services.Portal.ToplantiService().GetById(1773);
 
             string from = "Makam Takip Sistemi <mts@tskgv.local>";
             string userto = "asbuyruk@tskgv.org.tr";

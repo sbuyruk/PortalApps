@@ -545,7 +545,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                     ModalLbl.Text = "Ödeme Güncellenecek";
                     ModalLbl.CssClass= "col-form-label text-primary fw-bold";
                     Odeme oncekiOdeme = new Odeme();
-                    oncekiOdeme = oncekiOdeme.Select(OdemeIdQS.ConvertToInt());
+                    oncekiOdeme = new Model.Services.TBYS.OdemeService().GetById(OdemeIdQS.ConvertToInt());
                     if (oncekiOdeme != null)
                     {
                         int yeniOdemePlaniId = OdemePlaniDDL.SelectedItem.Value.ConvertToInt();

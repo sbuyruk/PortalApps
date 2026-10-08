@@ -172,7 +172,7 @@ namespace Portal_WebParts.OlayListesiWP
             if (faaliyetId > 0)
             {
                 faaliyet = new Faaliyet();
-                faaliyet = faaliyet.Select(faaliyetId);
+                faaliyet = new Model.Services.MTS.FaaliyetService().GetById(faaliyetId);
             }
             if (katilimciId > 0)
             {

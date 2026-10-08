@@ -387,8 +387,7 @@ headerToolbar: {
             InitialDateQS = basTar.ToString("yyyy-MM-dd");
             if (faaliyetId > 0)
             {
-                Faaliyet randevu = new Faaliyet();
-                randevu = randevu.Select(faaliyetId);
+                Faaliyet randevu = new Model.Services.MTS.FaaliyetService().GetById(faaliyetId);
                 if (randevu != null)
                 {
                     randevu.BaslangicTarihi = basTar;
@@ -396,7 +395,7 @@ headerToolbar: {
                     randevu.BitisTarihi = bitTar;
                     randevu.BitisSaati = bitTar.ToString("HH:mm");
                     randevu.AcikTarih = ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL.ConvertToBool();
-                    if (randevu.Update())
+                    if (new Model.Services.MTS.FaaliyetService().Update(randevu))
                     {
                         RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM + "?CalendarView=" + CalendarViewQS + "&InitialDate=" + InitialDateQS);
                     }
@@ -425,8 +424,7 @@ headerToolbar: {
             IcKatilimcilarCell.Text = string.Empty;
             BilgiCell.Text = string.Empty;
             int toplantiId = paramToplantiIdLbl.Text.ConvertToInt();
-            Toplanti toplanti = new Toplanti();
-            toplanti = toplanti.Select(toplantiId);
+            Toplanti toplanti = new Model.Services.Portal.ToplantiService().GetById(toplantiId);
             if (toplanti != null)
             {
                 IdLbl.Text = " ( Toplanti No: " + toplanti.Id.ToString() + " )";
@@ -463,8 +461,7 @@ headerToolbar: {
         private string ParseToplantiYeri(int yeri, string diger)
         {
             string yeriStr = string.Empty;
-            ToplantiParametre toplantiParametre = new ToplantiParametre();
-            toplantiParametre = toplantiParametre.Select(yeri);
+            ToplantiParametre toplantiParametre = new Model.Services.Portal.ToplantiParametreService().GetById(yeri);
             if (toplantiParametre != null)
             {
                 if (toplantiParametre.Deger.Equals(ProjeConstants.PARAM_DIGER))

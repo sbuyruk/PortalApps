@@ -63,7 +63,7 @@ namespace Portal_WebParts.ToplantiKatilimTutanagiWP
         private void KatilimciListesiniDoldur()
         {
             Toplanti toplanti = new Toplanti();
-            toplanti = toplanti.Select(ToplantiIdQS.ConvertToInt());
+            toplanti = new Model.Services.Portal.ToplantiService().GetById(ToplantiIdQS.ConvertToInt());
             if (toplanti != null)
             {
                 BaslikCell.Text = "TOPLANTI KATILIM TUTANAGI <br style='mso-data-placement:same-cell;' />(" + toplanti.ToplantiKonusu + ") <br style='mso-data-placement:same-cell;' />(" + toplanti.BaslangicTarihi.ToString("dd.MM.yyyy") + ")";

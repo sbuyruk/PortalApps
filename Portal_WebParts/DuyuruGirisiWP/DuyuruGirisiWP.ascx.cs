@@ -547,7 +547,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 duyuru.Resim= SaveImageFiles2SP(resim);
                 
             }
-            duyuru.Update();
+            new Model.Services.Portal.DuyuruService().Update(duyuru);
         }
         private string SaveImageFiles2SP(string fotoFile)
         {
@@ -590,12 +590,12 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 duyuru.Aktif = AktifChk.Checked;
                 duyuru.Popup = PopupChk.Checked;
                 duyuru.Olusturan = UtilityHelper.GetCurrentUserLoginName();
-                duyuruId = duyuru.Id = duyuru.Save();
+                duyuruId = duyuru.Id = new Model.Services.Portal.DuyuruService().Save(duyuru);
 
                 if (duyuruId > 0)
                 {
                     duyuru.Degistiren = UtilityHelper.GetCurrentUserLoginName();
-                    duyuru.Update();
+                    new Model.Services.Portal.DuyuruService().Update(duyuru);
                     if (duyuru != null)
                     {
                         DuyuruGosterim dg = new DuyuruGosterim();
@@ -641,7 +641,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
                     duyuru.Aktif = AktifChk.Checked;
                     duyuru.Popup = PopupChk.Checked;
                     duyuru.Degistiren = UtilityHelper.GetCurrentUserLoginName();
-                    guncellendiMi = duyuru.Update();
+                    guncellendiMi = new Model.Services.Portal.DuyuruService().Update(duyuru);
 
                     if (guncellendiMi)
                     {
@@ -708,10 +708,10 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 if (!string.IsNullOrEmpty(DuyuruIdQS))
                 {
                     Duyuru duyuru = new Duyuru();
-                    duyuru = duyuru.Select(DuyuruIdQS.ConvertToInt());
+                    duyuru = new Model.Services.Portal.DuyuruService().GetById(DuyuruIdQS.ConvertToInt());
                     if (duyuru != null)
                     {
-                        duyuru.Delete();
+                        new Model.Services.Portal.DuyuruService().Delete(duyuru);
                         RedirectToPage(ProjeConstants.PAGE_DUYURU_LIST);
                     }
                     //duyuruyu sil,
@@ -738,11 +738,11 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 if (!string.IsNullOrEmpty(DuyuruIdQS))
                 {
                     Duyuru duyuru = new Duyuru();
-                    duyuru = duyuru.Select(DuyuruIdQS.ConvertToInt());
+                    duyuru = new Model.Services.Portal.DuyuruService().GetById(DuyuruIdQS.ConvertToInt());
                     if (duyuru != null)
                     {
                         duyuru.Resim=null;
-                        duyuru.Update();
+                        new Model.Services.Portal.DuyuruService().Update(duyuru);
                     }
                     //duyuruyu sil,
                     //resmi sil

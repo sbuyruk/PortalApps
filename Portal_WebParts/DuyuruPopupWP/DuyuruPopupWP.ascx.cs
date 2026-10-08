@@ -355,7 +355,7 @@ namespace Portal_WebParts.DuyuruPopupWP
             if (!string.IsNullOrEmpty(paramDuyuruIdLbl.Value))
             {
                 Duyuru duyuru = new Duyuru();
-                duyuru = duyuru.Select(paramDuyuruIdLbl.Value.ConvertToInt());
+                duyuru = new Model.Services.Portal.DuyuruService().GetById(paramDuyuruIdLbl.Value.ConvertToInt());
                 if (duyuru != null)
                 {
                     ModalFormuOlusturVeGoster(duyuru, false);
@@ -383,7 +383,7 @@ namespace Portal_WebParts.DuyuruPopupWP
                     duyuruOkuma.PersonelId = personel == null ? 0 : personel.Id;
                     duyuruOkuma.DuyuruId = dg.DuyuruId;
                     duyuruOkuma.DuyuruGosterimId = dg.Id;
-                    duyuruOkuma.Save();
+                    new Model.Services.Portal.DuyuruOkumaService().Save(duyuruOkuma);
                 }
             }
         }

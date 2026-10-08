@@ -456,8 +456,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP
             IcKatilimcilarCell.Text = string.Empty;
             BilgiCell.Text = string.Empty;
             int toplantiId = paramToplantiIdLbl.Text.ConvertToInt();
-            Toplanti toplanti = new Toplanti();
-            toplanti = toplanti.Select(toplantiId);
+            Toplanti toplanti = new Model.Services.Portal.ToplantiService().GetById(toplantiId);
             if (toplanti != null)
             {
                 IdLbl.Text = " ( Toplanti No: " + toplanti.Id.ToString() + " )";
@@ -494,8 +493,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP
         private string ParseToplantiYeri(int yeri, string diger)
         {
             string yeriStr = string.Empty;
-            ToplantiParametre toplantiParametre = new ToplantiParametre();
-            toplantiParametre = toplantiParametre.Select(yeri);
+            ToplantiParametre toplantiParametre = new Model.Services.Portal.ToplantiParametreService().GetById(yeri);
             if (toplantiParametre != null)
             {
                 if (toplantiParametre.Deger.Equals(ProjeConstants.PARAM_DIGER))

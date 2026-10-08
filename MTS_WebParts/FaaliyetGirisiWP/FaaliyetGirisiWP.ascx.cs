@@ -1173,8 +1173,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 {
                     string kurumGorevStr = string.Empty;
 
-                        Kisi katilimci = new Kisi();
-                        katilimci = katilimci.Select(katilimciId);
+                        Kisi katilimci = new Model.Services.MTS.KisiService().GetById(katilimciId);
                         if (katilimci != null)
                         {
                             string kurum = string.Empty;
@@ -1545,7 +1544,6 @@ namespace MTS_WebParts.FaaliyetGirisiWP
 
             KaldirilanlariSil(idList, faaliyetId, katilimciId);
 
-            AniObjesiDagitim aniObjesiDagitimDao = new AniObjesiDagitim();
             List<AniObjesiDagitim> objeList = new Model.Services.MTS.AniObjesiDagitimService().GetStoksuz(faaliyetId, katilimciId);
             foreach (var item in objeList)
             {
@@ -1556,7 +1554,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
 
                     if (index < 0) // ikinci listede yok, silinecek
                     {
-                        item.Delete();
+                        new Model.Services.MTS.AniObjesiDagitimService().Delete(item);
                     }
                     else
                     {
@@ -1564,7 +1562,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                         if (adet == 0)//yeni adet sifirsa sil
                         {
 
-                            item.Delete();
+                            new Model.Services.MTS.AniObjesiDagitimService().Delete(item);
                         }
                         else if (adet == item.Adet)//adet ayni bisey yapma
                         {
@@ -1578,7 +1576,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                             item.KatilimciId = katilimciId;
                             item.VerilisTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
                             item.Olusturan = UtilityHelper.GetCurrentUserName();
-                            item.Save();
+                            new Model.Services.MTS.AniObjesiDagitimService().Save(item);
                         }
                         else //eski adetle adet farkli  update et
                         {
@@ -1587,7 +1585,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                             item.KatilimciId = katilimciId;
                             item.VerilisTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
                             item.Degistiren = UtilityHelper.GetCurrentUserName();
-                            item.Update();
+                            new Model.Services.MTS.AniObjesiDagitimService().Update(item);
                         }
                     }
                 }

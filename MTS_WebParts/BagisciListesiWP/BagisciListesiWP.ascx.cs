@@ -1,5 +1,6 @@
 using Model.MTS;
 using Model.Services.NBYS;
+using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -91,8 +92,7 @@ namespace MTS_WebParts.BagisciListesiWP
         {
             NakitBagisciReportService reportService = new NakitBagisciReportService();
             DataTable dataTableNakit = reportService.GetSecilmemisFaaliyetKatilimcilari();
-            TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-            DataTable dataTableTasinmaz = tasinmazBagisci.SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT();
+            DataTable dataTableTasinmaz = new TasinmazBagisciReportService().GetUnselectedParticipants();
 
             dataTableTasinmaz.Merge(dataTableNakit);
             int SiraNo = 1;

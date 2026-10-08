@@ -165,8 +165,7 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
             {
                 if (parametreId > 0)
                 {
-                    ToplantiParametre rp = new ToplantiParametre();
-                    rp = rp.Select(parametreId);
+                    ToplantiParametre rp = new Model.Services.Portal.ToplantiParametreService().GetById(parametreId);
                     if (rp != null)
                     {
                         ParametreTxt.Text = rp.Deger;
@@ -238,7 +237,7 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
         {
             int parametreId = parametreIdLbl.Value.ConvertToInt();
             ToplantiParametre toplantiParametre = new ToplantiParametre();
-            toplantiParametre = toplantiParametre.Select(parametreId);
+            toplantiParametre = new Model.Services.Portal.ToplantiParametreService().GetById(parametreId);
             if (toplantiParametre != null)
             {
                 List<ToplantiParametre> list = AyniIsimdeVarMi(toplantiParametre.Grup, ParametreTxt.Text);
@@ -261,7 +260,7 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
                 {
                     toplantiParametre.Deger = ParametreTxt.Text;
                     toplantiParametre.Sira = SiraTxt.Text.ConvertToInt();
-                    if (toplantiParametre.Update())
+                    if (new Model.Services.Portal.ToplantiParametreService().Update(toplantiParametre))
                     {
                         CloseModal();
                         MessageHelper.PublishMessage("Parametre güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
@@ -288,11 +287,11 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
         {
             int parametreId = parametreIdLbl.Value.ConvertToInt();
             ToplantiParametre toplantiParametre = new ToplantiParametre();
-            toplantiParametre = toplantiParametre.Select(parametreId);
+            toplantiParametre = new Model.Services.Portal.ToplantiParametreService().GetById(parametreId);
             CloseModal();
             if (toplantiParametre != null)
             {
-                bool silindiMi = toplantiParametre.Delete();
+                bool silindiMi = new Model.Services.Portal.ToplantiParametreService().Delete(toplantiParametre);
                 if (silindiMi)
                 {
                     TabloyuGuncelle();
@@ -329,7 +328,7 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
                         toplantiParametre.Sira = YeniSiraTxt.Text.ConvertToInt();
                         toplantiParametre.Deger = YeniDegerTxt.Text;
                         toplantiParametre.Olusturan = UtilityHelper.GetCurrentUserName();
-                        int id = toplantiParametre.Save();
+                        int id = new Model.Services.Portal.ToplantiParametreService().Save(toplantiParametre);
                         if (id > 0)
                         {
                             TabloyuGuncelle();

@@ -424,7 +424,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                     skBagisci.TabloAdi = "NakitBagisci_Table";
                     skBagisci.SilinmeTarihi = DateTime.Now;
                     skBagisci.SilinenKayitBilgisi = " #BagisciId=" + bagisci.Id + " #Adi=" + bagisci.Adi + " #TCKimlikNo=" + bagisci.TCKimlikNo + " #Telefon=" + bagisci.Telefon1 + " " + bagisci.Telefon2 + " #Adres=" + bagisci.Adres;
-                    skBagisci.Save();
+                    new SilinenKayitService().Save(skBagisci);
                     nakitBagisciService.Delete(bagisci);
                 }
                 if (silinecekArmagan != null)//armagan tablosunda islem oldu mu. //yeniden armagan hesaplanacak

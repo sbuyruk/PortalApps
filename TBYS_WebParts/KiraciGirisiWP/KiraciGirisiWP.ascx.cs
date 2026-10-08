@@ -676,7 +676,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
                         ekST.BolumId = item.BolumId;
                         ekST.TasinmazId = item.TasinmazId;
                         ekST.Olusturan = UtilityHelper.GetCurrentUserLoginName();
-                        ekST.Save();
+                        new Model.Services.TBYS.SozlesmeTasinmazService().Save(ekST);
                     }
 
                     RedirectToPage(ProjeConstants.PAGE_BITENKIRASOZLESMESI + "?DestinationApp=KS&SenderApp=KD&KiraSozlesmeId=" + yeniKayitbitenKiraSozlesme.Id);

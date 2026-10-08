@@ -440,7 +440,7 @@ namespace Portal_WebParts.ToplantiListesiWP
         {
             string yeriStr = string.Empty;
             ToplantiParametre toplantiParametre = new ToplantiParametre();
-            toplantiParametre = toplantiParametre.Select(yeri);
+            toplantiParametre = new Model.Services.Portal.ToplantiParametreService().GetById(yeri);
             if (toplantiParametre != null)
             {
                 if (toplantiParametre.Deger.Equals(ProjeConstants.PARAM_DIGER))
