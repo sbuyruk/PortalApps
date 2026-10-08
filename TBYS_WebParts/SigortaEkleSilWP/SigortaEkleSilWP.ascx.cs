@@ -174,7 +174,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP
             if (tasinmaz.KatMulkiyeti.Equals(ProjeConstants.KAT_MULKIYETI_YOK))
             {
                 BagimsizBolum bb = new BagimsizBolum();
-                List<BagimsizBolum> list = bb.SelectByTasinmazId(tasinmaz.Id);
+                List<BagimsizBolum> list = new BagimsizBolumService().GetByTasinmazId(tasinmaz.Id);
                 foreach (BagimsizBolum item in list)
                 {
                     ListItem li = new ListItem(item.BolumNo, item.Id.ToString());

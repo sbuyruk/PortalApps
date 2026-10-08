@@ -147,7 +147,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
             //Column headers
             BagimsizBolumTableHeaders();
             BagimsizBolum bt = new BagimsizBolum();
-            List<BagimsizBolum> list = bt.SelectByTasinmazId(tasinmaz.Id);
+            List<BagimsizBolum> list = new BagimsizBolumService().GetByTasinmazId(tasinmaz.Id);
             int SiraNo = 1;
             foreach (BagimsizBolum bagimsizBolum in list)
             {
@@ -414,7 +414,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
         {
 
             BagimsizBolum bagimsizBolum = new BagimsizBolum();
-            bagimsizBolum = bagimsizBolum.Select<BagimsizBolum>(ParamBagimsizBolumIdLbl.Text.ConvertToInt());
+            bagimsizBolum = new BagimsizBolumService().GetById(ParamBagimsizBolumIdLbl.Text.ConvertToInt());
             if (bagimsizBolum != null)
             {
                 bagimsizBolum.BolumNo = BolumNoTxt.Text;
@@ -459,7 +459,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
         {
 
             BagimsizBolum bagimsizBolum = new BagimsizBolum();
-            bagimsizBolum = bagimsizBolum.Select<BagimsizBolum>(ParamBagimsizBolumIdLbl.Text.ConvertToInt());
+            bagimsizBolum = new BagimsizBolumService().GetById(ParamBagimsizBolumIdLbl.Text.ConvertToInt());
             if (bagimsizBolum != null)
             {
                 if (bagimsizBolum.Delete())

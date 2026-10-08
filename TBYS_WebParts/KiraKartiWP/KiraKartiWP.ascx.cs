@@ -213,7 +213,7 @@ namespace TBYS_WebParts.KiraKartiWP
                     if (item.BolumId > 0)
                     {
                         BagimsizBolum bagimsizBolum = new BagimsizBolum();
-                        bagimsizBolum = bagimsizBolum.Select<BagimsizBolum>(item.BolumId);
+                        bagimsizBolum = new BagimsizBolumService().GetById(item.BolumId);
                         if (bagimsizBolum == null)
                         {
                             MessageHelper.PublishMessage("Bağımsız bölüm bulunamadı. Sözleşmeden bağımsız bölüm kaydını düzeltmeniz gerekmektedir.",ProjeConstants.MESAJ_HATA);
@@ -232,7 +232,7 @@ namespace TBYS_WebParts.KiraKartiWP
                     if (tasinmaz.AltBolum)
                     {
                         BagimsizBolum bagimsizBolum = new BagimsizBolum();
-                        bagimsizBolum = bagimsizBolum.Select<BagimsizBolum>(item.BolumId);
+                        bagimsizBolum = new BagimsizBolumService().GetById(item.BolumId);
                         if (bagimsizBolum != null)
                         {
                             NiteligiCell.Text = bagimsizBolum.Nitelik;

@@ -334,7 +334,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                         if (tasinmaz.AltBolum) // Bu siorta Bağımsız bölüme ait
                         {
                             BagimsizBolum bagimsizBolum = new BagimsizBolum();
-                            bagimsizBolum = bagimsizBolum.Select<BagimsizBolum>(sigorta.BolumId);
+                            bagimsizBolum = new BagimsizBolumService().GetById(sigorta.BolumId);
                             if (bagimsizBolum != null)
                             {
                                 KullanimAmaciTxt.Text = bagimsizBolum.KullanimAmaci;
@@ -396,7 +396,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 {
                     KullanimAmaciTxt.Text = sigorta.KullanimSekli;
                     BagimsizBolum bb = new BagimsizBolum();
-                    List<BagimsizBolum> list = bb.SelectByTasinmazId(sigorta.TasinmazId);
+                    List<BagimsizBolum> list = new BagimsizBolumService().GetByTasinmazId(sigorta.TasinmazId);
                     foreach (BagimsizBolum item in list)
                     {
                         ListItem li = new ListItem(item.BolumNo, item.Id.ToString());
