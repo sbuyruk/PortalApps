@@ -123,14 +123,5 @@ namespace Model.TBYS
         public static DataTable SelectSatisVsDahilTasinmazByBagisciIdReturnDT(this Bagis item, int id) { return new BagisService().GetSatisVsDahilTasinmazByBagisciId(id); }
         public static decimal SelectSumTahminiRayicByBagisciId(this Bagis item, int id) { return new BagisService().GetSumTahminiRayicByBagisciId(id); }
 
-        public static T Select<T>(this KiraBorcuTakip item, int id) { return (T)Convert.ChangeType(new KiraBorcuTakipService().GetById(id), typeof(T)); }
-        public static KiraBorcuTakip Select(this KiraBorcuTakip item, int id) { return new KiraBorcuTakipService().GetById(id); }
-        public static int Save(this KiraBorcuTakip item) { return new KiraBorcuTakipService().Save(item); }
-        public static bool Update(this KiraBorcuTakip item) { return new KiraBorcuTakipService().Update(item); }
-        public static bool Delete(this KiraBorcuTakip item) { return new KiraBorcuTakipService().Delete(item); }
-        public static List<T> SelectAll<T>(this KiraBorcuTakip item) { return (List<T>)Convert.ChangeType(new KiraBorcuTakipService().GetAll(), typeof(List<T>)); }
-        public static KiraBorcuTakip SelectByKiraciIdAyYil(this KiraBorcuTakip item, int id) { return new KiraBorcuTakipService().GetByKiraciIdAyYil(id); }
-        public static int SelectCountAdetByTakipIslemiBolge(this KiraBorcuTakip item, string takipIslemi, string bolge, int ay, int yil) { return new KiraBorcuTakipService().GetCountByFilters(takipIslemi, bolge, ay, yil); }
-        public static int SelectCountBySozlesmeId(this KiraBorcuTakip item, int id, string takipIslemi) { return new KiraBorcuTakipService().GetCountBySozlesmeId(id, takipIslemi); }
     }
 }
