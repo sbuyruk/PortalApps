@@ -117,8 +117,7 @@ namespace Portal_WebParts.OlayListesiWP
         }
         private List<Olay> GetDataList(DateTime tarih)
         {
-            Olay olayDao = new Olay();
-            List<Olay> list = olayDao.SelectByTarihReturnList(tarih, ProgramQS);
+            List<Olay> list = new Model.Services.Ortak.OlayService().GetByDateAndProgram(tarih, ProgramQS);
             return list;
         }
         private List<OlayListItem> OlayListItemDoldur(List<Olay> list)

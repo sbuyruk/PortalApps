@@ -1,4 +1,5 @@
 using Model.MTS;
+using Model.Services.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace Model.Ortak
                     olay.Olusturan = UtilityHelper.GetCurrentUserName();
                     olay.OlusturmaTarihi = DateTime.Now;
                     olay.Program = program;
-                    olay.Save();
+                    new OlayService().Save(olay);
                 }
                 
             }
@@ -66,7 +67,7 @@ namespace Model.Ortak
                     olay.Olusturan = UtilityHelper.GetCurrentUserName();
                     olay.OlusturmaTarihi = DateTime.Now;
                     olay.Program = program;
-                    olay.Save();
+                    new OlayService().Save(olay);
                 }
 
             }
@@ -102,7 +103,7 @@ namespace Model.Ortak
                     olay.Olusturan = UtilityHelper.GetCurrentUserName();
                     olay.OlusturmaTarihi = DateTime.Now;
                     olay.Program = program;
-                    olay.Save();
+                    new OlayService().Save(olay);
                 }
             }
             return kaydedildi;

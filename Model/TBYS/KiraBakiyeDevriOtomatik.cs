@@ -187,7 +187,7 @@ namespace Model.TBYS
                     "DevirAnaPara=" + eskiDevirAnaPara + "#" + kiraSozlesme.DevirAnaPara + ProjeConstants.DELIMITER +
                     "DevirFaizTutari=" + eskiDevirFaizTutari + "#" + kiraSozlesme.DevirFaizTutari + ProjeConstants.DELIMITER +
                     "DevirFaizliBakiye=" + eskiDevirFaizliBakiye + "#" + kiraSozlesme.DevirFaizliBakiye + ProjeConstants.DELIMITER;
-                olay.Save();
+                new Model.Services.Ortak.OlayService().Save(olay);
             }
             catch
             {
