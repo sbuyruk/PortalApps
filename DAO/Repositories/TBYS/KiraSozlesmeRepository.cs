@@ -116,5 +116,50 @@ namespace DAO.Repositories.TBYS
                 ORDER BY A.BolgeId, SozBitTar DESC", baslangic, bitis, bolgeStr);
             return db.SelectFromDb(sql, "");
         }
+        public DataTable SelectListByYear(int yil)
+        {
+            string sql = string.Format(@"
+                SELECT S.Id KiraSozlesmeId, S.DosyaNo, S.Bolge, S.BolgeId, S.KiraciId, S.Aktif, F.BolumNo, D.Adres, D.Ili,D.Ilcesi,
+                    FORMAT(S.IlkSozlesmeTar,'dd/MM/yyyy') IlkSozlesmeTar,
+                    FORMAT(S.SozBasTar, 'dd/MM/yyyy') SozBasTar,
+                    FORMAT(S.SozBitTar, 'dd/MM/yyyy') SozBitTar,
+                    S.KiraBedeli KiraBedeli,S.OdemeSekli,S.TaksitSayisi, S.KefilAdiSoyadi,
+                    S.KefilTCKimlikNo, S.KefilAdresi, S.KefilTel,S.TeminatCinsi,
+                    S.TeminatTutari, S.OdenenTeminatTutari, S.IadeTeminatTutari, S.KalanTeminatTutari,
+                    S.TeminatAciklama, S.TeminatOdemeTarihi,
+                    K.Adi KiraciAdi, K.Soyadi KiraciSoyadi, S.SozlesmeDurumu, S.DurumDegismeTar
+                FROM KiraSozlesme_Table S
+                    LEFT JOIN Kiraci_Table K on K.Id= S.KiraciId
+                    LEFT OUTER JOIN SozlesmeTasinmaz_Table C On C.SozlesmeId=S.Id
+                    LEFT OUTER JOIN Tasinmaz_Table D ON D.Id=C.TasinmazId
+                    LEFT OUTER JOIN BagimsizBolum_Table F ON F.TasinmazId=D.Id AND F.Id=C.BolumId
+                    LEFT JOIN Il_Table E ON E.IlAdi=D.Ili
+                WHERE YEAR(S.IlkSozlesmeTar)={0}
+                ORDER BY DosyaNo", yil);
+            return db.SelectFromDb(sql, "");
+        }
+        public DataTable SelectCompletedListByYear(int yil)
+        {
+            string sql = string.Format(@"
+                SELECT S.Id KiraSozlesmeId, S.DosyaNo, S.Bolge, S.BolgeId, S.KiraciId, S.Aktif, F.BolumNo, D.Adres, D.Ili,D.Ilcesi,
+                    FORMAT(S.IlkSozlesmeTar,'dd/MM/yyyy') IlkSozlesmeTar,
+                    FORMAT(S.SozBasTar, 'dd/MM/yyyy') SozBasTar,
+                    FORMAT(S.SozBitTar, 'dd/MM/yyyy') SozBitTar,
+                    S.KiraBedeli KiraBedeli,S.OdemeSekli,S.TaksitSayisi, S.KefilAdiSoyadi,
+                    S.KefilTCKimlikNo, S.KefilAdresi, S.KefilTel,S.TeminatCinsi,
+                    S.TeminatTutari, S.OdenenTeminatTutari, S.IadeTeminatTutari, S.KalanTeminatTutari,
+                    S.TeminatAciklama, S.TeminatOdemeTarihi,
+                    K.Adi KiraciAdi, K.Soyadi KiraciSoyadi, S.SozlesmeDurumu, S.DurumDegismeTar
+                FROM KiraSozlesme_Table S
+                    LEFT JOIN Kiraci_Table K on K.Id= S.KiraciId
+                    LEFT OUTER JOIN SozlesmeTasinmaz_Table C On C.SozlesmeId=S.Id
+                    LEFT OUTER JOIN Tasinmaz_Table D ON D.Id=C.TasinmazId
+                    LEFT OUTER JOIN BagimsizBolum_Table F ON F.TasinmazId=D.Id AND F.Id=C.BolumId
+                    LEFT JOIN Il_Table E ON E.IlAdi=D.Ili
+                WHERE YEAR(S.DurumDegismeTar)={0}
+                    AND S.SozlesmeDurumu in ({1},{2})
+                ORDER BY DosyaNo", yil, ProjeConstants.KIRASOZLESME_DURUMU_BITTI.ReturnQuotedValue(), ProjeConstants.KIRASOZLESME_DURUMU_FESIH.ReturnQuotedValue());
+            return db.SelectFromDb(sql, "");
+        }
     }
 }
