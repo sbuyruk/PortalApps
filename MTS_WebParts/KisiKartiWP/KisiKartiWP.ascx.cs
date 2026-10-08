@@ -373,7 +373,7 @@ namespace MTS_WebParts.KisiKartiWP
         {
             string objeStr = string.Empty;
             AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-            DataTable dataTable = aniObjesiDagitim.SelectReturnDT(faaliyetId, katilimciId);
+            DataTable dataTable = new Model.Services.MTS.AniObjesiDagitimService().GetDistributionTable(faaliyetId, katilimciId);
             if (dataTable != null)
             {
 
@@ -396,7 +396,7 @@ namespace MTS_WebParts.KisiKartiWP
         {
             string aniobjeStr = string.Empty;
             AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
-            getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(faaliyetId, katilimciId);
+            getirilenAniObjesi = new Model.Services.MTS.AniObjesiDagitimService().GetGetirilen(faaliyetId, katilimciId);
             if (getirilenAniObjesi != null)
             {
                 aniobjeStr = getirilenAniObjesi.GetirilenAniObjesi;

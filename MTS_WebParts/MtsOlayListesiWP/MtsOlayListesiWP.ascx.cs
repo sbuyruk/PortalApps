@@ -155,7 +155,7 @@ namespace MTS_WebParts.MtsOlayListesiWP
 
                     //Burada verilen ani objeleri aliniyor
                     AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-                    DataTable dataTable = aniObjesiDagitim.SelectReturnDT(faaliyetId, kisi.Id);
+                    DataTable dataTable = new Model.Services.MTS.AniObjesiDagitimService().GetDistributionTable(faaliyetId, kisi.Id);
                     if (dataTable != null)
                     {
                         string objeStr = string.Empty;
@@ -174,7 +174,7 @@ namespace MTS_WebParts.MtsOlayListesiWP
 
                     //Getirilen Ani Objeleri ayrica aliniyor
                     AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
-                    getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(faaliyetId, kisi.Id);
+                    getirilenAniObjesi = new Model.Services.MTS.AniObjesiDagitimService().GetGetirilen(faaliyetId, kisi.Id);
                     if (getirilenAniObjesi != null)
                     {
                         getirilenAniObjesiStr = getirilenAniObjesi.GetirilenAniObjesi;
