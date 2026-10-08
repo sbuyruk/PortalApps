@@ -140,10 +140,10 @@ namespace Portal_WebParts.DuyuruPopupWP
             DateTime now = DateTime.Now;
             List<Duyuru> duyuruListesi = new List<Duyuru>();
             List<Duyuru> kisiselDuyuruListesi = new List<Duyuru>();
-            List<Duyuru> tekrarYokDuyuruList = duyuruDao.SelectByTarihReturnList(now, ProjeConstants.DUYURU_TEKRAR_YOK);
-            List<Duyuru> yillikDuyuruList = duyuruDao.SelectByTarihReturnList(now, ProjeConstants.DUYURU_TEKRARLA_YIL);
-            List<Duyuru> aylikDuyuruList = duyuruDao.SelectByTarihReturnList(now, ProjeConstants.DUYURU_TEKRARLA_AY);
-            List<Duyuru> haftalikDuyuruList = duyuruDao.SelectByTarihReturnList(now, ProjeConstants.DUYURU_TEKRARLA_HAFTA);
+            List<Duyuru> tekrarYokDuyuruList = new Model.Services.Portal.DuyuruService().GetByRepeat(now, ProjeConstants.DUYURU_TEKRAR_YOK);
+            List<Duyuru> yillikDuyuruList = new Model.Services.Portal.DuyuruService().GetByRepeat(now, ProjeConstants.DUYURU_TEKRARLA_YIL);
+            List<Duyuru> aylikDuyuruList = new Model.Services.Portal.DuyuruService().GetByRepeat(now, ProjeConstants.DUYURU_TEKRARLA_AY);
+            List<Duyuru> haftalikDuyuruList = new Model.Services.Portal.DuyuruService().GetByRepeat(now, ProjeConstants.DUYURU_TEKRARLA_HAFTA);
             duyuruListesi.AddRange(tekrarYokDuyuruList);
             duyuruListesi.AddRange(yillikDuyuruList);
             duyuruListesi.AddRange(aylikDuyuruList);
@@ -195,7 +195,7 @@ namespace Portal_WebParts.DuyuruPopupWP
             else
             {
                 DuyuruGosterim dg = new DuyuruGosterim();
-                dg = dg.SelectByDuyuruId(duyuru.Id);
+                dg = new Model.Services.Portal.DuyuruGosterimService().GetByDuyuruId(duyuru.Id);
                 int dgId = 0;
                 if (dg != null)
                 {
@@ -371,7 +371,7 @@ namespace Portal_WebParts.DuyuruPopupWP
             foreach (string item in okunanDuyuruListesi)
             {
                 DuyuruGosterim dg = new DuyuruGosterim();
-                dg = dg.Select<DuyuruGosterim>(item.ConvertToInt());
+                dg = new Model.Services.Portal.DuyuruGosterimService().GetById(item.ConvertToInt());
                 if (dg != null)
                 {
                     DuyuruOkuma duyuruOkuma = new DuyuruOkuma();

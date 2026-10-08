@@ -227,7 +227,7 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
         private List<TasinmazBagisciListItem> GetDataList()
         {
             TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-            DataTable dataTable = tasinmazBagisci.SelectTasinmazBagisciReturnDataTable(false);
+            DataTable dataTable = new Model.Services.TBYS.TasinmazBagisciReportService().GetTasinmazBagisci(false);
             int SiraNo = 1;
             List<TasinmazBagisciListItem> list = new List<TasinmazBagisciListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);

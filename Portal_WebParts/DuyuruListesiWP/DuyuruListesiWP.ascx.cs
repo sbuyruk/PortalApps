@@ -156,7 +156,7 @@ namespace Portal_WebParts.DuyuruListesiWP
             if (duyuruId > 0)
             {
                 Duyuru duyuru = new Duyuru();
-                duyuru = duyuru.Select<Duyuru>(duyuruId);
+                duyuru = new Model.Services.Portal.DuyuruService().GetById(duyuruId);
                 if (duyuru != null)
                 {
                     DuyuruLbl.Text = duyuru.Baslik;
@@ -173,7 +173,7 @@ namespace Portal_WebParts.DuyuruListesiWP
         private string OkuyanlarListesiJson(int duyuruId)
         {
             DuyuruOkuma duyuruOkumaDao = new DuyuruOkuma();
-            string jSon = duyuruOkumaDao.SelectByDuyuruId(duyuruId);
+            string jSon = new Model.Services.Portal.DuyuruOkumaService().GetByDuyuruId(duyuruId);
             return jSon;
         }
         private string CreateModalDataTable(string jsonData)
@@ -286,7 +286,7 @@ namespace Portal_WebParts.DuyuruListesiWP
         private List<DuyuruListItem> GetDataList()
         {
             Duyuru duyuruDao = new Duyuru();
-            List<Duyuru> list = duyuruDao.SelectDuyuruListesi();
+            List<Duyuru> list = new Model.Services.Portal.DuyuruService().GetAnnouncementList();
 
             List<DuyuruListItem> yeniListe = new List<DuyuruListItem>();
             foreach (var item in list)

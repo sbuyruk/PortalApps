@@ -247,7 +247,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
                 }
             }
 
-            string json = toplantiDao.ToJSON(eventItems);
+            string json = new Faaliyet().ToJSON(eventItems);
             return json;
         }
         private string KisiDogumGunuListesiniGetir()

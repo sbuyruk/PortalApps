@@ -36,7 +36,7 @@ namespace NBYS_WebParts.NBYSYetkilendirmeWP
         {
             ProgramYetki programYetki = new ProgramYetki();
             string bolgeler = "(7,8,9)";
-            List<ProgramYetki> list = programYetki.SelectByProgramModul(ProjeConstants.NBYS, ProjeConstants.NBYS_BOLGE_NAKITBAGISCILISTESI, bolgeler);
+            List<ProgramYetki> list = new Model.Services.Portal.ProgramYetkiService().GetByProgramModul(ProjeConstants.NBYS, ProjeConstants.NBYS_BOLGE_NAKITBAGISCILISTESI, bolgeler);
             foreach (var item in list)
             {
                 if (item.Kosul.Equals("Belge Istemiyor"))

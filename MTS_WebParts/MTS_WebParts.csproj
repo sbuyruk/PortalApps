@@ -183,11 +183,6 @@
     <Compile Include="KisiKartiWP\KisiKartiWP.ascx.cs">
       <DependentUpon>KisiKartiWP.ascx</DependentUpon>
     </Compile>
-    <Compile Include="KisiKartiWP\KisiKartiWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>KisiKartiWP.ascx</DependentUpon>
-    </Compile>
     <Compile Include="KisiListesiWP\KisiListesiWP.ascx.cs">
       <DependentUpon>KisiListesiWP.ascx</DependentUpon>
     </Compile>
@@ -374,7 +369,6 @@
     <Content Include="KisiKartiWP\Elements.xml" />
     <Content Include="KisiKartiWP\KisiKartiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>KisiKartiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="KisiListesiWP\Elements.xml" />
     <Content Include="KisiListesiWP\KisiListesiWP.ascx">
