@@ -9,7 +9,7 @@ using System.Data;
 namespace Model.TBYS
 {
     [Serializable]
-    public class OdemeAyristirma : ParentClass
+    public class OdemeAyristirma : EntityBase
     {
         public int KiraEkstreAktarmaId { get; set; }
         public int KiraciId { get; set; }
@@ -22,7 +22,7 @@ namespace Model.TBYS
         public decimal Tutar { get; set; }
         public string DovizCinsi { get; set; }
         public string Aciklama { get; set; }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new OdemeAyristirmaService().GetById(id), typeof(T));
         }
@@ -30,19 +30,19 @@ namespace Model.TBYS
         {
             return new OdemeAyristirmaService().GetById(id);
         }
-        public override int Save()
+        public int Save()
         {
             return new OdemeAyristirmaService().Save(this);
         }
-        public override bool Update()
+        public bool Update()
         {
             return new OdemeAyristirmaService().Update(this);
         }
-        public override bool Delete()
+        public bool Delete()
         {
             return new OdemeAyristirmaService().Delete(this);
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(new OdemeAyristirmaService().GetAll(), typeof(List<T>));
         }

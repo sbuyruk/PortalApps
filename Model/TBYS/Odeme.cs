@@ -12,7 +12,7 @@ using Utility.ProjeGlobal;
 namespace Model.TBYS
 {
     [Serializable]
-    public class Odeme : ParentClass
+    public class Odeme : EntityBase
     {
         public int SozlesmeId { get; set; }
         public int KiraciId { get; set; }
@@ -20,7 +20,7 @@ namespace Model.TBYS
         public DateTime OdemeTarihi { get; set; }
         public decimal OdenenTutar { get; set; }
         public string Aciklama { get; set; }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new OdemeService().GetById(id), typeof(T));
         }
@@ -28,15 +28,15 @@ namespace Model.TBYS
         {
             return new OdemeService().GetById(id);
         }
-        public override int Save()
+        public int Save()
         {
             return new OdemeService().Save(this);
         }
-        public override bool Update()
+        public bool Update()
         {
             return new OdemeService().Update(this);
         }
-        public override bool Delete()
+        public bool Delete()
         {
             return new OdemeService().Delete(this);
         }
@@ -92,7 +92,7 @@ namespace Model.TBYS
         {
             return new OdemeService().DeleteBySozlesmeId(sozlesmeId);
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(new OdemeService().GetAll(), typeof(List<T>));
         }

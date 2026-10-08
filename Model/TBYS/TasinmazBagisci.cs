@@ -7,7 +7,7 @@ using System.Data;
 namespace Model.TBYS
 {
     [Serializable]
-    public class TasinmazBagisci : ParentClass
+    public class TasinmazBagisci : EntityBase
     {
         public string Adi { get; set; }
         public string Soyadi { get; set; }
@@ -36,11 +36,11 @@ namespace Model.TBYS
         public string Tahsil { get; set; }
         private static TasinmazBagisciService Service { get { return new TasinmazBagisciService(); } }
         private static TasinmazBagisciReportService Reports { get { return new TasinmazBagisciReportService(); } }
-        public override T Select<T>(int id) { return (T)Convert.ChangeType(Service.GetById(id), typeof(T)); }
-        public override int Save() { return Service.Save(this); }
-        public override bool Update() { return Service.Update(this); }
-        public override bool Delete() { return Service.Delete(this); }
-        public override List<T> SelectAll<T>() { return (List<T>)Convert.ChangeType(Service.GetAll(), typeof(List<T>)); }
+        public T Select<T>(int id) { return (T)Convert.ChangeType(Service.GetById(id), typeof(T)); }
+        public int Save() { return Service.Save(this); }
+        public bool Update() { return Service.Update(this); }
+        public bool Delete() { return Service.Delete(this); }
+        public List<T> SelectAll<T>() { return (List<T>)Convert.ChangeType(Service.GetAll(), typeof(List<T>)); }
         public List<TasinmazBagisci> SelectAllSagBagiscilar(string sag) { return Service.GetAllBySagVefat(sag); }
         public List<TasinmazBagisci> SelectByBolge(int bolgeId) { return Service.GetByBolge(bolgeId); }
         public List<TasinmazBagisci> SelectByFilters(bool a, bool b, bool c, bool d) { return Service.GetByFilters(a,b,c,d); }

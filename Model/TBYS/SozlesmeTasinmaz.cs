@@ -7,27 +7,27 @@ using System.Data;
 namespace Model.TBYS
 {
     [Serializable]
-    public class SozlesmeTasinmaz : ParentClass
+    public class SozlesmeTasinmaz : EntityBase
     {
         public int SozlesmeId { get; set; }
         public int TasinmazId { get; set; }
         public int BolumId { get; set; }
 
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new SozlesmeTasinmazService().GetById(id), typeof(T));
         }
 
-        public override int Save() { return new SozlesmeTasinmazService().Save(this); }
-        public override bool Update() { return new SozlesmeTasinmazService().Update(this); }
-        public override bool Delete() { return new SozlesmeTasinmazService().Delete(this); }
+        public int Save() { return new SozlesmeTasinmazService().Save(this); }
+        public bool Update() { return new SozlesmeTasinmazService().Update(this); }
+        public bool Delete() { return new SozlesmeTasinmazService().Delete(this); }
 
         public bool DeleteBySozlesmeId(int sozlesmeId)
         {
             return new SozlesmeTasinmazService().DeleteBySozlesmeId(this, sozlesmeId);
         }
 
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(new SozlesmeTasinmazService().GetAll(), typeof(List<T>));
         }

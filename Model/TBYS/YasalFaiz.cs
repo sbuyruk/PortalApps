@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Model.TBYS
 {
     [Serializable]
-    public class YasalFaiz : ParentClass
+    public class YasalFaiz : EntityBase
     {
         public int Yil { get; set; }
         public int Ay { get; set; }
@@ -15,23 +15,23 @@ namespace Model.TBYS
         public decimal Tufe { get; set; }
         public decimal Ufe { get; set; }
         public string Aciklama { get; set; }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new YasalFaizService().GetById(id), typeof(T));
         }
-        public override int Save()
+        public int Save()
         {
             return new YasalFaizService().Save(this);
         }
-        public override bool Update()
+        public bool Update()
         {
             return new YasalFaizService().Update(this);
         }
-        public override bool Delete()
+        public bool Delete()
         {
             return new YasalFaizService().Delete(this);
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(new YasalFaizService().GetAll(), typeof(List<T>));
         }

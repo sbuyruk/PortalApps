@@ -10,7 +10,7 @@ using Utility.ProjeGlobal;
 namespace Model.TBYS
 {
     [Serializable]
-    public class BagimsizBolum : ParentClass
+    public class BagimsizBolum : EntityBase
     {
         public int TasinmazId { get; set; }
         public string BolumNo { get; set; }
@@ -24,24 +24,24 @@ namespace Model.TBYS
         public decimal YaklasikPiyasaDegeri { get; set; }
         public string Aciklama { get; set; }
 
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new BagimsizBolumService().GetById(id), typeof(T));
 
         }
-        public override int Save()
+        public int Save()
         {
             return new BagimsizBolumService().Save(this);
         }
-        public override bool Update()
+        public bool Update()
         {
             return new BagimsizBolumService().Update(this);
         }
-        public override bool Delete()
+        public bool Delete()
         {
             return new BagimsizBolumService().Delete(this);
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(new BagimsizBolumService().GetAll(), typeof(List<T>));
         }

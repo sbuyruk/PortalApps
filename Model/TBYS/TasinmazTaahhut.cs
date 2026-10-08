@@ -7,7 +7,7 @@ using System.Data;
 namespace Model.TBYS
 {
     [Serializable]
-    public class TasinmazTaahhut : ParentClass
+    public class TasinmazTaahhut : EntityBase
     {
         public int TasinmazId { get; set; }
         public int BagisciId { get; set; }
@@ -25,27 +25,27 @@ namespace Model.TBYS
         public string Sag_vefat { get; set; }
         public DateTime VefatTarihi { get; set; }
 
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new TasinmazTaahhutService().GetById(id), typeof(T));
         }
 
-        public override int Save()
+        public int Save()
         {
             return new TasinmazTaahhutService().Save(this);
         }
 
-        public override bool Update()
+        public bool Update()
         {
             return new TasinmazTaahhutService().Update(this);
         }
 
-        public override bool Delete()
+        public bool Delete()
         {
             return new TasinmazTaahhutService().Delete(this);
         }
 
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(
                 new TasinmazTaahhutService().GetAll(),
