@@ -204,6 +204,7 @@
     <Compile Include="Services\TBYS\TasinmazBagisciReportService.cs" />
     <Compile Include="Services\TBYS\BagisciTalepleriService.cs" />
     <Compile Include="Services\MTS\KaynakTanimService.cs" />
+    <Compile Include="Services\MTS\KisiService.cs" />
     <Compile Include="Services\Ortak\IlService.cs" />
     <Compile Include="Services\Ortak\IlceService.cs" />
     <Compile Include="Services\NBYS\ArmaganService.cs" />
