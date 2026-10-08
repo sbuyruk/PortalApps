@@ -178,13 +178,13 @@ namespace Portal_WebParts.OlayListesiWP
             {
 
                 Kisi kisi = new Kisi();
-                kisi = new Model.Services.IKYS.KisiService().GetById(katilimciId);
+                kisi = new Model.Services.MTS.KisiService().GetById(katilimciId);
                 if (kisi != null)
                 {
                     katilimci = kisi.Adi + " " + kisi.Soyadi;
                     //Burada verilen ani objeleri aliniyor
                     AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-                    DataTable dataTable = aniObjesiDagitim.SelectReturnDT(faaliyetId, kisi.Id);
+                    DataTable dataTable = new Model.Services.MTS.AniObjesiDagitimService().GetDistributionTable(faaliyetId, kisi.Id);
                     if (dataTable != null)
                     {
                         string objeStr = string.Empty;

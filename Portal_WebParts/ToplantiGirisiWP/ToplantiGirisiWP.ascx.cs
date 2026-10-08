@@ -372,7 +372,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
             {
                 ToplantiParametre toplantiParametre = new ToplantiParametre();
                 string adiSoyadi = personel.Adi + " " + personel.Soyadi;
-                List<ToplantiParametre> liste = toplantiParametre.SelectByGrupDeger(ProjeConstants.PARAM_TOPLANTIYETKILISI, adiSoyadi);
+                List<ToplantiParametre> liste = new Model.Services.Portal.ToplantiParametreService().GetByGroupValue(ProjeConstants.PARAM_TOPLANTIYETKILISI, adiSoyadi);
                 yetkiliMi = liste.Count > 0;
             }
 
@@ -402,7 +402,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
         {
             ToplantiYeriDDL.Items.Clear();
             ToplantiParametre toplantiParametre = new ToplantiParametre();
-            List<ToplantiParametre> list = toplantiParametre.SelectByGrupReturnList(ProjeConstants.PARAM_TOPLANTIYERI);
+            List<ToplantiParametre> list = new Model.Services.Portal.ToplantiParametreService().GetByGroup(ProjeConstants.PARAM_TOPLANTIYERI);
 
             ListItem li0 = new ListItem(ProjeConstants.BOS, ProjeConstants.BOS);
             ToplantiYeriDDL.Items.Add(li0);
@@ -467,7 +467,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                     {
                         DateTime baslangicTarihi = UtilityHelper.TariheSaatEkle(BaslangicTarihiTxt.Text.ConvertToDatetime(), item.Value);
                         Toplanti kayitliToplanti = new Toplanti();
-                        kayitliToplanti = kayitliToplanti.SelectByBaslangicTarihi(ToplantiYeriDDL.SelectedItem.Value.ConvertToInt(), baslangicTarihi);
+                        kayitliToplanti = new Model.Services.Portal.ToplantiService().GetByStart(ToplantiYeriDDL.SelectedItem.Value.ConvertToInt(), baslangicTarihi);
 
                         if ((kayitliToplanti != null) && (kayitliToplanti.ToplantiYeri != ProjeConstants.PARAM_DIGER_INT))
                         {
@@ -634,7 +634,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
         private bool ToplantiDegistiMi(Toplanti toplanti)
         {
             ToplantiKatilim tk = new ToplantiKatilim();
-            List<ToplantiKatilim> list = tk.SelectBytoplantiId(toplanti.Id);
+            List<ToplantiKatilim> list = new Model.Services.Portal.ToplantiKatilimService().GetByMeeting(toplanti.Id);
             List<int> katilimcilar = new List<int>();
             if (list.Count > 0)
             {
@@ -794,7 +794,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                     if (toplantiId > 0)
                     {
                         ToplantiKatilim toplantiKatilim = new ToplantiKatilim();
-                        List<ToplantiKatilim> oncekiKatilimciListesi = toplantiKatilim.SelectBytoplantiId(toplanti.Id);
+                        List<ToplantiKatilim> oncekiKatilimciListesi = new Model.Services.Portal.ToplantiKatilimService().GetByMeeting(toplanti.Id);
 
                         KatilimcilariVeriTabaninaKaydet(toplantiId);
 
@@ -883,7 +883,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                                 tar4 = DateTime.Now;
                                 InitialDateQS = toplanti.BaslangicTarihi.ToString("yyyy-MM-dd");
                                 ToplantiKatilim toplantiKatilim = new ToplantiKatilim();
-                                List<ToplantiKatilim> oncekiKatilimciListesi = toplantiKatilim.SelectBytoplantiId(toplanti.Id);
+                                List<ToplantiKatilim> oncekiKatilimciListesi = new Model.Services.Portal.ToplantiKatilimService().GetByMeeting(toplanti.Id);
                                 KatilimcilariVeriTabaninaKaydet(toplanti.Id);
                                 tar5 = DateTime.Now;
                                 MessageHelper.PublishMessage("Toplantı güncellendi, e-posta gönderildi.", ProjeConstants.MESAJ_BASARILI, 2000);
@@ -972,10 +972,10 @@ namespace Portal_WebParts.ToplantiGirisiWP
                     if (silindi)
                     {
                         ToplantiKatilim toplantiKatilim = new ToplantiKatilim();
-                        List<ToplantiKatilim> oncekiKatilimciListesi = toplantiKatilim.SelectBytoplantiId(toplanti.Id);
+                        List<ToplantiKatilim> oncekiKatilimciListesi = new Model.Services.Portal.ToplantiKatilimService().GetByMeeting(toplanti.Id);
                         EPostaIslemleri(kopyaToplanti, ProjeConstants.SIL, oncekiKatilimciListesi);
                         toplantiKatilim = new ToplantiKatilim();
-                        bool katilimSilindi = toplantiKatilim.DeleteByToplantiId(ToplantiIdQS.ConvertToInt());
+                        bool katilimSilindi = new Model.Services.Portal.ToplantiKatilimService().DeleteByMeeting(ToplantiIdQS.ConvertToInt());
 
                         RedirectToPage(ProjeConstants.PAGE_TOPLANTI_LIST);
                     }
@@ -1207,7 +1207,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
         private List<KatilimciListItem> GetDataList()
         {
             Toplanti toplantiDao = new Toplanti();
-            DataTable dataTable = toplantiDao.SelectAllByKatilimciToplantiReturnDataTable(ToplantiIdQS.ConvertToInt(), string.Empty);
+            DataTable dataTable = new Model.Services.Portal.ToplantiService().GetByParticipantMeeting(0, string.Empty, ToplantiIdQS.ConvertToInt());
             int SiraNo = 1;
             List<KatilimciListItem> list = new List<KatilimciListItem>();
             if (dataTable != null)

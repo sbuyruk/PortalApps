@@ -61,7 +61,7 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
         {
             string toplantiParametreGrubu = ToplantiGrupDDL.SelectedItem.Value;
             ToplantiParametre toplantiDao = new ToplantiParametre();
-            List<ToplantiParametre> toplantiParametreList = toplantiDao.SelectByGrupReturnList(toplantiParametreGrubu);
+            List<ToplantiParametre> toplantiParametreList = new Model.Services.Portal.ToplantiParametreService().GetByGroup(toplantiParametreGrubu);
 
             GrupLbl.Text = toplantiParametreGrubu;
             YeniSiraTxt.Text = toplantiParametreList.Count > 0 ? (toplantiParametreList.Max(x => x.Sira) + 1).ToString() : "1";
@@ -352,7 +352,7 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
         private List<ToplantiParametre> AyniIsimdeVarMi(string grup, string deger)
         {
             ToplantiParametre toplantiParametreDAO = new ToplantiParametre();
-            List<ToplantiParametre> list = toplantiParametreDAO.SelectByGrupDeger(grup, deger);
+            List<ToplantiParametre> list = new Model.Services.Portal.ToplantiParametreService().GetByGroupValue(grup, deger);
             return list;
         }
     }

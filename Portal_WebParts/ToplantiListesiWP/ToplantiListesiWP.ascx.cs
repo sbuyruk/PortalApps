@@ -145,8 +145,8 @@ namespace Portal_WebParts.ToplantiListesiWP
             string seperator = "; ";
             List<ToplantiListItem> toplantiList = new List<ToplantiListItem>();
             Toplanti toplantiDao = new Toplanti();
-            DataTable dataTable = toplantiDao.SelectAllByKatilimciToplantiTarihReturnDataTable(ProjeConstants.HEPSI_INT,
-                ProjeConstants.HEPSI, BaslangicTarihiTxt.Text.ConvertToDatetime(), BitisTarihiTxt.Text.ConvertToDatetime());
+            DataTable dataTable = new Model.Services.Portal.ToplantiService().GetByParticipantMeetingDate(0,
+                ProjeConstants.HEPSI, null, BaslangicTarihiTxt.Text.ConvertToDatetime(), BitisTarihiTxt.Text.ConvertToDatetime());
 
             if (dataTable != null)
             {
@@ -337,7 +337,7 @@ namespace Portal_WebParts.ToplantiListesiWP
 
                     ToplantiParametre toplantiParametre = new ToplantiParametre();
                     string adiSoyadi = personel.Adi + " " + personel.Soyadi;
-                    List<ToplantiParametre> adminliste = toplantiParametre.SelectByGrupDeger(ProjeConstants.PARAM_TOPLANTIYONETICISI, adiSoyadi);
+                    List<ToplantiParametre> adminliste = new Model.Services.Portal.ToplantiParametreService().GetByGroupValue(ProjeConstants.PARAM_TOPLANTIYONETICISI, adiSoyadi);
 
                     if (adminliste.Count > 0)
                     {
@@ -345,7 +345,7 @@ namespace Portal_WebParts.ToplantiListesiWP
                     }
                     else
                     {
-                        List<ToplantiParametre> liste = toplantiParametre.SelectByGrupDeger(ProjeConstants.PARAM_TOPLANTIYETKILISI, adiSoyadi);
+                        List<ToplantiParametre> liste = new Model.Services.Portal.ToplantiParametreService().GetByGroupValue(ProjeConstants.PARAM_TOPLANTIYETKILISI, adiSoyadi);
                         if (liste.Count > 0)
                         {
 
