@@ -77,7 +77,7 @@ namespace MTS_WebParts.KisiKartiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        protected global::System.Web.UI.WebControls.Table AlınanFaaliyetBilgileriTable;
+        protected global::System.Web.UI.WebControls.Table AlinanFaaliyetBilgileriTable;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
@@ -666,12 +666,12 @@ namespace MTS_WebParts.KisiKartiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        private global::System.Web.UI.WebControls.Table @__BuildControlAlınanFaaliyetBilgileriTable() {
+        private global::System.Web.UI.WebControls.Table @__BuildControlAlinanFaaliyetBilgileriTable() {
             global::System.Web.UI.WebControls.Table @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Table();
-            this.AlınanFaaliyetBilgileriTable = @__ctrl;
+            this.AlinanFaaliyetBilgileriTable = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "AlınanFaaliyetBilgileriTable";
+            @__ctrl.ID = "AlinanFaaliyetBilgileriTable";
             @__ctrl.CssClass = "table table-sm table-hover table-striped table-bordered";
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             this.@__BuildControl__control20(@__ctrl.Rows);
@@ -869,7 +869,7 @@ namespace MTS_WebParts.KisiKartiWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div id=\"AlinanFaaliyetDiv\" cla" +
                         "ss=\"table\">\r\n                        "));
             global::System.Web.UI.WebControls.Table @__ctrl3;
-            @__ctrl3 = this.@__BuildControlAlınanFaaliyetBilgileriTable();
+            @__ctrl3 = this.@__BuildControlAlinanFaaliyetBilgileriTable();
             @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div id=\"AramaGorusmeDiv\" class" +
                         "=\"table\">\r\n                        "));
@@ -1034,7 +1034,7 @@ namespace MTS_WebParts.KisiKartiWP {
             global::System.Web.UI.UpdatePanel @__ctrl1;
             @__ctrl1 = this.@__BuildControlTableUpdatePanel();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n</div>"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n</div>\r\n"));
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
