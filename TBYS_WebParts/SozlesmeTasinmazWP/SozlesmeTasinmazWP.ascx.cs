@@ -154,7 +154,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         {
 
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 SecileniKaydet(kiraSozlesme);
@@ -256,7 +256,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 cikarBtn.Click += delegate
                 {
                     //int tasinmazId = sozlesmeTasinmaz.TasinmazId; //TODO commentledim, bu dogru mu
-                    sozlesmeTasinmaz.Delete();
+                new Model.Services.TBYS.SozlesmeTasinmazService().Delete(sozlesmeTasinmaz);
                     string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                     int queryIndex = newUrl.IndexOf("?");
                     if (queryIndex > 0)
@@ -294,7 +294,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                                 st.SozlesmeId = kiraSozlesme.Id;
                                 st.TasinmazId = tasinmaz.Id;
                                 st.BolumId = babo.Id;
-                                int tId = st.Save();
+                                int tId = new Model.Services.TBYS.SozlesmeTasinmazService().Save(st);
                             }
                         }
 
@@ -307,7 +307,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                                 st.SozlesmeId = kiraSozlesme.Id;
                                 st.TasinmazId = tasinmaz.Id;
                                 st.BolumId = 0;
-                                st.Save();
+                                new Model.Services.TBYS.SozlesmeTasinmazService().Save(st);
                             }//if list.count
                         }// else bagimsiz bolum parametre olarak gelmediyse
 
@@ -328,7 +328,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                     if (kiraci != null)
                     {
                         kiraSozlesme.KiraciId = kiraci.Id;
-                        kiraSozlesme.Update();
+                        new Model.Services.TBYS.KiraSozlesmeService().Update(kiraSozlesme);
                     }
                 }
             }
@@ -342,7 +342,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         protected void TamamBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             string sozlesmePage = ProjeConstants.PAGE_KIRASOZLESMESI;
             if (kiraSozlesme != null)
             {

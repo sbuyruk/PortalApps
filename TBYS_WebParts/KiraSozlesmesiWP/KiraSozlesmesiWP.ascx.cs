@@ -156,7 +156,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
                 Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
                 BolgeIdQS = bolge == null ? 0 : bolge.Id;
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
                 if (kiraSozlesme == null)
                 {
                     MessageHelper.PublishMessage("Sözleşme Bulunamadı",ProjeConstants.MESAJ_HATA);
@@ -486,7 +486,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
         private KiraSozlesme UpdateKiraSozlesmeData2Db()
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             kiraSozlesme.DosyaNo = DosyaNoTxt.Text.ConvertToInt();
             kiraSozlesme.DevirAnaPara = DevirAnaParaTxt.Value.ConvertToDecimal();
             kiraSozlesme.DevirFaizTutari = DevirFaizTutariTxt.Text.ConvertToDecimal();
@@ -524,7 +524,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             }
             kiraSozlesme.BolgeId = BolgeIdGetir(kiraSozlesme);
             kiraSozlesme.GecikmeZammiTipi = string.IsNullOrEmpty(kiraSozlesme.GecikmeZammiTipi)?ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK: kiraSozlesme.GecikmeZammiTipi;
-            bool guncellendiMi = kiraSozlesme.Update();
+            bool guncellendiMi = new Model.Services.TBYS.KiraSozlesmeService().Update(kiraSozlesme);
             if (guncellendiMi)
             {
                 //devirAnaPara, devirFaiz, devirFaizliBakiye degisti ise OdemePlanini güncelle
@@ -567,7 +567,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 bool odemePlaniVar = false;
                 bool odemeSilindi = false;
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
                 if (kiraSozlesme != null)
                 {
                     int kiraSozlesmeId = kiraSozlesme.Id;
@@ -578,7 +578,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                     }
                     if (odemePlaniSilindi || !odemePlaniVar)
                     {
-                        sozlesmeSilindi = kiraSozlesme.Delete();
+                        sozlesmeSilindi = new Model.Services.TBYS.KiraSozlesmeService().Delete(kiraSozlesme);
 
                     }
                     if (sozlesmeSilindi)
@@ -594,7 +594,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
 
                     }
                     SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-                    bool sozlesmeTasinmazSilindi = st.DeleteBySozlesmeId(kiraSozlesme.Id);
+                    bool sozlesmeTasinmazSilindi = new Model.Services.TBYS.SozlesmeTasinmazService().DeleteBySozlesmeId(st, kiraSozlesme.Id);
                 }
             }
             catch (Exception e)
@@ -725,7 +725,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
         protected void KiraciTasinmazDegistirBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             string rootUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
             string newUrl = "/" + ProjeConstants.PAGE_KIRASOZLESME_TASINMAZ + "?DestinationApp=ST&SenderApp=KS&KiraSozlesmeId=" + kiraSozlesme.Id;
@@ -765,7 +765,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 TaksitSayisiTxt.Enabled = true;
             }
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
@@ -775,7 +775,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
         protected void OdemePlaniGoruntuleBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (string.IsNullOrEmpty(kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull()) || string.IsNullOrEmpty(kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull()))
             {
                 MessageHelper.PublishMessage("Ödeme planı Açılamıyor. Lütfen sözleşmenin başlama ve bitiş tarihlerini girerek tekrar deneyin.", ProjeConstants.MESAJ_BILGI, 2000);
@@ -875,7 +875,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
         private void SozlesmeyiBitir()
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 new Model.Services.TBYS.KiraSozlesmeService().UpdateActiveStatus(kiraSozlesme, ProjeConstants.KIRASOZLESME_DURUMU_BITTI, ModalDurumDegismeTarTxt.Text, ProjeConstants.KIRASOZLESME_AKTIFDEGILBOOL);
@@ -890,7 +890,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 //mevcut Sözlesmeyi bitir
                 int eskiKiraSozlesmeId = KiraSozlesmeIdQS.ConvertToInt();
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(eskiKiraSozlesmeId);
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(eskiKiraSozlesmeId);
                 if (kiraSozlesme != null)
                 {
                     kiraSozlesme.Degistiren = CurrentUserName;
@@ -918,7 +918,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                     yeniSozlesme.SozlesmeDurumu = ProjeConstants.KIRASOZLESME_DURUMU_DEVAM;
                     yeniSozlesme.Degistiren = CurrentUserName;
                     yeniSozlesme.BolgeId = BolgeIdGetir(yeniSozlesme);
-                    yeniId = yeniSozlesme.Save();
+                    yeniId = new Model.Services.TBYS.KiraSozlesmeService().Save(yeniSozlesme);
                     yeniSozlesme.Id = yeniId;
                     //eski sözlesme tasinmaz bilgilerini al
                     SozlesmeTasinmaz st = new SozlesmeTasinmaz();
@@ -930,7 +930,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                         yeniST.SozlesmeId = yeniSozlesme.Id;
                         yeniST.TasinmazId = item.TasinmazId;
                         yeniST.BolumId = item.BolumId;
-                        yeniST.Save();
+                    new Model.Services.TBYS.SozlesmeTasinmazService().Save(yeniST);
                     }
                 }
                 //yeni sözlesmeye git
@@ -1037,7 +1037,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             ModalLbl.Text = "Sözleşme Yenilenecek";
             ModalDurumDegismeTarTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 ArtisOraniDiv.Attributes["style"] = "display:block";
@@ -1126,7 +1126,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             ModalLbl.Text = "Sözleşme Bitirilecek";
             ModalDurumDegismeTarTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 decimal faizliBakiye = 0;
@@ -1169,7 +1169,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             ModalDurumDegismeTarTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 decimal faizliBakiye = 0;
@@ -1210,7 +1210,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
         {
             ModalLbl.Text = "Sözleşme Güncellenecek";
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 ArtisOraniDiv.Attributes["style"] = "display:none";
@@ -1250,7 +1250,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
             OnaylaBtn.Text = " Sözleşmeyi Sil ";
             UtilityHelper.ScriptCalistir("OpenModal();");
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
@@ -1261,7 +1261,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
         {
             UtilityHelper.ScriptCalistir("CloseModal();");
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 if (SenderHF.Value.Equals("Delete"))
@@ -1317,7 +1317,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                     kiraSozlesme.SozlesmeDurumu = ProjeConstants.KIRASOZLESME_DURUMU_FESIH;
                     kiraSozlesme.DurumDegismeTar = ModalDurumDegismeTarTxt.Text.ConvertToDatetime();
                     kiraSozlesme.Aktif = ProjeConstants.KIRASOZLESME_AKTIF_DEGIL_INT.ConvertToBool();
-                    kiraSozlesme.Update();
+                    new Model.Services.TBYS.KiraSozlesmeService().Update(kiraSozlesme);
                     //new Model.Services.TBYS.KiraSozlesmeService().UpdateActiveStatus(kiraSozlesme, ProjeConstants.KIRASOZLESME_DURUMU_FESIH, ModalDurumDegismeTarTxt.Value);
                     OdemePlanindaVadesiGelmeyenleriSifirYap(kiraSozlesme, ModalDurumDegismeTarTxt.Text);
                     RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_LIST + "?SozlesmeId=" + KiraSozlesmeIdQS);
@@ -1327,7 +1327,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                     kiraSozlesme.SozlesmeDurumu = ProjeConstants.KIRASOZLESME_DURUMU_TAKIP;
                     kiraSozlesme.DurumDegismeTar = ModalDurumDegismeTarTxt.Text.ConvertToDatetime();
                     kiraSozlesme.Aktif = ProjeConstants.KIRASOZLESME_AKTIF_DEGIL_INT.ConvertToBool();
-                    kiraSozlesme.Update();
+                    new Model.Services.TBYS.KiraSozlesmeService().Update(kiraSozlesme);
                     //new Model.Services.TBYS.KiraSozlesmeService().UpdateActiveStatus(kiraSozlesme, ProjeConstants.KIRASOZLESME_DURUMU_TAKIP, ModalDurumDegismeTarTxt.Value);
                     OdemePlanindaVadesiGelmeyenleriSifirYap(kiraSozlesme, ModalDurumDegismeTarTxt.Text);
                     HukukiIslemlereEkle(kiraSozlesme);
@@ -1409,7 +1409,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
             try
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
                 KiraSozlesme oncekiKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetPrevious(kiraSozlesme.Id, kiraSozlesme.DosyaNo);
 
                 RedirectToPage(ProjeConstants.PAGE_KIRASOZLESMESI + "?DestinationApp=KS&KiraSozlesmeId=" + oncekiKiraSozlesme.Id);
@@ -1427,7 +1427,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
             try
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
                 KiraSozlesme sonrakiKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetNext(kiraSozlesme.Id, kiraSozlesme.DosyaNo);
 
                 RedirectToPage(ProjeConstants.PAGE_KIRASOZLESMESI + "?DestinationApp=KS&KiraSozlesmeId=" + sonrakiKiraSozlesme.Id);
@@ -1441,7 +1441,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
         protected void DevirAlBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 KiraSozlesme oncekiKiraSozlesmesi = new Model.Services.TBYS.KiraSozlesmeService().GetPreviousByTenant(kiraSozlesme.KiraciId, kiraSozlesme.SozBasTar);
@@ -1511,7 +1511,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
             {
                 UtilityHelper.ScriptCalistir("CloseModalDosyaNo();");
                 //KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                //kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+                //kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
                 //if (kiraSozlesme != null)
                 //{
                 //    SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
@@ -1531,7 +1531,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
         {
             // KiraSozlesme içindeki dosya no'ları bul DosyaNos adlı listeye koy
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-            List<KiraSozlesme> tumSozlesmeler = kiraSozlesmeDao.SelectAll<KiraSozlesme>();
+            List<KiraSozlesme> tumSozlesmeler = new Model.Services.TBYS.KiraSozlesmeService().GetAll();
 
             List<int> dosyaNos = tumSozlesmeler
                 .Where(s => s.DosyaNo > 0 && s.BolgeId == SorumluBolgeIdLbl.Text.ConvertToInt())
@@ -1716,7 +1716,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
             try
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
                 if (kiraSozlesme != null)
                 {
 
@@ -1759,7 +1759,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                     if (isOk)
                     {
                         kiraSozlesme.SozlesmePDFDosyasi = hedefDosyaAdi;
-                        kiraSozlesme.Update();
+                        new Model.Services.TBYS.KiraSozlesmeService().Update(kiraSozlesme);
                         DosyaLnk.Visible = true;
                         BelgeSilBtn.Visible = true;
                         BelgeYukleFU.Visible=false; 

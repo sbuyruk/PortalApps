@@ -301,7 +301,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
                             if (odemeYapildiMi)
                             {
                                 ekstreAktarma.AktarildiMi = true;
-                                ekstreAktarma.Update();
+                                new Model.Services.TBYS.KiraEkstreAktarmaService().Update(ekstreAktarma);
 
                             }
                         }

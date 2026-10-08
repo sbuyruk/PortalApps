@@ -276,7 +276,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                     tasinmaz.BagisciId = bagis.BagisciId;
                 }
                 tasinmaz.Aciklama = AciklamaTxt.Text;
-                bool guncellendiMi = tasinmaz.Update();
+                bool guncellendiMi = new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
                 if (guncellendiMi)
                 {
                     UpdateBtn.Visible = true;
@@ -321,13 +321,13 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
 
                 }
                 tasinmaz.Aciklama = AciklamaTxt.Text;
-                envanterdenCikarildiMi = tasinmaz.Update();
+                envanterdenCikarildiMi = new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
 
                 if (envanterdenCikarildiMi)
                 {
                     if (bagis != null)
                     {
-                        bagisGuncellendiMi = bagis.Update();
+                        bagisGuncellendiMi = new Model.Services.TBYS.BagisService().Update(bagis);
                     }
                     RedirectToPage(ProjeConstants.PAGE_ENVANTERDENCIKANTASINMAZ_LIST + "?SecilenId=" + TasinmazIdQS);
                 }

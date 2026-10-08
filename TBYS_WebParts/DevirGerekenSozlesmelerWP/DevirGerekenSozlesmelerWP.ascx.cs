@@ -152,7 +152,7 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
             {
                 UtilityHelper.ScriptCalistir("DevirAlModalKapat();");
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.Select(HiddenSecilenId.Value.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(HiddenSecilenId.Value.ConvertToInt());
                 if (kiraSozlesme == null)
                 {
                     MessageHelper.PublishMessage("Sözlesme bulunamadi!", ProjeConstants.MESAJ_HATA);

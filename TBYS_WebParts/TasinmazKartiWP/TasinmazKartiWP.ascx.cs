@@ -518,7 +518,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
 
             SozlesmeTasinmaz st = new SozlesmeTasinmaz();
             KiraSozlesme ks = new KiraSozlesme();
-            List<KiraSozlesme> kiraSozlesmeListesi = ks.SelectByTasinmazId(tasinmazId);
+            List<KiraSozlesme> kiraSozlesmeListesi = new Model.Services.TBYS.KiraSozlesmeService().GetByTasinmazId(tasinmazId);
             if (kiraSozlesmeListesi == null)
             {
                 TableHeaderCell cell1 = new TableHeaderCell();

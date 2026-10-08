@@ -408,7 +408,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
         protected void DevirAlBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select(paramSozlesmeIdLbl.Value.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(paramSozlesmeIdLbl.Value.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 KiraSozlesme oncekiKiraSozlesmesi = new Model.Services.TBYS.KiraSozlesmeService().GetPreviousByTenant(kiraSozlesme.KiraciId, kiraSozlesme.SozBasTar);
@@ -421,7 +421,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                     kiraSozlesme.DevirAnaPara = oncekiOdemePlani.AnaPara;
                     kiraSozlesme.DevirFaizliBakiye = oncekiOdemePlani.FaizliBakiye;
                     kiraSozlesme.DevirFaizTutari = kiraSozlesme.DevirFaizliBakiye - kiraSozlesme.DevirAnaPara;
-                    bool devirAlanlariGuncellendi= kiraSozlesme.Update();
+                    bool devirAlanlariGuncellendi= new Model.Services.TBYS.KiraSozlesmeService().Update(kiraSozlesme);
                     if (devirAlanlariGuncellendi)
                     {
                         //Ödeme Planında devir satırını güncelle 0ncı satır

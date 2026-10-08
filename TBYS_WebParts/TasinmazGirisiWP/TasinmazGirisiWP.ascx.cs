@@ -574,7 +574,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
             using (TransactionScope scope = new TransactionScope())
             {
-                int id = tasinmaz.Save();
+                int id = new Model.Services.TBYS.TasinmazService().Save(tasinmaz);
                 tasinmaz.Id = id;
                 //tasinmaz tablosundaki Bagisci alani her kaydedildiginde Ad+soyad olarak güncellesin
                 Bagis bagis = new Bagis();
@@ -587,7 +587,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                     {
                         tasinmaz.BagisciId = bagisci.Id;
                         tasinmaz.Bagisci = bagisci.Adi + ' ' + bagisci.Soyadi;
-                        tasinmaz.Update();
+                        new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
                     }
                 }
                 if (id > 0)
@@ -696,7 +696,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
                 using (TransactionScope scope = new TransactionScope())
                 {
-                    isSaved = tasinmaz.Update();
+                    isSaved = new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
 
                     Bagis bagis = new Bagis();
                     bagis = new BagisService().GetByTasinmazId(tasinmaz.Id);
@@ -708,7 +708,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                         {
                             tasinmaz.BagisciId = bagisci.Id;
                             tasinmaz.Bagisci = bagisci.Adi + ' ' + bagisci.Soyadi;
-                            tasinmaz.Update();
+                            new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
                         }
 
                     }
@@ -893,7 +893,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             tasinmaz.EmlakBeyanDegeri = EmlakBeyanDegeriTxt.Value.ConvertToDecimal();
             tasinmaz.YaklasikPiyasaDegeri = YaklasikPiyasaDegeriTxt.Value.ConvertToDecimal();
             tasinmaz.TahminiRayicDegeri = TahminiRayicDegeriTxt.Value.ConvertToDecimal();
-            tasinmaz.Update();
+            new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
 
             //MuhasebeyeKayitliDegerTxt.Value = tasinmaz.MuhasebeyeKayitliDeger.ToString("C", new System.Globalization.CultureInfo("tr-TR"));
             //EmlakBeyanDegeriTxt.Value = tasinmaz.EmlakBeyanDegeri.ToString("C", new System.Globalization.CultureInfo("tr-TR"));
@@ -991,7 +991,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
 //                    if (!SozlesmesiVarMi(tasinmaz))
 //                    {
-//                        if (tasinmaz.Delete())
+//                        if (new Model.Services.TBYS.TasinmazService().Delete(tasinmaz))
 //                        {
 
 //                            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -1095,7 +1095,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                     MessageHelper.PublishMessage("Taşınmaz bulunamadı", ProjeConstants.MESAJ_HATA);
                     return;
                 }
-                if (silinecekTasinmaz.Delete())
+                if (new Model.Services.TBYS.TasinmazService().Delete(silinecekTasinmaz))
                 {
                     string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                     string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
@@ -1247,7 +1247,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 tasinmaz.EnvanterdenCikmaSebebi = string.Empty;
                 tasinmaz.EnvanterdenCikmaBedeli = 0;
                 tasinmaz.EnvanterdenCikmaTarihi = string.Empty.ConvertToDatetime();
-                int tasinmazId = tasinmaz.Save();
+                int tasinmazId = new Model.Services.TBYS.TasinmazService().Save(tasinmaz);
 
                 #region Bagis
                 //Bu yeni Id'li tasinmaz için Bagis Tablosunda yeni Bagis nesnesi yarat
@@ -1264,7 +1264,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                     bagis.BagisYili = eskibagis.BagisYili;
                     bagis.Envanterde = ProjeConstants.ENVANTERDE;//true;
                     bagis.Degistiren = CurrentUserName;
-                    bagis.Save();
+                    new Model.Services.TBYS.BagisService().Save(bagis);
                 }
                 #endregion
 

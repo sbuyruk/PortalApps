@@ -385,7 +385,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
 
             using (TransactionScope scope = new TransactionScope())
             {
-                int id = tasinmaz.Save();
+                int id = new Model.Services.TBYS.TasinmazService().Save(tasinmaz);
                 tasinmaz.Id = id;
 
                 if (id > 0)
@@ -447,7 +447,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 tasinmaz.EnvanterdeMi = ProjeConstants.MULKIYETTE_OLMAYAN_TASINMAZ;
                 using (TransactionScope scope = new TransactionScope())
                 {
-                    isSaved = tasinmaz.Update();
+                    isSaved = new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
                     Sigorta sigorta = new Sigorta();
                     sigorta = sigorta.SelectByTasinmazId(tasinmaz.Id);
                     if (sigorta == null)//henuz sigorta kaydi yok yeni sigorta yarat
@@ -564,7 +564,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
             if (tasinmaz != null) //sildikten sonra önceki sayfaya dön
             {
-                if (tasinmaz.Delete())
+                if (new Model.Services.TBYS.TasinmazService().Delete(tasinmaz))
                 {
                     string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                     string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));

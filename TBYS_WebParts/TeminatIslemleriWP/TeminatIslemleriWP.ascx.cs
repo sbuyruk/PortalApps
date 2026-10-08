@@ -128,7 +128,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             try
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
                 if (!Page.IsPostBack)
                 {
                     Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
@@ -378,7 +378,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         protected void TeminatGuncelleBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 try
@@ -392,7 +392,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     string teminatCinsi = string.IsNullOrEmpty(TeminatCinsiDDL.SelectedItem.Value) ? ProjeConstants.TEMINATCINSI_NAKIT_TL : TeminatCinsiDDL.SelectedItem.Value;
                     kiraSozlesme.TeminatCinsi = teminatCinsi;
                     kiraSozlesme.TeminatOdemeTarihi = TeminatTarihiTxt.Value.ConvertToDatetime();
-                    bool guncellendiMi = kiraSozlesme.Update();
+                    bool guncellendiMi = new Model.Services.TBYS.KiraSozlesmeService().Update(kiraSozlesme);
                     if (guncellendiMi)
                     {
                         MessageHelper.PublishMessage("Teminat bilgileri güncellendi.", ProjeConstants.MESAJ_BASARILI);
@@ -440,7 +440,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         protected void ModalEkleBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 IslemTipiDDL.Visible = true;
@@ -495,7 +495,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         protected void ModalEkleNowBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
 
@@ -554,7 +554,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 if (teminatIslem.Update())
                 {
                     KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                    kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
+                    kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
                     if (kiraSozlesme != null)
                     {
                         KiraSozlesme mahsupEdilecekKiraSozlesme = new KiraSozlesme();
@@ -595,7 +595,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             {
                 bool silindiMi = teminatIslem.Delete();
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
                 if (kiraSozlesme != null)
                 {
                     if (teminatIslem.IslemTipi.Equals(ProjeConstants.TEMINAT_KIRAYAMAHSUP) && silindiMi)
@@ -672,7 +672,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         {
 
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null) //bu sozlesme varsa
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -690,7 +690,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             try
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
                     OdemePlani odemePlani = new OdemePlani();

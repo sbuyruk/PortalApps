@@ -598,7 +598,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             kiraSozlesme.KiraciId = KiraciIdQS.ConvertToInt();
             kiraSozlesme.Aktif = true;
             kiraSozlesme.SozlesmeDurumu = ProjeConstants.KIRASOZLESME_DURUMU_DEVAM;
-            kiraSozlesme.Id = kiraSozlesme.Save();
+            kiraSozlesme.Id = new Model.Services.TBYS.KiraSozlesmeService().Save(kiraSozlesme);
             if (kiraSozlesme.Id > 0)
             {
 
@@ -659,7 +659,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
 
             yeniKayitbitenKiraSozlesme.Olusturan = UtilityHelper.GetCurrentUserLoginName();
             yeniKayitbitenKiraSozlesme.Aktif = false;
-            yeniKayitbitenKiraSozlesme.Save();
+            new Model.Services.TBYS.KiraSozlesmeService().Save(yeniKayitbitenKiraSozlesme);
             if (yeniKayitbitenKiraSozlesme.Id > 0)
             {
 

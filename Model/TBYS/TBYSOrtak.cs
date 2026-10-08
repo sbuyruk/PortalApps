@@ -647,7 +647,7 @@ namespace Model.Ortak
             kiraSozlesme.OdenenTeminatTutari = toplamOdeme;
             kiraSozlesme.IadeTeminatTutari = toplamIade;
             kiraSozlesme.KalanTeminatTutari = toplamOdeme - toplamIade;
-            kiraSozlesme.Update();
+            new Model.Services.TBYS.KiraSozlesmeService().Update(kiraSozlesme);
         }
         #endregion TBYS
 
