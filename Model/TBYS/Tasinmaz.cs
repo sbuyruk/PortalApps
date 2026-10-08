@@ -1,14 +1,6 @@
 using Model.Ortak;
-using Model.Services.Ortak;
-using Model.Services.TBYS;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Linq;
-using DAO.Ortak;
-using Utility.HelperClasses;
-using Utility.ProjeGlobal;
 
 namespace Model.TBYS
 {
@@ -143,33 +135,5 @@ namespace Model.TBYS
         public string InsaatinSinifi { get; set; }
         public string ArazininCinsi { get; set; }
 
-        private string IliStr()
-        {
-            Il il = new IlService().GetById(Id);
-            return il==null?string.Empty:il.IlAdi;
-        }
-        public T Select<T>(int id)
-        {
-            return (T)Convert.ChangeType(new TasinmazService().GetInventoryById(id), typeof(T));
-
-        }
-        public int Save()
-        {
-            return new TasinmazService().Save(this);
-        }
-        public bool Update()
-        {
-            return new TasinmazService().Update(this);
-        }
-        public bool Delete()
-        {
-            return new TasinmazService().Delete(this);
-        }
-        public List<T> SelectAll<T>()
-        {
-            return (List<T>)Convert.ChangeType(
-                new TasinmazService().GetInventory(),
-                typeof(List<T>));
-        }
     }
 }
