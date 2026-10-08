@@ -617,7 +617,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
         {
             int kiraSozlesmeId = paramKiraSozlesmeIdLbl.Value.ConvertToInt();
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select(kiraSozlesmeId);
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(kiraSozlesmeId);
             if (kiraSozlesme != null) //bu sozlesme varsa
             {
                 OdemePlani odemePlani = new OdemePlani();
@@ -754,7 +754,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                 BaslikLbl.Text ="Takip Islemi : " + takipIslemi + " Girisi";
                 KiraciAdiLbl.Text= "<strong> Kiraci</strong> : " + (kiraci.Adi + " " + kiraci.Soyadi).Trim();
                 KiraSozlesme kiraSozlesme= new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.Select(kiraSozlesmeId);
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(kiraSozlesmeId);
                 SozlesmeLbl.Text = kiraSozlesme != null ? "<strong>Sözlesme : </strong>" + kiraSozlesme.Id + " numarali ve " + kiraSozlesme.SozBasTar + " - " + kiraSozlesme.SozBitTar + " tarihli sözlesme":string.Empty;
                 AciklamaTxt.Text = string.Empty;
                 TakipIslemTxt.Text= string.Empty;
@@ -834,7 +834,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                     BaslikLbl.Text = "Takip Islemi : " + takipIslemi + " Düzenleme";
                     KiraciAdiLbl.Text = "<strong> Kiraci</strong> : " + (kiraci.Adi + " " + kiraci.Soyadi).Trim();
                     KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                    kiraSozlesme = kiraSozlesme.Select(kiraSozlesmeId);
+                    kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(kiraSozlesmeId);
                     SozlesmeLbl.Text = kiraSozlesme != null ? "<strong>Sözlesme : </strong>" + kiraSozlesme.Id + " numarali ve " + kiraSozlesme.SozBasTar + " - " + kiraSozlesme.SozBitTar + " tarihli sözlesme" : string.Empty;
                     AciklamaTxt.Text = kiraBorcuTakip.Aciklama;
                     TakipIslemTxt.Text = takipIslemi;
@@ -897,7 +897,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                 int kiraciId = paramKiraciIdLbl.Value.ConvertToInt();
                 int kiraSozlesmeId = paramKiraSozlesmeIdLbl.Value.ConvertToInt();
                 KiraSozlesme kiraSozlesme= new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.Select(kiraSozlesmeId);
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(kiraSozlesmeId);
 
                 string takipIslemi = paramTakipIslemi.Value;
 

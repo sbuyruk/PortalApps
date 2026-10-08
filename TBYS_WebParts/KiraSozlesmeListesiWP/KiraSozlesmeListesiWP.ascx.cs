@@ -297,7 +297,7 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
 
             DataTable dataTable;
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select(SecilenIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(SecilenIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 AktifQS = kiraSozlesme.Aktif?ProjeConstants.KIRASOZLESME_AKTIF_INT.ToString():ProjeConstants.KIRASOZLESME_AKTIF_DEGIL_INT.ToString();

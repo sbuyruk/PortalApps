@@ -300,7 +300,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                                     kiraEkstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                     kiraEkstreAktarma.Olusturan = currentUser;
 
-                                    kiraEkstreAktarma.Save();
+                                    new Model.Services.TBYS.KiraEkstreAktarmaService().Save(kiraEkstreAktarma);
                                 }
                                 else if (true)//Kira veya Teminat değilse 
                                 {
@@ -315,7 +315,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                                     kiraEkstreAktarma.IslemNo = islemno;
                                     kiraEkstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                     kiraEkstreAktarma.Olusturan = currentUser;
-                                    kiraEkstreAktarma.Save();
+                                    new Model.Services.TBYS.KiraEkstreAktarmaService().Save(kiraEkstreAktarma);
                                 }
                             }
                         }

@@ -113,7 +113,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                 if (!Page.IsPostBack)
                 {
                     KiraEkstreAktarma kiraEkstreAktarma = new KiraEkstreAktarma();
-                    kiraEkstreAktarma = kiraEkstreAktarma.Select<KiraEkstreAktarma>(KiraEkstreAktarmaIdQS.ConvertToInt());
+                    kiraEkstreAktarma = new Model.Services.TBYS.KiraEkstreAktarmaService().GetById(KiraEkstreAktarmaIdQS.ConvertToInt());
                     if (kiraEkstreAktarma!=null)
                     {
                         Kiraci kiraci = new Kiraci();
@@ -295,7 +295,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
         protected void KaydetBtn_Click(object sender, EventArgs e)
         {
             KiraEkstreAktarma kiraEkstreAktarma = new KiraEkstreAktarma();
-            kiraEkstreAktarma = kiraEkstreAktarma.Select<KiraEkstreAktarma>(KiraEkstreAktarmaIdQS.ConvertToInt());
+            kiraEkstreAktarma = new Model.Services.TBYS.KiraEkstreAktarmaService().GetById(KiraEkstreAktarmaIdQS.ConvertToInt());
             OdemeAyristirmaAtomicKaydet(kiraEkstreAktarma);
             DisableAllButtons();
             TabloOlustur(kiraEkstreAktarma);
@@ -339,7 +339,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                         (item.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_GECICITEMINAT_INT))
                     {
                         KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                        kiraSozlesme = kiraSozlesme.Select(item.KiraSozlesmeId);
+                        kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(item.KiraSozlesmeId);
                         if (kiraSozlesme != null)
                         {
 
@@ -461,7 +461,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
         private void OdemeEkleModalAc(string odemeSebebi, int odemeSebebiId, string title)
         {
             KiraEkstreAktarma kiraEkstreAktarma = new KiraEkstreAktarma();
-            kiraEkstreAktarma = kiraEkstreAktarma.Select<KiraEkstreAktarma>(KiraEkstreAktarmaIdQS.ConvertToInt());
+            kiraEkstreAktarma = new Model.Services.TBYS.KiraEkstreAktarmaService().GetById(KiraEkstreAktarmaIdQS.ConvertToInt());
             if (kiraEkstreAktarma != null)
             {
 
@@ -542,7 +542,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
         protected void ListeyeEkleNowBtn_Click(object sender, EventArgs e)
         {
             KiraEkstreAktarma kiraEkstreAktarma = new KiraEkstreAktarma();
-            kiraEkstreAktarma = kiraEkstreAktarma.Select<KiraEkstreAktarma>(KiraEkstreAktarmaIdQS.ConvertToInt());
+            kiraEkstreAktarma = new Model.Services.TBYS.KiraEkstreAktarmaService().GetById(KiraEkstreAktarmaIdQS.ConvertToInt());
             if (kiraEkstreAktarma!=null)
             {
                 decimal islemTutari = IslemTutariTxt.Value.ConvertToDecimal();
@@ -637,7 +637,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
         protected void ListeyiGuncelleNowBtn_Click(object sender, EventArgs e)
         {
             KiraEkstreAktarma kiraEkstreAktarma = new KiraEkstreAktarma();
-            kiraEkstreAktarma = kiraEkstreAktarma.Select<KiraEkstreAktarma>(KiraEkstreAktarmaIdQS.ConvertToInt());
+            kiraEkstreAktarma = new Model.Services.TBYS.KiraEkstreAktarmaService().GetById(KiraEkstreAktarmaIdQS.ConvertToInt());
             decimal islemTutari = IslemTutariTxt.Value.ConvertToDecimal();
             if (islemTutari >= 0)
             {
@@ -729,7 +729,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
             {
                 OdemeAyristirmaListQS.Remove(odemeListItem);
                 KiraEkstreAktarma kiraEkstreAktarma = new KiraEkstreAktarma();
-                kiraEkstreAktarma = kiraEkstreAktarma.Select<KiraEkstreAktarma>(KiraEkstreAktarmaIdQS.ConvertToInt());
+                kiraEkstreAktarma = new Model.Services.TBYS.KiraEkstreAktarmaService().GetById(KiraEkstreAktarmaIdQS.ConvertToInt());
 
                 TabloOlustur(kiraEkstreAktarma);
                 ToplamlariDuzenle(kiraEkstreAktarma == null || kiraEkstreAktarma.AktarildiMi);

@@ -153,7 +153,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP
             onarim.Aciklama = AciklamaTxt.Text;
             onarim.TasinmazId = TasinmazIdQS.ConvertToInt();
             onarim.Olusturan = CurrentUserName;
-            int onarimId = onarim.Save();
+            int onarimId = new Model.Services.TBYS.OnarimService().Save(onarim);
             string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             int queryIndex = newUrl.IndexOf("?");
             if (queryIndex > 0)
@@ -243,7 +243,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP
                 SilBtn.Click += delegate
                 {
                     int tasinmazId = onarim.TasinmazId;
-                    onarim.Delete();
+                    new Model.Services.TBYS.OnarimService().Delete(onarim);
                     string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                     int queryIndex = newUrl.IndexOf("?");
                     if (queryIndex > 0)

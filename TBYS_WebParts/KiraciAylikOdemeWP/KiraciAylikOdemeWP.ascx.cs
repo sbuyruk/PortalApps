@@ -299,7 +299,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         protected void SilNowBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select(SozlesmeIdHdn.Value.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(SozlesmeIdHdn.Value.ConvertToInt());
             if (kiraSozlesme != null)
             {
 

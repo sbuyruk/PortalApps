@@ -322,7 +322,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
             {
                 if (bagis != null)
                 {
-                    isSaved = bagis.Delete();
+                    isSaved = new Model.Services.TBYS.BagisService().Delete(bagis);
 
                 }
             }
@@ -356,7 +356,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
             try
             {
                 Bagis bagis = new Bagis();
-                bagis = bagis.Select<Bagis>(BagisIdQS.ConvertToInt());
+                bagis = new Model.Services.TBYS.BagisService().GetById(BagisIdQS.ConvertToInt());
                 if (bagis != null)
                 {
                     int bagisciId = bagis.BagisciId;
@@ -500,7 +500,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
                         bagis.Olusturan = CurrentUserName;
                         bagis.TasinmazId = paramTasinmazIdLbl.Value.ConvertToInt();
                         bagis.Envanterde = true;
-                        int bagisId = bagis.Save();
+                        int bagisId = new Model.Services.TBYS.BagisService().Save(bagis);
                         kaydedildiMi = bagisId > 0;
                     }
                     else
@@ -508,7 +508,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
                         bagis.BagisciId = BagisciIdQS.ConvertToInt();
                         bagis.TasinmazId = tasinmazId;
                         bagis.Degistiren = CurrentUserName;
-                        kaydedildiMi = bagis.Update();
+                        kaydedildiMi = new Model.Services.TBYS.BagisService().Update(bagis);
                     }
                     if (kaydedildiMi)
                         scope.Complete();

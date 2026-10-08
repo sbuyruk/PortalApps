@@ -444,7 +444,7 @@ namespace TBYS_WebParts.OdemeGirisWP
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             int sozlesmeId = SozlesmeDDL.SelectedItem.Value.ConvertToInt();
-            kiraSozlesme = kiraSozlesme.Select(sozlesmeId);
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(sozlesmeId);
             if (kiraSozlesme != null)
             {
                 string sozlesmeStr = SozlesmeDDL.SelectedItem.Text;
@@ -469,7 +469,7 @@ namespace TBYS_WebParts.OdemeGirisWP
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             int sozlesmeId = SozlesmeDDL.SelectedItem.Value.ConvertToInt();
-            kiraSozlesme = kiraSozlesme.Select(sozlesmeId);
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(sozlesmeId);
             if (kiraSozlesme != null)
             {
                 string sozlesmeStr = SozlesmeDDL.SelectedItem.Text;
@@ -494,7 +494,7 @@ namespace TBYS_WebParts.OdemeGirisWP
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             int sozlesmeId = SozlesmeDDL.SelectedItem.Value.ConvertToInt();
-            kiraSozlesme = kiraSozlesme.Select(sozlesmeId);
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(sozlesmeId);
             if (kiraSozlesme != null)
             {
                 ModalLbl.Text = "Ödeme Silinecek";
@@ -522,7 +522,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             SecilenAyQS = ay;
             SecilenYilQS = yil;
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select(SozlesmeDDL.SelectedItem.Value.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(SozlesmeDDL.SelectedItem.Value.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 DateTime odemeTarihi = UtilityHelper.TariheSaatEkle(OdemeTarihiTxt.Text.ConvertToDatetime(),

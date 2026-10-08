@@ -126,7 +126,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             {
                 IdLbl.Text = KiraSozlesmeIdQS;
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
                 if (kiraSozlesme != null)
                 {
                     AdiLbl.Text = KiraciGetir(kiraSozlesme.KiraciId) + "( Sözleşme : " + kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull() + " - " + kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull() + ")";
@@ -358,7 +358,7 @@ namespace TBYS_WebParts.OdemePlaniWP
         protected void SozlesmeBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 if (kiraSozlesme.Aktif)
@@ -374,7 +374,7 @@ namespace TBYS_WebParts.OdemePlaniWP
         protected void KiraciKartiBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 Kiraci kiraci = new Kiraci();
@@ -396,7 +396,7 @@ namespace TBYS_WebParts.OdemePlaniWP
         protected void KiraciBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 Kiraci kiraci = new Kiraci();
@@ -427,7 +427,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             if (!string.IsNullOrEmpty(KiraSozlesmeIdQS))
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
                 if (kiraSozlesme != null)
                 {
                     yil = kiraSozlesme.SozBasTar.Year.ToString();
@@ -444,7 +444,7 @@ namespace TBYS_WebParts.OdemePlaniWP
         protected void OdemePlaniEkleBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             // kira sozlesmesinin sozbastar ve sozbittar alanlari dolu degilse 
             if (string.IsNullOrEmpty(kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull()) || string.IsNullOrEmpty(kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull()))
             {
@@ -467,7 +467,7 @@ namespace TBYS_WebParts.OdemePlaniWP
         {
             OdemePlaniEkleBtn.Visible = true;
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             // kira sozlesmesinin sozbastar ve sozbittar alanlari dolu degilse 
             if (string.IsNullOrEmpty(kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull()) || string.IsNullOrEmpty(kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull()))
             {
@@ -505,7 +505,7 @@ namespace TBYS_WebParts.OdemePlaniWP
         {
             bool isSaved = false;
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             // kira sozlesmesinin sozbastar ve sozbittar alanlari dolu degilse 
             if (string.IsNullOrEmpty(kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull()) || string.IsNullOrEmpty(kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull()))
             {
@@ -639,7 +639,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             //try
             //{
             //    KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            //    kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            //    kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             //    if (kiraSozlesme != null)
             //    {
             //        DateTime odemeTarihi = OdemeTarihiTxt.Value.ConvertToDatetime();
@@ -816,7 +816,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             {
                 bool odemePlaniSilindi = false;
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
                 if (kiraSozlesme != null)
                 {
                     int kiraSozlesmeId = kiraSozlesme.Id;
@@ -834,7 +834,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             try
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
                 KiraSozlesme oncekiKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetPrevious(kiraSozlesme.Id, kiraSozlesme.DosyaNo);
                 if (!kiraSozlesme.Aktif)
                 {
@@ -857,7 +857,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             try
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
                 KiraSozlesme sonrakiKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetNext(kiraSozlesme.Id, kiraSozlesme.DosyaNo);
                 if (!kiraSozlesme.Aktif)
                 {
@@ -886,11 +886,11 @@ namespace TBYS_WebParts.OdemePlaniWP
         protected void GecikmeZammmiGunlukBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 kiraSozlesme.GecikmeZammiTipi = ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK;
-                kiraSozlesme.Update();
+                new Model.Services.TBYS.KiraSozlesmeService().Update(kiraSozlesme);
             }
 
             RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + KiraSozlesmeIdQS);
@@ -898,11 +898,11 @@ namespace TBYS_WebParts.OdemePlaniWP
         protected void GecikmeZammmiAylikBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 kiraSozlesme.GecikmeZammiTipi = ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK;
-                kiraSozlesme.Update();
+                new Model.Services.TBYS.KiraSozlesmeService().Update(kiraSozlesme);
             }
 
             RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + KiraSozlesmeIdQS);

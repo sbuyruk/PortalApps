@@ -467,7 +467,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                     if (tasinmaz != null)
                     {
                         tasinmaz.SigortaDurumu = sigorta.SigortaCinsi;
-                        tasinmaz.Update();
+                        new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
                     }
                 }
             }
@@ -508,7 +508,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 if (tasinmaz != null)
                 {
                     tasinmaz.SigortaDurumu = sigorta.SigortaCinsi;
-                    tasinmaz.Update();
+                    new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
                 }
                 string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 int queryIndex = newUrl.IndexOf("?");

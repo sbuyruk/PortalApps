@@ -115,7 +115,7 @@ namespace Model.TBYS
             kiraSozlesme.DevirFaizliBakiye = yeniDevirFaizliBakiye;
             kiraSozlesme.DevirFaizTutari = yeniDevirFaizTutari;
 
-            bool devirAlanlariGuncellendi = kiraSozlesme.Update();
+            bool devirAlanlariGuncellendi = new Model.Services.TBYS.KiraSozlesmeService().Update(kiraSozlesme);
             if (!devirAlanlariGuncellendi)
             {
                 return false;

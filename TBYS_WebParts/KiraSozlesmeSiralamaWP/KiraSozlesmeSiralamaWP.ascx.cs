@@ -232,13 +232,13 @@ $('#CustomDataTable').on( 'draw.dt', function () {
                     {
                         sira++;
                         KiraSozlesme ks = new KiraSozlesme();
-                        ks = ks.Select<KiraSozlesme>(kiraSozlesmeId);
+                        ks = new Model.Services.TBYS.KiraSozlesmeService().GetById(kiraSozlesmeId);
                         if (ks != null)
                         {
                             if (ks.DosyaNo != sira)
                             {
                                 ks.DosyaNo = sira;
-                                ks.Update();
+                                new Model.Services.TBYS.KiraSozlesmeService().Update(ks);
                             }
                         }
                     }

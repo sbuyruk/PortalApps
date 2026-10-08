@@ -523,7 +523,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
         {
             int kiraSozlesmeId=paramKiraSozlesmeIdLbl.Value.ConvertToInt();
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = kiraSozlesme.Select(kiraSozlesmeId);
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(kiraSozlesmeId);
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
                     OdemePlani odemePlani = new OdemePlani();
