@@ -11,7 +11,7 @@ using Utility.ProjeGlobal;
 namespace Model.TBYS
 {
     [Serializable]
-    public class KiraBorcuTakip : ParentClass
+    public class KiraBorcuTakip : EntityBase
     {
         public int KiraciId { get; set; }
         public int KiraSozlesmeId { get; set; }
@@ -29,7 +29,7 @@ namespace Model.TBYS
         public string Bolge { get; set; }
         public string Aciklama { get; set; }
 
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new KiraBorcuTakipService().GetById(id), typeof(T));
 
@@ -40,19 +40,19 @@ namespace Model.TBYS
 
         }
 
-        public override int Save()
+        public int Save()
         {
             return new KiraBorcuTakipService().Save(this);
         }
-        public override bool Update()
+        public bool Update()
         {
             return new KiraBorcuTakipService().Update(this);
         }
-        public override bool Delete()
+        public bool Delete()
         {
             return new KiraBorcuTakipService().Delete(this);
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(new KiraBorcuTakipService().GetAll(), typeof(List<T>));
         }

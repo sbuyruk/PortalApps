@@ -7,7 +7,7 @@ using System.Data;
 namespace Model.TBYS
 {
     [Serializable]
-    public class Kiraci : ParentClass
+    public class Kiraci : EntityBase
     {
         public string Adi { get; set; }
         public string Soyadi { get; set; }
@@ -25,12 +25,12 @@ namespace Model.TBYS
         public string Aciklama { get; set; }
         public string KiralamaAmaci { get; set; }
 
-        public override T Select<T>(int id) { return (T)Convert.ChangeType(new KiraciService().GetById(id), typeof(T)); }
+        public T Select<T>(int id) { return (T)Convert.ChangeType(new KiraciService().GetById(id), typeof(T)); }
         public Kiraci Select(int id) { Id = id; return new KiraciService().GetById(id); }
-        public override int Save() { return new KiraciService().Save(this); }
-        public override bool Update() { return new KiraciService().Update(this); }
-        public override bool Delete() { return new KiraciService().Delete(this); }
-        public override List<T> SelectAll<T>() { return (List<T>)Convert.ChangeType(new KiraciService().GetAll(), typeof(List<T>)); }
+        public int Save() { return new KiraciService().Save(this); }
+        public bool Update() { return new KiraciService().Update(this); }
+        public bool Delete() { return new KiraciService().Delete(this); }
+        public List<T> SelectAll<T>() { return (List<T>)Convert.ChangeType(new KiraciService().GetAll(), typeof(List<T>)); }
         public List<Kiraci> SelectAktifKiracilar() { return new KiraciService().GetActiveTenants(); }
         public string SelectAllReturnJson() { return new KiraciService().GetAllReturnJson(); }
         public DataTable SelectAllReturnDT(string secim, int bolgeId) { return new KiraciService().GetAllReturnDataTable(secim, bolgeId); }

@@ -13,7 +13,7 @@ using Utility.ProjeGlobal;
 namespace Model.TBYS
 {
     [Serializable]
-    public class Tasinmaz : ParentClass
+    public class Tasinmaz : EntityBase
     {
         /// <summary>
         /// Tasinmaz envanterden ciktiginda, satis vs. kapsaminda degerlendirilecek
@@ -148,24 +148,24 @@ namespace Model.TBYS
             Il il = new IlService().GetById(Id);
             return il==null?string.Empty:il.IlAdi;
         }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new TasinmazService().GetInventoryById(id), typeof(T));
 
         }
-        public override int Save()
+        public int Save()
         {
             return new TasinmazService().Save(this);
         }
-        public override bool Update()
+        public bool Update()
         {
             return new TasinmazService().Update(this);
         }
-        public override bool Delete()
+        public bool Delete()
         {
             return new TasinmazService().Delete(this);
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(
                 new TasinmazService().GetInventory(),

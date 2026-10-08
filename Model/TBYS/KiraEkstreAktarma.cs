@@ -12,7 +12,7 @@ using Utility.ProjeGlobal;
 namespace Model.TBYS
 {
     [Serializable]
-    public class KiraEkstreAktarma : ParentClass
+    public class KiraEkstreAktarma : EntityBase
     {
         public DateTime IslemTarihi { get; set; }
         public string Adi { get; set; }
@@ -38,23 +38,23 @@ namespace Model.TBYS
         public bool Uyari { get; set; }
         public int OdemeSebebiId { get; set; }
 
-        public override int Save()
+        public int Save()
         {
             return new KiraEkstreAktarmaService().Save(this);
         }
-        public override bool Update()
+        public bool Update()
         {
             return new KiraEkstreAktarmaService().Update(this);
         }
-        public override bool Delete()
+        public bool Delete()
         {
             return new KiraEkstreAktarmaService().Delete(this);
         }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new KiraEkstreAktarmaService().GetById(id), typeof(T));
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(new KiraEkstreAktarmaService().GetAll(), typeof(List<T>));
         }
