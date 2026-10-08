@@ -99,15 +99,6 @@ namespace Model.TBYS
         public static List<Onarim> SelectOnarimByTasinmazId(this Onarim item, int id) { return new OnarimService().GetByTasinmazIdWithAddress(id); }
         public static Onarim SelectMin(this Onarim item) { return new OnarimService().GetMin(); }
 
-        public static T Select<T>(this BagimsizBolum item, int id) { return (T)Convert.ChangeType(new BagimsizBolumService().GetById(id), typeof(T)); }
-        public static int Save(this BagimsizBolum item) { return new BagimsizBolumService().Save(item); }
-        public static bool Update(this BagimsizBolum item) { return new BagimsizBolumService().Update(item); }
-        public static bool Delete(this BagimsizBolum item) { return new BagimsizBolumService().Delete(item); }
-        public static List<T> SelectAll<T>(this BagimsizBolum item) { return (List<T>)Convert.ChangeType(new BagimsizBolumService().GetAll(), typeof(List<T>)); }
-        public static List<BagimsizBolum> SelectByTasinmazId(this BagimsizBolum item, int id) { return new BagimsizBolumService().GetByTasinmazId(id); }
-        public static List<BagimsizBolum> SelectByBolumNO(this BagimsizBolum item, string bolumNo) { return new BagimsizBolumService().GetByBolumNo(bolumNo); }
-        public static BagimsizBolum SelectByBolumId(this BagimsizBolum item, int id) { return new BagimsizBolumService().GetByBolumId(id); }
-
         public static T Select<T>(this Bagis item, int id) { return (T)Convert.ChangeType(new BagisService().GetById(id), typeof(T)); }
         public static Bagis Select(this Bagis item, int id) { return new BagisService().GetById(id); }
         public static int Save(this Bagis item) { return new BagisService().Save(item); }

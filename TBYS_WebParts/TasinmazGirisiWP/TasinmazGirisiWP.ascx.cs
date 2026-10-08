@@ -803,7 +803,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             }
             //BagimsizBolum_Table'dan bu TasinmazId'ye ait bolumleri liste olarak al.
             BagimsizBolum bagimsizBolum = new BagimsizBolum();
-            List<BagimsizBolum> bolumListesi = bagimsizBolum.SelectByTasinmazId(TasinmazIdQS.ConvertToInt());
+            List<BagimsizBolum> bolumListesi = new BagimsizBolumService().GetByTasinmazId(TasinmazIdQS.ConvertToInt());
             if (bolumListesi.Count == 0)
             {
                 MessageHelper.PublishMessage("Bu taşınmaza ait bağımsız bölüm bulunamadı.", ProjeConstants.MESAJ_BILGI,2000);
@@ -1030,7 +1030,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             {
                 // Bu taşınmazın bağımsız bölümleri var mı
                 BagimsizBolum bagimsizBolum = new BagimsizBolum();
-                List<BagimsizBolum> bolumListesi = bagimsizBolum.SelectByTasinmazId(silinecekTasinmaz.Id);
+                List<BagimsizBolum> bolumListesi = new BagimsizBolumService().GetByTasinmazId(silinecekTasinmaz.Id);
                 if (bolumListesi!=null && bolumListesi.Count > 0) {
                     MessageHelper.PublishMessage("Taşınmaza ait bağımsız bölümler bulunmaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
                     return;
@@ -1389,7 +1389,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
             List<BagimsizBolumListItem> list = new List<BagimsizBolumListItem>();
             BagimsizBolum bbDao = new BagimsizBolum();
-            List<BagimsizBolum> bbList = bbDao.SelectByTasinmazId(tasinmaz.Id);
+            List<BagimsizBolum> bbList = new BagimsizBolumService().GetByTasinmazId(tasinmaz.Id);
             foreach (var bb in bbList)
             {
                 BagimsizBolumListItem item = new BagimsizBolumListItem

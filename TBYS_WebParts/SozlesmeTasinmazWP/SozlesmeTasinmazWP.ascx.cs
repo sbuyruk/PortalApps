@@ -214,7 +214,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 {
                     adres = tasinmaz.Adres;
                     BagimsizBolum bb = new BagimsizBolum();
-                    bb = bb.Select<BagimsizBolum>(sozlesmeTasinmaz.BolumId);
+                    bb = new BagimsizBolumService().GetById(sozlesmeTasinmaz.BolumId);
                     if (bb != null)
                     {
                         adres += " " + bb.BolumNo;
@@ -283,7 +283,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                     {
 
                         BagimsizBolum babo = new BagimsizBolum();
-                        babo = babo.Select<BagimsizBolum>(BolumIdQS.ConvertToInt());
+                        babo = new BagimsizBolumService().GetById(BolumIdQS.ConvertToInt());
                         //BagimsizBolum bolüm varsa
                         if (babo != null)
                         {

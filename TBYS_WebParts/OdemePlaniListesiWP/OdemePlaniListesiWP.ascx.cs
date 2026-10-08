@@ -132,7 +132,7 @@ namespace TBYS_WebParts.OdemePlaniListesiWP
                         if (item.BolumId > 0)
                         {
                             BagimsizBolum bagimsizBolum = new BagimsizBolum();
-                            bagimsizBolum = bagimsizBolum.Select<BagimsizBolum>(item.BolumId);
+                            bagimsizBolum = new BagimsizBolumService().GetById(item.BolumId);
                             if (bagimsizBolum != null)
                                 adres += "<br>-" + tasinmaz.Adres + bagimsizBolum.BolumNo + " " + ilcesi + "/" + ili + System.Environment.NewLine;
                         }
