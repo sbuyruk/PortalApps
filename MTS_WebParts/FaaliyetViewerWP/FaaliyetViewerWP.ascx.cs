@@ -254,7 +254,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
         private string KisiDogumGunuListesiniGetir()
         {
             Kisi kisi = new Kisi();
-            List<Kisi> kisiListesi = kisi.SelectByDogumGunuKutlamaReturnDT();
+            List<Kisi> kisiListesi = new Model.Services.MTS.KisiService().GetBirthdayCelebrations();
             List<CalendarEvent> eventItems = new List<CalendarEvent>();
             Faaliyet randevu = new Faaliyet();
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();

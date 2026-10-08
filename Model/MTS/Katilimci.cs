@@ -112,7 +112,7 @@ namespace Model.MTS
             {
 
                 Kisi kisi = new Kisi();
-                kisi = kisi.Select(katilimciId);
+                kisi = new Model.Services.MTS.KisiService().GetById(katilimciId);
                 if (kisi != null)
                 {
                     string kurum = string.Empty;

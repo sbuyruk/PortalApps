@@ -148,7 +148,7 @@ namespace MTS_WebParts.MtsOlayListesiWP
             {
 
                 Kisi kisi = new Kisi();
-                kisi = kisi.Select<Kisi>(katilimciId);
+                kisi = new Model.Services.MTS.KisiService().GetById(katilimciId);
                 if (kisi != null)
                 {
                     katilimci = kisi.Adi + " " + kisi.Soyadi;

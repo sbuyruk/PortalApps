@@ -83,7 +83,7 @@ namespace MTS_WebParts.KisiKartiWP
         private void KisiKartiniOlustur()
         {
             Kisi kisi = new Kisi();
-            kisi = kisi.Select(KatilimciIdQS.ConvertToInt());
+            kisi = new Model.Services.MTS.KisiService().GetById(KatilimciIdQS.ConvertToInt());
             if (kisi != null)
             {
                 KatilimciItem katilimci = new KatilimciItem();

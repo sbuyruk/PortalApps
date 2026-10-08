@@ -782,7 +782,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         private void DisIrtibatNoktasiDoldur(int kisiId, bool buttonsEnabled)
         {
             Kisi kisi = new Kisi();
-            kisi = kisi.Select(kisiId);
+            kisi = new Model.Services.MTS.KisiService().GetById(kisiId);
             if (kisi != null)
             {
                 DisIrtibatLbl.Text = "Irtibat Noktasi : " + kisi.Adi + " " + kisi.Soyadi;
@@ -1114,7 +1114,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         {
 
             Kisi kisi = new Kisi();
-            DataTable dataTable = kisi.SelectSecilmemisDisKatilimcilarByFaaliyetIdReturnDT(FaaliyetIdQS.ConvertToInt());
+            DataTable dataTable = new Model.Services.MTS.KisiService().GetUnselectedParticipants(FaaliyetIdQS.ConvertToInt());
 
 
             int SiraNo = 1;
@@ -1268,7 +1268,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             {
 
                     Kisi kisi = new Kisi();
-                    kisi = kisi.Select(katilimciId);
+                    kisi = new Model.Services.MTS.KisiService().GetById(katilimciId);
                     if (kisi != null)
                     {
                         AniObjesiHeaderLbl.InnerText = "Ani Objesi Seçimi (" + kisi.Adi + " " + kisi.Soyadi + ")";
@@ -1342,7 +1342,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 {
 
                         Kisi kisi = new Kisi();
-                        kisi = kisi.Select(katilimciId);
+                        kisi = new Model.Services.MTS.KisiService().GetById(katilimciId);
                         if (kisi != null)
                         {
 
@@ -1373,7 +1373,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             {
 
                     Kisi kisi = new Kisi();
-                    kisi = kisi.Select(katilimciId);
+                    kisi = new Model.Services.MTS.KisiService().GetById(katilimciId);
                     if (kisi != null)
                     {
                         GetirilenAniObjesiModalTitle.InnerText = "Getirilen Ani Objesi (" + kisi.Adi + " " + kisi.Soyadi + ")";

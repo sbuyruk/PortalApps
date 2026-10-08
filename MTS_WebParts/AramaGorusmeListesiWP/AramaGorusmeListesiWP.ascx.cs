@@ -101,7 +101,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
             bool katilimciBulundu = false;
            
             Kisi kisi = new Kisi();
-            kisi = kisi.Select(ArayanIdQS.ConvertToInt());
+            kisi = new Model.Services.MTS.KisiService().GetById(ArayanIdQS.ConvertToInt());
             if (kisi != null)
             {
                 string kurum = string.Empty;
@@ -390,7 +390,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
         private List<KatilimciListItem> GetModalDataList()
         {
             Kisi kisi = new Kisi();
-            DataTable dataTableDis = kisi.SelectSecilmemisDisKatilimcilarByFaaliyetIdReturnDT(ProjeConstants.HEPSI_INT);
+            DataTable dataTableDis = new Model.Services.MTS.KisiService().GetUnselectedParticipants(ProjeConstants.HEPSI_INT);
             int SiraNo = 1;
             List<KatilimciListItem> list = new List<KatilimciListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
