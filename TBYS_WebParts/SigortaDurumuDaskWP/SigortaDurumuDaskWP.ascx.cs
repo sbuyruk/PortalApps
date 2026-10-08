@@ -151,14 +151,14 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
         {
             decimal toplam = 0;
             Sigorta sigorta = new Sigorta();
-            toplam = sigorta.SelectSigortaBedeliToplamiBySigorta(ProjeConstants.SIGORTA_DASK);
+            toplam = new Model.Services.TBYS.SigortaService().GetInsuranceValueTotal(ProjeConstants.SIGORTA_DASK);
             return toplam;
         }
         private decimal PrimToplaminiBul()
         {
             decimal toplam = 0;
             Sigorta sigorta = new Sigorta();
-            toplam = sigorta.SelectPirimToplamiBySigorta(ProjeConstants.SIGORTA_DASK);
+            toplam = new Model.Services.TBYS.SigortaService().GetPremiumTotal(ProjeConstants.SIGORTA_DASK);
             return toplam;
         }
         private decimal EmlakBeyanDegeriToplaminiBul()

@@ -593,7 +593,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 if (id > 0)
                 {
                     Sigorta sigorta = new Sigorta();
-                    sigorta = sigorta.SelectByTasinmazId(tasinmaz.Id);
+                    sigorta = new Model.Services.TBYS.SigortaService().GetLatestByTasinmazId(tasinmaz.Id);
                     if (sigorta == null)//henuz sigorta kaydi yok yeni sigorta yarat
                     {
                         sigorta = new Sigorta();
@@ -716,7 +716,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                     if (!tasinmaz.EnvanterdeMi.Equals(ProjeConstants.TASINMAZ_ENVANTERDEN_CIKTI))
                     {
                         Sigorta sigorta = new Sigorta();
-                        sigorta = sigorta.SelectByTasinmazId(tasinmaz.Id);
+                        sigorta = new Model.Services.TBYS.SigortaService().GetLatestByTasinmazId(tasinmaz.Id);
                         if (sigorta == null)//henuz sigorta kaydi yok yeni sigorta yarat
                         {
                             sigorta = new Sigorta();
@@ -1070,7 +1070,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 }
                 //Sigortası var mı
                 Sigorta sigorta = new Sigorta();
-                sigorta = sigorta.SelectByTasinmazId(silinecekTasinmaz.Id);
+                sigorta = new Model.Services.TBYS.SigortaService().GetLatestByTasinmazId(silinecekTasinmaz.Id);
                 if (sigorta != null)
                 {
                     MessageHelper.PublishMessage("Taşınmaza ait sigorta bulunmaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
@@ -1271,7 +1271,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 #region Sigorta
                 //Sigorta verilerini de aktar
                 Sigorta sigorta = new Sigorta();
-                sigorta = sigorta.SelectByTasinmazId(envanterdencikmisTasinmazId);
+                sigorta = new Model.Services.TBYS.SigortaService().GetLatestByTasinmazId(envanterdencikmisTasinmazId);
                 if (sigorta != null)
                 {
                     sigorta.TasinmazId = tasinmazId;

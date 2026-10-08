@@ -436,7 +436,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
         private void TaahhutleriDoldur(TasinmazBagisci bagisci)
         {
             TasinmazTaahhut bt = new TasinmazTaahhut();
-            List<TasinmazTaahhut> taahhutListesi = bt.SelectByBagisciId(bagisci.Id);
+            List<TasinmazTaahhut> taahhutListesi = new Model.Services.TBYS.TasinmazTaahhutService().GetByBagisciId(bagisci.Id);
             TaahhutTable.Rows.Clear();
             TaahhutTable.BorderWidth = 2;
             TableHeaderRow headerRow = new TableHeaderRow();
@@ -473,7 +473,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             TaahhutTable.Controls.Add(headerRow1);
 
             TasinmazTaahhut tt = new TasinmazTaahhut();
-            List<TasinmazTaahhut> list = tt.SelectByBagisciId(bagisci.Id);
+            List<TasinmazTaahhut> list = new Model.Services.TBYS.TasinmazTaahhutService().GetByBagisciId(bagisci.Id);
             foreach (TasinmazTaahhut item in list)
             {
                 TableRow row = new TableRow();

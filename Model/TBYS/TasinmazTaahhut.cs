@@ -25,10 +25,6 @@ namespace Model.TBYS
         public string Sag_vefat { get; set; }
         public DateTime VefatTarihi { get; set; }
 
-        public T Select<T>(int id)
-        {
-            return (T)Convert.ChangeType(new TasinmazTaahhutService().GetById(id), typeof(T));
-        }
 
         public int Save()
         {
@@ -45,41 +41,5 @@ namespace Model.TBYS
             return new TasinmazTaahhutService().Delete(this);
         }
 
-        public List<T> SelectAll<T>()
-        {
-            return (List<T>)Convert.ChangeType(
-                new TasinmazTaahhutService().GetAll(),
-                typeof(List<T>));
-        }
-
-        public List<TasinmazTaahhut> SelectByBagisciId(int bagisciId)
-        {
-            return new TasinmazTaahhutService().GetByBagisciId(bagisciId);
-        }
-
-        public TasinmazTaahhut SelectByTCKimlikNo(long tcKimlikNo)
-        {
-            return new TasinmazTaahhutService().GetByTcKimlikNo(tcKimlikNo);
-        }
-
-        public List<TasinmazTaahhut> SelectByFilters(bool isSagVefat, bool isTCKimlikNoFull, bool isDogumTarihiFull, int bolgeId)
-        {
-            return new TasinmazTaahhutService().GetByFilters(isSagVefat, isTCKimlikNoFull, isDogumTarihiFull, bolgeId);
-        }
-
-        public List<TasinmazTaahhut> SelectByIlAdi(string ilAdi)
-        {
-            return new TasinmazTaahhutService().GetByIlAdi(ilAdi);
-        }
-
-        public string SelectAllCountBagisAdediReturnJson()
-        {
-            return new TasinmazTaahhutService().GetAllCountDonationAsJson();
-        }
-
-        public DataTable SelectAllCountBagisAdediReturnDataTable(bool vefatEdenBagiscilarHaric, bool gizliBagiscilarHaric)
-        {
-            return new TasinmazTaahhutService().GetAllCountDonation(vefatEdenBagiscilarHaric, gizliBagiscilarHaric);
-        }
     }
 }

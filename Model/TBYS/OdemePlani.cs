@@ -29,10 +29,6 @@ namespace Model.TBYS
         public DateTime OdemeBitTar { get; set; }
         public int Sira { get; set; }
         public string Aciklama { get; set; }
-        public T Select<T>(int id)
-        {
-            return (T)Convert.ChangeType(new OdemePlaniService().GetById(id), typeof(T));
-        }
         public int Save()
         {
             return new OdemePlaniService().Save(this);
@@ -48,56 +44,6 @@ namespace Model.TBYS
         public bool DeleteBySozlesmeId(int sozlesmeId)
         {
             return new OdemePlaniService().DeleteBySozlesmeId(this, sozlesmeId);
-        }
-        public List<T> SelectAll<T>()
-        {
-            return (List<T>)Convert.ChangeType(new OdemePlaniService().GetAll(), typeof(List<T>));
-        }
-
-        public DataTable SelectBorcluOdemePlanlariByBolgeTarih(int bolgeId, DateTime ilkTarih, DateTime sonTarih, int aySayisiBas, int aySayisiBit)
-        {
-            return new OdemePlaniRaporService().GetBorcluByBolgeTarih(bolgeId, ilkTarih, sonTarih, aySayisiBas, aySayisiBit);
-        }
-        public string SelectBorcluOdemePlanlariByBolgeTarihJson(int bolgeId, DateTime ilkTarih, DateTime sonTarih, int aySayisi, int aySayisiBit, ref int kayitSayisi)
-        {
-            return new OdemePlaniRaporService().GetBorcluByBolgeTarihJson(bolgeId, ilkTarih, sonTarih, aySayisi, aySayisiBit, ref kayitSayisi);
-
-        }
-        public DataTable SelectMevcutOdemePlanlariByTarih(DateTime ilkTarih, DateTime sonTarih, string bolge)
-        {
-            return new OdemePlaniRaporService().GetCurrentByDate(ilkTarih, sonTarih, bolge);
-        }
-        public List<OdemePlani> SelectBySozlesmeId(int sozlesmeId)
-        {
-            return new OdemePlaniService().GetBySozlesmeId(sozlesmeId);
-        }
-        public OdemePlani SelectBySozlesmeIdSira(int sozlesmeId, int sira)
-        {
-            return new OdemePlaniService().GetBySozlesmeIdSira(sozlesmeId, sira);
-        }
-        public DataTable SelectKiraGeliriByBolgeAyYil(int bolgeId, int ay, int yil)
-        {
-            return new OdemePlaniRaporService().GetIncomeByRegionMonth(bolgeId, ay, yil);
-        }
-        public OdemePlani SelectBySozlesmeIdOdemeTarihi(int sozlesmeId, DateTime odemeTarihi)
-        {
-            return new OdemePlaniService().GetBySozlesmeIdOdemeTarihi(sozlesmeId, odemeTarihi);
-        }
-        public bool OdemePlaniVarMi(int sozlesmeId)
-        {
-            return new OdemePlaniService().Exists(sozlesmeId);
-        }
-        public OdemePlani SelectSonOdemePlaniBySozlesmeId(int sozlesmeId)
-        {
-            return new OdemePlaniService().GetLastBySozlesmeId(sozlesmeId);
-        }
-        public OdemePlani SelectIlkOdemePlaniBySozlesmeId(int sozlesmeId)
-        {
-            return new OdemePlaniService().GetFirstBySozlesmeId(sozlesmeId);
-        }
-        public DataTable SelectOdemePlaniListByTarihReturnDT(DateTime tarih)
-        {
-            return new OdemePlaniRaporService().GetListByDate(tarih);
         }
         public bool OdemePlaniOlustur(KiraSozlesme kiraSozlesme)
         {

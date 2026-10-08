@@ -529,7 +529,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             {
                 //devirAnaPara, devirFaiz, devirFaizliBakiye degisti ise OdemePlanini güncelle
                 OdemePlani odemePlani = new OdemePlani();
-                odemePlani = odemePlani.SelectBySozlesmeIdSira(kiraSozlesme.Id, 0);
+                odemePlani = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdSira(kiraSozlesme.Id, 0);
                 if (odemePlani != null)
                 {
                     if ((odemePlani.AnaPara != DevirAnaParaTxt.Value.ConvertToDecimal())
@@ -586,7 +586,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                         Odeme odeme = new Odeme();
                         odemeSilindi = odeme.DeleteBySozlesmeId(kiraSozlesmeId);
                         OdemeAyrinti odemeAyrintiDao = new OdemeAyrinti();
-                        List<OdemeAyrinti> odemeAyrintiListesi = odemeAyrintiDao.SelectBySozlesmeId(kiraSozlesme.Id);
+                        List<OdemeAyrinti> odemeAyrintiListesi = new Model.Services.TBYS.OdemeAyrintiService().GetBySozlesmeId(kiraSozlesme.Id);
                         if (odemeAyrintiListesi.Count > 0)
                         {
                             odemeAyrintiDao.DeleteBySozlesmeId(kiraSozlesme.Id);
@@ -638,7 +638,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
         {
             bool silindi = false;
             OdemePlani odemePlaniDao = new OdemePlani();
-            List<OdemePlani> list = odemePlaniDao.SelectBySozlesmeId(kiraSozlesme.Id);
+            List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
             if (list.Count > 0)
             {
                 OdemePlani op = list[0];
@@ -654,7 +654,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                         //    odemeDao.DeleteBySozlesmeId(kiraSozlesme.Id);
                         //}
                         OdemeAyrinti odemeAyrintiDao = new OdemeAyrinti();
-                        List<OdemeAyrinti> odemeAyrintiListesi = odemeAyrintiDao.SelectBySozlesmeId(kiraSozlesme.Id);
+                        List<OdemeAyrinti> odemeAyrintiListesi = new Model.Services.TBYS.OdemeAyrintiService().GetBySozlesmeId(kiraSozlesme.Id);
                         if (odemeAyrintiListesi.Count > 0)
                         {
                             odemeAyrintiDao.DeleteBySozlesmeId(kiraSozlesme.Id);
@@ -669,7 +669,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             bool odemePlaniVar = false;
             //halen devam eden bir ödeme plani var mi
             OdemePlani odemePlaniDao = new OdemePlani();
-            List<OdemePlani> list = odemePlaniDao.SelectBySozlesmeId(kiraSozlesme.Id);
+            List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
             if (list.Count > 0)
             {
                 OdemePlani odemePlani = list[0];
@@ -690,12 +690,12 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 OdemePlani odemePlani = new OdemePlani();
                 if (isSozlesmeyiBitir)
                 {
-                    odemePlani = odemePlani.SelectSonOdemePlaniBySozlesmeId(kiraSozlesme.Id);
+                    odemePlani = new Model.Services.TBYS.OdemePlaniService().GetLastBySozlesmeId(kiraSozlesme.Id);
                 }
                 else
                 {
                     DateTime today = DateTime.Today;
-                    odemePlani = odemePlani.SelectBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, today);
+                    odemePlani = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, today);
                 }
                 if (odemePlani == null)
                 {
@@ -956,11 +956,11 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             if (kiraSozlesme != null)
             {
                 OdemePlani odemePlani = new OdemePlani();
-                odemePlani = odemePlani.SelectBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, islemTar);
+                odemePlani = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, islemTar);
                 if (odemePlani == null)
                 {
                     odemePlani = new OdemePlani();
-                    odemePlani = odemePlani.SelectSonOdemePlaniBySozlesmeId(kiraSozlesme.Id);
+                    odemePlani = new Model.Services.TBYS.OdemePlaniService().GetLastBySozlesmeId(kiraSozlesme.Id);
                 }
                 if (odemePlani == null)
                 {
@@ -985,11 +985,11 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             if (kiraSozlesme != null)
             {
                 OdemePlani odemePlani = new OdemePlani();
-                odemePlani = odemePlani.SelectBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, islemTar);
+                odemePlani = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, islemTar);
                 if (odemePlani == null)
                 {
                     odemePlani = new OdemePlani();
-                    odemePlani = odemePlani.SelectSonOdemePlaniBySozlesmeId(kiraSozlesme.Id);
+                    odemePlani = new Model.Services.TBYS.OdemePlaniService().GetLastBySozlesmeId(kiraSozlesme.Id);
                 }
                 if (odemePlani == null)
                 {
@@ -1014,11 +1014,11 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             if (kiraSozlesme != null)
             {
                 OdemePlani odemePlani = new OdemePlani();
-                odemePlani = odemePlani.SelectBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, islemTar);//.SelectSonOdemePlaniBySozlesmeId(kiraSozlesme.Id);
+                odemePlani = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, islemTar);//.SelectSonOdemePlaniBySozlesmeId(kiraSozlesme.Id);
                 if (odemePlani == null)
                 {
                     odemePlani = new OdemePlani();
-                    odemePlani = odemePlani.SelectSonOdemePlaniBySozlesmeId(kiraSozlesme.Id);
+                    odemePlani = new Model.Services.TBYS.OdemePlaniService().GetLastBySozlesmeId(kiraSozlesme.Id);
                 }
                 if (odemePlani == null)
                 {
@@ -1340,9 +1340,9 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
         {
             DateTime durumDegistirmeTar = string.IsNullOrEmpty(degistirmeTar) ? DateTime.Now : degistirmeTar.ConvertToDatetime();
             OdemePlani buAyinOdemePlani = new OdemePlani();
-            buAyinOdemePlani = buAyinOdemePlani.SelectBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, durumDegistirmeTar);
+            buAyinOdemePlani = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, durumDegistirmeTar);
             OdemePlani odemePlaniDao = new OdemePlani();
-            List<OdemePlani> odemePlaniList = odemePlaniDao.SelectBySozlesmeId(kiraSozlesme.Id);
+            List<OdemePlani> odemePlaniList = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
             foreach (OdemePlani item in odemePlaniList)
             {
                 if (item.Sira > buAyinOdemePlani.Sira)
@@ -1448,7 +1448,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                 if (oncekiKiraSozlesmesi != null)
                 {
                     OdemePlani odemePlaniDao = new OdemePlani();
-                    List<OdemePlani> odemePlaniList = odemePlaniDao.SelectBySozlesmeId(oncekiKiraSozlesmesi.Id);
+                    List<OdemePlani> odemePlaniList = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(oncekiKiraSozlesmesi.Id);
                     OdemePlani odemePlani = odemePlaniList[odemePlaniList.Count - 1];
                     decimal sonAnaPara = odemePlani.AnaPara;
                     decimal sonFaizliBakiye = odemePlani.FaizliBakiye;

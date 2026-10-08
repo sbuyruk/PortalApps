@@ -270,7 +270,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             TitleLbl.Text = "Sigorta Güncelleme";
 
             Sigorta sigorta = new Sigorta();
-            sigorta = sigorta.Select<Sigorta>(SigortaIdQS.ConvertToInt());
+            sigorta = new Model.Services.TBYS.SigortaService().GetById(SigortaIdQS.ConvertToInt());
             if (sigorta != null)
             {
 
@@ -615,7 +615,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             try
             {
                 Sigorta sigorta = new Sigorta();
-                sigorta = sigorta.Select<Sigorta>(SigortaIdQS.ConvertToInt());
+                sigorta = new Model.Services.TBYS.SigortaService().GetById(SigortaIdQS.ConvertToInt());
                 if (sigorta!=null)
                 {
                     bool guncellendiMi = UpdateSigorta(sigorta);
@@ -641,7 +641,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         protected void SilBtn_Click(object sender, EventArgs e)
         {
             Sigorta sigorta = new Sigorta();
-            sigorta = sigorta.Select<Sigorta>(SigortaIdQS.ConvertToInt());
+            sigorta = new Model.Services.TBYS.SigortaService().GetById(SigortaIdQS.ConvertToInt());
             if (sigorta != null)
             {
                 Tasinmaz tasinmaz = new Tasinmaz();
@@ -657,7 +657,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             try
             {
                 Sigorta sigorta = new Sigorta();
-                sigorta = sigorta.Select<Sigorta>(SigortaIdQS.ConvertToInt());
+                sigorta = new Model.Services.TBYS.SigortaService().GetById(SigortaIdQS.ConvertToInt());
                 if (sigorta != null)
                 {
                     silindi = sigorta.Delete();
@@ -714,8 +714,8 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         protected void NextBtn_Click(object sender, EventArgs e)
         {
             Sigorta sigorta = new Sigorta();
-            sigorta = sigorta.Select<Sigorta>(SigortaIdQS.ConvertToInt());
-            Sigorta sonrakiSigorta = sigorta.SelectNext(sigorta.Id);
+            sigorta = new Model.Services.TBYS.SigortaService().GetById(SigortaIdQS.ConvertToInt());
+            Sigorta sonrakiSigorta = new Model.Services.TBYS.SigortaService().GetNext(sigorta.Id);
             string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             int queryIndex = newUrl.IndexOf("?");
             if (queryIndex > 0)
@@ -727,8 +727,8 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         protected void PrevBtn_Click(object sender, EventArgs e)
         {
             Sigorta sigorta = new Sigorta();
-            sigorta = sigorta.Select<Sigorta>(SigortaIdQS.ConvertToInt());
-            Sigorta oncekiSigorta = sigorta.SelectPrev(sigorta.Id);
+            sigorta = new Model.Services.TBYS.SigortaService().GetById(SigortaIdQS.ConvertToInt());
+            Sigorta oncekiSigorta = new Model.Services.TBYS.SigortaService().GetPrev(sigorta.Id);
             string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             int queryIndex = newUrl.IndexOf("?");
             if (queryIndex > 0)
@@ -758,7 +758,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             try
             {
                 Sigorta sigorta = new Sigorta();
-                sigorta = sigorta.Select<Sigorta>(SigortaIdQS.ConvertToInt());
+                sigorta = new Model.Services.TBYS.SigortaService().GetById(SigortaIdQS.ConvertToInt());
                 if (sigorta != null)
                 {
                     string dosyaAdi = sigorta.PDFDosyasi;// ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK + AdresKoduQS + ".pdf";

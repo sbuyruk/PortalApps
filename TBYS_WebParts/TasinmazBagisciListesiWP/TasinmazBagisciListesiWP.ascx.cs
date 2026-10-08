@@ -450,7 +450,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
 
             string retval = string.Empty;
             TasinmazTaahhut tt = new TasinmazTaahhut();
-            List<TasinmazTaahhut> ttlist = tt.SelectByBagisciId(bagisciId);
+            List<TasinmazTaahhut> ttlist = new Model.Services.TBYS.TasinmazTaahhutService().GetByBagisciId(bagisciId);
             if (ttlist.Count > 0)
             {
                 retval = "<a href=# onclick=OpenModalTaahhut(" + bagisciId + "); class=\'btn btn-outline-secondary \'> Taahhütler</a>";
@@ -485,7 +485,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
             //Column headers
             TaahhutTableHeaders();
             TasinmazTaahhut tt = new TasinmazTaahhut();
-            List<TasinmazTaahhut> list = tt.SelectByBagisciId(bagisci.Id);
+            List<TasinmazTaahhut> list = new Model.Services.TBYS.TasinmazTaahhutService().GetByBagisciId(bagisci.Id);
             foreach (TasinmazTaahhut item in list)
             {
                 TableRow row = new TableRow();

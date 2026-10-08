@@ -163,69 +163,69 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP
             OdemePlani odemePlaniDao = new OdemePlani();
 
             //Ank 
-            DataTable dortAyBorcluAnkDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ANKARA_INT, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
+            DataTable dortAyBorcluAnkDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_ANKARA_INT, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
             int dortAyBorcluAnk = dortAyBorcluAnkDataTable == null ? 0 : dortAyBorcluAnkDataTable.Rows.Count;
 
-            DataTable ucAyBorcluAnkDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ANKARA_INT, vadeBastar, vadeBittar, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
+            DataTable ucAyBorcluAnkDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_ANKARA_INT, vadeBastar, vadeBittar, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
             int ucAyBorcluAnk = ucAyBorcluAnkDataTable == null ? 0 : ucAyBorcluAnkDataTable.Rows.Count;
 
-            DataTable ikiAyBorcluAnkDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ANKARA_INT, vadeBastar, vadeBittar, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
+            DataTable ikiAyBorcluAnkDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_ANKARA_INT, vadeBastar, vadeBittar, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
             int ikiAyBorcluAnk = ikiAyBorcluAnkDataTable == null ? 0 : ikiAyBorcluAnkDataTable.Rows.Count;
 
-            DataTable birAyBorcluAnkDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ANKARA_INT, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
+            DataTable birAyBorcluAnkDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_ANKARA_INT, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
             int birAyBorcluAnk = birAyBorcluAnkDataTable == null ? 0 : birAyBorcluAnkDataTable.Rows.Count;
 
             //Ist 
-            DataTable dortAyBorcluIstDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL_INT, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
+            DataTable dortAyBorcluIstDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL_INT, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
             int dortAyBorcluIst = dortAyBorcluIstDataTable == null ? 0 : dortAyBorcluIstDataTable.Rows.Count;
 
-            DataTable ucAyBorcluIstDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL_INT, vadeBastar, vadeBittar, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
+            DataTable ucAyBorcluIstDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL_INT, vadeBastar, vadeBittar, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
             int ucAyBorcluIst = ucAyBorcluIstDataTable == null ? 0 : ucAyBorcluIstDataTable.Rows.Count;
 
-            DataTable ikiAyBorcluIstDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL_INT, vadeBastar, vadeBittar, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
+            DataTable ikiAyBorcluIstDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL_INT, vadeBastar, vadeBittar, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
             int ikiAyBorcluIst = ikiAyBorcluIstDataTable == null ? 0 : ikiAyBorcluIstDataTable.Rows.Count;
 
-            DataTable birAyBorcluIstDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL_INT, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
+            DataTable birAyBorcluIstDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL_INT, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
             int birAyBorcluIst = birAyBorcluIstDataTable == null ? 0 : birAyBorcluIstDataTable.Rows.Count;
 
 
             //Izm 
-            DataTable dortAyBorcluIzmDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_IZMIR_INT, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
+            DataTable dortAyBorcluIzmDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_IZMIR_INT, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
             int dortAyBorcluIzm = dortAyBorcluIzmDataTable == null ? 0 : dortAyBorcluIzmDataTable.Rows.Count;
 
-            DataTable ucAyBorcluIzmDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_IZMIR_INT, vadeBastar, vadeBittar, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
+            DataTable ucAyBorcluIzmDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_IZMIR_INT, vadeBastar, vadeBittar, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
             int ucAyBorcluIzm = ucAyBorcluIzmDataTable == null ? 0 : ucAyBorcluIzmDataTable.Rows.Count;
 
-            DataTable ikiAyBorcluIzmDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_IZMIR_INT, vadeBastar, vadeBittar, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
+            DataTable ikiAyBorcluIzmDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_IZMIR_INT, vadeBastar, vadeBittar, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
             int ikiAyBorcluIzm = ikiAyBorcluIzmDataTable == null ? 0 : ikiAyBorcluIzmDataTable.Rows.Count;
 
-            DataTable birAyBorcluIzmDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_IZMIR_INT, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
+            DataTable birAyBorcluIzmDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_IZMIR_INT, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
             int birAyBorcluIzm = birAyBorcluIzmDataTable == null ? 0 : birAyBorcluIzmDataTable.Rows.Count;
 
 
             //Mer 
-            DataTable dortAyBorcluMerDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_MERSIN_INT, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
+            DataTable dortAyBorcluMerDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_MERSIN_INT, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
             int dortAyBorcluMer = dortAyBorcluMerDataTable == null ? 0 : dortAyBorcluMerDataTable.Rows.Count;
 
-            DataTable ucAyBorcluMerDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_MERSIN_INT, vadeBastar, vadeBittar, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
+            DataTable ucAyBorcluMerDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_MERSIN_INT, vadeBastar, vadeBittar, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
             int ucAyBorcluMer = ucAyBorcluMerDataTable == null ? 0 : ucAyBorcluMerDataTable.Rows.Count;
 
-            DataTable ikiAyBorcluMerDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_MERSIN_INT, vadeBastar, vadeBittar, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
+            DataTable ikiAyBorcluMerDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_MERSIN_INT, vadeBastar, vadeBittar, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
             int ikiAyBorcluMer = ikiAyBorcluMerDataTable == null ? 0 : ikiAyBorcluMerDataTable.Rows.Count;
 
-            DataTable birAyBorcluMerDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_MERSIN_INT, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
+            DataTable birAyBorcluMerDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_MERSIN_INT, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
             int birAyBorcluMer = birAyBorcluMerDataTable == null ? 0 : birAyBorcluMerDataTable.Rows.Count;
             //Erz 
-            DataTable dortAyBorcluErzDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ERZURUM_INT, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
+            DataTable dortAyBorcluErzDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_ERZURUM_INT, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
             int dortAyBorcluErz = dortAyBorcluErzDataTable == null ? 0 : dortAyBorcluErzDataTable.Rows.Count;
 
-            DataTable ucAyBorcluErzDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ERZURUM_INT, vadeBastar, vadeBittar, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
+            DataTable ucAyBorcluErzDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_ERZURUM_INT, vadeBastar, vadeBittar, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
             int ucAyBorcluErz = ucAyBorcluErzDataTable == null ? 0 : ucAyBorcluErzDataTable.Rows.Count;
 
-            DataTable ikiAyBorcluErzDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ERZURUM_INT, vadeBastar, vadeBittar, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
+            DataTable ikiAyBorcluErzDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_ERZURUM_INT, vadeBastar, vadeBittar, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
             int ikiAyBorcluErz = ikiAyBorcluErzDataTable == null ? 0 : ikiAyBorcluErzDataTable.Rows.Count;
 
-            DataTable birAyBorcluErzDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ERZURUM_INT, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
+            DataTable birAyBorcluErzDataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(ProjeConstants.BOLGE_ERZURUM_INT, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
             int birAyBorcluErz = birAyBorcluErzDataTable == null ? 0 : birAyBorcluErzDataTable.Rows.Count;
 
             //Top

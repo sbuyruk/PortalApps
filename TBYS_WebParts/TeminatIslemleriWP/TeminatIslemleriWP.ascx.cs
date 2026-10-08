@@ -287,7 +287,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         private List<TeminatIslemListItem> GetDataList(int kiraciId)
         {
             TeminatIslem teminatIslemDao = new TeminatIslem();
-            List<TeminatIslem> list = teminatIslemDao.SelectByKiraciId(kiraciId);
+            List<TeminatIslem> list = new Model.Services.TBYS.TeminatIslemService().GetByKiraciId(kiraciId);
             List<TeminatIslemListItem> list2 = new List<TeminatIslemListItem>();
             foreach (var item in list)
             {
@@ -425,7 +425,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 if (odeme != null)
                 {
                     OdemePlani opl = new OdemePlani();
-                    opl = opl.SelectBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi);
+                    opl = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi);
                     int yeniOdemePlaniId = opl != null ? opl.Id : odeme.OdemePlaniId;
                     guncellendiMi = odeme.OdemeyiVeOdemePlaniniGuncelle(kiraSozlesme.Id, odeme.OdemePlaniId, yeniOdemePlaniId,
                     odemeId, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
@@ -462,7 +462,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         protected void ModalGuncelleBtn_Click(object sender, EventArgs e)
         {
             TeminatIslem teminatIslem = new TeminatIslem();
-            teminatIslem = teminatIslem.Select(TeminatIslemIdGuncelleHdn.Value.ConvertToInt());
+            teminatIslem = new Model.Services.TBYS.TeminatIslemService().GetById(TeminatIslemIdGuncelleHdn.Value.ConvertToInt());
             if (teminatIslem != null)
             {
                 //IslemTipiDDLDoldur();
@@ -485,7 +485,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         protected void ModalSilBtn_Click(object sender, EventArgs e)
         {
             TeminatIslem teminatIslem = new TeminatIslem();
-            teminatIslem = teminatIslem.Select(TeminatIslemIdSilLbl.Value.ConvertToInt());
+            teminatIslem = new Model.Services.TBYS.TeminatIslemService().GetById(TeminatIslemIdSilLbl.Value.ConvertToInt());
             if (teminatIslem != null)
             {
                 SilmeMesajiLbl.Text = teminatIslem.IslemTarihi.ConvertToDatetimeEmptyIfNull() + " tarihli ve " + teminatIslem.IslemTutari.ToString("N", culturInfo) + " tutarlı '" + teminatIslem.IslemTipi + "' işlemi silinecek.";
@@ -541,7 +541,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         protected void ModalGuncelleNowBtn_Click(object sender, EventArgs e)
         {
             TeminatIslem teminatIslem = new TeminatIslem();
-            teminatIslem = teminatIslem.Select(TeminatIslemIdGuncelleHdn.Value.ConvertToInt());
+            teminatIslem = new Model.Services.TBYS.TeminatIslemService().GetById(TeminatIslemIdGuncelleHdn.Value.ConvertToInt());
             if (teminatIslem != null)
             {
 
@@ -590,7 +590,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             int teminatId = TeminatIslemIdSilLbl.Value.ConvertToInt();
 
             TeminatIslem teminatIslem = new TeminatIslem();
-            teminatIslem = teminatIslem.Select(teminatId);
+            teminatIslem = new Model.Services.TBYS.TeminatIslemService().GetById(teminatId);
             if (teminatIslem != null)
             {
                 bool silindiMi = teminatIslem.Delete();

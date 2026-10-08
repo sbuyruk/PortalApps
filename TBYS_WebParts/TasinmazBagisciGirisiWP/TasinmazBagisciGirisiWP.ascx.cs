@@ -498,14 +498,14 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         {
 
             TasinmazTaahhut tasinmazTaahhut = new TasinmazTaahhut();
-            List<TasinmazTaahhut> list = tasinmazTaahhut.SelectByBagisciId(bagisci.Id);
+            List<TasinmazTaahhut> list = new Model.Services.TBYS.TasinmazTaahhutService().GetByBagisciId(bagisci.Id);
             return list.Count > 0;
         }
         private bool BagisciyaArmaganVerilmisMi(TasinmazBagisci bagisci)
         {
 
             TasinmazTaahhut tasinmazTaahhut = new TasinmazTaahhut();
-            List<TasinmazTaahhut> list = tasinmazTaahhut.SelectByBagisciId(bagisci.Id);
+            List<TasinmazTaahhut> list = new Model.Services.TBYS.TasinmazTaahhutService().GetByBagisciId(bagisci.Id);
             return list.Count > 0;
         }
         protected void CloseBtn_Click(object sender, EventArgs e)

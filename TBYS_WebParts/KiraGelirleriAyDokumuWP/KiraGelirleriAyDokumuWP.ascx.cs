@@ -59,11 +59,11 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
                 for (int ay = 1; ay <= 12; ay++)
                 {
                     OdemePlani odemePlaniDao = new OdemePlani();
-                    DataTable dataTableGM = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_ANKARA_INT, ay, yil);
-                    DataTable dataTableIST = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_ISTANBUL_INT, ay, yil);
-                    DataTable dataTableIZM = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_IZMIR_INT, ay, yil);
-                    DataTable dataTableMER = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_MERSIN_INT, ay, yil);
-                    DataTable dataTableERZ = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_ERZURUM_INT, ay, yil);
+                    DataTable dataTableGM = new Model.Services.TBYS.OdemePlaniRaporService().GetIncomeByRegionMonth(ProjeConstants.BOLGE_ANKARA_INT, ay, yil);
+                    DataTable dataTableIST = new Model.Services.TBYS.OdemePlaniRaporService().GetIncomeByRegionMonth(ProjeConstants.BOLGE_ISTANBUL_INT, ay, yil);
+                    DataTable dataTableIZM = new Model.Services.TBYS.OdemePlaniRaporService().GetIncomeByRegionMonth(ProjeConstants.BOLGE_IZMIR_INT, ay, yil);
+                    DataTable dataTableMER = new Model.Services.TBYS.OdemePlaniRaporService().GetIncomeByRegionMonth(ProjeConstants.BOLGE_MERSIN_INT, ay, yil);
+                    DataTable dataTableERZ = new Model.Services.TBYS.OdemePlaniRaporService().GetIncomeByRegionMonth(ProjeConstants.BOLGE_ERZURUM_INT, ay, yil);
 
                     int kiraciSayisiToplam = 0;
                     decimal meskenToplam = 0;

@@ -445,7 +445,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
         private int OdemePlaniGetir(int kiraSozlesmeId,DateTime odemeTarihi)
         {
             OdemePlani odemePlani = new OdemePlani();
-            odemePlani = odemePlani.SelectBySozlesmeIdOdemeTarihi(kiraSozlesmeId, odemeTarihi);
+            odemePlani = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdOdemeTarihi(kiraSozlesmeId, odemeTarihi);
             return odemePlani == null ? 0 : odemePlani.Id;
         }
 

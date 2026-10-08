@@ -298,7 +298,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                         , OdemePlaniIdQS.ConvertToInt(), OdemePlaniDDL);
                     KaydetBtn.Visible = true;
                     OdemePlani odemePlani = new OdemePlani();
-                    odemePlani = odemePlani.Select<OdemePlani>(OdemePlaniDDL.SelectedItem.Value.ConvertToInt());
+                    odemePlani = new Model.Services.TBYS.OdemePlaniService().GetById(OdemePlaniDDL.SelectedItem.Value.ConvertToInt());
                     OdemeTutariTxt.Text = odemePlani == null ? "" : odemePlani.KiraBedeli.ToString("N", cultureInfo);
                 }
                 else
@@ -371,7 +371,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             if (sozlesmeId > 0)
             {
                 OdemePlani odemePlaniDao = new OdemePlani();
-                List<OdemePlani> odemePlaniList = odemePlaniDao.SelectBySozlesmeId(sozlesmeId);
+                List<OdemePlani> odemePlaniList = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(sozlesmeId);
                 foreach (var item in odemePlaniList)
                 {
                     if (item.Sira == 0)
@@ -432,7 +432,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             OdemePlani odemePlani = new OdemePlani();
             int kiraSozlesmeId = SozlesmeDDL.SelectedItem.Value.ConvertToInt();
 
-            odemePlani = odemePlani.SelectBySozlesmeIdOdemeTarihi(kiraSozlesmeId, OdemeTarihiTxt.Text.ConvertToDatetime());
+            odemePlani = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdOdemeTarihi(kiraSozlesmeId, OdemeTarihiTxt.Text.ConvertToDatetime());
             int odemePlaniId = 0;
             if (odemePlani != null)
             {
