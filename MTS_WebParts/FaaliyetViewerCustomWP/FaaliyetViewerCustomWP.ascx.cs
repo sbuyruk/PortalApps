@@ -104,8 +104,7 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
                     };
                     gunlukFaaliyetListesi.Add(gunlukFaaliyet);
                 }
-                Toplanti toplantiDao = new Toplanti();
-                List<Toplanti> toplantiListesi = toplantiDao.SelectByKatilimciTarih(ProjeConstants.GENELMUDUR_PERSONELID, date);
+                List<Toplanti> toplantiListesi = new Model.Services.Portal.ToplantiService().GetByParticipantDate(ProjeConstants.GENELMUDUR_PERSONELID, date);
                 foreach (var item in toplantiListesi)
                 {
                     FaaliyetListItem gunlukFaaliyet = new FaaliyetListItem
