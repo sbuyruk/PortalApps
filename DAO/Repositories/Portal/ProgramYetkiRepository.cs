@@ -1,2 +1,145 @@
-using DAO.Ortak; using System; using System.Collections.Generic; using System.Data;
-namespace DAO.Repositories.Portal { public class ProgramYetkiRepository { private readonly DbClass db; private readonly CrudQueryBuilder b; public ProgramYetkiRepository():this(new DbClass()){} public ProgramYetkiRepository(DbClass db){if(db==null)throw new ArgumentNullException("db");this.db=db;b=new CrudQueryBuilder();} public DataTable SelectById(int id){var q=new SqlQuery("SELECT * FROM ProgramYetki_Table WHERE Id=@Id");q.AddParameter("@Id",id);return db.SelectFromDb(q,"");} public DataTable SelectAll(){return db.SelectFromDb(new SqlQuery("SELECT * FROM ProgramYetki_Table"),"");} public DataTable SelectByProgram(string p){var q=new SqlQuery("SELECT * FROM ProgramYetki_Table WHERE Program=@Program");q.AddParameter("@Program",p);return db.SelectFromDb(q,"");} public DataTable SelectByProgramModul(string p,string m,string birimId){var q=new SqlQuery("SELECT * FROM ProgramYetki_Table WHERE Program=@Program AND Modul=@Modul AND BirimId IN ("+birimId+")");q.AddParameter("@Program",p);q.AddParameter("@Modul",m);return db.SelectFromDb(q,"");} public int Insert<T>(T x){return db.Insert(b.BuildInsert(x,"ProgramYetki_Table"));} public bool Update<T>(T x){return db.Update2Db(b.BuildUpdate(x,"ProgramYetki_Table"));} public bool Delete(int id){return db.DeleteFromDb(b.BuildDelete("ProgramYetki_Table",id),"");} } }
+using DAO.Ortak;
+using System;
+using System.Collections.Generic;
+using System.Data;
+
+namespace DAO.Repositories.Portal
+{
+    public class ProgramYetkiRepository
+    {
+        private readonly DbClass db;
+        private readonly CrudQueryBuilder b;
+
+        public ProgramYetkiRepository()
+            : this(new DbClass())
+        {
+        }
+
+        public ProgramYetkiRepository(DbClass db)
+        {
+            if (db == null)
+                throw new ArgumentNullException("db");
+
+            this.db = db;
+            b = new CrudQueryBuilder();
+        }
+
+        public DataTable SelectById(int id)
+        {
+            var q = new SqlQuery("SELECT * FROM ProgramYetki_Table WHERE Id=@Id");
+            q.AddParameter("@Id", id);
+            return db.SelectFromDb(q, "");
+        }
+
+        public DataTable SelectAll()
+        {
+            return db.SelectFromDb(new SqlQuery("SELECT * FROM ProgramYetki_Table"), "");
+        }
+
+        public DataTable SelectByProgram(string p)
+        {
+            var q = new SqlQuery("SELECT * FROM ProgramYetki_Table WHERE Program=@Program");
+            q.AddParameter("@Program", p);
+            return db.SelectFromDb(q, "");
+        }
+
+        public DataTable SelectByProgramModul(string p, string m, string birimId)
+        {
+            var q = new SqlQuery("SELECT * FROM ProgramYetki_Table WHERE Program=@Program AND Modul=@Modul AND BirimId IN (" + birimId + ")");
+            q.AddParameter("@Program", p);
+            q.AddParameter("@Modul", m);
+            return db.SelectFromDb(q, "");
+        }
+
+        public int Insert<T>(T x)
+        {
+            return db.Insert(b.BuildInsert(x, "ProgramYetki_Table"));
+        }
+
+        public bool Update<T>(T x)
+        {
+            return db.Update2Db(b.BuildUpdate(x, "ProgramYetki_Table"));
+        }
+
+        public bool Delete(int id)
+        {
+            return db.DeleteFromDb(b.BuildDelete("ProgramYetki_Table", id), "");
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+n

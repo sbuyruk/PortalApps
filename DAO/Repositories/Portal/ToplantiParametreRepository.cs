@@ -1,2 +1,136 @@
-using DAO.Ortak; using System; using System.Data;
-namespace DAO.Repositories.Portal { public class ToplantiParametreRepository { private readonly DbClass db; private readonly CrudQueryBuilder b; public ToplantiParametreRepository():this(new DbClass()){} public ToplantiParametreRepository(DbClass db){if(db==null)throw new ArgumentNullException("db");this.db=db;b=new CrudQueryBuilder();} public DataTable SelectById(int id){var q=new SqlQuery("SELECT * FROM ToplantiParametre_Table WHERE Id=@Id");q.AddParameter("@Id",id);return db.SelectFromDb(q,"");} public DataTable SelectAll(){return db.SelectFromDb(new SqlQuery("SELECT * FROM ToplantiParametre_Table"),"");} public DataTable SelectByGroup(string g){var q=new SqlQuery("SELECT * FROM ToplantiParametre_Table WHERE Grup=@Grup ORDER BY Sira");q.AddParameter("@Grup",g);return db.SelectFromDb(q,"");} public DataTable SelectByGroupUnselected(string g){var q=new SqlQuery("SELECT * FROM ToplantiParametre_Table WHERE Grup=@Grup AND Id NOT IN (SELECT ToplantiYeri FROM Toplanti_Table) ORDER BY Sira");q.AddParameter("@Grup",g);return db.SelectFromDb(q,"");} public DataTable SelectByGroupSelected(string g){var q=new SqlQuery("SELECT * FROM ToplantiParametre_Table WHERE Grup=@Grup AND Id IN (SELECT ToplantiYeri FROM Toplanti_Table) ORDER BY Sira");q.AddParameter("@Grup",g);return db.SelectFromDb(q,"");} public DataTable SelectAllData(){return db.SelectFromDb(new SqlQuery("SELECT * FROM ToplantiParametre_Table ORDER BY Sira"),"");} public DataTable SelectByGroupValue(string g,string d){var q=new SqlQuery("SELECT * FROM ToplantiParametre_Table WHERE Grup=@Grup AND Deger=@Deger");q.AddParameter("@Grup",g);q.AddParameter("@Deger",d);return db.SelectFromDb(q,"");} public int Insert<T>(T x){return db.Insert(b.BuildInsert(x,"ToplantiParametre_Table"));} public bool Update<T>(T x){return db.Update2Db(b.BuildUpdate(x,"ToplantiParametre_Table"));} public bool Delete(int id){return db.DeleteFromDb(b.BuildDelete("ToplantiParametre_Table",id),"");} } }
+using DAO.Ortak;
+using System;
+using System.Data;
+
+namespace DAO.Repositories.Portal
+{
+    public class ToplantiParametreRepository
+    {
+        private readonly DbClass db;
+        private readonly CrudQueryBuilder b;
+
+        public ToplantiParametreRepository()
+            : this(new DbClass())
+        {
+        }
+
+        public ToplantiParametreRepository(DbClass db)
+        {
+            if (db == null)
+                throw new ArgumentNullException("db");
+
+            this.db = db;
+            b = new CrudQueryBuilder();
+        }
+
+        public DataTable SelectById(int id)
+        {
+            var q = new SqlQuery("SELECT * FROM ToplantiParametre_Table WHERE Id=@Id");
+            q.AddParameter("@Id", id);
+            return db.SelectFromDb(q, "");
+        }
+
+        public DataTable SelectAll()
+        {
+            return db.SelectFromDb(new SqlQuery("SELECT * FROM ToplantiParametre_Table"), "");
+        }
+
+        public DataTable SelectByGroup(string g)
+        {
+            var q = new SqlQuery("SELECT * FROM ToplantiParametre_Table WHERE Grup=@Grup ORDER BY Sira");
+            q.AddParameter("@Grup", g);
+            return db.SelectFromDb(q, "");
+        }
+
+        public DataTable SelectByGroupUnselected(string g)
+        {
+            var q = new SqlQuery("SELECT * FROM ToplantiParametre_Table WHERE Grup=@Grup AND Id NOT IN (SELECT ToplantiYeri FROM Toplanti_Table) ORDER BY Sira");
+            q.AddParameter("@Grup", g);
+            return db.SelectFromDb(q, "");
+        }
+
+        public DataTable SelectByGroupSelected(string g)
+        {
+            var q = new SqlQuery("SELECT * FROM ToplantiParametre_Table WHERE Grup=@Grup AND Id IN (SELECT ToplantiYeri FROM Toplanti_Table) ORDER BY Sira");
+            q.AddParameter("@Grup", g);
+            return db.SelectFromDb(q, "");
+        }
+
+        public DataTable SelectAllData()
+        {
+            return db.SelectFromDb(new SqlQuery("SELECT * FROM ToplantiParametre_Table ORDER BY Sira"), "");
+        }
+
+        public DataTable SelectByGroupValue(string g, string d)
+        {
+            var q = new SqlQuery("SELECT * FROM ToplantiParametre_Table WHERE Grup=@Grup AND Deger=@Deger");
+            q.AddParameter("@Grup", g);
+            q.AddParameter("@Deger", d);
+            return db.SelectFromDb(q, "");
+        }
+
+        public int Insert<T>(T x)
+        {
+            return db.Insert(b.BuildInsert(x, "ToplantiParametre_Table"));
+        }
+
+        public bool Update<T>(T x)
+        {
+            return db.Update2Db(b.BuildUpdate(x, "ToplantiParametre_Table"));
+        }
+
+        public bool Delete(int id)
+        {
+            return db.DeleteFromDb(b.BuildDelete("ToplantiParametre_Table", id), "");
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+n
