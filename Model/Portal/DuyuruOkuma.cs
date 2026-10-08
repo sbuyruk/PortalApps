@@ -1,7 +1,5 @@
 using Model.Ortak;
-using Model.Services.Portal;
 using System;
-using System.Collections.Generic;
 
 namespace Model.Portal
 {
@@ -12,40 +10,6 @@ namespace Model.Portal
         public int PersonelId { get; set; }
         public DateTime OkumaTarihi { get; set; }
 
-        public T Select<T>(int id)
-        {
-            return (T)Convert.ChangeType(new DuyuruOkumaService().GetById(id), typeof(T));
-        }
-
-        public DuyuruOkuma Select(int id)
-        {
-            return new DuyuruOkumaService().GetById(id);
-        }
-
-        public int Save()
-        {
-            return new DuyuruOkumaService().Save(this);
-        }
-
-        public bool Update()
-        {
-            return new DuyuruOkumaService().Update(this);
-        }
-
-        public bool Delete()
-        {
-            return new DuyuruOkumaService().Delete(this);
-        }
-
-        public List<T> SelectAll<T>()
-        {
-            return (List<T>)Convert.ChangeType(new DuyuruOkumaService().GetAll(), typeof(List<T>));
-        }
-
-        public string SelectByDuyuruId(int id)
-        {
-            return new DuyuruOkumaService().GetByDuyuruId(id);
-        }
     }
 }
 
