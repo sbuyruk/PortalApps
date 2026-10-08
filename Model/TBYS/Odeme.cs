@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
@@ -107,174 +106,24 @@ namespace Model.TBYS
         }
 		public DataTable SelectByKiraciAyYil(int kiraciId, int ay, int yil)
 		{
-			StringBuilder sb = new StringBuilder(@"
-				SELECT A.Id, B.Adi KiraciAdiSoyadi, F.Bolge, 
-					A.Id OdemeId, A.OdemeTarihi, A.OdenenTutar, A.Aciklama, A.SozlesmeId, A.KiraciId, A.OdemePlaniId, B.KiralamaAmaci 
-				FROM Odeme_Table A
-					INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId 
-					INNER JOIN KiraSozlesme_Table C ON C.Id=A.SozlesmeId
-					INNER JOIN SozlesmeTasinmaz_Table D ON D.Id=(Select TOP 1 Id From SozlesmeTasinmaz_Table WHERE SozlesmeId=A.SozlesmeId) 
-					INNER JOIN Tasinmaz_Table E ON E.Id=D.TasinmazId 
-					INNER JOIN Il_Table F ON F.IlAdi= E.Ili
-				WHERE 1=1 ");
-			SqlQuery query = new SqlQuery();
-			if ((ay != ProjeConstants.HEPSI_INT) && (yil != ProjeConstants.HEPSI_INT))
-			{
-				sb.Append(" AND MONTH(A.OdemeTarihi)=@Ay AND YEAR(A.OdemeTarihi)=@Yil ");
-				query.AddParameter("@Ay", ay);
-				query.AddParameter("@Yil", yil);
-			}
-			else if ((ay == ProjeConstants.HEPSI_INT) && (yil != ProjeConstants.HEPSI_INT))
-			{
-				sb.Append(" AND YEAR(A.OdemeTarihi)=@Yil ");
-				query.AddParameter("@Yil", yil);
-			}
-			else if ((ay != ProjeConstants.HEPSI_INT) && (yil == ProjeConstants.HEPSI_INT))
-			{
-				sb.Append(" AND MONTH(A.OdemeTarihi)=@Ay ");
-				query.AddParameter("@Ay", ay);
-			}
-			if (kiraciId > 0)
-			{
-				sb.Append(" AND A.KiraciId=@KiraciId ");
-				query.AddParameter("@KiraciId", kiraciId);
-			}
-			sb.Append(" ORDER BY A.OdemeTarihi DESC, B.Id, A.SozlesmeId ");
-			query.Sql = sb.ToString();
-            // bölge de seçime eklendigi için sorgu üstteki ile degisti SB 23/09/2019
-            //string sqlString = string.Format(@"
-            //    SELECT A.Id, B.Adi,B.Soyadi,  B.Adi+' '+B.Soyadi KiraciAdiSoyadi,
-            //        A.Id OdemeId, A.OdemeTarihi, A.OdenenTutar, A.Aciklama, A.SozlesmeId, A.KiraciId, A.OdemePlaniId 
-            //    FROM Odeme_Table A
-            //    INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId 
-            //    {0} {1}
-            //    ORDER BY A.OdemeTarihi DESC, B.Id, A.SozlesmeId
-            //", ayYilStr,kiraciIdStr);
-			DataTable dataTable = dao.SelectFromDb(query, "");
-
-			return dataTable;
-
+			return new OdemeService().GetByKiraciAyYil(kiraciId, ay, yil);
 		}
-		public DataTable SelectByKiraciAyYilReturnDataTable(int bolgeId,int kiraciId,DateTime bastar, DateTime bittar)//int ay, int yil)
+		public DataTable SelectByKiraciAyYilReturnDataTable(int bolgeId, int kiraciId, DateTime bastar, DateTime bittar)
 		{
-			bittar = UtilityHelper.TariheSaatEkle(bittar, "23:59:59");
-			StringBuilder sb = new StringBuilder(@"
-				SELECT A.Id, A.Id OdemeId,A.OdemePlaniId,A.SozlesmeId,A.KiraciId,
-					A.OdemeTarihi, A.OdenenTutar, A.Aciklama, 
-					B.Adi, B.Soyadi, B.KiralamaAmaci, 
-					C.SozBasTar, C.SozBitTar, C.IlkSozlesmeTar,C.DosyaNo, C.ArtisAyi,C.KiraBedeli,C.OdemeSekli, 
-					D.VadeBitTar, E.Id TeminatId,
-					H.KisaAdi Bolge
-				FROM Odeme_Table A
-
-					INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId 
-					INNER JOIN KiraSozlesme_Table C ON C.Id=A.SozlesmeId
-					INNER JOIN OdemePlani_Table D ON D.Id=A.OdemePlaniId
-					LEFT JOIN TeminatIslem_Table E ON E.OdemeId=A.Id
-					LEFT JOIN Bolge_Table H ON H.Id=C.BolgeId
-				WHERE 1=1 ");
-			SqlQuery query = new SqlQuery();
-			sb.Append(" AND A.OdemeTarihi BETWEEN @BasTarih AND @BitTarih ");
-			query.AddParameter("@BasTarih", bastar);
-			query.AddParameter("@BitTarih", bittar);
-			if (kiraciId > 0)
-			{
-				sb.Append(" AND A.KiraciId=@KiraciId ");
-				query.AddParameter("@KiraciId", kiraciId);
-			}
-			if (bolgeId != ProjeConstants.HEPSI_INT && bolgeId != ProjeConstants.BOLGE_GENELMUDURLUK_INT)
-			{
-				sb.Append(" AND C.BolgeId=@BolgeId ");
-				query.AddParameter("@BolgeId", bolgeId);
-			}
-			sb.Append(" ORDER BY A.OdemeTarihi DESC, B.Id, A.SozlesmeId ");
-			query.Sql = sb.ToString();
-            // bölge de seçime eklendigi için sorgu üstteki ile degisti SB 23/09/2019
-            DataTable dataTable = dao.SelectFromDb(query, "");
-
-            return dataTable;
-
-        }
-		public DataTable SelectByAyYilReturnDataTable( int ay, int yil)
+			return new OdemeService().GetByKiraciAyYilReturnDataTable(bolgeId, kiraciId, bastar, bittar);
+		}
+		public DataTable SelectByAyYilReturnDataTable(int ay, int yil)
 		{
-			StringBuilder sb = new StringBuilder(@"
-				SELECT 
-					A.OdemeTarihi, A.OdenenTutar, A.Aciklama, 
-					B.Adi, B.Soyadi 
-					--D.Id TeminatId, D.IslemTipi
-				FROM Odeme_Table A
-					INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId 
-					INNER JOIN KiraSozlesme_Table C ON C.Id=A.SozlesmeId	                
-					LEFT JOIN TeminatIslem_Table E ON E.OdemeId=A.Id
-				WHERE 1=1 ");
-			SqlQuery query = new SqlQuery();
-			if ((ay != ProjeConstants.HEPSI_INT) && (yil != ProjeConstants.HEPSI_INT))
-			{
-				sb.Append(" AND MONTH(A.OdemeTarihi)=@Ay AND YEAR(A.OdemeTarihi)=@Yil ");
-				query.AddParameter("@Ay", ay);
-				query.AddParameter("@Yil", yil);
-			}
-			else if ((ay == ProjeConstants.HEPSI_INT) && (yil != ProjeConstants.HEPSI_INT))
-			{
-				sb.Append(" AND YEAR(A.OdemeTarihi)=@Yil ");
-				query.AddParameter("@Yil", yil);
-			}
-			else if ((ay != ProjeConstants.HEPSI_INT) && (yil == ProjeConstants.HEPSI_INT))
-			{
-				sb.Append(" AND MONTH(A.OdemeTarihi)=@Ay ");
-				query.AddParameter("@Ay", ay);
-			}
-			sb.Append(" ORDER BY A.OdemeTarihi DESC, B.Id, A.SozlesmeId ");
-			query.Sql = sb.ToString();
-
-			DataTable dataTable = dao.SelectFromDb(query, "");
-
-            return dataTable;
-
-        }
-		public List<Odeme> SelectByKiraciVadeBasTarVadeBitTar(int sozlesmeId,int kiraciId, DateTime ilkTarih, DateTime ikinciTarih)
+			return new OdemeService().GetByAyYilReturnDataTable(ay, yil);
+		}
+		public List<Odeme> SelectByKiraciVadeBasTarVadeBitTar(int sozlesmeId, int kiraciId, DateTime ilkTarih, DateTime ikinciTarih)
 		{
-			DateTime tarih1= new DateTime(ilkTarih.Year,ilkTarih.Month,ilkTarih.Day);
-			DateTime tarih2= new DateTime(ikinciTarih.Year, ikinciTarih.Month, ikinciTarih.Day);
-			DateTime tarihbas = UtilityHelper.TariheSaatEkle(tarih1, "00:00"); 
-			DateTime tarihbit = UtilityHelper.TariheSaatEkle(tarih2, "23:59"); 
-			SqlQuery query = new SqlQuery(@"
-				SELECT * 
-				FROM Odeme_Table A
-				WHERE KiraciId=@KiraciId AND SozlesmeId=@SozlesmeId
-					AND OdemeTarihi BETWEEN @BasTarih AND @BitTarih
-				ORDER BY A.OdemeTarihi ");
-			query.AddParameter("@KiraciId", kiraciId);
-			query.AddParameter("@SozlesmeId", sozlesmeId);
-			query.AddParameter("@BasTarih", tarihbas);
-			query.AddParameter("@BitTarih", tarihbit);
-
-			DataTable dataTable = dao.SelectFromDb(query, "");
-            List<Odeme> list = ToList<Odeme>(dataTable);
-            return list;
-        }
-        public decimal SelectSumBySozlesmeIdOdemePlaniId(int sozlesmeId, int odemePlaniId)
-        {
-            decimal toplam = 0;
-            SqlQuery query = new SqlQuery(@"
-                SELECT SUM(OdenenTutar) Toplam FROM Odeme_Table
-                WHERE SozlesmeId=@SozlesmeId 
-                    AND OdemePlaniId=@OdemePlaniId");
-            query.AddParameter("@SozlesmeId", sozlesmeId);
-            query.AddParameter("@OdemePlaniId", odemePlaniId);
-            DataTable dataTable = dao.SelectFromDb(query, "");
-            if (dataTable != null)
-            {
-                if (dataTable.Rows.Count > 0)
-                {
-                    DataRow row = dataTable.Rows[0];
-                    toplam = row["Toplam"].ToString().ConvertToDecimal();
-                }
-            }
-
-            return toplam;
-
-        }
+			return new OdemeService().GetByKiraciVadeBasTarVadeBitTar(sozlesmeId, kiraciId, ilkTarih, ikinciTarih);
+		}
+		public decimal SelectSumBySozlesmeIdOdemePlaniId(int sozlesmeId, int odemePlaniId)
+		{
+			return new OdemeService().GetSumBySozlesmeIdOdemePlaniId(sozlesmeId, odemePlaniId);
+		}
         public Odeme OdemeyiKaydetOdemePlaniniGuncelle(KiraSozlesme kiraSozlesme, OdemePlani odemePlani, DateTime odemeTarihi, decimal odenenTutar, string aciklama, string kullanici)
         {
             bool kaydedildiMi = false;
