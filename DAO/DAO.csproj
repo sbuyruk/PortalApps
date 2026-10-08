@@ -143,6 +143,16 @@
     <Compile Include="Repositories\TBYS\BagisciTalepleriRepository.cs" />
     <Compile Include="Repositories\MTS\KaynakTanimRepository.cs" />
     <Compile Include="Repositories\MTS\KisiRepository.cs" />
+    <Compile Include="Repositories\MTS\AniObjesiTanimRepository.cs" />
+    <Compile Include="Repositories\MTS\AniObjesiDagitimRepository.cs" />
+    <Compile Include="Repositories\MTS\AramaGorusmeRepository.cs" />
+    <Compile Include="Repositories\MTS\DepoTanimRepository.cs" />
+    <Compile Include="Repositories\MTS\DepoStokRepository.cs" />
+    <Compile Include="Repositories\MTS\FaaliyetRepository.cs" />
+    <Compile Include="Repositories\MTS\FaaliyetKatilimRepository.cs" />
+    <Compile Include="Repositories\MTS\MTSUnvanTanimRepository.cs" />
+    <Compile Include="Repositories\MTS\MTSGorevTanimRepository.cs" />
+    <Compile Include="Repositories\MTS\MTSKurumTanimRepository.cs" />
     <Compile Include="Repositories\MTS\MtsLookupRepository.cs" />
     <Compile Include="Repositories\MTS\MTSKurumGorevRepository.cs" />
     <Compile Include="Repositories\NBYS\ArmaganRepository.cs" />

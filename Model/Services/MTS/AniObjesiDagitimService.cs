@@ -12,41 +12,47 @@ namespace Model.Services.MTS
 {
     public class AniObjesiDagitimService
     {
-        private const string TableName = "AniObjesiDagitim_Table";
-        private readonly MtsLookupRepository repository;
+        private readonly AniObjesiDagitimRepository repository;
+        private readonly MtsLookupRepository lookupRepository;
 
-        public AniObjesiDagitimService() : this(new MtsLookupRepository())
+        public AniObjesiDagitimService() : this(new AniObjesiDagitimRepository(), new MtsLookupRepository())
         {
         }
 
-        public AniObjesiDagitimService(MtsLookupRepository repository)
+        public AniObjesiDagitimService(AniObjesiDagitimRepository repository, MtsLookupRepository lookupRepository)
         {
             this.repository = repository ?? throw new ArgumentNullException("repository");
+            this.lookupRepository = lookupRepository ?? throw new ArgumentNullException("lookupRepository");
+        }
+
+        public AniObjesiDagitimService(MtsLookupRepository lookupRepository)
+            : this(new AniObjesiDagitimRepository(), lookupRepository)
+        {
         }
 
         public AniObjesiDagitim GetById(int id)
         {
-            return Map(repository.SelectById(TableName, id));
+            return Map(repository.SelectById(id));
         }
 
         public List<AniObjesiDagitim> GetAll()
         {
-            return ToList(repository.SelectAll(TableName));
+            return ToList(repository.SelectAll());
         }
 
         public List<AniObjesiDagitim> GetByFaaliyetId(int faaliyetId)
         {
-            return ToList(repository.SelectAniObjesiDagitimByFilter(faaliyetId, 0, 0, null, null, "activity"));
+            return ToList(lookupRepository.SelectAniObjesiDagitimByFilter(faaliyetId, 0, 0, null, null, "activity"));
         }
 
         public AniObjesiDagitim GetGetirilen(int faaliyetId, int katilimciId)
         {
-            return Map(repository.SelectGetirilenAniObjesi(faaliyetId, katilimciId, 0, ProjeConstants.ANIOBJESI_GETIRILEN_INT));
+            return Map(lookupRepository.SelectGetirilenAniObjesi(faaliyetId, katilimciId, 0, ProjeConstants.ANIOBJESI_GETIRILEN_INT));
         }
 
         public DataTable GetDistributionTable(int faaliyetId, int katilimciId, string stokluMu = null)
         {
-            return repository.SelectAniObjesiDagitimByFilter(
+            return lookupRepository.SelectAniObjesiDagitimByFilter(
                 faaliyetId,
                 katilimciId,
                 0,
@@ -57,7 +63,7 @@ namespace Model.Services.MTS
 
         public List<AniObjesiDagitim> GetStoksuz(int faaliyetId, int katilimciId)
         {
-            return ToList(repository.SelectAniObjesiDagitimByFilter(
+            return ToList(lookupRepository.SelectAniObjesiDagitimByFilter(
                 faaliyetId,
                 katilimciId,
                 0,
@@ -68,7 +74,7 @@ namespace Model.Services.MTS
 
         public AniObjesiDagitim GetByActivityParticipantObject(int faaliyetId, int katilimciId, int aniObjesiId)
         {
-            return Map(repository.SelectAniObjesiDagitimByFilter(
+            return Map(lookupRepository.SelectAniObjesiDagitimByFilter(
                 faaliyetId,
                 katilimciId,
                 aniObjesiId,
@@ -79,7 +85,7 @@ namespace Model.Services.MTS
 
         public List<AniObjesiDagitim> GetByParticipant(int katilimciId, string verilenGetirilen)
         {
-            return ToList(repository.SelectAniObjesiDagitimByFilter(
+            return ToList(lookupRepository.SelectAniObjesiDagitimByFilter(
                 0,
                 katilimciId,
                 0,
@@ -90,7 +96,7 @@ namespace Model.Services.MTS
 
         public string GetGetirilenText(int katilimciId, int faaliyetId)
         {
-            DataTable table = repository.SelectGetirilenAniObjesiText(
+            DataTable table = lookupRepository.SelectGetirilenAniObjesiText(
                 katilimciId,
                 faaliyetId,
                 ProjeConstants.GETIRILEN_ANIOBJESIID_INT);
@@ -109,7 +115,7 @@ namespace Model.Services.MTS
 
         public DataTable GetByParticipantActivity(int katilimciId, int faaliyetId, string stokluMu)
         {
-            return repository.SelectAniObjesiDagitimByFilter(
+            return lookupRepository.SelectAniObjesiDagitimByFilter(
                 faaliyetId,
                 katilimciId,
                 0,
@@ -132,7 +138,7 @@ namespace Model.Services.MTS
             }).ToList();
 
             DataTable deletedItems;
-            int deleted = repository.DeleteAniObjesiDagitim(faaliyetId, katilimciId, ids, out deletedItems);
+            int deleted = lookupRepository.DeleteAniObjesiDagitim(faaliyetId, katilimciId, ids, out deletedItems);
             if (deleted > 0 && ProjeConstants.MTS_DELETE_LOG)
             {
                 foreach (AniObjesiDagitim item in ToList(deletedItems))
@@ -145,7 +151,7 @@ namespace Model.Services.MTS
         {
             item.OlusturmaTarihi = DateTime.Now;
             item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(TableName, item);
+            item.Id = repository.Insert(item);
             if (item.Id > 0 && ProjeConstants.MTS_SAVE_LOG)
                 new OlayKayit().GirisOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESIDAGITIM);
             return item.Id;
@@ -156,7 +162,7 @@ namespace Model.Services.MTS
             AniObjesiDagitim old = GetById(item.Id);
             item.DegistirmeTarihi = DateTime.Now;
             item.Degistiren = UtilityHelper.GetCurrentUserName();
-            bool updated = item.Id != 0 && repository.Update(TableName, item);
+            bool updated = item.Id != 0 && repository.Update(item);
             if (updated && ProjeConstants.MTS_UPDATE_LOG)
                 new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESIDAGITIM);
             return updated;
@@ -165,7 +171,7 @@ namespace Model.Services.MTS
         public bool Delete(AniObjesiDagitim item)
         {
             AniObjesiDagitim old = GetById(item.Id);
-            bool deleted = item.Id != 0 && old != null && repository.Delete(TableName, item.Id);
+            bool deleted = item.Id != 0 && old != null && repository.Delete(item.Id);
             if (deleted && ProjeConstants.MTS_DELETE_LOG)
                 new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESIDAGITIM);
             return deleted;
