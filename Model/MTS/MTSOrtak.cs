@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Services.IKYS;
+using Model.Services.Portal;
 using Model.Portal;
 using System;
 using System.Collections.Generic;
@@ -29,8 +30,7 @@ namespace Model.Ortak
             {
 
                 
-                ToplantiKatilim toplantiKatilim = new ToplantiKatilim();
-                List<ToplantiKatilim> katilimciListesi = toplantiKatilim.SelectBytoplantiId(toplanti.Id);
+                List<ToplantiKatilim> katilimciListesi = new ToplantiKatilimService().GetByMeeting(toplanti.Id);
                 StringBuilder tabloSB = new StringBuilder();
                 EPostaGondelienleriTemizle();
                 foreach (var item in katilimciListesi)
@@ -629,8 +629,7 @@ namespace Model.Ortak
         private static string ParseToplantiYeri(int yeri, string diger)
         {
             string yeriStr = string.Empty;
-            ToplantiParametre toplantiParametre = new ToplantiParametre();
-            toplantiParametre = toplantiParametre.Select(yeri);
+            ToplantiParametre toplantiParametre = new ToplantiParametreService().GetById(yeri);
             if (toplantiParametre != null)
             {
                 if (toplantiParametre.Deger.Equals(ProjeConstants.PARAM_DIGER))
