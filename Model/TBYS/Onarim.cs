@@ -7,7 +7,7 @@ using System.Data;
 namespace Model.TBYS
 {
     [Serializable]
-    public class Onarim : ParentClass
+    public class Onarim : EntityBase
     {
         public int TasinmazId { get; set; }
         public string YapilanIs { get; set; }
@@ -16,27 +16,27 @@ namespace Model.TBYS
         public decimal Tutar { get; set; }
         public string Aciklama { get; set; }
 
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new OnarimService().GetById(id), typeof(T));
         }
 
-        public override int Save()
+        public int Save()
         {
             return new OnarimService().Save(this);
         }
 
-        public override bool Update()
+        public bool Update()
         {
             return new OnarimService().Update(this);
         }
 
-        public override bool Delete()
+        public bool Delete()
         {
             return new OnarimService().Delete(this);
         }
 
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(
                 new OnarimService().GetAll(),

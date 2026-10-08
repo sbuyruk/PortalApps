@@ -7,7 +7,7 @@ using System.Data;
 namespace Model.TBYS
 {
     [Serializable]
-    public class HukukiTakip : ParentClass
+    public class HukukiTakip : EntityBase
     {
         public int SozlesmeId { get; set; }
         public int KiraciId { get; set; }
@@ -17,22 +17,22 @@ namespace Model.TBYS
         public string Aciklama { get; set; }
         public bool Aktif { get; set; }
 
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new HukukiTakipService().GetById(id), typeof(T));
         }
 
-        public override int Save()
+        public int Save()
         {
             return new HukukiTakipService().Save(this);
         }
 
-        public override bool Update()
+        public bool Update()
         {
             return new HukukiTakipService().Update(this);
         }
 
-        public override bool Delete()
+        public bool Delete()
         {
             return new HukukiTakipService().Delete(this);
         }
@@ -52,7 +52,7 @@ namespace Model.TBYS
             return new HukukiTakipService().GetActiveList();
         }
 
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(
                 new HukukiTakipService().GetAll(),

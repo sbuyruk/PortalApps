@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Model.TBYS
 {
-    public class VasiyeteKonuVarlik : ParentClass
+    public class VasiyeteKonuVarlik : EntityBase
     {
         public int VasiyetciId { get; set; }
         public string Konusu { get; set; }
@@ -14,17 +14,17 @@ namespace Model.TBYS
         public decimal TahminiRayic { get; set; }
         public string Aciklama { get; set; }
 
-        public override int Save()
+        public int Save()
         {
             return new VasiyeteKonuVarlikService().Save(this);
         }
 
-        public override bool Update()
+        public bool Update()
         {
             return new VasiyeteKonuVarlikService().Update(this);
         }
 
-        public override bool Delete()
+        public bool Delete()
         {
             return new VasiyeteKonuVarlikService().Delete(this);
         }
@@ -34,12 +34,12 @@ namespace Model.TBYS
             return new VasiyeteKonuVarlikService().GetById(id);
         }
 
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new VasiyeteKonuVarlikService().GetById(id), typeof(T));
         }
 
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(
                 new VasiyeteKonuVarlikService().GetAll(),

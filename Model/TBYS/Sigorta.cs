@@ -12,7 +12,7 @@ using Model.Services.TBYS;
 namespace Model.TBYS
 {
     [Serializable]
-    public class Sigorta : ParentClass
+    public class Sigorta : EntityBase
     {
         public int TasinmazId { get; set; }
         public string SigortaCinsi { get; set; }
@@ -36,24 +36,24 @@ namespace Model.TBYS
         public string PDFDosyasi { get; set; }
         public string Aciklama { get; set; }
         public string KullanimSekli { get; set; }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new SigortaService().GetById(id), typeof(T));
 
         }
-        public override int Save()
+        public int Save()
         {
             return new SigortaService().Save(this);
         }
-        public override bool Update()
+        public bool Update()
         {
             return new SigortaService().Update(this);
         }
-        public override bool Delete()
+        public bool Delete()
         {
             return new SigortaService().Delete(this);
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             return (List<T>)Convert.ChangeType(
                 new SigortaService().GetAll(),

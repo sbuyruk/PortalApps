@@ -9,7 +9,7 @@ using Utility.ProjeGlobal;
 namespace Model.TBYS
 {
     [Serializable]
-    public class TeminatIslem : ParentClass
+    public class TeminatIslem : EntityBase
     {
         public int KiraciId { get; set; }
         public int DosyaNo { get; set; }
@@ -20,13 +20,13 @@ namespace Model.TBYS
         public string Aciklama { get; set; }
         public int OdemeId { get; set; }
 
-        public override T Select<T>(int id) { return (T)Convert.ChangeType(new TeminatIslemService().GetById(id), typeof(T)); }
+        public T Select<T>(int id) { return (T)Convert.ChangeType(new TeminatIslemService().GetById(id), typeof(T)); }
         public TeminatIslem Select(int id) { return new TeminatIslemService().GetById(id); }
-        public override int Save() { return new TeminatIslemService().Save(this); }
-        public override bool Update() { return new TeminatIslemService().Update(this); }
-        public override bool Delete() { return new TeminatIslemService().Delete(this); }
+        public int Save() { return new TeminatIslemService().Save(this); }
+        public bool Update() { return new TeminatIslemService().Update(this); }
+        public bool Delete() { return new TeminatIslemService().Delete(this); }
         public bool DeleteBySozlesmeId(int id) { return new TeminatIslemService().DeleteBySozlesmeId(id); }
-        public override List<T> SelectAll<T>() { return (List<T>)Convert.ChangeType(new TeminatIslemService().GetAll(), typeof(List<T>)); }
+        public List<T> SelectAll<T>() { return (List<T>)Convert.ChangeType(new TeminatIslemService().GetAll(), typeof(List<T>)); }
         public List<TeminatIslem> SelectBySozlesmeId(int id) { return new TeminatIslemService().GetBySozlesmeId(id); }
         public decimal SelectSumOdenenTutarByKiraciId(int id) { return new TeminatIslemService().GetSumPaidByKiraciId(id); }
         public DataTable SelectSumIslemTutariByKiraciIdGroupByIslemTipi(int id) { return new TeminatIslemService().GetSumByKiraciIdGroupByType(id); }
