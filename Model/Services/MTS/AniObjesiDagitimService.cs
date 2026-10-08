@@ -13,21 +13,14 @@ namespace Model.Services.MTS
     public class AniObjesiDagitimService
     {
         private readonly AniObjesiDagitimRepository repository;
-        private readonly MtsLookupRepository lookupRepository;
 
-        public AniObjesiDagitimService() : this(new AniObjesiDagitimRepository(), new MtsLookupRepository())
+        public AniObjesiDagitimService() : this(new AniObjesiDagitimRepository())
         {
         }
 
-        public AniObjesiDagitimService(AniObjesiDagitimRepository repository, MtsLookupRepository lookupRepository)
+        public AniObjesiDagitimService(AniObjesiDagitimRepository repository)
         {
             this.repository = repository ?? throw new ArgumentNullException("repository");
-            this.lookupRepository = lookupRepository ?? throw new ArgumentNullException("lookupRepository");
-        }
-
-        public AniObjesiDagitimService(MtsLookupRepository lookupRepository)
-            : this(new AniObjesiDagitimRepository(), lookupRepository)
-        {
         }
 
         public AniObjesiDagitim GetById(int id)
@@ -42,17 +35,17 @@ namespace Model.Services.MTS
 
         public List<AniObjesiDagitim> GetByFaaliyetId(int faaliyetId)
         {
-            return ToList(lookupRepository.SelectAniObjesiDagitimByFilter(faaliyetId, 0, 0, null, null, "activity"));
+            return ToList(repository.SelectByFilter(faaliyetId, 0, 0, null, null, "activity"));
         }
 
         public AniObjesiDagitim GetGetirilen(int faaliyetId, int katilimciId)
         {
-            return Map(lookupRepository.SelectGetirilenAniObjesi(faaliyetId, katilimciId, 0, ProjeConstants.ANIOBJESI_GETIRILEN_INT));
+            return Map(repository.SelectGetirilen(faaliyetId, katilimciId, ProjeConstants.ANIOBJESI_GETIRILEN_INT));
         }
 
         public DataTable GetDistributionTable(int faaliyetId, int katilimciId, string stokluMu = null)
         {
-            return lookupRepository.SelectAniObjesiDagitimByFilter(
+            return repository.SelectByFilter(
                 faaliyetId,
                 katilimciId,
                 0,
@@ -63,7 +56,7 @@ namespace Model.Services.MTS
 
         public List<AniObjesiDagitim> GetStoksuz(int faaliyetId, int katilimciId)
         {
-            return ToList(lookupRepository.SelectAniObjesiDagitimByFilter(
+            return ToList(repository.SelectByFilter(
                 faaliyetId,
                 katilimciId,
                 0,
@@ -74,7 +67,7 @@ namespace Model.Services.MTS
 
         public AniObjesiDagitim GetByActivityParticipantObject(int faaliyetId, int katilimciId, int aniObjesiId)
         {
-            return Map(lookupRepository.SelectAniObjesiDagitimByFilter(
+            return Map(repository.SelectByFilter(
                 faaliyetId,
                 katilimciId,
                 aniObjesiId,
@@ -85,7 +78,7 @@ namespace Model.Services.MTS
 
         public List<AniObjesiDagitim> GetByParticipant(int katilimciId, string verilenGetirilen)
         {
-            return ToList(lookupRepository.SelectAniObjesiDagitimByFilter(
+            return ToList(repository.SelectByFilter(
                 0,
                 katilimciId,
                 0,
@@ -96,7 +89,7 @@ namespace Model.Services.MTS
 
         public string GetGetirilenText(int katilimciId, int faaliyetId)
         {
-            DataTable table = lookupRepository.SelectGetirilenAniObjesiText(
+            DataTable table = repository.SelectGetirilenText(
                 katilimciId,
                 faaliyetId,
                 ProjeConstants.GETIRILEN_ANIOBJESIID_INT);
@@ -115,7 +108,7 @@ namespace Model.Services.MTS
 
         public DataTable GetByParticipantActivity(int katilimciId, int faaliyetId, string stokluMu)
         {
-            return lookupRepository.SelectAniObjesiDagitimByFilter(
+            return repository.SelectByFilter(
                 faaliyetId,
                 katilimciId,
                 0,
@@ -138,7 +131,7 @@ namespace Model.Services.MTS
             }).ToList();
 
             DataTable deletedItems;
-            int deleted = lookupRepository.DeleteAniObjesiDagitim(faaliyetId, katilimciId, ids, out deletedItems);
+            int deleted = repository.DeleteByActivityAndParticipant(faaliyetId, katilimciId, ids, out deletedItems);
             if (deleted > 0 && ProjeConstants.MTS_DELETE_LOG)
             {
                 foreach (AniObjesiDagitim item in ToList(deletedItems))
