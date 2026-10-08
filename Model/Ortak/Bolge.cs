@@ -8,28 +8,28 @@ using Model.Services.Ortak;
 
 namespace Model.Ortak
 {
-    public class Bolge : ParentClass
+    public class Bolge : EntityBase
     {
         public string Adi { get; set; }
         public string KisaAdi { get; set; }
 
-        public override int Save()
+        public int Save()
         {
             throw new NotImplementedException();
         }
-        public override bool Update()
+        public bool Update()
         {
             throw new NotImplementedException();
         }
-        public override bool Delete()
+        public bool Delete()
         {
             throw new NotImplementedException();
         }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new BolgeService().GetById(id), typeof(T));
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             List<Bolge> list = new BolgeService().GetAll();
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));

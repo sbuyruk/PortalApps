@@ -8,7 +8,7 @@ using Utility.ProjeGlobal;
 
 namespace Model.Ortak
 {
-    public class Il : ParentClass
+    public class Il : EntityBase
     {
         public string IlAdi { get; set; }
         public int PlakaKodu { get; set; }
@@ -16,23 +16,23 @@ namespace Model.Ortak
         public string Bolge { get; set; }
         public int BolgeId { get; set; }
 
-        public override int Save()
+        public int Save()
         {
             throw new NotImplementedException();
         }
-        public override bool Update()
+        public bool Update()
         {
             throw new NotImplementedException();
         }
-        public override bool Delete()
+        public bool Delete()
         {
             throw new NotImplementedException();
         }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new IlService().GetById(id), typeof(T));
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             List<Il> list = new IlService().GetAll();
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));

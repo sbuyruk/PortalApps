@@ -9,31 +9,31 @@ using Model.Services.Ortak;
 namespace Model.Ortak
 {
 
-    public class Ilce : ParentClass
+    public class Ilce : EntityBase
     {
         public int IlId { get; set; }
         public string IlAdi { get; set; }
         public int IlceId { get; set; }
         public string IlceAdi { get; set; }
-        public override bool Delete()
+        public bool Delete()
         {
             throw new NotImplementedException();
         }
-        public override int Save()
+        public int Save()
         {
             throw new NotImplementedException();
         }
-        public override T Select<T>(int id)
+        public T Select<T>(int id)
         {
             return (T)Convert.ChangeType(new IlceService().GetById(id), typeof(T));
         }
-        public override List<T> SelectAll<T>()
+        public List<T> SelectAll<T>()
         {
             List<Ilce> list = new IlceService().GetAll();
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
 
-        public override bool Update()
+        public bool Update()
         {
             throw new NotImplementedException();
         }
