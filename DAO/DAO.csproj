@@ -45,6 +45,8 @@
     <AssemblyOriginatorKeyFile>daokey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Repositories\Portal\ToplantiKatilimRepository.cs" />
+    <Compile Include="Repositories\Portal\ToplantiParametreRepository.cs" />
     <Compile Include="Repositories\Portal\DuyuruGosterimRepository.cs" />
     <Compile Include="Repositories\Portal\DuyuruOkumaRepository.cs" />
     <Compile Include="Repositories\Portal\ProgramYetkiRepository.cs" />
