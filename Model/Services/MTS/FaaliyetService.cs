@@ -13,21 +13,14 @@ namespace Model.Services.MTS
     public class FaaliyetService
     {
         private readonly FaaliyetRepository repository;
-        private readonly MtsLookupRepository lookupRepository;
 
-        public FaaliyetService() : this(new FaaliyetRepository(), new MtsLookupRepository())
+        public FaaliyetService() : this(new FaaliyetRepository())
         {
         }
 
-        public FaaliyetService(FaaliyetRepository repository, MtsLookupRepository lookupRepository)
+        public FaaliyetService(FaaliyetRepository repository)
         {
             this.repository = repository ?? throw new ArgumentNullException("repository");
-            this.lookupRepository = lookupRepository ?? throw new ArgumentNullException("lookupRepository");
-        }
-
-        public FaaliyetService(MtsLookupRepository lookupRepository)
-            : this(new FaaliyetRepository(), lookupRepository)
-        {
         }
 
         public Faaliyet GetById(int id)
@@ -42,12 +35,12 @@ namespace Model.Services.MTS
 
         public List<Faaliyet> GetAll(string acikTarih)
         {
-            return ToList(lookupRepository.SelectFaaliyetByAcikTarih(acikTarih));
+            return ToList(repository.SelectByAcikTarih(acikTarih));
         }
 
         public DataTable GetAllData(string acikTarih)
         {
-            return lookupRepository.SelectFaaliyetByAcikTarih(acikTarih);
+            return repository.SelectByAcikTarih(acikTarih);
         }
 
         public string GetCalendarJson(string acikTarih)
@@ -93,12 +86,12 @@ namespace Model.Services.MTS
         {
             DateTime baslangic = new DateTime(tarih.Year, tarih.Month, tarih.Day);
             DateTime bitis = UtilityHelper.TariheSaatEkle(tarih, "23:59");
-            return ToList(lookupRepository.SelectFaaliyetByDate(baslangic, bitis));
+            return ToList(repository.SelectByDate(baslangic, bitis));
         }
 
         public DataTable GetParticipantList(int faaliyetId, int monthBefore, string acikTarihli, DateTime basTar, DateTime bitTar, string faaliyetAmaci)
         {
-            return lookupRepository.SelectFaaliyetParticipants(
+            return repository.SelectParticipants(
                 faaliyetId,
                 monthBefore,
                 acikTarihli,
@@ -111,7 +104,7 @@ namespace Model.Services.MTS
 
         public DataTable GetByParticipant(int katilimciId, int faaliyetId)
         {
-            return lookupRepository.SelectFaaliyetByParticipant(
+            return repository.SelectByParticipant(
                 katilimciId,
                 faaliyetId,
                 ProjeConstants.MTSGOREVDURUMU_GOREVDE);
@@ -119,7 +112,7 @@ namespace Model.Services.MTS
 
         public List<string> GetDistinctPlaces()
         {
-            return lookupRepository.SelectDistinctFaaliyetYeri()
+            return repository.SelectDistinctPlaces()
                 .AsEnumerable()
                 .Select(row => row.Field<string>("FaaliyetYeri"))
                 .ToList();

@@ -153,7 +153,6 @@
     <Compile Include="Repositories\MTS\MTSUnvanTanimRepository.cs" />
     <Compile Include="Repositories\MTS\MTSGorevTanimRepository.cs" />
     <Compile Include="Repositories\MTS\MTSKurumTanimRepository.cs" />
-    <Compile Include="Repositories\MTS\MtsLookupRepository.cs" />
     <Compile Include="Repositories\MTS\MTSKurumGorevRepository.cs" />
     <Compile Include="Repositories\NBYS\ArmaganRepository.cs" />
     <Compile Include="Repositories\NBYS\ArmaganTanimRepository.cs" />

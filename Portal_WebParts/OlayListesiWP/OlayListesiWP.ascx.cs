@@ -202,8 +202,8 @@ namespace Portal_WebParts.OlayListesiWP
                     }
 
                     //Getirilen Ani Objeleri ayrica aliniyor
-                    AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
-                    getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(faaliyetId, kisi.Id);
+                    AniObjesiDagitim getirilenAniObjesi = new Model.Services.MTS.AniObjesiDagitimService()
+                        .GetGetirilen(faaliyetId, kisi.Id);
                     if (getirilenAniObjesi != null)
                     {
                         getirilenAniObjesiStr = getirilenAniObjesi.GetirilenAniObjesi;
