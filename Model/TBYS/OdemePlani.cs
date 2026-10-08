@@ -1,4 +1,3 @@
-using DAO.Ortak;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Model.Ortak;
 using Model.Services.TBYS;
@@ -64,88 +63,9 @@ namespace Model.TBYS
             return new OdemePlaniRaporService().GetBorcluByBolgeTarihJson(bolgeId, ilkTarih, sonTarih, aySayisi, aySayisiBit, ref kayitSayisi);
 
         }
-        private string GetBorcluOdemePlanlariByBolgeTarihSqlScript(int bolgeId, DateTime ilkTarih, DateTime sonTarih, int aySayisiBas, int aySayisiBit)
-        {
-            //string aySayisiStr = string.Format(" ((ABS(C.FaizliBakiye) - ABS(A.KiraBedeli))  / A.KiraBedeli) BETWEEN {0} AND {1}  AND ", (aySayisiBas - 0.5).ToString().Replace(",", "."), (aySayisiBit + 0.5).ToString().Replace(",", "."));
-            string aySayisiStr = string.Format(@"
-                (
-                    (
-                        A.TaksitSayisi>1 AND ((ABS(C.FaizliBakiye) - ABS(A.KiraBedeli))  / A.KiraBedeli) BETWEEN {2} AND {3}  
-                    )
-                    OR
-                    (
-                        A.TaksitSayisi<2 AND 
-                        (
-                            (C.VadeBitTar BETWEEN {0} AND {1} )
-						    AND 
-                            (ABS(FaizliBakiye/A.KiraBedeli)*C.Sira BETWEEN {2} AND {3}) 
-                        )
-                     ) 
-                ) ", ilkTarih.ReturnTRDateFormat(), sonTarih.ReturnDDMMYYYFormat(), (aySayisiBas - 0.5).ToString().Replace(",", "."), (aySayisiBit + 0.5).ToString().Replace(",", "."));
-
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND A.BolgeId={0} ", bolgeId);
-
-
-            string sqlString = string.Format(@"
-                SELECT 
-                    A.Id KiraSozlesmeId, H.KisaAdi Bolge, A.DosyaNo, B.Adi+' '+B.Soyadi Kiraci, A.KiraciId,
-                    A.IlkSozlesmeTar, A.SozBasTar, A.SozBitTar, A.ArtisAyi, A.OdemeSekli, 
-                    A.KiraBedeli, C.AnaPara AnaPara,C.FaizTutari, C.FaizliBakiye, C.VadeBasTar, C.VadeBitTar, C.Id OdemePlaniId,
-                    FORMAT(C.FaizliBakiye,'###.00') FaizliBakiyeFormat,
-                    B.Adres, B.Ili,B.Ilcesi,B.Semt,
-	                A.TeminatOdemeTarihi,A.TeminatTutari,
-                    ABS(FaizliBakiye/A.KiraBedeli)*C.Sira AySayisi, A.TaksitSayisi
-                FROM KiraSozlesme_Table A
-                    INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId
-                    INNER JOIN Bolge_Table H ON H.Id=A.BolgeId
-                    LEFT JOIN OdemePlani_Table C ON C.SozlesmeId=A.Id 
-                WHERE 1>0
-                    {0}
-                    AND C.FaizliBakiye < 0 AND (C.VadeBitTar BETWEEN {1} AND {2}) AND
-	                {3} AND 
-                    (
-                        A.SozBasTar<{2} AND A.SozBitTar >= {1} 
-						AND
-                        (--SB 12.08.2022 parantez icine aldim cift cikan kayitlar oluyordu
-							(
-								A.SozlesmeDurumu = 'Devam Ediyor' 
-								OR
-								(A.SozlesmeDurumu != 'Devam Ediyor' AND A.SozlesmeDurumu != 'Yenilendi' AND A.DurumDegismeTar BETWEEN {1} AND {2})
-							)
-						    OR 
-						    (A.SozlesmeDurumu='Yenilendi' AND A.SozBitTar>{2}) 
-                        )--SB 12.08.2022
-                    )
-                ORDER BY A.BolgeId, A.DosyaNo,B.Adi
-
-                ", bolgeStr, ilkTarih.ReturnTRDateFormat(), sonTarih.ReturnDDMMYYYFormat(), aySayisiStr);
-            return sqlString;
-        }
         public DataTable SelectMevcutOdemePlanlariByTarih(DateTime ilkTarih, DateTime sonTarih, string bolge)
         {
             return new OdemePlaniRaporService().GetCurrentByDate(ilkTarih, sonTarih, bolge);
-            /* string bolgeStr = string.Format(bolge.Equals(ProjeConstants.HEPSI) || string.IsNullOrEmpty(bolge) ? " " : " AND E.Bolge ={0} ", bolge.ReturnQuotedValue());
-            string sqlString = string.Format(@"
-                SELECT A.Id KiraSozlesmeId, E.Bolge, A.DosyaNo, G.Adi+' '+G.Soyadi Kiraci, D.Adres + ' ' + ISNULL(F.BolumNo,'') Adres, 
-                    A.IlkSozlesmeTar, A.SozBasTar, A.SozBitTar, A.ArtisAyi, A.OdemeSekli, 
-                    A.KiraBedeli, B.AnaPara AnaPara,B.FaizTutari, B.FaizliBakiye, B.VadeBasTar, 
-					D.KullanimSekli,D.Ili,D.Ilcesi,
-					A.TeminatOdemeTarihi,A.TeminatTutari
-                FROM KiraSozlesme_Table A
-                    LEFT JOIN OdemePlani_Table B ON B.SozlesmeId=A.Id AND B.Id in (SELECT Id FROM OdemePlani_Table WHERE VadeBasTar BETWEEN {0} AND {1} )
-                    LEFT JOIN SozlesmeTasinmaz_Table C On C.SozlesmeId=A.Id AND C.Id = (Select top 1 Id from SozlesmeTasinmaz_Table where SozlesmeId = A.Id) 
-                    LEFT JOIN Tasinmaz_Table D On D.Id=C.TasinmazId
-                    LEFT JOIN Il_Table E ON E.IlAdi=D.Ili
-                    LEFT JOIN BagimsizBolum_Table F On F.Id=C.BolumId
-	                LEFT JOIN Kiraci_Table G On G.Id=A.KiraciId
-                WHERE A.Aktif= 1
-                    {2} 
-                ORDER BY CASE WHEN A.DosyaNo = 0 THEN 2 ELSE 1 END,ISNULL(A.DosyaNo, 999999),  A.Id
-	                
-                ", ilkTarih.ReturnTRDateFormat(), sonTarih.ReturnTRDateFormat(), bolgeStr);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable; */
         }
         public List<OdemePlani> SelectBySozlesmeId(int sozlesmeId)
         {
@@ -158,27 +78,6 @@ namespace Model.TBYS
         public DataTable SelectKiraGeliriByBolgeAyYil(int bolgeId, int ay, int yil)
         {
             return new OdemePlaniRaporService().GetIncomeByRegionMonth(bolgeId, ay, yil);
-            /* string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND C.BolgeId={0} ", bolgeId);
-
-            string sqlString = string.Format(@"
-				SELECT H.KisaAdi Bolge,B.kiralamaAmaci, SUM(A.OdenenTutar) ToplamOdemeTutari, COUNT(DISTINCT(C.Id)) ToplamKiraciSayisi
-				FROM Odeme_Table A
-					INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId 
-					INNER JOIN KiraSozlesme_Table C ON C.Id=A.SozlesmeId
-					INNER JOIN OdemePlani_Table D ON D.Id=A.OdemePlaniId
-					LEFT JOIN TeminatIslem_Table E ON E.OdemeId=A.Id
-					LEFT JOIN Bolge_Table H ON H.Id=C.BolgeId
-                WHERE  
-                    YEAR(A.OdemeTarihi) ={0}
-                    AND MONTH(A.OdemeTarihi) ={1}
-                    {2}
-                GROUP BY H.KisaAdi, B.KiralamaAmaci
-                ORDER BY H.KisaAdi, B.KiralamaAmaci
-                
-            ", yil, ay, bolgeStr);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            return dataTable; */
-
         }
         public OdemePlani SelectBySozlesmeIdOdemeTarihi(int sozlesmeId, DateTime odemeTarihi)
         {
@@ -199,29 +98,6 @@ namespace Model.TBYS
         public DataTable SelectOdemePlaniListByTarihReturnDT(DateTime tarih)
         {
             return new OdemePlaniRaporService().GetListByDate(tarih);
-            /* string sqlString = string.Format(@"
-                SELECT A.Id SozlesmeId,A.DosyaNo,B.Adi, B.Soyadi, B.Adi+' '+ B.Soyadi KiraciAdi,
-	                D.Adres, G.BolumNo, F.OdemeBasTar,F.OdemeBitTar,F.KiraBedeli,F.OdenenTutar,F.FaizliBakiye
-                FROM KiraSozlesme_Table A
-                INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId
-                    LEFT JOIN SozlesmeTasinmaz_Table C On C.Id=(Select top 1 Id from SozlesmeTasinmaz_Table where SozlesmeId=A.Id) 
-                    LEFT JOIN Tasinmaz_Table D On D.Id=C.TasinmazId
-                    LEFT JOIN BagimsizBolum_Table G ON G.Id=C.BolumId
-                    LEFT JOIN Il_Table E ON E.IlAdi=D.Ili
-                    LEFT JOIN OdemePlani_Table F ON F.Id=(Select MAX(Id) from OdemePlani_Table where SozlesmeId=A.Id AND VadeBasTar < {0}) 
-                WHERE Aktif=1
-                ORDER BY CASE WHEN A.DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(A.DosyaNo,999999),  ISNULL(A.BolgeId,0),  A.Id
-                ", tarih.ReturnTRDateFormat());
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            return dataTable; */
         }
         public bool OdemePlaniOlustur(KiraSozlesme kiraSozlesme)
         {

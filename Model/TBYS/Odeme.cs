@@ -83,7 +83,6 @@ namespace Model.TBYS
 
             try
             {
-                //dao.StartTransaction();
                 //odemeyi yap
                 odeme = new Odeme();
                 odeme.SozlesmeId = kiraSozlesme.Id;
@@ -114,7 +113,6 @@ namespace Model.TBYS
                     odemePlani.Degistiren = kullanici;
                     kaydedildiMi = odemePlani.Update();
                 }
-                //dao.EndTransaction();
             }
             catch (Exception exception1)
             {
