@@ -269,9 +269,19 @@ namespace DAO.Repositories.NBYS
             return db.Insert(queryBuilder.BuildInsert(entity, TableName));
         }
 
+        public int Insert<T>(T entity, SqlTransactionContext transaction)
+        {
+            return transaction.Insert(queryBuilder.BuildInsert(entity, TableName));
+        }
+
         public bool Update<T>(T entity)
         {
             return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName));
+        }
+
+        public bool Update<T>(T entity, SqlTransactionContext transaction)
+        {
+            return transaction.Update(queryBuilder.BuildUpdate(entity, TableName));
         }
 
         public bool Delete(int id)

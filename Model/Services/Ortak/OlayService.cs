@@ -1,4 +1,5 @@
 using DAO.Repositories.Ortak;
+using DAO.Ortak;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,17 @@ namespace Model.Services.Ortak
             return item.Id = repository.Insert(item);
         }
 
+        public int Save(Olay item, SqlTransactionContext transaction)
+        {
+            if (item == null)
+                throw new ArgumentNullException("item");
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            item.OlusturmaTarihi = DateTime.Now;
+            return item.Id = repository.Insert(item, transaction);
+        }
+
         public bool Update(Olay item)
         {
             if (item == null || item.Id == 0)
@@ -60,6 +72,17 @@ namespace Model.Services.Ortak
 
             item.DegistirmeTarihi = DateTime.Now;
             return repository.Update(item);
+        }
+
+        public bool Update(Olay item, SqlTransactionContext transaction)
+        {
+            if (item == null || item.Id == 0)
+                return false;
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            item.DegistirmeTarihi = DateTime.Now;
+            return repository.Update(item, transaction);
         }
 
         public bool Delete(Olay item)

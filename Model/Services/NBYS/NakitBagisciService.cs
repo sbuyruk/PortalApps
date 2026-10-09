@@ -1,4 +1,5 @@
 using DAO.Repositories.NBYS;
+using DAO.Ortak;
 using Model.NBYS;
 using Model.Ortak;
 using System;
@@ -45,6 +46,28 @@ namespace Model.Services.NBYS
                     ProjeConstants.NBYS_NAKITBAGISCI);
             }
 
+            return nakitBagisci.Id;
+        }
+
+        public int Save(NakitBagisci nakitBagisci, SqlTransactionContext transaction)
+        {
+            if (nakitBagisci == null)
+                throw new ArgumentNullException("nakitBagisci");
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            nakitBagisci.OlusturmaTarihi = DateTime.Now;
+            nakitBagisci.Olusturan = UtilityHelper.GetCurrentUserName();
+            nakitBagisci.Id = repository.Insert(nakitBagisci, transaction);
+
+            if (nakitBagisci.Id > 0 && ProjeConstants.NBYS_SAVE_LOG)
+            {
+                new OlayKayit().GirisOlayKaydet(
+                    nakitBagisci,
+                    ProjeConstants.NBYS,
+                    ProjeConstants.NBYS_NAKITBAGISCI,
+                    transaction);
+            }
             return nakitBagisci.Id;
         }
 
@@ -142,6 +165,32 @@ namespace Model.Services.NBYS
             return isSaved;
         }
 
+        public bool Update(NakitBagisci nakitBagisci, SqlTransactionContext transaction)
+        {
+            if (nakitBagisci == null)
+                throw new ArgumentNullException("nakitBagisci");
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            if (nakitBagisci.Id == 0)
+                return false;
+
+            NakitBagisci previous = GetById(nakitBagisci.Id);
+            nakitBagisci.DegistirmeTarihi = DateTime.Now;
+            nakitBagisci.Degistiren = UtilityHelper.GetCurrentUserName();
+            bool updated = repository.Update(nakitBagisci, transaction);
+            if (updated && ProjeConstants.NBYS_UPDATE_LOG)
+            {
+                new OlayKayit().GuncellemeOlayKaydet(
+                    previous,
+                    nakitBagisci,
+                    ProjeConstants.NBYS,
+                    ProjeConstants.NBYS_NAKITBAGISCI,
+                    transaction);
+            }
+            return updated;
+        }
+
         public bool Update(NakitBagisci nakitBagisci, bool oncekiTuzelKisi, string currentUser)
         {
             bool isSaved = Update(nakitBagisci);
@@ -200,6 +249,22 @@ namespace Model.Services.NBYS
                 ProjeConstants.NAKITBAGISCI_BILINMEYEN,
                 DateTime.Now,
                 UtilityHelper.GetCurrentUserName());
+        }
+
+        public int CreateBilinmeyenBagisci(SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            NakitBagisci bagisci = new NakitBagisci();
+            bagisci.OlusturmaTarihi = DateTime.Now;
+            bagisci.Olusturan = UtilityHelper.GetCurrentUserName();
+            return repository.CreateBilinmeyenBagisci(
+                bagisci,
+                ProjeConstants.NAKITBAGISCI_BILINMEYEN,
+                DateTime.Now,
+                UtilityHelper.GetCurrentUserName(),
+                transaction);
         }
 
         private static NakitBagisci MapSingle(DataTable dataTable)

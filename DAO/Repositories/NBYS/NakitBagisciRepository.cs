@@ -30,10 +30,20 @@ namespace DAO.Repositories.NBYS
             return db.Insert(query);
         }
 
+        public int Insert<T>(T entity, SqlTransactionContext transaction)
+        {
+            return transaction.Insert(crudQueryBuilder.BuildInsert(entity, TableName));
+        }
+
         public bool Update<T>(T entity)
         {
             SqlQuery query = crudQueryBuilder.BuildUpdate(entity, TableName);
             return db.Update2Db(query);
+        }
+
+        public bool Update<T>(T entity, SqlTransactionContext transaction)
+        {
+            return transaction.Update(crudQueryBuilder.BuildUpdate(entity, TableName));
         }
 
         public bool Delete(int id)
@@ -108,6 +118,36 @@ namespace DAO.Repositories.NBYS
                     }
                 }
             }
+        }
+
+        public int CreateBilinmeyenBagisci<T>(
+            T entity,
+            string namePrefix,
+            DateTime modifiedAt,
+            string modifiedBy,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            SqlQuery insert = crudQueryBuilder.BuildInsert(entity, TableName);
+            NormalizeLegacyNullStrings(entity, insert);
+            int id = transaction.Insert(insert);
+            if (id <= 0)
+                throw new InvalidOperationException("Bilinmeyen bagisci kimligi gecersiz.");
+
+            SqlQuery update = new SqlQuery(@"UPDATE NakitBagisci_Table
+                SET Adi=@Adi, Aciklama=@Aciklama,
+                    DegistirmeTarihi=@DegistirmeTarihi, Degistiren=@Degistiren
+                WHERE Id=@Id");
+            string idText = id.ToString(CultureInfo.InvariantCulture);
+            update.AddParameter("@Id", id);
+            update.AddParameter("@Adi", namePrefix + "_" + idText);
+            update.AddParameter("@Aciklama", namePrefix + " Bagisçi Id= " + idText);
+            update.AddParameter("@DegistirmeTarihi", modifiedAt);
+            update.AddParameter("@Degistiren", modifiedBy ?? string.Empty);
+            transaction.Update(update);
+            return id;
         }
 
         public DataTable SelectById(int id)

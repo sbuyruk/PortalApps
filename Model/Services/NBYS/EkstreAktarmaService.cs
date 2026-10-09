@@ -1,4 +1,5 @@
 using DAO.Repositories.NBYS;
+using DAO.Ortak;
 using Model.NBYS;
 using Model.Ortak;
 using System;
@@ -90,6 +91,32 @@ namespace Model.Services.NBYS
             }
             if (updated && ProjeConstants.NBYS_UPDATE_LOG)
                 new OlayKayit().GuncellemeOlayKaydet(item, previous, ProjeConstants.NBYS, ProjeConstants.NBYS_EKSTREAKTARMA);
+            return updated;
+        }
+
+        public bool Update(EkstreAktarma item, SqlTransactionContext transaction)
+        {
+            if (item == null) throw new ArgumentNullException("item");
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (item.Id == 0) return false;
+
+            EkstreAktarma previous = GetById(item.Id);
+            if (item.NakitBagisciId <= 0 && previous != null && previous.NakitBagisciId > 0)
+                item.NakitBagisciId = previous.NakitBagisciId;
+
+            item.DegistirmeTarihi = DateTime.Now;
+            item.Degistiren = UtilityHelper.GetCurrentUserName();
+
+            bool updated = repository.Update(item, transaction);
+            if (updated && ProjeConstants.NBYS_UPDATE_LOG)
+            {
+                new OlayKayit().GuncellemeOlayKaydet(
+                    previous,
+                    item,
+                    ProjeConstants.NBYS,
+                    ProjeConstants.NBYS_EKSTREAKTARMA,
+                    transaction);
+            }
             return updated;
         }
 

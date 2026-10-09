@@ -1,3 +1,4 @@
+using DAO.Ortak;
 using Model.MTS;
 using Model.Services.Ortak;
 using System;
@@ -13,7 +14,12 @@ namespace Model.Ortak
     public class OlayKayit
     {
         public OlayKayit() { }
-        public bool GuncellemeOlayKaydet<T> (T eski, T yeni, string program,string modul) 
+        public bool GuncellemeOlayKaydet<T> (
+            T eski,
+            T yeni,
+            string program,
+            string modul,
+            SqlTransactionContext transaction = null)
         {
             bool kaydedildi = false;
             if (eski != null && yeni != null)
@@ -39,7 +45,10 @@ namespace Model.Ortak
                     olay.Olusturan = UtilityHelper.GetCurrentUserName();
                     olay.OlusturmaTarihi = DateTime.Now;
                     olay.Program = program;
-                    new OlayService().Save(olay);
+                    if (transaction == null)
+                        new OlayService().Save(olay);
+                    else
+                        new OlayService().Save(olay, transaction);
                 }
                 
             }
@@ -74,7 +83,11 @@ namespace Model.Ortak
             return silindi;
         }
         
-        public bool GirisOlayKaydet<T>(T yeni, string program, string modul)
+        public bool GirisOlayKaydet<T>(
+            T yeni,
+            string program,
+            string modul,
+            SqlTransactionContext transaction = null)
         {
             bool kaydedildi = false;
             if (yeni != null)
@@ -103,7 +116,10 @@ namespace Model.Ortak
                     olay.Olusturan = UtilityHelper.GetCurrentUserName();
                     olay.OlusturmaTarihi = DateTime.Now;
                     olay.Program = program;
-                    new OlayService().Save(olay);
+                    if (transaction == null)
+                        new OlayService().Save(olay);
+                    else
+                        new OlayService().Save(olay, transaction);
                 }
             }
             return kaydedildi;

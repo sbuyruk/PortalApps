@@ -1,4 +1,5 @@
 using DAO.Repositories.NBYS;
+using DAO.Ortak;
 using Model.NBYS;
 using Model.Ortak;
 using System;
@@ -204,6 +205,28 @@ namespace Model.Services.NBYS
             return armagan.Id;
         }
 
+        public int Save(Armagan armagan, SqlTransactionContext transaction)
+        {
+            if (armagan == null)
+                throw new ArgumentNullException("armagan");
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            armagan.OlusturmaTarihi = DateTime.Now;
+            armagan.Olusturan = UtilityHelper.GetCurrentUserName();
+            armagan.Id = repository.Insert(armagan, transaction);
+
+            if (armagan.Id > 0 && ProjeConstants.NBYS_SAVE_LOG)
+            {
+                new OlayKayit().GirisOlayKaydet(
+                    armagan,
+                    ProjeConstants.NBYS,
+                    ProjeConstants.NBYS_ARMAGAN,
+                    transaction);
+            }
+            return armagan.Id;
+        }
+
         public Armagan GetDuzenliBagisByBelgeSirasi(int bagisciId, int belgeSirasi)
         {
             return Map(repository.SelectByBagisciIdTanimIdBelgeSirasi(
@@ -247,6 +270,31 @@ namespace Model.Services.NBYS
             {
                 new OlayKayit().GuncellemeOlayKaydet(
                     armagan, previous, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGAN);
+            }
+            return updated;
+        }
+
+        public bool Update(Armagan armagan, SqlTransactionContext transaction)
+        {
+            if (armagan == null)
+                throw new ArgumentNullException("armagan");
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            if (armagan.Id == 0)
+                return false;
+
+            Armagan previous = GetById(armagan.Id);
+            armagan.DegistirmeTarihi = DateTime.Now;
+            armagan.Degistiren = UtilityHelper.GetCurrentUserName();
+            bool updated = repository.Update(armagan, transaction);
+            if (updated && ProjeConstants.NBYS_UPDATE_LOG)
+            {
+                new OlayKayit().GuncellemeOlayKaydet(
+                    previous,
+                    armagan,
+                    ProjeConstants.NBYS,
+                    ProjeConstants.NBYS_ARMAGAN,
+                    transaction);
             }
             return updated;
         }
