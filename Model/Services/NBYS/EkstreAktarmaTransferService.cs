@@ -577,6 +577,9 @@ namespace Model.Services.NBYS
             NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
             NakitBagisHareket kayitliNakitBagishareket = new NakitBagisHareket();
             kayitliNakitBagishareket = new NakitBagisHareketService().GetByEkstreAktarmaId(ekstreAktarma.Id);
+            if (kayitliNakitBagishareket != null)
+                return kayitliNakitBagishareket;
+
             int nakitBagisHareketId = 0;
             if (kayitliNakitBagishareket==null)
             {
