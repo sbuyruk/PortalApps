@@ -195,6 +195,24 @@ namespace DAO.Repositories.NBYS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectSumByBagisciIdTarih(
+            int bagisciId,
+            DateTime baslangic,
+            DateTime bitis,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            SqlQuery query = new SqlQuery(@"SELECT SUM(BagisMiktari) Toplam
+                FROM NakitBagisHareket_Table
+                WHERE BagisciId=@BagisciId AND BagisTarihi BETWEEN @Baslangic AND @Bitis");
+            query.AddParameter("@BagisciId", bagisciId);
+            query.AddParameter("@Baslangic", baslangic);
+            query.AddParameter("@Bitis", bitis);
+            return transaction.Select(query);
+        }
+
         public DataTable SelectArmaganiOlmayanByBagisciId(int bagisciId)
         {
             SqlQuery query = new SqlQuery(@"SELECT A.*

@@ -293,7 +293,10 @@ namespace Model.Services.NBYS
                 //Geçmisten bugüne kadar olan toplam bagis tutarini bul
                 NakitBagisHareket nbh = new NakitBagisHareket();
                 decimal toplamBagis = new NakitBagisHareketService().GetTotalByBagisciIdDateRange(
-                    ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ConvertToDatetime(), nakitBagisHareket.BagisTarihi, nakitBagisci.Id);
+                    ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ConvertToDatetime(),
+                    nakitBagisHareket.BagisTarihi,
+                    nakitBagisci.Id,
+                    transaction);
 
                 //Geçmisten bugüne kadar olan toplam bagis tutarina göre Çoklu Bagis armagani hakediyor mu
                 ArmaganTanim cokluBagisanHakedilenArmaganTanim = new ArmaganTanimService().GetByAmount(toplamBagis, ekstreAktarma.TuzelKisi);

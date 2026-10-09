@@ -262,6 +262,22 @@ namespace Model.Services.NBYS
             return table.Rows[0]["Toplam"].ReturnZeroIfNull().ConvertToDecimal();
         }
 
+        public decimal GetTotalByBagisciIdDateRange(
+            DateTime baslangic,
+            DateTime bitis,
+            int bagisciId,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            DataTable table = repository.SelectSumByBagisciIdTarih(
+                bagisciId, baslangic.Date, bitis.Date, transaction);
+            if (table == null || table.Rows.Count == 0)
+                return 0;
+            return table.Rows[0]["Toplam"].ReturnZeroIfNull().ConvertToDecimal();
+        }
+
         public List<NakitBagisHareket> GetByBagisciIdDateRange(DateTime baslangic, DateTime bitis, int bagisciId)
         {
             return Map(repository.SelectByBagisciIdTarih(bagisciId, baslangic.Date, bitis.Date));
