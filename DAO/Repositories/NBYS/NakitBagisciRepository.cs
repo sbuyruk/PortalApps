@@ -327,7 +327,8 @@ namespace DAO.Repositories.NBYS
         public DataTable SelectByFilter(string filter, int eksiId)
         {
             SqlQuery query = new SqlQuery(@"
-                SELECT distinct(N.Id) NakitBagisciId, N.Adi,Soyadi, TCKimlikNo, A.IlAdi Ili ,B.IlceAdi Ilcesi,Adres,
+                SELECT distinct(N.Id) NakitBagisciId, N.Adi,ISNULL(Soyadi,'') Soyadi, 
+                    TCKimlikNo, A.IlAdi Ili ,B.IlceAdi Ilcesi,Adres,
 	                Telefon1,Telefon2, Telefon1 + IIF(ISNULL(Telefon1,'')!='' AND ISNULL(Telefon2,'')!='',' - ','') + Telefon2 Telefon,
                     N.OlusturmaTarihi  ,N.DegistirmeTarihi,N.Degistiren,Sag,Eposta ,PostaKodu, Ulasilamiyor, BelgeIstemiyor
                 FROM NakitBagisci_Table N
