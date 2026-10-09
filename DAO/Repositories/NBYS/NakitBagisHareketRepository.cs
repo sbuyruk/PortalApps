@@ -190,8 +190,8 @@ namespace DAO.Repositories.NBYS
                 FROM NakitBagisHareket_Table
                 WHERE BagisciId=@BagisciId AND BagisTarihi BETWEEN @Baslangic AND @Bitis");
             query.AddParameter("@BagisciId", bagisciId);
-            query.AddParameter("@Baslangic", LegacyDateValue(baslangic));
-            query.AddParameter("@Bitis", LegacyDateValue(bitis));
+            query.AddParameter("@Baslangic", baslangic);
+            query.AddParameter("@Bitis", bitis);
             return db.SelectFromDb(query, "");
         }
 
