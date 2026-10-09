@@ -455,6 +455,124 @@ namespace Utility.HelperClasses
             return result;
         }
 
+        public static bool TryConvertToDecimal(
+            this string value,
+            CultureInfo culture,
+            out decimal amount)
+        {
+            amount = 0;
+
+            if (value == null || culture == null)
+            {
+                return false;
+            }
+
+            string input = value.Trim();
+            if (input.Length == 0)
+            {
+                return false;
+            }
+
+            NumberFormatInfo numberFormat = culture.NumberFormat;
+            string decimalSeparator = numberFormat.NumberDecimalSeparator;
+            string groupSeparator = numberFormat.NumberGroupSeparator;
+
+            if (string.IsNullOrEmpty(decimalSeparator)
+                || string.IsNullOrEmpty(groupSeparator)
+                || decimalSeparator == groupSeparator)
+            {
+                return false;
+            }
+
+            int signOffset = input[0] == '+' || input[0] == '-' ? 1 : 0;
+            if (signOffset == input.Length)
+            {
+                return false;
+            }
+
+            string unsignedInput = input.Substring(signOffset);
+            int decimalSeparatorIndex = unsignedInput.IndexOf(decimalSeparator, StringComparison.Ordinal);
+            if (decimalSeparatorIndex >= 0
+                && decimalSeparatorIndex != unsignedInput.LastIndexOf(decimalSeparator, StringComparison.Ordinal))
+            {
+                return false;
+            }
+
+            string integerPart = decimalSeparatorIndex >= 0
+                ? unsignedInput.Substring(0, decimalSeparatorIndex)
+                : unsignedInput;
+            string fractionalPart = decimalSeparatorIndex >= 0
+                ? unsignedInput.Substring(decimalSeparatorIndex + decimalSeparator.Length)
+                : string.Empty;
+
+            if (integerPart.Length == 0
+                || (decimalSeparatorIndex >= 0 && fractionalPart.Length == 0)
+                || fractionalPart.Contains(groupSeparator))
+            {
+                return false;
+            }
+
+            if (!IsDigits(fractionalPart) && fractionalPart.Length > 0)
+            {
+                return false;
+            }
+
+            string[] integerGroups = integerPart.Split(new[] { groupSeparator }, StringSplitOptions.None);
+            if (integerGroups.Length == 1)
+            {
+                if (!IsDigits(integerGroups[0]))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                int groupSize = numberFormat.NumberGroupSizes.FirstOrDefault(size => size > 0);
+                if (groupSize <= 0
+                    || integerGroups[0].Length < 1
+                    || integerGroups[0].Length > groupSize
+                    || !IsDigits(integerGroups[0]))
+                {
+                    return false;
+                }
+
+                for (int i = 1; i < integerGroups.Length; i++)
+                {
+                    if (integerGroups[i].Length != groupSize || !IsDigits(integerGroups[i]))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return decimal.TryParse(
+                input,
+                NumberStyles.AllowLeadingSign
+                    | NumberStyles.AllowDecimalPoint
+                    | NumberStyles.AllowThousands,
+                culture,
+                out amount);
+        }
+
+        public static bool TryConvertTurkishDecimal(
+            this string value,
+            out decimal amount)
+        {
+            return value.TryConvertToDecimal(
+                CultureInfo.GetCultureInfo("tr-TR"),
+                out amount);
+        }
+
+        private static bool IsDigits(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return false;
+            }
+
+            return value.All(char.IsDigit);
+        }
+
         public static DateTime ConvertToDatetime(this object value)
         {
             DateTime result = new DateTime();

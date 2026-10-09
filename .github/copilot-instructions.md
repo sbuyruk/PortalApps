@@ -9,3 +9,6 @@
 - Make only the requested changes; do not make extra changes, and ask if something is really necessary.
 - Complete tasks in one attempt; if information is lacking, ask a maximum of 3 clear questions; otherwise, make assumptions and proceed.
 - When adding code changes, always use the `replace_string_in_file` or `multi_replace_string_in_file` tools to apply edits directly to files rather than presenting code blocks in the chat response for the user to apply manually.
+
+## Code Guidelines
+- Use `TryConvertTurkishDecimal()` method instead of `ConvertToDecimal()` in newly written code. If a code change requires testing, evaluate the conversion from `ConvertToDecimal` to `TryConvertTurkishDecimal`.
