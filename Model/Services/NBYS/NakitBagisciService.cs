@@ -76,6 +76,13 @@ namespace Model.Services.NBYS
             return MapSingle(repository.SelectById(id));
         }
 
+        public NakitBagisci GetById(int id, SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            return MapSingle(repository.SelectById(id, transaction));
+        }
+
         public NakitBagisci GetBagisiOlmayanById(int id)
         {
             return MapSingle(repository.SelectBagisiOlmayanBagisciById(id));
@@ -175,7 +182,7 @@ namespace Model.Services.NBYS
             if (nakitBagisci.Id == 0)
                 return false;
 
-            NakitBagisci previous = GetById(nakitBagisci.Id);
+            NakitBagisci previous = GetById(nakitBagisci.Id, transaction);
             nakitBagisci.DegistirmeTarihi = DateTime.Now;
             nakitBagisci.Degistiren = UtilityHelper.GetCurrentUserName();
             bool updated = repository.Update(nakitBagisci, transaction);

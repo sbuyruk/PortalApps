@@ -31,6 +31,13 @@ namespace Model.Services.NBYS
             return Map(repository.SelectById(id)).FirstOrDefault();
         }
 
+        public Armagan GetById(int id, SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            return Map(repository.SelectById(id, transaction)).FirstOrDefault();
+        }
+
         public List<Armagan> GetAll()
         {
             return Map(repository.SelectAll());
@@ -283,7 +290,7 @@ namespace Model.Services.NBYS
             if (armagan.Id == 0)
                 return false;
 
-            Armagan previous = GetById(armagan.Id);
+            Armagan previous = GetById(armagan.Id, transaction);
             armagan.DegistirmeTarihi = DateTime.Now;
             armagan.Degistiren = UtilityHelper.GetCurrentUserName();
             bool updated = repository.Update(armagan, transaction);

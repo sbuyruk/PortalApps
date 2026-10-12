@@ -22,6 +22,11 @@ namespace Model.Services.NBYS
         }
 
         public EkstreAktarma GetById(int id) { return Map(repository.SelectById(id)).FirstOrDefault(); }
+        public EkstreAktarma GetById(int id, SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            return Map(repository.SelectById(id, transaction)).FirstOrDefault();
+        }
         public List<EkstreAktarma> GetAll() { return Map(repository.SelectAll()); }
 
         public DataTable GetListTable(DateTime processDate, bool excludeTransferred, string bankName,
@@ -100,7 +105,7 @@ namespace Model.Services.NBYS
             if (transaction == null) throw new ArgumentNullException("transaction");
             if (item.Id == 0) return false;
 
-            EkstreAktarma previous = GetById(item.Id);
+            EkstreAktarma previous = GetById(item.Id, transaction);
             if (item.NakitBagisciId <= 0 && previous != null && previous.NakitBagisciId > 0)
                 item.NakitBagisciId = previous.NakitBagisciId;
 

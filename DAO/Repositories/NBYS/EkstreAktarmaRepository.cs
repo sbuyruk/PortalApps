@@ -27,6 +27,16 @@ namespace DAO.Repositories.NBYS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectById(int id, SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            SqlQuery query = new SqlQuery("SELECT * FROM EkstreAktarma_Table WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return transaction.Select(query);
+        }
+
         public DataTable SelectAll()
         {
             return db.SelectFromDb(new SqlQuery("SELECT * FROM EkstreAktarma_Table"), "");
