@@ -93,9 +93,26 @@ namespace Model.Services.NBYS
             return MapSingle(repository.SelectByTcKimlikno(tcKimlikNo));
         }
 
+        public NakitBagisci GetByTcKimlikNo(long tcKimlikNo, SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            return MapSingle(repository.SelectByTcKimlikno(tcKimlikNo, transaction));
+        }
+
         public NakitBagisci GetByAdAndTelefon(string adi, string telefon)
         {
             return MapSingle(repository.SelectByAdAndTelefon(adi, telefon));
+        }
+
+        public NakitBagisci GetByAdAndTelefon(
+            string adi,
+            string telefon,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            return MapSingle(repository.SelectByAdAndTelefon(adi, telefon, transaction));
         }
 
         public NakitBagisci GetByTelefon(string telefon)

@@ -187,6 +187,17 @@ namespace DAO.Repositories.NBYS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectByTcKimlikno(long tcKimlikno, SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            SqlQuery query = new SqlQuery(@"SELECT *
+                               FROM NakitBagisci_Table
+                               WHERE TCKimlikNo != 0 AND TCKimlikNo = @TCKimlikNo");
+            query.AddParameter("@TCKimlikNo", tcKimlikno);
+            return transaction.Select(query);
+        }
+
         public DataTable SelectImportCandidates(string fullName)
         {
             // Exact names only; phone normalization and uniqueness are checked by the service.
@@ -217,6 +228,21 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@Adi", adi ?? string.Empty);
             query.AddParameter("@Telefon", telefon ?? string.Empty);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectByAdAndTelefon(
+            string adi,
+            string telefon,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            SqlQuery query = new SqlQuery(@"SELECT *
+                               FROM NakitBagisci_Table
+                               WHERE Adi = @Adi AND (Telefon1 = @Telefon OR Telefon2 = @Telefon)");
+            query.AddParameter("@Adi", adi ?? string.Empty);
+            query.AddParameter("@Telefon", telefon ?? string.Empty);
+            return transaction.Select(query);
         }
 
         public DataTable SelectByTelefon(string telefon)

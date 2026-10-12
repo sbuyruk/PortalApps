@@ -43,6 +43,16 @@ namespace DAO.Repositories.NBYS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectByName(string name, SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM BankaTanim_Table WHERE Banka=@Banka");
+            query.AddParameter("@Banka", name);
+            return transaction.Select(query);
+        }
+
         public DataTable SelectGroups()
         {
             return db.SelectFromDb(new SqlQuery(

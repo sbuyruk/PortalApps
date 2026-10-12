@@ -60,9 +60,26 @@ namespace Model.Services.NBYS
             return Map(repository.SelectByBagisciId(bagisciId));
         }
 
+        public List<Armagan> GetByBagisciId(int bagisciId, SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            return Map(repository.SelectByBagisciId(bagisciId, transaction));
+        }
+
         public List<Armagan> GetByBagisciIdAndDurum(int bagisciId, string durum)
         {
             return Map(repository.SelectByBagisciIdAndDurum(bagisciId, durum));
+        }
+
+        public List<Armagan> GetByBagisciIdAndDurum(
+            int bagisciId,
+            string durum,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            return Map(repository.SelectByBagisciIdAndDurum(bagisciId, durum, transaction));
         }
 
         public Armagan GetByBagisciIdAndTanimId(int bagisciId, int armaganTanimId)
@@ -73,6 +90,17 @@ namespace Model.Services.NBYS
         public int CountByBagisciIdAndTanimId(int bagisciId, int armaganTanimId)
         {
             return repository.CountByBagisciIdAndTanimId(bagisciId, armaganTanimId);
+        }
+
+        public int CountByBagisciIdAndTanimId(
+            int bagisciId,
+            int armaganTanimId,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            return repository.CountByBagisciIdAndTanimId(
+                bagisciId, armaganTanimId, transaction);
         }
 
         public bool UpdateDurumByBolge(

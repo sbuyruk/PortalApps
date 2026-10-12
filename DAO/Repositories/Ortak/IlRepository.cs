@@ -45,6 +45,16 @@ namespace DAO.Repositories.Ortak
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectByName(string name, SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM Il_Table WHERE LOWER(IlAdi)=LOWER(@IlAdi)");
+            query.AddParameter("@IlAdi", name);
+            return transaction.Select(query);
+        }
+
         public DataTable SelectByEnglishName(string name)
         {
             SqlQuery query = new SqlQuery(

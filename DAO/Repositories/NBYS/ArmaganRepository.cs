@@ -80,6 +80,16 @@ namespace DAO.Repositories.NBYS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectByBagisciId(int bagisciId, SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            SqlQuery query = new SqlQuery(@"SELECT * FROM Armagan_Table
+                WHERE BelgeGecersizMi!=1 AND BagisciId=@BagisciId");
+            query.AddParameter("@BagisciId", bagisciId);
+            return transaction.Select(query);
+        }
+
         public DataTable SelectByBagisciIdAndDurum(int bagisciId, string durum)
         {
             SqlQuery query = new SqlQuery(@"SELECT * FROM Armagan_Table
@@ -87,6 +97,20 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@BagisciId", bagisciId);
             query.AddParameter("@Durum", durum);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectByBagisciIdAndDurum(
+            int bagisciId,
+            string durum,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            SqlQuery query = new SqlQuery(@"SELECT * FROM Armagan_Table
+                WHERE BagisciId=@BagisciId AND Durum=@Durum");
+            query.AddParameter("@BagisciId", bagisciId);
+            query.AddParameter("@Durum", durum);
+            return transaction.Select(query);
         }
 
         public DataTable SelectByBagisciIdAndTanimId(int bagisciId, int armaganTanimId)
@@ -107,6 +131,22 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@BagisciId", bagisciId);
             query.AddParameter("@ArmaganTanimId", armaganTanimId);
             DataTable table = db.SelectFromDb(query, "");
+            return table.Rows.Count == 0 ? 0 : Convert.ToInt32(table.Rows[0][0]);
+        }
+
+        public int CountByBagisciIdAndTanimId(
+            int bagisciId,
+            int armaganTanimId,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            SqlQuery query = new SqlQuery(@"SELECT COUNT(*) FROM Armagan_Table
+                WHERE BelgeGecersizMi!=1 AND BagisciId=@BagisciId
+                    AND ArmaganTanimId=@ArmaganTanimId");
+            query.AddParameter("@BagisciId", bagisciId);
+            query.AddParameter("@ArmaganTanimId", armaganTanimId);
+            DataTable table = transaction.Select(query);
             return table.Rows.Count == 0 ? 0 : Convert.ToInt32(table.Rows[0][0]);
         }
 

@@ -271,8 +271,10 @@ namespace Model.Services.NBYS
             SqlTransactionContext transaction = null)
         {
             bool isArmaganSaved = false;
-            NakitBagisci nakitBagisci = new NakitBagisciService().GetById(
-                nakitBagisHareket.BagisciId, transaction);
+            NakitBagisciService nakitBagisciService = new NakitBagisciService();
+            NakitBagisci nakitBagisci = transaction == null
+                ? nakitBagisciService.GetById(nakitBagisHareket.BagisciId)
+                : nakitBagisciService.GetById(nakitBagisHareket.BagisciId, transaction);
             //nakit bagisçi null veya bilinmeyen ise armagan üretmesin
             if ((nakitBagisci == null) || (nakitBagisci.Adi.Contains(ProjeConstants.NAKITBAGISCI_BILINMEYEN)))
             {
@@ -283,7 +285,9 @@ namespace Model.Services.NBYS
                 int armaganId = 0;
 
                 //Su ana kadar aldigi ArmaganTanimId leri bul
-                List<Armagan> alinanArmaganListesi = new ArmaganService().GetByBagisciId(nakitBagisci.Id);
+                List<Armagan> alinanArmaganListesi = transaction == null
+                    ? new ArmaganService().GetByBagisciId(nakitBagisci.Id)
+                    : new ArmaganService().GetByBagisciId(nakitBagisci.Id, transaction);
                 List<int> alinanArmaganTanimIdListesi = new List<int>();
                 foreach (Armagan item in alinanArmaganListesi)
                 {
@@ -294,20 +298,30 @@ namespace Model.Services.NBYS
                 decimal bagisTutari = nakitBagisHareket.BagisMiktari;
                 //Geçmisten bugüne kadar olan toplam bagis tutarini bul
                 NakitBagisHareket nbh = new NakitBagisHareket();
-                decimal toplamBagis = new NakitBagisHareketService().GetTotalByBagisciIdDateRange(
-                    ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ConvertToDatetime(),
-                    nakitBagisHareket.BagisTarihi,
-                    nakitBagisci.Id,
-                    transaction);
+                NakitBagisHareketService nakitBagisHareketService = new NakitBagisHareketService();
+                decimal toplamBagis = transaction == null
+                    ? nakitBagisHareketService.GetTotalByBagisciIdDateRange(
+                        ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ConvertToDatetime(),
+                        nakitBagisHareket.BagisTarihi,
+                        nakitBagisci.Id)
+                    : nakitBagisHareketService.GetTotalByBagisciIdDateRange(
+                        ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ConvertToDatetime(),
+                        nakitBagisHareket.BagisTarihi,
+                        nakitBagisci.Id,
+                        transaction);
 
                 //Geçmisten bugüne kadar olan toplam bagis tutarina göre Çoklu Bagis armagani hakediyor mu
-                ArmaganTanim cokluBagisanHakedilenArmaganTanim = new ArmaganTanimService().GetByAmount(toplamBagis, ekstreAktarma.TuzelKisi);
+                ArmaganTanim cokluBagisanHakedilenArmaganTanim = transaction == null
+                    ? new ArmaganTanimService().GetByAmount(toplamBagis, ekstreAktarma.TuzelKisi)
+                    : new ArmaganTanimService().GetByAmount(toplamBagis, ekstreAktarma.TuzelKisi, transaction);
 
 
                 bool cokluBagistanArmaganHakediyorMu = cokluBagisanHakedilenArmaganTanim != null 
                     && cokluBagisanHakedilenArmaganTanim.Id != ProjeConstants.ARMAGAN_YOKID;
 
-                ArmaganTanim tekliBagistanHakedilenArmaganTanim = new ArmaganTanimService().GetByAmount(bagisTutari, ekstreAktarma.TuzelKisi);
+                ArmaganTanim tekliBagistanHakedilenArmaganTanim = transaction == null
+                    ? new ArmaganTanimService().GetByAmount(bagisTutari, ekstreAktarma.TuzelKisi)
+                    : new ArmaganTanimService().GetByAmount(bagisTutari, ekstreAktarma.TuzelKisi, transaction);
                 bool tekliBagisArmaganHakediyorMu = tekliBagistanHakedilenArmaganTanim != null 
                     && tekliBagistanHakedilenArmaganTanim.Id != ProjeConstants.ARMAGAN_YOKID;
                 
@@ -399,7 +413,10 @@ namespace Model.Services.NBYS
 
             //Armagan_Table'dan bu bagisciId ve hakedilenArmaganTanimId kaç tane armagan aldğını bul
             int mevcutArmaganSayisi = duzenliBagisBelgeSirasi > 0 ? 0
-                : new ArmaganService().CountByBagisciIdAndTanimId(nakitBagisci.Id, hakedilenArmaganTanimId);
+                : transaction == null
+                    ? new ArmaganService().CountByBagisciIdAndTanimId(nakitBagisci.Id, hakedilenArmaganTanimId)
+                    : new ArmaganService().CountByBagisciIdAndTanimId(
+                        nakitBagisci.Id, hakedilenArmaganTanimId, transaction);
 
             int armaganId = 0;
             Armagan armagan = new Armagan();
@@ -422,7 +439,10 @@ namespace Model.Services.NBYS
             {
                 armagan.Durum = ProjeConstants.DURUM_EDEVLETTENBELGEGONDERILDI;
             }
-            List<Armagan> iadeEdilmisArmaganListesi = new ArmaganService().GetByBagisciIdAndDurum(nakitBagisci.Id, ProjeConstants.DURUM_PARAIADE);
+            List<Armagan> iadeEdilmisArmaganListesi = transaction == null
+                ? new ArmaganService().GetByBagisciIdAndDurum(nakitBagisci.Id, ProjeConstants.DURUM_PARAIADE)
+                : new ArmaganService().GetByBagisciIdAndDurum(
+                    nakitBagisci.Id, ProjeConstants.DURUM_PARAIADE, transaction);
             if (iadeEdilmisArmaganListesi.Count > 0)
             {
                 armagan.Durum = ProjeConstants.DURUM_DAHAONCEIADE;
@@ -445,7 +465,9 @@ namespace Model.Services.NBYS
             NakitBagisci nakitBagisci = new NakitBagisci();
             if (ekstreAktarma.Adi != ProjeConstants.NAKITBAGISCI_BILINMEYEN)
             {
-                nakitBagisci = service.GetByTcKimlikNo(ekstreAktarma.TCKimlikNo); //tc kimlik no bagisci tablosunda var mi kontrol ediliyor.
+                nakitBagisci = transaction == null
+                    ? service.GetByTcKimlikNo(ekstreAktarma.TCKimlikNo)
+                    : service.GetByTcKimlikNo(ekstreAktarma.TCKimlikNo, transaction); //tc kimlik no bagisci tablosunda var mi kontrol ediliyor.
 
                 if (nakitBagisci != null)//bagisci tablosunda var
                 {
@@ -457,7 +479,7 @@ namespace Model.Services.NBYS
                 {
                     nakitBagisci = new NakitBagisci();
 
-                    nakitBagisciId = GetUserIdByTelefonAndAd(ekstreAktarma);// telefon ve isime bakiyor
+                    nakitBagisciId = GetUserIdByTelefonAndAd(ekstreAktarma, transaction);// telefon ve isime bakiyor
 
                     if (nakitBagisciId == 0) //bu kisi kesin olarak yeni bagisci (Telefon ve isimden bulunamadi ise)
                     {
@@ -466,7 +488,9 @@ namespace Model.Services.NBYS
                     }
                     else //nakitBagisciId bos veya 0 degil, öyleyse bu bagisçiyi select edelim 22.ocak.2020
                     {
-                        nakitBagisci = service.GetById(nakitBagisciId);
+                        nakitBagisci = transaction == null
+                            ? service.GetById(nakitBagisciId)
+                            : service.GetById(nakitBagisciId, transaction);
                         nakitBagisciId = SaveBagisciFromEkstreAktarma(
                             nakitBagisci, ekstreAktarma, false, currentUser, transaction);
                     }
@@ -512,7 +536,9 @@ namespace Model.Services.NBYS
         //    return id;
 
         //}
-        private static int GetUserIdByTelefonAndAd(EkstreAktarma ekstreAktarma)
+        private static int GetUserIdByTelefonAndAd(
+            EkstreAktarma ekstreAktarma,
+            SqlTransactionContext transaction = null)
         {
             var nakitBagisciId = 0;
             var adi = ekstreAktarma.Adi;
@@ -522,7 +548,7 @@ namespace Model.Services.NBYS
                 var telefon1 = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString());
                 if (!string.IsNullOrEmpty(telefon1)) //telefon1 bos degil ise ise kontrol ediliyor adi ve telefon1 bulunur ise ayni kisi olarak kabul ediliyor, yeni kayit atilmiyor
                 {
-                    nakitBagisciId = GetUserId(adi, telefon1);
+                    nakitBagisciId = GetUserId(adi, telefon1, transaction);
                     if (nakitBagisciId != 0)
                     {
                         return nakitBagisciId;
@@ -533,20 +559,25 @@ namespace Model.Services.NBYS
                     var telefon2 = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon2.ReturnEmptyIfNull().ToString()); //telefon1 ve adi eslesmedi ise, telefon2 ve adi esleisiyor mu bakiliyor
                     if (!string.IsNullOrEmpty(telefon2))
                     {
-                        nakitBagisciId = telefon2.Length > 3 ? GetUserId(adi, telefon2) : 0;
+                        nakitBagisciId = telefon2.Length > 3 ? GetUserId(adi, telefon2, transaction) : 0;
                     }
                 }
             }
             return nakitBagisciId;
         }
-        private static int GetUserId(string adi, string telefon)
+        private static int GetUserId(
+            string adi,
+            string telefon,
+            SqlTransactionContext transaction = null)
         {
             var nakitBagisciId = 0;
             NakitBagisciService service = new NakitBagisciService();
             NakitBagisci nakitBagisci = null;
             if (telefon.Length > 3)
             {
-                nakitBagisci = service.GetByAdAndTelefon(adi, telefon);
+                nakitBagisci = transaction == null
+                    ? service.GetByAdAndTelefon(adi, telefon)
+                    : service.GetByAdAndTelefon(adi, telefon, transaction);
                 if (nakitBagisci == null)
                 {
                     string dokuzlu = telefon.Substring(0, 2);
@@ -555,17 +586,23 @@ namespace Model.Services.NBYS
                     if (dokuzlu.Equals("90"))
                     {
                         string telefon1 = telefon.Substring(2);
-                        nakitBagisci = service.GetByAdAndTelefon(adi, telefon1);
+                        nakitBagisci = transaction == null
+                            ? service.GetByAdAndTelefon(adi, telefon1)
+                            : service.GetByAdAndTelefon(adi, telefon1, transaction);
                     }
                     else if (sifirli.Equals("0"))
                     {
                         string telefon1 = telefon.Substring(1);
-                        nakitBagisci = service.GetByAdAndTelefon(adi, telefon1);
+                        nakitBagisci = transaction == null
+                            ? service.GetByAdAndTelefon(adi, telefon1)
+                            : service.GetByAdAndTelefon(adi, telefon1, transaction);
                     }
                     else
                     {
                         string bosluksuzTelefon = telefon.Replace(" ", "");
-                        nakitBagisci = service.GetByAdAndTelefon(adi, bosluksuzTelefon);
+                        nakitBagisci = transaction == null
+                            ? service.GetByAdAndTelefon(adi, bosluksuzTelefon)
+                            : service.GetByAdAndTelefon(adi, bosluksuzTelefon, transaction);
                     }
                 }
             };
@@ -575,7 +612,7 @@ namespace Model.Services.NBYS
             }
             return nakitBagisciId;
         }
-        private static int GetIlId(string value)
+        private static int GetIlId(string value, SqlTransactionContext transaction = null)
         {
             //il ziraat bankasi dosyasinda id olarak geliyor. diger bankalarda il adi olarak geliyor.
             int ilId = 0;
@@ -583,7 +620,9 @@ namespace Model.Services.NBYS
             var isInt = Int32.TryParse(value, out ilId);
             if (!isInt)
             {
-                Il il = new IlService().GetByName(value);
+                Il il = transaction == null
+                    ? new IlService().GetByName(value)
+                    : new IlService().GetByName(value, transaction);
                 if (il != null)
                 {
                     ilId = il.Id;
@@ -592,7 +631,9 @@ namespace Model.Services.NBYS
 
             return ilId;
         }
-        private static int GetIlceId(EkstreAktarma ekstreAktarma)
+        private static int GetIlceId(
+            EkstreAktarma ekstreAktarma,
+            SqlTransactionContext transaction = null)
         {
             //
             int ilceId = 0;
@@ -600,7 +641,9 @@ namespace Model.Services.NBYS
             var isInt = Int32.TryParse(ekstreAktarma.Ilcesi, out ilceId);
             if (isInt)
             {
-                Ilce ilce = new IlceService().GetById(ilceId);
+                Ilce ilce = transaction == null
+                    ? new IlceService().GetById(ilceId)
+                    : new IlceService().GetById(ilceId, transaction);
                 if (ilce != null)
                 {
                     ilceId = ilce.Id;
@@ -628,10 +671,15 @@ namespace Model.Services.NBYS
             int nakitBagisHareketId = 0;
             if (kayitliNakitBagishareket==null)
             {
-                BankaTanim bankaTanim = new BankaTanimService().GetByName(ekstreAktarma.BankaAdi);
+                BankaTanim bankaTanim = transaction == null
+                    ? new BankaTanimService().GetByName(ekstreAktarma.BankaAdi)
+                    : new BankaTanimService().GetByName(ekstreAktarma.BankaAdi, transaction);
 
-                Ilce ilce = new IlceService().GetByProvinceAndDistrictName(
-                    ekstreAktarma.Ili, ekstreAktarma.Ilcesi);
+                Ilce ilce = transaction == null
+                    ? new IlceService().GetByProvinceAndDistrictName(
+                        ekstreAktarma.Ili, ekstreAktarma.Ilcesi)
+                    : new IlceService().GetByProvinceAndDistrictName(
+                        ekstreAktarma.Ili, ekstreAktarma.Ilcesi, transaction);
 
                 
                 nakitBagisHareket.BagisciId = nakitBagisciId;
@@ -651,7 +699,7 @@ namespace Model.Services.NBYS
                 }
 
                 nakitBagisHareket.Telefon = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString());
-                nakitBagisHareket.Ili = GetIlId(ekstreAktarma.Ili);
+                nakitBagisHareket.Ili = GetIlId(ekstreAktarma.Ili, transaction);
                 nakitBagisHareket.Ilcesi = ilce != null ? ilce.Id : 0;
                 nakitBagisHareket.Olusturan = currentUser;
                 nakitBagisHareket.Aciklama = ekstreAktarma.Aciklama;
@@ -688,13 +736,16 @@ namespace Model.Services.NBYS
             }
             if (isNew)
             {
-                Ilce ilce = new IlceService().GetByProvinceAndDistrictName(
-                    ekstreAktarma.Ili, ekstreAktarma.Ilcesi);
+                Ilce ilce = transaction == null
+                    ? new IlceService().GetByProvinceAndDistrictName(
+                        ekstreAktarma.Ili, ekstreAktarma.Ilcesi)
+                    : new IlceService().GetByProvinceAndDistrictName(
+                        ekstreAktarma.Ili, ekstreAktarma.Ilcesi, transaction);
 
                 nakitBagisci.Adi = ekstreAktarma.Adi.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
                 nakitBagisci.Adres = ekstreAktarma.Adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
-                nakitBagisci.Ilcesi = ilce != null ? ilce.Id : GetIlceId(ekstreAktarma);//ekstreAktarma.Ilcesi;
-                nakitBagisci.Ili = GetIlId(ekstreAktarma.Ili);//ekstreAktarma.Ili;
+                nakitBagisci.Ilcesi = ilce != null ? ilce.Id : GetIlceId(ekstreAktarma, transaction);//ekstreAktarma.Ilcesi;
+                nakitBagisci.Ili = GetIlId(ekstreAktarma.Ili, transaction);//ekstreAktarma.Ili;
                 nakitBagisci.TCKimlikNo = (nakitBagisci.TCKimlikNo < 1) && (ekstreAktarma.TCKimlikNo > 0) ? ekstreAktarma.TCKimlikNo : nakitBagisci.TCKimlikNo;
                 nakitBagisci.Telefon1 = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString());
                 nakitBagisci.Telefon2 = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon2.ReturnEmptyIfNull().ToString());
@@ -719,13 +770,16 @@ namespace Model.Services.NBYS
             }//eski bagisci
             else
             {
-                Ilce ilce = new IlceService().GetByProvinceAndDistrictName(
-                    ekstreAktarma.Ili, ekstreAktarma.Ilcesi);
+                Ilce ilce = transaction == null
+                    ? new IlceService().GetByProvinceAndDistrictName(
+                        ekstreAktarma.Ili, ekstreAktarma.Ilcesi)
+                    : new IlceService().GetByProvinceAndDistrictName(
+                        ekstreAktarma.Ili, ekstreAktarma.Ilcesi, transaction);
 
                 nakitBagisci.Adi = string.IsNullOrEmpty(nakitBagisci.Adi) ? ekstreAktarma.Adi.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo) : nakitBagisci.Adi;
                 nakitBagisci.Adres = string.IsNullOrEmpty(nakitBagisci.Adres) ? ekstreAktarma.Adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo) : nakitBagisci.Adres;
-                nakitBagisci.Ilcesi = nakitBagisci.Ilcesi==0 ? ilce != null ? ilce.Id : GetIlceId(ekstreAktarma) : nakitBagisci.Ilcesi;//ekstreAktarma.Ilcesi;
-                nakitBagisci.Ili = nakitBagisci.Ili==0 ? GetIlId(ekstreAktarma.Ili) : nakitBagisci.Ili;//ekstreAktarma.Ili;
+                nakitBagisci.Ilcesi = nakitBagisci.Ilcesi==0 ? ilce != null ? ilce.Id : GetIlceId(ekstreAktarma, transaction) : nakitBagisci.Ilcesi;//ekstreAktarma.Ilcesi;
+                nakitBagisci.Ili = nakitBagisci.Ili==0 ? GetIlId(ekstreAktarma.Ili, transaction) : nakitBagisci.Ili;//ekstreAktarma.Ili;
                 nakitBagisci.TCKimlikNo = nakitBagisci.TCKimlikNo < 1 ? ekstreAktarma.TCKimlikNo : nakitBagisci.TCKimlikNo;
                 nakitBagisci.Telefon1 = string.IsNullOrEmpty(nakitBagisci.Telefon1) ? UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString()) : nakitBagisci.Telefon1;
                 nakitBagisci.Telefon2 = string.IsNullOrEmpty(nakitBagisci.Telefon2) ? UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon2.ReturnEmptyIfNull().ToString()) : nakitBagisci.Telefon2;

@@ -51,6 +51,22 @@ namespace DAO.Repositories.NBYS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectByAmount(
+            decimal amount,
+            bool isCorporate,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            string limits = isCorporate
+                ? "TuzelKisiAltLimit<=@Amount AND TuzelKisiUstLimit>=@Amount"
+                : "OzelKisiAltLimit<=@Amount AND OzelKisiUstLimit>=@Amount";
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM ArmaganTanim_Table WHERE Aktif=1 AND " + limits);
+            query.AddParameter("@Amount", amount);
+            return transaction.Select(query);
+        }
+
         public int Insert<T>(T entity)
         {
             return db.Insert(queryBuilder.BuildInsert(entity, TableName));

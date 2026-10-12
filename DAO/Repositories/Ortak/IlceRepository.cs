@@ -27,6 +27,16 @@ namespace DAO.Repositories.Ortak
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectById(int id, SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM Ilce_Table WHERE Id=@Id ORDER BY IlceAdi");
+            query.AddParameter("@Id", id);
+            return transaction.Select(query);
+        }
+
         public DataTable SelectByProvinceId(int provinceId)
         {
             SqlQuery query = new SqlQuery(
@@ -66,6 +76,22 @@ namespace DAO.Repositories.Ortak
             query.AddParameter("@IlceAdi", districtName);
             query.AddParameter("@IlAdi", provinceName);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectByProvinceAndDistrictName(
+            string provinceName,
+            string districtName,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM Ilce_Table " +
+                "WHERE LOWER(IlceAdi)=LOWER(@IlceAdi) " +
+                "AND LOWER(IlAdi)=LOWER(@IlAdi) ORDER BY IlceAdi");
+            query.AddParameter("@IlceAdi", districtName);
+            query.AddParameter("@IlAdi", provinceName);
+            return transaction.Select(query);
         }
 
         public DataTable SelectByProvinceAndDistrictContains(string provinceName, string districtName)
