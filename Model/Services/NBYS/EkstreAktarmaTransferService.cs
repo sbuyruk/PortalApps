@@ -25,7 +25,16 @@ namespace Model.Services.NBYS
                 {
                     EkstreAktarma ekstreAktarma = new EkstreAktarmaService().GetById(itemId);
                     if (ekstreAktarma!=null && ekstreAktarma.AktarildiMi==false)
-                        SaveEkstreAktarma(ekstreAktarma, currentUser);
+                    {
+                        if (SaveEkstreAktarma(ekstreAktarma, currentUser))
+                            exceptionHelper.SuccessCount++;
+                        else
+                            exceptionHelper.AlreadyProcessedCount++;
+                    }
+                    else if (ekstreAktarma != null && ekstreAktarma.AktarildiMi)
+                    {
+                        exceptionHelper.AlreadyProcessedCount++;
+                    }
                 }
                 catch (Exception e)
                 {
@@ -48,7 +57,16 @@ namespace Model.Services.NBYS
                 try
                 {
                     if (ekstreAktarma != null && ekstreAktarma.AktarildiMi == false)
-                        SaveEkstreAktarma(ekstreAktarma, currentUser);
+                    {
+                        if (SaveEkstreAktarma(ekstreAktarma, currentUser))
+                            exceptionHelper.SuccessCount++;
+                        else
+                            exceptionHelper.AlreadyProcessedCount++;
+                    }
+                    else if (ekstreAktarma != null && ekstreAktarma.AktarildiMi)
+                    {
+                        exceptionHelper.AlreadyProcessedCount++;
+                    }
                 }
                 catch (Exception e)
                 {
@@ -67,12 +85,18 @@ namespace Model.Services.NBYS
                 sw.WriteLine(text);
             }
         }
-        private static void SaveEkstreAktarma(EkstreAktarma ekstreAktarma, string currentUser)
+        private static bool SaveEkstreAktarma(EkstreAktarma ekstreAktarma, string currentUser)
         {
             if (!ekstreAktarma.AktarildiMi) //zaten aktarilmis olanlar bir kez daha aktarilmasin
             {
                 using (SqlTransactionContext transaction = new SqlTransactionContext())
                 {
+                    EkstreAktarma currentEkstreAktarma = new EkstreAktarmaService().GetById(
+                        ekstreAktarma.Id, transaction);
+                    if (currentEkstreAktarma == null || currentEkstreAktarma.AktarildiMi)
+                        return false;
+
+                    ekstreAktarma = currentEkstreAktarma;
                     var nakitBagisciId = 0;
 
                     if (ekstreAktarma.NakitBagisciId > 0)//NakitBagisciId si dolu olarak gelen ekstreAktarma (Yani elle yeni kayit girisi yapilmis ve NakitBagisci popup window dan secilmis )
@@ -108,9 +132,12 @@ namespace Model.Services.NBYS
                         if (!new EkstreAktarmaService().Update(ekstreAktarma, transaction))
                             throw new InvalidOperationException("EkstreAktarma kaydı güncellenemedi.");
                         transaction.Complete();
+                        return true;
                     }
                 }
             }
+
+            return false;
         }
 
         public static bool SaveArmagan(DateTime bagisTarihi, bool tuzelKisiMi, int nakitBagisciId, int nakitbagisHareketId, string currentUser)

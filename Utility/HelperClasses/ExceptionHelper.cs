@@ -10,6 +10,8 @@ namespace Utility.HelperClasses
         //public int CountError { get; set; }
 
         public List<Exception> Exceptions = new List<Exception>();
+        public int SuccessCount { get; set; }
+        public int AlreadyProcessedCount { get; set; }
         public ExceptionHelper()
         {
 
