@@ -243,6 +243,16 @@ namespace Model.Services.NBYS
             return Map(repository.SelectByEkstreAktarmaId(ekstreAktarmaId)).FirstOrDefault();
         }
 
+        public NakitBagisHareket GetByEkstreAktarmaId(
+            int ekstreAktarmaId,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            return Map(repository.SelectByEkstreAktarmaId(
+                ekstreAktarmaId, transaction)).FirstOrDefault();
+        }
+
         public List<NakitBagisHareket> GetByBagisciIdTarih(int bagisciId, DateTime baslangic, DateTime bitis)
         {
             return Map(repository.SelectByBagisciIdTarih(bagisciId, baslangic, bitis));

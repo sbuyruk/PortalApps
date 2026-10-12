@@ -94,7 +94,8 @@ namespace Model.Services.NBYS
 
                     if (nakitBagisHareket.Id > 0)
                     {
-                        NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisciId);
+                        NakitBagisci nakitBagisci = new NakitBagisciService().GetById(
+                            nakitBagisciId, transaction);
                         if (nakitBagisci.Adi.Contains(ProjeConstants.NAKITBAGISCI_BILINMEYEN))// adi bilinmeyen bagisci için eksrteAktarma tablosuna aciklama yaz
                         {
                             ekstreAktarma.Aciklama += "-NBYS- Adı BİLİNMEYEN bağışçı olduğundan armağan oluşturulmadı ";
@@ -270,7 +271,8 @@ namespace Model.Services.NBYS
             SqlTransactionContext transaction = null)
         {
             bool isArmaganSaved = false;
-            NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisHareket.BagisciId);
+            NakitBagisci nakitBagisci = new NakitBagisciService().GetById(
+                nakitBagisHareket.BagisciId, transaction);
             //nakit bagisçi null veya bilinmeyen ise armagan üretmesin
             if ((nakitBagisci == null) || (nakitBagisci.Adi.Contains(ProjeConstants.NAKITBAGISCI_BILINMEYEN)))
             {
@@ -616,7 +618,10 @@ namespace Model.Services.NBYS
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
             NakitBagisHareket kayitliNakitBagishareket = new NakitBagisHareket();
-            kayitliNakitBagishareket = new NakitBagisHareketService().GetByEkstreAktarmaId(ekstreAktarma.Id);
+            NakitBagisHareketService service = new NakitBagisHareketService();
+            kayitliNakitBagishareket = transaction == null
+                ? service.GetByEkstreAktarmaId(ekstreAktarma.Id)
+                : service.GetByEkstreAktarmaId(ekstreAktarma.Id, transaction);
             if (kayitliNakitBagishareket != null)
                 return kayitliNakitBagishareket;
 
@@ -652,7 +657,6 @@ namespace Model.Services.NBYS
                 nakitBagisHareket.Aciklama = ekstreAktarma.Aciklama;
                 nakitBagisHareket.EkstreAktarmaId = ekstreAktarma.Id;
                 nakitBagisHareket.BagisTipi = ekstreAktarma.BagisTipi;
-                NakitBagisHareketService service = new NakitBagisHareketService();
                 var id = transaction == null
                     ? service.Save(nakitBagisHareket)
                     : service.Save(nakitBagisHareket, transaction);

@@ -173,6 +173,19 @@ namespace DAO.Repositories.NBYS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectByEkstreAktarmaId(
+            int ekstreAktarmaId,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM NakitBagisHareket_Table WHERE EkstreAktarmaId=@EkstreAktarmaId");
+            query.AddParameter("@EkstreAktarmaId", ekstreAktarmaId);
+            return transaction.Select(query);
+        }
+
         public DataTable SelectByBagisciIdTarih(int bagisciId, DateTime baslangic, DateTime bitis)
         {
             SqlQuery query = new SqlQuery(@"SELECT * FROM NakitBagisHareket_Table
