@@ -12,3 +12,9 @@
 
 ## Code Guidelines
 - Use `TryConvertTurkishDecimal()` method instead of `ConvertToDecimal()` in newly written code. If a code change requires testing, evaluate the conversion from `ConvertToDecimal` to `TryConvertTurkishDecimal`.
+
+### Transaction bütünlüğü
+- `SqlTransactionContext transaction` parametresi alan bir metot, yaptığı tüm veritabanı `SELECT`, `INSERT`, `UPDATE` ve `DELETE` işlemlerini aynı transaction üzerinden çalıştırmalıdır.
+- Bu metotların içinden transaction parametresi olmayan repository/service metotları, `new DbClass()` veya ayrı bağlantı açan başka bir DB erişimi çağrılamaz.
+- Transaction parametresi nullable olan legacy yardımcı metotlarda yalnızca `transaction == null` dalı eski bağlantıyı kullanabilir; transaction verilmiş dalda tüm iç çağrılar transaction-aware overload olmalıdır.
+- Olay/audit kayıtları da aynı transaction üzerinden yazılmalıdır; `NOLOCK` bu kuralı aşmak için kullanılamaz.

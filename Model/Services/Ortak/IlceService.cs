@@ -1,4 +1,5 @@
 using DAO.Repositories.Ortak;
+using DAO.Ortak;
 using Model.Ortak;
 using System;
 using System.Data;
@@ -27,6 +28,13 @@ namespace Model.Services.Ortak
             return Map(repository.SelectById(id));
         }
 
+        public Ilce GetById(int id, SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            return Map(repository.SelectById(id, transaction));
+        }
+
         public List<Ilce> GetByProvinceId(int provinceId)
         {
             return new Ilce().ToList<Ilce>(repository.SelectByProvinceId(provinceId));
@@ -50,6 +58,17 @@ namespace Model.Services.Ortak
         public Ilce GetByProvinceAndDistrictName(string provinceName, string districtName)
         {
             return Map(repository.SelectByProvinceAndDistrictName(provinceName, districtName));
+        }
+
+        public Ilce GetByProvinceAndDistrictName(
+            string provinceName,
+            string districtName,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            return Map(repository.SelectByProvinceAndDistrictName(
+                provinceName, districtName, transaction));
         }
 
         public Ilce GetByProvinceAndDistrictContains(string provinceName, string districtName)

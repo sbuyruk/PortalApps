@@ -77,9 +77,19 @@ namespace DAO.Repositories.Ortak
             return db.Insert(queryBuilder.BuildInsert(entity, "Olay_Table"));
         }
 
+        public int Insert<T>(T entity, SqlTransactionContext transaction)
+        {
+            return transaction.Insert(queryBuilder.BuildInsert(entity, "Olay_Table"));
+        }
+
         public bool Update<T>(T entity)
         {
             return db.Update2Db(queryBuilder.BuildUpdate(entity, "Olay_Table"));
+        }
+
+        public bool Update<T>(T entity, SqlTransactionContext transaction)
+        {
+            return transaction.Update(queryBuilder.BuildUpdate(entity, "Olay_Table"));
         }
 
         public bool Delete(int id)

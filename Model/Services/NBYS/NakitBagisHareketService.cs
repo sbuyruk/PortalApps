@@ -1,4 +1,5 @@
 using DAO.Repositories.NBYS;
+using DAO.Ortak;
 using Model.NBYS;
 using Model.Ortak;
 using System;
@@ -56,6 +57,32 @@ namespace Model.Services.NBYS
             return bagisHareket.Id;
         }
 
+        public int Save(NakitBagisHareket bagisHareket, SqlTransactionContext transaction)
+        {
+            if (bagisHareket == null)
+                throw new ArgumentNullException("bagisHareket");
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            DateTime minTarih = new DateTime(1987, 9, 1);
+            if (bagisHareket.BagisTarihi == default(DateTime) || bagisHareket.BagisTarihi < minTarih)
+                throw new ArgumentException("BagisTarihi boş olamaz ve 01.09.1987 tarihinden önce olamaz.");
+
+            bagisHareket.OlusturmaTarihi = DateTime.Now;
+            bagisHareket.Olusturan = UtilityHelper.GetCurrentUserName();
+            bagisHareket.Id = repository.Insert(bagisHareket, transaction);
+
+            if (bagisHareket.Id > 0 && ProjeConstants.NBYS_SAVE_LOG)
+            {
+                new OlayKayit().GirisOlayKaydet(
+                    bagisHareket,
+                    ProjeConstants.NBYS,
+                    ProjeConstants.NBYS_NAKITBAGISHAREKET,
+                    transaction);
+            }
+            return bagisHareket.Id;
+        }
+
         public bool Update(NakitBagisHareket bagisHareket)
         {
             if (bagisHareket == null)
@@ -73,6 +100,32 @@ namespace Model.Services.NBYS
             {
                 new OlayKayit().GuncellemeOlayKaydet(
                     bagisHareket, previous, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISHAREKET);
+            }
+            return updated;
+        }
+
+        public bool Update(NakitBagisHareket bagisHareket, SqlTransactionContext transaction)
+        {
+            if (bagisHareket == null)
+                throw new ArgumentNullException("bagisHareket");
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            if (bagisHareket.Id == 0)
+                return false;
+
+            NakitBagisHareket previous = Map(
+                repository.SelectById(bagisHareket.Id, transaction)).FirstOrDefault();
+            bagisHareket.DegistirmeTarihi = DateTime.Now;
+            bagisHareket.Degistiren = UtilityHelper.GetCurrentUserName();
+            bool updated = repository.Update(bagisHareket, transaction);
+            if (updated && ProjeConstants.NBYS_UPDATE_LOG)
+            {
+                new OlayKayit().GuncellemeOlayKaydet(
+                    previous,
+                    bagisHareket,
+                    ProjeConstants.NBYS,
+                    ProjeConstants.NBYS_NAKITBAGISHAREKET,
+                    transaction);
             }
             return updated;
         }
@@ -190,6 +243,16 @@ namespace Model.Services.NBYS
             return Map(repository.SelectByEkstreAktarmaId(ekstreAktarmaId)).FirstOrDefault();
         }
 
+        public NakitBagisHareket GetByEkstreAktarmaId(
+            int ekstreAktarmaId,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            return Map(repository.SelectByEkstreAktarmaId(
+                ekstreAktarmaId, transaction)).FirstOrDefault();
+        }
+
         public List<NakitBagisHareket> GetByBagisciIdTarih(int bagisciId, DateTime baslangic, DateTime bitis)
         {
             return Map(repository.SelectByBagisciIdTarih(bagisciId, baslangic, bitis));
@@ -205,6 +268,22 @@ namespace Model.Services.NBYS
         {
             // Preserve the legacy inclusive range ending at midnight on the end date.
             DataTable table = repository.SelectSumByBagisciIdTarih(bagisciId, baslangic.Date, bitis.Date);
+            if (table == null || table.Rows.Count == 0)
+                return 0;
+            return table.Rows[0]["Toplam"].ReturnZeroIfNull().ConvertToDecimal();
+        }
+
+        public decimal GetTotalByBagisciIdDateRange(
+            DateTime baslangic,
+            DateTime bitis,
+            int bagisciId,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            DataTable table = repository.SelectSumByBagisciIdTarih(
+                bagisciId, baslangic.Date, bitis.Date, transaction);
             if (table == null || table.Rows.Count == 0)
                 return 0;
             return table.Rows[0]["Toplam"].ReturnZeroIfNull().ConvertToDecimal();

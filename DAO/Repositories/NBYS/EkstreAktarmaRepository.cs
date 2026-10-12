@@ -27,6 +27,16 @@ namespace DAO.Repositories.NBYS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectById(int id, SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            SqlQuery query = new SqlQuery("SELECT * FROM EkstreAktarma_Table WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return transaction.Select(query);
+        }
+
         public DataTable SelectAll()
         {
             return db.SelectFromDb(new SqlQuery("SELECT * FROM EkstreAktarma_Table"), "");
@@ -82,6 +92,10 @@ namespace DAO.Repositories.NBYS
 
         public int Insert<T>(T entity) { return db.Insert(queryBuilder.BuildInsert(entity, TableName)); }
         public bool Update<T>(T entity) { return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName)); }
+        public bool Update<T>(T entity, SqlTransactionContext transaction)
+        {
+            return transaction.Update(queryBuilder.BuildUpdate(entity, TableName));
+        }
         public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), ""); }
     }
 }

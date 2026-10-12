@@ -30,10 +30,20 @@ namespace DAO.Repositories.NBYS
             return db.Insert(query);
         }
 
+        public int Insert<T>(T entity, SqlTransactionContext transaction)
+        {
+            return transaction.Insert(crudQueryBuilder.BuildInsert(entity, TableName));
+        }
+
         public bool Update<T>(T entity)
         {
             SqlQuery query = crudQueryBuilder.BuildUpdate(entity, TableName);
             return db.Update2Db(query);
+        }
+
+        public bool Update<T>(T entity, SqlTransactionContext transaction)
+        {
+            return transaction.Update(crudQueryBuilder.BuildUpdate(entity, TableName));
         }
 
         public bool Delete(int id)
@@ -110,6 +120,36 @@ namespace DAO.Repositories.NBYS
             }
         }
 
+        public int CreateBilinmeyenBagisci<T>(
+            T entity,
+            string namePrefix,
+            DateTime modifiedAt,
+            string modifiedBy,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            SqlQuery insert = crudQueryBuilder.BuildInsert(entity, TableName);
+            NormalizeLegacyNullStrings(entity, insert);
+            int id = transaction.Insert(insert);
+            if (id <= 0)
+                throw new InvalidOperationException("Bilinmeyen bagisci kimligi gecersiz.");
+
+            SqlQuery update = new SqlQuery(@"UPDATE NakitBagisci_Table
+                SET Adi=@Adi, Aciklama=@Aciklama,
+                    DegistirmeTarihi=@DegistirmeTarihi, Degistiren=@Degistiren
+                WHERE Id=@Id");
+            string idText = id.ToString(CultureInfo.InvariantCulture);
+            update.AddParameter("@Id", id);
+            update.AddParameter("@Adi", namePrefix + "_" + idText);
+            update.AddParameter("@Aciklama", namePrefix + " Bagisçi Id= " + idText);
+            update.AddParameter("@DegistirmeTarihi", modifiedAt);
+            update.AddParameter("@Degistiren", modifiedBy ?? string.Empty);
+            transaction.Update(update);
+            return id;
+        }
+
         public DataTable SelectById(int id)
         {
             SqlQuery query = new SqlQuery(@"SELECT *
@@ -117,6 +157,18 @@ namespace DAO.Repositories.NBYS
                                WHERE Id = @Id");
             query.AddParameter("@Id", id);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectById(int id, SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            SqlQuery query = new SqlQuery(@"SELECT *
+                               FROM NakitBagisci_Table
+                               WHERE Id = @Id");
+            query.AddParameter("@Id", id);
+            return transaction.Select(query);
         }
 
         public DataTable SelectAll()
@@ -133,6 +185,17 @@ namespace DAO.Repositories.NBYS
                                WHERE TCKimlikNo != 0 AND TCKimlikNo = @TCKimlikNo");
             query.AddParameter("@TCKimlikNo", tcKimlikno);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectByTcKimlikno(long tcKimlikno, SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            SqlQuery query = new SqlQuery(@"SELECT *
+                               FROM NakitBagisci_Table
+                               WHERE TCKimlikNo != 0 AND TCKimlikNo = @TCKimlikNo");
+            query.AddParameter("@TCKimlikNo", tcKimlikno);
+            return transaction.Select(query);
         }
 
         public DataTable SelectImportCandidates(string fullName)
@@ -165,6 +228,21 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@Adi", adi ?? string.Empty);
             query.AddParameter("@Telefon", telefon ?? string.Empty);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectByAdAndTelefon(
+            string adi,
+            string telefon,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            SqlQuery query = new SqlQuery(@"SELECT *
+                               FROM NakitBagisci_Table
+                               WHERE Adi = @Adi AND (Telefon1 = @Telefon OR Telefon2 = @Telefon)");
+            query.AddParameter("@Adi", adi ?? string.Empty);
+            query.AddParameter("@Telefon", telefon ?? string.Empty);
+            return transaction.Select(query);
         }
 
         public DataTable SelectByTelefon(string telefon)
@@ -287,7 +365,8 @@ namespace DAO.Repositories.NBYS
         public DataTable SelectByFilter(string filter, int eksiId)
         {
             SqlQuery query = new SqlQuery(@"
-                SELECT distinct(N.Id) NakitBagisciId, N.Adi,Soyadi, TCKimlikNo, A.IlAdi Ili ,B.IlceAdi Ilcesi,Adres,
+                SELECT distinct(N.Id) NakitBagisciId, N.Adi,ISNULL(Soyadi,'') Soyadi, 
+                    TCKimlikNo, A.IlAdi Ili ,B.IlceAdi Ilcesi,Adres,
 	                Telefon1,Telefon2, Telefon1 + IIF(ISNULL(Telefon1,'')!='' AND ISNULL(Telefon2,'')!='',' - ','') + Telefon2 Telefon,
                     N.OlusturmaTarihi  ,N.DegistirmeTarihi,N.Degistiren,Sag,Eposta ,PostaKodu, Ulasilamiyor, BelgeIstemiyor
                 FROM NakitBagisci_Table N

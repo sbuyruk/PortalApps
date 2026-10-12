@@ -1,4 +1,5 @@
 using DAO.Repositories.Ortak;
+using DAO.Ortak;
 using Model.Ortak;
 using System;
 using System.Data;
@@ -40,6 +41,13 @@ namespace Model.Services.Ortak
         public Il GetByName(string name)
         {
             return Map(repository.SelectByName(name));
+        }
+
+        public Il GetByName(string name, SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            return Map(repository.SelectByName(name, transaction));
         }
 
         public Il GetByEnglishName(string name)

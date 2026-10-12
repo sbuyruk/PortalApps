@@ -1,4 +1,5 @@
 using DAO.Repositories.NBYS;
+using DAO.Ortak;
 using Model.NBYS;
 using Model.Ortak;
 using System;
@@ -30,6 +31,13 @@ namespace Model.Services.NBYS
             return Map(repository.SelectById(id)).FirstOrDefault();
         }
 
+        public Armagan GetById(int id, SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            return Map(repository.SelectById(id, transaction)).FirstOrDefault();
+        }
+
         public List<Armagan> GetAll()
         {
             return Map(repository.SelectAll());
@@ -52,9 +60,26 @@ namespace Model.Services.NBYS
             return Map(repository.SelectByBagisciId(bagisciId));
         }
 
+        public List<Armagan> GetByBagisciId(int bagisciId, SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            return Map(repository.SelectByBagisciId(bagisciId, transaction));
+        }
+
         public List<Armagan> GetByBagisciIdAndDurum(int bagisciId, string durum)
         {
             return Map(repository.SelectByBagisciIdAndDurum(bagisciId, durum));
+        }
+
+        public List<Armagan> GetByBagisciIdAndDurum(
+            int bagisciId,
+            string durum,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            return Map(repository.SelectByBagisciIdAndDurum(bagisciId, durum, transaction));
         }
 
         public Armagan GetByBagisciIdAndTanimId(int bagisciId, int armaganTanimId)
@@ -65,6 +90,17 @@ namespace Model.Services.NBYS
         public int CountByBagisciIdAndTanimId(int bagisciId, int armaganTanimId)
         {
             return repository.CountByBagisciIdAndTanimId(bagisciId, armaganTanimId);
+        }
+
+        public int CountByBagisciIdAndTanimId(
+            int bagisciId,
+            int armaganTanimId,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            return repository.CountByBagisciIdAndTanimId(
+                bagisciId, armaganTanimId, transaction);
         }
 
         public bool UpdateDurumByBolge(
@@ -204,6 +240,28 @@ namespace Model.Services.NBYS
             return armagan.Id;
         }
 
+        public int Save(Armagan armagan, SqlTransactionContext transaction)
+        {
+            if (armagan == null)
+                throw new ArgumentNullException("armagan");
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            armagan.OlusturmaTarihi = DateTime.Now;
+            armagan.Olusturan = UtilityHelper.GetCurrentUserName();
+            armagan.Id = repository.Insert(armagan, transaction);
+
+            if (armagan.Id > 0 && ProjeConstants.NBYS_SAVE_LOG)
+            {
+                new OlayKayit().GirisOlayKaydet(
+                    armagan,
+                    ProjeConstants.NBYS,
+                    ProjeConstants.NBYS_ARMAGAN,
+                    transaction);
+            }
+            return armagan.Id;
+        }
+
         public Armagan GetDuzenliBagisByBelgeSirasi(int bagisciId, int belgeSirasi)
         {
             return Map(repository.SelectByBagisciIdTanimIdBelgeSirasi(
@@ -247,6 +305,31 @@ namespace Model.Services.NBYS
             {
                 new OlayKayit().GuncellemeOlayKaydet(
                     armagan, previous, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGAN);
+            }
+            return updated;
+        }
+
+        public bool Update(Armagan armagan, SqlTransactionContext transaction)
+        {
+            if (armagan == null)
+                throw new ArgumentNullException("armagan");
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            if (armagan.Id == 0)
+                return false;
+
+            Armagan previous = GetById(armagan.Id, transaction);
+            armagan.DegistirmeTarihi = DateTime.Now;
+            armagan.Degistiren = UtilityHelper.GetCurrentUserName();
+            bool updated = repository.Update(armagan, transaction);
+            if (updated && ProjeConstants.NBYS_UPDATE_LOG)
+            {
+                new OlayKayit().GuncellemeOlayKaydet(
+                    previous,
+                    armagan,
+                    ProjeConstants.NBYS,
+                    ProjeConstants.NBYS_ARMAGAN,
+                    transaction);
             }
             return updated;
         }

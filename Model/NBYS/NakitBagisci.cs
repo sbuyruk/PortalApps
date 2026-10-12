@@ -6,9 +6,14 @@ namespace Model.NBYS
     [Serializable]
     public class NakitBagisci : EntityBase
     {
+        private string _soyadi;
 
         public string Adi { get; set; }
-        public string Soyadi { get; set; }
+        public string Soyadi
+        {
+            get { return _soyadi ?? string.Empty; }
+            set { _soyadi = value; }
+        }
         public long TCKimlikNo { get; set; }
         public int Ili { get; set; }
         public int Ilcesi { get; set; }

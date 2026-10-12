@@ -1,4 +1,5 @@
 using DAO.Repositories.NBYS;
+using DAO.Ortak;
 using Model.NBYS;
 using Model.Ortak;
 using System;
@@ -38,6 +39,13 @@ namespace Model.Services.NBYS
         public BankaTanim GetByName(string name)
         {
             return Map(repository.SelectByName(name)).FirstOrDefault();
+        }
+
+        public BankaTanim GetByName(string name, SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            return Map(repository.SelectByName(name, transaction)).FirstOrDefault();
         }
 
         public List<string> GetGroups()

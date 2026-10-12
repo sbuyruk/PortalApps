@@ -1,4 +1,5 @@
 using DAO.Repositories.NBYS;
+using DAO.Ortak;
 using Model.NBYS;
 using Model.Ortak;
 using System;
@@ -43,6 +44,16 @@ namespace Model.Services.NBYS
         public ArmaganTanim GetByAmount(decimal amount, bool isCorporate)
         {
             return Map(repository.SelectByAmount(amount, isCorporate)).FirstOrDefault();
+        }
+
+        public ArmaganTanim GetByAmount(
+            decimal amount,
+            bool isCorporate,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+            return Map(repository.SelectByAmount(amount, isCorporate, transaction)).FirstOrDefault();
         }
 
         public int Save(ArmaganTanim item)

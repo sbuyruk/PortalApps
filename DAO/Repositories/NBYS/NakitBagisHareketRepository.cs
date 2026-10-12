@@ -29,9 +29,19 @@ namespace DAO.Repositories.NBYS
             return db.Insert(queryBuilder.BuildInsert(entity, TableName));
         }
 
+        public int Insert<T>(T entity, SqlTransactionContext transaction)
+        {
+            return transaction.Insert(queryBuilder.BuildInsert(entity, TableName));
+        }
+
         public bool Update<T>(T entity)
         {
             return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName));
+        }
+
+        public bool Update<T>(T entity, SqlTransactionContext transaction)
+        {
+            return transaction.Update(queryBuilder.BuildUpdate(entity, TableName));
         }
 
         public void UpdateRefund<TDonation, TGift>(TDonation donation, TGift gift)
@@ -134,6 +144,16 @@ namespace DAO.Repositories.NBYS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectById(int id, SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            SqlQuery query = new SqlQuery("SELECT * FROM NakitBagisHareket_Table WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return transaction.Select(query);
+        }
+
         public DataTable SelectAll()
         {
             return db.SelectFromDb(new SqlQuery("SELECT * FROM NakitBagisHareket_Table"), "");
@@ -151,6 +171,19 @@ namespace DAO.Repositories.NBYS
             SqlQuery query = new SqlQuery("SELECT * FROM NakitBagisHareket_Table WHERE EkstreAktarmaId=@EkstreAktarmaId");
             query.AddParameter("@EkstreAktarmaId", ekstreAktarmaId);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectByEkstreAktarmaId(
+            int ekstreAktarmaId,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM NakitBagisHareket_Table WHERE EkstreAktarmaId=@EkstreAktarmaId");
+            query.AddParameter("@EkstreAktarmaId", ekstreAktarmaId);
+            return transaction.Select(query);
         }
 
         public DataTable SelectByBagisciIdTarih(int bagisciId, DateTime baslangic, DateTime bitis)
@@ -180,9 +213,27 @@ namespace DAO.Repositories.NBYS
                 FROM NakitBagisHareket_Table
                 WHERE BagisciId=@BagisciId AND BagisTarihi BETWEEN @Baslangic AND @Bitis");
             query.AddParameter("@BagisciId", bagisciId);
-            query.AddParameter("@Baslangic", LegacyDateValue(baslangic));
-            query.AddParameter("@Bitis", LegacyDateValue(bitis));
+            query.AddParameter("@Baslangic", baslangic);
+            query.AddParameter("@Bitis", bitis);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectSumByBagisciIdTarih(
+            int bagisciId,
+            DateTime baslangic,
+            DateTime bitis,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException("transaction");
+
+            SqlQuery query = new SqlQuery(@"SELECT SUM(BagisMiktari) Toplam
+                FROM NakitBagisHareket_Table
+                WHERE BagisciId=@BagisciId AND BagisTarihi BETWEEN @Baslangic AND @Bitis");
+            query.AddParameter("@BagisciId", bagisciId);
+            query.AddParameter("@Baslangic", baslangic);
+            query.AddParameter("@Bitis", bitis);
+            return transaction.Select(query);
         }
 
         public DataTable SelectArmaganiOlmayanByBagisciId(int bagisciId)
