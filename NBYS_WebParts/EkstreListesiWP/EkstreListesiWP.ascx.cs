@@ -203,6 +203,10 @@ namespace NBYS_WebParts.EkstreListesiWP
                             {
                                 if (MesajQS.ToLower().Equals("true"))
                                     MessageHelper.PublishMessage("Aktarma tamamlandı.", ProjeConstants.MESAJ_BASARILI, 2000);
+                                else if (MesajQS.ToLower().Equals("dahaonce"))
+                                    MessageHelper.PublishMessage("Bu kayıt daha önce aktarılmıştı, tekrar aktarılmadı.", ProjeConstants.MESAJ_BILGI, 4000);
+                                else if (MesajQS.ToLower().Equals("karisik"))
+                                    MessageHelper.PublishMessage("Bazı kayıtlar aktarıldı, bazıları daha önce aktarıldığı için atlandı.", ProjeConstants.MESAJ_BILGI, 4000);
                                 else
                                     MessageHelper.PublishMessage("Aktarma yapılamadı.", ProjeConstants.MESAJ_HATA);
                             }
@@ -580,7 +584,12 @@ namespace NBYS_WebParts.EkstreListesiWP
                     {
                         UtilityHelper.ScriptCalistir("CloseModalOnay();");
                         ScriptManager.RegisterStartupScript(this, this.GetType(), "HideLoader", "$('#customLoader').hide();", true);
-                        RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?Mesaj=true&Islem=kaydet&basarili=true&IslemTarihi=" + IslemTarihiQS + "&AktarilanlarHaric=" + AktarilanlarHaricQS + "&Banka=" + BankaQS);
+                        string mesaj = exceptionHelper.SuccessCount > 0 && exceptionHelper.AlreadyProcessedCount > 0
+                            ? "karisik"
+                            : exceptionHelper.AlreadyProcessedCount > 0
+                                ? "dahaonce"
+                                : "true";
+                        RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?Mesaj=" + mesaj + "&Islem=kaydet&basarili=true&IslemTarihi=" + IslemTarihiQS + "&AktarilanlarHaric=" + AktarilanlarHaricQS + "&Banka=" + BankaQS);
                     }
                     //RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST);
                 }
