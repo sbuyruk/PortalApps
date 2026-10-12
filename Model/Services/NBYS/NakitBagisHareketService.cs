@@ -113,7 +113,8 @@ namespace Model.Services.NBYS
             if (bagisHareket.Id == 0)
                 return false;
 
-            NakitBagisHareket previous = GetById(bagisHareket.Id);
+            NakitBagisHareket previous = Map(
+                repository.SelectById(bagisHareket.Id, transaction)).FirstOrDefault();
             bagisHareket.DegistirmeTarihi = DateTime.Now;
             bagisHareket.Degistiren = UtilityHelper.GetCurrentUserName();
             bool updated = repository.Update(bagisHareket, transaction);
