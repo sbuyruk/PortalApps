@@ -1,3 +1,4 @@
+using DAO.Ortak;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.Ortak;
@@ -14,14 +15,53 @@ namespace Model.Services.NBYS
 {
     public static class EkstreAktarmaImportService
     {
-        private static int SaveEkstreAktarma(EkstreAktarma item)
+        private static ExceptionHelper ExecuteFileImport(
+            Func<SqlTransactionContext, ExceptionHelper> import, string bankName, string fileName)
         {
-            if (item.NakitBagisciId <= 0)
-                item.NakitBagisciId = new EkstreBagisciEslestirmeService().FindDonorId(item);
-            return new EkstreAktarmaService().Save(item);
+            try
+            {
+                ExceptionHelper result;
+                using (var transaction = new SqlTransactionContext())
+                {
+                    result = import(transaction);
+                    if (result == null)
+                        throw new InvalidOperationException("Dosya işleme sonucu alınamadı.");
+                    if (result.Exceptions.Count == 0)
+                        transaction.Complete();
+                }
+                if (result.Exceptions.Count > 0)
+                {
+                    string context = bankName + (string.IsNullOrEmpty(fileName) ? "" : " / " + fileName);
+                    for (int i = 0; i < result.Exceptions.Count; i++)
+                        result.Exceptions[i] = new Exception(context + ": " + result.Exceptions[i].Message,
+                            result.Exceptions[i]);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                string context = bankName + (string.IsNullOrEmpty(fileName) ? "" : " / " + fileName);
+                return new ExceptionHelper(new Exception(context + ": dosya yüklenemedi.", ex));
+            }
         }
 
-        public static ExceptionHelper SaveAkBankFile(Stream fileStream, DateTime processTime, string currentUser)
+        private static int SaveEkstreAktarma(EkstreAktarma item, SqlTransactionContext transaction)
+        {
+            if (item.NakitBagisciId <= 0)
+                item.NakitBagisciId = new EkstreBagisciEslestirmeService(
+                    new DAO.Repositories.NBYS.NakitBagisciRepository(transaction))
+                    .FindDonorId(item, transaction);
+            return new EkstreAktarmaService(
+                new DAO.Repositories.NBYS.EkstreAktarmaRepository(transaction))
+                .Save(item, transaction);
+        }
+
+        public static ExceptionHelper SaveAkBankFile(Stream fileStream, DateTime processTime, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTime, currentUser, transaction), "AkBank", fileName);
+        }
+
+        private static ExceptionHelper SaveAkBankFileCore(Stream fileStream, DateTime processTime, string currentUser, SqlTransactionContext transaction)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -67,7 +107,7 @@ namespace Model.Services.NBYS
                         ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                         ekstreAktarma.Olusturan = currentUser;
                         //ekstreAktarma.FisNo = fisNo;
-                        SaveEkstreAktarma(ekstreAktarma);
+                        SaveEkstreAktarma(ekstreAktarma, transaction);
 
                     }
                 }
@@ -80,7 +120,12 @@ namespace Model.Services.NBYS
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveAkBankEkstreFile(Stream fileStream, DateTime islemTarihi, string currentUser)
+        public static ExceptionHelper SaveAkBankEkstreFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveAkBankEkstreFileCore(fileStream, islemTarihi, currentUser, transaction), "AkBankEkstre", fileName);
+        }
+
+        private static ExceptionHelper SaveAkBankEkstreFileCore(Stream fileStream, DateTime islemTarihi, string currentUser, SqlTransactionContext transaction)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -103,7 +148,7 @@ namespace Model.Services.NBYS
                             var tutar = row[2].ReturnEmptyIfNull().ToString().Replace(".", ",").ConvertToDecimal();//row[6].ReturnEmptyIfNull().ToString();
                             var bagisTarihi = row[0].ReturnEmptyIfNull().ToString().ConvertToDatetime();
                             if (BuKayitDahaOnceGirilmisMiByFisNo(//ProjeConstants.BANKA_AKBANKEKSTRE, fisNo, aciklama)) //fis numarasindan kontrol et kayit girilmisse atla
-                                "Akbank", fisNo, aciklama, bagisTarihi, tutar)) //fis numarasindan kontrol et kayit girilmisse atla
+                                "Akbank", fisNo, aciklama, bagisTarihi, tutar, transaction)) //fis numarasindan kontrol et kayit girilmisse atla
                             {
                                 continue;
                             }
@@ -120,7 +165,7 @@ namespace Model.Services.NBYS
                                     ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                     ekstreAktarma.Olusturan = currentUser;
                                     ekstreAktarma.FisNo = fisNo;
-                                    SaveEkstreAktarma(ekstreAktarma);
+                                    SaveEkstreAktarma(ekstreAktarma, transaction);
                                 }
                             }
                         }
@@ -138,7 +183,12 @@ namespace Model.Services.NBYS
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveGarantiBankFile(Stream filePath, DateTime processTime, string currentUser)
+        public static ExceptionHelper SaveGarantiBankFile(Stream filePath, DateTime processTime, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveGarantiBankFileCore(filePath, processTime, currentUser, transaction), "GarantiBank", fileName);
+        }
+
+        private static ExceptionHelper SaveGarantiBankFileCore(Stream filePath, DateTime processTime, string currentUser, SqlTransactionContext transaction)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -207,7 +257,7 @@ namespace Model.Services.NBYS
                             ekstreAktarma.IslemTarihi = processTime;
                             ekstreAktarma.Olusturan = currentUser;
 
-                            SaveEkstreAktarma(ekstreAktarma);
+                            SaveEkstreAktarma(ekstreAktarma, transaction);
 
                         }
                     }
@@ -221,7 +271,12 @@ namespace Model.Services.NBYS
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveGarantiEkstreFile(Stream fileStream, DateTime processTime, string currentUser)
+        public static ExceptionHelper SaveGarantiEkstreFile(Stream fileStream, DateTime processTime, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveGarantiEkstreFileCore(fileStream, processTime, currentUser, transaction), "GarantiEkstre", fileName);
+        }
+
+        private static ExceptionHelper SaveGarantiEkstreFileCore(Stream fileStream, DateTime processTime, string currentUser, SqlTransactionContext transaction)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -343,7 +398,7 @@ namespace Model.Services.NBYS
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
 
-                            SaveEkstreAktarma(ekstreAktarma);
+                            SaveEkstreAktarma(ekstreAktarma, transaction);
                         }
                     }
                     catch (Exception ex)
@@ -357,7 +412,12 @@ namespace Model.Services.NBYS
             return exceptionHelper;
 
         }
-        public static ExceptionHelper SaveHalkbankFile(Stream filePath, DateTime processTime, string currentUser)
+        public static ExceptionHelper SaveHalkbankFile(Stream filePath, DateTime processTime, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveHalkbankFileCore(filePath, processTime, currentUser, transaction), "Halkbank", fileName);
+        }
+
+        private static ExceptionHelper SaveHalkbankFileCore(Stream filePath, DateTime processTime, string currentUser, SqlTransactionContext transaction)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -390,7 +450,7 @@ namespace Model.Services.NBYS
                         ekstreAktarma.IslemTarihi = processTime;
                         ekstreAktarma.Olusturan = currentUser;
                         ekstreAktarma.BelgeIstemiyor = ekstreAktarma.Aciklama.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) || ekstreAktarma.Adres.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) ? true : false;
-                        SaveEkstreAktarma(ekstreAktarma);
+                        SaveEkstreAktarma(ekstreAktarma, transaction);
 
                     }
 
@@ -403,7 +463,12 @@ namespace Model.Services.NBYS
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveHalkbank2File(Stream fileStream, DateTime processTime, string currentUser)
+        public static ExceptionHelper SaveHalkbank2File(Stream fileStream, DateTime processTime, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveHalkbank2FileCore(fileStream, processTime, currentUser, transaction), "Halkbank2", fileName);
+        }
+
+        private static ExceptionHelper SaveHalkbank2FileCore(Stream fileStream, DateTime processTime, string currentUser, SqlTransactionContext transaction)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -470,7 +535,7 @@ namespace Model.Services.NBYS
                                 ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                 ekstreAktarma.Olusturan = currentUser;
                                 hata = detay;
-                                SaveEkstreAktarma(ekstreAktarma);
+                                SaveEkstreAktarma(ekstreAktarma, transaction);
                             }
 
                         }
@@ -488,7 +553,12 @@ namespace Model.Services.NBYS
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveFinansbankFile(Stream fileStream, DateTime processTime, string currentUser)
+        public static ExceptionHelper SaveFinansbankFile(Stream fileStream, DateTime processTime, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveFinansbankFileCore(fileStream, processTime, currentUser, transaction), "Finansbank", fileName);
+        }
+
+        private static ExceptionHelper SaveFinansbankFileCore(Stream fileStream, DateTime processTime, string currentUser, SqlTransactionContext transaction)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -541,7 +611,7 @@ namespace Model.Services.NBYS
                     //    ekstreAktarma.Save();
 
                     //}
-                    SaveEkstreAktarma(item);
+                    SaveEkstreAktarma(item, transaction);
                 }
                 catch (Exception ex)
                 {
@@ -552,7 +622,12 @@ namespace Model.Services.NBYS
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveFinansbankEkstreFile(Stream fileStream, DateTime islemTarihi, string currentUser)
+        public static ExceptionHelper SaveFinansbankEkstreFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveFinansbankEkstreFileCore(fileStream, islemTarihi, currentUser, transaction), "FinansbankEkstre", fileName);
+        }
+
+        private static ExceptionHelper SaveFinansbankEkstreFileCore(Stream fileStream, DateTime islemTarihi, string currentUser, SqlTransactionContext transaction)
         {
             int kayitNo = 0;
             ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -606,7 +681,7 @@ namespace Model.Services.NBYS
                                     ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                     ekstreAktarma.Olusturan = currentUser;
                                     ekstreAktarma.FisNo = fisNo;
-                                    if (BuKayitDahaOnceGirilmisMiByFisNo(ProjeConstants.BANKA_FINANSBANK ,fisNo, aciklama, bagisTarihi, tutar))
+                                    if (BuKayitDahaOnceGirilmisMiByFisNo(ProjeConstants.BANKA_FINANSBANK ,fisNo, aciklama, bagisTarihi, tutar, transaction))
                                     //fis numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                     {
                                         Exception ex = new Exception(fisNo + " Numaralı fiş daha önce girildiginden tekrar aktarılmadı.");
@@ -614,7 +689,7 @@ namespace Model.Services.NBYS
                                     }
                                     else
                                     {
-                                        SaveEkstreAktarma(ekstreAktarma);
+                                        SaveEkstreAktarma(ekstreAktarma, transaction);
                                     }
                                 }
 
@@ -638,7 +713,12 @@ namespace Model.Services.NBYS
         /// </summary>
         /// <param name="checkedRows"></param>
         /// <returns></returns>
-        public static ExceptionHelper SaveIsBankFile(Stream filePath, DateTime processTime, string currentUser)
+        public static ExceptionHelper SaveIsBankFile(Stream filePath, DateTime processTime, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveIsBankFileCore(filePath, processTime, currentUser, transaction), "IsBank", fileName);
+        }
+
+        private static ExceptionHelper SaveIsBankFileCore(Stream filePath, DateTime processTime, string currentUser, SqlTransactionContext transaction)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -677,7 +757,7 @@ namespace Model.Services.NBYS
 
 
 
-                        SaveEkstreAktarma(ekstreAktarma);
+                        SaveEkstreAktarma(ekstreAktarma, transaction);
                     }
                     catch (Exception ex)
                     {
@@ -695,7 +775,12 @@ namespace Model.Services.NBYS
 
         }
 
-        public static ExceptionHelper SaveIsBankEkstreFile(Stream fileStream, DateTime processTime, string currentUser)
+        public static ExceptionHelper SaveIsBankEkstreFile(Stream fileStream, DateTime processTime, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveIsBankEkstreFileCore(fileStream, processTime, currentUser, transaction), "IsBankEkstre", fileName);
+        }
+
+        private static ExceptionHelper SaveIsBankEkstreFileCore(Stream fileStream, DateTime processTime, string currentUser, SqlTransactionContext transaction)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -783,7 +868,7 @@ namespace Model.Services.NBYS
                                 ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                 ekstreAktarma.Olusturan = currentUser;
 
-                                SaveEkstreAktarma(ekstreAktarma);
+                                SaveEkstreAktarma(ekstreAktarma, transaction);
                             }
                             else
                             {
@@ -802,7 +887,12 @@ namespace Model.Services.NBYS
             return exceptionHelper;
 
         }
-        public static ExceptionHelper SaveYKBEkstreFile(Stream fileStream, DateTime processTime, string currentUser)
+        public static ExceptionHelper SaveYKBEkstreFile(Stream fileStream, DateTime processTime, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveYKBEkstreFileCore(fileStream, processTime, currentUser, transaction), "YKBEkstre", fileName);
+        }
+
+        private static ExceptionHelper SaveYKBEkstreFileCore(Stream fileStream, DateTime processTime, string currentUser, SqlTransactionContext transaction)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -910,14 +1000,14 @@ namespace Model.Services.NBYS
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
                             ekstreAktarma.FisNo = fisno;
-                            if (BuKayitDahaOnceGirilmisMiByFisNo(ProjeConstants.BANKA_YKBEKSTRE, fisno, detay, tarih.ReturnEmptyIfNull().ConvertToDatetime(), tutar.ConvertToDecimal())) //Referans numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
+                            if (BuKayitDahaOnceGirilmisMiByFisNo(ProjeConstants.BANKA_YKBEKSTRE, fisno, detay, tarih.ReturnEmptyIfNull().ConvertToDatetime(), tutar.ConvertToDecimal(), transaction)) //Referans numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                             {
                                 Exception ex = new Exception(fisno + " Numaralı fiş daha önce girildiğinden tekrar aktarılmadı.");
                                 exceptionHelper.Exceptions.Add(ex);
                             }
                             else
                             {
-                                SaveEkstreAktarma(ekstreAktarma);
+                                SaveEkstreAktarma(ekstreAktarma, transaction);
 
                             }
                         }
@@ -939,7 +1029,12 @@ namespace Model.Services.NBYS
 
         }
 
-        public static ExceptionHelper SaveVakifBankFile(Stream fileStream, DateTime processTime, string currentUser)
+        public static ExceptionHelper SaveVakifBankFile(Stream fileStream, DateTime processTime, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveVakifBankFileCore(fileStream, processTime, currentUser, transaction), "VakifBank", fileName);
+        }
+
+        private static ExceptionHelper SaveVakifBankFileCore(Stream fileStream, DateTime processTime, string currentUser, SqlTransactionContext transaction)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -1010,7 +1105,7 @@ namespace Model.Services.NBYS
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
 
-                            SaveEkstreAktarma(ekstreAktarma);
+                            SaveEkstreAktarma(ekstreAktarma, transaction);
                         }
                         catch (Exception ex)
                         {
@@ -1026,7 +1121,12 @@ namespace Model.Services.NBYS
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveVakifBankGunlukTextFile(Stream filePath, DateTime processTime, string currentUser)
+        public static ExceptionHelper SaveVakifBankGunlukTextFile(Stream filePath, DateTime processTime, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveVakifBankGunlukTextFileCore(filePath, processTime, currentUser, transaction), "VakifBankGunlukText", fileName);
+        }
+
+        private static ExceptionHelper SaveVakifBankGunlukTextFileCore(Stream filePath, DateTime processTime, string currentUser, SqlTransactionContext transaction)
         {
             /**
                 D                   :  Satır Başı
@@ -1075,7 +1175,7 @@ namespace Model.Services.NBYS
                         ekstreAktarma.IslemTarihi = processTime;
                         ekstreAktarma.Olusturan = currentUser;
                         ekstreAktarma.BelgeIstemiyor = ekstreAktarma.Aciklama.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) || ekstreAktarma.Adres.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) ? true : false;
-                        SaveEkstreAktarma(ekstreAktarma);
+                        SaveEkstreAktarma(ekstreAktarma, transaction);
 
                     }
 
@@ -1088,7 +1188,12 @@ namespace Model.Services.NBYS
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveVakifBank2File(Stream fileStream, DateTime processTime, string currentUser)
+        public static ExceptionHelper SaveVakifBank2File(Stream fileStream, DateTime processTime, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveVakifBank2FileCore(fileStream, processTime, currentUser, transaction), "VakifBank2", fileName);
+        }
+
+        private static ExceptionHelper SaveVakifBank2FileCore(Stream fileStream, DateTime processTime, string currentUser, SqlTransactionContext transaction)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -1174,7 +1279,7 @@ namespace Model.Services.NBYS
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
 
-                            SaveEkstreAktarma(ekstreAktarma);
+                            SaveEkstreAktarma(ekstreAktarma, transaction);
                         }
                         catch (Exception ex)
                         {
@@ -1190,7 +1295,12 @@ namespace Model.Services.NBYS
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveVakifKatilimFile(Stream fileStream, DateTime processTime, string currentUser)
+        public static ExceptionHelper SaveVakifKatilimFile(Stream fileStream, DateTime processTime, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveVakifKatilimFileCore(fileStream, processTime, currentUser, transaction), "VakifKatilim", fileName);
+        }
+
+        private static ExceptionHelper SaveVakifKatilimFileCore(Stream fileStream, DateTime processTime, string currentUser, SqlTransactionContext transaction)
         {
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -1260,7 +1370,7 @@ namespace Model.Services.NBYS
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
 
-                            SaveEkstreAktarma(ekstreAktarma);
+                            SaveEkstreAktarma(ekstreAktarma, transaction);
                         }
                         catch (Exception ex)
                         {
@@ -1276,7 +1386,12 @@ namespace Model.Services.NBYS
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveTEBBankFile(Stream filePath, DateTime processTime, string currentUser)
+        public static ExceptionHelper SaveTEBBankFile(Stream filePath, DateTime processTime, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveTEBBankFileCore(filePath, processTime, currentUser, transaction), "TEBBank", fileName);
+        }
+
+        private static ExceptionHelper SaveTEBBankFileCore(Stream filePath, DateTime processTime, string currentUser, SqlTransactionContext transaction)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -1341,7 +1456,7 @@ namespace Model.Services.NBYS
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
 
-                            SaveEkstreAktarma(ekstreAktarma);
+                            SaveEkstreAktarma(ekstreAktarma, transaction);
 
                         }
                     }
@@ -1355,7 +1470,12 @@ namespace Model.Services.NBYS
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveZiraatFile(Stream fileStream, DateTime islemTarihi, string currentUser)
+        public static ExceptionHelper SaveZiraatFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveZiraatFileCore(fileStream, islemTarihi, currentUser, transaction), "Ziraat", fileName);
+        }
+
+        private static ExceptionHelper SaveZiraatFileCore(Stream fileStream, DateTime islemTarihi, string currentUser, SqlTransactionContext transaction)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -1407,7 +1527,7 @@ namespace Model.Services.NBYS
                         ekstreAktarma.BagisTarihi = tarih.ConvertToDatetime();// ConverYYYMMDDToDateTime(tarih);
                         ekstreAktarma.AktarildiMi = false;
                         ekstreAktarma.BankaAdi = ProjeConstants.BANKA_ZIRAAT;
-                        ekstreAktarma.Ili = GetIlNameById(il);
+                        ekstreAktarma.Ili = GetIlNameById(il, transaction);
                         //ekstreAktarma.Ilcesi = ilce; ziraat bankasindan gelen ilce kodlari tutmuyor. bu yuzden ilceyi yazmasin
                         ekstreAktarma.Eposta = eposta;
                         ekstreAktarma.IslemTarihi = islemTarihi;
@@ -1415,14 +1535,14 @@ namespace Model.Services.NBYS
                         ekstreAktarma.Olusturan = currentUser;
                         ekstreAktarma.FisNo = fisNo;
                         if (BuKayitDahaOnceGirilmisMiByFisNo(//ProjeConstants.BANKA_ZIRAAT,fisNo,aciklama))
-                            "Ziraat", fisNo, aciklama, tarih.ReturnEmptyIfNull().ConvertToDatetime(), tutar)) //fis numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
+                            "Ziraat", fisNo, aciklama, tarih.ReturnEmptyIfNull().ConvertToDatetime(), tutar, transaction)) //fis numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                         {
                             Exception ex = new Exception(fisNo + " Numaralı fiş daha önce girildiginden tekrar aktarılmadı.");
                             exceptionHelper.Exceptions.Add(ex);
                         }
                         else
                         {
-                            SaveEkstreAktarma(ekstreAktarma);
+                            SaveEkstreAktarma(ekstreAktarma, transaction);
 
                         }
 
@@ -1437,7 +1557,12 @@ namespace Model.Services.NBYS
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveKartIleFile(Stream fileStream, DateTime islemTarihi, string currentUser, DateTime bagisTarihi)
+        public static ExceptionHelper SaveKartIleFile(Stream fileStream, DateTime islemTarihi, string currentUser, DateTime bagisTarihi, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveKartIleFileCore(fileStream, islemTarihi, currentUser, bagisTarihi, transaction), "KartIle", fileName);
+        }
+
+        private static ExceptionHelper SaveKartIleFileCore(Stream fileStream, DateTime islemTarihi, string currentUser, DateTime bagisTarihi, SqlTransactionContext transaction)
         {
             int kayitNo = ProjeConstants.BANKA_KARTILE_ILKKACSATIRHARIC;
             ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -1518,14 +1643,14 @@ namespace Model.Services.NBYS
                                     ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                     ekstreAktarma.Olusturan = currentUser;
                                     if (BuKayitDahaOnceGirilmisMiByFisNo(//transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
-                                        "Kart ile Bağış", transactionId, aciklama, bagisTarihi, tutar)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
+                                        "Kart ile Bağış", transactionId, aciklama, bagisTarihi, tutar, transaction)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                     {
                                         Exception ex = new Exception(transactionId + " Numaralı kayıt daha önce girildiginden tekrar aktarılmadı.");
                                         exceptionHelper.Exceptions.Add(ex);
                                     }
                                     else
                                     {
-                                        SaveEkstreAktarma(ekstreAktarma);
+                                        SaveEkstreAktarma(ekstreAktarma, transaction);
                                     }
                                 }
                             }
@@ -1544,7 +1669,12 @@ namespace Model.Services.NBYS
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveZiraatMT940File(Stream filePath, DateTime processTime, string currentUser)
+        public static ExceptionHelper SaveZiraatMT940File(Stream filePath, DateTime processTime, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveZiraatMT940FileCore(filePath, processTime, currentUser, transaction), "ZiraatMT940", fileName);
+        }
+
+        private static ExceptionHelper SaveZiraatMT940FileCore(Stream filePath, DateTime processTime, string currentUser, SqlTransactionContext transaction)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -1637,7 +1767,12 @@ namespace Model.Services.NBYS
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveEDevletFile(Stream fileStream, DateTime islemTarihi, string currentUser)
+        public static ExceptionHelper SaveEDevletFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveEDevletFileCore(fileStream, islemTarihi, currentUser, transaction), "EDevlet", fileName);
+        }
+
+        private static ExceptionHelper SaveEDevletFileCore(Stream fileStream, DateTime islemTarihi, string currentUser, SqlTransactionContext transaction)
         {
             int kayitNo = ProjeConstants.BANKA_EDEVLET_ILKKACSATIRHARIC;
             ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -1704,26 +1839,26 @@ namespace Model.Services.NBYS
                                 ekstreAktarma.BagisTipi = bagisTipi;
                                 ekstreAktarma.Olusturan = currentUser;
                                 if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
-                                    "EDevlet ile Bağış", odemeId, aciklama, ekstreAktarma.BagisTarihi, tutar)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
+                                    "EDevlet ile Bağış", odemeId, aciklama, ekstreAktarma.BagisTarihi, tutar, transaction)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                 {
                                     Exception ex = new Exception(odemeId + " Numaralı kayıt daha önce girildiginden tekrar aktarılmadı.");
                                     exceptionHelper.Exceptions.Add(ex);
                                 }
                                 else if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
-                                    "Kart ile Bağış", odemeId, aciklama, ekstreAktarma.BagisTarihi, tutar)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
+                                    "Kart ile Bağış", odemeId, aciklama, ekstreAktarma.BagisTarihi, tutar, transaction)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                 {
                                     Exception ex = new Exception(odemeId + " Numaralı kayıt daha önce girildiginden tekrar aktarılmadı.");
                                     exceptionHelper.Exceptions.Add(ex);
                                 }
                                 else if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
-                                    "Kiosk", odemeId, aciklama, ekstreAktarma.BagisTarihi, tutar)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
+                                    "Kiosk", odemeId, aciklama, ekstreAktarma.BagisTarihi, tutar, transaction)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                 {
                                     Exception ex = new Exception(odemeId + " Numaralı kayıt daha önce girildiginden tekrar aktarılmadı.");
                                     exceptionHelper.Exceptions.Add(ex);
                                 }
                                 else
                                 {
-                                    SaveEkstreAktarma(ekstreAktarma);
+                                    SaveEkstreAktarma(ekstreAktarma, transaction);
                                 }
                             }
 
@@ -1742,11 +1877,12 @@ namespace Model.Services.NBYS
             }
             return exceptionHelper;
         }
-        private static bool BuKayitDahaOnceGirilmisMiByFisNo(string bankaLike, string fisNo, string aciklama, DateTime bagisTarihi, decimal tutar)
+        private static bool BuKayitDahaOnceGirilmisMiByFisNo(string bankaLike, string fisNo, string aciklama, DateTime bagisTarihi, decimal tutar, SqlTransactionContext transaction)
         {
             bool kaydedilmisMi = false;
-            List<EkstreAktarma> ekstreAktarmaList = new EkstreAktarmaService()
-                .GetByBankAndReceipt(bankaLike, fisNo);
+            List<EkstreAktarma> ekstreAktarmaList = new EkstreAktarmaService(
+                new DAO.Repositories.NBYS.EkstreAktarmaRepository(transaction))
+                .GetByBankAndReceipt(bankaLike, fisNo, transaction);
             foreach (var ekstreAktarma in ekstreAktarmaList)
             {
                 if (ekstreAktarma != null)
@@ -1764,7 +1900,12 @@ namespace Model.Services.NBYS
             return kaydedilmisMi;
         }
 
-        public static ExceptionHelper SaveZiraatEkstreFile(Stream fileStream, DateTime islemTarihi, string currentUser)
+        public static ExceptionHelper SaveZiraatEkstreFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveZiraatEkstreFileCore(fileStream, islemTarihi, currentUser, transaction), "ZiraatEkstre", fileName);
+        }
+
+        private static ExceptionHelper SaveZiraatEkstreFileCore(Stream fileStream, DateTime islemTarihi, string currentUser, SqlTransactionContext transaction)
         {
             int kayitNo = 0;
             ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -1809,7 +1950,7 @@ namespace Model.Services.NBYS
                                     ekstreAktarma.Olusturan = currentUser;
                                     ekstreAktarma.FisNo = fisNo;
                                     if (BuKayitDahaOnceGirilmisMiByFisNo(//ProjeConstants.BANKA_ZIRAATEKSTRE, fisNo,aciklama)) //fis numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
-                                        "Ziraat", fisNo, aciklama, bagisTarihi, tutar)) //fis numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
+                                        "Ziraat", fisNo, aciklama, bagisTarihi, tutar, transaction)) //fis numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                     {
                                         Exception ex = new Exception(fisNo + " Numaralı fiş daha önce girildiginden tekrar aktarılmadı.");
                                         exceptionHelper.Exceptions.Add(ex);
@@ -1889,7 +2030,7 @@ namespace Model.Services.NBYS
                                                 ekstreAktarma.TCKimlikNo = tcKalan.Split(new char[] { ' ', '/' })[0].ConvertToLong();
                                             }
                                         }
-                                        SaveEkstreAktarma(ekstreAktarma);
+                                        SaveEkstreAktarma(ekstreAktarma, transaction);
 
                                     }
                                 }
@@ -1910,7 +2051,12 @@ namespace Model.Services.NBYS
             return exceptionHelper;
         }
 
-        public static ExceptionHelper SaveZiraatKatilimFile(Stream fileStream, DateTime processTime, string currentUser)
+        public static ExceptionHelper SaveZiraatKatilimFile(Stream fileStream, DateTime processTime, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveZiraatKatilimFileCore(fileStream, processTime, currentUser, transaction), "ZiraatKatilim", fileName);
+        }
+
+        private static ExceptionHelper SaveZiraatKatilimFileCore(Stream fileStream, DateTime processTime, string currentUser, SqlTransactionContext transaction)
         {
 
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -1960,7 +2106,7 @@ namespace Model.Services.NBYS
                                 ekstreAktarma.IslemTarihi = processTime;
                                 ekstreAktarma.Olusturan = currentUser;
 
-                                var id = SaveEkstreAktarma(ekstreAktarma);
+                                var id = SaveEkstreAktarma(ekstreAktarma, transaction);
                             }
                         }
                     }
@@ -1973,7 +2119,12 @@ namespace Model.Services.NBYS
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveSMSVakifFile(Stream fileStream, DateTime islemTarihi, string currentUser)
+        public static ExceptionHelper SaveSMSVakifFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveSMSVakifFileCore(fileStream, islemTarihi, currentUser, transaction), "SMSVakif", fileName);
+        }
+
+        private static ExceptionHelper SaveSMSVakifFileCore(Stream fileStream, DateTime islemTarihi, string currentUser, SqlTransactionContext transaction)
         {
             int counter = ProjeConstants.BANKA_SMSVAKIF_ILKKACSATIRHARIC;
             ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -2018,14 +2169,14 @@ namespace Model.Services.NBYS
                                     ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                     ekstreAktarma.Olusturan = currentUser;
                                     if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
-                                        ProjeConstants.BANKA_SMSVAKIF, islemNo, aciklama, ekstreAktarma.BagisTarihi, tutar)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
+                                        ProjeConstants.BANKA_SMSVAKIF, islemNo, aciklama, ekstreAktarma.BagisTarihi, tutar, transaction)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                     {
                                         Exception ex = new Exception(islemNo + " Numaralı kayıt daha önce girildiğinden tekrar aktarılmadı.");
                                         exceptionHelper.Exceptions.Add(ex);
                                     }
                                     else
                                     {
-                                        SaveEkstreAktarma(ekstreAktarma);
+                                        SaveEkstreAktarma(ekstreAktarma, transaction);
                                     }
                                 }
                             }
@@ -2045,7 +2196,12 @@ namespace Model.Services.NBYS
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveAlbarakaFile(Stream fileStream, DateTime islemTarihi, string currentUser)
+        public static ExceptionHelper SaveAlbarakaFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName = null)
+        {
+            return ExecuteFileImport(transaction => SaveAlbarakaFileCore(fileStream, islemTarihi, currentUser, transaction), "Albaraka", fileName);
+        }
+
+        private static ExceptionHelper SaveAlbarakaFileCore(Stream fileStream, DateTime islemTarihi, string currentUser, SqlTransactionContext transaction)
         {
             int kayitNo = 0;
             ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -2095,7 +2251,7 @@ namespace Model.Services.NBYS
                             string tarihKismi = tarihStr.Contains(" ") ? tarihStr.Substring(0, tarihStr.IndexOf(" ")) : tarihStr;
                             DateTime bagisTarihi = tarihKismi.ConvertToDatetime();
 
-                            if (BuKayitDahaOnceGirilmisMiByFisNo("Albaraka", fisNo, aciklama, bagisTarihi, tutar))
+                            if (BuKayitDahaOnceGirilmisMiByFisNo("Albaraka", fisNo, aciklama, bagisTarihi, tutar, transaction))
                             {
                                 Exception ex = new Exception(fisNo + " Numaralı fiş daha önce girildiğinden tekrar aktarılmadı.");
                                 exceptionHelper.Exceptions.Add(ex);
@@ -2113,7 +2269,7 @@ namespace Model.Services.NBYS
                             ekstreAktarma.IslemTarihi = islemTarihi;
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
-                            SaveEkstreAktarma(ekstreAktarma);
+                            SaveEkstreAktarma(ekstreAktarma, transaction);
                         }
                         catch (Exception ex)
                         {
@@ -2130,14 +2286,15 @@ namespace Model.Services.NBYS
             return exceptionHelper;
         }
 
-        private static string GetIlNameById(string ilId)
+        private static string GetIlNameById(string ilId, SqlTransactionContext transaction)
         {
             int id = 0;
             string ilAdi = ilId;
             bool isInteger = Int32.TryParse(ilId, out id);
             if (isInteger)
             {
-                Il il = new IlService().GetById(id);
+                Il il = new IlService(new DAO.Repositories.Ortak.IlRepository(transaction))
+                    .GetById(id, transaction);
                 if (il != null)
                 {
                     ilAdi = il.IlAdi;

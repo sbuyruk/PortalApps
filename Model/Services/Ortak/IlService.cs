@@ -28,6 +28,12 @@ namespace Model.Services.Ortak
             return Map(repository.SelectById(id));
         }
 
+        public Il GetById(int id, SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            return Map(repository.SelectById(id, transaction));
+        }
+
         public List<Il> GetAll()
         {
             return new Il().ToList<Il>(repository.SelectAll());

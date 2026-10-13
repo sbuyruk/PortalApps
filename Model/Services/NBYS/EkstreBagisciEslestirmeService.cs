@@ -1,4 +1,5 @@
 using DAO.Repositories.NBYS;
+using DAO.Ortak;
 using Model.NBYS;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,22 @@ namespace Model.Services.NBYS
     // Only identifies existing donors; never creates or changes donor records.
     public class EkstreBagisciEslestirmeService
     {
-        private readonly NakitBagisciRepository repository = new NakitBagisciRepository();
+        private readonly NakitBagisciRepository repository;
+
+        public EkstreBagisciEslestirmeService() : this(new NakitBagisciRepository()) { }
+
+        public EkstreBagisciEslestirmeService(NakitBagisciRepository repository)
+        {
+            if (repository == null) throw new ArgumentNullException("repository");
+            this.repository = repository;
+        }
 
         public int FindDonorId(EkstreAktarma item)
+        {
+            return FindDonorId(item, null);
+        }
+
+        public int FindDonorId(EkstreAktarma item, SqlTransactionContext transaction)
         {
             if (item == null) throw new ArgumentNullException("item");
             if (item.NakitBagisciId > 0) return item.NakitBagisciId;
@@ -21,8 +35,9 @@ namespace Model.Services.NBYS
             if (item.TCKimlikNo != 0)
             {
                 if (!IsValidIdentity(item.TCKimlikNo)) return 0;
-                var matches = new NakitBagisci().ToList<NakitBagisci>(
-                    repository.SelectByTcKimlikno(item.TCKimlikNo));
+                var matches = new NakitBagisci().ToList<NakitBagisci>(transaction == null
+                    ? repository.SelectByTcKimlikno(item.TCKimlikNo)
+                    : repository.SelectByTcKimlikno(item.TCKimlikNo, transaction));
                 return matches.Count == 1 && matches[0].TuzelKisi == item.TuzelKisi
                     ? matches[0].Id : 0;
             }
@@ -32,7 +47,9 @@ namespace Model.Services.NBYS
                 .Where(phone => phone.Length > 0).Distinct().ToList();
             if (name.Length == 0 || phones.Count == 0) return 0;
 
-            var candidates = new NakitBagisci().ToList<NakitBagisci>(repository.SelectImportCandidates(name));
+            var candidates = new NakitBagisci().ToList<NakitBagisci>(transaction == null
+                ? repository.SelectImportCandidates(name)
+                : repository.SelectImportCandidates(name, transaction));
             var ids = new HashSet<int>();
             foreach (string phone in phones)
             {

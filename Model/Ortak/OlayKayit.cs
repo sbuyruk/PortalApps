@@ -48,7 +48,8 @@ namespace Model.Ortak
                     if (transaction == null)
                         new OlayService().Save(olay);
                     else
-                        new OlayService().Save(olay, transaction);
+                        new OlayService(new DAO.Repositories.Ortak.OlayRepository(transaction))
+                            .Save(olay, transaction);
                 }
                 
             }
@@ -119,7 +120,8 @@ namespace Model.Ortak
                     if (transaction == null)
                         new OlayService().Save(olay);
                     else
-                        new OlayService().Save(olay, transaction);
+                        new OlayService(new DAO.Repositories.Ortak.OlayRepository(transaction))
+                            .Save(olay, transaction);
                 }
             }
             return kaydedildi;

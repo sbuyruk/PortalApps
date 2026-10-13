@@ -20,6 +20,12 @@ namespace DAO.Repositories.NBYS
             queryBuilder = new CrudQueryBuilder();
         }
 
+        public EkstreAktarmaRepository(SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            queryBuilder = new CrudQueryBuilder();
+        }
+
         public DataTable SelectById(int id)
         {
             SqlQuery query = new SqlQuery("SELECT * FROM EkstreAktarma_Table WHERE Id=@Id");
@@ -67,6 +73,17 @@ namespace DAO.Repositories.NBYS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectByBankAndReceipt(string bankNamePart, string receiptNumber,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            SqlQuery query = new SqlQuery(@"SELECT * FROM EkstreAktarma_Table
+                WHERE BankaAdi LIKE @BankaAdi AND FisNo=@FisNo");
+            query.AddParameter("@BankaAdi", "%" + bankNamePart + "%");
+            query.AddParameter("@FisNo", receiptNumber);
+            return transaction.Select(query);
+        }
+
         public DataTable SelectByIds(IList<int> ids, bool includeIdDescending)
         {
             if (ids == null || ids.Count == 0) return new DataTable();
@@ -92,6 +109,11 @@ namespace DAO.Repositories.NBYS
         }
 
         public int Insert<T>(T entity) { return db.Insert(queryBuilder.BuildInsert(entity, TableName)); }
+        public int Insert<T>(T entity, SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            return transaction.Insert(queryBuilder.BuildInsert(entity, TableName));
+        }
         public bool Update<T>(T entity) { return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName)); }
         public bool Update<T>(T entity, SqlTransactionContext transaction)
         {

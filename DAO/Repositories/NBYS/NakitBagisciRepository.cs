@@ -24,6 +24,12 @@ namespace DAO.Repositories.NBYS
             crudQueryBuilder = new CrudQueryBuilder();
         }
 
+        public NakitBagisciRepository(SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            crudQueryBuilder = new CrudQueryBuilder();
+        }
+
         public int Insert<T>(T entity)
         {
             SqlQuery query = crudQueryBuilder.BuildInsert(entity, TableName);
@@ -205,6 +211,15 @@ namespace DAO.Repositories.NBYS
                 WHERE LTRIM(RTRIM(ISNULL(Adi,'') + ' ' + ISNULL(Soyadi,''))) = @FullName");
             query.AddParameter("@FullName", fullName);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectImportCandidates(string fullName, SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            SqlQuery query = new SqlQuery(@"SELECT * FROM NakitBagisci_Table
+                WHERE LTRIM(RTRIM(ISNULL(Adi,'') + ' ' + ISNULL(Soyadi,''))) = @FullName");
+            query.AddParameter("@FullName", fullName);
+            return transaction.Select(query);
         }
 
         public DataTable SelectBagisiOlmayanBagisciById(int bagisciId)

@@ -24,6 +24,12 @@ namespace DAO.Repositories.Ortak
             queryBuilder = new CrudQueryBuilder();
         }
 
+        public OlayRepository(SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            queryBuilder = new CrudQueryBuilder();
+        }
+
         public DataTable SelectById(int id)
         {
             SqlQuery query = new SqlQuery("SELECT * FROM Olay_Table WHERE Id=@Id");

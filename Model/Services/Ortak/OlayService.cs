@@ -62,7 +62,10 @@ namespace Model.Services.Ortak
                 throw new ArgumentNullException("transaction");
 
             item.OlusturmaTarihi = DateTime.Now;
-            return item.Id = repository.Insert(item, transaction);
+            item.Id = repository.Insert(item, transaction);
+            if (item.Id <= 0)
+                throw new InvalidOperationException("Olay kaydı veritabanına eklenemedi.");
+            return item.Id;
         }
 
         public bool Update(Olay item)
