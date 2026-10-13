@@ -752,8 +752,9 @@ namespace Model.Services.NBYS
                     nakitBagisHareket.BankaId = bankaTanim.Id;
                 }
                 nakitBagisHareket.Adresi = ekstreAktarma.Adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
-                nakitBagisHareket.DovizCinsi = string.IsNullOrEmpty(ekstreAktarma.DovizCinsi) ? ProjeConstants.DOVIZ_TL : ekstreAktarma.DovizCinsi;
-                if (!ekstreAktarma.DovizCinsi.Equals(ProjeConstants.DOVIZ_TL))
+                string dovizCinsi = string.IsNullOrEmpty(ekstreAktarma.DovizCinsi) ? ProjeConstants.DOVIZ_TL : ekstreAktarma.DovizCinsi;
+                nakitBagisHareket.DovizCinsi = dovizCinsi;
+                if (!ProjeConstants.DOVIZ_TL.Equals(dovizCinsi))
                 {
                     nakitBagisHareket.DovizTutari = ekstreAktarma.DovizTutari;
                     nakitBagisHareket.DovizKuru = ekstreAktarma.DovizKuru;
