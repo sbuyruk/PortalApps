@@ -12,16 +12,16 @@
     .bdy { --bdy-ink: #15263e; --bdy-muted: #64748b; --bdy-line: #e1e8f0; --bdy-blue: #1768d2; --bdy-surface: #fff; max-width: 1440px; margin: 0 auto; padding: 24px 32px 0; background: #f5f7fb; color: var(--bdy-ink); font-family: "Segoe UI", Arial, sans-serif; font-size: 15px; }
     .bdy a { text-decoration: none; }
     .bdy-header { position: relative; margin-bottom: 24px; padding-right: 50px; }
-    .bdy-brand { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 24px; color: #29405c; font-weight: 700; }
+    .bdy-brand { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 10px; color: #29405c; font-weight: 700; }
     .bdy-brand-mark { display: inline-grid; width: 34px; height: 34px; place-items: center; border-radius: 10px; background: var(--bdy-blue); color: #fff; font-size: 19px; }
     .bdy-eyebrow { display: block; margin-bottom: 9px; color: var(--bdy-blue); font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
-    .bdy-title { margin: 0; color: var(--bdy-ink); font-size: clamp(27px, 3vw, 36px); font-weight: 700; letter-spacing: -.035em; line-height: 1.15; }
-    .bdy-subtitle { margin: 9px 0 0; color: var(--bdy-muted); font-size: 15px; line-height: 1.5; }
+    .bdy-title { margin: 0; color: var(--bdy-ink); font-weight: 600; letter-spacing: -.035em; line-height: 1.15; }
+    .bdy-subtitle { color: var(--bdy-muted); font-size: 12px; line-height: 1.5; }
     .bdy-close { position: absolute; top: 0; right: 0; display: grid; width: 36px; height: 36px; place-items: center; border: 1px solid var(--bdy-line); border-radius: 9px; background: #fff; color: #60748b; font-size: 22px; line-height: 1; }
     .bdy-close:hover { background: #edf5ff; color: #0d4fa8; }
     .bdy-overview { display: grid; grid-template-columns: minmax(260px, 1.4fr) minmax(130px, 1fr); gap: 12px; margin-bottom: 24px; }
     .bdy-enhanced .bdy-overview { grid-template-columns: minmax(260px, 1.4fr) repeat(3, minmax(130px, 1fr)); }
-    .bdy-overview-card { min-height: 105px; padding: 18px 20px; border: 1px solid var(--bdy-line); border-radius: 15px; background: var(--bdy-surface); box-shadow: 0 2px 7px #203a5a08; }
+    .bdy-overview-card { min-height: 105px; padding: 8px 20px; border: 1px solid var(--bdy-line); border-radius: 15px; background: var(--bdy-surface); box-shadow: 0 2px 7px #203a5a08; }
     .bdy-overview-label { display: block; margin-bottom: 10px; color: var(--bdy-muted); font-size: 13px; font-weight: 700; }
     .bdy-overview-value { display: flex; align-items: baseline; gap: 7px; }
     .bdy-overview-value strong { color: var(--bdy-ink); font-size: 29px; line-height: 1; }
@@ -165,7 +165,7 @@
 <div class="bdy">
     <header class="bdy-header">
         <div class="bdy-brand"><span class="bdy-brand-mark" aria-hidden="true">▤</span>
-        <h1 class="bdy-title">Banka dosyası yükleme</h1></div>
+        <h3 class="bdy-title">Banka dosyası yükleme</h3></div>
         <asp:LinkButton ID="CloseBtn" runat="server" CssClass="bdy-close" OnClick="CloseBtn_Click" ToolTip="Kapat" aria-label="Kapat">&times;</asp:LinkButton>
         <p class="bdy-subtitle">İşlem tarihini belirleyin, bankaya ait dosyaları seçin ve tek seferde yükleyin.</p>
     </header>
