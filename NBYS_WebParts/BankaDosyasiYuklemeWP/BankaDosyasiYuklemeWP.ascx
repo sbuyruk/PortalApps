@@ -159,10 +159,9 @@
 
 <div class="bdy">
     <header class="bdy-header">
-        <div class="bdy-brand"><span class="bdy-brand-mark" aria-hidden="true">▤</span><span>Bağış Yönetimi</span></div>
+        <div class="bdy-brand"><span class="bdy-brand-mark" aria-hidden="true">▤</span>
+        <h1 class="bdy-title">Banka dosyası yükleme</h1></div>
         <asp:LinkButton ID="CloseBtn" runat="server" CssClass="bdy-close" OnClick="CloseBtn_Click" ToolTip="Kapat" aria-label="Kapat">&times;</asp:LinkButton>
-        <span class="bdy-eyebrow">Banka işlemleri</span>
-        <h1 class="bdy-title">Banka dosyası yükleme</h1>
         <p class="bdy-subtitle">İşlem tarihini belirleyin, bankaya ait dosyaları seçin ve tek seferde yükleyin.</p>
     </header>
 
