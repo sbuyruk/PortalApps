@@ -32,7 +32,8 @@ namespace DAO.Repositories.NBYS
             if (transaction == null)
                 throw new ArgumentNullException("transaction");
 
-            SqlQuery query = new SqlQuery("SELECT * FROM EkstreAktarma_Table WHERE Id=@Id");
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM EkstreAktarma_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id");
             query.AddParameter("@Id", id);
             return transaction.Select(query);
         }
