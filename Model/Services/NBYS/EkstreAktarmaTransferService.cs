@@ -421,10 +421,12 @@ namespace Model.Services.NBYS
                     {
                         nakitBagisHareket.ArmaganId = armaganId;
                         NakitBagisHareketService service = new NakitBagisHareketService();
-                        if (transaction == null)
-                            service.Update(nakitBagisHareket);
-                        else
-                            service.Update(nakitBagisHareket, transaction);
+                        bool hareketGuncellendi = transaction == null
+                            ? service.Update(nakitBagisHareket)
+                            : service.Update(nakitBagisHareket, transaction);
+                        if (!hareketGuncellendi)
+                            throw new InvalidOperationException(
+                                "ArmaganId, NakitBagisHareket kaydina baglanamadi.");
                     }
                 }
             }
