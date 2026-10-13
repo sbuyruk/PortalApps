@@ -13,6 +13,14 @@ namespace Model.Services.NBYS
 {
     public static class EkstreAktarmaTransferService
     {
+        public enum ArmaganTransferResult
+        {
+            NoGiftRequired,
+            AlreadyExists,
+            Created,
+            TechnicalFailure
+        }
+
         public static ExceptionHelper SaveAll(List<int> idlist, string currentUser)//List<EkstreAktarma> listEkstreAktarma, string currentUser)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -113,8 +121,11 @@ namespace Model.Services.NBYS
                         ekstreAktarma, nakitBagisciId, currentUser, transaction); //NakitBagisHareket_Table tablosuna aktarim
 
                     //bool isArmaganSaved = SaveArmagan(ekstreAktarma.BagisTarihi, ekstreAktarma.TuzelKisi, nakitBagisciId, nakitBagisHareketId, currentUser);//Armagan tablosuna aktarim
-                    bool isArmaganSaved = SaveArmaganYeni(
+                    ArmaganTransferResult armaganResult = SaveArmaganYeniWithResult(
                         ekstreAktarma, ref nakitBagisHareket, currentUser, transaction);//Armagan tablosuna aktarim
+                    if (armaganResult == ArmaganTransferResult.TechnicalFailure)
+                        throw new InvalidOperationException(
+                            "Armagan aktarimi teknik bir hata nedeniyle tamamlanamadi.");
 
                     if (nakitBagisHareket.Id > 0)
                     {
@@ -297,7 +308,20 @@ namespace Model.Services.NBYS
             string currentUser,
             SqlTransactionContext transaction = null)
         {
+            return SaveArmaganYeniWithResult(
+                ekstreAktarma, ref nakitBagisHareket, currentUser, transaction)
+                == ArmaganTransferResult.Created;
+        }
+
+        public static ArmaganTransferResult SaveArmaganYeniWithResult(
+            EkstreAktarma ekstreAktarma,
+            ref NakitBagisHareket nakitBagisHareket,
+            string currentUser,
+            SqlTransactionContext transaction = null)
+        {
             bool isArmaganSaved = false;
+            bool armaganAlreadyExists = false;
+            bool armaganTechnicalFailure = false;
             NakitBagisciService nakitBagisciService = new NakitBagisciService();
             NakitBagisci nakitBagisci = transaction == null
                 ? nakitBagisciService.GetById(nakitBagisHareket.BagisciId)
@@ -360,7 +384,7 @@ namespace Model.Services.NBYS
                     //daha önce bu armagani aldiysa, armagan verme
                     if (alinanArmaganTanimIdListesi.Contains(tekliBagistanHakedilenArmaganTanim.Id))
                     {
-                        isArmaganSaved = false;
+                        armaganAlreadyExists = true;
                         nakitBagisHareket.Aciklama += "-NBYS- Daha önce "+ tekliBagistanHakedilenArmaganTanim.Armagan+" aldığı için armağan verilmedi ";
                     }
                     else
@@ -370,7 +394,8 @@ namespace Model.Services.NBYS
                             nakitBagisHareket, nakitBagisci, nakitBagisHareket.BagisMiktari,
                             tekliBagistanHakedilenArmaganTanim.Id, currentUser,
                             transaction: transaction);
-                        isArmaganSaved= armaganId > 0;
+                        isArmaganSaved = armaganId > 0;
+                        armaganTechnicalFailure = !isArmaganSaved;
                         nakitBagisHareket.Aciklama += "-NBYS- Hem tekli hem çoklu bağıştan "+tekliBagistanHakedilenArmaganTanim.Armagan+ " hakediyor, Tekli bağıştan armağan verildi ";
                     }
 
@@ -381,7 +406,7 @@ namespace Model.Services.NBYS
                 {
                     if (alinanArmaganTanimIdListesi.Contains(cokluBagisanHakedilenArmaganTanim.Id))
                     {
-                        isArmaganSaved = false;
+                        armaganAlreadyExists = true;
                         nakitBagisHareket.Aciklama += "-NBYS- Daha önce " + cokluBagisanHakedilenArmaganTanim.Armagan + " aldığı için armağan oluşturulmadı ";
                     }
                     else
@@ -391,6 +416,7 @@ namespace Model.Services.NBYS
                             cokluBagisanHakedilenArmaganTanim.Id, currentUser, true,
                             transaction: transaction);
                         isArmaganSaved = armaganId > 0;
+                        armaganTechnicalFailure = armaganTechnicalFailure || !isArmaganSaved;
                         nakitBagisHareket.Aciklama += "-NBYS-"+ nakitBagisHareket.BagisTarihi.ConvertToDatetimeEmptyIfNull() +
                             " tarihine kadar yaptığı bağışlardan hak ettiği " + cokluBagisanHakedilenArmaganTanim.Armagan + " oluşturuldu.";
                     }
@@ -401,7 +427,7 @@ namespace Model.Services.NBYS
                 {
                     if (alinanArmaganTanimIdListesi.Contains(tekliBagistanHakedilenArmaganTanim.Id))
                     {
-                        isArmaganSaved = false;
+                        armaganAlreadyExists = true;
                         nakitBagisHareket.Aciklama += "-NBYS- Daha önce " + tekliBagistanHakedilenArmaganTanim.Armagan + " aldığı için armağan oluşturulmadı ";
                     }
                     else
@@ -411,6 +437,7 @@ namespace Model.Services.NBYS
                             tekliBagistanHakedilenArmaganTanim.Id, currentUser,
                             transaction: transaction);
                         isArmaganSaved = armaganId > 0;
+                        armaganTechnicalFailure = armaganTechnicalFailure || !isArmaganSaved;
                         nakitBagisHareket.Aciklama += "-NBYS- tekli bağıştan hak ettiği " + tekliBagistanHakedilenArmaganTanim.Armagan + " oluşturuldu.";
                     }
                 }
@@ -431,7 +458,13 @@ namespace Model.Services.NBYS
                 }
             }
 
-            return isArmaganSaved;
+            if (isArmaganSaved)
+                return ArmaganTransferResult.Created;
+            if (armaganTechnicalFailure)
+                return ArmaganTransferResult.TechnicalFailure;
+            if (armaganAlreadyExists)
+                return ArmaganTransferResult.AlreadyExists;
+            return ArmaganTransferResult.NoGiftRequired;
         }
         public static int ArmaganiKaydet(NakitBagisHareket nakitBagisHareket, NakitBagisci nakitBagisci, decimal bagisTutari,
             int hakedilenArmaganTanimId, string currentUser, bool cokluBagis=false, int duzenliBagisBelgeSirasi=0,
