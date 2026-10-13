@@ -80,6 +80,11 @@
     .bdy-enhanced .bdy-file-input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
     .bdy-enhanced .bdy-file-input:focus-visible { opacity: 1; background: #fff; }
     .bdy-enhanced .bdy-filename { display: block; overflow: hidden; color: #64748b; font-size: 13px; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
+    .bdy-clear-file { display: none; align-items: center; justify-content: center; min-width: 30px; min-height: 30px; padding: 0 8px; border: 1px solid #d6e0eb; border-radius: 7px; background: #fff; color: #60748b; font: 700 12px "Segoe UI", Arial, sans-serif; cursor: pointer; }
+    .bdy-clear-file:hover { border-color: #e4a2a7; background: #fff4f4; color: #b4232d; }
+    .bdy-row[data-state="selected"] .bdy-clear-file { display: inline-flex; }
+    .bdy-row[data-state="selected"] .bdy-filename { flex: 1; min-width: 0; text-align: left; }
+    .bdy-selected-file { display: flex; align-items: center; gap: 6px; min-width: 0; }
     .bdy-row[data-state="done"] .bdy-file-action { opacity: .6; cursor: not-allowed; }
     .bdy-row[data-state="selected"] .bdy-filename { color: #36516e; }
     .bdy-empty { display: none; padding: 30px 15px; border: 1px dashed #c4d1e1; border-radius: 12px; background: #fff; color: var(--bdy-muted); text-align: center; }
@@ -713,7 +718,25 @@
         }
 
         rows.forEach(function (row) {
-            row.querySelector('input[type="file"]').addEventListener('change', function () {
+            var input = row.querySelector('input[type="file"]');
+            var filename = row.querySelector('.bdy-filename');
+            var selectedFile = document.createElement('span');
+            var clear = document.createElement('button');
+            selectedFile.className = 'bdy-selected-file';
+            clear.type = 'button';
+            clear.className = 'bdy-clear-file';
+            clear.textContent = 'Temizle';
+            clear.setAttribute('aria-label', 'Seçilen ' + row.querySelector('.bdy-bank-name').textContent + ' dosyasını temizle');
+            filename.parentNode.insertBefore(selectedFile, filename);
+            selectedFile.appendChild(filename);
+            selectedFile.appendChild(clear);
+            clear.addEventListener('click', function () {
+                if (input.disabled) return;
+                input.value = '';
+                setFilter('all');
+                input.focus();
+            });
+            input.addEventListener('change', function () {
                 setFilter('all');
             });
         });
