@@ -163,6 +163,11 @@
     <Compile Include="BankaDosyasiYuklemeWP\BankaDosyasiYuklemeWP.ascx.cs">
       <DependentUpon>BankaDosyasiYuklemeWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="BankaDosyasiYuklemeWP\BankaDosyasiYuklemeWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BankaDosyasiYuklemeWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="BeratBasimiWP\BeratBasimiWP.ascx.cs">
       <DependentUpon>BeratBasimiWP.ascx</DependentUpon>
     </Compile>
@@ -833,6 +838,7 @@
     <Content Include="BagisIadesiWP\Elements.xml" />
     <Content Include="BankaDosyasiYuklemeWP\BankaDosyasiYuklemeWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>BankaDosyasiYuklemeWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="BankaDosyasiYuklemeWP\Elements.xml" />
     <Content Include="BeratBasimiWP\BeratBasimiWP.ascx">
