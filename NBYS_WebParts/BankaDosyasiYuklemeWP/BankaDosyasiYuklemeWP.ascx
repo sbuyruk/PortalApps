@@ -38,9 +38,13 @@
     .bdy-filter { padding: 8px 13px; border: 0; border-radius: 7px; background: transparent; color: #52647b; font: 700 14px "Segoe UI", Arial, sans-serif; cursor: pointer; }
     .bdy-filter[aria-pressed="true"] { background: #fff; color: #0d4fa8; box-shadow: 0 1px 5px #23405d1b; }
     .bdy-search { width: min(100%, 310px); min-height: 39px; padding: 9px 12px; border: 1px solid #cbd7e5; border-radius: 9px; background: #fff; color: var(--bdy-ink); font-size: 14px; }
-    .bdy-section { margin-bottom: 25px; }
-    .bdy-section-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 11px; }
-    .bdy-section-heading h2 { margin: 0; color: var(--bdy-ink); font-size: 18px; font-weight: 700; }
+    .bdy-section { margin-bottom: 25px; padding: 16px; border: 1px solid #dce6f1; border-radius: 16px; background: #f8fbff; }
+    .bdy-section--daily { border-color: #cfe1f8; background: #f1f7ff; }
+    .bdy-section--periodic { border-color: #f1d7d4; background: #fff7f5; }
+    .bdy-section-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 13px; }
+    .bdy-section-heading h2 { display: flex; align-items: center; gap: 9px; margin: 0; color: var(--bdy-ink); font-size: 18px; font-weight: 700; }
+    .bdy-section-heading h2::before { content: ""; display: inline-block; width: 8px; height: 24px; border-radius: 5px; background: #3b82d0; }
+    .bdy-section--periodic .bdy-section-heading h2::before { background: #d45b55; }
     .bdy-section-count { color: var(--bdy-muted); font-size: 13px; }
     .bdy-rows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px 12px; }
     .bdy-row { display: grid; grid-template-columns: minmax(140px, 1fr) minmax(190px, 1.1fr); align-items: center; gap: 12px; min-height: 86px; padding: 14px 16px; border: 1px solid var(--bdy-line); border-radius: 11px; background: #fff; box-shadow: 0 1px 4px #243e5c07; }
@@ -109,6 +113,7 @@
     }
     @media (max-width: 850px) {
         .bdy { padding: 20px 20px 0; }
+        .bdy-section { padding: 13px; }
         .bdy-overview { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .bdy-enhanced .bdy-overview { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .bdy-overview-card:first-child { grid-column: 1 / -1; }
@@ -120,6 +125,7 @@
         .bdy-brand { margin-bottom: 20px; }
         .bdy-subtitle { font-size: 14px; }
         .bdy-overview { gap: 8px; }
+        .bdy-section { padding: 11px; border-radius: 13px; }
         .bdy-overview-card { min-height: 86px; padding: 13px; }
         .bdy-overview-value strong { font-size: 24px; }
         .bdy-toolbar, .bdy-search { width: 100%; }
@@ -200,7 +206,7 @@
         <input class="bdy-search" type="search" placeholder="Banka veya dosya türü ara" aria-label="Banka veya dosya türü ara" />
     </div>
 
-    <section class="bdy-section" aria-labelledby="bdy-daily-title">
+    <section class="bdy-section bdy-section--daily" aria-labelledby="bdy-daily-title">
         <div class="bdy-section-heading"><h2 id="bdy-daily-title">Günlük dosyalar</h2><span class="bdy-section-count">8 dosya türü</span></div>
         <div class="bdy-rows">
             <div class="bdy-row bdy-bank--akbank">
@@ -366,7 +372,7 @@
         </div>
     </section>
 
-    <section class="bdy-section" aria-labelledby="bdy-periodic-title">
+    <section class="bdy-section bdy-section--periodic" aria-labelledby="bdy-periodic-title">
         <div class="bdy-section-heading"><h2 id="bdy-periodic-title">Dönemlik dosyalar</h2><span class="bdy-section-count">13 dosya türü</span></div>
         <div class="bdy-rows">
             <div class="bdy-row bdy-bank--akbank">
