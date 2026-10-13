@@ -19,11 +19,24 @@ namespace DAO.Repositories.Ortak
             this.db = db;
         }
 
+        public IlRepository(SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+        }
+
         public DataTable SelectById(int id)
         {
             SqlQuery query = new SqlQuery("SELECT * FROM Il_Table WHERE Id=@Id");
             query.AddParameter("@Id", id);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectById(int id, SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            SqlQuery query = new SqlQuery("SELECT * FROM Il_Table WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return transaction.Select(query);
         }
 
         public DataTable SelectAll()

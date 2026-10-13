@@ -43,6 +43,13 @@ namespace Model.Services.NBYS
             return Map(repository.SelectByBankAndReceipt(bankNamePart, receiptNumber));
         }
 
+        public List<EkstreAktarma> GetByBankAndReceipt(string bankNamePart, string receiptNumber,
+            SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            return Map(repository.SelectByBankAndReceipt(bankNamePart, receiptNumber, transaction));
+        }
+
         public List<EkstreAktarma> GetByIdList(string idList, bool includeIdDescending,
             ref int rowCount)
         {
@@ -75,6 +82,21 @@ namespace Model.Services.NBYS
             item.Id = repository.Insert(item);
             if (item.Id > 0 && ProjeConstants.NBYS_SAVE_LOG)
                 new OlayKayit().GirisOlayKaydet(item, ProjeConstants.NBYS, ProjeConstants.NBYS_EKSTREAKTARMA);
+            return item.Id;
+        }
+
+        public int Save(EkstreAktarma item, SqlTransactionContext transaction)
+        {
+            if (item == null) throw new ArgumentNullException("item");
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            item.OlusturmaTarihi = DateTime.Now;
+            item.Olusturan = UtilityHelper.GetCurrentUserName();
+            item.Id = repository.Insert(item, transaction);
+            if (item.Id <= 0)
+                throw new InvalidOperationException("Ekstre aktarımı veritabanına eklenemedi.");
+            if (ProjeConstants.NBYS_SAVE_LOG)
+                new OlayKayit().GirisOlayKaydet(item, ProjeConstants.NBYS,
+                    ProjeConstants.NBYS_EKSTREAKTARMA, transaction);
             return item.Id;
         }
 
