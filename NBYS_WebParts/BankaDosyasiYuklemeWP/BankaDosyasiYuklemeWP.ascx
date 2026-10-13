@@ -9,7 +9,7 @@
 
 <style type="text/css">
     .bdy, .bdy * { box-sizing: border-box; }
-    .bdy { --bdy-ink: #15263e; --bdy-muted: #64748b; --bdy-line: #e1e8f0; --bdy-blue: #1768d2; --bdy-surface: #fff; max-width: 1440px; margin: 0 auto; padding: 24px 32px 0; background: #f5f7fb; color: var(--bdy-ink); font-family: "Segoe UI", Arial, sans-serif; font-size: 15px; }
+    .bdy { --bdy-ink: #15263e; --bdy-muted: #64748b; --bdy-line: #e1e8f0; --bdy-blue: #1768d2; --bdy-surface: #fff; max-width: 1530px; margin: 0 auto; padding: 10px 10px 0; background: #f5f7fb; color: var(--bdy-ink); font-family: "Segoe UI", Arial, sans-serif; font-size: 15px; }
     .bdy a { text-decoration: none; }
     .bdy-header { position: relative; margin-bottom: 24px; padding-right: 50px; }
     .bdy-brand { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 10px; color: #29405c; font-weight: 700; }
@@ -38,8 +38,14 @@
     .bdy-filter { padding: 8px 13px; border: 0; border-radius: 7px; background: transparent; color: #52647b; font: 700 14px "Segoe UI", Arial, sans-serif; cursor: pointer; }
     .bdy-filter[aria-pressed="true"] { background: #fff; color: #0d4fa8; box-shadow: 0 1px 5px #23405d1b; }
     .bdy-search { width: min(100%, 310px); min-height: 39px; padding: 9px 12px; border: 1px solid #cbd7e5; border-radius: 9px; background: #fff; color: var(--bdy-ink); font-size: 14px; }
+    .bdy-status-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; color: var(--bdy-muted); font-size: 12px; }
+    .bdy-status-legend-item { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+    .bdy-status-legend-item::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #95a2b2; }
+    .bdy-status-legend-item--selected::before { background: #2581e4; }
+    .bdy-status-legend-item--done::before { background: #18a471; }
+    .bdy-status-legend-item--error::before { background: #d54851; }
     .bdy-section { margin-bottom: 25px; padding: 16px; border: 1px solid #dce6f1; border-radius: 16px; background: #f8fbff; }
-    .bdy-section--daily { border-color: #cfe1f8; background: #f1f7ff; }
+    .bdy-section--daily { border-color: #cfe1f8; background: #d0dff3; }
     .bdy-section--periodic { border-color: #f1d7d4; background: #fff7f5; }
     .bdy-section-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 13px; }
     .bdy-section-heading h2 { display: flex; align-items: center; gap: 9px; margin: 0; color: var(--bdy-ink); font-size: 18px; font-weight: 700; }
@@ -70,6 +76,9 @@
     .bdy-row[data-state="done"] .bdy-state-label::before { background: #18a471; }
     .bdy-row[data-state="error"] .bdy-state-label { background: #fff0f0; color: #aa333c; }
     .bdy-row[data-state="error"] .bdy-state-label::before { background: #d54851; }
+    .bdy-row[data-state="selected"] { border-color: #a9c9ef; box-shadow: inset 3px 0 0 #2581e4, 0 3px 10px #243e5c0d; }
+    .bdy-row[data-state="done"] { border-color: #a9dbc8; box-shadow: inset 3px 0 0 #18a471, 0 2px 8px #243e5c08; }
+    .bdy-row[data-state="error"] { border-color: #efb7ba; box-shadow: inset 3px 0 0 #d54851, 0 2px 8px #243e5c08; }
     .bdy-file-side { min-width: 0; }
     .bdy-file-action { display: block; min-width: 0; }
     .bdy-file-action-text, .bdy-filename { display: none; }
@@ -204,6 +213,12 @@
             <button type="button" class="bdy-filter" data-filter="done" aria-pressed="false">Yüklenen</button>
         </div>
         <input class="bdy-search" type="search" placeholder="Banka veya dosya türü ara" aria-label="Banka veya dosya türü ara" />
+        <div class="bdy-status-legend" aria-label="Dosya durumları açıklaması">
+            <span class="bdy-status-legend-item">Bekleyen</span>
+            <span class="bdy-status-legend-item bdy-status-legend-item--selected">Seçilen</span>
+            <span class="bdy-status-legend-item bdy-status-legend-item--done">Yüklenen</span>
+            <span class="bdy-status-legend-item bdy-status-legend-item--error">Hata</span>
+        </div>
     </div>
 
     <section class="bdy-section bdy-section--daily" aria-labelledby="bdy-daily-title">
