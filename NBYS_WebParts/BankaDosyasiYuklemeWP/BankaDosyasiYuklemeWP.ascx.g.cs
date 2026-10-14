@@ -3891,7 +3891,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-        <p class=""bdy-subtitle"">İşlem tarihini belirleyin, bankaya ait dosyaları seçin ve tek seferde yükleyin.</p>
+        <p class=""bdy-subtitle"">İşlem tarihini belirleyin, bankaya ait dosyaları seçin ve tek seferde yükleyin.X</p>
     </header>
 
     <div class=""bdy-overview"" aria-label=""Dosya türleri özeti"">
