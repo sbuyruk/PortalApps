@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Web;
 
 namespace Utility.HelperClasses
@@ -24,53 +23,9 @@ namespace Utility.HelperClasses
             Exceptions.Add(ex);
         }
 
-        private string GetAllMessages(Exception ex)
-        {
-
-
-            StringBuilder sb = new StringBuilder();
-
-            while (ex != null)
-            {
-                LogHelper.WriteTrace(ex);//Sharepoint log larina yaziyor.
-
-                if (!string.IsNullOrEmpty(ex.Message))
-                {
-                    if (sb.Length > 0)
-                        sb.Append(" ");
-
-                    sb.Append("<br>");
-                    sb.Append(RemoveQuote(ex.Message));
-                    sb.Append("<br>");
-                    sb.Append(RemoveQuote(ex.StackTrace));
-                }
-
-                ex = ex.InnerException;
-            }
-
-            return sb.ToString();
-        }
-        private static string RemoveQuote(string value)
-        {
-            string result = string.Empty;
-            if (!string.IsNullOrEmpty(value))
-            {
-                if (value.Contains("\""))
-                {
-                    result = value.Replace("\"", "");
-                }
-                else
-                {
-                    result = value;
-                }
-            }
-
-            return result;
-        }
         private string GetExceptionMessageAsHtml()
         {
-            StringBuilder alertHtml = new StringBuilder();
-            int count = 0;
+            var alertHtml = new System.Text.StringBuilder();
             if (this.Exceptions.Count > 0)
             {
                 alertHtml.Append("<div id=\'exceptionAll\'>");
@@ -81,27 +36,25 @@ namespace Utility.HelperClasses
                     alertHtml.Append("<div class=\'" + alertClass + "\' role=\'alert\'>");
 
                     alertHtml.Append("<div class=\'exceptionMessage\'>");
-
                     alertHtml.Append("<b>");
-                    alertHtml.Append(RemoveQuote(exceptionItem.Message));
+                    alertHtml.Append(HttpUtility.HtmlEncode(GetUserMessage(exceptionItem)));
                     alertHtml.Append("</b>");
                     alertHtml.Append("</div>");
-
-                    alertHtml.Append(string.Format("<br><a href=\'#\' onclick=ToggleItem(\'Detail_{0}\')>Hata Detay</a>", count));
-
-                    alertHtml.Append(string.Format("<br><div class=\'exceptionPanelDetail\' id=\'Detail_{0}\'>", count));
-
-                    alertHtml.Append(GetAllMessages(exceptionItem));
-
                     alertHtml.Append("</div>");
 
-                    alertHtml.Append("</div>");
-
-                    count++;
                 }
                 alertHtml.Append("</div>");
             }
             return alertHtml.ToString();
+        }
+        private static string GetUserMessage(Exception exception)
+        {
+            for (Exception detail = exception; detail != null; detail = detail.InnerException)
+                LogHelper.WriteTrace(detail);
+
+            return exception is ImportAlreadyProcessedException
+                ? exception.Message
+                : "İşlem tamamlanamadı. Lütfen yeniden deneyin.";
         }
         public void PublishException()
         {
