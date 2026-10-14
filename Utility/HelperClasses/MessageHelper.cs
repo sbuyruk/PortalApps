@@ -15,7 +15,9 @@ namespace Utility.HelperClasses
 
                 message = string.Format("<div class='container'><div class='d-flex justify-content-center'><div class='{0} snackbar'><div class='card shadow'><div class='card-header'><span class='close' onclick=CloseMessage('{0}')>×</span></div><div class='card-body customMessageBody'>{1}</div></div></div></div></div>", className, message);
 
-                var messageHtml = string.Format("$('body').append({0});", "\"" + message + "\"");
+                // HTML is retained for existing callers; encode it only when embedding in JavaScript.
+                var messageHtml = string.Format("$('body').append({0});",
+                    System.Web.HttpUtility.JavaScriptStringEncode(message, true));
 
                 System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), messageHtml, true);
                 if (!string.IsNullOrEmpty(fadeOutString))
