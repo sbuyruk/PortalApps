@@ -66,6 +66,24 @@ namespace DAO.Ortak
             }
         }
 
+        public void AcquireEkstreImportLock()
+        {
+            using (SqlCommand command = new SqlCommand(@"
+                DECLARE @result int;
+                EXEC @result = sp_getapplock
+                    @Resource = N'PortalApps.EkstreAktarma.Import',
+                    @LockMode = N'Exclusive',
+                    @LockOwner = N'Transaction',
+                    @LockTimeout = 30000;
+                SELECT @result;", connection, transaction))
+            {
+                command.CommandTimeout = 35;
+                int result = Convert.ToInt32(command.ExecuteScalar());
+                if (result < 0)
+                    throw new InvalidOperationException("Ekstre yüklemesi başka bir işlem nedeniyle bekledi; lütfen tekrar deneyin.");
+            }
+        }
+
         public void Complete()
         {
             completed = true;

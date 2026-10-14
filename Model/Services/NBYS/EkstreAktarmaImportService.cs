@@ -5,6 +5,7 @@ using Model.Services.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace Model.Services.NBYS
                 ExceptionHelper result;
                 using (var transaction = new SqlTransactionContext())
                 {
+                    transaction.AcquireEkstreImportLock();
                     result = import(transaction);
                     if (result == null)
                         throw new InvalidOperationException("Dosya işleme sonucu alınamadı.");
@@ -33,16 +35,35 @@ namespace Model.Services.NBYS
                 {
                     string context = bankName + (string.IsNullOrEmpty(fileName) ? "" : " / " + fileName);
                     for (int i = 0; i < result.Exceptions.Count; i++)
-                        result.Exceptions[i] = new Exception(context + ": " + result.Exceptions[i].Message,
-                            result.Exceptions[i]);
+                    {
+                        Exception error = result.Exceptions[i];
+                        string message = IsUniqueViolation(error)
+                            ? "mükerrer kayıt bulundu; dosyadaki değişiklikler geri alındı."
+                            : error.Message;
+                        result.Exceptions[i] = new Exception(context + ": " + message, error);
+                    }
                 }
                 return result;
             }
             catch (Exception ex)
             {
                 string context = bankName + (string.IsNullOrEmpty(fileName) ? "" : " / " + fileName);
+                if (IsUniqueViolation(ex))
+                    return new ExceptionHelper(new Exception(context +
+                        ": mükerrer kayıt bulundu; dosyadaki değişiklikler geri alındı.", ex));
                 return new ExceptionHelper(new Exception(context + ": dosya yüklenemedi.", ex));
             }
+        }
+
+        private static bool IsUniqueViolation(Exception error)
+        {
+            for (Exception current = error; current != null; current = current.InnerException)
+            {
+                SqlException sqlError = current as SqlException;
+                if (sqlError != null && (sqlError.Number == 2601 || sqlError.Number == 2627))
+                    return true;
+            }
+            return false;
         }
 
         private static int SaveEkstreAktarma(EkstreAktarma item, SqlTransactionContext transaction)
@@ -58,7 +79,7 @@ namespace Model.Services.NBYS
 
         public static ExceptionHelper SaveAkBankFile(Stream fileStream, DateTime processTime, string currentUser, string fileName = null)
         {
-            return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTime, currentUser, transaction), "AkBank", fileName);
+return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTime, currentUser, transaction), "AkBank", fileName);
         }
 
         private static ExceptionHelper SaveAkBankFileCore(Stream fileStream, DateTime processTime, string currentUser, SqlTransactionContext transaction)
@@ -1879,7 +1900,6 @@ namespace Model.Services.NBYS
         }
         private static bool BuKayitDahaOnceGirilmisMiByFisNo(string bankaLike, string fisNo, string aciklama, DateTime bagisTarihi, decimal tutar, SqlTransactionContext transaction)
         {
-            bool kaydedilmisMi = false;
             List<EkstreAktarma> ekstreAktarmaList = new EkstreAktarmaService(
                 new DAO.Repositories.NBYS.EkstreAktarmaRepository(transaction))
                 .GetByBankAndReceipt(bankaLike, fisNo, transaction);
@@ -1889,15 +1909,11 @@ namespace Model.Services.NBYS
                 {
                     //eger bu kayitin fisnosu daha önce girilmisse bir de bagistarihi ve tutardan kontrol et
                     if ((bagisTarihi == ekstreAktarma.BagisTarihi) && (Math.Round(tutar,2) == Math.Round(ekstreAktarma.Tutar,2)))
-                    {
-                        kaydedilmisMi = true;
-                    }
-                    else
-                        kaydedilmisMi = false;
+                        return true;
                 }
             }
 
-            return kaydedilmisMi;
+            return false;
         }
 
         public static ExceptionHelper SaveZiraatEkstreFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName = null)
