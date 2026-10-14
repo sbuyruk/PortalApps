@@ -28,9 +28,13 @@ namespace Model.Services.NBYS
                     result = import(transaction);
                     if (result == null)
                         throw new InvalidOperationException("Dosya işleme sonucu alınamadı.");
-                    if (result.Exceptions.Count == 0 || result.Exceptions.All(IsAlreadyProcessedException))
+                    result.AlreadyProcessedCount += result.Exceptions.Count(IsAlreadyProcessedException);
+                    result.ErrorCount += result.Exceptions.Count - result.Exceptions.Count(IsAlreadyProcessedException);
+                    if (result.ErrorCount == 0 && result.SuccessCount > 0)
                         transaction.Complete();
                 }
+                if (result.ErrorCount > 0)
+                    result.SuccessCount = 0; // Geri alınan INSERT işlemlerini başarı olarak gösterme.
                 if (result.Exceptions.Count > 0)
                 {
                     string context = bankName + (string.IsNullOrEmpty(fileName) ? "" : " / " + fileName);
@@ -39,7 +43,11 @@ namespace Model.Services.NBYS
                         Exception error = result.Exceptions[i];
                         string message = IsUniqueViolation(error)
                             ? "mükerrer kayıt bulundu; dosyadaki değişiklikler geri alındı."
-                            : error.Message;
+                            : IsAlreadyProcessedException(error)
+                                ? error.Message
+                                : error.Message.StartsWith("HATA SATIRI", StringComparison.OrdinalIgnoreCase)
+                                    ? "Bir satır işlenemedi; veri biçimini ve alan değerlerini kontrol edin. Dosyadaki değişiklikler geri alındı."
+                                    : "Dosya okunamadı veya banka şablonu beklenen biçimde değil. Dosyadaki değişiklikler geri alındı.";
                         result.Exceptions[i] = IsAlreadyProcessedException(error)
                             ? new ImportAlreadyProcessedException(context + ": " + message, error)
                             : new Exception(context + ": " + message, error);
@@ -52,8 +60,8 @@ namespace Model.Services.NBYS
                 string context = bankName + (string.IsNullOrEmpty(fileName) ? "" : " / " + fileName);
                 if (IsUniqueViolation(ex))
                     return new ExceptionHelper(new Exception(context +
-                        ": mükerrer kayıt bulundu; dosyadaki değişiklikler geri alındı.", ex));
-                return new ExceptionHelper(new Exception(context + ": dosya yüklenemedi.", ex));
+                        ": mükerrer kayıt bulundu; dosyadaki değişiklikler geri alındı.", ex)) { ErrorCount = 1 };
+                return new ExceptionHelper(new Exception(context + ": dosya yüklenemedi.", ex)) { ErrorCount = 1 };
             }
         }
 
@@ -73,15 +81,17 @@ namespace Model.Services.NBYS
             return error is ImportAlreadyProcessedException;
         }
 
-        private static int SaveEkstreAktarma(EkstreAktarma item, SqlTransactionContext transaction)
+        private static int SaveEkstreAktarma(EkstreAktarma item, SqlTransactionContext transaction, ExceptionHelper result)
         {
             if (item.NakitBagisciId <= 0)
                 item.NakitBagisciId = new EkstreBagisciEslestirmeService(
                     new DAO.Repositories.NBYS.NakitBagisciRepository(transaction))
                     .FindDonorId(item, transaction);
-            return new EkstreAktarmaService(
+            int id = new EkstreAktarmaService(
                 new DAO.Repositories.NBYS.EkstreAktarmaRepository(transaction))
                 .Save(item, transaction);
+            result.SuccessCount++;
+            return id;
         }
 
         public static ExceptionHelper SaveAkBankFile(Stream fileStream, DateTime processTime, string currentUser, string fileName = null)
@@ -135,7 +145,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                         ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                         ekstreAktarma.Olusturan = currentUser;
                         //ekstreAktarma.FisNo = fisNo;
-                        SaveEkstreAktarma(ekstreAktarma, transaction);
+                        SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
 
                     }
                 }
@@ -178,6 +188,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                             if (BuKayitDahaOnceGirilmisMiByFisNo(//ProjeConstants.BANKA_AKBANKEKSTRE, fisNo, aciklama)) //fis numarasindan kontrol et kayit girilmisse atla
                                 "Akbank", fisNo, aciklama, bagisTarihi, tutar, transaction)) //fis numarasindan kontrol et kayit girilmisse atla
                             {
+                                exceptionHelper.AlreadyProcessedCount++;
                                 continue;
                             }
                             else
@@ -193,7 +204,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                                     ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                     ekstreAktarma.Olusturan = currentUser;
                                     ekstreAktarma.FisNo = fisNo;
-                                    SaveEkstreAktarma(ekstreAktarma, transaction);
+                                    SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
                                 }
                             }
                         }
@@ -285,7 +296,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                             ekstreAktarma.IslemTarihi = processTime;
                             ekstreAktarma.Olusturan = currentUser;
 
-                            SaveEkstreAktarma(ekstreAktarma, transaction);
+                            SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
 
                         }
                     }
@@ -324,6 +335,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                         string tarihStr = row[0].ReturnZeroIfNull().ToString();
                         if (tarihStr.Contains("Tarih"))
                         {
+                            exceptionHelper.SkippedCount++;
                             continue;
                         }
                         else
@@ -338,6 +350,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                                 || detay.Contains("22100000000")//swap açilis kapanis
                                 || detay.Contains("EF3077117 TÜRK SİLAHLI")) //vakif hesabina virman
                             {
+                                exceptionHelper.SkippedCount++;
                                 continue;
                             }
 
@@ -426,7 +439,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
 
-                            SaveEkstreAktarma(ekstreAktarma, transaction);
+                            SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
                         }
                     }
                     catch (Exception ex)
@@ -478,7 +491,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                         ekstreAktarma.IslemTarihi = processTime;
                         ekstreAktarma.Olusturan = currentUser;
                         ekstreAktarma.BelgeIstemiyor = ekstreAktarma.Aciklama.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) || ekstreAktarma.Adres.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) ? true : false;
-                        SaveEkstreAktarma(ekstreAktarma, transaction);
+                        SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
 
                     }
 
@@ -522,6 +535,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                                 || (detay.Contains("5528790009947647 KREDİ KARTI OTOMATİK VİRMAN"))
                                 || (tutar.ReturnZeroIfNull().ConvertToDecimal() < 0))
                             {
+                                exceptionHelper.SkippedCount++;
                                 continue;
                             }
                             else
@@ -563,7 +577,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                                 ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                 ekstreAktarma.Olusturan = currentUser;
                                 hata = detay;
-                                SaveEkstreAktarma(ekstreAktarma, transaction);
+                                SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
                             }
 
                         }
@@ -598,7 +612,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                 {
 
                     //var fisNo = line.Substring(51, 72 - 51).TrimEnd();
-                    if (string.IsNullOrWhiteSpace(line)) continue;
+                    if (string.IsNullOrWhiteSpace(line)) { exceptionHelper.SkippedCount++; continue; }
                     var soyadi = line.Substring(30, 30).Trim();
                     var adi = line.Substring(0, 30).Trim();
                     var item = new EkstreAktarma
@@ -639,7 +653,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                     //    ekstreAktarma.Save();
 
                     //}
-                    SaveEkstreAktarma(item, transaction);
+                    SaveEkstreAktarma(item, transaction, exceptionHelper);
                 }
                 catch (Exception ex)
                 {
@@ -717,7 +731,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                                     }
                                     else
                                     {
-                                        SaveEkstreAktarma(ekstreAktarma, transaction);
+                                        SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
                                     }
                                 }
 
@@ -785,7 +799,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
 
 
 
-                        SaveEkstreAktarma(ekstreAktarma, transaction);
+                        SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
                     }
                     catch (Exception ex)
                     {
@@ -828,6 +842,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                         string tarihStr = row[0].ReturnZeroIfNull().ToString();
                         if (tarihStr.Contains("Tarih/Saat"))
                         {
+                            exceptionHelper.SkippedCount++;
                             continue;
                         }
                         else
@@ -896,10 +911,11 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                                 ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                 ekstreAktarma.Olusturan = currentUser;
 
-                                SaveEkstreAktarma(ekstreAktarma, transaction);
+                                SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
                             }
                             else
                             {
+                                exceptionHelper.SkippedCount++;
                                 continue;
                             }
                         }
@@ -1035,12 +1051,13 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                             }
                             else
                             {
-                                SaveEkstreAktarma(ekstreAktarma, transaction);
+                                SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
 
                             }
                         }
                         else
                         {
+                            exceptionHelper.SkippedCount++;
                             continue;
                         }
 
@@ -1081,6 +1098,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                             var borc_alacak = row[15].ReturnEmptyIfNull().ToString();//borc satiri için islem yapma
                             if (borc_alacak.Equals("B"))
                             {
+                                exceptionHelper.SkippedCount++;
                                 continue;
                             }
                             //dummy rows
@@ -1133,7 +1151,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
 
-                            SaveEkstreAktarma(ekstreAktarma, transaction);
+                            SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
                         }
                         catch (Exception ex)
                         {
@@ -1203,7 +1221,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                         ekstreAktarma.IslemTarihi = processTime;
                         ekstreAktarma.Olusturan = currentUser;
                         ekstreAktarma.BelgeIstemiyor = ekstreAktarma.Aciklama.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) || ekstreAktarma.Adres.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) ? true : false;
-                        SaveEkstreAktarma(ekstreAktarma, transaction);
+                        SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
 
                     }
 
@@ -1245,12 +1263,13 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                            || islem.Contains("Batch Komisyonu")
                            || hesapNo.Equals("HESAP NO")
                            || tutar < 0)
-                            continue;
+                            { exceptionHelper.SkippedCount++; continue; }
                         try
                         {
                             var borc_alacak = row[15].ReturnEmptyIfNull().ToString();//borc satiri için islem yapma
                             if (borc_alacak.Equals("B"))
                             {
+                                exceptionHelper.SkippedCount++;
                                 continue;
                             }
                             //dummy rows
@@ -1307,7 +1326,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
 
-                            SaveEkstreAktarma(ekstreAktarma, transaction);
+                            SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
                         }
                         catch (Exception ex)
                         {
@@ -1352,6 +1371,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
 
                             if (detay.Contains("198700 - 1 no")) //vakıf hesabına transfer
                             {
+                                exceptionHelper.SkippedCount++;
                                 continue;
                             }
                             string ayrac1 = "Genel Bağış";
@@ -1398,7 +1418,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
 
-                            SaveEkstreAktarma(ekstreAktarma, transaction);
+                            SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
                         }
                         catch (Exception ex)
                         {
@@ -1484,7 +1504,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
 
-                            SaveEkstreAktarma(ekstreAktarma, transaction);
+                            SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
 
                         }
                     }
@@ -1570,7 +1590,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                         }
                         else
                         {
-                            SaveEkstreAktarma(ekstreAktarma, transaction);
+                            SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
 
                         }
 
@@ -1611,7 +1631,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                         var onayli = row[11].ReturnEmptyIfNull().ToString();
                         bool kaydiAtla = !onayli.Equals("ONAYLI");
                         if (kaydiAtla)// onayli olmayanlari atla
-                            continue;
+                            { exceptionHelper.SkippedCount++; continue; }
                         try
                         {
 
@@ -1678,7 +1698,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                                     }
                                     else
                                     {
-                                        SaveEkstreAktarma(ekstreAktarma, transaction);
+                                        SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
                                     }
                                 }
                             }
@@ -1861,7 +1881,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                                 else if (bagisKanali.ReturnEmptyIfNull().Equals("Sistem içi"))
                                     ekstreAktarma.BankaAdi = ProjeConstants.BANKA_KARTILEBAGIS;
                                 else
-                                    continue;// diger kanallardan gelen bagislari kaydetme zaten var
+                                    { exceptionHelper.SkippedCount++; continue; }// diger kanallardan gelen bagislari kaydetme zaten var
                                 ekstreAktarma.IslemTarihi = islemTarihi;
                                 ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                 ekstreAktarma.BagisTipi = bagisTipi;
@@ -1886,7 +1906,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                                 }
                                 else
                                 {
-                                    SaveEkstreAktarma(ekstreAktarma, transaction);
+                                    SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
                                 }
                             }
 
@@ -1982,6 +2002,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                                     {
                                         if (aciklama.Contains("6031741-5087"))
                                         {
+                                            exceptionHelper.SkippedCount++;
                                             continue; //6031741-5087 referans numarasi ile gelenleri atla
                                         }
                                         else if (aciklama.Contains("- Pazarcık Depremi Bağış"))
@@ -2053,7 +2074,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                                                 ekstreAktarma.TCKimlikNo = tcKalan.Split(new char[] { ' ', '/' })[0].ConvertToLong();
                                             }
                                         }
-                                        SaveEkstreAktarma(ekstreAktarma, transaction);
+                                        SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
 
                                     }
                                 }
@@ -2129,7 +2150,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                                 ekstreAktarma.IslemTarihi = processTime;
                                 ekstreAktarma.Olusturan = currentUser;
 
-                                var id = SaveEkstreAktarma(ekstreAktarma, transaction);
+                                var id = SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
                             }
                         }
                     }
@@ -2199,7 +2220,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                                     }
                                     else
                                     {
-                                        SaveEkstreAktarma(ekstreAktarma, transaction);
+                                        SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
                                     }
                                 }
                             }
@@ -2257,7 +2278,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
 
                             // Sadece pozitif tutarlar alinir; bakiye satirlari vb. atlanir
                             if (tutar <= 0)
-                                continue;
+                                { exceptionHelper.SkippedCount++; continue; }
 
                             // "AD SOYAD / GENEL BAGIS" formatindan ad soyad çikar
                             string adi = string.Empty;
@@ -2292,7 +2313,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                             ekstreAktarma.IslemTarihi = islemTarihi;
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
-                            SaveEkstreAktarma(ekstreAktarma, transaction);
+                            SaveEkstreAktarma(ekstreAktarma, transaction, exceptionHelper);
                         }
                         catch (Exception ex)
                         {
