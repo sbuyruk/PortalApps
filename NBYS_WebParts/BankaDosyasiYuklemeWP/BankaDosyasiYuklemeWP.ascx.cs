@@ -393,7 +393,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             {
 
                 var exceptionHelper = EkstreAktarmaImportService.SaveAkBankFile(AkbankFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, AkbankFU.FileName);
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     AkbankFU.Enabled = true;
                     AkbankOkLbl.ForeColor = System.Drawing.Color.Red;
@@ -403,6 +403,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
 
                 else
                 {
+                    exceptionHelper.PublishException();
                     AkbankFU.Enabled = false;
                     AkbankOkLbl.ForeColor = System.Drawing.Color.Green;
                     AkbankOkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -416,7 +417,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             {
 
                 var exceptionHelper = EkstreAktarmaImportService.SaveAkBankEkstreFile(AkbankEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, AkbankEkstreFU.FileName);
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     AkbankEkstreFU.Enabled = true;
                     AkbankEkstreOkLbl.ForeColor = System.Drawing.Color.Red;
@@ -426,6 +427,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
 
                 else
                 {
+                    exceptionHelper.PublishException();
                     AkbankEkstreFU.Enabled = false;
                     AkbankEkstreOkLbl.ForeColor = System.Drawing.Color.Green;
                     AkbankEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -439,7 +441,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             {
 
                 var exceptionHelper = EkstreAktarmaImportService.SaveFinansbankFile(FinansbankFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, FinansbankFU.FileName);
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     FinansbankFU.Enabled = true;
                     FinansbankOkLbl.ForeColor = System.Drawing.Color.Red;
@@ -449,6 +451,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
 
                 else
                 {
+                    exceptionHelper.PublishException();
                     FinansbankFU.Enabled = false;
                     FinansbankOkLbl.ForeColor = System.Drawing.Color.Green;
                     FinansbankOkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -462,7 +465,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             {
                 var exceptionHelper = EkstreAktarmaImportService.SaveFinansbankEkstreFile(FinansbankEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, FinansbankEkstreFU.FileName);
 
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     FinansbankEkstreFU.Enabled = true;
                     FinansbankEkstreOkLbl.ForeColor = System.Drawing.Color.Red;
@@ -471,6 +474,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 }
                 else
                 {
+                    exceptionHelper.PublishException();
                     FinansbankEkstreFU.Enabled = false;
                     FinansbankEkstreOkLbl.ForeColor = System.Drawing.Color.Green;
                     FinansbankEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -484,7 +488,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
 
                 var exceptionHelper = EkstreAktarmaImportService.SaveGarantiBankFile(GarantiFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, GarantiFU.FileName);
 
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     GarantiFU.Enabled = true;
                     GarantiOkLbl.ForeColor = System.Drawing.Color.Red;
@@ -494,6 +498,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
 
                 else
                 {
+                    exceptionHelper.PublishException();
                     GarantiFU.Enabled = false;
                     GarantiOkLbl.ForeColor = System.Drawing.Color.Green;
                     GarantiOkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -509,7 +514,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
 
                 var exceptionHelper = EkstreAktarmaImportService.SaveGarantiEkstreFile(GarantiEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, GarantiEkstreFU.FileName);
 
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     GarantiEkstreFU.Enabled = true;
                     GarantiEkstreOkLbl.ForeColor = System.Drawing.Color.Red;
@@ -519,6 +524,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
 
                 else
                 {
+                    exceptionHelper.PublishException();
                     GarantiEkstreFU.Enabled = false;
                     GarantiEkstreOkLbl.ForeColor = System.Drawing.Color.Green;
                     GarantiEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -534,7 +540,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
 
                 var exceptionHelper = EkstreAktarmaImportService.SaveTEBBankFile(TebFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, TebFU.FileName);
 
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     TebFU.Enabled = true;
                     TebOkLbl.ForeColor = System.Drawing.Color.Red;
@@ -544,6 +550,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
 
                 else
                 {
+                    exceptionHelper.PublishException();
                     TebFU.Enabled = false;
                     TebOkLbl.ForeColor = System.Drawing.Color.Green;
                     TebOkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -557,7 +564,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             if (!isHalkBankAktarildi && HalkbankFU.HasFile)
             {
                 var exceptionHelper = EkstreAktarmaImportService.SaveHalkbankFile(HalkbankFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, HalkbankFU.FileName);
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     HalkbankFU.Enabled = true;
                     HalkbankOkLbl.ForeColor = System.Drawing.Color.Red;
@@ -567,6 +574,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
 
                 else
                 {
+                    exceptionHelper.PublishException();
                     HalkbankFU.Enabled = false;
                     HalkbankOkLbl.ForeColor = System.Drawing.Color.Green;
                     HalkbankOkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -578,7 +586,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             if (!isHalkbank2Aktarildi && Halkbank2FU.HasFile)
             {
                 var exceptionHelper = EkstreAktarmaImportService.SaveHalkbank2File(Halkbank2FU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, Halkbank2FU.FileName);
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     Halkbank2FU.Enabled = true;
                     Halkbank2OkLbl.ForeColor = System.Drawing.Color.Red;
@@ -587,6 +595,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 }
                 else
                 {
+                    exceptionHelper.PublishException();
                     Halkbank2FU.Enabled = false;
                     Halkbank2OkLbl.ForeColor = System.Drawing.Color.Green;
                     Halkbank2OkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -599,7 +608,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             {
                 var exceptionHelper = EkstreAktarmaImportService.SaveIsBankFile(IsbankFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, IsbankFU.FileName);
 
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     IsbankFU.Enabled = true;
                     IsbankOkLbl.ForeColor = System.Drawing.Color.Red;
@@ -608,6 +617,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 }
                 else
                 {
+                    exceptionHelper.PublishException();
                     IsbankFU.Enabled = false;
                     IsbankOkLbl.ForeColor = System.Drawing.Color.Green;
                     IsbankOkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -620,7 +630,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             {
                 var exceptionHelper = EkstreAktarmaImportService.SaveIsBankEkstreFile(IsbankEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, IsbankEkstreFU.FileName);
 
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     IsbankEkstreFU.Enabled = true;
                     IsbankEkstreOkLbl.ForeColor = System.Drawing.Color.Red;
@@ -629,6 +639,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 }
                 else
                 {
+                    exceptionHelper.PublishException();
                     IsbankEkstreFU.Enabled = false;
                     IsbankEkstreOkLbl.ForeColor = System.Drawing.Color.Green;
                     IsbankEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -641,7 +652,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             {
                 var exceptionHelper = EkstreAktarmaImportService.SaveYKBEkstreFile(YKBEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, YKBEkstreFU.FileName);
 
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     YKBEkstreFU.Enabled = true;
                     YKBEkstreOkLbl.ForeColor = System.Drawing.Color.Red;
@@ -650,6 +661,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 }
                 else
                 {
+                    exceptionHelper.PublishException();
                     YKBEkstreFU.Enabled = false;
                     YKBEkstreOkLbl.ForeColor = System.Drawing.Color.Green;
                     YKBEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -662,7 +674,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             if (!isVakifBankGunlukAktarildi && VakifbankGunlukFU.HasFile)
             {
                 var exceptionHelper = EkstreAktarmaImportService.SaveVakifBankGunlukTextFile(VakifbankGunlukFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, VakifbankGunlukFU.FileName);
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     VakifbankGunlukFU.Enabled = true;
                     VakifbankGunlukOkLbl.ForeColor = System.Drawing.Color.Red;
@@ -671,6 +683,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 }
                 else
                 {
+                    exceptionHelper.PublishException();
                     VakifbankGunlukFU.Enabled = false;
                     VakifbankGunlukOkLbl.ForeColor = System.Drawing.Color.Green;
                     VakifbankGunlukOkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -682,7 +695,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             if (!isVakifBank2Aktarildi && Vakifbank2FU.HasFile)
             {
                 var exceptionHelper = EkstreAktarmaImportService.SaveVakifBank2File(Vakifbank2FU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, Vakifbank2FU.FileName);
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     Vakifbank2FU.Enabled = true;
                     Vakifbank2OkLbl.ForeColor = System.Drawing.Color.Red;
@@ -691,6 +704,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 }
                 else
                 {
+                    exceptionHelper.PublishException();
                     Vakifbank2FU.Enabled = false;
                     Vakifbank2OkLbl.ForeColor = System.Drawing.Color.Green;
                     Vakifbank2OkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -703,7 +717,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             if (!isVakifKatilimAktarildi && VakifKatilimFU.HasFile)
             {
                 var exceptionHelper = EkstreAktarmaImportService.SaveVakifKatilimFile(VakifKatilimFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, VakifKatilimFU.FileName);
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     VakifKatilimFU.Enabled = true;
                     VakifKatilimOkLbl.ForeColor = System.Drawing.Color.Red;
@@ -712,6 +726,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 }
                 else
                 {
+                    exceptionHelper.PublishException();
                     VakifKatilimFU.Enabled = false;
                     VakifKatilimOkLbl.ForeColor = System.Drawing.Color.Green;
                     VakifKatilimOkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -724,7 +739,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             {
                 var exceptionHelper = EkstreAktarmaImportService.SaveZiraatFile(ZiraatFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, ZiraatFU.FileName);
 
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     ZiraatFU.Enabled = true;
                     ZiraatOkLbl.ForeColor = System.Drawing.Color.Red;
@@ -733,6 +748,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 }
                 else
                 {
+                    exceptionHelper.PublishException();
                     ZiraatFU.Enabled = false;
                     ZiraatOkLbl.ForeColor = System.Drawing.Color.Green;
                     ZiraatOkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -745,7 +761,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             {
                 var exceptionHelper = EkstreAktarmaImportService.SaveZiraatEkstreFile(ZiraatEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, ZiraatEkstreFU.FileName);
 
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     ZiraatEkstreFU.Enabled = true;
                     ZiraatEkstreOkLbl.ForeColor = System.Drawing.Color.Red;
@@ -754,6 +770,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 }
                 else
                 {
+                    exceptionHelper.PublishException();
                     ZiraatEkstreFU.Enabled = false;
                     ZiraatEkstreOkLbl.ForeColor = System.Drawing.Color.Green;
                     ZiraatEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -765,7 +782,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             if (!isZiraatKatilimAktarildi && ZiraatKatilimFU.HasFile)
             {
                 var exceptionHelper = EkstreAktarmaImportService.SaveZiraatKatilimFile(ZiraatKatilimFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, ZiraatKatilimFU.FileName);
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     ZiraatKatilimFU.Enabled = true;
                     ZiraatKatilimOkLbl.ForeColor = System.Drawing.Color.Red;
@@ -774,6 +791,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 }
                 else
                 {
+                    exceptionHelper.PublishException();
                     ZiraatKatilimFU.Enabled = false;
                     ZiraatKatilimOkLbl.ForeColor = System.Drawing.Color.Green;
                     ZiraatKatilimOkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -786,7 +804,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             {
                 var exceptionHelper = EkstreAktarmaImportService.SaveEDevletFile(EDevletFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, EDevletFU.FileName);
 
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     EDevletFU.Enabled = true;
                     EDevletOkLbl.ForeColor = System.Drawing.Color.Red;
@@ -795,6 +813,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 }
                 else
                 {
+                    exceptionHelper.PublishException();
                     EDevletFU.Enabled = false;
                     EDevletOkLbl.ForeColor = System.Drawing.Color.Green;
                     EDevletOkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -807,7 +826,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             {
                 var exceptionHelper = EkstreAktarmaImportService.SaveAlbarakaFile(AlbarakaFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, AlbarakaFU.FileName);
 
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     AlbarakaFU.Enabled = true;
                     AlbarakaOkLbl.ForeColor = System.Drawing.Color.Red;
@@ -816,6 +835,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 }
                 else
                 {
+                    exceptionHelper.PublishException();
                     AlbarakaFU.Enabled = false;
                     AlbarakaOkLbl.ForeColor = System.Drawing.Color.Green;
                     AlbarakaOkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -828,7 +848,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             {
                 var exceptionHelper = EkstreAktarmaImportService.SaveSMSVakifFile(SMSVakifFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, SMSVakifFU.FileName);
 
-                if (exceptionHelper.Exceptions.Count > 0)
+                if (exceptionHelper.HasFatalException())
                 {
                     SMSVakifFU.Enabled = true;
                     SMSVakifOkLbl.ForeColor = System.Drawing.Color.Red;
@@ -837,6 +857,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 }
                 else
                 {
+                    exceptionHelper.PublishException();
                     SMSVakifFU.Enabled = false;
                     SMSVakifOkLbl.ForeColor = System.Drawing.Color.Green;
                     SMSVakifOkLbl.Text = "  " + ((char)0x221A).ToString();

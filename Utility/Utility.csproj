@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="HelperClasses\ExcelHelper.cs" />
     <Compile Include="HelperClasses\ExceptionHelper.cs" />
+    <Compile Include="HelperClasses\ImportAlreadyProcessedException.cs" />
     <Compile Include="HelperClasses\HelperFunctions.cs" />
     <Compile Include="HelperClasses\LogHelper.cs" />
     <Compile Include="HelperClasses\MailHelper.cs" />
