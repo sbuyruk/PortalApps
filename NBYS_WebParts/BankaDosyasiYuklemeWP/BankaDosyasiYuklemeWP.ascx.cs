@@ -3,6 +3,10 @@ using Model.Ortak;
 using Model.Services.NBYS;
 using System;
 using System.ComponentModel;
+using System.Collections.Generic;
+using System.Text;
+using System.Web;
+using System.Web.UI;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
@@ -108,6 +112,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                         DateTime today = DateTime.Now;
                         IslemTarihiTxt.Text = today.ToString(ProjeConstants.DATE_TR);
                     }
+                    AddDateCalendar(DateTime.Today);
                     checkSavedFiles(IslemTarihiTxt.Text.ConvertToDatetime());
 
                     NextBtn.Visible = isAkbankAktarildi || isAkbankEkstreAktarildi || isFinansbankAktarildi
@@ -127,6 +132,36 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen yeniden deneyin.", "alert-danger");
             }
 
+        }
+
+        private void AddDateCalendar(DateTime today)
+        {
+            DateTime startDate = today.AddDays(-30);
+            DateTime endDate = today.AddDays(1);
+            HashSet<DateTime> uploadedDates = new HashSet<DateTime>(
+                new EkstreAktarmaService().GetProcessDatesWithUploads(startDate, endDate));
+            DateTime selectedDate = IslemTarihiTxt.Text.ConvertToDatetime().Date;
+            StringBuilder markup = new StringBuilder();
+            markup.Append("<style>.bdy-calendar{margin-top:14px;padding:12px;border:1px solid #dce6f1;border-radius:12px;background:#f8fbff}.bdy-calendar-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}.bdy-calendar-title{color:#29405c;font-size:12px;font-weight:800}.bdy-calendar-switch{display:flex;gap:4px}.bdy-calendar-switch button{padding:4px 7px;border:1px solid #cbd7e5;border-radius:6px;background:#fff;color:#52647b;font-size:11px;cursor:pointer}.bdy-calendar-switch button[aria-pressed=true]{border-color:#1768d2;background:#eaf3ff;color:#0d4fa8}.bdy-calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}.bdy-calendar-weekday{padding:3px 0;color:#7b8da3;font-size:10px;font-weight:700;text-align:center}.bdy-calendar-day{display:flex;min-height:28px;align-items:center;justify-content:center;border:1px solid #dce6f1;border-radius:6px;background:#fff;color:#52647b;font-size:11px}.bdy-calendar-day--uploaded{border-color:#a9dbc8;background:#e7f6ef;color:#0f7652;font-weight:800}.bdy-calendar-day--selected{outline:2px solid #1768d2;outline-offset:-2px}.bdy-calendar-day--future{opacity:.45}.bdy-calendar-day--older{display:flex}.bdy-calendar-legend{display:flex;gap:10px;margin-top:8px;color:#64748b;font-size:10px}.bdy-calendar-legend span{display:flex;align-items:center;gap:4px}.bdy-calendar-legend i{display:inline-block;width:8px;height:8px;border-radius:3px;background:#e7f6ef;border:1px solid #a9dbc8}.bdy-calendar-legend .bdy-calendar-empty i{background:#fff;border-color:#dce6f1}</style>");
+            markup.Append("<div class=\"bdy-calendar\" aria-label=\"Son 1 ayın yükleme takvimi\">");
+            markup.Append("<div class=\"bdy-calendar-head\"><span class=\"bdy-calendar-title\">Yükleme takvimi</span><span class=\"bdy-calendar-switch\"><button type=\"button\" data-calendar-range=\"15\" aria-pressed=\"false\">15 gün</button><button type=\"button\" data-calendar-range=\"30\" aria-pressed=\"true\">1 ay</button></span></div>");
+            string[] weekdays = { "Pt", "Sa", "Ça", "Pe", "Cu", "Ct", "Pz" };
+            markup.Append("<div class=\"bdy-calendar-grid\">");
+            foreach (string weekday in weekdays) markup.Append("<span class=\"bdy-calendar-weekday\">").Append(weekday).Append("</span>");
+            int leadingDays = ((int)startDate.DayOfWeek + 6) % 7;
+            for (int i = 0; i < leadingDays; i++) markup.Append("<span></span>");
+            string currentPath = Page.Request.Url.AbsolutePath;
+            for (DateTime day = startDate; day <= today; day = day.AddDays(1))
+            {
+                bool isUploaded = uploadedDates.Contains(day.Date);
+                bool isSelected = selectedDate == day.Date;
+                string classes = "bdy-calendar-day" + (isUploaded ? " bdy-calendar-day--uploaded" : "") + (isSelected ? " bdy-calendar-day--selected" : "") + (day < today.AddDays(-14) ? " bdy-calendar-day--older" : "");
+                string url = currentPath + "?IslemTarihi=" + HttpUtility.UrlEncode(day.ToString(ProjeConstants.DATE_TR));
+                markup.Append("<a class=\"").Append(classes).Append("\" href=\"").Append(HttpUtility.HtmlAttributeEncode(url)).Append("\" title=\"").Append(isUploaded ? "Bu tarihte yükleme var" : "Bu tarihte yükleme yok").Append("\">").Append(day.Day).Append("</a>");
+            }
+            markup.Append("</div><div class=\"bdy-calendar-legend\"><span><i></i>Yükleme var</span><span class=\"bdy-calendar-empty\"><i></i>Boş gün</span></div></div>");
+            markup.Append("<script>(function(){var c=document.currentScript.previousElementSibling;if(!c)return;var b=c.querySelectorAll('[data-calendar-range]');b.forEach(function(x){x.onclick=function(){var n=x.getAttribute('data-calendar-range');c.querySelectorAll('.bdy-calendar-day').forEach(function(d){d.style.display=n==='15'&&d.classList.contains('bdy-calendar-day--older')?'none':''});b.forEach(function(y){y.setAttribute('aria-pressed',String(y===x));});};});}());</script>");
+            IslemTarihiTxt.Parent.Controls.Add(new LiteralControl(markup.ToString()));
         }
         private void InitializeLabels()
         {

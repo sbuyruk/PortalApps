@@ -108,6 +108,18 @@ namespace DAO.Repositories.NBYS
             return table != null && table.Rows.Count > 0;
         }
 
+        public DataTable SelectProcessDatesWithUploads(DateTime startDate, DateTime endDate)
+        {
+            SqlQuery query = new SqlQuery(@"SELECT DISTINCT IslemTarihi
+                FROM EkstreAktarma_Table
+                WHERE IslemTarihi >= @StartDate AND IslemTarihi < @EndDate
+                    AND ElleKayit<>1
+                ORDER BY IslemTarihi");
+            query.AddParameter("@StartDate", startDate);
+            query.AddParameter("@EndDate", endDate);
+            return db.SelectFromDb(query, "");
+        }
+
         public int Insert<T>(T entity) { return db.Insert(queryBuilder.BuildInsert(entity, TableName)); }
         public int Insert<T>(T entity, SqlTransactionContext transaction)
         {

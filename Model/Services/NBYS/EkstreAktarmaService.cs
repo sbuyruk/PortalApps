@@ -74,6 +74,14 @@ namespace Model.Services.NBYS
             return ExistsByBankAndProcessDate(bankName, processDate);
         }
 
+        public List<DateTime> GetProcessDatesWithUploads(DateTime startDate, DateTime endDate)
+        {
+            DataTable table = repository.SelectProcessDatesWithUploads(startDate, endDate);
+            return table == null
+                ? new List<DateTime>()
+                : table.AsEnumerable().Select(row => row.Field<DateTime>("IslemTarihi").Date).Distinct().ToList();
+        }
+
         public int Save(EkstreAktarma item)
         {
             if (item == null) throw new ArgumentNullException("item");
