@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Web;
 
 namespace Utility.HelperClasses
 {
@@ -12,6 +13,8 @@ namespace Utility.HelperClasses
         public List<Exception> Exceptions = new List<Exception>();
         public int SuccessCount { get; set; }
         public int AlreadyProcessedCount { get; set; }
+        public int SkippedCount { get; set; }
+        public int ErrorCount { get; set; }
         public ExceptionHelper()
         {
 
@@ -106,6 +109,18 @@ namespace Utility.HelperClasses
             if (!string.IsNullOrEmpty(messageAsHtml))
             {
                 MessageHelper.PublishMessage(messageAsHtml, "");
+            }
+        }
+        public void PublishImportExceptions()
+        {
+            foreach (Exception error in Exceptions)
+            {
+                for (Exception detail = error; detail != null; detail = detail.InnerException)
+                    LogHelper.WriteTrace(detail);
+
+                string message = HttpUtility.HtmlEncode(error.Message ?? "Dosya işlenemedi.");
+                string css = error is ImportAlreadyProcessedException ? "alert-warning" : "alert-danger";
+                MessageHelper.PublishMessage(message, css);
             }
         }
         public bool HasException()
