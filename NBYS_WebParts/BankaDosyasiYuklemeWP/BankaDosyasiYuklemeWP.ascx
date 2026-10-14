@@ -26,8 +26,8 @@
     .bdy-subtitle { color: var(--bdy-muted); font-size: 12px; line-height: 1.5; }
     .bdy-close { position: absolute; top: 0; right: 0; display: grid; width: 36px; height: 36px; place-items: center; border: 1px solid var(--bdy-line); border-radius: 9px; background: #fff; color: #60748b; font-size: 22px; line-height: 1; }
     .bdy-close:hover { background: #edf5ff; color: #0d4fa8; }
-    .bdy-overview { display: grid; grid-template-columns: minmax(260px, 1.4fr) minmax(130px, 1fr); gap: 12px; margin-bottom: 24px; }
-    .bdy-enhanced .bdy-overview { grid-template-columns: minmax(260px, 1.4fr) repeat(3, minmax(130px, 1fr)); }
+    .bdy-overview { display: grid; grid-template-columns: minmax(420px, 1.35fr) minmax(300px, 1fr); gap: 12px; margin-bottom: 18px; }
+    .bdy-enhanced .bdy-overview { grid-template-columns: minmax(420px, 1.35fr) minmax(300px, 1fr); }
     .bdy-overview-card { min-height: 105px; padding: 8px 20px; border: 1px solid var(--bdy-line); border-radius: 15px; background: var(--bdy-surface); box-shadow: 0 2px 7px #203a5a08; }
     .bdy-overview-label { display: block; margin-bottom: 10px; color: var(--bdy-muted); font-size: 13px; font-weight: 700; }
     .bdy-overview-value { display: flex; align-items: baseline; gap: 7px; }
@@ -37,6 +37,11 @@
     .bdy-enhanced .bdy-live-card { display: block; }
     .bdy-selected-value strong { color: var(--bdy-blue); }
     .bdy-done-value strong { color: #12805c; }
+    .bdy-summary-card { display: flex; min-height: 105px; align-items: center; gap: 0; padding: 12px 8px; }
+    .bdy-summary-item { flex: 1; min-width: 0; padding: 0 12px; border-right: 1px solid var(--bdy-line); }
+    .bdy-summary-item:last-child { border-right: 0; }
+    .bdy-summary-item .bdy-overview-label { margin-bottom: 8px; font-size: 12px; }
+    .bdy-summary-item .bdy-overview-value strong { font-size: 24px; }
     .bdy-date-input { display: block; width: 220px; max-width: 100%; min-height: 40px; padding: 9px 12px; border: 1px solid #cbd7e5; border-radius: 8px; background: #fff; color: var(--bdy-ink); font-size: 15px; }
     .bdy-date-note { display: block; margin-top: 8px; color: var(--bdy-muted); font-size: 12px; line-height: 1.3; }
     .bdy-toolbar { display: none; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin: 0 0 18px; }
@@ -130,8 +135,8 @@
     @media (max-width: 850px) {
         .bdy { padding: 20px 20px 0; }
         .bdy-section { padding: 13px; }
-        .bdy-overview { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        .bdy-enhanced .bdy-overview { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .bdy-overview { grid-template-columns: 1fr; }
+        .bdy-enhanced .bdy-overview { grid-template-columns: 1fr; }
         .bdy-overview-card:first-child { grid-column: 1 / -1; }
         .bdy-rows { grid-template-columns: 1fr; }
         .bdy-footer { margin-right: -20px; margin-left: -20px; padding-right: 20px; padding-left: 20px; }
@@ -144,6 +149,8 @@
         .bdy-section { padding: 11px; border-radius: 13px; }
         .bdy-overview-card { min-height: 86px; padding: 13px; }
         .bdy-overview-value strong { font-size: 24px; }
+        .bdy-summary-card { min-height: 78px; }
+        .bdy-summary-item { padding: 0 8px; }
         .bdy-toolbar, .bdy-search { width: 100%; }
         .bdy-filters { width: 100%; justify-content: space-between; }
         .bdy-filter { padding: 8px 9px; font-size: 12px; }
@@ -198,17 +205,19 @@
             <asp:TextBox ID="IslemTarihiTxt" runat="server" CssClass="bdy-date-input DateTimePickerV1" AutoPostBack="true" OnTextChanged="islemTarihiTxt_TextChanged" ToolTip="İşlem tarihi"></asp:TextBox>
             <span class="bdy-date-note">Tarihi değiştirince seçili dosyalar temizlenir.</span>
         </div>
-        <div class="bdy-overview-card">
-            <span class="bdy-overview-label">Dosya türü</span>
-            <div class="bdy-overview-value"><strong>21</strong><span>alan</span></div>
-        </div>
-        <div class="bdy-overview-card bdy-live-card">
-            <span class="bdy-overview-label">Seçilen</span>
-            <div class="bdy-overview-value bdy-selected-value"><strong class="bdy-selected-count">0</strong><span>dosya</span></div>
-        </div>
-        <div class="bdy-overview-card bdy-live-card">
-            <span class="bdy-overview-label">Yüklenen</span>
-            <div class="bdy-overview-value bdy-done-value"><strong class="bdy-done-count">0</strong><span>dosya</span></div>
+        <div class="bdy-overview-card bdy-summary-card">
+            <div class="bdy-summary-item">
+                <span class="bdy-overview-label">Dosya türü</span>
+                <div class="bdy-overview-value"><strong>21</strong><span>alan</span></div>
+            </div>
+            <div class="bdy-summary-item bdy-live-card">
+                <span class="bdy-overview-label">Seçilen</span>
+                <div class="bdy-overview-value bdy-selected-value"><strong class="bdy-selected-count">0</strong><span>dosya</span></div>
+            </div>
+            <div class="bdy-summary-item bdy-live-card">
+                <span class="bdy-overview-label">Yüklenen</span>
+                <div class="bdy-overview-value bdy-done-value"><strong class="bdy-done-count">0</strong><span>dosya</span></div>
+            </div>
         </div>
     </div>
 
