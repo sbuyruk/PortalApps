@@ -10,6 +10,13 @@
 <style type="text/css">
     .bdy, .bdy * { box-sizing: border-box; }
     .bdy { --bdy-ink: #15263e; --bdy-muted: #64748b; --bdy-line: #e1e8f0; --bdy-blue: #1768d2; --bdy-surface: #fff; max-width: 1530px; margin: 0 auto; padding: 10px 10px 0; background: #f5f7fb; color: var(--bdy-ink); font-family: "Segoe UI", Arial, sans-serif; font-size: 15px; }
+    .bdy-busy-overlay { position: fixed; inset: 0; z-index: 10000; display: none; align-items: center; justify-content: center; padding: 24px; background: #15263ebd; cursor: wait; }
+    .bdy.is-busy .bdy-busy-overlay { display: flex; }
+    .bdy-busy-card { min-width: min(360px, 100%); padding: 28px 32px; border-radius: 16px; background: #fff; box-shadow: 0 18px 50px #071a3380; text-align: center; }
+    .bdy-busy-spinner { width: 42px; height: 42px; margin: 0 auto 16px; border: 4px solid #d9e6f6; border-top-color: var(--bdy-blue); border-radius: 50%; animation: bdy-spin .8s linear infinite; }
+    .bdy-busy-title { display: block; font-size: 17px; font-weight: 700; }
+    .bdy-busy-note { display: block; margin-top: 7px; color: var(--bdy-muted); font-size: 13px; }
+    @keyframes bdy-spin { to { transform: rotate(360deg); } }
     .bdy a { text-decoration: none; }
     .bdy-header { position: relative; margin-bottom: 24px; padding-right: 50px; }
     .bdy-brand { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 10px; color: #29405c; font-weight: 700; }
@@ -655,16 +662,37 @@
 
     <div class="bdy-empty"><strong>Eşleşen dosya alanı bulunamadı.</strong>Arama veya filtre seçimini değiştirin.</div>
 
+    <div class="bdy-busy-overlay" role="alertdialog" aria-modal="true" aria-labelledby="bdy-busy-title" aria-describedby="bdy-busy-note">
+        <div class="bdy-busy-card"><div class="bdy-busy-spinner" aria-hidden="true"></div><strong id="bdy-busy-title" class="bdy-busy-title">Dosyalar yükleniyor</strong><span id="bdy-busy-note" class="bdy-busy-note">İşlem tamamlanana kadar lütfen bu sayfayı kullanmayın.</span></div>
+    </div>
+
     <footer class="bdy-footer">
         <div class="bdy-footer-copy"><strong class="bdy-footer-title">Yüklenecek dosya seçilmedi</strong><span>Dosyaları ilgili banka satırından seçebilirsiniz.</span></div>
         <div class="bdy-actions">
             <asp:LinkButton ID="NextBtn" runat="server" CssClass="bdy-action bdy-action-secondary" Text="Ekstre listesine git →" OnClick="NextBtn_Click" />
-            <asp:LinkButton ID="KaydetBtn" runat="server" CssClass="bdy-action bdy-action-primary" Text="Seçilen dosyaları yükle" OnClick="KaydetBtn_Click" />
+            <asp:LinkButton ID="KaydetBtn" runat="server" CssClass="bdy-action bdy-action-primary" Text="Seçilen dosyaları yükle" OnClick="KaydetBtn_Click" OnClientClick="return bdyShowBusy(this);" />
         </div>
     </footer>
 </div>
 
 <script type="text/javascript">
+    function bdyShowBusy(button) {
+        if (button.getAttribute('data-bdy-busy') === 'true') return false;
+        button.setAttribute('data-bdy-busy', 'true');
+        var root = button.closest ? button.closest('.bdy') : null;
+        if (!root) return true;
+        root.classList.add('is-busy');
+        button.setAttribute('aria-disabled', 'true');
+        button.setAttribute('aria-busy', 'true');
+        var postback = button.getAttribute('href');
+        window.setTimeout(function () {
+            if (postback && postback.indexOf('javascript:') === 0) {
+                window.setTimeout(function () { Function(postback.substring(11))(); }, 0);
+            }
+        }, 50);
+        return false;
+    }
+
     (function () {
         var script = document.currentScript;
         var root = script && script.previousElementSibling;
@@ -678,7 +706,23 @@
         var doneCount = root.querySelector('.bdy-done-count');
         var footerTitle = root.querySelector('.bdy-footer-title');
         var empty = root.querySelector('.bdy-empty');
+        var saveButton = root.querySelector('.bdy-action-primary');
+        var busy = false;
         var activeFilter = 'all';
+
+        function showBusyState(event) {
+            if (busy) { event.preventDefault(); return false; }
+            busy = true;
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            root.classList.add('is-busy');
+            saveButton.setAttribute('aria-disabled', 'true');
+            saveButton.setAttribute('aria-busy', 'true');
+            window.setTimeout(function () {
+                saveButton.removeEventListener('click', showBusyState);
+                saveButton.click();
+            }, 50);
+        }
 
         function stateOf(row) {
             var input = row.querySelector('input[type="file"]');
