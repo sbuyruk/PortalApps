@@ -5,6 +5,7 @@ using Model.Services.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -15,6 +16,11 @@ namespace Model.Services.NBYS
 {
     public static class EkstreAktarmaImportService
     {
+        private sealed class AlreadyProcessedException : Exception
+        {
+            public AlreadyProcessedException(string message) : base(message) { }
+        }
+
         private static ExceptionHelper ExecuteFileImport(
             Func<SqlTransactionContext, ExceptionHelper> import, string bankName, string fileName)
         {
@@ -23,26 +29,51 @@ namespace Model.Services.NBYS
                 ExceptionHelper result;
                 using (var transaction = new SqlTransactionContext())
                 {
+                    transaction.AcquireEkstreImportLock();
                     result = import(transaction);
                     if (result == null)
                         throw new InvalidOperationException("Dosya işleme sonucu alınamadı.");
-                    if (result.Exceptions.Count == 0)
+                    if (result.Exceptions.Count == 0 || result.Exceptions.All(IsAlreadyProcessedException))
                         transaction.Complete();
                 }
                 if (result.Exceptions.Count > 0)
                 {
                     string context = bankName + (string.IsNullOrEmpty(fileName) ? "" : " / " + fileName);
                     for (int i = 0; i < result.Exceptions.Count; i++)
-                        result.Exceptions[i] = new Exception(context + ": " + result.Exceptions[i].Message,
-                            result.Exceptions[i]);
+                    {
+                        Exception error = result.Exceptions[i];
+                        string message = IsUniqueViolation(error)
+                            ? "mükerrer kayıt bulundu; dosyadaki değişiklikler geri alındı."
+                            : error.Message;
+                        result.Exceptions[i] = new Exception(context + ": " + message, error);
+                    }
                 }
                 return result;
             }
             catch (Exception ex)
             {
                 string context = bankName + (string.IsNullOrEmpty(fileName) ? "" : " / " + fileName);
+                if (IsUniqueViolation(ex))
+                    return new ExceptionHelper(new Exception(context +
+                        ": mükerrer kayıt bulundu; dosyadaki değişiklikler geri alındı.", ex));
                 return new ExceptionHelper(new Exception(context + ": dosya yüklenemedi.", ex));
             }
+        }
+
+        private static bool IsUniqueViolation(Exception error)
+        {
+            for (Exception current = error; current != null; current = current.InnerException)
+            {
+                SqlException sqlError = current as SqlException;
+                if (sqlError != null && (sqlError.Number == 2601 || sqlError.Number == 2627))
+                    return true;
+            }
+            return false;
+        }
+
+        private static bool IsAlreadyProcessedException(Exception error)
+        {
+            return error is AlreadyProcessedException;
         }
 
         private static int SaveEkstreAktarma(EkstreAktarma item, SqlTransactionContext transaction)
@@ -58,7 +89,7 @@ namespace Model.Services.NBYS
 
         public static ExceptionHelper SaveAkBankFile(Stream fileStream, DateTime processTime, string currentUser, string fileName = null)
         {
-            return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTime, currentUser, transaction), "AkBank", fileName);
+return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTime, currentUser, transaction), "AkBank", fileName);
         }
 
         private static ExceptionHelper SaveAkBankFileCore(Stream fileStream, DateTime processTime, string currentUser, SqlTransactionContext transaction)
@@ -684,7 +715,7 @@ namespace Model.Services.NBYS
                                     if (BuKayitDahaOnceGirilmisMiByFisNo(ProjeConstants.BANKA_FINANSBANK ,fisNo, aciklama, bagisTarihi, tutar, transaction))
                                     //fis numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                     {
-                                        Exception ex = new Exception(fisNo + " Numaralı fiş daha önce girildiginden tekrar aktarılmadı.");
+                                        Exception ex = new AlreadyProcessedException(fisNo + " Numaralı fiş daha önce girildiginden tekrar aktarılmadı.");
                                         exceptionHelper.Exceptions.Add(ex);
                                     }
                                     else
@@ -1002,7 +1033,7 @@ namespace Model.Services.NBYS
                             ekstreAktarma.FisNo = fisno;
                             if (BuKayitDahaOnceGirilmisMiByFisNo(ProjeConstants.BANKA_YKBEKSTRE, fisno, detay, tarih.ReturnEmptyIfNull().ConvertToDatetime(), tutar.ConvertToDecimal(), transaction)) //Referans numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                             {
-                                Exception ex = new Exception(fisno + " Numaralı fiş daha önce girildiğinden tekrar aktarılmadı.");
+                                Exception ex = new AlreadyProcessedException(fisno + " Numaralı fiş daha önce girildiğinden tekrar aktarılmadı.");
                                 exceptionHelper.Exceptions.Add(ex);
                             }
                             else
@@ -1537,7 +1568,7 @@ namespace Model.Services.NBYS
                         if (BuKayitDahaOnceGirilmisMiByFisNo(//ProjeConstants.BANKA_ZIRAAT,fisNo,aciklama))
                             "Ziraat", fisNo, aciklama, tarih.ReturnEmptyIfNull().ConvertToDatetime(), tutar, transaction)) //fis numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                         {
-                            Exception ex = new Exception(fisNo + " Numaralı fiş daha önce girildiginden tekrar aktarılmadı.");
+                            Exception ex = new AlreadyProcessedException(fisNo + " Numaralı fiş daha önce girildiginden tekrar aktarılmadı.");
                             exceptionHelper.Exceptions.Add(ex);
                         }
                         else
@@ -1645,7 +1676,7 @@ namespace Model.Services.NBYS
                                     if (BuKayitDahaOnceGirilmisMiByFisNo(//transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                         "Kart ile Bağış", transactionId, aciklama, bagisTarihi, tutar, transaction)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                     {
-                                        Exception ex = new Exception(transactionId + " Numaralı kayıt daha önce girildiginden tekrar aktarılmadı.");
+                                        Exception ex = new AlreadyProcessedException(transactionId + " Numaralı kayıt daha önce girildiginden tekrar aktarılmadı.");
                                         exceptionHelper.Exceptions.Add(ex);
                                     }
                                     else
@@ -1841,19 +1872,19 @@ namespace Model.Services.NBYS
                                 if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                     "EDevlet ile Bağış", odemeId, aciklama, ekstreAktarma.BagisTarihi, tutar, transaction)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                 {
-                                    Exception ex = new Exception(odemeId + " Numaralı kayıt daha önce girildiginden tekrar aktarılmadı.");
+                                    Exception ex = new AlreadyProcessedException(odemeId + " Numaralı kayıt daha önce girildiginden tekrar aktarılmadı.");
                                     exceptionHelper.Exceptions.Add(ex);
                                 }
                                 else if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                     "Kart ile Bağış", odemeId, aciklama, ekstreAktarma.BagisTarihi, tutar, transaction)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                 {
-                                    Exception ex = new Exception(odemeId + " Numaralı kayıt daha önce girildiginden tekrar aktarılmadı.");
+                                    Exception ex = new AlreadyProcessedException(odemeId + " Numaralı kayıt daha önce girildiginden tekrar aktarılmadı.");
                                     exceptionHelper.Exceptions.Add(ex);
                                 }
                                 else if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                     "Kiosk", odemeId, aciklama, ekstreAktarma.BagisTarihi, tutar, transaction)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                 {
-                                    Exception ex = new Exception(odemeId + " Numaralı kayıt daha önce girildiginden tekrar aktarılmadı.");
+                                    Exception ex = new AlreadyProcessedException(odemeId + " Numaralı kayıt daha önce girildiginden tekrar aktarılmadı.");
                                     exceptionHelper.Exceptions.Add(ex);
                                 }
                                 else
@@ -1879,7 +1910,6 @@ namespace Model.Services.NBYS
         }
         private static bool BuKayitDahaOnceGirilmisMiByFisNo(string bankaLike, string fisNo, string aciklama, DateTime bagisTarihi, decimal tutar, SqlTransactionContext transaction)
         {
-            bool kaydedilmisMi = false;
             List<EkstreAktarma> ekstreAktarmaList = new EkstreAktarmaService(
                 new DAO.Repositories.NBYS.EkstreAktarmaRepository(transaction))
                 .GetByBankAndReceipt(bankaLike, fisNo, transaction);
@@ -1889,15 +1919,11 @@ namespace Model.Services.NBYS
                 {
                     //eger bu kayitin fisnosu daha önce girilmisse bir de bagistarihi ve tutardan kontrol et
                     if ((bagisTarihi == ekstreAktarma.BagisTarihi) && (Math.Round(tutar,2) == Math.Round(ekstreAktarma.Tutar,2)))
-                    {
-                        kaydedilmisMi = true;
-                    }
-                    else
-                        kaydedilmisMi = false;
+                        return true;
                 }
             }
 
-            return kaydedilmisMi;
+            return false;
         }
 
         public static ExceptionHelper SaveZiraatEkstreFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName = null)
@@ -1952,7 +1978,7 @@ namespace Model.Services.NBYS
                                     if (BuKayitDahaOnceGirilmisMiByFisNo(//ProjeConstants.BANKA_ZIRAATEKSTRE, fisNo,aciklama)) //fis numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                         "Ziraat", fisNo, aciklama, bagisTarihi, tutar, transaction)) //fis numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                     {
-                                        Exception ex = new Exception(fisNo + " Numaralı fiş daha önce girildiginden tekrar aktarılmadı.");
+                                        Exception ex = new AlreadyProcessedException(fisNo + " Numaralı fiş daha önce girildiginden tekrar aktarılmadı.");
                                         exceptionHelper.Exceptions.Add(ex);
                                     }
                                     else
@@ -2171,7 +2197,7 @@ namespace Model.Services.NBYS
                                     if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                         ProjeConstants.BANKA_SMSVAKIF, islemNo, aciklama, ekstreAktarma.BagisTarihi, tutar, transaction)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                     {
-                                        Exception ex = new Exception(islemNo + " Numaralı kayıt daha önce girildiğinden tekrar aktarılmadı.");
+                                        Exception ex = new AlreadyProcessedException(islemNo + " Numaralı kayıt daha önce girildiğinden tekrar aktarılmadı.");
                                         exceptionHelper.Exceptions.Add(ex);
                                     }
                                     else
@@ -2253,7 +2279,7 @@ namespace Model.Services.NBYS
 
                             if (BuKayitDahaOnceGirilmisMiByFisNo("Albaraka", fisNo, aciklama, bagisTarihi, tutar, transaction))
                             {
-                                Exception ex = new Exception(fisNo + " Numaralı fiş daha önce girildiğinden tekrar aktarılmadı.");
+                                Exception ex = new AlreadyProcessedException(fisNo + " Numaralı fiş daha önce girildiğinden tekrar aktarılmadı.");
                                 exceptionHelper.Exceptions.Add(ex);
                                 continue;
                             }

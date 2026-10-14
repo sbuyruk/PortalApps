@@ -77,7 +77,7 @@ namespace DAO.Repositories.NBYS
             SqlTransactionContext transaction)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
-            SqlQuery query = new SqlQuery(@"SELECT * FROM EkstreAktarma_Table
+            SqlQuery query = new SqlQuery(@"SELECT * FROM EkstreAktarma_Table WITH (UPDLOCK, HOLDLOCK)
                 WHERE BankaAdi LIKE @BankaAdi AND FisNo=@FisNo");
             query.AddParameter("@BankaAdi", "%" + bankNamePart + "%");
             query.AddParameter("@FisNo", receiptNumber);
