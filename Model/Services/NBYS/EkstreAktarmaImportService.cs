@@ -188,7 +188,8 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
                             if (BuKayitDahaOnceGirilmisMiByFisNo(//ProjeConstants.BANKA_AKBANKEKSTRE, fisNo, aciklama)) //fis numarasindan kontrol et kayit girilmisse atla
                                 "Akbank", fisNo, aciklama, bagisTarihi, tutar, transaction)) //fis numarasindan kontrol et kayit girilmisse atla
                             {
-                                exceptionHelper.AlreadyProcessedCount++;
+                                exceptionHelper.Exceptions.Add(new ImportAlreadyProcessedException(
+                                    fisNo + " Numaralı kayıt daha önce girildiğinden tekrar aktarılmadı."));
                                 continue;
                             }
                             else
