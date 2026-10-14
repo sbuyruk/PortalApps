@@ -73,7 +73,9 @@ namespace Utility.HelperClasses
                 alertHtml.Append("<div id=\'exceptionAll\'>");
                 foreach (Exception exceptionItem in this.Exceptions)
                 {
-                    alertHtml.Append("<div class=\'alert alert-danger\' role=\'alert\'>");
+                    string alertClass = exceptionItem is ImportAlreadyProcessedException
+                        ? "alert alert-warning" : "alert alert-danger";
+                    alertHtml.Append("<div class=\'" + alertClass + "\' role=\'alert\'>");
 
                     alertHtml.Append("<div class=\'exceptionMessage\'>");
 
@@ -110,6 +112,13 @@ namespace Utility.HelperClasses
         {
             return Exceptions.Count > 0;
 
+        }
+
+        public bool HasFatalException()
+        {
+            foreach (Exception exception in Exceptions)
+                if (!(exception is ImportAlreadyProcessedException)) return true;
+            return false;
         }
     }
 
