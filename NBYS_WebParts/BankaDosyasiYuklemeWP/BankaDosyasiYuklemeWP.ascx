@@ -670,12 +670,29 @@
         <div class="bdy-footer-copy"><strong class="bdy-footer-title">Yüklenecek dosya seçilmedi</strong><span>Dosyaları ilgili banka satırından seçebilirsiniz.</span></div>
         <div class="bdy-actions">
             <asp:LinkButton ID="NextBtn" runat="server" CssClass="bdy-action bdy-action-secondary" Text="Ekstre listesine git →" OnClick="NextBtn_Click" />
-            <asp:LinkButton ID="KaydetBtn" runat="server" CssClass="bdy-action bdy-action-primary" Text="Seçilen dosyaları yükle" OnClick="KaydetBtn_Click" />
+            <asp:LinkButton ID="KaydetBtn" runat="server" CssClass="bdy-action bdy-action-primary" Text="Seçilen dosyaları yükle" OnClick="KaydetBtn_Click" OnClientClick="return bdyShowBusy(this);" />
         </div>
     </footer>
 </div>
 
 <script type="text/javascript">
+    function bdyShowBusy(button) {
+        if (button.getAttribute('data-bdy-busy') === 'true') return false;
+        button.setAttribute('data-bdy-busy', 'true');
+        var root = button.closest ? button.closest('.bdy') : null;
+        if (!root) return true;
+        root.classList.add('is-busy');
+        button.setAttribute('aria-disabled', 'true');
+        button.setAttribute('aria-busy', 'true');
+        var postback = button.getAttribute('href');
+        window.setTimeout(function () {
+            if (postback && postback.indexOf('javascript:') === 0) {
+                window.setTimeout(function () { Function(postback.substring(11))(); }, 0);
+            }
+        }, 50);
+        return false;
+    }
+
     (function () {
         var script = document.currentScript;
         var root = script && script.previousElementSibling;
@@ -791,7 +808,6 @@
         filters.forEach(function (button) {
             button.addEventListener('click', function () { setFilter(button.getAttribute('data-filter')); });
         });
-        if (saveButton) saveButton.addEventListener('click', showBusyState);
         search.addEventListener('input', update);
         search.addEventListener('keydown', function (event) {
             if (event.key === 'Enter') event.preventDefault();
