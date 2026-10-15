@@ -104,6 +104,11 @@
     <Compile Include="ArmaganListesiWP\ArmaganListesiWP.ascx.cs">
       <DependentUpon>ArmaganListesiWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="ArmaganListesiWP\ArmaganListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArmaganListesiWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="BagisaVesileOlanArmaganBelgesiWP\BagisaVesileOlanArmaganBelgesiWP.ascx.cs">
       <DependentUpon>BagisaVesileOlanArmaganBelgesiWP.ascx</DependentUpon>
     </Compile>
@@ -798,6 +803,7 @@
     <Content Include="ArmaganEditWP\Elements.xml" />
     <Content Include="ArmaganListesiWP\ArmaganListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>ArmaganListesiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="ArmaganListesiWP\Elements.xml" />
     <Content Include="BagisaVesileOlanArmaganBelgesiWP\BagisaVesileOlanArmaganBelgesiWP.ascx">
