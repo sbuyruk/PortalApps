@@ -25,10 +25,18 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         {
         }
 
+        private LiteralControl uploadCalendar;
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
             InitializeControl();
+            // Recreate the calendar before ViewState/post data is restored on every request.
+            // Inserting it in PreRender shifts child indexes and makes the unchanged date
+            // raise TextChanged (and redirect) before KaydetBtn_Click can run.
+            uploadCalendar = new LiteralControl { ID = "UploadCalendar", EnableViewState = false };
+            Control dateCard = IslemTarihiTxt.Parent;
+            dateCard.Controls.AddAt(Math.Min(2, dateCard.Controls.Count), uploadCalendar);
             this.ChromeType = PartChromeType.None;
         }
         bool isAkbankAktarildi = false;
@@ -166,8 +174,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             }
             markup.Append("</div><div class=\"bdy-calendar-legend\"><span><i></i>Yükleme var</span><span class=\"bdy-calendar-empty\"><i></i>Boş gün</span></div></div>");
             markup.Append("<script>(function(){function moveCalendar(){var c=document.getElementById('bdy-calendar');var card=document.querySelector('.bdy .bdy-overview-card');if(c&&card&&c.parentNode!==card)card.appendChild(c);if(!c)return;var b=c.querySelectorAll('[data-calendar-range]');function setRange(n){c.querySelectorAll('.bdy-calendar-day').forEach(function(d){d.style.display=n==='15'&&d.classList.contains('bdy-calendar-day--older')?'none':''});b.forEach(function(y){y.setAttribute('aria-pressed',String(y.getAttribute('data-calendar-range')===n));});}b.forEach(function(x){x.onclick=function(){setRange(x.getAttribute('data-calendar-range'));};});setRange('15');}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',moveCalendar);else window.setTimeout(moveCalendar,0);}());</script>");
-            Control dateCard = IslemTarihiTxt.Parent;
-            dateCard.Controls.AddAt(Math.Min(2, dateCard.Controls.Count), new LiteralControl(markup.ToString()));
+            uploadCalendar.Text = markup.ToString();
         }
         private void InitializeLabels()
         {
