@@ -692,19 +692,14 @@
 <script type="text/javascript">
     function bdyShowBusy(button) {
         if (button.getAttribute('data-bdy-busy') === 'true') return false;
+        if (!window.confirm('Seçilen dosyalar işlem tarihi için yüklenecek. Devam etmek istiyor musunuz?')) return false;
         button.setAttribute('data-bdy-busy', 'true');
         var root = button.closest ? button.closest('.bdy') : null;
         if (!root) return true;
         root.classList.add('is-busy');
         button.setAttribute('aria-disabled', 'true');
         button.setAttribute('aria-busy', 'true');
-        var postback = button.getAttribute('href');
-        window.setTimeout(function () {
-            if (postback && postback.indexOf('javascript:') === 0) {
-                window.setTimeout(function () { Function(postback.substring(11))(); }, 0);
-            }
-        }, 50);
-        return false;
+        return true;
     }
 
     (function () {
