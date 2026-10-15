@@ -719,7 +719,15 @@
             modal.querySelector('[data-confirm-submit]').onclick = function () {
                 modal.classList.remove('is-visible');
                 button.setAttribute('data-bdy-confirmed', 'true');
-                button.click();
+                button.setAttribute('data-bdy-busy', 'true');
+                var uploadRoot = button.closest ? button.closest('.bdy') : null;
+                if (uploadRoot) uploadRoot.classList.add('is-busy');
+                button.setAttribute('aria-disabled', 'true');
+                button.setAttribute('aria-busy', 'true');
+                var postback = button.getAttribute('href');
+                if (postback && postback.indexOf('javascript:') === 0) {
+                    window.setTimeout(function () { Function(postback.substring(11))(); }, 0);
+                }
             };
             modal.querySelector('[data-confirm-cancel]').onclick = function () {
                 modal.classList.remove('is-visible');
