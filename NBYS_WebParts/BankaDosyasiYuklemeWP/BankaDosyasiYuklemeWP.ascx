@@ -29,6 +29,8 @@
     .bdy-overview { display: grid; grid-template-columns: minmax(420px, 1.35fr) minmax(300px, 1fr); gap: 12px; margin-bottom: 18px; }
     .bdy-enhanced .bdy-overview { grid-template-columns: minmax(420px, 1.35fr) minmax(300px, 1fr); }
     .bdy-overview-card { min-height: 105px; padding: 8px 20px; border: 1px solid var(--bdy-line); border-radius: 15px; background: var(--bdy-surface); box-shadow: 0 2px 7px #203a5a08; }
+    .bdy-overview-card:first-child { display: grid; grid-template-columns: 220px minmax(0, 1fr); column-gap: 16px; align-items: start; }
+    .bdy-date-fields { min-width: 0; }
     .bdy-overview-label { display: block; margin-bottom: 10px; color: var(--bdy-muted); font-size: 13px; font-weight: 700; }
     .bdy-overview-value { display: flex; align-items: baseline; gap: 7px; }
     .bdy-overview-value strong { color: var(--bdy-ink); font-size: 29px; line-height: 1; }
@@ -138,6 +140,7 @@
         .bdy-overview { grid-template-columns: 1fr; }
         .bdy-enhanced .bdy-overview { grid-template-columns: 1fr; }
         .bdy-overview-card:first-child { grid-column: 1 / -1; }
+        .bdy-overview-card:first-child { display: block; }
         .bdy-rows { grid-template-columns: 1fr; }
         .bdy-footer { margin-right: -20px; margin-left: -20px; padding-right: 20px; padding-left: 20px; }
     }
@@ -201,9 +204,11 @@
 
     <div class="bdy-overview" aria-label="Dosya türleri özeti">
         <div class="bdy-overview-card">
-            <span class="bdy-overview-label">İşlem tarihi</span>
-            <asp:TextBox ID="IslemTarihiTxt" runat="server" CssClass="bdy-date-input DateTimePickerV1" AutoPostBack="true" OnTextChanged="islemTarihiTxt_TextChanged" ToolTip="İşlem tarihi"></asp:TextBox>
-            <span class="bdy-date-note">Tarihi değiştirince seçili dosyalar temizlenir.</span>
+            <div class="bdy-date-fields">
+                <span class="bdy-overview-label">İşlem tarihi</span>
+                <asp:TextBox ID="IslemTarihiTxt" runat="server" CssClass="bdy-date-input DateTimePickerV1" AutoPostBack="true" OnTextChanged="islemTarihiTxt_TextChanged" ToolTip="İşlem tarihi"></asp:TextBox>
+                <span class="bdy-date-note">Tarihi değiştirince seçili dosyalar temizlenir.</span>
+            </div>
         </div>
         <div class="bdy-overview-card bdy-summary-card">
             <div class="bdy-summary-item">
