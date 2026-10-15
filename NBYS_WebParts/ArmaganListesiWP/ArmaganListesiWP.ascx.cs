@@ -707,11 +707,11 @@ namespace NBYS_WebParts.ArmaganListesiWP
                 armagan = new ArmaganService().GetById(paramArmaganIdLbl.Value.ConvertToInt());
                 if (armagan != null)
                 {
-                    armagan.Durum = ProjeConstants.DURUM_PARAIADE;
+                    armagan.Durum = ProjeConstants.DURUM_DAHAONCEIADE;
                 if (new ArmaganService().Update(armagan))
                     {
                         TabloOlustur();
-                        MessageHelper.PublishMessage(" Armağan Durumu " + ProjeConstants.DURUM_PARAIADE
+                        MessageHelper.PublishMessage(" Armağan Durumu " + ProjeConstants.DURUM_DAHAONCEIADE
                             + " Olarak Değiştirildi", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
                     else
@@ -881,7 +881,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
                             var link='';
                             if (row.Durum==='Gönderildi')
                             {
-                                link='<a href=# onclick=CallButtonClick('+row.ArmaganId + '); class=\'btn btn-outline-danger \'>İade Edildi Yap</a>';
+                                link='<a href=# onclick=CallButtonClick('+row.ArmaganId + '); class=\'btn btn-outline-danger \'>Belge İadesi</a>';
                             }else if (row.Durum == 'Parasi Iade Edildi')
                             {
                                 link= '<span>'+row.IadeMiktari+ ' '+row.DovizCinsi +' İade edildi</span>';

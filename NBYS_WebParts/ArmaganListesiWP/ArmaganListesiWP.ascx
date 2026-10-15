@@ -110,7 +110,7 @@
                                     <th>Durumu</th>
                                     <th>Bağış</th>
                                     <th>Düzenle</th>
-                                    <th>İade</th>
+                                    <th>Belge İadesi</th>
                                 </tr>
                             </thead>
                         </table>
