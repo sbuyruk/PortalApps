@@ -16,6 +16,14 @@
     .bdy-busy-spinner { width: 42px; height: 42px; margin: 0 auto 16px; border: 4px solid #d9e6f6; border-top-color: var(--bdy-blue); border-radius: 50%; animation: bdy-spin .8s linear infinite; }
     .bdy-busy-title { display: block; font-size: 17px; font-weight: 700; }
     .bdy-busy-note { display: block; margin-top: 7px; color: var(--bdy-muted); font-size: 13px; }
+    .bdy-confirm-overlay { position: fixed; inset: 0; z-index: 9999; display: none; align-items: center; justify-content: center; padding: 24px; background: #15263ebd; }
+    .bdy-confirm-overlay.is-visible { display: flex; }
+    .bdy-confirm-card { width: min(440px, 100%); padding: 24px; border: 1px solid #dce5ef; border-radius: 14px; background: #fff; box-shadow: 0 18px 50px #071a3380; }
+    .bdy-confirm-title { display: block; color: var(--bdy-ink); font-size: 17px; font-weight: 700; }
+    .bdy-confirm-note { display: block; margin-top: 8px; color: var(--bdy-muted); font-size: 13px; line-height: 1.5; }
+    .bdy-confirm-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+    .bdy-confirm-button { min-height: 38px; padding: 0 15px; border: 1px solid #c8d4e2; border-radius: 8px; background: #fff; color: #34516f; font: 700 13px "Segoe UI", Arial, sans-serif; cursor: pointer; }
+    .bdy-confirm-button--primary { border-color: var(--bdy-blue); background: var(--bdy-blue); color: #fff; }
     @keyframes bdy-spin { to { transform: rotate(360deg); } }
     .bdy a { text-decoration: none; }
     .bdy-header { position: relative; margin-bottom: 24px; padding-right: 50px; }
@@ -680,6 +688,17 @@
         <div class="bdy-busy-card"><div class="bdy-busy-spinner" aria-hidden="true"></div><strong id="bdy-busy-title" class="bdy-busy-title">Dosyalar yükleniyor</strong><span id="bdy-busy-note" class="bdy-busy-note">İşlem tamamlanana kadar lütfen bu sayfayı kullanmayın.</span></div>
     </div>
 
+    <div class="bdy-confirm-overlay" role="dialog" aria-modal="true" aria-labelledby="bdy-confirm-title" aria-describedby="bdy-confirm-note">
+        <div class="bdy-confirm-card">
+            <strong id="bdy-confirm-title" class="bdy-confirm-title">Dosyaları yükle</strong>
+            <span id="bdy-confirm-note" class="bdy-confirm-note">Seçilen dosyalar belirlenen işlem tarihi için yüklenecek. Devam etmek istiyor musunuz?</span>
+            <div class="bdy-confirm-actions">
+                <button type="button" class="bdy-confirm-button" data-confirm-cancel>Vazgeç</button>
+                <button type="button" class="bdy-confirm-button bdy-confirm-button--primary" data-confirm-submit>Yüklemeyi başlat</button>
+            </div>
+        </div>
+    </div>
+
     <footer class="bdy-footer">
         <div class="bdy-footer-copy"><strong class="bdy-footer-title">Yüklenecek dosya seçilmedi</strong><span>Dosyaları ilgili banka satırından seçebilirsiniz.</span></div>
         <div class="bdy-actions">
@@ -692,7 +711,22 @@
 <script type="text/javascript">
     function bdyShowBusy(button) {
         if (button.getAttribute('data-bdy-busy') === 'true') return false;
-        if (!window.confirm('Seçilen dosyalar işlem tarihi için yüklenecek. Devam etmek istiyor musunuz?')) return false;
+        if (button.getAttribute('data-bdy-confirmed') !== 'true') {
+            var root = button.closest ? button.closest('.bdy') : null;
+            var modal = root && root.querySelector('.bdy-confirm-overlay');
+            if (!modal) return true;
+            modal.classList.add('is-visible');
+            modal.querySelector('[data-confirm-submit]').onclick = function () {
+                modal.classList.remove('is-visible');
+                button.setAttribute('data-bdy-confirmed', 'true');
+                button.click();
+            };
+            modal.querySelector('[data-confirm-cancel]').onclick = function () {
+                modal.classList.remove('is-visible');
+            };
+            return false;
+        }
+        button.removeAttribute('data-bdy-confirmed');
         button.setAttribute('data-bdy-busy', 'true');
         var root = button.closest ? button.closest('.bdy') : null;
         if (!root) return true;
