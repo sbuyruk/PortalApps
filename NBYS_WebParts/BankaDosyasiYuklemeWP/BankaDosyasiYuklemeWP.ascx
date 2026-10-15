@@ -199,7 +199,7 @@
         <div class="bdy-brand"><span class="bdy-brand-mark" aria-hidden="true">▤</span>
         <h3 class="bdy-title">Banka dosyası yükleme</h3></div>
         <asp:LinkButton ID="CloseBtn" runat="server" CssClass="bdy-close" OnClick="CloseBtn_Click" ToolTip="Kapat" aria-label="Kapat">&times;</asp:LinkButton>
-        <p class="bdy-subtitle">İşlem tarihini belirleyin, bankaya ait dosyaları seçin ve tek seferde yükleyin.X</p>
+        <p class="bdy-subtitle">İşlem tarihini belirleyin, bankaya ait dosyaları seçin ve tek seferde yükleyin.</p>
     </header>
 
     <div class="bdy-overview" aria-label="Dosya türleri özeti">
