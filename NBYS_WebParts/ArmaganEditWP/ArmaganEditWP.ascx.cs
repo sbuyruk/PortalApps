@@ -253,6 +253,8 @@ namespace NBYS_WebParts.ArmaganEditWP
                     bool kullaniciYetkiliMi = NBYSOrtak.YetkiKontrolu(kullanicininBolgesi, armagan.BagisciId);
                     if (kullaniciGmtenmi || kullaniciYetkiliMi)
                     {
+                        DurumDDL.Parent.Controls.Add(new System.Web.UI.LiteralControl(
+                            "<small class=\"form-text text-muted\">Para iadesi için Bağış İadesi ekranındaki para iadesi işlemini kullanın.</small>"));
                         if (!Page.IsPostBack)
                         {
                             FillDropDownList();
@@ -261,6 +263,16 @@ namespace NBYS_WebParts.ArmaganEditWP
                                 FillArmaganForm(armagan);
                             }
 
+                        }
+                        if (armagan.Durum == ProjeConstants.DURUM_PARAIADE)
+                        {
+                            // İade edilmiş kaydın durumu korunur; diğer alanları düzenlenebilir.
+                            DurumDDL.Enabled = false;
+                        }
+                        else
+                        {
+                            // Seçenek görünür kalsın, ancak yeni iade durumu bu ekrandan seçilemesin.
+                            DurumDDL.Items.FindByValue(ProjeConstants.DURUM_PARAIADE).Attributes["disabled"] = "disabled";
                         }
                     }
                     else
@@ -376,6 +388,17 @@ namespace NBYS_WebParts.ArmaganEditWP
                     int armaganId = ArmaganIdQS.ConvertToInt();
                     Armagan armagan = new Armagan();
                     armagan = new ArmaganService().GetById(armaganId);
+                    if (armagan == null)
+                    {
+                        MessageHelper.PublishMessage("Armağan kaydı bulunamadı", ProjeConstants.MESAJ_HATA);
+                        return;
+                    }
+                    if (armagan.Durum != ProjeConstants.DURUM_PARAIADE &&
+                        DurumDDL.SelectedValue == ProjeConstants.DURUM_PARAIADE)
+                    {
+                        MessageHelper.PublishMessage("Para iadesi için Bağış İadesi ekranındaki para iadesi işlemini kullanın.", ProjeConstants.MESAJ_HATA);
+                        return;
+                    }
                     if (armaganId == 0)
                     {
                         isSaved = saveArmagan(armagan);
@@ -426,7 +449,8 @@ namespace NBYS_WebParts.ArmaganEditWP
         {
             armagan.ArmaganTanimId = ArmaganDDL.SelectedValue.ConvertToInt();
             armagan.BagisMiktari = BagisMiktariTxt.Text.ConvertToDecimal();
-            armagan.Durum = DurumDDL.SelectedValue.ReturnZeroIfNull().ToString();
+            if (armagan.Durum != ProjeConstants.DURUM_PARAIADE)
+                armagan.Durum = DurumDDL.SelectedValue.ReturnZeroIfNull().ToString();
             armagan.Tarih = BagisTarihiTxt.Value.ConvertToDatetime();
             armagan.Aciklama = AciklamaTxt.Text.ReturnEmptyIfNull().ToString();
             armagan.BelgedeYazanIsim = BelgedeYazanIsimTxt.Text.ReturnEmptyIfNull().ToString();
