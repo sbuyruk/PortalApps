@@ -724,10 +724,8 @@
                 if (uploadRoot) uploadRoot.classList.add('is-busy');
                 button.setAttribute('aria-disabled', 'true');
                 button.setAttribute('aria-busy', 'true');
-                var postback = button.getAttribute('href');
-                if (postback && postback.indexOf('javascript:') === 0) {
-                    window.setTimeout(function () { Function(postback.substring(11))(); }, 0);
-                }
+                button.removeAttribute('onclick');
+                window.setTimeout(function () { button.click(); }, 0);
             };
             modal.querySelector('[data-confirm-cancel]').onclick = function () {
                 modal.classList.remove('is-visible');
