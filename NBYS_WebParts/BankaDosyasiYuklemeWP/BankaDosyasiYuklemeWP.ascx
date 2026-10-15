@@ -703,7 +703,7 @@
         <div class="bdy-footer-copy"><strong class="bdy-footer-title">Yüklenecek dosya seçilmedi</strong><span>Dosyaları ilgili banka satırından seçebilirsiniz.</span></div>
         <div class="bdy-actions">
             <asp:LinkButton ID="NextBtn" runat="server" CssClass="bdy-action bdy-action-secondary" Text="Ekstre listesine git →" OnClick="NextBtn_Click" />
-            <asp:LinkButton ID="KaydetBtn" runat="server" CssClass="bdy-action bdy-action-primary" Text="Seçilen Dosyaları yükle" OnClick="KaydetBtn_Click" OnClientClick="return bdyShowBusy(this);" />
+            <asp:LinkButton ID="KaydetBtn" runat="server" CssClass="bdy-action bdy-action-primary" Text="Seçilen Dosyaları Yükle" OnClick="KaydetBtn_Click" OnClientClick="return bdyShowBusy(this);" />
         </div>
     </footer>
 </div>

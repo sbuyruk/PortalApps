@@ -1236,7 +1236,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KaydetBtn";
             @__ctrl.CssClass = "bdy-action bdy-action-primary";
-            @__ctrl.Text = "Seçilen Dosyaları yükle";
+            @__ctrl.Text = "Seçilen Dosyaları Yükle";
             @__ctrl.OnClientClick = "return bdyShowBusy(this);";
             @__ctrl.Click -= new System.EventHandler(this.KaydetBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KaydetBtn_Click);
@@ -4648,92 +4648,90 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
                         "losest ? button.closest(\'.bdy\') : null;\r\n                if (uploadRoot) uploadR" +
                         "oot.classList.add(\'is-busy\');\r\n                button.setAttribute(\'aria-disable" +
                         "d\', \'true\');\r\n                button.setAttribute(\'aria-busy\', \'true\');\r\n       " +
-                        "         var postback = button.getAttribute(\'href\');\r\n                if (postba" +
-                        "ck && postback.indexOf(\'javascript:\') === 0) {\r\n                    window.setTi" +
-                        "meout(function () { Function(postback.substring(11))(); }, 0);\r\n                " +
-                        "}\r\n            };\r\n            modal.querySelector(\'[data-confirm-cancel]\').oncl" +
-                        "ick = function () {\r\n                modal.classList.remove(\'is-visible\');\r\n    " +
-                        "        };\r\n            return false;\r\n        }\r\n        button.removeAttribute" +
-                        "(\'data-bdy-confirmed\');\r\n        button.setAttribute(\'data-bdy-busy\', \'true\');\r\n" +
-                        "        var root = button.closest ? button.closest(\'.bdy\') : null;\r\n        if (" +
-                        "!root) return true;\r\n        root.classList.add(\'is-busy\');\r\n        button.setA" +
-                        "ttribute(\'aria-disabled\', \'true\');\r\n        button.setAttribute(\'aria-busy\', \'tr" +
-                        "ue\');\r\n        return true;\r\n    }\r\n\r\n    (function () {\r\n        var script = d" +
-                        "ocument.currentScript;\r\n        var root = script && script.previousElementSibli" +
-                        "ng;\r\n        if (!root || !root.classList.contains(\'bdy\')) return;\r\n\r\n        va" +
-                        "r rows = Array.prototype.slice.call(root.querySelectorAll(\'.bdy-row\'));\r\n       " +
-                        " var sections = Array.prototype.slice.call(root.querySelectorAll(\'.bdy-section\')" +
-                        ");\r\n        var filters = Array.prototype.slice.call(root.querySelectorAll(\'.bdy" +
-                        "-filter\'));\r\n        var search = root.querySelector(\'.bdy-search\');\r\n        va" +
-                        "r selectedCount = root.querySelector(\'.bdy-selected-count\');\r\n        var doneCo" +
-                        "unt = root.querySelector(\'.bdy-done-count\');\r\n        var footerTitle = root.que" +
-                        "rySelector(\'.bdy-footer-title\');\r\n        var empty = root.querySelector(\'.bdy-e" +
-                        "mpty\');\r\n        var saveButton = root.querySelector(\'.bdy-action-primary\');\r\n  " +
-                        "      var busy = false;\r\n        var activeFilter = \'all\';\r\n\r\n        function s" +
-                        "howBusyState(event) {\r\n            if (busy) { event.preventDefault(); return fa" +
-                        "lse; }\r\n            busy = true;\r\n            event.preventDefault();\r\n         " +
-                        "   event.stopImmediatePropagation();\r\n            root.classList.add(\'is-busy\');" +
-                        "\r\n            saveButton.setAttribute(\'aria-disabled\', \'true\');\r\n            sav" +
-                        "eButton.setAttribute(\'aria-busy\', \'true\');\r\n            window.setTimeout(functi" +
-                        "on () {\r\n                saveButton.removeEventListener(\'click\', showBusyState);" +
-                        "\r\n                saveButton.click();\r\n            }, 50);\r\n        }\r\n\r\n       " +
-                        " function stateOf(row) {\r\n            var input = row.querySelector(\'input[type=" +
-                        "\"file\"]\');\r\n            var serverStatus = row.querySelector(\'.bdy-server-status" +
-                        "\').textContent.trim();\r\n            if (serverStatus === \'X\') return \'error\';\r\n " +
-                        "           if (input.disabled || serverStatus.indexOf(\'√\') !== -1) return \'done\'" +
-                        ";\r\n            if (input.files && input.files.length) return \'selected\';\r\n      " +
-                        "      return \'waiting\';\r\n        }\r\n\r\n        function update() {\r\n            v" +
-                        "ar selected = 0;\r\n            var done = 0;\r\n            var visible = 0;\r\n     " +
-                        "       var term = search.value.trim().toLocaleLowerCase(\'tr-TR\');\r\n\r\n           " +
-                        " rows.forEach(function (row) {\r\n                var input = row.querySelector(\'i" +
-                        "nput[type=\"file\"]\');\r\n                var state = stateOf(row);\r\n               " +
-                        " var file = input.files && input.files[0];\r\n                var name = row.query" +
-                        "Selector(\'.bdy-bank-name\').textContent;\r\n                var kind = row.querySel" +
-                        "ector(\'.bdy-kind\').textContent;\r\n                row.setAttribute(\'data-state\', " +
-                        "state);\r\n                row.querySelector(\'.bdy-state-label\').textContent = {\r\n" +
-                        "                    waiting: \'Dosya bekleniyor\', selected: \'Seçildi\', done: \'Yük" +
-                        "lendi\', error: \'Hata\'\r\n                }[state];\r\n                row.querySelec" +
-                        "tor(\'.bdy-file-action-text\').textContent =\r\n                    state === \'selec" +
-                        "ted\' ? \'Değiştir\' : state === \'done\' ? \'Yüklendi\' : \'Dosya seç\';\r\n              " +
-                        "  row.querySelector(\'.bdy-filename\').textContent = file ? file.name :\r\n         " +
-                        "           state === \'done\' ? \'Bu tarih için yüklendi\' : state === \'error\' ? \'Ye" +
-                        "niden dosya seçebilirsiniz\' : \'Dosya seçilmedi\';\r\n\r\n                if (state ==" +
-                        "= \'selected\') selected++;\r\n                if (state === \'done\') done++;\r\n      " +
-                        "          var matches = (!term || (name + \' \' + kind).toLocaleLowerCase(\'tr-TR\')" +
-                        ".indexOf(term) !== -1) &&\r\n                    (activeFilter === \'all\' || state " +
-                        "=== activeFilter);\r\n                row.hidden = !matches;\r\n                if (" +
-                        "matches) visible++;\r\n            });\r\n\r\n            selectedCount.textContent = " +
-                        "selected;\r\n            doneCount.textContent = done;\r\n            footerTitle.te" +
-                        "xtContent = selected ? selected + \' dosya yüklemeye hazır\' :\r\n                do" +
-                        "ne ? done + \' dosya yüklendi\' : \'Yüklenecek dosya seçilmedi\';\r\n            secti" +
-                        "ons.forEach(function (section) {\r\n                var shown = section.querySelec" +
-                        "torAll(\'.bdy-row:not([hidden])\').length;\r\n                section.hidden = shown" +
-                        " === 0;\r\n                section.querySelector(\'.bdy-section-count\').textContent" +
-                        " = shown + \' dosya türü\';\r\n            });\r\n            empty.hidden = visible !" +
-                        "== 0;\r\n        }\r\n\r\n        function setFilter(value) {\r\n            activeFilte" +
-                        "r = value;\r\n            filters.forEach(function (button) {\r\n                but" +
-                        "ton.setAttribute(\'aria-pressed\', String(button.getAttribute(\'data-filter\') === v" +
-                        "alue));\r\n            });\r\n            update();\r\n        }\r\n\r\n        rows.forEa" +
-                        "ch(function (row) {\r\n            var input = row.querySelector(\'input[type=\"file" +
-                        "\"]\');\r\n            var filename = row.querySelector(\'.bdy-filename\');\r\n         " +
-                        "   var selectedFile = document.createElement(\'span\');\r\n            var clear = d" +
-                        "ocument.createElement(\'button\');\r\n            selectedFile.className = \'bdy-sele" +
-                        "cted-file\';\r\n            clear.type = \'button\';\r\n            clear.className = \'" +
-                        "bdy-clear-file\';\r\n            clear.textContent = \'Temizle\';\r\n            clear." +
-                        "setAttribute(\'aria-label\', \'Seçilen \' + row.querySelector(\'.bdy-bank-name\').text" +
-                        "Content + \' dosyasını temizle\');\r\n            filename.parentNode.insertBefore(s" +
-                        "electedFile, filename);\r\n            selectedFile.appendChild(filename);\r\n      " +
-                        "      selectedFile.appendChild(clear);\r\n            clear.addEventListener(\'clic" +
-                        "k\', function () {\r\n                if (input.disabled) return;\r\n                " +
-                        "input.value = \'\';\r\n                setFilter(\'all\');\r\n                input.focu" +
-                        "s();\r\n            });\r\n            input.addEventListener(\'change\', function () " +
-                        "{\r\n                setFilter(\'all\');\r\n            });\r\n        });\r\n        filt" +
-                        "ers.forEach(function (button) {\r\n            button.addEventListener(\'click\', fu" +
-                        "nction () { setFilter(button.getAttribute(\'data-filter\')); });\r\n        });\r\n   " +
-                        "     search.addEventListener(\'input\', update);\r\n        search.addEventListener(" +
-                        "\'keydown\', function (event) {\r\n            if (event.key === \'Enter\') event.prev" +
-                        "entDefault();\r\n        });\r\n        update();\r\n        root.classList.add(\'bdy-e" +
-                        "nhanced\');\r\n    }());\r\n</script>\r\n"));
+                        "         button.removeAttribute(\'onclick\');\r\n                window.setTimeout(f" +
+                        "unction () { button.click(); }, 0);\r\n            };\r\n            modal.querySele" +
+                        "ctor(\'[data-confirm-cancel]\').onclick = function () {\r\n                modal.cla" +
+                        "ssList.remove(\'is-visible\');\r\n            };\r\n            return false;\r\n       " +
+                        " }\r\n        button.removeAttribute(\'data-bdy-confirmed\');\r\n        button.setAtt" +
+                        "ribute(\'data-bdy-busy\', \'true\');\r\n        var root = button.closest ? button.clo" +
+                        "sest(\'.bdy\') : null;\r\n        if (!root) return true;\r\n        root.classList.ad" +
+                        "d(\'is-busy\');\r\n        button.setAttribute(\'aria-disabled\', \'true\');\r\n        bu" +
+                        "tton.setAttribute(\'aria-busy\', \'true\');\r\n        return true;\r\n    }\r\n\r\n    (fun" +
+                        "ction () {\r\n        var script = document.currentScript;\r\n        var root = scr" +
+                        "ipt && script.previousElementSibling;\r\n        if (!root || !root.classList.cont" +
+                        "ains(\'bdy\')) return;\r\n\r\n        var rows = Array.prototype.slice.call(root.query" +
+                        "SelectorAll(\'.bdy-row\'));\r\n        var sections = Array.prototype.slice.call(roo" +
+                        "t.querySelectorAll(\'.bdy-section\'));\r\n        var filters = Array.prototype.slic" +
+                        "e.call(root.querySelectorAll(\'.bdy-filter\'));\r\n        var search = root.querySe" +
+                        "lector(\'.bdy-search\');\r\n        var selectedCount = root.querySelector(\'.bdy-sel" +
+                        "ected-count\');\r\n        var doneCount = root.querySelector(\'.bdy-done-count\');\r\n" +
+                        "        var footerTitle = root.querySelector(\'.bdy-footer-title\');\r\n        var " +
+                        "empty = root.querySelector(\'.bdy-empty\');\r\n        var saveButton = root.querySe" +
+                        "lector(\'.bdy-action-primary\');\r\n        var busy = false;\r\n        var activeFil" +
+                        "ter = \'all\';\r\n\r\n        function showBusyState(event) {\r\n            if (busy) {" +
+                        " event.preventDefault(); return false; }\r\n            busy = true;\r\n            " +
+                        "event.preventDefault();\r\n            event.stopImmediatePropagation();\r\n        " +
+                        "    root.classList.add(\'is-busy\');\r\n            saveButton.setAttribute(\'aria-di" +
+                        "sabled\', \'true\');\r\n            saveButton.setAttribute(\'aria-busy\', \'true\');\r\n  " +
+                        "          window.setTimeout(function () {\r\n                saveButton.removeEven" +
+                        "tListener(\'click\', showBusyState);\r\n                saveButton.click();\r\n       " +
+                        "     }, 50);\r\n        }\r\n\r\n        function stateOf(row) {\r\n            var inpu" +
+                        "t = row.querySelector(\'input[type=\"file\"]\');\r\n            var serverStatus = row" +
+                        ".querySelector(\'.bdy-server-status\').textContent.trim();\r\n            if (server" +
+                        "Status === \'X\') return \'error\';\r\n            if (input.disabled || serverStatus." +
+                        "indexOf(\'√\') !== -1) return \'done\';\r\n            if (input.files && input.files." +
+                        "length) return \'selected\';\r\n            return \'waiting\';\r\n        }\r\n\r\n        " +
+                        "function update() {\r\n            var selected = 0;\r\n            var done = 0;\r\n " +
+                        "           var visible = 0;\r\n            var term = search.value.trim().toLocale" +
+                        "LowerCase(\'tr-TR\');\r\n\r\n            rows.forEach(function (row) {\r\n              " +
+                        "  var input = row.querySelector(\'input[type=\"file\"]\');\r\n                var stat" +
+                        "e = stateOf(row);\r\n                var file = input.files && input.files[0];\r\n  " +
+                        "              var name = row.querySelector(\'.bdy-bank-name\').textContent;\r\n     " +
+                        "           var kind = row.querySelector(\'.bdy-kind\').textContent;\r\n             " +
+                        "   row.setAttribute(\'data-state\', state);\r\n                row.querySelector(\'.b" +
+                        "dy-state-label\').textContent = {\r\n                    waiting: \'Dosya bekleniyor" +
+                        "\', selected: \'Seçildi\', done: \'Yüklendi\', error: \'Hata\'\r\n                }[state" +
+                        "];\r\n                row.querySelector(\'.bdy-file-action-text\').textContent =\r\n  " +
+                        "                  state === \'selected\' ? \'Değiştir\' : state === \'done\' ? \'Yüklen" +
+                        "di\' : \'Dosya seç\';\r\n                row.querySelector(\'.bdy-filename\').textConte" +
+                        "nt = file ? file.name :\r\n                    state === \'done\' ? \'Bu tarih için y" +
+                        "üklendi\' : state === \'error\' ? \'Yeniden dosya seçebilirsiniz\' : \'Dosya seçilmedi" +
+                        "\';\r\n\r\n                if (state === \'selected\') selected++;\r\n                if " +
+                        "(state === \'done\') done++;\r\n                var matches = (!term || (name + \' \' " +
+                        "+ kind).toLocaleLowerCase(\'tr-TR\').indexOf(term) !== -1) &&\r\n                   " +
+                        " (activeFilter === \'all\' || state === activeFilter);\r\n                row.hidden" +
+                        " = !matches;\r\n                if (matches) visible++;\r\n            });\r\n\r\n      " +
+                        "      selectedCount.textContent = selected;\r\n            doneCount.textContent =" +
+                        " done;\r\n            footerTitle.textContent = selected ? selected + \' dosya yükl" +
+                        "emeye hazır\' :\r\n                done ? done + \' dosya yüklendi\' : \'Yüklenecek do" +
+                        "sya seçilmedi\';\r\n            sections.forEach(function (section) {\r\n            " +
+                        "    var shown = section.querySelectorAll(\'.bdy-row:not([hidden])\').length;\r\n    " +
+                        "            section.hidden = shown === 0;\r\n                section.querySelector" +
+                        "(\'.bdy-section-count\').textContent = shown + \' dosya türü\';\r\n            });\r\n  " +
+                        "          empty.hidden = visible !== 0;\r\n        }\r\n\r\n        function setFilter" +
+                        "(value) {\r\n            activeFilter = value;\r\n            filters.forEach(functi" +
+                        "on (button) {\r\n                button.setAttribute(\'aria-pressed\', String(button" +
+                        ".getAttribute(\'data-filter\') === value));\r\n            });\r\n            update()" +
+                        ";\r\n        }\r\n\r\n        rows.forEach(function (row) {\r\n            var input = r" +
+                        "ow.querySelector(\'input[type=\"file\"]\');\r\n            var filename = row.querySel" +
+                        "ector(\'.bdy-filename\');\r\n            var selectedFile = document.createElement(\'" +
+                        "span\');\r\n            var clear = document.createElement(\'button\');\r\n            " +
+                        "selectedFile.className = \'bdy-selected-file\';\r\n            clear.type = \'button\'" +
+                        ";\r\n            clear.className = \'bdy-clear-file\';\r\n            clear.textConten" +
+                        "t = \'Temizle\';\r\n            clear.setAttribute(\'aria-label\', \'Seçilen \' + row.qu" +
+                        "erySelector(\'.bdy-bank-name\').textContent + \' dosyasını temizle\');\r\n            " +
+                        "filename.parentNode.insertBefore(selectedFile, filename);\r\n            selectedF" +
+                        "ile.appendChild(filename);\r\n            selectedFile.appendChild(clear);\r\n      " +
+                        "      clear.addEventListener(\'click\', function () {\r\n                if (input.d" +
+                        "isabled) return;\r\n                input.value = \'\';\r\n                setFilter(\'" +
+                        "all\');\r\n                input.focus();\r\n            });\r\n            input.addEv" +
+                        "entListener(\'change\', function () {\r\n                setFilter(\'all\');\r\n        " +
+                        "    });\r\n        });\r\n        filters.forEach(function (button) {\r\n            b" +
+                        "utton.addEventListener(\'click\', function () { setFilter(button.getAttribute(\'dat" +
+                        "a-filter\')); });\r\n        });\r\n        search.addEventListener(\'input\', update);" +
+                        "\r\n        search.addEventListener(\'keydown\', function (event) {\r\n            if " +
+                        "(event.key === \'Enter\') event.preventDefault();\r\n        });\r\n        update();\r" +
+                        "\n        root.classList.add(\'bdy-enhanced\');\r\n    }());\r\n</script>\r\n"));
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
