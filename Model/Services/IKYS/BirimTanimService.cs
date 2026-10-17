@@ -80,6 +80,7 @@ namespace Model.Services.IKYS
         }
         public List<BirimTanim> GetByAmirId(int amirId) { return ToList(repository.SelectByAmirId(amirId)); }
         public List<BirimTanim> GetByBirimKaldirildi(bool value) { return ToList(repository.SelectByBirimKaldirildi(value)); }
+        public List<BirimTanim> GetByBirimKaldirildi(bool value, PortalLogContext context) { return ToList(repository.SelectByBirimKaldirildi(value, context)); }
         public DataTable GetAllReturnDataTable() { return repository.SelectAllReturnDataTable(); }
         public DataTable GetAllReturnDataTable(PortalLogContext context) { return repository.SelectAllReturnDataTable(context); }
         public List<BirimTanim> GetByParentId(int parentId) { return ToList(repository.SelectByParentId(parentId)); }

@@ -136,6 +136,29 @@ Visual Studio incelemesinden ve Test sunucusu yayımlamasından sonra liste,
 Excel, ekleme, personel ataması değişen güncelleme, boş/dolu görev silme,
 audit alanları, ULS SQL izleri ve hata başvuru kodu kontrol edilir.
 
+## IKYS dördüncü dikey geçişi: Birim ve Görev Şemaları
+
+`BirimSemasiWP` ve `GorevSemasiWP` ilk açılışta kullanıcı etkinliği kaydeder.
+Bu ekranlar yalnızca okuma yapar; bu nedenle audit INSERT/UPDATE/DELETE kaydı
+üretmezler. Etkinleştirilen yolda birim, yönetici, aktif personel ve görev
+verileri toplu sorgularla alınır. Böylece her birim veya personel için ayrı
+SELECT çalıştırılıp SQL izi hacmi büyütülmez. Sorgu adı, süre ve sonuç durumu
+ULS'ye yazılır; sorgu metni ve kişisel alan değerleri yazılmaz. Etkin olmayan
+webpart'ların eski okuma akışı korunur.
+
+Yeni tablo veya migration gerekmez. Önceki pilotlar etkin kalacaksa host
+`web.config` içindeki mevcut değere bu iki WebPart adı eklenir:
+
+```xml
+<add key="PortalLogging.EnabledWebParts" value="IKYS:ResmiTatilGirisiWP;IKYS:ResmiTatilListesiWP;IKYS:ResmiTatillerWP;IKYS:BirimTanimEditWP;IKYS:BirimListesiWP;IKYS:GorevTanimEditWP;IKYS:GorevTanimListesiWP;IKYS:BirimSemasiWP;IKYS:GorevSemasiWP" />
+```
+
+Visual Studio incelemesi ve Test sunucusu yayımlamasından sonra iki şemadaki
+birim hiyerarşisi, yönetici adları, aktif personel ve görev düğümleri kontrol
+edilir. ULS'de açılış, dört civarı toplu SELECT ve olası hata başvuru kodu
+izlenir. Özellikle görev düğümleri önceki akışta personel kimliği eşlemesine
+bağlı olduğundan görsel karşılaştırma yapılır.
+
 ## Güvenilirlik ve gizlilik
 
 - SQL izinde sorgu adı veya sabit kimliği kullanılır; tam SQL, parametre değerleri

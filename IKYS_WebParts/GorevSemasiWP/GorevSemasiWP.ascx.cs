@@ -4,10 +4,12 @@ using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 using static Model.IKYS.Personel;
 
@@ -16,6 +18,19 @@ namespace IKYS_WebParts.GorevSemasiWP
     [ToolboxItemAttribute(false)]
     public partial class GorevSemasiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "GorevSemasiWP"); } }
+
+        private void ReportError(Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context))
+            {
+                new ExceptionHelper(error).PublishException();
+                return;
+            }
+            PortalTechnicalLog.WriteError(context, "GorevSemasi.Load", error);
+            MessageHelper.PublishMessage("Görev şeması yüklenemedi. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -52,12 +67,12 @@ namespace IKYS_WebParts.GorevSemasiWP
         {
             try
             {
+                if (!Page.IsPostBack) new GorevTanimService().TryRecordWebPartOpened(LoggingContext);
                 GorevSemasiGetir();
             }
-            catch (Exception)
+            catch (Exception error)
             {
-
-                throw;
+                ReportError(error);
             }
         }
 
@@ -82,11 +97,55 @@ namespace IKYS_WebParts.GorevSemasiWP
             csChartConfig += "config,";
 
             BirimTanim birimTanimDao = new BirimTanim();
-            var birimListesi = new BirimTanimService().GetByBirimKaldirildi(false);
+            PortalLogContext context = LoggingContext;
+            bool enabled = PortalLogSettings.IsEnabled(context);
+            var birimListesi = enabled
+                ? new BirimTanimService().GetByBirimKaldirildi(false, context)
+                : new BirimTanimService().GetByBirimKaldirildi(false);
+            Dictionary<int, Personel> managers = enabled
+                ? new PersonelService().GetSchemaManagers(context).ToDictionary(personel => personel.Id)
+                : null;
+            Dictionary<int, List<Personel>> employeesByUnit = null;
+            Dictionary<int, GorevTanim> jobsByPerson = null;
+            if (enabled)
+            {
+                employeesByUnit = new Dictionary<int, List<Personel>>();
+                DataTable employees = new PersonelService().GetSchemaEmployees(context);
+                if (employees != null)
+                {
+                    foreach (DataRow row in employees.Rows)
+                    {
+                        if (row.IsNull("BirimId")) continue;
+                        int unitId = Convert.ToInt32(row["BirimId"]);
+                        int employeeId = Convert.ToInt32(row["Id"]);
+                        List<Personel> unitEmployees;
+                        if (!employeesByUnit.TryGetValue(unitId, out unitEmployees))
+                        {
+                            unitEmployees = new List<Personel>();
+                            employeesByUnit.Add(unitId, unitEmployees);
+                        }
+                        if (unitEmployees.Any(person => person.Id == employeeId)) continue;
+                        unitEmployees.Add(new Personel
+                        {
+                            Id = employeeId,
+                            Adi = row["Adi"] as string,
+                            Soyadi = row["Soyadi"] as string,
+                            KullaniciAdi = row["KullaniciAdi"] as string
+                        });
+                    }
+                }
+                jobsByPerson = new GorevTanimService().GetAll(context)
+                    .Where(job => job.PersonelId > 0)
+                    .GroupBy(job => job.PersonelId)
+                    .ToDictionary(group => group.Key, group => group.OrderBy(job => job.Id).First());
+            }
 
             BirimTanim parent = birimListesi.Where(a => a.ParentId == 0).FirstOrDefault<BirimTanim>();
             Personel ilknode = new Personel();
-            ilknode = new PersonelService().GetById(parent.AmirId);
+            if (enabled)
+                managers.TryGetValue(parent.AmirId, out ilknode);
+            else
+                ilknode = new PersonelService().GetById(parent.AmirId);
             string gmKullaniciAdi = ilknode == null ? "" : ilknode.KullaniciAdi.ReturnEmptyIfNull().ToString();
             string gmAdi = ilknode == null ? "" : ilknode.Adi.ReturnEmptyIfNull().ToString();
             string gmSoyadi = ilknode == null ? "" : ilknode.Soyadi.ReturnEmptyIfNull().ToString();
@@ -113,7 +172,10 @@ namespace IKYS_WebParts.GorevSemasiWP
             foreach (BirimTanim item in birimListesi)
             {
                 Personel birimAmiri = new Personel();
-                birimAmiri = new PersonelService().GetById(item.AmirId);
+                if (enabled)
+                    managers.TryGetValue(item.AmirId, out birimAmiri);
+                else
+                    birimAmiri = new PersonelService().GetById(item.AmirId);
                 if (birimAmiri == null)
                 {
                     birimAmiri=new Personel();
@@ -147,11 +209,21 @@ namespace IKYS_WebParts.GorevSemasiWP
 
                 
                 Personel personelDao = new Personel();
-                List<Personel> personelList = new PersonelService().GetActiveEmployeesByUnit(item.Id, PersonelTipi.Tumu);
+                List<Personel> personelList;
+                if (enabled)
+                {
+                    if (!employeesByUnit.TryGetValue(item.Id, out personelList))
+                        personelList = new List<Personel>();
+                }
+                else
+                    personelList = new PersonelService().GetActiveEmployeesByUnit(item.Id, PersonelTipi.Tumu);
                 foreach (Personel personelItem in personelList)
                 {
                     GorevTanim gorevTanim = new GorevTanim();
-                    gorevTanim = new GorevTanimService().GetByPersonelId(personelItem.Id);
+                    if (enabled)
+                        jobsByPerson.TryGetValue(personelItem.Id, out gorevTanim);
+                    else
+                        gorevTanim = new GorevTanimService().GetByPersonelId(personelItem.Id);
                     if (gorevTanim != null)
                     {
                         string gorevliKullaniciAdi = personelItem == null ? "" : personelItem.KullaniciAdi.ReturnEmptyIfNull().ToString();
@@ -159,7 +231,7 @@ namespace IKYS_WebParts.GorevSemasiWP
                         string gorevliSoyadi = personelItem == null ? "" : personelItem.Soyadi.ReturnEmptyIfNull().ToString();
                         string gorevliAdiSoyadi = gorevliAdi + " " + gorevliSoyadi;
                         
-                        string gorevliFotostr = string.IsNullOrEmpty(gorevliKullaniciAdi) ? (!string.IsNullOrEmpty(amirAdi) ? gorevliAdi.Substring(0, 1) + gorevliSoyadi : "") : gorevliKullaniciAdi;
+                        string gorevliFotostr = string.IsNullOrEmpty(gorevliKullaniciAdi) ? (!string.IsNullOrEmpty(gorevliAdi) ? gorevliAdi.Substring(0, 1) + gorevliSoyadi : "") : gorevliKullaniciAdi;
                         gorevliFotostr = string.IsNullOrEmpty(gorevliFotostr) ? "person" : gorevliFotostr;
                         string gorevliImageUrl = newUrl + "/../" + ProjeConstants.RESIMLER_PERSONEL + "/" + gorevliFotostr.ReplaceTrChars() + ".jpg";
 
@@ -179,7 +251,7 @@ namespace IKYS_WebParts.GorevSemasiWP
                                 },
                                 stackChildren: true,
                                 image: '" + gorevliImageUrl + @"',
-                                onerror :this.src = '" + gorevliImageUrl + @"'
+                                onerror :this.src = '" + gorevliErrImgUrl + @"'
                             },";
 
                                 csChartConfig += "b" + gorevTanim.Id + ",";

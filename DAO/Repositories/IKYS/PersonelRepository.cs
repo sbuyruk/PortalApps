@@ -154,6 +154,32 @@ namespace DAO.Repositories.IKYS
         }
 
         public DataTable SelectManagers() { return db.SelectFromDb(new SqlQuery("SELECT P.Id PersonelId,P.Adi,Soyadi,P.PerId,P.SicilNo,P.Tahsili,P.KullaniciAdi,P.Asker_sivil,B.Adi BirimSube,B.Id BirimId FROM BirimTanim_Table B INNER JOIN Personel_Table P ON P.Id=B.AmirId INNER JOIN IsBilgileri_Table I ON I.PersonelId=B.AmirId WHERE I.CalismaDurumu=1 ORDER BY I.ProtokolSiraNo"), ""); }
+        public DataTable SelectSchemaManagers(PortalLogContext context)
+        {
+            return TraceSchemaSelect(new SqlQuery(@"SELECT DISTINCT P.Id, P.Adi, P.Soyadi, P.KullaniciAdi
+                FROM Personel_Table P INNER JOIN BirimTanim_Table B ON B.AmirId=P.Id
+                WHERE B.BirimKaldirildi=0"), "Personel.SelectSchemaManagers", context);
+        }
+        public DataTable SelectSchemaActiveManagers(PortalLogContext context)
+        {
+            return TraceSchemaSelect(new SqlQuery(@"SELECT DISTINCT P.Id, P.Adi, P.Soyadi, P.KullaniciAdi
+                FROM Personel_Table P INNER JOIN BirimTanim_Table B ON B.AmirId=P.Id
+                INNER JOIN IsBilgileri_Table I ON I.PersonelId=P.Id
+                WHERE B.BirimKaldirildi=0 AND I.CalismaDurumu=1"), "Personel.SelectSchemaActiveManagers", context);
+        }
+        public DataTable SelectSchemaEmployees(PortalLogContext context)
+        {
+            return TraceSchemaSelect(new SqlQuery(@"SELECT P.Id, P.Adi, P.Soyadi, P.KullaniciAdi, I.BirimId
+                FROM Personel_Table P INNER JOIN IsBilgileri_Table I ON I.PersonelId=P.Id
+                WHERE I.CalismaDurumu=1 ORDER BY I.ProtokolSiraNo"), "Personel.SelectSchemaEmployees", context);
+        }
+        private DataTable TraceSchemaSelect(SqlQuery query, string name, PortalLogContext context)
+        {
+            Stopwatch clock = Stopwatch.StartNew();
+            bool succeeded = false;
+            try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
+            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", name, clock.ElapsedMilliseconds, succeeded); }
+        }
         public DataTable SelectActiveEmployeesReturnDT() { return db.SelectFromDb(new SqlQuery("SELECT P.Id PersonelId,P.Id Id,P.Adi,Soyadi,P.PerId,P.SicilNo,P.Tahsili,P.KullaniciAdi,P.Asker_sivil,U.Adi Unvan,G.Adi Gorev,B.Id BirimId,B.Adi Birim,I.IzinDonemiBasTar FROM Personel_Table P INNER JOIN IsBilgileri_Table I ON I.PersonelId=P.Id LEFT JOIN UnvanTanim_Table U ON I.UnvanId=U.Id LEFT JOIN BirimTanim_Table B ON I.BirimId=B.Id LEFT JOIN GorevTanim_Table G ON I.GorevId=G.Id WHERE I.CalismaDurumu=1 ORDER BY B.Sira,I.ProtokolSiraNo"), ""); }
 
         public DataTable SelectActiveEmployeesByUnitReturnDataTable(IList<int> birimIds, bool allUnits)
