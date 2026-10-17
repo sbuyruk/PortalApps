@@ -9,6 +9,7 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace IKYS_WebParts.ResmiTatillerWP
@@ -16,6 +17,19 @@ namespace IKYS_WebParts.ResmiTatillerWP
     [ToolboxItemAttribute(false)]
     public partial class ResmiTatillerWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "ResmiTatillerWP"); } }
+
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context))
+            {
+                new ExceptionHelper(error).PublishException();
+                return;
+            }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -38,6 +52,7 @@ namespace IKYS_WebParts.ResmiTatillerWP
             {
                 if (!Page.IsPostBack)
                 {
+                    new ResmiTatilService().TryRecordWebPartOpened(LoggingContext);
                     DateTime today = DateTime.Today;
                     TitleLbl.Text =  "Resmi Tatil Listesi ";
                     ResmiTatilleriTabloyaDoldur();
@@ -45,8 +60,7 @@ namespace IKYS_WebParts.ResmiTatillerWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(exception);
-                exHelper.PublishException();
+                ReportError("ResmiTatiller.PageLoad", exception);
             }
         }
         private void ResmiTatilTableHeaders()
@@ -89,7 +103,7 @@ namespace IKYS_WebParts.ResmiTatillerWP
             DateTime bitTar = basTar.AddYears(1);
 
             ResmiTatil resmiTatilDao = new ResmiTatil();
-            List<ResmiTatil> list = new ResmiTatilService().GetByTarih(basTar, bitTar);
+            List<ResmiTatil> list = new ResmiTatilService().GetByTarih(basTar, bitTar, LoggingContext);
 
             if (list.Count > 0)
             {
