@@ -42,6 +42,21 @@ ekler. Kullanıcı etkinliği/denetim tabloları, SQL çağrı noktaları ve Web
 entegrasyonu sonraki parçalardadır. Bu nedenle ilk parça tek başına yeni kayıt
 üretmez.
 
+İkinci parça `PortalActivityLog_Table`, `PortalAuditLog_Table` ve ileride yalnızca
+izin verilen alan değişikliklerinin yazılacağı `PortalAuditChange_Table` şemasını
+ve repository yazıcısını ekler. SQL betiği
+`Database/Migrations/20261017_PortalLoggingActivityAudit.sql` dosyasındadır.
+Veritabanına uygulanmadan yeni kayıtları etkinleştirmeyin. Bu parça da mevcut
+WebPart'ları otomatik olarak yeni düzene geçirmez.
+
+`TryRecordWebPartOpened` yalnızca kullanıcı arayüzündeki ilk açılış akışında
+çağrılmalıdır; log yazma hatası sayfayı durdurmaz ve ULS'ye hata izi göndermeyi
+dener. `RecordAudit`, `Complete()` çağrısından önce aynı `SqlTransactionContext`
+ile çağrılır. Denetim yazma hatası iş işlemini başarısız kılar ve rollback'e gider.
+EntityId olarak T.C. kimlik numarası gibi doğal kişisel anahtarlar değil, uygulama
+kayıt kimliği kullanılır. Alanların eski/yeni değerleri IKYS geçişinde modül bazlı
+izin listesi hazırlanıp gözden geçirilmeden kaydedilmez.
+
 ## Güvenilirlik ve gizlilik
 
 - SQL izinde sorgu adı veya sabit kimliği kullanılır; tam SQL, parametre değerleri

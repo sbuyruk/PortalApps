@@ -24,7 +24,8 @@ namespace Utility.Logging
             Project = project;
             WebPart = webPart ?? string.Empty;
             UserLogin = userLogin ?? string.Empty;
-            PagePath = pagePath ?? string.Empty;
+            PagePath = pagePath == null ? string.Empty
+                : (pagePath.Length > 1024 ? pagePath.Substring(0, 1024) : pagePath);
             OperationId = operationId == Guid.Empty ? Guid.NewGuid() : operationId;
         }
 
