@@ -11,6 +11,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 using static Model.IKYS.Personel;
 
@@ -19,6 +20,19 @@ namespace IKYS_WebParts.GorevTanimListesiWP
     [ToolboxItemAttribute(false)]
     public partial class GorevTanimListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "GorevTanimListesiWP"); } }
+
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context))
+            {
+                new ExceptionHelper(error).PublishException();
+                return;
+            }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -87,6 +101,7 @@ namespace IKYS_WebParts.GorevTanimListesiWP
             {
                 if (!Page.IsPostBack)
                 {
+                    new GorevTanimService().TryRecordWebPartOpened(LoggingContext);
                     if (!string.IsNullOrEmpty(MesajQS))
                     {
                         MessageHelper.PublishMessage("Kadro Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
@@ -97,8 +112,7 @@ namespace IKYS_WebParts.GorevTanimListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("GorevTanimListesi.PageLoad", ex);
             }
         }
         private void TabloOlustur()
@@ -119,9 +133,7 @@ namespace IKYS_WebParts.GorevTanimListesiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                ReportError("GorevTanimListesi.TableJson", exception);
             }
             return jSon;
         }
@@ -248,16 +260,19 @@ namespace IKYS_WebParts.GorevTanimListesiWP
             {
                 ExportToExcel();
             }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("GorevTanimListesi.Excel", ex);
             }
         }
         private DataTable GetData()
         {
             GorevTanim gorevTanim = new GorevTanim();
-            DataTable dataTable = new GorevTanimService().GetAllReturnDataTable(PersonelTipi.Kadrolu);
+            DataTable dataTable = new GorevTanimService().GetAllReturnDataTable(PersonelTipi.Kadrolu, LoggingContext);
             return dataTable;
         }
         protected void ExportToExcel()
@@ -301,10 +316,13 @@ namespace IKYS_WebParts.GorevTanimListesiWP
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl);
             }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("GorevTanimListesi.Close", ex);
             }
         }
     }

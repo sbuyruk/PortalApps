@@ -114,6 +114,28 @@ Etkinleştirmeden önce Visual Studio incelemesi ve Test sunucusunda
 yayımlama yapılır. Liste/açılış, ekleme, değiştirme, Excel, audit alanları,
 ULS SELECT/yazma izleri ve hata başvuru kodu izlenir.
 
+## IKYS üçüncü dikey geçişi: Görev/Kadro Tanımı
+
+`GorevTanimEditWP` ve `GorevTanimListesiWP` ilk açılışta etkinlik kaydeder.
+Formun görev, birim ve personel okumaları ile liste ve Excel sorguları SELECT
+izi üretir. Ekleme, güncelleme ve silme için iş kaydı ve denetim kaydı aynı
+transaction içinde yazılır. Görev güncellemesi personel atamasını değiştirirse
+`IsBilgileri_Table.GorevId` değişiklikleri ve bunların ayrı audit kayıtları da
+aynı transaction içindedir. Silmeden önce görevde personel bulunup bulunmadığı
+transaction içinde tekrar kontrol edilir. Görev alan izin listesi: `BirimId`,
+`PersonelId`, `Adi`, `KisaAdi`, `Vekil`, `Aktif`, `HarcirahGrupId`.
+
+Yeni tablo veya migration gerekmez. Önceki pilotlar etkin kalacaksa host
+`web.config` içindeki mevcut değere bu iki WebPart adı eklenir:
+
+```xml
+<add key="PortalLogging.EnabledWebParts" value="IKYS:ResmiTatilGirisiWP;IKYS:ResmiTatilListesiWP;IKYS:ResmiTatillerWP;IKYS:BirimTanimEditWP;IKYS:BirimListesiWP;IKYS:GorevTanimEditWP;IKYS:GorevTanimListesiWP" />
+```
+
+Visual Studio incelemesinden ve Test sunucusu yayımlamasından sonra liste,
+Excel, ekleme, personel ataması değişen güncelleme, boş/dolu görev silme,
+audit alanları, ULS SQL izleri ve hata başvuru kodu kontrol edilir.
+
 ## Güvenilirlik ve gizlilik
 
 - SQL izinde sorgu adı veya sabit kimliği kullanılır; tam SQL, parametre değerleri
