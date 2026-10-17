@@ -116,12 +116,12 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP
                 string envanterdenCikmaSebebi = row["EnvanterdenCikmaSebebi"].ToString();
                 string envanterdenCikmaYili = row["EnvanterdenCikmaYili"].ToString();
                 string adresIlIlce = row["AdresIlIlce"].ToString();
-                string aciklama = row["Açıklama"].ToString();
+                string aciklama = row["Aciklama"].ToString();
 
 
                 EnvanterdenCikanListesiListItem envanterdenCikanListesiListItem = new EnvanterdenCikanListesiListItem();
                 envanterdenCikanListesiListItem.TasinmazId = tasinmazId;
-                envanterdenCikanListesiListItem.Bagisci = row["Bağışçı"].ToString();
+                envanterdenCikanListesiListItem.Bagisci = row["Bagisci"].ToString();
                 envanterdenCikanListesiListItem.KullanimSekli = kullanimSekli;
                 envanterdenCikanListesiListItem.EnvanterdenCikmaSebebi = envanterdenCikmaSebebi;
                 envanterdenCikanListesiListItem.EnvanterdenCikmaYili = envanterdenCikmaYili;
