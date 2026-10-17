@@ -52,6 +52,7 @@
     <Reference Include="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
       <Private>True</Private>
@@ -78,6 +79,11 @@
     <Compile Include="HelperClasses\MailHelper.cs" />
     <Compile Include="HelperClasses\MessageHelper.cs" />
     <Compile Include="HelperClasses\ResponseHelper.cs" />
+    <Compile Include="Logging\PortalLogContext.cs" />
+    <Compile Include="Logging\PortalLogKind.cs" />
+    <Compile Include="Logging\PortalLogRecord.cs" />
+    <Compile Include="Logging\PortalLogSettings.cs" />
+    <Compile Include="Logging\PortalTechnicalLog.cs" />
     <Compile Include="ProjeGlobal\ProjeConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

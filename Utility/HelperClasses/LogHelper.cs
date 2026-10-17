@@ -8,6 +8,7 @@ namespace Utility.HelperClasses
     public class LogHelper : SPDiagnosticsServiceBase
     {
         public static string MaventionDiagnosticAreaName = "TSKGV NBYS";
+        private const string PortalLoggingCategoryName = "PortalApps Logging";
         private static LogHelper _Current;
         public static LogHelper Current
         {
@@ -33,7 +34,8 @@ namespace Utility.HelperClasses
             {
                 new SPDiagnosticsArea(MaventionDiagnosticAreaName, new List<SPDiagnosticsCategory>
                 {
-                    new SPDiagnosticsCategory(MaventionDiagnosticAreaName, TraceSeverity.Unexpected, EventSeverity.Error)
+                    new SPDiagnosticsCategory(MaventionDiagnosticAreaName, TraceSeverity.Unexpected, EventSeverity.Error),
+                    new SPDiagnosticsCategory(PortalLoggingCategoryName, TraceSeverity.Medium, EventSeverity.Error)
                 })
             };
 
@@ -47,6 +49,16 @@ namespace Utility.HelperClasses
             SPSecurity.RunWithElevatedPrivileges(delegate
             {
                 LogHelper.Current.WriteTrace(0, category, TraceSeverity.Unexpected, "{0}", new object[] { ex });
+            });
+        }
+
+        public static void WritePortalTrace(TraceSeverity severity, string message)
+        {
+            SPDiagnosticsCategory category = Current.Areas[MaventionDiagnosticAreaName]
+                .Categories[PortalLoggingCategoryName];
+            SPSecurity.RunWithElevatedPrivileges(delegate
+            {
+                Current.WriteTrace(0, category, severity, "{0}", new object[] { message });
             });
         }
     }
