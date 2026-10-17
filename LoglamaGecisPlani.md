@@ -57,6 +57,31 @@ EntityId olarak T.C. kimlik numarası gibi doğal kişisel anahtarlar değil, uy
 kayıt kimliği kullanılır. Alanların eski/yeni değerleri IKYS geçişinde modül bazlı
 izin listesi hazırlanıp gözden geçirilmeden kaydedilmez.
 
+## IKYS ilk dikey geçişi: Resmî Tatil
+
+`ResmiTatilGirisiWP`, `ResmiTatilListesiWP` ve `ResmiTatillerWP` ilk açılışta
+etkinlik kaydı üretir. Bu üç WebPart'ın Resmî Tatil okuma çağrıları SELECT izini;
+giriş WebPart'ının ekleme, güncelleme ve silme çağrıları SQL izini üretir.
+Giriş, güncelleme ve silme sırasında iş verisi ile denetim başlığı/alan değişiklikleri
+aynı transaction içinde tamamlanır. Resmî Tatil alanları için izin listesi:
+`Gun`, `Ay`, `Yil`, `Tatil`, `BaslamaTarihi`, `BitisTarihi`, `IlanTarihi`,
+`IptalTarihi`. Güncellemede yalnızca değişen alanlar saklanır. Olay zamanı
+UTC olarak saklanır; tatil tarihleri iş verisindeki biçimiyle kaydedilir. SQL izine sorgu metni ve parametre
+değerleri yazılmaz. Etkin olmayan WebPart'lar eski servis çağrılarını sürdürür.
+
+Bu pilot için önce `Database/Migrations/20261017_PortalLoggingActivityAudit.sql`
+uygulanır. Ardından host `web.config` içinde yalnızca seçilen WebPart'lar
+etkinleştirilir; `EnabledProjects=IKYS` henüz kullanılmaz. Örnek:
+
+```xml
+<add key="PortalLogging.EnabledWebParts" value="IKYS:ResmiTatilGirisiWP;IKYS:ResmiTatilListesiWP;IKYS:ResmiTatillerWP" />
+```
+
+Pilot denetiminde açılış zamanı/kullanıcı, üç yazma işleminin denetim kayıtları,
+alan değişiklikleri, SELECT dahil SQL izleri ve hata başvuru kodu kontrol edilir.
+Başarısız denetim yazması iş işlemini geri alır; etkinlik yazma hatası sayfayı
+engellemez. ULS SQL izi hacmi yalnızca bu dar pilotta izlenir.
+
 ## Güvenilirlik ve gizlilik
 
 - SQL izinde sorgu adı veya sabit kimliği kullanılır; tam SQL, parametre değerleri

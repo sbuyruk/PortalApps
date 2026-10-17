@@ -93,6 +93,26 @@ namespace DAO.Repositories.Ortak
             return id;
         }
 
+        public void RecordAuditChange(int auditLogId, string fieldName, string oldValue,
+            string newValue, SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (auditLogId <= 0) throw new ArgumentOutOfRangeException("auditLogId");
+            if (string.IsNullOrWhiteSpace(fieldName)) throw new ArgumentException("Alan adı gereklidir.", "fieldName");
+            ValidateLength(fieldName, 256, "Alan adı");
+            ValidateLength(oldValue, 2000, "Eski değer");
+            ValidateLength(newValue, 2000, "Yeni değer");
+            SqlQuery query = new SqlQuery(@"
+                INSERT INTO PortalAuditChange_Table (AuditLogId, FieldName, OldValue, NewValue)
+                VALUES (@AuditLogId, @FieldName, @OldValue, @NewValue)");
+            query.AddParameter("@AuditLogId", auditLogId);
+            query.AddParameter("@FieldName", fieldName);
+            query.AddParameter("@OldValue", (object)oldValue ?? DBNull.Value);
+            query.AddParameter("@NewValue", (object)newValue ?? DBNull.Value);
+            if (transaction.Insert(query) <= 0)
+                throw new InvalidOperationException("İşlem denetimi ayrıntısı oluşturulamadı.");
+        }
+
         private static void ValidateLength(string value, int limit, string label)
         {
             if (value != null && value.Length > limit)

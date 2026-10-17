@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace IKYS_WebParts.ResmiTatilGirisiWP
@@ -13,6 +14,19 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
     [ToolboxItemAttribute(false)]
     public partial class ResmiTatilGirisiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "ResmiTatilGirisiWP"); } }
+
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context))
+            {
+                new ExceptionHelper(error).PublishException();
+                return;
+            }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -122,6 +136,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
         {
             try
             {
+                if (!Page.IsPostBack) new ResmiTatilService().TryRecordWebPartOpened(LoggingContext);
                 if (string.IsNullOrEmpty(DestinationAppQS) || (!DestinationAppQS.Equals("RTD")))
                 {
                     OpenTatilGiris();
@@ -134,8 +149,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(exception);
-                exHelper.PublishException();
+                ReportError("ResmiTatil.PageLoad", exception);
             }
         }
         private void OpenTatilDuzenle()
@@ -172,7 +186,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
         {
 
             ResmiTatil resmiTatil = new ResmiTatil();
-            resmiTatil = new ResmiTatilService().GetById(ResmiTatilIdQS.ConvertToInt());
+            resmiTatil = new ResmiTatilService().GetById(ResmiTatilIdQS.ConvertToInt(), LoggingContext);
             if (resmiTatil != null)
             {
                 ResmiTatilIdLbl.Text = resmiTatil.Id.ReturnEmptyIfNull().ToString();
@@ -269,7 +283,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
 
             resmiTatil.IlanTarihi = IlanTarihiTxt.Text.ConvertToDatetime();
             resmiTatil.IptalTarihi = IptalTarihiTxt.Text.ConvertToDatetime();
-            int tatilId = new ResmiTatilService().Save(resmiTatil);
+            int tatilId = new ResmiTatilService().Save(resmiTatil, LoggingContext);
             isSaved = tatilId > 0 ? true : false;
             return isSaved;
         }
@@ -277,7 +291,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
         {
             bool isSaved = false;
             ResmiTatil resmiTatil = new ResmiTatil();
-            resmiTatil = new ResmiTatilService().GetById(ResmiTatilIdQS.ConvertToInt());
+            resmiTatil = new ResmiTatilService().GetById(ResmiTatilIdQS.ConvertToInt(), LoggingContext);
             if (resmiTatil != null)
             {
                 string gecerlilik = GecerlilikDDL.SelectedItem.Value;
@@ -325,29 +339,14 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
 
                 resmiTatil.IlanTarihi = IlanTarihiTxt.Text.ConvertToDatetime();
                 resmiTatil.IptalTarihi = IptalTarihiTxt.Text.ConvertToDatetime();
-                isSaved = new ResmiTatilService().Update(resmiTatil);
+                isSaved = new ResmiTatilService().Update(resmiTatil, LoggingContext);
             }
 
             return isSaved;
         }
         private bool ResmiTatiliSil(ResmiTatil resmiTatil)
         {
-            bool isSaved = false;
-            try
-            {
-                if (resmiTatil != null)
-                {
-                    isSaved = new ResmiTatilService().Delete(resmiTatil);
-
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
-
-            return isSaved;
+            return resmiTatil != null && new ResmiTatilService().Delete(resmiTatil, LoggingContext);
         }
         private bool KontrolIslemleri()
         {
@@ -449,10 +448,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Tatil Bilgileri kaydedilemedi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
+                ReportError("ResmiTatil.Save", exception);
             }
         }
         private void AyDDLDoldur(DropDownList ddl)
@@ -481,8 +477,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("ResmiTatil.Redirect", ex);
             }
         }
         protected void DeleteBtn_Click(object sender, EventArgs e)
@@ -501,7 +496,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             try
             {
                 ResmiTatil resmiTatil = new ResmiTatil();
-                resmiTatil = new ResmiTatilService().GetById(ResmiTatilIdQS.ConvertToInt());
+                resmiTatil = new ResmiTatilService().GetById(ResmiTatilIdQS.ConvertToInt(), LoggingContext);
                 if (resmiTatil != null)
                 {
                     bool isDeleted = ResmiTatiliSil(resmiTatil);
@@ -514,10 +509,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Tatil Kaydi Silinemedi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
+                ReportError("ResmiTatil.Delete", exception);
             }
         }
 
@@ -537,10 +529,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Tatil Bilgileri Güncellenemdi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
+                ReportError("ResmiTatil.Update", exception);
             }
         }
         protected void GecerlilikDDL_SelectedIndexChanged(object sender, EventArgs e)
