@@ -69,6 +69,13 @@ aynı transaction içinde tamamlanır. Resmî Tatil alanları için izin listesi
 UTC olarak saklanır; tatil tarihleri iş verisindeki biçimiyle kaydedilir. SQL izine sorgu metni ve parametre
 değerleri yazılmaz. Etkin olmayan WebPart'lar eski servis çağrılarını sürdürür.
 
+Tüm yıllar için geçerli Resmî Tatil kayıtlarında kullanılan 1800 yılı başlangıç
+ve bitiş tarihleri, yalnızca bu entity'nin yeni transaction yolunda SQL'e tarih
+olarak gönderilir. Ortak `CrudQueryBuilder`'ın diğer alanlar ve eski çağrılar için
+1901 öncesi tarihi `NULL` sayma davranışı korunur. Bu iki tarih de denetim
+ayrıntısına yazılır. Önceden `NULL` kaydedilmiş tatil tarihleri otomatik olarak
+geri doldurulmaz; ilgili kayıtlar ayrıca incelenmelidir.
+
 Bu pilot için önce `Database/Migrations/20261017_PortalLoggingActivityAudit.sql`
 uygulanır. Ardından host `web.config` içinde yalnızca seçilen WebPart'lar
 etkinleştirilir; `EnabledProjects=IKYS` henüz kullanılmaz. Örnek:

@@ -8,6 +8,7 @@ namespace DAO.Repositories.IKYS
 {
     public class ResmiTatilRepository
     {
+        private static readonly string[] PreservedDateColumns = { "BaslamaTarihi", "BitisTarihi" };
         private readonly DbClass db;
         private readonly CrudQueryBuilder queryBuilder;
         public ResmiTatilRepository() : this(new DbClass()) { }
@@ -36,13 +37,13 @@ namespace DAO.Repositories.IKYS
         public int Insert<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
-            return TraceInsert(queryBuilder.BuildInsert(item, "ResmiTatil_Table"), "ResmiTatil.Insert", transaction, context);
+            return TraceInsert(queryBuilder.BuildInsert(item, "ResmiTatil_Table", PreservedDateColumns), "ResmiTatil.Insert", transaction, context);
         }
         public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "ResmiTatil_Table")); }
         public bool Update<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
-            return TraceWrite(queryBuilder.BuildUpdate(item, "ResmiTatil_Table"), "UPDATE", "ResmiTatil.Update", transaction, context);
+            return TraceWrite(queryBuilder.BuildUpdate(item, "ResmiTatil_Table", PreservedDateColumns), "UPDATE", "ResmiTatil.Update", transaction, context);
         }
         public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("ResmiTatil_Table", id), ""); }
         public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
