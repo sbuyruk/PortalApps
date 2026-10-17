@@ -89,6 +89,31 @@ alan değişiklikleri, SELECT dahil SQL izleri ve hata başvuru kodu kontrol edi
 Başarısız denetim yazması iş işlemini geri alır; etkinlik yazma hatası sayfayı
 engellemez. ULS SQL izi hacmi yalnızca bu dar pilotta izlenir.
 
+## IKYS ikinci dikey geçişi: Birim Tanımı
+
+`BirimTanimEditWP` ve `BirimListesiWP` ilk açılışta kullanıcı etkinliği
+kaydeder. Düzenleme ekranındaki birim ve amir listeleri, kayıt okuması ve
+liste/Excel verisi için SELECT izi yazılır. Birim ekleme ve güncellemede iş
+verisi, denetim başlığı ve değişen alanlar aynı transaction ile kaydedilir.
+Denetim alanları: `Adi`, `KisaAdi`, `ParentId`, `AmirId`, `Sira`, `Aktif`,
+`BirimKaldirildi`, `BolgeId`. Sorgu metni ve parametre değerleri SQL izine
+girmez. Mevcut silme düğmesinde işlev bulunmadığından bu ekranda DELETE
+işlemi oluşmaz; servis/repository transaction yolu ilerideki çağrılar için
+hazırdır. `BirimSemasiWP` bu parçada etkinleştirilmez.
+
+Mevcut `PortalActivityLog_Table`, `PortalAuditLog_Table` ve
+`PortalAuditChange_Table` kullanılır; yeni veritabanı değişikliği yoktur.
+Resmî Tatil pilotu da etkin kalacaksa host `web.config` içindeki aynı
+`PortalLogging.EnabledWebParts` değerine bu iki ad eklenir:
+
+```xml
+<add key="PortalLogging.EnabledWebParts" value="IKYS:ResmiTatilGirisiWP;IKYS:ResmiTatilListesiWP;IKYS:ResmiTatillerWP;IKYS:BirimTanimEditWP;IKYS:BirimListesiWP" />
+```
+
+Etkinleştirmeden önce Visual Studio incelemesi ve Test sunucusunda
+yayımlama yapılır. Liste/açılış, ekleme, değiştirme, Excel, audit alanları,
+ULS SELECT/yazma izleri ve hata başvuru kodu izlenir.
+
 ## Güvenilirlik ve gizlilik
 
 - SQL izinde sorgu adı veya sabit kimliği kullanılır; tam SQL, parametre değerleri

@@ -11,6 +11,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace IKYS_WebParts.BirimListesiWP
@@ -18,6 +19,19 @@ namespace IKYS_WebParts.BirimListesiWP
     [ToolboxItemAttribute(false)]
     public partial class BirimListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "BirimListesiWP"); } }
+
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context))
+            {
+                new ExceptionHelper(error).PublishException();
+                return;
+            }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -63,13 +77,13 @@ namespace IKYS_WebParts.BirimListesiWP
             {
                 if (!Page.IsPostBack)
                 {
+                    new BirimTanimService().TryRecordWebPartOpened(LoggingContext);
                     TabloOlustur();
                 }
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("BirimListesi.PageLoad", ex);
             }
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
@@ -78,16 +92,19 @@ namespace IKYS_WebParts.BirimListesiWP
             {
                 ExportToExcel();
             }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("BirimListesi.Excel", ex);
             }
         }
         private DataTable GetData()
         {
             BirimTanim birimTanim = new BirimTanim();
-            DataTable dataTable = new BirimTanimService().GetAllReturnDataTable();
+            DataTable dataTable = new BirimTanimService().GetAllReturnDataTable(LoggingContext);
             return dataTable;
         }
         private void TabloOlustur()
@@ -109,9 +126,7 @@ namespace IKYS_WebParts.BirimListesiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                ReportError("BirimListesi.TableJson", exception);
             }
             return jSon;
         }
@@ -273,10 +288,13 @@ namespace IKYS_WebParts.BirimListesiWP
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl);
             }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("BirimListesi.Close", ex);
             }
         }
     }
