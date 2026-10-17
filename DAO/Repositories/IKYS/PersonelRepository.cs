@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
+using Utility.Logging;
 
 namespace DAO.Repositories.IKYS
 {
@@ -49,6 +51,24 @@ namespace DAO.Repositories.IKYS
 
         public DataTable SelectActiveEmployees(int personelTipi)
         {
+            return db.SelectFromDb(CreateActiveEmployeesQuery(personelTipi), "");
+        }
+
+        public DataTable SelectActiveEmployees(int personelTipi, PortalLogContext context)
+        {
+            Stopwatch clock = Stopwatch.StartNew();
+            bool succeeded = false;
+            try
+            {
+                DataTable result = db.SelectFromDb(CreateActiveEmployeesQuery(personelTipi), "");
+                succeeded = true;
+                return result;
+            }
+            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Personel.SelectActiveEmployees", clock.ElapsedMilliseconds, succeeded); }
+        }
+
+        private static SqlQuery CreateActiveEmployeesQuery(int personelTipi)
+        {
             SqlQuery query = new SqlQuery(@"
                 SELECT P.Id PersonelId,P.Id Id,P.Adi,Soyadi,P.PerId, P.SicilNo, P.Tahsili, P.KullaniciAdi, P.Asker_sivil,
                        U.Adi Unvan, G.Adi Gorev, B.Adi BirimSube,I.BirimId
@@ -60,7 +80,7 @@ namespace DAO.Repositories.IKYS
                 WHERE CalismaDurumu=1 AND Tipi=@Tipi
                 ORDER BY I.ProtokolSiraNo");
             query.AddParameter("@Tipi", personelTipi);
-            return db.SelectFromDb(query, "");
+            return query;
         }
 
         public DataTable SelectActiveEmployee(int personelId)

@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace IKYS_WebParts.BirimTanimEditWP
@@ -14,6 +15,19 @@ namespace IKYS_WebParts.BirimTanimEditWP
     [ToolboxItemAttribute(false)]
     public partial class BirimTanimEditWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "BirimTanimEditWP"); } }
+
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context))
+            {
+                new ExceptionHelper(error).PublishException();
+                return;
+            }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -96,31 +110,39 @@ namespace IKYS_WebParts.BirimTanimEditWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            BirimTanim birim = new BirimTanimService().GetById(BirimIdQS.ConvertToInt());
-            if (!Page.IsPostBack)
+            try
             {
-                FillUstBirimDDL();
-                FillAmirDDL();
-                FillBirimToForm();
+                if (!Page.IsPostBack) new BirimTanimService().TryRecordWebPartOpened(LoggingContext);
+                BirimTanim birim = new BirimTanimService().GetById(BirimIdQS.ConvertToInt(), LoggingContext);
+                if (!Page.IsPostBack)
+                {
+                    FillUstBirimDDL();
+                    FillAmirDDL();
+                    FillBirimToForm();
+                }
+                if (birim == null)
+                {
+                    TitleLbl.Text = "Birim/Şube/Dir. Girişi";
+                    UpdateBtn.Visible = false;
+                    SaveBtn.Visible = true;
+                    AktifChk.Checked = true;
+                    BirimKaldirildiChk.Checked = false;
+                }
+                else
+                {
+                    TitleLbl.Text = "Birim/Şube/Dir. Düzenleme";
+                    UpdateBtn.Visible = true;
+                    SaveBtn.Visible = false;
+                }
             }
-            if (birim == null)
+            catch (Exception exception)
             {
-                TitleLbl.Text = "Birim/Şube/Dir. Girişi";
-                UpdateBtn.Visible = false;
-                SaveBtn.Visible = true;
-                AktifChk.Checked = true;
-                BirimKaldirildiChk.Checked = false;
-            }
-            else
-            {
-                TitleLbl.Text = "Birim/Şube/Dir. Düzenleme";
-                UpdateBtn.Visible = true;
-                SaveBtn.Visible = false;
+                ReportError("BirimTanim.PageLoad", exception);
             }
         }
         private void FillBirimToForm()
         {
-            BirimTanim birim = new BirimTanimService().GetById(BirimIdQS.ConvertToInt());
+            BirimTanim birim = new BirimTanimService().GetById(BirimIdQS.ConvertToInt(), LoggingContext);
             if (birim != null)
             {
                 AdiTxt.Text = birim.Adi;
@@ -137,7 +159,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
         private void FillUstBirimDDL()
         {
             UstBirimDDL.Items.Clear();
-            List<BirimTanim> list = new BirimTanimService().GetAll();
+            List<BirimTanim> list = new BirimTanimService().GetAll(LoggingContext);
             ListItem bosLi = new ListItem("", "0");
             UstBirimDDL.Items.Add(bosLi);
             foreach (BirimTanim gr in list)
@@ -149,7 +171,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
         private void FillAmirDDL()
         {
             AmirDDL.Items.Clear();
-            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu, LoggingContext);
             ListItem bosLi = new ListItem("", "0");
             AmirDDL.Items.Add(bosLi);
             foreach (Personel item in list)
@@ -182,7 +204,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
                     birim.Aktif = AktifChk.Checked;
                     birim.BirimKaldirildi = BirimKaldirildiChk.Checked;
                     birim.Degistiren = CurrentUserName;
-                    int id = new BirimTanimService().Save(birim);
+                    int id = new BirimTanimService().Save(birim, LoggingContext);
                     if (id > 0)
                     {
                         MessageHelper.PublishMessage("Yeni birim kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
@@ -201,9 +223,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.Exceptions.Add(new Exception("Birim kaydedilemedi!"));
-                ex.PublishException();
+                ReportError("BirimTanim.Save", exception);
             }
         }
         protected void DeleteBtn_Click(object sender, EventArgs e)
@@ -216,7 +236,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
         {
             try
             {
-                BirimTanim birim = new BirimTanimService().GetById(BirimIdQS.ConvertToInt());
+                BirimTanim birim = new BirimTanimService().GetById(BirimIdQS.ConvertToInt(), LoggingContext);
                 if (birim != null)
                 {
                     birim.Adi = AdiTxt.Text;
@@ -226,7 +246,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
                     birim.Aktif = AktifChk.Checked;
                     birim.BirimKaldirildi = BirimKaldirildiChk.Checked;
                     birim.Degistiren = CurrentUserName;
-                    bool isupdated = new BirimTanimService().Update(birim);
+                    bool isupdated = new BirimTanimService().Update(birim, LoggingContext);
                     if (isupdated)
                         MessageHelper.PublishMessage("Birim Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                     else
@@ -236,8 +256,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
             catch (Exception exception)
             {
 
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
+                ReportError("BirimTanim.Update", exception);
             }
         }
 
@@ -253,10 +272,13 @@ namespace IKYS_WebParts.BirimTanimEditWP
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
                 Page.Response.Redirect(newUrl);
             }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("BirimTanim.Redirect", ex);
             }
         }
     }

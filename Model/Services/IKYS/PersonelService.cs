@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using Model.Ortak;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace Model.Services.IKYS
 {
@@ -42,6 +43,10 @@ namespace Model.Services.IKYS
         public List<Personel> GetActiveEmployees(Personel.PersonelTipi personelTipi)
         {
             return MapList(repository.SelectActiveEmployees((int)personelTipi));
+        }
+        public List<Personel> GetActiveEmployees(Personel.PersonelTipi personelTipi, PortalLogContext context)
+        {
+            return MapList(repository.SelectActiveEmployees((int)personelTipi, context));
         }
 
         public int Save(Personel item) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item); if (item.Id > 0 && ProjeConstants.IKYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_PERSONEL); return item.Id; }
