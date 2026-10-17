@@ -27,6 +27,7 @@ namespace Model.Services.IKYS
         public GorevTanim GetById(int id) { return Map(repository.SelectById(id)); }
         public GorevTanim GetById(int id, PortalLogContext context) { return Map(repository.SelectById(id, context)); }
         public List<GorevTanim> GetAll() { return ToList(repository.SelectAll()); }
+        public List<GorevTanim> GetAll(PortalLogContext context) { return ToList(repository.SelectAll(context)); }
         public bool TryRecordWebPartOpened(PortalLogContext context) { return new PortalLogRepository().TryRecordWebPartOpened(context); }
         public int Save(GorevTanim item)
         {

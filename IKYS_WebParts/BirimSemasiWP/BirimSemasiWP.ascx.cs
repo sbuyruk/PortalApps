@@ -3,10 +3,12 @@ using Model.Ortak;
 using Model.Services.IKYS;
 using System;
 using System.ComponentModel;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace IKYS_WebParts.BirimSemasiWP
@@ -14,6 +16,19 @@ namespace IKYS_WebParts.BirimSemasiWP
     [ToolboxItemAttribute(false)]
     public partial class BirimSemasiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "BirimSemasiWP"); } }
+
+        private void ReportError(Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context))
+            {
+                new ExceptionHelper(error).PublishException();
+                return;
+            }
+            PortalTechnicalLog.WriteError(context, "BirimSemasi.Load", error);
+            MessageHelper.PublishMessage("Birim şeması yüklenemedi. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -50,11 +65,12 @@ namespace IKYS_WebParts.BirimSemasiWP
         {
             try
             {
+                if (!Page.IsPostBack) new BirimTanimService().TryRecordWebPartOpened(LoggingContext);
                 BirimSemasiGetir();
             }
             catch (Exception ex)
             {
-                MessageHelper.PublishMessage(ex.Message,ProjeConstants.MESAJ_HATA);
+                ReportError(ex);
             }
         }
 
@@ -80,11 +96,18 @@ namespace IKYS_WebParts.BirimSemasiWP
             csChartConfig += "config,";
 
             BirimTanim birimTanim = new BirimTanim();
-            var birimListesi = new BirimTanimService().GetByBirimKaldirildi(false);
+            PortalLogContext context = LoggingContext;
+            bool enabled = PortalLogSettings.IsEnabled(context);
+            var birimListesi = enabled
+                ? new BirimTanimService().GetByBirimKaldirildi(false, context)
+                : new BirimTanimService().GetByBirimKaldirildi(false);
+            Dictionary<int, Personel> activeManagers = enabled
+                ? new PersonelService().GetSchemaActiveManagers(context).ToDictionary(personel => personel.Id)
+                : null;
 
             BirimTanim parent = birimListesi.Where(a => a.ParentId == 0).FirstOrDefault<BirimTanim>();
             Personel ilknode = new Personel();
-            ilknode = new PersonelService().GetById(parent.AmirId);
+            ilknode = enabled ? new PersonelService().GetById(parent.AmirId, context) : new PersonelService().GetById(parent.AmirId);
             string gmKullaniciAdi = ilknode == null ? "" : ilknode.KullaniciAdi.ReturnEmptyIfNull().ToString();
             string gmAdi = ilknode == null ? "" : ilknode.Adi.ReturnEmptyIfNull().ToString();
             string gmSoyadi = ilknode == null ? "" : ilknode.Soyadi.ReturnEmptyIfNull().ToString();
@@ -113,7 +136,10 @@ namespace IKYS_WebParts.BirimSemasiWP
             foreach (BirimTanim item in birimListesi)
             {
                 Personel birimAmiri = new Personel();
-                birimAmiri = new PersonelService().GetActiveEmployee(item.AmirId);
+                if (enabled)
+                    activeManagers.TryGetValue(item.AmirId, out birimAmiri);
+                else
+                    birimAmiri = new PersonelService().GetActiveEmployee(item.AmirId);
                 string amirKullaniciAdi = birimAmiri == null ? "" : birimAmiri.KullaniciAdi.ReturnEmptyIfNull().ToString();
                 string amirAdi = birimAmiri == null ? "" : birimAmiri.Adi.ReturnEmptyIfNull().ToString();
                 string amirSoyadi = birimAmiri == null ? "" : birimAmiri.Soyadi.ReturnEmptyIfNull().ToString();
