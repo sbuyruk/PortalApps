@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace Model.Services.IKYS
 {
@@ -21,6 +22,7 @@ namespace Model.Services.IKYS
         public bool Delete(IsBilgileri item) { if (item == null || item.Id == 0) return false; IsBilgileri old = GetById(item.Id); if (old == null) return false; bool ok = repository.Delete(item.Id); if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.IKYS, ProjeConstants.IKYS_ISBILGILERI); return ok; }
         public IsBilgileri GetByPersonelId(int personelId) { return Map(repository.SelectByPersonelId(personelId)); }
         public IsBilgileri GetByGorevId(int gorevId) { return Map(repository.SelectByGorevId(gorevId)); }
+        public IsBilgileri GetByGorevId(int gorevId, PortalLogContext context) { return Map(repository.SelectByGorevId(gorevId, context)); }
         public DataTable GetAllFromIsYeriBilgileri() { return repository.SelectAllFromIsYeriBilgileri(); }
         private static IsBilgileri Map(DataTable table) { return ToList(table).FirstOrDefault(); }
         private static List<IsBilgileri> ToList(DataTable table) { return new IsBilgileri().ToList<IsBilgileri>(table); }

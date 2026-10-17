@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace IKYS_WebParts.GorevTanimEditWP
@@ -14,6 +15,19 @@ namespace IKYS_WebParts.GorevTanimEditWP
     [ToolboxItemAttribute(false)]
     public partial class GorevTanimEditWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "GorevTanimEditWP"); } }
+
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context))
+            {
+                new ExceptionHelper(error).PublishException();
+                return;
+            }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -93,18 +107,22 @@ namespace IKYS_WebParts.GorevTanimEditWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
+            try
             {
-                FillBirimDDL();
-                FillPersonelDDL();
-                if (GorevTanimIdQS.ConvertToInt() > 0)
+                if (!Page.IsPostBack)
                 {
-                    OpenDuzenle();
+                    new GorevTanimService().TryRecordWebPartOpened(LoggingContext);
+                    FillBirimDDL();
+                    FillPersonelDDL();
+                    if (GorevTanimIdQS.ConvertToInt() > 0)
+                        OpenDuzenle();
+                    else
+                        OpenGiris();
                 }
-                else
-                {
-                    OpenGiris();
-                }
+            }
+            catch (Exception exception)
+            {
+                ReportError("GorevTanim.PageLoad", exception);
             }
         }
 
@@ -124,7 +142,7 @@ namespace IKYS_WebParts.GorevTanimEditWP
         }
         private void FillGorevToForm()
         {
-            GorevTanim gorev = new GorevTanimService().GetById(GorevTanimIdQS.ConvertToInt());
+            GorevTanim gorev = new GorevTanimService().GetById(GorevTanimIdQS.ConvertToInt(), LoggingContext);
             if (gorev != null)
             {
                 AdiTxt.Text = gorev.Adi;
@@ -140,7 +158,7 @@ namespace IKYS_WebParts.GorevTanimEditWP
         private void FillBirimDDL()
         {
             BirimDDL.Items.Clear();
-            List<BirimTanim> list = new BirimTanimService().GetAll();
+            List<BirimTanim> list = new BirimTanimService().GetAll(LoggingContext);
             ListItem bosLi = new ListItem("", "0");
             BirimDDL.Items.Add(bosLi);
             foreach (BirimTanim gr in list)
@@ -152,7 +170,7 @@ namespace IKYS_WebParts.GorevTanimEditWP
         private void FillPersonelDDL()
         {
             PersonelDDL.Items.Clear();
-            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu, LoggingContext);
             ListItem bosLi = new ListItem("", "0");
             PersonelDDL.Items.Add(bosLi);
             foreach (Personel item in list)
@@ -179,7 +197,7 @@ namespace IKYS_WebParts.GorevTanimEditWP
                 gorev.PersonelId = PersonelDDL.SelectedItem.Value.ConvertToInt();
                 gorev.Vekil = VekilChk.Checked;
                 gorev.Aktif = AktifChk.Checked;
-                int id = new GorevTanimService().Save(gorev);
+                int id = new GorevTanimService().Save(gorev, LoggingContext);
                 if (id > 0)
                 {
                     MessageHelper.PublishMessage("Yeni görev kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
@@ -197,41 +215,54 @@ namespace IKYS_WebParts.GorevTanimEditWP
 
 
             }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
             catch (Exception exception)
             {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.Exceptions.Add(new Exception("Görev kaydedilemedi!"));
-                ex.PublishException();
+                ReportError("GorevTanim.Save", exception);
             }
 
         }
         protected void DeleteBtn_Click(object sender, EventArgs e)
         {
-            IsBilgileri isBilgileri = new IsBilgileriService().GetByGorevId(GorevTanimIdQS.ConvertToInt());
-            if (isBilgileri == null)
+            try
             {
-                GorevTanim gorevTanim = new GorevTanimService().GetByGorevId(GorevTanimIdQS.ConvertToInt());
-                if (gorevTanim != null)
+                IsBilgileri isBilgileri = new IsBilgileriService().GetByGorevId(GorevTanimIdQS.ConvertToInt(), LoggingContext);
+                if (isBilgileri == null)
                 {
-                    if (new GorevTanimService().Delete(gorevTanim))
-                        RedirectToPage(ProjeConstants.PAGE_GOREVTANIM_LIST + "?Mesaj=true");
-                    else
-                        MessageHelper.PublishMessage("Kadroyu silinemedi", ProjeConstants.MESAJ_HATA);
+                    GorevTanim gorevTanim = new GorevTanimService().GetByGorevId(GorevTanimIdQS.ConvertToInt(), LoggingContext);
+                    if (gorevTanim != null)
+                    {
+                        if (new GorevTanimService().Delete(gorevTanim, LoggingContext))
+                            RedirectToPage(ProjeConstants.PAGE_GOREVTANIM_LIST + "?Mesaj=true");
+                        else
+                            MessageHelper.PublishMessage("Kadro silinemedi.", ProjeConstants.MESAJ_HATA);
+                    }
+                }
+                else
+                {
+                    Personel personel = new PersonelService().GetById(isBilgileri.PersonelId, LoggingContext);
+                    string adi = personel != null ? "(" + personel.Adi + " " + personel.Soyadi + ")" : string.Empty;
+                    MessageHelper.PublishMessage("Bu kadroda tanımlı personel bulunmaktadır. " + adi +
+                        " Kadroyu silmek için önce kadroyu boşaltın.", ProjeConstants.MESAJ_HATA);
                 }
             }
-            else
+            catch (System.Threading.ThreadAbortException)
             {
-                Personel personel = new PersonelService().GetById(isBilgileri.PersonelId);
-                string adi = personel!=null? "(" + personel.Adi + " " + personel.Soyadi +")":string.Empty;
-                MessageHelper.PublishMessage("Bu kadroda tanımlı personel bulunmaktadır.\n+" + adi +
-                    " Kadroyu silmek için önce kadroyu bosaltin", ProjeConstants.MESAJ_HATA);
+                throw;
+            }
+            catch (Exception exception)
+            {
+                ReportError("GorevTanim.Delete", exception);
             }
         }
         protected void UpdateBtn_Click(object sender, EventArgs e)
         {
             try
             {
-                GorevTanim gorev = new GorevTanimService().GetById(GorevTanimIdQS.ConvertToInt());
+                GorevTanim gorev = new GorevTanimService().GetById(GorevTanimIdQS.ConvertToInt(), LoggingContext);
 
                 if (gorev != null)
                 {
@@ -243,22 +274,24 @@ namespace IKYS_WebParts.GorevTanimEditWP
                     gorev.Vekil = VekilChk.Checked;
                     gorev.Aktif = AktifChk.Checked;
                     gorev.Degistiren = CurrentUserName;
-                    bool isupdated = new GorevTanimService().Update(gorev);
+                    bool isupdated = new GorevTanimService().Update(gorev, LoggingContext);
                     if (isupdated)
                     {
-                        IsBilgileri ib = new IsBilgileriService().GetByPersonelId(oncekiPersonelId);
-                        if (ib != null)
+                        if (!PortalLogSettings.IsEnabled(LoggingContext))
                         {
-                            ib.GorevId = 0;
-                            new IsBilgileriService().Update(ib);
+                            IsBilgileri ib = new IsBilgileriService().GetByPersonelId(oncekiPersonelId);
+                            if (ib != null)
+                            {
+                                ib.GorevId = 0;
+                                new IsBilgileriService().Update(ib);
+                            }
+                            ib = new IsBilgileriService().GetByPersonelId(gorev.PersonelId);
+                            if (ib != null)
+                            {
+                                ib.GorevId = gorev.Id;
+                                new IsBilgileriService().Update(ib);
+                            }
                         }
-                        ib = new IsBilgileriService().GetByPersonelId(gorev.PersonelId);
-                        if (ib != null)
-                        {
-                            ib.GorevId = gorev.Id;
-                            new IsBilgileriService().Update(ib);
-                        }
-
                         MessageHelper.PublishMessage("Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
 
@@ -267,8 +300,7 @@ namespace IKYS_WebParts.GorevTanimEditWP
             catch (Exception exception)
             {
 
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
+                ReportError("GorevTanim.Update", exception);
             }
         }
 
@@ -284,10 +316,13 @@ namespace IKYS_WebParts.GorevTanimEditWP
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
                 Page.Response.Redirect(newUrl);
             }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("GorevTanim.Redirect", ex);
             }
         }
     }

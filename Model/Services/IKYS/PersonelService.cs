@@ -29,6 +29,10 @@ namespace Model.Services.IKYS
         {
             return MapSingle(repository.SelectById(id));
         }
+        public Personel GetById(int id, PortalLogContext context)
+        {
+            return MapSingle(repository.SelectById(id, context));
+        }
 
         public List<Personel> GetAll()
         {
