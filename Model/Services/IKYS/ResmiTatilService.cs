@@ -108,14 +108,18 @@ namespace Model.Services.IKYS
             AddChange(log, auditId, "Ay", old == null ? null : old.Ay.ToString(CultureInfo.InvariantCulture), current == null ? null : current.Ay.ToString(CultureInfo.InvariantCulture), transaction);
             AddChange(log, auditId, "Yil", old == null ? null : old.Yil.ToString(CultureInfo.InvariantCulture), current == null ? null : current.Yil.ToString(CultureInfo.InvariantCulture), transaction);
             AddChange(log, auditId, "Tatil", old == null ? null : old.Tatil, current == null ? null : current.Tatil, transaction);
-            AddChange(log, auditId, "BaslamaTarihi", old == null ? null : DateValue(old.BaslamaTarihi), current == null ? null : DateValue(current.BaslamaTarihi), transaction);
-            AddChange(log, auditId, "BitisTarihi", old == null ? null : DateValue(old.BitisTarihi), current == null ? null : DateValue(current.BitisTarihi), transaction);
+            AddChange(log, auditId, "BaslamaTarihi", old == null ? null : HolidayDateValue(old.BaslamaTarihi), current == null ? null : HolidayDateValue(current.BaslamaTarihi), transaction);
+            AddChange(log, auditId, "BitisTarihi", old == null ? null : HolidayDateValue(old.BitisTarihi), current == null ? null : HolidayDateValue(current.BitisTarihi), transaction);
             AddChange(log, auditId, "IlanTarihi", old == null ? null : DateValue(old.IlanTarihi), current == null ? null : DateValue(current.IlanTarihi), transaction);
             AddChange(log, auditId, "IptalTarihi", old == null ? null : DateValue(old.IptalTarihi), current == null ? null : DateValue(current.IptalTarihi), transaction);
         }
         private static string DateValue(DateTime value)
         {
             return value < new DateTime(1901, 1, 1) ? null : value.ToString("o", CultureInfo.InvariantCulture);
+        }
+        private static string HolidayDateValue(DateTime value)
+        {
+            return value < new DateTime(1753, 1, 1) ? null : value.ToString("o", CultureInfo.InvariantCulture);
         }
         private static void AddChange(PortalLogRepository log, int auditId, string field, string oldValue, string newValue, SqlTransactionContext transaction)
         {

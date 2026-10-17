@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
@@ -7,6 +8,11 @@ namespace DAO.Ortak
     public class CrudQueryBuilder
     {
         public SqlQuery BuildInsert<T>(T entity, string tableName)
+        {
+            return BuildInsert(entity, tableName, null);
+        }
+
+        public SqlQuery BuildInsert<T>(T entity, string tableName, ICollection<string> preservedDateColumns)
         {
             if ((object)entity == null)
                 throw new ArgumentNullException("entity");
@@ -24,7 +30,7 @@ namespace DAO.Ortak
                 AppendSeparator(values);
                 columns.Append(property.Name);
                 values.Append("@" + property.Name);
-                query.AddParameter("@" + property.Name, GetParameterValue(entity, property));
+                query.AddParameter("@" + property.Name, GetParameterValue(entity, property, preservedDateColumns));
             }
 
             query.Sql = string.Format(
@@ -37,6 +43,11 @@ namespace DAO.Ortak
 
         public SqlQuery BuildUpdate<T>(T entity, string tableName)
         {
+            return BuildUpdate(entity, tableName, null);
+        }
+
+        public SqlQuery BuildUpdate<T>(T entity, string tableName, ICollection<string> preservedDateColumns)
+        {
             if ((object)entity == null)
                 throw new ArgumentNullException("entity");
 
@@ -45,7 +56,7 @@ namespace DAO.Ortak
 
             foreach (PropertyInfo property in entity.GetType().GetProperties())
             {
-                query.AddParameter("@" + property.Name, GetParameterValue(entity, property));
+                query.AddParameter("@" + property.Name, GetParameterValue(entity, property, preservedDateColumns));
                 if (property.Name.Equals("Id"))
                     continue;
 
@@ -74,14 +85,17 @@ namespace DAO.Ortak
                 builder.Append(", ");
         }
 
-        private static object GetParameterValue<T>(T entity, PropertyInfo property)
+        private static object GetParameterValue<T>(T entity, PropertyInfo property,
+            ICollection<string> preservedDateColumns)
         {
             object value = property.GetValue(entity, null);
             if (value == null)
                 return DBNull.Value;
 
             if (property.PropertyType == typeof(DateTime)
-                && (DateTime)value < new DateTime(1901, 1, 1))
+                && (DateTime)value < new DateTime(1901, 1, 1)
+                && ((DateTime)value < new DateTime(1753, 1, 1)
+                    || preservedDateColumns == null || !preservedDateColumns.Contains(property.Name)))
             {
                 return DBNull.Value;
             }

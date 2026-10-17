@@ -348,22 +348,36 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
         {
             return resmiTatil != null && new ResmiTatilService().Delete(resmiTatil, LoggingContext);
         }
-        private bool KontrolIslemleri()
+        private string KontrolHatasi()
         {
-            string bastarih = GunTxt.Text + "." + BasAyDDL.SelectedItem.Value.ConvertToInt() + "." + 1800;
-            string bittarih = BitGunTxt.Text + "." + BitAyDDL.SelectedItem.Value.ConvertToInt() + "." + 1800;
-            
-            string bastar = GecerlilikDDL.SelectedItem.Value.Equals(TUM_YILLAR_GECERLI) ?
-                bastarih : BaslangicTarihiTxt.Text;
+            if (string.IsNullOrWhiteSpace(TatilTxt.Text)) return "Tatil adını giriniz.";
+            if (GecerlilikDDL.SelectedItem == null) return "Geçerlilik seçiniz.";
 
-            string bittar = GecerlilikDDL.SelectedItem.Value.Equals(TUM_YILLAR_GECERLI) ?
-                bittarih : BitisTarihiTxt.Text;
+            if (GecerlilikDDL.SelectedItem.Value.Equals(TUM_YILLAR_GECERLI))
+            {
+                int basGun, bitGun;
+                if (BasAyDDL.SelectedItem == null || !int.TryParse(GunTxt.Text, out basGun))
+                    return "Başlangıç Tarihi Giriniz.";
+                if (BitAyDDL.SelectedItem == null || !int.TryParse(BitGunTxt.Text, out bitGun))
+                    return "Bitiş Tarihi Giriniz";
 
-            bool isOK = false;
-            isOK = (!string.IsNullOrEmpty(TatilTxt.Text.ReturnEmptyIfNull().ToString()) &&
-                !string.IsNullOrEmpty(bastar.ConvertToDatetimeEmptyIfNull()) &&
-                !string.IsNullOrEmpty(bittar.ConvertToDatetimeEmptyIfNull()));
-            return isOK;
+                int basAy = BasAyDDL.SelectedItem.Value.ConvertToInt();
+                int bitAy = BitAyDDL.SelectedItem.Value.ConvertToInt();
+                if (!GecerliGunMu(1800, basAy, basGun)) return "Geçerli bir başlangıç tarihi giriniz.";
+                if (!GecerliGunMu(1800, bitAy, bitGun)) return "Geçerli bir bitiş tarihi giriniz.";
+                return null;
+            }
+
+            if (BaslangicTarihiTxt.Text.ConvertToDatetime() == DateTime.MinValue)
+                return "Başlangıç Tarihi Giriniz.";
+            if (BitisTarihiTxt.Text.ConvertToDatetime() == DateTime.MinValue)
+                return "Bitiş Tarihi Giriniz";
+            return null;
+        }
+
+        private static bool GecerliGunMu(int yil, int ay, int gun)
+        {
+            return ay >= 1 && ay <= 12 && gun >= 1 && gun <= DateTime.DaysInMonth(yil, ay);
         }
         private void FillBasSaatDDL()
         {
@@ -394,8 +408,8 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
         }
         protected void GuncelleBtn_Click(object sender, EventArgs e)
         {
-            bool isValid = KontrolIslemleri();
-            if (isValid)
+            string kontrolHatasi = KontrolHatasi();
+            if (kontrolHatasi == null)
             {
                 SilLbl.Text = "Lütfen Dikkat";
                 SilmeMesajiLbl.Text = "Tatil kaydini degistirdiginiz takdirde, söz konusu tarihlerde kullanilan izinlerin sürelerinde tutarsizlik olusabilir."
@@ -407,7 +421,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Kaydetmeden önce Baslama/Bitis Tarihi ve Tatil alanlarini doldurunuz.",ProjeConstants.MESAJ_HATA,2000);
+                MessageHelper.PublishMessage(kontrolHatasi, ProjeConstants.MESAJ_HATA, 2000);
             }
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
@@ -429,8 +443,8 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
         {
             try
             {
-                bool isValid = KontrolIslemleri();
-                if (isValid)
+                string kontrolHatasi = KontrolHatasi();
+                if (kontrolHatasi == null)
                 {
                     bool isSaved = YeniTatiliKaydet();
                     if (isSaved)
@@ -441,7 +455,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kaydetmeden önce Baslama/Bitis Tarihi ve Tatil alanlarini doldurunuz.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage(kontrolHatasi, ProjeConstants.MESAJ_HATA, 2000);
                 }
 
 

@@ -18,8 +18,9 @@ namespace Utility.Logging
             {
                 if (context == null || error == null || !PortalLogSettings.IsEnabled(context)) return;
                 PortalLogRecord record = new PortalLogRecord(PortalLogKind.Error, context, name, "Failed");
+                string detail = error.ToString();
                 Write(record, TraceSeverity.Unexpected,
-                    error.GetType().FullName + " " + (error.StackTrace ?? string.Empty));
+                    detail.Length > 8000 ? detail.Substring(0, 8000) : detail);
             }
             catch (Exception)
             {
