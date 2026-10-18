@@ -3,9 +3,11 @@ using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace IKYS_WebParts.AileGirisiWP
@@ -13,6 +15,24 @@ namespace IKYS_WebParts.AileGirisiWP
     [ToolboxItemAttribute(false)]
     public partial class AileGirisiWP : WebPart
     {
+        private List<Meslek> meslekler;
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "AileGirisiWP"); } }
+        private List<Meslek> GetMeslekler()
+        {
+            if (meslekler == null) meslekler = new MeslekService().GetAll(LoggingContext);
+            return meslekler;
+        }
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context))
+            {
+                new ExceptionHelper(error).PublishException();
+                return;
+            }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -78,15 +98,21 @@ namespace IKYS_WebParts.AileGirisiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
+            try
             {
-                FillYakinlikDerecesiDDL();
-                FillMeslekDDL();
+                if (!Page.IsPostBack)
+                {
+                    new AileService().TryRecordWebPartOpened(LoggingContext);
+                    FillYakinlikDerecesiDDL();
+                    FillMeslekDDL();
+                }
+                Personel personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), LoggingContext);
+                if (personel != null)
+                    FillAileBilgileriTable(personel);
             }
-            Personel personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
-            if (personel != null)
+            catch (Exception exception)
             {
-                FillAileBilgileriTable(personel);
+                ReportError("Aile.PageLoad", exception);
             }
         }
         private void FillAileBilgileriTable(Personel personel)
@@ -108,7 +134,7 @@ namespace IKYS_WebParts.AileGirisiWP
             HeaderCell6.Text = "Telefon";
             HeaderCell6.Visible = true;
 
-            List<Aile> list = new AileService().GetByPersonelId(personel.Id);
+            List<Aile> list = new AileService().GetByPersonelId(personel.Id, LoggingContext);
             int SiraNo = 1;
             foreach (Aile aile in list)
             {
@@ -142,8 +168,8 @@ namespace IKYS_WebParts.AileGirisiWP
                 row.Controls.Add(OkulCell);
 
                 TableCell MeslekCell = new TableCell();
-                Meslek meslek = new MeslekService().GetById(aile.Meslek);
-                MeslekCell.Text = meslek.Adi;
+                Meslek meslek = GetMeslekler().FirstOrDefault(item => item.Id == aile.Meslek);
+                MeslekCell.Text = meslek == null ? string.Empty : meslek.Adi;
                 row.Controls.Add(MeslekCell);
 
                 TableCell TelefonCell = new TableCell();
@@ -158,8 +184,17 @@ namespace IKYS_WebParts.AileGirisiWP
                 SilBtn.CssClass = "btn btn-outline-danger";
                 SilBtn.Click += delegate
                 {
-                    new AileService().Delete(aile);
-                    FillAileBilgileriTable(personel);
+                    try
+                    {
+                        if (new AileService().Delete(aile, LoggingContext))
+                            FillAileBilgileriTable(personel);
+                        else
+                            MessageHelper.PublishMessage("Aile kaydı silinemedi.", ProjeConstants.MESAJ_HATA);
+                    }
+                    catch (Exception exception)
+                    {
+                        ReportError("Aile.Delete", exception);
+                    }
                 };
                 SilCell.Controls.Add(SilBtn);
                 row.Controls.Add(SilCell);
@@ -181,7 +216,7 @@ namespace IKYS_WebParts.AileGirisiWP
         private void FillMeslekDDL()
         {
             YakMeslekDDL.Items.Clear();
-            List<Meslek> list = new MeslekService().GetAll();
+            List<Meslek> list = GetMeslekler();
             foreach (Meslek meslek in list)
             {
                 ListItem li = new ListItem(meslek.Adi, meslek.Id.ReturnZeroIfNull().ToString());
@@ -221,8 +256,13 @@ namespace IKYS_WebParts.AileGirisiWP
 
         protected void YakinEkleBtn_Click(object sender, EventArgs e)
         {
-            if (validateItems())
+            try
             {
+                if (!validateItems())
+                {
+                    MessageHelper.PublishMessage("Yakının adını ve soyadını giriniz.", ProjeConstants.MESAJ_HATA);
+                    return;
+                }
                 Aile aile = new Aile();
 
                 aile.PersonelId = PersonelIdQS.ConvertToInt();
@@ -235,12 +275,16 @@ namespace IKYS_WebParts.AileGirisiWP
                 aile.Meslek = YakMeslekDDL.SelectedItem.Value.ConvertToInt();
                 aile.Telefon = YakTelefonTxt.Text;
                 aile.Okul = OkulTxt.Text;
-                aile.Id = new AileService().Save(aile);
-                Personel personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
+                aile.Id = new AileService().Save(aile, LoggingContext);
+                Personel personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), LoggingContext);
                 if (personel != null)
                 {
                     FillAileBilgileriTable(personel);
                 }
+            }
+            catch (Exception exception)
+            {
+                ReportError("Aile.Save", exception);
             }
         }
     }
