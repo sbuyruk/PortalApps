@@ -1,10 +1,12 @@
 using DAO.Repositories.IKYS;
 using DAO.Repositories.Ortak;
+using DAO.Ortak;
 using Model.IKYS;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Globalization;
 using Model.Ortak;
 using Utility.ProjeGlobal;
 using Utility.Logging;
@@ -60,7 +62,35 @@ namespace Model.Services.IKYS
         }
 
         public int Save(Personel item) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item); if (item.Id > 0 && ProjeConstants.IKYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_PERSONEL); return item.Id; }
+        public int Save(Personel item, PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context");
+            if (!PortalLogSettings.IsEnabled(context)) return Save(item);
+            if (item == null) throw new ArgumentNullException("item");
+            item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName();
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                item.Id = repository.Insert(item, transaction, context);
+                if (item.Id <= 0) throw new InvalidOperationException("Personel kaydı oluşturulamadı.");
+                int auditId = new PortalLogRepository().RecordAudit(context, "INSERT", "Personel", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+                RecordChanges(null, item, auditId, transaction); transaction.Complete();
+            }
+            return item.Id;
+        }
         public bool Update(Personel item) { if (item == null) throw new ArgumentNullException("item"); Personel old = GetById(item.Id); bool ok = false; if (item.Id != 0) { item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); ok = repository.Update(item); } if (ok && ProjeConstants.IKYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.IKYS, ProjeConstants.IKYS_PERSONEL); return ok; }
+        public bool Update(Personel item, PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context"); if (!PortalLogSettings.IsEnabled(context)) return Update(item);
+            if (item == null || item.Id <= 0) return false;
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                Personel old = MapSingle(repository.SelectById(item.Id, transaction, context));
+                item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName();
+                if (old == null || !repository.Update(item, transaction, context)) return false;
+                int auditId = new PortalLogRepository().RecordAudit(context, "UPDATE", "Personel", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+                RecordChanges(old, item, auditId, transaction); transaction.Complete(); return true;
+            }
+        }
         public bool Delete(Personel item) { if (item == null || item.Id == 0) return false; Personel old = GetById(item.Id); if (old == null) return false; bool ok = repository.Delete(item.Id); if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.IKYS, ProjeConstants.IKYS_PERSONEL); return ok; }
         public Personel GetActiveEmployee(int personelId) { return MapSingle(repository.SelectActiveEmployee(personelId)); }
         public DataTable GetActiveEmployeesByUnitReturnDataTable(int birimId, Personel.PersonelTipi type) { return repository.SelectActiveEmployeesByUnit(birimId, (int)type, type == Personel.PersonelTipi.Tumu); }
@@ -84,6 +114,15 @@ namespace Model.Services.IKYS
         public List<Personel> GetByMarriageDate(int gun, int ay) { return MapList(repository.SelectByEvlilikTarihi(gun, ay)); }
         public DataTable GetUnselectedMeetingParticipants(int toplantiId) { return repository.SelectUnselectedMeetingParticipants(toplantiId); }
         public List<Personel> GetMeetingParticipants(int toplantiId, bool bilgiVerildi) { return MapList(repository.SelectMeetingParticipants(toplantiId, bilgiVerildi)); }
+        private static void RecordChanges(Personel old, Personel current, int auditId, SqlTransactionContext transaction)
+        {
+            PortalLogRepository log = new PortalLogRepository();
+            AddChange(log, auditId, "PerId", old == null ? null : old.PerId.ToString(CultureInfo.InvariantCulture), current == null ? null : current.PerId.ToString(CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "SicilNo", old == null ? null : old.SicilNo.ToString(CultureInfo.InvariantCulture), current == null ? null : current.SicilNo.ToString(CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "Tahsili", old == null ? null : old.Tahsili.ToString(CultureInfo.InvariantCulture), current == null ? null : current.Tahsili.ToString(CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "Tipi", old == null ? null : old.Tipi.ToString(CultureInfo.InvariantCulture), current == null ? null : current.Tipi.ToString(CultureInfo.InvariantCulture), transaction);
+        }
+        private static void AddChange(PortalLogRepository log, int auditId, string field, string oldValue, string newValue, SqlTransactionContext transaction) { if (!string.Equals(oldValue, newValue, StringComparison.Ordinal)) log.RecordAuditChange(auditId, field, oldValue, newValue, transaction); }
 
         private static Personel MapSingle(DataTable dataTable)
         {
