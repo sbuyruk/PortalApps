@@ -1583,6 +1583,19 @@ namespace IKYS_WebParts.EskiPersonelWP
             personel.Id = new PersonelService().Save(personel);
             return personel;
         }
+        private Personel PersonelSave(SqlTransactionContext transaction, PortalLogContext context)
+        {
+            Personel personel = new Personel();
+            personel.Adi = AdiTxt.Text;
+            personel.Soyadi = SoyadiTxt.Text;
+            personel.SicilNo = SicilNoTxt.Text.ConvertToInt();
+            personel.KullaniciAdi = KullaniciAdiTxt.Text;
+            personel.Asker_sivil = AskerSivilDDL.SelectedValue.ConvertToInt();
+            personel.Tahsili = TahsiliDDL.SelectedValue.ConvertToInt();
+            personel.Tipi = PersonelTipiDDL.SelectedItem.Value.ConvertToInt();
+            personel.Id = new PersonelService().Save(personel, transaction, context);
+            return personel;
+        }
         private bool PersonelUpdate(Personel personel)
         {
             bool perSaved = false;
@@ -1624,6 +1637,31 @@ namespace IKYS_WebParts.EskiPersonelWP
                     kimlik.DogumGunuKutlama = true;
                     kimlik.Id = new KimlikService().Save(kimlik);
                 }
+            }
+            return kimlik;
+        }
+        private Kimlik KimlikSave(Personel personel, string kimlikNo, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            Kimlik kimlik = new KimlikService().GetByPersonelId(personel.Id, transaction, context);
+            if (kimlik == null)
+            {
+                kimlik = new Kimlik
+                {
+                    PersonelId = personel.Id,
+                    TCKimlikNo = kimlikNo,
+                    AnneAdi = AnneAdiTxt.Text,
+                    BabaAdi = BabaAdiTxt.Text,
+                    DogumYeri = DogumIlceDDL.SelectedValue,
+                    DogumTar = DogumTarihiTxt.Value.ConvertToDatetime(),
+                    MedeniHali = MedeniHaliDDL.SelectedValue,
+                    EvlilikTar = EvlilikTarihiTxt.Value.ConvertToDatetime(),
+                    Cinsiyet = CinsiyetDDL.SelectedValue,
+                    KanGrubu = KanGrubuDDL.SelectedValue,
+                    Olusturan = CurrentUserName,
+                    EvlilikKutlama = true,
+                    DogumGunuKutlama = true
+                };
+                kimlik.Id = new KimlikService().Save(kimlik, transaction, context);
             }
             return kimlik;
         }
@@ -1669,6 +1707,21 @@ namespace IKYS_WebParts.EskiPersonelWP
                     isBilgileri.Olusturan = CurrentUserName;
                     isBilgileri.Id = new IsBilgileriService().Save(isBilgileri);
                 }
+            }
+            return isBilgileri;
+        }
+        private IsBilgileri IsBilgileriSave(Personel personel, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            IsBilgileri isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id, transaction, context);
+            if (isBilgileri == null)
+            {
+                isBilgileri = new IsBilgileri
+                {
+                    PersonelId = personel.Id,
+                    CalismaDurumu = ProjeConstants.PER_CALISIYOR_INT,
+                    Olusturan = CurrentUserName
+                };
+                isBilgileri.Id = new IsBilgileriService().Save(isBilgileri, transaction, context);
             }
             return isBilgileri;
         }
@@ -1779,6 +1832,16 @@ namespace IKYS_WebParts.EskiPersonelWP
             }
             return iletisimBilgileri;
         }
+        private IletisimBilgileri IletisimBilgileriSave(Personel personel, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            IletisimBilgileri iletisimBilgileri = new IletisimBilgileriService().GetByPersonelId(personel.Id, transaction, context);
+            if (iletisimBilgileri == null)
+            {
+                iletisimBilgileri = new IletisimBilgileri { PersonelId = personel.Id };
+                iletisimBilgileri.Id = new IletisimBilgileriService().Save(iletisimBilgileri, transaction, context);
+            }
+            return iletisimBilgileri;
+        }
         private bool IletisimBilgileriUpdate(Personel personel)
         {
 
@@ -1836,17 +1899,24 @@ namespace IKYS_WebParts.EskiPersonelWP
                 string kimlikNo = TCKimlikNoTxt.Text;
                 //kimlikNo = string.IsNullOrEmpty(kimlikNo) ? "" : kimlikNo.Trim();
 
-                kimlik = new KimlikService().GetByTcKimlikNo(kimlikNo);
+                PortalLogContext context = LoggingContext;
+                bool loggingEnabled = PortalLogSettings.IsEnabled(context);
+                kimlik = loggingEnabled ? new KimlikService().GetByTcKimlikNo(kimlikNo, context) : new KimlikService().GetByTcKimlikNo(kimlikNo);
                 if (kimlik == null)//Kayitli degilse
                 {
-                    //girilen personel bilgilerini kaydet
-                    Personel personel = PersonelSave();
-                    //kimlik tablosuna personeli gir
-                    kimlik = KimlikSave(personel, kimlikNo);
-                    //Isbilgileri tablosuna personeli gir
-                    IsBilgileri isb = IsBilgileriSave(personel);
-                    //Iletisim tablosuna personeli gir
-                    IletisimBilgileri iletisim = IletisimBilgileriSave(personel);
+                    Personel personel;
+                    IsBilgileri isb;
+                    using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
+                    {
+                        personel = transaction == null ? PersonelSave() : PersonelSave(transaction, context);
+                        kimlik = transaction == null ? KimlikSave(personel, kimlikNo) : KimlikSave(personel, kimlikNo, transaction, context);
+                        isb = transaction == null ? IsBilgileriSave(personel) : IsBilgileriSave(personel, transaction, context);
+                        if (transaction == null)
+                            IletisimBilgileriSave(personel);
+                        else
+                            IletisimBilgileriSave(personel, transaction, context);
+                        if (transaction != null) transaction.Complete();
+                    }
                     //Aile, Egitim, Kurs,IsTecrube   tablolari ayrica save edilecek
 
                     //hataya düsmediyse kayit tamam

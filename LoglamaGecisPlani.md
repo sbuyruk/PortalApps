@@ -469,3 +469,6 @@ Bu parça da yalnızca kaynak/diff/UTF-8 kontrolleriyle doğrulanmıştır. Visu
 ## TBYS bağış ve taşınmaz webpartları exception standardı
 
 TBYS başlangıç grubunda `BagisciBagislariWP`, `BagisciTalepleriWP`, `BagisciTaahhutleriWP` ve `BagimsizBolumWP` için `PortalLogContext` ve `ReportError` altyapısı eklendi. Bağış, taahhüt ve bağımsız bölüm işlemlerindeki exception akışları OperationId ile teknik loga bağlandı; loglama kapalıyken legacy exception davranışı korunur.
+## IKYS personel çoklu entity kayıt transaction'ı
+
+`PersonelGirisiWP` ve `EskiPersonelWP` yeni personel kayıt akışlarında Personel, Kimlik, İş Bilgileri ve İletişim Bilgileri kayıtları loglama açıkken aynı `SqlTransactionContext` içinde yürütülür. Personel, Kimlik ve İletişim servislerine dış transaction overloadları ile transaction-aware personel sorguları eklendi; İş Bilgileri servisinin mevcut transaction yolu da kayıt akışına bağlandı. Her entity'nin audit ve SQL izi aynı `OperationId` ile üretilir. Loglama kapalıyken mevcut legacy çağrılar korunur. Güncelleme akışlarının aynı zincire alınması sonraki IKYS parçasıdır.

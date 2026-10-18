@@ -27,10 +27,20 @@ namespace Model.Services.IKYS
             if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName();
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                item.Id = repository.Insert(item, transaction, context); if (item.Id <= 0) throw new InvalidOperationException("İletişim bilgileri kaydı oluşturulamadı.");
-                int auditId = new PortalLogRepository().RecordAudit(context, "INSERT", "IletisimBilgileri", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
-                RecordChanges(null, item, auditId, transaction); transaction.Complete();
+                item.Id = Save(item, transaction, context); transaction.Complete();
             }
+            return item.Id;
+        }
+        public int Save(IletisimBilgileri item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            if (item == null) throw new ArgumentNullException("item");
+            item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName();
+            item.Id = repository.Insert(item, transaction, context);
+            if (item.Id <= 0) throw new InvalidOperationException("İletişim bilgileri kaydı oluşturulamadı.");
+            int auditId = new PortalLogRepository().RecordAudit(context, "INSERT", "IletisimBilgileri", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            RecordChanges(null, item, auditId, transaction);
             return item.Id;
         }
         public bool Update(IletisimBilgileri item) { if (item == null) throw new ArgumentNullException("item"); IletisimBilgileri old = GetById(item.Id); bool ok = false; if (item.Id != 0) { item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); ok = repository.Update(item); } if (ok && ProjeConstants.IKYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.IKYS, ProjeConstants.IKYS_ILETISIMBILGILERI); return ok; }
@@ -40,11 +50,21 @@ namespace Model.Services.IKYS
             if (item == null || item.Id <= 0) return false;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                IletisimBilgileri old = Map(repository.SelectById(item.Id, transaction, context)); item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName();
-                if (old == null || !repository.Update(item, transaction, context)) return false;
-                int auditId = new PortalLogRepository().RecordAudit(context, "UPDATE", "IletisimBilgileri", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
-                RecordChanges(old, item, auditId, transaction); transaction.Complete(); return true;
+                bool updated = Update(item, transaction, context);
+                if (updated) transaction.Complete();
+                return updated;
             }
+        }
+        public bool Update(IletisimBilgileri item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            if (item == null || item.Id <= 0) return false;
+            IletisimBilgileri old = Map(repository.SelectById(item.Id, transaction, context)); item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName();
+            if (old == null || !repository.Update(item, transaction, context)) return false;
+            int auditId = new PortalLogRepository().RecordAudit(context, "UPDATE", "IletisimBilgileri", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            RecordChanges(old, item, auditId, transaction);
+            return true;
         }
         public bool Delete(IletisimBilgileri item) { if (item == null || item.Id == 0) return false; IletisimBilgileri old = GetById(item.Id); if (old == null) return false; bool ok = repository.Delete(item.Id); if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.IKYS, ProjeConstants.IKYS_ILETISIMBILGILERI); return ok; }
         public bool Delete(IletisimBilgileri item, PortalLogContext context)
@@ -60,6 +80,12 @@ namespace Model.Services.IKYS
         }
         public IletisimBilgileri GetByPersonelId(int personelId) { return Map(repository.SelectByPersonelId(personelId)); }
         public IletisimBilgileri GetByPersonelId(int personelId, PortalLogContext context) { return Map(repository.SelectByPersonelId(personelId, context)); }
+        public IletisimBilgileri GetByPersonelId(int personelId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            return Map(repository.SelectByPersonelId(personelId, transaction, context));
+        }
         private static void RecordChanges(IletisimBilgileri old, IletisimBilgileri current, int auditId, SqlTransactionContext transaction)
         {
             PortalLogRepository log = new PortalLogRepository();

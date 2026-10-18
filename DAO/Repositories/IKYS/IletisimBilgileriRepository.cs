@@ -51,6 +51,13 @@ namespace DAO.Repositories.IKYS
             try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
             finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "IletisimBilgileri.SelectByPersonelId", clock.ElapsedMilliseconds, succeeded); }
         }
+        public DataTable SelectByPersonelId(int personelId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            SqlQuery query = new SqlQuery("SELECT * FROM IletisimBilgileri_Table WITH (UPDLOCK, HOLDLOCK) WHERE PersonelId=@PersonelId ORDER BY Adres");
+            query.AddParameter("@PersonelId", personelId);
+            return TraceSelect(query, "IletisimBilgileri.SelectByPersonelId", transaction, context);
+        }
         private static DataTable TraceSelect(SqlQuery query, string name, SqlTransactionContext transaction, PortalLogContext context)
         {
             Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;

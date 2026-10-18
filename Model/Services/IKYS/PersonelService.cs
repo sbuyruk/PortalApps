@@ -70,11 +70,21 @@ namespace Model.Services.IKYS
             item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName();
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                item.Id = repository.Insert(item, transaction, context);
-                if (item.Id <= 0) throw new InvalidOperationException("Personel kaydı oluşturulamadı.");
-                int auditId = new PortalLogRepository().RecordAudit(context, "INSERT", "Personel", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
-                RecordChanges(null, item, auditId, transaction); transaction.Complete();
+                item.Id = Save(item, transaction, context);
+                transaction.Complete();
             }
+            return item.Id;
+        }
+        public int Save(Personel item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            if (item == null) throw new ArgumentNullException("item");
+            item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName();
+            item.Id = repository.Insert(item, transaction, context);
+            if (item.Id <= 0) throw new InvalidOperationException("Personel kaydı oluşturulamadı.");
+            int auditId = new PortalLogRepository().RecordAudit(context, "INSERT", "Personel", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            RecordChanges(null, item, auditId, transaction);
             return item.Id;
         }
         public bool Update(Personel item) { if (item == null) throw new ArgumentNullException("item"); Personel old = GetById(item.Id); bool ok = false; if (item.Id != 0) { item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); ok = repository.Update(item); } if (ok && ProjeConstants.IKYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.IKYS, ProjeConstants.IKYS_PERSONEL); return ok; }
@@ -84,12 +94,22 @@ namespace Model.Services.IKYS
             if (item == null || item.Id <= 0) return false;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                Personel old = MapSingle(repository.SelectById(item.Id, transaction, context));
-                item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName();
-                if (old == null || !repository.Update(item, transaction, context)) return false;
-                int auditId = new PortalLogRepository().RecordAudit(context, "UPDATE", "Personel", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
-                RecordChanges(old, item, auditId, transaction); transaction.Complete(); return true;
+                bool updated = Update(item, transaction, context);
+                if (updated) transaction.Complete();
+                return updated;
             }
+        }
+        public bool Update(Personel item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            if (item == null || item.Id <= 0) return false;
+            Personel old = MapSingle(repository.SelectById(item.Id, transaction, context));
+            item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName();
+            if (old == null || !repository.Update(item, transaction, context)) return false;
+            int auditId = new PortalLogRepository().RecordAudit(context, "UPDATE", "Personel", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            RecordChanges(old, item, auditId, transaction);
+            return true;
         }
         public bool Delete(Personel item) { if (item == null || item.Id == 0) return false; Personel old = GetById(item.Id); if (old == null) return false; bool ok = repository.Delete(item.Id); if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.IKYS, ProjeConstants.IKYS_PERSONEL); return ok; }
         public Personel GetActiveEmployee(int personelId) { return MapSingle(repository.SelectActiveEmployee(personelId)); }
