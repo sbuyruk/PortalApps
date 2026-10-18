@@ -275,6 +275,12 @@ okuma/yazmasının servis ve repository transaction yolları, WebPart etkinliğe
 alınmadan önce bu parçanın devamında birlikte tamamlanacaktır. Yeni migration
 gerekmez.
 
+Personel girişleri devam parçasında `Personel` ve `Kimlik` servis/repository
+katmanlarına transaction-aware `INSERT/UPDATE` yolları eklendi. İş kaydı ile
+audit aynı transaction içindedir; kimlik numarası, ad, soyad ve adres gibi
+hassas/serbest alanlar audit ayrıntısına yazılmaz. Bu servis yolları WebPart’a
+bağlanıp diğer personel entity’leri tamamlanmadan etkinleştirilmemelidir.
+
 ## Güvenilirlik ve gizlilik
 
 - SQL izinde sorgu adı veya sabit kimliği kullanılır; tam SQL, parametre değerleri
