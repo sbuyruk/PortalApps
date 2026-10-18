@@ -8,12 +8,14 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace IKYS_WebParts.MazereteMahsupWP
 {
     [ToolboxItemAttribute(false)]
     public partial class MazereteMahsupWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "MazereteMahsupWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -148,6 +150,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
             {
                 if (!Page.IsPostBack)
                 {
+                    new IzinHareketService().TryRecordWebPartOpened(LoggingContext);
                     if (!string.IsNullOrEmpty(MahsupMesajiQS))
                     {
                         MessageHelper.PublishMessage("Mahsup Tamamlandi", ProjeConstants.MESAJ_BASARILI, 2000);
@@ -243,7 +246,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
                         izinHareket.IzinTipi = ProjeConstants.IZINTIPI_UCRETLI_INT;
                         izinHareket.Mahsup = true;
                         izinHareket.Olusturan = CurrentUserName;
-                        int izinHareketId = new IzinHareketService().Save(izinHareket);
+                        int izinHareketId = new IzinHareketService().Save(izinHareket, LoggingContext);
                         isIzinHareketSaved = izinHareketId > 0 ? true : false;
                         if (isIzinHareketSaved)
                         {
@@ -281,7 +284,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
                 if (!isAllSaved)
                 {
                     bool isMahsupRB = (mahsupRB == null) ? true : new MahsupService().Delete(mahsupRB);
-                    bool isIzinHareketRB = new IzinHareketService().Delete(izinHareket);
+                    bool isIzinHareketRB = new IzinHareketService().Delete(izinHareket, LoggingContext);
                     bool isUcretliIzinRB = new IzinDonemService().Update(ucretliIzinDonemiRB);
                     bool isMazeretIzinRB = new IzinDonemService().Update(mazeretIzinDonemiRB);
                     string message = "Ücretli izinden Mazeret İznine Mahsup sırasında sorunlarla karşılaşıldı. Geri alma işleminde: "

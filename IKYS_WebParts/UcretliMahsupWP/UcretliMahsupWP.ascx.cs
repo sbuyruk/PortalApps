@@ -10,12 +10,14 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace IKYS_WebParts.UcretliMahsupWP
 {
     [ToolboxItemAttribute(false)]
     public partial class UcretliMahsupWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "UcretliMahsupWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -102,6 +104,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
             {
                 if (!Page.IsPostBack)
                 {
+                    new IzinHareketService().TryRecordWebPartOpened(LoggingContext);
                     if (!string.IsNullOrEmpty(MesajQS))
                     {
                         MessageHelper.PublishMessage("Mahsup Tamamlandi", ProjeConstants.MESAJ_BASARILI, 2000);
@@ -180,7 +183,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
             {
                 List<IzinDonem> list = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
                 int donemSayisi = 0;
-                IzinHareket izinHareket = new IzinHareketService().GetById(izinHareketId);
+                IzinHareket izinHareket = new IzinHareketService().GetById(izinHareketId, LoggingContext);
                 int sure = izinHareket.Sure.ConvertToInt();
                 foreach (IzinDonem item in list)
                 {
@@ -201,7 +204,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
         }
         private void FillOnayLbl(Personel personel, bool isUygunDonemVar)
         {
-            IzinHareket izinHareket = new IzinHareketService().GetById(paramIzinHareketIdLbl.Value.ConvertToInt());
+            IzinHareket izinHareket = new IzinHareketService().GetById(paramIzinHareketIdLbl.Value.ConvertToInt(), LoggingContext);
             if (isUygunDonemVar)
             {
                 OnayLbl.Text = "Onayladiginiz takdirde " + personel.Adi + " " + personel.Soyadi + " Tarafindan " + izinHareket.BaslangicTarihi.ToString("dd.MM.yyyy") + " - "
@@ -314,7 +317,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
             //int personelId = paramPersonelIdLbl.Value.ConvertToInt();
             int izinHareketId = paramIzinHareketIdLbl.Value.ConvertToInt();
             SecilenIdQS = izinHareketId.ToString();
-            IzinHareket izinHareket = new IzinHareketService().GetById(izinHareketId);
+            IzinHareket izinHareket = new IzinHareketService().GetById(izinHareketId, LoggingContext);
             if (izinHareket!=null)
             {
                 int personelId = izinHareket.PersonelId;

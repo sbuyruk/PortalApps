@@ -9,12 +9,14 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace IKYS_WebParts.TopluIzinGirisiWP
 {
     [ToolboxItemAttribute(false)]
     public partial class TopluIzinGirisiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "TopluIzinGirisiWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -94,6 +96,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
             {
                 if (!Page.IsPostBack)
                 {
+                    new IzinHareketService().TryRecordWebPartOpened(LoggingContext);
                     FillIzinTanim();
                     FillIzinBasSaat();
                     FillIzinBitSaat();
@@ -280,7 +283,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                     izinHareket.IzinDonemId = izinDonemi != null ? izinDonemi.Id : 0;
                 }
                 izinHareket.Olusturan = CurrentUserName;
-                int id = new IzinHareketService().Save(izinHareket);
+                int id = new IzinHareketService().Save(izinHareket, LoggingContext);
                 if (id > 0)
                     isSaved = true;
             }
