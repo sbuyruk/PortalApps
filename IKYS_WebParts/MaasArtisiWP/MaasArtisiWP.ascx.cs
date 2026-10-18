@@ -8,6 +8,7 @@ using System.Web.UI.WebControls.WebParts;
 using Utility.ProjeGlobal;
 using Model.TBYS;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Model.Ortak;
 using Model.IKYS;
 using Model.Services.IKYS;
@@ -19,6 +20,7 @@ namespace IKYS_WebParts.MaasArtisiWP
     [ToolboxItemAttribute(false)]
     public partial class MaasArtisiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "MaasArtisiWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -39,6 +41,7 @@ namespace IKYS_WebParts.MaasArtisiWP
         {
             if (!Page.IsPostBack)
             {
+                    new PersonelService().TryRecordWebPartOpened(LoggingContext);
                 UcretTanimService ucretTanimService = new UcretTanimService();
                 DateTime maxBitisTarihi = ucretTanimService.GetMaxBitisTarihi();
                 decimal agi = ucretTanimService.GetAgi(maxBitisTarihi);
