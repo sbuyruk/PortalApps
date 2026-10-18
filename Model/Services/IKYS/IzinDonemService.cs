@@ -1,4 +1,6 @@
 using DAO.Repositories.IKYS;
+using DAO.Repositories.Ortak;
+using DAO.Ortak;
 using Model.IKYS;
 using Model.Ortak;
 using System;
@@ -9,6 +11,7 @@ using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 using Utility.Logging;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace Model.Services.IKYS
 {
@@ -21,10 +24,46 @@ namespace Model.Services.IKYS
         public IzinDonem GetById(int id, PortalLogContext context) { return Trace(context, "IzinDonem.SelectById", () => Map(repository.SelectById(id))); }
         public List<IzinDonem> GetAll() { return ToList(repository.SelectAll()); }
         public int Save(IzinDonem item) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item); if (item.Id > 0 && ProjeConstants.IKYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINDONEM); return item.Id; }
+        public int Save(IzinDonem item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            if (item == null) throw new ArgumentNullException("item");
+            item.OlusturmaTarihi = DateTime.Now;
+            item.Olusturan = UtilityHelper.GetCurrentUserName();
+            item.Id = repository.Insert(item, transaction, context);
+            if (item.Id <= 0) throw new InvalidOperationException("İzin dönemi oluşturulamadı.");
+            new PortalLogRepository().RecordAudit(context, "INSERT", "IzinDonem", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            return item.Id;
+        }
         public bool Update(IzinDonem item) { if (item == null) throw new ArgumentNullException("item"); IzinDonem old = GetById(item.Id); bool ok = false; if (item.Id != 0) { item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); ok = repository.Update(item); } if (ok && ProjeConstants.IKYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINDONEM); return ok; }
+        public bool Update(IzinDonem item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            if (item == null || item.Id <= 0) return false;
+            IzinDonem old = Map(repository.SelectById(item.Id, transaction, context));
+            if (old == null) return false;
+            item.DegistirmeTarihi = DateTime.Now;
+            item.Degistiren = UtilityHelper.GetCurrentUserName();
+            if (!repository.Update(item, transaction, context)) return false;
+            new PortalLogRepository().RecordAudit(context, "UPDATE", "IzinDonem", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            return true;
+        }
         public bool Delete(IzinDonem item) { if (item == null || item.Id == 0) return false; IzinDonem old = GetById(item.Id); if (old == null) return false; bool ok = repository.Delete(item.Id); if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINDONEM); return ok; }
+        public bool Delete(IzinDonem item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            if (item == null || item.Id <= 0) return false;
+            IzinDonem old = Map(repository.SelectById(item.Id, transaction, context));
+            if (old == null || !repository.Delete(item.Id, transaction, context)) return false;
+            new PortalLogRepository().RecordAudit(context, "DELETE", "IzinDonem", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            return true;
+        }
         public IzinDonem GetByIzinTarihi(int personelId, int izinTipi, DateTime tarih) { return Map(repository.SelectByIzinTarihi(personelId, izinTipi, tarih)); }
         public IzinDonem GetByIzinTarihi(int personelId, int izinTipi, DateTime tarih, PortalLogContext context) { return Trace(context, "IzinDonem.SelectByIzinTarihi", () => Map(repository.SelectByIzinTarihi(personelId, izinTipi, tarih))); }
+        public IzinDonem GetByIzinTarihi(int personelId, int izinTipi, DateTime tarih, SqlTransactionContext transaction, PortalLogContext context) { return Map(repository.SelectByIzinTarihi(personelId, izinTipi, tarih, transaction, context)); }
         public List<IzinDonem> GetOncekiYillaraAit(int personelId) { return ToList(repository.SelectOncekiYillaraAit(personelId)); }
         public List<IzinDonem> GetOncekiYillaraAit(int personelId, PortalLogContext context) { return Trace(context, "IzinDonem.SelectOncekiYillaraAit", () => ToList(repository.SelectOncekiYillaraAit(personelId))); }
         public List<IzinDonem> GetByPersonelId(int personelId, int izinTipi) { return ToList(repository.SelectByPersonelId(personelId, izinTipi)); }

@@ -415,3 +415,6 @@ Bu pilotta build, test ve debug çalıştırılmadı; doğrulama kaynak taramas�
 Kalan 14 IKYS webpartındaki exception yakalama akışları da ortak `ReportError` davranışına geçirildi: `BekleyenIslemlerWP`, `DereceKademeListesiWP`, `GorevOnayGirisiWP`, `GorevOnayListesiKisiselWP`, `GorevOnayListesiWP`, `IzinDonemListesiWP`, `IzinHareketEditWP`, `KisiselSayfaListesiWP`, `KisiselSayfaWP`, `MaasArtisiWP`, `MazereteMahsupWP`, `ProtokolSirasiWP`, `TopluIzinGirisiWP` ve `YoklamaGirisiWP`. Böylece IKYS webpartlarında `ExceptionHelper` kullanılan dosyaların tamamında teknik loglama ve Türkçe kullanıcı mesajı için ortak yol bulunur. Loglama kapalıyken eski ULS fallback davranışı korunur.
 
 Bu parça da yalnızca kaynak/diff/UTF-8 kontrolleriyle doğrulanmıştır. Visual Studio derleme ve Test sunucusu testi kullanıcı tarafından yapılacaktır.
+## IzinDonem transaction altyapısı
+
+`IzinDonemRepository` ve `IzinDonemService` için transaction-aware SELECT/INSERT/UPDATE/DELETE overloadları eklendi. Bu overloadlar aynı `SqlTransactionContext` üzerinden çalışır, SQL izini ve audit kaydını aynı transaction içinde üretir; transaction'ın tamamlanması çağıran çoklu entity akışına bırakılır. Böylece IzinHareket ve IzinTalep ile birlikte yürüyen izin dönemi değişiklikleri sonraki webpart parçasında tek transaction altında birleştirilebilir.

@@ -2,6 +2,8 @@ using DAO.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
+using Utility.Logging;
 
 namespace DAO.Repositories.IKYS
 {
@@ -12,14 +14,31 @@ namespace DAO.Repositories.IKYS
         public IzinDonemRepository() : this(new DbClass()) { }
         public IzinDonemRepository(DbClass db) { if (db == null) throw new ArgumentNullException("db"); this.db = db; queryBuilder = new CrudQueryBuilder(); }
         public DataTable SelectById(int id) { SqlQuery q = new SqlQuery("SELECT * FROM IzinDonem_Table WHERE Id=@Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, ""); }
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            SqlQuery q = new SqlQuery("SELECT * FROM IzinDonem_Table WITH (UPDLOCK,HOLDLOCK) WHERE Id=@Id");
+            q.AddParameter("@Id", id);
+            return TraceSelect(q, "IzinDonem.SelectById", transaction, context);
+        }
         public DataTable SelectAll() { return db.SelectFromDb(new SqlQuery("SELECT * FROM IzinDonem_Table ORDER BY BaslangicTarihi DESC"), ""); }
         public int Insert<T>(T item) { return db.Insert(queryBuilder.BuildInsert(item, "IzinDonem_Table")); }
         public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "IzinDonem_Table")); }
         public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("IzinDonem_Table", id), ""); }
+        public int Insert<T>(T item, SqlTransactionContext transaction, PortalLogContext context) { return TraceInsert(queryBuilder.BuildInsert(item, "IzinDonem_Table"), transaction, context); }
+        public bool Update<T>(T item, SqlTransactionContext transaction, PortalLogContext context) { return TraceWrite(queryBuilder.BuildUpdate(item, "IzinDonem_Table"), "UPDATE", "IzinDonem.Update", transaction, context); }
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context) { return TraceWrite(queryBuilder.BuildDelete("IzinDonem_Table", id), "DELETE", "IzinDonem.Delete", transaction, context); }
         public DataTable SelectByIzinTarihi(int personelId, int izinTipi, DateTime tarih)
         {
             SqlQuery q = new SqlQuery("SELECT * FROM IzinDonem_Table WHERE PersonelId=@PersonelId AND (IzinTipi=@IzinTipi OR @IzinTipi=0) AND BaslangicTarihi<=@Tarih AND BitisTarihi>@OncekiTarih ORDER BY BaslangicTarihi");
             q.AddParameter("@PersonelId", personelId); q.AddParameter("@IzinTipi", izinTipi); q.AddParameter("@Tarih", tarih); q.AddParameter("@OncekiTarih", tarih.AddDays(-1)); return db.SelectFromDb(q, "");
+        }
+        public DataTable SelectByIzinTarihi(int personelId, int izinTipi, DateTime tarih, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            SqlQuery q = new SqlQuery("SELECT * FROM IzinDonem_Table WITH (UPDLOCK,HOLDLOCK) WHERE PersonelId=@PersonelId AND (IzinTipi=@IzinTipi OR @IzinTipi=0) AND BaslangicTarihi<=@Tarih AND BitisTarihi>@OncekiTarih ORDER BY BaslangicTarihi");
+            q.AddParameter("@PersonelId", personelId); q.AddParameter("@IzinTipi", izinTipi); q.AddParameter("@Tarih", tarih); q.AddParameter("@OncekiTarih", tarih.AddDays(-1));
+            return TraceSelect(q, "IzinDonem.SelectByIzinTarihi", transaction, context);
         }
         public DataTable SelectOncekiYillaraAit(int personelId)
         {
@@ -37,5 +56,25 @@ namespace DAO.Repositories.IKYS
             SqlQuery q = new SqlQuery("SELECT SUM(CONVERT(INT,IzinHakki)) IzinHakkiToplami,SUM(CONVERT(INT,KullanilanIzin)) KullanilanIzinToplami,SUM(CONVERT(INT,KalanIzin)) KalanIzinToplami FROM IzinDonem_Table WHERE IzinTipi=@IzinTipi AND PersonelId=@PersonelId" + oldFilter + " GROUP BY PersonelId"); q.AddParameter("@IzinTipi", 1); q.AddParameter("@PersonelId", personelId); return db.SelectFromDb(q, "");
         }
         public DataTable SelectByPersonelIdReturnDataTable(int personelId, int izinTipi) { return SelectByPersonelId(personelId, izinTipi); }
+        private static DataTable TraceSelect(SqlQuery query, string name, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
+            try { DataTable result = transaction.Select(query); succeeded = true; return result; }
+            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", name, clock.ElapsedMilliseconds, succeeded); }
+        }
+        private static int TraceInsert(SqlQuery query, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
+            try { int id = transaction.Insert(query); succeeded = id > 0; return id; }
+            finally { PortalTechnicalLog.WriteSqlTrace(context, "INSERT", "IzinDonem.Insert", clock.ElapsedMilliseconds, succeeded); }
+        }
+        private static bool TraceWrite(SqlQuery query, string operation, string name, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
+            try { succeeded = transaction.Update(query); return succeeded; }
+            finally { PortalTechnicalLog.WriteSqlTrace(context, operation, name, clock.ElapsedMilliseconds, succeeded); }
+        }
     }
 }
