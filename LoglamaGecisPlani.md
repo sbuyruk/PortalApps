@@ -304,6 +304,12 @@ personel, tarih, derece, kademe, grup ve protokol kimlikleriyle sınırlı kayı
 tutulur. Toplu silme işlemi de etkin akışta aynı transaction içinde audit
 başlığıyla tamamlanır.
 
+Bu geniş parçada `UnvanTanim`, `TahsilTanim` ve `BulunmamaSebebi` yardımcı
+entity’leri de transaction-aware CRUD yollarına alındı. Personel ve yoklama
+ekranlarının bu listeleri context ile okuması halinde SELECT izi üretilecek;
+etkin yazma yollarında audit aynı transaction içinde tutulacaktır. Audit
+ayrıntısı unvan kısa adı/adı, tahsil durumu ve bulunmama sebebi adıyla sınırlıdır.
+
 ## Güvenilirlik ve gizlilik
 
 - SQL izinde sorgu adı veya sabit kimliği kullanılır; tam SQL, parametre değerleri
