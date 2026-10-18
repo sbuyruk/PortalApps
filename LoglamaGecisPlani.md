@@ -448,3 +448,6 @@ Bu parça da yalnızca kaynak/diff/UTF-8 kontrolleriyle doğrulanmıştır. Visu
 ## Mahsup servislerinin transaction hazırlığı
 
 `MahsupService` için dış transaction kullanan INSERT ve DELETE overloadları eklendi. `MazereteMahsupWP` ve `UcretliMahsupWP` içindeki Mahsup INSERT çağrıları bağlamlı servis yoluna geçirildi; audit ve SQL izi aynı OperationId ile üretilir. Mahsup, IzinHareket ve IzinDonem geri alma zincirinin tek transaction altında birleştirilmesi sonraki mahsup parçasında yapılacaktır.
+## Mahsup ve toplu izin çoklu entity transaction akışları
+
+`MazereteMahsupWP` ve `UcretliMahsupWP` içinde Mahsup, IzinHareket ve IzinDonem değişiklikleri loglama açıkken aynı `SqlTransactionContext` altında yürütülecek şekilde birleştirildi. Başarısız akışta transaction tamamlanmadığı için manuel geri alma yalnızca legacy yolda çalışır. `TopluIzinGirisiWP` içinde dönem arama/oluşturma/güncelleme, kullanılan izin değişikliği ve IzinHareket INSERT'i aynı transaction'a bağlandı. Loglama kapalıyken mevcut servis çağrıları korunur.
