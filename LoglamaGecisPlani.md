@@ -481,3 +481,6 @@ TBYS başlangıç grubunda `BagisciBagislariWP`, `BagisciTalepleriWP`, `BagisciT
 ## IKYS son açılış ve maaş/protokol transaction kapsamı
 
 `GorevOnayListesiKisiselWP` ve `ProtokolSirasiWP` açılış kayıtları tamamlandı. Protokol sırası toplu güncellemesi loglama açıkken tek transaction içinde çalışır; eksik personel veya başarısız güncelleme commit edilmez. `MaasOlusturmaWP` içinde derece/kademe değişimi ile maaş hareketi INSERT işlemleri aynı transaction'a bağlandı. Derece/kademe ve maaş servislerine dış transaction kullanan kayıt yolları eklendi.
+## IKYS kalan kritik okuma izleri
+
+`GorevOnayGirisiWP`, `BekleyenIslemlerWP`, `YoklamaGirisiWP`, `IzinTalepListesiWP` ve `MazeretIzinTalepListesiWP` içindeki personel, iş bilgileri, iletişim ve görev sorgularının context-aware servis yolları kullanması sağlandı. Böylece bu kullanıcı akışlarındaki SELECT işlemleri teknik SQL iziyle aynı `OperationId` üzerinden takip edilebilir.

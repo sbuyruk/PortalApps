@@ -248,7 +248,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                         BulunmamaSebebiDDL.Enabled = false;
                         TitleLbl.Text = "Uzaktan Çalisma Görev Formu";
                         IletisimBilgileri ib = new IletisimBilgileri();
-                        ib = new IletisimBilgileriService().GetByPersonelId(PersonelIdQS.ConvertToInt());
+                        ib = new IletisimBilgileriService().GetByPersonelId(PersonelIdQS.ConvertToInt(), LoggingContext);
                         if (ib != null)
                         {
                             Ilce ilce = new IlceService().GetById(ib.Ilcesi);
@@ -397,7 +397,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                 if (string.IsNullOrEmpty(BirimTanimIdQS))
                 {
                     IsBilgileri ib = new IsBilgileri();
-                    ib = new IsBilgileriService().GetByPersonelId(personel.Id);
+                    ib = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
                     if (ib != null)
                     {
                         int birimId = ib.BirimId;
@@ -574,7 +574,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
 
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), LoggingContext);
 
             }
             else
@@ -827,7 +827,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
             {
                 PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
                 IletisimBilgileri ib = new IletisimBilgileri();
-                ib = new IletisimBilgileriService().GetByPersonelId(personel.Id);
+                ib = new IletisimBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
                 if (ib != null)
                 {
                     Ilce ilce = new IlceService().GetById(ib.Ilcesi);
