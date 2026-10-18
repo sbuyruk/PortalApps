@@ -433,3 +433,9 @@ Bu parça da yalnızca kaynak/diff/UTF-8 kontrolleriyle doğrulanmıştır. Visu
 ## IzinDonem transaction-aware dönem oluşturma/güncelleme
 
 Çoklu entity izin hareketi güncellemesine hazırlık olarak `IzinDonemService` için transaction-aware dönem oluşturma ve güncelleme yolları eklendi. İş bilgileri SELECT'i, dönem arama, dönem INSERT/UPDATE, SQL izi ve audit yazımı aynı `SqlTransactionContext` üzerinden yürür. Bu overloadlar transaction'ı tamamlamaz; üst akışın IzinHareket ve IzinTalep işlemleriyle birlikte commit etmesine bırakır.
+## IzinHareketEdit güncelleme transaction bağlantısı
+
+`IzinHareketEditWP` güncelleme akışı transaction-aware IzinDonem ve IzinHareket servis yollarına bağlandı. Dönem arama, gerekirse dönem oluşturma/güncelleme, kullanılan izin düşme/ekleme ve IzinHareket güncellemesi loglama açıkken aynı transaction içinde yürür; başarılı işlem sonunda tek commit yapılır. Legacy yol loglama kapalıyken korunur. İlişkili IzinTalep güncellemesinin aynı transaction zincirine alınması sonraki alt adımda tamamlanacaktır.
+## İzin talebi güncellemesinin zincire alınması
+
+`IzinHareketEditWP` güncelleme akışında ilişkili `IzinTalep` kaydının güncellenmesi de aynı transaction'a alındı. Böylece dönem kullanımı, IzinHareket ve IzinTalep değişiklikleri birlikte commit edilir; herhangi biri başarısız olursa tamamı geri alınır. `IzinTalepService` için transaction-aware `Update` overloadı eklendi.
