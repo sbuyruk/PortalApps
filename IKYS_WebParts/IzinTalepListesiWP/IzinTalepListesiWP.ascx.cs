@@ -116,9 +116,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                ReportError("IzinTalepListesi.Data", exception);
             }
             return jSon;
         }

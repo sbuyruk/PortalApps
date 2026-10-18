@@ -1991,8 +1991,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                     }
                     catch (Exception ex)
                     {
-                        ExceptionHelper exhMail = new ExceptionHelper(ex);
-                        exhMail.PublishException();
+                        ReportError("Personel.Mail", ex);
                     }
 
                     //Aile, Egitim, Kurs,IsTecrube   tablolari ayrica save edilecek
@@ -2011,8 +2010,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exh = new ExceptionHelper(ex);
-                exh.PublishException();
+                ReportError("Personel.Save", ex);
             }
         }
         protected void DeleteBtn_Click(object sender, EventArgs e)
@@ -2028,8 +2026,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("DogumIli.Changed", ex);
             }
 
         }
@@ -2044,8 +2041,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("IkametIli.Changed", ex);
             }
         }
         protected void CalismaDurumuDDL_SelectedIndexChanged(object sender, EventArgs e)
@@ -2142,7 +2138,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             {
                 Exception ex = new Exception("Resim Kaydedilemedi.");
                 exhelper.Exceptions.Add(ex);
-                exhelper.PublishException();
+                ReportError("Personel.Image", ex);
             }
             else
             {

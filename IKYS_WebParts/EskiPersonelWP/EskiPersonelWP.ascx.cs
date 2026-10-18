@@ -1990,7 +1990,7 @@ namespace IKYS_WebParts.EskiPersonelWP
             {
                 Exception ex = new Exception("Resim Kaydedilemedi.");
                 exhelper.Exceptions.Add(ex);
-                exhelper.PublishException();
+                ReportError("Personel.Image", ex);
             }
             else
             {
