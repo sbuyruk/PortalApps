@@ -475,3 +475,6 @@ TBYS başlangıç grubunda `BagisciBagislariWP`, `BagisciTalepleriWP`, `BagisciT
 ## IKYS personel ve kimlik güncelleme transaction'ı
 
 `PersonelGirisiWP` ve `EskiPersonelWP` içindeki personel/kimlik güncellemesi loglama açıkken aynı transaction altında yürütülür. Personel ve Kimlik SELECT, UPDATE, audit ve SQL izleri aynı `OperationId` ile kaydedilir; iki güncellemeden biri başarısız olursa transaction tamamlanmaz. Görev tanımı için transaction-aware personel sorgusu da ortak servis altyapısına eklendi. Loglama kapalıyken mevcut legacy akış korunur.
+## IKYS iş ve iletişim bilgileri güncelleme transaction'ı
+
+`PersonelGirisiWP` ve `EskiPersonelWP` içindeki İş Bilgileri ve İletişim Bilgileri güncellemeleri loglama açıkken dış transaction kullanan servis yollarına geçirildi. İş bilgisi güncellemesinde ilişkili Görev Tanımı ataması da aynı transaction içinde yürür; İletişim Bilgileri SELECT/UPDATE, audit ve SQL izi aynı `OperationId` ile kaydedilir. Loglama kapalıyken legacy akış korunur.

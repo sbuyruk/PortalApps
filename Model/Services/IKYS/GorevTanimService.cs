@@ -26,6 +26,12 @@ namespace Model.Services.IKYS
         }
         public GorevTanim GetById(int id) { return Map(repository.SelectById(id)); }
         public GorevTanim GetById(int id, PortalLogContext context) { return Map(repository.SelectById(id, context)); }
+        public GorevTanim GetById(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            return Map(repository.SelectById(id, transaction, context));
+        }
         public List<GorevTanim> GetAll() { return ToList(repository.SelectAll()); }
         public List<GorevTanim> GetAll(PortalLogContext context) { return ToList(repository.SelectAll(context)); }
         public bool TryRecordWebPartOpened(PortalLogContext context) { return new PortalLogRepository().TryRecordWebPartOpened(context); }
@@ -93,6 +99,25 @@ namespace Model.Services.IKYS
                 return true;
             }
         }
+        public bool Update(GorevTanim item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            if (item == null || item.Id <= 0) return false;
+            GorevTanim old = Map(repository.SelectById(item.Id, transaction, context));
+            if (old == null) return false;
+            item.DegistirmeTarihi = DateTime.Now;
+            item.Degistiren = UtilityHelper.GetCurrentUserName();
+            if (!repository.Update(item, transaction, context)) return false;
+            PortalLogRepository log = new PortalLogRepository();
+            int auditId = log.RecordAudit(context, "UPDATE", "GorevTanim", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            RecordChanges(old, item, auditId, transaction);
+            IsBilgileriRepository workRepository = new IsBilgileriRepository();
+            if (old.PersonelId != item.PersonelId)
+                ChangeAssignment(workRepository, old.PersonelId, 0, transaction, context, log);
+            ChangeAssignment(workRepository, item.PersonelId, item.Id, transaction, context, log);
+            return true;
+        }
         public bool Delete(GorevTanim item)
         {
             if (item == null || item.Id == 0) return false;
@@ -121,6 +146,12 @@ namespace Model.Services.IKYS
             }
         }
         public GorevTanim GetByPersonelId(int personelId) { return Map(repository.SelectByPersonelId(personelId)); }
+        public GorevTanim GetByPersonelId(int personelId, PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context");
+            if (!PortalLogSettings.IsEnabled(context)) return GetByPersonelId(personelId);
+            return Map(repository.SelectByPersonelId(personelId, context));
+        }
         public GorevTanim GetByPersonelId(int personelId, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");

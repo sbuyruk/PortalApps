@@ -68,6 +68,12 @@ namespace DAO.Repositories.IKYS
             query.AddParameter("@PersonelId", personelId);
             return db.SelectFromDb(query, "");
         }
+        public DataTable SelectByPersonelId(int personelId, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM GorevTanim_Table WHERE PersonelId=@PersonelId ORDER BY Id");
+            query.AddParameter("@PersonelId", personelId);
+            return TraceSelect(query, "GorevTanim.SelectByPersonelId", context);
+        }
         public DataTable SelectByPersonelId(int personelId, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
