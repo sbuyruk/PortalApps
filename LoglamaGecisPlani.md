@@ -466,3 +466,6 @@ Bu parça da yalnızca kaynak/diff/UTF-8 kontrolleriyle doğrulanmıştır. Visu
 ## Liste ve personel giriş webpartlarında kalan exception standardı
 
 `IzinHareketListesiWP`, `IzinTalepListesiWP`, `PersonelGirisiWP` ve `EskiPersonelWP` içindeki kalan veri, personel, yönlendirme ve resim yükleme exception akışları `ReportError` üzerinden teknik loglamaya bağlandı. Kullanıcı mesajları Türkçe başvuru kodu standardını korur.
+## TBYS bağış ve taşınmaz webpartları exception standardı
+
+TBYS başlangıç grubunda `BagisciBagislariWP`, `BagisciTalepleriWP`, `BagisciTaahhutleriWP` ve `BagimsizBolumWP` için `PortalLogContext` ve `ReportError` altyapısı eklendi. Bağış, taahhüt ve bağımsız bölüm işlemlerindeki exception akışları OperationId ile teknik loga bağlandı; loglama kapalıyken legacy exception davranışı korunur.
