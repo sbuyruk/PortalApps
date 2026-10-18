@@ -281,6 +281,16 @@ audit aynı transaction içindedir; kimlik numarası, ad, soyad ve adres gibi
 hassas/serbest alanlar audit ayrıntısına yazılmaz. Bu servis yolları WebPart’a
 bağlanıp diğer personel entity’leri tamamlanmadan etkinleştirilmemelidir.
 
+Personel girişleri devam parçasının kapsamı `IsBilgileri` ve
+`IletisimBilgileri` entity’lerini de içerir. Bu iki entity için repository
+katmanında transaction-aware `SELECT/INSERT/UPDATE/DELETE` ve SQL izleri,
+service katmanında aynı transaction içinde audit başlığı ve güvenli alan
+değişiklikleri eklendi. İletişim adresi, telefon, e-posta ve plaka gibi hassas
+ve serbest metin alanları audit ayrıntısına yazılmaz; iş bilgilerinde yalnızca
+personel, unvan, görev, birim ve çalışma durumu kimlikleri tutulur. WebPart
+akışlarının bu context overload’larına bağlanması ve etkinleştirme ayrı bir
+inceleme adımıdır.
+
 ## Güvenilirlik ve gizlilik
 
 - SQL izinde sorgu adı veya sabit kimliği kullanılır; tam SQL, parametre değerleri
