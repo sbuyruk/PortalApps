@@ -478,3 +478,6 @@ TBYS başlangıç grubunda `BagisciBagislariWP`, `BagisciTalepleriWP`, `BagisciT
 ## IKYS iş ve iletişim bilgileri güncelleme transaction'ı
 
 `PersonelGirisiWP` ve `EskiPersonelWP` içindeki İş Bilgileri ve İletişim Bilgileri güncellemeleri loglama açıkken dış transaction kullanan servis yollarına geçirildi. İş bilgisi güncellemesinde ilişkili Görev Tanımı ataması da aynı transaction içinde yürür; İletişim Bilgileri SELECT/UPDATE, audit ve SQL izi aynı `OperationId` ile kaydedilir. Loglama kapalıyken legacy akış korunur.
+## IKYS son açılış ve maaş/protokol transaction kapsamı
+
+`GorevOnayListesiKisiselWP` ve `ProtokolSirasiWP` açılış kayıtları tamamlandı. Protokol sırası toplu güncellemesi loglama açıkken tek transaction içinde çalışır; eksik personel veya başarısız güncelleme commit edilmez. `MaasOlusturmaWP` içinde derece/kademe değişimi ile maaş hareketi INSERT işlemleri aynı transaction'a bağlandı. Derece/kademe ve maaş servislerine dış transaction kullanan kayıt yolları eklendi.

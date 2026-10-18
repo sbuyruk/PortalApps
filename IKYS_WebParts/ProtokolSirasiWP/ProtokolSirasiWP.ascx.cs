@@ -47,9 +47,17 @@ namespace IKYS_WebParts.ProtokolSirasiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
+            try
             {
-                TabloOlustur();
+                if (!Page.IsPostBack)
+                {
+                    new PersonelService().TryRecordWebPartOpened(LoggingContext);
+                    TabloOlustur();
+                }
+            }
+            catch (Exception ex)
+            {
+                ReportError("ProtokolSirasi.PageLoad", ex);
             }
         }
         private void TabloOlustur()
@@ -200,22 +208,35 @@ $('#CustomDataTable').on( 'draw.dt', function () {
                 string value = paramProtokolArray.Value;
                 string[] idList = value.Split(',');
                 int sira = 1;
-                foreach (string item in idList)
+                PortalLogContext context = LoggingContext;
+                bool loggingEnabled = PortalLogSettings.IsEnabled(context);
+                using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
                 {
-                    int personelId = item.ConvertToInt();
-                    if (personelId > 0)
+                    foreach (string item in idList)
                     {
-                        IsBilgileri isb = new IsBilgileriService().GetByPersonelId(personelId);
-                        isb.ProtokolSiraNo = sira++;
-                        new IsBilgileriService().Update(isb);
+                        int personelId = item.ConvertToInt();
+                        if (personelId > 0)
+                        {
+                            IsBilgileriService service = new IsBilgileriService();
+                            IsBilgileri isb = transaction == null
+                                ? service.GetByPersonelId(personelId)
+                                : service.GetByPersonelId(personelId, transaction, context);
+                            if (isb == null) throw new InvalidOperationException("Personel iş bilgileri bulunamadı.");
+                            isb.ProtokolSiraNo = sira++;
+                            bool updated = transaction == null
+                                ? service.Update(isb)
+                                : service.Update(isb, transaction, context);
+                            if (!updated) throw new InvalidOperationException("Protokol sırası güncellenemedi.");
+                        }
                     }
-
+                    if (transaction != null) transaction.Complete();
                 }
                 TabloOlustur();
                 MessageHelper.PublishMessage("Sıralama kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ReportError("ProtokolSirasi.Save", ex);
                 MessageHelper.PublishMessage("Sıralama kaydedilemedi", ProjeConstants.MESAJ_HATA);
             }
 

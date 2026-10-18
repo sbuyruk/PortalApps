@@ -9,6 +9,7 @@ using System.Text;
 using Model.IKYS;
 using Model.Ortak;
 using Model.Services.IKYS;
+using DAO.Ortak;
 using System.Data;
 using System.Web.UI.WebControls;
 using System.Collections.Generic;
@@ -375,10 +376,13 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
             UtilityHelper.SetDDLValue(TarihDDL, (string.IsNullOrEmpty(TarihDDL.SelectedItem.Value) ? DateTime.Today.ToString("dd.MM.yyyy") : TarihDDL.SelectedItem.Value));
             DateTime tarih = TarihDDL.SelectedItem.Value.ConvertToDatetime();
             List<MaasListItem> list=GetDataList();
-
-            foreach (MaasListItem item in list)
+            PortalLogContext context = LoggingContext;
+            bool loggingEnabled = PortalLogSettings.IsEnabled(context);
+            using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
             {
-                MaasHareket maasHareket = new MaasHareket();
+                foreach (MaasListItem item in list)
+                {
+                    MaasHareket maasHareket = new MaasHareket();
                 maasHareket.Adi = item.Adi;
                 maasHareket.Soyadi = item.Soyadi;
                 maasHareket.Unvan = item.Unvan;
@@ -401,7 +405,10 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
                         dereceKademeDegisim.DegisimTarihi = new DateTime(tarih.Year, tarih.Month, item.DereceKademeIlerlemeTarihi.ConvertToDatetime().Day); // DereceKademeDegisim'in tarihi, maasin olusturuldugu tarih olacak
                         dereceKademeDegisim.Degisim = "Kademe Yükseltme";
                         dereceKademeDegisim.Derece = item.Derece; // Derece'yi de ayni sekilde al
-                        new DereceKademeDegisimService().Save(dereceKademeDegisim);
+                        if (transaction == null)
+                            new DereceKademeDegisimService().Save(dereceKademeDegisim);
+                        else
+                            new DereceKademeDegisimService().Save(dereceKademeDegisim, transaction, context);
                         maasHareket.DereceKademeIlerlemeTarihi = dereceKademeDegisim.DegisimTarihi;
                         //IsBligileri_Table'da Derece,Kademe ve DereceKademeIlerlemeTarihi alanlari güncellensin
                         //IsBilgileri personelIsBilgileri = new IsBilgileri();
@@ -424,7 +431,12 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
                 maasHareket.ProtokolSiraNo = item.ProtokolSiraNo;
                 maasHareket.GrupId = item.GrupId;
                 maasHareket.Tarih = TarihDDL.SelectedItem.Value.ConvertToDatetime();
-                new MaasHareketService().Save(maasHareket);
+                    if (transaction == null)
+                        new MaasHareketService().Save(maasHareket);
+                    else
+                        new MaasHareketService().Save(maasHareket, transaction, context);
+                }
+                if (transaction != null) transaction.Complete();
             }
         }
 
