@@ -10,12 +10,14 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace IKYS_WebParts.KisiselSayfaListesiWP
 {
     [ToolboxItemAttribute(false)]
     public partial class KisiselSayfaListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "KisiselSayfaListesiWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -75,6 +77,7 @@ namespace IKYS_WebParts.KisiselSayfaListesiWP
         {
             try
             {
+                new PersonelService().TryRecordWebPartOpened(LoggingContext);
                 FillPersonelTable();
             }
             catch (Exception ex)
@@ -219,13 +222,13 @@ namespace IKYS_WebParts.KisiselSayfaListesiWP
 
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), LoggingContext);
 
             }
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = new PersonelService().GetByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName, LoggingContext);
             }
             PersonelIdQS = personel.Id.ToString();
             return personel;
