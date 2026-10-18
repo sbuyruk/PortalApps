@@ -424,3 +424,6 @@ Bu parça da yalnızca kaynak/diff/UTF-8 kontrolleriyle doğrulanmıştır. Visu
 ## IzinDonemListesi webpart transaction kullanımı
 
 `IzinDonemListesiWP` içindeki dönem ekleme ve güncelleme işlemleri, loglama etkin olduğunda `SqlTransactionContext` üzerinden çalışacak şekilde güncellendi. Başarılı işlemde transaction açıkça tamamlanır; hata veya başarısız sonuçta değişiklikler commit edilmez. Loglama kapalıyken mevcut legacy servis yolu korunur.
+## IzinHareketEdit silme akışı
+
+`IzinHareketEditWP` içinde mazeret ve ücretli izin hareketi silinirken kullanılan izin dönemi güncellemesi ile hareket silme işlemi aynı `SqlTransactionContext` altında birleştirildi. Dönem güncellemesi başarısız olursa hareket silinmez; başarılı iki işlemden sonra transaction tamamlanır. Loglama kapalıyken eski davranış korunur. İzin talebi kaydının ayrıca silinmesi sonraki çoklu entity adımında aynı transaction zincirine alınacaktır.
