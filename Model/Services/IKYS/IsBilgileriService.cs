@@ -28,10 +28,20 @@ namespace Model.Services.IKYS
             if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName();
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                item.Id = repository.Insert(item, transaction, context); if (item.Id <= 0) throw new InvalidOperationException("İş bilgileri kaydı oluşturulamadı.");
-                int auditId = new PortalLogRepository().RecordAudit(context, "INSERT", "IsBilgileri", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
-                RecordChanges(null, item, auditId, transaction); transaction.Complete();
+                item.Id = Save(item, transaction, context); transaction.Complete();
             }
+            return item.Id;
+        }
+        public int Save(IsBilgileri item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            if (item == null) throw new ArgumentNullException("item");
+            item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName();
+            item.Id = repository.Insert(item, transaction, context);
+            if (item.Id <= 0) throw new InvalidOperationException("İş bilgileri kaydı oluşturulamadı.");
+            int auditId = new PortalLogRepository().RecordAudit(context, "INSERT", "IsBilgileri", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            RecordChanges(null, item, auditId, transaction);
             return item.Id;
         }
         public bool Update(IsBilgileri item) { if (item == null) throw new ArgumentNullException("item"); IsBilgileri old = GetById(item.Id); bool ok = false; if (item.Id != 0) { item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); ok = repository.Update(item); } if (ok && ProjeConstants.IKYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.IKYS, ProjeConstants.IKYS_ISBILGILERI); return ok; }

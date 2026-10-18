@@ -28,10 +28,20 @@ namespace Model.Services.IKYS
             if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName();
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                item.Id = repository.Insert(item, transaction, context); if (item.Id <= 0) throw new InvalidOperationException("Kimlik kaydı oluşturulamadı.");
-                int auditId = new PortalLogRepository().RecordAudit(context, "INSERT", "Kimlik", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
-                RecordChanges(null, item, auditId, transaction); transaction.Complete();
+                item.Id = Save(item, transaction, context); transaction.Complete();
             }
+            return item.Id;
+        }
+        public int Save(Kimlik item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            if (item == null) throw new ArgumentNullException("item");
+            item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName();
+            item.Id = repository.Insert(item, transaction, context);
+            if (item.Id <= 0) throw new InvalidOperationException("Kimlik kaydı oluşturulamadı.");
+            int auditId = new PortalLogRepository().RecordAudit(context, "INSERT", "Kimlik", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            RecordChanges(null, item, auditId, transaction);
             return item.Id;
         }
         public bool Update(Kimlik item) { if (item == null) throw new ArgumentNullException("item"); Kimlik old = GetById(item.Id); bool ok = false; if (item.Id != 0) { item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); ok = repository.Update(item); } if (ok && ProjeConstants.IKYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.IKYS, ProjeConstants.IKYS_KIMLIK); return ok; }
@@ -41,16 +51,38 @@ namespace Model.Services.IKYS
             if (item == null || item.Id <= 0) return false;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                Kimlik old = Map(repository.SelectById(item.Id, transaction, context)); item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName();
-                if (old == null || !repository.Update(item, transaction, context)) return false;
-                int auditId = new PortalLogRepository().RecordAudit(context, "UPDATE", "Kimlik", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
-                RecordChanges(old, item, auditId, transaction); transaction.Complete(); return true;
+                bool updated = Update(item, transaction, context);
+                if (updated) transaction.Complete();
+                return updated;
             }
+        }
+        public bool Update(Kimlik item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            if (item == null || item.Id <= 0) return false;
+            Kimlik old = Map(repository.SelectById(item.Id, transaction, context)); item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName();
+            if (old == null || !repository.Update(item, transaction, context)) return false;
+            int auditId = new PortalLogRepository().RecordAudit(context, "UPDATE", "Kimlik", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            RecordChanges(old, item, auditId, transaction);
+            return true;
         }
         public bool Delete(Kimlik item) { if (item == null || item.Id == 0) return false; Kimlik old = GetById(item.Id); if (old == null) return false; bool ok = repository.Delete(item.Id); if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.IKYS, ProjeConstants.IKYS_KIMLIK); return ok; }
         public Kimlik GetByPersonelId(int personelId) { return Map(repository.SelectByPersonelId(personelId)); }
         public Kimlik GetByPersonelId(int personelId, PortalLogContext context) { return Map(repository.SelectByPersonelId(personelId, context)); }
+        public Kimlik GetByPersonelId(int personelId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            return Map(repository.SelectByPersonelId(personelId, transaction, context));
+        }
         public Kimlik GetByTcKimlikNo(string kimlikNo) { return Map(repository.SelectByTcKimlikNo(kimlikNo)); }
+        public Kimlik GetByTcKimlikNo(string kimlikNo, PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context");
+            if (!PortalLogSettings.IsEnabled(context)) return GetByTcKimlikNo(kimlikNo);
+            return Map(repository.SelectByTcKimlikNo(kimlikNo, context));
+        }
         public DataTable GetAllFromKimlik() { return repository.SelectAllFromKimlik(); }
         private static void RecordChanges(Kimlik old, Kimlik current, int auditId, SqlTransactionContext transaction)
         {

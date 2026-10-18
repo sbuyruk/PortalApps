@@ -49,7 +49,24 @@ namespace DAO.Repositories.IKYS
             try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
             finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Kimlik.SelectByPersonelId", clock.ElapsedMilliseconds, succeeded); }
         }
+        public DataTable SelectByPersonelId(int personelId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            SqlQuery query = new SqlQuery("SELECT * FROM Kimlik_Table WITH (UPDLOCK, HOLDLOCK) WHERE PersonelId=@PersonelId ORDER BY Id");
+            query.AddParameter("@PersonelId", personelId);
+            Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
+            try { DataTable result = transaction.Select(query); succeeded = true; return result; }
+            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Kimlik.SelectByPersonelId", clock.ElapsedMilliseconds, succeeded); }
+        }
         public DataTable SelectByTcKimlikNo(string kimlikNo) { SqlQuery q = new SqlQuery("SELECT * FROM Kimlik_Table WHERE TCKimlikNo=@TCKimlikNo ORDER BY Id"); q.AddParameter("@TCKimlikNo", kimlikNo); return db.SelectFromDb(q, ""); }
+        public DataTable SelectByTcKimlikNo(string kimlikNo, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM Kimlik_Table WHERE TCKimlikNo=@TCKimlikNo ORDER BY Id");
+            query.AddParameter("@TCKimlikNo", kimlikNo);
+            Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
+            try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
+            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Kimlik.SelectByTcKimlikNo", clock.ElapsedMilliseconds, succeeded); }
+        }
         public DataTable SelectAllFromKimlik() { return db.SelectFromDb(new SqlQuery("SELECT * FROM KIMLIK_BILGILERI"), ""); }
     }
 }
