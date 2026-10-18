@@ -384,3 +384,7 @@ Yoklama giriş/liste/aylık rapor ve harcırah giriş webpartları bu bağlamlı
 ## IzinHareket geçişi
 
 `IzinHareketRepository` ve `IzinHareketService` için transaction-aware INSERT/UPDATE/DELETE, SQL izi ve alan bazlı audit desteği eklendi. `IzinHareketEditWP` açılış, okuma, güncelleme ve silme işlemlerinde yeni bağlamlı çağrıları kullanır. Audit ayrıntısı personel, izin türü/talep/dönem, tarih ve mahsup durumuyla sınırlıdır.
+
+## İzin raporları ve dönem listeleri
+
+`IzinDonemListesiWP`, `SonIzinDurumuWP` ve `TarihBazliIzinKullanimRaporuWP` webpartlarının açılış ve okuma akışları bağlamlı servis çağrılarına geçirildi. Bu parçada mevcut yazma akışları korunmuştur; IzinDonem ve IzinHareket birlikte güncellenen toplu işlemler sonraki transaction parçasında ele alınacaktır.

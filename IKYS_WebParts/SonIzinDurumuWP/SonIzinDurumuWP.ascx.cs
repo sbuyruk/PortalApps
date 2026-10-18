@@ -10,12 +10,14 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace IKYS_WebParts.SonIzinDurumuWP
 {
     [ToolboxItemAttribute(false)]
     public partial class SonIzinDurumuWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "SonIzinDurumuWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -77,6 +79,7 @@ namespace IKYS_WebParts.SonIzinDurumuWP
         {
             try
             {
+                new IzinDonemService().TryRecordWebPartOpened(LoggingContext);
                 if (!Page.IsPostBack)
                 {
             TitleLbl.Text = "Son İzin Durumu ("+ DateTime.Now.ConvertToDDMMYYYHHmmFormat()+")";
@@ -244,7 +247,7 @@ namespace IKYS_WebParts.SonIzinDurumuWP
 
             DateTime tarih = DateTime.Now;
             DateTime kontrolEdilecekTarih = DateTime.Today;
-            izinDonemi = new IzinDonemService().GetByIzinTarihi(personelId, ProjeConstants.IZINTIPI_UCRETLI_INT, kontrolEdilecekTarih);
+            izinDonemi = new IzinDonemService().GetByIzinTarihi(personelId, ProjeConstants.IZINTIPI_UCRETLI_INT, kontrolEdilecekTarih, LoggingContext);
 
             int kalanIzinToplami = izinDonemi==null?0:izinDonemi.KalanIzin.ConvertToInt();
 
