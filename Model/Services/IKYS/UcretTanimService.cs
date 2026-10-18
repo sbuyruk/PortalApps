@@ -1,4 +1,8 @@
 using DAO.Repositories.IKYS;
+using DAO.Repositories.Ortak;
+using DAO.Ortak;
+using System.Globalization;
+using Utility.Logging;
 using Model.IKYS;
 using Model.Ortak;
 using System;
@@ -32,6 +36,123 @@ namespace Model.Services.IKYS
         public int GetGrupIdByTarih(DateTime tarih) { return repository.SelectGrupIdByTarih(tarih).Rows[0][0].ConvertToInt(); }
         public bool DeleteByGrupId(int grupId, UcretTanim auditItem) { bool ok = repository.DeleteByGrupId(grupId); if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(auditItem, ProjeConstants.IKYS, ProjeConstants.IKYS_MAASARTISI); return ok; }
         public decimal GetUcretByGrupDereceKademe(Personel personel, int grupId, int derece, int kademe) { DataTable table = repository.SelectUcretByGrupDereceKademe(grupId, derece, kademe, personel.Asker_sivil == ProjeConstants.PER_ASKER_INT); return table.Rows.Count > 0 ? table.Rows[0][0].ConvertToDecimal() : SqlDecimal.Null.Value; }
+
+        public UcretTanim GetById(int id, PortalLogContext context) { return Map(repository.SelectById(id, context)); }
+        public List<UcretTanim> GetAll(PortalLogContext context) { return ToList(repository.SelectAll(context)); }
+
+        public int Save(UcretTanim item, PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context");
+            if (!PortalLogSettings.IsEnabled(context)) return Save(item);
+            if (item == null) throw new ArgumentNullException("item");
+            item.OlusturmaTarihi = DateTime.Now;
+            item.Olusturan = UtilityHelper.GetCurrentUserName();
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                item.Id = repository.Insert(item, transaction, context);
+                if (item.Id <= 0) throw new InvalidOperationException("Tanım kaydı oluşturulamadı.");
+                int auditId = new PortalLogRepository().RecordAudit(context, "INSERT", "UcretTanim", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+                RecordChanges(null, item, auditId, transaction);
+                transaction.Complete();
+            }
+            return item.Id;
+        }
+
+        public bool Update(UcretTanim item, PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context");
+            if (!PortalLogSettings.IsEnabled(context)) return Update(item);
+            if (item == null || item.Id <= 0) return false;
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                UcretTanim old = Map(repository.SelectById(item.Id, transaction, context));
+                if (old == null) return false;
+                item.DegistirmeTarihi = DateTime.Now;
+                item.Degistiren = UtilityHelper.GetCurrentUserName();
+                if (!repository.Update(item, transaction, context)) return false;
+                int auditId = new PortalLogRepository().RecordAudit(context, "UPDATE", "UcretTanim", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+                RecordChanges(old, item, auditId, transaction);
+                transaction.Complete();
+                return true;
+            }
+        }
+
+        public bool Delete(UcretTanim item, PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context");
+            if (!PortalLogSettings.IsEnabled(context)) return Delete(item);
+            if (item == null || item.Id <= 0) return false;
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                UcretTanim old = Map(repository.SelectById(item.Id, transaction, context));
+                if (old == null || !repository.Delete(item.Id, transaction, context)) return false;
+                int auditId = new PortalLogRepository().RecordAudit(context, "DELETE", "UcretTanim", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+                RecordChanges(old, null, auditId, transaction);
+                transaction.Complete();
+                return true;
+            }
+        }
+
+        private static void RecordChanges(UcretTanim old, UcretTanim current, int auditId, SqlTransactionContext transaction)
+        {
+            PortalLogRepository log = new PortalLogRepository();
+            AddChange(log, auditId, "GrupId", old == null ? null : old.GrupId.ToString(CultureInfo.InvariantCulture), current == null ? null : current.GrupId.ToString(CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "Derece", old == null ? null : old.Derece.ToString(CultureInfo.InvariantCulture), current == null ? null : current.Derece.ToString(CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "Kademe", old == null ? null : old.Kademe.ToString(CultureInfo.InvariantCulture), current == null ? null : current.Kademe.ToString(CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "BaslangicTarihi", old == null ? null : AuditDate(old.BaslangicTarihi), current == null ? null : AuditDate(current.BaslangicTarihi), transaction);
+            AddChange(log, auditId, "BitisTarihi", old == null ? null : AuditDate(old.BitisTarihi), current == null ? null : AuditDate(current.BitisTarihi), transaction);
+        }
+
+        private static void AddChange(PortalLogRepository log, int auditId, string field, string oldValue, string newValue, SqlTransactionContext transaction)
+        {
+            if (!string.Equals(oldValue, newValue, StringComparison.Ordinal))
+                log.RecordAuditChange(auditId, field, oldValue, newValue, transaction);
+        }
+
+        private static string AuditDate(DateTime value)
+        {
+            return value < new DateTime(1901, 1, 1) ? null : value.ToString("o", CultureInfo.InvariantCulture);
+        }
+
+
+        public List<UcretTanim> GetByKademe(int grupId, int kademe, PortalLogContext context) { return ToList(repository.SelectByKademe(grupId, kademe, context)); }
+        public List<UcretTanim> GetByMaxGrupId(PortalLogContext context) { return ToList(repository.SelectByMaxGrupId(context)); }
+        public DataTable GetByGrup(PortalLogContext context) { return repository.SelectByGrup(context); }
+        public DataTable GetDerece(PortalLogContext context) { return repository.SelectDerece(context); }
+        public DataTable GetKademe(int derece, int grupId, PortalLogContext context) { return repository.SelectKademe(derece, grupId, context); }
+        public DataTable GetMaasListesi(int grupId, DateTime tarih, PortalLogContext context) { return repository.SelectMaasListesi(grupId, tarih, context); }
+        public DateTime GetMaxBitisTarihi(PortalLogContext context) { return repository.SelectMaxBitisTarihi(context).Rows[0][0].ConvertToDatetime(); }
+        public decimal GetAgi(DateTime tarih, PortalLogContext context) { return repository.SelectAgi(tarih, context).Rows[0][0].ConvertToDecimal(); }
+        public int GetGrupIdByTarih(DateTime tarih, PortalLogContext context) { return repository.SelectGrupIdByTarih(tarih, context).Rows[0][0].ConvertToInt(); }
+        public decimal GetUcretByGrupDereceKademe(Personel personel, int grupId, int derece, int kademe, PortalLogContext context)
+        {
+            DataTable table = repository.SelectUcretByGrupDereceKademe(grupId, derece, kademe, personel.Asker_sivil == ProjeConstants.PER_ASKER_INT, context);
+            return table.Rows.Count > 0 ? table.Rows[0][0].ConvertToDecimal() : SqlDecimal.Null.Value;
+        }
+
+        public List<UcretTanim> GetByGrupId(int grupId, PortalLogContext context) { return ToList(repository.SelectByGrupId(grupId, context)); }
+        public bool TryRecordWebPartOpened(PortalLogContext context) { return new PortalLogRepository().TryRecordWebPartOpened(context); }
+
+        public bool DeleteByGrupId(int grupId, UcretTanim auditItem, PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context");
+            if (!PortalLogSettings.IsEnabled(context)) return DeleteByGrupId(grupId, auditItem);
+            if (grupId <= 0) return false;
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                List<UcretTanim> old = ToList(repository.SelectByGrupId(grupId, transaction, context));
+                if (old.Count == 0 || !repository.DeleteByGrupId(grupId, transaction, context)) return false;
+                PortalLogRepository log = new PortalLogRepository();
+                foreach (UcretTanim deleted in old)
+                {
+                    int auditId = log.RecordAudit(context, "DELETE", "UcretTanim", deleted.Id.ToString(CultureInfo.InvariantCulture), transaction);
+                    RecordChanges(deleted, null, auditId, transaction);
+                }
+                transaction.Complete();
+                return true;
+            }
+        }
+
         private static UcretTanim Map(DataTable table) { return ToList(table).FirstOrDefault(); }
         private static List<UcretTanim> ToList(DataTable table) { return new UcretTanim().ToList<UcretTanim>(table); }
     }

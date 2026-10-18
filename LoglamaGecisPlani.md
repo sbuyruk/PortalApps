@@ -310,6 +310,35 @@ ekranlarının bu listeleri context ile okuması halinde SELECT izi üretilecek;
 etkin yazma yollarında audit aynı transaction içinde tutulacaktır. Audit
 ayrıntısı unvan kısa adı/adı, tahsil durumu ve bulunmama sebebi adıyla sınırlıdır.
 
+## IKYS ücret tabloları ve izin/ücret tanımı altyapısı
+
+`IzinTanim` ve `UcretTanim` servis/repository katmanlarında context destekli
+okumalar ve transaction-aware ekleme, güncelleme, silme yolları hazırlandı.
+İzin tanımı audit ayrıntısı `Adi`; ücret tanımı ayrıntısı `GrupId`, `Derece`,
+`Kademe`, `BaslangicTarihi` ve `BitisTarihi` alanlarıyla sınırlıdır.
+Ücret tutarları ve AGİ audit ayrıntısına yazılmaz. Ücret grubu silinirken eski
+satırlar kilitlenerek aynı transaction içinde okunur; grup silme ve her satırın
+gerçek `Id` değeriyle oluşturulan denetim kayıtları birlikte tamamlanır.
+Bu yeni yazma overload'ları henüz maaş oluşturma/artış ekranlarına bağlanmadı.
+
+`MaasTablolariWP` açılış etkinliği, SELECT izleri ve Türkçe hata başvuru koduyla
+yeni yapıya bağlandı. Etkin akışta seçilen ücret grubu istek başına tek sorguyla
+alınır; iki tablo aynı listeyi kullanır. Tarih filtresi ve Excel çıktıları da
+bu yolu kullanır. Tablo tekrar hazırlanırken başlıklar korunup veri satırları
+yenilenir. Bu ekran yalnızca okur; audit yazma kaydı üretmez.
+
+Yeni migration gerekmez. Visual Studio incelemesi ve Test sunucusu yayımından
+sonra host `web.config` içindeki mevcut `PortalLogging.EnabledWebParts`
+değerine `IKYS:MaasTablolariWP` eklenebilir. Proje genelinde etkinleştirme
+henüz yapılmamalıdır.
+
+Kullanıcı kontrolünde ekran açılışı, tarih/grup seçimi, iki ücret tablosunun
+eski çıktıyla karşılaştırılması ve Excel indirme incelenir. Etkinlik tablosunda
+açılış; ULS'de grup listesi ve seçili grubun SELECT izleri beklenir. Boş grup
+listesinde hata oluşmamalı; tutarlar ve kişisel bilgiler SQL izinde bulunmamalıdır.
+Yeni servis yazma yollarının audit/rollback kontrolü, bu yolları çağıran yazma
+ekranları taşındığında yapılacaktır.
+
 ## Güvenilirlik ve gizlilik
 
 - SQL izinde sorgu adı veya sabit kimliği kullanılır; tam SQL, parametre değerleri
