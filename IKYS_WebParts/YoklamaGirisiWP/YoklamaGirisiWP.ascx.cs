@@ -10,12 +10,14 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace IKYS_WebParts.YoklamaGirisiWP
 {
     [ToolboxItemAttribute(false)]
     public partial class YoklamaGirisiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "YoklamaGirisiWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -289,6 +291,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
             Personel personel = PersonelGetir();
             if (!Page.IsPostBack)
             {
+                    new YoklamaService().TryRecordWebPartOpened(LoggingContext);
                 if (personel != null)
                 {
                     PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
@@ -515,7 +518,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
         private void YoklamaFormunuDoldur()
         {
             Yoklama yoklama = new Yoklama();
-            yoklama = new YoklamaService().GetById(YoklamaIdQS.ConvertToInt());
+            yoklama = new YoklamaService().GetById(YoklamaIdQS.ConvertToInt(), LoggingContext);
             if (yoklama != null)
             {
                 YoklamaIdLbl.Text = yoklama.Id.ReturnEmptyIfNull().ToString();
@@ -668,7 +671,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                     yoklama.Adres = AdresTxt.Text;
                     yoklama.Olusturan = CurrentUserName;
                     yoklama.PersonelId = personel.Id;
-                    yoklama.Id = new YoklamaService().Save(yoklama);
+                    yoklama.Id = new YoklamaService().Save(yoklama, LoggingContext);
                 }
             }
 
@@ -686,7 +689,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
 
             bool cakismaVarMi = false;
             Yoklama yoklama = new Yoklama();
-            List<Yoklama> list = new YoklamaService().GetByPersonelIdAndDate(PersonelIdQS.ConvertToInt(), bastar, bittar);
+            List<Yoklama> list = new YoklamaService().GetByPersonelIdAndDate(PersonelIdQS.ConvertToInt(), bastar, bittar, LoggingContext);
             foreach (Yoklama item in list)
             {
                 if (item.Id == current)
@@ -720,7 +723,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
             {
                 if (yoklama != null)
                 {
-                    isSaved = new YoklamaService().Delete(yoklama);
+                    isSaved = new YoklamaService().Delete(yoklama, LoggingContext);
 
                 }
             }
@@ -780,7 +783,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
             else
             {
                 Yoklama yoklama = new Yoklama();
-                yoklama = new YoklamaService().GetById(YoklamaIdQS.ConvertToInt());
+                yoklama = new YoklamaService().GetById(YoklamaIdQS.ConvertToInt(), LoggingContext);
                 if (yoklama != null)
                 {
                     DateTime bastar = BasTarTxt.Value.ConvertToDatetime();
@@ -798,7 +801,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                     yoklama.Degistiren = CurrentUserName;
                     Personel personel = PersonelGetir();
                     yoklama.PersonelId = personel.Id;
-                    isUpdated = new YoklamaService().Update(yoklama);
+                    isUpdated = new YoklamaService().Update(yoklama, LoggingContext);
                 }
 
             }
@@ -858,7 +861,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
             try
             {
                 Yoklama yoklama = new Yoklama();
-                yoklama = new YoklamaService().GetById(YoklamaIdQS.ConvertToInt());
+                yoklama = new YoklamaService().GetById(YoklamaIdQS.ConvertToInt(), LoggingContext);
                 if (yoklama != null)
                 {
                     bool isDeleted = YoklamaKaydiSil(yoklama);

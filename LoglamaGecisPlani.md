@@ -370,3 +370,5 @@ ekranlar doğrulanarak temizlenir.
 ## Yoklama ve Harcirah geçişi
 
 `YoklamaRepository/Service` ile `HarcirahRepository/Service` için bağlamlı okuma, SQL izi ve transaction-aware INSERT/UPDATE/DELETE metotları eklendi. Audit ayrıntıları kimlik, tarih, durum ve tutar gibi raporlama için gerekli alanlarla sınırlandırıldı; serbest açıklama ve adres alanları audit ayrıntısına alınmadı. Ayar kapalı olduğunda mevcut servis çağrıları çalışmaya devam eder.
+
+Yoklama giriş/liste/aylık rapor ve harcırah giriş webpartları bu bağlamlı servis çağrılarına bağlandı. İlk açılışlar kullanıcı etkinliği olarak, okuma işlemleri SQL izi olarak, kayıt değişiklikleri ise audit olarak kaydedilir.
