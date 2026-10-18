@@ -31,6 +31,7 @@ namespace Model.Services.IKYS
         }
 
         public IzinTalep GetById(int id, PortalLogContext context) { return Map(repository.SelectById(id, context)); }
+        public IzinTalep GetById(int id, SqlTransactionContext transaction, PortalLogContext context) { if (transaction == null) throw new ArgumentNullException("transaction"); if (context == null) throw new ArgumentNullException("context"); return Map(repository.SelectById(id, transaction, context)); }
 
         public List<IzinTalep> GetAll()
         {

@@ -427,3 +427,6 @@ Bu parça da yalnızca kaynak/diff/UTF-8 kontrolleriyle doğrulanmıştır. Visu
 ## IzinHareketEdit silme akışı
 
 `IzinHareketEditWP` içinde mazeret ve ücretli izin hareketi silinirken kullanılan izin dönemi güncellemesi ile hareket silme işlemi aynı `SqlTransactionContext` altında birleştirildi. Dönem güncellemesi başarısız olursa hareket silinmez; başarılı iki işlemden sonra transaction tamamlanır. Loglama kapalıyken eski davranış korunur. İzin talebi kaydının ayrıca silinmesi sonraki çoklu entity adımında aynı transaction zincirine alınacaktır.
+## Izin talebi silme zinciri
+
+`IzinHareketEditWP` silme akışında ilişkili `IzinTalep` kaydı da aynı transaction içine alındı. Loglama etkin olduğunda dönem kullanımı güncellemesi, IzinHareket silme ve ilişkili IzinTalep silme işlemleri aynı context ile yürür; herhangi biri başarısız olursa tüm değişiklikler geri alınır. Loglama kapalıyken önceki bağımsız silme davranışı korunur.

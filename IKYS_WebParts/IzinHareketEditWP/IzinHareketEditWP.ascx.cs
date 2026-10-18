@@ -576,6 +576,12 @@ namespace IKYS_WebParts.IzinHareketEditWP
                                 IzinDonem mevcutIzinDonemi = izinDonemService.GetById(izinHareket.IzinDonemId, transaction, LoggingContext);
                                 if (mevcutIzinDonemi != null && !izinDonemService.UpdateUsedLeave(mevcutIzinDonemi, izinSuresiOnceki, false, CurrentUserName, transaction, LoggingContext)) return false;
                                 isSaved = izinHareketService.Delete(izinHareket, transaction, LoggingContext);
+                                if (isSaved && izinHareket.IzinTalepId > 0)
+                                {
+                                    IzinTalepService izinTalepService = new IzinTalepService();
+                                    IzinTalep izinTalep = izinTalepService.GetById(izinHareket.IzinTalepId, transaction, LoggingContext);
+                                    if (izinTalep != null && !izinTalepService.Delete(izinTalep, transaction, LoggingContext)) return false;
+                                }
                                 if (isSaved) transaction.Complete();
                             }
                         }
@@ -709,7 +715,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
                     bool isSaved = IzinHareketSil(izinHareket);
                     if (isSaved)
                     {
-                        IzinTalebiniSil(izinHareket.IzinTalepId);
+                        if (!PortalLogSettings.IsEnabled(LoggingContext)) IzinTalebiniSil(izinHareket.IzinTalepId);
                         MessageHelper.PublishMessage("İzin Kaydı Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                         RedirectToPage(ProjeConstants.PAGE_IZINHAREKET_LIST);
                     }
