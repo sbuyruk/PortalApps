@@ -185,6 +185,36 @@ Visual Studio incelemesi ve Test sunucusu yayımlamasından sonra açılış,
 yakın ekleme/silme, aile tablosunun yeniden çizilmesi, audit alan izin listesi,
 SELECT/yazma izleri ve hata başvuru kodu kontrol edilir.
 
+## IKYS altıncı dikey geçişi: Eğitim Kayıtları
+
+`EgitimGirisiWP` üzerindeki okul, kurs, iş tecrübesi ve yabancı dil bölümleri
+birlikte geçer. İlk açılış kullanıcı etkinliği kaydeder. Personel, dört kayıt
+türü ve eğitim seviyesi okumaları SELECT izi üretir. Eğitim seviyesi listesi
+aynı HTTP isteğinde bir kez okunur; okul satırı başına sorgu çalışmaz.
+Ekleme ve silme işlemlerinde iş kaydı ile audit aynı transaction içindedir.
+Bu ekran güncelleme yapmaz; dört servis/repository için güncellemenin
+transaction ve audit yolu da hazırlanmıştır.
+
+Audit alan ayrıntısı `PersonelId` ile sınırlı ve izin verilen kod/tarih
+alanlarını kapsar: eğitimde `Seviye`, `MezuniyetTar`; kursta `Tarih`;
+iş tecrübesinde `BasTar`, `BitTar`; yabancı dilde `Dil`, `SinavTarihi`.
+Okul, kurs, işyeri, kurum, sınav adı/notu, adres ve açıklama gibi serbest
+metinler audit ve SQL izine yazılmaz. `EntityId` ilgili tablonun uygulama
+kayıt kimliğidir. DAO'nun 1901 öncesi tarihleri `NULL` yazma davranışı audit
+ayrıntısına da uygulanır. Hata kaydı istisna içeriğini ULS'ye yazdığı için uygulama
+hatası metinlerine kişisel girdi eklenmemelidir.
+
+Yeni tablo veya migration gerekmez. Önceki pilotlar etkin kalacaksa host
+`web.config` içindeki mevcut değere `IKYS:EgitimGirisiWP` eklenir:
+
+```xml
+<add key="PortalLogging.EnabledWebParts" value="IKYS:ResmiTatilGirisiWP;IKYS:ResmiTatilListesiWP;IKYS:ResmiTatillerWP;IKYS:BirimTanimEditWP;IKYS:BirimListesiWP;IKYS:GorevTanimEditWP;IKYS:GorevTanimListesiWP;IKYS:BirimSemasiWP;IKYS:GorevSemasiWP;IKYS:AileGirisiWP;IKYS:EgitimGirisiWP" />
+```
+
+Visual Studio incelemesi ve Test sunucusu yayımlamasından sonra dört
+bölümün açılışı, her türden ekleme/silme, tablo yenilenmesi, audit alanları,
+ULS SELECT/yazma izleri ve hata başvuru kodu kontrol edilir.
+
 ## Güvenilirlik ve gizlilik
 
 - SQL izinde sorgu adı veya sabit kimliği kullanılır; tam SQL, parametre değerleri

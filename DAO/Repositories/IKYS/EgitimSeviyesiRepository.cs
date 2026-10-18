@@ -1,6 +1,8 @@
 using DAO.Ortak;
 using System;
 using System.Data;
+using System.Diagnostics;
+using Utility.Logging;
 namespace DAO.Repositories.IKYS
 {
     public class EgitimSeviyesiRepository
@@ -10,6 +12,13 @@ namespace DAO.Repositories.IKYS
         public EgitimSeviyesiRepository(DbClass db) { if (db == null) throw new ArgumentNullException("db"); this.db = db; queryBuilder = new CrudQueryBuilder(); }
         public DataTable SelectById(int id) { SqlQuery q = new SqlQuery("SELECT * FROM EgitimSeviyesi_Table WHERE Id=@Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, ""); }
         public DataTable SelectAll() { return db.SelectFromDb(new SqlQuery("SELECT * FROM EgitimSeviyesi_Table"), ""); }
+        public DataTable SelectAll(PortalLogContext context)
+        {
+            Stopwatch clock = Stopwatch.StartNew();
+            bool succeeded = false;
+            try { DataTable result = db.SelectFromDb(new SqlQuery("SELECT * FROM EgitimSeviyesi_Table"), ""); succeeded = true; return result; }
+            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "EgitimSeviyesi.SelectAll", clock.ElapsedMilliseconds, succeeded); }
+        }
         public int Insert<T>(T item) { return db.Insert(queryBuilder.BuildInsert(item, "EgitimSeviyesi_Table")); }
         public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "EgitimSeviyesi_Table")); }
         public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("EgitimSeviyesi_Table", id), ""); }
