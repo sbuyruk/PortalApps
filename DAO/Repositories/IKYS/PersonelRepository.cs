@@ -157,9 +157,27 @@ namespace DAO.Repositories.IKYS
                 FROM Personel_Table A INNER JOIN Kimlik_Table B ON B.PersonelId=A.Id INNER JOIN IsBilgileri_Table C ON A.Id=C.PersonelId LEFT JOIN UnvanTanim_Table D ON C.UnvanId=D.Id LEFT JOIN BirimTanim_Table E ON C.BirimId=E.Id LEFT JOIN GorevTanim_Table F ON C.GorevId=F.Id LEFT JOIN IletisimBilgileri_Table G ON G.PersonelId=A.Id LEFT JOIN TahsilTanim_Table H ON H.Id=A.Tahsili LEFT JOIN Ilce_Table I ON I.Id=B.DogumYeri LEFT JOIN Aile_Table J ON J.PersonelId=A.Id AND YakinlikDerecesi=1 LEFT JOIN Ilce_Table K ON K.Id=G.Ilcesi WHERE C.CalismaDurumu=1" + typeFilter + " ORDER BY C.ProtokolSiraNo"); if (!includeAllTypes) query.AddParameter("@Tipi", personelTipi); return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectEmployeeListReturnDataTable(int personelTipi, bool includeAllTypes, PortalLogContext context)
+        {
+            string typeFilter = includeAllTypes ? "" : " AND A.Tipi=@Tipi";
+            SqlQuery query = new SqlQuery(@"SELECT A.Id PersonelId,B.TCKimlikNo,A.SicilNo,A.Adi,A.Soyadi,IIF(A.Asker_sivil=0,'Sivil','(E) Asker') Asker_Sivil,A.KullaniciAdi,A.Tipi PersonelTipi,
+                B.AnneAdi,B.BabaAdi,FORMAT(B.DogumTar,'dd.MM.yyyy') DogumTarihi,B.MedeniHali,B.EvlilikTar,B.Cinsiyet,B.KanGrubu,B.DogumTar,B.DogumGunuKutlama,B.EvlilikTar,B.EvlilikKutlama,
+                IIF(FORMAT(C.BaslamaTar,'dd.MM.yyyy')='01.01.1900','',FORMAT(C.BaslamaTar,'dd.MM.yyyy')) BaslamaTar,C.CalismaDurumu,
+                IIF(FORMAT(C.AyrilmaTar,'dd.MM.yyyy')='01.01.1900','',FORMAT(C.AyrilmaTar,'dd.MM.yyyy')) AyrilmaTar,C.AyrilmaSebebi,C.ProtokolSiraNo,C.SGKSicilNo,C.SGKBasTar,C.VakifOncesiPrimGunSayisi,
+                IIF(FORMAT(C.EmeklilikTarihi,'dd.MM.yyyy')='01.01.1900','',FORMAT(C.EmeklilikTarihi,'dd.MM.yyyy')) EmeklilikTarihi,IIF(FORMAT(C.IzinDonemiBasTar,'dd.MM.yyyy')='01.01.1900','',FORMAT(C.IzinDonemiBasTar,'dd.MM.yyyy')) IzinDonemiBasTar,
+                D.Adi Unvan,F.Adi Gorev,E.Adi BirimSube,G.CepTelefonu,G.Adres,G.InternetEPosta,K.IlceAdi IkametIlcesi,K.IlAdi IkametIli,H.TahsilDurumu,I.IlAdi+' - '+I.IlceAdi DogumYeri,J.Adi+' '+J.Soyadi Esi,J.TcKimlikNo EsTcKimlikNo,J.Telefon EsTelefon,Plaka
+                FROM Personel_Table A INNER JOIN Kimlik_Table B ON B.PersonelId=A.Id INNER JOIN IsBilgileri_Table C ON A.Id=C.PersonelId LEFT JOIN UnvanTanim_Table D ON C.UnvanId=D.Id LEFT JOIN BirimTanim_Table E ON C.BirimId=E.Id LEFT JOIN GorevTanim_Table F ON C.GorevId=F.Id LEFT JOIN IletisimBilgileri_Table G ON G.PersonelId=A.Id LEFT JOIN TahsilTanim_Table H ON H.Id=A.Tahsili LEFT JOIN Ilce_Table I ON I.Id=B.DogumYeri LEFT JOIN Aile_Table J ON J.PersonelId=A.Id AND YakinlikDerecesi=1 LEFT JOIN Ilce_Table K ON K.Id=G.Ilcesi WHERE C.CalismaDurumu=1" + typeFilter + " ORDER BY C.ProtokolSiraNo");
+            if (!includeAllTypes) query.AddParameter("@Tipi", personelTipi);
+            return TraceSchemaSelect(query, "Personel.SelectEmployeeList", context);
+        }
+
         public DataTable SelectFormerEmployeeListReturnDataTable()
         {
             return db.SelectFromDb(new SqlQuery(@"SELECT A.Id PersonelId,B.TCKimlikNo,A.SicilNo,A.Adi,A.Soyadi,IIF(A.Asker_sivil=0,'Sivil','(E) Asker') Asker_Sivil,D.Adi Unvan,F.Adi Gorev,E.Adi BirimSube,A.KullaniciAdi,FORMAT(B.DogumTar,'dd.MM.yyyy') DogumTarihi,B.MedeniHali,B.EvlilikTar,B.KanGrubu,G.CepTelefonu,G.Adres,G.InternetEPosta,B.DogumTar,B.EvlilikTar,B.EvlilikKutlama,C.ProtokolSiraNo,C.BaslamaTar,C.AyrilmaTar,C.AyrilmaSebebi FROM Personel_Table A INNER JOIN Kimlik_Table B ON B.PersonelId=A.Id INNER JOIN IsBilgileri_Table C ON A.Id=C.PersonelId LEFT JOIN UnvanTanim_Table D ON C.UnvanId=D.Id LEFT JOIN BirimTanim_Table E ON C.BirimId=E.Id LEFT JOIN EskiPersonelGorevTanim_Table F ON C.GorevId=F.Id LEFT JOIN IletisimBilgileri_Table G ON G.PersonelId=A.Id WHERE C.CalismaDurumu=0 ORDER BY C.ProtokolSiraNo"), "");
+        }
+        public DataTable SelectFormerEmployeeListReturnDataTable(PortalLogContext context)
+        {
+            return TraceSchemaSelect(new SqlQuery(@"SELECT A.Id PersonelId,B.TCKimlikNo,A.SicilNo,A.Adi,A.Soyadi,IIF(A.Asker_sivil=0,'Sivil','(E) Asker') Asker_Sivil,D.Adi Unvan,F.Adi Gorev,E.Adi BirimSube,A.KullaniciAdi,FORMAT(B.DogumTar,'dd.MM.yyyy') DogumTarihi,B.MedeniHali,B.EvlilikTar,B.KanGrubu,G.CepTelefonu,G.Adres,G.InternetEPosta,B.DogumTar,B.EvlilikTar,B.EvlilikKutlama,C.ProtokolSiraNo,C.BaslamaTar,C.AyrilmaTar,C.AyrilmaSebebi FROM Personel_Table A INNER JOIN Kimlik_Table B ON B.PersonelId=A.Id INNER JOIN IsBilgileri_Table C ON A.Id=C.PersonelId LEFT JOIN UnvanTanim_Table D ON C.UnvanId=D.Id LEFT JOIN BirimTanim_Table E ON C.BirimId=E.Id LEFT JOIN EskiPersonelGorevTanim_Table F ON C.GorevId=F.Id LEFT JOIN IletisimBilgileri_Table G ON G.PersonelId=A.Id WHERE C.CalismaDurumu=0 ORDER BY C.ProtokolSiraNo"), "Personel.SelectFormerEmployeeList", context);
         }
 
         public DataTable SelectManagers() { return db.SelectFromDb(new SqlQuery("SELECT P.Id PersonelId,P.Adi,Soyadi,P.PerId,P.SicilNo,P.Tahsili,P.KullaniciAdi,P.Asker_sivil,B.Adi BirimSube,B.Id BirimId FROM BirimTanim_Table B INNER JOIN Personel_Table P ON P.Id=B.AmirId INNER JOIN IsBilgileri_Table I ON I.PersonelId=B.AmirId WHERE I.CalismaDurumu=1 ORDER BY I.ProtokolSiraNo"), ""); }

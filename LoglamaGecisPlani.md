@@ -238,6 +238,19 @@ Visual Studio incelemesi ve Test sunucusu yayımlamasından sonra personel
 kartının kendisi ve Excel çıktısı, iletişim listesinin birim filtresi ve Excel
 çıktısı, açılış kayıtları, ULS SELECT izleri ve hata başvuru kodu kontrol edilir.
 
+## IKYS sekizinci dikey geçişi: Personel listeleri
+
+`PersonelListesiWP` ve `EskiPersonelListesiWP` ilk açılışlarında kullanıcı
+etkinliği kaydeder. Aktif ve eski personel liste/Excel sorguları etkin akışta
+SELECT izi üretir; ekranlar veri yazmadığı için audit kaydı oluşturmaz.
+Etkin olmayan WebPart'lar mevcut sorgu ve hata akışını kullanmaya devam eder.
+Yeni migration gerekmez. Host `web.config` içinde önceki değer korunarak
+`IKYS:PersonelListesiWP;IKYS:EskiPersonelListesiWP` eklenir.
+
+Test sunucusunda liste açılışı, personel tipi filtresi, eski personel listesi,
+iki Excel çıktısı, açılış kayıtları, SELECT izleri ve hata başvuru kodu kontrol
+edilir.
+
 ## Güvenilirlik ve gizlilik
 
 - SQL izinde sorgu adı veya sabit kimliği kullanılır; tam SQL, parametre değerleri

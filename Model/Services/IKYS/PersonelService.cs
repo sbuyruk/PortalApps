@@ -69,7 +69,9 @@ namespace Model.Services.IKYS
         public DataTable GetActiveEmployeesReturnDataTable(Personel.PersonelTipi type) { return repository.SelectActiveEmployeesReturnDataTable((int)type, type == Personel.PersonelTipi.Tumu); }
         public DataTable GetPersonelReturnDataTable(int personelId) { return repository.SelectPersonelReturnDataTable(personelId); }
         public DataTable GetEmployeeListReturnDataTable(Personel.PersonelTipi type) { return repository.SelectEmployeeListReturnDataTable((int)type, type == Personel.PersonelTipi.Tumu); }
+        public DataTable GetEmployeeListReturnDataTable(Personel.PersonelTipi type, PortalLogContext context) { return repository.SelectEmployeeListReturnDataTable((int)type, type == Personel.PersonelTipi.Tumu, context); }
         public DataTable GetFormerEmployeeListReturnDataTable() { return repository.SelectFormerEmployeeListReturnDataTable(); }
+        public DataTable GetFormerEmployeeListReturnDataTable(PortalLogContext context) { return repository.SelectFormerEmployeeListReturnDataTable(context); }
         public DataTable GetManagers() { return repository.SelectManagers(); }
         public List<Personel> GetSchemaManagers(PortalLogContext context) { return MapList(repository.SelectSchemaManagers(context)); }
         public List<Personel> GetSchemaActiveManagers(PortalLogContext context) { return MapList(repository.SelectSchemaActiveManagers(context)); }

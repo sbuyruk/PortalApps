@@ -13,6 +13,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace IKYS_WebParts.EskiPersonelListesiWP
@@ -20,6 +21,14 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
     [ToolboxItemAttribute(false)]
     public partial class EskiPersonelListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "EskiPersonelListesiWP"); } }
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context)) { new ExceptionHelper(error).PublishException(); return; }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -65,13 +74,13 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
             {
                 if (!Page.IsPostBack)
                 {
+                    new PersonelService().TryRecordWebPartOpened(LoggingContext);
                     TabloOlustur();
                 }
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("EskiPersonelListesi.PageLoad", ex);
             }
         }
         private void TabloOlustur()
@@ -94,9 +103,7 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                ReportError("EskiPersonelListesi.Data", exception);
             }
             return jSon;
         }
@@ -144,7 +151,10 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
         private DataTable GetDataTable()
         {
             Personel personel = new Personel();
-            DataTable dataTable = new PersonelService().GetFormerEmployeeListReturnDataTable();
+            PersonelService service = new PersonelService();
+            DataTable dataTable = PortalLogSettings.IsEnabled(LoggingContext)
+                ? service.GetFormerEmployeeListReturnDataTable(LoggingContext)
+                : service.GetFormerEmployeeListReturnDataTable();
             return dataTable;
         }
 
@@ -156,8 +166,7 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("EskiPersonelListesi.Excel", ex);
             }
         }
         protected void ExportToExcel()
@@ -199,12 +208,12 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-                Page.Response.Redirect(newUrl);
+                Page.Response.Redirect(newUrl, false);
+                Page.Context.ApplicationInstance.CompleteRequest();
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("EskiPersonelListesi.Redirect", ex);
             }
         }
     }
