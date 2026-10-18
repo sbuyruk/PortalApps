@@ -1,6 +1,8 @@
 using DAO.Ortak;
 using System;
 using System.Data;
+using System.Diagnostics;
+using Utility.Logging;
 
 namespace DAO.Repositories.IKYS
 {
@@ -27,6 +29,18 @@ namespace DAO.Repositories.IKYS
         public int Insert<T>(T item) { return db.Insert(queryBuilder.BuildInsert(item, "EskiPersonelGorevTanim_Table")); }
         public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "EskiPersonelGorevTanim_Table")); }
         public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("EskiPersonelGorevTanim_Table", id), ""); }
+        public DataTable SelectById(int id, PortalLogContext context) { return TraceSelect("EskiPersonelGorevTanim.SelectById", () => SelectById(id), context); }
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context) { if(transaction==null) throw new ArgumentNullException("transaction"); SqlQuery q=new SqlQuery("SELECT * FROM EskiPersonelGorevTanim_Table WITH (UPDLOCK,HOLDLOCK) WHERE Id=@Id"); q.AddParameter("@Id",id); Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { DataTable result=transaction.Select(q); ok=true; return result; } finally { PortalTechnicalLog.WriteSqlTrace(context,"SELECT","EskiPersonelGorevTanim.SelectById",clock.ElapsedMilliseconds,ok); } }
+        public DataTable SelectAll(PortalLogContext context) { return TraceSelect("EskiPersonelGorevTanim.SelectAll", () => SelectAll(), context); }
+        public int Insert<T>(T item, SqlTransactionContext transaction, PortalLogContext context) { return TraceInsert(queryBuilder.BuildInsert(item,"EskiPersonelGorevTanim_Table"),transaction,context); }
+        public bool Update<T>(T item, SqlTransactionContext transaction, PortalLogContext context) { return TraceWrite(queryBuilder.BuildUpdate(item,"EskiPersonelGorevTanim_Table"),"UPDATE","EskiPersonelGorevTanim.Update",transaction,context); }
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context) { return TraceWrite(queryBuilder.BuildDelete("EskiPersonelGorevTanim_Table",id),"DELETE","EskiPersonelGorevTanim.Delete",transaction,context); }
+        public DataTable SelectByPersonelId(int personelId, PortalLogContext context) { return TraceSelect("EskiPersonelGorevTanim.SelectByPersonelId", () => SelectByPersonelId(personelId), context); }
+        public DataTable SelectByBirimId(int birimId, PortalLogContext context) { return TraceSelect("EskiPersonelGorevTanim.SelectByBirimId", () => SelectByBirimId(birimId), context); }
+        public DataTable SelectAllReturnDataTable(int? personelTipi, PortalLogContext context) { return TraceSelect("EskiPersonelGorevTanim.SelectAllReturnDataTable", () => SelectAllReturnDataTable(personelTipi), context); }
+        private DataTable TraceSelect(string name, Func<DataTable> action, PortalLogContext context) { Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { DataTable result=action(); ok=true; return result; } finally { PortalTechnicalLog.WriteSqlTrace(context,"SELECT",name,clock.ElapsedMilliseconds,ok); } }
+        private static int TraceInsert(SqlQuery q, SqlTransactionContext transaction, PortalLogContext context) { if(transaction==null) throw new ArgumentNullException("transaction"); Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { int id=transaction.Insert(q); ok=id>0; return id; } finally { PortalTechnicalLog.WriteSqlTrace(context,"INSERT","EskiPersonelGorevTanim.Insert",clock.ElapsedMilliseconds,ok); } }
+        private static bool TraceWrite(SqlQuery q,string operation,string name,SqlTransactionContext transaction,PortalLogContext context) { if(transaction==null) throw new ArgumentNullException("transaction"); Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { ok=transaction.Update(q); return ok; } finally { PortalTechnicalLog.WriteSqlTrace(context,operation,name,clock.ElapsedMilliseconds,ok); } }
 
         public DataTable SelectByPersonelId(int personelId)
         {
