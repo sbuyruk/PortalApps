@@ -10,6 +10,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using static Model.IKYS.Personel;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 using System.Linq;
 using Microsoft.SharePoint;
@@ -19,6 +20,14 @@ namespace IKYS_WebParts.EskiPersonelWP
     [ToolboxItemAttribute(false)]
     public partial class EskiPersonelWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "EskiPersonelWP"); } }
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context)) { new ExceptionHelper(error).PublishException(); return; }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -225,6 +234,7 @@ namespace IKYS_WebParts.EskiPersonelWP
             {
                 if (!Page.IsPostBack)
                 {
+                    new PersonelService().TryRecordWebPartOpened(LoggingContext);
                     YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_IKYSYONERGE, ProjeConstants.IKYSBELGELERI_LIB, ProjeConstants.PAGE_PERSONEL_EDIT);
                     FillData2DDLs();
                     if (String.IsNullOrEmpty(DestinationAppQS) || String.Equals(DestinationAppQS, ""))
@@ -261,8 +271,7 @@ namespace IKYS_WebParts.EskiPersonelWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("EskiPersonel.PageLoad", ex);
             }
 
 
