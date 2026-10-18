@@ -18,6 +18,17 @@ namespace IKYS_WebParts.IzinDonemListesiWP
     public partial class IzinDonemListesiWP : WebPart
     {
         private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "IzinDonemListesiWP"); } }
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context))
+            {
+                new ExceptionHelper(error).PublishException();
+                return;
+            }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -96,8 +107,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("Unhandled", ex);
             }
         }
         private void IzinTableHeaders()
@@ -246,10 +256,9 @@ namespace IKYS_WebParts.IzinDonemListesiWP
 
                         }
                         catch (Exception exception)
-                        {
-                            ExceptionHelper ex = new ExceptionHelper(exception);
-                            ex.PublishException();
-                        }
+            {
+                ReportError("Unhandled", exception);
+            }
                     };
                     DuzenleCell.Controls.Add(DuzenleBtn);
                     row.Controls.Add(DuzenleCell);
@@ -291,10 +300,9 @@ namespace IKYS_WebParts.IzinDonemListesiWP
 
                         }
                         catch (Exception exception)
-                        {
-                            ExceptionHelper ex = new ExceptionHelper(exception);
-                            ex.PublishException();
-                        }
+            {
+                ReportError("Unhandled", exception);
+            }
                     };
                     IzinlerCell.Controls.Add(IzinlerBtn);
                     row.Controls.Add(IzinlerCell);
@@ -407,8 +415,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("Unhandled", ex);
             }
         }
         private void FillPersonelDDL()
@@ -549,9 +556,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
             }
             catch (Exception exception)
             {
-
-                ExceptionHelper exhelper = new ExceptionHelper(exception);
-                exhelper.PublishException();
+                ReportError("Unhandled", exception);
             }
 
         }
@@ -624,8 +629,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exh = new ExceptionHelper(exception);
-                exh.PublishException();
+                ReportError("Unhandled", exception);
             }
         }
     }

@@ -22,6 +22,17 @@ namespace IKYS_WebParts.GorevOnayListesiWP
     public partial class GorevOnayListesiWP : WebPart
     {
         private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "GorevOnayListesiWP"); } }
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context))
+            {
+                new ExceptionHelper(error).PublishException();
+                return;
+            }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -115,8 +126,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("Unhandled", ex);
             }
         }
 
@@ -133,34 +143,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             }
             catch (Exception ex)
             {
-
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(ex);
-            }
-        }
-
-        private void TabloOlustur()
-        {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            //var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
-            UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
-        }
-        private string TabloJson()
-        {
-            string jSon = string.Empty;
-
-            try
-            {
-                List<GorevOnayListItem> list = GetDataList();
-                var serializer = new JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                ReportError("Unhandled", ex);
             }
             return jSon;
         }
@@ -379,8 +362,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(ex);
-                exceptionHelper.PublishException();
+                ReportError("Unhandled", ex);
             }
         }
 
@@ -400,8 +382,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("Unhandled", ex);
             }
         }
         private class GorevOnayListItem
