@@ -10,12 +10,21 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace IKYS_WebParts.MazeretIzinTalepListesiWP
 {
     [ToolboxItemAttribute(false)]
     public partial class MazeretIzinTalepListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "MazeretIzinTalepListesiWP"); } }
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context)) { new ExceptionHelper(error).PublishException(); return; }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -78,13 +87,13 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             {
                 if (!Page.IsPostBack)
                 {
+                    new IzinTalepService().TryRecordWebPartOpened(LoggingContext);
                     TabloOlustur();
                 }
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("MazeretIzinTalepListesi.PageLoad", ex);
             }
         }
         private void FillIzinHareketleriTable(Personel personel)
@@ -269,12 +278,12 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                 //IzinTalep_Table da onayDurumu hanesini kayitlara islendi yap
                 IzinTalep izinTalep = new IzinTalep();
                 izinTalep.Aciklama = AciklamaTxt.Text;
-                izinTalep = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt());
+                izinTalep = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), LoggingContext);
                 if (izinTalep != null)
                 {
                     izinTalep.OnayDurumu = ProjeConstants.PER_IZINTALEBI_KAYITLARAISLENDI_INT;
                     izinTalep.Degistiren = CurrentUserName;
-                    bool onaylandi = new IzinTalepService().Update(izinTalep);
+                    bool onaylandi = new IzinTalepService().Update(izinTalep, LoggingContext);
                     if (onaylandi)
                     {
                         bool izinHareketTablosundaVarMi = IzinHareketTablosundaVarMI(izinTalep.Id);
@@ -343,13 +352,13 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             {
                 //IzinTalep_Table da onayDurumu hanesini kontrol edildi yap
                 IzinTalep izinTalep = new IzinTalep();
-                izinTalep = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt());
+                izinTalep = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), LoggingContext);
                 if (izinTalep != null)
                 {
                     izinTalep.OnayDurumu = ProjeConstants.PER_IZINTALEBI_KONTROLEDILDI_INT;
                     izinTalep.Aciklama = AciklamaTxt.Text;
                     izinTalep.Degistiren = CurrentUserName;
-                    bool kabuledildi = new IzinTalepService().Update(izinTalep);
+                    bool kabuledildi = new IzinTalepService().Update(izinTalep, LoggingContext);
                     if (kabuledildi)
                     {
                         if (izinTalep.EPostaGonder)
@@ -376,12 +385,12 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             //IzinTalep_Table da onayDurumu hanesini reddedildi 2 yap
             IzinTalep izinTalep = new IzinTalep();
             izinTalep.Aciklama = AciklamaTxt.Text;
-            izinTalep = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt());
+            izinTalep = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), LoggingContext);
             if (izinTalep != null)
             {
                 izinTalep.OnayDurumu = ProjeConstants.PER_IZINTALEBI_REDDEDILDI;
                 izinTalep.Degistiren = CurrentUserName;
-                bool reddedildi = new IzinTalepService().Update(izinTalep);
+                bool reddedildi = new IzinTalepService().Update(izinTalep, LoggingContext);
                 if (reddedildi)
                 {
                     if (izinTalep.EPostaGonder)
@@ -421,7 +430,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
         private void FillIzinTalebi(Personel personel)
         {
             IzinTalep it = new IzinTalep();
-            it = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt());
+            it = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), LoggingContext);
 
             IzinTanim izinTanim = new IzinTanim();
             izinTanim = new IzinTanimService().GetById(it.IzinTipi);
@@ -537,7 +546,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
         private DataTable GetDataTable()
         {
             IzinTalep izinTalep = new IzinTalep();
-            DataTable dataTable = new IzinTalepService().GetIzinTalepleriReturnDataTable(0, ProjeConstants.IZINTIPI_MAZERET_INT, false, false);
+            DataTable dataTable = new IzinTalepService().GetIzinTalepleriReturnDataTable(0, ProjeConstants.IZINTIPI_MAZERET_INT, false, false, LoggingContext);
             return dataTable;
         }
 

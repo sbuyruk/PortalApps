@@ -361,3 +361,8 @@ korunur. Kullanıcı Windows 11 Visual Studio 2026 incelemesi ile Test sunucusun
 yayımlama ve testi yapar. Codex Windows 11'de test, build veya debug çalıştırmaz.
 Son projeden sonra kullanılmayan eski kod ve tablolar, tarihsel veri ve okuyan
 ekranlar doğrulanarak temizlenir.
+## IzinTalep geçişi
+
+`IzinTalepRepository` ve `IzinTalepService` için yeni loglama bağlamı desteklendi. Okuma işlemleri SQL izi üretir; ekleme, güncelleme ve silme işlemleri `SqlTransactionContext` ile aynı işlem içinde denetim kaydı ve güvenli alan değişiklikleriyle birlikte yazılır. Denetim ayrıntısında personel, izin türü/dönemi, başlangıç-bitiş tarihi, süre, onay durumu ve aktiflik alanları tutulur; adres ve açıklama gibi serbest metin alanları kaydedilmez.
+
+İzin talep girişi, ücretli izin talep listesi ve mazeret izin talep listesi webpartları yeni bağlama geçirildi. Webpart açılışı `PortalActivityLog_Table` tablosuna, IzinTalep SQL işlemleri `PortalTechnicalLog` kaydına gider. Ayar kapalıysa mevcut eski servis davranışı korunur. Bu webpartlarda IzinHareket ve IsBilgileri ile birlikte yürüyen çoklu işlemlerin tek ortak transaction altında birleştirilmesi sonraki parçada ele alınacaktır.
