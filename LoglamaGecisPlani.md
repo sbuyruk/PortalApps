@@ -291,6 +291,12 @@ personel, unvan, görev, birim ve çalışma durumu kimlikleri tutulur. WebPart
 akışlarının bu context overload’larına bağlanması ve etkinleştirme ayrı bir
 inceleme adımıdır.
 
+Sonraki genişletmede `DereceKademeDegisim` ve `Mahsup` için de transaction-aware
+CRUD yolları eklendi. Personel ekranlarının derece-kademe ve mahsup okumaları
+SQL izi üretir; yazma yolları etkinleştirildiğinde iş kaydı ile audit aynı
+transaction içinde tamamlanır. Mahsup audit ayrıntısı izin ve dönem kimlikleriyle
+sınırlıdır; açıklama gibi serbest metin alanları yazılmaz.
+
 ## Güvenilirlik ve gizlilik
 
 - SQL izinde sorgu adı veya sabit kimliği kullanılır; tam SQL, parametre değerleri
