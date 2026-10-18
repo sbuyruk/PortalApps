@@ -16,6 +16,17 @@ namespace IKYS_WebParts.IzinHareketEditWP
     public partial class IzinHareketEditWP : WebPart
     {
         private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "IzinHareketEditWP"); } }
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context))
+            {
+                new ExceptionHelper(error).PublishException();
+                return;
+            }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -503,8 +514,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("Unhandled", ex);
             }
 
             return isSaved;
@@ -570,8 +580,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("Unhandled", ex);
             }
 
             return isSaved;
@@ -615,10 +624,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Izin Kaydedilemedi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
+                ReportError("Unhandled", exception);
             }
         }
         private void IzinTalebiniGüncelle(int izinTalepId, IzinHareket izinHareket)
@@ -646,10 +652,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Izin Talebi Silinemedi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
+                ReportError("Unhandled", exception);
             }
         }
         protected void IzinHareketListesiBtn_Click(object sender, EventArgs e)
@@ -678,10 +681,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Izin Talebi Silinemedi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
+                ReportError("Unhandled", exception);
             }
         }
         protected void DeleteNowBtn_Click(object sender, EventArgs e)
@@ -705,10 +705,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Izin Kaydi Silinemedi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
+                ReportError("Unhandled", exception);
             }
         }
         private void IzinTalebiniSil(int izinTalepId)
@@ -723,10 +720,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("İzin Talebi Silinemedi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
+                ReportError("Unhandled", exception);
             }
         }
         private void RedirectToPage(string pageUrl)
@@ -739,8 +733,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("Unhandled", ex);
             }
         }
         protected void IzinDegisDilekceBtn_Click(object sender, EventArgs e)
@@ -759,10 +752,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Izin Kaydi Degistirilemedi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
+                ReportError("Unhandled", exception);
             }
 
         }
@@ -784,10 +774,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("İzin Kaydı İptal Edilemedi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
+                ReportError("Unhandled", exception);
             }
 
 

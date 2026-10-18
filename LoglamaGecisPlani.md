@@ -410,3 +410,8 @@ Yoklama giriş/liste/aylık rapor ve harcırah giriş webpartları bu bağlamlı
 Bu parçada `AylikYoklamaRaporuWP`, `GorevliIzinliPersonelWP`, `TarihBazliIzinKullanimRaporuWP`, `SonIzinDurumuWP`, `YoklamaListesiWP`, `HarcirahGirisWP`, `UcretliMahsupWP` ve `MaasOlusturmaWP` içindeki yakalanan exception akışları ortak `ReportError` davranışına bağlandı. Loglama etkin olduğunda teknik kayıt `PortalTechnicalLog` üzerinden aynı `OperationId` ile yazılır ve kullanıcıya Türkçe, güvenli bir başvuru kodu mesajı gösterilir. Loglama kapalı olduğunda mevcut `ExceptionHelper`/ULS davranışı korunur.
 
 Bu pilotta build, test ve debug çalıştırılmadı; doğrulama kaynak taraması, diff kontrolü ve UTF-8 kontrolüyle sınırlıdır. Kalan IKYS webpartlarındaki exception catch blokları sonraki parçalarda aynı standarda geçirilecektir. Exception standardizasyonu tamamlandıktan sonra çoklu entity transaction çalışmasına dönülecektir.
+## IKYS exception standardizasyonu (kalan webpartlar)
+
+Kalan 14 IKYS webpartındaki exception yakalama akışları da ortak `ReportError` davranışına geçirildi: `BekleyenIslemlerWP`, `DereceKademeListesiWP`, `GorevOnayGirisiWP`, `GorevOnayListesiKisiselWP`, `GorevOnayListesiWP`, `IzinDonemListesiWP`, `IzinHareketEditWP`, `KisiselSayfaListesiWP`, `KisiselSayfaWP`, `MaasArtisiWP`, `MazereteMahsupWP`, `ProtokolSirasiWP`, `TopluIzinGirisiWP` ve `YoklamaGirisiWP`. Böylece IKYS webpartlarında `ExceptionHelper` kullanılan dosyaların tamamında teknik loglama ve Türkçe kullanıcı mesajı için ortak yol bulunur. Loglama kapalıyken eski ULS fallback davranışı korunur.
+
+Bu parça da yalnızca kaynak/diff/UTF-8 kontrolleriyle doğrulanmıştır. Visual Studio derleme ve Test sunucusu testi kullanıcı tarafından yapılacaktır.

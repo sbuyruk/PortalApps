@@ -21,6 +21,17 @@ namespace IKYS_WebParts.MaasArtisiWP
     public partial class MaasArtisiWP : WebPart
     {
         private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "MaasArtisiWP"); } }
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context))
+            {
+                new ExceptionHelper(error).PublishException();
+                return;
+            }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -93,8 +104,7 @@ namespace IKYS_WebParts.MaasArtisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("Unhandled", ex);
             }
         }
         #endregion
@@ -176,8 +186,7 @@ namespace IKYS_WebParts.MaasArtisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("Unhandled", ex);
             }
         }
 

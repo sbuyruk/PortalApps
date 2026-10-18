@@ -22,6 +22,17 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
     public partial class GorevOnayGirisiWP : WebPart
     {
         private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "GorevOnayGirisiWP"); } }
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context))
+            {
+                new ExceptionHelper(error).PublishException();
+                return;
+            }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -180,8 +191,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(exception);
-                exHelper.PublishException();
+                ReportError("Unhandled", exception);
             }
         }
         private void SetSureFromSelectedDateTime()
@@ -955,8 +965,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("Unhandled", ex);
             }
 
             return isSaved;
@@ -1106,8 +1115,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("Unhandled", ex);
             }
         }
         #region Events
@@ -1133,10 +1141,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Görev kaydedilemedi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
+                ReportError("Unhandled", exception);
             }
         }
         protected void UpdateBtn_Click(object sender, EventArgs e)
@@ -1165,10 +1170,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Güncellenemedi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
+                ReportError("Unhandled", exception);
             }
 
         }
@@ -1198,10 +1200,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Görev Onayı Silinemedi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
+                ReportError("Unhandled", exception);
             }
         }
         protected void KaydetNowBtn_Click(object sender, EventArgs e)
@@ -1252,10 +1251,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Görev Onayı Kaydedilemedi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
+                ReportError("Unhandled", exception);
             }
         }
         protected void HarcirahHesaplansinChk_CheckedChanged(object sender, EventArgs e)
