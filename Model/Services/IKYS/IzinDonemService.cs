@@ -7,6 +7,8 @@ using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
+using System.Diagnostics;
 
 namespace Model.Services.IKYS
 {
@@ -16,16 +18,28 @@ namespace Model.Services.IKYS
         public IzinDonemService() : this(new IzinDonemRepository()) { }
         public IzinDonemService(IzinDonemRepository repository) { if (repository == null) throw new ArgumentNullException("repository"); this.repository = repository; }
         public IzinDonem GetById(int id) { return Map(repository.SelectById(id)); }
+        public IzinDonem GetById(int id, PortalLogContext context) { return Trace(context, "IzinDonem.SelectById", () => Map(repository.SelectById(id))); }
         public List<IzinDonem> GetAll() { return ToList(repository.SelectAll()); }
         public int Save(IzinDonem item) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item); if (item.Id > 0 && ProjeConstants.IKYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINDONEM); return item.Id; }
         public bool Update(IzinDonem item) { if (item == null) throw new ArgumentNullException("item"); IzinDonem old = GetById(item.Id); bool ok = false; if (item.Id != 0) { item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); ok = repository.Update(item); } if (ok && ProjeConstants.IKYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINDONEM); return ok; }
         public bool Delete(IzinDonem item) { if (item == null || item.Id == 0) return false; IzinDonem old = GetById(item.Id); if (old == null) return false; bool ok = repository.Delete(item.Id); if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINDONEM); return ok; }
         public IzinDonem GetByIzinTarihi(int personelId, int izinTipi, DateTime tarih) { return Map(repository.SelectByIzinTarihi(personelId, izinTipi, tarih)); }
+        public IzinDonem GetByIzinTarihi(int personelId, int izinTipi, DateTime tarih, PortalLogContext context) { return Trace(context, "IzinDonem.SelectByIzinTarihi", () => Map(repository.SelectByIzinTarihi(personelId, izinTipi, tarih))); }
         public List<IzinDonem> GetOncekiYillaraAit(int personelId) { return ToList(repository.SelectOncekiYillaraAit(personelId)); }
+        public List<IzinDonem> GetOncekiYillaraAit(int personelId, PortalLogContext context) { return Trace(context, "IzinDonem.SelectOncekiYillaraAit", () => ToList(repository.SelectOncekiYillaraAit(personelId))); }
         public List<IzinDonem> GetByPersonelId(int personelId, int izinTipi) { return ToList(repository.SelectByPersonelId(personelId, izinTipi)); }
+        public List<IzinDonem> GetByPersonelId(int personelId, int izinTipi, PortalLogContext context) { return Trace(context, "IzinDonem.SelectByPersonelId", () => ToList(repository.SelectByPersonelId(personelId, izinTipi))); }
         public DataTable GetSumKalanIzinByPersonelId(int personelId, bool sadeceEskiDonemler) { return repository.SelectSumKalanIzinByPersonelId(personelId, sadeceEskiDonemler); }
         public string GetByPersonelIdReturnJson(int personelId, int izinTipi) { return new IzinHareketService().ConvertDataTableToString(repository.SelectByPersonelId(personelId, izinTipi)); }
         public DataTable GetByPersonelIdReturnDataTable(int personelId, int izinTipi) { return repository.SelectByPersonelIdReturnDataTable(personelId, izinTipi); }
+        public DataTable GetByPersonelIdReturnDataTable(int personelId, int izinTipi, PortalLogContext context) { return Trace(context, "IzinDonem.SelectByPersonelIdReturnDataTable", () => repository.SelectByPersonelIdReturnDataTable(personelId, izinTipi)); }
+        public bool TryRecordWebPartOpened(PortalLogContext context) { return new DAO.Repositories.Ortak.PortalLogRepository().TryRecordWebPartOpened(context); }
+        private static T Trace<T>(PortalLogContext context, string name, Func<T> action)
+        {
+            Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
+            try { T result = action(); succeeded = true; return result; }
+            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", name, clock.ElapsedMilliseconds, succeeded); }
+        }
 
         public IzinDonem CreateForPersonel(Personel personel, int izinTipi, DateTime tarih, string currentUserName)
         {

@@ -9,6 +9,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace IKYS_WebParts.IzinKullanimRaporuWP
@@ -16,6 +17,8 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
     [ToolboxItemAttribute(false)]
     public partial class IzinKullanimRaporuWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "IzinKullanimRaporuWP"); } }
+        private void ReportError(string operation, Exception error) { PortalLogContext context = LoggingContext; if (!PortalLogSettings.IsEnabled(context)) { new ExceptionHelper(error).PublishException(); return; } PortalTechnicalLog.WriteError(context, operation, error); MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA); }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -102,6 +105,7 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
             {
                 if (!Page.IsPostBack)
                 {
+                    new IzinDonemService().TryRecordWebPartOpened(LoggingContext);
                     FillIzinTanim();
                     YilDDLDoldur();
                     FillIzinTable(IzinTanimDDL.SelectedItem.Value.ConvertToInt());
@@ -109,8 +113,7 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(exception);
-                exHelper.PublishException();
+                ReportError("IzinKullanimRaporu.PageLoad", exception);
             }
         }
 
@@ -204,7 +207,7 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
                     DateTime raporTarihi = new DateTime(yil, 12, 31);
 
                     DateTime gecerliTarih = now.Year == yil ? now : raporTarihi;
-                    IzinDonem izinDonemi = new IzinDonemService().GetByIzinTarihi(personelId, izinTipi, gecerliTarih);
+                    IzinDonem izinDonemi = new IzinDonemService().GetByIzinTarihi(personelId, izinTipi, gecerliTarih, LoggingContext);
                     string izinDonemiStr = string.Empty;
                     string izinHakki = string.Empty;
                     string kullanilanIzin = string.Empty;

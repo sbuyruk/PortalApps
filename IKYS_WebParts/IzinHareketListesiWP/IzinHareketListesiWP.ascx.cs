@@ -8,6 +8,7 @@ using System.Data;
 using System.Web.Script.Serialization;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace IKYS_WebParts.IzinHareketListesiWP
@@ -15,6 +16,14 @@ namespace IKYS_WebParts.IzinHareketListesiWP
     [ToolboxItemAttribute(false)]
     public partial class IzinHareketListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "IzinHareketListesiWP"); } }
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context)) { new ExceptionHelper(error).PublishException(); return; }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -60,13 +69,13 @@ namespace IKYS_WebParts.IzinHareketListesiWP
             {
                 if (!Page.IsPostBack)
                 {
+                    new IzinHareketService().TryRecordWebPartOpened(LoggingContext);
                     TabloOlustur();
                 }
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("IzinHareketListesi.PageLoad", ex);
             }
         }
         private void TabloOlustur()
@@ -95,7 +104,10 @@ namespace IKYS_WebParts.IzinHareketListesiWP
         }
         private List<IzinHareketItemList> GetDataList()
         {
-            DataTable dataTable = new IzinHareketService().GetByIzinDonemiReturnDataTable(0, 0, 0);
+            IzinHareketService service = new IzinHareketService();
+            DataTable dataTable = PortalLogSettings.IsEnabled(LoggingContext)
+                ? service.GetByIzinDonemiReturnDataTable(0, 0, 0, LoggingContext)
+                : service.GetByIzinDonemiReturnDataTable(0, 0, 0);
             List<IzinHareketItemList> returnlist = new List<IzinHareketItemList>();
 
             if (dataTable != null)

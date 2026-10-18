@@ -251,6 +251,21 @@ Test sunucusunda liste açılışı, personel tipi filtresi, eski personel liste
 iki Excel çıktısı, açılış kayıtları, SELECT izleri ve hata başvuru kodu kontrol
 edilir.
 
+## IKYS dokuzuncu dikey geçişi: İzin raporları
+
+`IzinHareketListesiWP`, `IzinKullanimRaporuWP` ve
+`KullanilmayanIzinListesiWP` birlikte taşınır. Açılış etkinliği, izin dönemi ve
+izin hareketi okuma yolları ile rapor filtreleri için SELECT izi eklenir.
+Hata durumlarında Türkçe başvuru kodu gösterilir; etkin olmayan WebPart'lar
+eski sorgu yolunu kullanır. Bu parçada iş verisi yazılmaz ve audit kaydı
+oluşturulmaz. İzin talebi ve onay ekranlarının INSERT/UPDATE akışları ayrı bir
+transaction ve audit parçasında ele alınacaktır.
+
+Yeni migration gerekmez. Önceki değer korunarak host `web.config` içine
+`IKYS:IzinHareketListesiWP;IKYS:IzinKullanimRaporuWP;IKYS:KullanilmayanIzinListesiWP`
+eklenir. Testte üç ekranın açılışı, personel/yıl/izin filtresi, rapor sonuçları,
+Excel çıktıları, SELECT izleri ve hata başvuru kodları kontrol edilir.
+
 ## Güvenilirlik ve gizlilik
 
 - SQL izinde sorgu adı veya sabit kimliği kullanılır; tam SQL, parametre değerleri

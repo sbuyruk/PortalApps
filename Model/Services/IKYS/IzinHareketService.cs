@@ -8,6 +8,8 @@ using System.Linq;
 using System.Web.Script.Serialization;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
+using System.Diagnostics;
 
 namespace Model.Services.IKYS
 {
@@ -24,12 +26,23 @@ namespace Model.Services.IKYS
         public List<IzinHareket> GetByTarih(DateTime tarih) { return ToList(repository.SelectByTarih(tarih)); }
         public IzinHareket GetByIzinTalepId(int id) { return Map(repository.SelectByIzinTalepId(id)); }
         public DataTable GetByTarihReturnDataTable(DateTime baslangic, DateTime bitis) { return repository.SelectByTarihReturnDataTable(baslangic, bitis); }
+        public DataTable GetByTarihReturnDataTable(DateTime baslangic, DateTime bitis, PortalLogContext context) { return Trace(context, "IzinHareket.SelectByTarih", () => repository.SelectByTarihReturnDataTable(baslangic, bitis)); }
         public IzinHareket GetByPersonelTarih(int personelId, DateTime baslangic, DateTime bitis) { return Map(repository.SelectByPersonelTarih(personelId, baslangic, bitis)); }
         public DataTable GetByIzinTipiTarihReturnDataTable(int izinTipi, DateTime ilkTarih, DateTime bitis) { return repository.SelectByIzinTipiTarih(izinTipi, ilkTarih, bitis); }
+        public DataTable GetByIzinTipiTarihReturnDataTable(int izinTipi, DateTime ilkTarih, DateTime bitis, PortalLogContext context) { return Trace(context, "IzinHareket.SelectByIzinTipiTarih", () => repository.SelectByIzinTipiTarih(izinTipi, ilkTarih, bitis)); }
         public DataTable GetByIzinDonemiReturnDataTable(int personelId, int izinTipi, DateTime baslangic, DateTime bitis) { return repository.SelectByIzinDonemi(personelId, izinTipi, baslangic, bitis); }
         public DataTable GetByIzinDonemiReturnDataTable(int izinDonemId, int personelId, int izinTipi) { return repository.SelectByPersonelIdDonemId(personelId, izinDonemId, izinTipi); }
+        public DataTable GetByIzinDonemiReturnDataTable(int izinDonemId, int personelId, int izinTipi, PortalLogContext context) { return Trace(context, "IzinHareket.SelectByPersonelIdDonemId", () => repository.SelectByPersonelIdDonemId(personelId, izinDonemId, izinTipi)); }
         public string GetByPersonelIdDonemIdReturnJson(int personelId, int donemId, int izinTanimId) { return ConvertDataTableToString(repository.SelectByPersonelIdDonemId(personelId, donemId, izinTanimId)); }
         public List<IzinHareket> GetDigerByPersonelId(int personelId) { return ToList(repository.SelectDigerByPersonelId(personelId)); }
+        public List<IzinHareket> GetDigerByPersonelId(int personelId, PortalLogContext context) { return Trace(context, "IzinHareket.SelectDigerByPersonelId", () => ToList(repository.SelectDigerByPersonelId(personelId))); }
+        public bool TryRecordWebPartOpened(PortalLogContext context) { return new DAO.Repositories.Ortak.PortalLogRepository().TryRecordWebPartOpened(context); }
+        private static T Trace<T>(PortalLogContext context, string name, Func<T> action)
+        {
+            Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
+            try { T result = action(); succeeded = true; return result; }
+            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", name, clock.ElapsedMilliseconds, succeeded); }
+        }
         public string ConvertDataTableToString(DataTable table)
         {
             JavaScriptSerializer serializer = new JavaScriptSerializer(); List<Dictionary<string, object>> rows = new List<Dictionary<string, object>>();
