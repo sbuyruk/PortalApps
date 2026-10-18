@@ -404,3 +404,9 @@ Yoklama giriş/liste/aylık rapor ve harcırah giriş webpartları bu bağlamlı
 ## Kişisel sayfa webpartları
 
 `KisiselSayfaWP` ve `KisiselSayfaListesiWP` açılışları kullanıcı etkinliği kaydına bağlandı. Personel, izin talebi ve görev onayı için mevcut bağlamlı servis çağrıları kullanıldı; kişisel sayfanın diğer legacy okuma akışları sonraki ortak okuma standardizasyonunda ele alınacaktır.
+
+## IKYS exception standardizasyonu (pilot grup)
+
+Bu parçada `AylikYoklamaRaporuWP`, `GorevliIzinliPersonelWP`, `TarihBazliIzinKullanimRaporuWP`, `SonIzinDurumuWP`, `YoklamaListesiWP`, `HarcirahGirisWP`, `UcretliMahsupWP` ve `MaasOlusturmaWP` içindeki yakalanan exception akışları ortak `ReportError` davranışına bağlandı. Loglama etkin olduğunda teknik kayıt `PortalTechnicalLog` üzerinden aynı `OperationId` ile yazılır ve kullanıcıya Türkçe, güvenli bir başvuru kodu mesajı gösterilir. Loglama kapalı olduğunda mevcut `ExceptionHelper`/ULS davranışı korunur.
+
+Bu pilotta build, test ve debug çalıştırılmadı; doğrulama kaynak taraması, diff kontrolü ve UTF-8 kontrolüyle sınırlıdır. Kalan IKYS webpartlarındaki exception catch blokları sonraki parçalarda aynı standarda geçirilecektir. Exception standardizasyonu tamamlandıktan sonra çoklu entity transaction çalışmasına dönülecektir.

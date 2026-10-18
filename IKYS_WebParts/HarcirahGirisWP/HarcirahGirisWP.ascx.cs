@@ -18,6 +18,17 @@ namespace IKYS_WebParts.HarcirahGirisWP
     public partial class HarcirahGirisWP : WebPart
     {
         private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "HarcirahGirisWP"); } }
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context))
+            {
+                new ExceptionHelper(error).PublishException();
+                return;
+            }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         public HarcirahGirisWP()
         {
         }
@@ -120,8 +131,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(exception);
-                exHelper.PublishException();
+                ReportError("Unhandled", exception);
             }
         }
 
@@ -281,8 +291,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("Unhandled", ex);
             }
         }
 
@@ -397,10 +406,9 @@ namespace IKYS_WebParts.HarcirahGirisWP
                         }
                     }
                     catch (Exception ex)
-                    {
-                        ExceptionHelper exHelper = new ExceptionHelper(ex);
-                        exHelper.PublishException();
-                    }
+            {
+                ReportError("Unhandled", ex);
+            }
                 };
                 guncelleCell.Controls.Add(guncelleBtn);
 
@@ -426,10 +434,9 @@ namespace IKYS_WebParts.HarcirahGirisWP
                         }
                     }
                     catch (Exception ex)
-                    {
-                        ExceptionHelper exHelper = new ExceptionHelper(ex);
-                        exHelper.PublishException();
-                    }
+            {
+                ReportError("Unhandled", ex);
+            }
                 };
                 silCell.Controls.Add(silBtn);
 
