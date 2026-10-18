@@ -2,6 +2,7 @@ using Microsoft.SharePoint;
 using Model.IKYS;
 using Model.Ortak;
 using Model.Services.IKYS;
+using DAO.Ortak;
 using Model.Services.Ortak;
 using System;
 using System.Collections.Generic;
@@ -1846,17 +1847,24 @@ namespace IKYS_WebParts.PersonelGirisiWP
         }
         private void IzinDonemiBilgileriniGuncelle(Personel personel)
         {
-            IzinDonem izinDonemi = new IzinDonem();
             DateTime today = DateTime.Today;
-                izinDonemi = new IzinDonemService().GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, today);
-            if (izinDonemi == null)
+            bool loggingEnabled = PortalLogSettings.IsEnabled(LoggingContext);
+            using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
             {
-                izinDonemi = new IzinDonem();
-                izinDonemi = new IzinDonemService().CreateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName);
-            }
-            else
-            {
-                izinDonemi = new IzinDonemService().UpdateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName);
+                IzinDonemService service = new IzinDonemService();
+                IzinDonem izinDonemi = transaction == null
+                    ? service.GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, today)
+                    : service.GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, today, transaction, LoggingContext);
+                if (izinDonemi == null)
+                    izinDonemi = transaction == null
+                        ? service.CreateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName)
+                        : service.CreateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName, transaction, LoggingContext);
+                else
+                    izinDonemi = transaction == null
+                        ? service.UpdateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName)
+                        : service.UpdateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName, transaction, LoggingContext);
+                if (izinDonemi != null && transaction != null)
+                    transaction.Complete();
             }
         }
         private IletisimBilgileri IletisimBilgileriSave(Personel personel)

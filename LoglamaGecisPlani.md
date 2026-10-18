@@ -454,3 +454,6 @@ Bu parça da yalnızca kaynak/diff/UTF-8 kontrolleriyle doğrulanmıştır. Visu
 ## Mazeret onayı ve izin talebi giriş transaction akışları
 
 `MazeretIzinTalepListesiWP` onay akışında IzinTalep durumu, IzinHareket oluşturma/güncelleme ve mazeret izin dönemi kullanımı loglama açıkken aynı transaction altında yürütülür. `IzinTalepGirisWP` içinde yeni talep ve talep güncelleme sırasında dönem arama/oluşturma/güncelleme ile IzinTalep INSERT/UPDATE işlemleri transaction-aware servis yollarına bağlandı. Başarılı işlemden sonra e-posta ve kullanıcı mesajı akışları korunur; legacy yol loglama kapalıyken devam eder.
+## Personel izin dönemi yardımcıları
+
+`EskiPersonelWP` ve `PersonelGirisiWP` içindeki ücretli izin dönemi oluşturma/güncelleme yardımcıları transaction-aware `IzinDonemService` yollarına geçirildi. Loglama açıkken dönem SELECT ve INSERT/UPDATE işlemleri aynı transaction içinde SQL izi ve audit ile tamamlanır; loglama kapalıyken mevcut legacy yol korunur.
