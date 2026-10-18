@@ -8,12 +8,14 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace IKYS_WebParts.GorevliIzinliPersonelWP
 {
     [ToolboxItemAttribute(false)]
     public partial class GorevliIzinliPersonelWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "GorevliIzinliPersonelWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -57,6 +59,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
         {
             try
             {
+                new GorevOnayService().TryRecordWebPartOpened(LoggingContext);
                 DateTime today = DateTime.Today;
                 TitleLbl.Text = "Görevli/Izinli Personel Listesi";
                 GorevOnayliOlanPersonelTablosunuDoldur();
@@ -137,7 +140,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
             DateTime todaybas = UtilityHelper.TariheSaatEkle(today, "23:59");
             DateTime todaybit = UtilityHelper.TariheSaatEkle(today, "06:00");
 
-            DataTable dataTable = new GorevOnayService().GetByTarihReturnDataTable(todaybas, todaybit);
+            DataTable dataTable = new GorevOnayService().GetByTarihReturnDataTable(todaybas, todaybit, LoggingContext);
             if (dataTable == null)
             {
                 GorevOnayTable.Rows.Clear();
@@ -603,7 +606,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                 bittar = UtilityHelper.TariheSaatEkle(tarih.AddDays(1), "07:00");
             }
 
-            gorevOnay = new GorevOnayService().GetByPersonelTarih(personelId, bastar, bittar);
+            gorevOnay = new GorevOnayService().GetByPersonelTarih(personelId, bastar, bittar, LoggingContext);
             if (gorevOnay != null)
             {
                 return ("(Devaminda görevi var. </br>Görev Bitisi: " + gorevOnay.BitisTarihi.ConvertToDDMMYYYHHmmFormat() + ")");

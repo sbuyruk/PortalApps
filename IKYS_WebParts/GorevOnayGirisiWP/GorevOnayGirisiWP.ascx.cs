@@ -13,6 +13,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 using static Model.IKYS.Personel;
 
 namespace IKYS_WebParts.GorevOnayGirisiWP
@@ -20,6 +21,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
     [ToolboxItemAttribute(false)]
     public partial class GorevOnayGirisiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "GorevOnayGirisiWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -155,13 +157,14 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             {
                 if (!Page.IsPostBack)
                 {
+                    new GorevOnayService().TryRecordWebPartOpened(LoggingContext);
                     if (string.IsNullOrEmpty(GorevOnayIdQS))
                     {
                         OpenGiris();
                     }
                     else
                     {
-                        GorevOnay gorevOnay = new GorevOnayService().GetById(GorevOnayIdQS.ConvertToInt());
+                        GorevOnay gorevOnay = new GorevOnayService().GetById(GorevOnayIdQS.ConvertToInt(), LoggingContext);
                         if (gorevOnay == null)
                         {
                             MessageHelper.PublishMessage("Görev kaydı bulunamadı. Yeni görev girişi yapabilirsiniz.", ProjeConstants.MESAJ_HATA);
@@ -815,7 +818,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 gorevOnay.Yevmiye = YevmiyeTxt.Text;
                 gorevOnay.GunlukYevmiye = GunlukYevmiyeTxt.Text;
                 gorevOnay.AmirOnayi = (int)AmirOnayiBelirle();
-                gorevOnay.Id = new GorevOnayService().Save(gorevOnay);
+                gorevOnay.Id = new GorevOnayService().Save(gorevOnay, LoggingContext);
 
             }
             return gorevOnay;
@@ -869,7 +872,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     basTarih = UtilityHelper.TariheSaatEkle(basTarih, basSaat);
                     string bitSaat = BitSaatDDL.SelectedItem.Text;
                     bitTarih = UtilityHelper.TariheSaatEkle(bitTarih, bitSaat);
-                    isDateUsed = new GorevOnayService().HasDateConflict(personelId, basTarih, bitTarih, gorevOnayId);
+                    isDateUsed = new GorevOnayService().HasDateConflict(personelId, basTarih, bitTarih, gorevOnayId, LoggingContext);
                     if (isDateUsed)
                     {
                         MessageHelper.PublishMessage("Bu tarihlerde başka bir görev kaydı bulunmaktadır.", ProjeConstants.MESAJ_HATA);
@@ -883,7 +886,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         {
             bool isUpdated = false;
 
-            GorevOnay gorevOnay = new GorevOnayService().GetById(GorevOnayIdQS.ConvertToInt());
+            GorevOnay gorevOnay = new GorevOnayService().GetById(GorevOnayIdQS.ConvertToInt(), LoggingContext);
             if (gorevOnay != null)
             {
                 DateTime bastar = BaslangicTarihiTxt.Text.ConvertToDatetime();
@@ -917,7 +920,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 gorevOnay.Yevmiye = YevmiyeTxt.Text;
                 gorevOnay.GunlukYevmiye = GunlukYevmiyeTxt.Text;
                 gorevOnay.AmirOnayi = (int)AmirOnayiBelirle();
-                isUpdated = new GorevOnayService().Update(gorevOnay);
+                isUpdated = new GorevOnayService().Update(gorevOnay, LoggingContext);
             }
             return isUpdated;
         }
@@ -946,7 +949,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             {
                 if (gorevOnay != null)
                 {
-                    isSaved = new GorevOnayService().Delete(gorevOnay);
+                    isSaved = new GorevOnayService().Delete(gorevOnay, LoggingContext);
 
                 }
             }
@@ -1182,7 +1185,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         {
             try
             {
-                GorevOnay gorevOnay = new GorevOnayService().GetById(GorevOnayIdQS.ConvertToInt());
+                GorevOnay gorevOnay = new GorevOnayService().GetById(GorevOnayIdQS.ConvertToInt(), LoggingContext);
                 if (gorevOnay != null)
                 {
                     bool isDeleted = GorevOnayiSil(gorevOnay);

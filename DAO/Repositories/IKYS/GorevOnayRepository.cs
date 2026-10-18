@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
+using Utility.Logging;
 
 namespace DAO.Repositories.IKYS
 {
@@ -46,6 +48,20 @@ namespace DAO.Repositories.IKYS
         {
             return db.DeleteFromDb(queryBuilder.BuildDelete("GorevOnay_Table", id), "");
         }
+        public DataTable SelectById(int id, PortalLogContext context) { return TraceSelect("GorevOnay.SelectById", () => SelectById(id), context); }
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context) { if (transaction == null) throw new ArgumentNullException("transaction"); SqlQuery q = new SqlQuery("SELECT * FROM GorevOnay_Table WITH (UPDLOCK,HOLDLOCK) WHERE Id=@Id"); q.AddParameter("@Id", id); Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { DataTable result=transaction.Select(q); ok=true; return result; } finally { PortalTechnicalLog.WriteSqlTrace(context,"SELECT","GorevOnay.SelectById",clock.ElapsedMilliseconds,ok); } }
+        public DataTable SelectAll(PortalLogContext context) { return TraceSelect("GorevOnay.SelectAll", () => SelectAll(), context); }
+        public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context) { return TraceInsert(queryBuilder.BuildInsert(entity,"GorevOnay_Table"),transaction,context); }
+        public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context) { return TraceWrite(queryBuilder.BuildUpdate(entity,"GorevOnay_Table"),"UPDATE","GorevOnay.Update",transaction,context); }
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context) { return TraceWrite(queryBuilder.BuildDelete("GorevOnay_Table",id),"DELETE","GorevOnay.Delete",transaction,context); }
+        public DataTable SelectAllReturnDataTable(int personelId, DateTime since, PortalLogContext context) { return TraceSelect("GorevOnay.SelectAllReturnDataTable", () => SelectAllReturnDataTable(personelId,since), context); }
+        public DataTable SelectAllByPersonelReturnDataTable(int personelId, PortalLogContext context) { return TraceSelect("GorevOnay.SelectAllByPersonelReturnDataTable", () => SelectAllByPersonelReturnDataTable(personelId), context); }
+        public DataTable SelectByTarihReturnDataTable(DateTime baslangic, DateTime bitis, PortalLogContext context) { return TraceSelect("GorevOnay.SelectByTarihReturnDataTable", () => SelectByTarihReturnDataTable(baslangic,bitis), context); }
+        public DataTable SelectByPersonelTarih(int personelId, DateTime baslangic, DateTime bitis, PortalLogContext context) { return TraceSelect("GorevOnay.SelectByPersonelTarih", () => SelectByPersonelTarih(personelId,baslangic,bitis), context); }
+        public DataTable SelectForDateConflict(int personelId, DateTime baslangic, DateTime bitis, int gorevOnayId, PortalLogContext context) { return TraceSelect("GorevOnay.SelectForDateConflict", () => SelectForDateConflict(personelId,baslangic,bitis,gorevOnayId), context); }
+        private DataTable TraceSelect(string name, Func<DataTable> action, PortalLogContext context) { Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { DataTable result=action(); ok=true; return result; } finally { PortalTechnicalLog.WriteSqlTrace(context,"SELECT",name,clock.ElapsedMilliseconds,ok); } }
+        private static int TraceInsert(SqlQuery query, SqlTransactionContext transaction, PortalLogContext context) { if(transaction==null) throw new ArgumentNullException("transaction"); Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { int id=transaction.Insert(query); ok=id>0; return id; } finally { PortalTechnicalLog.WriteSqlTrace(context,"INSERT","GorevOnay.Insert",clock.ElapsedMilliseconds,ok); } }
+        private static bool TraceWrite(SqlQuery query,string operation,string name,SqlTransactionContext transaction,PortalLogContext context) { if(transaction==null) throw new ArgumentNullException("transaction"); Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { ok=transaction.Update(query); return ok; } finally { PortalTechnicalLog.WriteSqlTrace(context,operation,name,clock.ElapsedMilliseconds,ok); } }
 
         public bool UpdateAllSecildiToFalse()
         {
