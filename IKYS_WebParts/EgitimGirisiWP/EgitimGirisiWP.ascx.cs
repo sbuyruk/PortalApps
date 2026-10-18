@@ -4,9 +4,11 @@ using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace IKYS_WebParts.EgitimGirisiWP
@@ -14,6 +16,24 @@ namespace IKYS_WebParts.EgitimGirisiWP
     [ToolboxItemAttribute(false)]
     public partial class EgitimGirisiWP : WebPart
     {
+        private List<EgitimSeviyesi> seviyeler;
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "EgitimGirisiWP"); } }
+        private List<EgitimSeviyesi> GetSeviyeler()
+        {
+            if (seviyeler == null) seviyeler = new EgitimSeviyesiService().GetAll(LoggingContext);
+            return seviyeler;
+        }
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context))
+            {
+                new ExceptionHelper(error).PublishException();
+                return;
+            }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -96,26 +116,30 @@ namespace IKYS_WebParts.EgitimGirisiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            Personel personel = PersonelGetir();
-            if (!Page.IsPostBack)
+            try
             {
-                PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
-                FillEgitimSeviyesiDDL();
-                YabanciDilDDLDoldur();
-
-            }
-            if (personel != null)
-            {
+                if (!Page.IsPostBack) new EgitimService().TryRecordWebPartOpened(LoggingContext);
+                Personel personel = PersonelGetir();
+                if (!Page.IsPostBack)
+                {
+                    PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
+                    FillEgitimSeviyesiDDL();
+                    YabanciDilDDLDoldur();
+                }
                 FillOkulTable(personel);
                 FillKursTable(personel);
                 FillIsyeriTable(personel);
                 FillYabanciDilTable(personel);
             }
+            catch (Exception exception)
+            {
+                ReportError("Egitim.PageLoad", exception);
+            }
         }
         private void FillEgitimSeviyesiDDL()
         {
             OkulSeviyeDDL.Items.Clear();
-            List<EgitimSeviyesi> list = new EgitimSeviyesiService().GetAll();
+            List<EgitimSeviyesi> list = GetSeviyeler();
             foreach (EgitimSeviyesi item in list)
             {
                 ListItem li = new ListItem(item.Adi, item.Id.ReturnZeroIfNull().ToString());
@@ -148,7 +172,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
         }
         private void FillOkulTable(Personel personel)
         {
-            List<Egitim> egitimList = new EgitimService().GetByPersonelId(personel.Id);
+            List<Egitim> egitimList = new EgitimService().GetByPersonelId(personel.Id, LoggingContext);
             OkulTableHeaders();
             int SiraNo = 1;
             foreach (Egitim item in egitimList)
@@ -167,7 +191,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
                 int seviyeId = item.Seviye.ConvertToInt();
                 if (seviyeId > 0)
                 {
-                    EgitimSeviyesi es = new EgitimSeviyesiService().GetById(seviyeId);
+                    EgitimSeviyesi es = GetSeviyeler().FirstOrDefault(seviye => seviye.Id == seviyeId);
                     SeviyeCell.Text = es != null ? es.Adi : "";
                 }
 
@@ -192,7 +216,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
 
                     try
                     {
-                        bool isDeleted = new EgitimService().Delete(item);
+                        bool isDeleted = new EgitimService().Delete(item, LoggingContext);
 
                         if (isDeleted)
                         {
@@ -204,8 +228,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
                     }
                     catch (Exception exception)
                     {
-                        ExceptionHelper ex = new ExceptionHelper(exception);
-                        ex.PublishException();
+                        ReportError("Egitim.Delete", exception);
                     }
                 };
                 SilCell.Controls.Add(SilBtn);
@@ -216,7 +239,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
         }
         private void FillKursTable(Personel personel)
         {
-            List<Kurs> kursList = new KursService().GetByPersonelId(personel.Id);
+            List<Kurs> kursList = new KursService().GetByPersonelId(personel.Id, LoggingContext);
             KursTableHeaders();
             int SiraNo = 1;
             foreach (Kurs item in kursList)
@@ -254,7 +277,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
 
                     try
                     {
-                        bool isDeleted = new KursService().Delete(item);
+                        bool isDeleted = new KursService().Delete(item, LoggingContext);
 
                         if (isDeleted)
                         {
@@ -266,8 +289,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
                     }
                     catch (Exception exception)
                     {
-                        ExceptionHelper ex = new ExceptionHelper(exception);
-                        ex.PublishException();
+                        ReportError("Kurs.Delete", exception);
                     }
                 };
                 SilCell.Controls.Add(SilBtn);
@@ -278,7 +300,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
         }
         private void FillIsyeriTable(Personel personel)
         {
-            List<IsTecrube> kursList = new IsTecrubeService().GetByPersonelId(personel.Id);
+            List<IsTecrube> kursList = new IsTecrubeService().GetByPersonelId(personel.Id, LoggingContext);
             IsyeriTableHeaders();
             int SiraNo = 1;
             foreach (IsTecrube item in kursList)
@@ -316,7 +338,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
 
                     try
                     {
-                        bool isDeleted = new IsTecrubeService().Delete(item);
+                        bool isDeleted = new IsTecrubeService().Delete(item, LoggingContext);
 
                         if (isDeleted)
                         {
@@ -328,8 +350,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
                     }
                     catch (Exception exception)
                     {
-                        ExceptionHelper ex = new ExceptionHelper(exception);
-                        ex.PublishException();
+                        ReportError("IsTecrube.Delete", exception);
                     }
                 };
                 SilCell.Controls.Add(SilBtn);
@@ -345,7 +366,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
             string[] headers = { "Sira", "Yabanci Dil","Sinav Adi","Sinav Notu","Sinav Tarihi","Açiklama" };
             UtilityHelper.SetTableHeaders(YabanciDilTable,headers);
 
-            List<YabanciDil> yabanciDilList = new YabanciDilService().GetByPersonelId(personel.Id);
+            List<YabanciDil> yabanciDilList = new YabanciDilService().GetByPersonelId(personel.Id, LoggingContext);
             int SiraNo = 1;
             foreach (YabanciDil item in yabanciDilList)
             {
@@ -383,7 +404,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
 
                     try
                     {
-                        bool isDeleted = new YabanciDilService().Delete(item);
+                        bool isDeleted = new YabanciDilService().Delete(item, LoggingContext);
 
                         if (isDeleted)
                         {
@@ -395,8 +416,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
                     }
                     catch (Exception exception)
                     {
-                        ExceptionHelper ex = new ExceptionHelper(exception);
-                        ex.PublishException();
+                        ReportError("YabanciDil.Delete", exception);
                     }
                 };
                 SilCell.Controls.Add(SilBtn);
@@ -411,14 +431,15 @@ namespace IKYS_WebParts.EgitimGirisiWP
 
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), LoggingContext);
 
             }
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = new PersonelService().GetByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName, LoggingContext);
             }
+            if (personel == null) throw new InvalidOperationException("Personel kaydı bulunamadı.");
             PersonelIdQS = personel.Id.ToString();
             return personel;
         }
@@ -536,8 +557,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
             catch (Exception exception)
             {
 
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
+                ReportError("Egitim.Save", exception);
             }
 
         }
@@ -550,7 +570,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
             egitim.Seviye = OkulSeviyeDDL.SelectedItem.Value;
             egitim.MezuniyetTar = MezuniyetTarTxt.Value.ConvertToDatetime();
             egitim.Aciklama = AciklamaTxt.Text;
-            int egitimId = new EgitimService().Save(egitim);
+            int egitimId = new EgitimService().Save(egitim, LoggingContext);
             if (egitimId > 0)
                 return true;
             else return false;
@@ -564,7 +584,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
             kurs.Tarih = TarihTxt.Value.ConvertToDatetime();
             kurs.Sure = SureTxt.Text;
             kurs.VerenKurum = VerenKurumTxt.Text;
-            int kursId = new KursService().Save(kurs);
+            int kursId = new KursService().Save(kurs, LoggingContext);
             if (kursId > 0)
                 return true;
             else return false;
@@ -579,7 +599,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
             istecrube.BasTar = BasTarTxt.Value.ConvertToDatetime();
             istecrube.BitTar = BitTarTxt.Value.ConvertToDatetime();
 
-            int isyeriId = new IsTecrubeService().Save(istecrube);
+            int isyeriId = new IsTecrubeService().Save(istecrube, LoggingContext);
             if (isyeriId > 0)
                 return true;
             else return false;
@@ -594,7 +614,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
             yabanciDil.SinavNotu = SinavNotuTxt.Text;
             yabanciDil.SinavTarihi = SinavTarihiTxt.Value.ConvertToDatetime();
 
-            int id = new YabanciDilService().Save(yabanciDil);
+            int id = new YabanciDilService().Save(yabanciDil, LoggingContext);
             if (id > 0)
                 return true;
             else return false;
@@ -618,8 +638,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
             catch (Exception exception)
             {
 
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
+                ReportError("Kurs.Save", exception);
             }
         }
         protected void IsyeriEkleBtn_Click(object sender, EventArgs e)
@@ -640,8 +659,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
             catch (Exception exception)
             {
 
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
+                ReportError("IsTecrube.Save", exception);
             }
         }
 
@@ -663,8 +681,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
             catch (Exception exception)
             {
 
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
+                ReportError("YabanciDil.Save", exception);
             }
         }
     }

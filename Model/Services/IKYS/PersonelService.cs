@@ -43,6 +43,10 @@ namespace Model.Services.IKYS
         {
             return MapSingle(repository.SelectByUserName(userName));
         }
+        public Personel GetByUserName(string userName, PortalLogContext context)
+        {
+            return MapSingle(repository.SelectByUserName(userName, context));
+        }
 
         public List<Personel> GetActiveEmployees(Personel.PersonelTipi personelTipi)
         {

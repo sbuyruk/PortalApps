@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace Model.Services.IKYS
 {
@@ -20,6 +21,7 @@ namespace Model.Services.IKYS
         }
         public EgitimSeviyesi GetById(int id) { return Map(repository.SelectById(id)); }
         public List<EgitimSeviyesi> GetAll() { return ToList(repository.SelectAll()); }
+        public List<EgitimSeviyesi> GetAll(PortalLogContext context) { return ToList(repository.SelectAll(context)); }
         public int Save(EgitimSeviyesi item)
         {
             if (item == null) throw new ArgumentNullException("item");

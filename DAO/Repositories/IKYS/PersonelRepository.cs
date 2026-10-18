@@ -53,6 +53,15 @@ namespace DAO.Repositories.IKYS
             query.AddParameter("@KullaniciAdi", userName);
             return db.SelectFromDb(query, "");
         }
+        public DataTable SelectByUserName(string userName, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM Personel_Table WHERE KullaniciAdi=@KullaniciAdi ORDER BY Id");
+            query.AddParameter("@KullaniciAdi", userName);
+            Stopwatch clock = Stopwatch.StartNew();
+            bool succeeded = false;
+            try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
+            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Personel.SelectByUserName", clock.ElapsedMilliseconds, succeeded); }
+        }
 
         public int Insert<T>(T entity) { return db.Insert(queryBuilder.BuildInsert(entity, "Personel_Table")); }
         public bool Update<T>(T entity) { return db.Update2Db(queryBuilder.BuildUpdate(entity, "Personel_Table")); }
