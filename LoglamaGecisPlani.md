@@ -418,3 +418,6 @@ Bu parça da yalnızca kaynak/diff/UTF-8 kontrolleriyle doğrulanmıştır. Visu
 ## IzinDonem transaction altyapısı
 
 `IzinDonemRepository` ve `IzinDonemService` için transaction-aware SELECT/INSERT/UPDATE/DELETE overloadları eklendi. Bu overloadlar aynı `SqlTransactionContext` üzerinden çalışır, SQL izini ve audit kaydını aynı transaction içinde üretir; transaction'ın tamamlanması çağıran çoklu entity akışına bırakılır. Böylece IzinHareket ve IzinTalep ile birlikte yürüyen izin dönemi değişiklikleri sonraki webpart parçasında tek transaction altında birleştirilebilir.
+## IzinHareket transaction overloadları
+
+`IzinHareketService` için dışarıdan verilen `SqlTransactionContext` ile çalışan `GetById`, `Save`, `Update` ve `Delete` overloadları eklendi. Bu yollar kendi transaction'ını tamamlamaz; IzinDonem ve IzinTalep değişikliklerini aynı işlem içinde yöneten üst servis/webpart akışına bırakır. Repository SQL izi ve audit kayıtları aynı transaction üzerinden devam eder.
