@@ -400,3 +400,7 @@ Yoklama giriş/liste/aylık rapor ve harcırah giriş webpartları bu bağlamlı
 ## Derece, maaş ve protokol webpartları
 
 `DereceKademeListesiWP`, `MaasArtisiWP`, `MaasOlusturmaWP` ve `ProtokolSirasiWP` webpartlarının açılış ve desteklenen okuma/yazma çağrıları yeni loglama bağlamına geçirildi. Maaş ve derece işlemlerinin aynı iş akışında birden fazla entity değiştirdiği bölümler sonraki ortak transaction çalışmasına bırakıldı.
+
+## Kişisel sayfa webpartları
+
+`KisiselSayfaWP` ve `KisiselSayfaListesiWP` açılışları kullanıcı etkinliği kaydına bağlandı. Personel, izin talebi ve görev onayı için mevcut bağlamlı servis çağrıları kullanıldı; kişisel sayfanın diğer legacy okuma akışları sonraki ortak okuma standardizasyonunda ele alınacaktır.

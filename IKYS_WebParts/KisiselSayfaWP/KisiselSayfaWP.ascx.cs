@@ -12,12 +12,14 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace IKYS_WebParts.KisiselSayfaWP
 {
     [ToolboxItemAttribute(false)]
     public partial class KisiselSayfaWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "KisiselSayfaWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -128,6 +130,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
             Personel personel = PersonelGetir();
             if (!Page.IsPostBack)
             {
+                new PersonelService().TryRecordWebPartOpened(LoggingContext);
 
                 if (personel != null)
                 {                    
@@ -165,7 +168,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
 
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), LoggingContext);
 
             }
             else
@@ -177,7 +180,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                 else
                 {
                     string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                    personel = new PersonelService().GetByUserName(userName);
+                    personel = new PersonelService().GetByUserName(userName, LoggingContext);
                 }
             }
             PersonelIdQS = personel == null ? "0" : personel.Id.ToString();
@@ -1009,7 +1012,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
         {
 
             IzinTalep izinTalep = new IzinTalep();
-            DataTable dataTable = new IzinTalepService().GetIzinTalepleriReturnDataTable(personel.Id, 0, false, true);
+            DataTable dataTable = new IzinTalepService().GetIzinTalepleriReturnDataTable(personel.Id, 0, false, true, LoggingContext);
             int SiraNo = 1;
             if (dataTable == null)
             {
@@ -1089,10 +1092,10 @@ namespace IKYS_WebParts.KisiselSayfaWP
                         SilBtn.Click += delegate
                         {
 
-                            izinTalep = new IzinTalepService().GetById(izinTalepId);
+                            izinTalep = new IzinTalepService().GetById(izinTalepId, LoggingContext);
                             if (izinTalep != null)
                             {
-                                bool isdeleted = new IzinTalepService().Delete(izinTalep);
+                                bool isdeleted = new IzinTalepService().Delete(izinTalep, LoggingContext);
                                 if (isdeleted)
                                     MessageHelper.PublishMessage("İzin talebi silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                                 else
@@ -1158,10 +1161,10 @@ namespace IKYS_WebParts.KisiselSayfaWP
                         kapatBtn.ToolTip = "Kapat, bir daha gösterme";
                         kapatBtn.Click += delegate
                         {
-                            izinTalep = new IzinTalepService().GetById(izinTalepId);
+                            izinTalep = new IzinTalepService().GetById(izinTalepId, LoggingContext);
                             izinTalep.Aktif = false;
                             izinTalep.Degistiren = CurrentUserName;
-                            bool isclosed = new IzinTalepService().Update(izinTalep);
+                                bool isclosed = new IzinTalepService().Update(izinTalep, LoggingContext);
                             if (isclosed)
                                 MessageHelper.PublishMessage("Izin talebi kapatildi", ProjeConstants.MESAJ_BASARILI, 2000);
                             else
@@ -1339,7 +1342,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
             {
                 string gorevOnayIdStr = string.Empty;
                 GorevOnay gorevOnay = new GorevOnay();
-                DataTable dataTable = new GorevOnayService().GetAllReturnDataTable(personel.Id, DateTime.Today.AddYears(-5));// PersonelIdQS.ConvertToInt());
+                DataTable dataTable = new GorevOnayService().GetAllReturnDataTable(personel.Id, DateTime.Today.AddYears(-5), LoggingContext);// PersonelIdQS.ConvertToInt());
 
                 List<GorevOnayListItem> list = new List<GorevOnayListItem>();
 
