@@ -209,7 +209,7 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl, false);
-                Page.Context.ApplicationInstance.CompleteRequest();
+                System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
             }
             catch (Exception ex)
             {
