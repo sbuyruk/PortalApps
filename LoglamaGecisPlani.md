@@ -421,3 +421,6 @@ Bu parça da yalnızca kaynak/diff/UTF-8 kontrolleriyle doğrulanmıştır. Visu
 ## IzinHareket transaction overloadları
 
 `IzinHareketService` için dışarıdan verilen `SqlTransactionContext` ile çalışan `GetById`, `Save`, `Update` ve `Delete` overloadları eklendi. Bu yollar kendi transaction'ını tamamlamaz; IzinDonem ve IzinTalep değişikliklerini aynı işlem içinde yöneten üst servis/webpart akışına bırakır. Repository SQL izi ve audit kayıtları aynı transaction üzerinden devam eder.
+## IzinDonemListesi webpart transaction kullanımı
+
+`IzinDonemListesiWP` içindeki dönem ekleme ve güncelleme işlemleri, loglama etkin olduğunda `SqlTransactionContext` üzerinden çalışacak şekilde güncellendi. Başarılı işlemde transaction açıkça tamamlanır; hata veya başarısız sonuçta değişiklikler commit edilmez. Loglama kapalıyken mevcut legacy servis yolu korunur.
