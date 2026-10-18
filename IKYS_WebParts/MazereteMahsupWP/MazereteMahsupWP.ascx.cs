@@ -316,7 +316,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
             mahsup.MahsupDonemId = mahsupDonemi;
             mahsup.Aciklama = aciklama;
             mahsup.Olusturan = CurrentUserName;
-            int mahsupid = new MahsupService().Save(mahsup);
+            int mahsupid = new MahsupService().Save(mahsup, LoggingContext);
             return mahsup;
         }
 
