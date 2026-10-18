@@ -442,3 +442,6 @@ Bu parça da yalnızca kaynak/diff/UTF-8 kontrolleriyle doğrulanmıştır. Visu
 ## IzinTalepListesi onay transaction akışı
 
 `IzinTalepListesiWP` onay akışı transaction-aware servis yollarına bağlandı. IzinTalep onay durumu güncellemesi, IzinHareket oluşturma/güncelleme, ücretli izin dönemindeki kullanılan izin değişikliği ve ücretsiz izin için IsBilgileri güncellemesi loglama açıkken aynı transaction içinde yürür. Onay işlemindeki exception akışları da teknik log ve Türkçe kullanıcı mesajı standardına bağlandı. Legacy servis yolu loglama kapalıyken korunur.
+## IzinTalepListesi kabul ve red akışları
+
+`IzinTalepListesiWP` içindeki kontrol edildi/kabul ve reddet işlemleri transaction-aware `IzinTalepService` çağrılarına geçirildi. Durum değişikliği, audit ve SQL izi aynı transaction üzerinden yazılır; başarılı güncelleme olmadan e-posta ve başarı mesajı gönderilmez. Exception akışları teknik log ve Türkçe kullanıcı mesajına bağlandı.

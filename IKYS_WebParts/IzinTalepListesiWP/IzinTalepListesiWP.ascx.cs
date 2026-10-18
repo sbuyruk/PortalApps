@@ -593,14 +593,21 @@ namespace IKYS_WebParts.IzinTalepListesiWP
         {
             try
             {
+                bool loggingEnabled = PortalLogSettings.IsEnabled(LoggingContext);
+                bool updated = false;
+                IzinTalep izinTalep;
+                using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
+                {
                 //IzinTalep_Table da onayDurumu hanesini kontrol edildi yap
-                IzinTalep izinTalep = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), LoggingContext);
+                IzinTalepService service = new IzinTalepService();
+                izinTalep = loggingEnabled ? service.GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), transaction, LoggingContext) : service.GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), LoggingContext);
                 if (izinTalep != null)
                 {
                     izinTalep.OnayDurumu = ProjeConstants.PER_IZINTALEBI_KONTROLEDILDI_INT;
                     izinTalep.Aciklama = string.IsNullOrEmpty(AciklamaTxt.Text) ? izinTalep.Aciklama : AciklamaTxt.Text;
                     izinTalep.Degistiren = CurrentUserName;
-                    bool kontroledildi = new IzinTalepService().Update(izinTalep, LoggingContext);
+                    bool kontroledildi = loggingEnabled ? service.Update(izinTalep, transaction, LoggingContext) : service.Update(izinTalep, LoggingContext);
+                    updated = kontroledildi;
                     if (kontroledildi)
                     {
                         if (izinTalep.EPostaGonder)
@@ -611,38 +618,49 @@ namespace IKYS_WebParts.IzinTalepListesiWP
                         TabloOlustur();
                     }
                 }
+                if (loggingEnabled && updated) transaction.Complete();
+                }
 
 
             }
             catch (Exception exception)
             {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
+                ReportError("LeaveRequest.Accept", exception);
 
             }
 
         }
         protected void ReddetBtn_Click(object sender, EventArgs e)
         {
-            //IzinTalep_Table da onayDurumu hanesini reddedildi 2 yap
-            IzinTalep izinTalep = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), LoggingContext);
-            if (izinTalep != null)
+            try
             {
-                izinTalep.Aciklama = string.IsNullOrEmpty(AciklamaTxt.Text) ? izinTalep.Aciklama : AciklamaTxt.Text;
-                izinTalep.OnayDurumu = ProjeConstants.PER_IZINTALEBI_REDDEDILDI;
-                izinTalep.Degistiren = CurrentUserName;
-                bool reddedildi = new IzinTalepService().Update(izinTalep, LoggingContext);
-                if (reddedildi)
+                bool loggingEnabled = PortalLogSettings.IsEnabled(LoggingContext);
+                bool updated = false;
+                IzinTalep izinTalep;
+                using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
                 {
-                    if (izinTalep.EPostaGonder)
+                    IzinTalepService service = new IzinTalepService();
+                    izinTalep = loggingEnabled ? service.GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), transaction, LoggingContext) : service.GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), LoggingContext);
+                    if (izinTalep != null)
                     {
-                        IKYSOrtak.IzinKabulRedOnayEPostasiGonder(izinTalep.PersonelId, izinTalep.Id, "Red");
+                        izinTalep.Aciklama = string.IsNullOrEmpty(AciklamaTxt.Text) ? izinTalep.Aciklama : AciklamaTxt.Text;
+                        izinTalep.OnayDurumu = ProjeConstants.PER_IZINTALEBI_REDDEDILDI;
+                        izinTalep.Degistiren = CurrentUserName;
+                        updated = loggingEnabled ? service.Update(izinTalep, transaction, LoggingContext) : service.Update(izinTalep, LoggingContext);
                     }
-                    MessageHelper.PublishMessage("Izin Talebi Reddedildi", ProjeConstants.MESAJ_BASARILI, 2000);
-                    //EpostaGonder(izinTalep);
+                    if (loggingEnabled && updated) transaction.Complete();
                 }
+                if (updated)
+                {
+                    if (izinTalep.EPostaGonder) IKYSOrtak.IzinKabulRedOnayEPostasiGonder(izinTalep.PersonelId, izinTalep.Id, "Red");
+                    MessageHelper.PublishMessage("Izin Talebi Reddedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                }
+                TabloOlustur();
             }
-            TabloOlustur();
+            catch (Exception exception)
+            {
+                ReportError("LeaveRequest.Reject", exception);
+            }
         }
 
         protected void YazdirBtn_Click(object sender, EventArgs e)
