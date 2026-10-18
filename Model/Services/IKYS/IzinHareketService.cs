@@ -39,6 +39,7 @@ namespace Model.Services.IKYS
         public List<IzinHareket> GetByTarih(DateTime tarih, PortalLogContext context) { return ToList(repository.SelectByTarih(tarih,context)); }
         public IzinHareket GetByIzinTalepId(int id) { return Map(repository.SelectByIzinTalepId(id)); }
         public IzinHareket GetByIzinTalepId(int id, PortalLogContext context) { return Map(repository.SelectByIzinTalepId(id,context)); }
+        public IzinHareket GetByIzinTalepId(int id, SqlTransactionContext transaction, PortalLogContext context) { if(transaction==null) throw new ArgumentNullException("transaction"); if(context==null) throw new ArgumentNullException("context"); return Map(repository.SelectByIzinTalepId(id, transaction, context)); }
         public DataTable GetByTarihReturnDataTable(DateTime baslangic, DateTime bitis) { return repository.SelectByTarihReturnDataTable(baslangic, bitis); }
         public DataTable GetByTarihReturnDataTable(DateTime baslangic, DateTime bitis, PortalLogContext context) { return Trace(context, "IzinHareket.SelectByTarih", () => repository.SelectByTarihReturnDataTable(baslangic, bitis)); }
         public IzinHareket GetByPersonelTarih(int personelId, DateTime baslangic, DateTime bitis) { return Map(repository.SelectByPersonelTarih(personelId, baslangic, bitis)); }

@@ -1,6 +1,7 @@
 using Model.IKYS;
 using Model.Ortak;
 using Model.Services.IKYS;
+using DAO.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -449,17 +450,23 @@ namespace IKYS_WebParts.IzinTalepListesiWP
         {
             try
             {
+                bool loggingEnabled = PortalLogSettings.IsEnabled(LoggingContext);
+                bool transactionSucceeded = false;
+                IzinTalep izinTalep = null;
+                using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
+                {
                 //IzinTalep_Table da onayDurumu hanesini kayitlara islendi yap
-                IzinTalep izinTalep = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), LoggingContext);
+                IzinTalepService izinTalepService = new IzinTalepService();
+                izinTalep = loggingEnabled ? izinTalepService.GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), transaction, LoggingContext) : izinTalepService.GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), LoggingContext);
                 if (izinTalep != null)
                 {
                     izinTalep.Aciklama = string.IsNullOrEmpty(AciklamaTxt.Text) ? izinTalep.Aciklama : AciklamaTxt.Text;
                     izinTalep.OnayDurumu = ProjeConstants.PER_IZINTALEBI_KAYITLARAISLENDI_INT;
                     izinTalep.Degistiren = CurrentUserName;
-                    bool kayitlaraIslendi = new IzinTalepService().Update(izinTalep, LoggingContext);
+                    bool kayitlaraIslendi = loggingEnabled ? izinTalepService.Update(izinTalep, transaction, LoggingContext) : izinTalepService.Update(izinTalep, LoggingContext);
                     if (kayitlaraIslendi)
                     {
-                        bool izinHareketTablosundaVarMi = IzinHareketTablosundaVarMI(izinTalep.Id);
+                        bool izinHareketTablosundaVarMi = loggingEnabled ? new IzinHareketService().GetByIzinTalepId(izinTalep.Id, transaction, LoggingContext) != null : IzinHareketTablosundaVarMI(izinTalep.Id);
                         if (izinHareketTablosundaVarMi)
                         {
                             MessageHelper.PublishMessage("Bu Talep daha önce zaten onaylanmistir.", ProjeConstants.MESAJ_HATA);
@@ -481,26 +488,31 @@ namespace IKYS_WebParts.IzinTalepListesiWP
                             ih.Sure = izinTalep.Sure;
                             ih.Birim = izinTalep.Birim;
                             
-                            int izinHareketId = new IzinHareketService().Save(ih);
+                            IzinHareketService izinHareketService = new IzinHareketService();
+                            int izinHareketId = loggingEnabled ? izinHareketService.Save(ih, transaction, LoggingContext) : izinHareketService.Save(ih);
                             if (izinHareketId > 0)
                             {
+                                bool operationSucceeded = true;
                                 if (ih.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT) 
                                 {
-                                    IzinDonem izinDonemi = new IzinDonemService().GetById(ih.IzinDonemId);
+                                    IzinDonemService izinDonemService = new IzinDonemService();
+                                    IzinDonem izinDonemi = loggingEnabled ? izinDonemService.GetById(ih.IzinDonemId, transaction, LoggingContext) : izinDonemService.GetById(ih.IzinDonemId);
                                     if (izinDonemi != null)
                                     {
                                         ih.OncekiIzinStr = izinDonemi.KalanIzin.ToString();
                                         ih.OncekiIzinStr = izinDonemi.KalanIzin.ToString();
                                         ih.KullanilanIzinStr = izinTalep.Sure;
-                                        new IzinDonemService().UpdateUsedLeave(izinDonemi, ih.Sure, true, CurrentUserName);
+                                        operationSucceeded = loggingEnabled ? izinDonemService.UpdateUsedLeave(izinDonemi, ih.Sure, true, CurrentUserName, transaction, LoggingContext) : izinDonemService.UpdateUsedLeave(izinDonemi, ih.Sure, true, CurrentUserName);
                                         ih.KalanIzinStr = izinDonemi.KalanIzin.ToString();
-                                        new IzinHareketService().Update(ih);//kalan izin hesaplandiktan sonra izinHareket tablosuna yazsin
+                                        operationSucceeded = operationSucceeded && (loggingEnabled ? izinHareketService.Update(ih, transaction, LoggingContext) : izinHareketService.Update(ih));//kalan izin hesaplandiktan sonra izinHareket tablosuna yazsin
                                     }
+                                    else operationSucceeded = false;
                                 }
                                 if (ih.IzinTipi == ProjeConstants.IZINTIPI_UCRETSIZ_INT)
                                 {
 
-                                    IsBilgileri ib = new IsBilgileriService().GetById(ih.PersonelId);
+                                    IsBilgileriService isBilgileriService = new IsBilgileriService();
+                                    IsBilgileri ib = loggingEnabled ? isBilgileriService.GetById(ih.PersonelId, transaction, LoggingContext) : isBilgileriService.GetById(ih.PersonelId);
                                     string baslamaTarStr = ib == null ? "" : ib.BaslamaTar.ConvertToDatetimeEmptyIfNull();
                                     string izinDonemiBasTarStr = ib == null ? "" : ib.IzinDonemiBasTar.ConvertToDatetimeEmptyIfNull();
 
@@ -517,7 +529,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
                                             ib.IzinDonemiBasTar = yeniIzinDonemiBastar;
                                             try
                                             {
-                                                bool issaved = new IsBilgileriService().Update(ib);
+                                                bool issaved = loggingEnabled ? isBilgileriService.Update(ib, transaction, LoggingContext) : isBilgileriService.Update(ib);
                                                 if (issaved)
                                                 {
 
@@ -526,21 +538,27 @@ namespace IKYS_WebParts.IzinTalepListesiWP
                                                 }
 
                                             }
-                                            catch (Exception)
+                                            catch (Exception exception)
                                             {
+                                                operationSucceeded = false;
+                                                ReportError("LeaveRequest.FreeLeavePeriodUpdate", exception);
                                                 MessageHelper.PublishMessage("Izin Dönemi Baslangiç Tarihi Ücretsiz izin Süresi Kadar Ertelenemedi", ProjeConstants.MESAJ_HATA);
                                             }
                                         }
                                     }
                                     else
                                     {
+                                        operationSucceeded = false;
                                         MessageHelper.PublishMessage("Ise Baslama Tarihi (Izin Dönemi Baslangiç Tarihi) bos oldugundan, Izin Dönemi Baslangiç Tarihi Ücretsiz izin Süresi Kadar Ertelenemedi", ProjeConstants.MESAJ_HATA);
                                     }
                                 }
                             }
+                            transactionSucceeded = operationSucceeded;
                         }
 
                     }
+                }
+                if (loggingEnabled && transactionSucceeded) transaction.Complete();
                 }
                 if (izinTalep.EPostaGonder)
                 {
@@ -552,8 +570,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
+                ReportError("LeaveRequest.Approve", exception);
 
             }
 

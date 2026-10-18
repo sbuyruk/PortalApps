@@ -19,6 +19,7 @@ namespace Model.Services.IKYS
         public IsBilgileriService() : this(new IsBilgileriRepository()) { }
         public IsBilgileriService(IsBilgileriRepository repository) { if (repository == null) throw new ArgumentNullException("repository"); this.repository = repository; }
         public IsBilgileri GetById(int id) { return Map(repository.SelectById(id)); }
+        public IsBilgileri GetById(int id, SqlTransactionContext transaction, PortalLogContext context) { if (transaction == null) throw new ArgumentNullException("transaction"); if (context == null) throw new ArgumentNullException("context"); return Map(repository.SelectById(id, transaction, context)); }
         public List<IsBilgileri> GetAll() { return ToList(repository.SelectAll()); }
         public int Save(IsBilgileri item) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item); if (item.Id > 0 && ProjeConstants.IKYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_ISBILGILERI); return item.Id; }
         public int Save(IsBilgileri item, PortalLogContext context)
@@ -45,6 +46,19 @@ namespace Model.Services.IKYS
                 int auditId = new PortalLogRepository().RecordAudit(context, "UPDATE", "IsBilgileri", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
                 RecordChanges(old, item, auditId, transaction); transaction.Complete(); return true;
             }
+        }
+        public bool Update(IsBilgileri item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            if (item == null || item.Id <= 0) return false;
+            IsBilgileri old = Map(repository.SelectById(item.Id, transaction, context));
+            if (old == null) return false;
+            item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName();
+            if (!repository.Update(item, transaction, context)) return false;
+            int auditId = new PortalLogRepository().RecordAudit(context, "UPDATE", "IsBilgileri", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            RecordChanges(old, item, auditId, transaction);
+            return true;
         }
         public bool Delete(IsBilgileri item) { if (item == null || item.Id == 0) return false; IsBilgileri old = GetById(item.Id); if (old == null) return false; bool ok = repository.Delete(item.Id); if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.IKYS, ProjeConstants.IKYS_ISBILGILERI); return ok; }
         public bool Delete(IsBilgileri item, PortalLogContext context)

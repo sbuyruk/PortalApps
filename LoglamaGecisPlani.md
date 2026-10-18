@@ -439,3 +439,6 @@ Bu parça da yalnızca kaynak/diff/UTF-8 kontrolleriyle doğrulanmıştır. Visu
 ## İzin talebi güncellemesinin zincire alınması
 
 `IzinHareketEditWP` güncelleme akışında ilişkili `IzinTalep` kaydının güncellenmesi de aynı transaction'a alındı. Böylece dönem kullanımı, IzinHareket ve IzinTalep değişiklikleri birlikte commit edilir; herhangi biri başarısız olursa tamamı geri alınır. `IzinTalepService` için transaction-aware `Update` overloadı eklendi.
+## IzinTalepListesi onay transaction akışı
+
+`IzinTalepListesiWP` onay akışı transaction-aware servis yollarına bağlandı. IzinTalep onay durumu güncellemesi, IzinHareket oluşturma/güncelleme, ücretli izin dönemindeki kullanılan izin değişikliği ve ücretsiz izin için IsBilgileri güncellemesi loglama açıkken aynı transaction içinde yürür. Onay işlemindeki exception akışları da teknik log ve Türkçe kullanıcı mesajı standardına bağlandı. Legacy servis yolu loglama kapalıyken korunur.
