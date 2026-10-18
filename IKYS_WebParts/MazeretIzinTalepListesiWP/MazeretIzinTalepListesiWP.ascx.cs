@@ -399,33 +399,39 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
+                ReportError("IzinTalep.Kabul", exception);
 
             }
 
         }
         protected void ReddetBtn_Click(object sender, EventArgs e)
         {
-            //IzinTalep_Table da onayDurumu hanesini reddedildi 2 yap
-            IzinTalep izinTalep = new IzinTalep();
-            izinTalep.Aciklama = AciklamaTxt.Text;
-            izinTalep = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), LoggingContext);
-            if (izinTalep != null)
+            try
             {
-                izinTalep.OnayDurumu = ProjeConstants.PER_IZINTALEBI_REDDEDILDI;
-                izinTalep.Degistiren = CurrentUserName;
-                bool reddedildi = new IzinTalepService().Update(izinTalep, LoggingContext);
-                if (reddedildi)
+                //IzinTalep_Table da onayDurumu hanesini reddedildi 2 yap
+                IzinTalep izinTalep = new IzinTalep();
+                izinTalep.Aciklama = AciklamaTxt.Text;
+                izinTalep = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), LoggingContext);
+                if (izinTalep != null)
                 {
-                    if (izinTalep.EPostaGonder)
+                    izinTalep.OnayDurumu = ProjeConstants.PER_IZINTALEBI_REDDEDILDI;
+                    izinTalep.Degistiren = CurrentUserName;
+                    bool reddedildi = new IzinTalepService().Update(izinTalep, LoggingContext);
+                    if (reddedildi)
                     {
-                        IKYSOrtak.IzinKabulRedOnayEPostasiGonder(izinTalep.PersonelId, izinTalep.Id, "Red");
+                        if (izinTalep.EPostaGonder)
+                        {
+                            IKYSOrtak.IzinKabulRedOnayEPostasiGonder(izinTalep.PersonelId, izinTalep.Id, "Red");
+                        }
+                        MessageHelper.PublishMessage("Izin Talebi Reddedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
-                    MessageHelper.PublishMessage("Izin Talebi Reddedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
+                TabloOlustur();
             }
-            TabloOlustur();
+            catch (Exception exception)
+            {
+                ReportError("IzinTalep.Red", exception);
+            }
         }
         protected void IzinHareketleriBtn_Click(object sender, EventArgs e)
         {
