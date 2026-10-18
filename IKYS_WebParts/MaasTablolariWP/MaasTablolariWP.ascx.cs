@@ -16,12 +16,38 @@ using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 using Model.TBYS;
+using System.Linq;
+using Utility.Logging;
 
 namespace IKYS_WebParts.MaasTablolariWP
 {
     [ToolboxItemAttribute(false)]
     public partial class MaasTablolariWP : WebPart
     {
+        private List<UcretTanim> grupUcretleri;
+        private int? yuklenenGrupId;
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "MaasTablolariWP"); } }
+        private List<UcretTanim> GetGrupUcretleri(int grupId)
+        {
+            if (grupUcretleri == null || yuklenenGrupId != grupId)
+            {
+                grupUcretleri = new UcretTanimService().GetByGrupId(grupId, LoggingContext);
+                yuklenenGrupId = grupId;
+            }
+            return grupUcretleri;
+        }
+
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context))
+            {
+                new ExceptionHelper(error).PublishException();
+                return;
+            }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -43,22 +69,32 @@ namespace IKYS_WebParts.MaasTablolariWP
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
+            try
             {
-                TarihDDLDoldur();
-                TablolariDoldur();
+                if (!Page.IsPostBack)
+                {
+                    new UcretTanimService().TryRecordWebPartOpened(LoggingContext);
+                    TarihDDLDoldur();
+                    TablolariDoldur();
+                }
             }
+            catch (Exception error) { ReportError("MaasTablolari.Load", error); }
         }
 
         private void TablolariDoldur()
         {
+            if (TarihDDL.SelectedItem == null) return;
+            ClearDataRows(UcretTanimTable1);
+            ClearDataRows(UcretTanimTable2);
             Table1Title.Text = TarihDDL.SelectedItem.Text + " TARIHLERI ARASI GEÇERLI TSKGV ÜCRET TABLOSU-1";
             Table2Title.Text = TarihDDL.SelectedItem.Text + " TARIHLERI ARASI GEÇERLI TSKGV ÜCRET TABLOSU-2 (TSK'DAN EMEKLI PERSONEL IÇIN GEÇERLIDIR)";
             int grupId = TarihDDL.SelectedItem.Value.ConvertToInt();
             UcretTanim ucretTanim = new UcretTanim();
             int derece = 1;
-            DataTable dataTable = new UcretTanimService().GetKademe(derece, grupId);
-            for (int i = 1; i <= dataTable.Rows.Count; i++)
+            IEnumerable<int> kademeler = PortalLogSettings.IsEnabled(LoggingContext)
+                ? GetGrupUcretleri(grupId).Where(x => x.Derece == derece).Select(x => x.Kademe).Distinct().OrderBy(x => x)
+                : Enumerable.Range(1, new UcretTanimService().GetKademe(derece, grupId).Rows.Count);
+            foreach (int i in kademeler)
             {
 
                 UcretTanimTablosunuDoldur(grupId, i, UcretTanimTable1);
@@ -66,10 +102,18 @@ namespace IKYS_WebParts.MaasTablolariWP
             }
         }
         #region Methods
+        private static void ClearDataRows(Table table)
+        {
+            for (int i = table.Rows.Count - 1; i >= 0; i--)
+                if (!(table.Rows[i] is TableHeaderRow)) table.Rows.RemoveAt(i);
+        }
+
         private void UcretTanimTablosunuDoldur(int grupId,int kademe, Table table)
         {
             UcretTanim ucretTanim = new UcretTanim();
-            List<UcretTanim> list = new UcretTanimService().GetByKademe(grupId, kademe);
+            List<UcretTanim> list = PortalLogSettings.IsEnabled(LoggingContext)
+                ? GetGrupUcretleri(grupId).Where(x => x.Kademe == kademe).ToList()
+                : new UcretTanimService().GetByKademe(grupId, kademe);
             TableRow row = new TableRow();
             TableCell kademeCell = new TableCell();
             kademeCell.Text = kademe.ToString();
@@ -182,7 +226,7 @@ namespace IKYS_WebParts.MaasTablolariWP
         {
             TarihDDL.Items.Clear();
             UcretTanim ucretTanim = new UcretTanim();
-            DataTable dataTable = new UcretTanimService().GetByGrup();
+            DataTable dataTable = new UcretTanimService().GetByGrup(LoggingContext);
             foreach (DataRow row in dataTable.Rows)
             {
                 DateTime bastar = row["BaslangicTarihi"].ConvertToDatetime();
@@ -196,6 +240,19 @@ namespace IKYS_WebParts.MaasTablolariWP
         #endregion
         #region Events
         protected void ExportTablo1ToExcelBtn_Click(object sender, EventArgs e)
+        {
+            try { ExportTablo1ToExcel(); }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                HttpContext.Current.Response.Clear();
+                HttpContext.Current.Response.ClearHeaders();
+                HttpContext.Current.Response.ContentType = "text/html";
+                ReportError("MaasTablolari.Export1", error);
+            }
+        }
+
+        private void ExportTablo1ToExcel()
         {
 
             HttpContext.Current.Response.Clear();
@@ -233,6 +290,23 @@ namespace IKYS_WebParts.MaasTablolariWP
         }
         protected void ExportTablo2ToExcelBtn_Click(object sender, EventArgs e)
         {
+            try
+            {
+                TablolariDoldur();
+                ExportTablo2ToExcel();
+            }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                HttpContext.Current.Response.Clear();
+                HttpContext.Current.Response.ClearHeaders();
+                HttpContext.Current.Response.ContentType = "text/html";
+                ReportError("MaasTablolari.Export2", error);
+            }
+        }
+
+        private void ExportTablo2ToExcel()
+        {
 
             HttpContext.Current.Response.Clear();
             HttpContext.Current.Response.Buffer = true;
@@ -269,7 +343,8 @@ namespace IKYS_WebParts.MaasTablolariWP
         }
         protected void TarihDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TablolariDoldur();
+            try { TablolariDoldur(); }
+            catch (Exception error) { ReportError("MaasTablolari.Filter", error); }
         }
 
         protected void CloseBtn_Click(object sender, EventArgs e)
