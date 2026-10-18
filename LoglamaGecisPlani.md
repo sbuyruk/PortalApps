@@ -376,3 +376,7 @@ Yoklama giriş/liste/aylık rapor ve harcırah giriş webpartları bu bağlamlı
 ## GorevOnay geçişi
 
 `GorevOnayRepository` ve `GorevOnayService` bağlamlı okuma, SQL izi ve transaction-aware kayıt değişikliği desteği kazandı. Görev onay girişi ile görevli/izinli personel listesi webpartları yeni servis çağrılarını kullanır. Audit ayrıntısı personel, tarih, amir onayı, seçilme ve ödeme durumlarıyla sınırlıdır.
+
+## EskiPersonelGorevTanim geçişi
+
+`EskiPersonelGorevTanimRepository` ve `EskiPersonelGorevTanimService` için bağlamlı okuma, SQL izi ve transaction-aware INSERT/UPDATE/DELETE desteği eklendi. Audit alanları birim, personel, görev adı, kısa ad, vekillik ve aktiflik bilgileriyle sınırlandırıldı. Aktif webpart çağrısı bulunmadığı için bu parçada yalnızca ortak servis ve repository katmanı taşındı.
