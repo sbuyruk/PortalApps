@@ -472,3 +472,6 @@ TBYS başlangıç grubunda `BagisciBagislariWP`, `BagisciTalepleriWP`, `BagisciT
 ## IKYS personel çoklu entity kayıt transaction'ı
 
 `PersonelGirisiWP` ve `EskiPersonelWP` yeni personel kayıt akışlarında Personel, Kimlik, İş Bilgileri ve İletişim Bilgileri kayıtları loglama açıkken aynı `SqlTransactionContext` içinde yürütülür. Personel, Kimlik ve İletişim servislerine dış transaction overloadları ile transaction-aware personel sorguları eklendi; İş Bilgileri servisinin mevcut transaction yolu da kayıt akışına bağlandı. Her entity'nin audit ve SQL izi aynı `OperationId` ile üretilir. Loglama kapalıyken mevcut legacy çağrılar korunur. Güncelleme akışlarının aynı zincire alınması sonraki IKYS parçasıdır.
+## IKYS personel ve kimlik güncelleme transaction'ı
+
+`PersonelGirisiWP` ve `EskiPersonelWP` içindeki personel/kimlik güncellemesi loglama açıkken aynı transaction altında yürütülür. Personel ve Kimlik SELECT, UPDATE, audit ve SQL izleri aynı `OperationId` ile kaydedilir; iki güncellemeden biri başarısız olursa transaction tamamlanmaz. Görev tanımı için transaction-aware personel sorgusu da ortak servis altyapısına eklendi. Loglama kapalıyken mevcut legacy akış korunur.

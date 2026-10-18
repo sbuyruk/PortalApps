@@ -1518,8 +1518,14 @@ namespace IKYS_WebParts.PersonelGirisiWP
 
             if (personel != null)
             {
-                personelUpdated = PersonelUpdate(personel);
-                kimlikUpdated = KimlikUpdate(personel);
+                PortalLogContext context = LoggingContext;
+                bool loggingEnabled = PortalLogSettings.IsEnabled(context);
+                using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
+                {
+                    personelUpdated = transaction == null ? PersonelUpdate(personel) : PersonelUpdate(personel, transaction, context);
+                    kimlikUpdated = personelUpdated && (transaction == null ? KimlikUpdate(personel) : KimlikUpdate(personel, transaction, context));
+                    if (transaction != null && personelUpdated && kimlikUpdated) transaction.Complete();
+                }
             }
             if (personelUpdated && kimlikUpdated)
             {
@@ -1648,6 +1654,18 @@ namespace IKYS_WebParts.PersonelGirisiWP
             }
             return perSaved;
         }
+        private bool PersonelUpdate(Personel personel, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (personel == null) return false;
+            personel.Adi = AdiTxt.Text;
+            personel.Soyadi = SoyadiTxt.Text;
+            personel.SicilNo = SicilNoTxt.Text.ConvertToInt();
+            personel.KullaniciAdi = KullaniciAdiTxt.Text;
+            personel.Asker_sivil = AskerSivilDDL.SelectedValue.ConvertToInt();
+            personel.Tahsili = TahsiliDDL.SelectedValue.ConvertToInt();
+            personel.Tipi = PersonelTipiDDL.SelectedItem.Value.ConvertToInt();
+            return new PersonelService().Update(personel, transaction, context);
+        }
         private Kimlik KimlikSave(Personel personel, string kimlikNo)
         {
             Kimlik kimlik = new Kimlik();
@@ -1726,6 +1744,25 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 }
             }
             return kimlikUpdated;
+        }
+        private bool KimlikUpdate(Personel personel, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (personel == null) return false;
+            Kimlik kimlik = new KimlikService().GetByPersonelId(personel.Id, transaction, context);
+            if (kimlik == null) return false;
+            kimlik.TCKimlikNo = TCKimlikNoTxt.Text;
+            kimlik.AnneAdi = AnneAdiTxt.Text;
+            kimlik.BabaAdi = BabaAdiTxt.Text;
+            kimlik.DogumYeri = DogumIlceDDL.SelectedValue;
+            kimlik.DogumTar = DogumTarihiTxt.Value.ConvertToDatetime();
+            kimlik.MedeniHali = MedeniHaliDDL.SelectedValue;
+            kimlik.EvlilikTar = EvlilikTarihiTxt.Value.ConvertToDatetime();
+            kimlik.Cinsiyet = CinsiyetDDL.SelectedValue;
+            kimlik.KanGrubu = KanGrubuDDL.SelectedValue;
+            kimlik.Degistiren = CurrentUserName;
+            kimlik.DogumGunuKutlama = DogumGunuKutlamaChk.Checked;
+            kimlik.EvlilikKutlama = EvlilikKutlamaChk.Checked;
+            return new KimlikService().Update(kimlik, transaction, context);
         }
         private IsBilgileri IsBilgileriSave(Personel personel)
         {

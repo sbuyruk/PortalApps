@@ -121,6 +121,12 @@ namespace Model.Services.IKYS
             }
         }
         public GorevTanim GetByPersonelId(int personelId) { return Map(repository.SelectByPersonelId(personelId)); }
+        public GorevTanim GetByPersonelId(int personelId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            return Map(repository.SelectByPersonelId(personelId, transaction, context));
+        }
         public List<GorevTanim> GetByBirimId(int birimId) { return ToList(repository.SelectByBirimId(birimId)); }
         public GorevTanim GetByGorevId(int gorevId) { return GetById(gorevId); }
         public GorevTanim GetByGorevId(int gorevId, PortalLogContext context) { return GetById(gorevId, context); }
