@@ -22,6 +22,7 @@ namespace Model.Services.IKYS
         public IzinDonemService(IzinDonemRepository repository) { if (repository == null) throw new ArgumentNullException("repository"); this.repository = repository; }
         public IzinDonem GetById(int id) { return Map(repository.SelectById(id)); }
         public IzinDonem GetById(int id, PortalLogContext context) { return Trace(context, "IzinDonem.SelectById", () => Map(repository.SelectById(id))); }
+        public IzinDonem GetById(int id, SqlTransactionContext transaction, PortalLogContext context) { return Map(repository.SelectById(id, transaction, context)); }
         public List<IzinDonem> GetAll() { return ToList(repository.SelectAll()); }
         public int Save(IzinDonem item) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item); if (item.Id > 0 && ProjeConstants.IKYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINDONEM); return item.Id; }
         public int Save(IzinDonem item, SqlTransactionContext transaction, PortalLogContext context)
@@ -101,6 +102,26 @@ namespace Model.Services.IKYS
         {
             bool isSaved = false; if (donem.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT && donem != null) { int used = donem.KullanilanIzin.ConvertToInt() + (ekle ? sure.ConvertToInt() : -sure.ConvertToInt()); donem.KullanilanIzin = used.ToString(); donem.KalanIzin = (donem.IzinHakki.ConvertToInt() - used).ToString(); Update(donem); }
             if (donem.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT && donem != null) { TimeSpan used = donem.KullanilanIzin.ConvertToTimeSpan(); TimeSpan result = used + (ekle ? sure.ConvertToTimeSpan() : -sure.ConvertToTimeSpan()); donem.KullanilanIzin = result.ToString(); donem.KalanIzin = (donem.IzinHakki.ConvertToTimeSpan() - result).ToString(); donem.Degistiren = currentUserName; Update(donem); } return isSaved;
+        }
+        public bool UpdateUsedLeave(IzinDonem donem, string sure, bool ekle, string currentUserName, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (donem == null) return false;
+            if (donem.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT)
+            {
+                int used = donem.KullanilanIzin.ConvertToInt() + (ekle ? sure.ConvertToInt() : -sure.ConvertToInt());
+                donem.KullanilanIzin = used.ToString();
+                donem.KalanIzin = (donem.IzinHakki.ConvertToInt() - used).ToString();
+            }
+            else if (donem.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT)
+            {
+                TimeSpan used = donem.KullanilanIzin.ConvertToTimeSpan();
+                TimeSpan result = used + (ekle ? sure.ConvertToTimeSpan() : -sure.ConvertToTimeSpan());
+                donem.KullanilanIzin = result.ToString();
+                donem.KalanIzin = (donem.IzinHakki.ConvertToTimeSpan() - result).ToString();
+            }
+            else return false;
+            donem.Degistiren = currentUserName;
+            return Update(donem, transaction, context);
         }
         private bool GetIzinBaslangic(Personel personel, int izinTipi, out DateTime baslangic, out string birim)
         {

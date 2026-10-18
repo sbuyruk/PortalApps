@@ -1,6 +1,7 @@
 using Model.IKYS;
 using Model.Ortak;
 using Model.Services.IKYS;
+using DAO.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -566,15 +567,29 @@ namespace IKYS_WebParts.IzinHareketEditWP
                         //mevcut izin dönemini bul
                         // izin doneminden kullanilan izni çikar, kalan izne ekle, 
                         // izintalepTabledaki kaydi güncelle
-                        IzinDonem mevutIzinDonemi = new IzinDonemService().GetById(izinHareket.IzinDonemId);
-                        if (mevutIzinDonemi != null)
+                        IzinDonemService izinDonemService = new IzinDonemService();
+                        IzinHareketService izinHareketService = new IzinHareketService();
+                        if (PortalLogSettings.IsEnabled(LoggingContext))
                         {
-                            new IzinDonemService().UpdateUsedLeave(mevutIzinDonemi, izinSuresiOnceki, false, CurrentUserName);// dönemden düs
-
+                            using (SqlTransactionContext transaction = new SqlTransactionContext())
+                            {
+                                IzinDonem mevcutIzinDonemi = izinDonemService.GetById(izinHareket.IzinDonemId, transaction, LoggingContext);
+                                if (mevcutIzinDonemi != null && !izinDonemService.UpdateUsedLeave(mevcutIzinDonemi, izinSuresiOnceki, false, CurrentUserName, transaction, LoggingContext)) return false;
+                                isSaved = izinHareketService.Delete(izinHareket, transaction, LoggingContext);
+                                if (isSaved) transaction.Complete();
+                            }
+                        }
+                        else
+                        {
+                            IzinDonem mevcutIzinDonemi = izinDonemService.GetById(izinHareket.IzinDonemId);
+                            if (mevcutIzinDonemi != null) izinDonemService.UpdateUsedLeave(mevcutIzinDonemi, izinSuresiOnceki, false, CurrentUserName);
+                            isSaved = izinHareketService.Delete(izinHareket);
                         }
                     }
-
-                    isSaved = new IzinHareketService().Delete(izinHareket, LoggingContext);
+                    else
+                    {
+                        isSaved = new IzinHareketService().Delete(izinHareket, LoggingContext);
+                    }
 
                 }
             }
