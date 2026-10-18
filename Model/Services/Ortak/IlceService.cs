@@ -34,7 +34,7 @@ namespace Model.Services.Ortak
             return Map(repository.SelectById(id, context));
         }
 
-        public Ilce GetById(int id, SqlTransactionContext transaction)
+        internal Ilce GetById(int id, SqlTransactionContext transaction)
         {
             if (transaction == null)
                 throw new ArgumentNullException("transaction");
@@ -66,7 +66,7 @@ namespace Model.Services.Ortak
             return Map(repository.SelectByProvinceAndDistrictName(provinceName, districtName));
         }
 
-        public Ilce GetByProvinceAndDistrictName(
+        internal Ilce GetByProvinceAndDistrictName(
             string provinceName,
             string districtName,
             SqlTransactionContext transaction)
