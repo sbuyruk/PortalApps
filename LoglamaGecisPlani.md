@@ -445,3 +445,6 @@ Bu parça da yalnızca kaynak/diff/UTF-8 kontrolleriyle doğrulanmıştır. Visu
 ## IzinTalepListesi kabul ve red akışları
 
 `IzinTalepListesiWP` içindeki kontrol edildi/kabul ve reddet işlemleri transaction-aware `IzinTalepService` çağrılarına geçirildi. Durum değişikliği, audit ve SQL izi aynı transaction üzerinden yazılır; başarılı güncelleme olmadan e-posta ve başarı mesajı gönderilmez. Exception akışları teknik log ve Türkçe kullanıcı mesajına bağlandı.
+## Mahsup servislerinin transaction hazırlığı
+
+`MahsupService` için dış transaction kullanan INSERT ve DELETE overloadları eklendi. `MazereteMahsupWP` ve `UcretliMahsupWP` içindeki Mahsup INSERT çağrıları bağlamlı servis yoluna geçirildi; audit ve SQL izi aynı OperationId ile üretilir. Mahsup, IzinHareket ve IzinDonem geri alma zincirinin tek transaction altında birleştirilmesi sonraki mahsup parçasında yapılacaktır.
