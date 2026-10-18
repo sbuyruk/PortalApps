@@ -274,7 +274,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
         {
             DateTime today = DateTime.Today;
             DateTime threeMonthsLater = DateTime.Today.AddMonths(3);
-            IsBilgileri ib = new IsBilgileriService().GetByPersonelId(personel.Id);
+            IsBilgileri ib = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
             if (ib != null)
             {
 
@@ -357,7 +357,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
         private void FillIzinBilgileriTable(Personel personel)
         {
             DateTime today = DateTime.Today;
-            IsBilgileri ib = new IsBilgileriService().GetByPersonelId(personel.Id);
+            IsBilgileri ib = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
             if (ib != null)
             {
 
@@ -517,7 +517,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
                                     izinDonemiBasTarStr = string.IsNullOrEmpty(izinDonemiBasTarStr) ? baslamaTarStr : izinDonemiBasTarStr;
                                     if (!string.IsNullOrEmpty(izinDonemiBasTarStr))
                                     {
-                                        Personel personel = new PersonelService().GetById(ih.PersonelId);
+                                        Personel personel = new PersonelService().GetById(ih.PersonelId, LoggingContext);
                                         if ((personel != null) && (!personel.Asker_sivil.Equals(ProjeConstants.PER_ASKER_INT)))//asker degilse islem yap
                                         {
 
@@ -673,7 +673,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
         protected void IzinHareketleriBtn_Click(object sender, EventArgs e)
         {
             int personelId = paramPersonelIdLbl.Value.ConvertToInt();
-            Personel personel = new PersonelService().GetById(personelId);
+            Personel personel = new PersonelService().GetById(personelId, LoggingContext);
             if (personel != null)
             {
                 PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;

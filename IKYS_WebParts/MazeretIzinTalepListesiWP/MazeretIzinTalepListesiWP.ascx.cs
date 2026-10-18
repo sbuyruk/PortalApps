@@ -102,7 +102,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             DateTime today = DateTime.Today;
             DateTime threeMonthsLater = DateTime.Today.AddMonths(3);
             IsBilgileri ib = new IsBilgileri();
-            ib = new IsBilgileriService().GetByPersonelId(personel.Id);
+            ib = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
             if (ib != null)
             {
 
@@ -183,7 +183,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
         {
             DateTime today = DateTime.Today;
             IsBilgileri ib = new IsBilgileri();
-            ib = new IsBilgileriService().GetByPersonelId(personel.Id);
+            ib = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
             if (ib != null)
             {
 
@@ -437,7 +437,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
         {
             int personelId = paramPersonelIdLbl.Value.ConvertToInt();
             Personel personel = new Personel();
-            personel = new PersonelService().GetById(personelId);
+            personel = new PersonelService().GetById(personelId, LoggingContext);
             if (personel != null)
             {
                 PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;

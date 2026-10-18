@@ -326,7 +326,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                 GorevOnay gorevOnay = new GorevOnayService().GetById(paramGorevOnayIdLbl.Value.ConvertToInt(), LoggingContext);
                 if (gorevOnay != null)
                 {
-                    Personel personel = new PersonelService().GetById(gorevOnay.PersonelId);
+                    Personel personel = new PersonelService().GetById(gorevOnay.PersonelId, LoggingContext);
                     OnayLbl.Text = personel.Adi + " " + personel.Soyadi + " için "
                         + gorevOnay.BaslangicTarihi.ToString("dd.MM.yyyy") + " - " + gorevOnay.BitisTarihi.ToString("dd.MM.yyyy")
                         + " tarihleri arasındaki görevi onaylamak istediğinize emin misiniz?";
@@ -348,7 +348,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                 GorevOnay gorevOnay = new GorevOnayService().GetById(paramGorevOnayIdLbl.Value.ConvertToInt(), LoggingContext);
                 if (gorevOnay != null)
                 {
-                    Personel personel = new PersonelService().GetById(gorevOnay.PersonelId);
+                    Personel personel = new PersonelService().GetById(gorevOnay.PersonelId, LoggingContext);
                     ReddetLbl.Text = personel.Adi + " " + personel.Soyadi + " için "
                         + gorevOnay.BaslangicTarihi.ToString("dd.MM.yyyy") + " - " + gorevOnay.BitisTarihi.ToString("dd.MM.yyyy")
                         + " tarihleri arasındaki görevi reddetmek istediğinize emin misiniz?";
@@ -370,7 +370,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                 GorevOnay gorevOnay = new GorevOnayService().GetById(paramGorevOnayIdLbl.Value.ConvertToInt(), LoggingContext);
                 if (gorevOnay != null)
                 {
-                    Personel personel = new PersonelService().GetById(gorevOnay.PersonelId);
+                    Personel personel = new PersonelService().GetById(gorevOnay.PersonelId, LoggingContext);
 
                     GorevInfoTable.Controls.Clear();
 
@@ -477,23 +477,23 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
         {
             try
             {
-                Personel personel = new PersonelService().GetById(gorevOnay.PersonelId);
+                Personel personel = new PersonelService().GetById(gorevOnay.PersonelId, LoggingContext);
                 if (personel != null)
                 {
                     List<string> emailList = new List<string>();
                     //Bu personelin Amirini bul
-                    IsBilgileri isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id);
+                    IsBilgileri isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
                     Personel amir = null;
                     if (isBilgileri != null)
                     {
                         BirimTanim birimTanim = new BirimTanimService().GetById(isBilgileri.BirimId);
-                        amir = new PersonelService().GetById(birimTanim.AmirId);
+                        amir = new PersonelService().GetById(birimTanim.AmirId, LoggingContext);
                         if (birimTanim != null)
                         {
-                            IletisimBilgileri amirIsBilgileri = new IletisimBilgileriService().GetByPersonelId(amir.Id);
+                            IletisimBilgileri amirIsBilgileri = new IletisimBilgileriService().GetByPersonelId(amir.Id, LoggingContext);
                             emailList.Add(amirIsBilgileri.InternetEPosta);
                         }
-                        IletisimBilgileri ib = new IletisimBilgileriService().GetByPersonelId(personel.Id);
+                        IletisimBilgileri ib = new IletisimBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
                         emailList.Add(ib.InternetEPosta);
                     }
                     //amire mail gönder
@@ -511,23 +511,23 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
         {
             try
             {
-                Personel personel = new PersonelService().GetById(gorevOnay.PersonelId);
+                Personel personel = new PersonelService().GetById(gorevOnay.PersonelId, LoggingContext);
                 if (personel != null)
                 {
                     List<string> emailList = new List<string>();
                     //Bu personelin Amirini bul
-                    IsBilgileri isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id);
+                    IsBilgileri isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
                     Personel amir = null;
                     if (isBilgileri != null)
                     {
                         BirimTanim birimTanim = new BirimTanimService().GetById(isBilgileri.BirimId);
-                        amir = new PersonelService().GetById(birimTanim.AmirId);
+                        amir = new PersonelService().GetById(birimTanim.AmirId, LoggingContext);
                         if (birimTanim != null)
                         {
-                            IletisimBilgileri amirIsBilgileri = new IletisimBilgileriService().GetByPersonelId(amir.Id);
+                            IletisimBilgileri amirIsBilgileri = new IletisimBilgileriService().GetByPersonelId(amir.Id, LoggingContext);
                             emailList.Add(amirIsBilgileri.InternetEPosta);
                         }
-                        IletisimBilgileri ib = new IletisimBilgileriService().GetByPersonelId(personel.Id);
+                        IletisimBilgileri ib = new IletisimBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
                         emailList.Add(ib.InternetEPosta);
                     }
                     //amire mail gönder
