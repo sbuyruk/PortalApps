@@ -388,3 +388,7 @@ Yoklama giriş/liste/aylık rapor ve harcırah giriş webpartları bu bağlamlı
 ## İzin raporları ve dönem listeleri
 
 `IzinDonemListesiWP`, `SonIzinDurumuWP` ve `TarihBazliIzinKullanimRaporuWP` webpartlarının açılış ve okuma akışları bağlamlı servis çağrılarına geçirildi. Bu parçada mevcut yazma akışları korunmuştur; IzinDonem ve IzinHareket birlikte güncellenen toplu işlemler sonraki transaction parçasında ele alınacaktır.
+
+## Toplu izin ve mahsup webpartları
+
+`TopluIzinGirisiWP`, `MazereteMahsupWP` ve `UcretliMahsupWP` açılışları yeni kullanıcı etkinliği kaydına bağlandı. IzinHareket ekleme, silme ve okuma çağrıları bağlamlı servis metotlarını kullanır. IzinDonem ve IzinHareket birlikte değişen mahsup işlemlerinin tek transaction altında birleştirilmesi sonraki güvenilirlik parçasıdır.
