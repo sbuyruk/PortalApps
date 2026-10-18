@@ -1,6 +1,8 @@
 using DAO.Ortak;
 using System;
 using System.Data;
+using System.Diagnostics;
+using Utility.Logging;
 
 namespace DAO.Repositories.Ortak
 {
@@ -25,6 +27,16 @@ namespace DAO.Repositories.Ortak
                 "SELECT * FROM Ilce_Table WHERE Id=@Id ORDER BY IlceAdi");
             query.AddParameter("@Id", id);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectById(int id, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM Ilce_Table WHERE Id=@Id ORDER BY IlceAdi");
+            query.AddParameter("@Id", id);
+            Stopwatch clock = Stopwatch.StartNew();
+            bool succeeded = false;
+            try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
+            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Ilce.SelectById", clock.ElapsedMilliseconds, succeeded); }
         }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction)

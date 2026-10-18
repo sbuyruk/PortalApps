@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace Model.Services.IKYS
 {
@@ -21,6 +22,7 @@ namespace Model.Services.IKYS
         public bool Update(Kimlik item) { if (item == null) throw new ArgumentNullException("item"); Kimlik old = GetById(item.Id); bool ok = false; if (item.Id != 0) { item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); ok = repository.Update(item); } if (ok && ProjeConstants.IKYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.IKYS, ProjeConstants.IKYS_KIMLIK); return ok; }
         public bool Delete(Kimlik item) { if (item == null || item.Id == 0) return false; Kimlik old = GetById(item.Id); if (old == null) return false; bool ok = repository.Delete(item.Id); if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.IKYS, ProjeConstants.IKYS_KIMLIK); return ok; }
         public Kimlik GetByPersonelId(int personelId) { return Map(repository.SelectByPersonelId(personelId)); }
+        public Kimlik GetByPersonelId(int personelId, PortalLogContext context) { return Map(repository.SelectByPersonelId(personelId, context)); }
         public Kimlik GetByTcKimlikNo(string kimlikNo) { return Map(repository.SelectByTcKimlikNo(kimlikNo)); }
         public DataTable GetAllFromKimlik() { return repository.SelectAllFromKimlik(); }
         private static Kimlik Map(DataTable table) { return ToList(table).FirstOrDefault(); }

@@ -17,6 +17,15 @@ namespace DAO.Repositories.IKYS
         public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "IsBilgileri_Table")); }
         public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("IsBilgileri_Table", id), ""); }
         public DataTable SelectByPersonelId(int personelId) { SqlQuery q = new SqlQuery("SELECT * FROM IsBilgileri_Table WHERE PersonelId=@PersonelId ORDER BY UnvanId"); q.AddParameter("@PersonelId", personelId); return db.SelectFromDb(q, ""); }
+        public DataTable SelectByPersonelId(int personelId, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM IsBilgileri_Table WHERE PersonelId=@PersonelId ORDER BY UnvanId");
+            query.AddParameter("@PersonelId", personelId);
+            Stopwatch clock = Stopwatch.StartNew();
+            bool succeeded = false;
+            try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
+            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "IsBilgileri.SelectByPersonelId", clock.ElapsedMilliseconds, succeeded); }
+        }
         public DataTable SelectByPersonelId(int personelId, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");

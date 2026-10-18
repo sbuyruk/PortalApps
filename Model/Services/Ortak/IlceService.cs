@@ -5,6 +5,7 @@ using System;
 using System.Data;
 using System.Collections.Generic;
 using System.Linq;
+using Utility.Logging;
 
 namespace Model.Services.Ortak
 {
@@ -26,6 +27,11 @@ namespace Model.Services.Ortak
         public Ilce GetById(int id)
         {
             return Map(repository.SelectById(id));
+        }
+
+        public Ilce GetById(int id, PortalLogContext context)
+        {
+            return Map(repository.SelectById(id, context));
         }
 
         public Ilce GetById(int id, SqlTransactionContext transaction)

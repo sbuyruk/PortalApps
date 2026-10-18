@@ -1,6 +1,8 @@
 using DAO.Ortak;
 using System;
 using System.Data;
+using System.Diagnostics;
+using Utility.Logging;
 
 namespace DAO.Repositories.IKYS
 {
@@ -16,5 +18,14 @@ namespace DAO.Repositories.IKYS
         public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "IletisimBilgileri_Table")); }
         public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("IletisimBilgileri_Table", id), ""); }
         public DataTable SelectByPersonelId(int personelId) { SqlQuery q = new SqlQuery("SELECT * FROM IletisimBilgileri_Table WHERE PersonelId=@PersonelId ORDER BY Adres"); q.AddParameter("@PersonelId", personelId); return db.SelectFromDb(q, ""); }
+        public DataTable SelectByPersonelId(int personelId, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM IletisimBilgileri_Table WHERE PersonelId=@PersonelId ORDER BY Adres");
+            query.AddParameter("@PersonelId", personelId);
+            Stopwatch clock = Stopwatch.StartNew();
+            bool succeeded = false;
+            try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
+            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "IletisimBilgileri.SelectByPersonelId", clock.ElapsedMilliseconds, succeeded); }
+        }
     }
 }
