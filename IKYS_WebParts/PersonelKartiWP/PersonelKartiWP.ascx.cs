@@ -6,10 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace IKYS_WebParts.PersonelKartiWP
@@ -17,6 +19,18 @@ namespace IKYS_WebParts.PersonelKartiWP
     [ToolboxItemAttribute(false)]
     public partial class PersonelKartiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "PersonelKartiWP"); } }
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context))
+            {
+                new ExceptionHelper(error).PublishException();
+                return;
+            }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -75,7 +89,15 @@ namespace IKYS_WebParts.PersonelKartiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            BilgiFormunuDoldur();
+            try
+            {
+                if (!Page.IsPostBack) new PersonelService().TryRecordWebPartOpened(LoggingContext);
+                BilgiFormunuDoldur();
+            }
+            catch (Exception exception)
+            {
+                ReportError("PersonelKarti.PageLoad", exception);
+            }
         }
         private Personel PersonelGetir()
         {
@@ -83,13 +105,13 @@ namespace IKYS_WebParts.PersonelKartiWP
 
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), LoggingContext);
 
             }
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = new PersonelService().GetByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName, LoggingContext);
             }
             PersonelIdQS = personel == null ? "0" : personel.Id.ToString();
             return personel;
@@ -98,6 +120,7 @@ namespace IKYS_WebParts.PersonelKartiWP
         {
             #region personel
             Personel personel = PersonelGetir();
+            if (personel == null) throw new InvalidOperationException("Personel kaydı bulunamadı.");
 
             if (personel != null)
             {
@@ -114,11 +137,11 @@ namespace IKYS_WebParts.PersonelKartiWP
             #endregion
 
             #region kimlik bilgileri
-            Kimlik kimlik = new KimlikService().GetByPersonelId(personel.Id);
+            Kimlik kimlik = new KimlikService().GetByPersonelId(personel.Id, LoggingContext);
             if (kimlik != null)
             {
                 TCKimlikNOCell.Text = kimlik.TCKimlikNo;
-                Ilce dilce = new IlceService().GetById(kimlik.DogumYeri.ConvertToInt()) ?? new Ilce();
+                Ilce dilce = new IlceService().GetById(kimlik.DogumYeri.ConvertToInt(), LoggingContext) ?? new Ilce();
                 DogumYeriCell.Text = dilce.IlceAdi + "/" + dilce.IlAdi;
 
                 DogumTarihiCell.Text = kimlik.DogumTar.ConvertToDatetimeEmptyIfNull();
@@ -129,10 +152,10 @@ namespace IKYS_WebParts.PersonelKartiWP
             #endregion
 
             #region Is bilgileri
-            IsBilgileri isBilgisi = new IsBilgileriService().GetByPersonelId(personel.Id);
+            IsBilgileri isBilgisi = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
             if (isBilgisi != null)
             {
-                GorevTanim gt = new GorevTanimService().GetById(isBilgisi.GorevId);
+                GorevTanim gt = new GorevTanimService().GetById(isBilgisi.GorevId, LoggingContext);
                 if (gt!=null)
                 {
                     UnvaniCell.Text = gt.Adi;
@@ -142,7 +165,9 @@ namespace IKYS_WebParts.PersonelKartiWP
             #endregion
 
             #region Aile bilgileri
-            List<Aile> aileList = new AileService().GetByPersonelId(personel.Id);
+            List<Aile> aileList = new AileService().GetByPersonelId(personel.Id, LoggingContext);
+            List<Meslek> meslekler = PortalLogSettings.IsEnabled(LoggingContext) && aileList.Count > 0
+                ? new MeslekService().GetAll(LoggingContext) : null;
             int sayac = 0;
             foreach (Aile item in aileList)
             {
@@ -151,7 +176,9 @@ namespace IKYS_WebParts.PersonelKartiWP
                     yakinlikDerecesi = ProjeConstants.PER_YAKINLIKDERECESI_ES;
                 else if (yakinlikDerecesi.Equals("2"))
                     yakinlikDerecesi = ProjeConstants.PER_YAKINLIKDERECESI_COCUK;
-                Meslek meslek = new MeslekService().GetById(item.Meslek);
+                Meslek meslek = meslekler == null
+                    ? new MeslekService().GetById(item.Meslek)
+                    : meslekler.FirstOrDefault(value => value.Id == item.Meslek);
                 AddRow(sayac++, yakinlikDerecesi, item.Adi, item.Soyadi, item.DogumTar.ConvertToDatetimeEmptyIfNull(), meslek == null ? "" : meslek.Adi);
 
             }
@@ -162,15 +189,18 @@ namespace IKYS_WebParts.PersonelKartiWP
             #endregion
 
             #region Iletisim Bilgileri
-            IletisimBilgileri ib = new IletisimBilgileriService().GetByPersonelId(personel.Id);
-            Ilce ilce = new IlceService().GetById(ib.Ilcesi.ConvertToInt()) ?? new Ilce();
-            AdresCell.Text = ib.Adres + " " + ilce.IlceAdi + "/" + ilce.IlAdi;
-            CepTelCell.Text = ib.CepTelefonu + " " + ib.CepTelefonu2;
-            EvTelCell.Text = ib.EvTelefonu;
+            IletisimBilgileri ib = new IletisimBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
+            if (ib != null)
+            {
+                Ilce ilce = new IlceService().GetById(ib.Ilcesi.ConvertToInt(), LoggingContext) ?? new Ilce();
+                AdresCell.Text = ib.Adres + " " + ilce.IlceAdi + "/" + ilce.IlAdi;
+                CepTelCell.Text = ib.CepTelefonu + " " + ib.CepTelefonu2;
+                EvTelCell.Text = ib.EvTelefonu;
+            }
             #endregion
 
             #region Egitim Bilgileri
-            List<Egitim> egitimList = new EgitimService().GetByPersonelId(personel.Id);
+            List<Egitim> egitimList = new EgitimService().GetByPersonelId(personel.Id, LoggingContext);
             string liseOkul = string.Empty;
             string liseMezuniyet = string.Empty;
             string lisansOkul = string.Empty;
@@ -232,7 +262,7 @@ namespace IKYS_WebParts.PersonelKartiWP
             #endregion
 
             #region Is Deneyimi
-            List<IsTecrube> isTecrubeList = new IsTecrubeService().GetByPersonelId(personel.Id);
+            List<IsTecrube> isTecrubeList = new IsTecrubeService().GetByPersonelId(personel.Id, LoggingContext);
             sayac = 0;
             foreach (IsTecrube item in isTecrubeList)
             {
@@ -267,7 +297,7 @@ namespace IKYS_WebParts.PersonelKartiWP
             #endregion
 
             #region Yabanci Dil
-            List<YabanciDil> yabanciDilList = new YabanciDilService().GetByPersonelId(personel.Id);
+            List<YabanciDil> yabanciDilList = new YabanciDilService().GetByPersonelId(personel.Id, LoggingContext);
             sayac = 0;
             foreach (YabanciDil item in yabanciDilList)
             {
@@ -351,12 +381,12 @@ namespace IKYS_WebParts.PersonelKartiWP
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
+                Page.Response.Redirect(newUrl, false);
+                Page.Context.ApplicationInstance.CompleteRequest();
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("PersonelKarti.Redirect", ex);
             }
         }
         protected void PersonelListesiBtn_Click(object sender, EventArgs e)
@@ -365,12 +395,14 @@ namespace IKYS_WebParts.PersonelKartiWP
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            ExportToExcel();
+            try { ExportToExcel(); }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception exception) { ReportError("PersonelKarti.Excel", exception); }
         }
         protected void ExportToExcel()
         {
             Personel personel = new Personel();
-            personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
+            personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), LoggingContext);
 
             string filename = "PersonelKarti" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xlsx";
             if (personel != null)

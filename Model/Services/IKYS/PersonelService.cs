@@ -1,4 +1,5 @@
 using DAO.Repositories.IKYS;
+using DAO.Repositories.Ortak;
 using Model.IKYS;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,7 @@ namespace Model.Services.IKYS
         {
             return MapSingle(repository.SelectByUserName(userName, context));
         }
+        public bool TryRecordWebPartOpened(PortalLogContext context) { return new PortalLogRepository().TryRecordWebPartOpened(context); }
 
         public List<Personel> GetActiveEmployees(Personel.PersonelTipi personelTipi)
         {
@@ -74,6 +76,7 @@ namespace Model.Services.IKYS
         public DataTable GetSchemaEmployees(PortalLogContext context) { return repository.SelectSchemaEmployees(context); }
         public DataTable GetActiveEmployeesReturnDT() { return repository.SelectActiveEmployeesReturnDT(); }
         public DataTable GetActiveEmployeesByUnitReturnDT(string ids) { return repository.SelectActiveEmployeesByUnitReturnDataTable(ParseIds(ids), IsAllUnits(ids)); }
+        public DataTable GetActiveEmployeesByUnitReturnDT(string ids, PortalLogContext context) { return repository.SelectActiveEmployeesByUnitReturnDataTable(ParseIds(ids), IsAllUnits(ids), context); }
         public List<Personel> GetActiveEmployeesByUnitReturnList(string ids) { return MapList(repository.SelectActiveEmployeesByUnitReturnList(ParseIds(ids), IsAllUnits(ids))); }
         public List<Personel> GetByBirthday(int gun, int ay) { return MapList(repository.SelectByDogumGunu(gun, ay)); }
         public List<Personel> GetByMarriageDate(int gun, int ay) { return MapList(repository.SelectByEvlilikTarihi(gun, ay)); }

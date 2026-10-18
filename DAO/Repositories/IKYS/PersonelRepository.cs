@@ -193,13 +193,27 @@ namespace DAO.Repositories.IKYS
 
         public DataTable SelectActiveEmployeesByUnitReturnDataTable(IList<int> birimIds, bool allUnits)
         {
+            return db.SelectFromDb(BuildActiveEmployeesByUnitQuery(birimIds, allUnits), "");
+        }
+
+        public DataTable SelectActiveEmployeesByUnitReturnDataTable(IList<int> birimIds, bool allUnits, PortalLogContext context)
+        {
+            SqlQuery query = BuildActiveEmployeesByUnitQuery(birimIds, allUnits);
+            Stopwatch clock = Stopwatch.StartNew();
+            bool succeeded = false;
+            try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
+            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Personel.SelectActiveEmployeesByUnitReturnDataTable", clock.ElapsedMilliseconds, succeeded); }
+        }
+
+        private static SqlQuery BuildActiveEmployeesByUnitQuery(IList<int> birimIds, bool allUnits)
+        {
             SqlQuery query = new SqlQuery(@"SELECT P.Id PersonelId,P.Id Id,P.Adi,Soyadi,P.PerId,P.SicilNo,P.Tahsili,P.KullaniciAdi,P.Asker_sivil,
                 U.Adi Unvan,U.KisaAdi UnvanKisa,G.Adi Gorev,G.KisaAdi GorevKisa,B.Id BirimId,B.Adi Birim,I.IzinDonemiBasTar,I.BaslamaTar IseBaslamaTar,
                 L.DahiliTelefonu,L.EvTelefonu,L.CepTelefonu,L.InternetEPosta,L.Plaka
                 FROM Personel_Table P INNER JOIN IsBilgileri_Table I ON P.Id=I.PersonelId LEFT JOIN UnvanTanim_Table U ON I.UnvanId=U.Id
                 LEFT JOIN BirimTanim_Table B ON I.BirimId=B.Id LEFT JOIN GorevTanim_Table G ON I.GorevId=G.Id LEFT JOIN IletisimBilgileri_Table L ON L.PersonelId=P.Id
                 WHERE I.CalismaDurumu=1");
-            query.Sql += allUnits ? "" : (birimIds.Count == 0 ? " AND I.BirimId IN ('')" : " AND I.BirimId IN (" + AddIds(query, birimIds, "@BirimId") + ")"); query.Sql += " ORDER BY B.Sira,I.ProtokolSiraNo"; return db.SelectFromDb(query, "");
+            query.Sql += allUnits ? "" : (birimIds.Count == 0 ? " AND I.BirimId IN ('')" : " AND I.BirimId IN (" + AddIds(query, birimIds, "@BirimId") + ")"); query.Sql += " ORDER BY B.Sira,I.ProtokolSiraNo"; return query;
         }
 
         public DataTable SelectActiveEmployeesByUnitReturnList(IList<int> birimIds, bool allUnits)

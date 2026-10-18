@@ -5,9 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Linq;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace IKYS_WebParts.IletisimBilgileriListesiWP
@@ -15,6 +17,24 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
     [ToolboxItemAttribute(false)]
     public partial class IletisimBilgileriListesiWP : WebPart
     {
+        private List<BirimTanim> birimler;
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "IletisimBilgileriListesiWP"); } }
+        private List<BirimTanim> GetBirimler()
+        {
+            if (birimler == null) birimler = new BirimTanimService().GetAll(LoggingContext);
+            return birimler;
+        }
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context))
+            {
+                new ExceptionHelper(error).PublishException();
+                return;
+            }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -173,6 +193,7 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
             {
                 if (!Page.IsPostBack)
                 {
+                    new PersonelService().TryRecordWebPartOpened(LoggingContext);
                     FillBirimDDL();
                     int birimId = BirimDDL.SelectedItem == null ? 1 : BirimDDL.SelectedItem.Value.ConvertToInt();
                     FillIletisimTable(birimId);
@@ -180,8 +201,7 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(exception);
-                exHelper.PublishException();
+                ReportError("IletisimBilgileriListesi.PageLoad", exception);
             }
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
@@ -193,7 +213,7 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
         private void FillBirimDDL()
         {
             BirimDDL.Items.Clear();
-            List<BirimTanim> list = new BirimTanimService().GetAll();
+            List<BirimTanim> list = GetBirimler();
             //ListItem bosLi = new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString());
             //BirimDDL.Items.Add(bosLi);
             foreach (BirimTanim gr in list)
@@ -206,7 +226,7 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
         {
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                Personel personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
+                Personel personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), LoggingContext);
                 PersonelIdQS = personel.Id.ToString();
                 return personel;
 
@@ -214,7 +234,7 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                Personel personel = new PersonelService().GetByUserName(userName);
+                Personel personel = new PersonelService().GetByUserName(userName, LoggingContext);
                 PersonelIdQS = personel.Id.ToString();
                 return personel;
             }
@@ -237,6 +257,14 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
         }
         private string BirimListesiGetir(int birimId)
         {
+            if (PortalLogSettings.IsEnabled(LoggingContext))
+            {
+                List<BirimTanim> all = GetBirimler();
+                if (!all.Any(item => item.Id == birimId)) return string.Empty;
+                List<int> ids = new List<int>();
+                CollectBirimIds(birimId, all.ToLookup(item => item.ParentId), new HashSet<int>(), ids);
+                return string.Join(",", ids);
+            }
             string birimIdStr = string.Empty;
             BirimTanim bt = new BirimTanimService().GetById(birimId);
             if (bt != null)
@@ -245,6 +273,13 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
                 birimIdStr = string.IsNullOrEmpty(birim) ? "" : birim.Substring(0, birim.Length - 1);
             }
             return birimIdStr;
+        }
+        private static void CollectBirimIds(int birimId, ILookup<int, BirimTanim> children, HashSet<int> visited, List<int> ids)
+        {
+            if (!visited.Add(birimId)) return;
+            ids.Add(birimId);
+            foreach (BirimTanim child in children[birimId])
+                CollectBirimIds(child.Id, children, visited, ids);
         }
         private void IletisimTableHeaders()
         {
@@ -288,7 +323,7 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
         {
             IletisimTableHeaders();
             string birimListesiStr = BirimListesiGetir(birimId);
-            DataTable dataTable = new PersonelService().GetActiveEmployeesByUnitReturnDT(birimListesiStr);
+            DataTable dataTable = new PersonelService().GetActiveEmployeesByUnitReturnDT(birimListesiStr, LoggingContext);
 
             int birimIdTemp = 0;
             int sira = 0;
@@ -380,12 +415,18 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
         }
         protected void BirimDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FillIletisimTable(BirimDDL.SelectedItem.Value.ConvertToInt());
+            try { FillIletisimTable(BirimDDL.SelectedItem.Value.ConvertToInt()); }
+            catch (Exception exception) { ReportError("IletisimBilgileriListesi.Filter", exception); }
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            FillIletisimTable(BirimDDL.SelectedItem.Value.ConvertToInt());
-            ExportToExcel();
+            try
+            {
+                FillIletisimTable(BirimDDL.SelectedItem.Value.ConvertToInt());
+                ExportToExcel();
+            }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception exception) { ReportError("IletisimBilgileriListesi.Excel", exception); }
         }
     }
 }

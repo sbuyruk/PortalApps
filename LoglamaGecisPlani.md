@@ -215,6 +215,29 @@ Visual Studio incelemesi ve Test sunucusu yayımlamasından sonra dört
 bölümün açılışı, her türden ekleme/silme, tablo yenilenmesi, audit alanları,
 ULS SELECT/yazma izleri ve hata başvuru kodu kontrol edilir.
 
+## IKYS yedinci dikey geçişi: Personel görüntüleme
+
+`PersonelKartiWP` ve `IletisimBilgileriListesiWP` ilk açılışlarında kullanıcı
+etkinliği kaydeder. Personel kartındaki personel, kimlik, iş, görev, aile,
+iletişim, eğitim, iş tecrübesi, yabancı dil, ilçe ve meslek okumaları; iletişim
+listesindeki birim ve personel okumaları SELECT izi üretir. Ekranlar veri
+yazmadığı için işlem denetimi kaydı oluşturmaz. Kartın meslek adları tek bir
+liste okumasıyla, iletişim listesinin alt birimleri tek bir birim listesi
+okumasıyla bulunur; satır/birim başına tekrar sorgu çalışmaz.
+
+SQL izine sorgu metni, parametreler, personel kimliği, iletişim bilgileri veya
+sonuç satırları yazılmaz. Etkin olmayan WebPart'larda eski kayıt yolu devam
+eder. Mevcut log tabloları yeterlidir; yeni migration gerekmez. Önceki
+pilotlar etkin kalacaksa host `web.config` değerine bu iki WebPart eklenir:
+
+```xml
+<add key="PortalLogging.EnabledWebParts" value="IKYS:ResmiTatilGirisiWP;IKYS:ResmiTatilListesiWP;IKYS:ResmiTatillerWP;IKYS:BirimTanimEditWP;IKYS:BirimListesiWP;IKYS:GorevTanimEditWP;IKYS:GorevTanimListesiWP;IKYS:BirimSemasiWP;IKYS:GorevSemasiWP;IKYS:AileGirisiWP;IKYS:EgitimGirisiWP;IKYS:PersonelKartiWP;IKYS:IletisimBilgileriListesiWP" />
+```
+
+Visual Studio incelemesi ve Test sunucusu yayımlamasından sonra personel
+kartının kendisi ve Excel çıktısı, iletişim listesinin birim filtresi ve Excel
+çıktısı, açılış kayıtları, ULS SELECT izleri ve hata başvuru kodu kontrol edilir.
+
 ## Güvenilirlik ve gizlilik
 
 - SQL izinde sorgu adı veya sabit kimliği kullanılır; tam SQL, parametre değerleri
