@@ -14,6 +14,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 using static Model.IKYS.Personel;
 
@@ -22,6 +23,14 @@ namespace IKYS_WebParts.PersonelListesiWP
     [ToolboxItemAttribute(false)]
     public partial class PersonelListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "PersonelListesiWP"); } }
+        private void ReportError(string operation, Exception error)
+        {
+            PortalLogContext context = LoggingContext;
+            if (!PortalLogSettings.IsEnabled(context)) { new ExceptionHelper(error).PublishException(); return; }
+            PortalTechnicalLog.WriteError(context, operation, error);
+            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -91,6 +100,7 @@ namespace IKYS_WebParts.PersonelListesiWP
             {
                 if (!Page.IsPostBack)
                 {
+                    new PersonelService().TryRecordWebPartOpened(LoggingContext);
                     PersonelTipiDDLDoldur();
                     TabloOlustur();
                 }
@@ -98,8 +108,7 @@ namespace IKYS_WebParts.PersonelListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("PersonelListesi.PageLoad", ex);
             }
         }
 
@@ -144,9 +153,7 @@ namespace IKYS_WebParts.PersonelListesiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                ReportError("PersonelListesi.Data", exception);
             }
             return jSon;
         }
@@ -363,7 +370,10 @@ namespace IKYS_WebParts.PersonelListesiWP
         {
             PersonelTipi personelTipi = (PersonelTipi)PersonelTipiDDL.SelectedItem.Value.ConvertToInt();
             Personel personel = new Personel();
-            DataTable dataTable = new PersonelService().GetEmployeeListReturnDataTable(personelTipi);
+            PersonelService service = new PersonelService();
+            DataTable dataTable = PortalLogSettings.IsEnabled(LoggingContext)
+                ? service.GetEmployeeListReturnDataTable(personelTipi, LoggingContext)
+                : service.GetEmployeeListReturnDataTable(personelTipi);
             return dataTable;
         }
         private class PersonelListItem
@@ -429,8 +439,7 @@ namespace IKYS_WebParts.PersonelListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("PersonelListesi.Excel", ex);
             }
         }
         protected void ExportToExcel()
@@ -472,12 +481,12 @@ namespace IKYS_WebParts.PersonelListesiWP
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-                Page.Response.Redirect(newUrl);
+                Page.Response.Redirect(newUrl, false);
+                Page.Context.ApplicationInstance.CompleteRequest();
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("PersonelListesi.Redirect", ex);
             }
         }
     }
