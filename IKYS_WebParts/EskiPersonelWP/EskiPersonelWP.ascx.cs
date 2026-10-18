@@ -1534,7 +1534,13 @@ namespace IKYS_WebParts.EskiPersonelWP
             personel = new PersonelService().GetById(personelId);
             if (personel != null)
             {
-                isBilgileriUpdated = IsBilgileriUpdate(personel);
+                PortalLogContext context = LoggingContext;
+                bool loggingEnabled = PortalLogSettings.IsEnabled(context);
+                using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
+                {
+                    isBilgileriUpdated = transaction == null ? IsBilgileriUpdate(personel) : IsBilgileriUpdate(personel, transaction, context);
+                    if (transaction != null && isBilgileriUpdated) transaction.Complete();
+                }
             }
 
             if (isBilgileriUpdated)
@@ -1554,7 +1560,13 @@ namespace IKYS_WebParts.EskiPersonelWP
             personel = new PersonelService().GetById(personelId);
             if (personel != null)
             {
-                iletisimUpdated = IletisimBilgileriUpdate(personel);
+                PortalLogContext context = LoggingContext;
+                bool loggingEnabled = PortalLogSettings.IsEnabled(context);
+                using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
+                {
+                    iletisimUpdated = transaction == null ? IletisimBilgileriUpdate(personel) : IletisimBilgileriUpdate(personel, transaction, context);
+                    if (transaction != null && iletisimUpdated) transaction.Complete();
+                }
             }
 
             if (iletisimUpdated)
@@ -1807,6 +1819,39 @@ namespace IKYS_WebParts.EskiPersonelWP
             }
             return isSaved;
         }
+        private bool IsBilgileriUpdate(Personel personel, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (personel == null) return false;
+            IsBilgileri item = new IsBilgileriService().GetByPersonelId(personel.Id, transaction, context);
+            if (item == null) return false;
+            item.UnvanId = UnvanTanimDDL.SelectedItem.Value.ConvertToInt();
+            item.GorevId = GorevTanimDDL.SelectedItem.Value.ConvertToInt();
+            item.BirimId = BirimIdTxt.Text.ConvertToInt();
+            item.BaslamaTar = IsbasTarTxt.Value.ConvertToDatetime();
+            item.AyrilmaTar = AyrilmaTarTxt.Value.ConvertToDatetime();
+            item.AyrilmaSebebi = AyrilmaSebebiDDL.SelectedItem.Value;
+            item.CalismaDurumu = CalismaDurumuDDL.SelectedItem.Value.ConvertToInt();
+            item.ProtokolSiraNo = ProtokolSirasiTxt.Text.ConvertToInt();
+            item.SGKSicilNo = SGKSicilNoTxt.Text;
+            item.SGKBasTar = SGKBasTarTxt.Value.ConvertToDatetime();
+            item.VakifOncesiPrimGunSayisi = VakifOncesiPrimGunSayisiTxt.Text.ConvertToInt();
+            item.EmeklilikTarihi = EmeklilikTarTxt.Value.ConvertToDatetime();
+            item.IzinDonemiBasTar = IzinDonemiBasTarTxt.Value.ConvertToDatetime();
+            item.Aciklama = IsBilgileriAciklamaTxt.Text;
+            item.Degistiren = CurrentUserName;
+            if (!new IsBilgileriService().Update(item, transaction, context)) return false;
+            if (item.CalismaDurumu == ProjeConstants.PER_CALISIYOR_INT)
+            {
+                GorevTanimService service = new GorevTanimService();
+                GorevTanim gt = service.GetById(item.GorevId, transaction, context);
+                if (gt != null)
+                {
+                    gt.PersonelId = personel.Id;
+                    if (!service.Update(gt, transaction, context)) return false;
+                }
+            }
+            return true;
+        }
         private bool KadrosuzIsBilgileriUpdate(Personel personel)
         {
 
@@ -1908,6 +1953,27 @@ namespace IKYS_WebParts.EskiPersonelWP
                 }
             }
             return iletisimSaved;
+        }
+        private bool IletisimBilgileriUpdate(Personel personel, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (personel == null) return false;
+            IletisimBilgileri item = new IletisimBilgileriService().GetByPersonelId(personel.Id, transaction, context);
+            if (item == null) return false;
+            item.Adres = AdresTxt.Text;
+            item.CepTelefonu = CepTelefonuTxt.Text;
+            item.CepTelefonu2 = CepTelefonu2Txt.Text;
+            item.DahiliTelefonu = DahiliTelefonuTxt.Text;
+            item.EvTelefonu = EvTelefonuTxt.Text;
+            item.Ili = IkametIliDDL.SelectedItem.Value;
+            item.Ilcesi = IkametIlcesiDDL.SelectedItem.Value.ConvertToInt();
+            item.InternetEPosta = InternetEPostaTxt.Text;
+            item.IntranetEPosta = IntranetEPostaTxt.Text;
+            item.OzelEPosta = OzelEPostaTxt.Text;
+            item.PersonelId = personel.Id;
+            item.PostaKodu = PostaKoduTxt.Text;
+            item.Semt = SemtTxt.Text;
+            item.Plaka = PlakaTxt.Text;
+            return new IletisimBilgileriService().Update(item, transaction, context);
         }
         private void RedirectToPage(string pageUrl)
         {
