@@ -380,3 +380,7 @@ Yoklama giriş/liste/aylık rapor ve harcırah giriş webpartları bu bağlamlı
 ## EskiPersonelGorevTanim geçişi
 
 `EskiPersonelGorevTanimRepository` ve `EskiPersonelGorevTanimService` için bağlamlı okuma, SQL izi ve transaction-aware INSERT/UPDATE/DELETE desteği eklendi. Audit alanları birim, personel, görev adı, kısa ad, vekillik ve aktiflik bilgileriyle sınırlandırıldı. Aktif webpart çağrısı bulunmadığı için bu parçada yalnızca ortak servis ve repository katmanı taşındı.
+
+## IzinHareket geçişi
+
+`IzinHareketRepository` ve `IzinHareketService` için transaction-aware INSERT/UPDATE/DELETE, SQL izi ve alan bazlı audit desteği eklendi. `IzinHareketEditWP` açılış, okuma, güncelleme ve silme işlemlerinde yeni bağlamlı çağrıları kullanır. Audit ayrıntısı personel, izin türü/talep/dönem, tarih ve mahsup durumuyla sınırlıdır.

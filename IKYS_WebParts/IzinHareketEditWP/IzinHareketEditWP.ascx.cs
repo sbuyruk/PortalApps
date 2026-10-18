@@ -8,12 +8,14 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace IKYS_WebParts.IzinHareketEditWP
 {
     [ToolboxItemAttribute(false)]
     public partial class IzinHareketEditWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "IzinHareketEditWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -171,6 +173,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             Personel personel = PersonelGetir();
             if (!Page.IsPostBack)
             {
+                    new IzinHareketService().TryRecordWebPartOpened(LoggingContext);
                 if (personel != null)
                 {
                     PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
@@ -228,7 +231,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
         }
         private void FillIzinHareketForm()
         {
-            IzinHareket izinHareket = new IzinHareketService().GetById(IzinHareketIdQS.ConvertToInt());
+            IzinHareket izinHareket = new IzinHareketService().GetById(IzinHareketIdQS.ConvertToInt(), LoggingContext);
             if (izinHareket != null)
             {
                 IzinHareketIdLbl.Text = izinHareket.Id.ReturnEmptyIfNull().ToString();
@@ -494,7 +497,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
                     izinHareket.Degistiren = CurrentUserName;
 
                     
-                    isSaved = new IzinHareketService().Update(izinHareket);
+                    isSaved = new IzinHareketService().Update(izinHareket, LoggingContext);
 
                 }
             }
@@ -561,7 +564,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
                         }
                     }
 
-                    isSaved = new IzinHareketService().Delete(izinHareket);
+                    isSaved = new IzinHareketService().Delete(izinHareket, LoggingContext);
 
                 }
             }
@@ -598,7 +601,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
         {
             try
             {
-                IzinHareket izinHareket = new IzinHareketService().GetById(IzinHareketIdQS.ConvertToInt());
+                IzinHareket izinHareket = new IzinHareketService().GetById(IzinHareketIdQS.ConvertToInt(), LoggingContext);
                 if (izinHareket != null)
                 {
                     bool isSaved = IzinHareketGuncelle(izinHareket);
@@ -685,7 +688,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
         {
             try
             {
-                IzinHareket izinHareket = new IzinHareketService().GetById(IzinHareketIdQS.ConvertToInt());
+                IzinHareket izinHareket = new IzinHareketService().GetById(IzinHareketIdQS.ConvertToInt(), LoggingContext);
                 if (izinHareket != null)
                 {
                     bool isSaved = IzinHareketSil(izinHareket);
@@ -746,7 +749,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             {
                 string yeniIzinBasTar = IzinBasTarTxt.Value.ConvertToDatetimeEmptyIfNull();
                 string yeniIzinBitTar = IzinBitTarTxt.Value.ConvertToDatetimeEmptyIfNull();
-                IzinHareket izinHareket = new IzinHareketService().GetById(IzinHareketIdQS.ConvertToInt());
+                IzinHareket izinHareket = new IzinHareketService().GetById(IzinHareketIdQS.ConvertToInt(), LoggingContext);
                 if (izinHareket != null)
                 {
                     var fullUrl = string.Format("{0}?IzinHareketId={1}&AmirId={2}&OnaylayanId={3}&YeniIzinBasTar={4}&YeniIzinBitTar={5}",
@@ -768,7 +771,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
 
             try
             {
-                IzinHareket izinHareket = new IzinHareketService().GetById(IzinHareketIdQS.ConvertToInt());
+                IzinHareket izinHareket = new IzinHareketService().GetById(IzinHareketIdQS.ConvertToInt(), LoggingContext);
                 if (izinHareket != null)
                 {
                     var fullUrl = string.Format("{0}?IzinHareketId={1}&AmirId={2}&OnaylayanId={3}",
