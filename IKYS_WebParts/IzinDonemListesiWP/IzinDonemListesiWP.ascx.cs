@@ -10,12 +10,14 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace IKYS_WebParts.IzinDonemListesiWP
 {
     [ToolboxItemAttribute(false)]
     public partial class IzinDonemListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "IzinDonemListesiWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -78,6 +80,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
             {
                 if (!Page.IsPostBack)
                 {
+                    new IzinDonemService().TryRecordWebPartOpened(LoggingContext);
                     if (!string.IsNullOrEmpty(MesajQS))
                     {
                         MessageHelper.PublishMessage("Kayit Tamamlandi", ProjeConstants.MESAJ_BASARILI, 2000);
@@ -139,7 +142,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
             Personel personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt());
             if (personel != null)
             {
-                DataTable dataTable = new IzinDonemService().GetByPersonelIdReturnDataTable(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
+                DataTable dataTable = new IzinDonemService().GetByPersonelIdReturnDataTable(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, LoggingContext);
                 int sira = 0;
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -328,14 +331,14 @@ namespace IKYS_WebParts.IzinDonemListesiWP
         }
         private void FillIzinHareketleriTable(int izinDonemId)
         {
-            IzinDonem izinDonemi = new IzinDonemService().GetById(izinDonemId);
+            IzinDonem izinDonemi = new IzinDonemService().GetById(izinDonemId, LoggingContext);
             if (izinDonemi == null)
             {
                 MessageHelper.PublishMessage("İzin Dönemi bulunamadı.", ProjeConstants.MESAJ_HATA);
             }
             else
             {
-                DataTable dataTable = new IzinHareketService().GetByIzinDonemiReturnDataTable(izinDonemId, izinDonemi.PersonelId, ProjeConstants.IZINTIPI_UCRETLI_INT);
+                DataTable dataTable = new IzinHareketService().GetByIzinDonemiReturnDataTable(izinDonemId, izinDonemi.PersonelId, ProjeConstants.IZINTIPI_UCRETLI_INT, LoggingContext);
                 int SiraNo = 1;
                 if (dataTable == null)
                 {
@@ -437,7 +440,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
         protected void UpdateNowBtn_Click(object sender, EventArgs e)
         {
             int izinDonemId = IzinDonemIdLbl.Text.ConvertToInt();
-            IzinDonem izinDonemi = new IzinDonemService().GetById(izinDonemId);
+            IzinDonem izinDonemi = new IzinDonemService().GetById(izinDonemId, LoggingContext);
             if (izinDonemi != null)
             {
                 try
@@ -509,7 +512,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                 ModalSubTitleLbl.Text = string.Empty;
                 ModalTitleLbl.Text = personel.Adi + " " + personel.Soyadi;
 
-                List<IzinDonem> list = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
+            List<IzinDonem> list = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, LoggingContext);
                 IzinDonem izinDonemi = null;
 
                 //modal açilista Dönem basi ve sonunu dolu getirsin en eski dönemden önceki bir yil degerini doldursun
@@ -588,7 +591,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                     IsBilgileri ib = new IsBilgileriService().GetByPersonelId(personel.Id);
                     if (ib != null)
                     {
-                        List<IzinDonem> list = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
+                        List<IzinDonem> list = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, LoggingContext);
                         IzinDonem enEskiIzinDonemi = list.LastOrDefault();
 
                         DateTime iseBaslamaTar = ib.BaslamaTar != null ? ib.BaslamaTar : ib.IzinDonemiBasTar;

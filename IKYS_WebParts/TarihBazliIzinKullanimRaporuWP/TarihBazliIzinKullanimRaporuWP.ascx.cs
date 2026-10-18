@@ -10,12 +10,14 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
 {
     [ToolboxItemAttribute(false)]
     public partial class TarihBazliIzinKullanimRaporuWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "TarihBazliIzinKullanimRaporuWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -172,6 +174,7 @@ namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
         {
             try
             {
+                new IzinDonemService().TryRecordWebPartOpened(LoggingContext);
                 if (!Page.IsPostBack)
                 {
                     FillIzinTanim();
@@ -282,7 +285,7 @@ namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
                     DateTime raporTarihi = new DateTime(yil, 12, 01);
 
                     DateTime gecerliTarih = now.Year == yil ? now : raporTarihi;
-                    izinDonemi = new IzinDonemService().GetByIzinTarihi(personelId, izinTipi, gecerliTarih);
+                    izinDonemi = new IzinDonemService().GetByIzinTarihi(personelId, izinTipi, gecerliTarih, LoggingContext);
                     string izinDonemiStr = string.Empty;
                     string izinHakki = string.Empty;
                     string kullanilanIzin = string.Empty;
