@@ -101,6 +101,20 @@ namespace Model.Services.IKYS
                 return true;
             }
         }
+        public bool Update(IzinTalep item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            if (item == null || item.Id <= 0) return false;
+            IzinTalep old = Map(repository.SelectById(item.Id, transaction, context));
+            if (old == null) return false;
+            item.DegistirmeTarihi = DateTime.Now;
+            item.Degistiren = UtilityHelper.GetCurrentUserName();
+            if (!repository.Update(item, transaction, context)) return false;
+            int auditId = new PortalLogRepository().RecordAudit(context, "UPDATE", "IzinTalep", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            RecordChanges(old, item, auditId, transaction);
+            return true;
+        }
 
         public bool Delete(IzinTalep item)
         {

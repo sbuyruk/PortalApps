@@ -424,8 +424,11 @@ namespace IKYS_WebParts.IzinHareketEditWP
             bool isSaved = false;
             try
             {
-                string izinSuresiOnceki = string.Empty;
+                bool loggingEnabled = PortalLogSettings.IsEnabled(LoggingContext);
                 Personel personel = PersonelGetir();
+                using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
+                {
+                string izinSuresiOnceki = string.Empty;
 
                 if (izinHareket != null)
                 {
@@ -466,33 +469,33 @@ namespace IKYS_WebParts.IzinHareketEditWP
                         // hayir ise yeni izin onemi zaten var mi bak yoksa yeni izin donemi olustur
                         //       izinhareket de izindonemId yi güncelle
                         // izintalepTabledaki kaydi güncelle
-                        IzinDonem mevutIzinDonemi = new IzinDonemService().GetById(izinHareket.IzinDonemId);
+                        IzinDonem mevutIzinDonemi = loggingEnabled ? new IzinDonemService().GetById(izinHareket.IzinDonemId, transaction, LoggingContext) : new IzinDonemService().GetById(izinHareket.IzinDonemId);
 
-                        IzinDonem yeniIzinDonemi = new IzinDonemService().GetByIzinTarihi(personel.Id, izinHareket.IzinTipi, izinHareket.BaslangicTarihi);
+                        IzinDonem yeniIzinDonemi = loggingEnabled ? new IzinDonemService().GetByIzinTarihi(personel.Id, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, transaction, LoggingContext) : new IzinDonemService().GetByIzinTarihi(personel.Id, izinHareket.IzinTipi, izinHareket.BaslangicTarihi);
 
                         if (yeniIzinDonemi == null)
                         {
                             yeniIzinDonemi = new IzinDonem();
-                            yeniIzinDonemi = new IzinDonemService().CreateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName);
+                            yeniIzinDonemi = loggingEnabled ? new IzinDonemService().CreateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName, transaction, LoggingContext) : new IzinDonemService().CreateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName);
                         }
                         else
                         {
-                            yeniIzinDonemi = new IzinDonemService().UpdateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName);
+                            yeniIzinDonemi = loggingEnabled ? new IzinDonemService().UpdateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName, transaction, LoggingContext) : new IzinDonemService().UpdateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName);
                         }
                         string yeniSure = string.Empty;
                         if (yeniIzinDonemi.Id != mevutIzinDonemi.Id)
                         {
-                            new IzinDonemService().UpdateUsedLeave(mevutIzinDonemi, izinSuresiOnceki, false, CurrentUserName);//önceki dönemden düs
+                            if (loggingEnabled) new IzinDonemService().UpdateUsedLeave(mevutIzinDonemi, izinSuresiOnceki, false, CurrentUserName, transaction, LoggingContext); else new IzinDonemService().UpdateUsedLeave(mevutIzinDonemi, izinSuresiOnceki, false, CurrentUserName);//önceki dönemden düs
                             yeniSure = IKYSOrtak.IzinSuresiHesapla(izinHareket.IzinTipi, izinHareket.BaslangicTarihi, izinHareket.BitisTarihi);
 
-                            new IzinDonemService().UpdateUsedLeave(yeniIzinDonemi, yeniSure, true, CurrentUserName);//sonraki döneme ekle
+                            if (loggingEnabled) new IzinDonemService().UpdateUsedLeave(yeniIzinDonemi, yeniSure, true, CurrentUserName, transaction, LoggingContext); else new IzinDonemService().UpdateUsedLeave(yeniIzinDonemi, yeniSure, true, CurrentUserName);//sonraki döneme ekle
                         }
                         else
                         {
-                            new IzinDonemService().UpdateUsedLeave(yeniIzinDonemi, izinSuresiOnceki, false, CurrentUserName);// dönemden düs
+                            if (loggingEnabled) new IzinDonemService().UpdateUsedLeave(yeniIzinDonemi, izinSuresiOnceki, false, CurrentUserName, transaction, LoggingContext); else new IzinDonemService().UpdateUsedLeave(yeniIzinDonemi, izinSuresiOnceki, false, CurrentUserName);// dönemden düs
                             yeniSure = IKYSOrtak.IzinSuresiHesapla(izinHareket.IzinTipi, izinHareket.BaslangicTarihi, izinHareket.BitisTarihi);
 
-                            new IzinDonemService().UpdateUsedLeave(yeniIzinDonemi, yeniSure, true, CurrentUserName);//sonraki döneme ekle
+                            if (loggingEnabled) new IzinDonemService().UpdateUsedLeave(yeniIzinDonemi, yeniSure, true, CurrentUserName, transaction, LoggingContext); else new IzinDonemService().UpdateUsedLeave(yeniIzinDonemi, yeniSure, true, CurrentUserName);//sonraki döneme ekle
                         }
 
                         izinHareket.IzinDonemId = yeniIzinDonemi != null ? yeniIzinDonemi.Id : 0;
@@ -509,8 +512,11 @@ namespace IKYS_WebParts.IzinHareketEditWP
                     izinHareket.Degistiren = CurrentUserName;
 
                     
-                    isSaved = new IzinHareketService().Update(izinHareket, LoggingContext);
+                    isSaved = loggingEnabled ? new IzinHareketService().Update(izinHareket, transaction, LoggingContext) : new IzinHareketService().Update(izinHareket, LoggingContext);
+                    if (loggingEnabled && isSaved && izinHareket.IzinTalepId > 0) isSaved = IzinTalebiniGüncelle(izinHareket.IzinTalepId, izinHareket, transaction);
+                    if (loggingEnabled && isSaved) transaction.Complete();
 
+                }
                 }
             }
             catch (Exception ex)
@@ -637,7 +643,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
                     bool isSaved = IzinHareketGuncelle(izinHareket);
                     if (isSaved)
                     {
-                        IzinTalebiniGüncelle(izinHareket.IzinTalepId, izinHareket);
+                        if (!PortalLogSettings.IsEnabled(LoggingContext)) IzinTalebiniGüncelle(izinHareket.IzinTalepId, izinHareket);
                         MessageHelper.PublishMessage("Izin Kaydi Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                         //RedirectToPage(ProjeConstants.PAGE_IZINHAREKET_LIST);
                     }
@@ -675,6 +681,15 @@ namespace IKYS_WebParts.IzinHareketEditWP
             {
                 ReportError("Unhandled", exception);
             }
+        }
+        private bool IzinTalebiniGüncelle(int izinTalepId, IzinHareket izinHareket, SqlTransactionContext transaction)
+        {
+            IzinTalepService izinTalepService = new IzinTalepService();
+            IzinTalep izinTalep = izinTalepService.GetById(izinTalepId, transaction, LoggingContext);
+            if (izinTalep == null) return true;
+            izinTalep.Aciklama += System.Environment.NewLine + CurrentUserName + " tarafindan " + DateTime.Now.ReturnTRDateFormat() + " tarihinde izin kaydi güncellendi";
+            izinTalep.Adres = izinHareket.Adres; izinTalep.AmirImza = izinHareket.AmirImza; izinTalep.BaslangicTarihi = izinHareket.BaslangicTarihi; izinTalep.BitisTarihi = izinHareket.BitisTarihi; izinTalep.Birim = izinHareket.Birim; izinTalep.IzinDonemId = izinHareket.IzinDonemId; izinTalep.IzinTipi = izinHareket.IzinTipi; izinTalep.OnayImza = izinHareket.OnayImza; izinTalep.Sure = izinHareket.Sure; izinTalep.VekilImza = izinHareket.VekilImza; izinTalep.Degistiren = CurrentUserName;
+            return izinTalepService.Update(izinTalep, transaction, LoggingContext);
         }
         protected void IzinHareketListesiBtn_Click(object sender, EventArgs e)
         {
