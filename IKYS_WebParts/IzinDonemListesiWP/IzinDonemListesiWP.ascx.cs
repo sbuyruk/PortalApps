@@ -1,6 +1,7 @@
 using Model.IKYS;
 using Model.Ortak;
 using Model.Services.IKYS;
+using DAO.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -467,9 +468,28 @@ namespace IKYS_WebParts.IzinDonemListesiWP
 
                     if (validated)
                     {
-                        bool issaved = new IzinDonemService().Update(izinDonemi);
-                        MessageHelper.PublishMessage("Kayıt Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
-                        FillIzinDonemTable();
+                        bool issaved;
+                        if (PortalLogSettings.IsEnabled(LoggingContext))
+                        {
+                            using (SqlTransactionContext transaction = new SqlTransactionContext())
+                            {
+                                issaved = new IzinDonemService().Update(izinDonemi, transaction, LoggingContext);
+                                if (issaved) transaction.Complete();
+                            }
+                        }
+                        else
+                        {
+                            issaved = new IzinDonemService().Update(izinDonemi);
+                        }
+                        if (issaved)
+                        {
+                            MessageHelper.PublishMessage("Kayıt Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
+                            FillIzinDonemTable();
+                        }
+                        else
+                        {
+                            MessageHelper.PublishMessage("Kayıt Yapılamadı. Lütfen tekrar deneyin.", ProjeConstants.MESAJ_HATA);
+                        }
                     }
                     else
                     {
@@ -617,10 +637,26 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                     izinDonemi.Adi = bastar.Year + "-" + bittar.Year + " İzin Dönemi";
                     izinDonemi.Aciklama = AciklamaTxt.Text;
                     izinDonemi.Olusturan = CurrentUserName;
-                    izinDonemi.Id = new IzinDonemService().Save(izinDonemi);
-                    bool issaved = izinDonemi.Id > 0 ? true : false;
-                    MessageHelper.PublishMessage("Kayıt Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
-                    FillIzinDonemTable();
+                    bool issaved;
+                    if (PortalLogSettings.IsEnabled(LoggingContext))
+                    {
+                        using (SqlTransactionContext transaction = new SqlTransactionContext())
+                        {
+                            izinDonemi.Id = new IzinDonemService().Save(izinDonemi, transaction, LoggingContext);
+                            issaved = izinDonemi.Id > 0;
+                            if (issaved) transaction.Complete();
+                        }
+                    }
+                    else
+                    {
+                        izinDonemi.Id = new IzinDonemService().Save(izinDonemi);
+                        issaved = izinDonemi.Id > 0;
+                    }
+                    if (issaved)
+                    {
+                        MessageHelper.PublishMessage("Kayıt Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
+                        FillIzinDonemTable();
+                    }
                 }
                 else
                 {
