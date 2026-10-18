@@ -430,3 +430,6 @@ Bu parça da yalnızca kaynak/diff/UTF-8 kontrolleriyle doğrulanmıştır. Visu
 ## Izin talebi silme zinciri
 
 `IzinHareketEditWP` silme akışında ilişkili `IzinTalep` kaydı da aynı transaction içine alındı. Loglama etkin olduğunda dönem kullanımı güncellemesi, IzinHareket silme ve ilişkili IzinTalep silme işlemleri aynı context ile yürür; herhangi biri başarısız olursa tüm değişiklikler geri alınır. Loglama kapalıyken önceki bağımsız silme davranışı korunur.
+## IzinDonem transaction-aware dönem oluşturma/güncelleme
+
+Çoklu entity izin hareketi güncellemesine hazırlık olarak `IzinDonemService` için transaction-aware dönem oluşturma ve güncelleme yolları eklendi. İş bilgileri SELECT'i, dönem arama, dönem INSERT/UPDATE, SQL izi ve audit yazımı aynı `SqlTransactionContext` üzerinden yürür. Bu overloadlar transaction'ı tamamlamaz; üst akışın IzinHareket ve IzinTalep işlemleriyle birlikte commit etmesine bırakır.
