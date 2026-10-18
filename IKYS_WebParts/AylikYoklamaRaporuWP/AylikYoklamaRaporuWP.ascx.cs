@@ -12,6 +12,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 
 namespace IKYS_WebParts.AylikYoklamaRaporuWP
@@ -19,6 +20,7 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP
     [ToolboxItemAttribute(false)]
     public partial class AylikYoklamaRaporuWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "AylikYoklamaRaporuWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -176,6 +178,7 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP
             {
                 if (!Page.IsPostBack)
                 {
+                    new YoklamaService().TryRecordWebPartOpened(LoggingContext);
                     YilDDLDoldur();
                     AyDDLDoldur();
                     SetDDLValues();
@@ -438,7 +441,7 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP
             DateTime basTar = new DateTime(yil, ay, 1);
             DateTime bitTar = basTar.AddMonths(1).AddDays(-1) + ProjeConstants.MESAI_BITIS_SAATI;
             string bulunmamaSebebiIds = "2,3";//hastanede, görevli
-            dataTable = new YoklamaService().GetByTarihAndReasons(bulunmamaSebebiIds, basTar, bitTar);
+            dataTable = new YoklamaService().GetByTarihAndReasons(bulunmamaSebebiIds, basTar, bitTar, LoggingContext);
             List<AylikYoklamaListItem> yoklamaList = new List<AylikYoklamaListItem>();
             if (dataTable != null)
             {

@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 using System.Collections.Generic;
 
 namespace IKYS_WebParts.HarcirahGirisWP
@@ -16,6 +17,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
     [ToolboxItemAttribute(false)]
     public partial class HarcirahGirisWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "HarcirahGirisWP"); } }
         public HarcirahGirisWP()
         {
         }
@@ -110,6 +112,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
             {
                 if (!Page.IsPostBack)
                 {
+                    new HarcirahService().TryRecordWebPartOpened(LoggingContext);
                     FillDropDowns();
                 }
 
@@ -143,7 +146,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
         {
             ddl.Items.Clear();
 
-            DataTable dt = new HarcirahService().GetAllReturnDataTable();
+            DataTable dt = new HarcirahService().GetAllReturnDataTable(LoggingContext);
             if (dt == null || dt.Rows.Count == 0)
             {
                 ddl.Items.Add(new ListItem(ProjeConstants.BOS, ProjeConstants.BOS_INT.ToString()));
@@ -194,7 +197,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
 
                 DateTime baslangicTarihi = YeniBaslangicTarihiTxt.Text.ConvertToDatetime();
 
-                List<Harcirah> mevcutKayitlar = new HarcirahService().GetAll();
+                List<Harcirah> mevcutKayitlar = new HarcirahService().GetAll(LoggingContext);
 
                 List<Harcirah> seciliUlkeKayitlari = mevcutKayitlar
                     .Where(x => string.Equals((x.Ulke ?? string.Empty).Trim(), seciliUlke.Trim(), StringComparison.OrdinalIgnoreCase))
@@ -215,7 +218,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
                     {
                         eski.BitisTarihi = oncekiBitis;
                         eski.Degistiren = CurrentUserName;
-                        new HarcirahService().Update(eski);
+                        new HarcirahService().Update(eski, LoggingContext);
                     }
                 }
 
@@ -266,7 +269,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
                         Olusturan = CurrentUserName
                     };
 
-                    int id = new HarcirahService().Save(yeni);
+                    int id = new HarcirahService().Save(yeni, LoggingContext);
                     if (id > 0)
                     {
                         eklendi++;
@@ -303,7 +306,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
 
             AyrintiTable.Rows.Add(headerRow);
 
-            List<Harcirah> list = new HarcirahService().GetAll();
+            List<Harcirah> list = new HarcirahService().GetAll(LoggingContext);
 
             if (!string.IsNullOrWhiteSpace(SelectedUlkeFilter))
             {
@@ -387,7 +390,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
                         item.Aciklama = aciklamaTxt.Text;
                         item.Degistiren = CurrentUserName;
 
-                        if (new HarcirahService().Update(item))
+                        if (new HarcirahService().Update(item, LoggingContext))
                         {
                             MessageHelper.PublishMessage("Güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
                             RedirectToSelf();
@@ -416,7 +419,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
                     {
                         item.Degistiren = CurrentUserName;
 
-                        if (new HarcirahService().Delete(item))
+                        if (new HarcirahService().Delete(item, LoggingContext))
                         {
                             MessageHelper.PublishMessage("Silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
                             RedirectToSelf();
@@ -538,7 +541,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
                 return;
             }
 
-            List<Harcirah> list = new HarcirahService().GetAll();
+            List<Harcirah> list = new HarcirahService().GetAll(LoggingContext);
 
             list = list
                 .Where(x => x.SeriId > 0)

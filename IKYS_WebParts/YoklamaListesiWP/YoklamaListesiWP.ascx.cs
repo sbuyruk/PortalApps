@@ -10,12 +10,14 @@ using System.Web.Script.Serialization;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace IKYS_WebParts.YoklamaListesiWP
 {
     [ToolboxItemAttribute(false)]
     public partial class YoklamaListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "YoklamaListesiWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -127,6 +129,7 @@ namespace IKYS_WebParts.YoklamaListesiWP
 
                 if (!Page.IsPostBack)
                 {
+                    new YoklamaService().TryRecordWebPartOpened(LoggingContext);
                     if (AuthQS.Equals("IKYS"))
                     {
                         TabloOlustur(ProjeConstants.HEPSI_INT);
@@ -235,7 +238,7 @@ namespace IKYS_WebParts.YoklamaListesiWP
         private DataTable GetDataTable(int personelId)
         {
             Yoklama yoklama = new Yoklama();
-            DataTable dataTable = new YoklamaService().GetAllByPersonelId(personelId);
+            DataTable dataTable = new YoklamaService().GetAllByPersonelId(personelId, LoggingContext);
             return dataTable;
         }
         private string CreateDataTable(string jsonData)
