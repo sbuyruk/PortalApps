@@ -463,3 +463,6 @@ Bu parça da yalnızca kaynak/diff/UTF-8 kontrolleriyle doğrulanmıştır. Visu
 ## Personel ve izin webpartlarında exception standardı
 
 `EskiPersonelWP`, `PersonelGirisiWP`, `IzinTalepGirisWP` ve `MazeretIzinTalepListesiWP` içindeki seçili kullanıcı işlemleri, yönlendirme ve e-posta hata akışları `ReportError` standardına geçirildi. Loglama açıkken teknik hata OperationId ile kaydedilir ve kullanıcıya Türkçe başvuru kodlu mesaj döner; loglama kapalıyken legacy exception yayınlama davranışı korunur.
+## Liste ve personel giriş webpartlarında kalan exception standardı
+
+`IzinHareketListesiWP`, `IzinTalepListesiWP`, `PersonelGirisiWP` ve `EskiPersonelWP` içindeki kalan veri, personel, yönlendirme ve resim yükleme exception akışları `ReportError` üzerinden teknik loglamaya bağlandı. Kullanıcı mesajları Türkçe başvuru kodu standardını korur.

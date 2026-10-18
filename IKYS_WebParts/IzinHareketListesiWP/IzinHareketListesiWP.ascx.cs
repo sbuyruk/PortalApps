@@ -96,9 +96,7 @@ namespace IKYS_WebParts.IzinHareketListesiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                ReportError("IzinHareketListesi.Data", exception);
             }
             return jSon;
         }
