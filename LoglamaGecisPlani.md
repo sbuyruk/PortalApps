@@ -159,6 +159,32 @@ edilir. ULS'de açılış, dört civarı toplu SELECT ve olası hata başvuru ko
 izlenir. Özellikle görev düğümleri önceki akışta personel kimliği eşlemesine
 bağlı olduğundan görsel karşılaştırma yapılır.
 
+## IKYS beşinci dikey geçişi: Aile Bilgileri
+
+`AileGirisiWP` ilk açılışta kullanıcı etkinliği kaydeder. Personel, aile ve
+meslek okumaları SELECT izi üretir; meslek listesi aynı HTTP isteğinde bir kez
+okunur. Ekleme ve silmede iş kaydı ile audit aynı transaction içinde yazılır.
+Servis/repository katmanında güncelleme için de transaction ve audit yolu
+hazırdır; bu WebPart güncelleme yapmaz.
+
+Aile verisi kişisel bilgi içerdiğinden audit alan ayrıntısı yalnızca
+`PersonelId`, `YakinlikDerecesi` ve `Meslek` kimlik/kodlarıyla sınırlıdır.
+Ad, soyad, T.C. kimlik numarası, telefon, doğum tarihi, okul ve diğer serbest
+metin değerleri audit ve SQL izine yazılmaz. Audit başlığındaki `EntityId`
+uygulamanın `Aile_Table.Id` değeridir. Hata kaydı istisna içeriğini ULS'ye
+yazdığı için uygulama hatası metinlerine kişisel girdi eklenmemelidir.
+
+Yeni tablo veya migration gerekmez. Önceki pilotlar etkin kalacaksa host
+`web.config` içindeki mevcut değere `IKYS:AileGirisiWP` eklenir:
+
+```xml
+<add key="PortalLogging.EnabledWebParts" value="IKYS:ResmiTatilGirisiWP;IKYS:ResmiTatilListesiWP;IKYS:ResmiTatillerWP;IKYS:BirimTanimEditWP;IKYS:BirimListesiWP;IKYS:GorevTanimEditWP;IKYS:GorevTanimListesiWP;IKYS:BirimSemasiWP;IKYS:GorevSemasiWP;IKYS:AileGirisiWP" />
+```
+
+Visual Studio incelemesi ve Test sunucusu yayımlamasından sonra açılış,
+yakın ekleme/silme, aile tablosunun yeniden çizilmesi, audit alan izin listesi,
+SELECT/yazma izleri ve hata başvuru kodu kontrol edilir.
+
 ## Güvenilirlik ve gizlilik
 
 - SQL izinde sorgu adı veya sabit kimliği kullanılır; tam SQL, parametre değerleri
