@@ -1,6 +1,8 @@
 using DAO.Ortak;
 using System;
 using System.Data;
+using System.Diagnostics;
+using Utility.Logging;
 
 namespace DAO.Repositories.IKYS
 {
@@ -21,6 +23,20 @@ namespace DAO.Repositories.IKYS
         public int Insert<T>(T item) { return db.Insert(queryBuilder.BuildInsert(item, "Yoklama_Table")); }
         public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "Yoklama_Table")); }
         public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("Yoklama_Table", id), ""); }
+        public DataTable SelectById(int id, PortalLogContext context) { return TraceSelect("Yoklama.SelectById", () => SelectById(id), context); }
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context) { if (transaction == null) throw new ArgumentNullException("transaction"); SqlQuery query = new SqlQuery("SELECT * FROM Yoklama_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id"); query.AddParameter("@Id", id); Stopwatch clock = Stopwatch.StartNew(); bool ok = false; try { DataTable result = transaction.Select(query); ok = true; return result; } finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Yoklama.SelectById", clock.ElapsedMilliseconds, ok); } }
+        public DataTable SelectAll(PortalLogContext context) { return TraceSelect("Yoklama.SelectAll", () => SelectAll(), context); }
+        public int Insert<T>(T item, SqlTransactionContext transaction, PortalLogContext context) { return TraceInsert(queryBuilder.BuildInsert(item, "Yoklama_Table"), transaction, context); }
+        public bool Update<T>(T item, SqlTransactionContext transaction, PortalLogContext context) { return TraceWrite(queryBuilder.BuildUpdate(item, "Yoklama_Table"), "UPDATE", "Yoklama.Update", transaction, context); }
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context) { return TraceWrite(queryBuilder.BuildDelete("Yoklama_Table", id), "DELETE", "Yoklama.Delete", transaction, context); }
+        public DataTable SelectByPersonelIdAndDate(int personelId, DateTime start, DateTime end, PortalLogContext context) { return TraceSelect("Yoklama.SelectByPersonelIdAndDate", () => SelectByPersonelIdAndDate(personelId, start, end), context); }
+        public DataTable SelectAllByPersonelId(int personelId, PortalLogContext context) { return TraceSelect("Yoklama.SelectAllByPersonelId", () => SelectAllByPersonelId(personelId), context); }
+        public DataTable SelectByTarih(DateTime start, DateTime end, PortalLogContext context) { return TraceSelect("Yoklama.SelectByTarih", () => SelectByTarih(start, end), context); }
+        public DataTable SelectByTarihAndReasons(string reasonIds, DateTime start, DateTime end, PortalLogContext context) { return TraceSelect("Yoklama.SelectByTarihAndReasons", () => SelectByTarihAndReasons(reasonIds, start, end), context); }
+
+        private DataTable TraceSelect(string name, Func<DataTable> action, PortalLogContext context) { Stopwatch clock = Stopwatch.StartNew(); bool ok = false; try { DataTable result = action(); ok = true; return result; } finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", name, clock.ElapsedMilliseconds, ok); } }
+        private static int TraceInsert(SqlQuery query, SqlTransactionContext transaction, PortalLogContext context) { if (transaction == null) throw new ArgumentNullException("transaction"); Stopwatch clock = Stopwatch.StartNew(); bool ok = false; try { int id = transaction.Insert(query); ok = id > 0; return id; } finally { PortalTechnicalLog.WriteSqlTrace(context, "INSERT", "Yoklama.Insert", clock.ElapsedMilliseconds, ok); } }
+        private static bool TraceWrite(SqlQuery query, string operation, string name, SqlTransactionContext transaction, PortalLogContext context) { if (transaction == null) throw new ArgumentNullException("transaction"); Stopwatch clock = Stopwatch.StartNew(); bool ok = false; try { ok = transaction.Update(query); return ok; } finally { PortalTechnicalLog.WriteSqlTrace(context, operation, name, clock.ElapsedMilliseconds, ok); } }
 
         public DataTable SelectById(int id)
         {

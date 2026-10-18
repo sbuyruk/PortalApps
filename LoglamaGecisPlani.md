@@ -366,3 +366,7 @@ ekranlar doğrulanarak temizlenir.
 `IzinTalepRepository` ve `IzinTalepService` için yeni loglama bağlamı desteklendi. Okuma işlemleri SQL izi üretir; ekleme, güncelleme ve silme işlemleri `SqlTransactionContext` ile aynı işlem içinde denetim kaydı ve güvenli alan değişiklikleriyle birlikte yazılır. Denetim ayrıntısında personel, izin türü/dönemi, başlangıç-bitiş tarihi, süre, onay durumu ve aktiflik alanları tutulur; adres ve açıklama gibi serbest metin alanları kaydedilmez.
 
 İzin talep girişi, ücretli izin talep listesi ve mazeret izin talep listesi webpartları yeni bağlama geçirildi. Webpart açılışı `PortalActivityLog_Table` tablosuna, IzinTalep SQL işlemleri `PortalTechnicalLog` kaydına gider. Ayar kapalıysa mevcut eski servis davranışı korunur. Bu webpartlarda IzinHareket ve IsBilgileri ile birlikte yürüyen çoklu işlemlerin tek ortak transaction altında birleştirilmesi sonraki parçada ele alınacaktır.
+
+## Yoklama ve Harcirah geçişi
+
+`YoklamaRepository/Service` ile `HarcirahRepository/Service` için bağlamlı okuma, SQL izi ve transaction-aware INSERT/UPDATE/DELETE metotları eklendi. Audit ayrıntıları kimlik, tarih, durum ve tutar gibi raporlama için gerekli alanlarla sınırlandırıldı; serbest açıklama ve adres alanları audit ayrıntısına alınmadı. Ayar kapalı olduğunda mevcut servis çağrıları çalışmaya devam eder.
