@@ -266,6 +266,15 @@ Yeni migration gerekmez. Önceki değer korunarak host `web.config` içine
 eklenir. Testte üç ekranın açılışı, personel/yıl/izin filtresi, rapor sonuçları,
 Excel çıktıları, SELECT izleri ve hata başvuru kodları kontrol edilir.
 
+## IKYS onuncu dikey geçişi: Personel giriş ekranları
+
+`PersonelGirisiWP` ve `EskiPersonelWP` aynı personel, kimlik, iş ve iletişim
+akışının iki yüzüdür. Bu parçada ilk açılış kullanıcı etkinliği ile WebPart
+seviyesinde Türkçe hata ve başvuru kodu kaydı hazırlanır. Çok sayıdaki entity
+okuma/yazmasının servis ve repository transaction yolları, WebPart etkinliğe
+alınmadan önce bu parçanın devamında birlikte tamamlanacaktır. Yeni migration
+gerekmez.
+
 ## Güvenilirlik ve gizlilik
 
 - SQL izinde sorgu adı veya sabit kimliği kullanılır; tam SQL, parametre değerleri
