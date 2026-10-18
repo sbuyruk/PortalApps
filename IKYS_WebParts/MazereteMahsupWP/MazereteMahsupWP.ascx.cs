@@ -1,5 +1,6 @@
 using Model.IKYS;
 using Model.Services.IKYS;
+using DAO.Ortak;
 using Model.Ortak;
 using System;
 using System.ComponentModel;
@@ -221,6 +222,9 @@ namespace IKYS_WebParts.MazereteMahsupWP
                 }
                 else
                 {
+                    bool loggingEnabled = PortalLogSettings.IsEnabled(LoggingContext);
+                    using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
+                    {
                     //ücretli izin hareketi yarat 
                     //ücretli izin dönemini güncelle
                     //mazeret iznine 9 saat ekle
@@ -229,7 +233,9 @@ namespace IKYS_WebParts.MazereteMahsupWP
 
                     if (ucretliIzinDonemi == null)
                     {
-                        ucretliIzinDonemi = izinDonemService.CreateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName);
+                        ucretliIzinDonemi = loggingEnabled
+                            ? izinDonemService.CreateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName, transaction, LoggingContext)
+                            : izinDonemService.CreateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName);
                     }
                     if (ucretliIzinDonemi != null)
                     {
@@ -255,12 +261,16 @@ namespace IKYS_WebParts.MazereteMahsupWP
                         izinHareket.IzinTipi = ProjeConstants.IZINTIPI_UCRETLI_INT;
                         izinHareket.Mahsup = true;
                         izinHareket.Olusturan = CurrentUserName;
-                        int izinHareketId = new IzinHareketService().Save(izinHareket, LoggingContext);
+                        int izinHareketId = transaction == null
+                            ? new IzinHareketService().Save(izinHareket, LoggingContext)
+                            : new IzinHareketService().Save(izinHareket, transaction, LoggingContext);
                         isIzinHareketSaved = izinHareketId > 0 ? true : false;
                         if (isIzinHareketSaved)
                         {
                             string mahsupAciklama = "Ücretli izinden Mazerete mahsup edildi.";
-                            Mahsup mahsup = MahsupTablosunaEkle(izinHareket, ProjeConstants.IZINTIPI_UCRETLI_INT, mazeretIzinDonemi.Id, ucretliIzinDonemi.Id, mahsupAciklama);
+                            Mahsup mahsup = transaction == null
+                                ? MahsupTablosunaEkle(izinHareket, ProjeConstants.IZINTIPI_UCRETLI_INT, mazeretIzinDonemi.Id, ucretliIzinDonemi.Id, mahsupAciklama)
+                                : MahsupTablosunaEkle(izinHareket, ProjeConstants.IZINTIPI_UCRETLI_INT, mazeretIzinDonemi.Id, ucretliIzinDonemi.Id, mahsupAciklama, transaction);
                             mahsupRB = mahsup;
                             int ucretliKullanilanIzinInt = ucretliIzinDonemi.KullanilanIzin.ConvertToInt() + 1;
                             ucretliIzinDonemi.KullanilanIzin = ucretliKullanilanIzinInt.ToString();
@@ -268,7 +278,9 @@ namespace IKYS_WebParts.MazereteMahsupWP
                             ucretliIzinDonemi.KalanIzin = ucretliKalanIzinInt.ToString();
                             ucretliIzinDonemi.Aciklama += System.Environment.NewLine + "#Mazerete Mahsup, IzinHareketId=" + izinHareket.Id + " MazeretIzinDonemi=" + mazeretIzinDonemi.Id;
                             ucretliIzinDonemi.Degistiren = CurrentUserName;
-                            isUcretliIzinDonemiGuncellendi = izinDonemService.Update(ucretliIzinDonemi);
+                            isUcretliIzinDonemiGuncellendi = transaction == null
+                                ? izinDonemService.Update(ucretliIzinDonemi)
+                                : izinDonemService.Update(ucretliIzinDonemi, transaction, LoggingContext);
                             if (isUcretliIzinDonemiGuncellendi)
                             {
                                 TimeSpan birGunTs = ProjeConstants.BIRGUN_MAZERET_SAAT_TS;
@@ -282,20 +294,31 @@ namespace IKYS_WebParts.MazereteMahsupWP
                                 mazeretIzinDonemi.IzinHakki = mazeretIzinHakkiTS.ToString();
                                 mazeretIzinDonemi.KalanIzin = mazeretKalanIzinTS.ToString();
                                 mazeretIzinDonemi.Degistiren = CurrentUserName;
-                                isMazeretIzinDonemiGuncellendi = izinDonemService.Update(mazeretIzinDonemi);
+                                isMazeretIzinDonemiGuncellendi = transaction == null
+                                    ? izinDonemService.Update(mazeretIzinDonemi)
+                                    : izinDonemService.Update(mazeretIzinDonemi, transaction, LoggingContext);
                             }
                         }
 
+                        isAllSaved = isIzinHareketSaved && isUcretliIzinDonemiGuncellendi && isMazeretIzinDonemiGuncellendi;
+                        if (isAllSaved && transaction != null)
+                            transaction.Complete();
                     }
                 }
 
-                isAllSaved = isIzinHareketSaved && isUcretliIzinDonemiGuncellendi && isMazeretIzinDonemiGuncellendi;
                 if (!isAllSaved)
                 {
-                    bool isMahsupRB = (mahsupRB == null) ? true : new MahsupService().Delete(mahsupRB);
-                    bool isIzinHareketRB = new IzinHareketService().Delete(izinHareket, LoggingContext);
-                    bool isUcretliIzinRB = new IzinDonemService().Update(ucretliIzinDonemiRB);
-                    bool isMazeretIzinRB = new IzinDonemService().Update(mazeretIzinDonemiRB);
+                    bool isMahsupRB = true;
+                    bool isIzinHareketRB = true;
+                    bool isUcretliIzinRB = true;
+                    bool isMazeretIzinRB = true;
+                    if (!PortalLogSettings.IsEnabled(LoggingContext))
+                    {
+                        isMahsupRB = (mahsupRB == null) ? true : new MahsupService().Delete(mahsupRB);
+                        isIzinHareketRB = new IzinHareketService().Delete(izinHareket, LoggingContext);
+                        isUcretliIzinRB = new IzinDonemService().Update(ucretliIzinDonemiRB);
+                        isMazeretIzinRB = new IzinDonemService().Update(mazeretIzinDonemiRB);
+                    }
                     string message = "Ücretli izinden Mazeret İznine Mahsup sırasında sorunlarla karşılaşıldı. Geri alma işleminde: "
                         + " İzin Hareketi geri alma : " + (isIzinHareketRB ? "Başarılı. " : "Başarısız. ")
                         + " Ücretli İzin Dönemi geri alma : " + (isUcretliIzinRB ? "Başarılı. " : " Başarısız")
@@ -303,10 +326,16 @@ namespace IKYS_WebParts.MazereteMahsupWP
                     MessageHelper.PublishMessage(message, ProjeConstants.MESAJ_HATA);
                 }
             }
+            }
             return isAllSaved;
         }
 
         private Mahsup MahsupTablosunaEkle(IzinHareket izinHareket, int asilIzinTipi, int kullanildigiDonem, int mahsupDonemi, string aciklama)
+        {
+            return MahsupTablosunaEkle(izinHareket, asilIzinTipi, kullanildigiDonem, mahsupDonemi, aciklama, null);
+        }
+
+        private Mahsup MahsupTablosunaEkle(IzinHareket izinHareket, int asilIzinTipi, int kullanildigiDonem, int mahsupDonemi, string aciklama, SqlTransactionContext transaction)
         {
             Mahsup mahsup = new Mahsup();
             mahsup.PersonelId = izinHareket.PersonelId;
@@ -316,7 +345,9 @@ namespace IKYS_WebParts.MazereteMahsupWP
             mahsup.MahsupDonemId = mahsupDonemi;
             mahsup.Aciklama = aciklama;
             mahsup.Olusturan = CurrentUserName;
-            int mahsupid = new MahsupService().Save(mahsup, LoggingContext);
+            int mahsupid = transaction == null
+                ? new MahsupService().Save(mahsup, LoggingContext)
+                : new MahsupService().Save(mahsup, transaction, LoggingContext);
             return mahsup;
         }
 

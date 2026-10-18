@@ -1,6 +1,7 @@
 using Model.IKYS;
 using Model.Ortak;
 using Model.Services.IKYS;
+using DAO.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -276,21 +277,45 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                 if ((izinHareket.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT) ||
                    (izinHareket.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT))
                 {
-                    IzinDonem izinDonemi = new IzinDonem();
-                    izinDonemi = new IzinDonemService().GetByIzinTarihi(personel.Id, izinHareket.IzinTipi, izinHareket.BaslangicTarihi);
-                    if (izinDonemi == null)
+                    bool loggingEnabled = PortalLogSettings.IsEnabled(LoggingContext);
+                    using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
                     {
-                        izinDonemi = new IzinDonem();
-                        izinDonemi = new IzinDonemService().CreateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName);
-                    }
-                    else
-                    {
-                        izinDonemi = new IzinDonemService().UpdateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName);
-                    }
-                    string yeniSure = IKYSOrtak.IzinSuresiHesapla(izinHareket.IzinTipi, izinHareket.BaslangicTarihi, izinHareket.BitisTarihi);
-                    new IzinDonemService().UpdateUsedLeave(izinDonemi, yeniSure, true, CurrentUserName);//kullanilan izni düs
+                        IzinDonemService izinDonemService = new IzinDonemService();
+                        IzinDonem izinDonemi = transaction == null
+                            ? izinDonemService.GetByIzinTarihi(personel.Id, izinHareket.IzinTipi, izinHareket.BaslangicTarihi)
+                            : izinDonemService.GetByIzinTarihi(personel.Id, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, transaction, LoggingContext);
+                        if (izinDonemi == null)
+                        {
+                            izinDonemi = transaction == null
+                                ? izinDonemService.CreateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName)
+                                : izinDonemService.CreateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName, transaction, LoggingContext);
+                        }
+                        else
+                        {
+                            izinDonemi = transaction == null
+                                ? izinDonemService.UpdateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName)
+                                : izinDonemService.UpdateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName, transaction, LoggingContext);
+                        }
+                        string yeniSure = IKYSOrtak.IzinSuresiHesapla(izinHareket.IzinTipi, izinHareket.BaslangicTarihi, izinHareket.BitisTarihi);
+                        bool izinDonemiGuncellendi;
+                        if (transaction == null)
+                            izinDonemiGuncellendi = izinDonemService.UpdateUsedLeave(izinDonemi, yeniSure, true, CurrentUserName);
+                        else
+                            izinDonemiGuncellendi = izinDonemService.UpdateUsedLeave(izinDonemi, yeniSure, true, CurrentUserName, transaction, LoggingContext);
 
-                    izinHareket.IzinDonemId = izinDonemi != null ? izinDonemi.Id : 0;
+                        izinHareket.IzinDonemId = izinDonemi != null ? izinDonemi.Id : 0;
+                        izinHareket.Olusturan = CurrentUserName;
+                        int id = transaction == null
+                            ? new IzinHareketService().Save(izinHareket, LoggingContext)
+                            : new IzinHareketService().Save(izinHareket, transaction, LoggingContext);
+                        if (id > 0 && izinDonemiGuncellendi)
+                        {
+                            isSaved = true;
+                            if (transaction != null)
+                                transaction.Complete();
+                        }
+                    }
+                    return isSaved;
                 }
                 izinHareket.Olusturan = CurrentUserName;
                 int id = new IzinHareketService().Save(izinHareket, LoggingContext);

@@ -1,6 +1,7 @@
 using Model.IKYS;
 using Model.Ortak;
 using Model.Services.IKYS;
+using DAO.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -349,6 +350,11 @@ namespace IKYS_WebParts.UcretliMahsupWP
         }
         private Mahsup MahsupTablosunaEkle(IzinHareket izinHareket, int asilIzinTipi, int kullanildigiDonem, int mahsupDonemi, string aciklama)
         {
+            return MahsupTablosunaEkle(izinHareket, asilIzinTipi, kullanildigiDonem, mahsupDonemi, aciklama, null);
+        }
+
+        private Mahsup MahsupTablosunaEkle(IzinHareket izinHareket, int asilIzinTipi, int kullanildigiDonem, int mahsupDonemi, string aciklama, SqlTransactionContext transaction)
+        {
             Mahsup mahsup = new Mahsup();
             mahsup.PersonelId = izinHareket.PersonelId;
             mahsup.IzinHareketId = izinHareket.Id;
@@ -357,7 +363,9 @@ namespace IKYS_WebParts.UcretliMahsupWP
             mahsup.MahsupDonemId = mahsupDonemi;
             mahsup.Aciklama = aciklama;
             mahsup.Olusturan = CurrentUserName;
-            int mahsupid = new MahsupService().Save(mahsup, LoggingContext);
+            int mahsupid = transaction == null
+                ? new MahsupService().Save(mahsup, LoggingContext)
+                : new MahsupService().Save(mahsup, transaction, LoggingContext);
             return mahsup;
         }
         private bool MahsupIsleminiyap()
@@ -406,6 +414,9 @@ namespace IKYS_WebParts.UcretliMahsupWP
                         //her üçü de ok ise islem tamamlandi
                         //eger herhangi biri tamamlanmadi ize rollback yap
 
+                        bool loggingEnabled = PortalLogSettings.IsEnabled(LoggingContext);
+                        using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
+                        {
                         if (oncekiIzinDonemi != null)
                         {
                             int sure = izinHareket.Sure.ConvertToInt();
@@ -414,7 +425,9 @@ namespace IKYS_WebParts.UcretliMahsupWP
                             string mahsupAciklama = "# Önceki izin dönemi= " + oncekiIzinDonemi.BaslangicTarihi + "-" + oncekiIzinDonemi.BitisTarihi
                                 + "; Yeni izin dönemi= " + yeniIzinDonemi.BaslangicTarihi + "-" + yeniIzinDonemi.BitisTarihi + "; "
                                 + "; Mahsup Edilen süre = " + izinHareket.Sure;
-                            Mahsup mahsup = MahsupTablosunaEkle(izinHareket, ProjeConstants.IZINTIPI_UCRETLI_INT, oncekiIzinDonemi.Id, yeniIzinDonemi.Id, mahsupAciklama);
+                            Mahsup mahsup = transaction == null
+                                ? MahsupTablosunaEkle(izinHareket, ProjeConstants.IZINTIPI_UCRETLI_INT, oncekiIzinDonemi.Id, yeniIzinDonemi.Id, mahsupAciklama)
+                                : MahsupTablosunaEkle(izinHareket, ProjeConstants.IZINTIPI_UCRETLI_INT, oncekiIzinDonemi.Id, yeniIzinDonemi.Id, mahsupAciklama, transaction);
                             mahsupRB = mahsup;
                             //önceki izin dönemi mahsupislemleri
                             int oncekiKullanilanIzinInt = oncekiIzinDonemi.KullanilanIzin.ConvertToInt() - sure;
@@ -423,7 +436,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
                             oncekiIzinDonemi.KalanIzin = oncekiKalanIzinInt.ToString();
                             oncekiIzinDonemi.Aciklama += System.Environment.NewLine + "# Tarih=(" + DateTime.Now + ") Mahsup, IzinHareketId=" + izinHareket.Id + " YeniIzinDonemiId=" + yeniIzinDonemi.Id;
                             oncekiIzinDonemi.Degistiren = CurrentUserName;
-                            isOncekiDonemGuncellendi = izinDonemService.Update(oncekiIzinDonemi);
+                            isOncekiDonemGuncellendi = transaction == null ? izinDonemService.Update(oncekiIzinDonemi) : izinDonemService.Update(oncekiIzinDonemi, transaction, LoggingContext);
 
                             //yeni izin dönemi mahsupislemleri
                             int yeniKullanilanIzinInt = yeniIzinDonemi.KullanilanIzin.ConvertToInt() + sure;
@@ -432,24 +445,34 @@ namespace IKYS_WebParts.UcretliMahsupWP
                             yeniIzinDonemi.KalanIzin = yeniKalanIzinInt.ToString();
                             yeniIzinDonemi.Aciklama += System.Environment.NewLine + "# Tarih=(" + DateTime.Now + ") Mahsup, IzinHareketId=" + izinHareket.Id + " OncekiIzinDonemiId=" + oncekiIzinDonemi.Id;
                             yeniIzinDonemi.Degistiren = CurrentUserName;
-                            isYeniIzinDonemiGuncellendi = izinDonemService.Update(yeniIzinDonemi);
+                            isYeniIzinDonemiGuncellendi = transaction == null ? izinDonemService.Update(yeniIzinDonemi) : izinDonemService.Update(yeniIzinDonemi, transaction, LoggingContext);
 
                             //izin hareket islemleri
                             izinHareket.Aciklama += "# Tarih=(" + DateTime.Now + ") MahsupId=" + mahsup.Id + "; " + AciklamaTxt.Text;
                             izinHareket.Mahsup = true;
                             izinHareket.IzinDonemId = yeniIzinDonemi.Id;
                             izinHareket.Degistiren = CurrentUserName;
-                            isIzinHareketSaved = izinHareketService.Update(izinHareket);
+                            isIzinHareketSaved = transaction == null ? izinHareketService.Update(izinHareket) : izinHareketService.Update(izinHareket, transaction, LoggingContext);
 
                         }
+                        isAllSaved = isIzinHareketSaved && isOncekiDonemGuncellendi && isYeniIzinDonemiGuncellendi;
+                        if (isAllSaved && transaction != null)
+                            transaction.Complete();
+                        }
                     }
-                    isAllSaved = isIzinHareketSaved && isOncekiDonemGuncellendi && isYeniIzinDonemiGuncellendi;
                     if (!isAllSaved)
                     {
-                        bool isMahsupRB = (mahsupRB == null) ? true : mahsupService.Delete(mahsupRB);
-                        bool isIzinHareketRB = izinHareketService.Update(izinHareketRB);
-                        bool isOncekiIzinRB = izinDonemService.Update(oncekiIzinDonemiRB);
-                        bool isYeniIzinRB = izinDonemService.Update(yeniIzinDonemiRB);
+                        bool isMahsupRB = true;
+                        bool isIzinHareketRB = true;
+                        bool isOncekiIzinRB = true;
+                        bool isYeniIzinRB = true;
+                        if (!PortalLogSettings.IsEnabled(LoggingContext))
+                        {
+                            isMahsupRB = (mahsupRB == null) ? true : mahsupService.Delete(mahsupRB);
+                            isIzinHareketRB = izinHareketService.Update(izinHareketRB);
+                            isOncekiIzinRB = izinDonemService.Update(oncekiIzinDonemiRB);
+                            isYeniIzinRB = izinDonemService.Update(yeniIzinDonemiRB);
+                        }
                         string message = " Mahsup sırasında sorunlarla karşılaşıldı. Geri alma işleminde: "
                             + " İzin Hareketi geri alma : " + (isIzinHareketRB ? "Başarılı. " : "Başarısız. ")
                             + " Önceki İzin Dönemi geri alma : " + (isOncekiIzinRB ? "Başarılı. " : " Başarısız")
