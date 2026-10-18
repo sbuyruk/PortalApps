@@ -297,6 +297,13 @@ SQL izi üretir; yazma yolları etkinleştirildiğinde iş kaydı ile audit ayn�
 transaction içinde tamamlanır. Mahsup audit ayrıntısı izin ve dönem kimlikleriyle
 sınırlıdır; açıklama gibi serbest metin alanları yazılmaz.
 
+Bu parçanın devamında `MaasHareket` için tarih bazlı personel ekranı okumaları
+ve toplu silme yolu da SQL izi üretir. Maaş tutarı, ad, soyad ve unvan gibi
+hassas veya serbest metin alanları audit değişiklik ayrıntısına yazılmaz;
+personel, tarih, derece, kademe, grup ve protokol kimlikleriyle sınırlı kayıt
+tutulur. Toplu silme işlemi de etkin akışta aynı transaction içinde audit
+başlığıyla tamamlanır.
+
 ## Güvenilirlik ve gizlilik
 
 - SQL izinde sorgu adı veya sabit kimliği kullanılır; tam SQL, parametre değerleri
