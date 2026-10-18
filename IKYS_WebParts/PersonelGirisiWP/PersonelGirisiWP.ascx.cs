@@ -1785,8 +1785,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                             }
                             catch (Exception ex)
                             {
-                                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                                exHelper.PublishException();
+                                ReportError("IsBilgileri.Mail", ex);
                             }
                         }
                     }
@@ -1835,8 +1834,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                             }
                             catch (Exception ex)
                             {
-                                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                                exHelper.PublishException();
+                                ReportError("KadrosuzIsBilgileri.Mail", ex);
                             }
                         }
                     }
@@ -1935,8 +1933,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                             }
                             catch (Exception ex)
                             {
-                                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                                exHelper.PublishException();
+                                ReportError("IletisimBilgileri.Mail", ex);
                             }
                         }
                     }
@@ -1954,8 +1951,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("RedirectToPage", ex);
             }
         }
         private void SetActiveTab(string activeTab)

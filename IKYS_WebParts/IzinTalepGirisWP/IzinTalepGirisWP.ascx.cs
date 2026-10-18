@@ -1332,10 +1332,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("İzin Talebi kaydedilemedi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
+                ReportError("IzinTalep.SaveButton", exception);
             }
         }
         private bool IslemiDevamEdenIzinTalebiVarMi(int personelId)
@@ -1364,10 +1361,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("İzin Talebi Güncellenemdi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
+                ReportError("IzinTalep.UpdateButton", exception);
             }
 
         }
@@ -1710,8 +1704,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("RedirectToPage", ex);
             }
         }
         protected void IzinBasSaatDDL_SelectedIndexChanged(object sender, EventArgs e)

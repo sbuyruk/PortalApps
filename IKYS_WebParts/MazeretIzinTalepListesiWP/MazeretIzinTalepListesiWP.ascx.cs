@@ -504,9 +504,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                ReportError("IzinTalep.ListJson", exception);
             }
             return jSon;
         }
