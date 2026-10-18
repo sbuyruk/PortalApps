@@ -14,12 +14,14 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace IKYS_WebParts.GorevOnayListesiWP
 {
     [ToolboxItemAttribute(false)]
     public partial class GorevOnayListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "GorevOnayListesiWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -106,6 +108,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             {
                 if (!Page.IsPostBack)
                 {
+                    new GorevOnayService().TryRecordWebPartOpened(LoggingContext);
                     SecildiFalseYap();
                     TabloOlustur();
                 }
@@ -164,7 +167,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
         private List<GorevOnayListItem> GetDataList()
         {
             string gorevOnayIdStr = string.Empty;
-            DataTable dataTable = new GorevOnayService().GetAllReturnDataTable(0, DateTime.Today.AddYears(-1));
+            DataTable dataTable = new GorevOnayService().GetAllReturnDataTable(0, DateTime.Today.AddYears(-1), LoggingContext);
 
             List<GorevOnayListItem> list = new List<GorevOnayListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -287,7 +290,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
  
         private bool SureVeYevmiyeHesabiDogruMu(int gorevOnayId)
         {
-            GorevOnay gorevOnay = new GorevOnayService().GetById(gorevOnayId);
+            GorevOnay gorevOnay = new GorevOnayService().GetById(gorevOnayId, LoggingContext);
             if (gorevOnay != null)
             {
                 var gunlukYevmiye = gorevOnay.GunlukYevmiye.ConvertToDecimal();

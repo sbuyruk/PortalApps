@@ -392,3 +392,7 @@ Yoklama giriş/liste/aylık rapor ve harcırah giriş webpartları bu bağlamlı
 ## Toplu izin ve mahsup webpartları
 
 `TopluIzinGirisiWP`, `MazereteMahsupWP` ve `UcretliMahsupWP` açılışları yeni kullanıcı etkinliği kaydına bağlandı. IzinHareket ekleme, silme ve okuma çağrıları bağlamlı servis metotlarını kullanır. IzinDonem ve IzinHareket birlikte değişen mahsup işlemlerinin tek transaction altında birleştirilmesi sonraki güvenilirlik parçasıdır.
+
+## Görev onayı listeleri
+
+`GorevOnayListesiWP`, `GorevOnayListesiKisiselWP` ve `BekleyenIslemlerWP` için açılış, liste okuma, kayıt okuma ve onay güncelleme çağrıları yeni loglama bağlamına geçirildi. Toplu seçim/ödeme bayraklarını değiştiren eski yardımcı metotlar sonraki transaction-aware görev onayı parçasında ele alınacaktır.

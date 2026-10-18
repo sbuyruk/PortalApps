@@ -11,12 +11,14 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace IKYS_WebParts.BekleyenIslemlerWP
 {
     [ToolboxItemAttribute(false)]
     public partial class BekleyenIslemlerWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "BekleyenIslemlerWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -91,6 +93,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
         {
             try
             {
+                new GorevOnayService().TryRecordWebPartOpened(LoggingContext);
                 if (!ProjeConstants.AMIRONAYIETKINMI)
                 {
                     return;
@@ -312,7 +315,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
 
             try
             {
-                GorevOnay gorevOnay = new GorevOnayService().GetById(paramGorevOnayIdLbl.Value.ConvertToInt());
+                GorevOnay gorevOnay = new GorevOnayService().GetById(paramGorevOnayIdLbl.Value.ConvertToInt(), LoggingContext);
                 if (gorevOnay != null)
                 {
                     Personel personel = new PersonelService().GetById(gorevOnay.PersonelId);
@@ -335,7 +338,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
 
             try
             {
-                GorevOnay gorevOnay = new GorevOnayService().GetById(paramGorevOnayIdLbl.Value.ConvertToInt());
+                GorevOnay gorevOnay = new GorevOnayService().GetById(paramGorevOnayIdLbl.Value.ConvertToInt(), LoggingContext);
                 if (gorevOnay != null)
                 {
                     Personel personel = new PersonelService().GetById(gorevOnay.PersonelId);
@@ -358,7 +361,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
 
             try
             {
-                GorevOnay gorevOnay = new GorevOnayService().GetById(paramGorevOnayIdLbl.Value.ConvertToInt());
+                GorevOnay gorevOnay = new GorevOnayService().GetById(paramGorevOnayIdLbl.Value.ConvertToInt(), LoggingContext);
                 if (gorevOnay != null)
                 {
                     Personel personel = new PersonelService().GetById(gorevOnay.PersonelId);
@@ -414,11 +417,11 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
 
             try
             {
-                GorevOnay gorevOnay = new GorevOnayService().GetById(paramGorevOnayIdLbl.Value.ConvertToInt());
+                GorevOnay gorevOnay = new GorevOnayService().GetById(paramGorevOnayIdLbl.Value.ConvertToInt(), LoggingContext);
                 if (gorevOnay != null)
                 {
                     gorevOnay.AmirOnayi = (int)GorevOnay.AmirOnayDurumu.Onaylandi;
-                    bool isSuccess = new GorevOnayService().Update(gorevOnay);
+                    bool isSuccess = new GorevOnayService().Update(gorevOnay, LoggingContext);
                     if (isSuccess)
                     {
                         OnaylandiMailiGonder(gorevOnay);
@@ -443,12 +446,12 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
 
             try
             {
-                GorevOnay gorevOnay = new GorevOnayService().GetById(paramGorevOnayIdLbl.Value.ConvertToInt());
+                GorevOnay gorevOnay = new GorevOnayService().GetById(paramGorevOnayIdLbl.Value.ConvertToInt(), LoggingContext);
                 if (gorevOnay != null)
                 {
                     gorevOnay.OnayRedAciklama = ReddetAciklamaTxt.Text;
                     gorevOnay.AmirOnayi = (int)GorevOnay.AmirOnayDurumu.Reddedildi;
-                    bool isSuccess = new GorevOnayService().Update(gorevOnay);
+                    bool isSuccess = new GorevOnayService().Update(gorevOnay, LoggingContext);
                     if (isSuccess)
                     {
                         ReddedildiMailiGonder(gorevOnay);
