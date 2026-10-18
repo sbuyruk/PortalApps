@@ -451,3 +451,6 @@ Bu parça da yalnızca kaynak/diff/UTF-8 kontrolleriyle doğrulanmıştır. Visu
 ## Mahsup ve toplu izin çoklu entity transaction akışları
 
 `MazereteMahsupWP` ve `UcretliMahsupWP` içinde Mahsup, IzinHareket ve IzinDonem değişiklikleri loglama açıkken aynı `SqlTransactionContext` altında yürütülecek şekilde birleştirildi. Başarısız akışta transaction tamamlanmadığı için manuel geri alma yalnızca legacy yolda çalışır. `TopluIzinGirisiWP` içinde dönem arama/oluşturma/güncelleme, kullanılan izin değişikliği ve IzinHareket INSERT'i aynı transaction'a bağlandı. Loglama kapalıyken mevcut servis çağrıları korunur.
+## Mazeret onayı ve izin talebi giriş transaction akışları
+
+`MazeretIzinTalepListesiWP` onay akışında IzinTalep durumu, IzinHareket oluşturma/güncelleme ve mazeret izin dönemi kullanımı loglama açıkken aynı transaction altında yürütülür. `IzinTalepGirisWP` içinde yeni talep ve talep güncelleme sırasında dönem arama/oluşturma/güncelleme ile IzinTalep INSERT/UPDATE işlemleri transaction-aware servis yollarına bağlandı. Başarılı işlemden sonra e-posta ve kullanıcı mesajı akışları korunur; legacy yol loglama kapalıyken devam eder.

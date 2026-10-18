@@ -1,6 +1,7 @@
 using Model.IKYS;
 using Model.Ortak;
 using Model.Services.IKYS;
+using DAO.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -283,10 +284,17 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                 {
                     izinTalep.OnayDurumu = ProjeConstants.PER_IZINTALEBI_KAYITLARAISLENDI_INT;
                     izinTalep.Degistiren = CurrentUserName;
-                    bool onaylandi = new IzinTalepService().Update(izinTalep, LoggingContext);
+                    bool loggingEnabled = PortalLogSettings.IsEnabled(LoggingContext);
+                    bool izinHareketTablosundaVarMi = IzinHareketTablosundaVarMI(izinTalep.Id);
+                    bool onaylandi;
+                    using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
+                    {
+                    onaylandi = transaction == null
+                        ? new IzinTalepService().Update(izinTalep, LoggingContext)
+                        : new IzinTalepService().Update(izinTalep, transaction, LoggingContext);
+                    bool operationCompleted = onaylandi;
                     if (onaylandi)
                     {
-                        bool izinHareketTablosundaVarMi = IzinHareketTablosundaVarMI(izinTalep.Id);
                         if (izinHareketTablosundaVarMi)
                         {
                             MessageHelper.PublishMessage("Bu Talep daha önce zaten onaylanmistir.", ProjeConstants.MESAJ_HATA);
@@ -308,26 +316,44 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                             ih.Sure = izinTalep.Sure;
                             ih.Birim = izinTalep.Birim;
 
-                            int izinHareketId = new IzinHareketService().Save(ih);
+                            int izinHareketId = transaction == null
+                                ? new IzinHareketService().Save(ih)
+                                : new IzinHareketService().Save(ih, transaction, LoggingContext);
+                            if (izinHareketId <= 0)
+                                operationCompleted = false;
                             if (izinHareketId > 0)
                             {
                                 if (ih.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT)
                                 {
                                     IzinDonem izinDonemi = new IzinDonem();
-                                    izinDonemi = new IzinDonemService().GetById(ih.IzinDonemId);
+                                    izinDonemi = transaction == null
+                                        ? new IzinDonemService().GetById(ih.IzinDonemId)
+                                        : new IzinDonemService().GetById(ih.IzinDonemId, transaction, LoggingContext);
                                     if (izinDonemi != null)
                                     {
                                         ih.OncekiIzinStr = izinDonemi.KalanIzin.ToString();
                                         ih.KullanilanIzinStr = izinTalep.Sure;
-                                        new IzinDonemService().UpdateUsedLeave(izinDonemi, ih.Sure, true, CurrentUserName);
+                                        bool periodUpdated = transaction == null
+                                            ? new IzinDonemService().UpdateUsedLeave(izinDonemi, ih.Sure, true, CurrentUserName)
+                                            : new IzinDonemService().UpdateUsedLeave(izinDonemi, ih.Sure, true, CurrentUserName, transaction, LoggingContext);
                                         ih.KalanIzinStr = izinDonemi.KalanIzin.ToString();
-                                        new IzinHareketService().Update(ih);//kalan izin hesaplandiktan sonra izinHareket tablosuna yazsin
+                                        bool movementUpdated = transaction == null
+                                            ? new IzinHareketService().Update(ih)//kalan izin hesaplandiktan sonra izinHareket tablosuna yazsin
+                                            : new IzinHareketService().Update(ih, transaction, LoggingContext);
+                                        operationCompleted = periodUpdated && movementUpdated;
                                     }
+                                    else
+                                        operationCompleted = false;
                                 }
                             }
 
                         }
 
+                    }
+                    if (operationCompleted && transaction != null)
+                        transaction.Complete();
+                    else if (!operationCompleted)
+                        onaylandi = false;
                     }
                 }
                 if (izinTalep.EPostaGonder)
@@ -340,8 +366,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
+                ReportError("IzinTalep.Onay", exception);
 
             }
 

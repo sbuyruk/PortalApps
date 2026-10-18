@@ -2,6 +2,7 @@ using Model.IKYS;
 using Model.Ortak;
 using Model.Services.IKYS;
 using Model.Services.Ortak;
+using DAO.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -1072,29 +1073,44 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 if ((izinTalep.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT) ||
                    (izinTalep.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT))
                 {
-                    IzinDonem izinDonemi = new IzinDonem();
-                    izinDonemi = new IzinDonemService().GetByIzinTarihi(personel.Id, izinTalep.IzinTipi, izinTalep.BaslangicTarihi);
-                    if (izinDonemi == null)
+                    bool loggingEnabled = PortalLogSettings.IsEnabled(LoggingContext);
+                    using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
                     {
-                        izinDonemi = new IzinDonem();
-                        izinDonemi = new IzinDonemService().CreateForPersonel(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName);
+                        IzinDonemService izinDonemService = new IzinDonemService();
+                        IzinDonem izinDonemi = transaction == null
+                            ? izinDonemService.GetByIzinTarihi(personel.Id, izinTalep.IzinTipi, izinTalep.BaslangicTarihi)
+                            : izinDonemService.GetByIzinTarihi(personel.Id, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, transaction, LoggingContext);
+                        if (izinDonemi == null)
+                            izinDonemi = transaction == null
+                                ? izinDonemService.CreateForPersonel(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName)
+                                : izinDonemService.CreateForPersonel(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName, transaction, LoggingContext);
+                        else
+                            izinDonemi = transaction == null
+                                ? izinDonemService.UpdateForPersonel(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName)
+                                : izinDonemService.UpdateForPersonel(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName, transaction, LoggingContext);
+                        izinTalep.IzinDonemId = izinDonemi != null ? izinDonemi.Id : 0;
+                        izinTalep.Olusturan = CurrentUserName;
+                        izinTalep.OnayDurumu = onayDurumu;
+                        izinTalep.EPostaGonder = EPostaGonderChk.Checked;
+                        izinTalepId = transaction == null
+                            ? new IzinTalepService().Save(izinTalep, LoggingContext)
+                            : new IzinTalepService().Save(izinTalep, transaction, LoggingContext);
+                        if (izinTalepId > 0 && transaction != null)
+                            transaction.Complete();
                     }
-                    else
-                    {
-                        izinDonemi = new IzinDonemService().UpdateForPersonel(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName);
-                    }
-                    izinTalep.IzinDonemId = izinDonemi != null ? izinDonemi.Id : 0;
                 }
-                izinTalep.Olusturan = CurrentUserName;
-                izinTalep.OnayDurumu = onayDurumu;
-                izinTalep.EPostaGonder = EPostaGonderChk.Checked;
-                izinTalepId = new IzinTalepService().Save(izinTalep, LoggingContext);
+                else
+                {
+                    izinTalep.Olusturan = CurrentUserName;
+                    izinTalep.OnayDurumu = onayDurumu;
+                    izinTalep.EPostaGonder = EPostaGonderChk.Checked;
+                    izinTalepId = new IzinTalepService().Save(izinTalep, LoggingContext);
+                }
 
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("IzinTalep.Save", ex);
             }
 
             return izinTalepId;
@@ -1156,22 +1172,37 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     if ((izinTalep.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT) ||
                        (izinTalep.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT))
                     {
-                        IzinDonem izinDonemi = new IzinDonem();
-                        izinDonemi = new IzinDonemService().GetByIzinTarihi(personel.Id, izinTalep.IzinTipi, izinTalep.BaslangicTarihi);
-                        if (izinDonemi == null)
+                        bool loggingEnabled = PortalLogSettings.IsEnabled(LoggingContext);
+                        using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
                         {
-                            izinDonemi = new IzinDonem();
-                            izinDonemi = new IzinDonemService().CreateForPersonel(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName);
+                            IzinDonemService izinDonemService = new IzinDonemService();
+                            IzinDonem izinDonemi = transaction == null
+                                ? izinDonemService.GetByIzinTarihi(personel.Id, izinTalep.IzinTipi, izinTalep.BaslangicTarihi)
+                                : izinDonemService.GetByIzinTarihi(personel.Id, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, transaction, LoggingContext);
+                            if (izinDonemi == null)
+                                izinDonemi = transaction == null
+                                    ? izinDonemService.CreateForPersonel(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName)
+                                    : izinDonemService.CreateForPersonel(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName, transaction, LoggingContext);
+                            else
+                                izinDonemi = transaction == null
+                                    ? izinDonemService.UpdateForPersonel(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName)
+                                    : izinDonemService.UpdateForPersonel(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName, transaction, LoggingContext);
+                            izinTalep.IzinDonemId = izinDonemi != null ? izinDonemi.Id : 0;
+                            izinTalep.Degistiren = CurrentUserName;
+                            izinTalep.EPostaGonder = EPostaGonderChk.Checked;
+                            isSaved = transaction == null
+                                ? new IzinTalepService().Update(izinTalep, LoggingContext)
+                                : new IzinTalepService().Update(izinTalep, transaction, LoggingContext);
+                            if (isSaved && transaction != null)
+                                transaction.Complete();
                         }
-                        else
-                        {
-                            izinDonemi = new IzinDonemService().UpdateForPersonel(personel, izinTalep.IzinTipi, izinTalep.BaslangicTarihi, CurrentUserName);
-                        }
-                        izinTalep.IzinDonemId = izinDonemi != null ? izinDonemi.Id : 0;
                     }
-                    izinTalep.Degistiren = CurrentUserName;
-                    izinTalep.EPostaGonder = EPostaGonderChk.Checked;
-                    isSaved = new IzinTalepService().Update(izinTalep, LoggingContext);
+                    else
+                    {
+                        izinTalep.Degistiren = CurrentUserName;
+                        izinTalep.EPostaGonder = EPostaGonderChk.Checked;
+                        isSaved = new IzinTalepService().Update(izinTalep, LoggingContext);
+                    }
                 }
                 else
                 {
@@ -1180,8 +1211,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("IzinTalep.Update", ex);
             }
 
             return isSaved;
