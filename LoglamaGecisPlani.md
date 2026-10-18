@@ -457,3 +457,6 @@ Bu parça da yalnızca kaynak/diff/UTF-8 kontrolleriyle doğrulanmıştır. Visu
 ## Personel izin dönemi yardımcıları
 
 `EskiPersonelWP` ve `PersonelGirisiWP` içindeki ücretli izin dönemi oluşturma/güncelleme yardımcıları transaction-aware `IzinDonemService` yollarına geçirildi. Loglama açıkken dönem SELECT ve INSERT/UPDATE işlemleri aynı transaction içinde SQL izi ve audit ile tamamlanır; loglama kapalıyken mevcut legacy yol korunur.
+## Mazeret izin talebi karar hata logları
+
+`MazeretIzinTalepListesiWP` kabul ve red kararlarındaki exception akışları teknik log ve Türkçe kullanıcı mesajı standardına bağlandı. Böylece onay, kabul ve red işlemleri aynı OperationId üzerinden izlenebilir hale geldi.
