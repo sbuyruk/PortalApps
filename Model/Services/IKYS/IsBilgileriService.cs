@@ -60,6 +60,7 @@ namespace Model.Services.IKYS
         }
         public IsBilgileri GetByPersonelId(int personelId) { return Map(repository.SelectByPersonelId(personelId)); }
         public IsBilgileri GetByPersonelId(int personelId, PortalLogContext context) { return Map(repository.SelectByPersonelId(personelId, context)); }
+        public IsBilgileri GetByPersonelId(int personelId, SqlTransactionContext transaction, PortalLogContext context) { if (transaction == null) throw new ArgumentNullException("transaction"); if (context == null) throw new ArgumentNullException("context"); return Map(repository.SelectByPersonelId(personelId, transaction, context)); }
         public IsBilgileri GetByGorevId(int gorevId) { return Map(repository.SelectByGorevId(gorevId)); }
         public IsBilgileri GetByGorevId(int gorevId, PortalLogContext context) { return Map(repository.SelectByGorevId(gorevId, context)); }
         public DataTable GetAllFromIsYeriBilgileri() { return repository.SelectAllFromIsYeriBilgileri(); }
