@@ -53,6 +53,8 @@ namespace IKYS_WebParts.GorevOnayListesiKisiselWP
         {
             try
             {
+                if (!Page.IsPostBack)
+                    new GorevOnayService().TryRecordWebPartOpened(LoggingContext);
                 TabloJson = GetTableJson(GetDataTable());
             }
             catch (Exception ex)
