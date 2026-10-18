@@ -13,12 +13,14 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace IKYS_WebParts.DereceKademeListesiWP
 {
     [ToolboxItemAttribute(false)]
     public partial class DereceKademeListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "DereceKademeListesiWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -79,6 +81,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
         {
             if (!Page.IsPostBack)
             {
+                    new PersonelService().TryRecordWebPartOpened(LoggingContext);
 
                 FillPersonelDDL();
                 PersonelIdQS = string.IsNullOrEmpty(PersonelIdQS) ? PersonelDDL.SelectedItem.Value : PersonelIdQS; // Eger PersonelIdQS bos ise, geçerli kullanici Id'sini kullan
@@ -120,7 +123,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
         private void FillPersonelDDL()
         {
             PersonelDDL.Items.Clear();
-            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu, LoggingContext);
 
             foreach (Personel item in list)
             {
@@ -132,13 +135,13 @@ namespace IKYS_WebParts.DereceKademeListesiWP
         {
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                return new PersonelService().GetById(PersonelIdQS.ConvertToInt());
+                return new PersonelService().GetById(PersonelIdQS.ConvertToInt(), LoggingContext);
 
             }
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                Personel personel = new PersonelService().GetByUserName(userName);
+                Personel personel = new PersonelService().GetByUserName(userName, LoggingContext);
                 PersonelIdQS = personel.Id.ToString();
                 return personel;
             }
@@ -212,7 +215,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             else
             {
                 List<DereceKademeListItem> list = new List<DereceKademeListItem>();
-                DataTable dataTable = new DereceKademeDegisimService().GetAllByPersonelIdReturnDataTable(personel.Id);
+                DataTable dataTable = new DereceKademeDegisimService().GetAllByPersonelIdReturnDataTable(personel.Id, LoggingContext);
                 string adSoyad = (personel.Adi + " " + personel.Soyadi).Trim();
                 if (dataTable!=null)
                 {
@@ -267,7 +270,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             }
             else
             {
-                DereceKademeDegisim dereceKademe = new DereceKademeDegisimService().GetByPersonelId(personel.Id);
+                DereceKademeDegisim dereceKademe = new DereceKademeDegisimService().GetByPersonelId(personel.Id, LoggingContext);
                 GecerliDereceTxt.Text = dereceKademe?.Derece.ToString() ?? "Bulunamadı";
                 GecerliKademeTxt.Text = dereceKademe?.Kademe.ToString() ?? "Bulunamadı";
             }
@@ -299,7 +302,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                     Aciklama = aciklama,
                 };
 
-                new DereceKademeDegisimService().Save(dereceKademeDegisim);
+                new DereceKademeDegisimService().Save(dereceKademeDegisim, LoggingContext);
                 MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Kaydedildi.", ProjeConstants.MESAJ_BASARILI);
             }
             catch (Exception)
@@ -324,7 +327,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                 dereceKademeDegisim.Derece = derece;
                 dereceKademeDegisim.Kademe = kademe;
                 dereceKademeDegisim.Aciklama = aciklama;
-                new DereceKademeDegisimService().Update(dereceKademeDegisim);
+                new DereceKademeDegisimService().Update(dereceKademeDegisim, LoggingContext);
                 MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Güncellendi.", ProjeConstants.MESAJ_BASARILI);
             }
             catch (Exception)
@@ -345,7 +348,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                     return;
                 }
 
-                new DereceKademeDegisimService().Delete(dereceKademeDegisim);
+                new DereceKademeDegisimService().Delete(dereceKademeDegisim, LoggingContext);
                 MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Silindi.", ProjeConstants.MESAJ_BASARILI);
             }
             catch (Exception)
@@ -456,7 +459,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
 
         private void BilgileriDoldur()
         {
-            Personel personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt());
+            Personel personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt(), LoggingContext);
             if (personel != null)
             {
                 PersonelIdQS = personel.Id.ToString();

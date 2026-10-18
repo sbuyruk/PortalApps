@@ -396,3 +396,7 @@ Yoklama giriş/liste/aylık rapor ve harcırah giriş webpartları bu bağlamlı
 ## Görev onayı listeleri
 
 `GorevOnayListesiWP`, `GorevOnayListesiKisiselWP` ve `BekleyenIslemlerWP` için açılış, liste okuma, kayıt okuma ve onay güncelleme çağrıları yeni loglama bağlamına geçirildi. Toplu seçim/ödeme bayraklarını değiştiren eski yardımcı metotlar sonraki transaction-aware görev onayı parçasında ele alınacaktır.
+
+## Derece, maaş ve protokol webpartları
+
+`DereceKademeListesiWP`, `MaasArtisiWP`, `MaasOlusturmaWP` ve `ProtokolSirasiWP` webpartlarının açılış ve desteklenen okuma/yazma çağrıları yeni loglama bağlamına geçirildi. Maaş ve derece işlemlerinin aynı iş akışında birden fazla entity değiştirdiği bölümler sonraki ortak transaction çalışmasına bırakıldı.

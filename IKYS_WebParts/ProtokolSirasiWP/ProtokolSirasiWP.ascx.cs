@@ -10,6 +10,7 @@ using System.Web.Script.Serialization;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 using static Model.IKYS.Personel;
 
 namespace IKYS_WebParts.ProtokolSirasiWP
@@ -17,6 +18,7 @@ namespace IKYS_WebParts.ProtokolSirasiWP
     [ToolboxItemAttribute(false)]
     public partial class ProtokolSirasiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "ProtokolSirasiWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -135,7 +137,7 @@ $('#CustomDataTable').on( 'draw.dt', function () {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             DateTime islemTarihiDateTime = new DateTime(2020, 1, 9);
 
-            DataTable dataTable = new PersonelService().GetActiveEmployeesReturnDataTable(Personel.PersonelTipi.Kadrolu);
+            DataTable dataTable = new PersonelService().GetEmployeeListReturnDataTable(Personel.PersonelTipi.Kadrolu, LoggingContext);
 
             List<PersonelListItem> returnlist = new List<PersonelListItem>();
             if (dataTable != null)

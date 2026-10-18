@@ -16,6 +16,7 @@ using System.Globalization;
 using static Model.IKYS.Personel;
 using System.Web.Script.Serialization;
 using Utility.HelperClasses;
+using Utility.Logging;
 using System.Drawing;
 using Microsoft.SharePoint;
 
@@ -24,6 +25,7 @@ namespace IKYS_WebParts.MaasOlusturmaWP
     [ToolboxItemAttribute(false)]
     public partial class MaasOlusturmaWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "MaasOlusturmaWP"); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -46,6 +48,7 @@ namespace IKYS_WebParts.MaasOlusturmaWP
         {
             if (!Page.IsPostBack)
             {
+                    new PersonelService().TryRecordWebPartOpened(LoggingContext);
                 DateTime tarih = DateTime.Today;
                 int ay = tarih.Month;
                 // ay eger Ocak, Nisan, Temmuz ve Ekim aylarindan birine esitse IkramiyeChk.Checked=true; yap
@@ -72,7 +75,7 @@ namespace IKYS_WebParts.MaasOlusturmaWP
         {
             //bu tarihe ait kayit MaasHareket_Table'da var mi kontrol et
             MaasHareket maasHareket = new MaasHareket();
-            maasHareket = new MaasHareketService().GetByTarih(TarihDDL.SelectedItem == null ? DateTime.Today : TarihDDL.SelectedItem.Value.ConvertToDatetime());
+            maasHareket = new MaasHareketService().GetByTarih(TarihDDL.SelectedItem == null ? DateTime.Today : TarihDDL.SelectedItem.Value.ConvertToDatetime(), LoggingContext);
             if (maasHareket != null)
             {
                 //eger varsa, o tarihe ait maas listesi zaten olusturulmus demektir.
@@ -136,13 +139,13 @@ namespace IKYS_WebParts.MaasOlusturmaWP
             DateTime tarih = TarihDDL.SelectedItem.Value.ConvertToDatetime();
             //ilk olarak bu tarihe ait kayit MaasHareket_Table'da var mi kontrol et
             MaasHareket maasHareket = new MaasHareket();
-            maasHareket = new MaasHareketService().GetByTarih(tarih);
+            maasHareket = new MaasHareketService().GetByTarih(tarih, LoggingContext);
             if (maasHareket != null)
             {
                 //eger varsa, o tarihe ait maas listesi zaten olusturulmus demektir.
                 //o yüzden bu tarihe ait maas listesi tekrar olusturulmayacak.
                 // olusturulan kayitlar MaasHareket_Table'dan çekilecek.
-                List<MaasHareket> maaslist = new MaasHareketService().GetMaasListesiByTarih(tarih);
+                List<MaasHareket> maaslist = new MaasHareketService().GetMaasListesiByTarih(tarih, LoggingContext);
                 List<MaasListItem> hazirliste = new List<MaasListItem>();
                 foreach (MaasHareket item in maaslist)
                 {
@@ -420,7 +423,7 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
         {
             MaasHareket maasHareket = new MaasHareket();
             // ilk olarak bu tarihe ait kayit MaasHareket_Table'da var mi kontrol et
-            maasHareket = new MaasHareketService().GetByTarih(TarihDDL.SelectedItem.Value.ConvertToDatetime());
+                maasHareket = new MaasHareketService().GetByTarih(TarihDDL.SelectedItem.Value.ConvertToDatetime(), LoggingContext);
             if (maasHareket == null)
             {
             MessageHelper.PublishMessage("Silinecek bir maaş kaydı bulunamadı.", ProjeConstants.MESAJ_BILGI);
@@ -472,7 +475,7 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
                 DateTime tarih = TarihDDL.SelectedItem.Value.ConvertToDatetime();
 
                 MaasHareket maasHareket = new MaasHareket();
-                maasHareket = new MaasHareketService().GetByTarih(tarih);
+                maasHareket = new MaasHareketService().GetByTarih(tarih, LoggingContext);
                 if (maasHareket == null)
                 {
                     TabloyuKaydet();
@@ -495,7 +498,7 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
                 DateTime tarih = TarihDDL.SelectedItem.Value.ConvertToDatetime();
 
                 MaasHareket maasHareket = new MaasHareket();
-                maasHareket = new MaasHareketService().GetByTarih(tarih);
+                maasHareket = new MaasHareketService().GetByTarih(tarih, LoggingContext);
                 if (maasHareket != null)
                 {
                     TabloyuSil();
