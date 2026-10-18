@@ -1819,8 +1819,7 @@ namespace IKYS_WebParts.EskiPersonelWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("RedirectToPage", ex);
             }
         }
         private void SetActiveTab(string activeTab)
@@ -1864,8 +1863,7 @@ namespace IKYS_WebParts.EskiPersonelWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exh = new ExceptionHelper(ex);
-                exh.PublishException();
+                ReportError("Personel.Save", ex);
             }
         }
         protected void DeleteBtn_Click(object sender, EventArgs e)
@@ -1881,8 +1879,7 @@ namespace IKYS_WebParts.EskiPersonelWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("DogumIli.Changed", ex);
             }
 
         }
@@ -1901,8 +1898,7 @@ namespace IKYS_WebParts.EskiPersonelWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                ReportError("IkametIli.Changed", ex);
             }
         }
         protected void CalismaDurumuDDL_SelectedIndexChanged(object sender, EventArgs e)

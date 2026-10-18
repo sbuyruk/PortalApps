@@ -460,3 +460,6 @@ Bu parça da yalnızca kaynak/diff/UTF-8 kontrolleriyle doğrulanmıştır. Visu
 ## Mazeret izin talebi karar hata logları
 
 `MazeretIzinTalepListesiWP` kabul ve red kararlarındaki exception akışları teknik log ve Türkçe kullanıcı mesajı standardına bağlandı. Böylece onay, kabul ve red işlemleri aynı OperationId üzerinden izlenebilir hale geldi.
+## Personel ve izin webpartlarında exception standardı
+
+`EskiPersonelWP`, `PersonelGirisiWP`, `IzinTalepGirisWP` ve `MazeretIzinTalepListesiWP` içindeki seçili kullanıcı işlemleri, yönlendirme ve e-posta hata akışları `ReportError` standardına geçirildi. Loglama açıkken teknik hata OperationId ile kaydedilir ve kullanıcıya Türkçe başvuru kodlu mesaj döner; loglama kapalıyken legacy exception yayınlama davranışı korunur.
