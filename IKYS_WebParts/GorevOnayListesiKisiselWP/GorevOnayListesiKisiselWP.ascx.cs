@@ -28,7 +28,7 @@ namespace IKYS_WebParts.GorevOnayListesiKisiselWP
                 return;
             }
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -70,7 +70,7 @@ namespace IKYS_WebParts.GorevOnayListesiKisiselWP
                 ? null : IKYSOrtak.PersonelGetir(currentUserName);
             if (personel == null || personel.Id <= 0)
             {
-                MessageHelper.PublishMessage("Personel bulunamadı", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Personel bulunamadı");
                 return null;
             }
 

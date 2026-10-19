@@ -29,7 +29,7 @@ namespace IKYS_WebParts.GorevSemasiWP
                 return;
             }
             PortalTechnicalLog.WriteError(context, "GorevSemasi.Load", error);
-            MessageHelper.PublishMessage("Görev şeması yüklenemedi. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("Görev şeması yüklenemedi. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready

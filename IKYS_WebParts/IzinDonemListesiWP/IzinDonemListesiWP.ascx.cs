@@ -28,7 +28,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                 return;
             }
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -95,7 +95,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                     new IzinDonemService().TryRecordWebPartOpened(LoggingContext);
                     if (!string.IsNullOrEmpty(MesajQS))
                     {
-                        MessageHelper.PublishMessage("Kayit Tamamlandi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        Messages.Success("Kayit Tamamlandi", 2000);
                         MesajQS = string.Empty;
                     }
                     FillPersonelDDL();
@@ -252,7 +252,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                             }
                             else
                             {
-                                MessageHelper.PublishMessage("İzin Dönemi Bulunamadı", ProjeConstants.MESAJ_HATA);
+                                Messages.Error("İzin Dönemi Bulunamadı");
                             }
 
                         }
@@ -296,7 +296,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                             }
                             else
                             {
-                                MessageHelper.PublishMessage("İzin Dönemi Bulunamadı", ProjeConstants.MESAJ_HATA);
+                                Messages.Error("İzin Dönemi Bulunamadı");
                             }
 
                         }
@@ -343,7 +343,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
             IzinDonem izinDonemi = new IzinDonemService().GetById(izinDonemId, LoggingContext);
             if (izinDonemi == null)
             {
-                MessageHelper.PublishMessage("İzin Dönemi bulunamadı.", ProjeConstants.MESAJ_HATA);
+                Messages.Error("İzin Dönemi bulunamadı.");
             }
             else
             {
@@ -483,23 +483,23 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                         }
                         if (issaved)
                         {
-                            MessageHelper.PublishMessage("Kayıt Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
+                            Messages.Success("Kayıt Tamamlandı", 2000);
                             FillIzinDonemTable();
                         }
                         else
                         {
-                            MessageHelper.PublishMessage("Kayıt Yapılamadı. Lütfen tekrar deneyin.", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Kayıt Yapılamadı. Lütfen tekrar deneyin.");
                         }
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Kayıt Yapılamadı. İzin Hakkı, Kullanılan İzin ve Kalan İzin değerlerine lütfen tamsayı giriniz", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Kayıt Yapılamadı. İzin Hakkı, Kullanılan İzin ve Kalan İzin değerlerine lütfen tamsayı giriniz");
                     }
                 }
                 catch (Exception)
                 {
 
-                    MessageHelper.PublishMessage("İzin Hakkı, Kullanılan İzin ve Kalan İzin bilgilerine lütfen tamsayı giriniz", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("İzin Hakkı, Kullanılan İzin ve Kalan İzin bilgilerine lütfen tamsayı giriniz");
                 }
 
 
@@ -654,13 +654,13 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                     }
                     if (issaved)
                     {
-                        MessageHelper.PublishMessage("Kayıt Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
+                        Messages.Success("Kayıt Tamamlandı", 2000);
                         FillIzinDonemTable();
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kayıt Yapılamadı. İzin Hakkı, Kullanılan İzin ve Kalan İzin değerlerine lütfen tamsayı giriniz", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Kayıt Yapılamadı. İzin Hakkı, Kullanılan İzin ve Kalan İzin değerlerine lütfen tamsayı giriniz");
                 }
             }
             catch (Exception exception)

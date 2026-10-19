@@ -78,6 +78,7 @@
     <Compile Include="HelperClasses\LogHelper.cs" />
     <Compile Include="HelperClasses\MailHelper.cs" />
     <Compile Include="HelperClasses\MessageHelper.cs" />
+    <Compile Include="HelperClasses\Messages.cs" />
     <Compile Include="HelperClasses\ResponseHelper.cs" />
     <Compile Include="Logging\PortalLogContext.cs" />
     <Compile Include="Logging\PortalLogKind.cs" />
@@ -91,6 +92,14 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="tskgv.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HelperClasses\Messages.js">
+      <LogicalName>Utility.HelperClasses.Messages.js</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HelperClasses\Messages.css">
+      <LogicalName>Utility.HelperClasses.Messages.css</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
