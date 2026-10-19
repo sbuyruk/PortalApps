@@ -297,6 +297,10 @@ namespace IKYS_WebParts.PersonelGirisiWP
         }
         private void OpenPersonelDuzenle()
         {
+            // Name-based username suggestions are only needed when creating personnel.
+            // Avoid a blur-triggered postback consuming the first save click while editing.
+            AdiTxt.AutoPostBack = false;
+            SoyadiTxt.AutoPostBack = false;
             SaveBtn.Visible = false;
             PersonelListesiBtn.Visible = true;
             PersonelIdLbl.Visible = true;
