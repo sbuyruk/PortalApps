@@ -6,6 +6,7 @@
     var hostId = 'portalapps-messages-v1';
     var styleId = 'portalapps-messages-v1-style';
     var labels = { Information: 'Bilgi', Success: 'Başarılı', Warning: 'Uyarı', Error: 'Hata' };
+    var icons = { Information: 'ℹ', Success: '✓', Warning: '⚠', Error: '✕' };
 
     function element(tag, className, text) {
         var node = document.createElement(tag);
@@ -53,7 +54,12 @@
         var notice = element('div', 'portalapps-message portalapps-message--' + severity.toLowerCase());
         notice.id = message.id;
         var heading = element('div', 'portalapps-message__heading');
-        heading.appendChild(element('strong', 'portalapps-message__title', labels[severity]));
+        var title = element('strong', 'portalapps-message__title');
+        var icon = element('span', 'portalapps-message__icon', icons[severity]);
+        icon.setAttribute('aria-hidden', 'true');
+        title.appendChild(icon);
+        title.appendChild(document.createTextNode(labels[severity]));
+        heading.appendChild(title);
         var close = element('button', 'portalapps-message__close', '×');
         close.type = 'button';
         close.setAttribute('aria-label', 'Bildirimi kapat');
