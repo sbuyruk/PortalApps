@@ -21,7 +21,17 @@
 <script type="text/javascript">
 
     function setActiveTab(activeTab) {
-        $("#" + activeTab).tab("show");
+        var tabElement = document.getElementById(activeTab);
+        if (!tabElement) {
+            return;
+        }
+
+        if (window.bootstrap && window.bootstrap.Tab) {
+            window.bootstrap.Tab.getOrCreateInstance(tabElement).show();
+            return;
+        }
+
+        tabElement.click();
     }
     function clearEvlilikTar() {
         $('#clear-evlilikTar').on('click', function () {
