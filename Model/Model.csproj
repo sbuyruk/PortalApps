@@ -108,6 +108,7 @@
     <Compile Include="Ortak\Bolge.cs" />
     <Compile Include="Ortak\Olay.cs" />
     <Compile Include="Ortak\OlayKayit.cs" />
+    <Compile Include="Ortak\PortalLogDashboardModels.cs" />
     <Compile Include="Portal\ProgramYetki.cs" />
     <Compile Include="Ortak\Variance.cs" />
     <Compile Include="TBYS\BagisciBagis.cs" />
@@ -146,6 +147,7 @@
     <Compile Include="Services\NBYS\NakitBagisciReportService.cs" />
     <Compile Include="Services\Ortak\BolgeService.cs" />
     <Compile Include="Services\Ortak\OlayService.cs" />
+    <Compile Include="Services\Ortak\PortalLogDashboardService.cs" />
     <Compile Include="Services\Ortak\OrtakParametreService.cs" />
     <Compile Include="Services\Ortak\SilinenKayitService.cs" />
     <Compile Include="Services\IKYS\PersonelService.cs" />
