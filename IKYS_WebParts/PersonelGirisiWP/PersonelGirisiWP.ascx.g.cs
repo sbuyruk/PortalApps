@@ -699,7 +699,7 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             this.DogumGunuKutlamaChk = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "DogumGunuKutlamaChk";
-            @__ctrl.CssClass = "form-select form-select-lg";
+            @__ctrl.CssClass = "form-control";
             @__ctrl.Text = "    ";
             @__ctrl.Checked = true;
             return @__ctrl;
