@@ -155,6 +155,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>KutlamaMoveWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="LogDurumTakipWP\LogDurumTakipWP.ascx.cs">
+      <DependentUpon>LogDurumTakipWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="OlayListesiWP\OlayListesiWP.ascx.cs">
       <DependentUpon>OlayListesiWP.ascx</DependentUpon>
     </Compile>
@@ -255,6 +258,10 @@
     <None Include="KutlamaMoveWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{00c68a23-86c8-4adc-895f-912f3c0aabe9}</SharePointProjectItemId>
     </None>
+    <None Include="LogDurumTakipWP\LogDurumTakipWP.webpart" />
+    <None Include="LogDurumTakipWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{7a1b9b59-af4c-4374-a623-b3c21bc8f204}</SharePointProjectItemId>
+    </None>
     <None Include="OlayListesiWP\OlayListesiWP.webpart" />
     <None Include="OlayListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{c591681a-fe12-4670-ae75-d410db7152f6}</SharePointProjectItemId>
@@ -339,6 +346,10 @@
     <Content Include="KutlamaMoveWP\KutlamaMoveWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>KutlamaMoveWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="LogDurumTakipWP\Elements.xml" />
+    <Content Include="LogDurumTakipWP\LogDurumTakipWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
     </Content>
     <Content Include="OlayListesiWP\Elements.xml" />
     <Content Include="OlayListesiWP\OlayListesiWP.ascx">
