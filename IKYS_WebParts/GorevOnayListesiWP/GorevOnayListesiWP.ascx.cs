@@ -145,7 +145,33 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             {
                 ReportError("Unhandled", ex);
             }
-            return jSon;
+        }
+
+        private void TabloOlustur()
+        {
+            string jsonData = TabloJson();
+            UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
+        }
+
+        private string TabloJson()
+        {
+            string json = string.Empty;
+
+            try
+            {
+                List<GorevOnayListItem> list = GetDataList();
+                JavaScriptSerializer serializer = new JavaScriptSerializer
+                {
+                    MaxJsonLength = Int32.MaxValue
+                };
+                json = serializer.Serialize(list);
+            }
+            catch (Exception ex)
+            {
+                ReportError("GorevOnayListesi.TableJson", ex);
+            }
+
+            return json;
         }
         private List<GorevOnayListItem> GetDataList()
         {
