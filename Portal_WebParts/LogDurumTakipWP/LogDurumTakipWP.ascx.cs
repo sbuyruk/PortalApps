@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 
 namespace Portal_WebParts.LogDurumTakipWP
@@ -33,16 +34,22 @@ namespace Portal_WebParts.LogDurumTakipWP
         {
             try
             {
-                if (!IsAuthorized()) { DashboardLiteral.Text = Message("Bu ekranı görüntüleme yetkiniz bulunmuyor."); return; }
+                if (!IsAuthorized()) { SetDashboardText(Message("Bu ekranı görüntüleme yetkiniz bulunmuyor.")); return; }
                 DateTime localNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TurkeyTimeZone());
                 DateTime localStart = localNow.Date;
                 DateTime fromUtc = TimeZoneInfo.ConvertTimeToUtc(localStart, TurkeyTimeZone());
                 DateTime toUtc = TimeZoneInfo.ConvertTimeToUtc(localStart.AddDays(1), TurkeyTimeZone());
                 PortalLogDashboardService service = new PortalLogDashboardService();
                 List<PortalLogEntry> logs = service.GetLogs(new PortalLogFilter { FromUtc = fromUtc, ToUtc = toUtc, Page = 1, PageSize = 200 });
-                DashboardLiteral.Text = BuildDashboard(service, logs, service.GetSummary(fromUtc, toUtc));
+                SetDashboardText(BuildDashboard(service, logs, service.GetSummary(fromUtc, toUtc)));
             }
-            catch (Exception) { DashboardLiteral.Text = Message("Log kayıtları şu anda yüklenemedi. Lütfen daha sonra tekrar deneyiniz."); }
+            catch (Exception) { SetDashboardText(Message("Log kayıtları şu anda yüklenemedi. Lütfen daha sonra tekrar deneyiniz.")); }
+        }
+
+        private void SetDashboardText(string text)
+        {
+            Literal dashboardLiteral = FindControl("DashboardLiteral") as Literal;
+            if (dashboardLiteral != null) dashboardLiteral.Text = text;
         }
 
         private static bool IsAuthorized()
