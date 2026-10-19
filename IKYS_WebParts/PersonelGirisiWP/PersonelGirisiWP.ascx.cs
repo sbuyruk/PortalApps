@@ -2111,7 +2111,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             item.Ili = IkametIliDDL.SelectedItem.Value;
             item.Ilcesi = IkametIlcesiDDL.SelectedItem.Value.ConvertToInt();
             item.InternetEPosta = InternetEPostaTxt.Text;
-            item.IntranetEPosta = IntranetEPostaTxt.Text;
+            //item.IntranetEPosta = IntranetEPostaTxt.Text;
             item.OzelEPosta = OzelEPostaTxt.Text;
             item.PersonelId = personel.Id;
             item.PostaKodu = PostaKoduTxt.Text;
