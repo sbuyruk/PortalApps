@@ -11,28 +11,266 @@ namespace DAO.Repositories.IKYS
     {
         private readonly DbClass db;
         private readonly CrudQueryBuilder queryBuilder;
-        public IzinHareketRepository() : this(new DbClass()) { }
-        public IzinHareketRepository(DbClass db) { if (db == null) throw new ArgumentNullException("db"); this.db = db; queryBuilder = new CrudQueryBuilder(); }
-        public DataTable SelectById(int id) { SqlQuery q = new SqlQuery("SELECT * FROM IzinHareket_Table WHERE Id=@Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, ""); }
-        public DataTable SelectAll() { return db.SelectFromDb(new SqlQuery("SELECT * FROM IzinHareket_Table"), ""); }
-        public int Insert<T>(T item) { return db.Insert(queryBuilder.BuildInsert(item, "IzinHareket_Table")); }
-        public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "IzinHareket_Table")); }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("IzinHareket_Table", id), ""); }
-        public DataTable SelectById(int id, PortalLogContext context) { return TraceSelect("IzinHareket.SelectById", () => SelectById(id), context); }
-        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context) { if(transaction==null) throw new ArgumentNullException("transaction"); SqlQuery q=new SqlQuery("SELECT * FROM IzinHareket_Table WITH (UPDLOCK,HOLDLOCK) WHERE Id=@Id"); q.AddParameter("@Id",id); Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { DataTable result=transaction.Select(q); ok=true; return result; } finally { PortalTechnicalLog.WriteSqlTrace(context,"SELECT","IzinHareket.SelectById",clock.ElapsedMilliseconds,ok); } }
-        public DataTable SelectAll(PortalLogContext context) { return TraceSelect("IzinHareket.SelectAll", () => SelectAll(), context); }
-        public int Insert<T>(T item, SqlTransactionContext transaction, PortalLogContext context) { return TraceInsert(queryBuilder.BuildInsert(item,"IzinHareket_Table"),transaction,context); }
-        public bool Update<T>(T item, SqlTransactionContext transaction, PortalLogContext context) { return TraceWrite(queryBuilder.BuildUpdate(item,"IzinHareket_Table"),"UPDATE","IzinHareket.Update",transaction,context); }
-        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context) { return TraceWrite(queryBuilder.BuildDelete("IzinHareket_Table",id),"DELETE","IzinHareket.Delete",transaction,context); }
-        public DataTable SelectByTarih(DateTime tarih, PortalLogContext context) { return TraceSelect("IzinHareket.SelectByTarih", () => SelectByTarih(tarih), context); }
-        public DataTable SelectByIzinTalepId(int id, PortalLogContext context) { return TraceSelect("IzinHareket.SelectByIzinTalepId", () => SelectByIzinTalepId(id), context); }
-        public DataTable SelectByPersonelTarih(int personelId, DateTime baslangic, DateTime bitis, PortalLogContext context) { return TraceSelect("IzinHareket.SelectByPersonelTarih", () => SelectByPersonelTarih(personelId,baslangic,bitis), context); }
-        public DataTable SelectDigerByPersonelId(int personelId, PortalLogContext context) { return TraceSelect("IzinHareket.SelectDigerByPersonelId", () => SelectDigerByPersonelId(personelId), context); }
-        private DataTable TraceSelect(string name, Func<DataTable> action, PortalLogContext context) { Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { DataTable result=action(); ok=true; return result; } finally { PortalTechnicalLog.WriteSqlTrace(context,"SELECT",name,clock.ElapsedMilliseconds,ok); } }
-        private static int TraceInsert(SqlQuery q, SqlTransactionContext transaction, PortalLogContext context) { if(transaction==null) throw new ArgumentNullException("transaction"); Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { int id=transaction.Insert(q); ok=id>0; return id; } finally { PortalTechnicalLog.WriteSqlTrace(context,"INSERT","IzinHareket.Insert",clock.ElapsedMilliseconds,ok); } }
-        private static bool TraceWrite(SqlQuery q,string operation,string name,SqlTransactionContext transaction,PortalLogContext context) { if(transaction==null) throw new ArgumentNullException("transaction"); Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { ok=transaction.Update(q); return ok; } finally { PortalTechnicalLog.WriteSqlTrace(context,operation,name,clock.ElapsedMilliseconds,ok); } }
+        public IzinHareketRepository() : this(new DbClass())
+        {
+        }
+
+        public IzinHareketRepository(DbClass db)
+        {
+            if (db == null)
+            {
+                throw new ArgumentNullException("db");
+            }
+
+            this.db = db;
+            queryBuilder = new CrudQueryBuilder();
+        }
+        public DataTable SelectById(int id)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM IzinHareket_Table WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectAll()
+        {
+            return db.SelectFromDb(new SqlQuery("SELECT * FROM IzinHareket_Table"), "");
+        }
+
+        public int Insert<T>(T item)
+        {
+            return db.Insert(queryBuilder.BuildInsert(item, "IzinHareket_Table"));
+        }
+
+        public bool Update<T>(T item)
+        {
+            return db.Update2Db(queryBuilder.BuildUpdate(item, "IzinHareket_Table"));
+        }
+
+        public bool Delete(int id)
+        {
+            return db.DeleteFromDb(queryBuilder.BuildDelete("IzinHareket_Table", id), "");
+        }
+
+        public DataTable SelectById(int id, PortalLogContext context)
+        {
+            return TraceSelect("IzinHareket.SelectById", () => SelectById(id), context);
+        }
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null)
+            {
+                throw new ArgumentNullException("transaction");
+            }
+
+            SqlQuery query = new SqlQuery("SELECT * FROM IzinHareket_Table WITH (UPDLOCK,HOLDLOCK) WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+
+            Stopwatch clock = Stopwatch.StartNew();
+            bool succeeded = false;
+            try
+            {
+                DataTable result = transaction.Select(query);
+                succeeded = true;
+                return result;
+            }
+            finally
+            {
+                PortalTechnicalLog.WriteSqlTrace(
+                    context,
+                    "SELECT",
+                    "IzinHareket.SelectById",
+                    clock.ElapsedMilliseconds,
+                    succeeded);
+            }
+        }
+        public DataTable SelectAll(PortalLogContext context)
+        {
+            return TraceSelect("IzinHareket.SelectAll", () => SelectAll(), context);
+        }
+
+        public int Insert<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return TraceInsert(
+                queryBuilder.BuildInsert(item, "IzinHareket_Table"),
+                transaction,
+                context);
+        }
+
+        public bool Update<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return TraceWrite(
+                queryBuilder.BuildUpdate(item, "IzinHareket_Table"),
+                "UPDATE",
+                "IzinHareket.Update",
+                transaction,
+                context);
+        }
+
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return TraceWrite(
+                queryBuilder.BuildDelete("IzinHareket_Table", id),
+                "DELETE",
+                "IzinHareket.Delete",
+                transaction,
+                context);
+        }
+
+        public DataTable SelectByTarih(DateTime tarih, PortalLogContext context)
+        {
+            return TraceSelect("IzinHareket.SelectByTarih", () => SelectByTarih(tarih), context);
+        }
+        public DataTable SelectByIzinTalepId(int id, PortalLogContext context)
+        {
+            return TraceSelect(
+                "IzinHareket.SelectByIzinTalepId",
+                () => SelectByIzinTalepId(id),
+                context);
+        }
+
+        public DataTable SelectByIzinTalepId(
+            int id,
+            SqlTransactionContext transaction,
+            PortalLogContext context)
+        {
+            if (transaction == null)
+            {
+                throw new ArgumentNullException("transaction");
+            }
+
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM IzinHareket_Table WHERE IzinTalepId=@IzinTalepId");
+            query.AddParameter("@IzinTalepId", id);
+
+            Stopwatch clock = Stopwatch.StartNew();
+            bool succeeded = false;
+            try
+            {
+                DataTable result = transaction.Select(query);
+                succeeded = true;
+                return result;
+            }
+            finally
+            {
+                PortalTechnicalLog.WriteSqlTrace(
+                    context,
+                    "SELECT",
+                    "IzinHareket.SelectByIzinTalepId",
+                    clock.ElapsedMilliseconds,
+                    succeeded);
+            }
+        }
+        public DataTable SelectByPersonelTarih(
+            int personelId,
+            DateTime baslangic,
+            DateTime bitis,
+            PortalLogContext context)
+        {
+            return TraceSelect(
+                "IzinHareket.SelectByPersonelTarih",
+                () => SelectByPersonelTarih(personelId, baslangic, bitis),
+                context);
+        }
+
+        public DataTable SelectDigerByPersonelId(int personelId, PortalLogContext context)
+        {
+            return TraceSelect(
+                "IzinHareket.SelectDigerByPersonelId",
+                () => SelectDigerByPersonelId(personelId),
+                context);
+        }
+
+        private DataTable TraceSelect(
+            string name,
+            Func<DataTable> action,
+            PortalLogContext context)
+        {
+            Stopwatch clock = Stopwatch.StartNew();
+            bool succeeded = false;
+            try
+            {
+                DataTable result = action();
+                succeeded = true;
+                return result;
+            }
+            finally
+            {
+                PortalTechnicalLog.WriteSqlTrace(
+                    context,
+                    "SELECT",
+                    name,
+                    clock.ElapsedMilliseconds,
+                    succeeded);
+            }
+        }
+
+        private static int TraceInsert(
+            SqlQuery query,
+            SqlTransactionContext transaction,
+            PortalLogContext context)
+        {
+            if (transaction == null)
+            {
+                throw new ArgumentNullException("transaction");
+            }
+
+            Stopwatch clock = Stopwatch.StartNew();
+            bool succeeded = false;
+            try
+            {
+                int id = transaction.Insert(query);
+                succeeded = id > 0;
+                return id;
+            }
+            finally
+            {
+                PortalTechnicalLog.WriteSqlTrace(
+                    context,
+                    "INSERT",
+                    "IzinHareket.Insert",
+                    clock.ElapsedMilliseconds,
+                    succeeded);
+            }
+        }
+
+        private static bool TraceWrite(
+            SqlQuery query,
+            string operation,
+            string name,
+            SqlTransactionContext transaction,
+            PortalLogContext context)
+        {
+            if (transaction == null)
+            {
+                throw new ArgumentNullException("transaction");
+            }
+
+            Stopwatch clock = Stopwatch.StartNew();
+            bool succeeded = false;
+            try
+            {
+                succeeded = transaction.Update(query);
+                return succeeded;
+            }
+            finally
+            {
+                PortalTechnicalLog.WriteSqlTrace(
+                    context,
+                    operation,
+                    name,
+                    clock.ElapsedMilliseconds,
+                    succeeded);
+            }
+        }
         public DataTable SelectByTarih(DateTime tarih) { SqlQuery q = new SqlQuery("SELECT * FROM IzinHareket_Table WHERE IzinTipi!=2 AND BitisTarihi>=@Tarih ORDER BY BaslangicTarihi"); q.AddParameter("@Tarih", tarih); return db.SelectFromDb(q, ""); }
-        public DataTable SelectByIzinTalepId(int id) { SqlQuery q = new SqlQuery("SELECT * FROM IzinHareket_Table WHERE IzinTalepId=@IzinTalepId"); q.AddParameter("@IzinTalepId", id); return db.SelectFromDb(q, ""); }
+        public DataTable SelectByIzinTalepId(int id)
+        {
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM IzinHareket_Table WHERE IzinTalepId=@IzinTalepId");
+            query.AddParameter("@IzinTalepId", id);
+            return db.SelectFromDb(query, "");
+        }
         public DataTable SelectByTarihReturnDataTable(DateTime baslangic, DateTime bitis)
         {
             SqlQuery q = new SqlQuery(@"SELECT B.Adi+' ' + B.Soyadi AdiSoyadi,A.PersonelId,A.BaslangicTarihi,A.BitisTarihi,A.Sure,A.Birim,A.IzinTipi,C.Adi IzinTanim,D.BirimId,E.KisaAdi GorevYeri
