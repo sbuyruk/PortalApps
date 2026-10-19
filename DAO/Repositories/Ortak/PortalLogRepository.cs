@@ -6,7 +6,7 @@ using Utility.Logging;
 namespace DAO.Repositories.Ortak
 {
     /// <summary>
-    /// Persistence for the new logging tables. Business audit writes use the caller's
+    /// Persistence for PortalLog_Table. Business audit writes use the caller's
     /// transaction; opening a WebPart is recorded outside a business transaction.
     /// </summary>
     public sealed class PortalLogRepository
@@ -23,17 +23,21 @@ namespace DAO.Repositories.Ortak
                 PortalLogRecord record = new PortalLogRecord(
                     PortalLogKind.UserActivity, context, "WebPartOpened", "Succeeded");
                 SqlQuery query = new SqlQuery(@"
-                    INSERT INTO PortalActivityLog_Table
-                        (OccurredUtc, Project, WebPart, UserLogin, PagePath, OperationId, EventName)
+                    INSERT INTO PortalLog_Table
+                        (OccurredUtc, Kind, Project, WebPart, UserLogin, PagePath, OperationId,
+                         EventName, Outcome)
                     VALUES
-                        (@OccurredUtc, @Project, @WebPart, @UserLogin, @PagePath, @OperationId, @EventName)");
+                        (@OccurredUtc, @Kind, @Project, @WebPart, @UserLogin, @PagePath, @OperationId,
+                         @EventName, @Outcome)");
                 query.AddParameter("@OccurredUtc", record.OccurredUtc);
+                query.AddParameter("@Kind", record.Kind.ToString());
                 query.AddParameter("@Project", context.Project);
                 query.AddParameter("@WebPart", context.WebPart);
                 query.AddParameter("@UserLogin", context.UserLogin);
                 query.AddParameter("@PagePath", context.PagePath);
                 query.AddParameter("@OperationId", context.OperationId);
                 query.AddParameter("@EventName", record.Name);
+                query.AddParameter("@Outcome", record.Outcome);
                 using (SqlConnection connection = new SqlConnection(DBProcess.getConnectString()))
                 using (SqlCommand command = new SqlCommand(query.Sql, connection))
                 {
@@ -71,19 +75,21 @@ namespace DAO.Repositories.Ortak
             PortalLogRecord record = new PortalLogRecord(
                 PortalLogKind.Audit, context, operation, "Succeeded");
             SqlQuery query = new SqlQuery(@"
-                INSERT INTO PortalAuditLog_Table
-                    (OccurredUtc, Project, WebPart, UserLogin, PagePath, OperationId,
-                     Operation, EntityName, EntityId)
+                INSERT INTO PortalLog_Table
+                    (OccurredUtc, Kind, Project, WebPart, UserLogin, PagePath, OperationId,
+                     Operation, Outcome, EntityName, EntityId)
                 VALUES
-                    (@OccurredUtc, @Project, @WebPart, @UserLogin, @PagePath, @OperationId,
-                     @Operation, @EntityName, @EntityId)");
+                    (@OccurredUtc, @Kind, @Project, @WebPart, @UserLogin, @PagePath, @OperationId,
+                     @Operation, @Outcome, @EntityName, @EntityId)");
             query.AddParameter("@OccurredUtc", record.OccurredUtc);
+            query.AddParameter("@Kind", record.Kind.ToString());
             query.AddParameter("@Project", context.Project);
             query.AddParameter("@WebPart", context.WebPart);
             query.AddParameter("@UserLogin", context.UserLogin);
             query.AddParameter("@PagePath", context.PagePath);
             query.AddParameter("@OperationId", context.OperationId);
             query.AddParameter("@Operation", operation);
+            query.AddParameter("@Outcome", record.Outcome);
             query.AddParameter("@EntityName", entityName);
             query.AddParameter("@EntityId", entityId);
 
@@ -103,9 +109,9 @@ namespace DAO.Repositories.Ortak
             ValidateLength(oldValue, 2000, "Eski değer");
             ValidateLength(newValue, 2000, "Yeni değer");
             SqlQuery query = new SqlQuery(@"
-                INSERT INTO PortalAuditChange_Table (AuditLogId, FieldName, OldValue, NewValue)
-                VALUES (@AuditLogId, @FieldName, @OldValue, @NewValue)");
-            query.AddParameter("@AuditLogId", auditLogId);
+                INSERT INTO PortalAuditChange_Table (PortalLogId, FieldName, OldValue, NewValue)
+                VALUES (@PortalLogId, @FieldName, @OldValue, @NewValue)");
+            query.AddParameter("@PortalLogId", auditLogId);
             query.AddParameter("@FieldName", fieldName);
             query.AddParameter("@OldValue", (object)oldValue ?? DBNull.Value);
             query.AddParameter("@NewValue", (object)newValue ?? DBNull.Value);

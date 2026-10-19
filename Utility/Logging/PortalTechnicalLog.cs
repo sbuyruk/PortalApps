@@ -1,14 +1,13 @@
-using Microsoft.SharePoint.Administration;
 using System;
-using System.Collections.Generic;
-using System.Web.Script.Serialization;
-using Utility.HelperClasses;
+using System.Data.SqlClient;
+using System.Web.Configuration;
 
 namespace Utility.Logging
 {
     /// <summary>
-    /// Writes technical events to SharePoint ULS. Database audit and activity sinks are added
-    /// separately so they can honor the caller's SQL transaction.
+    /// Writes technical events to the Portal Logging store. The write is intentionally
+    /// independent from the business transaction so a failed transaction can still leave
+    /// an error or SQL trace record for the monitoring WebPart.
     /// </summary>
     public static class PortalTechnicalLog
     {
@@ -19,8 +18,8 @@ namespace Utility.Logging
                 if (context == null || error == null || !PortalLogSettings.IsEnabled(context)) return;
                 PortalLogRecord record = new PortalLogRecord(PortalLogKind.Error, context, name, "Failed");
                 string detail = error.ToString();
-                Write(record, TraceSeverity.Unexpected,
-                    detail.Length > 8000 ? detail.Substring(0, 8000) : detail);
+                string technicalDetail = detail.Length > 8000 ? detail.Substring(0, 8000) : detail;
+                WriteErrorRecord(record, error, technicalDetail);
             }
             catch (Exception)
             {
@@ -37,8 +36,7 @@ namespace Utility.Logging
                 if (operation != "SELECT" && operation != "INSERT" && operation != "UPDATE" && operation != "DELETE") return;
                 PortalLogRecord record = new PortalLogRecord(PortalLogKind.SqlTrace, context,
                     queryName, succeeded ? "Succeeded" : "Failed", durationMilliseconds);
-                Write(record, succeeded ? TraceSeverity.Medium : TraceSeverity.Unexpected,
-                    "SqlOperation=" + operation);
+                WriteSqlRecord(record, operation, queryName, succeeded);
             }
             catch (Exception)
             {
@@ -46,25 +44,91 @@ namespace Utility.Logging
             }
         }
 
-        private static void Write(PortalLogRecord record, TraceSeverity severity, string detail)
+        private static void WriteErrorRecord(PortalLogRecord record, Exception error, string detail)
         {
-            Dictionary<string, object> fields = new Dictionary<string, object>
+            try
             {
-                { "OccurredUtc", record.OccurredUtc },
-                { "Kind", record.Kind.ToString() },
-                { "Project", record.Context.Project },
-                { "WebPart", record.Context.WebPart },
-                { "User", record.Context.UserLogin },
-                { "Page", record.Context.PagePath },
-                { "OperationId", record.Context.OperationId.ToString("N") },
-                { "Name", record.Name },
-                { "Outcome", record.Outcome },
-                { "Detail", detail }
-            };
-            if (record.DurationMilliseconds.HasValue)
-                fields.Add("DurationMs", record.DurationMilliseconds.Value);
+                using (SqlConnection connection = new SqlConnection(GetConnectionString()))
+                using (SqlCommand command = new SqlCommand(@"
+                    INSERT INTO PortalLog_Table
+                        (OccurredUtc, Kind, Project, WebPart, UserLogin, PagePath, OperationId,
+                         EventName, Outcome, Detail, ErrorType, ErrorLevel, TechnicalSummary,
+                         StackTrace, InnerException)
+                    VALUES
+                        (@OccurredUtc, @Kind, @Project, @WebPart, @UserLogin, @PagePath, @OperationId,
+                         @EventName, @Outcome, @Detail, @ErrorType, @ErrorLevel, @TechnicalSummary,
+                         @StackTrace, @InnerException)", connection))
+                {
+                    AddCommonParameters(command, record);
+                    command.Parameters.AddWithValue("@EventName", record.Name);
+                    command.Parameters.AddWithValue("@Outcome", record.Outcome);
+                    command.Parameters.AddWithValue("@Detail", (object)detail ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@ErrorType", error.GetType().Name);
+                    command.Parameters.AddWithValue("@ErrorLevel", "Error");
+                    command.Parameters.AddWithValue("@TechnicalSummary", (object)error.Message ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@StackTrace", (object)error.StackTrace ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@InnerException", (object)(error.InnerException == null ? null : error.InnerException.ToString()) ?? DBNull.Value);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception)
+            {
+                // Logging must not replace the original application exception.
+            }
+        }
 
-            LogHelper.WritePortalTrace(severity, new JavaScriptSerializer().Serialize(fields));
+        private static void WriteSqlRecord(PortalLogRecord record, string operation, string queryName, bool succeeded)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(GetConnectionString()))
+                using (SqlCommand command = new SqlCommand(@"
+                    INSERT INTO PortalLog_Table
+                        (OccurredUtc, Kind, Project, WebPart, UserLogin, PagePath, OperationId,
+                         EventName, Operation, Outcome, SqlOperation, RepositoryMethod, DurationMs, Detail)
+                    VALUES
+                        (@OccurredUtc, @Kind, @Project, @WebPart, @UserLogin, @PagePath, @OperationId,
+                         @EventName, @Operation, @Outcome, @SqlOperation, @RepositoryMethod, @DurationMs, @Detail)", connection))
+                {
+                    AddCommonParameters(command, record);
+                    command.Parameters.AddWithValue("@EventName", queryName);
+                    command.Parameters.AddWithValue("@Operation", operation);
+                    command.Parameters.AddWithValue("@Outcome", succeeded ? "Succeeded" : "Failed");
+                    command.Parameters.AddWithValue("@SqlOperation", operation);
+                    command.Parameters.AddWithValue("@RepositoryMethod", queryName);
+                    command.Parameters.AddWithValue("@DurationMs", record.DurationMilliseconds.HasValue ? (object)record.DurationMilliseconds.Value : DBNull.Value);
+                    command.Parameters.AddWithValue("@Detail", "SQL izi kaydedildi; sorgu metni ve parametreler kaydedilmedi.");
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception)
+            {
+                // Logging must not replace the SQL result or exception.
+            }
+        }
+
+        private static void AddCommonParameters(SqlCommand command, PortalLogRecord record)
+        {
+            command.Parameters.AddWithValue("@OccurredUtc", record.OccurredUtc);
+            command.Parameters.AddWithValue("@Kind", record.Kind.ToString());
+            command.Parameters.AddWithValue("@Project", record.Context.Project);
+            command.Parameters.AddWithValue("@WebPart", record.Context.WebPart);
+            command.Parameters.AddWithValue("@UserLogin", record.Context.UserLogin);
+            command.Parameters.AddWithValue("@PagePath", record.Context.PagePath);
+            command.Parameters.AddWithValue("@OperationId", record.Context.OperationId);
+        }
+
+        private static string GetConnectionString()
+        {
+            System.Configuration.Configuration configuration = WebConfigurationManager.OpenWebConfiguration("/");
+            System.Configuration.ConnectionStringSettings connection =
+                configuration.ConnectionStrings.ConnectionStrings["TSKGV_Connection"];
+            if (connection == null || string.IsNullOrWhiteSpace(connection.ConnectionString))
+                throw new System.Configuration.ConfigurationErrorsException(
+                    "'TSKGV_Connection' bağlantı dizesi web.config içinde bulunamadı.");
+            return connection.ConnectionString;
         }
     }
 }
