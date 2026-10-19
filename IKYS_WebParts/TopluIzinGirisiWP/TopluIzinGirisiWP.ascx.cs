@@ -305,10 +305,10 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
 
                         izinHareket.IzinDonemId = izinDonemi != null ? izinDonemi.Id : 0;
                         izinHareket.Olusturan = CurrentUserName;
-                        int id = transaction == null
+                        int izinHareketId = transaction == null
                             ? new IzinHareketService().Save(izinHareket, LoggingContext)
                             : new IzinHareketService().Save(izinHareket, transaction, LoggingContext);
-                        if (id > 0 && izinDonemiGuncellendi)
+                        if (izinHareketId > 0 && izinDonemiGuncellendi)
                         {
                             isSaved = true;
                             if (transaction != null)

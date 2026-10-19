@@ -1,3 +1,4 @@
+using DAO.Ortak;
 using Model.IKYS;
 using Model.Ortak;
 using Model.Services.IKYS;

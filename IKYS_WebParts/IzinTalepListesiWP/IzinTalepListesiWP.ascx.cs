@@ -488,9 +488,9 @@ namespace IKYS_WebParts.IzinTalepListesiWP
                             
                             IzinHareketService izinHareketService = new IzinHareketService();
                             int izinHareketId = loggingEnabled ? izinHareketService.Save(ih, transaction, LoggingContext) : izinHareketService.Save(ih);
+                             bool operationSucceeded = true;
                             if (izinHareketId > 0)
                             {
-                                bool operationSucceeded = true;
                                 if (ih.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT) 
                                 {
                                     IzinDonemService izinDonemService = new IzinDonemService();

@@ -68,6 +68,30 @@ namespace Model.Services.IKYS
             return item.Id;
         }
 
+        public int Save(
+            IzinTalep item,
+            SqlTransactionContext transaction,
+            PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            if (item == null) throw new ArgumentNullException("item");
+
+            item.OlusturmaTarihi = DateTime.Now;
+            item.Olusturan = UtilityHelper.GetCurrentUserName();
+            item.Id = repository.Insert(item, transaction, context);
+            if (item.Id <= 0) throw new InvalidOperationException("İzin talebi oluşturulamadı.");
+
+            int auditId = new PortalLogRepository().RecordAudit(
+                context,
+                "INSERT",
+                "IzinTalep",
+                item.Id.ToString(CultureInfo.InvariantCulture),
+                transaction);
+            RecordChanges(null, item, auditId, transaction);
+            return item.Id;
+        }
+
         public bool Update(IzinTalep item)
         {
             if (item == null) throw new ArgumentNullException("item");
@@ -140,6 +164,28 @@ namespace Model.Services.IKYS
                 transaction.Complete();
                 return true;
             }
+        }
+
+        public bool Delete(
+            IzinTalep item,
+            SqlTransactionContext transaction,
+            PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            if (item == null || item.Id <= 0) return false;
+
+            IzinTalep old = Map(repository.SelectById(item.Id, transaction, context));
+            if (old == null || !repository.Delete(item.Id, transaction, context)) return false;
+
+            int auditId = new PortalLogRepository().RecordAudit(
+                context,
+                "DELETE",
+                "IzinTalep",
+                item.Id.ToString(CultureInfo.InvariantCulture),
+                transaction);
+            RecordChanges(old, null, auditId, transaction);
+            return true;
         }
 
         public string GetIzinTalepleriReturnJson(int personelId, int izinTipi, bool mazeretHaric, bool sadeceGecerliDonemTalepleri)
