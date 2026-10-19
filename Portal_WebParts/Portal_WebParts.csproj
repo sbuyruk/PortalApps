@@ -158,11 +158,6 @@
     <Compile Include="LogDurumTakipWP\LogDurumTakipWP.ascx.cs">
       <DependentUpon>LogDurumTakipWP.ascx</DependentUpon>
     </Compile>
-    <Compile Include="LogDurumTakipWP\LogDurumTakipWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LogDurumTakipWP.ascx</DependentUpon>
-    </Compile>
     <Compile Include="OlayListesiWP\OlayListesiWP.ascx.cs">
       <DependentUpon>OlayListesiWP.ascx</DependentUpon>
     </Compile>
@@ -355,7 +350,6 @@
     <Content Include="LogDurumTakipWP\Elements.xml" />
     <Content Include="LogDurumTakipWP\LogDurumTakipWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>LogDurumTakipWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="OlayListesiWP\Elements.xml" />
     <Content Include="OlayListesiWP\OlayListesiWP.ascx">
