@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace Model.Services.TBYS
 {
@@ -28,6 +29,10 @@ namespace Model.Services.TBYS
         public List<SozlesmeTasinmaz> GetByTasinmazId(int id) { return ToList(repository.SelectByTasinmazId(id)); }
         public List<SozlesmeTasinmaz> GetBySozlesmeIdTasinmazId(int sozlesmeId, int tasinmazId, int bolumId) { return ToList(repository.SelectBySozlesmeIdTasinmazId(sozlesmeId, tasinmazId, bolumId)); }
         public List<SozlesmeTasinmaz> GetByBolumId(int bolumId) { return ToList(repository.SelectByBolumId(bolumId)); }
+        public List<SozlesmeTasinmaz> GetByBolumId(int bolumId, PortalLogContext context)
+        {
+            return ToList(new SozlesmeTasinmazRepository(context).SelectByBolumId(bolumId));
+        }
         public DataTable GetBySozlesmeIdReturnDataTable(int id) { return repository.SelectBySozlesmeIdReturnDataTable(id); }
         public DataTable GetBySozlesmeIdReturnList(int id) { return repository.SelectBySozlesmeIdReturnList(id); }
         public DataTable GetBySozlesmeIdReturnDT(int id) { return repository.SelectBySozlesmeIdReturnDT(id); }

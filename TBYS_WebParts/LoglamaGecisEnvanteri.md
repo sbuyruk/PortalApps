@@ -1,4 +1,30 @@
-# TBYS loglama ve mesaj dönüşümü — inceleme noktası 1
+# TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
+
+## Güncel parça: bağımsız bölüm SQL izi ve audit
+
+Dal: `codex/tbys-bagimsiz-bolum-audit`. Başlangıç commit'i: `8cf737492011691415b9836b33284615c1c2429c`. Kod değişikliğinden önce master temizdi ve GitHub master ile aynı commit'teydi. Bu parçanın çalışma zamanı sonucu kullanıcı doğrulamasını bekliyor.
+
+BagimsizBolumWP'nin okumaları ve ekleme/güncelleme/silme çağrıları LoggingContext taşır. İlgili taşınmaz ve sözleşme okumaları SQL izi üretir. TasinmazGirisiWP içindeki bağımsız bölüm okuma çağrıları da kendi WebPart bağlamıyla izlenir. Aynı HTTP isteğinin SQL, hata ve audit kayıtları ortak OperationId taşır; yönlendirme yeni istektir.
+
+Bağımsız bölüm yazması, audit başlığı ve değişen izinli alanlar aynı SqlTransactionContext içindedir. Eski kayıt ve bağlı taşınmaz aynı transaction'dan okunur. Silme kararı sırasında sözleşme bağlantısı UPDLOCK/HOLDLOCK ile tekrar kontrol edilir; bağlantı varsa kayıt silinmez. Önceden gösterilmiş sil düğmesi bu kontrolü atlayamaz. Yeni bağlantı eklemeye çalışan diğer akışların ve taşınmaz silmenin bütünü bu parçada dönüştürülmüş sayılmaz.
+
+Audit entity adı BagimsizBolum, kimlik uygulamadaki Id alanıdır. İzinli alanlar: TasinmazId, BolumNo, BBBrutAlan, BBNetAlan, KullanimAmaci, MuhasebeyeKayitliDeger, TahminiRayicDegeri, EmlakBeyanDegeri, YaklasikPiyasaDegeri. Serbest Nitelik ve Aciklama metinleri iş verisinde korunur; audit ayrıntısına alınmaz. Teknik kullanıcı/zaman alanları da ayrıntıya alınmaz. Eski/yeni değerler doğrudan veritabanı kayıtlarından karşılaştırılır; NULL sıfıra çevrilmez ve kayıttan sonra okunan gerçek sayı hassasiyeti esas alınır. Güncellemede yalnızca değişen izinli alanlar yazılır; izinli alan değişmeden yapılan UPDATE başlığının ayrıntı sayısı sıfır olabilir.
+
+Bağlamlı bağımsız bölüm yazmaları eski OlayKayit yoluna dönmez; logging kapalıysa iş transaction'ı devam eder, audit yazılmaz. Bağlamsız eski çağıranlar korunur. Bağımsız bölümde audit yazma hatası iş verisini de geri alır; teknik hata/SQL izleri ortak bağımsız yazıcı üzerinden gider. SQL izindeki Succeeded, ilgili komutun yürütülmesini gösterir; iş transaction'ının daha sonra rollback olmasını dışlamaz.
+
+Taşınmaz ve sözleşme servislerine bu parçada yalnızca ihtiyaç duyulan bağlamlı okuma overload'ları eklendi. Taşınmazın bağışçı/sigorta içeren ekleme/güncelleme/silme zinciri ile sözleşme yazmalarının audit dönüşümü sonraki parçalardır. Bu aşamada o akışlar tamamlandı kabul edilmemelidir.
+
+Kullanıcı TEST kontrolleri:
+
+1. Bağımsız bölüm ekranı açıldığında bağlı taşınmaz ve bölüm SELECT izleri doğru WebPart/metot adıyla görünmeli. Taşınmaz girişindeki bağımsız bölüm okumaları TasinmazGirisiWP bağlamını taşımalı.
+2. Bölüm ekleme/güncelleme/silmede INSERT/UPDATE/DELETE audit başlığı, doğru EntityId ve izinli alanlar kontrol edilmeli. Tek alan güncellemede yalnızca o alanın eski/yeni değeri ayrıntıya yazılmalı. Açıklama/nitelik metni ayrıntıda bulunmamalı.
+3. Sözleşmeyle bağlı bölüm silinememeli. Modal açıldıktan sonra bağlantı eklenmiş olsa bile son silme kontrolü kaydı korumalı. Bu başarısız silmede DELETE audit kaydı oluşmamalı.
+4. Geçersiz veya artık bulunmayan taşınmaza bölüm eklenmemeli. Kontrollü audit ayrıntısı yazma hatasında ana kayıt ve audit başlığı rollback olmalı; teknik Error kaydı korunmalı. Hata senaryosu teknik log tablosuna yazma yetkisini de kapatmamalı.
+5. Başarılı yönlendirme hata olarak loglanmamalı. Yeni hatalar kullanıcıya teknik ayrıntı yerine mevcut güvenli Türkçe mesajla gösterilmeli. Logging kapalı senaryoda eski log yazıcısına dönüş olmamalı.
+
+Mevcut EnabledProjects=TBYS etkinleştirmesi varsa yeni web.config değişikliği gerekmez. Tek tek etkinleştirmede mevcut değerler korunarak TBYS:BagimsizBolumWP ve ilgili okumalar için TBYS:TasinmazGirisiWP kullanılır. Yeni şema, dosya veya tanılama kodu eklenmedi; üretilmiş dosyalar değiştirilmedi. Codex build/test/debug çalıştırmadı. Statik kaynak kontrolleri ve git diff --check tamamlandı; build ve TEST kullanıcıya aittir.
+
+## İlk envanter — başlangıç durumu
 
 Tarih: 20 Ekim 2026. Başlangıç commit'i: 6e6978d2fff9a5524b5315f49a9df88fb051d045.
 Dal: codex/tbys-logging-message-migration. Değişiklik öncesi master temizdi ve GitHub master ile aynı commit'teydi.

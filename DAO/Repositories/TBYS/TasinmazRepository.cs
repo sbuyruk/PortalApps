@@ -1,13 +1,14 @@
 using DAO.Ortak;
 using System;
 using System.Data;
+using Utility.Logging;
 using System.Linq;
 
 namespace DAO.Repositories.TBYS
 {
     public class TasinmazRepository
     {
-        private readonly DbClass db;
+        private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
         public TasinmazRepository() : this(new DbClass()) { }
@@ -15,8 +16,21 @@ namespace DAO.Repositories.TBYS
         public TasinmazRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
+            this.db = new TbysSqlExecutor(db, "TasinmazRepository");
             queryBuilder = new CrudQueryBuilder();
+        }
+
+        public TasinmazRepository(PortalLogContext context)
+        {
+            db = new TbysSqlExecutor(context, "TasinmazRepository");
+            queryBuilder = new CrudQueryBuilder();
+        }
+
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM Tasinmaz_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return db.SelectFromDb(query, transaction, context);
         }
 
         public DataTable SelectById(int id)
