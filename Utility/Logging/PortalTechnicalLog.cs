@@ -17,14 +17,20 @@ namespace Utility.Logging
         {
             try
             {
-                if (context == null || error == null || !PortalLogSettings.IsEnabled(context)) return;
+                if (context == null || error == null) return;
+                if (!PortalLogSettings.IsEnabled(context))
+                {
+                    PortalLogWriteDiagnostics.Record("Hata kaydı", "Loglama ayarı etkin değil; yazma denenmedi.");
+                    return;
+                }
                 PortalLogRecord record = new PortalLogRecord(PortalLogKind.Error, context, name, "Failed");
                 string detail = error.ToString();
                 string technicalDetail = detail.Length > 8000 ? detail.Substring(0, 8000) : detail;
                 WriteErrorRecord(record, error, technicalDetail);
             }
-            catch (Exception)
+            catch (Exception loggingError)
             {
+                PortalLogWriteDiagnostics.RecordFailure("Hata kaydı hazırlığı", loggingError);
                 // Logging must not replace the original application exception.
             }
         }
@@ -34,14 +40,20 @@ namespace Utility.Logging
         {
             try
             {
-                if (context == null || !PortalLogSettings.IsEnabled(context)) return;
+                if (context == null) return;
+                if (!PortalLogSettings.IsEnabled(context))
+                {
+                    PortalLogWriteDiagnostics.Record("SQL izi (" + operation + ")", "Loglama ayarı etkin değil; yazma denenmedi.");
+                    return;
+                }
                 if (operation != "SELECT" && operation != "INSERT" && operation != "UPDATE" && operation != "DELETE") return;
                 PortalLogRecord record = new PortalLogRecord(PortalLogKind.SqlTrace, context,
                     queryName, succeeded ? "Succeeded" : "Failed", durationMilliseconds);
                 WriteSqlRecord(record, operation, queryName, succeeded);
             }
-            catch (Exception)
+            catch (Exception loggingError)
             {
+                PortalLogWriteDiagnostics.RecordFailure("SQL izi hazırlığı", loggingError);
                 // Logging must not replace the SQL result or exception.
             }
         }
@@ -77,10 +89,12 @@ namespace Utility.Logging
                         ? (object)DefaultUserMessage : DBNull.Value);
                     connection.Open();
                     command.ExecuteNonQuery();
+                    PortalLogWriteDiagnostics.Record("Hata kaydı", "Yazma komutu tamamlandı.");
                 }
             }
-            catch (Exception)
+            catch (Exception loggingError)
             {
+                PortalLogWriteDiagnostics.RecordFailure("Hata kaydı yazma", loggingError);
                 // Logging must not replace the original application exception.
             }
         }
@@ -109,10 +123,12 @@ namespace Utility.Logging
                     command.Parameters.AddWithValue("@Detail", "SQL izi kaydedildi; sorgu metni ve parametreler kaydedilmedi.");
                     connection.Open();
                     command.ExecuteNonQuery();
+                    PortalLogWriteDiagnostics.Record("SQL izi (" + operation + ") / " + queryName, "Yazma komutu tamamlandı.");
                 }
             }
-            catch (Exception)
+            catch (Exception loggingError)
             {
+                PortalLogWriteDiagnostics.RecordFailure("SQL izi (" + operation + ") / " + queryName, loggingError);
                 // Logging must not replace the SQL result or exception.
             }
         }

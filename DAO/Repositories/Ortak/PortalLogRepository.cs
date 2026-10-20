@@ -16,7 +16,11 @@ namespace DAO.Repositories.Ortak
             if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
             try
             {
-                if (!PortalLogSettings.IsEnabled(context)) return false;
+                if (!PortalLogSettings.IsEnabled(context))
+                {
+                    PortalLogWriteDiagnostics.Record("WebPartOpened", "Loglama ayarı bu bağlam için etkin değil; yazma denenmedi.");
+                    return false;
+                }
                 ValidateLength(context.Project, 64, "Proje adı");
                 ValidateLength(context.WebPart, 256, "WebPart adı");
                 ValidateLength(context.UserLogin, 256, "Kullanıcı adı");
@@ -43,11 +47,14 @@ namespace DAO.Repositories.Ortak
                 {
                     command.Parameters.AddRange(query.Parameters.ToArray());
                     connection.Open();
-                    return command.ExecuteNonQuery() == 1;
+                    int affected = command.ExecuteNonQuery();
+                    PortalLogWriteDiagnostics.Record("WebPartOpened", "Yazma komutu tamamlandı; etkilenen satır sayısı: " + affected);
+                    return affected == 1;
                 }
             }
             catch (Exception error)
             {
+                PortalLogWriteDiagnostics.RecordFailure("WebPartOpened", error);
                 PortalTechnicalLog.WriteError(context, "WebPartActivityWrite", error);
                 return false;
             }
