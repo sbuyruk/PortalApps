@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using Utility.ProjeGlobal;
 
 namespace TBYS_WebParts.KiraGeliriTahakkukTahsilWP
@@ -31,6 +32,23 @@ namespace TBYS_WebParts.KiraGeliriTahakkukTahsilWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public KiraGeliriTahakkukTahsilWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraGeliriTahakkukTahsilWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)

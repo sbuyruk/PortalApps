@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using Utility.ProjeGlobal;
 
 namespace TBYS_WebParts.EnvanterdenCikarmaWP
@@ -28,6 +29,23 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public EnvanterdenCikarmaWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.EnvanterdenCikarmaWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -178,6 +196,8 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.EnvanterdenCikarmaWP.EnvanterdenCikarmaFormunuDuzenle", exception);
                 ExceptionHelper exh = new ExceptionHelper(exception);
                 formDolduMu = false;
             }
@@ -224,8 +244,9 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.EnvanterdenCikarmaWP.RedirectToPage", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.EnvanterdenCikarmaWP.RedirectToPage", ex);
             }
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
@@ -238,8 +259,9 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.EnvanterdenCikarmaWP.CloseBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.EnvanterdenCikarmaWP.CloseBtn_Click", ex);
             }
         }
         protected void BackBtn_Click(object sender, EventArgs e)
@@ -263,8 +285,9 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.EnvanterdenCikarmaWP.EnvanterdenCikarBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.EnvanterdenCikarmaWP.EnvanterdenCikarBtn_Click", ex);
             }
         }
         protected void UpdateBtn_Click(object sender, EventArgs e)
@@ -295,9 +318,11 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.EnvanterdenCikarmaWP.UpdateBtn_Click", ex);
                 ExceptionHelper exHelper = new ExceptionHelper(ex);
                 Exception guncellemeExc = new Exception("(Envanterde olmayan) Taşınmaz Güncellenemedi1");
-                exHelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.EnvanterdenCikarmaWP.UpdateBtn_Click", exHelper.Exceptions);
             }
             finally {
                 var closePopup = "CloseModal();";
@@ -347,9 +372,10 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.EnvanterdenCikarmaWP.EnvanterdenCikarNowBtn_Click", ex);
 
-                ExceptionHelper eh= new ExceptionHelper(ex);
-                eh.PublishException();
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.EnvanterdenCikarmaWP.EnvanterdenCikarNowBtn_Click", ex);
             }
 
 

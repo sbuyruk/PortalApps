@@ -2,6 +2,7 @@ using Model.Ortak;
 using Model.TBYS;
 using System;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Web.Script.Serialization;
@@ -30,6 +31,23 @@ namespace TBYS_WebParts.TasinmazBagisWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public TasinmazBagisWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazBagisWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -64,9 +82,11 @@ namespace TBYS_WebParts.TasinmazBagisWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazBagisWP.TasinmazTabloJson", exception);
                 ExceptionHelper exceptionHelper = new ExceptionHelper();
                 exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.TasinmazBagisWP.TasinmazTabloJson", exceptionHelper.Exceptions);
             }
             return jSon;
         }
@@ -131,9 +151,11 @@ namespace TBYS_WebParts.TasinmazBagisWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazBagisWP.BagisciTabloJson", exception);
                 ExceptionHelper exceptionHelper = new ExceptionHelper();
                 exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.TasinmazBagisWP.BagisciTabloJson", exceptionHelper.Exceptions);
             }
             return jSon;
         }

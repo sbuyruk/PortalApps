@@ -5,6 +5,7 @@ using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -35,6 +36,23 @@ namespace TBYS_WebParts.TasinmazKartiWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public TasinmazKartiWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazKartiWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -180,8 +198,9 @@ namespace TBYS_WebParts.TasinmazKartiWP
             }
             catch (Exception exception)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(exception);
-                exHelper.PublishException();
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazKartiWP.Page_Load", exception);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazKartiWP.Page_Load", exception);
             }
         }
 
@@ -255,10 +274,12 @@ namespace TBYS_WebParts.TasinmazKartiWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazKartiWP.PDFGoster", exception);
                 Exception ex = new Exception("PDF Yüklenemedi");
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
                 exhelper.Exceptions.Add(ex);
-                exhelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.TasinmazKartiWP.PDFGoster", exhelper.Exceptions);
             }
         }
 
@@ -458,8 +479,10 @@ namespace TBYS_WebParts.TasinmazKartiWP
                     image.ImageUrl = dosyaVarmi ? imgUrl : newUrl + "/" + ProjeConstants.RESIMLER_BAGISCI + "/_t/bagisci_jpg.jpg"; ;
                 }
             }
-            catch (Exception)
+            catch (Exception tbysError)
             {
+                if (tbysError is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazKartiWP.BagisciBilgileriniDoldur", tbysError);
                 image.ImageUrl = dosyaVarmi ? imgUrl : newUrl + "/" + ProjeConstants.RESIMLER_BAGISCI + "/_t/bagisci_jpg.jpg"; ;
             }
 
@@ -762,8 +785,9 @@ namespace TBYS_WebParts.TasinmazKartiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazKartiWP.RedirectToPage", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazKartiWP.RedirectToPage", ex);
             }
         }
 

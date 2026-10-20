@@ -4,6 +4,7 @@ using Model.Services.Ortak;
 using Model.TBYS;
 using System;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -33,6 +34,23 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
         public VasiyetciGirisiWP()
         {
         }
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.VasiyetciGirisiWP.Page_Load", error);
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -401,8 +419,10 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.VasiyetciGirisiWP.KaydetBtn_Click", ex);
 
-                MessageHelper.PublishMessage(ex.Message, ProjeConstants.MESAJ_HATA);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.VasiyetciGirisiWP.KaydetBtn_Click", ex);
             }
 
         }
@@ -416,8 +436,9 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.VasiyetciGirisiWP.RedirectToPage", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.VasiyetciGirisiWP.RedirectToPage", ex);
             }
         }
         protected void GuncelleBtn_Click(object sender, EventArgs e)
@@ -480,8 +501,10 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.VasiyetciGirisiWP.GuncelleBtn_Click", ex);
 
-                MessageHelper.PublishMessage(ex.Message, ProjeConstants.MESAJ_HATA);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.VasiyetciGirisiWP.GuncelleBtn_Click", ex);
             }
         }
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
@@ -537,10 +560,12 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.VasiyetciGirisiWP.YukleBtn_Click", exception);
                 Exception ex = new Exception("PDF Yüklenemedi");
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
                 exhelper.Exceptions.Add(ex);
-                exhelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.VasiyetciGirisiWP.YukleBtn_Click", exhelper.Exceptions);
             }
         }
 
@@ -672,11 +697,13 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             }
             catch (Exception e1)
             {
+                if (e1 is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.VasiyetciGirisiWP.VasiyetciSilBtn_Click", e1);
                 ExceptionHelper eh = new ExceptionHelper();
                 Exception e2 = new Exception("Vasiyetçi silinemedi");
                 eh.Exceptions.Add(e2);
                 eh.Exceptions.Add(e1);
-                eh.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.VasiyetciGirisiWP.VasiyetciSilBtn_Click", eh.Exceptions);
             }
         }
         protected void VasiyetciSilNowBtn_Click(object sender, EventArgs e)
@@ -698,11 +725,13 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             }
             catch (Exception e1)
             {
+                if (e1 is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.VasiyetciGirisiWP.VasiyetciSilNowBtn_Click", e1);
                 ExceptionHelper eh = new ExceptionHelper();
                 Exception e2 = new Exception("Vasiyetci silinemedi");
                 eh.Exceptions.Add(e2);
                 eh.Exceptions.Add(e1);
-                eh.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.VasiyetciGirisiWP.VasiyetciSilNowBtn_Click", eh.Exceptions);
             }
         }
         protected void NiteligiSilNowBtn_Click(object sender, EventArgs e)
@@ -739,8 +768,9 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.VasiyetciGirisiWP.CloseBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.VasiyetciGirisiWP.CloseBtn_Click", ex);
             }
         }
 

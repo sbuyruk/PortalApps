@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using Utility.ProjeGlobal;
 
 namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
@@ -72,6 +73,23 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
                 ViewState["CurrentUserName"] = value;
             }
         }
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KirayaVerilmeyenTasinmazlarWP.Page_Load", error);
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

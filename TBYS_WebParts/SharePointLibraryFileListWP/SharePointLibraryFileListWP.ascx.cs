@@ -3,6 +3,7 @@ using Model.NBYS;
 using Model.Ortak;
 using System;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -34,6 +35,23 @@ namespace TBYS_WebParts.SharePointLibraryFileListWP
         public SharePointLibraryFileListWP()
         {
         }
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.SharePointLibraryFileListWP.Page_Load", error);
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -168,8 +186,9 @@ namespace TBYS_WebParts.SharePointLibraryFileListWP
             }
             catch (Exception e)
             {
-                ExceptionHelper eh = new ExceptionHelper(e);
-                eh.PublishException();
+                if (e is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.SharePointLibraryFileListWP.ToJSON", e);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.SharePointLibraryFileListWP.ToJSON", e);
                 throw;
             }
             return json;

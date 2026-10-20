@@ -6,6 +6,7 @@ using Model.TBYS;
 using Model.Services.TBYS;
 using System;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -39,6 +40,23 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         public TasinmazGirisiWP()
         {
         }
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazGirisiWP.Page_Load", error);
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -498,11 +516,13 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazGirisiWP.TasinmazFormunuDoldur", ex);
                 ExceptionHelper exhelper = new ExceptionHelper();
                 Exception message = new Exception("Taşınmaz ekrana getirilemedi");
                 exhelper.Exceptions.Add(message);
                 exhelper.Exceptions.Add(ex);
-                exhelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.TasinmazGirisiWP.TasinmazFormunuDoldur", exhelper.Exceptions);
                 formDolduMu = false;
             }
             return formDolduMu;
@@ -981,8 +1001,9 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazGirisiWP.DeleteBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazGirisiWP.DeleteBtn_Click", ex);
             }
             ///Tasinmazin siinmesi bir dizi konrol ile yapilabilir. Su an silme yetkisi kaldirildi SB 24.06.2021
 //            if (true)
@@ -1119,8 +1140,9 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazGirisiWP.TasinmaziSil", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazGirisiWP.TasinmaziSil", ex);
             }
         }
 
@@ -1222,8 +1244,9 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazGirisiWP.KopyalaBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazGirisiWP.KopyalaBtn_Click", ex);
             }
         }
         /// <summary>
@@ -1354,9 +1377,11 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazGirisiWP.BagimsizBolumTabloJson", exception);
                 ExceptionHelper exceptionHelper = new ExceptionHelper();
                 exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.TasinmazGirisiWP.BagimsizBolumTabloJson", exceptionHelper.Exceptions);
             }
             return jSon;
         }
@@ -1437,9 +1462,11 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazGirisiWP.SerhBeyanIrtifakTabloJson", exception);
                 ExceptionHelper exceptionHelper = new ExceptionHelper();
                 exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.TasinmazGirisiWP.SerhBeyanIrtifakTabloJson", exceptionHelper.Exceptions);
             }
             return jSon;
         }

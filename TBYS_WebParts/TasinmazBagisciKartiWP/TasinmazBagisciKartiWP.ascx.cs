@@ -4,6 +4,7 @@ using Model.TBYS;
 using Model.Services.TBYS;
 using System;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -35,6 +36,23 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
         public TasinmazBagisciKartiWP()
         {
         }
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazBagisciKartiWP.Page_Load", error);
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -540,8 +558,9 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazBagisciKartiWP.CloseBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazBagisciKartiWP.CloseBtn_Click", ex);
             }
         }
         protected void TasinmazBagisciListesiBtn_Click(object sender, EventArgs e)
@@ -560,8 +579,9 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazBagisciKartiWP.TasinmazBagisciListesiBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazBagisciKartiWP.TasinmazBagisciListesiBtn_Click", ex);
             }
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
@@ -587,8 +607,9 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazBagisciKartiWP.RedirectToPage", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazBagisciKartiWP.RedirectToPage", ex);
             }
         }
     }

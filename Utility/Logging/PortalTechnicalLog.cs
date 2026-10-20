@@ -11,6 +11,8 @@ namespace Utility.Logging
     /// </summary>
     public static class PortalTechnicalLog
     {
+        public const string DefaultUserMessage = "İşlem tamamlanamadı. Lütfen tekrar deneyiniz.";
+
         public static void WriteError(PortalLogContext context, string name, Exception error)
         {
             try
@@ -48,16 +50,16 @@ namespace Utility.Logging
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(GetConnectionString()))
+                using (SqlConnection connection = new SqlConnection(GetConnectionString(record.Context)))
                 using (SqlCommand command = new SqlCommand(@"
                     INSERT INTO PortalLog_Table
                         (OccurredUtc, Kind, Project, WebPart, UserLogin, PagePath, OperationId,
                          EventName, Outcome, Detail, ErrorType, ErrorLevel, TechnicalSummary,
-                         StackTrace, InnerException)
+                         StackTrace, InnerException, UserMessage)
                     VALUES
                         (@OccurredUtc, @Kind, @Project, @WebPart, @UserLogin, @PagePath, @OperationId,
                          @EventName, @Outcome, @Detail, @ErrorType, @ErrorLevel, @TechnicalSummary,
-                         @StackTrace, @InnerException)", connection))
+                         @StackTrace, @InnerException, @UserMessage)", connection))
                 {
                     AddCommonParameters(command, record);
                     command.Parameters.AddWithValue("@EventName", record.Name);
@@ -65,9 +67,14 @@ namespace Utility.Logging
                     command.Parameters.AddWithValue("@Detail", (object)detail ?? DBNull.Value);
                     command.Parameters.AddWithValue("@ErrorType", error.GetType().Name);
                     command.Parameters.AddWithValue("@ErrorLevel", "Error");
-                    command.Parameters.AddWithValue("@TechnicalSummary", (object)error.Message ?? DBNull.Value);
+                    string summary = error.Message;
+                    if (record.Context.Project == "TBYS" && summary != null && summary.Length > 2000)
+                        summary = summary.Substring(0, 2000);
+                    command.Parameters.AddWithValue("@TechnicalSummary", (object)summary ?? DBNull.Value);
                     command.Parameters.AddWithValue("@StackTrace", (object)error.StackTrace ?? DBNull.Value);
                     command.Parameters.AddWithValue("@InnerException", (object)(error.InnerException == null ? null : error.InnerException.ToString()) ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@UserMessage", record.Context.Project == "TBYS"
+                        ? (object)DefaultUserMessage : DBNull.Value);
                     connection.Open();
                     command.ExecuteNonQuery();
                 }
@@ -82,7 +89,7 @@ namespace Utility.Logging
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(GetConnectionString()))
+                using (SqlConnection connection = new SqlConnection(GetConnectionString(record.Context)))
                 using (SqlCommand command = new SqlCommand(@"
                     INSERT INTO PortalLog_Table
                         (OccurredUtc, Kind, Project, WebPart, UserLogin, PagePath, OperationId,
@@ -120,7 +127,7 @@ namespace Utility.Logging
             command.Parameters.AddWithValue("@OperationId", record.Context.OperationId);
         }
 
-        private static string GetConnectionString()
+        private static string GetConnectionString(PortalLogContext context)
         {
             System.Configuration.Configuration configuration = WebConfigurationManager.OpenWebConfiguration("/");
             System.Configuration.ConnectionStringSettings connection =
@@ -128,6 +135,13 @@ namespace Utility.Logging
             if (connection == null || string.IsNullOrWhiteSpace(connection.ConnectionString))
                 throw new System.Configuration.ConfigurationErrorsException(
                     "'TSKGV_Connection' bağlantı dizesi web.config içinde bulunamadı.");
+            if (context.Project == "TBYS")
+            {
+                // Technical events must survive rollback of a legacy ambient TransactionScope.
+                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connection.ConnectionString);
+                builder.Enlist = false;
+                return builder.ConnectionString;
+            }
             return connection.ConnectionString;
         }
     }

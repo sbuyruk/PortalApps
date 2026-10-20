@@ -10,6 +10,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using Utility.ProjeGlobal;
 
 namespace TBYS_WebParts.GecikmeZammiWP
@@ -33,6 +34,23 @@ namespace TBYS_WebParts.GecikmeZammiWP
         public GecikmeZammiWP()
         {
         }
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.GecikmeZammiWP.Page_Load", error);
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -149,10 +167,12 @@ namespace TBYS_WebParts.GecikmeZammiWP
                         }
 
                     }
-                    catch (Exception)
+                    catch (Exception tbysError)
                     {
+                        if (tbysError is System.Threading.ThreadAbortException) throw;
+                        TbysWebPartLog.WriteError(LoggingContext, "TBYS.GecikmeZammiWP.GecikmeZammiiTablosunuDoldur", tbysError);
 
-                        MessageHelper.PublishMessage("Gecikme Zammı Kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                        TbysWebPartLog.ReportError(LoggingContext, "TBYS.GecikmeZammiWP.GecikmeZammiiTablosunuDoldur", tbysError);
                     }
                 };
                 GuncelleCell.Controls.Add(GuncelleBtn);
@@ -185,10 +205,12 @@ namespace TBYS_WebParts.GecikmeZammiWP
                             Page.Response.Redirect(newUrl, true);
                         }
                     }
-                    catch (Exception)
+                    catch (Exception tbysError)
                     {
+                        if (tbysError is System.Threading.ThreadAbortException) throw;
+                        TbysWebPartLog.WriteError(LoggingContext, "TBYS.GecikmeZammiWP.GecikmeZammiiTablosunuDoldur", tbysError);
 
-                        MessageHelper.PublishMessage("Faiz Oranları Kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                        TbysWebPartLog.ReportError(LoggingContext, "TBYS.GecikmeZammiWP.GecikmeZammiiTablosunuDoldur", tbysError);
                     }
                 };
                 SilCell.Controls.Add(SilBtn);
@@ -213,8 +235,9 @@ namespace TBYS_WebParts.GecikmeZammiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.GecikmeZammiWP.RedirectToPage", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.GecikmeZammiWP.RedirectToPage", ex);
             }
         }
         protected void CloseBtn_Click(object sender, EventArgs e)

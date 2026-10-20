@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using Utility.ProjeGlobal;
 
 namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
@@ -30,6 +31,23 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public BorcluKiraciTakibiByBolgeWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BorcluKiraciTakibiByBolgeWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -142,8 +160,9 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exh = new ExceptionHelper(ex);
-                exh.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BorcluKiraciTakibiByBolgeWP.Page_Load", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BorcluKiraciTakibiByBolgeWP.Page_Load", ex);
             }
         }
         protected void TabloyuDoldur()
@@ -260,8 +279,10 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
                     SecilenYilQS = YilItem.Value;
                 }
             }
-            catch (Exception)
+            catch (Exception tbysError)
             {
+                if (tbysError is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BorcluKiraciTakibiByBolgeWP.SetDDLValues", tbysError);
 
                 //TODO
             }
@@ -335,8 +356,9 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BorcluKiraciTakibiByBolgeWP.ExcelBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BorcluKiraciTakibiByBolgeWP.ExcelBtn_Click", ex);
             }
             //string filename = "BorcluKiracilarRaporu" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls";
             //Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
@@ -364,8 +386,9 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BorcluKiraciTakibiByBolgeWP.RedirectToPage", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BorcluKiraciTakibiByBolgeWP.RedirectToPage", ex);
             }
         }
     }

@@ -14,6 +14,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using Utility.ProjeGlobal;
 using System.Transactions;
 
@@ -38,6 +39,23 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
         public KiraSozlesmesiWP()
         {
         }
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.Page_Load", error);
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -478,10 +496,12 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                         MessageHelper.PublishMessage("Kira Sözleşmesi Kayıt işlemi başarısız oldu.", ProjeConstants.MESAJ_HATA);
                     }
                 }
-                catch (Exception)
+                catch (Exception tbysError)
                 {
+                    if (tbysError is System.Threading.ThreadAbortException) throw;
+                    TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.UpdateKiraSozlesme", tbysError);
                     issaved = false;
-                    MessageHelper.PublishMessage(" Geçerli bir Kira Bedeli girmediniz!", ProjeConstants.MESAJ_HATA);
+                    TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.UpdateKiraSozlesme", tbysError);
                 }
 
             }
@@ -608,9 +628,10 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             }
             catch (Exception e)
             {
+                if (e is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.SozlesmeSil", e);
 
-                ExceptionHelper exhelper = new ExceptionHelper(e);
-                exhelper.PublishException();
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.SozlesmeSil", e);
             }
 
 
@@ -637,9 +658,10 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             }
             catch (Exception e)
             {
+                if (e is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.SozlesmeGuncelle", e);
                 UtilityHelper.ScriptCalistir("CloseModal();");
-                ExceptionHelper exhelper = new ExceptionHelper(e);
-                exhelper.PublishException();
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.SozlesmeGuncelle", e);
             }
             return kiraSozlesmeGuncellendi;
         }
@@ -717,10 +739,12 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                     borcuVar = odemePlani.FaizliBakiye < 0;
                 }
             }
-            catch (Exception)
+            catch (Exception tbysError)
             {
+                if (tbysError is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.BorcuVarMi", tbysError);
 
-                exHelper.PublishException();
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.BorcuVarMi", tbysError);
             }
 
             return faizliBakiye;
@@ -827,6 +851,8 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             }
             catch (Exception e)
             {
+                if (e is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.HukukiIslemleriGuncelle", e);
                 ExceptionHelper exHelper = new ExceptionHelper();
                 exHelper.Exceptions.Add(e);
                 exHelper.Exceptions.Add(new Exception("Hukuki Takip Başlatılamadı"));
@@ -853,6 +879,8 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             }
             catch (Exception e)
             {
+                if (e is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.HukukiiIslemlereEkle", e);
                 ExceptionHelper exHelper = new ExceptionHelper();
                 exHelper.Exceptions.Add(e);
                 exHelper.Exceptions.Add(new Exception("Hukuki Takip Başlatılamadı"));
@@ -950,8 +978,10 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.SozlesmeyiYenile", ex);
 
-                MessageHelper.PublishMessage("Hata" + ex.Message, ProjeConstants.MESAJ_HATA);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.SozlesmeyiYenile", ex);
             }
         }
         private decimal DevirFaizTutariHesapla(KiraSozlesme kiraSozlesme)
@@ -1385,6 +1415,8 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
             }
             catch (Exception e)
             {
+                if (e is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.HukukiIslemlereEkle", e);
                 ExceptionHelper exHelper = new ExceptionHelper();
                 exHelper.Exceptions.Add(e);
                 exHelper.Exceptions.Add(new Exception("Hukuki Takip Başlatılamadı"));
@@ -1409,8 +1441,9 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.RedirectToPage", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.RedirectToPage", ex);
             }
         }
         protected void PrevBtn_Click(object sender, EventArgs e)
@@ -1425,8 +1458,9 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.PrevBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.PrevBtn_Click", ex);
             }
 
 
@@ -1443,8 +1477,9 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.NextBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.NextBtn_Click", ex);
             }
         }
         protected void DevirAlBtn_Click(object sender, EventArgs e)
@@ -1513,8 +1548,9 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.DosyaNoDegistirNowBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.DosyaNoDegistirNowBtn_Click", ex);
             }
             finally
             {
@@ -1611,9 +1647,11 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.TabloModalJson", exception);
                 ExceptionHelper exceptionHelper = new ExceptionHelper();
                 exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.KiraSozlesmesiWP.TabloModalJson", exceptionHelper.Exceptions);
             }
             return jSon;
         }
@@ -1753,8 +1791,9 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
             }
             catch (Exception ex)
             {
-                ExceptionHelper eh = new ExceptionHelper(ex);
-                eh.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.BelgeSilBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.BelgeSilBtn_Click", ex);
             }
         }
         private void PDFKaydet(KiraSozlesme kiraSozlesme)
@@ -1789,10 +1828,12 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.PDFKaydet", exception);
                 Exception ex = new Exception("Dosya Yüklenemedi");
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
                 exhelper.Exceptions.Add(ex);
-                exhelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.KiraSozlesmesiWP.PDFKaydet", exhelper.Exceptions);
             }
         }
         private void PDFGoster(KiraSozlesme kiraSozlesme)
@@ -1831,10 +1872,12 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.PDFGoster", exception);
                 Exception ex = new Exception("PDF Yüklenemedi");
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
                 exhelper.Exceptions.Add(ex);
-                exhelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.KiraSozlesmesiWP.PDFGoster", exhelper.Exceptions);
             }
         }
         #endregion

@@ -9,6 +9,7 @@ using System.IO;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using Utility.ProjeGlobal;
 
 namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
@@ -32,6 +33,23 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
         public KiraOdemeDosyasiYuklemeWP()
         {
         }
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraOdemeDosyasiYuklemeWP.Page_Load", error);
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -70,8 +88,9 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraOdemeDosyasiYuklemeWP.Page_Load", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraOdemeDosyasiYuklemeWP.Page_Load", ex);
             }
 
         }
@@ -85,8 +104,9 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraOdemeDosyasiYuklemeWP.CloseBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraOdemeDosyasiYuklemeWP.CloseBtn_Click", ex);
             }
 
         }
@@ -98,8 +118,9 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraOdemeDosyasiYuklemeWP.KaydetBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraOdemeDosyasiYuklemeWP.KaydetBtn_Click", ex);
             }
         }
         private void Vakifbank2Save()
@@ -110,7 +131,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
                     Vakifbank2FU.Enabled = true;
-                    exceptionHelper.PublishException();
+                    TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.KiraOdemeDosyasiYuklemeWP.Vakifbank2Save", exceptionHelper.Exceptions);
                 }
                 else
                 {
@@ -330,6 +351,8 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                         }
                         catch (Exception ex)
                         {
+                            if (ex is System.Threading.ThreadAbortException) throw;
+                            TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraOdemeDosyasiYuklemeWP.SaveVakifBank2File", ex);
                             Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} ->", ProjeConstants.BANKA_VAKIF, aciklamaStr), ex);
                             exceptionHelper.Exceptions.Add(exception);
                         }
@@ -338,6 +361,8 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraOdemeDosyasiYuklemeWP.SaveVakifBank2File", ex);
                 exceptionHelper.Exceptions.Add(ex);
             }
             return exceptionHelper;
@@ -537,8 +562,9 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraOdemeDosyasiYuklemeWP.RedirectWithTarih", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraOdemeDosyasiYuklemeWP.RedirectWithTarih", ex);
             }
         }
     }

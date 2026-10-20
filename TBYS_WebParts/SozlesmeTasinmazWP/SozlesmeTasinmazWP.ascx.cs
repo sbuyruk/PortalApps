@@ -3,6 +3,7 @@ using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Web.UI;
@@ -31,6 +32,23 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public SozlesmeTasinmazWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.SozlesmeTasinmazWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)

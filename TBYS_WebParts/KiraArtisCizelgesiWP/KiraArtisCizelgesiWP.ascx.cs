@@ -12,6 +12,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using Utility.ProjeGlobal;
 namespace TBYS_WebParts.KiraArtisCizelgesiWP
 {
@@ -33,6 +34,23 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public KiraArtisCizelgesiWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraArtisCizelgesiWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -98,8 +116,9 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraArtisCizelgesiWP.Page_Load", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraArtisCizelgesiWP.Page_Load", ex);
             }
         }
         private void TabloOlustur()
@@ -121,9 +140,11 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraArtisCizelgesiWP.TabloJson", exception);
                 ExceptionHelper exceptionHelper = new ExceptionHelper();
                 exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.KiraArtisCizelgesiWP.TabloJson", exceptionHelper.Exceptions);
             }
             return jSon;
         }
@@ -226,8 +247,9 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraArtisCizelgesiWP.ExcelBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraArtisCizelgesiWP.ExcelBtn_Click", ex);
             }
         }
         protected void ExportToExcel()
@@ -260,8 +282,9 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraArtisCizelgesiWP.CloseBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraArtisCizelgesiWP.CloseBtn_Click", ex);
             }
         }
         private List<KiraArtisListItem> GetDataList()
