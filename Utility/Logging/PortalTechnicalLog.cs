@@ -100,7 +100,8 @@ namespace Utility.Logging
                 {
                     AddCommonParameters(command, record);
                     command.Parameters.AddWithValue("@EventName", queryName);
-                    command.Parameters.AddWithValue("@Operation", operation);
+                    // SELECT belongs to SqlOperation; the business Operation constraint excludes it.
+                    command.Parameters.AddWithValue("@Operation", operation == "SELECT" ? (object)DBNull.Value : operation);
                     command.Parameters.AddWithValue("@Outcome", succeeded ? "Succeeded" : "Failed");
                     command.Parameters.AddWithValue("@SqlOperation", operation);
                     command.Parameters.AddWithValue("@RepositoryMethod", queryName);
