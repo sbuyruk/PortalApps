@@ -84,7 +84,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
         private void GecikmeZammiiTablosunuDoldur()
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            GecikmeZammiService faizOranService = new GecikmeZammiService();
+            GecikmeZammiService faizOranService = new GecikmeZammiService(LoggingContext);
             List<GecikmeZammi> list = faizOranService.GetAll();
             int sira = 1;
             foreach (GecikmeZammi item in list)
@@ -140,7 +140,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
                         item.Aciklama = AciklamaTxt.Text;
                         item.Degistiren = CurrentUserName;
 
-                        GecikmeZammiService gecikmeZammiService = new GecikmeZammiService();
+                        GecikmeZammiService gecikmeZammiService = new GecikmeZammiService(LoggingContext);
                         GecikmeZammi oncekiTarihliFO = gecikmeZammiService.GetPrevious(item.BaslangicTarihi);
 
                         if (oncekiTarihliFO != null)
@@ -186,7 +186,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
                 {
                     try
                     {
-                        GecikmeZammiService gecikmeZammiService = new GecikmeZammiService();
+                        GecikmeZammiService gecikmeZammiService = new GecikmeZammiService(LoggingContext);
                         GecikmeZammi oncekiTarihliFO = gecikmeZammiService.GetPrevious(item.BaslangicTarihi);
 
                         if (oncekiTarihliFO != null)
@@ -257,7 +257,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
             yeni.Aciklama = YeniAciklamaTxt.Value;
             yeni.Olusturan = CurrentUserName;
 
-            GecikmeZammiService gecikmeZammiService = new GecikmeZammiService();
+            GecikmeZammiService gecikmeZammiService = new GecikmeZammiService(LoggingContext);
             GecikmeZammi oncekiTarihliFO = gecikmeZammiService.GetPrevious(YeniBaslangicTarihiTxt.Value.ConvertToDatetime());
             //öncekinin biti tarihini degistir
             if (oncekiTarihliFO != null)
