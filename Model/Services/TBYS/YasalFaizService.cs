@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace Model.Services.TBYS
 {
@@ -15,6 +16,7 @@ namespace Model.Services.TBYS
         private readonly YasalFaizRepository repository;
 
         public YasalFaizService() : this(new YasalFaizRepository()) { }
+        public YasalFaizService(PortalLogContext context) : this(new YasalFaizRepository(context)) { }
         public YasalFaizService(YasalFaizRepository repository)
         {
             if (repository == null) throw new ArgumentNullException("repository");

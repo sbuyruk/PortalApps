@@ -1,12 +1,13 @@
 using DAO.Ortak;
 using System;
 using System.Data;
+using Utility.Logging;
 
 namespace DAO.Repositories.TBYS
 {
     public class YasalFaizRepository
     {
-        private readonly DbClass db;
+        private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
         public YasalFaizRepository()
@@ -17,7 +18,13 @@ namespace DAO.Repositories.TBYS
         public YasalFaizRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
+            this.db = new TbysSqlExecutor(db);
+            queryBuilder = new CrudQueryBuilder();
+        }
+
+        public YasalFaizRepository(PortalLogContext context)
+        {
+            db = new TbysSqlExecutor(context, "YasalFaizRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 

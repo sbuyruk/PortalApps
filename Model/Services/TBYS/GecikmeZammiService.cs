@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace Model.Services.TBYS
 {
@@ -15,6 +16,7 @@ namespace Model.Services.TBYS
         private readonly GecikmeZammiRepository repository;
 
         public GecikmeZammiService() : this(new GecikmeZammiRepository()) { }
+        public GecikmeZammiService(PortalLogContext context) : this(new GecikmeZammiRepository(context)) { }
 
         public GecikmeZammiService(GecikmeZammiRepository repository)
         {
