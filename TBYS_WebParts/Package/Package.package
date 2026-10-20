@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="f91dc33c-f2ea-4dbb-badd-08101d6a06b0" solutionId="f91dc33c-f2ea-4dbb-badd-08101d6a06b0" resetWebServer="true" sharePointProductVersion="16.0" name="TBYS_WebParts" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
   <assemblies>
-    <customAssembly location="DAO.dll" deploymentTarget="GlobalAssemblyCache" sourcePath="..\DAO\bin\Debug\DAO.dll" />
-    <customAssembly location="Model.dll" deploymentTarget="GlobalAssemblyCache" sourcePath="..\Model\bin\Debug\Model.dll" />
+    <projectOutputAssembly location="DAO.dll" deploymentTarget="GlobalAssemblyCache" projectPath="..\DAO\DAO.csproj" />
+    <projectOutputAssembly location="Model.dll" deploymentTarget="GlobalAssemblyCache" projectPath="..\Model\Model.csproj" />
     <projectOutputAssembly location="Utility.dll" deploymentTarget="GlobalAssemblyCache" projectPath="..\Utility\Utility.csproj" />
   </assemblies>
   <features>
