@@ -3,6 +3,7 @@ using Model.Ortak;
 using Model.TBYS;
 using Model.Services.TBYS;
 using System;
+using Utility.Logging;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,6 +20,14 @@ namespace TBYS_WebParts.TeminatIslemleriWP
     [ToolboxItemAttribute(false)]
     public partial class TeminatIslemleriWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get
+            {
+                return PortalLogContext.FromCurrentRequest("TBYS", "TeminatIslemleriWP");
+            }
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of

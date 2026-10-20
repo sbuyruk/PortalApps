@@ -8,6 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
@@ -15,6 +16,14 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
     [ToolboxItemAttribute(false)]
     public partial class KiraOdemeDosyasiYuklemeWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get
+            {
+                return PortalLogContext.FromCurrentRequest("TBYS", "KiraOdemeDosyasiYuklemeWP");
+            }
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of

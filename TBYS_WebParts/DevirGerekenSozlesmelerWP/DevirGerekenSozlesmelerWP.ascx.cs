@@ -9,6 +9,7 @@ using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
@@ -16,6 +17,14 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
     [ToolboxItemAttribute(false)]
     public partial class DevirGerekenSozlesmelerWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get
+            {
+                return PortalLogContext.FromCurrentRequest("TBYS", "DevirGerekenSozlesmelerWP");
+            }
+        }
+
         public DevirGerekenSozlesmelerWP()
         {
         }
