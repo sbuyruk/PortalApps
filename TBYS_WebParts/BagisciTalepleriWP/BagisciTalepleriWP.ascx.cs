@@ -10,6 +10,7 @@ using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 
 namespace TBYS_WebParts.BagisciTalepleriWP
 {
@@ -19,10 +20,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP
         private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("TBYS", "BagisciTalepleriWP"); } }
         private void ReportError(string operation, Exception error)
         {
-            PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context)) { new ExceptionHelper(error).PublishException(); return; }
-            PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciTalepleriWP." + operation, error);
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -32,6 +30,23 @@ namespace TBYS_WebParts.BagisciTalepleriWP
         public BagisciTalepleriWP()
         {
         }
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciTalepleriWP.Page_Load", error);
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -76,8 +91,10 @@ namespace TBYS_WebParts.BagisciTalepleriWP
                     } 
                 }
             }
-            catch (Exception)
+            catch (Exception tbysError)
             {
+                if (tbysError is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciTalepleriWP.Page_Load", tbysError);
 
                 throw;
             }
@@ -168,6 +185,8 @@ namespace TBYS_WebParts.BagisciTalepleriWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciTalepleriWP.CloseBtn_Click", ex);
                 ReportError("Unhandled", ex);
             }
         }
@@ -222,6 +241,8 @@ namespace TBYS_WebParts.BagisciTalepleriWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciTalepleriWP.TalepKaydetBtn_Click", ex);
 
                 ReportError("Unhandled", ex);
             }
@@ -251,6 +272,8 @@ namespace TBYS_WebParts.BagisciTalepleriWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciTalepleriWP.TalepGuncelleBtn_Click", ex);
 
                 ReportError("Unhandled", ex);
             }
@@ -269,6 +292,8 @@ namespace TBYS_WebParts.BagisciTalepleriWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciTalepleriWP.RedirectToPage", ex);
                 ReportError("Unhandled", ex);
             }
         }

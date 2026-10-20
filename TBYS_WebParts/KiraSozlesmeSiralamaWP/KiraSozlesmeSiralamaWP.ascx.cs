@@ -9,6 +9,7 @@ using System.Web.Script.Serialization;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using Utility.ProjeGlobal;
 
 namespace TBYS_WebParts.KiraSozlesmeSiralamaWP
@@ -31,6 +32,23 @@ namespace TBYS_WebParts.KiraSozlesmeSiralamaWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public KiraSozlesmeSiralamaWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmeSiralamaWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -209,8 +227,9 @@ $('#CustomDataTable').on( 'draw.dt', function () {
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmeSiralamaWP.CloseBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmeSiralamaWP.CloseBtn_Click", ex);
             }
         }
         private class KiraSozlesmeListItem
@@ -255,9 +274,11 @@ $('#CustomDataTable').on( 'draw.dt', function () {
                 TabloOlustur();
                 MessageHelper.PublishMessage("Siralama kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
             }
-            catch (Exception)
+            catch (Exception tbysError)
             {
-                MessageHelper.PublishMessage("Siralama kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                if (tbysError is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmeSiralamaWP.KaydetNowBtn_Click", tbysError);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmeSiralamaWP.KaydetNowBtn_Click", tbysError);
             }
 
         }

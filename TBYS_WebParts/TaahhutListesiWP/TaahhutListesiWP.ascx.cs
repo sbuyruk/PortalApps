@@ -4,6 +4,7 @@ using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -36,6 +37,23 @@ namespace TBYS_WebParts.TaahhutListesiWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public TaahhutListesiWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TaahhutListesiWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -154,7 +172,9 @@ namespace TBYS_WebParts.TaahhutListesiWP
             }
             catch (Exception ex)
             {
-                MessageHelper.PublishMessage(ex.Message, ProjeConstants.MESAJ_HATA);
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TaahhutListesiWP.Page_Load", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TaahhutListesiWP.Page_Load", ex);
             }
         }
         private void RedirectToPage(string pageUrl)
@@ -167,8 +187,9 @@ namespace TBYS_WebParts.TaahhutListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TaahhutListesiWP.RedirectToPage", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TaahhutListesiWP.RedirectToPage", ex);
             }
         }
         private void TabloOlustur()
@@ -189,9 +210,11 @@ namespace TBYS_WebParts.TaahhutListesiWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TaahhutListesiWP.TabloJson", exception);
                 ExceptionHelper exceptionHelper = new ExceptionHelper();
                 exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.TaahhutListesiWP.TabloJson", exceptionHelper.Exceptions);
             }
             return jSon;
         }
@@ -394,8 +417,9 @@ namespace TBYS_WebParts.TaahhutListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TaahhutListesiWP.ExcelBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TaahhutListesiWP.ExcelBtn_Click", ex);
             }
         }
         protected void ExportToExcel()
@@ -441,8 +465,9 @@ namespace TBYS_WebParts.TaahhutListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TaahhutListesiWP.CloseBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TaahhutListesiWP.CloseBtn_Click", ex);
             }
         }
         protected void TasinmazBagisciListesiBtn_Click(object sender, EventArgs e)

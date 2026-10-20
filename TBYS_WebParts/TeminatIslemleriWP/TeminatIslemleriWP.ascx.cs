@@ -4,6 +4,7 @@ using Model.TBYS;
 using Model.Services.TBYS;
 using System;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -58,6 +59,23 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             set
             {
                 ViewState["KiraSozlesmeId"] = value;
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TeminatIslemleriWP.Page_Load", error);
             }
         }
 
@@ -169,9 +187,10 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TeminatIslemleriWP.Page_Load", exception);
 
-                ExceptionHelper exhelper = new ExceptionHelper(exception);
-                exhelper.PublishException();
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TeminatIslemleriWP.Page_Load", exception);
             }
         }
 
@@ -288,9 +307,11 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TeminatIslemleriWP.TabloJson", exception);
                 ExceptionHelper exceptionHelper = new ExceptionHelper();
                 exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.TeminatIslemleriWP.TabloJson", exceptionHelper.Exceptions);
             }
             return jSon;
         }
@@ -414,9 +435,10 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 }
                 catch (Exception exception)
                 {
+                    if (exception is System.Threading.ThreadAbortException) throw;
+                    TbysWebPartLog.WriteError(LoggingContext, "TBYS.TeminatIslemleriWP.TeminatGuncelleBtn_Click", exception);
 
-                    ExceptionHelper exhelper = new ExceptionHelper(exception);
-                    exhelper.PublishException();
+                    TbysWebPartLog.ReportError(LoggingContext, "TBYS.TeminatIslemleriWP.TeminatGuncelleBtn_Click", exception);
                 }
             }
             else
@@ -644,8 +666,9 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TeminatIslemleriWP.RedirectToPage", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TeminatIslemleriWP.RedirectToPage", ex);
             }
         }
 
@@ -715,8 +738,9 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TeminatIslemleriWP.OdemePlaninaGitBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TeminatIslemleriWP.OdemePlaninaGitBtn_Click", ex);
             }
         }
         protected void KiraciListesiBtn_Click(object sender, EventArgs e)
@@ -737,8 +761,9 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TeminatIslemleriWP.PrevBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TeminatIslemleriWP.PrevBtn_Click", ex);
             }
         }
         protected void NextBtn_Click(object sender, EventArgs e)
@@ -755,8 +780,9 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TeminatIslemleriWP.NextBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TeminatIslemleriWP.NextBtn_Click", ex);
             }
 
         }
@@ -770,8 +796,9 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TeminatIslemleriWP.CloseBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TeminatIslemleriWP.CloseBtn_Click", ex);
             }
         }
         protected void TeminatListesiBtn_Click(object sender, EventArgs e)
@@ -792,8 +819,9 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TeminatIslemleriWP.AylikOdemelerBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TeminatIslemleriWP.AylikOdemelerBtn_Click", ex);
             }
 
         }

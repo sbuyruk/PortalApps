@@ -12,6 +12,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using Utility.ProjeGlobal;
 
 namespace TBYS_WebParts.BorcluKiraciIslemleriWP
@@ -34,6 +35,23 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public BorcluKiraciIslemleriWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BorcluKiraciIslemleriWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -229,9 +247,10 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                 }
                 catch (Exception ex)
                 {
+                    if (ex is System.Threading.ThreadAbortException) throw;
+                    TbysWebPartLog.WriteError(LoggingContext, "TBYS.BorcluKiraciIslemleriWP.Page_Load", ex);
 
-                    ExceptionHelper exh = new ExceptionHelper(ex);
-                    exh.PublishException();
+                    TbysWebPartLog.ReportError(LoggingContext, "TBYS.BorcluKiraciIslemleriWP.Page_Load", ex);
 
                 }
             }
@@ -250,8 +269,10 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                 string yil = !string.IsNullOrEmpty(SecilenYilQS) ? SecilenYilQS : DateTime.Today.Year.ReturnEmptyIfNull().ToString();
                 SecilenYilQS = yil;
             }
-            catch (Exception)
+            catch (Exception tbysError)
             {
+                if (tbysError is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BorcluKiraciIslemleriWP.SetAyYilValues", tbysError);
 
                 //TODO
             }
@@ -940,6 +961,8 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BorcluKiraciIslemleriWP.TakipIslemiYapNowBtn_Click", exception);
                 ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
                 Exception exceptionInfo = new Exception("Kira Borcu Takip Islemi Yapilamadi");
                 exceptionHelper.Exceptions.Add(exceptionInfo);
@@ -974,11 +997,13 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BorcluKiraciIslemleriWP.TakipIslemiGuncelleNowBtn_Click", exception);
                 UtilityHelper.ScriptCalistir("CloseKiraBocuTakibiModal();");
                 ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
                 Exception exceptionInfo = new Exception("Kira Borcu Takip Islemi Yapilamadi");
                 exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.BorcluKiraciIslemleriWP.TakipIslemiGuncelleNowBtn_Click", exceptionHelper.Exceptions);
             }
         }
     }

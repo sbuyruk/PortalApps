@@ -2,6 +2,7 @@ using DocumentFormat.OpenXml.Packaging;
 using Microsoft.SharePoint;
 using System;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -34,6 +35,23 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
         // your constructor, it's not recommended for production purposes.
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.VasiyetciAdresListesiWP.Page_Load", error);
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -80,8 +98,9 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.VasiyetciAdresListesiWP.Page_Load", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.VasiyetciAdresListesiWP.Page_Load", ex);
             }
         }
 
@@ -184,8 +203,9 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.VasiyetciAdresListesiWP.CloseBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.VasiyetciAdresListesiWP.CloseBtn_Click", ex);
             }
         }
         private void TabloOlustur()
@@ -386,9 +406,10 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.VasiyetciAdresListesiWP.YeniAdresEtiketDosyasiOlustur", ex);
                 isYaziOlusturuldu = false;
-                ExceptionHelper exh = new ExceptionHelper(ex);
-                exh.PublishException();
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.VasiyetciAdresListesiWP.YeniAdresEtiketDosyasiOlustur", ex);
             }
             return isYaziOlusturuldu;
         }
@@ -411,9 +432,10 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.VasiyetciAdresListesiWP.AdresEtiketiBtn_Click", ex);
                 Exception ex1 = new Exception("Adres etiketleri olusturmada hata");
-                ExceptionHelper exh = new ExceptionHelper(ex);
-                exh.PublishException();
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.VasiyetciAdresListesiWP.AdresEtiketiBtn_Click", ex);
             }
         }
         protected void VefatEdenlerHaricChk_TextChanged(object sender, EventArgs e)
@@ -428,8 +450,9 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.VasiyetciAdresListesiWP.ExcelBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.VasiyetciAdresListesiWP.ExcelBtn_Click", ex);
             }
         }
         private List<AdresListItem> GetDataList()

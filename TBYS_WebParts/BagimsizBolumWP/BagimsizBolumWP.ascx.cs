@@ -10,6 +10,7 @@ using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 
 namespace TBYS_WebParts.BagimsizBolumWP
 {
@@ -19,10 +20,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
         private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("TBYS", "BagimsizBolumWP"); } }
         private void ReportError(string operation, Exception error)
         {
-            PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context)) { new ExceptionHelper(error).PublishException(); return; }
-            PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagimsizBolumWP." + operation, error);
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -31,6 +29,23 @@ namespace TBYS_WebParts.BagimsizBolumWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public BagimsizBolumWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagimsizBolumWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -256,6 +271,8 @@ namespace TBYS_WebParts.BagimsizBolumWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagimsizBolumWP.CloseBtn_Click", ex);
                 ReportError("Unhandled", ex);
             }
         }
@@ -269,6 +286,8 @@ namespace TBYS_WebParts.BagimsizBolumWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagimsizBolumWP.TasinmazaGitBtn_Click", ex);
                 ReportError("Unhandled", ex);
             }
         }

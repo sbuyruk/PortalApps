@@ -4,6 +4,7 @@ using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using System.ComponentModel;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
@@ -31,6 +32,23 @@ namespace TBYS_WebParts.TasinmazResimleriWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public TasinmazResimleriWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazResimleriWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -193,7 +211,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                 {
                     Exception ex = new Exception("Resim Kaydedilemedi.");
                     exhelper.Exceptions.Add(ex);
-                    exhelper.PublishException();
+                    TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.TasinmazResimleriWP.SaveBtn_Click", exhelper.Exceptions);
                 }
                 else
                 {
@@ -298,6 +316,8 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazResimleriWP.saveImageFiles2SP", ex);
 
                 exhelper.Exceptions.Add(ex); ;
             }
@@ -314,8 +334,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazResimleriWP.RedirectToPage", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazResimleriWP.RedirectToPage", ex);
             }
         }
 
@@ -345,8 +366,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper eh = new ExceptionHelper(ex);
-                eh.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazResimleriWP.BildirimEPostasiGonder", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazResimleriWP.BildirimEPostasiGonder", ex);
             }
         }
 
@@ -552,10 +574,12 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazResimleriWP.PDFKaydet", exception);
                 Exception ex = new Exception("Dosya Yüklenemedi");
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
                 exhelper.Exceptions.Add(ex);
-                exhelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.TasinmazResimleriWP.PDFKaydet", exhelper.Exceptions);
             }
         }
         private void PDFGoster(int tasinmazId)
@@ -679,10 +703,12 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazResimleriWP.PDFGoster", exception);
                 Exception ex = new Exception("PDF Yüklenemedi");
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
                 exhelper.Exceptions.Add(ex);
-                exhelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.TasinmazResimleriWP.PDFGoster", exhelper.Exceptions);
             }
         }
 
@@ -706,8 +732,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper eh = new ExceptionHelper(ex);
-                eh.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazResimleriWP.EmlakBeyaniSilBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazResimleriWP.EmlakBeyaniSilBtn_Click", ex);
             }
         }
         protected void YapiKayitSilBtn_Click(object sender, EventArgs e)
@@ -730,8 +757,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper eh = new ExceptionHelper(ex);
-                eh.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazResimleriWP.YapiKayitSilBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazResimleriWP.YapiKayitSilBtn_Click", ex);
             }
         }
         protected void TapuKayitSilBtn_Click(object sender, EventArgs e)
@@ -754,8 +782,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper eh = new ExceptionHelper(ex);
-                eh.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazResimleriWP.TapuKayitSilBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazResimleriWP.TapuKayitSilBtn_Click", ex);
             }
         }
         protected void ImarDurumuSilBtn_Click(object sender, EventArgs e)
@@ -778,8 +807,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper eh = new ExceptionHelper(ex);
-                eh.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazResimleriWP.ImarDurumuSilBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazResimleriWP.ImarDurumuSilBtn_Click", ex);
             }
         }
         protected void TasinmazRaporuSilBtn_Click(object sender, EventArgs e)
@@ -802,8 +832,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper eh = new ExceptionHelper(ex);
-                eh.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazResimleriWP.TasinmazRaporuSilBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazResimleriWP.TasinmazRaporuSilBtn_Click", ex);
             }
         }
         #endregion

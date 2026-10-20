@@ -10,6 +10,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using Utility.ProjeGlobal;
 
 namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
@@ -27,6 +28,23 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
 
         public DevirGerekenSozlesmelerWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.DevirGerekenSozlesmelerWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -183,8 +201,9 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.DevirGerekenSozlesmelerWP.DevirAlBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.DevirGerekenSozlesmelerWP.DevirAlBtn_Click", ex);
             }
         }
 
@@ -205,8 +224,9 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.DevirGerekenSozlesmelerWP.TumunuDevirAlNowBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.DevirGerekenSozlesmelerWP.TumunuDevirAlNowBtn_Click", ex);
             }
         }
         protected void OdemePlanlariniGuncelleBtn_Click(object sender, EventArgs e)
@@ -219,8 +239,9 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.DevirGerekenSozlesmelerWP.OdemePlanlariniGuncelleBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.DevirGerekenSozlesmelerWP.OdemePlanlariniGuncelleBtn_Click", ex);
             }
         }
         private class DevirGerekenSozlesmeItem

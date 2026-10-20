@@ -16,6 +16,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using Utility.ProjeGlobal;
 
 namespace TBYS_WebParts.KiraArtisYazisiWP
@@ -38,6 +39,23 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public KiraArtisYazisiWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraArtisYazisiWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -209,9 +227,11 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraArtisYazisiWP.TabloJson", exception);
                 ExceptionHelper exceptionHelper = new ExceptionHelper();
                 exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.KiraArtisYazisiWP.TabloJson", exceptionHelper.Exceptions);
             }
             return jSon;
         }
@@ -379,10 +399,11 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraArtisYazisiWP.YaziyiOlusturBtn_Click", ex);
                 TabloOlustur();
                 Exception ex1 = new Exception("Yazi ve Adres olusturmada hata");
-                ExceptionHelper exh = new ExceptionHelper(ex);
-                exh.PublishException();
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraArtisYazisiWP.YaziyiOlusturBtn_Click", ex);
             }
         }
         private bool YeniAdresEtiketDosyasiOlustur(string dosyaAdi)
@@ -418,9 +439,10 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraArtisYazisiWP.YeniAdresEtiketDosyasiOlustur", ex);
                 isYaziOlusturuldu = false;
-                ExceptionHelper exh = new ExceptionHelper(ex);
-                exh.PublishException();
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraArtisYazisiWP.YeniAdresEtiketDosyasiOlustur", ex);
             }
             return isYaziOlusturuldu;
         }
@@ -465,6 +487,8 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraArtisYazisiWP.YeniYaziOlustur", ex);
                 isYaziOlusturuldu = false;
                 throw;
             }

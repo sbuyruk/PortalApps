@@ -3,6 +3,7 @@ using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Web.UI;
@@ -33,6 +34,23 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         public TasinmazSigortaGirisWP()
         {
         }
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.Page_Load", error);
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -369,6 +387,8 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.SigortaFormunuDoldur", exception);
                 ExceptionHelper exh = new ExceptionHelper(exception);
                 formDolduMu = false;
             }
@@ -564,8 +584,9 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.RedirectToPage", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.RedirectToPage", ex);
             }
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
@@ -578,8 +599,9 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.CloseBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.CloseBtn_Click", ex);
             }
         }
         protected void BackBtn_Click(object sender, EventArgs e)
@@ -615,8 +637,9 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.SaveBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.SaveBtn_Click", ex);
             }
         }
         protected void UpdateBtn_Click(object sender, EventArgs e)
@@ -643,8 +666,9 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.UpdateBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.UpdateBtn_Click", ex);
             }
         }
         protected void SilBtn_Click(object sender, EventArgs e)
@@ -683,11 +707,13 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.SilNowBtn_Click", ex);
 
                 ExceptionHelper exhelper = new ExceptionHelper();
                 exhelper.Exceptions.Add(new Exception("Sigorta Silinemedi"));
                 exhelper.Exceptions.Add(ex);
-                exhelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.TasinmazSigortaGirisWP.SilNowBtn_Click", exhelper.Exceptions);
             }
 
         }
@@ -801,8 +827,9 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper eh = new ExceptionHelper(ex);
-                eh.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.BelgeSilBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.BelgeSilBtn_Click", ex);
             }
         }
         private void PDFKaydet(Sigorta sigorta)
@@ -837,10 +864,12 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.PDFKaydet", exception);
                 Exception ex = new Exception("Dosya Yüklenemedi");
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
                 exhelper.Exceptions.Add(ex);
-                exhelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.TasinmazSigortaGirisWP.PDFKaydet", exhelper.Exceptions);
             }
         }
         private void PDFGoster(Sigorta sigorta)
@@ -879,10 +908,12 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.PDFGoster", exception);
                 Exception ex = new Exception("PDF Yüklenemedi");
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
                 exhelper.Exceptions.Add(ex);
-                exhelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.TasinmazSigortaGirisWP.PDFGoster", exhelper.Exceptions);
             }
         }
         #endregion

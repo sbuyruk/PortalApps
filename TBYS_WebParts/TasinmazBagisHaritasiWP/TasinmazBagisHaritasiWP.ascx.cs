@@ -4,6 +4,7 @@ using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -34,6 +35,23 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public TasinmazBagisHaritasiWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazBagisHaritasiWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -225,9 +243,10 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazBagisHaritasiWP.SelectedIlBtn_Click", exception);
 
-                ExceptionHelper eh = new ExceptionHelper(exception);
-                eh.PublishException();
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazBagisHaritasiWP.SelectedIlBtn_Click", exception);
             }
         }
         protected void CloseBtn_Click(object sender, EventArgs e)

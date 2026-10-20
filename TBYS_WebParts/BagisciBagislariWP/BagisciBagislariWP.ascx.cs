@@ -14,6 +14,7 @@ using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 
 namespace TBYS_WebParts.BagisciBagislariWP
 {
@@ -23,10 +24,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
         private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("TBYS", "BagisciBagislariWP"); } }
         private void ReportError(string operation, Exception error)
         {
-            PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context)) { new ExceptionHelper(error).PublishException(); return; }
-            PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciBagislariWP." + operation, error);
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -35,6 +33,23 @@ namespace TBYS_WebParts.BagisciBagislariWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public BagisciBagislariWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciBagislariWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -156,6 +171,8 @@ namespace TBYS_WebParts.BagisciBagislariWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciBagislariWP.Page_Load", exception);
                 ReportError("Bagis.Tasinmaz", exception);
             }
 
@@ -336,6 +353,8 @@ namespace TBYS_WebParts.BagisciBagislariWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciBagislariWP.BagisSil", ex);
                 ReportError("Unhandled", ex);
             }
 
@@ -354,6 +373,8 @@ namespace TBYS_WebParts.BagisciBagislariWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciBagislariWP.RedirectToPage", ex);
                 ReportError("Unhandled", ex);
             }
         }
@@ -390,6 +411,8 @@ namespace TBYS_WebParts.BagisciBagislariWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciBagislariWP.CikarNowBtn_Click", exception);
                 var closePopup = "CloseModal();";
                 UtilityHelper.ScriptCalistir(closePopup);
                 ReportError("Bagis.TasinmazSil", exception);
@@ -434,6 +457,8 @@ namespace TBYS_WebParts.BagisciBagislariWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciBagislariWP.TabloModalJson", exception);
                 ReportError("Unhandled", exception);
             }
             return jSon;

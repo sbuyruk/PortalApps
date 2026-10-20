@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using Utility.ProjeGlobal;
 
 namespace TBYS_WebParts.KiraciListesiWP
@@ -34,6 +35,23 @@ namespace TBYS_WebParts.KiraciListesiWP
         public KiraciListesiWP()
         {
         }
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraciListesiWP.Page_Load", error);
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -143,8 +161,9 @@ namespace TBYS_WebParts.KiraciListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraciListesiWP.Page_Load", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraciListesiWP.Page_Load", ex);
             }
         }
         private void KiraciSecimiDDLDoldur()
@@ -187,9 +206,11 @@ namespace TBYS_WebParts.KiraciListesiWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraciListesiWP.TabloJson", exception);
                 ExceptionHelper exceptionHelper = new ExceptionHelper();
                 exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.KiraciListesiWP.TabloJson", exceptionHelper.Exceptions);
             }
             return jSon;
         }
@@ -369,8 +390,9 @@ namespace TBYS_WebParts.KiraciListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraciListesiWP.ExcelBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraciListesiWP.ExcelBtn_Click", ex);
             }
         }
         protected void ExportToExcel()
@@ -415,8 +437,9 @@ namespace TBYS_WebParts.KiraciListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraciListesiWP.CloseBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraciListesiWP.CloseBtn_Click", ex);
             }
         }
         private class KiraciListItem

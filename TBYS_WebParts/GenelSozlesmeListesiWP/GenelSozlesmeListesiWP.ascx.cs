@@ -12,6 +12,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using Utility.ProjeGlobal;
 
 namespace TBYS_WebParts.GenelSozlesmeListesiWP
@@ -34,6 +35,23 @@ namespace TBYS_WebParts.GenelSozlesmeListesiWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public GenelSozlesmeListesiWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.GenelSozlesmeListesiWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -101,8 +119,9 @@ namespace TBYS_WebParts.GenelSozlesmeListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.GenelSozlesmeListesiWP.Page_Load", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.GenelSozlesmeListesiWP.Page_Load", ex);
             }
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
@@ -113,8 +132,9 @@ namespace TBYS_WebParts.GenelSozlesmeListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.GenelSozlesmeListesiWP.ExcelBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.GenelSozlesmeListesiWP.ExcelBtn_Click", ex);
             }
         }
         protected void ExportToExcel()
@@ -160,8 +180,9 @@ namespace TBYS_WebParts.GenelSozlesmeListesiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.GenelSozlesmeListesiWP.CloseBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.GenelSozlesmeListesiWP.CloseBtn_Click", ex);
             }
         }
         
@@ -364,9 +385,11 @@ namespace TBYS_WebParts.GenelSozlesmeListesiWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.GenelSozlesmeListesiWP.TabloJson", exception);
                 ExceptionHelper exceptionHelper = new ExceptionHelper();
                 exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.GenelSozlesmeListesiWP.TabloJson", exceptionHelper.Exceptions);
             }
             return jSon;
         }

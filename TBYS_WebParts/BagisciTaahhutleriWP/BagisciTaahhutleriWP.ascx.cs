@@ -11,6 +11,7 @@ using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 
 namespace TBYS_WebParts.BagisciTaahhutleriWP
 {
@@ -20,10 +21,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
         private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("TBYS", "BagisciTaahhutleriWP"); } }
         private void ReportError(string operation, Exception error)
         {
-            PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context)) { new ExceptionHelper(error).PublishException(); return; }
-            PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciTaahhutleriWP." + operation, error);
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -32,6 +30,23 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public BagisciTaahhutleriWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciTaahhutleriWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -85,8 +100,10 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception tbysError)
             {
+                if (tbysError is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciTaahhutleriWP.Page_Load", tbysError);
 
                 throw;
             }
@@ -248,6 +265,8 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciTaahhutleriWP.CloseBtn_Click", ex);
                 ReportError("Unhandled", ex);
             }
         }
@@ -354,6 +373,8 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciTaahhutleriWP.TaahhutKaydetBtn_Click", ex);
 
                 ReportError("Unhandled", ex);
             }
@@ -400,6 +421,8 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciTaahhutleriWP.TaahhutGuncelle_Click", ex);
 
                 ReportError("Unhandled", ex);
             }
@@ -417,6 +440,8 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciTaahhutleriWP.RedirectToPage", ex);
                 ReportError("Unhandled", ex);
             }
         }
@@ -485,6 +510,8 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciTaahhutleriWP.BagisciyiTaahhutListesineEkleBtn_Click", ex);
                 ReportError("Bagis.Taahhut", ex);
             }
 

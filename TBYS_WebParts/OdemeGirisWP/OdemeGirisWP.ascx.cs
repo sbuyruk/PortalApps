@@ -2,6 +2,7 @@ using Model.Ortak;
 using Model.TBYS;
 using System;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -32,6 +33,23 @@ namespace TBYS_WebParts.OdemeGirisWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public OdemeGirisWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.OdemeGirisWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -320,9 +338,10 @@ namespace TBYS_WebParts.OdemeGirisWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.OdemeGirisWP.OdemeGirisiAc", exception);
 
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                exceptionHelper.PublishException();
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.OdemeGirisWP.OdemeGirisiAc", exception);
             }
         }
 
@@ -366,9 +385,10 @@ namespace TBYS_WebParts.OdemeGirisWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.OdemeGirisWP.OdemeDuzenleAc", exception);
 
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                exceptionHelper.PublishException();
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.OdemeGirisWP.OdemeDuzenleAc", exception);
             }
 
         }
@@ -754,8 +774,9 @@ namespace TBYS_WebParts.OdemeGirisWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.OdemeGirisWP.RedirectToPage", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.OdemeGirisWP.RedirectToPage", ex);
             }
         }
 

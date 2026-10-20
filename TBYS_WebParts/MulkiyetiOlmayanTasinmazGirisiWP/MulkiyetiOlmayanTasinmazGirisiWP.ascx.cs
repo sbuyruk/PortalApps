@@ -4,6 +4,7 @@ using Model.Services.TBYS;
 using Model.TBYS;
 using System;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Transactions;
@@ -32,6 +33,23 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public MulkiyetiOlmayanTasinmazGirisiWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.MulkiyetiOlmayanTasinmazGirisiWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -357,11 +375,13 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.MulkiyetiOlmayanTasinmazGirisiWP.TasinmazFormunuDoldur", ex);
                 ExceptionHelper exhelper = new ExceptionHelper();
                 Exception message = new Exception("Taşınmaz ekrana getirilemedi");
                 exhelper.Exceptions.Add(message);
                 exhelper.Exceptions.Add(ex);
-                exhelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.MulkiyetiOlmayanTasinmazGirisiWP.TasinmazFormunuDoldur", exhelper.Exceptions);
                 formDolduMu = false;
             }
             return formDolduMu;

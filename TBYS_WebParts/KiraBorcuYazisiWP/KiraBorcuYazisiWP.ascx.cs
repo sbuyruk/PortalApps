@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using Utility.ProjeGlobal;
 
 namespace TBYS_WebParts.KiraBorcuYazisiWP
@@ -37,6 +38,23 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
         public KiraBorcuYazisiWP()
         {
         }
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraBorcuYazisiWP.Page_Load", error);
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -250,8 +268,10 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
                 }
                 #endregion
             }
-            catch (Exception)
+            catch (Exception tbysError)
             {
+                if (tbysError is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraBorcuYazisiWP.SetDDLValues", tbysError);
 
                 //TODO
             }
@@ -392,9 +412,10 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraBorcuYazisiWP.YaziyiOlusturBtn_Click", ex);
                 Exception ex1 = new Exception("Yazi ve Adres oluşturulmada hata");
-                ExceptionHelper exh = new ExceptionHelper(ex);
-                exh.PublishException();
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraBorcuYazisiWP.YaziyiOlusturBtn_Click", ex);
             }
 
         }
@@ -431,9 +452,10 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraBorcuYazisiWP.YeniAdresEtiketDosyasiOlustur", ex);
                 isYaziOlusturuldu = false;
-                ExceptionHelper exh = new ExceptionHelper(ex);
-                exh.PublishException();
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraBorcuYazisiWP.YeniAdresEtiketDosyasiOlustur", ex);
             }
             return isYaziOlusturuldu;
         }
@@ -466,8 +488,10 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
                 DosyaLnk.Visible = true;
                 isYaziOlusturuldu = true;
             }
-            catch (Exception)
+            catch (Exception tbysError)
             {
+                if (tbysError is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraBorcuYazisiWP.YeniYaziOlustur", tbysError);
                 isYaziOlusturuldu = false;
                 throw;
             }

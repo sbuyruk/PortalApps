@@ -10,6 +10,7 @@ using System.Web.Script.Serialization;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using Utility.ProjeGlobal;
 
 namespace TBYS_WebParts.KPSSorguListesiWP
@@ -32,6 +33,23 @@ namespace TBYS_WebParts.KPSSorguListesiWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public KPSSorguListesiWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KPSSorguListesiWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -91,9 +109,11 @@ namespace TBYS_WebParts.KPSSorguListesiWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KPSSorguListesiWP.TabloJson", exception);
                 ExceptionHelper exceptionHelper = new ExceptionHelper();
                 exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.KPSSorguListesiWP.TabloJson", exceptionHelper.Exceptions);
             }
             return jSon;
         }
@@ -299,9 +319,10 @@ namespace TBYS_WebParts.KPSSorguListesiWP
                     }
                     catch (Exception ex)
                     {
+                        if (ex is System.Threading.ThreadAbortException) throw;
+                        TbysWebPartLog.WriteError(LoggingContext, "TBYS.KPSSorguListesiWP.DosyayaKaydetBtn_Click", ex);
 
-                        ExceptionHelper exh = new ExceptionHelper(ex);
-                        exh.PublishException();
+                        TbysWebPartLog.ReportError(LoggingContext, "TBYS.KPSSorguListesiWP.DosyayaKaydetBtn_Click", ex);
                     }
                 }
             }
@@ -367,9 +388,11 @@ namespace TBYS_WebParts.KPSSorguListesiWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KPSSorguListesiWP.CikarNowBtn_Click", exception);
                 ExceptionHelper exceptionHelper = new ExceptionHelper();
                 exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.KPSSorguListesiWP.CikarNowBtn_Click", exceptionHelper.Exceptions);
             }
         }
     }

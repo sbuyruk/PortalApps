@@ -3,6 +3,7 @@ using Model.TBYS;
 using Model.Services.TBYS;
 using System;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using System.ComponentModel;
 using System.Data;
 using System.Globalization;
@@ -31,6 +32,23 @@ namespace TBYS_WebParts.MevcutKiracilarWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public MevcutKiracilarWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.MevcutKiracilarWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -167,9 +185,10 @@ namespace TBYS_WebParts.MevcutKiracilarWP
             }
             catch (Exception ex)
             {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.MevcutKiracilarWP.Page_Load", ex);
 
-                ExceptionHelper exh = new ExceptionHelper(ex);
-                exh.PublishException();
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.MevcutKiracilarWP.Page_Load", ex);
 
             }
         }
@@ -298,8 +317,10 @@ namespace TBYS_WebParts.MevcutKiracilarWP
                 string yil = !string.IsNullOrEmpty(SecilenYilQS) ? SecilenYilQS : DateTime.Today.Year.ReturnEmptyIfNull().ToString();
                 SecilenYilQS = yil;
             }
-            catch (Exception)
+            catch (Exception tbysError)
             {
+                if (tbysError is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.MevcutKiracilarWP.SetAyYilValues", tbysError);
 
                 //TODO
             }

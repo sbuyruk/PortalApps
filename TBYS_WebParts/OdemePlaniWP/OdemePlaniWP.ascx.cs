@@ -2,6 +2,7 @@ using Model.Ortak;
 using Model.TBYS;
 using System;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -31,6 +32,23 @@ namespace TBYS_WebParts.OdemePlaniWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public OdemePlaniWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.OdemePlaniWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -615,8 +633,9 @@ namespace TBYS_WebParts.OdemePlaniWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.OdemePlaniWP.RedirectToPage", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.OdemePlaniWP.RedirectToPage", ex);
             }
         }
         protected void OdeBtn_Click(object sender, EventArgs e)
@@ -640,9 +659,11 @@ namespace TBYS_WebParts.OdemePlaniWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.OdemePlaniWP.OdeBtn_Click", exception);
                 ExceptionHelper exHelper = new ExceptionHelper(exception);
                 exHelper.Exceptions.Add(new Exception("Ödeme Yapılamadı."));
-                exHelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.OdemePlaniWP.OdeBtn_Click", exHelper.Exceptions);
             }
 
             //try
@@ -740,7 +761,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             //{
             //    ExceptionHelper exHelper = new ExceptionHelper(ex);
             //    exHelper.Exceptions.Add(new Exception("Ödeme Yapilamadi."));
-            //    exHelper.PublishException();
+            //    TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.OdemePlaniWP.OdeBtn_Click", exHelper.Exceptions);
             //}
         }
         private void OdemeGoruntule(KiraSozlesme kiraSozlesme, int yil, int ay, int odemePlaniId)
@@ -834,8 +855,9 @@ namespace TBYS_WebParts.OdemePlaniWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exhelper = new ExceptionHelper(ex);
-                exhelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.OdemePlaniWP.OdemePlaniSilBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.OdemePlaniWP.OdemePlaniSilBtn_Click", ex);
             }
         }
         protected void PrevBtn_Click(object sender, EventArgs e)
@@ -855,8 +877,9 @@ namespace TBYS_WebParts.OdemePlaniWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.OdemePlaniWP.PrevBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.OdemePlaniWP.PrevBtn_Click", ex);
             }
 
 
@@ -876,8 +899,9 @@ namespace TBYS_WebParts.OdemePlaniWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.OdemePlaniWP.NextBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.OdemePlaniWP.NextBtn_Click", ex);
             }
         }
         protected void KiraBedeliniDegistirBtn_Click(object sender, EventArgs e)

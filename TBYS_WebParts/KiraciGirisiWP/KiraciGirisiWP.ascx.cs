@@ -12,6 +12,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using Utility.ProjeGlobal;
 
 
@@ -35,6 +36,23 @@ namespace TBYS_WebParts.KiraciGirisiWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public KiraciGirisiWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraciGirisiWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -148,9 +166,11 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 TelefonTxt.Text = kiraci.Telefon;
                 EpostaTxt.Text = kiraci.Eposta;
             }
-            catch (Exception)
+            catch (Exception tbysError)
             {
-                MessageHelper.PublishMessage("Kiraci ekrana getirilemedi", ProjeConstants.MESAJ_HATA);
+                if (tbysError is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraciGirisiWP.FillKiraci2Form", tbysError);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraciGirisiWP.FillKiraci2Form", tbysError);
                 dataFilledToModal = false;
             }
             return dataFilledToModal;
@@ -339,9 +359,11 @@ namespace TBYS_WebParts.KiraciGirisiWP
             }
             catch (Exception exception)
             {
+                if (exception is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraciGirisiWP.TabloJson", exception);
                 ExceptionHelper exceptionHelper = new ExceptionHelper();
                 exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.KiraciGirisiWP.TabloJson", exceptionHelper.Exceptions);
             }
             return jSon;
         }
@@ -457,8 +479,9 @@ namespace TBYS_WebParts.KiraciGirisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraciGirisiWP.SaveBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraciGirisiWP.SaveBtn_Click", ex);
             }
         }
         protected void UpdateBtn_Click(object sender, EventArgs e)
@@ -738,8 +761,9 @@ namespace TBYS_WebParts.KiraciGirisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraciGirisiWP.OdemeYapBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraciGirisiWP.OdemeYapBtn_Click", ex);
             }
 
 
@@ -758,8 +782,9 @@ namespace TBYS_WebParts.KiraciGirisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraciGirisiWP.PrevBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraciGirisiWP.PrevBtn_Click", ex);
             }
         }
         protected void NextBtn_Click(object sender, EventArgs e)
@@ -776,8 +801,9 @@ namespace TBYS_WebParts.KiraciGirisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraciGirisiWP.NextBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraciGirisiWP.NextBtn_Click", ex);
             }
 
         }
@@ -791,8 +817,9 @@ namespace TBYS_WebParts.KiraciGirisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraciGirisiWP.CloseBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraciGirisiWP.CloseBtn_Click", ex);
             }
         }
         protected void BackBtn_Click(object sender, EventArgs e)
@@ -805,8 +832,9 @@ namespace TBYS_WebParts.KiraciGirisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraciGirisiWP.BackBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraciGirisiWP.BackBtn_Click", ex);
             }
         }
         private void RedirectToPage(string pageUrl)
@@ -819,8 +847,9 @@ namespace TBYS_WebParts.KiraciGirisiWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraciGirisiWP.RedirectToPage", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraciGirisiWP.RedirectToPage", ex);
             }
         }
 
@@ -901,8 +930,10 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 }
                 
             }
-            catch (Exception)
+            catch (Exception tbysError)
             {
+                if (tbysError is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraciGirisiWP.KiraciSilinebilirMi", tbysError);
 
                 throw;
             }

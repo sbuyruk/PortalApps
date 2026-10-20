@@ -2,6 +2,7 @@ using Model.Ortak;
 using Model.TBYS;
 using System;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -31,6 +32,23 @@ namespace TBYS_WebParts.YasalFaizWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public YasalFaizWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.YasalFaizWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -122,10 +140,12 @@ namespace TBYS_WebParts.YasalFaizWP
 
                 }
             }
-            catch (Exception)
+            catch (Exception tbysError)
             {
+                if (tbysError is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.YasalFaizWP.BuYilinTablosunuOlustur", tbysError);
 
-                MessageHelper.PublishMessage("Faiz oranları oluşturulamadı", ProjeConstants.MESAJ_HATA);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.YasalFaizWP.BuYilinTablosunuOlustur", tbysError);
             }
         }
         private bool BuYilinTablosuVarMi()
@@ -164,8 +184,10 @@ namespace TBYS_WebParts.YasalFaizWP
                     SecilenYilQS = YilItem.Value;
                 }
             }
-            catch (Exception)
+            catch (Exception tbysError)
             {
+                if (tbysError is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.YasalFaizWP.SetDDLValues", tbysError);
 
                 //TODO
             }
@@ -497,8 +519,9 @@ namespace TBYS_WebParts.YasalFaizWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.YasalFaizWP.RedirectToPage", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.YasalFaizWP.RedirectToPage", ex);
             }
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
@@ -543,10 +566,12 @@ namespace TBYS_WebParts.YasalFaizWP
                     new Model.Services.TBYS.YasalFaizService().Update(yasalFaiz);
                 }
             }
-            catch (Exception)
+            catch (Exception tbysError)
             {
+                if (tbysError is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.YasalFaizWP.HepsiniKaydetBtn_Click", tbysError);
 
-                MessageHelper.PublishMessage("Faiz Oranları Kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.YasalFaizWP.HepsiniKaydetBtn_Click", tbysError);
             }
         }
         protected void Kaydet1Btn_Click(object sender, EventArgs e)
@@ -697,10 +722,12 @@ namespace TBYS_WebParts.YasalFaizWP
                 }
 
             }
-            catch (Exception)
+            catch (Exception tbysError)
             {
+                if (tbysError is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.YasalFaizWP.Kaydet1Btn_Click", tbysError);
 
-                MessageHelper.PublishMessage("Faiz Oranlari Kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.YasalFaizWP.Kaydet1Btn_Click", tbysError);
             }
         }
     }

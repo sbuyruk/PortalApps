@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using Utility.ProjeGlobal;
 
 namespace TBYS_WebParts.BagisciYakinlariWP
@@ -30,6 +31,23 @@ namespace TBYS_WebParts.BagisciYakinlariWP
         public BagisciYakinlariWP()
         {
         }
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciYakinlariWP.Page_Load", error);
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -200,8 +218,9 @@ namespace TBYS_WebParts.BagisciYakinlariWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciYakinlariWP.CloseBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciYakinlariWP.CloseBtn_Click", ex);
             }
         }
         protected void BackBtn_Click(object sender, EventArgs e)
@@ -214,8 +233,9 @@ namespace TBYS_WebParts.BagisciYakinlariWP
             }
             catch (Exception ex)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciYakinlariWP.BackBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciYakinlariWP.BackBtn_Click", ex);
             }
         }
         protected void SaveBtn_Click(object sender, EventArgs e)

@@ -1,6 +1,7 @@
 using Model.TBYS;
 using System;
 using Utility.Logging;
+using TBYS_WebParts.Logging;
 using System.ComponentModel;
 using System.Data;
 using System.Globalization;
@@ -29,6 +30,23 @@ namespace TBYS_WebParts.TeminatDurumRaporuWP
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
         public TeminatDurumRaporuWP()
         {
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
+            try
+            {
+                base.OnLoad(e);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TeminatDurumRaporuWP.Page_Load", error);
+            }
         }
 
         protected override void OnInit(EventArgs e)
