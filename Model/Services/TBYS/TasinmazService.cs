@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace Model.Services.TBYS
 {
@@ -25,6 +26,10 @@ namespace Model.Services.TBYS
         public Tasinmaz GetById(int id)
         {
             return Map(repository.SelectById(id));
+        }
+        public Tasinmaz GetById(int id, PortalLogContext context)
+        {
+            return Map(new TasinmazRepository(context).SelectById(id));
         }
         public string GetAddressByBolumId(int tasinmazId, int bolumId)
         {
@@ -133,6 +138,7 @@ namespace Model.Services.TBYS
         public DataTable SelectAllEnvanterdenCikanReturnDataTable() { return GetAllOutOfInventoryReport(); }
         public DataTable SelectBolumByTasinmazId(int tasinmazId) { return GetSectionsByTasinmazId(tasinmazId); }
         public Tasinmaz Select(int id) { return GetById(id); }
+        public Tasinmaz Select(int id, PortalLogContext context) { return GetById(id, context); }
         public Tasinmaz SelectById(int id) { return GetById(id); }
         public Tasinmaz SelectEnvanterdenCikanTasinmaz(int id) { return GetOutOfInventoryById(id); }
         public List<Tasinmaz> SelectByIlAdi(string ilAdi) { return GetInventoryByIlAdi(ilAdi); }

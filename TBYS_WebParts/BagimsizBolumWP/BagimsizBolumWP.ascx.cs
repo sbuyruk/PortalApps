@@ -106,7 +106,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
         protected void Page_Load(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt(), LoggingContext);
             if (tasinmaz != null)
             {
                 BagimsizBolumTablosunuDoldur(tasinmaz);
@@ -171,7 +171,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
             //Column headers
             BagimsizBolumTableHeaders();
             BagimsizBolum bt = new BagimsizBolum();
-            List<BagimsizBolum> list = new BagimsizBolumService().GetByTasinmazId(tasinmaz.Id);
+            List<BagimsizBolum> list = new BagimsizBolumService(LoggingContext).GetByTasinmazId(tasinmaz.Id);
             int SiraNo = 1;
             foreach (BagimsizBolum bagimsizBolum in list)
             {
@@ -294,7 +294,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
         protected void BagimsizBolumBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt(), LoggingContext);
             if (tasinmaz != null)
             {
                 BagimsizBolumEkleModalAc(tasinmaz);
@@ -405,7 +405,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
         {
             bool silinebilirMi = false;
             SozlesmeTasinmaz sozlesmeTasinmaz = new SozlesmeTasinmaz();
-            List<SozlesmeTasinmaz> list = new SozlesmeTasinmazService().GetByBolumId(bagimsizBolum.Id);
+            List<SozlesmeTasinmaz> list = new SozlesmeTasinmazService().GetByBolumId(bagimsizBolum.Id, LoggingContext);
             if (list.Count < 1)
             {
                 silinebilirMi = true;
@@ -414,101 +414,126 @@ namespace TBYS_WebParts.BagimsizBolumWP
         }
         protected void KaydetBtn_Click(object sender, EventArgs e)
         {
-            BagimsizBolum bagimsizBolum = new BagimsizBolum();
-            bagimsizBolum.BolumNo = BolumNoTxt.Text;
-            bagimsizBolum.Nitelik = NitelikTxt.Text;
-            bagimsizBolum.BBBrutAlan = BBBrutAlanTxt.Text.ConvertToDecimal();
-            bagimsizBolum.BBNetAlan = BBNetAlanTxt.Text.ConvertToDecimal();
-            bagimsizBolum.KullanimAmaci=KullanimAmaciDDL.SelectedItem.Text ;
-            bagimsizBolum.Aciklama = AciklamaTxt.Text;
-            bagimsizBolum.TasinmazId = TasinmazIdQS.ConvertToInt();
-            bagimsizBolum.MuhasebeyeKayitliDeger = MuhasebeyeKayitliDegerTxt.Text.ConvertToDecimal();
-            bagimsizBolum.TahminiRayicDegeri = TahminiRayicDegeriTxt.Text.ConvertToDecimal();
-            bagimsizBolum.EmlakBeyanDegeri = EmlakBeyanDegeriTxt.Text.ConvertToDecimal();
-            bagimsizBolum.YaklasikPiyasaDegeri = YaklasikPiyasaDegeriTxt.Text.ConvertToDecimal();
-
-            int bagimsizBolumId = new BagimsizBolumService().Save(bagimsizBolum);
-            bagimsizBolum.Id = bagimsizBolumId;
-            string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            int queryIndex = newUrl.IndexOf("?");
-            if (queryIndex > 0)
-                newUrl = newUrl.Substring(0, queryIndex);
-
-            Page.Response.Redirect(newUrl + "?TasinmazId=" + TasinmazIdQS, true);
-        }
-        protected void GuncelleBtn_Click(object sender, EventArgs e)
-        {
-
-            BagimsizBolum bagimsizBolum = new BagimsizBolum();
-            bagimsizBolum = new BagimsizBolumService().GetById(ParamBagimsizBolumIdLbl.Text.ConvertToInt());
-            if (bagimsizBolum != null)
+            try
             {
+                BagimsizBolum bagimsizBolum = new BagimsizBolum();
                 bagimsizBolum.BolumNo = BolumNoTxt.Text;
                 bagimsizBolum.Nitelik = NitelikTxt.Text;
                 bagimsizBolum.BBBrutAlan = BBBrutAlanTxt.Text.ConvertToDecimal();
                 bagimsizBolum.BBNetAlan = BBNetAlanTxt.Text.ConvertToDecimal();
-                bagimsizBolum.KullanimAmaci = KullanimAmaciDDL.SelectedItem.Text;
+                bagimsizBolum.KullanimAmaci=KullanimAmaciDDL.SelectedItem.Text ;
                 bagimsizBolum.Aciklama = AciklamaTxt.Text;
                 bagimsizBolum.TasinmazId = TasinmazIdQS.ConvertToInt();
                 bagimsizBolum.MuhasebeyeKayitliDeger = MuhasebeyeKayitliDegerTxt.Text.ConvertToDecimal();
                 bagimsizBolum.TahminiRayicDegeri = TahminiRayicDegeriTxt.Text.ConvertToDecimal();
                 bagimsizBolum.EmlakBeyanDegeri = EmlakBeyanDegeriTxt.Text.ConvertToDecimal();
                 bagimsizBolum.YaklasikPiyasaDegeri = YaklasikPiyasaDegeriTxt.Text.ConvertToDecimal();
-                if (new BagimsizBolumService().Update(bagimsizBolum))
-                {
-                    Tasinmaz tasinmaz = new Tasinmaz();
-                    tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
-                    if (tasinmaz != null)
-                    {
-                        BagimsizBolumTablosunuDoldur(tasinmaz);
-                    }
-                    MessageHelper.PublishMessage("Bağımsız Bölüm güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
-                    string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                    int queryIndex = newUrl.IndexOf("?");
-                    if (queryIndex > 0)
-                        newUrl = newUrl.Substring(0, queryIndex);
 
-                    Page.Response.Redirect(newUrl + "?TasinmazId=" + TasinmazIdQS, true);
+                int bagimsizBolumId = new BagimsizBolumService(LoggingContext).Save(bagimsizBolum);
+                bagimsizBolum.Id = bagimsizBolumId;
+                string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                int queryIndex = newUrl.IndexOf("?");
+                if (queryIndex > 0)
+                    newUrl = newUrl.Substring(0, queryIndex);
+
+                Page.Response.Redirect(newUrl + "?TasinmazId=" + TasinmazIdQS, true);
+            }
+            catch (Exception error)
+            {
+                if (error is System.Threading.ThreadAbortException) throw;
+                ReportError("KaydetBtn_Click", error);
+            }
+        }
+        protected void GuncelleBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                BagimsizBolum bagimsizBolum = new BagimsizBolum();
+                bagimsizBolum = new BagimsizBolumService(LoggingContext).GetById(ParamBagimsizBolumIdLbl.Text.ConvertToInt());
+                if (bagimsizBolum != null)
+                {
+                    bagimsizBolum.BolumNo = BolumNoTxt.Text;
+                    bagimsizBolum.Nitelik = NitelikTxt.Text;
+                    bagimsizBolum.BBBrutAlan = BBBrutAlanTxt.Text.ConvertToDecimal();
+                    bagimsizBolum.BBNetAlan = BBNetAlanTxt.Text.ConvertToDecimal();
+                    bagimsizBolum.KullanimAmaci = KullanimAmaciDDL.SelectedItem.Text;
+                    bagimsizBolum.Aciklama = AciklamaTxt.Text;
+                    bagimsizBolum.TasinmazId = TasinmazIdQS.ConvertToInt();
+                    bagimsizBolum.MuhasebeyeKayitliDeger = MuhasebeyeKayitliDegerTxt.Text.ConvertToDecimal();
+                    bagimsizBolum.TahminiRayicDegeri = TahminiRayicDegeriTxt.Text.ConvertToDecimal();
+                    bagimsizBolum.EmlakBeyanDegeri = EmlakBeyanDegeriTxt.Text.ConvertToDecimal();
+                    bagimsizBolum.YaklasikPiyasaDegeri = YaklasikPiyasaDegeriTxt.Text.ConvertToDecimal();
+                    if (new BagimsizBolumService(LoggingContext).Update(bagimsizBolum))
+                    {
+                        Tasinmaz tasinmaz = new Tasinmaz();
+                        tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt(), LoggingContext);
+                        if (tasinmaz != null)
+                        {
+                            BagimsizBolumTablosunuDoldur(tasinmaz);
+                        }
+                        MessageHelper.PublishMessage("Bağımsız Bölüm güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                        int queryIndex = newUrl.IndexOf("?");
+                        if (queryIndex > 0)
+                            newUrl = newUrl.Substring(0, queryIndex);
+
+                        Page.Response.Redirect(newUrl + "?TasinmazId=" + TasinmazIdQS, true);
+                    }
+                    else
+                    {
+                        MessageHelper.PublishMessage("Bağımsız Bölüm güncellenemedi", ProjeConstants.MESAJ_HATA);
+                    }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Bağımsız Bölüm güncellenemedi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Bağımsız Bölüm bulunamadı", ProjeConstants.MESAJ_HATA);
                 }
             }
-            else
+            catch (Exception error)
             {
-                MessageHelper.PublishMessage("Bağımsız Bölüm bulunamadı", ProjeConstants.MESAJ_HATA);
+                if (error is System.Threading.ThreadAbortException) throw;
+                ReportError("GuncelleBtn_Click", error);
             }
-
         }
         protected void SilBtn_Click(object sender, EventArgs e)
         {
-
-            BagimsizBolum bagimsizBolum = new BagimsizBolum();
-            bagimsizBolum = new BagimsizBolumService().GetById(ParamBagimsizBolumIdLbl.Text.ConvertToInt());
-            if (bagimsizBolum != null)
+            try
             {
-                if (new BagimsizBolumService().Delete(bagimsizBolum))
+                BagimsizBolum bagimsizBolum = new BagimsizBolum();
+                bagimsizBolum = new BagimsizBolumService(LoggingContext).GetById(ParamBagimsizBolumIdLbl.Text.ConvertToInt());
+                if (bagimsizBolum != null)
                 {
-                    Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
-                    if (tasinmaz != null)
+                    if (new BagimsizBolumService(LoggingContext).Delete(bagimsizBolum))
                     {
-                        BagimsizBolumTablosunuDoldur(tasinmaz);
+                        Tasinmaz tasinmaz = new Tasinmaz();
+                tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt(), LoggingContext);
+                        if (tasinmaz != null)
+                        {
+                            BagimsizBolumTablosunuDoldur(tasinmaz);
+                        }
+                        MessageHelper.PublishMessage("Bağımsız Bölüm silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                        int queryIndex = newUrl.IndexOf("?");
+                        if (queryIndex > 0)
+                            newUrl = newUrl.Substring(0, queryIndex);
+
+                        Page.Response.Redirect(newUrl + "?TasinmazId=" + TasinmazIdQS, true);
                     }
-                    MessageHelper.PublishMessage("Bağımsız Bölüm silindi", ProjeConstants.MESAJ_BASARILI, 2000);
-                    string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                    int queryIndex = newUrl.IndexOf("?");
-                    if (queryIndex > 0)
-                        newUrl = newUrl.Substring(0, queryIndex);
+                    else
+                    {
+                        MessageHelper.PublishMessage("Bağımsız bölüm silinemedi. Sözleşme bağlantılarını kontrol ediniz.", ProjeConstants.MESAJ_HATA);
+                    }
 
-                    Page.Response.Redirect(newUrl + "?TasinmazId=" + TasinmazIdQS, true);
                 }
-
+                else
+                {
+                    MessageHelper.PublishMessage("Bağımsız Bölüm silinemedi", ProjeConstants.MESAJ_HATA);
+                }
             }
-            else
+            catch (Exception error)
             {
-                MessageHelper.PublishMessage("Bağımsız Bölüm silinemedi", ProjeConstants.MESAJ_HATA);
+                if (error is System.Threading.ThreadAbortException) throw;
+                ReportError("SilBtn_Click", error);
             }
         }
     }
