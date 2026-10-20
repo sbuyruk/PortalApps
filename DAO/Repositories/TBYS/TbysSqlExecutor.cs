@@ -19,10 +19,11 @@ namespace DAO.Repositories.TBYS
         private readonly PortalLogContext context;
         private readonly string repositoryName;
 
-        internal TbysSqlExecutor(DbClass legacy)
+        internal TbysSqlExecutor(DbClass legacy, string repositoryName)
         {
             if (legacy == null) throw new ArgumentNullException("legacy", "Veritabanı erişimi gereklidir.");
             this.legacy = legacy;
+            this.repositoryName = repositoryName;
         }
 
         internal TbysSqlExecutor(PortalLogContext context, string repositoryName)
@@ -94,7 +95,48 @@ namespace DAO.Repositories.TBYS
             }
         }
 
+        internal DataTable SelectFromDb(SqlQuery query, SqlTransactionContext transaction,
+            PortalLogContext logContext, [CallerMemberName] string method = "")
+        {
+            ValidateTransaction(transaction, logContext);
+            return Trace(logContext, "SELECT", method, () => transaction.Select(query), result => true);
+        }
+
+        internal int Insert(SqlQuery query, SqlTransactionContext transaction,
+            PortalLogContext logContext, [CallerMemberName] string method = "")
+        {
+            ValidateTransaction(transaction, logContext);
+            return Trace(logContext, "INSERT", method, () => transaction.Insert(query), result => result > 0);
+        }
+
+        internal bool Update2Db(SqlQuery query, SqlTransactionContext transaction,
+            PortalLogContext logContext, [CallerMemberName] string method = "")
+        {
+            ValidateTransaction(transaction, logContext);
+            return Trace(logContext, "UPDATE", method, () => transaction.Update(query), result => result);
+        }
+
+        internal bool DeleteFromDb(SqlQuery query, SqlTransactionContext transaction,
+            PortalLogContext logContext, [CallerMemberName] string method = "")
+        {
+            ValidateTransaction(transaction, logContext);
+            return Trace(logContext, "DELETE", method, () => transaction.Update(query), result => result);
+        }
+
+        private static void ValidateTransaction(SqlTransactionContext transaction, PortalLogContext logContext)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction", "Veritabanı işlem bağlamı gereklidir.");
+            if (logContext == null) throw new ArgumentNullException("logContext", "Log bağlamı gereklidir.");
+            if (logContext.Project != "TBYS") throw new ArgumentException("TBYS log bağlamı gereklidir.", "logContext");
+        }
+
         private T Trace<T>(string operation, string method, Func<T> execute, Predicate<T> isSuccessful)
+        {
+            return Trace(context, operation, method, execute, isSuccessful);
+        }
+
+        private T Trace<T>(PortalLogContext logContext, string operation, string method,
+            Func<T> execute, Predicate<T> isSuccessful)
         {
             Stopwatch clock = Stopwatch.StartNew();
             bool succeeded = false;
@@ -108,7 +150,7 @@ namespace DAO.Repositories.TBYS
             {
                 clock.Stop();
                 // Only the static repository/method names are passed, never SQL or parameter values.
-                PortalTechnicalLog.WriteSqlTrace(context, operation, repositoryName + "." + method,
+                PortalTechnicalLog.WriteSqlTrace(logContext, operation, repositoryName + "." + method,
                     clock.ElapsedMilliseconds, succeeded);
             }
         }

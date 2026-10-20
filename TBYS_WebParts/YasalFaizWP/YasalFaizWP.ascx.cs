@@ -116,29 +116,9 @@ namespace TBYS_WebParts.YasalFaizWP
         {
             try
             {
-                IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
                 int yil = YilDDL.SelectedItem.Value.ConvertToInt();
                 if (yil > 0)
-                {
-                    YasalFaiz yasalFaizDbo = new YasalFaiz();
-                    decimal sonFaizOrani = new Model.Services.TBYS.YasalFaizService(LoggingContext).GetLatestRate();
-                    decimal sonTufe = new Model.Services.TBYS.YasalFaizService(LoggingContext).GetLatestTufe();
-                    decimal sonUfe = new Model.Services.TBYS.YasalFaizService(LoggingContext).GetLatestUfe();
-                    for (int i = 1; i < 13; i++)
-                    {
-                        YasalFaiz yasalFaiz = new YasalFaiz();
-                        yasalFaiz.Ay = i;
-                        DateTime tarih = new DateTime(yil, yasalFaiz.Ay, 1);
-                        yasalFaiz.AyAdi = tarih.ToString("MMMM", culturInfo);
-                        yasalFaiz.Yil = yil;
-                        yasalFaiz.FaizOrani = sonFaizOrani;// FaizOraniTxt.Text.ConvertToDecimal();
-                        yasalFaiz.Tufe = sonTufe;// TufeTxt.Text.ConvertToDecimal();
-                        yasalFaiz.Ufe = sonUfe;// UfeTxt.Text.ConvertToDecimal();
-                        yasalFaiz.Aciklama = "";// yil + " yili " + yasalFaiz.AyAdi + " faiz orani";
-                        new Model.Services.TBYS.YasalFaizService(LoggingContext).Save(yasalFaiz);
-                    }
-
-                }
+                    new Model.Services.TBYS.YasalFaizService(LoggingContext).CreateYear(yil);
             }
             catch (Exception tbysError)
             {
@@ -540,195 +520,52 @@ namespace TBYS_WebParts.YasalFaizWP
 
         protected void HepsiniKaydetBtn_Click(object sender, EventArgs e)
         {
-
             try
             {
-
-                for (int i = 1; i < 13; i++)
-                {
-                    string ay = AyrintiTable.Rows[i].Cells[0].Text;
-                    string yil = AyrintiTable.Rows[i].Cells[2].Text;
-                    string faizOraniTxtStr = "FaizOrani" + i + "Txt";
-                    string tufeTxtStr = "Tufe" + i + "Txt";
-                    string ufeTxtStr = "Ufe" + i + "Txt";
-                    string faizOranix = ((TextBox)this.FindControl(faizOraniTxtStr)).Text;
-                    string tufex = ((TextBox)this.FindControl(tufeTxtStr)).Text;
-                    string ufex = ((TextBox)this.FindControl(ufeTxtStr)).Text;
-                    string aciklamaTxtStr = "Aciklama" + i + "Txt";
-                    string aciklama = ((TextBox)this.FindControl(aciklamaTxtStr)).Text;
-                    YasalFaiz yasalFaiz = new YasalFaiz();
-                    yasalFaiz = new Model.Services.TBYS.YasalFaizService(LoggingContext).GetByYearMonth(yil.ConvertToInt(), ay.ConvertToInt());
-                    yasalFaiz.FaizOrani = faizOranix.ConvertToDecimal();
-                    yasalFaiz.Tufe = tufex.ConvertToDecimal();
-                    yasalFaiz.Ufe = ufex.ConvertToDecimal();
-                    yasalFaiz.Degistiren = CurrentUserName;
-                    yasalFaiz.Aciklama = aciklama;
-                    new Model.Services.TBYS.YasalFaizService(LoggingContext).Update(yasalFaiz);
-                }
+                List<YasalFaiz> edits = new List<YasalFaiz>();
+                for (int month = 1; month <= 12; month++) edits.Add(ReadMonthValues(month));
+                new Model.Services.TBYS.YasalFaizService(LoggingContext).UpdateMonths(edits);
+                MessageHelper.PublishMessage("Kayıtlar güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
             }
-            catch (Exception tbysError)
+            catch (Exception error)
             {
-                if (tbysError is System.Threading.ThreadAbortException) throw;
-                TbysWebPartLog.WriteError(LoggingContext, "TBYS.YasalFaizWP.HepsiniKaydetBtn_Click", tbysError);
-
-                TbysWebPartLog.ReportError(LoggingContext, "TBYS.YasalFaizWP.HepsiniKaydetBtn_Click", tbysError);
+                if (error is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.YasalFaizWP.HepsiniKaydetBtn_Click", error);
             }
         }
+
         protected void Kaydet1Btn_Click(object sender, EventArgs e)
         {
-            int button = 0;
-
-            YasalFaiz yasalFaizDbo = new YasalFaiz();
-            decimal sonFaizOrani = new Model.Services.TBYS.YasalFaizService(LoggingContext).GetLatestRate();
-            decimal sonTufe = new Model.Services.TBYS.YasalFaizService(LoggingContext).GetLatestTufe();
-            decimal sonUfe = new Model.Services.TBYS.YasalFaizService(LoggingContext).GetLatestUfe();
-
-            string faizOrani = sonFaizOrani.ToString();
-            string tufe = sonTufe.ToString();
-            string ufe = sonUfe.ToString();
-
-            LinkButton senderBtn = sender as LinkButton;
-            switch (senderBtn.ID.ToString())
-            {
-                case "Kaydet1Btn":
-                    button = 1;
-                    faizOrani = FaizOrani1Txt.Text;
-                    tufe = Tufe1Txt.Text;
-                    ufe = Ufe1Txt.Text;
-                    break;
-                case "Kaydet2Btn":
-                    button = 2;
-                    faizOrani = FaizOrani2Txt.Text;
-                    tufe = Tufe2Txt.Text;
-                    ufe = Ufe2Txt.Text;
-                    break;
-                case "Kaydet3Btn":
-                    button = 3;
-                    faizOrani = FaizOrani3Txt.Text;
-                    tufe = Tufe3Txt.Text;
-                    ufe = Ufe3Txt.Text;
-                    break;
-                case "Kaydet4Btn":
-                    button = 4;
-                    faizOrani = FaizOrani4Txt.Text;
-                    tufe = Tufe4Txt.Text;
-                    ufe = Ufe4Txt.Text;
-                    break;
-                case "Kaydet5Btn":
-                    button = 5;
-                    faizOrani = FaizOrani5Txt.Text;
-                    tufe = Tufe5Txt.Text;
-                    ufe = Ufe5Txt.Text;
-                    break;
-                case "Kaydet6Btn":
-                    button = 6;
-                    faizOrani = FaizOrani6Txt.Text;
-                    tufe = Tufe6Txt.Text;
-                    ufe = Ufe6Txt.Text;
-                    break;
-                case "Kaydet7Btn":
-                    button = 7;
-                    faizOrani = FaizOrani7Txt.Text;
-                    tufe = Tufe7Txt.Text;
-                    ufe = Ufe7Txt.Text;
-                    break;
-                case "Kaydet8Btn":
-                    button = 8;
-                    faizOrani = FaizOrani8Txt.Text;
-                    tufe = Tufe8Txt.Text;
-                    ufe = Ufe8Txt.Text;
-                    break;
-                case "Kaydet9Btn":
-                    button = 9;
-                    faizOrani = FaizOrani9Txt.Text;
-                    tufe = Tufe9Txt.Text;
-                    ufe = Ufe9Txt.Text;
-                    break;
-                case "Kaydet10Btn":
-                    button = 10;
-                    faizOrani = FaizOrani10Txt.Text;
-                    tufe = Tufe10Txt.Text;
-                    ufe = Ufe10Txt.Text;
-                    break;
-                case "Kaydet11Btn":
-                    button = 11;
-                    faizOrani = FaizOrani11Txt.Text;
-                    tufe = Tufe11Txt.Text;
-                    ufe = Ufe11Txt.Text;
-                    break;
-                case "Kaydet12Btn":
-                    button = 12;
-                    faizOrani = FaizOrani12Txt.Text;
-                    tufe = Tufe12Txt.Text;
-                    ufe = Ufe12Txt.Text;
-                    break;
-            }
-
             try
             {
-                bool kaydedildi = false;
-                if (button == 0)
-                {
-                    for (int i = 1; i < 13; i++)
-                    {
-                        string ay = AyrintiTable.Rows[i].Cells[0].Text;
-                        string yil = AyrintiTable.Rows[i].Cells[2].Text;
-                        //string faizOrani = AyrintiTable.Rows[i].Cells[3].Text;
-                        string faizOraniTxtStr = "FaizOrani" + i + "Txt";
-                        string tufeTxtStr = "Tufe" + i + "Txt";
-                        string ufeTxtStr = "Ufe" + i + "Txt";
-                        string faizOranix = ((TextBox)this.FindControl(faizOraniTxtStr)).Text;
-                        string tufex = ((TextBox)this.FindControl(faizOraniTxtStr)).Text;
-                        string ufex = ((TextBox)this.FindControl(faizOraniTxtStr)).Text;
-
-
-                        string aciklamaTxtStr = "Açıklama" + i + "Txt";
-                        string aciklama = ((TextBox)this.FindControl(aciklamaTxtStr)).Text;
-                        YasalFaiz yasalFaiz = new YasalFaiz();
-                        yasalFaiz = new Model.Services.TBYS.YasalFaizService(LoggingContext).GetByYearMonth(yil.ConvertToInt(), ay.ConvertToInt());
-                        yasalFaiz.FaizOrani = faizOranix.ConvertToDecimal();
-                        yasalFaiz.Tufe = tufex.ConvertToDecimal();
-                        yasalFaiz.Ufe = ufex.ConvertToDecimal();
-                        yasalFaiz.Degistiren = CurrentUserName;
-                        yasalFaiz.Aciklama = aciklama;
-                        new Model.Services.TBYS.YasalFaizService(LoggingContext).Update(yasalFaiz);
-                    }
-                }
-                else
-                {
-                    string ay = AyrintiTable.Rows[button].Cells[0].Text;
-                    string yil = AyrintiTable.Rows[button].Cells[2].Text;
-                    //string faizOrani = AyrintiTable.Rows[i].Cells[3].Text;
-                    string faizOraniTxtStr = "FaizOrani" + button + "Txt";
-                    string tufeTxtStr = "Tufe" + button + "Txt";
-                    string ufeTxtStr = "Ufe" + button + "Txt";
-
-                    string aciklamaTxtStr = "Aciklama" + button + "Txt";
-                    string aciklama = ((TextBox)this.FindControl(aciklamaTxtStr)).Text;
-
-                    //string faizOrani = ((TextBox)this.FindControl(tboxname)).Text;
-                    YasalFaiz yasalFaiz = new YasalFaiz();
-                    yasalFaiz = new Model.Services.TBYS.YasalFaizService(LoggingContext).GetByYearMonth(yil.ConvertToInt(), ay.ConvertToInt());
-                    yasalFaiz.FaizOrani = faizOrani.ConvertToDecimal();
-                    yasalFaiz.Tufe = tufe.ConvertToDecimal();
-                    yasalFaiz.Ufe = ufe.ConvertToDecimal();
-                    yasalFaiz.Aciklama = aciklama;
-                    yasalFaiz.Degistiren = CurrentUserName;
-                    kaydedildi = new Model.Services.TBYS.YasalFaizService(LoggingContext).Update(yasalFaiz);
-                }
-                if (kaydedildi)
-                {
-                    MessageHelper.PublishMessage("Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
-                }
-
+                LinkButton button = sender as LinkButton;
+                int month;
+                if (button == null || !button.ID.StartsWith("Kaydet", StringComparison.Ordinal)
+                    || !button.ID.EndsWith("Btn", StringComparison.Ordinal) || button.ID.Length < 10
+                    || !int.TryParse(button.ID.Substring(6, button.ID.Length - 9), out month) || month < 1 || month > 12)
+                    throw new InvalidOperationException("Güncellenecek ay belirlenemedi.");
+                new Model.Services.TBYS.YasalFaizService(LoggingContext)
+                    .UpdateMonths(new List<YasalFaiz> { ReadMonthValues(month) });
+                MessageHelper.PublishMessage("Kayıt güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
             }
-            catch (Exception tbysError)
+            catch (Exception error)
             {
-                if (tbysError is System.Threading.ThreadAbortException) throw;
-                TbysWebPartLog.WriteError(LoggingContext, "TBYS.YasalFaizWP.Kaydet1Btn_Click", tbysError);
-
-                TbysWebPartLog.ReportError(LoggingContext, "TBYS.YasalFaizWP.Kaydet1Btn_Click", tbysError);
+                if (error is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.YasalFaizWP.Kaydet1Btn_Click", error);
             }
+        }
+
+        private YasalFaiz ReadMonthValues(int month)
+        {
+            return new YasalFaiz
+            {
+                Yil = YilDDL.SelectedItem.Value.ConvertToInt(),
+                Ay = month,
+                FaizOrani = ((TextBox)FindControl("FaizOrani" + month + "Txt")).Text.ConvertToDecimal(),
+                Tufe = ((TextBox)FindControl("Tufe" + month + "Txt")).Text.ConvertToDecimal(),
+                Ufe = ((TextBox)FindControl("Ufe" + month + "Txt")).Text.ConvertToDecimal(),
+                Aciklama = ((TextBox)FindControl("Aciklama" + month + "Txt")).Text
+            };
         }
     }
 }

@@ -129,35 +129,11 @@ namespace TBYS_WebParts.GecikmeZammiWP
                 {
                     try
                     {
-                        ///
-                        /// Bundan önceki kaydi bul,
-                        ///     Bitis tarihini degistir (bu kaydin baslangic tarihi - 1 Gun yap)
-                        ///Bundan Sonraki kaydi bul
-                        ///     Bu kaydin bitis tarihini Sonrakinin baslangic tarihi olarak degistir
-
                         item.BaslangicTarihi = BaslangicTarihiTxt.Value.ConvertToDatetime();
                         item.ZamOrani = ZamOraniTxt.Text.ConvertToDecimal();
                         item.Aciklama = AciklamaTxt.Text;
-                        item.Degistiren = CurrentUserName;
-
                         GecikmeZammiService gecikmeZammiService = new GecikmeZammiService(LoggingContext);
-                        GecikmeZammi oncekiTarihliFO = gecikmeZammiService.GetPrevious(item.BaslangicTarihi);
-
-                        if (oncekiTarihliFO != null)
-                        {
-                            oncekiTarihliFO.BitisTarihi = item.BaslangicTarihi.AddDays(-1);
-                            oncekiTarihliFO.Degistiren = CurrentUserName;
-                            gecikmeZammiService.Update(oncekiTarihliFO);
-                        }
-
-                        GecikmeZammi sonrakiTarihliFO = gecikmeZammiService.GetNext(item.BaslangicTarihi);
-
-                        if (sonrakiTarihliFO != null)
-                        {
-                            item.BitisTarihi = sonrakiTarihliFO.BaslangicTarihi.AddDays(-1);
-                        }
-
-                        if (gecikmeZammiService.Update(item))
+                        if (gecikmeZammiService.UpdatePeriod(item))
                         {
                             MessageHelper.PublishMessage("Kayıt Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -187,16 +163,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
                     try
                     {
                         GecikmeZammiService gecikmeZammiService = new GecikmeZammiService(LoggingContext);
-                        GecikmeZammi oncekiTarihliFO = gecikmeZammiService.GetPrevious(item.BaslangicTarihi);
-
-                        if (oncekiTarihliFO != null)
-                        {
-                            oncekiTarihliFO.BitisTarihi = item.BitisTarihi;
-                            oncekiTarihliFO.Degistiren = CurrentUserName;
-                            gecikmeZammiService.Update(oncekiTarihliFO);
-                        }
-
-                        if (gecikmeZammiService.Delete(item))
+                        if (gecikmeZammiService.DeletePeriod(item.Id))
                         {
                             MessageHelper.PublishMessage("Kayıt Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -251,35 +218,23 @@ namespace TBYS_WebParts.GecikmeZammiWP
 
         protected void EkleBtn_Click(object sender, EventArgs e)
         {
-            GecikmeZammi yeni = new GecikmeZammi();
-            yeni.BaslangicTarihi = YeniBaslangicTarihiTxt.Value.ConvertToDatetime();
-            yeni.ZamOrani = YeniZamOraniTxt.Value.ConvertToDecimal();
-            yeni.Aciklama = YeniAciklamaTxt.Value;
-            yeni.Olusturan = CurrentUserName;
-
-            GecikmeZammiService gecikmeZammiService = new GecikmeZammiService(LoggingContext);
-            GecikmeZammi oncekiTarihliFO = gecikmeZammiService.GetPrevious(YeniBaslangicTarihiTxt.Value.ConvertToDatetime());
-            //öncekinin biti tarihini degistir
-            if (oncekiTarihliFO != null)
+            try
             {
-                oncekiTarihliFO.BitisTarihi = YeniBaslangicTarihiTxt.Value.ConvertToDatetime().AddDays(-1);
-                oncekiTarihliFO.Degistiren = CurrentUserName;
-                gecikmeZammiService.Update(oncekiTarihliFO);
+                GecikmeZammi yeni = new GecikmeZammi
+                {
+                    BaslangicTarihi = YeniBaslangicTarihiTxt.Value.ConvertToDatetime(),
+                    ZamOrani = YeniZamOraniTxt.Value.ConvertToDecimal(),
+                    Aciklama = YeniAciklamaTxt.Value
+                };
+                new GecikmeZammiService(LoggingContext).SavePeriod(yeni);
+                MessageHelper.PublishMessage("Kayıt eklendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                RedirectToPage(ProjeConstants.PAGE_GECIKMEZAMMI);
             }
-
-            GecikmeZammi sonrakiTarihliFO = gecikmeZammiService.GetNext(yeni.BaslangicTarihi);
-            //yeninin bitis tarihini sonrakinin baslama tarihi yap
-            if (sonrakiTarihliFO != null)
+            catch (Exception error)
             {
-                yeni.BitisTarihi = sonrakiTarihliFO.BaslangicTarihi.AddDays(-1);
+                if (error is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.GecikmeZammiWP.EkleBtn_Click", error);
             }
-            gecikmeZammiService.Save(yeni);
-
-            MessageHelper.PublishMessage("Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-            newUrl += "/" + ProjeConstants.PAGE_GECIKMEZAMMI;
-            Page.Response.Redirect(newUrl, true);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace DAO.Repositories.TBYS
         public GecikmeZammiRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db);
+            this.db = new TbysSqlExecutor(db, "GecikmeZammiRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -129,6 +129,46 @@ namespace DAO.Repositories.TBYS
         public bool Delete(int id)
         {
             return db.DeleteFromDb(queryBuilder.BuildDelete("GecikmeZammi_Table", id), "");
+        }
+
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM GecikmeZammi_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
+        public DataTable SelectPrevious(DateTime date, int excludedId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"SELECT TOP (1) * FROM GecikmeZammi_Table WITH (UPDLOCK, HOLDLOCK)
+                WHERE BaslangicTarihi < @Tarih AND Id<>@ExcludedId ORDER BY BaslangicTarihi DESC, Id DESC");
+            query.AddParameter("@Tarih", date);
+            query.AddParameter("@ExcludedId", excludedId);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
+        public DataTable SelectNext(DateTime date, int excludedId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"SELECT TOP (1) * FROM GecikmeZammi_Table WITH (UPDLOCK, HOLDLOCK)
+                WHERE BaslangicTarihi > @Tarih AND Id<>@ExcludedId ORDER BY BaslangicTarihi, Id");
+            query.AddParameter("@Tarih", date);
+            query.AddParameter("@ExcludedId", excludedId);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
+        public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Insert(queryBuilder.BuildInsert(entity, "GecikmeZammi_Table"), transaction, context);
+        }
+
+        public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Update2Db(queryBuilder.BuildUpdate(entity, "GecikmeZammi_Table"), transaction, context);
+        }
+
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.DeleteFromDb(queryBuilder.BuildDelete("GecikmeZammi_Table", id), transaction, context);
         }
     }
 }
