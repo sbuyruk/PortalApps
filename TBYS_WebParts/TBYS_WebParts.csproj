@@ -91,7 +91,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logging\TbysWebPartLog.cs" />
-    <Compile Include="Logging\TbysLogDiagnostics.cs" />
     <Compile Include="BagimsizBolumWP\BagimsizBolumWP.ascx.cs">
       <DependentUpon>BagimsizBolumWP.ascx</DependentUpon>
     </Compile>

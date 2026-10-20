@@ -44,3 +44,11 @@ Visual Studio 2026 build ve TEST sunucusu doğrulaması kullanıcı tarafından 
 Codex build/test/debug çalıştırmadı. Statik kaynak incelemesi ve git diff --check yapıldı. Üretilmiş dosyalar, diğer projelerin kodları ve ortak DB/log sınıfları değiştirilmedi. DAO.csproj yalnızca yeni TBYS kaynak dosyasını derlemeye dahil eder.
 
 Sonraki parçalar kalan TBYS repository/servis SQL izleri ve onların çağrı zincirleri, ardından transaction/audit ve alan değişiklikleridir.
+
+## TEST sonucu ve tanılama temizliği
+
+20 Ekim 2026 tarihinde kullanıcı YasalFaiz için yeni WebPartOpened, SELECT ve UPDATE kayıtlarının hem TESTDB'de hem takip ekranında oluştuğunu doğruladı. Aynı güncelleme isteğinin SQL kayıtları ortak OperationId taşıdı. Bu doğrulama diğer entity'lerin veya tüm test senaryolarının tamamlandığı anlamına gelmez.
+
+Kayıtların yazılmamasının doğrulanan nedeni, EnabledProjects boşken EnabledWebParts listesine tek başına TBYS eklenmesiydi. Tüm TBYS için PortalLogging.EnabledProjects değerine TBYS eklenmelidir; tek tek etkinleştirmede PortalLogging.EnabledWebParts değerleri TBYS:WebPartAdi biçiminde olmalıdır. Mevcut IKYS değerleri korunur.
+
+Geçici yönetici tanılama paneli, gözlem çağrıları, yardımcı sınıflar, kontrol SQL'i ve geçici sorun inceleme belgeleri kaldırıldı. Gerçek SELECT şema düzeltmesi (Operation=NULL, SqlOperation=SELECT) ve TBYS paketinin DAO/Model proje çıktılarını kullanması korundu. YasalFaiz URL'sindeki geçici tanılama parametresi artık bir panel açmaz; normal sayfa adresi kullanılabilir. Temizlik sonrası build ve TEST doğrulaması kullanıcıya aittir; Codex build/test/debug çalıştırmadı.
