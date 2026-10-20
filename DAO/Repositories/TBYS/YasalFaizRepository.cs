@@ -18,7 +18,7 @@ namespace DAO.Repositories.TBYS
         public YasalFaizRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db);
+            this.db = new TbysSqlExecutor(db, "YasalFaizRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -73,6 +73,52 @@ namespace DAO.Repositories.TBYS
         public bool Delete(int id)
         {
             return db.DeleteFromDb(queryBuilder.BuildDelete("YasalFaiz_Table", id), "");
+        }
+
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM YasalFaiz_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
+        public DataTable SelectByYear(int year, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM YasalFaiz_Table WITH (UPDLOCK, HOLDLOCK) WHERE Yil=@Yil ORDER BY Ay, Id");
+            query.AddParameter("@Yil", year);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
+        public DataTable SelectByYearMonth(int year, int month, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM YasalFaiz_Table WITH (UPDLOCK, HOLDLOCK) WHERE Yil=@Yil AND Ay=@Ay");
+            query.AddParameter("@Yil", year);
+            query.AddParameter("@Ay", month);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
+        public DataTable SelectLatestRate(string columnName, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (columnName != "FaizOrani" && columnName != "Tufe" && columnName != "Ufe")
+                throw new ArgumentException("Geçersiz oran alanı.", "columnName");
+            SqlQuery query = new SqlQuery("SELECT TOP (1) * FROM YasalFaiz_Table WITH (UPDLOCK, HOLDLOCK) WHERE "
+                + columnName + " IS NOT NULL AND " + columnName + " > 0 ORDER BY Yil DESC, Ay DESC, Id DESC");
+            return db.SelectFromDb(query, transaction, context);
+        }
+
+        public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Insert(queryBuilder.BuildInsert(entity, "YasalFaiz_Table"), transaction, context);
+        }
+
+        public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Update2Db(queryBuilder.BuildUpdate(entity, "YasalFaiz_Table"), transaction, context);
+        }
+
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.DeleteFromDb(queryBuilder.BuildDelete("YasalFaiz_Table", id), transaction, context);
         }
     }
 }
