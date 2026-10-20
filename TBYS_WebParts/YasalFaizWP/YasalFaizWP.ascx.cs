@@ -36,7 +36,6 @@ namespace TBYS_WebParts.YasalFaizWP
 
         protected override void OnLoad(EventArgs e)
         {
-            TbysLogDiagnostics.Attach(this, LoggingContext);
             if (!Page.IsPostBack) TbysWebPartLog.RecordOpened(LoggingContext);
             try
             {
