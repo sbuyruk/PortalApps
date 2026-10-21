@@ -125,7 +125,7 @@ namespace DAO.Repositories.TBYS
 
         public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
         {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("KiraBorcuTakip_Table", id), "", transaction, context);
+            return db.DeleteFromDb(queryBuilder.BuildDelete("KiraBorcuTakip_Table", id), transaction, context);
         }
     }
 }
