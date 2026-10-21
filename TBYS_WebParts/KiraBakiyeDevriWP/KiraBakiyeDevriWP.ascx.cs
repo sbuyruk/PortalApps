@@ -205,7 +205,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                     OdemePlaniGoruntuleBtn.Visible = false;
                     OdemePlaniBtn.Visible = false;
                     OdemePlani odemePlani = new OdemePlani();
-                    bool odemePlaniVarMi = new Model.Services.TBYS.OdemePlaniService().Exists(kiraSozlesme.Id);
+                    bool odemePlaniVarMi = new Model.Services.TBYS.OdemePlaniService(LoggingContext).Exists(kiraSozlesme.Id);
                     if (odemePlaniVarMi)
                     {
                         OdemePlaniGoruntuleBtn.Visible = true;
@@ -243,7 +243,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                     if (oncekiKiraSozlesmesi != null)
                     {
                         OdemePlani odemePlaniDao = new OdemePlani();
-                        List<OdemePlani> odemePlaniList = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(oncekiKiraSozlesmesi.Id);
+                    List<OdemePlani> odemePlaniList = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeId(oncekiKiraSozlesmesi.Id);
                         if (odemePlaniList.Count>0)
                         {
                             OdemePlani odemePlani = odemePlaniList[odemePlaniList.Count - 1];
@@ -372,7 +372,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
                     OdemePlani odemePlani = new OdemePlani();
-                    bool odemePlaniVarMi = new Model.Services.TBYS.OdemePlaniService().Exists(kiraSozlesme.Id);
+                    bool odemePlaniVarMi = new Model.Services.TBYS.OdemePlaniService(LoggingContext).Exists(kiraSozlesme.Id);
                     if (odemePlani != null)
                     {
                         OdemePlaniGoruntule(kiraSozlesme);
@@ -454,7 +454,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                     if (devirAlanlariGuncellendi)
                     {
                         //Ödeme Planında devir satırını güncelle 0ncı satır
-                        List<OdemePlani> odemePlaniList= new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
+                    List<OdemePlani> odemePlaniList= new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeId(kiraSozlesme.Id);
                         OdemePlani odemePlani = odemePlaniList[0];//devir satiri
                         if (odemePlani != null)
                         {

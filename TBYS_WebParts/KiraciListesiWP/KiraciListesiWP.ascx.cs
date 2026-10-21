@@ -176,7 +176,7 @@ namespace TBYS_WebParts.KiraciListesiWP
             if (!string.IsNullOrEmpty(SecilenIdQS))
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(SecilenIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetActiveByKiraciId(SecilenIdQS.ConvertToInt());
                 if (kiraSozlesme != null)
                 {
                     UtilityHelper.SetDDLValue(KiraciSecimiDDL, ProjeConstants.KIRASOZLESME_AKTIF_INT.ToString());
@@ -354,11 +354,11 @@ namespace TBYS_WebParts.KiraciListesiWP
 
                 if (!aktif)
                 {
-                    ks = new Model.Services.TBYS.KiraSozlesmeService().GetCompletedByKiraciId(kiraciId.ConvertToInt());
+                    ks = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetCompletedByKiraciId(kiraciId.ConvertToInt());
                 }
                 else
                 {
-                    ks = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(kiraciId.ConvertToInt());
+                    ks = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetActiveByKiraciId(kiraciId.ConvertToInt());
                 }
                 
                 int sonSozlesmeId = ks != null ? ks.Id : sozlesmeId.ConvertToInt();

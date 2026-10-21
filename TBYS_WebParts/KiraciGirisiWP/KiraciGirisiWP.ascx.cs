@@ -188,7 +188,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
                     OdemePlaniGoruntuleBtn.Visible = false;
                     OdemeYapBtn.Visible = false;
                     OdemePlani odemePlani = new OdemePlani();
-                    bool odemePlaniVarMi = new Model.Services.TBYS.OdemePlaniService().Exists(kiraSozlesme.Id);
+                    bool odemePlaniVarMi = new Model.Services.TBYS.OdemePlaniService(LoggingContext).Exists(kiraSozlesme.Id);
                     if (odemePlaniVarMi)
                     {
                         OdemePlaniGoruntuleBtn.Visible = true;
@@ -232,7 +232,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
         {
             bool isUpdated = false;
             Kiraci kiraci = new Kiraci();
-            kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+            kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
             kiraci.Adi = AdiTxt.Text;
             kiraci.Soyadi = SoyadiTxt.Text;
             kiraci.TCKimlikNo = TCKimlikNoTxt.Text;
@@ -510,7 +510,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
         protected void SilBtn_Click(object sender, EventArgs e)
         {
             Kiraci kiraci = new Kiraci();
-            kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+            kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
             if (kiraci != null)//bu kiraci varsa
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
@@ -532,7 +532,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
         protected void OdemePlaniGoruntuleBtn_Click(object sender, EventArgs e)
         {
             Kiraci kiraci = new Kiraci();
-            kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+            kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
             if (kiraci != null)//bu kiraci varsa
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();

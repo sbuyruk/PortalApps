@@ -651,7 +651,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
             if (kiraSozlesme != null) //bu sozlesme varsa
             {
                 OdemePlani odemePlani = new OdemePlani();
-                bool odemePlaniVarMi = new Model.Services.TBYS.OdemePlaniService().Exists(kiraSozlesme.Id);
+                bool odemePlaniVarMi = new Model.Services.TBYS.OdemePlaniService(LoggingContext).Exists(kiraSozlesme.Id);
                 if (odemePlaniVarMi)
                 {
                     OdemePlaniGoruntule(kiraSozlesme);
@@ -769,7 +769,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
             int kiraSozlesmeId = paramKiraSozlesmeIdLbl.Value.ConvertToInt();
             string takipIslemi = paramTakipIslemi.Value;
             Kiraci kiraci= new Kiraci();
-            kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraciId);
+            kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(kiraciId);
             if (kiraci != null)
             {
                 BaslikLbl.CssClass = "col-form-label text-success fw-bold";
@@ -852,7 +852,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                 int kiraSozlesmeId = kiraBorcuTakip.KiraSozlesmeId;
                 string takipIslemi = kiraBorcuTakip.TakipIslemi;
                 Kiraci kiraci = new Kiraci();
-                kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraBorcuTakip.KiraciId);
+                kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(kiraBorcuTakip.KiraciId);
                 if (kiraci != null)
                 {
                     IslemTarihiTxt.Text = kiraBorcuTakip.IslemTarihi.ConvertToDatetimeEmptyIfNull();
