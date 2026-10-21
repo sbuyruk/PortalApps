@@ -1,4 +1,5 @@
 using DAO.Ortak;
+using Utility.Logging;
 using System;
 using System.Data;
 
@@ -6,7 +7,7 @@ namespace DAO.Repositories.TBYS
 {
     public class BagisRepository
     {
-        private readonly DbClass db;
+        private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
         public BagisRepository() : this(new DbClass()) { }
@@ -14,7 +15,13 @@ namespace DAO.Repositories.TBYS
         public BagisRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
+            this.db = new TbysSqlExecutor(db, "BagisRepository");
+            queryBuilder = new CrudQueryBuilder();
+        }
+
+        public BagisRepository(PortalLogContext context)
+        {
+            db = new TbysSqlExecutor(context, "BagisRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -119,6 +126,13 @@ namespace DAO.Repositories.TBYS
             string[] names = new string[count];
             for (int i = 0; i < count; i++) names[i] = "@Sebep" + i;
             return names;
+        }
+
+        public DataTable SelectByTasinmazId(int tasinmazId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT TOP (1) * FROM Bagis_Table WITH (UPDLOCK, HOLDLOCK) WHERE TasinmazId=@TasinmazId ORDER BY Id");
+            query.AddParameter("@TasinmazId", tasinmazId);
+            return db.SelectFromDb(query, transaction, context);
         }
     }
 }

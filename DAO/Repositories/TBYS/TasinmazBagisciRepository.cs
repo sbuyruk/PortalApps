@@ -1,4 +1,5 @@
 using DAO.Ortak;
+using Utility.Logging;
 using System;
 using System.Data;
 
@@ -6,7 +7,7 @@ namespace DAO.Repositories.TBYS
 {
     public class TasinmazBagisciRepository
     {
-        private readonly DbClass db;
+        private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
         public TasinmazBagisciRepository()
@@ -17,7 +18,13 @@ namespace DAO.Repositories.TBYS
         public TasinmazBagisciRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
+            this.db = new TbysSqlExecutor(db, "TasinmazBagisciRepository");
+            queryBuilder = new CrudQueryBuilder();
+        }
+
+        public TasinmazBagisciRepository(PortalLogContext context)
+        {
+            db = new TbysSqlExecutor(context, "TasinmazBagisciRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -79,6 +86,13 @@ namespace DAO.Repositories.TBYS
         public bool Delete(int id)
         {
             return db.DeleteFromDb(queryBuilder.BuildDelete("TasinmazBagisci_Table", id), "");
+        }
+
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM TasinmazBagisci_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return db.SelectFromDb(query, transaction, context);
         }
     }
 }

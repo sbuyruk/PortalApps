@@ -7,7 +7,6 @@ using Utility.Logging;
 using TBYS_WebParts.Logging;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Transactions;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
@@ -243,7 +242,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             int tasinmazId = (TasinmazIdQS.ConvertToInt());
 
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(tasinmazId);
+            tasinmaz = new TasinmazService(LoggingContext).Select(tasinmazId);
             if (tasinmaz != null)
             {
                 tasinmazBulunamadi = false;
@@ -412,40 +411,14 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             tasinmaz.Nitelik = NitelikTxt.Text;
             tasinmaz.EnvanterdeMi = ProjeConstants.MULKIYETTE_OLMAYAN_TASINMAZ;
 
-            using (TransactionScope scope = new TransactionScope())
-            {
-                int id = new Model.Services.TBYS.TasinmazService().Save(tasinmaz);
-                tasinmaz.Id = id;
-
-                if (id > 0)
-                {
-                    Sigorta sigorta = new Sigorta();
-                    sigorta = new Model.Services.TBYS.SigortaService().GetLatestByTasinmazId(tasinmaz.Id);
-                    if (sigorta == null)//henuz sigorta kaydi yok yeni sigorta yarat
-                    {
-                        sigorta = new Sigorta();
-                        sigorta.TasinmazId = tasinmaz.Id;
-                        sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                        int sigortaid = new Model.Services.TBYS.SigortaService().Save(sigorta);
-                        sigorta.Id = sigortaid;
-                    }
-                    else
-                    {
-                        sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                        new Model.Services.TBYS.SigortaService().Update(sigorta);
-                    }
-                    scope.Complete();
-                    return tasinmaz;
-                }
-
-                else return null;
-            }
+            new TasinmazService(LoggingContext).SaveWithRelations(tasinmaz, synchronizeDonor: false);
+            return tasinmaz;
         }
         private bool updateTasinmazData2Db(int tId)
         {
             bool isSaved = false;
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(tId);
+            tasinmaz = new TasinmazService(LoggingContext).Select(tId);
             //tasinmaz.Id = tId;
             if (tasinmaz != null)
             {
@@ -474,58 +447,56 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 tasinmaz.BBBrutAlan = BBBrutAlanTxt.Text.ConvertToDecimal();
                 tasinmaz.Nitelik = NitelikTxt.Text;
                 tasinmaz.EnvanterdeMi = ProjeConstants.MULKIYETTE_OLMAYAN_TASINMAZ;
-                using (TransactionScope scope = new TransactionScope())
-                {
-                    isSaved = new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
-                    Sigorta sigorta = new Sigorta();
-                    sigorta = new Model.Services.TBYS.SigortaService().GetLatestByTasinmazId(tasinmaz.Id);
-                    if (sigorta == null)//henuz sigorta kaydi yok yeni sigorta yarat
-                    {
-                        sigorta = new Sigorta();
-                        sigorta.TasinmazId = tasinmaz.Id;
-                        sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                        new Model.Services.TBYS.SigortaService().Save(sigorta);
-                    }
-                    else
-                    {
-                        sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                        new Model.Services.TBYS.SigortaService().Update(sigorta);
-                    }
-                    scope.Complete();
-                }
+                isSaved = new TasinmazService(LoggingContext).UpdateWithRelations(tasinmaz,
+                    synchronizeDonor: false, synchronizeInsurance: true);
             }
 
             return isSaved;
         }
         protected void SaveBtn_Click(object sender, EventArgs e)
         {
-
-            Tasinmaz tasinmaz = SaveTasinmazData2Db();
-            if (tasinmaz != null)
+            try
             {
-                string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                int queryIndex = newUrl.IndexOf("?");
-                if (queryIndex > 0)
-                    newUrl = newUrl.Substring(0, queryIndex);
-                newUrl = newUrl + "?DestinationApp=TD&TasinmazId=" + tasinmaz.Id + "&EnvanterdeMi=" + EnvanterdeMiQS;
-                //+ "&tasinmazFoto=" + tasinmaz.TasinmazFoto //kaydesttikten sonra tasinmaz resimleri görünsün
-                //+ "&tasinmazFoto1=" + tasinmaz.TasinmazFoto1 + "&tasinmazFoto2=" + tasinmaz.TasinmazFoto2
-                //+ "&tapuFoto=" + tasinmaz.TapuFoto + "&krokiFoto=" + tasinmaz.KrokiFoto + "&tahkikatFoto=" + tasinmaz.TahkikatFoto;
-                Page.Response.Redirect(newUrl, true);
+                Tasinmaz tasinmaz = SaveTasinmazData2Db();
+                if (tasinmaz != null)
+                {
+                    string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                    int queryIndex = newUrl.IndexOf("?");
+                    if (queryIndex > 0)
+                        newUrl = newUrl.Substring(0, queryIndex);
+                    newUrl = newUrl + "?DestinationApp=TD&TasinmazId=" + tasinmaz.Id + "&EnvanterdeMi=" + EnvanterdeMiQS;
+                    //+ "&tasinmazFoto=" + tasinmaz.TasinmazFoto //kaydesttikten sonra tasinmaz resimleri görünsün
+                    //+ "&tasinmazFoto1=" + tasinmaz.TasinmazFoto1 + "&tasinmazFoto2=" + tasinmaz.TasinmazFoto2
+                    //+ "&tapuFoto=" + tasinmaz.TapuFoto + "&krokiFoto=" + tasinmaz.KrokiFoto + "&tahkikatFoto=" + tasinmaz.TahkikatFoto;
+                    Page.Response.Redirect(newUrl, true);
+                }
+                else
+                    MessageHelper.PublishMessage("Taşınmaz Kaydı başarısız oldu.-TS001", ProjeConstants.MESAJ_HATA);
             }
-            else
-                MessageHelper.PublishMessage("Taşınmaz Kaydı başarısız oldu.-TS001", ProjeConstants.MESAJ_HATA);
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.MulkiyetiOlmayanTasinmazGirisiWP.SaveBtn_Click", error);
+            }
         }
         protected void UpdateBtn_Click(object sender, EventArgs e)
         {
-            if (updateTasinmazData2Db(TasinmazIdQS.ConvertToInt()))
+            try
             {
-                SigortaBtn.Visible = true;
-                MessageHelper.PublishMessage("Taşınmaz kaydı güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                if (updateTasinmazData2Db(TasinmazIdQS.ConvertToInt()))
+                {
+                    SigortaBtn.Visible = true;
+                    MessageHelper.PublishMessage("Taşınmaz kaydı güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                }
+                else
+                {
+                    MessageHelper.PublishMessage("Taşınmaz Güncellenemedi.-TS001", ProjeConstants.MESAJ_HATA);
+                }
             }
-            else
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
             {
-                MessageHelper.PublishMessage("Taşınmaz Güncellenemedi.-TS001", ProjeConstants.MESAJ_HATA);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.MulkiyetiOlmayanTasinmazGirisiWP.UpdateBtn_Click", error);
             }
         }
         protected void TasinmazKartiBtn_Click(object sender, EventArgs e)
@@ -589,27 +560,35 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
         }
         protected void DeleteBtn_Click(object sender, EventArgs e)
         {
-            Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
-            if (tasinmaz != null) //sildikten sonra önceki sayfaya dön
+            try
             {
-                if (new Model.Services.TBYS.TasinmazService().Delete(tasinmaz))
+                Tasinmaz tasinmaz = new Tasinmaz();
+                tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
+                if (tasinmaz != null) //sildikten sonra önceki sayfaya dön
                 {
-                    string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                    string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-                    newUrl += "/" + ProjeConstants.PAGE_PAGE_MULKIYETIOLMAYANTASINMAZ_LIST;
-                    Page.Response.Redirect(newUrl, true);
+                    if (new Model.Services.TBYS.TasinmazService(LoggingContext).Delete(tasinmaz))
+                    {
+                        string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                        string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
+                        newUrl += "/" + ProjeConstants.PAGE_PAGE_MULKIYETIOLMAYANTASINMAZ_LIST;
+                        Page.Response.Redirect(newUrl, true);
+                    }
+                    else
+                        MessageHelper.PublishMessage("Taşınmaz silinemedi. Kayıt artık mevcut olmayabilir veya bağlı bölüm, bağış, sözleşme, onarım ya da sigorta kaydı bulunabilir.", ProjeConstants.MESAJ_HATA);
                 }
                 else
-                    MessageHelper.PublishMessage("Taşınmaz Silinemedi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Taşınmaz silinemedi. Kayıt artık mevcut olmayabilir veya bağlı bölüm, bağış, sözleşme, onarım ya da sigorta kaydı bulunabilir.", ProjeConstants.MESAJ_HATA);
             }
-            else
-                MessageHelper.PublishMessage("Taşınmaz Silinemedi", ProjeConstants.MESAJ_HATA);
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.MulkiyetiOlmayanTasinmazGirisiWP.DeleteBtn_Click", error);
+            }
         }
         protected void ResimlerBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
             if (tasinmaz != null)
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -661,8 +640,8 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
         protected void NextBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
-            Tasinmaz sonrakiTasinmaz = new TasinmazService().SelectNext(tasinmaz.Id);
+            tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
+            Tasinmaz sonrakiTasinmaz = new TasinmazService(LoggingContext).SelectNext(tasinmaz.Id);
             string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             int queryIndex = newUrl.IndexOf("?");
             if (queryIndex > 0)
@@ -673,8 +652,8 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
         protected void PrevBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
-            Tasinmaz oncekiTasinmaz = new TasinmazService().SelectPrev(tasinmaz.Id);
+            tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
+            Tasinmaz oncekiTasinmaz = new TasinmazService(LoggingContext).SelectPrev(tasinmaz.Id);
             string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             int queryIndex = newUrl.IndexOf("?");
             if (queryIndex > 0)

@@ -1,4 +1,5 @@
 using DAO.Ortak;
+using Utility.Logging;
 using System;
 using System.Data;
 using System.Globalization;
@@ -9,7 +10,7 @@ namespace DAO.Repositories.TBYS
 {
     public class SigortaRepository
     {
-        private readonly DbClass db;
+        private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
         public SigortaRepository() : this(new DbClass()) { }
@@ -17,7 +18,13 @@ namespace DAO.Repositories.TBYS
         public SigortaRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
+            this.db = new TbysSqlExecutor(db, "SigortaRepository");
+            queryBuilder = new CrudQueryBuilder();
+        }
+
+        public SigortaRepository(PortalLogContext context)
+        {
+            db = new TbysSqlExecutor(context, "SigortaRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -171,6 +178,30 @@ namespace DAO.Repositories.TBYS
         public bool Delete(int id)
         {
             return db.DeleteFromDb(queryBuilder.BuildDelete("Sigorta_Table", id), "");
+        }
+
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM Sigorta_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
+        public DataTable SelectLatestByTasinmazId(int tasinmazId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT TOP (1) * FROM Sigorta_Table WITH (UPDLOCK, HOLDLOCK) WHERE TasinmazId=@TasinmazId ORDER BY SigortaBitTar DESC, Id DESC");
+            query.AddParameter("@TasinmazId", tasinmazId);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
+        public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Insert(queryBuilder.BuildInsert(entity, "Sigorta_Table"), transaction, context);
+        }
+
+        public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Update2Db(queryBuilder.BuildUpdate(entity, "Sigorta_Table"), transaction, context);
         }
     }
 }

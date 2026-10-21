@@ -1,4 +1,5 @@
 using DAO.Ortak;
+using Utility.Logging;
 using System;
 using System.Data;
 
@@ -6,7 +7,7 @@ namespace DAO.Repositories.TBYS
 {
     public class OnarimRepository
     {
-        private readonly DbClass db;
+        private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
         public OnarimRepository() : this(new DbClass()) { }
@@ -14,7 +15,13 @@ namespace DAO.Repositories.TBYS
         public OnarimRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
+            this.db = new TbysSqlExecutor(db, "OnarimRepository");
+            queryBuilder = new CrudQueryBuilder();
+        }
+
+        public OnarimRepository(PortalLogContext context)
+        {
+            db = new TbysSqlExecutor(context, "OnarimRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -113,6 +120,13 @@ namespace DAO.Repositories.TBYS
         public bool Delete(int id)
         {
             return db.DeleteFromDb(queryBuilder.BuildDelete("Onarim_Table", id), "");
+        }
+
+        public DataTable SelectByTasinmazId(int tasinmazId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT TOP (1) * FROM Onarim_Table WITH (UPDLOCK, HOLDLOCK) WHERE TasinmazId=@TasinmazId ORDER BY Id");
+            query.AddParameter("@TasinmazId", tasinmazId);
+            return db.SelectFromDb(query, transaction, context);
         }
     }
 }

@@ -1,6 +1,36 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
-## Güncel parça: bağımsız bölüm SQL izi ve audit
+## Güncel parça: taşınmaz ve bağlı sigorta transaction/audit dönüşümü
+
+Dal: `codex/tbys-tasinmaz-transaction-audit`. Başlangıç commit'i: `21b1127bf934abcc030b70f3c5f6281c882c9075`. Kod değişikliğinden önce yerel master temizdi ve GitHub master ile aynı commit'teydi. Önceki bağımsız bölüm parçası PR #458 ile birleştirildi; kullanıcı testleri toplu yapacak. Bu parçanın çalışma zamanı doğrulaması henüz yapılmadı.
+
+TasinmazGirisiWP ve MulkiyetiOlmayanTasinmazGirisiWP ekleme/güncelleme akışlarındaki TransactionScope blokları kaldırıldı. Taşınmaz yazması, gerekli bağış/bağışçı okumaları, son sigortanın okunması ve oluşturulması/güncellenmesi, audit başlığı ve alan ayrıntıları tek SqlTransactionContext kullanır. İşlem veya audit yazımı hata verirse tamamı rollback olur. Güncellemede bağışçı eşitlemesi ana UPDATE öncesinde yapılır; aynı taşınmaz için gereksiz ikinci UPDATE oluşmaz.
+
+Mevcut ekran farkları korunur: normal taşınmaz girişinde bağışçı adı ve BagisciId iş kaydına eşitlenir; envanterden çıkan taşınmaz güncellemesinde sigorta eşitlenmez. Mülkiyeti olmayan taşınmaz ekranında bağışçı eşitlemesi yapılmaz, sigorta eşitlenir. Son sigorta SigortaBitTar azalan sırayla seçilir; eşit tarihlerde Id azalan sıra belirleyicidir. Sigorta türü değişmemişse gereksiz sigorta UPDATE/audit üretilmez.
+
+İki ekrandaki taşınmaz okumaları bağlam taşır. Normal taşınmaz girişindeki Değerleri Kaydet işlemi de transaction ve audit yolunu kullanır. Bağlamsız eski servis çağıranları kendi eski davranışlarında kalır. Bağlamlı yazmalar ayar kapalıysa da iş transaction'ını kullanır; eski OlayKayit yazıcısına geri dönmez. Aynı istek içinde SQL, hata ve audit kayıtları ortak OperationId taşır; yönlendirmeden sonraki açılış yeni istektir.
+
+Taşınmaz silinmeden önce eski kayıt ve bağlı bağımsız bölüm, bağış, sözleşme, onarım ve sigorta varlığı aynı transaction'dan UPDLOCK/HOLDLOCK ile kontrol edilir. Herhangi bir bağlantı varsa silme ve DELETE audit yapılmaz. Mülkiyeti olmayan taşınmaz silmesi de bu kontrollerden geçer. Bağımsız ekrandaki ön kontroller veri bütünlüğü kararı sayılmaz. Silme düğmesindeki sabit adlarla örnek resim kopyalama çağrısı kaldırıldı; null kontrolü nesne alanlarına erişimden önce yapılır. Tek sözleşme de sözleşme varlığı kabul edilir.
+
+Audit entity adları Tasinmaz ve Sigorta, kimlikler uygulamadaki Id değerleridir. İzin listeleri servislerde açıkça tanımlıdır. Taşınmazda bölge kimlikleri, mülkiyet/kullanım/kira/sigorta ve envanter durumları, değerleme tutarları, alanlar, tarihler, BagisciId ve sayısal plan/hisse alanları izlenir. Sigortada TasinmazId, BolumId, SigortaCinsi, SigortaBasTar, SigortaBitTar, SigortaBedeli, Prim ve KullanimSekli izlenir. Ad-soyad, adres, poliçe/belge numarası ve serbest açıklamalar audit ayrıntısına alınmaz. Eski/yeni değerler doğrudan transaction'dan okunan veritabanı satırlarıyla karşılaştırılır; NULL ve sıfır ayrıdır, tarih/sayılar kültürden bağımsız biçimlenir. İzinli alanı değişmeyen taşınmaz UPDATE başlığında sıfır ayrıntı bulunabilir.
+
+Teknik SQL izleri ortak bağımsız yazıcıyı kullanır. SqlTrace Succeeded yalnızca komutun yürütülmesini gösterir; sonradan rollback olan işin tamamlandığı anlamına gelmez. Audit başlığı ve ayrıntıları ise iş transaction'ının parçasıdır. Yeni olay yakalayıcıları teknik hatayı güvenli Türkçe mesaj ve başvuru koduyla bildirir; Redirect kaynaklı ThreadAbortException hata kaydına dönüşmez.
+
+Kapsam sınırı: bağışçı/bağış/sigorta/onarım/sözleşme ekranlarının kendi yazmaları, envanterden çıkarma ve KopyalaNowBtn_Click içindeki tüm ilişkileri taşıyan kopyalama zinciri bu parçada dönüştürülmedi. Bu akışlar ve kalan TBYS servisleri sonraki parçalardır. Repository'ye transaction overload'u eklenmiş olması ilgili modülün bütünü tamamlandı anlamına gelmez.
+
+Kullanıcı TEST kontrolleri (önceki bağımsız bölüm kontrollerine ek):
+
+1. İki ekranda ayrı ayrı yeni taşınmaz oluşturun. Taşınmaz ve ilk sigorta iş kayıtları ile Tasinmaz INSERT ve Sigorta INSERT audit başlıkları aynı OperationId altında oluşmalı; gerçek EntityId değerleri doğru olmalı.
+2. Normal taşınmazda tek değerleme tutarını ve sigorta türünü değiştirip kaydedin. Tasinmaz UPDATE ve gerekiyorsa Sigorta UPDATE, yalnızca değişen izinli alanların eski/yeni değerleriyle görünmeli. Sigorta türü değişmediyse sigorta UPDATE beklenmez. Değerleri Kaydet düğmesini de ayrıca deneyin.
+3. Bağışçısı olan taşınmazı kaydedin. BagisRepository.SelectByTasinmazId ve TasinmazBagisciRepository.SelectById SELECT izleri görünmeli; iş tablosundaki ad-soyad eşitlenmeli, audit ayrıntısına ad-soyad/adres/açıklama yazılmamalı.
+4. Envanterden çıkan taşınmaz güncellemesinin sigortayı değiştirmediğini ve mülkiyeti olmayan taşınmazın sigorta eşitlemesini koruduğunu kontrol edin.
+5. Her bağlantı türü için taşınmaz silmeyi deneyin: bölüm, bağış, sözleşme, onarım veya sigorta varsa silinmemeli ve DELETE audit oluşmamalı. Modal açıldıktan sonra bağlantı ekleme senaryosunu da deneyin. Bağlantısız bir test kaydında başarılı DELETE ve eski izinli alanlar görünmeli. Otomatik oluşturulan sigorta da bir bağlantıdır; silme test verisini buna göre hazırlayın.
+6. Kontrollü sigorta veya audit ayrıntısı yazma hatasında taşınmaz, sigorta ve audit değişikliklerinin birlikte geri alındığını; teknik hata kaydının kaldığını doğrulayın. Teknik log yazma yetkisini kapatmak bu kontrolle aynı senaryo değildir.
+7. Logging kapalıyken iş akışı çalışmalı; yeni audit ve eski OlayKayit oluşmamalı. Başarılı yönlendirme hata olarak kaydedilmemeli.
+
+EnabledProjects içinde TBYS zaten varsa ek web.config değişikliği gerekmez. Tek tek etkinleştirmede mevcut değerleri koruyarak TBYS:TasinmazGirisiWP ve TBYS:MulkiyetiOlmayanTasinmazGirisiWP kullanılır. Yeni dosya, şema veya tanılama altyapısı eklenmedi; üretilmiş ASCX dosyaları değiştirilmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve git diff --check yapıldı. Build ve TEST kullanıcıya aittir.
+
+## Önceki parça: bağımsız bölüm SQL izi ve audit
 
 Dal: `codex/tbys-bagimsiz-bolum-audit`. Başlangıç commit'i: `8cf737492011691415b9836b33284615c1c2429c`. Kod değişikliğinden önce master temizdi ve GitHub master ile aynı commit'teydi. Bu parçanın çalışma zamanı sonucu kullanıcı doğrulamasını bekliyor.
 
@@ -12,7 +42,7 @@ Audit entity adı BagimsizBolum, kimlik uygulamadaki Id alanıdır. İzinli alan
 
 Bağlamlı bağımsız bölüm yazmaları eski OlayKayit yoluna dönmez; logging kapalıysa iş transaction'ı devam eder, audit yazılmaz. Bağlamsız eski çağıranlar korunur. Bağımsız bölümde audit yazma hatası iş verisini de geri alır; teknik hata/SQL izleri ortak bağımsız yazıcı üzerinden gider. SQL izindeki Succeeded, ilgili komutun yürütülmesini gösterir; iş transaction'ının daha sonra rollback olmasını dışlamaz.
 
-Taşınmaz ve sözleşme servislerine bu parçada yalnızca ihtiyaç duyulan bağlamlı okuma overload'ları eklendi. Taşınmazın bağışçı/sigorta içeren ekleme/güncelleme/silme zinciri ile sözleşme yazmalarının audit dönüşümü sonraki parçalardır. Bu aşamada o akışlar tamamlandı kabul edilmemelidir.
+Taşınmaz ve sözleşme servislerine bu parçada yalnızca ihtiyaç duyulan bağlamlı okuma overload'ları eklendi. Bu önceki parçada taşınmazın bağışçı/sigorta içeren yazma zinciri ve sözleşme yazmaları kapsam dışıydı. Taşınmaz zincirinin güncel durumu üstteki yeni parçada açıklanır; sözleşme yazmaları sonraki parçalardır.
 
 Kullanıcı TEST kontrolleri:
 

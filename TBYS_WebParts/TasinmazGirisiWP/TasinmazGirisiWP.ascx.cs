@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
-using System.Transactions;
 using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -180,7 +179,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             int tasinmazId = (TasinmazIdQS.ConvertToInt());
             //TasinmazDuzenle açilacak
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(tasinmazId);
+            tasinmaz = new TasinmazService(LoggingContext).Select(tasinmazId);
             if (tasinmaz != null)
             {
                 AdresLbl.Text = tasinmaz.Adres;
@@ -196,7 +195,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             if (EnvanterdeMiQS.Equals(ProjeConstants.TASINMAZ_ENVANTERDEN_CIKTI.ToString()))
             {
                 Tasinmaz envanterdenCikanTasinmaz = new Tasinmaz();
-                envanterdenCikanTasinmaz = new TasinmazService().SelectEnvanterdenCikanTasinmaz(tasinmazId);
+                envanterdenCikanTasinmaz = new TasinmazService(LoggingContext).SelectEnvanterdenCikanTasinmaz(tasinmazId);
                 if (envanterdenCikanTasinmaz != null)
                 {
                     tasinmazBulunamadi = false;
@@ -601,53 +600,14 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             tasinmaz.SatisPlani = SatisPlaniDDL.SelectedValue.ConvertToInt();
             tasinmaz.SatisPlaniAciklama = SatisPlaniAciklamaTxt.Text;
 
-            using (TransactionScope scope = new TransactionScope())
-            {
-                int id = new Model.Services.TBYS.TasinmazService().Save(tasinmaz);
-                tasinmaz.Id = id;
-                //tasinmaz tablosundaki Bagisci alani her kaydedildiginde Ad+soyad olarak güncellesin
-                Bagis bagis = new Bagis();
-                bagis = new BagisService().GetByTasinmazId(id);
-                if (bagis != null)
-                {
-                    TasinmazBagisci bagisci = new TasinmazBagisci();
-                    bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(bagis.BagisciId);
-                    if (bagisci != null)
-                    {
-                        tasinmaz.BagisciId = bagisci.Id;
-                        tasinmaz.Bagisci = bagisci.Adi + ' ' + bagisci.Soyadi;
-                        new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
-                    }
-                }
-                if (id > 0)
-                {
-                    Sigorta sigorta = new Sigorta();
-                    sigorta = new Model.Services.TBYS.SigortaService().GetLatestByTasinmazId(tasinmaz.Id);
-                    if (sigorta == null)//henuz sigorta kaydi yok yeni sigorta yarat
-                    {
-                        sigorta = new Sigorta();
-                        sigorta.TasinmazId = tasinmaz.Id;
-                        sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                        int sigortaid = new Model.Services.TBYS.SigortaService().Save(sigorta);
-                        sigorta.Id = sigortaid;
-                    }
-                    else
-                    {
-                        sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                        new Model.Services.TBYS.SigortaService().Update(sigorta);
-                    }
-                    scope.Complete();
-                    return tasinmaz;
-                }
-
-                else return null;
-            }
+            new TasinmazService(LoggingContext).SaveWithRelations(tasinmaz, synchronizeDonor: true);
+            return tasinmaz;
         }
         private bool UpdateTasinmazData2Db(int tId)
         {
             bool isSaved = false;
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(tId);
+            tasinmaz = new TasinmazService(LoggingContext).Select(tId);
             //tasinmaz.Id = tId;
             if (tasinmaz != null)
             {
@@ -723,44 +683,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 tasinmaz.SatisPlani = SatisPlaniDDL.SelectedValue.ConvertToInt();
                 tasinmaz.SatisPlaniAciklama = SatisPlaniAciklamaTxt.Text;
 
-                using (TransactionScope scope = new TransactionScope())
-                {
-                    isSaved = new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
-
-                    Bagis bagis = new Bagis();
-                    bagis = new BagisService().GetByTasinmazId(tasinmaz.Id);
-                    if (bagis != null)
-                    {
-                        TasinmazBagisci bagisci = new TasinmazBagisci();
-                        bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(bagis.BagisciId);
-                        if (bagisci != null)
-                        {
-                            tasinmaz.BagisciId = bagisci.Id;
-                            tasinmaz.Bagisci = bagisci.Adi + ' ' + bagisci.Soyadi;
-                            new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
-                        }
-
-                    }
-
-                    if (!tasinmaz.EnvanterdeMi.Equals(ProjeConstants.TASINMAZ_ENVANTERDEN_CIKTI))
-                    {
-                        Sigorta sigorta = new Sigorta();
-                        sigorta = new Model.Services.TBYS.SigortaService().GetLatestByTasinmazId(tasinmaz.Id);
-                        if (sigorta == null)//henuz sigorta kaydi yok yeni sigorta yarat
-                        {
-                            sigorta = new Sigorta();
-                            sigorta.TasinmazId = tasinmaz.Id;
-                            sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                            new Model.Services.TBYS.SigortaService().Save(sigorta);
-                        }
-                        else
-                        {
-                            sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
-                            new Model.Services.TBYS.SigortaService().Update(sigorta);
-                        }
-                    }
-                    scope.Complete();
-                }
+                isSaved = new TasinmazService(LoggingContext).UpdateWithRelations(tasinmaz,
+                    synchronizeDonor: true, synchronizeInsurance: tasinmaz.EnvanterdeMi != ProjeConstants.TASINMAZ_ENVANTERDEN_CIKTI);
             }
 
             return isSaved;
@@ -769,37 +693,52 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         {
             SozlesmeTasinmaz sozlesmeTasinmaz = new SozlesmeTasinmaz();
                             List<SozlesmeTasinmaz> liste = new Model.Services.TBYS.SozlesmeTasinmazService().GetByTasinmazId(tasinmaz.Id);
-            return (liste.Count > 1);
+            return (liste.Count > 0);
         }
 
         #endregion
         #region events
         protected void SaveBtn_Click(object sender, EventArgs e)
         {
-
-            Tasinmaz tasinmaz = SaveTasinmazData2Db();
-            if (tasinmaz != null)
+            try
             {
-                string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                int queryIndex = newUrl.IndexOf("?");
-                if (queryIndex > 0)
-                    newUrl = newUrl.Substring(0, queryIndex);
-                newUrl = newUrl + "?DestinationApp=TD&TasinmazId=" + tasinmaz.Id;
-                Page.Response.Redirect(newUrl, true);
+                Tasinmaz tasinmaz = SaveTasinmazData2Db();
+                if (tasinmaz != null)
+                {
+                    string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                    int queryIndex = newUrl.IndexOf("?");
+                    if (queryIndex > 0)
+                        newUrl = newUrl.Substring(0, queryIndex);
+                    newUrl = newUrl + "?DestinationApp=TD&TasinmazId=" + tasinmaz.Id;
+                    Page.Response.Redirect(newUrl, true);
+                }
+                else
+                    MessageHelper.PublishMessage("Taşınmaz Kaydı başarısız oldu.-TS001", ProjeConstants.MESAJ_HATA);
             }
-            else
-                MessageHelper.PublishMessage("Taşınmaz Kaydı başarısız oldu.-TS001", ProjeConstants.MESAJ_HATA);
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazGirisiWP.SaveBtn_Click", error);
+            }
         }
         protected void UpdateBtn_Click(object sender, EventArgs e)
         {
-            if (UpdateTasinmazData2Db(TasinmazIdQS.ConvertToInt()))
+            try
             {
-                TasinmazDuzenle();
-                MessageHelper.PublishMessage("Taşınmaz kaydı güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                if (UpdateTasinmazData2Db(TasinmazIdQS.ConvertToInt()))
+                {
+                    TasinmazDuzenle();
+                    MessageHelper.PublishMessage("Taşınmaz kaydı güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                }
+                else
+                {
+                    MessageHelper.PublishMessage("Taşınmaz Güncellenemedi.-TS001", ProjeConstants.MESAJ_HATA);
+                }
             }
-            else
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
             {
-                MessageHelper.PublishMessage("Taşınmaz Güncellenemedi.-TS001", ProjeConstants.MESAJ_HATA);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazGirisiWP.UpdateBtn_Click", error);
             }
         }
         protected void TasinmazKartiBtn_Click(object sender, EventArgs e)
@@ -819,7 +758,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         protected void AltBolumlerdenDegerAlBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
             if (tasinmaz == null)
             {
                 MessageHelper.PublishMessage("Taşınmaz bilgileri alınamadı.", ProjeConstants.MESAJ_HATA);
@@ -872,7 +811,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         protected void KayitliDegerGetirBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
             if (tasinmaz == null)
             {
                 MessageHelper.PublishMessage("Taşınmaz bilgileri alınamadı.", ProjeConstants.MESAJ_HATA);
@@ -911,42 +850,55 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         }
         protected void DegerleriKaydetBtn_Click(object sender, EventArgs e)
         {
-            Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
-            if (tasinmaz == null)
+            try
             {
-                MessageHelper.PublishMessage("Taşınmaz bilgileri alınamadı.", ProjeConstants.MESAJ_HATA);
-                return;
-            }
-            tasinmaz.MuhasebeyeKayitliDeger = MuhasebeyeKayitliDegerTxt.Value.ConvertToDecimal();
-            tasinmaz.EmlakBeyanDegeri = EmlakBeyanDegeriTxt.Value.ConvertToDecimal();
-            tasinmaz.YaklasikPiyasaDegeri = YaklasikPiyasaDegeriTxt.Value.ConvertToDecimal();
-            tasinmaz.TahminiRayicDegeri = TahminiRayicDegeriTxt.Value.ConvertToDecimal();
-            new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
+                Tasinmaz tasinmaz = new Tasinmaz();
+                tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
+                if (tasinmaz == null)
+                {
+                    MessageHelper.PublishMessage("Taşınmaz bilgileri alınamadı.", ProjeConstants.MESAJ_HATA);
+                    return;
+                }
+                tasinmaz.MuhasebeyeKayitliDeger = MuhasebeyeKayitliDegerTxt.Value.ConvertToDecimal();
+                tasinmaz.EmlakBeyanDegeri = EmlakBeyanDegeriTxt.Value.ConvertToDecimal();
+                tasinmaz.YaklasikPiyasaDegeri = YaklasikPiyasaDegeriTxt.Value.ConvertToDecimal();
+                tasinmaz.TahminiRayicDegeri = TahminiRayicDegeriTxt.Value.ConvertToDecimal();
+                if (!new Model.Services.TBYS.TasinmazService(LoggingContext).Update(tasinmaz))
+                {
+                    MessageHelper.PublishMessage("Taşınmaz değerleri güncellenemedi.", ProjeConstants.MESAJ_HATA);
+                    return;
+                }
 
-            //MuhasebeyeKayitliDegerTxt.Value = tasinmaz.MuhasebeyeKayitliDeger.ToString("C", new System.Globalization.CultureInfo("tr-TR"));
-            //EmlakBeyanDegeriTxt.Value = tasinmaz.EmlakBeyanDegeri.ToString("C", new System.Globalization.CultureInfo("tr-TR"));
-            //YaklasikPiyasaDegeriTxt.Value = tasinmaz.YaklasikPiyasaDegeri.ToString("C", new System.Globalization.CultureInfo("tr-TR"));
-            //TahminiRayicDegeriTxt.Value = tasinmaz.TahminiRayicDegeri.ToString("C", new System.Globalization.CultureInfo("tr-TR"));
-            SerhBeyanIrtifakTabloOlustur(tasinmaz);
-            if (tasinmaz.AltBolum)
+                //MuhasebeyeKayitliDegerTxt.Value = tasinmaz.MuhasebeyeKayitliDeger.ToString("C", new System.Globalization.CultureInfo("tr-TR"));
+                //EmlakBeyanDegeriTxt.Value = tasinmaz.EmlakBeyanDegeri.ToString("C", new System.Globalization.CultureInfo("tr-TR"));
+                //YaklasikPiyasaDegeriTxt.Value = tasinmaz.YaklasikPiyasaDegeri.ToString("C", new System.Globalization.CultureInfo("tr-TR"));
+                //TahminiRayicDegeriTxt.Value = tasinmaz.TahminiRayicDegeri.ToString("C", new System.Globalization.CultureInfo("tr-TR"));
+                SerhBeyanIrtifakTabloOlustur(tasinmaz);
+                if (tasinmaz.AltBolum)
+                {
+                    BagimsizBolumTabloOlustur(tasinmaz);
+
+                    BagimsizBolumBtn.Visible = true;
+                    AltBolumlerdenDegerAlBtn.Visible = true;
+                    BagimsizBolumTabloContainer.Visible = true;
+                }
+                else
+                {
+                    BagimsizBolumBtn.Visible = false;
+                    AltBolumlerdenDegerAlBtn.Visible = false;
+                    BagimsizBolumTabloContainer.Visible = false;
+                }
+
+
+                ActiveTabQS = "DegerlemeLi";
+                UtilityHelper.ScriptCalistir("setActiveTab('" + ActiveTabQS + "');");
+
+            }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
             {
-                BagimsizBolumTabloOlustur(tasinmaz);
-
-                BagimsizBolumBtn.Visible = true;
-                AltBolumlerdenDegerAlBtn.Visible = true;
-                BagimsizBolumTabloContainer.Visible = true;
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazGirisiWP.DegerleriKaydetBtn_Click", error);
             }
-            else
-            {
-                BagimsizBolumBtn.Visible = false;
-                AltBolumlerdenDegerAlBtn.Visible = false;
-                BagimsizBolumTabloContainer.Visible = false;
-            }
-
-
-            ActiveTabQS = "DegerlemeLi";
-            UtilityHelper.ScriptCalistir("setActiveTab('" + ActiveTabQS + "');");
         }
         protected void SigortaBtn_Click(object sender, EventArgs e)
         {
@@ -1044,88 +996,30 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         }
         protected void DeleteNowBtn_Click(object sender, EventArgs e)
         {
-            //Silme onaylandı
-
-
-            Tasinmaz silinecekTasinmaz = new Tasinmaz();
-            silinecekTasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
-            ExceptionHelper eh = new ExceptionHelper();
-            UtilityHelper.CopyAndCreateImageFromSPLibrary("100TapuFoto.jpg", "100test.jpg", ProjeConstants.RESIMLER_TASINMAZ, eh);
-
-            if (silinecekTasinmaz == null)
+            try
             {
-                MessageHelper.PublishMessage("Taşınmaz bulunamadı", ProjeConstants.MESAJ_HATA);
-            }
-            else
-            {
-                // Bu taşınmazın bağımsız bölümleri var mı
-                BagimsizBolum bagimsizBolum = new BagimsizBolum();
-                List<BagimsizBolum> bolumListesi = new BagimsizBolumService(LoggingContext).GetByTasinmazId(silinecekTasinmaz.Id);
-                if (bolumListesi!=null && bolumListesi.Count > 0) {
-                    MessageHelper.PublishMessage("Taşınmaza ait bağımsız bölümler bulunmaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
-                    return;
-                }
-                //Bağışçısı var mı
-                Bagis bagis = new Bagis();
-                bagis = new BagisService().GetByTasinmazId(silinecekTasinmaz.Id);
-                if (bagis != null)
-                {
-                    MessageHelper.PublishMessage("Taşınmaza ait bağışçı bulunmaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
-                    return;
-                }
-                //sözleşmesi var mı
-                SozlesmeTasinmaz sozlesmeTasinmaz = new SozlesmeTasinmaz();
-                List<SozlesmeTasinmaz> sozlesmeListesi = new Model.Services.TBYS.SozlesmeTasinmazService().GetByTasinmazId(silinecekTasinmaz.Id);
-                if (sozlesmeListesi!=null && sozlesmeListesi.Count > 0)
-                {
-                    MessageHelper.PublishMessage("Taşınmaza ait sözleşmeler bulunmaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
-                    return;
-                }
-                //SozlesmeTasinmaz_Table'da TasinmazId olan var mi
-                SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-                List<SozlesmeTasinmaz> stList = new Model.Services.TBYS.SozlesmeTasinmazService().GetByTasinmazId(silinecekTasinmaz.Id);
-                if (stList!=null && stList.Count > 0)
-                {
-                    MessageHelper.PublishMessage("Taşınmaza ait sözleşme bulunmaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
-                    return;
-                }
-
-                //Onarım planı var mı
-                Onarim onarim = new Onarim();
-                List<Onarim> onarimList = new Model.Services.TBYS.OnarimService().GetByTasinmazId(silinecekTasinmaz.Id);
-                if (onarimList!=null && onarimList.Count > 0)
-                {
-                    MessageHelper.PublishMessage("Taşınmaza ait onarım bulunmaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
-                    return;
-                }
-                //Sigortası var mı
-                Sigorta sigorta = new Sigorta();
-                sigorta = new Model.Services.TBYS.SigortaService().GetLatestByTasinmazId(silinecekTasinmaz.Id);
-                if (sigorta != null)
-                {
-                    MessageHelper.PublishMessage("Taşınmaza ait sigorta bulunmaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
-                    return;
-                }
-
-                //Resimler silinmesin
+                Tasinmaz property = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
                 UtilityHelper.ScriptCalistir("CloseDeleteModal();");
-                TasinmaziSil(silinecekTasinmaz);
-
+                TasinmaziSil(property);
             }
-
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazGirisiWP.DeleteNowBtn_Click", error);
+            }
         }
 
         private void TasinmaziSil(Tasinmaz silinecekTasinmaz)
         {
             try
             {
-                bool envanterdeMi = silinecekTasinmaz.EnvanterdeMi == ProjeConstants.TASINMAZ_ENVANTERDE;
                 if (silinecekTasinmaz == null)
                 {
                     MessageHelper.PublishMessage("Taşınmaz bulunamadı", ProjeConstants.MESAJ_HATA);
                     return;
                 }
-                if (new Model.Services.TBYS.TasinmazService().Delete(silinecekTasinmaz))
+                bool envanterdeMi = silinecekTasinmaz.EnvanterdeMi == ProjeConstants.TASINMAZ_ENVANTERDE;
+                if (new Model.Services.TBYS.TasinmazService(LoggingContext).Delete(silinecekTasinmaz))
                 {
                     string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                     string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
@@ -1134,9 +1028,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Taşınmaz silinemedi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Taşınmaz silinemedi. Kayıt artık mevcut olmayabilir veya bağlı bölüm, bağış, sözleşme, onarım ya da sigorta kaydı bulunabilir.", ProjeConstants.MESAJ_HATA);
                 }
-
             }
             catch (Exception ex)
             {
@@ -1149,7 +1042,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         protected void ResimlerBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
             if (tasinmaz != null)
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -1201,8 +1094,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         protected void NextBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
-            Tasinmaz sonrakiTasinmaz = new TasinmazService().SelectNext(tasinmaz.Id);
+            tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
+            Tasinmaz sonrakiTasinmaz = new TasinmazService(LoggingContext).SelectNext(tasinmaz.Id);
             string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             int queryIndex = newUrl.IndexOf("?");
             if (queryIndex > 0)
@@ -1213,8 +1106,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         protected void PrevBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
-            Tasinmaz oncekiTasinmaz = new TasinmazService().SelectPrev(tasinmaz.Id);
+            tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
+            Tasinmaz oncekiTasinmaz = new TasinmazService(LoggingContext).SelectPrev(tasinmaz.Id);
             string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             int queryIndex = newUrl.IndexOf("?");
             if (queryIndex > 0)
@@ -1606,7 +1499,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 UtilityHelper.ScriptCalistir("OpenModal();");
             }
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
             if (tasinmaz != null)
             {
                 SerhBeyanIrtifakTabloOlustur(tasinmaz);
@@ -1658,7 +1551,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             {
                 //SerhBeyanIrtifak tablosunu güncelle
                 Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+                tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
                 SerhBeyanIrtifakTabloOlustur(tasinmaz);
                 if (tasinmaz.AltBolum)
                 {
@@ -1686,7 +1579,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 {
                     //SerhBeyanIrtifak tablosunu güncelle
                     Tasinmaz tasinmaz = new Tasinmaz();
-                    tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+                    tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
                     SerhBeyanIrtifakTabloOlustur(tasinmaz);
                     if (tasinmaz.AltBolum)
                     {
@@ -1723,7 +1616,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 {
                     //SerhBeyanIrtifak tablosunu güncelle
                     Tasinmaz tasinmaz = new Tasinmaz();
-                    tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+                    tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
                     SerhBeyanIrtifakTabloOlustur(tasinmaz);
                     if (tasinmaz.AltBolum)
                     {
