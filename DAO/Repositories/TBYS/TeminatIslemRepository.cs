@@ -70,6 +70,12 @@ namespace DAO.Repositories.TBYS
             q.AddParameter("@KiraciId", id);
             return db.SelectFromDb(q, "");
         }
+        public DataTable SelectSumByKiraciIdGroupByType(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery q = new SqlQuery("SELECT SUM(IslemTutari) IslemToplami, IslemTipi FROM TeminatIslem_Table WITH (UPDLOCK, HOLDLOCK) WHERE KiraciId=@KiraciId GROUP BY IslemTipi");
+            q.AddParameter("@KiraciId", id);
+            return db.SelectFromDb(q, transaction, context);
+        }
 
         public bool DeleteBySozlesmeId(int id)
         {
