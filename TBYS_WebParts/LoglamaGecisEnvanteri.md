@@ -1,5 +1,11 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
+## Güncel parça: kiracı okuma bağlantıları
+
+Dal: `codex/tbys-tenant-read-wiring-batch`. Başlangıç commit'i: `e5d716c0` (PR #470 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. Borçlu kiracı, kira kartı, aylık ödeme, banka ekstresi, ödeme girişi, ödeme planı ve teminat ekranlarının kiracı okumaları mevcut bağlamlı `KiraciService` overload'larına geçirildi. Bu dalda 8 WebPart dosyası ve envanter olmak üzere 9 dosya değişti.
+
+Bu parça kiracı CRUD yazmalarını değiştirmiyor; yalnızca ilgili ekran okumalarının TBYS SQL izine doğru WebPart bağlamıyla ulaşmasını sağlıyor. Üretilmiş ASCX dosyaları değişmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve `git diff --check` yapıldı. Build ve TEST kullanıcıya aittir.
+
 ## Güncel parça: ödeme planı okuma bağlantıları
 
 Dal: `codex/tbys-payment-read-wiring-batch`. Başlangıç commit'i: `abcd6b1c` (PR #469 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. Borçlu kiracı, kiracı kartı/girişi, kira banka ekstresi, ödeme girişi ve aylık ödeme ekranlarının ana ödeme planı/ödeme okumaları bağlamlı servis kurucularına geçirildi. Kira bakiyesi devrinin yazma çağrısı önceki parçada bağlanmıştı. Bu dalda 7 WebPart dosyası ve envanter olmak üzere 8 dosya değişti.

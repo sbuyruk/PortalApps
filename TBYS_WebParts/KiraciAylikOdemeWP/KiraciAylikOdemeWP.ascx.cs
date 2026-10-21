@@ -198,7 +198,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                     BitisTarihiTxt.Text = BittarQS.ConvertToDatetimeEmptyIfNull();
                 }
                 Kiraci kiraci = new Kiraci();
-                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt(), LoggingContext);
                 if (kiraci != null || string.IsNullOrEmpty(KiraciIdQS) || KiraciIdQS.Equals(ProjeConstants.HEPSI_INT.ToString()))
                 {
                     KiraciTxt.Text = kiraci == null ? "Hepsi" : kiraci.Adi + " " + kiraci.Soyadi;

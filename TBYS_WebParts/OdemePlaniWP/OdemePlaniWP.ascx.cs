@@ -189,7 +189,7 @@ namespace TBYS_WebParts.OdemePlaniWP
         private string KiraciGetir(int kiraciId)
         {
             Kiraci kiraci = new Kiraci();
-            kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraciId);
+            kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraciId, LoggingContext);
             if (kiraci != null)
             {
                 return kiraci.Adi + " " + kiraci.Soyadi;
