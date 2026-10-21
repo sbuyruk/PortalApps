@@ -1,6 +1,43 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
-## Güncel parça: taşınmaz kopyalama ve ilişkileri taşıma
+## Güncel parça: sigorta ve onarım girişleri, SQL izi ve audit
+
+Dal: `codex/tbys-insurance-repair-audit`. Başlangıç commit'i: `ee714670e8f4e04db475e5d6d35a238e9a5f0ac3`. Kod değişikliğinden önce yerel master temizdi ve GitHub master ile aynı commit'teydi. Önceki kopyalama parçası PR #460 ile birleştirildi. Kullanıcı toplu test yapacağını bildirmişti; bu parçanın çalışma zamanı doğrulaması henüz yapılmadı.
+
+Bağlamlı servis çağrıları eklenen ekranlar: TasinmazSigortaGirisWP, SigortaEkleSilWP, TasinmazOnarimGirisiWP, TasinmazSigortaListesiWP, TasinmazOnarimListesiWP, SigortaDurumuDaskWP. Sigorta/onarım, bağlı taşınmaz ve bölüm okumaları kendi WebPart/OperationId bağlamlarıyla SQL izi üretir. Dinamik tablolardaki silme olaylarında sonuç kontrol edilir; hata güvenli Türkçe mesajla bildirilir. Redirect kaynaklı ThreadAbortException hata sayılmaz.
+
+SigortaService ve OnarimService bağlamlı kurucu ve transaction-aware yazma yollarına sahiptir. Bağlamlı Save/Update/Delete iş verisini ve audit başlık/ayrıntılarını aynı SqlTransactionContext ile yazar. Eski/yeni değerler aynı transaction'dan okunan gerçek satırlardan karşılaştırılır. Audit yazımı başarısızsa iş verisi de rollback olur. Logging kapalıysa transaction çalışmaya devam eder; eski OlayKayit yoluna dönülmez. Bağlamsız eski çağıranlar korunur.
+
+Sigorta ekleme/güncellemede bağlı taşınmaz kilitlenerek doğrulanır; BolumId pozitifse bölümün aynı taşınmaza ait olması gerekir. Onarım ekleme/güncellemede bağlı taşınmaz doğrulanır. Güncellemede mevcut oluşturulma bilgileri korunur. Sigorta/onarımın bağlı taşınmazı arada taşınmışsa eski ekranın güncellemesi bu ilişkiyi eski taşınmaza geri döndürmez. Silmede kayıt aynı transaction'dan yeniden okunur; taşınmaz kimliği beklenenle eşleşmiyorsa silinmez.
+
+TasinmazSigortaGirisWP'nin sigorta ekleme/güncellemesindeki ikinci taşınmaz yazması artık SaveWithPropertyStatus/UpdateWithPropertyStatus içindedir. Sigorta ve taşınmazın SigortaDurumu değişimi, ilgili audit kayıtlarıyla birlikte tek transaction'dır. Taşınmazda yalnızca SigortaDurumu ve değiştiren/zaman alanları yazılır; durum zaten aynıysa gereksiz taşınmaz UPDATE/audit üretilmez. SigortaEkleSilWP'nin basit eklemesi önceki davranışı gibi taşınmaz durumunu ayrıca eşitlemez. Sigorta silinmesi de önceki davranışı gibi taşınmaz durumunu yeniden hesaplamaz. Bu parça yeni bir sigorta öncelik/son poliçe iş kuralı getirmez.
+
+Audit izin listeleri:
+
+- Sigorta: TasinmazId, BolumId, SigortaCinsi, SigortaBasTar, SigortaBitTar, SigortaBedeli, Prim, KullanimSekli.
+- Onarim: TasinmazId, HarcamaUsulu, OnayTarihi, Tutar. YapilanIs ve Aciklama iş kaydında korunur, audit ayrıntısına yazılmaz.
+- Sigorta ekranının taşınmaz eşitlemesi: yalnızca değişen SigortaDurumu.
+- Belge referansı: Sigorta UPDATE başlığı; var/yok değişiminde türetilmiş BelgeMevcut alanının false/true değerleri. Dosya adı/yolu/içeriği audit ayrıntısına alınmaz. Başka bir dolu dosya adına geçişte veya aynı adla yeniden yüklemede başlık olup ayrıntı olmayabilir.
+
+Poliçe numarası, adres kodu, serbest açıklama ve teminat açıklamaları audit ayrıntısına alınmaz. İzinli alanı değişmeyen UPDATE başlığında sıfır ayrıntı bulunabilir. NULL ve sıfır ayrıdır; tarih ve sayılar kültürden bağımsız biçimlenir. EntityId uygulamadaki gerçek Id alanıdır. Teknik SQL izleri bağımsız yazıcıyı kullanır; SqlTrace Succeeded yalnızca komut yürütülmesini gösterir ve sonradan iş rollback olmasını dışlamaz.
+
+Belge kaydetme yalnızca PDFDosyasi ve değiştiren/zaman alanlarını hedefleyen UpdateDocument metodunu kullanır; eski formun tüm sigorta alanlarını yeniden yazmaz. Dosya silme başarılıysa veritabanındaki belge referansı da temizlenir. Boş belge referansında görüntüleme hata üretmez. Başarısız sigorta güncellemesinden sonra PDF yazımı başlatılmaz.
+
+SharePoint dosyasını yükleme/silme işlemi SQL transaction'ının parçası değildir. Belge referansı ile onun audit'i birlikte commit/rollback olur; dosyanın kendisi bu rollback ile geri gelmez veya silinmez. Dosya işlemi başarılı, sonraki DB yazması başarısızsa dosya/referans tutarsızlığı teknik hata olarak bildirilir; bu parçada dağıtık transaction veya otomatik telafi altyapısı eklenmedi. Sigorta kaydının silinmesi fiziksel belgeyi otomatik silmez.
+
+Kullanıcı TEST kontrolleri:
+
+1. Altı ekranda açılış ve ilgili liste/rapor SELECT izlerini kontrol edin; doğru WebPart ve repository/metot görünmeli. Giriş ekranlarında sigorta/onarım ekleme ve silme audit başlıkları doğru entity ve Id ile oluşmalı.
+2. SigortaBedeli/Prim/tarih gibi tek izinli alanı değiştirin. Eski/yeni değer yalnızca değişen izinli alanlar için görünmeli. Açıklama/poliçe numarası gibi dışlanan alanlar audit ayrıntısında bulunmamalı.
+3. Ana sigorta girişinde SigortaCinsi değiştirin. Sigorta UPDATE ve gerekiyorsa Tasinmaz UPDATE aynı OperationId altında olmalı; taşınmaz ayrıntısı yalnızca SigortaDurumu olmalı. Kontrollü taşınmaz/audit yazma hatasında her iki iş yazması ve audit birlikte geri alınmalı.
+4. Onarım ekleyip silin; Tutar/OnayTarihi/HarcamaUsulu audit değerlerini kontrol edin. Ekran bağımsız bir onarım düzenleme düğmesi içermez; servis Update yolu hazırdır, yeni düzenleme ekranı eklenmedi. Bulunmayan taşınmaza kayıt eklenmemeli. Başka taşınmazın bölümüyle sigorta yazılmamalı. Kontrollü audit hatasında sigorta/onarım yazması geri alınmalı.
+5. Kopyalama/taşıma nedeniyle bağlı taşınmazı değişen eski kayıt nesnesiyle güncelleme/silmeyi deneyin; kayıt eski taşınmaza dönmemeli veya yanlış bağlamdan silinmemeli. Başarısız silmede DELETE audit oluşmamalı.
+6. Belge yükleyin, değiştirin ve silin. PDF referansı doğru güncellenmeli; başka sigorta alanları belge yazımıyla değişmemeli. Silmede referans temizlenmeli ve BelgeMevcut true→false görünmeli. Dosya adı/içeriği audit'e yazılmamalı. Dosya işlemi sonrasındaki kontrollü DB hatasını ayrı bir tutarsızlık senaryosu olarak değerlendirin.
+7. Önceki taşınmaz ekleme/güncelleme ve kopyalama kontrollerini tekrarlayın: sigorta transaction overload'larına eklenen ilişki doğrulaması geçerli mevcut akışları bozmamalı. Logging kapalı kullanımda iş transaction'ı çalışmalı ve eski log yazıcısı çağrılmamalı.
+
+Genel bağış/bağışçı, sözleşme ve envanterden çıkarma akışları kalan parçalardır. Mevcut EnabledProjects=TBYS varsa yeni web.config değişikliği gerekmez; tek tek etkinleştirmede yukarıdaki altı WebPart adı TBYS: ön ekiyle kullanılır. Yeni dosya/şema veya tanılama altyapısı eklenmedi; üretilmiş ASCX dosyaları değiştirilmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve git diff --check yapıldı. Build ve TEST kullanıcıya aittir.
+
+## Önceki parça: taşınmaz kopyalama ve ilişkileri taşıma
 
 Dal: `codex/tbys-property-copy-audit`. Başlangıç commit'i: `db24c8f2682882c8fa9dee1f48cd70e49ffd6b41`. Kod değişikliğinden önce yerel master temizdi ve GitHub master ile aynı commit'teydi. Önceki taşınmaz parçası PR #459 ile birleştirildi. Kullanıcı toplu test yapacağını bildirmişti; bu parçanın çalışma zamanı doğrulaması henüz yapılmadı.
 

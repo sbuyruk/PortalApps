@@ -152,7 +152,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP
             if (!string.IsNullOrEmpty(TasinmazIdQS))
             {
                 Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = new TasinmazService().GetById(TasinmazIdQS.ConvertToInt());
+                tasinmaz = new TasinmazService(LoggingContext).GetById(TasinmazIdQS.ConvertToInt());
                 if (tasinmaz != null)
                 {
                     OnarimFormunuDoldur(tasinmaz);
@@ -172,26 +172,34 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP
         }
         protected void OnarimEkleBtn_Click(object sender, EventArgs e)
         {
-            Onarim onarim = new Onarim();
-            onarim.YapilanIs = YapilanIsTxt.Text;
-            onarim.HarcamaUsulu = HarcamaUsuluDDL.SelectedValue;
-            onarim.OnayTarihi = OnayTarihiTxt.Value.ConvertToDatetime();
-            onarim.Tutar = TutarTxt.Text.ConvertToDecimal();
-            onarim.Aciklama = AciklamaTxt.Text;
-            onarim.TasinmazId = TasinmazIdQS.ConvertToInt();
-            onarim.Olusturan = CurrentUserName;
-            int onarimId = new Model.Services.TBYS.OnarimService().Save(onarim);
-            string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            int queryIndex = newUrl.IndexOf("?");
-            if (queryIndex > 0)
-                newUrl = newUrl.Substring(0, queryIndex);
+            try
+            {
+                Onarim onarim = new Onarim();
+                onarim.YapilanIs = YapilanIsTxt.Text;
+                onarim.HarcamaUsulu = HarcamaUsuluDDL.SelectedValue;
+                onarim.OnayTarihi = OnayTarihiTxt.Value.ConvertToDatetime();
+                onarim.Tutar = TutarTxt.Text.ConvertToDecimal();
+                onarim.Aciklama = AciklamaTxt.Text;
+                onarim.TasinmazId = TasinmazIdQS.ConvertToInt();
+                onarim.Olusturan = CurrentUserName;
+                int onarimId = new Model.Services.TBYS.OnarimService(LoggingContext).Save(onarim);
+                string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                int queryIndex = newUrl.IndexOf("?");
+                if (queryIndex > 0)
+                    newUrl = newUrl.Substring(0, queryIndex);
 
-            Page.Response.Redirect(newUrl + "?TasinmazId=" + onarim.TasinmazId + "&SenderApp=" + SenderAppQS, true);
+                Page.Response.Redirect(newUrl + "?TasinmazId=" + onarim.TasinmazId + "&SenderApp=" + SenderAppQS, true);
+            }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazOnarimGirisiWP.OnarimEkleBtn_Click", error);
+            }
         }
         protected void BackBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().GetById(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService(LoggingContext).GetById(TasinmazIdQS.ConvertToInt());
             if (SenderAppQS.Equals("TD"))
             {
                 //Page.Response.Redirect("/pages/TasinmazGirisi.aspx?visible=TD&tId=" + tasinmazId);
@@ -231,7 +239,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP
             HeaderCell5.Text = "Açiklama";
             HeaderCell5.Visible = true;
 
-            List<Onarim> list = new OnarimService().GetByTasinmazIdWithAddress(tasinmaz.Id);
+            List<Onarim> list = new OnarimService(LoggingContext).GetByTasinmazIdWithAddress(tasinmaz.Id);
             int SiraNo = 1;
             foreach (Onarim onarim in list)
             {
@@ -269,13 +277,25 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP
                 SilBtn.CssClass = "btn btn-outline-danger";
                 SilBtn.Click += delegate
                 {
-                    int tasinmazId = onarim.TasinmazId;
-                    new Model.Services.TBYS.OnarimService().Delete(onarim);
-                    string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                    int queryIndex = newUrl.IndexOf("?");
-                    if (queryIndex > 0)
-                        newUrl = newUrl.Substring(0, queryIndex);
-                    Page.Response.Redirect(newUrl + "?TasinmazId=" + tasinmazId + "&SenderApp=" + SenderAppQS, true);
+                    try
+                    {
+                        int tasinmazId = onarim.TasinmazId;
+                        if (!new Model.Services.TBYS.OnarimService(LoggingContext).Delete(onarim))
+                        {
+                            MessageHelper.PublishMessage("Onarım kaydı silinemedi. Sayfayı yenileyip tekrar deneyiniz.", ProjeConstants.MESAJ_HATA);
+                            return;
+                        }
+                        string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                        int queryIndex = newUrl.IndexOf("?");
+                        if (queryIndex > 0)
+                            newUrl = newUrl.Substring(0, queryIndex);
+                        Page.Response.Redirect(newUrl + "?TasinmazId=" + tasinmazId + "&SenderApp=" + SenderAppQS, true);
+                    }
+                    catch (System.Threading.ThreadAbortException) { throw; }
+                    catch (Exception error)
+                    {
+                        TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazOnarimGirisiWP.Delete", error);
+                    }
                 };
                 SilCell.Controls.Add(SilBtn);
                 row.Controls.Add(SilCell);

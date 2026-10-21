@@ -158,5 +158,20 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@ChangedBy", changedBy);
             return db.Update2Db(query, transaction, context);
         }
+
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.DeleteFromDb(queryBuilder.BuildDelete("Onarim_Table", id), transaction, context);
+        }
+
+        public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Insert(queryBuilder.BuildInsert(entity, "Onarim_Table"), transaction, context);
+        }
+
+        public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Update2Db(queryBuilder.BuildUpdate(entity, "Onarim_Table"), transaction, context);
+        }
     }
 }

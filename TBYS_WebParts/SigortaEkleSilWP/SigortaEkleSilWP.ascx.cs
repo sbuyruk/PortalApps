@@ -174,7 +174,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP
         protected void Page_Load(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
             if (tasinmaz != null)
             {
                 SigortaTablosunuDoldur(tasinmaz);
@@ -201,7 +201,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP
             if (tasinmaz.KatMulkiyeti.Equals(ProjeConstants.KAT_MULKIYETI_YOK))
             {
                 BagimsizBolum bb = new BagimsizBolum();
-                List<BagimsizBolum> list = new BagimsizBolumService().GetByTasinmazId(tasinmaz.Id);
+                List<BagimsizBolum> list = new BagimsizBolumService(LoggingContext).GetByTasinmazId(tasinmaz.Id);
                 foreach (BagimsizBolum item in list)
                 {
                     ListItem li = new ListItem(item.BolumNo, item.Id.ToString());
@@ -211,34 +211,42 @@ namespace TBYS_WebParts.SigortaEkleSilWP
         }
         protected void SigortaEkleBtn_Click(object sender, EventArgs e)
         {
-            Sigorta sigorta = new Sigorta();
-            sigorta.TasinmazId = TasinmazIdQS.ConvertToInt();
+            try
+            {
+                Sigorta sigorta = new Sigorta();
+                sigorta.TasinmazId = TasinmazIdQS.ConvertToInt();
 
-            sigorta.SigortaCinsi = SigortaCinsiDDL.SelectedValue;
-            sigorta.SigortaBasTar = SigortaBasTarTxt.Value.ConvertToDatetime();
-            sigorta.SigortaBitTar = SigortaBitTarTxt.Value.ConvertToDatetime();
-            sigorta.BulunduguKat = BulunduguKatTxt.Text;
-            sigorta.SigortaBedeli = SigortaBedeliTxt.Text.ConvertToDecimal();
-            sigorta.Prim = PrimTxt.Text.ConvertToDecimal();
-            sigorta.AdresKodu = AdresKoduTxt.Text;
-            sigorta.PoliceNo = PoliceNoTxt.Text;
-            sigorta.DaskPoliceNo = DaskPoliceNoTxt.Text;
-            sigorta.YapiTarzi = YapiTarziTxt.Text;
-            sigorta.InsaYili = InsaYiliTxt.Text;
-            sigorta.Olusturan = CurrentUserName;
-            sigorta.BolumId = BagimsizBolumDDL.SelectedItem.Value.ConvertToInt();
-            int sigortaId = new Model.Services.TBYS.SigortaService().Save(sigorta);
-            string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            int queryIndex = newUrl.IndexOf("?");
-            if (queryIndex > 0)
-                newUrl = newUrl.Substring(0, queryIndex);
+                sigorta.SigortaCinsi = SigortaCinsiDDL.SelectedValue;
+                sigorta.SigortaBasTar = SigortaBasTarTxt.Value.ConvertToDatetime();
+                sigorta.SigortaBitTar = SigortaBitTarTxt.Value.ConvertToDatetime();
+                sigorta.BulunduguKat = BulunduguKatTxt.Text;
+                sigorta.SigortaBedeli = SigortaBedeliTxt.Text.ConvertToDecimal();
+                sigorta.Prim = PrimTxt.Text.ConvertToDecimal();
+                sigorta.AdresKodu = AdresKoduTxt.Text;
+                sigorta.PoliceNo = PoliceNoTxt.Text;
+                sigorta.DaskPoliceNo = DaskPoliceNoTxt.Text;
+                sigorta.YapiTarzi = YapiTarziTxt.Text;
+                sigorta.InsaYili = InsaYiliTxt.Text;
+                sigorta.Olusturan = CurrentUserName;
+                sigorta.BolumId = BagimsizBolumDDL.SelectedItem.Value.ConvertToInt();
+                int sigortaId = new Model.Services.TBYS.SigortaService(LoggingContext).Save(sigorta);
+                string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                int queryIndex = newUrl.IndexOf("?");
+                if (queryIndex > 0)
+                    newUrl = newUrl.Substring(0, queryIndex);
 
-            Page.Response.Redirect(newUrl + "?TasinmazId=" + sigorta.TasinmazId + "&SenderApp=" + SenderAppQS, true);
+                Page.Response.Redirect(newUrl + "?TasinmazId=" + sigorta.TasinmazId + "&SenderApp=" + SenderAppQS, true);
+            }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.SigortaEkleSilWP.SigortaEkleBtn_Click", error);
+            }
         }
         protected void BackBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
             if (EnvanterdeMiQS.Equals("2"))
                 RedirectToPage(ProjeConstants.PAGE_PAGE_MULKIYETIOLMAYANTASINMAZ_LIST);
 
@@ -280,7 +288,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP
             HeaderCell9.Text = "Sil";
             HeaderCell9.Visible = true;
 
-            List<Sigorta> list = new Model.Services.TBYS.SigortaService().GetByTasinmazId(tasinmaz.Id);
+            List<Sigorta> list = new Model.Services.TBYS.SigortaService(LoggingContext).GetByTasinmazId(tasinmaz.Id);
             foreach (Sigorta sigorta in list)
             {
                 TableRow row = new TableRow();
@@ -337,13 +345,25 @@ namespace TBYS_WebParts.SigortaEkleSilWP
                 SilBtn.CssClass = "btn btn-outline-danger";
                 SilBtn.Click += delegate
                 {
-                    int tasinmazId = sigorta.TasinmazId;
-                    new Model.Services.TBYS.SigortaService().Delete(sigorta);
-                    string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                    int queryIndex = newUrl.IndexOf("?");
-                    if (queryIndex > 0)
-                        newUrl = newUrl.Substring(0, queryIndex);
-                    Page.Response.Redirect(newUrl + "?TasinmazId=" + tasinmazId + "&SenderApp=" + SenderAppQS, true);
+                    try
+                    {
+                        int tasinmazId = sigorta.TasinmazId;
+                        if (!new Model.Services.TBYS.SigortaService(LoggingContext).Delete(sigorta))
+                        {
+                            MessageHelper.PublishMessage("Sigorta kaydı silinemedi. Sayfayı yenileyip tekrar deneyiniz.", ProjeConstants.MESAJ_HATA);
+                            return;
+                        }
+                        string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                        int queryIndex = newUrl.IndexOf("?");
+                        if (queryIndex > 0)
+                            newUrl = newUrl.Substring(0, queryIndex);
+                        Page.Response.Redirect(newUrl + "?TasinmazId=" + tasinmazId + "&SenderApp=" + SenderAppQS, true);
+                    }
+                    catch (System.Threading.ThreadAbortException) { throw; }
+                    catch (Exception error)
+                    {
+                        TbysWebPartLog.ReportError(LoggingContext, "TBYS.SigortaEkleSilWP.Delete", error);
+                    }
                 };
                 SilCell.Controls.Add(SilBtn);
                 row.Controls.Add(SilCell);

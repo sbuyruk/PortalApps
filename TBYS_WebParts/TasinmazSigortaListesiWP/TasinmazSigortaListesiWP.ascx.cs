@@ -487,7 +487,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
             DateTime bitTarih = BitisTarihiTxt.Text.ConvertToDatetime().Date;
             Sigorta sigorta = new Sigorta();
             //DataTable dataTable = sigorta.SelectAllReturnDataTable();
-            DataTable dataTable = new Model.Services.TBYS.SigortaService().GetByTeminatSigortaCinsi(SigortaCinsiQS, VadesiGelenlerChk.Checked, DepremQS.ConvertToBool(), YanginQS.ConvertToBool(), Makine100000QS.ConvertToBool(),
+            DataTable dataTable = new Model.Services.TBYS.SigortaService(LoggingContext).GetByTeminatSigortaCinsi(SigortaCinsiQS, VadesiGelenlerChk.Checked, DepremQS.ConvertToBool(), YanginQS.ConvertToBool(), Makine100000QS.ConvertToBool(),
                 Makine5000QS.ConvertToBool(), JeneratorQS.ConvertToBool(), AsansorQS.ConvertToBool(), KazanQS.ConvertToBool(), BolgeIdQS, basTarih, bitTarih);
             BitAlanlariMetneCevir(dataTable);
             return dataTable;
@@ -759,7 +759,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
             Sigorta sigorta = new Sigorta();
             //DataTable dataTable = sigorta.SelectAllReturnDataTable();
 
-            DataTable dataTable = new Model.Services.TBYS.SigortaService().GetByTeminatSigortaCinsi(SigortaCinsiQS, VadesiGelenlerChk.Checked, DepremQS.ConvertToBool(), YanginQS.ConvertToBool(), Makine100000QS.ConvertToBool(),
+            DataTable dataTable = new Model.Services.TBYS.SigortaService(LoggingContext).GetByTeminatSigortaCinsi(SigortaCinsiQS, VadesiGelenlerChk.Checked, DepremQS.ConvertToBool(), YanginQS.ConvertToBool(), Makine100000QS.ConvertToBool(),
                 Makine5000QS.ConvertToBool(), JeneratorQS.ConvertToBool(), AsansorQS.ConvertToBool(), KazanQS.ConvertToBool(),BolgeIdQS, basTarih, bitTarih);
 
             if (dataTable != null && dataTable.Rows.Count > 0)

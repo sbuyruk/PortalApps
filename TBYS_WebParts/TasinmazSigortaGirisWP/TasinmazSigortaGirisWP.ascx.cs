@@ -297,7 +297,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             TitleLbl.Text = "Sigorta Güncelleme";
 
             Sigorta sigorta = new Sigorta();
-            sigorta = new Model.Services.TBYS.SigortaService().GetById(SigortaIdQS.ConvertToInt());
+            sigorta = new Model.Services.TBYS.SigortaService(LoggingContext).GetById(SigortaIdQS.ConvertToInt());
             if (sigorta != null)
             {
 
@@ -346,7 +346,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
 
                 BagimsizBolumNoTxt.Text = string.IsNullOrEmpty(sigorta.BagimsizBolumNo)?BagimsizBolumDDL.SelectedItem.Text: sigorta.BagimsizBolumNo;
                 Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = new TasinmazService().Select(sigorta.TasinmazId);
+                tasinmaz = new TasinmazService(LoggingContext).Select(sigorta.TasinmazId);
                 if (tasinmaz != null)
                 {
                     AdiLbl.Text = tasinmaz.KullanimSekli + " - " + tasinmaz.Adres + " - " + tasinmaz.Ilcesi + "/" + tasinmaz.Ili;
@@ -361,7 +361,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                         if (tasinmaz.AltBolum) // Bu siorta Bağımsız bölüme ait
                         {
                             BagimsizBolum bagimsizBolum = new BagimsizBolum();
-                            bagimsizBolum = new BagimsizBolumService().GetById(sigorta.BolumId);
+                            bagimsizBolum = new BagimsizBolumService(LoggingContext).GetById(sigorta.BolumId);
                             if (bagimsizBolum != null)
                             {
                                 KullanimAmaciTxt.Text = bagimsizBolum.KullanimAmaci;
@@ -411,7 +411,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             //BagimsizBolumDDL.Items.Add(li0);
 
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(sigorta.TasinmazId);
+            tasinmaz = new TasinmazService(LoggingContext).Select(sigorta.TasinmazId);
             if (tasinmaz != null)
             {
                 if (tasinmaz.AltBolum == ProjeConstants.ALTBOLUM_YOK)
@@ -425,7 +425,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 {
                     KullanimAmaciTxt.Text = sigorta.KullanimSekli;
                     BagimsizBolum bb = new BagimsizBolum();
-                    List<BagimsizBolum> list = new BagimsizBolumService().GetByTasinmazId(sigorta.TasinmazId);
+                    List<BagimsizBolum> list = new BagimsizBolumService(LoggingContext).GetByTasinmazId(sigorta.TasinmazId);
                     foreach (BagimsizBolum item in list)
                     {
                         ListItem li = new ListItem(item.BolumNo, item.Id.ToString());
@@ -488,17 +488,8 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 sigorta.BagimsizBolumNo = BagimsizBolumNoTxt.Text;
                 sigorta.Aciklama = AciklamaTxt.Text;
                 sigorta.KullanimSekli = KullanimAmaciTxt.Text;
-                guncellendiMi = new Model.Services.TBYS.SigortaService().Update(sigorta);
-                if (guncellendiMi)
-                {
-                    Tasinmaz tasinmaz = new Tasinmaz();
-                    tasinmaz = new TasinmazService().Select(sigorta.TasinmazId);
-                    if (tasinmaz != null)
-                    {
-                        tasinmaz.SigortaDurumu = sigorta.SigortaCinsi;
-                        new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
-                    }
-                }
+                guncellendiMi = new Model.Services.TBYS.SigortaService(LoggingContext).UpdateWithPropertyStatus(sigorta);
+
             }
             return guncellendiMi;
         }
@@ -528,17 +519,10 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             sigorta.BagimsizBolumNo = BagimsizBolumNoTxt.Text;
             sigorta.Aciklama = AciklamaTxt.Text;
             sigorta.KullanimSekli = KullanimAmaciTxt.Text;
-            int sigortaId = new Model.Services.TBYS.SigortaService().Save(sigorta);
+            int sigortaId = new Model.Services.TBYS.SigortaService(LoggingContext).SaveWithPropertyStatus(sigorta);
             sigorta.Id = sigortaId;
             if (sigortaId > 0)
             {
-                Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = new TasinmazService().Select(sigorta.TasinmazId);
-                if (tasinmaz != null)
-                {
-                    tasinmaz.SigortaDurumu = sigorta.SigortaCinsi;
-                    new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
-                }
                 string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 int queryIndex = newUrl.IndexOf("?");
                 if (queryIndex > 0)
@@ -630,7 +614,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Bağışçı Kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Sigorta kaydedilemedi.", ProjeConstants.MESAJ_HATA);
                 }
 
 
@@ -646,39 +630,35 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         {
             try
             {
-                Sigorta sigorta = new Sigorta();
-                sigorta = new Model.Services.TBYS.SigortaService().GetById(SigortaIdQS.ConvertToInt());
-                if (sigorta!=null)
+                Sigorta sigorta = new Model.Services.TBYS.SigortaService(LoggingContext).GetById(SigortaIdQS.ConvertToInt());
+                if (sigorta == null)
                 {
-                    bool guncellendiMi = UpdateSigorta(sigorta);
-                    if (guncellendiMi)
-                    {
-                        MessageHelper.PublishMessage("Sigorta Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage("Sigorta Güncellenemedi", ProjeConstants.MESAJ_HATA);
-                    }
+                    MessageHelper.PublishMessage("Sigorta kaydı bulunamadı.", ProjeConstants.MESAJ_HATA);
+                    return;
                 }
+                if (!UpdateSigorta(sigorta))
+                {
+                    MessageHelper.PublishMessage("Sigorta güncellenemedi.", ProjeConstants.MESAJ_HATA);
+                    return;
+                }
+                MessageHelper.PublishMessage("Sigorta güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
                 PDFKaydet(sigorta);
                 PDFGoster(sigorta);
-
             }
-            catch (Exception ex)
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
             {
-                if (ex is System.Threading.ThreadAbortException) throw;
-                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.UpdateBtn_Click", ex);
-                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.UpdateBtn_Click", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.UpdateBtn_Click", error);
             }
         }
         protected void SilBtn_Click(object sender, EventArgs e)
         {
             Sigorta sigorta = new Sigorta();
-            sigorta = new Model.Services.TBYS.SigortaService().GetById(SigortaIdQS.ConvertToInt());
+            sigorta = new Model.Services.TBYS.SigortaService(LoggingContext).GetById(SigortaIdQS.ConvertToInt());
             if (sigorta != null)
             {
                 Tasinmaz tasinmaz = new Tasinmaz();
-                string adres = new TasinmazService().SelectByIdBolumId(sigorta.TasinmazId, sigorta.BolumId);
+                string adres = new TasinmazService(LoggingContext).SelectByIdBolumId(sigorta.TasinmazId, sigorta.BolumId);
                 SilmeMesajiLbl.Text = adres + " adresindeki taşınmaza ait Sigorta silinecek";
                 ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "ModalOnay();", true);
             }
@@ -690,10 +670,10 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             try
             {
                 Sigorta sigorta = new Sigorta();
-                sigorta = new Model.Services.TBYS.SigortaService().GetById(SigortaIdQS.ConvertToInt());
+                sigorta = new Model.Services.TBYS.SigortaService(LoggingContext).GetById(SigortaIdQS.ConvertToInt());
                 if (sigorta != null)
                 {
-                    silindi = new Model.Services.TBYS.SigortaService().Delete(sigorta);
+                    silindi = new Model.Services.TBYS.SigortaService(LoggingContext).Delete(sigorta);
                 }
                 ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "CloseModal();", true);
                 if (silindi)
@@ -728,7 +708,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         protected void KullanimAmaciGetirBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
             if (tasinmaz != null)
             {
                 KullanimAmaciTxt.Text = tasinmaz.KullanimSekli;
@@ -749,8 +729,8 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         protected void NextBtn_Click(object sender, EventArgs e)
         {
             Sigorta sigorta = new Sigorta();
-            sigorta = new Model.Services.TBYS.SigortaService().GetById(SigortaIdQS.ConvertToInt());
-            Sigorta sonrakiSigorta = new Model.Services.TBYS.SigortaService().GetNext(sigorta.Id);
+            sigorta = new Model.Services.TBYS.SigortaService(LoggingContext).GetById(SigortaIdQS.ConvertToInt());
+            Sigorta sonrakiSigorta = new Model.Services.TBYS.SigortaService(LoggingContext).GetNext(sigorta.Id);
             string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             int queryIndex = newUrl.IndexOf("?");
             if (queryIndex > 0)
@@ -762,8 +742,8 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         protected void PrevBtn_Click(object sender, EventArgs e)
         {
             Sigorta sigorta = new Sigorta();
-            sigorta = new Model.Services.TBYS.SigortaService().GetById(SigortaIdQS.ConvertToInt());
-            Sigorta oncekiSigorta = new Model.Services.TBYS.SigortaService().GetPrev(sigorta.Id);
+            sigorta = new Model.Services.TBYS.SigortaService(LoggingContext).GetById(SigortaIdQS.ConvertToInt());
+            Sigorta oncekiSigorta = new Model.Services.TBYS.SigortaService(LoggingContext).GetPrev(sigorta.Id);
             string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             int queryIndex = newUrl.IndexOf("?");
             if (queryIndex > 0)
@@ -793,7 +773,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             try
             {
                 Sigorta sigorta = new Sigorta();
-                sigorta = new Model.Services.TBYS.SigortaService().GetById(SigortaIdQS.ConvertToInt());
+                sigorta = new Model.Services.TBYS.SigortaService(LoggingContext).GetById(SigortaIdQS.ConvertToInt());
                 if (sigorta != null)
                 {
                     string dosyaAdi = sigorta.PDFDosyasi;// ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK + AdresKoduQS + ".pdf";
@@ -802,6 +782,9 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
 
                         if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
                         {
+                            sigorta.PDFDosyasi = null;
+                            if (!new Model.Services.TBYS.SigortaService(LoggingContext).UpdateDocument(sigorta))
+                                throw new InvalidOperationException("Silinen belgenin sigorta bağlantısı güncellenemedi.");
                             MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                             BelgeSilBtn.Visible = false;
                             DosyaLnk.Visible = false;
@@ -836,6 +819,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         {
             try
             {
+                if (sigorta == null || sigorta.Id <= 0) return;
                 if (BelgeYukleFU.HasFile)
                 {
                     string hedefDosyaAdi = (ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK + AdresKoduQS).Trim() + ".pdf";
@@ -843,7 +827,8 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                     if (isOk)
                     {
                         sigorta.PDFDosyasi = (hedefDosyaAdi).Trim();
-                        new Model.Services.TBYS.SigortaService().Update(sigorta);
+                        if (!new Model.Services.TBYS.SigortaService(LoggingContext).UpdateDocument(sigorta))
+                            throw new InvalidOperationException("Yüklenen belgenin sigorta bağlantısı kaydedilemedi.");
                         DosyaLnk.Visible = true;
                         BelgeSilBtn.Visible = true;
                         BelgeYukleFU.Visible = false;
@@ -878,7 +863,14 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             {
                 if (sigorta != null)
                 {
-                    string dosyaAdi = (sigorta.PDFDosyasi).Trim();
+                    string dosyaAdi = (sigorta.PDFDosyasi ?? string.Empty).Trim();
+                    if (string.IsNullOrEmpty(dosyaAdi))
+                    {
+                        DosyaLnk.Visible = false;
+                        BelgeSilBtn.Visible = false;
+                        BelgeYukleFU.Visible = true;
+                        return;
+                    }
                     string dosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + dosyaAdi;
                     bool dosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi);
                     if (dosyaVarMi)
