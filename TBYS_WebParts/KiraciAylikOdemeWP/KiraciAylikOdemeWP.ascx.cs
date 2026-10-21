@@ -335,7 +335,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
             {
 
                 Odeme odeme = new Odeme();
-                bool silindiMi = new Model.Services.TBYS.OdemeService().OdemeyiSilOdemePlaniniGuncelle(OdemeIdHdn.Value.ConvertToInt(), string.Empty, OdemePlaniIdIdHdn.Value.ConvertToInt(), CurrentUserName);
+                bool silindiMi = new Model.Services.TBYS.OdemeService(LoggingContext).OdemeyiSilOdemePlaniniGuncelle(OdemeIdHdn.Value.ConvertToInt(), string.Empty, OdemePlaniIdIdHdn.Value.ConvertToInt(), CurrentUserName);
                 if (silindiMi)
                 {
                     RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?KiraciId=" + KiraciIdQS + "&Bittar=" + BittarQS + "&Bastar=" + BastarQS);
@@ -620,7 +620,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                 Odeme odemeDao = new Odeme();
                 int bolgeId = BolgeDDL.SelectedItem.Value.ConvertToInt();
 
-                DataTable dataTable = new Model.Services.TBYS.OdemeService().GetByKiraciAyYilReturnDataTable(bolgeId, KiraciIdQS.ConvertToInt(), basTarih, bitTarih);
+            DataTable dataTable = new Model.Services.TBYS.OdemeService(LoggingContext).GetByKiraciAyYilReturnDataTable(bolgeId, KiraciIdQS.ConvertToInt(), basTarih, bitTarih);
                 
 
                 if (dataTable != null)

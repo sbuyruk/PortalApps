@@ -944,7 +944,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
         {
             bool odemesiVarMi = true;
             Odeme odeme = new Odeme();
-            List<Odeme> list = new Model.Services.TBYS.OdemeService().GetByKiraciId(kiraci.Id);
+            List<Odeme> list = new Model.Services.TBYS.OdemeService(LoggingContext).GetByKiraciId(kiraci.Id);
             if (list.Count<1)
             {
                 odemesiVarMi = false;

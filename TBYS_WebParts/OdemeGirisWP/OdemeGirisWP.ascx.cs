@@ -355,7 +355,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             try
             {
                 Odeme odeme = new Odeme();
-                odeme = new Model.Services.TBYS.OdemeService().GetById(OdemeIdQS.ConvertToInt());
+                odeme = new Model.Services.TBYS.OdemeService(LoggingContext).GetById(OdemeIdQS.ConvertToInt());
                 if (odeme != null)
                 {
                     KiraciIdQS = odeme.KiraciId.ToString();
@@ -574,14 +574,14 @@ namespace TBYS_WebParts.OdemeGirisWP
                     ModalLbl.Text = "Ödeme Güncellenecek";
                     ModalLbl.CssClass= "col-form-label text-primary fw-bold";
                     Odeme oncekiOdeme = new Odeme();
-                    oncekiOdeme = new Model.Services.TBYS.OdemeService().GetById(OdemeIdQS.ConvertToInt());
+                        oncekiOdeme = new Model.Services.TBYS.OdemeService(LoggingContext).GetById(OdemeIdQS.ConvertToInt());
                     if (oncekiOdeme != null)
                     {
                         int yeniOdemePlaniId = OdemePlaniDDL.SelectedItem.Value.ConvertToInt();
                         decimal yeniOdemeTutari = OdemeTutariTxt.Text.ConvertToDecimal();
 
                         Odeme odemeDao = new Odeme();
-                        bool guncellendiMi = new Model.Services.TBYS.OdemeService().OdemeyiVeOdemePlaniniGuncelle(kiraSozlesme.Id, oncekiOdeme.OdemePlaniId, yeniOdemePlaniId,
+                        bool guncellendiMi = new Model.Services.TBYS.OdemeService(LoggingContext).OdemeyiVeOdemePlaniniGuncelle(kiraSozlesme.Id, oncekiOdeme.OdemePlaniId, yeniOdemePlaniId,
                             oncekiOdeme.Id, odemeTarihi, yeniOdemeTutari, AciklamaTxt.Text, CurrentUserName);
                         if (guncellendiMi)
                         {
@@ -596,10 +596,10 @@ namespace TBYS_WebParts.OdemeGirisWP
                     if (kiraSozlesme != null)
                     {
                         Odeme silinecekOdeme = new Odeme();
-                        silinecekOdeme = new Model.Services.TBYS.OdemeService().GetById(OdemeIdQS.ConvertToInt());
+                        silinecekOdeme = new Model.Services.TBYS.OdemeService(LoggingContext).GetById(OdemeIdQS.ConvertToInt());
 
                         Odeme odemeDao = new Odeme();
-                        bool silindiMi = new Model.Services.TBYS.OdemeService().OdemeyiSilOdemePlaniniGuncelle(silinecekOdeme.Id, string.Empty, silinecekOdeme.OdemePlaniId, CurrentUserName);
+                        bool silindiMi = new Model.Services.TBYS.OdemeService(LoggingContext).OdemeyiSilOdemePlaniniGuncelle(silinecekOdeme.Id, string.Empty, silinecekOdeme.OdemePlaniId, CurrentUserName);
                         if (silindiMi)
                         {
                             RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?KiraciId=" + KiraciIdQS + "&Bastar=" + BastarQS+ "&Bittar=" + BittarQS);
