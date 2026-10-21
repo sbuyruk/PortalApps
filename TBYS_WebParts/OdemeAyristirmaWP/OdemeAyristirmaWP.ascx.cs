@@ -144,7 +144,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                     if (kiraEkstreAktarma!=null)
                     {
                         Kiraci kiraci = new Kiraci();
-                        kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraEkstreAktarma.KiraciId);
+                        kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraEkstreAktarma.KiraciId, LoggingContext);
                         if (kiraci != null)
                         {
                             AdiLbl.Text = kiraci == null ? "" : kiraci.Adi + " " + kiraci.Soyadi;

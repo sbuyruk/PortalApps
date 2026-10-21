@@ -1,5 +1,11 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
+## Güncel parça: kiracı CRUD ve ekran bağlantıları
+
+Dal: `codex/tbys-tenant-crud-workflow`. Başlangıç commit'i: `f0d79a25` (PR #471 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. `KiraciRepository` transaction-aware INSERT/UPDATE/DELETE overload'ları ve `KiraciService` bağlamlı CRUD/audit akışı eklendi. Kiracı giriş ekranının üç yazma çağrısı ile beş ödeme/kira ekranındaki kiracı okumaları bağlamlı servislere geçirildi. Bu dalda 8 kod dosyası ve envanter olmak üzere 9 dosya değişti.
+
+Audit yalnızca Kiraci entity başlığı üretir; kimlik, adres, telefon, e-posta ve serbest açıklama gibi kiracı ayrıntıları audit değerlerine alınmadı. Üretilmiş ASCX dosyaları değişmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve `git diff --check` yapıldı. Build ve TEST kullanıcıya aittir.
+
 ## Güncel parça: kiracı okuma bağlantıları
 
 Dal: `codex/tbys-tenant-read-wiring-batch`. Başlangıç commit'i: `e5d716c0` (PR #470 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. Borçlu kiracı, kira kartı, aylık ödeme, banka ekstresi, ödeme girişi, ödeme planı ve teminat ekranlarının kiracı okumaları mevcut bağlamlı `KiraciService` overload'larına geçirildi. Bu dalda 8 WebPart dosyası ve envanter olmak üzere 9 dosya değişti.

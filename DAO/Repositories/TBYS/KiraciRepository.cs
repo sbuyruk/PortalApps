@@ -141,5 +141,9 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@Id", id);
             return db.SelectFromDb(query, transaction, context);
         }
+
+        public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context) { return db.Insert(new CrudQueryBuilder().BuildInsert(entity, "Kiraci_Table"), transaction, context); }
+        public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context) { return db.Update2Db(new CrudQueryBuilder().BuildUpdate(entity, "Kiraci_Table"), transaction, context); }
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context) { return db.DeleteFromDb(new CrudQueryBuilder().BuildDelete("Kiraci_Table", id), "", transaction, context); }
     }
 }

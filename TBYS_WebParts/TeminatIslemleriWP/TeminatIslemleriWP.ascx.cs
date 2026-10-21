@@ -691,7 +691,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         protected void KiraKartiBtn_Click(object sender, EventArgs e)
         {
             Kiraci kiraci = new Kiraci();
-            kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+            kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt(), LoggingContext);
             if (kiraci != null)//bu kiraci varsa
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
