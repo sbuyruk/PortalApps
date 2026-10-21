@@ -1,14 +1,16 @@
 using DAO.Ortak;
 using System;
 using System.Data;
+using Utility.Logging;
 
 namespace DAO.Repositories.TBYS
 {
     public class OdemePlaniRaporRepository
     {
-        private readonly DbClass db;
+        private readonly TbysSqlExecutor db;
         public OdemePlaniRaporRepository() : this(new DbClass()) { }
-        public OdemePlaniRaporRepository(DbClass db) { if (db == null) throw new ArgumentNullException("db"); this.db = db; }
+        public OdemePlaniRaporRepository(DbClass db) { if (db == null) throw new ArgumentNullException("db"); this.db = new TbysSqlExecutor(db, "OdemePlaniRaporRepository"); }
+        public OdemePlaniRaporRepository(PortalLogContext context) { db = new TbysSqlExecutor(context, "OdemePlaniRaporRepository"); }
 
         public DataTable SelectBorcluByBolgeTarih(int bolgeId, DateTime ilkTarih, DateTime sonTarih, int ayBas, int ayBit, int allRegionId, int headquartersRegionId)
         {

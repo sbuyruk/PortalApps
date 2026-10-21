@@ -198,7 +198,7 @@ namespace TBYS_WebParts.GenelSozlesmeListesiWP
             List<KiraSozlesmeListItem> list = new List<KiraSozlesmeListItem>();
 
             OdemePlani opl = new OdemePlani();
-            DataTable dataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetCurrentByDate(vadeBastar, vadeBittar, BolgeQS);
+            DataTable dataTable = new Model.Services.TBYS.OdemePlaniRaporService(LoggingContext).GetCurrentByDate(vadeBastar, vadeBittar, BolgeQS);
             DataView dataView = new DataView(dataTable);
             dataView.Sort = "Bolge,DosyaNo,Kiraci";
             int tempSozlesmeId = 0;
