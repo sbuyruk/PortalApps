@@ -134,5 +134,17 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@TasinmazId", tasinmazId);
             return db.SelectFromDb(query, transaction, context);
         }
+
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM Bagis_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
+        public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Insert(queryBuilder.BuildInsert(entity, "Bagis_Table"), transaction, context);
+        }
     }
 }

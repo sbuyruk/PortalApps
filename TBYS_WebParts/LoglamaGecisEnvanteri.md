@@ -1,6 +1,36 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
-## Güncel parça: taşınmaz ve bağlı sigorta transaction/audit dönüşümü
+## Güncel parça: taşınmaz kopyalama ve ilişkileri taşıma
+
+Dal: `codex/tbys-property-copy-audit`. Başlangıç commit'i: `db24c8f2682882c8fa9dee1f48cd70e49ffd6b41`. Kod değişikliğinden önce yerel master temizdi ve GitHub master ile aynı commit'teydi. Önceki taşınmaz parçası PR #459 ile birleştirildi. Kullanıcı toplu test yapacağını bildirmişti; bu parçanın çalışma zamanı doğrulaması henüz yapılmadı.
+
+KopyalaNowBtn_Click yalnızca bağlamlı TasinmazService.CopyOutOfInventory çağrısını ve başarılı işlemden sonraki yönlendirmeyi yapar. Kaynak taşınmaz, bölümler, bağış, son sigorta, onarımlar ve sözleşme bağlantıları aynı SqlTransactionContext ile okunur ve kilitlenir. Yeni taşınmaz/bölüm/bağış kayıtları, ilişki taşımaları ve tüm audit kayıtları bu transaction içindedir. Herhangi bir adım başarısız olursa hepsi geri alınır. ThreadAbortException yönlendirmede yeniden fırlatılır; diğer hatalar ortak güvenli Türkçe mesaj ve başvuru koduyla bildirilir.
+
+İş davranışı ve inceleme noktaları:
+
+- Kaynak yalnızca envanterden çıkmış bir taşınmaz olabilir. Kaynak taşınmaz güncellenmez. Yeni taşınmazda envanter durumu açılır, çıkış sebebi/bedeli/tarihi temizlenir, oluşturulma bilgileri yeniden üretilir ve eski değiştiren/zaman bilgisi taşınmaz. Resim alanlarının referansları korunur; sabit 100TapuFoto.jpg / 100test.jpg örnek kopyalama çağrısı kaldırıldı. Gerçek resim dosyaları çoğaltılmaz veya silinmez.
+- Bağımsız bölümler artık yeni Id ve yeni TasinmazId ile kopyalanır; eski bölümler kaynakta kalır. Taşınan sigorta ve sözleşmedeki BolumId yeni bölümün Id değerine eşlenir. Böylece yeni taşınmaza ait ilişkiler eski taşınmazın bölümünü göstermeyi sürdürmez. NULL ve sıfır olan bölüm bağlantıları kendi değerlerinde korunur. Kaynağa ait olmayan veya bulunamayan bir bölüm bağlantısı bütün kopyalamayı iptal eder.
+- Mevcut bağış seçimi gibi tek bağış esas alınır (Id sırası). Bağışçı kimliği bu bağıştan okunur ve bağışçı kaydı aynı transaction ile doğrulanır; taşınmazdaki eski BagisciId değeriyle farklıysa yeni taşınmazda düzeltilir. Yeni bağışa BagisciId, BagisTarihi, BagisYili ve envanter durumu aktarılır; kaynak bağış ve bağışçı korunur. Armağan bilgileri önceki akıştaki gibi yeni bağışa kopyalanmaz. Bağış yoksa bağış oluşturulmaz.
+- Yalnızca son sigorta taşınır (SigortaBitTar DESC, eşitlikte Id DESC); önceki sigortalar kaynakta kalır. Sigorta yoksa bu kopyalama akışı otomatik sigorta yaratmaz.
+- Tüm onarımlar ve tüm SozlesmeTasinmaz bağlantıları mevcut kodun yaptığı gibi yeni taşınmaza taşınır. Eski yorumdaki aktif sözleşme sınırlaması gerçek kodda yoktu; bu parçada yeni bir aktif/pasif filtresi eklenmedi. Sözleşme Id değişmez; ödeme planı tablosuna ayrıca yazılmaz.
+- Taşıma UPDATE'leri yalnızca TasinmazId, gerektiğinde BolumId ve değiştiren/zaman alanlarını yazar. Onarım tutarını yuvarlayan eski adresli rapor sorgusundan model üretip tüm satırı güncelleme kaldırıldı. Tutar, açıklama, poliçe ve oluşturulma bilgileri taşımada yeniden yazılmaz. UPDATE kaynak Id koşuluyla tam bir satır etkilemelidir; aksi durumda exception ile rollback olur.
+
+Audit: Yeni Tasinmaz ve BagimsizBolum kayıtları önceki parçalardaki izin listeleriyle INSERT üretir. Yeni Bagis INSERT ayrıntıları BagisciId, TasinmazId, BagisTarihi, BagisYili ve Envanterde alanlarıyla sınırlıdır. Sigorta UPDATE TasinmazId/BolumId, Onarim UPDATE TasinmazId, SozlesmeTasinmaz UPDATE değişen TasinmazId/BolumId alanlarını yazar; değişmeyen SozlesmeId ayrıntı üretmez. Eski/yeni değerler transaction'dan okunan gerçek satırlardan alınır. Kişisel ad, adres, açıklama ve poliçe metni ilişki audit'ine yazılmaz. Tüm audit başlıkları aynı istek OperationId değerini ve gerçek entity Id değerini taşır.
+
+Teknik SQL izleri ortak bağımsız yazıcıdadır; komutun Succeeded olması daha sonra iş transaction'ının rollback olmayacağı anlamına gelmez. Logging kapalıyken iş transaction'ı çalışmaya devam eder; audit ve eski OlayKayit üretilmez. Önceki ekleme/güncelleme/silme yollarının davranışı bu kopyalama metodu tarafından değiştirilmez.
+
+Kullanıcı TEST kontrolleri:
+
+1. Bağlantısız, envanter dışı taşınmazı kopyalayın. Yeni taşınmaz envanterde olmalı; kaynak kayıt ve resim referansları korunmalı. Tasinmaz INSERT ve SQL izleri TasinmazGirisiWP bağlamıyla görünmeli.
+2. Bağımsız bölümleri, bağışı, birden fazla sigortası, onarımları ve sözleşme bağlantıları bulunan kaynakla deneyin. Yeni bölümlerin Id değerleri ayrı olmalı; kaynak bölümler korunmalı. Yeni bağış doğru bağışçıya bağlanmalı; yalnızca son sigorta, tüm onarımlar ve tüm sözleşme bağlantıları taşınmalı.
+3. Sigorta/sözleşme BolumId alanları yeni bölümleri göstermeli. NULL ve 0 bağlantılarını ayrıca deneyin. Başka taşınmazın bölümüne bağlanmış bozuk test kaydında kopyalama bütünüyle geri alınmalı.
+4. Taşımada onarım Tutar değerinin tam hassasiyeti, açıklamalar, poliçe verileri ve oluşturulma bilgileri değişmemeli. Audit UPDATE ayrıntıları yalnızca değişen ilişki alanlarını göstermeli. Yeni INSERT audit kimlikleri yeni uygulama kayıtlarıyla eşleşmeli.
+5. Birkaç alt kayıt oluşturulduktan/taşındıktan sonra kontrollü audit veya iş yazma hatası üretin. Yeni taşınmaz, bölümler, bağış ve tüm ilişki değişiklikleri ile audit kayıtları birlikte rollback olmalı; teknik Error kaydı kalmalı.
+6. Envanterde olan veya bulunmayan kaynak Id ile çağrı yeni kayıt üretmemeli. Logging kapalı kullanımda iş akışı ve rollback kuralı çalışmalı. Başarılı yönlendirme hata olarak loglanmamalı.
+
+Bu akış kaynak üzerinde kalıcı bir kopyalandı işareti oluşturmaz; aynı kaynak için yeniden verilen kopyalama komutu, önceki davranış gibi tekrar yeni kayıt oluşturabilir. Genel bağış/sigorta/onarım/sözleşme ekranlarının bağımsız yazmaları ve envanterden çıkarma sonraki parçalardır. Yeni dosya, şema veya tanılama altyapısı eklenmedi. Üretilmiş ASCX dosyaları değişmedi. Mevcut EnabledProjects=TBYS varsa web.config değişmez; tek WebPart etkinleştirmesinde TBYS:TasinmazGirisiWP yeterlidir. Codex build/test/debug çalıştırmaz; yalnızca statik kaynak incelemesi ve git diff --check yapılır.
+
+## Önceki parça: taşınmaz ve bağlı sigorta transaction/audit dönüşümü
 
 Dal: `codex/tbys-tasinmaz-transaction-audit`. Başlangıç commit'i: `21b1127bf934abcc030b70f3c5f6281c882c9075`. Kod değişikliğinden önce yerel master temizdi ve GitHub master ile aynı commit'teydi. Önceki bağımsız bölüm parçası PR #458 ile birleştirildi; kullanıcı testleri toplu yapacak. Bu parçanın çalışma zamanı doğrulaması henüz yapılmadı.
 
