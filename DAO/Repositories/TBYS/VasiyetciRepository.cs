@@ -1,12 +1,13 @@
 using DAO.Ortak;
 using System;
 using System.Data;
+using Utility.Logging;
 
 namespace DAO.Repositories.TBYS
 {
     public class VasiyetciRepository
     {
-        private readonly DbClass db;
+        private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
         public VasiyetciRepository() : this(new DbClass()) { }
@@ -14,9 +15,11 @@ namespace DAO.Repositories.TBYS
         public VasiyetciRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
+            this.db = new TbysSqlExecutor(db, "VasiyetciRepository");
             queryBuilder = new CrudQueryBuilder();
         }
+
+        public VasiyetciRepository(PortalLogContext context) { db = new TbysSqlExecutor(context, "VasiyetciRepository"); queryBuilder = new CrudQueryBuilder(); }
 
         public DataTable SelectById(int id)
         {
@@ -100,5 +103,10 @@ namespace DAO.Repositories.TBYS
         {
             return db.DeleteFromDb(queryBuilder.BuildDelete("Vasiyetci_Table", id), "");
         }
+
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context) { SqlQuery q = new SqlQuery("SELECT * FROM Vasiyetci_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, transaction, context); }
+        public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context) { return db.Insert(queryBuilder.BuildInsert(entity, "Vasiyetci_Table"), transaction, context); }
+        public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context) { return db.Update2Db(queryBuilder.BuildUpdate(entity, "Vasiyetci_Table"), transaction, context); }
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context) { return db.DeleteFromDb(queryBuilder.BuildDelete("Vasiyetci_Table", id), "", transaction, context); }
     }
 }
