@@ -571,7 +571,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                         odemePlani.AnaPara = devirAnaPara;
                         odemePlani.FaizTutari = devirFaizTutari;
                         odemePlani.FaizliBakiye = devirAnaPara + devirFaizTutari;
-                        new Model.Services.TBYS.OdemePlaniService().Update(odemePlani);
+                        new Model.Services.TBYS.OdemePlaniService(LoggingContext).Update(odemePlani);
                         if ((kiraSozlesme.Aktif)&&(kiraSozlesme.SozlesmeDurumu.Equals(ProjeConstants.KIRASOZLESME_DURUMU_TAKIP)))
                         {
                             HukukiiIslemlereEkle(kiraSozlesme);
@@ -675,7 +675,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 OdemePlani op = list[0];
                 if (op.SozlesmeId == kiraSozlesme.Id)
                 {
-                    silindi = new Model.Services.TBYS.OdemePlaniService().DeleteBySozlesmeId(op, kiraSozlesme.Id);
+                    silindi = new Model.Services.TBYS.OdemePlaniService(LoggingContext).DeleteBySozlesmeId(op, kiraSozlesme.Id);
                     if (silindi)
                     {
                         //Odeme odemeDao = new Odeme();
@@ -1391,7 +1391,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                     item.FaizTutari = 0;
                     item.FaizliBakiye = 0;
                     item.FaizOrani = 0;
-                    new Model.Services.TBYS.OdemePlaniService().Update(item);
+                    new Model.Services.TBYS.OdemePlaniService(LoggingContext).Update(item);
                 }
             }
         }
