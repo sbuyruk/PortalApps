@@ -1,4 +1,7 @@
 using DAO.Repositories.TBYS;
+using DAO.Ortak;
+using DAO.Repositories.Ortak;
+using Utility.Logging;
 using Model.Ortak;
 using Model.TBYS;
 using System;
@@ -13,6 +16,7 @@ namespace Model.Services.TBYS
     public class HukukiTakipService
     {
         private readonly HukukiTakipRepository repository;
+        private readonly PortalLogContext context;
 
         public HukukiTakipService() : this(new HukukiTakipRepository()) { }
 
@@ -21,6 +25,8 @@ namespace Model.Services.TBYS
             if (repository == null) throw new ArgumentNullException("repository");
             this.repository = repository;
         }
+
+        public HukukiTakipService(PortalLogContext context) : this(new HukukiTakipRepository(context)) { this.context = context; }
 
         public HukukiTakip GetById(int id)
         {
@@ -49,6 +55,7 @@ namespace Model.Services.TBYS
 
         public int Save(HukukiTakip item)
         {
+            if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { int id = Save(item, tx); tx.Complete(); return id; }
             if (item == null) throw new ArgumentNullException("item");
 
             item.OlusturmaTarihi = DateTime.Now;
@@ -63,9 +70,11 @@ namespace Model.Services.TBYS
 
             return item.Id;
         }
+        public int Save(HukukiTakip item, SqlTransactionContext tx) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item, tx, context); if (item.Id > 0 && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "INSERT", "HukukiTakip", item.Id.ToString(), tx); return item.Id; }
 
         public bool Update(HukukiTakip item)
         {
+            if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Update(item, tx); if (ok) tx.Complete(); return ok; }
             if (item == null) throw new ArgumentNullException("item");
 
             HukukiTakip oldItem = GetById(item.Id);
@@ -85,9 +94,11 @@ namespace Model.Services.TBYS
 
             return isSuccess;
         }
+        public bool Update(HukukiTakip item, SqlTransactionContext tx) { if (item == null || item.Id == 0) return false; item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); bool ok = repository.Update(item, tx, context); if (ok && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "UPDATE", "HukukiTakip", item.Id.ToString(), tx); return ok; }
 
         public bool Delete(HukukiTakip item)
         {
+            if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Delete(item, tx); if (ok) tx.Complete(); return ok; }
             if (item == null || item.Id == 0) return false;
 
             HukukiTakip oldItem = GetById(item.Id);
@@ -102,6 +113,7 @@ namespace Model.Services.TBYS
 
             return isDeleted;
         }
+        public bool Delete(HukukiTakip item, SqlTransactionContext tx) { if (item == null || item.Id == 0) return false; bool ok = repository.Delete(item.Id, tx, context); if (ok && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "DELETE", "HukukiTakip", item.Id.ToString(), tx); return ok; }
 
         public bool DeleteBySozlesmeId(int sozlesmeId)
         {
