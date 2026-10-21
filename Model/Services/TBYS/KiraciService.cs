@@ -59,7 +59,7 @@ namespace Model.Services.TBYS
         public int Save(Kiraci item, SqlTransactionContext tx) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item, tx, context); if (item.Id > 0 && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "INSERT", "Kiraci", item.Id.ToString(), tx); return item.Id; }
         public bool Update(Kiraci item)
         {
-            if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Update(item, tx); if (ok) tx.Complete(); return ok; }
+            if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool transactionSucceeded = Update(item, tx); if (transactionSucceeded) tx.Complete(); return transactionSucceeded; }
             if (item == null || item.Id == 0) return false;
             Kiraci old = GetById(item.Id);
             item.DegistirmeTarihi = DateTime.Now;
@@ -71,7 +71,7 @@ namespace Model.Services.TBYS
         public bool Update(Kiraci item, SqlTransactionContext tx) { if (item == null || item.Id == 0) return false; item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); bool ok = repository.Update(item, tx, context); if (ok && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "UPDATE", "Kiraci", item.Id.ToString(), tx); return ok; }
         public bool Delete(Kiraci item)
         {
-            if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Delete(item, tx); if (ok) tx.Complete(); return ok; }
+            if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool transactionSucceeded = Delete(item, tx); if (transactionSucceeded) tx.Complete(); return transactionSucceeded; }
             if (item == null || item.Id == 0) return false;
             Kiraci old = GetById(item.Id);
             if (old == null) return false;
