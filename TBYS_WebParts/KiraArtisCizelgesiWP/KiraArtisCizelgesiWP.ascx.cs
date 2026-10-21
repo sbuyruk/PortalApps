@@ -295,7 +295,7 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
 
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
 
-            DataTable dataTable = new Model.Services.TBYS.KiraSozlesmeService().GetRentIncreaseDue(BolgeIdQS, tarih);
+            DataTable dataTable = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetRentIncreaseDue(BolgeIdQS, tarih);
             int SiraNo = 1;
 
             List<KiraArtisListItem> list = new List<KiraArtisListItem>();
