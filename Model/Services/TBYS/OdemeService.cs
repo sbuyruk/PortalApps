@@ -22,6 +22,7 @@ namespace Model.Services.TBYS
         public OdemeService(OdemeRepository repository) { if (repository == null) throw new ArgumentNullException("repository"); this.repository = repository; }
         public OdemeService(PortalLogContext context) : this(new OdemeRepository(context)) { this.context = context; }
         public Odeme GetById(int id) { return Map(repository.SelectById(id)); }
+        public Odeme GetById(int id, SqlTransactionContext transaction) { return Map(repository.SelectById(id, transaction, context)); }
         public List<Odeme> GetAll() { return ToList(repository.SelectAll()); }
         public List<Odeme> GetByKiraciId(int id) { return ToList(repository.SelectByKiraciId(id)); }
         public List<Odeme> GetBySozlesmeIdOdemePlaniId(int sozlesmeId, int planId) { return ToList(repository.SelectBySozlesmeIdOdemePlaniId(sozlesmeId, planId)); }
@@ -153,6 +154,51 @@ namespace Model.Services.TBYS
 
         public bool OdemeyiSilOdemePlaniniGuncelle(int odemeId, string aciklama, int odemePlaniId, string kullanici)
         {
+            if (context != null)
+            {
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool result = OdemeyiSilOdemePlaniniGuncelle(odemeId, aciklama, odemePlaniId, kullanici, transaction);
+                    if (result) transaction.Complete();
+                    return result;
+                }
+            }
+            return OdemeyiSilOdemePlaniniGuncelleLegacy(odemeId, aciklama, odemePlaniId, kullanici);
+        }
+
+        private bool OdemeyiSilOdemePlaniniGuncelle(int odemeId, string aciklama, int odemePlaniId, string kullanici, SqlTransactionContext transaction)
+        {
+            try
+            {
+                IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+                Odeme odeme = GetById(odemeId, transaction);
+                if (odeme == null || !Delete(odeme, transaction)) return false;
+
+                OdemeAyrintiService odemeAyrintiService = new OdemeAyrintiService(context);
+                if (odemeAyrintiService.GetByOdemeIdOdemePlaniId(odemeId, odemePlaniId, transaction).Count > 0
+                    && !odemeAyrintiService.DeleteByOdemeIdOdemePlaniId(odemeId, odemePlaniId, transaction)) return false;
+
+                OdemePlaniService odemePlaniService = new OdemePlaniService(context);
+                OdemePlani odemePlani = odemePlaniService.GetById(odemePlaniId, transaction);
+                if (odemePlani == null) return false;
+                odemePlani.OdenenTutar = GetSumBySozlesmeIdOdemePlaniId(odemePlani.SozlesmeId, odemePlani.Id, transaction);
+                odemePlani.Aciklama += aciklama + Environment.NewLine +
+                    " *" + odeme.OdemeTarihi.ConvertToDatetimeEmptyIfNull() + " tarihli " + odeme.OdenenTutar.ToString("N", culturInfo) + " ödeme silindi." + Environment.NewLine;
+                odemePlani.Degistiren = kullanici;
+                return odemePlaniService.Update(odemePlani, transaction);
+            }
+            catch (Exception exception1)
+            {
+                ExceptionHelper exHelper = new ExceptionHelper();
+                exHelper.Exceptions.Add(new Exception("Ödeme Silinemedi"));
+                exHelper.Exceptions.Add(exception1);
+                exHelper.PublishException();
+                return false;
+            }
+        }
+
+        private bool OdemeyiSilOdemePlaniniGuncelleLegacy(int odemeId, string aciklama, int odemePlaniId, string kullanici)
+        {
             bool silindiMi = false;
             try
             {
@@ -190,6 +236,68 @@ namespace Model.Services.TBYS
         }
 
         public bool OdemeyiVeOdemePlaniniGuncelle(int sozlesmeId, int oncekiOdemePlaniId, int yeniOdemePlaniId, int odemeId, DateTime odemeTarihi, decimal odenenTutar, string aciklama, string kullanici)
+        {
+            if (context != null)
+            {
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool result = OdemeyiVeOdemePlaniniGuncelle(sozlesmeId, oncekiOdemePlaniId, yeniOdemePlaniId, odemeId, odemeTarihi, odenenTutar, aciklama, kullanici, transaction);
+                    if (result) transaction.Complete();
+                    return result;
+                }
+            }
+            return OdemeyiVeOdemePlaniniGuncelleLegacy(sozlesmeId, oncekiOdemePlaniId, yeniOdemePlaniId, odemeId, odemeTarihi, odenenTutar, aciklama, kullanici);
+        }
+
+        private bool OdemeyiVeOdemePlaniniGuncelle(int sozlesmeId, int oncekiOdemePlaniId, int yeniOdemePlaniId, int odemeId, DateTime odemeTarihi, decimal odenenTutar, string aciklama, string kullanici, SqlTransactionContext transaction)
+        {
+            try
+            {
+                OdemePlaniService odemePlaniService = new OdemePlaniService(context);
+                OdemePlani oncekiOdemePlani = odemePlaniService.GetById(oncekiOdemePlaniId, transaction);
+                OdemePlani yeniOdemePlani = odemePlaniService.GetById(yeniOdemePlaniId, transaction);
+                if (yeniOdemePlani == null)
+                {
+                    if (oncekiOdemePlani == null) return false;
+                    List<OdemePlani> sozlesmeOdemePlanlari = odemePlaniService.GetBySozlesmeId(sozlesmeId, transaction);
+                    if (odemeTarihi <= oncekiOdemePlani.OdemeBasTar) yeniOdemePlani = sozlesmeOdemePlanlari.FirstOrDefault();
+                    else if (odemeTarihi >= oncekiOdemePlani.OdemeBitTar) yeniOdemePlani = sozlesmeOdemePlanlari.LastOrDefault();
+                    else return false;
+                }
+                if (yeniOdemePlani == null) return false;
+
+                Odeme odeme = GetById(odemeId, transaction);
+                if (odeme == null) return false;
+                odeme.OdemeTarihi = odemeTarihi;
+                odeme.OdenenTutar = odenenTutar;
+                odeme.Aciklama = aciklama;
+                odeme.Degistiren = kullanici;
+                odeme.OdemePlaniId = yeniOdemePlani.Id;
+                odeme.SozlesmeId = yeniOdemePlani.SozlesmeId;
+                if (!Update(odeme, transaction)) return false;
+
+                if (oncekiOdemePlani != null)
+                {
+                    oncekiOdemePlani.OdenenTutar = GetSumBySozlesmeIdOdemePlaniId(oncekiOdemePlani.SozlesmeId, oncekiOdemePlani.Id, transaction);
+                    oncekiOdemePlani.Degistiren = kullanici;
+                    if (!odemePlaniService.Update(oncekiOdemePlani, transaction)) return false;
+                }
+                yeniOdemePlani.OdenenTutar = GetSumBySozlesmeIdOdemePlaniId(yeniOdemePlani.SozlesmeId, yeniOdemePlani.Id, transaction);
+                yeniOdemePlani.Aciklama = aciklama;
+                yeniOdemePlani.Degistiren = kullanici;
+                return odemePlaniService.Update(yeniOdemePlani, transaction);
+            }
+            catch (Exception exception1)
+            {
+                ExceptionHelper exHelper = new ExceptionHelper();
+                exHelper.Exceptions.Add(new Exception("Ödeme Kaydedilemedi"));
+                exHelper.Exceptions.Add(exception1);
+                exHelper.PublishException();
+                return false;
+            }
+        }
+
+        private bool OdemeyiVeOdemePlaniniGuncelleLegacy(int sozlesmeId, int oncekiOdemePlaniId, int yeniOdemePlaniId, int odemeId, DateTime odemeTarihi, decimal odenenTutar, string aciklama, string kullanici)
         {
             bool guncellendiMi = false;
             try

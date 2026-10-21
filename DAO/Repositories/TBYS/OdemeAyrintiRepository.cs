@@ -50,6 +50,13 @@ namespace DAO.Repositories.TBYS
             q.AddParameter("@OdemePlaniId", planId);
             return db.SelectFromDb(q, "");
         }
+        public DataTable SelectByOdemeIdOdemePlaniId(int odemeId, int planId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery q = new SqlQuery("SELECT * FROM OdemeAyrinti_Table WITH (UPDLOCK, HOLDLOCK) WHERE OdemeId=@OdemeId AND OdemePlaniId=@OdemePlaniId ORDER BY OdemePlaniSirasi,OdemeTarihi,OdemeId,Id");
+            q.AddParameter("@OdemeId", odemeId);
+            q.AddParameter("@OdemePlaniId", planId);
+            return db.SelectFromDb(q, transaction, context);
+        }
 
         public DataTable SelectByPlanAndDelay(int kiraciId, int sozlesmeId, int planId, int delayId, int odemeId)
         {
@@ -82,6 +89,13 @@ namespace DAO.Repositories.TBYS
             q.AddParameter("@OdemeId", odemeId);
             q.AddParameter("@OdemePlaniId", planId);
             return db.DeleteFromDb(q, "");
+        }
+        public bool DeleteByOdemeIdOdemePlaniId(int odemeId, int planId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery q = new SqlQuery("DELETE OdemeAyrinti_Table WHERE OdemeId=@OdemeId AND OdemePlaniId=@OdemePlaniId");
+            q.AddParameter("@OdemeId", odemeId);
+            q.AddParameter("@OdemePlaniId", planId);
+            return db.DeleteFromDb(q, "", transaction, context);
         }
 
         public DataTable SelectLastAnaPara(int planId)

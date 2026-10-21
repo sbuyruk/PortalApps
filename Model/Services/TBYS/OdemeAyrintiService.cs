@@ -24,6 +24,7 @@ namespace Model.Services.TBYS
         public List<OdemeAyrinti> GetAll() { return ToList(repository.SelectAll()); }
         public List<OdemeAyrinti> GetBySozlesmeId(int id) { return ToList(repository.SelectBySozlesmeId(id)); }
         public List<OdemeAyrinti> GetByOdemeIdOdemePlaniId(int odemeId, int planId) { return ToList(repository.SelectByOdemeIdOdemePlaniId(odemeId, planId)); }
+        public List<OdemeAyrinti> GetByOdemeIdOdemePlaniId(int odemeId, int planId, SqlTransactionContext transaction) { return ToList(repository.SelectByOdemeIdOdemePlaniId(odemeId, planId, transaction, context)); }
         public OdemeAyrinti GetByPlanAndDelay(KiraSozlesme sozlesme, int planId, int delayId, int odemeId) { return Map(repository.SelectByPlanAndDelay(sozlesme.KiraciId, sozlesme.Id, planId, delayId, odemeId)); }
         public List<OdemeAyrinti> GetBySozlesme(KiraSozlesme sozlesme) { return GetBySozlesmeId(sozlesme.Id); }
         public List<OdemeAyrinti> GetByPlan(OdemePlani plan) { return ToList(repository.SelectByPlan(plan.Id)); }
@@ -40,6 +41,7 @@ namespace Model.Services.TBYS
         public bool DeleteBySozlesmeId(int id) { if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = DeleteBySozlesmeId(id, tx); if (ok) tx.Complete(); return ok; } return repository.DeleteBySozlesmeId(id); }
         public bool DeleteBySozlesmeId(int id, SqlTransactionContext tx) { return repository.DeleteBySozlesmeId(id, tx, context); }
         public bool DeleteByOdemeIdOdemePlaniId(int odemeId, int planId) { return repository.DeleteByOdemeIdOdemePlaniId(odemeId, planId); }
+        public bool DeleteByOdemeIdOdemePlaniId(int odemeId, int planId, SqlTransactionContext transaction) { return repository.DeleteByOdemeIdOdemePlaniId(odemeId, planId, transaction, context); }
         private static List<OdemeAyrinti> ToList(DataTable t) { return new OdemeAyrinti().ToList<OdemeAyrinti>(t); }
         private static OdemeAyrinti Map(DataTable t) { return ToList(t).FirstOrDefault(); }
     }
