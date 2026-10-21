@@ -78,7 +78,7 @@ namespace Model.Services.TBYS
             return OdemeyiKaydetOdemePlaniniGuncelleLegacy(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, kullanici);
         }
 
-        private Odeme OdemeyiKaydetOdemePlaniniGuncelle(KiraSozlesme kiraSozlesme, OdemePlani odemePlani, DateTime odemeTarihi, decimal odenenTutar, string aciklama, string kullanici, SqlTransactionContext transaction)
+        public Odeme OdemeyiKaydetOdemePlaniniGuncelle(KiraSozlesme kiraSozlesme, OdemePlani odemePlani, DateTime odemeTarihi, decimal odenenTutar, string aciklama, string kullanici, SqlTransactionContext transaction)
         {
             Odeme odeme = null;
             try

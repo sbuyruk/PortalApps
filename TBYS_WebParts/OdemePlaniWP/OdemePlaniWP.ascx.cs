@@ -649,7 +649,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                     DateTime odemeTarihi = OdemeTarihiTxt.Value.ConvertToDatetime();
                     decimal odemeTutari = OdenenTutarTxt.Value.ConvertToDecimal();
                     int odemeId = 0;
-                    bool odemeYapildiMi = TBYSOrtak.OdemeYap(kiraSozlesme, odemeTarihi, odemeTutari, AciklamaTxt.Text, ref odemeId);
+                    bool odemeYapildiMi = TBYSOrtak.OdemeYap(kiraSozlesme, odemeTarihi, odemeTutari, AciklamaTxt.Text, ref odemeId, LoggingContext);
                     RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + kiraSozlesme.Id);
                 }
                 else
