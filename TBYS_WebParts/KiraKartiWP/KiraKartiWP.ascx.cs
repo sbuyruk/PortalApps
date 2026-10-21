@@ -301,7 +301,7 @@ namespace TBYS_WebParts.KiraKartiWP
                 if (kiraSozlesme != null)
                 {
                     OdemePlani odemePlani = new OdemePlani();
-                    List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
+                    List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeId(kiraSozlesme.Id);
                     List<OdemePlani> sortedOPList = list.OrderByDescending(x => x.Sira).ToList();
                     DateTime buAySonu = (new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1)).AddMonths(1).AddDays(-1);
                     foreach (OdemePlani op in sortedOPList)

@@ -325,7 +325,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                         , OdemePlaniIdQS.ConvertToInt(), OdemePlaniDDL);
                     KaydetBtn.Visible = true;
                     OdemePlani odemePlani = new OdemePlani();
-                    odemePlani = new Model.Services.TBYS.OdemePlaniService().GetById(OdemePlaniDDL.SelectedItem.Value.ConvertToInt());
+                    odemePlani = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetById(OdemePlaniDDL.SelectedItem.Value.ConvertToInt());
                     OdemeTutariTxt.Text = odemePlani == null ? "" : odemePlani.KiraBedeli.ToString("N", cultureInfo);
                 }
                 else
