@@ -182,7 +182,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
                 if (!Page.IsPostBack)
                 {
                     Tasinmaz tasinmaz = new Tasinmaz();
-                    tasinmaz = new TasinmazService().GetById(TasinmazIdQS.ConvertToInt());
+                    tasinmaz = new TasinmazService(LoggingContext).GetById(TasinmazIdQS.ConvertToInt());
                     if (tasinmaz != null)
                     {
                         TumTablolariDoldur(tasinmaz);
@@ -208,7 +208,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
         {
             TasinmazBilgileriniDoldur(tasinmaz);
             Bagis bagis = new Bagis();
-            bagis = new BagisService().GetByTasinmazId(tasinmaz.Id);
+            bagis = new BagisService(LoggingContext).GetByTasinmazId(tasinmaz.Id);
             if (bagis != null)
             {
                 TasinmazBagisci bagisci = new TasinmazBagisci();
@@ -286,7 +286,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
         protected void ExportToExcel()
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().GetById(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService(LoggingContext).GetById(TasinmazIdQS.ConvertToInt());
             string filename = "TasinmazKartiNo" + tasinmaz.Id.ReplaceTrChars() + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls";
             Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
             Page.Response.Charset = "windows-1254";//ISO-8859-9
@@ -808,7 +808,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().GetById(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService(LoggingContext).GetById(TasinmazIdQS.ConvertToInt());
             if (tasinmaz != null)
             {
                 TumTablolariDoldur(tasinmaz);

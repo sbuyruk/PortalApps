@@ -106,7 +106,7 @@ namespace TBYS_WebParts.TasinmazSorgulamaWP
         {
 
             Tasinmaz tasinmaz = new Tasinmaz();
-            DataTable dataTable = new TasinmazService().SelectAllReturnDataTable();
+            DataTable dataTable = new TasinmazService(LoggingContext).SelectAllReturnDataTable();
 
 
 
@@ -169,7 +169,7 @@ namespace TBYS_WebParts.TasinmazSorgulamaWP
         {
             //Get the data from database into datatable
             Tasinmaz tasinmaz = new Tasinmaz();
-            DataTable dt = new TasinmazService().SelectAllReturnDataTable();
+            DataTable dt = new TasinmazService(LoggingContext).SelectAllReturnDataTable();
 
 
             //Create a dummy GridView

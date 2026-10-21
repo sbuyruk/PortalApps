@@ -1,4 +1,5 @@
 using DAO.Ortak;
+using Utility.Logging;
 using System;
 using System.Data;
 
@@ -6,7 +7,7 @@ namespace DAO.Repositories.TBYS
 {
     public class SerhBeyanIrtifakRepository
     {
-        private readonly DbClass db;
+        private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
         public SerhBeyanIrtifakRepository() : this(new DbClass()) { }
@@ -14,7 +15,13 @@ namespace DAO.Repositories.TBYS
         public SerhBeyanIrtifakRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
+            this.db = new TbysSqlExecutor(db, "SerhBeyanIrtifakRepository");
+            queryBuilder = new CrudQueryBuilder();
+        }
+
+        public SerhBeyanIrtifakRepository(PortalLogContext context)
+        {
+            db = new TbysSqlExecutor(context, "SerhBeyanIrtifakRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -53,6 +60,28 @@ namespace DAO.Repositories.TBYS
         public bool Delete(int id)
         {
             return db.DeleteFromDb(queryBuilder.BuildDelete("SerhBeyanIrtifak_Table", id), "");
+        }
+
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM SerhBeyanIrtifak_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
+        public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Insert(queryBuilder.BuildInsert(entity, "SerhBeyanIrtifak_Table"), transaction, context);
+        }
+
+        public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Update2Db(queryBuilder.BuildUpdate(entity, "SerhBeyanIrtifak_Table"), transaction, context);
+        }
+
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.DeleteFromDb(queryBuilder.BuildDelete("SerhBeyanIrtifak_Table", id), "", transaction, context);
         }
     }
 }

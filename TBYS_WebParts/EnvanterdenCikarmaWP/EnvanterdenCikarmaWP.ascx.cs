@@ -151,7 +151,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                 if (String.IsNullOrEmpty(DestinationAppQS) || String.Equals(DestinationAppQS, ""))
                 {
                     tasinmaz = new Tasinmaz();
-                    tasinmaz = new TasinmazService().GetById(TasinmazIdQS.ConvertToInt());
+                    tasinmaz = new TasinmazService(LoggingContext).GetById(TasinmazIdQS.ConvertToInt());
                     if (tasinmaz != null)
                     {
                         //envanterden çikar btn yi visible yap
@@ -163,7 +163,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                 else if (String.Equals(DestinationAppQS, "ECD"))
                 {
                     tasinmaz = new Tasinmaz();
-                    tasinmaz = new TasinmazService().SelectEnvanterdenCikanTasinmaz(TasinmazIdQS.ConvertToInt());
+                    tasinmaz = new TasinmazService(LoggingContext).SelectEnvanterdenCikanTasinmaz(TasinmazIdQS.ConvertToInt());
                     if (tasinmaz != null)
                     {
                         UpdateBtn.Visible = true;
@@ -296,7 +296,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
             try
             {
                 Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = new TasinmazService().SelectEnvanterdenCikanTasinmaz(TasinmazIdQS.ConvertToInt());
+                tasinmaz = new TasinmazService(LoggingContext).SelectEnvanterdenCikanTasinmaz(TasinmazIdQS.ConvertToInt());
                 tasinmaz.EnvanterdeMi = ProjeConstants.TASINMAZ_ENVANTERDEN_CIKTI;//
                 tasinmaz.EnvanterdenCikmaSebebi = CikarmaSebebiDDL.SelectedItem.Value;
                 tasinmaz.EnvanterdenCikmaBedeli = BedelTxt.Value.ConvertToDecimal();
@@ -339,7 +339,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
             try
             {
                 Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = new TasinmazService().GetById(TasinmazIdQS.ConvertToInt());
+                tasinmaz = new TasinmazService(LoggingContext).GetById(TasinmazIdQS.ConvertToInt());
                 tasinmaz.EnvanterdeMi = ProjeConstants.TASINMAZ_ENVANTERDEN_CIKTI;//false;
                 tasinmaz.EnvanterdenCikmaSebebi = CikarmaSebebiDDL.SelectedItem.Value;
                 tasinmaz.EnvanterdenCikmaBedeli = BedelTxt.Value.ConvertToDecimal();

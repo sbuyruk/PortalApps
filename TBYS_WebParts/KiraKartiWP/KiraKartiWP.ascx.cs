@@ -232,7 +232,7 @@ namespace TBYS_WebParts.KiraKartiWP
                 string ilcesi = string.Empty;
                 int tasinmazId = item.TasinmazId;
                 Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = new TasinmazService().Select(tasinmazId);
+                tasinmaz = new TasinmazService(LoggingContext).Select(tasinmazId);
                 if (tasinmaz != null)
                 {
                     ili = tasinmaz.Ili;
@@ -240,7 +240,7 @@ namespace TBYS_WebParts.KiraKartiWP
                     if (item.BolumId > 0)
                     {
                         BagimsizBolum bagimsizBolum = new BagimsizBolum();
-                        bagimsizBolum = new BagimsizBolumService().GetById(item.BolumId);
+                        bagimsizBolum = new BagimsizBolumService(LoggingContext).GetById(item.BolumId);
                         if (bagimsizBolum == null)
                         {
                             MessageHelper.PublishMessage("Bağımsız bölüm bulunamadı. Sözleşmeden bağımsız bölüm kaydını düzeltmeniz gerekmektedir.",ProjeConstants.MESAJ_HATA);
@@ -259,7 +259,7 @@ namespace TBYS_WebParts.KiraKartiWP
                     if (tasinmaz.AltBolum)
                     {
                         BagimsizBolum bagimsizBolum = new BagimsizBolum();
-                        bagimsizBolum = new BagimsizBolumService().GetById(item.BolumId);
+                        bagimsizBolum = new BagimsizBolumService(LoggingContext).GetById(item.BolumId);
                         if (bagimsizBolum != null)
                         {
                             NiteligiCell.Text = bagimsizBolum.Nitelik;

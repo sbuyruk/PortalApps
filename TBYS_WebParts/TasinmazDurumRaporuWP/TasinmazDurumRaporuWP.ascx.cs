@@ -113,28 +113,28 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP
         private decimal TahminiRayicToplaminiBul()
         {
             decimal toplam = 0;
-            TasinmazService tasinmazService = new TasinmazService();
+            TasinmazService tasinmazService = new TasinmazService(LoggingContext);
             toplam = tasinmazService.SelectTahminiRayicToplami(BolgeIdQS);
             return toplam;
         }
         private decimal MuhasebeyeKayitliToplaminiBul()
         {
             decimal toplam = 0;
-            TasinmazService tasinmazService = new TasinmazService();
+            TasinmazService tasinmazService = new TasinmazService(LoggingContext);
             toplam = tasinmazService.SelectMuhasebeyeKayitliDegerToplami(BolgeIdQS);
             return toplam;
         }
         private decimal EmlakBeyanDegeriToplaminiBul()
         {
             decimal toplam = 0;
-            TasinmazService tasinmazService = new TasinmazService();
+            TasinmazService tasinmazService = new TasinmazService(LoggingContext);
             toplam = tasinmazService.SelectEmlakBeyanDegeriToplami(BolgeIdQS);
             return toplam;
         }
         private decimal YaklasikPiyasaToplaminiBul()
         {
             decimal toplam = 0;
-            TasinmazService tasinmazService = new TasinmazService();
+            TasinmazService tasinmazService = new TasinmazService(LoggingContext);
             toplam = tasinmazService.SelectYaklasikPiyasaToplami(BolgeIdQS);
             return toplam;
         }
@@ -176,7 +176,7 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP
                 int totalArs = 0;
                 int totalTar = 0;
 
-                TasinmazService tasinmazService = new TasinmazService();
+                TasinmazService tasinmazService = new TasinmazService(LoggingContext);
 
                 // Get active regions based on user permission/context
                 var bolgeList = new BolgeService().GetActive(BolgeIdQS);

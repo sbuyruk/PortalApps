@@ -171,7 +171,7 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             GenelBaslikCell.Text = AyDDL.SelectedItem.Text + " " + YilDDL.SelectedItem.Text + " Itibari Ile  Yapilan Takip Islemleri";
 
-            KiraBorcuTakipService kiraBorcuTakipService = new KiraBorcuTakipService();
+            KiraBorcuTakipService kiraBorcuTakipService = new KiraBorcuTakipService(LoggingContext);
 
             //Ank 
             int AnkUyariAdet = kiraBorcuTakipService.GetCountByFilters(ProjeConstants.KIRABORCU_UYARI, ProjeConstants.BOLGE_ANKARA, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
