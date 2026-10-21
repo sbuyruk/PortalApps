@@ -299,7 +299,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             try
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt(), LoggingContext);
                 if (kiraci != null)
                 {
                     KiraciAdiLbl.Text = kiraci.Adi + kiraci.Soyadi;

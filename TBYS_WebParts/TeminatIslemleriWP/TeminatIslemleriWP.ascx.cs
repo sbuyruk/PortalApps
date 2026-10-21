@@ -164,7 +164,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     if (KiraSozlesmeIdQS.ConvertToInt() > 0)
                     {
                         Kiraci kiraci = new Kiraci();
-                        kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
+                        kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId, LoggingContext);
                         if (kiraci != null)
                         {
                             KiraciIdQS = kiraci.Id.ToString();
