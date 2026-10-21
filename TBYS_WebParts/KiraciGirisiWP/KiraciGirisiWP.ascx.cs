@@ -91,7 +91,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             if (KiraciIdQS.ConvertToInt() > 0)
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+                kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
                 if (!Page.IsPostBack)
                 {
                     IlDDLDoldur();
@@ -181,7 +181,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             {
                 BitenSozlesmeOlusturBtn.Visible = true;
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(kiraci.Id);
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetActiveByKiraciId(kiraci.Id);
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
                     KiraKartiBtn.Visible = true;
@@ -372,7 +372,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
 
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             List<KiraSozlesmeListItem> list = new List<KiraSozlesmeListItem>();
-            DataTable dataTable = new Model.Services.TBYS.KiraSozlesmeService().GetListReturnDataTable(KiraciIdQS.ConvertToInt(), ProjeConstants.KIRASOZLESME_AKTIF_HEPSI_INT, ProjeConstants.BOLGE_HEPSI_INT);
+            DataTable dataTable = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetListReturnDataTable(KiraciIdQS.ConvertToInt(), ProjeConstants.KIRASOZLESME_AKTIF_HEPSI_INT, ProjeConstants.BOLGE_HEPSI_INT);
             if (dataTable != null)
             {
                 int SiraNo = 1;

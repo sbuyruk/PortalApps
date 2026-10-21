@@ -315,7 +315,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 {
                     IdLbl.Text = "Sözleşme No: " + kiraSozlesme.Id.ToString() ;
                     Kiraci kiraci = new Kiraci();
-                    kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
+                    kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(kiraSozlesme.KiraciId);
                     if (kiraci != null)
                     {
                         KiraciIdQS = kiraSozlesme.KiraciId.ToString();
@@ -558,7 +558,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             {
                 //devirAnaPara, devirFaiz, devirFaizliBakiye degisti ise OdemePlanini güncelle
                 OdemePlani odemePlani = new OdemePlani();
-                odemePlani = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdSira(kiraSozlesme.Id, 0);
+                odemePlani = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeIdSira(kiraSozlesme.Id, 0);
                 if (odemePlani != null)
                 {
                     if ((odemePlani.AnaPara != DevirAnaParaTxt.Value.ConvertToDecimal())
@@ -669,7 +669,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
         {
             bool silindi = false;
             OdemePlani odemePlaniDao = new OdemePlani();
-            List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
+            List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeId(kiraSozlesme.Id);
             if (list.Count > 0)
             {
                 OdemePlani op = list[0];
@@ -700,7 +700,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             bool odemePlaniVar = false;
             //halen devam eden bir ödeme plani var mi
             OdemePlani odemePlaniDao = new OdemePlani();
-            List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
+            List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeId(kiraSozlesme.Id);
             if (list.Count > 0)
             {
                 OdemePlani odemePlani = list[0];
@@ -721,12 +721,12 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 OdemePlani odemePlani = new OdemePlani();
                 if (isSozlesmeyiBitir)
                 {
-                    odemePlani = new Model.Services.TBYS.OdemePlaniService().GetLastBySozlesmeId(kiraSozlesme.Id);
+                    odemePlani = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetLastBySozlesmeId(kiraSozlesme.Id);
                 }
                 else
                 {
                     DateTime today = DateTime.Today;
-                    odemePlani = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, today);
+                    odemePlani = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, today);
                 }
                 if (odemePlani == null)
                 {
@@ -895,7 +895,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             if (yasalFaiz != null)
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
+                kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(kiraSozlesme.KiraciId);
                 if ((yenibastar >= ProjeConstants.SINIRLIKIRAARTISI_BASLAMATARIHI) &&
                     (yenibastar <= ProjeConstants.SINIRLIKIRAARTISI_BITISTARIHI) &&
                     kiraci.KiralamaAmaci.Equals(ProjeConstants.SINIRLIKIRAARTISI_UYGULANACAKTASINMAZCINSI))

@@ -164,7 +164,7 @@ namespace TBYS_WebParts.KiraKartiWP
                 if (kiraci != null)
                 {
                     KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                    kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetByKiraciId(kiraci.Id);
+                    kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetByKiraciId(kiraci.Id);
 
                     if (kiraSozlesme != null)
                     {
@@ -198,7 +198,7 @@ namespace TBYS_WebParts.KiraKartiWP
                 KiraciBilgileriniTabloyaYaz(kiraci);
 
                 KiraSozlesme aktifSozlesme = new KiraSozlesme();
-                aktifSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(kiraci.Id);
+                aktifSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetActiveByKiraciId(kiraci.Id);
                 if (aktifSozlesme != null)
                 {
                     KiraSozlesmeIdQS = aktifSozlesme.Id.ToString();
@@ -224,7 +224,7 @@ namespace TBYS_WebParts.KiraKartiWP
         private void TasinmazBilgileriniTabloyaYaz(KiraSozlesme ks)
         {
             SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-            List<SozlesmeTasinmaz> stList = new Model.Services.TBYS.SozlesmeTasinmazService().GetBySozlesmeId(ks.Id);
+            List<SozlesmeTasinmaz> stList = new Model.Services.TBYS.SozlesmeTasinmazService(LoggingContext).GetBySozlesmeId(ks.Id);
             foreach (SozlesmeTasinmaz item in stList)
             {
                 string adres = string.Empty;
