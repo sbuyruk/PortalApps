@@ -1,5 +1,11 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
+## Güncel parça: kira raporu ve borç takip okumaları
+
+Dal: `codex/tbys-report-read-wiring`. Başlangıç commit'i: `deedfdc4` (PR #480 sonrası). Borçlu kiracı, bölgesel borç özeti, kira artışı, gerçekleşen artış ve tahakkuk/tahsil raporlarındaki kira sözleşmesi SELECT çağrıları `LoggingContext` kullanan `KiraSozlesmeService` kurucularına geçirildi. Bu rapor sorguları artık teknik SQL izinde ilgili WebPart bağlamını taşır.
+
+Üretilmiş ASCX dosyaları değişmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve `git diff --check` yapıldı. Build ve TEST kullanıcıya aittir.
+
 ## Güncel parça: kira sözleşmesi okuma bağlantıları
 
 Dal: `codex/tbys-final-read-wiring`. Başlangıç commit'i: `1141fdfc` (PR #479 sonrası). Sekiz WebPart’ta kira sözleşmesi okumaları `LoggingContext` kullanan `KiraSozlesmeService` kurucularına geçirildi. Listeleme, devir, kiracı eşleştirme, ödeme dosyası, sözleşme sıralama, ödeme girişi, aylık ödeme ve taşınmaz kartı ekranlarının SQL izleri artık ilgili WebPart bağlamını taşıyor.

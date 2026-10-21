@@ -252,7 +252,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             DateTime tarih = AyDDL.SelectedItem.Value.ConvertToDatetime();
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
             int bolgeId= BolgeDDL.SelectedItem==null ? ProjeConstants.BOLGE_HEPSI_INT:BolgeDDL.SelectedItem.Value.ConvertToInt();
-            DataTable dataTable = new Model.Services.TBYS.KiraSozlesmeService().GetRentIncreaseDue(bolgeId,tarih);
+            DataTable dataTable = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetRentIncreaseDue(bolgeId,tarih);
             int SiraNo = 1;
 
             List<KiraArtisListItem> list = new List<KiraArtisListItem>();
@@ -519,7 +519,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             DateTime gecenAySonGun = new DateTime(bugun.Year, bugun.Month, 1).AddDays(-1);
             DateTime gecenAyIlkGun = new DateTime(bugun.Year, bugun.AddMonths(-1).Month, 1);
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            DataTable dataTable = new Model.Services.TBYS.KiraSozlesmeService().GetRentIncreaseDue(BolgeIdQS, tarih);
+            DataTable dataTable = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetRentIncreaseDue(BolgeIdQS, tarih);
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
@@ -642,7 +642,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             MemoryStream destinationStream = null;
 
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            DataTable dataTable = new Model.Services.TBYS.KiraSozlesmeService().GetRentIncreaseDue(BolgeIdQS, tarih);
+            DataTable dataTable = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetRentIncreaseDue(BolgeIdQS, tarih);
             if (dataTable != null)
             {
                 int index = 1;
