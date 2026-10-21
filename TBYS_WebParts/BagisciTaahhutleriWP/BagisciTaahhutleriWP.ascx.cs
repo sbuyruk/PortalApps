@@ -86,7 +86,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                 if (!Page.IsPostBack)
                 {
                     TasinmazBagisci bagisci = new TasinmazBagisci();
-                    bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
+                    bagisci = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetById(BagisciIdQS.ConvertToInt());
                     if (bagisci != null)
                     {
                         TasinmazDDLDoldur(bagisci);
@@ -114,7 +114,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
             BagisciyiTaahhutListesineEkleBtn.Visible = false;
 
             TasinmazTaahhut tt = new TasinmazTaahhut();
-            tt = new Model.Services.TBYS.TasinmazTaahhutService().GetByTcKimlikNo(bagisci.TCKimlikNo);
+            tt = new Model.Services.TBYS.TasinmazTaahhutService(LoggingContext).GetByTcKimlikNo(bagisci.TCKimlikNo);
             if (tt == null || tt.TCKimlikNo == 0)
             {
                 BagisciyiTaahhutListesineEkleBtn.Visible = true;
@@ -151,7 +151,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
         {
             TasinmazDDL.Items.Clear();
             Bagis bagis = new Bagis();
-            DataTable dataTable = new BagisService().GetTasinmazByBagisciId(bagisci.Id);
+            DataTable dataTable = new BagisService(LoggingContext).GetTasinmazByBagisciId(bagisci.Id);
             if (dataTable != null)
             {
                 foreach (DataRow dataRow in dataTable.Rows)
@@ -210,7 +210,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
             //Column headers
             TaahhutTableHeaders();
             TasinmazTaahhut tt = new TasinmazTaahhut();
-            List<TasinmazTaahhut> list = new Model.Services.TBYS.TasinmazTaahhutService().GetByBagisciId(bagisci.Id);
+            List<TasinmazTaahhut> list = new Model.Services.TBYS.TasinmazTaahhutService(LoggingContext).GetByBagisciId(bagisci.Id);
             int SiraNo = 1;
             foreach (TasinmazTaahhut item in list)
             {
@@ -232,7 +232,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
 
                 TableCell TasinmazCell = new TableCell();
                 Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = new TasinmazService().GetById(item.TasinmazId);
+                tasinmaz = new TasinmazService(LoggingContext).GetById(item.TasinmazId);
                 TasinmazCell.Text = tasinmaz != null ? tasinmaz.Adres + " " + tasinmaz.Ilcesi + "/" + tasinmaz.Ili : string.Empty;
                 row.Controls.Add(TasinmazCell);
 
@@ -298,7 +298,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
 
             int taahhutId = ParamTaahhutIdLbl.Value.ConvertToInt();
             TasinmazTaahhut tasinmazTaahhut = new TasinmazTaahhut();
-            tasinmazTaahhut = new Model.Services.TBYS.TasinmazTaahhutService().GetById(taahhutId);
+            tasinmazTaahhut = new Model.Services.TBYS.TasinmazTaahhutService(LoggingContext).GetById(taahhutId);
             if (tasinmazTaahhut != null)
             {
                 AdiTxt.Text = tasinmazTaahhut.Adi;
@@ -362,10 +362,10 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                 }
                 tt.Soyadi = SoyadiTxt.Text;
                 tt.TaahhutAciklama = TaahhutAciklamaTxt.Text;
-                tt.TasinmazId = TasinmazDDL.SelectedItem.Value.ConvertToInt();
+                tt.TasinmazId = TasinmazDDL.SelectedValue.ConvertToInt();
                 tt.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
                 tt.Telefon = TelefonTxt.Text;
-                int id = new Model.Services.TBYS.TasinmazTaahhutService().Save(tt);
+                int id = new Model.Services.TBYS.TasinmazTaahhutService(LoggingContext).Save(tt);
                 if (id > 0)
                     MessageHelper.PublishMessage("Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                 RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TAAHHUTLERI+ "?BagisciId=" + BagisciIdQS);
@@ -385,7 +385,12 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
             {
                 int taahhutId = ParamTaahhutIdLbl.Value.ConvertToInt();
                 TasinmazTaahhut tt = new TasinmazTaahhut();
-                tt = new Model.Services.TBYS.TasinmazTaahhutService().GetById(taahhutId);
+                tt = new Model.Services.TBYS.TasinmazTaahhutService(LoggingContext).GetById(taahhutId);
+                if (tt == null || tt.BagisciId != BagisciIdQS.ConvertToInt())
+                {
+                    MessageHelper.PublishMessage("Kaydın bağışçı ilişkisi değişmiş veya kayıt bulunamıyor. Sayfayı yenileyiniz.", ProjeConstants.MESAJ_HATA);
+                    return;
+                }
                 if (tt != null)
                 {
                     tt.Adi = AdiTxt.Text;
@@ -408,11 +413,11 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                         tt.VefatTarihi = VefatTarihiTxt.Value.ConvertToDatetime();
                     }
                     tt.TaahhutAciklama = TaahhutAciklamaTxt.Text;
-                    tt.TasinmazId = TasinmazDDL.SelectedItem.Value.ConvertToInt();
+                    tt.TasinmazId = TasinmazDDL.SelectedValue.ConvertToInt();
                     tt.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
                     tt.Telefon = TelefonTxt.Text;
                     //tt.TaahhutPdfAdi = TaahhutPdfAdi.Text;
-                    if (new Model.Services.TBYS.TasinmazTaahhutService().Update(tt))
+                    if (new Model.Services.TBYS.TasinmazTaahhutService(LoggingContext).Update(tt))
                         MessageHelper.PublishMessage("Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                     else
                         MessageHelper.PublishMessage("Kaydedilemedi", ProjeConstants.MESAJ_HATA);
@@ -447,75 +452,43 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
         }
         protected void TaahhutSilNowBtn_Click(object sender, EventArgs e)
         {
-            int taahhutId = ParamTaahhutIdLbl.Value.ConvertToInt();
-            TasinmazTaahhut tt = new TasinmazTaahhut();
-            tt = new Model.Services.TBYS.TasinmazTaahhutService().GetById(taahhutId);
-            if (tt != null)
+            try
             {
-                if (new Model.Services.TBYS.TasinmazTaahhutService().Delete(tt))
-                    RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TAAHHUTLERI + "?BagisciId=" + BagisciIdQS);
-
+                TasinmazTaahhut item = new Model.Services.TBYS.TasinmazTaahhutService(LoggingContext).GetById(ParamTaahhutIdLbl.Value.ConvertToInt());
+                if (item == null || item.BagisciId != BagisciIdQS.ConvertToInt())
+                {
+                    MessageHelper.PublishMessage("Taahhüt kaydı değişmiş veya bulunamıyor. Sayfayı yenileyip tekrar deneyiniz.", ProjeConstants.MESAJ_HATA);
+                    return;
+                }
+                if (!new Model.Services.TBYS.TasinmazTaahhutService(LoggingContext).Delete(item))
+                {
+                    MessageHelper.PublishMessage("Taahhüt kaydı silinemedi.", ProjeConstants.MESAJ_HATA);
+                    return;
+                }
+                RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TAAHHUTLERI + "?BagisciId=" + BagisciIdQS);
             }
-            else
-                MessageHelper.PublishMessage("Taahhüt bulunamadı", ProjeConstants.MESAJ_BILGI);
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciTaahhutleriWP.TaahhutSilNowBtn_Click", error);
+            }
         }
         protected void BagisciyiTaahhutListesineEkleBtn_Click(object sender, EventArgs e)
         {
             try
             {
-                TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-                tasinmazBagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
-                if (tasinmazBagisci != null )
-                {
-                    TasinmazTaahhut tt = new TasinmazTaahhut();
-                    tt = new Model.Services.TBYS.TasinmazTaahhutService().GetByTcKimlikNo(tasinmazBagisci.TCKimlikNo);
-                    if (tt == null || tasinmazBagisci.TCKimlikNo == 0)
-                    {
-                        TasinmazTaahhut yeniTaahhut = new TasinmazTaahhut();
-                        yeniTaahhut.Adi = tasinmazBagisci.Adi;
-                        yeniTaahhut.Adres = tasinmazBagisci.Adres;
-                        yeniTaahhut.BagisciId = tasinmazBagisci.Id;
-                        yeniTaahhut.DogumTarihi = tasinmazBagisci.DogumTarihi;
-                        Ilce ilce = new IlceService().GetByProvinceAndDistrictContains(tasinmazBagisci.Ili, tasinmazBagisci.Ilcesi);
-                        if (ilce != null)
-                        {
-                            yeniTaahhut.Ilcesi = ilce.Id;
-                            yeniTaahhut.Ili = ilce.IlId;
-                        }
-                        yeniTaahhut.Olusturan = UtilityHelper.GetCurrentUserLoginName();
-                        yeniTaahhut.Sag_vefat = tasinmazBagisci.Sag_vefat;
-                        yeniTaahhut.Soyadi = tasinmazBagisci.Soyadi;
-                        yeniTaahhut.TaahhutAciklama = "Bağışçıya taahhüt verilmiştir.";
-                        yeniTaahhut.TasinmazId = TasinmazDDL.SelectedItem.Value.ConvertToInt();
-                        yeniTaahhut.TCKimlikNo = tasinmazBagisci.TCKimlikNo;
-                        yeniTaahhut.Telefon = tasinmazBagisci.Telefon1;
-                        if (tasinmazBagisci.VefatTarihi != null)
-                        {
-                            yeniTaahhut.VefatTarihi = tasinmazBagisci.VefatTarihi;
-                        }
-                        if (new Model.Services.TBYS.TasinmazTaahhutService().Save(yeniTaahhut) > 0)
-                        {
-                            RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TAAHHUTLERI + "?BagisciId=" + BagisciIdQS);
-                        }
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage("Bağışçı zaten listede var.",ProjeConstants.MESAJ_BILGI, 2000);
-                    }
-                }
+                bool added = new Model.Services.TBYS.TasinmazTaahhutService(LoggingContext).AddDonorToPledgeList(
+                    BagisciIdQS.ConvertToInt(), TasinmazDDL.SelectedValue.ConvertToInt());
+                if (added)
+                    RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TAAHHUTLERI + "?BagisciId=" + BagisciIdQS);
                 else
-                {
-                    MessageHelper.PublishMessage("Bağışçı bulunamadı.", ProjeConstants.MESAJ_BILGI, 2000);
-                }
+                    MessageHelper.PublishMessage("Bu bağışçı için taahhüt kaydı zaten bulunmaktadır.", ProjeConstants.MESAJ_BILGI);
             }
-            catch (Exception ex)
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
             {
-                if (ex is System.Threading.ThreadAbortException) throw;
-                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciTaahhutleriWP.BagisciyiTaahhutListesineEkleBtn_Click", ex);
-                ReportError("Bagis.Taahhut", ex);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciTaahhutleriWP.BagisciyiTaahhutListesineEkleBtn_Click", error);
             }
-
-
         }
     }
 }

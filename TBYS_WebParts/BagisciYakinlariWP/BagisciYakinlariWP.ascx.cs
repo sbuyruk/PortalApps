@@ -132,7 +132,7 @@ namespace TBYS_WebParts.BagisciYakinlariWP
             //önceki sayfayi tut, geri tusuna basildiginda gerekli
 
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
+            bagisci = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetById(BagisciIdQS.ConvertToInt());
             if (bagisci != null)
             {
                 FillBagisciYakinlari2Table(bagisci);
@@ -165,7 +165,7 @@ namespace TBYS_WebParts.BagisciYakinlariWP
             //Column headers
             BagisciYakinlariTableHeaders();
             BagisciYakinlari bt = new BagisciYakinlari();
-            List<BagisciYakinlari> list = new BagisciYakinlariService().GetByBagisciId(bagisci.Id);
+            List<BagisciYakinlari> list = new BagisciYakinlariService(LoggingContext).GetByBagisciId(bagisci.Id);
             int SiraNo = 1;
             foreach (BagisciYakinlari bagisciYakini in list)
             {
@@ -194,12 +194,25 @@ namespace TBYS_WebParts.BagisciYakinlariWP
                 SilBtn.CssClass = "btn btn-outline-danger";
                 SilBtn.Click += delegate
                 {
-                    new BagisciYakinlariService().Delete(bagisciYakini);
-                    string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                    int queryIndex = newUrl.IndexOf("?");
-                    if (queryIndex > 0)
-                        newUrl = newUrl.Substring(0, queryIndex);
-                    Page.Response.Redirect(newUrl + "?DestinationApp=TBD&BagisciId=" + bagisciYakini.BagisciId, true);
+                    try
+                    {
+                        if (!new BagisciYakinlariService(LoggingContext).Delete(bagisciYakini))
+                        {
+                            MessageHelper.PublishMessage("Yakın kaydı silinemedi. Sayfayı yenileyip tekrar deneyiniz.", ProjeConstants.MESAJ_HATA);
+                            return;
+                        }
+                        string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                        int queryIndex = newUrl.IndexOf("?");
+                        if (queryIndex > 0)
+                            newUrl = newUrl.Substring(0, queryIndex);
+                        Page.Response.Redirect(newUrl + "?DestinationApp=TBD&BagisciId=" + bagisciYakini.BagisciId, true);
+
+                    }
+                    catch (System.Threading.ThreadAbortException) { throw; }
+                    catch (Exception error)
+                    {
+                        TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciYakinlariWP.Delete", error);
+                    }
                 };
                 SilCell.Controls.Add(SilBtn);
                 row.Controls.Add(SilCell);
@@ -240,19 +253,28 @@ namespace TBYS_WebParts.BagisciYakinlariWP
         }
         protected void SaveBtn_Click(object sender, EventArgs e)
         {
-            BagisciYakinlari bagisciYakinlari = new BagisciYakinlari();
-            bagisciYakinlari.AdSoyad = AdsoyadTxt.Text;
-            bagisciYakinlari.Telefon = TelefonTxt.Text;
-            bagisciYakinlari.YakinlikDerecesi = YakinlikDerecesiTxt.Text;
-            bagisciYakinlari.BagisciId = BagisciIdQS.ConvertToInt();
-            int id = new BagisciYakinlariService().Save(bagisciYakinlari);
-            bagisciYakinlari.Id = id;
-            string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            int queryIndex = newUrl.IndexOf("?");
-            if (queryIndex > 0)
-                newUrl = newUrl.Substring(0, queryIndex);
+            try
+            {
+                BagisciYakinlari bagisciYakinlari = new BagisciYakinlari();
+                bagisciYakinlari.AdSoyad = AdsoyadTxt.Text;
+                bagisciYakinlari.Telefon = TelefonTxt.Text;
+                bagisciYakinlari.YakinlikDerecesi = YakinlikDerecesiTxt.Text;
+                bagisciYakinlari.BagisciId = BagisciIdQS.ConvertToInt();
+                int id = new BagisciYakinlariService(LoggingContext).Save(bagisciYakinlari);
+                bagisciYakinlari.Id = id;
+                string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                int queryIndex = newUrl.IndexOf("?");
+                if (queryIndex > 0)
+                    newUrl = newUrl.Substring(0, queryIndex);
 
-            Page.Response.Redirect(newUrl + "?BagisciId=" + BagisciIdQS, true);
+                Page.Response.Redirect(newUrl + "?BagisciId=" + BagisciIdQS, true);
+
+            }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciYakinlariWP.SaveBtn_Click", error);
+            }
         }
     }
 }

@@ -84,7 +84,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP
                 if (!Page.IsPostBack)
                 {
                     TasinmazBagisci bagisci = new TasinmazBagisci();
-                    bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
+                    bagisci = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetById(BagisciIdQS.ConvertToInt());
                     if (bagisci != null)
                     {
                         BagisciTalepleriTablosunuDoldur(bagisci);
@@ -134,7 +134,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP
             //Column headers
             BagisciTalepleriTableHeaders();
             BagisciTalepleri bt = new BagisciTalepleri();
-            List<BagisciTalepleri> list = new BagisciTalepleriService().GetByBagisciId(bagisci.Id);
+            List<BagisciTalepleri> list = new BagisciTalepleriService(LoggingContext).GetByBagisciId(bagisci.Id);
             int SiraNo = 1;
             foreach (BagisciTalepleri item in list)
             {
@@ -194,14 +194,14 @@ namespace TBYS_WebParts.BagisciTalepleriWP
         {
             RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_GIRIS + "?DestinationApp=TBD&BagisciId=" + BagisciIdQS);
         }
-        
+
         protected void TalepModalDoldurBtnBtn_Click(object sender, EventArgs e)
         {
             TalepKaydetBtn.Visible = false;
             TalepGuncelleBtn.Visible = false;
             int talepId = ParamTalepIdLbl.Value.ConvertToInt();
             BagisciTalepleri bt = new BagisciTalepleri();
-            bt = new BagisciTalepleriService().GetById(talepId);
+            bt = new BagisciTalepleriService(LoggingContext).GetById(talepId);
             if (bt != null)
             {
                 TalepTxt.Text = bt.Talep;
@@ -233,7 +233,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP
                 bt.Talep = TalepTxt.Text;
                 bt.Tarih = TarihTxt.Text;
 
-                int id = new BagisciTalepleriService().Save(bt);
+                int id = new BagisciTalepleriService(LoggingContext).Save(bt);
                 if (id > 0)
                     MessageHelper.PublishMessage("Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                 RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TALEPLERI + "?BagisciId=" + BagisciIdQS);
@@ -254,7 +254,12 @@ namespace TBYS_WebParts.BagisciTalepleriWP
 
                 int talepId = ParamTalepIdLbl.Value.ConvertToInt();
                 BagisciTalepleri bt = new BagisciTalepleri();
-                bt = new BagisciTalepleriService().GetById(talepId);
+                bt = new BagisciTalepleriService(LoggingContext).GetById(talepId);
+                if (bt == null || bt.BagisciId != BagisciIdQS.ConvertToInt())
+                {
+                    MessageHelper.PublishMessage("Kaydın bağışçı ilişkisi değişmiş veya kayıt bulunamıyor. Sayfayı yenileyiniz.", ProjeConstants.MESAJ_HATA);
+                    return;
+                }
                 if (bt != null)
                 {
                     bt.Aciklama = TalepAciklamaTxt.Text;
@@ -263,7 +268,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP
                     bt.Irtibat = IrtibatTxt.Text;
                     bt.Talep = TalepTxt.Text;
                     bt.Tarih = TarihTxt.Text;
-                    if (new BagisciTalepleriService().Update(bt))
+                    if (new BagisciTalepleriService(LoggingContext).Update(bt))
                         MessageHelper.PublishMessage("Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                     else
                         MessageHelper.PublishMessage("Kaydedilemedi", ProjeConstants.MESAJ_HATA);
@@ -299,18 +304,26 @@ namespace TBYS_WebParts.BagisciTalepleriWP
         }
         protected void TalepSilNowBtn_Click(object sender, EventArgs e)
         {
-            int talepId = ParamTalepIdLbl.Value.ConvertToInt();
-            BagisciTalepleri bt = new BagisciTalepleri();
-            bt = new BagisciTalepleriService().GetById(talepId);
-            if (bt != null)
+            try
             {
-                if (new BagisciTalepleriService().Delete(bt))
-                    RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TALEPLERI + "?BagisciId=" + BagisciIdQS);
-
+                BagisciTalepleri item = new Model.Services.TBYS.BagisciTalepleriService(LoggingContext).GetById(ParamTalepIdLbl.Value.ConvertToInt());
+                if (item == null || item.BagisciId != BagisciIdQS.ConvertToInt())
+                {
+                    MessageHelper.PublishMessage("Talep kaydı değişmiş veya bulunamıyor. Sayfayı yenileyip tekrar deneyiniz.", ProjeConstants.MESAJ_HATA);
+                    return;
+                }
+                if (!new Model.Services.TBYS.BagisciTalepleriService(LoggingContext).Delete(item))
+                {
+                    MessageHelper.PublishMessage("Talep kaydı silinemedi.", ProjeConstants.MESAJ_HATA);
+                    return;
+                }
+                RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TALEPLERI + "?BagisciId=" + BagisciIdQS);
             }
-            else
-                MessageHelper.PublishMessage("Talep bulunamadi",ProjeConstants.MESAJ_BILGI);
-
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciTalepleriWP.TalepSilNowBtn_Click", error);
+            }
         }
     }
 }

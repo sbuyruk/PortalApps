@@ -221,7 +221,7 @@ namespace TBYS_WebParts.TaahhutListesiWP
         private List<TasinmazTaahhut> GetBagisciData()
         {
             TasinmazTaahhut ttDao = new TasinmazTaahhut();
-            List<TasinmazTaahhut> ttlist = new Model.Services.TBYS.TasinmazTaahhutService().GetByFilters(false, false, false,BolgeIdQS);
+            List<TasinmazTaahhut> ttlist = new Model.Services.TBYS.TasinmazTaahhutService(LoggingContext).GetByFilters(false, false, false,BolgeIdQS);
             return ttlist;
         }
         private List<TasinmazTaahhutListItem> GetDataList()
@@ -231,7 +231,7 @@ namespace TBYS_WebParts.TaahhutListesiWP
             List<string> bagisciTaahhutFormuDosyalari = UtilityHelper.GetFileNameListFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, ProjeConstants.DOSYA_TAAHHUT_FORMU);
             bool isEditable = BolgeIdQS == ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? true : false;
             TasinmazBagisci tb= new TasinmazBagisci();
-            List<TasinmazBagisci> tblist =  new Model.Services.TBYS.TasinmazBagisciService().GetByBolge(BolgeIdQS);
+            List<TasinmazBagisci> tblist =  new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetByBolge(BolgeIdQS);
             foreach (var item in tblist)
             {
                 string dosyaAdi = ProjeConstants.DOSYA_TAAHHUT_FORMU + item.Id + ".pdf";
@@ -297,14 +297,14 @@ namespace TBYS_WebParts.TaahhutListesiWP
         private string BagisciBilgisiGetir(int bagisciId)
         {
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(bagisciId);
+            bagisci = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetById(bagisciId);
             return bagisci != null ? (bagisci.Adi + " " + bagisci.Soyadi).Trim() : string.Empty;
         }
 
         private void TasinmazBilgileriGetir(TasinmazTaahhutListItem tasinmazBagisciListItem, TasinmazTaahhut taahhut)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(taahhut.TasinmazId);
+            tasinmaz = new TasinmazService(LoggingContext).Select(taahhut.TasinmazId);
             tasinmazBagisciListItem.TasinmazAdresi = tasinmaz != null ? (tasinmaz.Adres + " " + tasinmaz.Ilcesi + " " + tasinmaz.Ili).Trim() : string.Empty;
             tasinmazBagisciListItem.MulkiyetSekli = tasinmaz != null ? tasinmaz.MulkiyetSekli: string.Empty;
         }
