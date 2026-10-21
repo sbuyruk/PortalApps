@@ -554,7 +554,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                         if (mahsupEdilecekKiraSozlesme != null)
                         {
                             int odemeId = 0;
-                            TBYSOrtak.OdemeYap(mahsupEdilecekKiraSozlesme, teminatIslem.IslemTarihi, teminatIslem.IslemTutari, teminatIslem.Aciklama, ref odemeId);
+                            TBYSOrtak.OdemeYap(mahsupEdilecekKiraSozlesme, teminatIslem.IslemTarihi, teminatIslem.IslemTutari, teminatIslem.Aciklama, ref odemeId, LoggingContext);
                             teminatIslem.OdemeId = odemeId;
                             new Model.Services.TBYS.TeminatIslemService(LoggingContext).Update(teminatIslem);
                         }

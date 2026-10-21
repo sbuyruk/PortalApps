@@ -327,7 +327,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
                         if (!ekstreAktarma.AktarildiMi)
                         {
                             int odemeId = 0;
-                            bool odemeYapildiMi = TBYSOrtak.OdemeYap(kiraSozlesme, odemeTarihi, odemeTutari, " Banka Ekstresinden Aktarma ", ref odemeId);
+                            bool odemeYapildiMi = TBYSOrtak.OdemeYap(kiraSozlesme, odemeTarihi, odemeTutari, " Banka Ekstresinden Aktarma ", ref odemeId, LoggingContext);
                             if (odemeYapildiMi)
                             {
                                 ekstreAktarma.AktarildiMi = true;

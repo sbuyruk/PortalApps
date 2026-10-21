@@ -560,7 +560,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                 {
                     
                     int odemeId = 0;
-                    bool odemeYapildiMi = TBYSOrtak.OdemeYap(kiraSozlesme, odemeTarihi, OdemeTutariTxt.Text.ConvertToDecimal(), AciklamaTxt.Text, ref odemeId);
+                    bool odemeYapildiMi = TBYSOrtak.OdemeYap(kiraSozlesme, odemeTarihi, OdemeTutariTxt.Text.ConvertToDecimal(), AciklamaTxt.Text, ref odemeId, LoggingContext);
                     if (odemeYapildiMi)
                     {
                         
