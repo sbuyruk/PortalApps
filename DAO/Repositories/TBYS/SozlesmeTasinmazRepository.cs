@@ -131,7 +131,7 @@ namespace DAO.Repositories.TBYS
 
         public DataTable SelectByBolumId(int bolumId)
         {
-            SqlQuery query = new SqlQuery("SELECT * FROM SozlesmeTasinmaz_Table WHERE SozlesmeId=@BolumId");
+            SqlQuery query = new SqlQuery("SELECT * FROM SozlesmeTasinmaz_Table WHERE BolumId=@BolumId");
             query.AddParameter("@BolumId", bolumId);
             return db.SelectFromDb(query, "");
         }
@@ -194,6 +194,40 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@ChangedAt", changedAt);
             query.AddParameter("@ChangedBy", changedBy);
             return db.Update2Db(query, transaction, context);
+        }
+
+        public DataTable SelectBySozlesmeId(int contractId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM SozlesmeTasinmaz_Table WITH (UPDLOCK, HOLDLOCK) WHERE SozlesmeId=@Id ORDER BY Id");
+            query.AddParameter("@Id", contractId);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
+        public DataTable SelectBySozlesmeIdTasinmazId(int contractId, int propertyId, int sectionId,
+            SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT * FROM SozlesmeTasinmaz_Table WITH (UPDLOCK, HOLDLOCK)
+                WHERE SozlesmeId=@ContractId AND TasinmazId=@PropertyId AND BolumId=@SectionId ORDER BY Id");
+            query.AddParameter("@ContractId", contractId);
+            query.AddParameter("@PropertyId", propertyId);
+            query.AddParameter("@SectionId", sectionId);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
+        public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Insert(queryBuilder.BuildInsert(entity, "SozlesmeTasinmaz_Table"), transaction, context);
+        }
+
+        public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Update2Db(queryBuilder.BuildUpdate(entity, "SozlesmeTasinmaz_Table"), transaction, context);
+        }
+
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.DeleteFromDb(queryBuilder.BuildDelete("SozlesmeTasinmaz_Table", id), transaction, context);
         }
     }
 }

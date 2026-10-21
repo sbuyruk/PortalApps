@@ -1,4 +1,5 @@
 using DAO.Repositories.TBYS;
+using Utility.Logging;
 using Model.Ortak;
 using Model.TBYS;
 using System;
@@ -20,6 +21,11 @@ namespace Model.Services.TBYS
         {
             if (repository == null) throw new ArgumentNullException("repository");
             this.repository = repository;
+        }
+
+        public KiraSozlesme GetById(int id, PortalLogContext context)
+        {
+            return Map(new KiraSozlesmeRepository(context).SelectById(id));
         }
 
         public KiraSozlesme GetById(int id)

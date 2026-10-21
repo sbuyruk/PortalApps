@@ -1,4 +1,5 @@
 using DAO.Ortak;
+using Utility.Logging;
 using System;
 using System.Data;
 using System.Text;
@@ -8,14 +9,19 @@ namespace DAO.Repositories.TBYS
 {
     public class KiraciRepository
     {
-        private readonly DbClass db;
+        private readonly TbysSqlExecutor db;
 
         public KiraciRepository() : this(new DbClass()) { }
 
         public KiraciRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
+            this.db = new TbysSqlExecutor(db, "KiraciRepository");
+        }
+
+        public KiraciRepository(PortalLogContext context)
+        {
+            db = new TbysSqlExecutor(context, "KiraciRepository");
         }
 
         public DataTable SelectById(int id)
@@ -128,5 +134,12 @@ namespace DAO.Repositories.TBYS
         public int Insert<T>(T entity) { return db.Insert(new CrudQueryBuilder().BuildInsert(entity, "Kiraci_Table")); }
         public bool Update<T>(T entity) { return db.Update2Db(new CrudQueryBuilder().BuildUpdate(entity, "Kiraci_Table")); }
         public bool Delete(int id) { return db.DeleteFromDb(new CrudQueryBuilder().BuildDelete("Kiraci_Table", id), ""); }
+
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM Kiraci_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return db.SelectFromDb(query, transaction, context);
+        }
     }
 }

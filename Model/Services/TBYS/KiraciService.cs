@@ -1,4 +1,5 @@
 using DAO.Repositories.TBYS;
+using Utility.Logging;
 using Model.Ortak;
 using Model.TBYS;
 using System;
@@ -19,6 +20,11 @@ namespace Model.Services.TBYS
         {
             if (repository == null) throw new ArgumentNullException("repository");
             this.repository = repository;
+        }
+
+        public Kiraci GetById(int id, PortalLogContext context)
+        {
+            return Map(new KiraciRepository(context).SelectById(id));
         }
 
         public Kiraci GetById(int id)
@@ -63,6 +69,7 @@ namespace Model.Services.TBYS
             if (ok && ProjeConstants.TBYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRACI);
             return ok;
         }
+        public string GetAllReturnJson(PortalLogContext context) { return new Kiraci().ToJSON(new KiraciRepository(context).SelectAllReturnJson()); }
         public string GetAllReturnJson() { return new Kiraci().ToJSON(repository.SelectAllReturnJson()); }
         public DataTable GetAllReturnDataTable(string secim, int bolgeId) { return repository.SelectAllReturnDataTable(secim, bolgeId); }
         public DataTable GetByBolge(string aktif, string bolge) { return repository.SelectByBolge(aktif, bolge); }

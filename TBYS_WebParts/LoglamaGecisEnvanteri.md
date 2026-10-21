@@ -1,6 +1,38 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
-## Güncel parça: bağışçı talepleri, yakınları ve taahhütleri
+## Güncel parça: sözleşme taşınmaz/bölüm bağlantıları ve kiracı seçimi
+
+Dal: `codex/tbys-contract-property-audit`. Başlangıç commit'i: `c3d05ca87a8dff2b59154429bf8e89c659c0065d`. Kod değişikliğinden önce yerel master temizdi ve GitHub master ile aynı commit'teydi. Önceki talep/yakın/taahhüt parçası PR #463 ile birleştirildi. Kullanıcı toplu test yapacağını bildirmişti; bu parçanın çalışma zamanı doğrulaması henüz yapılmadı.
+
+Kapsam SozlesmeTasinmazWP'nin taşınmaz/bölüm ekleme ve çıkarma, kiracı seçme ve ilgili liste/modal okumalarıdır. KiraSozlesmeService ve KiraciService'e yalnızca ihtiyaç duyulan bağlamlı okuma overload'ları eklendi; bu servislerin genel yazmaları bu parçada dönüştürülmedi. İki repository ortak TBYS SQL yürütücüsünü kullanabilir; bağlamsız eski çağrılar DbClass'a iletilir. Mevcut kira sözleşmesi string SELECT ifadeleri metinleri değiştirilmeden SqlQuery ile sarıldı; yürütücü API'sine tip uyumu sağlandı.
+
+SozlesmeTasinmazService bağlamlı kurucu ve transaction-aware Save/Update/Delete ile sözleşme bazında toplu çıkarma yoluna sahiptir. Eski/yeni kayıt, sözleşme, taşınmaz ve bölüm doğrulamaları aynı SqlTransactionContext üzerinden yapılır. Bölüm kimliği sıfırsa doğrudan taşınmaz bağlantısıdır; pozitifse bölümün seçilen taşınmaza ait olması gerekir. Geçersiz pozitif bölüm, eski ekranın yaptığı gibi sessizce bütün taşınmaz bağlantısına çevrilmez. Negatif bölüm kimliği reddedilir.
+
+Eklemede sözleşme kilidi ve tam (SozlesmeId, TasinmazId, BolumId) üçlüsü transaction içinde kontrol edilir. Aynı bağlantı varsa mevcut Id döner; yeni kayıt, INSERT komutu ve INSERT audit üretilmez. Güncellemede aynı üçlü başka bir Id üzerinde varsa reddedilir; oluşturulma bilgileri korunur. Eski kaydın sözleşmesi değişmişse eski nesneyle başka sözleşmeye taşınmaz. Silmede mevcut üç bağlantı kimliği beklenen değerlerle karşılaştırılır; arada taşınmış kayıt eski nesneyle silinmez.
+
+Bağlamlı DeleteBySozlesmeId, aynı transaction'da okuduğu her gerçek bağlantı Id'si için ayrı DELETE audit yazar. Bir satır silinemez veya audit yazılamazsa tüm çıkarma geri alınır. Boş liste idempotent başarıdır; hayali DELETE audit oluşturmaz. Bu API hazır olmakla birlikte ana sözleşme ekranının eski çok adımlı silme zinciri bu parçada bağlamlı API'ye geçirilmedi.
+
+Kiracı seçimi yalnızca KiraciId ve değiştiren/zaman alanlarını hedefleyen UPDATE kullanır. Sözleşme ve kiracı aynı transaction'dan doğrulanır. Mevcut kiracı yeniden seçilmişse UPDATE/audit yapılmaz. ApplySelection aynı HTTP isteğindeki yeni taşınmaz/bölüm bağlantısı ve kiracı seçimini tek transaction'da toplar; ikinci adım veya audit hatası ilk adımı da geri alır. Arayüzde seçilen kiracı nesnesi başarılı işlemden sonra güncellenir. Kiracı henüz seçilmemişse etiketler null erişimi yerine Türkçe seçim mesajını gösterir.
+
+Audit alanları SozlesmeTasinmaz için SozlesmeId, TasinmazId, BolumId; kiracı seçimi için KiraSozlesme.KiraciId'dir. EntityId gerçek uygulama Id'sidir. Değerler transaction'dan okunan gerçek eski/yeni satırlardan karşılaştırılır; NULL ve sıfır ayrıdır. Kiracı ad-soyad/adres/kimlik bilgileri ve kira sözleşmesinin diğer alanları audit ayrıntısına alınmaz. İş verisi, başlık ve ayrıntılar birlikte commit/rollback olur. Logging kapalıyken iş transaction'ı korunur ve eski OlayKayit yoluna dönülmez. Bağlamsız eski servis çağrıları korunur.
+
+SozlesmeTasinmazWP okumaları ve modal verileri doğru WebPart bağlamıyla SQL izi üretir. Dinamik çıkarma düğmesi sonucu kontrol eder ve yeni hataları ortak güvenli Türkçe mesajla bildirir. Redirect kaynaklı ThreadAbortException hata olarak kaydedilmez. Teknik SQL izleri bağımsız yazıcıyı kullanır; komutun Succeeded olması iş transaction'ının sonradan rollback olmayacağı anlamına gelmez.
+
+İlgili okuma düzeltmesi: normal SelectByBolumId sorgusunda yanlış SozlesmeId=@BolumId filtresi vardı; BolumId=@BolumId yapıldı. Önceden eklenmiş transaction overload'u zaten doğru bölüm sütununu kullanıyordu. Böylece bağımsız bölümün sözleşme bağlantılarını gösteren normal okumalar da doğru kayıtları getirir.
+
+Kullanıcı TEST kontrolleri:
+
+1. Sözleşmeye bütün taşınmazı (BolumId=0) ve geçerli bağımsız bölümü ayrı ayrı ekleyin. Gerçek SozlesmeTasinmaz Id'siyle INSERT audit ve üç bağlantı alanı görünmeli. Aynı seçimi tekrarlamak veya sayfayı yenilemek ek satır/INSERT audit üretmemeli.
+2. Başka taşınmazın bölümünü veya bulunmayan sözleşme/taşınmaz/bölümü seçmeyi deneyin; bağlantı yazılmamalı. Normal bölümden sözleşme okuması yalnızca o BolumId'nin kayıtlarını getirmeli.
+3. Bağlantıyı çıkarın. DELETE audit eski üç alanı içermeli; kaybolmuş/taşınmış bağlantıda yanlış başarı yönlendirmesi olmamalı. Toplu çıkarma API'sinin birden fazla satırında hata oluşursa tamamının geri alındığını ayrıca doğrulayın.
+4. Kiracıyı değiştirin. Yalnızca KiraSozlesme.KiraciId audit ayrıntısına girmeli; kira tutarı, plan/durum ve diğer sözleşme alanları değişmemeli. Aynı kiracıyı tekrar seçmek UPDATE audit üretmemeli. Bulunmayan kiracıda yazma olmamalı.
+5. Aynı istekte yeni taşınmaz bağlantısı ve kiracı seçimini gönderip ikinci adımda veya audit'te kontrollü hata üretin. Yeni bağlantı, kiracı değişimi ve tüm audit kayıtları birlikte rollback olmalı; teknik Error kaydı kalmalı.
+6. Henüz kiracısı olmayan sözleşmede sayfa güvenli açılmalı. Taşınmaz/bölüm/kiracı modal sonuçları ve SQL izlerinin WebPart/metot bilgileri doğru olmalı. Logging kapalıyken iş akışı çalışmalı ve eski log yazıcısı çağrılmamalı.
+7. Önceki bağımsız bölüm/taşınmaz silme ve taşınmaz kopyalama testlerini tekrarlayın; repository okuma düzeltmesi ve yeni overload'lar mevcut ilişki kontrollerini bozmamalı.
+
+Ana kira sözleşmesi ekleme/güncelleme/onay/durum/silme, sözleşme kopyalama/devir, ödeme planı/tahsilat/ayrıştırma ve hukuki takip zincirleri sonraki parçalardır. Kiracı ekranının kendi CRUD dönüşümü de bu parçada yapılmadı. TBYS bütünüyle tamamlanmış kabul edilmez. Mevcut EnabledProjects=TBYS varsa web.config değişmez; tek tek etkinleştirmede TBYS:SozlesmeTasinmazWP kullanılır. Yeni dosya/şema/tanılama altyapısı eklenmedi, üretilmiş ASCX dosyaları değişmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve git diff --check yapıldı. Build ve TEST kullanıcıya aittir.
+
+## Önceki parça: bağışçı talepleri, yakınları ve taahhütleri
 
 Dal: `codex/tbys-donor-related-audit`. Başlangıç commit'i: `a34f67f868828d6705397a8f342957919fe95e8e`. Kod değişikliğinden önce yerel master temizdi ve GitHub master ile aynı commit'teydi. Önceki bağış/bağışçı parçası PR #462 ile birleştirildi. Kullanıcı toplu test yapacağını bildirmişti; bu parçanın çalışma zamanı doğrulaması henüz yapılmadı.
 
