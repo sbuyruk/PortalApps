@@ -829,7 +829,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                         List<OdemeAyrinti> odemeAyrintiListesi = new Model.Services.TBYS.OdemeAyrintiService().GetBySozlesmeId(kiraSozlesme.Id);
                         if (odemeAyrintiListesi.Count > 0)
                         {
-                            new Model.Services.TBYS.OdemeAyrintiService().DeleteBySozlesmeId(kiraSozlesme.Id);
+                            new Model.Services.TBYS.OdemeAyrintiService(LoggingContext).DeleteBySozlesmeId(kiraSozlesme.Id);
                         }
                     }
                 }

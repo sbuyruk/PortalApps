@@ -364,7 +364,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                                 OdemeTarihi = item.OdemeTarihi.ConvertToDatetime(),
                                 OdenenTutar = item.Tutar
                             };
-                            odemeAyristirma.OdemeId = new Model.Services.TBYS.OdemeService().Save(kiraOdemesi);
+                            odemeAyristirma.OdemeId = new Model.Services.TBYS.OdemeService(LoggingContext).Save(kiraOdemesi);
                         }
                         else if (item.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT ||
                                  item.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_GECICITEMINAT_INT)
@@ -385,7 +385,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                             }
                         }
 
-                        if (new Model.Services.TBYS.OdemeAyristirmaService().Save(odemeAyristirma) > 0)
+                        if (new Model.Services.TBYS.OdemeAyristirmaService(LoggingContext).Save(odemeAyristirma) > 0)
                             savedCount++;
                     }
 
