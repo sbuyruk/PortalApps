@@ -1,6 +1,42 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
-## Güncel parça: sigorta ve onarım girişleri, SQL izi ve audit
+## Güncel parça: bağış ve bağışçı kayıtları, ilişkilendirme ve çıkarma
+
+Dal: `codex/tbys-donor-donation-audit`. Başlangıç commit'i: `429d3203dea7cf6ea4c3728892f8b8a28929bc52`. Kod değişikliğinden önce yerel master temizdi ve GitHub master ile aynı commit'teydi. Önceki sigorta/onarım parçası PR #461 ile birleştirildi. Kullanıcı toplu test yapacağını bildirmişti; bu parçanın çalışma zamanı doğrulaması henüz yapılmadı.
+
+Bağlamlı çağrılar eklenen ekranlar: BagisciBagislariWP, TasinmazBagisciGirisiWP, TasinmazBagisciKartiWP, TasinmazBagisciListesiWP, TasinmazBagisciBilgiListesiWP, TasinmazBagisHaritasiWP. Bu ekranlardaki BagisService, TasinmazBagisciService, TasinmazService ve TasinmazBagisciReportService çağrıları kendi WebPart/OperationId bağlamını taşır. Bağışçı liste raporunun repository'si de ortak TBYS SQL izini kullanır. Talep/yakın/taahhüt ve ortak il/ilçe servislerinin bu ekranlardaki ayrı okumaları bu parçaya dahil değildir.
+
+BagisService ve TasinmazBagisciService bağlamlı kurucu ve transaction-aware Save/Update/Delete yollarına sahiptir. İş verisi, audit başlığı ve alan ayrıntıları tek SqlTransactionContext üzerinden okunup yazılır. Audit yazımı hata verirse iş verisi de geri alınır. Logging kapalıysa iş transaction'ı devam eder ve eski OlayKayit yoluna dönülmez. Bağlamsız eski çağıranların davranışı korunur. Teknik SQL izleri bağımsız yazıcıdadır; komut Succeeded bilgisi sonradan transaction rollback olmayacağı anlamına gelmez.
+
+Bağış ataması AssignToProperty ile servis katmanındadır. Eski WebPart TransactionScope kaldırıldı. Taşınmaz ve bağışçı aynı transaction'dan kilitlenerek doğrulanır; taşınmazda bağış yoksa yeni kayıt oluşturulur, varsa önceki akış gibi seçilen kaydın bağışçısı güncellenir. Yeni bağışın tarihi/yılı taşınmazın envantere giriş tarihinden alınır; mevcut bağışın diğer alanları korunur. Var olan birden fazla bağışta Id sırasındaki ilk kayıt esas alınır; geçmiş çoğul kayıtlar otomatik birleştirilmez veya silinmez. Aynı taşınmaz için atamalar taşınmaz kilidiyle sıralanır. Yeni benzersizlik şeması eklenmedi.
+
+Bağlamlı bağış yazmasından sonra Tasinmaz_Table.BagisciId ve Bagisci adı aynı transaction'da eşitlenir. Son bağış silinirse BagisciId=0 ve Bagisci boş yapılır. Başka bağış kalmışsa ilk kalan kaydın bağışçısına eşitlenir. Taşınmazda yalnızca bu iki alan ve değiştiren/zaman bilgisi güncellenir. Eşitleme veya onun audit'i başarısızsa bağış yazması da geri alınır. Değer zaten aynıysa gereksiz taşınmaz UPDATE/audit oluşturulmaz. Bağış silmede kaydın beklenen taşınmaz/bağışçı kimlikleri aynı transaction'dan kontrol edilir; değişmiş ilişki eski nesneyle silinmez. Arayüzde çıkarma ayrıca ekranın bağışçı kimliğini kontrol eder.
+
+Bağışçı silme kararı artık servistedir: bağışçı satırı ve bağlı Bagis_Table, Tasinmaz_Table, BagisciTalepleri_Table, BagisciYakinlari_Table, TasinmazTaahhut_Table ilişkileri aynı transaction'da UPDLOCK/HOLDLOCK kullanılarak kontrol edilir. Bağlı kayıt varsa silme ve DELETE audit yapılmaz. Bağış armağanı bilgileri bağış kaydında olduğundan bağlı bağış kontrolü kapsamındadır; eski UI armağan kontrolü taahhüt sorgusunu tekrar ediyordu. Birbirinden bağımsız UI kontrol metotları kaldırıldı. Bu kontrolün eklenmesi, henüz dönüştürülmemiş talep/yakın/taahhüt yazıcılarının transaction geçişinin tamamlandığı anlamına gelmez.
+
+Audit izin listeleri:
+
+- Bagis: BagisciId, TasinmazId, BagisTarihi, BagisYili, Envanterde, ArmaganDurumu, ArmaganTarihi. ArmaganId ve serbest ArmaganAciklama ayrıntıya alınmaz.
+- TasinmazBagisci: IlId, IlceId, Sag_vefat, Gizli. T.C. kimlik numarası, ad-soyad, doğum/vefat tarihleri, telefon, e-posta, adres, meslek, öğrenim, sosyal güvence, fotoğraf ve defin/açıklama metinleri ayrıntıya alınmaz.
+- Bağış yazmasının taşınmaz eşitlemesi: yalnızca BagisciId. Ad-soyad iş kaydında eşitlenir, audit değeri olarak yazılmaz. Yalnızca ad değişmişse taşınmaz UPDATE başlığında ayrıntı sayısı sıfır olabilir.
+
+Eski/yeni audit değerleri transaction'dan okunan gerçek satırlardan alınır; NULL ile sıfır/boş ayrıdır. Tarihler ve sayılar kültürden bağımsız biçimlenir. Yalnızca değişen izinli alanlar ayrıntı üretir. Bağışçının yalnızca ad/iletişim/açıklama gibi dışlanan alanlarını değiştirmek UPDATE başlığı oluşturur, bu alanların değerlerini kaydetmez. Bağışçı adını güncellemek bu parçada bütün taşınmazlara toplu ad yayılımı yapmaz; ilişkilendirme veya mevcut taşınmaz kaydetme yolu adı eşitler.
+
+Bağışçı güncelleme sonucu başarısızsa arayüz fotoğraf/PDF işlemlerine devam etmez. Fotoğraf ve belge yükleme/silme SharePoint işlemidir; SQL transaction/audit kapsamında fiziksel dosya rollback garantisi yoktur. Yeni dosya işlem altyapısı eklenmedi. Yeni hata yakalayıcıları güvenli Türkçe mesaj kullanır, başarılı yönlendirme hata olarak loglanmaz.
+
+Kullanıcı TEST kontrolleri:
+
+1. Bağışçı ekleyin; Gizli veya IlId/IlceId/Sag_vefat alanını değiştirin. INSERT/UPDATE audit'inde doğru TasinmazBagisci Id ve yalnızca izinli alanlar görünmeli. T.C. kimlik, ad-soyad, iletişim ve açıklama değerleri audit ayrıntısında bulunmamalı.
+2. Bağışçıya taşınmaz atayın. Bagis INSERT (mevcut ilişkide UPDATE) ile gerekiyorsa Tasinmaz UPDATE aynı OperationId altında oluşmalı. Taşınmaz BagisciId ve adı atanmış bağışçıyla hemen eşleşmeli; taşınmaz audit'inde ad yer almamalı.
+3. İlişkiyi çıkarın. Bagis DELETE ve son ilişkiyse Tasinmaz BagisciId→0 aynı işlemde olmalı. Varsa ilk kalan bağışçıya eşitlenmeli. Eski veya başka bağışçıya taşınmış bir ilişki yanlış bağışçı ekranından çıkarılamamalı.
+4. Bağış/taşınmaz eşitlemesi veya audit ayrıntısı için kontrollü hata üretin. Bağış, taşınmaz ve tüm audit değişiklikleri birlikte geri alınmalı; teknik Error kaydı kalmalı. Bulunmayan taşınmaz/bağışçıya atama kayıt üretmemeli.
+5. Bağış, doğrudan taşınmaz referansı, talep, yakın ve taahhüt bağımlılıklarını ayrı ayrı deneyin. Bağlı bağışçı silinmemeli, DELETE audit oluşmamalı. Bağlantısız test bağışçısı silinmeli ve eski izinli alanlarla DELETE audit oluşturulmalı. Kontrollü audit hatasında silme geri alınmalı.
+6. Altı ekrandaki dönüştürülmüş bağış/bağışçı/taşınmaz ve rapor okumaları doğru WebPart/metot adıyla SQL izi üretmeli. Liste filtreleri ve rapor sonuçları korunmalı; Logging kapalıyken eski log yazıcısına dönüş olmamalı.
+7. Önceki taşınmaz kaydetme ve kopyalama senaryolarını da kontrol edin: ortak repository overload'ları ve bağışçı doğrulamaları mevcut akışları bozmamalı.
+
+Talep/yakın/taahhüt/armağan ekranlarının bağımsız yazmaları, sözleşmeler ve envanterden çıkarma sonraki parçalardır. Mevcut EnabledProjects=TBYS varsa web.config değişmez; tek tek etkinleştirmede ilgili altı WebPart adı TBYS: ön ekiyle kullanılır. Yeni dosya/şema/tanılama altyapısı eklenmedi, üretilmiş ASCX dosyaları değiştirilmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve git diff --check yapıldı. Build ve TEST kullanıcıya aittir.
+
+## Önceki parça: sigorta ve onarım girişleri, SQL izi ve audit
 
 Dal: `codex/tbys-insurance-repair-audit`. Başlangıç commit'i: `ee714670e8f4e04db475e5d6d35a238e9a5f0ac3`. Kod değişikliğinden önce yerel master temizdi ve GitHub master ile aynı commit'teydi. Önceki kopyalama parçası PR #460 ile birleştirildi. Kullanıcı toplu test yapacağını bildirmişti; bu parçanın çalışma zamanı doğrulaması henüz yapılmadı.
 

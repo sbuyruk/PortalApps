@@ -1,4 +1,5 @@
 using DAO.Repositories.TBYS;
+using Utility.Logging;
 using System.Data;
 using Utility.ProjeGlobal;
 
@@ -13,6 +14,7 @@ namespace Model.Services.TBYS
         {
         }
 
+        public TasinmazBagisciReportService(PortalLogContext context) : this(new TasinmazBagisciReportRepository(context)) { }
         public TasinmazBagisciReportService(TasinmazBagisciReportRepository repository)
         {
             this.repository = repository;

@@ -1,4 +1,5 @@
 using DAO.Ortak;
+using Utility.Logging;
 using System;
 using System.Data;
 
@@ -6,7 +7,7 @@ namespace DAO.Repositories.TBYS
 {
     public class TasinmazBagisciReportRepository
     {
-        private readonly DbClass db;
+        private readonly TbysSqlExecutor db;
 
         public TasinmazBagisciReportRepository()
             : this(new DbClass())
@@ -16,7 +17,12 @@ namespace DAO.Repositories.TBYS
         public TasinmazBagisciReportRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
+            this.db = new TbysSqlExecutor(db, "TasinmazBagisciReportRepository");
+        }
+
+        public TasinmazBagisciReportRepository(PortalLogContext context)
+        {
+            db = new TbysSqlExecutor(context, "TasinmazBagisciReportRepository");
         }
 
         public DataTable SelectAllCountBagisAdedi(bool excludeDeceased, bool excludeHidden, string sagValue)

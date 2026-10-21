@@ -274,5 +274,21 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@ChangedBy", changedBy);
             return db.Update2Db(query, transaction, context);
         }
+
+        public bool UpdateDonor(int id, int donorId, string name, DateTime changedAt, string changedBy,
+            SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                UPDATE Tasinmaz_Table SET BagisciId=@DonorId, Bagisci=@Name,
+                    DegistirmeTarihi=@ChangedAt, Degistiren=@ChangedBy
+                WHERE Id=@Id;
+                IF @@ROWCOUNT <> 1 THROW 50001, N'Taşınmazın bağışçı bilgisi güncellenemedi.', 1;");
+            query.AddParameter("@Id", id);
+            query.AddParameter("@DonorId", donorId);
+            query.AddParameter("@Name", name);
+            query.AddParameter("@ChangedAt", changedAt);
+            query.AddParameter("@ChangedBy", changedBy);
+            return db.Update2Db(query, transaction, context);
+        }
     }
 }

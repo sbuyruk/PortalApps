@@ -94,5 +94,37 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@Id", id);
             return db.SelectFromDb(query, transaction, context);
         }
+
+        public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Insert(queryBuilder.BuildInsert(entity, "TasinmazBagisci_Table"), transaction, context);
+        }
+
+        public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Update2Db(queryBuilder.BuildUpdate(entity, "TasinmazBagisci_Table"), transaction, context);
+        }
+
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.DeleteFromDb(queryBuilder.BuildDelete("TasinmazBagisci_Table", id), transaction, context);
+        }
+
+        public bool HasDependencies(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT CASE WHEN
+                    EXISTS (SELECT 1 FROM Bagis_Table WITH (UPDLOCK, HOLDLOCK) WHERE BagisciId=@Id) OR
+                    EXISTS (SELECT 1 FROM Tasinmaz_Table WITH (UPDLOCK, HOLDLOCK) WHERE BagisciId=@Id) OR
+                    EXISTS (SELECT 1 FROM BagisciTalepleri_Table WITH (UPDLOCK, HOLDLOCK) WHERE BagisciId=@Id) OR
+                    EXISTS (SELECT 1 FROM BagisciYakinlari_Table WITH (UPDLOCK, HOLDLOCK) WHERE BagisciId=@Id) OR
+                    EXISTS (SELECT 1 FROM TasinmazTaahhut_Table WITH (UPDLOCK, HOLDLOCK) WHERE BagisciId=@Id)
+                    THEN 1 ELSE 0 END AS HasDependencies");
+            query.AddParameter("@Id", id);
+            DataTable table = db.SelectFromDb(query, transaction, context);
+            if (table == null || table.Rows.Count != 1)
+                throw new InvalidOperationException("Bağışçıya bağlı kayıtlar kontrol edilemedi.");
+            return Convert.ToInt32(table.Rows[0]["HasDependencies"]) != 0;
+        }
     }
 }
