@@ -360,7 +360,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                 {
                     KiraciIdQS = odeme.KiraciId.ToString();
                     Kiraci kiraci = new Kiraci();
-                    kiraci = new Model.Services.TBYS.KiraciService().GetById(odeme.KiraciId);
+                    kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(odeme.KiraciId);
                     if (kiraci != null)
                     {
                         KiraciAdiLbl.Text = kiraci.Adi + kiraci.Soyadi;
@@ -400,7 +400,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             if (sozlesmeId > 0)
             {
                 OdemePlani odemePlaniDao = new OdemePlani();
-                List<OdemePlani> odemePlaniList = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(sozlesmeId);
+            List<OdemePlani> odemePlaniList = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeId(sozlesmeId);
                 foreach (var item in odemePlaniList)
                 {
                     if (item.Sira == 0)
@@ -461,7 +461,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             OdemePlani odemePlani = new OdemePlani();
             int kiraSozlesmeId = SozlesmeDDL.SelectedItem.Value.ConvertToInt();
 
-            odemePlani = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdOdemeTarihi(kiraSozlesmeId, OdemeTarihiTxt.Text.ConvertToDatetime());
+            odemePlani = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeIdOdemeTarihi(kiraSozlesmeId, OdemeTarihiTxt.Text.ConvertToDatetime());
             int odemePlaniId = 0;
             if (odemePlani != null)
             {
@@ -706,7 +706,7 @@ namespace TBYS_WebParts.OdemeGirisWP
         {
 
             Kiraci kiraci = new Kiraci();
-            kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+            kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
             if (kiraci != null)
             {
                 RedirectToPage(ProjeConstants.PAGE_KIRACI_GIRIS + "?DestinationApp=KD&SenderApp=KL&KiraciId=" + KiraciIdQS + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS);

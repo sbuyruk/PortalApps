@@ -276,7 +276,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
 
                             //işlem numarası varsa kaydı atla
                             KiraEkstreAktarma keaDao = new KiraEkstreAktarma();
-                            List<KiraEkstreAktarma> bulunanIslemNolar = new Model.Services.TBYS.KiraEkstreAktarmaService().GetByIslemNo(islemno);
+                            List<KiraEkstreAktarma> bulunanIslemNolar = new Model.Services.TBYS.KiraEkstreAktarmaService(LoggingContext).GetByIslemNo(islemno);
                             if (bulunanIslemNolar.Count > 0)
                             {
                                 Exception kayitVar = new Exception("İşlem Numarası Çakışıyor. (" + adi + ", " + tutar + "TL, " + hareketTar);
@@ -490,7 +490,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
             {
                 //kiraEkstreAktarma Listesinde kiraciId>0 olan kayıtları ada göre sorgulasın 
                 KiraEkstreAktarma keaDao = new KiraEkstreAktarma();
-                List<KiraEkstreAktarma> keaList = new Model.Services.TBYS.KiraEkstreAktarmaService().GetByKiraciAdi(adi);
+                List<KiraEkstreAktarma> keaList = new Model.Services.TBYS.KiraEkstreAktarmaService(LoggingContext).GetByKiraciAdi(adi);
                 foreach (var item in keaList)
                 {
                     if (item.KiraciId > 0)
