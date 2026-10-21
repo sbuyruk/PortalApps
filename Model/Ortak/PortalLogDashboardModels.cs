@@ -2,6 +2,14 @@ using System;
 
 namespace Model.Ortak
 {
+    public sealed class PortalLogMonitorSummary
+    {
+        public long ActivityCount { get; set; }
+        public long ErrorCount { get; set; }
+        public long ActiveUserCount { get; set; }
+        public decimal? AverageSqlDurationMs { get; set; }
+    }
+
     [Serializable]
     public sealed class PortalLogFilter
     {
