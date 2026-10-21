@@ -1,4 +1,5 @@
 using DAO.Ortak;
+using Utility.Logging;
 using System;
 using System.Data;
 using System.Text;
@@ -7,7 +8,7 @@ namespace DAO.Repositories.TBYS
 {
     public class OdemeRepository
     {
-        private readonly DbClass db;
+        private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
         public OdemeRepository()
@@ -18,9 +19,11 @@ namespace DAO.Repositories.TBYS
         public OdemeRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
+            this.db = new TbysSqlExecutor(db, "OdemeRepository");
             queryBuilder = new CrudQueryBuilder();
         }
+
+        public OdemeRepository(PortalLogContext context) { db = new TbysSqlExecutor(context, "OdemeRepository"); queryBuilder = new CrudQueryBuilder(); }
 
         public DataTable SelectById(int id)
         {
@@ -203,5 +206,10 @@ namespace DAO.Repositories.TBYS
         {
             return db.DeleteFromDb(queryBuilder.BuildDelete("Odeme_Table", id), "");
         }
+
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context) { SqlQuery q = new SqlQuery("SELECT * FROM Odeme_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, transaction, context); }
+        public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context) { return db.Insert(queryBuilder.BuildInsert(entity, "Odeme_Table"), transaction, context); }
+        public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context) { return db.Update2Db(queryBuilder.BuildUpdate(entity, "Odeme_Table"), transaction, context); }
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context) { return db.DeleteFromDb(queryBuilder.BuildDelete("Odeme_Table", id), "", transaction, context); }
     }
 }
