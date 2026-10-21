@@ -1,5 +1,11 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
+## Güncel parça: kiracı ve ödeme planı kalan okumaları
+
+Dal: `codex/tbys-tenant-read-wiring-2`. Başlangıç commit'i: `24adad89` (PR #485 sonrası). Bakiye devri, taşınmaz kartı, kiracı eşleştirme, banka ekstresi, aylık ödeme, ödeme girişi, ödeme planı ve kira sözleşmesi ekranlarında kalan `KiraciService`, `KiraSozlesmeService` ve `OdemePlaniService` okumaları `LoggingContext` ile bağlandı.
+
+Üretilmiş ASCX dosyaları değişmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve `git diff --check` yapıldı. Build ve TEST kullanıcıya aittir.
+
 ## Güncel parça: kalan ödeme planı ve kiracı ekranı okumaları
 
 Dal: `codex/tbys-payment-read-wiring-2`. Başlangıç commit'i: `980d81e8` (PR #484 sonrası). Borçlu kiracı, kiracı girişi, bakiye devri, ödeme planı, banka ekstresi, kiracı listesi ve mevcut kiracılar ekranlarında kalan `OdemePlaniService`, `KiraciService` ve `KiraSozlesmeService` okumaları `LoggingContext` ile bağlandı.

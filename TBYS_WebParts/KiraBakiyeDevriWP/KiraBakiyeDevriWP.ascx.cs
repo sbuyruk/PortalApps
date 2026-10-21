@@ -193,12 +193,12 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
         private void EnableOdemeSozlesmeBtns(string kiraciId)
         {
             Kiraci kiraci = new Kiraci();
-            kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+            kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
             if (kiraci != null)//bu kiraci varsa
             {
 
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(kiraci.Id);
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetActiveByKiraciId(kiraci.Id);
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
                     KiraKartiBtn.Visible = true;
@@ -224,7 +224,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
           
             
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-            List<KiraSozlesme> sozlesmeListesi = new Model.Services.TBYS.KiraSozlesmeService().GetAllByKiraciId(kiraciId);
+            List<KiraSozlesme> sozlesmeListesi = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetAllByKiraciId(kiraciId);
             foreach (var kiraSozlesme in sozlesmeListesi)
             {
                 if (kiraSozlesme != null)
@@ -364,7 +364,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
         protected void OdemePlaniGoruntuleBtn_Click(object sender, EventArgs e)
         {
             Kiraci kiraci = new Kiraci();
-            kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+            kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
             if (kiraci != null)//bu kiraci varsa
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();

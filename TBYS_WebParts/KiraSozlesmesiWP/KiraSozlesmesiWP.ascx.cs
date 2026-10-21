@@ -515,7 +515,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
         private KiraSozlesme UpdateKiraSozlesmeData2Db()
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
             kiraSozlesme.DosyaNo = DosyaNoTxt.Text.ConvertToInt();
             kiraSozlesme.DevirAnaPara = DevirAnaParaTxt.Value.ConvertToDecimal();
             kiraSozlesme.DevirFaizTutari = DevirFaizTutariTxt.Text.ConvertToDecimal();
@@ -758,7 +758,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
         protected void KiraciTasinmazDegistirBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             string rootUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
             string newUrl = "/" + ProjeConstants.PAGE_KIRASOZLESME_TASINMAZ + "?DestinationApp=ST&SenderApp=KS&KiraSozlesmeId=" + kiraSozlesme.Id;

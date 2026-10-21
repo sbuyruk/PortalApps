@@ -248,7 +248,7 @@ namespace TBYS_WebParts.KiraciEslestirWP
             }
             
             Kiraci kiraci = new Kiraci();
-            DataTable dataTable = new Model.Services.TBYS.KiraciService().GetByFilter(KiraciAraTxt.Text);
+            DataTable dataTable = new Model.Services.TBYS.KiraciService(LoggingContext).GetByFilter(KiraciAraTxt.Text);
 
             List<KiraciListItem> list = new List<KiraciListItem>();
             
@@ -392,7 +392,7 @@ namespace TBYS_WebParts.KiraciEslestirWP
             try
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = new Model.Services.TBYS.KiraciService().GetById(paramKiraciIdLbl.Value.ConvertToInt());
+                kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(paramKiraciIdLbl.Value.ConvertToInt());
                 if (kiraci != null)
                 {
                     KiraEkstreAktarma kiraEkstreAktarma = new KiraEkstreAktarma();
