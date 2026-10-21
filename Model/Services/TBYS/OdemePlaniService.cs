@@ -22,6 +22,7 @@ namespace Model.Services.TBYS
         public OdemePlaniService(OdemePlaniRepository repository) { if (repository == null) throw new ArgumentNullException("repository"); this.repository = repository; }
         public OdemePlaniService(PortalLogContext context) : this(new OdemePlaniRepository(context)) { this.context = context; }
         public OdemePlani GetById(int id) { return Map(repository.SelectById(id)); }
+        public OdemePlani GetById(int id, SqlTransactionContext transaction) { return Map(repository.SelectById(id, transaction, context)); }
         public List<OdemePlani> GetAll() { return ToList(repository.SelectAll()); }
         public List<OdemePlani> GetBySozlesmeId(int id) { return ToList(repository.SelectBySozlesmeId(id)); }
         public List<OdemePlani> GetBySozlesmeId(int id, SqlTransactionContext transaction) { return ToList(repository.SelectBySozlesmeId(id, transaction, context)); }
