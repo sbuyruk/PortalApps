@@ -615,7 +615,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                         Odeme odeme = new Odeme();
                         odemeSilindi = new Model.Services.TBYS.OdemeService(LoggingContext).DeleteBySozlesmeId(kiraSozlesmeId);
                         OdemeAyrinti odemeAyrintiDao = new OdemeAyrinti();
-                        List<OdemeAyrinti> odemeAyrintiListesi = new Model.Services.TBYS.OdemeAyrintiService().GetBySozlesmeId(kiraSozlesme.Id);
+                        List<OdemeAyrinti> odemeAyrintiListesi = new Model.Services.TBYS.OdemeAyrintiService(LoggingContext).GetBySozlesmeId(kiraSozlesme.Id);
                         if (odemeAyrintiListesi.Count > 0)
                         {
                             new Model.Services.TBYS.OdemeAyrintiService(LoggingContext).DeleteBySozlesmeId(kiraSozlesme.Id);
@@ -685,7 +685,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                         //    odemeDao.DeleteBySozlesmeId(kiraSozlesme.Id);
                         //}
                         OdemeAyrinti odemeAyrintiDao = new OdemeAyrinti();
-                        List<OdemeAyrinti> odemeAyrintiListesi = new Model.Services.TBYS.OdemeAyrintiService().GetBySozlesmeId(kiraSozlesme.Id);
+                        List<OdemeAyrinti> odemeAyrintiListesi = new Model.Services.TBYS.OdemeAyrintiService(LoggingContext).GetBySozlesmeId(kiraSozlesme.Id);
                         if (odemeAyrintiListesi.Count > 0)
                         {
                             new Model.Services.TBYS.OdemeAyrintiService(LoggingContext).DeleteBySozlesmeId(kiraSozlesme.Id);

@@ -1,5 +1,11 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
+## Güncel parça: ödeme ayrıntısı okumaları
+
+Dal: `codex/tbys-payment-detail-links`. Başlangıç commit'i: `3027bd74` (PR #474 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. Ödeme planı, ana kira sözleşmesi ve ekstre ayrıştırma ekranlarındaki ödeme ayrıntısı okumaları bağlamlı `OdemeAyrintiService`/`OdemeAyristirmaService` kullanacak şekilde geçirildi. Böylece bu SELECT çağrıları doğru WebPart/metot SQL izini üretir.
+
+Üretilmiş ASCX dosyaları değişmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve `git diff --check` yapıldı. Build ve TEST kullanıcıya aittir.
+
 ## Güncel parça: kira ekstresi aktarım akışı
 
 Dal: `codex/tbys-bank-statement-workflow`. Başlangıç commit'i: `0fc78713` (PR #473 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. `KiraEkstreAktarmaRepository` transaction-aware CRUD ve bağlamlı SQL yürütücüsüne geçirildi; `KiraEkstreAktarmaService` bağlamlı CRUD/audit overload'ları kazandı. Ekstre yükleme, kiracı eşleştirme ve banka ekstresi ekranlarındaki yazma çağrıları bağlamlı servise geçirildi.
