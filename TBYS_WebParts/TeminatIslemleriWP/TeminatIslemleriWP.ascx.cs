@@ -156,7 +156,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             try
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
                 if (!Page.IsPostBack)
                 {
                     Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
@@ -164,7 +164,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     if (KiraSozlesmeIdQS.ConvertToInt() > 0)
                     {
                         Kiraci kiraci = new Kiraci();
-                        kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId, LoggingContext);
+                        kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(kiraSozlesme.KiraciId, LoggingContext);
                         if (kiraci != null)
                         {
                             KiraciIdQS = kiraci.Id.ToString();
@@ -318,7 +318,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         private List<TeminatIslemListItem> GetDataList(int kiraciId)
         {
             TeminatIslem teminatIslemDao = new TeminatIslem();
-            List<TeminatIslem> list = new Model.Services.TBYS.TeminatIslemService().GetByKiraciId(kiraciId);
+            List<TeminatIslem> list = new Model.Services.TBYS.TeminatIslemService(LoggingContext).GetByKiraciId(kiraciId);
             List<TeminatIslemListItem> list2 = new List<TeminatIslemListItem>();
             foreach (var item in list)
             {
@@ -409,7 +409,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         protected void TeminatGuncelleBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 try
@@ -457,7 +457,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 if (odeme != null)
                 {
                     OdemePlani opl = new OdemePlani();
-                    opl = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi);
+                    opl = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi);
                     int yeniOdemePlaniId = opl != null ? opl.Id : odeme.OdemePlaniId;
                     guncellendiMi = new Model.Services.TBYS.OdemeService(LoggingContext).OdemeyiVeOdemePlaniniGuncelle(kiraSozlesme.Id, odeme.OdemePlaniId, yeniOdemePlaniId,
                     odemeId, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
@@ -472,7 +472,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         protected void ModalEkleBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 IslemTipiDDL.Visible = true;
@@ -494,7 +494,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         protected void ModalGuncelleBtn_Click(object sender, EventArgs e)
         {
             TeminatIslem teminatIslem = new TeminatIslem();
-            teminatIslem = new Model.Services.TBYS.TeminatIslemService().GetById(TeminatIslemIdGuncelleHdn.Value.ConvertToInt());
+            teminatIslem = new Model.Services.TBYS.TeminatIslemService(LoggingContext).GetById(TeminatIslemIdGuncelleHdn.Value.ConvertToInt());
             if (teminatIslem != null)
             {
                 //IslemTipiDDLDoldur();
@@ -517,7 +517,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         protected void ModalSilBtn_Click(object sender, EventArgs e)
         {
             TeminatIslem teminatIslem = new TeminatIslem();
-            teminatIslem = new Model.Services.TBYS.TeminatIslemService().GetById(TeminatIslemIdSilLbl.Value.ConvertToInt());
+            teminatIslem = new Model.Services.TBYS.TeminatIslemService(LoggingContext).GetById(TeminatIslemIdSilLbl.Value.ConvertToInt());
             if (teminatIslem != null)
             {
                 SilmeMesajiLbl.Text = teminatIslem.IslemTarihi.ConvertToDatetimeEmptyIfNull() + " tarihli ve " + teminatIslem.IslemTutari.ToString("N", culturInfo) + " tutarlı '" + teminatIslem.IslemTipi + "' işlemi silinecek.";
@@ -527,7 +527,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         protected void ModalEkleNowBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
 
@@ -545,11 +545,11 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     if (teminatIslem.IslemTipi.Equals(ProjeConstants.TEMINAT_KIRAYAMAHSUP))
                     {
                         KiraSozlesme mahsupEdilecekKiraSozlesme = new KiraSozlesme();
-                        mahsupEdilecekKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetByKiraciIdAndDate(kiraSozlesme.KiraciId, IslemTarihiTxt.Value.ConvertToDatetime());
+                        mahsupEdilecekKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetByKiraciIdAndDate(kiraSozlesme.KiraciId, IslemTarihiTxt.Value.ConvertToDatetime());
                         if (mahsupEdilecekKiraSozlesme == null)
                         {
                             mahsupEdilecekKiraSozlesme = new KiraSozlesme();
-                            mahsupEdilecekKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetNearestByKiraciIdAndDate(kiraSozlesme.KiraciId, IslemTarihiTxt.Value.ConvertToDatetime());
+                            mahsupEdilecekKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetNearestByKiraciIdAndDate(kiraSozlesme.KiraciId, IslemTarihiTxt.Value.ConvertToDatetime());
                         }
                         if (mahsupEdilecekKiraSozlesme != null)
                         {
@@ -573,7 +573,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         protected void ModalGuncelleNowBtn_Click(object sender, EventArgs e)
         {
             TeminatIslem teminatIslem = new TeminatIslem();
-            teminatIslem = new Model.Services.TBYS.TeminatIslemService().GetById(TeminatIslemIdGuncelleHdn.Value.ConvertToInt());
+            teminatIslem = new Model.Services.TBYS.TeminatIslemService(LoggingContext).GetById(TeminatIslemIdGuncelleHdn.Value.ConvertToInt());
             if (teminatIslem != null)
             {
 
@@ -586,11 +586,11 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 if (new Model.Services.TBYS.TeminatIslemService(LoggingContext).Update(teminatIslem))
                 {
                     KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                    kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
+                    kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
                     if (kiraSozlesme != null)
                     {
                         KiraSozlesme mahsupEdilecekKiraSozlesme = new KiraSozlesme();
-                        mahsupEdilecekKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetNearestByKiraciIdAndDate(kiraSozlesme.KiraciId, IslemTarihiTxt.Value.ConvertToDatetime());
+                        mahsupEdilecekKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetNearestByKiraciIdAndDate(kiraSozlesme.KiraciId, IslemTarihiTxt.Value.ConvertToDatetime());
 
                         if (mahsupEdilecekKiraSozlesme != null)
                         {
@@ -622,12 +622,12 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             int teminatId = TeminatIslemIdSilLbl.Value.ConvertToInt();
 
             TeminatIslem teminatIslem = new TeminatIslem();
-            teminatIslem = new Model.Services.TBYS.TeminatIslemService().GetById(teminatId);
+            teminatIslem = new Model.Services.TBYS.TeminatIslemService(LoggingContext).GetById(teminatId);
             if (teminatIslem != null)
             {
                 bool silindiMi = new Model.Services.TBYS.TeminatIslemService(LoggingContext).Delete(teminatIslem);
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
                 if (kiraSozlesme != null)
                 {
                     if (teminatIslem.IslemTipi.Equals(ProjeConstants.TEMINAT_KIRAYAMAHSUP) && silindiMi)
@@ -691,7 +691,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         protected void KiraKartiBtn_Click(object sender, EventArgs e)
         {
             Kiraci kiraci = new Kiraci();
-            kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt(), LoggingContext);
+            kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt(), LoggingContext);
             if (kiraci != null)//bu kiraci varsa
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -705,7 +705,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         {
 
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null) //bu sozlesme varsa
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -723,7 +723,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             try
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
                     OdemePlani odemePlani = new OdemePlani();
@@ -752,8 +752,8 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             try
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
-                Kiraci oncekiKiraci = new Model.Services.TBYS.KiraciService().GetNext(kiraci.Id);
+                kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
+                Kiraci oncekiKiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetNext(kiraci.Id);
                 if (oncekiKiraci != null)
                 {
                     RedirectToPage(ProjeConstants.PAGE_KIRACI_GIRIS + "?DestinationApp=KD&KiraciId=" + oncekiKiraci.Id);
@@ -771,8 +771,8 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             try
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
-                Kiraci sonrakiKiraci = new Model.Services.TBYS.KiraciService().GetNext(kiraci.Id);
+                kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
+                Kiraci sonrakiKiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetNext(kiraci.Id);
                 if (sonrakiKiraci != null)
                 {
                     RedirectToPage(ProjeConstants.PAGE_KIRACI_GIRIS + "?DestinationApp=KD&KiraciId=" + sonrakiKiraci.Id);
@@ -811,7 +811,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             try
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+                kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
                 if (kiraci != null)
                 {
                     RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?KiraciId=" + KiraciIdQS + "&SecilenAy=0&SecilenYil=0");
