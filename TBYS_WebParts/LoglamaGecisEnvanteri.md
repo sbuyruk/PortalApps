@@ -1,5 +1,11 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
+## Güncel parça: kira sözleşmesi WebPart yazma bağlantıları
+
+Dal: `codex/tbys-remaining-workflow-1`. Başlangıç commit'i: `5861b942` (PR #477 sonrası). `KiraSozlesmeRepository` ve `KiraSozlesmeService` için etkin durum güncellemesinin transaction/audit yolu tamamlandı. `KiraSozlesmeService` ve `TasinmazService` için mevcut bağlamlı CRUD yollarını kullanan sekiz WebPart yazma çağrısı `LoggingContext` ile çalışacak şekilde geçirildi: kira sözleşmesi, kiracı girişi, bakiye devri, sözleşme sıralama, ödeme planı, teminat işlemleri, envanterden çıkarma ve taşınmaz resimleri ekranları.
+
+Üretilmiş ASCX dosyaları değişmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve `git diff --check` yapıldı. Build ve TEST kullanıcıya aittir.
+
 ## Güncel parça: vasiyetçi ve vasiyete konu varlık akışı
 
 Dal: `codex/tbys-will-asset-workflow`. Başlangıç commit'i: `d2e779a3` (PR #476 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. `VasiyetciRepository` ve `VasiyeteKonuVarlikRepository` bağlamlı SQL yürütücüsü ile transaction-aware CRUD overload'larına geçirildi; servislerde bağlamlı CRUD/audit akışı eklendi. Vasiyetçi giriş, vasiyetçi adres/liste ve KPSS sorgu ekranlarının okumaları ve yazmaları bağlamlı servislere geçirildi.

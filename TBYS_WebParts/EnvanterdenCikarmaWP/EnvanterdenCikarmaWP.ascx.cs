@@ -308,7 +308,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                     tasinmaz.BagisciId = bagis.BagisciId;
                 }
                 tasinmaz.Aciklama = AciklamaTxt.Text;
-                bool guncellendiMi = new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
+                bool guncellendiMi = new Model.Services.TBYS.TasinmazService(LoggingContext).Update(tasinmaz);
                 if (guncellendiMi)
                 {
                     UpdateBtn.Visible = true;
@@ -355,7 +355,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
 
                 }
                 tasinmaz.Aciklama = AciklamaTxt.Text;
-                envanterdenCikarildiMi = new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
+                envanterdenCikarildiMi = new Model.Services.TBYS.TasinmazService(LoggingContext).Update(tasinmaz);
 
                 if (envanterdenCikarildiMi)
                 {

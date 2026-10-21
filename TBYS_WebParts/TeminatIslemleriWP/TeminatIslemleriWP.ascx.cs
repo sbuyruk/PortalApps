@@ -423,7 +423,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     string teminatCinsi = string.IsNullOrEmpty(TeminatCinsiDDL.SelectedItem.Value) ? ProjeConstants.TEMINATCINSI_NAKIT_TL : TeminatCinsiDDL.SelectedItem.Value;
                     kiraSozlesme.TeminatCinsi = teminatCinsi;
                     kiraSozlesme.TeminatOdemeTarihi = TeminatTarihiTxt.Value.ConvertToDatetime();
-                    bool guncellendiMi = new Model.Services.TBYS.KiraSozlesmeService().Update(kiraSozlesme);
+                    bool guncellendiMi = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Update(kiraSozlesme);
                     if (guncellendiMi)
                     {
                         MessageHelper.PublishMessage("Teminat bilgileri güncellendi.", ProjeConstants.MESAJ_BASARILI);

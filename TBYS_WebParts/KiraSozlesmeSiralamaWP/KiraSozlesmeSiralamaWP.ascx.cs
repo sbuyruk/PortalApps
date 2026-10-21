@@ -266,7 +266,7 @@ $('#CustomDataTable').on( 'draw.dt', function () {
                             if (ks.DosyaNo != sira)
                             {
                                 ks.DosyaNo = sira;
-                                new Model.Services.TBYS.KiraSozlesmeService().Update(ks);
+                                new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Update(ks);
                             }
                         }
                     }

@@ -491,7 +491,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             {
                 KiraSozlesme ks = new KiraSozlesme();
                 Bolge bolge = BolgeGetir();
-                bool ksUpdateed = new Model.Services.TBYS.KiraSozlesmeService().UpdateByKiraciId(bolge.Id, kiraci.Id);
+                bool ksUpdateed = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).UpdateByKiraciId(bolge.Id, kiraci.Id);
                 SozlesmelerTablosunuDoldur(kiraci.Id);
                 MessageHelper.PublishMessage("Kiraci Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
             }
@@ -630,7 +630,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             kiraSozlesme.KiraciId = KiraciIdQS.ConvertToInt();
             kiraSozlesme.Aktif = true;
             kiraSozlesme.SozlesmeDurumu = ProjeConstants.KIRASOZLESME_DURUMU_DEVAM;
-            kiraSozlesme.Id = new Model.Services.TBYS.KiraSozlesmeService().Save(kiraSozlesme);
+            kiraSozlesme.Id = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Save(kiraSozlesme);
             if (kiraSozlesme.Id > 0)
             {
 
@@ -691,7 +691,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
 
             yeniKayitbitenKiraSozlesme.Olusturan = UtilityHelper.GetCurrentUserLoginName();
             yeniKayitbitenKiraSozlesme.Aktif = false;
-            new Model.Services.TBYS.KiraSozlesmeService().Save(yeniKayitbitenKiraSozlesme);
+            new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Save(yeniKayitbitenKiraSozlesme);
             if (yeniKayitbitenKiraSozlesme.Id > 0)
             {
 

@@ -289,7 +289,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                     exhelper = saveImageFiles2SP(tasinmaz, tasinmaz.TasinmazFoto4, FileUpload7, exhelper);
                 }
             }
-            isSaved = new Model.Services.TBYS.TasinmazService().Update(tasinmaz);
+            isSaved = new Model.Services.TBYS.TasinmazService(LoggingContext).Update(tasinmaz);
             if (!isSaved)
             {
                 Exception exception = new Exception("Resim Veri Tabanına Kayıt edilemedi");
@@ -467,7 +467,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                     default:
                         break;
                 }
-                if (new Model.Services.TBYS.TasinmazService().Update(tasinmaz))
+                if (new Model.Services.TBYS.TasinmazService(LoggingContext).Update(tasinmaz))
                 {
                     MessageHelper.PublishMessage("Resim Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                     BildirimEPostasiGonder("<b>" + foto + "</b> resmi silindi.");

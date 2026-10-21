@@ -157,11 +157,31 @@ namespace Model.Services.TBYS
         public bool UpdateByKiraciId(int bolgeId, int kiraciId) { return repository.UpdateByKiraciId(bolgeId, kiraciId); }
         public bool UpdateActiveStatus(KiraSozlesme item, string durum, string degistirmeTar, bool aktif)
         {
+            if (context != null)
+            {
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool updated = UpdateActiveStatus(item, durum, degistirmeTar, aktif, transaction);
+                    if (updated) transaction.Complete();
+                    return updated;
+                }
+            }
             if (item == null) return false;
             item.Degistiren = UtilityHelper.GetCurrentUserName();
             item.DegistirmeTarihi = DateTime.Now;
             string durumDegistirmeTar = string.IsNullOrEmpty(degistirmeTar) ? DateTime.Now.ConvertToTimeSpanReturnInHHmm() : degistirmeTar;
             return repository.UpdateActiveStatus(item.Id, aktif, durum, durumDegistirmeTar, item.Degistiren, item.DegistirmeTarihi);
+        }
+
+        public bool UpdateActiveStatus(KiraSozlesme item, string durum, string degistirmeTar, bool aktif, SqlTransactionContext transaction)
+        {
+            if (item == null || item.Id == 0) return false;
+            item.Degistiren = UtilityHelper.GetCurrentUserName();
+            item.DegistirmeTarihi = DateTime.Now;
+            string durumDegistirmeTar = string.IsNullOrEmpty(degistirmeTar) ? DateTime.Now.ConvertToTimeSpanReturnInHHmm() : degistirmeTar;
+            bool updated = repository.UpdateActiveStatus(item.Id, aktif, durum, durumDegistirmeTar, item.Degistiren, item.DegistirmeTarihi, transaction, context);
+            if (updated && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "UPDATE", "KiraSozlesme", item.Id.ToString(), transaction);
+            return updated;
         }
 
         public List<KiraSozlesme> GetAll()

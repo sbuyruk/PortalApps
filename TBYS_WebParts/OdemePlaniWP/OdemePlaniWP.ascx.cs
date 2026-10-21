@@ -923,7 +923,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             if (kiraSozlesme != null)
             {
                 kiraSozlesme.GecikmeZammiTipi = ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK;
-                new Model.Services.TBYS.KiraSozlesmeService().Update(kiraSozlesme);
+                new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Update(kiraSozlesme);
             }
 
             RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + KiraSozlesmeIdQS);
@@ -935,7 +935,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             if (kiraSozlesme != null)
             {
                 kiraSozlesme.GecikmeZammiTipi = ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK;
-                new Model.Services.TBYS.KiraSozlesmeService().Update(kiraSozlesme);
+                new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Update(kiraSozlesme);
             }
 
             RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + KiraSozlesmeIdQS);
