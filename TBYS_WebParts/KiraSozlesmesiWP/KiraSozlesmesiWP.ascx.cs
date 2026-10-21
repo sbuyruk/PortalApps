@@ -247,7 +247,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
                     IdLbl.Text = "Sözleşme No: " + kiraSozlesme.Id.ToString() ;
                     EskiDosyaNoLbl.Text = kiraSozlesme.DosyaNo.ToString();
                     Kiraci kiraci = new Kiraci();
-                    kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
+                    kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId, LoggingContext);
                     if (kiraci != null)
                     {
                         KiraciIdQS = kiraSozlesme.KiraciId.ToString();

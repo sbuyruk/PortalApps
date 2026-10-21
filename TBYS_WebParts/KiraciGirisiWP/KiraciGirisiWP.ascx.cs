@@ -221,7 +221,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             kiraci.Telefon = TelefonTxt.Text;
             kiraci.Eposta = EpostaTxt.Text;
             kiraci.KiralamaAmaci = KiralamaAmaciDDL.SelectedItem.ToString();
-            int id = new Model.Services.TBYS.KiraciService().Save(kiraci);
+            int id = new Model.Services.TBYS.KiraciService(LoggingContext).Save(kiraci);
             kiraci.Id = id;
             if (id > 0)
                 return kiraci;
@@ -249,7 +249,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             kiraci.Telefon = TelefonTxt.Text;
             kiraci.Eposta = EpostaTxt.Text;
             kiraci.KiralamaAmaci = KiralamaAmaciDDL.SelectedItem.ToString();
-            isUpdated = new Model.Services.TBYS.KiraciService().Update(kiraci);
+            isUpdated = new Model.Services.TBYS.KiraciService(LoggingContext).Update(kiraci);
             return kiraci;
         }
         private void IlDDLDoldur()
@@ -892,7 +892,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             ///Kiracinin siinmesi bir dizi konrol ile yapilabilir. 
             if (KiraciSilinebilirMi(kiraci))
             {
-                if (new Model.Services.TBYS.KiraciService().Delete(kiraci))
+                if (new Model.Services.TBYS.KiraciService(LoggingContext).Delete(kiraci))
                 {
                     RedirectToPage(ProjeConstants.PAGE_KIRACI_LIST + "?Mesaj=true");
                 }

@@ -1,4 +1,6 @@
 using DAO.Repositories.TBYS;
+using DAO.Ortak;
+using DAO.Repositories.Ortak;
 using Utility.Logging;
 using Model.Ortak;
 using Model.TBYS;
@@ -13,6 +15,7 @@ namespace Model.Services.TBYS
     public class KiraciService
     {
         private readonly KiraciRepository repository;
+        private readonly PortalLogContext context;
 
         public KiraciService() : this(new KiraciRepository()) { }
 
@@ -21,6 +24,8 @@ namespace Model.Services.TBYS
             if (repository == null) throw new ArgumentNullException("repository");
             this.repository = repository;
         }
+
+        public KiraciService(PortalLogContext context) : this(new KiraciRepository(context)) { this.context = context; }
 
         public Kiraci GetById(int id, PortalLogContext context)
         {
@@ -43,6 +48,7 @@ namespace Model.Services.TBYS
         }
         public int Save(Kiraci item)
         {
+            if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { int id = Save(item, tx); tx.Complete(); return id; }
             if (item == null) throw new ArgumentNullException("item");
             item.OlusturmaTarihi = DateTime.Now;
             item.Olusturan = UtilityHelper.GetCurrentUserName();
@@ -50,8 +56,10 @@ namespace Model.Services.TBYS
             if (item.Id > 0 && ProjeConstants.TBYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRACI);
             return item.Id;
         }
+        public int Save(Kiraci item, SqlTransactionContext tx) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item, tx, context); if (item.Id > 0 && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "INSERT", "Kiraci", item.Id.ToString(), tx); return item.Id; }
         public bool Update(Kiraci item)
         {
+            if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Update(item, tx); if (ok) tx.Complete(); return ok; }
             if (item == null || item.Id == 0) return false;
             Kiraci old = GetById(item.Id);
             item.DegistirmeTarihi = DateTime.Now;
@@ -60,8 +68,10 @@ namespace Model.Services.TBYS
             if (ok && ProjeConstants.TBYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRACI);
             return ok;
         }
+        public bool Update(Kiraci item, SqlTransactionContext tx) { if (item == null || item.Id == 0) return false; item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); bool ok = repository.Update(item, tx, context); if (ok && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "UPDATE", "Kiraci", item.Id.ToString(), tx); return ok; }
         public bool Delete(Kiraci item)
         {
+            if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Delete(item, tx); if (ok) tx.Complete(); return ok; }
             if (item == null || item.Id == 0) return false;
             Kiraci old = GetById(item.Id);
             if (old == null) return false;
@@ -69,6 +79,7 @@ namespace Model.Services.TBYS
             if (ok && ProjeConstants.TBYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRACI);
             return ok;
         }
+        public bool Delete(Kiraci item, SqlTransactionContext tx) { if (item == null || item.Id == 0) return false; bool ok = repository.Delete(item.Id, tx, context); if (ok && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "DELETE", "Kiraci", item.Id.ToString(), tx); return ok; }
         public string GetAllReturnJson(PortalLogContext context) { return new Kiraci().ToJSON(new KiraciRepository(context).SelectAllReturnJson()); }
         public string GetAllReturnJson() { return new Kiraci().ToJSON(repository.SelectAllReturnJson()); }
         public DataTable GetAllReturnDataTable(string secim, int bolgeId) { return repository.SelectAllReturnDataTable(secim, bolgeId); }

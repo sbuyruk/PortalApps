@@ -137,7 +137,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
             if (!Page.IsPostBack)
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt(), LoggingContext);
                 if (kiraci==null)
                 {
                     kiraci = new Kiraci();

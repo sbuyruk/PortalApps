@@ -405,7 +405,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             if (kiraSozlesme != null)
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId, LoggingContext);
                 if (kiraci != null)
                 {
                     RedirectToPage(ProjeConstants.PAGE_KIRAKARTI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + kiraSozlesme.Id + "&KiraciId=" + kiraci.Id);
