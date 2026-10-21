@@ -234,7 +234,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
         private void OdemeAyristirmaTabledanDoldur(KiraEkstreAktarma kiraEkstreAktarma)
         {
             OdemeAyristirma odemeAyristirma = new OdemeAyristirma();
-            DataTable dataTable = new Model.Services.TBYS.OdemeAyristirmaService().GetByKiraEkstreAktarmaId(kiraEkstreAktarma.Id);
+            DataTable dataTable = new Model.Services.TBYS.OdemeAyristirmaService(LoggingContext).GetByKiraEkstreAktarmaId(kiraEkstreAktarma.Id);
             if (dataTable != null)
             {
                 OdemeAyristirmaListQS.Clear();

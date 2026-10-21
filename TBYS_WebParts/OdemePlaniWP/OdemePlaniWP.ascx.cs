@@ -580,7 +580,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             if (odemePlani != null)
             {
                 OdemeAyrinti odemeAyrinti = new OdemeAyrinti();
-                List<OdemeAyrinti> odemeAyrintiList = new Model.Services.TBYS.OdemeAyrintiService().GetByPlan(odemePlani);
+                List<OdemeAyrinti> odemeAyrintiList = new Model.Services.TBYS.OdemeAyrintiService(LoggingContext).GetByPlan(odemePlani);
                 foreach (OdemeAyrinti item in odemeAyrintiList)
                 {
                     TableRow row = new TableRow();
@@ -826,7 +826,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                         //    odemeDao.DeleteBySozlesmeId(kiraSozlesme.Id);
                         //}
                         OdemeAyrinti odemeAyrintiDao = new OdemeAyrinti();
-                        List<OdemeAyrinti> odemeAyrintiListesi = new Model.Services.TBYS.OdemeAyrintiService().GetBySozlesmeId(kiraSozlesme.Id);
+                        List<OdemeAyrinti> odemeAyrintiListesi = new Model.Services.TBYS.OdemeAyrintiService(LoggingContext).GetBySozlesmeId(kiraSozlesme.Id);
                         if (odemeAyrintiListesi.Count > 0)
                         {
                             new Model.Services.TBYS.OdemeAyrintiService(LoggingContext).DeleteBySozlesmeId(kiraSozlesme.Id);
