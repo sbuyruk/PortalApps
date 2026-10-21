@@ -381,7 +381,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                                     IslemTipi = item.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT ? ProjeConstants.TEMINAT_ODEMESI : ProjeConstants.TEMINAT_GECICITEMINATODEMESI,
                                     IslemTutari = item.Tutar
                                 };
-                                odemeAyristirma.TeminatIslemId = new Model.Services.TBYS.TeminatIslemService().Save(teminatIslem);
+                                odemeAyristirma.TeminatIslemId = new Model.Services.TBYS.TeminatIslemService(LoggingContext).Save(teminatIslem);
                             }
                         }
 

@@ -1,5 +1,11 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
+## Güncel parça: teminat işlem akışı
+
+Dal: `codex/tbys-payment-split`. Başlangıç commit'i: `f48286b5` (PR #475 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. `TeminatIslemRepository` transaction-aware CRUD ve bağlamlı SQL yürütücüsüne geçirildi; `TeminatIslemService` bağlamlı CRUD/audit overload'ları kazandı. Ekstre ayrıştırma ve teminat ekranlarındaki teminat işlem yazmaları bağlamlı servise geçirildi.
+
+Audit yalnızca entity başlığı üretir; teminat açıklaması ve tutar ayrıntıları audit değerlerine alınmadı. Üretilmiş ASCX dosyaları değişmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve `git diff --check` yapıldı. Build ve TEST kullanıcıya aittir.
+
 ## Güncel parça: ödeme ayrıntısı okumaları
 
 Dal: `codex/tbys-payment-detail-links`. Başlangıç commit'i: `3027bd74` (PR #474 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. Ödeme planı, ana kira sözleşmesi ve ekstre ayrıştırma ekranlarındaki ödeme ayrıntısı okumaları bağlamlı `OdemeAyrintiService`/`OdemeAyristirmaService` kullanacak şekilde geçirildi. Böylece bu SELECT çağrıları doğru WebPart/metot SQL izini üretir.
