@@ -62,7 +62,7 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
         }
         protected void TabloyuDoldur()
         {
-            TasinmazService tasinmazService = new TasinmazService();
+            TasinmazService tasinmazService = new TasinmazService(LoggingContext);
             int AnkTM = tasinmazService.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.SIGORTA_DASK);
             int AnkCM = tasinmazService.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.SIGORTA_DASK);
             int IstTM = tasinmazService.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.SIGORTA_DASK);
@@ -170,7 +170,7 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
         private decimal TahminiRayicToplaminiBul()
         {
             decimal toplam = 0;
-            TasinmazService tasinmazService = new TasinmazService();
+            TasinmazService tasinmazService = new TasinmazService(LoggingContext);
             toplam = tasinmazService.SelectTahminiRayicToplamiBySigorta(ProjeConstants.SIGORTA_DASK);
             return toplam;
         }
@@ -178,20 +178,20 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
         {
             decimal toplam = 0;
             Sigorta sigorta = new Sigorta();
-            toplam = new Model.Services.TBYS.SigortaService().GetInsuranceValueTotal(ProjeConstants.SIGORTA_DASK);
+            toplam = new Model.Services.TBYS.SigortaService(LoggingContext).GetInsuranceValueTotal(ProjeConstants.SIGORTA_DASK);
             return toplam;
         }
         private decimal PrimToplaminiBul()
         {
             decimal toplam = 0;
             Sigorta sigorta = new Sigorta();
-            toplam = new Model.Services.TBYS.SigortaService().GetPremiumTotal(ProjeConstants.SIGORTA_DASK);
+            toplam = new Model.Services.TBYS.SigortaService(LoggingContext).GetPremiumTotal(ProjeConstants.SIGORTA_DASK);
             return toplam;
         }
         private decimal EmlakBeyanDegeriToplaminiBul()
         {
             decimal toplam = 0;
-            TasinmazService tasinmazService = new TasinmazService();
+            TasinmazService tasinmazService = new TasinmazService(LoggingContext);
             toplam = tasinmazService.SelectEmlakBeyanDegeriToplamiBySigorta(ProjeConstants.SIGORTA_DASK);
             return toplam;
         }

@@ -106,7 +106,7 @@ namespace TBYS_WebParts.TasinmazOnarimListesiWP
 
 
             Onarim onarim = new Onarim();
-            DataTable dataTable = new Model.Services.TBYS.OnarimService().GetAllForDataTable();
+            DataTable dataTable = new Model.Services.TBYS.OnarimService(LoggingContext).GetAllForDataTable();
 
 
 

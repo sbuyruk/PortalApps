@@ -17,13 +17,27 @@ namespace Model.Services.TBYS
     public class SigortaService
     {
         private readonly SigortaRepository repository;
+        private readonly PortalLogContext context;
+        private readonly TasinmazRepository propertyRepository;
+        private readonly BagimsizBolumRepository sectionRepository;
 
         public SigortaService() : this(new SigortaRepository()) { }
 
+        public SigortaService(PortalLogContext context)
+            : this(new SigortaRepository(context), new TasinmazRepository(context), new BagimsizBolumRepository(context))
+        {
+            this.context = context;
+        }
+
         public SigortaService(SigortaRepository repository)
+            : this(repository, new TasinmazRepository(), new BagimsizBolumRepository()) { }
+
+        private SigortaService(SigortaRepository repository, TasinmazRepository propertyRepository, BagimsizBolumRepository sectionRepository)
         {
             if (repository == null) throw new ArgumentNullException("repository");
             this.repository = repository;
+            this.propertyRepository = propertyRepository;
+            this.sectionRepository = sectionRepository;
         }
 
         public Sigorta GetById(int id)
@@ -106,6 +120,15 @@ namespace Model.Services.TBYS
 
         public int Save(Sigorta item)
         {
+            if (context != null)
+            {
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    int id = Save(item, transaction, context);
+                    transaction.Complete();
+                    return id;
+                }
+            }
             if (item == null) throw new ArgumentNullException("item");
 
             item.OlusturmaTarihi = DateTime.Now;
@@ -123,6 +146,15 @@ namespace Model.Services.TBYS
 
         public bool Update(Sigorta item)
         {
+            if (context != null)
+            {
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool updated = Update(item, transaction, context);
+                    if (updated) transaction.Complete();
+                    return updated;
+                }
+            }
             if (item == null) throw new ArgumentNullException("item");
 
             Sigorta oldItem = GetById(item.Id);
@@ -145,6 +177,15 @@ namespace Model.Services.TBYS
 
         public bool Delete(Sigorta item)
         {
+            if (context != null)
+            {
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool deleted = Delete(item, transaction, context);
+                    if (deleted) transaction.Complete();
+                    return deleted;
+                }
+            }
             if (item == null || item.Id == 0) return false;
 
             Sigorta oldItem = GetById(item.Id);
@@ -169,6 +210,7 @@ namespace Model.Services.TBYS
         {
             RequireTransaction(transaction, context);
             if (item == null) throw new ArgumentNullException("item", "Kaydedilecek sigorta gereklidir.");
+            EnsureRelation(item, transaction, context);
             item.OlusturmaTarihi = DateTime.Now;
             item.Olusturan = UtilityHelper.GetCurrentUserName();
             item.Id = repository.Insert(item, transaction, context);
@@ -183,9 +225,12 @@ namespace Model.Services.TBYS
         {
             RequireTransaction(transaction, context);
             if (item == null || item.Id <= 0) return false;
+            EnsureRelation(item, transaction, context);
             DataTable oldValues = repository.SelectById(item.Id, transaction, context);
             Sigorta old = Map(oldValues);
             if (old == null) return false;
+            if (old.TasinmazId != item.TasinmazId)
+                throw new InvalidOperationException("Sigortanın bağlı taşınmazı değişmiş. Sayfayı yenileyip tekrar deneyiniz.");
             item.OlusturmaTarihi = old.OlusturmaTarihi;
             item.Olusturan = old.Olusturan;
             item.DegistirmeTarihi = DateTime.Now;
@@ -197,6 +242,98 @@ namespace Model.Services.TBYS
             return true;
         }
 
+        public bool Delete(Sigorta item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            RequireTransaction(transaction, context);
+            if (item == null || item.Id <= 0) return false;
+            DataTable oldValues = repository.SelectById(item.Id, transaction, context);
+            Sigorta old = Map(oldValues);
+            if (old == null || old.TasinmazId != item.TasinmazId) return false;
+            if (!repository.Delete(item.Id, transaction, context)) return false;
+            RecordAudit("DELETE", item.Id, oldValues, null, transaction, context);
+            return true;
+        }
+
+        public int SaveWithPropertyStatus(Sigorta item)
+        {
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                int id = Save(item, transaction, context);
+                SynchronizePropertyStatus(item, transaction, context);
+                transaction.Complete();
+                return id;
+            }
+        }
+
+        public bool UpdateWithPropertyStatus(Sigorta item)
+        {
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                if (!Update(item, transaction, context)) return false;
+                SynchronizePropertyStatus(item, transaction, context);
+                transaction.Complete();
+                return true;
+            }
+        }
+
+        private void EnsureRelation(Sigorta item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            RequireTransaction(transaction, context);
+            if (item.TasinmazId <= 0 || propertyRepository.SelectById(item.TasinmazId, transaction, context) == null)
+                throw new InvalidOperationException("İlişkili taşınmaz kaydı bulunamadı.");
+            if (item.BolumId < 0) throw new InvalidOperationException("Bağımsız bölüm seçimi geçersiz.");
+            if (item.BolumId == 0) return;
+            DataTable section = sectionRepository.SelectById(item.BolumId, transaction, context);
+            if (section == null || Convert.ToInt32(section.Rows[0]["TasinmazId"]) != item.TasinmazId)
+                throw new InvalidOperationException("Seçilen bağımsız bölüm bu taşınmaza ait değil.");
+        }
+
+        private void SynchronizePropertyStatus(Sigorta item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            RequireTransaction(transaction, context);
+            DataTable oldValues = propertyRepository.SelectById(item.TasinmazId, transaction, context);
+            if (oldValues == null) throw new InvalidOperationException("İlişkili taşınmaz kaydı bulunamadı.");
+            string oldStatus = oldValues.Rows[0]["SigortaDurumu"] == DBNull.Value ? null : Convert.ToString(oldValues.Rows[0]["SigortaDurumu"]);
+            if (string.Equals(oldStatus, item.SigortaCinsi, StringComparison.Ordinal)) return;
+            propertyRepository.UpdateInsuranceStatus(item.TasinmazId, item.SigortaCinsi, DateTime.Now,
+                UtilityHelper.GetCurrentUserName(), transaction, context);
+            DataTable saved = propertyRepository.SelectById(item.TasinmazId, transaction, context);
+            if (saved == null) throw new InvalidOperationException("Güncellenen taşınmaz okunamadı.");
+            RecordEntityAudit("UPDATE", "Tasinmaz", item.TasinmazId, oldValues, saved,
+                new[] { "SigortaDurumu" }, transaction, context);
+        }
+
+        public bool UpdateDocument(Sigorta item)
+        {
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                bool updated = UpdateDocument(item, transaction, context);
+                if (updated) transaction.Complete();
+                return updated;
+            }
+        }
+
+        public bool UpdateDocument(Sigorta item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            RequireTransaction(transaction, context);
+            if (item == null || item.Id <= 0) return false;
+            DataTable oldValues = repository.SelectById(item.Id, transaction, context);
+            Sigorta old = Map(oldValues);
+            if (old == null || old.TasinmazId != item.TasinmazId) return false;
+            repository.UpdateDocument(item.Id, item.PDFDosyasi, DateTime.Now, UtilityHelper.GetCurrentUserName(), transaction, context);
+            DataTable saved = repository.SelectById(item.Id, transaction, context);
+            if (saved == null) throw new InvalidOperationException("Güncellenen sigorta belge bilgisi okunamadı.");
+            PortalLogRepository log = new PortalLogRepository();
+            int auditId = log.RecordAudit(context, "UPDATE", "Sigorta", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            if (auditId > 0)
+            {
+                string oldValue = string.IsNullOrWhiteSpace(old.PDFDosyasi) ? "false" : "true";
+                string newValue = string.IsNullOrWhiteSpace(Convert.ToString(saved.Rows[0]["PDFDosyasi"])) ? "false" : "true";
+                if (oldValue != newValue) log.RecordAuditChange(auditId, "BelgeMevcut", oldValue, newValue, transaction);
+            }
+            return true;
+        }
+
         private static void RequireTransaction(SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction", "Veritabanı işlem bağlamı gereklidir.");
@@ -205,11 +342,18 @@ namespace Model.Services.TBYS
 
         private static void RecordAudit(string operation, int entityId, DataTable oldValues, DataTable current, SqlTransactionContext transaction, PortalLogContext context)
         {
+            RecordEntityAudit(operation, "Sigorta", entityId, oldValues, current,
+                new[] { "TasinmazId", "BolumId", "SigortaCinsi", "SigortaBasTar", "SigortaBitTar", "SigortaBedeli", "Prim", "KullanimSekli" }, transaction, context);
+        }
+
+        private static void RecordEntityAudit(string operation, string entityName, int entityId, DataTable oldValues,
+            DataTable current, string[] fields, SqlTransactionContext transaction, PortalLogContext context)
+        {
             RequireTransaction(transaction, context);
             PortalLogRepository log = new PortalLogRepository();
-            int auditId = log.RecordAudit(context, operation, "Sigorta", entityId.ToString(CultureInfo.InvariantCulture), transaction);
+            int auditId = log.RecordAudit(context, operation, entityName, entityId.ToString(CultureInfo.InvariantCulture), transaction);
             if (auditId <= 0) return;
-            foreach (string field in new[] { "TasinmazId", "BolumId", "SigortaCinsi", "SigortaBasTar", "SigortaBitTar", "SigortaBedeli", "Prim", "KullanimSekli" })
+            foreach (string field in fields)
             {
                 string oldValue = AuditValue(oldValues, field);
                 string newValue = AuditValue(current, field);

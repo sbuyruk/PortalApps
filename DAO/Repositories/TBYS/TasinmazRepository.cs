@@ -260,5 +260,19 @@ namespace DAO.Repositories.TBYS
         {
             return db.DeleteFromDb(queryBuilder.BuildDelete("Tasinmaz_Table", id), transaction, context);
         }
+
+        public bool UpdateInsuranceStatus(int id, string status, DateTime changedAt, string changedBy,
+            SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                UPDATE Tasinmaz_Table SET SigortaDurumu=@Status, DegistirmeTarihi=@ChangedAt, Degistiren=@ChangedBy
+                WHERE Id=@Id;
+                IF @@ROWCOUNT <> 1 THROW 50001, N'Taşınmazın sigorta durumu güncellenemedi.', 1;");
+            query.AddParameter("@Id", id);
+            query.AddParameter("@Status", (object)status ?? DBNull.Value);
+            query.AddParameter("@ChangedAt", changedAt);
+            query.AddParameter("@ChangedBy", changedBy);
+            return db.Update2Db(query, transaction, context);
+        }
     }
 }

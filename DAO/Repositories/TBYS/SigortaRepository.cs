@@ -220,5 +220,24 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@ChangedBy", changedBy);
             return db.Update2Db(query, transaction, context);
         }
+
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.DeleteFromDb(queryBuilder.BuildDelete("Sigorta_Table", id), transaction, context);
+        }
+
+        public bool UpdateDocument(int id, string document, DateTime changedAt, string changedBy,
+            SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                UPDATE Sigorta_Table SET PDFDosyasi=@Document, DegistirmeTarihi=@ChangedAt, Degistiren=@ChangedBy
+                WHERE Id=@Id;
+                IF @@ROWCOUNT <> 1 THROW 50001, N'Sigorta belge bilgisi güncellenemedi.', 1;");
+            query.AddParameter("@Id", id);
+            query.AddParameter("@Document", (object)document ?? DBNull.Value);
+            query.AddParameter("@ChangedAt", changedAt);
+            query.AddParameter("@ChangedBy", changedBy);
+            return db.Update2Db(query, transaction, context);
+        }
     }
 }

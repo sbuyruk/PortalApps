@@ -38,7 +38,7 @@ namespace Model.Services.TBYS
             contractRepository = new SozlesmeTasinmazRepository(context);
             repairRepository = new OnarimRepository(context);
             insuranceRepository = new SigortaRepository(context);
-            insuranceService = new SigortaService(insuranceRepository);
+            insuranceService = new SigortaService(context);
             sectionService = new BagimsizBolumService(context);
         }
 
