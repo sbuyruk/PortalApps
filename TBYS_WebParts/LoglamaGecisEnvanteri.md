@@ -1,5 +1,11 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
+## Güncel parça: vasiyetçi ve vasiyete konu varlık akışı
+
+Dal: `codex/tbys-will-asset-workflow`. Başlangıç commit'i: `d2e779a3` (PR #476 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. `VasiyetciRepository` ve `VasiyeteKonuVarlikRepository` bağlamlı SQL yürütücüsü ile transaction-aware CRUD overload'larına geçirildi; servislerde bağlamlı CRUD/audit akışı eklendi. Vasiyetçi giriş, vasiyetçi adres/liste ve KPSS sorgu ekranlarının okumaları ve yazmaları bağlamlı servislere geçirildi.
+
+Audit yalnızca entity başlığı üretir; kimlik, adres, telefon, e-posta ve vasiyete konu varlık açıklaması gibi ayrıntılar audit değerlerine alınmadı. Üretilmiş ASCX dosyaları değişmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve `git diff --check` yapıldı. Build ve TEST kullanıcıya aittir.
+
 ## Güncel parça: teminat işlem akışı
 
 Dal: `codex/tbys-payment-split`. Başlangıç commit'i: `f48286b5` (PR #475 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. `TeminatIslemRepository` transaction-aware CRUD ve bağlamlı SQL yürütücüsüne geçirildi; `TeminatIslemService` bağlamlı CRUD/audit overload'ları kazandı. Ekstre ayrıştırma ve teminat ekranlarındaki teminat işlem yazmaları bağlamlı servise geçirildi.

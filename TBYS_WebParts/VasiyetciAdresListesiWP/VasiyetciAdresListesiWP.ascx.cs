@@ -285,7 +285,7 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
 
             Vasiyetci vasiyetci = new Vasiyetci();
             int rowCount = 0;
-            DataTable dataTable = new Model.Services.TBYS.VasiyetciService().GetAllForDataTable(VefatEdenlerHaricChk.Checked, ref rowCount);
+            DataTable dataTable = new Model.Services.TBYS.VasiyetciService(LoggingContext).GetAllForDataTable(VefatEdenlerHaricChk.Checked, ref rowCount);
             if (dataTable != null)
             {
                 int index = 1;
@@ -460,7 +460,7 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
             DateTime today = DateTime.Today;
             int rowCount = 0;
             Vasiyetci vasiyetci = new Vasiyetci();
-            DataTable dataTable = new Model.Services.TBYS.VasiyetciService().GetAllForDataTable(VefatEdenlerHaricChk.Checked, ref rowCount);
+            DataTable dataTable = new Model.Services.TBYS.VasiyetciService(LoggingContext).GetAllForDataTable(VefatEdenlerHaricChk.Checked, ref rowCount);
             int SiraNo = 0;
             List<AdresListItem> list = new List<AdresListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);

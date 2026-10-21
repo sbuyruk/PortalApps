@@ -119,7 +119,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                 if (DestinationAppQS.Equals("Duzenle"))
                 {
 
-                    vasiyetci = new Model.Services.TBYS.VasiyetciService().GetById(VasiyetciIdQS.ConvertToInt());
+                    vasiyetci = new Model.Services.TBYS.VasiyetciService(LoggingContext).GetById(VasiyetciIdQS.ConvertToInt());
                     IdLbl.Text = vasiyetci.Id.ToString();
                     VarlikDiv.Attributes["style"] = "display:block";
                     BelgeYukleDiv.Attributes["style"] = "display:block";
@@ -152,7 +152,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
         {
 
             VasiyeteKonuVarlik vasiyeteKonuVarlik = new VasiyeteKonuVarlik();
-            List<VasiyeteKonuVarlik> vasiyeteKonuVarlikListesi = new Model.Services.TBYS.VasiyeteKonuVarlikService().GetByVasiyetciId(VasiyetciIdQS.ConvertToInt());
+            List<VasiyeteKonuVarlik> vasiyeteKonuVarlikListesi = new Model.Services.TBYS.VasiyeteKonuVarlikService(LoggingContext).GetByVasiyetciId(VasiyetciIdQS.ConvertToInt());
             foreach (VasiyeteKonuVarlik item in vasiyeteKonuVarlikListesi)
             {
                 TableRow yeniRow = new TableRow();
@@ -228,7 +228,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             {
 
                 Vasiyetci vasiyetci = new Vasiyetci();
-                vasiyetci = new Model.Services.TBYS.VasiyetciService().GetById(VasiyetciIdQS.ConvertToInt());
+                vasiyetci = new Model.Services.TBYS.VasiyetciService(LoggingContext).GetById(VasiyetciIdQS.ConvertToInt());
                 if (vasiyetci != null)
                 {
                     AdiTxt.Text = vasiyetci.Adi;
@@ -403,7 +403,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                 }
                 else
                 {
-                    int yeniId = new Model.Services.TBYS.VasiyetciService().Save(yeniVasiyetci);
+                    int yeniId = new Model.Services.TBYS.VasiyetciService(LoggingContext).Save(yeniVasiyetci);
                     if (yeniId > 0)
                     {
                         VasiyetciIdQS = yeniId.ToString();
@@ -446,7 +446,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             try
             {
                 Vasiyetci vasiyetci = new Vasiyetci();
-                vasiyetci = new Model.Services.TBYS.VasiyetciService().GetById(VasiyetciIdQS.ConvertToInt());
+                vasiyetci = new Model.Services.TBYS.VasiyetciService(LoggingContext).GetById(VasiyetciIdQS.ConvertToInt());
                 if (vasiyetci != null)
                 {
                     vasiyetci.Adi = AdiTxt.Text;
@@ -487,7 +487,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                 }
                 else
                 {
-                    bool guncellendiMi = new Model.Services.TBYS.VasiyetciService().Update(vasiyetci);
+                    bool guncellendiMi = new Model.Services.TBYS.VasiyetciService(LoggingContext).Update(vasiyetci);
                     if (guncellendiMi)
                     {
                         MessageHelper.PublishMessage("Vasiyetçi Güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
@@ -578,7 +578,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             vn.AdetMiktar = AdetMiktarTxt.Text;
             vn.TahminiRayic = TahminiRayicTxt.Text.ConvertToDecimal();
             vn.Aciklama= KonuAciklama.Text;
-            new Model.Services.TBYS.VasiyeteKonuVarlikService().Save(vn);
+            new Model.Services.TBYS.VasiyeteKonuVarlikService(LoggingContext).Save(vn);
             RedirectToPage(ProjeConstants.PAGE_VASIYETCI_GIRISI + "?DestinationApp=Duzenle&VasiyetciId=" + VasiyetciIdQS);
         }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)
@@ -680,11 +680,11 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             try
             {
                 Vasiyetci vasiyetci = new Vasiyetci();
-                vasiyetci = new Model.Services.TBYS.VasiyetciService().GetById(VasiyetciIdQS.ConvertToInt());
+                vasiyetci = new Model.Services.TBYS.VasiyetciService(LoggingContext).GetById(VasiyetciIdQS.ConvertToInt());
                 if (vasiyetci != null)
                 {
                     VasiyeteKonuVarlik vkv = new VasiyeteKonuVarlik();
-                    List<VasiyeteKonuVarlik> list =new Model.Services.TBYS.VasiyeteKonuVarlikService().GetByVasiyetciId(vasiyetci.Id);
+                    List<VasiyeteKonuVarlik> list =new Model.Services.TBYS.VasiyeteKonuVarlikService(LoggingContext).GetByVasiyetciId(vasiyetci.Id);
                     if (list.Count < 1)
                     {
                         VasiyetciyiSilPopupAc(sender);
@@ -712,10 +712,10 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             try
             {
                 Vasiyetci vasiyetci = new Vasiyetci();
-                vasiyetci = new Model.Services.TBYS.VasiyetciService().GetById(VasiyetciIdQS.ConvertToInt());
+                vasiyetci = new Model.Services.TBYS.VasiyetciService(LoggingContext).GetById(VasiyetciIdQS.ConvertToInt());
                 if (vasiyetci != null)
                 {
-                    silindi = new Model.Services.TBYS.VasiyetciService().Delete(vasiyetci);
+                    silindi = new Model.Services.TBYS.VasiyetciService(LoggingContext).Delete(vasiyetci);
                     RedirectToPage(ProjeConstants.PAGE_VASIYETCI_LISTESI);
                 }
                 if (!silindi)
@@ -738,10 +738,10 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
         {
             int silecekVnId = ParamVnLbl.Text.ConvertToInt();
             VasiyeteKonuVarlik silinecekvn = new VasiyeteKonuVarlik();
-            silinecekvn = new Model.Services.TBYS.VasiyeteKonuVarlikService().GetById(silecekVnId);
+            silinecekvn = new Model.Services.TBYS.VasiyeteKonuVarlikService(LoggingContext).GetById(silecekVnId);
             if (silinecekvn != null)
             {
-                bool silindi = new Model.Services.TBYS.VasiyeteKonuVarlikService().Delete(silinecekvn);
+                bool silindi = new Model.Services.TBYS.VasiyeteKonuVarlikService(LoggingContext).Delete(silinecekvn);
                 if (silindi)
                 {
                     RedirectToPage(ProjeConstants.PAGE_VASIYETCI_GIRISI + "?DestinationApp=Duzenle&VasiyetciId=" + VasiyetciIdQS);

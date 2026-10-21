@@ -344,7 +344,7 @@ namespace TBYS_WebParts.VasiyetciListesiWP
         {
             Vasiyetci vasiyetci = new Vasiyetci();
 
-            DataTable dataTable = new Model.Services.TBYS.VasiyetciService().GetByRegion(BolgeIdQS);
+            DataTable dataTable = new Model.Services.TBYS.VasiyetciService(LoggingContext).GetByRegion(BolgeIdQS);
 
             int SiraNo = 1;
             List<VasiyetciListItem> list = new List<VasiyetciListItem>();
