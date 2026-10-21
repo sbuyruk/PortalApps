@@ -503,7 +503,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                 if (kiraciId < 1)
                 {
                     Kiraci kiraciDao = new Kiraci();
-                    List<Kiraci> kiraciList = new Model.Services.TBYS.KiraciService().GetByName(adi);
+                    List<Kiraci> kiraciList = new Model.Services.TBYS.KiraciService(LoggingContext).GetByName(adi);
                     foreach (var item in kiraciList)
                     {
                         if (item.Id > 0)
@@ -523,7 +523,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
             {
                 //kiraci tablosundaki kayıtları isme göre sorgulasın
                 Kiraci kiraciDao = new Kiraci();
-                List<Kiraci> kiraciList = new Model.Services.TBYS.KiraciService().GetByName(adi);
+                List<Kiraci> kiraciList = new Model.Services.TBYS.KiraciService(LoggingContext).GetByName(adi);
                 if (kiraciList.Count > 1)
                 {
                     varMi = true;

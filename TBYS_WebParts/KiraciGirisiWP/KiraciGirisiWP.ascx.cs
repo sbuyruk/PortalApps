@@ -607,7 +607,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             if (kiraci != null)//bu kiraci varsa
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(kiraci.Id);
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetActiveByKiraciId(kiraci.Id);
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
                     MessageHelper.PublishMessage("Zaten Bir kira sözlesmesi mevcut", ProjeConstants.MESAJ_HATA);
@@ -618,7 +618,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
         protected void BitenSozlesmeOlusturBtn_Click(object sender, EventArgs e)
         {
             Kiraci kiraci = new Kiraci();
-            kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+            kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
             if (kiraci != null)//bu kiraci varsa
             {
                 ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "BitenSozlesmeModalOnay();", true);
@@ -644,9 +644,9 @@ namespace TBYS_WebParts.KiraciGirisiWP
         protected void BitenSozlesmeOnayBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme bitenKiraSozlesmeDao = new KiraSozlesme();
-            bitenKiraSozlesmeDao = new Model.Services.TBYS.KiraSozlesmeService().GetCompletedByKiraciId(KiraciIdQS.ConvertToInt());
+            bitenKiraSozlesmeDao = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetCompletedByKiraciId(KiraciIdQS.ConvertToInt());
             KiraSozlesme aktifKiraSozlesme = new KiraSozlesme();
-            aktifKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(KiraciIdQS.ConvertToInt());
+            aktifKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetActiveByKiraciId(KiraciIdQS.ConvertToInt());
 
             KiraSozlesme masterKs = new KiraSozlesme();
             masterKs = aktifKiraSozlesme != null ? aktifKiraSozlesme : bitenKiraSozlesmeDao;// != null ? bitenKiraSozlesmeDao : new KiraSozlesme();
@@ -727,7 +727,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
         protected void KiraKartiBtn_Click(object sender, EventArgs e)
         {
             Kiraci kiraci = new Kiraci();
-            kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+            kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
             if (kiraci != null)//bu kiraci varsa
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -742,11 +742,11 @@ namespace TBYS_WebParts.KiraciGirisiWP
             try
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+                kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
                 if (kiraci != null)
                 {
                     KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                    kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(kiraci.Id);
+                    kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetActiveByKiraciId(kiraci.Id);
                     if (kiraSozlesme != null) //bu sozlesme varsa
                     {
                         OdemePlani odemePlani = new OdemePlani();
@@ -773,8 +773,8 @@ namespace TBYS_WebParts.KiraciGirisiWP
             try
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
-                Kiraci oncekiKiraci = new Model.Services.TBYS.KiraciService().GetNext(kiraci.Id);
+                kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
+                Kiraci oncekiKiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetNext(kiraci.Id);
                 if (oncekiKiraci != null)
                 {
                     RedirectToPage(ProjeConstants.PAGE_KIRACI_GIRIS + "?DestinationApp=KD&KiraciId=" + oncekiKiraci.Id);
@@ -792,8 +792,8 @@ namespace TBYS_WebParts.KiraciGirisiWP
             try
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
-                Kiraci sonrakiKiraci = new Model.Services.TBYS.KiraciService().GetNext(kiraci.Id);
+                kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
+                Kiraci sonrakiKiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetNext(kiraci.Id);
                 if (sonrakiKiraci != null)
                 {
                     RedirectToPage(ProjeConstants.PAGE_KIRACI_GIRIS + "?DestinationApp=KD&KiraciId=" + sonrakiKiraci.Id);
@@ -888,7 +888,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
         protected void DeleteNowBtn_Click(object sender, EventArgs e)
         {
             Kiraci kiraci = new Kiraci();
-            kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt());
+            kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
             ///Kiracinin siinmesi bir dizi konrol ile yapilabilir. 
             if (KiraciSilinebilirMi(kiraci))
             {
@@ -956,7 +956,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
         {
             bool sozlesmesiVarMi = true;
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetByKiraciId(kiraci.Id);
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetByKiraciId(kiraci.Id);
             if (kiraSozlesme == null)
             {
                 sozlesmesiVarMi = false;

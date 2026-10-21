@@ -160,7 +160,7 @@ namespace TBYS_WebParts.KiraKartiWP
             if (!Page.IsPostBack)
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = new Model.Services.TBYS.KiraciService().GetById(KiraciIdQS.ConvertToInt(), LoggingContext);
+                kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt(), LoggingContext);
                 if (kiraci != null)
                 {
                     KiraSozlesme kiraSozlesme = new KiraSozlesme();

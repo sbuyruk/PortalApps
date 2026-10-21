@@ -283,7 +283,7 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP
             decimal tufe = 1M;
             YasalFaiz yasalFaiz = new YasalFaiz();
 
-            yasalFaiz = new Model.Services.TBYS.YasalFaizService().GetByYearMonth(tarih.Year, tarih.Month);//gelecek ay artacak
+            yasalFaiz = new Model.Services.TBYS.YasalFaizService(LoggingContext).GetByYearMonth(tarih.Year, tarih.Month);//gelecek ay artacak
             if (yasalFaiz != null)
             {
                 tufe = yasalFaiz.Tufe;

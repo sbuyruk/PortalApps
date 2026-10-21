@@ -605,7 +605,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
         protected void BagisciBtn_Click(object sender, EventArgs e)
         {
             Bagis bagis = new Bagis();
-            bagis = new Model.Services.TBYS.BagisService().GetByTasinmazId(TasinmazIdQS.ConvertToInt());
+            bagis = new Model.Services.TBYS.BagisService(LoggingContext).GetByTasinmazId(TasinmazIdQS.ConvertToInt());
 
             if (bagis == null)
             {
@@ -614,7 +614,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             else
             {
                 TasinmazBagisci bagisci = new TasinmazBagisci();
-                bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(bagis.BagisciId);
+                bagisci = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetById(bagis.BagisciId);
                 if (bagisci == null)
                 {
                     MessageHelper.PublishMessage("Bağışçı Bulunamadı. Bu taşınmazın ilişkilendirildiği bağışçı bulunamadı. Lütfen Bağışçı sayfasından bağışçı ataması yapınız.", ProjeConstants.MESAJ_HATA);

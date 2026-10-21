@@ -144,7 +144,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                     if (kiraEkstreAktarma!=null)
                     {
                         Kiraci kiraci = new Kiraci();
-                        kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraEkstreAktarma.KiraciId, LoggingContext);
+                        kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(kiraEkstreAktarma.KiraciId, LoggingContext);
                         if (kiraci != null)
                         {
                             AdiLbl.Text = kiraci == null ? "" : kiraci.Adi + " " + kiraci.Soyadi;
@@ -369,7 +369,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                         else if (item.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT ||
                                  item.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_GECICITEMINAT_INT)
                         {
-                            KiraSozlesme kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(item.KiraSozlesmeId);
+                            KiraSozlesme kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(item.KiraSozlesmeId);
                             if (kiraSozlesme != null)
                             {
                                 TeminatIslem teminatIslem = new TeminatIslem
@@ -483,7 +483,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                         foreach (var item in kiraciList)
                         {
                             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetNearestByKiraciIdAndDate(item.Id, OdemeTarihiLbl.Text.ConvertToDatetime());
+                            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetNearestByKiraciIdAndDate(item.Id, OdemeTarihiLbl.Text.ConvertToDatetime());
                             if (kiraSozlesme != null)
                             {
                                 KiraciDDL.Enabled = true;
@@ -540,7 +540,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                     OdemeListItem odemeListItem = new OdemeListItem();
                     int kiraciId = KiraciDDL.Items.Count > 0 ? KiraciDDL.SelectedItem.Value.ConvertToInt() : KiraciIdLbl.Text.ConvertToInt();
                     Kiraci kiraci = new Kiraci();
-                    kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraciId);
+                    kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(kiraciId);
                     if (kiraci != null)
                     {
                         odemeListItem.KiraciId = kiraci.Id;
@@ -586,7 +586,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
         {
             int sozlesmeId = 0;
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetNearestByKiraciIdAndDate(kiraciId, odemeTarihi);
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetNearestByKiraciIdAndDate(kiraciId, odemeTarihi);
             if (kiraSozlesme != null)
             {
                 sozlesmeId=kiraSozlesme.Id;

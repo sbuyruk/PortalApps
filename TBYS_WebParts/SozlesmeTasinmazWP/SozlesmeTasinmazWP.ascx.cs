@@ -181,7 +181,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         {
 
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt(), LoggingContext);
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt(), LoggingContext);
             if (kiraSozlesme != null)
             {
                 SecileniKaydet(kiraSozlesme);
@@ -191,7 +191,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 TamamBtn.Visible = list.Count > 0;
 
                 Kiraci kiraci = new Kiraci();
-                kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId, LoggingContext);
+                kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(kiraSozlesme.KiraciId, LoggingContext);
                 if (kiraci != null)
                 {
                     AdiLbl.Text = kiraci.Adi + " " + kiraci.Soyadi + " (" + kiraci.Id + ")";
@@ -335,7 +335,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         protected void TamamBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt(), LoggingContext);
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt(), LoggingContext);
             string sozlesmePage = ProjeConstants.PAGE_KIRASOZLESMESI;
             if (kiraSozlesme != null)
             {
@@ -424,7 +424,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         private void KiraciSecimiModalShow()
         {
             Kiraci kiraci = new Kiraci();
-            var jsonData = new Model.Services.TBYS.KiraciService().GetAllReturnJson(LoggingContext);
+            var jsonData = new Model.Services.TBYS.KiraciService(LoggingContext).GetAllReturnJson(LoggingContext);
             var jsString = CreateKiraciModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
             UtilityHelper.ScriptCalistir("KiraciSecimiModal();");
