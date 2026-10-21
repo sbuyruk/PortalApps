@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace Model.Ortak
