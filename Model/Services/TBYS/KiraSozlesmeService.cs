@@ -1,4 +1,6 @@
 using DAO.Repositories.TBYS;
+using DAO.Ortak;
+using DAO.Repositories.Ortak;
 using Utility.Logging;
 using Model.Ortak;
 using Model.TBYS;
@@ -8,12 +10,14 @@ using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using System.Globalization;
 
 namespace Model.Services.TBYS
 {
     public class KiraSozlesmeService
     {
         private readonly KiraSozlesmeRepository repository;
+        private readonly PortalLogContext context;
 
         public KiraSozlesmeService() : this(new KiraSozlesmeRepository()) { }
 
@@ -21,6 +25,11 @@ namespace Model.Services.TBYS
         {
             if (repository == null) throw new ArgumentNullException("repository");
             this.repository = repository;
+        }
+
+        public KiraSozlesmeService(PortalLogContext context) : this(new KiraSozlesmeRepository(context))
+        {
+            this.context = context;
         }
 
         public KiraSozlesme GetById(int id, PortalLogContext context)
@@ -34,6 +43,15 @@ namespace Model.Services.TBYS
         }
         public int Save(KiraSozlesme item)
         {
+            if (context != null)
+            {
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    int id = Save(item, transaction);
+                    transaction.Complete();
+                    return id;
+                }
+            }
             if (item == null) throw new ArgumentNullException("item");
             item.OlusturmaTarihi = DateTime.Now;
             item.Olusturan = UtilityHelper.GetCurrentUserName();
@@ -41,8 +59,28 @@ namespace Model.Services.TBYS
             if (item.Id > 0 && ProjeConstants.TBYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRASOZLESME);
             return item.Id;
         }
+
+        public int Save(KiraSozlesme item, SqlTransactionContext transaction)
+        {
+            if (item == null) throw new ArgumentNullException("item");
+            item.OlusturmaTarihi = DateTime.Now;
+            item.Olusturan = UtilityHelper.GetCurrentUserName();
+            item.Id = repository.Insert(item, transaction, context);
+            if (item.Id > 0)
+                RecordAudit("INSERT", item.Id, null, repository.SelectById(item.Id, transaction, context), transaction);
+            return item.Id;
+        }
         public bool Update(KiraSozlesme item)
         {
+            if (context != null)
+            {
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool updated = Update(item, transaction);
+                    if (updated) transaction.Complete();
+                    return updated;
+                }
+            }
             if (item == null) return false;
             KiraSozlesme old = GetById(item.Id);
             bool ok = false;
@@ -55,14 +93,66 @@ namespace Model.Services.TBYS
             if (ok && ProjeConstants.TBYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRASOZLESME);
             return ok;
         }
+
+        public bool Update(KiraSozlesme item, SqlTransactionContext transaction)
+        {
+            if (item == null || item.Id == 0) return false;
+            DataTable oldValues = repository.SelectById(item.Id, transaction, context);
+            if (oldValues == null || oldValues.Rows.Count == 0) return false;
+            item.DegistirmeTarihi = DateTime.Now;
+            item.Degistiren = UtilityHelper.GetCurrentUserName();
+            bool updated = repository.Update(item, transaction, context);
+            if (updated)
+                RecordAudit("UPDATE", item.Id, oldValues, repository.SelectById(item.Id, transaction, context), transaction);
+            return updated;
+        }
         public bool Delete(KiraSozlesme item)
         {
+            if (context != null)
+            {
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool deleted = Delete(item, transaction);
+                    if (deleted) transaction.Complete();
+                    return deleted;
+                }
+            }
             if (item == null || item.Id == 0) return false;
             KiraSozlesme old = GetById(item.Id);
             if (old == null) return false;
             bool ok = repository.Delete(item.Id);
             if (ok && ProjeConstants.TBYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRASOZLESME);
             return ok;
+        }
+
+        public bool Delete(KiraSozlesme item, SqlTransactionContext transaction)
+        {
+            if (item == null || item.Id == 0) return false;
+            DataTable oldValues = repository.SelectById(item.Id, transaction, context);
+            if (oldValues == null || oldValues.Rows.Count == 0) return false;
+            bool deleted = repository.Delete(item.Id, transaction, context);
+            if (deleted) RecordAudit("DELETE", item.Id, oldValues, null, transaction);
+            return deleted;
+        }
+
+        private void RecordAudit(string operation, int id, DataTable oldValues, DataTable current, SqlTransactionContext transaction)
+        {
+            if (!PortalLogSettings.IsEnabled(context)) return;
+            PortalLogRepository log = new PortalLogRepository();
+            int auditId = log.RecordAudit(context, operation, "KiraSozlesme", id.ToString(CultureInfo.InvariantCulture), transaction);
+            string[] fields = { "KiraciId", "SozBasTar", "SozBitTar", "KiraBedeli", "OdemeSekli", "TaksitSayisi", "TeminatTutari", "Aktif", "SozlesmeDurumu", "DosyaNo" };
+            foreach (string field in fields)
+            {
+                string oldValue = AuditValue(oldValues, field);
+                string newValue = AuditValue(current, field);
+                if (oldValue != newValue) log.RecordAuditChange(auditId, field, oldValue, newValue, transaction);
+            }
+        }
+
+        private static string AuditValue(DataTable table, string field)
+        {
+            if (table == null || table.Rows.Count == 0 || !table.Columns.Contains(field) || table.Rows[0][field] == DBNull.Value) return null;
+            return Convert.ToString(table.Rows[0][field], CultureInfo.InvariantCulture);
         }
         public bool UpdateByKiraciId(int bolgeId, int kiraciId) { return repository.UpdateByKiraciId(bolgeId, kiraciId); }
         public bool UpdateActiveStatus(KiraSozlesme item, string durum, string degistirmeTar, bool aktif)

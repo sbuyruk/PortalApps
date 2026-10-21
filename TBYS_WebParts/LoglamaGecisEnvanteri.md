@@ -1,5 +1,13 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
+## Güncel parça: ana kira sözleşmesi CRUD transaction altyapısı
+
+Dal: `codex/tbys-main-lease-workflow`. Başlangıç commit'i: `53cc3a25` (PR #464 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. Bu parça ana kira ekranının tüm çok adımlı akışını henüz bağlamlı servise taşımıyor; sonraki parçalarda ekran çağrıları ve ödeme planı zinciri ayrıca ele alınacak.
+
+`KiraSozlesmeRepository` transaction-aware INSERT/UPDATE/DELETE overload'ları kullanıma açıldı. `KiraSozlesmeService(PortalLogContext)` ile bağlamlı çağrılar kendi `SqlTransactionContext` işlemini açıyor; Save/Update/Delete transaction overload'ları bütün veri erişimini aynı transaction'a iletiyor. Bağlamlı CRUD'ta eski/yeni satır transaction içinden okunuyor ve audit aynı transaction'a yazılıyor. Audit ayrıntıları yalnızca KiraciId, tarih aralığı, kira bedeli, ödeme şekli, taksit sayısı, teminat tutarı, aktiflik, sözleşme durumu ve dosya numarası alanlarıyla sınırlı; kefil kimliği/adresi, serbest açıklama ve sözleşme dosyası gibi kişisel veya serbest metin alanları yazılmıyor.
+
+Bağlamsız eski çağrılar ve eski OlayKayit davranışı korunuyor. Bağlamlı servis çağrılarında logging kapalı olsa da iş transaction'ı korunuyor; audit üretimi ayara bağlı. Üretilmiş ASCX dosyaları değişmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve `git diff --check` yapıldı. Build ve TEST kullanıcıya aittir.
+
 ## Güncel parça: sözleşme taşınmaz/bölüm bağlantıları ve kiracı seçimi
 
 Dal: `codex/tbys-contract-property-audit`. Başlangıç commit'i: `c3d05ca87a8dff2b59154429bf8e89c659c0065d`. Kod değişikliğinden önce yerel master temizdi ve GitHub master ile aynı commit'teydi. Önceki talep/yakın/taahhüt parçası PR #463 ile birleştirildi. Kullanıcı toplu test yapacağını bildirmişti; bu parçanın çalışma zamanı doğrulaması henüz yapılmadı.
