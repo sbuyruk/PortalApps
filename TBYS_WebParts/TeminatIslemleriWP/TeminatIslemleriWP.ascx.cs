@@ -636,7 +636,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                         odeme = new Model.Services.TBYS.OdemeService().GetById(teminatIslem.OdemeId);
                         if (odeme != null)
                         {
-                            bool odemeSilindiMi = new Model.Services.TBYS.OdemeService().Delete(odeme);
+                            bool odemeSilindiMi = new Model.Services.TBYS.OdemeService(LoggingContext).Delete(odeme);
                         }
 
                     }
