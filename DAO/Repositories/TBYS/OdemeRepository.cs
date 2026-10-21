@@ -173,6 +173,15 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@BitTarih", bitTarih);
             return db.SelectFromDb(query, "");
         }
+        public DataTable SelectByKiraciVadeBasTarVadeBitTar(int sozlesmeId, int kiraciId, DateTime basTarih, DateTime bitTarih, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"SELECT * FROM Odeme_Table WITH (UPDLOCK, HOLDLOCK) WHERE KiraciId=@KiraciId AND SozlesmeId=@SozlesmeId AND OdemeTarihi BETWEEN @BasTarih AND @BitTarih ORDER BY OdemeTarihi");
+            query.AddParameter("@KiraciId", kiraciId);
+            query.AddParameter("@SozlesmeId", sozlesmeId);
+            query.AddParameter("@BasTarih", basTarih);
+            query.AddParameter("@BitTarih", bitTarih);
+            return db.SelectFromDb(query, transaction, context);
+        }
 
         public DataTable SelectSumBySozlesmeIdOdemePlaniId(int sozlesmeId, int odemePlaniId)
         {
