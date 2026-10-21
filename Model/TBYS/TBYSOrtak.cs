@@ -46,8 +46,7 @@ namespace Model.Ortak
             if (kiraSozlesme == null || context == null) return false;
             if (kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK))
                 return BakiyeBorcHesaplaGunlukGecikmeZammi(kiraSozlesme, context);
-            BakiyeBorcHesaplaAylik(kiraSozlesme);
-            return true;
+            return BakiyeBorcHesaplaAylik(kiraSozlesme, context);
         }
 
         /// <summary>
@@ -194,6 +193,66 @@ namespace Model.Ortak
             }
 
         }
+        public static bool BakiyeBorcHesaplaAylik(KiraSozlesme kiraSozlesme, PortalLogContext context)
+        {
+            if (kiraSozlesme == null || context == null) return false;
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                bool updated = BakiyeBorcHesaplaAylik(kiraSozlesme, context, transaction);
+                if (updated) transaction.Complete();
+                return updated;
+            }
+        }
+
+        private static bool BakiyeBorcHesaplaAylik(KiraSozlesme kiraSozlesme, PortalLogContext context, SqlTransactionContext transaction)
+        {
+            decimal faizToplami = 0m;
+            decimal faizOrani = ProjeConstants.YASAL_FAIZ_ORANI;
+            decimal anaParaToplami = 0m;
+            decimal faizliBakiye = 0m;
+            decimal devirAnaPara = 0m;
+            decimal devirFaiz = 0m;
+            Model.Services.TBYS.OdemePlaniService planService = new Model.Services.TBYS.OdemePlaniService(context);
+            List<OdemePlani> planlar = planService.GetBySozlesmeId(kiraSozlesme.Id, transaction);
+            if (planlar.Count > 0)
+            {
+                devirAnaPara = planlar[0].AnaPara;
+                devirFaiz = planlar[0].FaizTutari;
+            }
+
+            foreach (OdemePlani odemePlani in planlar)
+            {
+                if (odemePlani.Sira == 0 || odemePlani.VadeBasTar > kiraSozlesme.SozBitTar) continue;
+                YasalFaiz yasalFaiz = new YasalFaizService(context).GetByYearMonth(odemePlani.VadeBasTar.Year, odemePlani.VadeBasTar.Month, transaction);
+                if (yasalFaiz == null) continue;
+                faizOrani = yasalFaiz.FaizOrani <= 0 ? faizOrani : yasalFaiz.FaizOrani;
+                decimal borc = -odemePlani.KiraBedeli;
+                decimal anaPara = odemePlani.OdenenTutar + borc;
+                anaParaToplami += anaPara + devirAnaPara;
+                devirAnaPara = 0;
+                decimal faizTutari = Math.Round(anaParaToplami * faizOrani / 100);
+                if (kiraSozlesme.SozBitTar.AddMonths(-1) < odemePlani.VadeBasTar) faizTutari = 0;
+                faizTutari = faizTutari > 0 ? 0 : faizTutari;
+                faizToplami += faizTutari + devirFaiz;
+                devirFaiz = 0;
+                faizliBakiye = anaParaToplami + faizToplami;
+                if (anaParaToplami > 0 && faizToplami < 0)
+                {
+                    decimal fark = anaParaToplami + faizToplami;
+                    if (fark > 0) { anaParaToplami = Math.Max(0, fark); faizToplami = 0; }
+                    else if (fark < 0) { faizToplami = Math.Min(0, fark); anaParaToplami = 0; }
+                    else { anaParaToplami = 0; faizToplami = 0; }
+                }
+                odemePlani.OdenenTutar = new Model.Services.TBYS.OdemeService(context).GetSumBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlani.Id, transaction);
+                odemePlani.FaizliBakiye = faizliBakiye;
+                odemePlani.FaizOrani = faizOrani;
+                odemePlani.FaizTutari = faizTutari;
+                odemePlani.AnaPara = anaParaToplami;
+                if (!planService.Update(odemePlani, transaction)) return false;
+            }
+            return true;
+        }
+
         public static void AktifSozleslemelerinBakiyeBorcunuHesapla()
         {
             DateTime saat = DateTime.Now;
