@@ -1,5 +1,6 @@
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
+using DAO.Ortak;
 using Model.IKYS;
 using Model.Services.TBYS;
 using Model.TBYS;
@@ -648,6 +649,49 @@ namespace Model.Ortak
             kiraSozlesme.IadeTeminatTutari = toplamIade;
             kiraSozlesme.KalanTeminatTutari = toplamOdeme - toplamIade;
             new Model.Services.TBYS.KiraSozlesmeService().Update(kiraSozlesme);
+        }
+
+        public static bool TeminatIslemleriniHesaplaVeKaydet(KiraSozlesme kiraSozlesme, PortalLogContext context)
+        {
+            if (kiraSozlesme == null || context == null) return false;
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                bool updated = TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme, context, transaction);
+                if (updated) transaction.Complete();
+                return updated;
+            }
+        }
+
+        private static bool TeminatIslemleriniHesaplaVeKaydet(KiraSozlesme kiraSozlesme, PortalLogContext context, SqlTransactionContext transaction)
+        {
+            decimal toplamOdeme = 0m;
+            decimal toplamIade = 0m;
+            DataTable dataTable = new Model.Services.TBYS.TeminatIslemService(context).GetSumByKiraciIdGroupByType(kiraSozlesme.KiraciId, transaction);
+            if (dataTable != null)
+            {
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    decimal islemToplami = row["IslemToplami"].ReturnZeroIfNull().ConvertToDecimal();
+                    switch (row["IslemTipi"].ToString())
+                    {
+                        case ProjeConstants.TEMINAT_ODEMESI:
+                        case ProjeConstants.TEMINAT_GECICITEMINATODEMESI:
+                            toplamOdeme += islemToplami;
+                            break;
+                        case ProjeConstants.TEMINAT_KIRACIYAIADE:
+                        case ProjeConstants.TEMINAT_KIRAYAMAHSUP:
+                        case ProjeConstants.TEMINAT_HASARAMAHSUP:
+                        case ProjeConstants.TEMINAT_AIDATAMAHSUP:
+                        case ProjeConstants.TEMINAT_VAKFABAGIS:
+                            toplamIade += islemToplami;
+                            break;
+                    }
+                }
+            }
+            kiraSozlesme.OdenenTeminatTutari = toplamOdeme;
+            kiraSozlesme.IadeTeminatTutari = toplamIade;
+            kiraSozlesme.KalanTeminatTutari = toplamOdeme - toplamIade;
+            return new Model.Services.TBYS.KiraSozlesmeService(context).Update(kiraSozlesme, transaction);
         }
         #endregion TBYS
 
