@@ -141,7 +141,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                 if (kiraci==null)
                 {
                     kiraci = new Kiraci();
-                    kiraci = new Model.Services.TBYS.KiraciService().GetMin();
+                    kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetMin();
                 }
                 
                 if (kiraci != null)
@@ -239,7 +239,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                     decimal sonFaizliBakiye = 0;
                     decimal sonFaizTutari = 0;
                     kiraSozlesmeListItem.FarkVarMi = false;
-                    KiraSozlesme oncekiKiraSozlesmesi = new Model.Services.TBYS.KiraSozlesmeService().GetPreviousByTenant(kiraSozlesme.KiraciId, kiraSozlesme.SozBasTar);
+                    KiraSozlesme oncekiKiraSozlesmesi = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetPreviousByTenant(kiraSozlesme.KiraciId, kiraSozlesme.SozBasTar);
                     if (oncekiKiraSozlesmesi != null)
                     {
                         OdemePlani odemePlaniDao = new OdemePlani();
@@ -273,7 +273,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
         private void OdemeleriHesaplaOdemePlaniniGuncelle(int kiraciId)
         {
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-            List<KiraSozlesme> sozlesmeListesi = new Model.Services.TBYS.KiraSozlesmeService().GetAllByKiraciId(kiraciId);
+            List<KiraSozlesme> sozlesmeListesi = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetAllByKiraciId(kiraciId);
             sozlesmeListesi = sozlesmeListesi.OrderBy(x => x.SozBasTar).ToList();
             foreach (var kiraSozlesme in sozlesmeListesi)
             {
@@ -368,7 +368,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
             if (kiraci != null)//bu kiraci varsa
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(kiraci.Id);
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetActiveByKiraciId(kiraci.Id);
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
                     OdemePlani odemePlani = new OdemePlani();
@@ -384,13 +384,13 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
         private void OdemePlaniGoruntule(KiraSozlesme kiraSozlesme)
         {
             Kiraci kiraci = new Kiraci();
-            kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
+            kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(kiraSozlesme.KiraciId);
             TitleLbl.Text = " Kiracı : " + kiraci.Adi + " " + kiraci.Soyadi;
 
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
 
             OdemePlani odemePlaniDao = new OdemePlani();
-            List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
+            List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeId(kiraSozlesme.Id);
             if (list.Count > 0)
             {
                 DevirLbl.Text = "Devir Anapara : " + kiraSozlesme.DevirAnaPara.ToString("N", culturInfo) + "      "
