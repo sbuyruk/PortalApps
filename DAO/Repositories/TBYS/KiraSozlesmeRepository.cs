@@ -72,6 +72,20 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@Id", id);
             return db.Update2Db(query);
         }
+        public bool UpdateActiveStatus(int id, bool aktif, string durum, string durumDegistirmeTar, string degistiren, DateTime degistirmeTarihi, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"UPDATE KiraSozlesme_Table
+                SET Aktif=@Aktif, SozlesmeDurumu=@Durum, DurumDegismeTar=@DurumDegismeTar,
+                    Degistiren=@Degistiren, DegistirmeTarihi=@DegistirmeTarihi
+                WHERE Aktif=1 AND Id=@Id");
+            query.AddParameter("@Aktif", aktif);
+            query.AddParameter("@Durum", durum);
+            query.AddParameter("@DurumDegismeTar", durumDegistirmeTar);
+            query.AddParameter("@Degistiren", degistiren);
+            query.AddParameter("@DegistirmeTarihi", degistirmeTarihi);
+            query.AddParameter("@Id", id);
+            return db.Update2Db(query, transaction, context);
+        }
         public DataTable SelectListReturnDataTable(int kiraciId, int aktif, int bolgeId)
         {
             string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND S.BolgeId={0} ", bolgeId);

@@ -450,7 +450,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                     kiraSozlesme.DevirAnaPara = oncekiOdemePlani.AnaPara;
                     kiraSozlesme.DevirFaizliBakiye = oncekiOdemePlani.FaizliBakiye;
                     kiraSozlesme.DevirFaizTutari = kiraSozlesme.DevirFaizliBakiye - kiraSozlesme.DevirAnaPara;
-                    bool devirAlanlariGuncellendi= new Model.Services.TBYS.KiraSozlesmeService().Update(kiraSozlesme);
+                    bool devirAlanlariGuncellendi= new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Update(kiraSozlesme);
                     if (devirAlanlariGuncellendi)
                     {
                         //Ödeme Planında devir satırını güncelle 0ncı satır
