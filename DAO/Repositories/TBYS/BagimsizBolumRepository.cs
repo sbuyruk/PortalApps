@@ -49,5 +49,12 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@TasinmazId", tasinmazId);
             return db.SelectFromDb(query, transaction, context);
         }
+
+        public DataTable SelectAllByTasinmazId(int tasinmazId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM BagimsizBolum_Table WITH (UPDLOCK, HOLDLOCK) WHERE TasinmazId=@TasinmazId ORDER BY Id");
+            query.AddParameter("@TasinmazId", tasinmazId);
+            return db.SelectFromDb(query, transaction, context);
+        }
     }
 }

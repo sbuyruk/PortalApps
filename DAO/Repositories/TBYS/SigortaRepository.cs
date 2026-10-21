@@ -203,5 +203,22 @@ namespace DAO.Repositories.TBYS
         {
             return db.Update2Db(queryBuilder.BuildUpdate(entity, "Sigorta_Table"), transaction, context);
         }
+
+        public bool MoveToTasinmaz(int id, int sourceId, int targetId, object bolumId,
+            DateTime changedAt, string changedBy, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                UPDATE Sigorta_Table SET TasinmazId=@TargetId, BolumId=@BolumId,
+                    DegistirmeTarihi=@ChangedAt, Degistiren=@ChangedBy
+                WHERE Id=@Id AND TasinmazId=@SourceId;
+                IF @@ROWCOUNT <> 1 THROW 50001, N'İlişkili kayıt taşınamadı.', 1;");
+            query.AddParameter("@Id", id);
+            query.AddParameter("@SourceId", sourceId);
+            query.AddParameter("@TargetId", targetId);
+            query.AddParameter("@BolumId", bolumId);
+            query.AddParameter("@ChangedAt", changedAt);
+            query.AddParameter("@ChangedBy", changedBy);
+            return db.Update2Db(query, transaction, context);
+        }
     }
 }

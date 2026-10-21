@@ -1130,7 +1130,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
                 KopyalaNowBtn.Visible = true;
                 SBIDeleteBtn.Visible = false;
-                MesajLbl.Text = "Taşınmaza bağlı Bağışçı, Kira Sözleşmesi, Ödeme Planı, Sigorta ve Onarım işlemleri gibi bilgiler aktarılacak.";
+                MesajLbl.Text = "Taşınmaz ve bağımsız bölümleri kopyalanacak, bağış kaydı oluşturulacak. Son sigorta, onarımlar ve sözleşme bağlantıları yeni taşınmaza taşınacak.";
                 MesajLbl1.Text = "Bu taşınmazdan kopyalanarak yeni bir taşınmaz yaratılmasını onaylıyor musunuz?";
                 var openPopup = "OpenSBIModal();";
                 UtilityHelper.ScriptCalistir(openPopup);
@@ -1144,98 +1144,27 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         }
         /// <summary>
         /// Envanterden Çikmis bir tasinmazi yeni bir tasinmaz olarak kopyalar
-        /// yeni kopyalanarak yaratilan tasinmaza önceki tasinmazdan gelen bagisçi, sigorta ve onarim bilgilrini tasir
-        /// envanterden çikmis tasinmazin resimlerini yeni yaratilan tasinmaza verir
-        /// Eklendi 10.06.2022 KiraSozlesmesi aktif olan tasinmazlari da yeni kopyalanan tasinmaza aktarir
+        /// Bağımsız bölümleri ve bağış kaydını kopyalar; son sigorta, onarım ve sözleşme bağlantılarını taşır.
+        /// İş verisi ve audit tek transaction içinde tamamlanır; resim referansları korunur.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void KopyalaNowBtn_Click(object sender, EventArgs e)
         {
-            //Önce onay popup aç
-            //onay evetse envanterdeMi=1 yap ve Tasinmaz_Table'a ayri bir kayit olarak insert et,
-            //Resimleri Kopyalasin mi?? bagimsiz bolumleri kopytalasin mi? sigortalari kopyalasin mi?
-            Tasinmaz envanterdencikmisTasinmaz = new Tasinmaz();
-            envanterdencikmisTasinmaz = new TasinmazService().SelectEnvanterdenCikanTasinmaz(TasinmazIdQS.ConvertToInt());
-            ExceptionHelper eh = new ExceptionHelper();
-            UtilityHelper.CopyAndCreateImageFromSPLibrary("100TapuFoto.jpg", "100test.jpg", ProjeConstants.RESIMLER_TASINMAZ, eh);
-
-            if (envanterdencikmisTasinmaz != null)
+            try
             {
-                //Tasinmaz yarat
-                //envanterdemi=0, ve env çikis bilgilerini yaz
-                //tasinmazi kaydet
-                int envanterdencikmisTasinmazId = envanterdencikmisTasinmaz.Id;
-                Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = envanterdencikmisTasinmaz;
-                tasinmaz.EnvanterdeMi = ProjeConstants.TASINMAZ_ENVANTERDE.ConvertToInt();//true;
-                tasinmaz.EnvanterdenCikmaSebebi = string.Empty;
-                tasinmaz.EnvanterdenCikmaBedeli = 0;
-                tasinmaz.EnvanterdenCikmaTarihi = string.Empty.ConvertToDatetime();
-                int tasinmazId = new Model.Services.TBYS.TasinmazService().Save(tasinmaz);
-
-                #region Bagis
-                //Bu yeni Id'li tasinmaz için Bagis Tablosunda yeni Bagis nesnesi yarat
-                //BagisciId sini gir
-                //Bagis nesnesini kaydet
-                Bagis eskibagis = new Bagis();
-                eskibagis = new BagisService().GetByTasinmazId(envanterdencikmisTasinmazId);
-                if (eskibagis != null)
-                {
-                    Bagis bagis = new Bagis();
-                    bagis.BagisciId = tasinmaz.BagisciId;
-                    bagis.TasinmazId = tasinmazId;
-                    bagis.BagisTarihi = eskibagis.BagisTarihi;
-                    bagis.BagisYili = eskibagis.BagisYili;
-                    bagis.Envanterde = ProjeConstants.ENVANTERDE;//true;
-                    bagis.Degistiren = CurrentUserName;
-                    new Model.Services.TBYS.BagisService().Save(bagis);
-                }
-                #endregion
-
-                #region Sigorta
-                //Sigorta verilerini de aktar
-                Sigorta sigorta = new Sigorta();
-                sigorta = new Model.Services.TBYS.SigortaService().GetLatestByTasinmazId(envanterdencikmisTasinmazId);
-                if (sigorta != null)
-                {
-                    sigorta.TasinmazId = tasinmazId;
-                    new Model.Services.TBYS.SigortaService().Update(sigorta);
-                }
-                #endregion
-                #region Onarim
-                //Onarim verilerini de aktar
-                List<Onarim> onarimList = new OnarimService().GetByTasinmazIdWithAddress(envanterdencikmisTasinmazId);
-                foreach (Onarim item in onarimList)
-                {
-                    if (item != null)
-                    {
-                        item.TasinmazId = tasinmazId;
-                        new Model.Services.TBYS.OnarimService().Update(item);
-                    }
-                }
-                #endregion
-                #region Kira Islemleri
-                //SozlesmeTasinmaz_Table'da KiraSozlesmesi Aktif olan ve TasinmazId=EnvanterdenCikanTasinmazId olan var mi
-                //Varsa SozlesmeTasinmaz_Table'da tasinmaz Id'sini yeni tasinmazId ile degistir.
-                SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-            List<SozlesmeTasinmaz> stList = new Model.Services.TBYS.SozlesmeTasinmazService().GetByTasinmazId(envanterdencikmisTasinmazId);
-                foreach (var item in stList)
-                {
-                    item.TasinmazId = tasinmazId;
-                    new Model.Services.TBYS.SozlesmeTasinmazService().Update(item);
-                }
-                #endregion
+                int targetId = new TasinmazService(LoggingContext).CopyOutOfInventory(TasinmazIdQS.ConvertToInt());
                 string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 int queryIndex = newUrl.IndexOf("?");
-                if (queryIndex > 0)
-                    newUrl = newUrl.Substring(0, queryIndex);
-                newUrl = newUrl + "?DestinationApp=TD&TasinmazId=" + tasinmaz.Id;
-
+                if (queryIndex > 0) newUrl = newUrl.Substring(0, queryIndex);
+                newUrl += "?DestinationApp=TD&TasinmazId=" + targetId;
                 Page.Response.Redirect(newUrl, true);
             }
-            else
-                MessageHelper.PublishMessage("Taşınmaz Kaydı başarısız oldu.-TS001", ProjeConstants.MESAJ_HATA);
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazGirisiWP.KopyalaNowBtn_Click", error);
+            }
         }
         protected void AltBolumChk_CheckedChanged(object sender, EventArgs e)
         {

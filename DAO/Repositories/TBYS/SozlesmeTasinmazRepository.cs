@@ -164,5 +164,36 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@TasinmazId", tasinmazId);
             return db.SelectFromDb(query, transaction, context);
         }
+
+        public DataTable SelectAllByTasinmazId(int tasinmazId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM SozlesmeTasinmaz_Table WITH (UPDLOCK, HOLDLOCK) WHERE TasinmazId=@TasinmazId ORDER BY Id");
+            query.AddParameter("@TasinmazId", tasinmazId);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM SozlesmeTasinmaz_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
+        public bool MoveToTasinmaz(int id, int sourceId, int targetId, object bolumId,
+            DateTime changedAt, string changedBy, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                UPDATE SozlesmeTasinmaz_Table SET TasinmazId=@TargetId, BolumId=@BolumId,
+                    DegistirmeTarihi=@ChangedAt, Degistiren=@ChangedBy
+                WHERE Id=@Id AND TasinmazId=@SourceId;
+                IF @@ROWCOUNT <> 1 THROW 50001, N'İlişkili kayıt taşınamadı.', 1;");
+            query.AddParameter("@Id", id);
+            query.AddParameter("@SourceId", sourceId);
+            query.AddParameter("@TargetId", targetId);
+            query.AddParameter("@BolumId", bolumId);
+            query.AddParameter("@ChangedAt", changedAt);
+            query.AddParameter("@ChangedBy", changedBy);
+            return db.Update2Db(query, transaction, context);
+        }
     }
 }
