@@ -105,7 +105,7 @@ namespace DAO.Repositories.TBYS
             SqlQuery q = new SqlQuery("DELETE OdemeAyrinti_Table WHERE OdemeId=@OdemeId AND OdemePlaniId=@OdemePlaniId");
             q.AddParameter("@OdemeId", odemeId);
             q.AddParameter("@OdemePlaniId", planId);
-            return db.DeleteFromDb(q, "", transaction, context);
+            return db.DeleteFromDb(q, transaction, context);
         }
 
         public DataTable SelectLastAnaPara(int planId)
@@ -159,7 +159,7 @@ namespace DAO.Repositories.TBYS
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context) { SqlQuery q = new SqlQuery("SELECT * FROM OdemeAyrinti_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, transaction, context); }
         public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context) { return db.Insert(queryBuilder.BuildInsert(entity, "OdemeAyrinti_Table"), transaction, context); }
         public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context) { return db.Update2Db(queryBuilder.BuildUpdate(entity, "OdemeAyrinti_Table"), transaction, context); }
-        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context) { return db.DeleteFromDb(queryBuilder.BuildDelete("OdemeAyrinti_Table", id), "", transaction, context); }
-        public bool DeleteBySozlesmeId(int id, SqlTransactionContext transaction, PortalLogContext context) { SqlQuery q = new SqlQuery("DELETE OdemeAyrinti_Table WHERE SozlesmeId=@SozlesmeId"); q.AddParameter("@SozlesmeId", id); return db.DeleteFromDb(q, "", transaction, context); }
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context) { return db.DeleteFromDb(queryBuilder.BuildDelete("OdemeAyrinti_Table", id), transaction, context); }
+        public bool DeleteBySozlesmeId(int id, SqlTransactionContext transaction, PortalLogContext context) { SqlQuery q = new SqlQuery("DELETE OdemeAyrinti_Table WHERE SozlesmeId=@SozlesmeId"); q.AddParameter("@SozlesmeId", id); return db.DeleteFromDb(q, transaction, context); }
     }
 }

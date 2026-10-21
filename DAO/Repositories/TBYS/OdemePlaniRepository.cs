@@ -139,14 +139,14 @@ namespace DAO.Repositories.TBYS
 
         public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
         {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("OdemePlani_Table", id), "", transaction, context);
+            return db.DeleteFromDb(queryBuilder.BuildDelete("OdemePlani_Table", id), transaction, context);
         }
 
         public bool DeleteBySozlesmeId(int id, SqlTransactionContext transaction, PortalLogContext context)
         {
             SqlQuery q = new SqlQuery("DELETE OdemePlani_Table WHERE SozlesmeId=@SozlesmeId");
             q.AddParameter("@SozlesmeId", id);
-            return db.DeleteFromDb(q, "", transaction, context);
+            return db.DeleteFromDb(q, transaction, context);
         }
     }
 }

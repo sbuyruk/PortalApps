@@ -434,7 +434,7 @@ namespace DAO.Repositories.TBYS
 
         public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
         {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("KiraSozlesme_Table", id), "", transaction, context);
+            return db.DeleteFromDb(queryBuilder.BuildDelete("KiraSozlesme_Table", id), transaction, context);
         }
 
         public bool UpdateTenant(int id, int tenantId, DateTime changedAt, string changedBy,
