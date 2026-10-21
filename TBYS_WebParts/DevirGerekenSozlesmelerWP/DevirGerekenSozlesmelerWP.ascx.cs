@@ -79,7 +79,7 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
             List<DevirGerekenSozlesmeItem> itemListesi = new List<DevirGerekenSozlesmeItem>();
 
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-            System.Data.DataTable dt = new Model.Services.TBYS.KiraSozlesmeService().GetTransferRequiredActiveContracts();
+            System.Data.DataTable dt = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetTransferRequiredActiveContracts();
 
             if (dt != null)
             {
@@ -179,7 +179,7 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
             {
                 UtilityHelper.ScriptCalistir("DevirAlModalKapat();");
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(HiddenSecilenId.Value.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(HiddenSecilenId.Value.ConvertToInt());
                 if (kiraSozlesme == null)
                 {
                     MessageHelper.PublishMessage("Sözlesme bulunamadi!", ProjeConstants.MESAJ_HATA);

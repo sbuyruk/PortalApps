@@ -540,7 +540,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
             {
                 //kiraSozlesme tablosundaki kayıtları isme göre sorgulasın
                 KiraSozlesme kirasozlesmeDao = new KiraSozlesme();
-                List<KiraSozlesme> sozlesmeList = new Model.Services.TBYS.KiraSozlesmeService().GetByKiraciAdi(adi);
+                List<KiraSozlesme> sozlesmeList = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetByKiraciAdi(adi);
                 if (sozlesmeList.Count > 1)
                 {
                     varMi = true;

@@ -153,7 +153,7 @@ $('#CustomDataTable').on( 'draw.dt', function () {
         {
 
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            DataTable dataTable = new Model.Services.TBYS.KiraSozlesmeService().GetListReturnDataTable(0, ProjeConstants.KIRASOZLESME_AKTIF_INT,ProjeConstants.BOLGE_HEPSI_INT);
+            DataTable dataTable = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetListReturnDataTable(0, ProjeConstants.KIRASOZLESME_AKTIF_INT,ProjeConstants.BOLGE_HEPSI_INT);
             string tempIli = string.Empty;
             string tempIlcesi = string.Empty;
             string tempAdres = string.Empty;
@@ -260,7 +260,7 @@ $('#CustomDataTable').on( 'draw.dt', function () {
                     {
                         sira++;
                         KiraSozlesme ks = new KiraSozlesme();
-                        ks = new Model.Services.TBYS.KiraSozlesmeService().GetById(kiraSozlesmeId);
+                        ks = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(kiraSozlesmeId);
                         if (ks != null)
                         {
                             if (ks.DosyaNo != sira)

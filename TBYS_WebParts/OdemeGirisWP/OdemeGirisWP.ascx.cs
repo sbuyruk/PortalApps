@@ -430,7 +430,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             int tempSozlesmeId1 = 0;
             sozlesmeIdDDL.Items.Clear();
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-            List<KiraSozlesme> kiraSozlesmeList = new Model.Services.TBYS.KiraSozlesmeService().GetAllByKiraciId(kiraciId);
+            List<KiraSozlesme> kiraSozlesmeList = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetAllByKiraciId(kiraciId);
             foreach (var item in kiraSozlesmeList)
             {
                 string text = item.SozBasTar.ConvertToDatetimeEmptyIfNull() + " - " + item.SozBitTar.ConvertToDatetimeEmptyIfNull();
@@ -473,7 +473,7 @@ namespace TBYS_WebParts.OdemeGirisWP
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             int sozlesmeId = SozlesmeDDL.SelectedItem.Value.ConvertToInt();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(sozlesmeId);
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(sozlesmeId);
             if (kiraSozlesme != null)
             {
                 string sozlesmeStr = SozlesmeDDL.SelectedItem.Text;
@@ -498,7 +498,7 @@ namespace TBYS_WebParts.OdemeGirisWP
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             int sozlesmeId = SozlesmeDDL.SelectedItem.Value.ConvertToInt();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(sozlesmeId);
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(sozlesmeId);
             if (kiraSozlesme != null)
             {
                 string sozlesmeStr = SozlesmeDDL.SelectedItem.Text;
@@ -523,7 +523,7 @@ namespace TBYS_WebParts.OdemeGirisWP
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             int sozlesmeId = SozlesmeDDL.SelectedItem.Value.ConvertToInt();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(sozlesmeId);
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(sozlesmeId);
             if (kiraSozlesme != null)
             {
                 ModalLbl.Text = "Ödeme Silinecek";
@@ -551,7 +551,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             SecilenAyQS = ay;
             SecilenYilQS = yil;
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(SozlesmeDDL.SelectedItem.Value.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(SozlesmeDDL.SelectedItem.Value.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 DateTime odemeTarihi = UtilityHelper.TariheSaatEkle(OdemeTarihiTxt.Text.ConvertToDatetime(),
@@ -721,14 +721,14 @@ namespace TBYS_WebParts.OdemeGirisWP
         protected void SozlesmeBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(KiraciIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetActiveByKiraciId(KiraciIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 RedirectToPage(ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + kiraSozlesme.Id + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS);
             }
             else
             {
-                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetCompletedByKiraciId(KiraciIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetCompletedByKiraciId(KiraciIdQS.ConvertToInt());
 
                 if (kiraSozlesme == null)
                     MessageHelper.PublishMessage("Kiracıya ait bir Kira Sözleşmesi bulunamadı.", ProjeConstants.MESAJ_HATA);
@@ -737,7 +737,7 @@ namespace TBYS_WebParts.OdemeGirisWP
         protected void OdemePlaniBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(KiraciIdQS.ConvertToInt());
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetActiveByKiraciId(KiraciIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 if (kiraSozlesme != null)
@@ -786,7 +786,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             if (odemeTarihi > ProjeConstants.REFERANS_TARIHI)
             {
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetByKiraciIdAndDate(KiraciIdQS.ConvertToInt(), odemeTarihi);
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetByKiraciIdAndDate(KiraciIdQS.ConvertToInt(), odemeTarihi);
                 if (kiraSozlesme != null)
                 {
                     UtilityHelper.SetDDLValue(SozlesmeDDL, kiraSozlesme.Id.ToString());

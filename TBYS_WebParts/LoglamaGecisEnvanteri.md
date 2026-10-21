@@ -1,5 +1,11 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
+## Güncel parça: kira sözleşmesi okuma bağlantıları
+
+Dal: `codex/tbys-final-read-wiring`. Başlangıç commit'i: `1141fdfc` (PR #479 sonrası). Sekiz WebPart’ta kira sözleşmesi okumaları `LoggingContext` kullanan `KiraSozlesmeService` kurucularına geçirildi. Listeleme, devir, kiracı eşleştirme, ödeme dosyası, sözleşme sıralama, ödeme girişi, aylık ödeme ve taşınmaz kartı ekranlarının SQL izleri artık ilgili WebPart bağlamını taşıyor.
+
+Üretilmiş ASCX dosyaları değişmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve `git diff --check` yapıldı. Build ve TEST kullanıcıya aittir.
+
 ## Güncel parça: kalan sözleşme bağlantısı ve ekstre yazmaları
 
 Dal: `codex/tbys-property-write-wiring`. Başlangıç commit'i: `2261e05b` (PR #478 sonrası). Bağış güncellemesi, kira ekstresi güncellemesi ve sözleşme-taşınmaz bağlantılarının okuma/yazma çağrıları `LoggingContext` kullanan servis kurucularına geçirildi. Böylece bu dört WebPart’ın ilgili SQL işlemleri teknik iz ve transaction-aware CRUD akışına bağlandı.

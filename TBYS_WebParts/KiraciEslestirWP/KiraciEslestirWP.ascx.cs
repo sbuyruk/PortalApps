@@ -285,11 +285,11 @@ namespace TBYS_WebParts.KiraciEslestirWP
 
                     if (!aktif)
                     {
-                        ks = new Model.Services.TBYS.KiraSozlesmeService().GetCompletedByKiraciId(kiraciId.ConvertToInt());
+                        ks = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetCompletedByKiraciId(kiraciId.ConvertToInt());
                     }
                     else
                     {
-                        ks = new Model.Services.TBYS.KiraSozlesmeService().GetActiveByKiraciId(kiraciId.ConvertToInt());
+                        ks = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetActiveByKiraciId(kiraciId.ConvertToInt());
                     }
 
                     int sonSozlesmeId = ks != null ? ks.Id : sozlesmeId.ConvertToInt();
