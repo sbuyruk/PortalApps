@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="Portal_WebParts.LogIzlemeWP.LogIzlemeWP, $SharePoint.Project.AssemblyFullName$" />
+      <importErrorMessage>$Resources:core,ImportErrorMessage;</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Title" type="string">Log İzleme</property>
+        <property name="Description" type="string">Tarih ve proje filtreleriyle kullanıcı etkinliklerini ve hata kayıtlarını izleyin.</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

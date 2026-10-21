@@ -111,6 +111,27 @@ namespace DAO.Repositories.Ortak
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectMonitorSummary(DateTime fromUtc, DateTime toUtc,
+            string project, string userLogin, string operationId)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT COUNT_BIG(CASE WHEN Kind = 'UserActivity' THEN 1 END) AS ActivityCount,
+                       COUNT_BIG(CASE WHEN Kind = 'Error' THEN 1 END) AS ErrorCount,
+                       COUNT_BIG(DISTINCT CASE WHEN Kind = 'UserActivity' THEN UserLogin END) AS ActiveUserCount,
+                       AVG(CASE WHEN Kind = 'SqlTrace' THEN CAST(DurationMs AS decimal(18,2)) END) AS AverageSqlDurationMs
+                FROM dbo.PortalLog_Table
+                WHERE OccurredUtc >= @FromUtc AND OccurredUtc < @ToUtc
+                  AND (@Project IS NULL OR Project = @Project)
+                  AND (@UserLogin IS NULL OR UserLogin LIKE @UserLogin)
+                  AND (@OperationId IS NULL OR CONVERT(nvarchar(36), OperationId) LIKE @OperationId)");
+            query.AddParameter("@FromUtc", fromUtc);
+            query.AddParameter("@ToUtc", toUtc);
+            query.AddParameter("@Project", NullIfEmpty(project));
+            query.AddParameter("@UserLogin", LikeValue(userLogin));
+            query.AddParameter("@OperationId", LikeValue(operationId));
+            return db.SelectFromDb(query, "");
+        }
+
         private static void AddFilterParameters(SqlQuery query, DateTime? fromUtc, DateTime? toUtc,
             string project, string webPart, string userLogin, string operationId, string kind,
             string operation, string outcome, string errorLevel)

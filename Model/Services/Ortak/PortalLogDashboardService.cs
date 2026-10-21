@@ -60,6 +60,24 @@ namespace Model.Services.Ortak
             return summary;
         }
 
+        public PortalLogMonitorSummary GetMonitorSummary(PortalLogFilter filter)
+        {
+            if (filter == null || !filter.FromUtc.HasValue || !filter.ToUtc.HasValue
+                || filter.ToUtc.Value <= filter.FromUtc.Value)
+                throw new ArgumentException("Geçerli bir tarih aralığı gereklidir.", "filter");
+            DataTable table = repository.SelectMonitorSummary(filter.FromUtc.Value, filter.ToUtc.Value,
+                filter.Project, filter.UserLogin, filter.OperationId);
+            if (table == null || table.Rows.Count == 0) return new PortalLogMonitorSummary();
+            DataRow row = table.Rows[0];
+            return new PortalLogMonitorSummary
+            {
+                ActivityCount = LongValue(row, "ActivityCount"),
+                ErrorCount = LongValue(row, "ErrorCount"),
+                ActiveUserCount = LongValue(row, "ActiveUserCount"),
+                AverageSqlDurationMs = NullableDecimal(row, "AverageSqlDurationMs")
+            };
+        }
+
         private static PortalLogFilter Normalize(PortalLogFilter filter)
         {
             filter = filter ?? new PortalLogFilter();
