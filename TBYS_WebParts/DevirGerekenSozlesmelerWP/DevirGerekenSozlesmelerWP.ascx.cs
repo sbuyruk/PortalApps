@@ -186,7 +186,7 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
                     return;
                 }
 
-                KiraBakiyeDevriOtomatik bakiyeDevri = new KiraBakiyeDevriOtomatik();
+                KiraBakiyeDevriOtomatik bakiyeDevri = new KiraBakiyeDevriOtomatik(LoggingContext);
                 bool islendi = bakiyeDevri.DevirAl(kiraSozlesme, atlaBayrakKontrolu: true);
                 if (islendi)
                 {
@@ -212,7 +212,7 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
             try
             {
                 UtilityHelper.ScriptCalistir("DevirAlModalKapat();");
-                KiraBakiyeDevriOtomatik bakiyeDevri = new KiraBakiyeDevriOtomatik();
+                KiraBakiyeDevriOtomatik bakiyeDevri = new KiraBakiyeDevriOtomatik(LoggingContext);
                 KiraBakiyeDevriSonuc sonuc = bakiyeDevri.TumAktifSozlesmeleriIsle();
 
                 MessageHelper.PublishMessage(

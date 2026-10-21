@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace Model.TBYS
 {
@@ -14,6 +15,24 @@ namespace Model.TBYS
     /// </summary>
     public class KiraBakiyeDevriOtomatik
     {
+        private readonly PortalLogContext context;
+
+        public KiraBakiyeDevriOtomatik() { }
+
+        public KiraBakiyeDevriOtomatik(PortalLogContext context)
+        {
+            this.context = context;
+        }
+
+        private Model.Services.TBYS.KiraSozlesmeService KiraSozlesmeService
+        {
+            get { return context == null ? new Model.Services.TBYS.KiraSozlesmeService() : new Model.Services.TBYS.KiraSozlesmeService(context); }
+        }
+
+        private Model.Services.TBYS.OdemePlaniService OdemePlaniService
+        {
+            get { return context == null ? new Model.Services.TBYS.OdemePlaniService() : new Model.Services.TBYS.OdemePlaniService(context); }
+        }
         /// <summary>
         /// Otomatik devir işlemi için kullanılacak işlem yapan adı.
         /// </summary>
@@ -29,7 +48,7 @@ namespace Model.TBYS
             KiraBakiyeDevriSonuc sonuc = new KiraBakiyeDevriSonuc();
 
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-            List<KiraSozlesme> aktifSozlesmeler = new Model.Services.TBYS.KiraSozlesmeService().GetAllActive();
+            List<KiraSozlesme> aktifSozlesmeler = KiraSozlesmeService.GetAllActive();
 
             foreach (KiraSozlesme kiraSozlesme in aktifSozlesmeler)
             {
@@ -80,7 +99,7 @@ namespace Model.TBYS
                 return false;
             }
 
-            KiraSozlesme oncekiKiraSozlesmesi = new Model.Services.TBYS.KiraSozlesmeService().GetPreviousByTenant(kiraSozlesme.KiraciId, kiraSozlesme.SozBasTar);
+            KiraSozlesme oncekiKiraSozlesmesi = KiraSozlesmeService.GetPreviousByTenant(kiraSozlesme.KiraciId, kiraSozlesme.SozBasTar);
             if (oncekiKiraSozlesmesi == null)
             {
                 return false;
@@ -88,7 +107,7 @@ namespace Model.TBYS
 
             OdemePlani odemePlaniDao = new OdemePlani();
 
-            List<OdemePlani> oncekiOdemePlaniList = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(oncekiKiraSozlesmesi.Id);
+            List<OdemePlani> oncekiOdemePlaniList = OdemePlaniService.GetBySozlesmeId(oncekiKiraSozlesmesi.Id);
             if (oncekiOdemePlaniList == null || oncekiOdemePlaniList.Count == 0)
             {
                 return false;
@@ -115,13 +134,13 @@ namespace Model.TBYS
             kiraSozlesme.DevirFaizliBakiye = yeniDevirFaizliBakiye;
             kiraSozlesme.DevirFaizTutari = yeniDevirFaizTutari;
 
-            bool devirAlanlariGuncellendi = new Model.Services.TBYS.KiraSozlesmeService().Update(kiraSozlesme);
+            bool devirAlanlariGuncellendi = KiraSozlesmeService.Update(kiraSozlesme);
             if (!devirAlanlariGuncellendi)
             {
                 return false;
             }
 
-            List<OdemePlani> odemePlaniList = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
+            List<OdemePlani> odemePlaniList = OdemePlaniService.GetBySozlesmeId(kiraSozlesme.Id);
             if (odemePlaniList == null || odemePlaniList.Count == 0)
             {
                 return false;
@@ -145,7 +164,7 @@ namespace Model.TBYS
             odemePlani.FaizTutari = kiraSozlesme.DevirFaizTutari;
             odemePlani.FaizliBakiye = kiraSozlesme.DevirFaizliBakiye;
 
-            if (!new Model.Services.TBYS.OdemePlaniService().Update(odemePlani))
+            if (!OdemePlaniService.Update(odemePlani))
             {
                 return false;
             }
@@ -161,7 +180,7 @@ namespace Model.TBYS
         private void OdemeleriHesaplaOdemePlaniniGuncelle(int kiraciId)
         {
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-            List<KiraSozlesme> sozlesmeListesi = new Model.Services.TBYS.KiraSozlesmeService().GetAllByKiraciId(kiraciId);
+            List<KiraSozlesme> sozlesmeListesi = KiraSozlesmeService.GetAllByKiraciId(kiraciId);
             sozlesmeListesi = sozlesmeListesi.OrderBy(x => x.SozBasTar).ToList();
             foreach (KiraSozlesme kiraSozlesme in sozlesmeListesi)
             {
