@@ -214,7 +214,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             string[] headers = { "Sıra", "Taşınmaz Adresi" };
             UtilityHelper.SetTableHeaders(TasinmazAdresTable, headers);
             SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-            DataTable dataTable = new SozlesmeTasinmazService().GetBySozlesmeIdReturnDataTable(kiraSozlesme.Id);
+            DataTable dataTable = new SozlesmeTasinmazService(LoggingContext).GetBySozlesmeIdReturnDataTable(kiraSozlesme.Id);
             if (dataTable != null)
             {
                 int sira = 0;

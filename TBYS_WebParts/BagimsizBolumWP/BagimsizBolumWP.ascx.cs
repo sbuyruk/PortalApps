@@ -106,7 +106,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
         protected void Page_Load(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt(), LoggingContext);
+            tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt(), LoggingContext);
             if (tasinmaz != null)
             {
                 BagimsizBolumTablosunuDoldur(tasinmaz);
@@ -294,7 +294,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
         protected void BagimsizBolumBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt(), LoggingContext);
+            tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt(), LoggingContext);
             if (tasinmaz != null)
             {
                 BagimsizBolumEkleModalAc(tasinmaz);
@@ -405,7 +405,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
         {
             bool silinebilirMi = false;
             SozlesmeTasinmaz sozlesmeTasinmaz = new SozlesmeTasinmaz();
-            List<SozlesmeTasinmaz> list = new SozlesmeTasinmazService().GetByBolumId(bagimsizBolum.Id, LoggingContext);
+            List<SozlesmeTasinmaz> list = new SozlesmeTasinmazService(LoggingContext).GetByBolumId(bagimsizBolum.Id, LoggingContext);
             if (list.Count < 1)
             {
                 silinebilirMi = true;
@@ -466,7 +466,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
                     if (new BagimsizBolumService(LoggingContext).Update(bagimsizBolum))
                     {
                         Tasinmaz tasinmaz = new Tasinmaz();
-                        tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt(), LoggingContext);
+                        tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt(), LoggingContext);
                         if (tasinmaz != null)
                         {
                             BagimsizBolumTablosunuDoldur(tasinmaz);
@@ -506,7 +506,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
                     if (new BagimsizBolumService(LoggingContext).Delete(bagimsizBolum))
                     {
                         Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt(), LoggingContext);
+                tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt(), LoggingContext);
                         if (tasinmaz != null)
                         {
                             BagimsizBolumTablosunuDoldur(tasinmaz);

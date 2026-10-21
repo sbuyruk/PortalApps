@@ -217,7 +217,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
         private DataTable GetDataListDT()
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            DataTable dataTable = new TasinmazService().SelectAllReturnDataTable();
+            DataTable dataTable = new TasinmazService(LoggingContext).SelectAllReturnDataTable();
             SatisPlaniKolonunuDisplayAdinaCevir(dataTable);
             return dataTable;
         }
@@ -399,7 +399,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
         private List<TasinmazListesiListItem> GetDataList()
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            DataTable dataTable = new TasinmazService().SelectByBolgeReturnJson(BolgeIdQS);
+            DataTable dataTable = new TasinmazService(LoggingContext).SelectByBolgeReturnJson(BolgeIdQS);
 
             List<TasinmazListesiListItem> list = new List<TasinmazListesiListItem>();
 
@@ -591,7 +591,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
         {
             Tasinmaz tasinmaz = new Tasinmaz();
 
-            DataTable dataTable = new TasinmazService().SelectBolumByTasinmazId(paramTasinmazIdLbl.Value.ConvertToInt());
+            DataTable dataTable = new TasinmazService(LoggingContext).SelectBolumByTasinmazId(paramTasinmazIdLbl.Value.ConvertToInt());
 
             List<BagimsizBolumListItem> list = new List<BagimsizBolumListItem>();
 

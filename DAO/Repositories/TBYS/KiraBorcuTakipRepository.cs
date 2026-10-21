@@ -1,4 +1,5 @@
 using DAO.Ortak;
+using Utility.Logging;
 using System;
 using System.Data;
 
@@ -6,7 +7,7 @@ namespace DAO.Repositories.TBYS
 {
     public class KiraBorcuTakipRepository
     {
-        private readonly DbClass db;
+        private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
         public KiraBorcuTakipRepository()
@@ -17,7 +18,13 @@ namespace DAO.Repositories.TBYS
         public KiraBorcuTakipRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
+            this.db = new TbysSqlExecutor(db, "KiraBorcuTakipRepository");
+            queryBuilder = new CrudQueryBuilder();
+        }
+
+        public KiraBorcuTakipRepository(PortalLogContext context)
+        {
+            db = new TbysSqlExecutor(context, "KiraBorcuTakipRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -97,6 +104,28 @@ namespace DAO.Repositories.TBYS
         public bool Delete(int id)
         {
             return db.DeleteFromDb(queryBuilder.BuildDelete("KiraBorcuTakip_Table", id), "");
+        }
+
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery q = new SqlQuery("SELECT * FROM KiraBorcuTakip_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id");
+            q.AddParameter("@Id", id);
+            return db.SelectFromDb(q, transaction, context);
+        }
+
+        public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Insert(queryBuilder.BuildInsert(entity, "KiraBorcuTakip_Table"), transaction, context);
+        }
+
+        public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Update2Db(queryBuilder.BuildUpdate(entity, "KiraBorcuTakip_Table"), transaction, context);
+        }
+
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.DeleteFromDb(queryBuilder.BuildDelete("KiraBorcuTakip_Table", id), "", transaction, context);
         }
     }
 }

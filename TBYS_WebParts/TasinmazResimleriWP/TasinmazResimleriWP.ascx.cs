@@ -151,7 +151,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
         private void ResimleriDoldur()
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
             if (tasinmaz != null)
             {
                 string newUrl = UtilityHelper.TbysURLGetir() + "/" + ProjeConstants.RESIMLER_TASINMAZ + "/";
@@ -201,7 +201,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
         protected void SaveBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
             if (tasinmaz != null)
             {
                 ExceptionHelper exhelper = updateTasinmazFoto2Db(tasinmaz);
@@ -407,7 +407,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
         private void ResmiSil(string foto)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+            tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
             if (tasinmaz != null)
             {
 

@@ -153,7 +153,7 @@ namespace TBYS_WebParts.OdemePlaniListesiWP
                 {
                     int tasinmazId = item.TasinmazId;
                     Tasinmaz tasinmaz = new Tasinmaz();
-                    tasinmaz = new TasinmazService().SelectById(tasinmazId);
+                    tasinmaz = new TasinmazService(LoggingContext).SelectById(tasinmazId);
                     if (tasinmaz != null)
                     {
                         string ili = tasinmaz.Ili;
@@ -162,7 +162,7 @@ namespace TBYS_WebParts.OdemePlaniListesiWP
                         if (item.BolumId > 0)
                         {
                             BagimsizBolum bagimsizBolum = new BagimsizBolum();
-                            bagimsizBolum = new BagimsizBolumService().GetById(item.BolumId);
+                            bagimsizBolum = new BagimsizBolumService(LoggingContext).GetById(item.BolumId);
                             if (bagimsizBolum != null)
                                 adres += "<br>-" + tasinmaz.Adres + bagimsizBolum.BolumNo + " " + ilcesi + "/" + ili + System.Environment.NewLine;
                         }

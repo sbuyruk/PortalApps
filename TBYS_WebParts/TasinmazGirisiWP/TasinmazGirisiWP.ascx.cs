@@ -967,7 +967,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 //#pragma warning disable CS0162 // Unreachable code detected
 //                Tasinmaz tasinmaz = new Tasinmaz();
 //#pragma warning restore CS0162 // Unreachable code detected
-//                tasinmaz = new TasinmazService().Select(TasinmazIdQS.ConvertToInt());
+//                tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
 //                if (tasinmaz != null) //sildikten sonra önceki sayfaya dön
 //                {
 
@@ -1059,7 +1059,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         protected void BagisciBtn_Click(object sender, EventArgs e)
         {
             Bagis bagis = new Bagis();
-            bagis = new BagisService().GetByTasinmazId(TasinmazIdQS.ConvertToInt());
+            bagis = new BagisService(LoggingContext).GetByTasinmazId(TasinmazIdQS.ConvertToInt());
 
             if (bagis == null)
             {
@@ -1338,7 +1338,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             {
                 List<SerhBeyanIrtifakListItem> list = new List<SerhBeyanIrtifakListItem>();
                 SerhBeyanIrtifak sbiDao = new SerhBeyanIrtifak();
-                List<SerhBeyanIrtifak> sbiList = new SerhBeyanIrtifakService().GetByTasinmazId(tasinmaz.Id);
+                List<SerhBeyanIrtifak> sbiList = new SerhBeyanIrtifakService(LoggingContext).GetByTasinmazId(tasinmaz.Id);
                 foreach (var sbi in sbiList)
                 {
                     int serhBeyanIrtifakId = sbi.Id; // örnek id
@@ -1397,7 +1397,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
                     //Seçilen Şerh Beyan ve İrtifak kaydini getir
                     SerhBeyanIrtifak sbi = new SerhBeyanIrtifak();
-                    sbi = new SerhBeyanIrtifakService().GetById(serhBeyanIrtifakId);
+                    sbi = new SerhBeyanIrtifakService(LoggingContext).GetById(serhBeyanIrtifakId);
                     if (sbi != null)
                     {
                         MalikLehtarTxt.Text = sbi.MalikLehtar;
@@ -1475,7 +1475,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             sbi.Yevmiye = YevmiyeTxt.Text;
             sbi.TerkinSebebi = TerkinSebebiTxt.Text;
             sbi.Olusturan = CurrentUserName;
-            int sbiId = new SerhBeyanIrtifakService().Save(sbi);
+            int sbiId = new SerhBeyanIrtifakService(LoggingContext).Save(sbi);
             if (sbiId > 0)
             {
                 //SerhBeyanIrtifak tablosunu güncelle
@@ -1501,10 +1501,10 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             int parametreId = parametreIdLbl.Value.ConvertToInt();
             // SerhBeyanIrtifak tablosundan Id= parametreId olan kaydi güncelle
             SerhBeyanIrtifak sbi = new SerhBeyanIrtifak();
-            sbi = new SerhBeyanIrtifakService().GetById(parametreId);
+            sbi = new SerhBeyanIrtifakService(LoggingContext).GetById(parametreId);
             if (sbi != null)
             {
-                if (new SerhBeyanIrtifakService().Delete(sbi))
+                if (new SerhBeyanIrtifakService(LoggingContext).Delete(sbi))
                 {
                     //SerhBeyanIrtifak tablosunu güncelle
                     Tasinmaz tasinmaz = new Tasinmaz();
@@ -1530,7 +1530,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             int parametreId = parametreIdLbl.Value.ConvertToInt();
             // SerhBeyanIrtifak tablosundan Id= parametreId olan kaydi güncelle
             SerhBeyanIrtifak sbi = new SerhBeyanIrtifak();
-            sbi = new SerhBeyanIrtifakService().GetById(parametreId);
+            sbi = new SerhBeyanIrtifakService(LoggingContext).GetById(parametreId);
             if (sbi != null)
             {
                 sbi.SBI = SerhBeyanIrtifakDDL.SelectedValue;
@@ -1541,7 +1541,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 sbi.Yevmiye = YevmiyeTxt.Text;
                 sbi.TerkinSebebi = TerkinSebebiTxt.Text;
                 sbi.Degistiren = CurrentUserName;
-                if (new SerhBeyanIrtifakService().Update(sbi))
+                if (new SerhBeyanIrtifakService(LoggingContext).Update(sbi))
                 {
                     //SerhBeyanIrtifak tablosunu güncelle
                     Tasinmaz tasinmaz = new Tasinmaz();

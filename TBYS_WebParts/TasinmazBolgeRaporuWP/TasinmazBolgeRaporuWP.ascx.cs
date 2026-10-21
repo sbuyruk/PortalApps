@@ -178,20 +178,20 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
         private decimal TahminiRayicToplaminiBul()
         {
             decimal toplam = 0;
-            TasinmazService tasinmazService = new TasinmazService();
+            TasinmazService tasinmazService = new TasinmazService(LoggingContext);
             toplam = tasinmazService.SelectTahminiRayicToplami(BolgeIdQS);
             return toplam;
         }
         private decimal EmlakBeyanToplaminiBul()
         {
             decimal toplam = 0;
-            TasinmazService tasinmazService = new TasinmazService();
+            TasinmazService tasinmazService = new TasinmazService(LoggingContext);
             toplam = tasinmazService.SelectEmlakBeyanDegeriToplami(BolgeIdQS);
             return toplam;
         }
         private void TablolariDoldur(int bolgeId)
         {
-            TasinmazService tasinmazService = new TasinmazService();
+            TasinmazService tasinmazService = new TasinmazService(LoggingContext);
             List<Il> ilList = new IlService().GetByRegion(bolgeId, true);
             int AptTMToplam = 0;
             int AptCMToplam = 0;
