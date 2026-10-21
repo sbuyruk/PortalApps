@@ -52,6 +52,10 @@ namespace Model.Services.TBYS
         {
             return ToList(repository.SelectByDateRange(vadeBaslangicTarihi, vadeBitisTarihi));
         }
+        public List<GecikmeZammi> GetByDateRange(DateTime vadeBaslangicTarihi, DateTime vadeBitisTarihi, SqlTransactionContext transaction)
+        {
+            return ToList(repository.SelectByDateRange(vadeBaslangicTarihi, vadeBitisTarihi, transaction, context));
+        }
 
         public GecikmeZammi GetLatestByDate(DateTime sonOdemeTarihi)
         {

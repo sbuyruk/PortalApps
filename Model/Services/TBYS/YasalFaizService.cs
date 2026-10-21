@@ -31,6 +31,7 @@ namespace Model.Services.TBYS
         public List<YasalFaiz> GetAll() { return ToList(repository.SelectAll()); }
         public List<YasalFaiz> GetByYear(int year) { return ToList(repository.SelectByYear(year)); }
         public YasalFaiz GetByYearMonth(int year, int month) { return Map(repository.SelectByYearMonth(year, month)); }
+        public YasalFaiz GetByYearMonth(int year, int month, SqlTransactionContext transaction) { return Map(repository.SelectByYearMonth(year, month, transaction, context)); }
         public decimal GetLatestRate() { return GetLatestValue(repository.SelectLatestRate("FaizOrani"), x => x.FaizOrani); }
         public decimal GetLatestTufe() { return GetLatestValue(repository.SelectLatestRate("Tufe"), x => x.Tufe); }
         public decimal GetLatestUfe() { return GetLatestValue(repository.SelectLatestRate("Ufe"), x => x.Ufe); }

@@ -74,6 +74,13 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@VadeBitisTarihi", vadeBitisTarihi);
             return db.SelectFromDb(query, "");
         }
+        public DataTable SelectByDateRange(DateTime vadeBaslangicTarihi, DateTime vadeBitisTarihi, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"SELECT * FROM GecikmeZammi_Table WITH (UPDLOCK, HOLDLOCK) WHERE BaslangicTarihi <= @VadeBitisTarihi AND (BitisTarihi is null OR BitisTarihi>=@VadeBaslangicTarihi) ORDER BY BaslangicTarihi DESC");
+            query.AddParameter("@VadeBaslangicTarihi", vadeBaslangicTarihi);
+            query.AddParameter("@VadeBitisTarihi", vadeBitisTarihi);
+            return db.SelectFromDb(query, transaction, context);
+        }
 
         public DataTable SelectLatestByDate(DateTime sonOdemeTarihi)
         {

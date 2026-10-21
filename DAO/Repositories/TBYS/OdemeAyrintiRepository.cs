@@ -68,6 +68,16 @@ namespace DAO.Repositories.TBYS
             q.AddParameter("@OdemeId", odemeId);
             return db.SelectFromDb(q, "");
         }
+        public DataTable SelectByPlanAndDelay(int kiraciId, int sozlesmeId, int planId, int delayId, int odemeId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery q = new SqlQuery("SELECT * FROM OdemeAyrinti_Table WITH (UPDLOCK, HOLDLOCK) WHERE KiraciId=@KiraciId AND SozlesmeId=@SozlesmeId AND OdemePlaniId=@OdemePlaniId AND GecikmeZammiId=@GecikmeZammiId AND OdemeId=@OdemeId ORDER BY OdemePlaniSirasi,OdemeTarihi,OdemeId,Id");
+            q.AddParameter("@KiraciId", kiraciId);
+            q.AddParameter("@SozlesmeId", sozlesmeId);
+            q.AddParameter("@OdemePlaniId", planId);
+            q.AddParameter("@GecikmeZammiId", delayId);
+            q.AddParameter("@OdemeId", odemeId);
+            return db.SelectFromDb(q, transaction, context);
+        }
 
         public DataTable SelectByPlan(int planId)
         {
@@ -111,12 +121,24 @@ namespace DAO.Repositories.TBYS
             q.AddParameter("@OdemePlaniId", planId);
             return db.SelectFromDb(q, "");
         }
+        public DataTable SelectSumDelayAmount(int planId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery q = new SqlQuery("SELECT ISNULL(SUM(GecikmeZammiTutari),0) Toplam FROM OdemeAyrinti_Table WITH (UPDLOCK, HOLDLOCK) WHERE OdemePlaniId=@OdemePlaniId");
+            q.AddParameter("@OdemePlaniId", planId);
+            return db.SelectFromDb(q, transaction, context);
+        }
 
         public DataTable SelectLastDelayRate(int planId)
         {
             SqlQuery q = new SqlQuery("SELECT GecikmeZammiOrani FROM OdemeAyrinti_Table WHERE OdemePlaniId=@OdemePlaniId ORDER BY IlkTarih");
             q.AddParameter("@OdemePlaniId", planId);
             return db.SelectFromDb(q, "");
+        }
+        public DataTable SelectLastDelayRate(int planId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery q = new SqlQuery("SELECT GecikmeZammiOrani FROM OdemeAyrinti_Table WITH (UPDLOCK, HOLDLOCK) WHERE OdemePlaniId=@OdemePlaniId ORDER BY IlkTarih");
+            q.AddParameter("@OdemePlaniId", planId);
+            return db.SelectFromDb(q, transaction, context);
         }
 
         public int Insert<T>(T entity)

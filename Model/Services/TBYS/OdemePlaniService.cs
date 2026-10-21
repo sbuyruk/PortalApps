@@ -31,7 +31,9 @@ namespace Model.Services.TBYS
         public OdemePlani GetBySozlesmeIdOdemeTarihi(int id, DateTime tarih, SqlTransactionContext transaction) { return Map(repository.SelectBySozlesmeIdOdemeTarihi(id, tarih, transaction, context)); }
         public bool Exists(int id) { return ToList(repository.SelectExists(id)).Count > 0; }
         public OdemePlani GetLastBySozlesmeId(int id) { return ToList(repository.SelectLastBySozlesmeId(id)).LastOrDefault(); }
+        public OdemePlani GetLastBySozlesmeId(int id, SqlTransactionContext transaction) { return GetBySozlesmeId(id, transaction).LastOrDefault(); }
         public OdemePlani GetFirstBySozlesmeId(int id) { return Map(repository.SelectFirstBySozlesmeId(id)); }
+        public OdemePlani GetFirstBySozlesmeId(int id, SqlTransactionContext transaction) { return GetBySozlesmeId(id, transaction).FirstOrDefault(x => x.Sira == 1); }
         public int Save(OdemePlani item)
         {
             if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { int id = Save(item, tx); tx.Complete(); return id; }
