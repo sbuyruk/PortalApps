@@ -1,5 +1,11 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
+## Güncel parça: banka ekstresi ve ödeme okumaları
+
+Dal: `codex/tbys-bank-report-read-wiring`. Başlangıç commit'i: `9b7dc663` (PR #483 sonrası). Kira banka ekstresi ve kiracı eşleştirme ekranlarındaki `KiraEkstreAktarmaService` çağrıları ile sekiz WebPart’taki `OdemeService` okuma/güncelleme çağrıları `LoggingContext` ile bağlandı. Böylece ödeme ve banka ekstresi SQL işlemleri ilgili WebPart bağlamıyla izlenir.
+
+Üretilmiş ASCX dosyaları değişmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve `git diff --check` yapıldı. Build ve TEST kullanıcıya aittir.
+
 ## Güncel parça: ödeme planı rapor servisi bağlamı
 
 Dal: `codex/tbys-report-service-context`. Başlangıç commit'i: `cc0b9fbf` (PR #482 sonrası). `OdemePlaniRaporRepository` `TbysSqlExecutor` ve bağlam kurucusuna geçirildi; `OdemePlaniRaporService` bağlamlı kurucu kazandı. Borçlu kiracı, sözleşme listesi, gelir ve ödeme planı raporlarındaki yedi WebPart çağrısı `LoggingContext` ile bağlandı.

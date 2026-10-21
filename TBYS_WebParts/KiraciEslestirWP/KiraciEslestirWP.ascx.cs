@@ -139,7 +139,7 @@ namespace TBYS_WebParts.KiraciEslestirWP
                     if (!string.IsNullOrEmpty(KiraEkstreAktarmaIdQS))
                     {
                         KiraEkstreAktarma ekstreAktarma = new KiraEkstreAktarma();
-                        ekstreAktarma = new Model.Services.TBYS.KiraEkstreAktarmaService().GetById(KiraEkstreAktarmaIdQS.ConvertToInt());
+                        ekstreAktarma = new Model.Services.TBYS.KiraEkstreAktarmaService(LoggingContext).GetById(KiraEkstreAktarmaIdQS.ConvertToInt());
                         KiraciAraTxt.Text = ekstreAktarma != null ? ekstreAktarma.Adi : "";
                         TabloOlustur();
                     }
@@ -241,7 +241,7 @@ namespace TBYS_WebParts.KiraciEslestirWP
         private List<KiraciListItem> GetDataList()
         {
             KiraEkstreAktarma kea = new KiraEkstreAktarma();
-            kea = new Model.Services.TBYS.KiraEkstreAktarmaService().GetById(KiraEkstreAktarmaIdQS.ConvertToInt());
+            kea = new Model.Services.TBYS.KiraEkstreAktarmaService(LoggingContext).GetById(KiraEkstreAktarmaIdQS.ConvertToInt());
             if (kea != null)
             {
                 GelenOdemeLbl.Text = "Ödenen Tutar :" + kea.Tutar.ToString("N", culturInfo) + " TL";
@@ -350,7 +350,7 @@ namespace TBYS_WebParts.KiraciEslestirWP
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
                 KiraEkstreAktarma ekstreAktarma = new KiraEkstreAktarma();
-                ekstreAktarma = new Model.Services.TBYS.KiraEkstreAktarmaService().GetById(KiraEkstreAktarmaIdQS.ConvertToInt());
+                ekstreAktarma = new Model.Services.TBYS.KiraEkstreAktarmaService(LoggingContext).GetById(KiraEkstreAktarmaIdQS.ConvertToInt());
                 if ((ekstreAktarma != null) && (SenderAppQS.Equals("EkstreListesi")))//ekstrelistesinden'dan geldiyse
                 {
                     newUrl += "/" + ProjeConstants.PAGE_KIRAEKSTRE_LIST + "?SecilenId=" + KiraEkstreAktarmaIdQS ;
@@ -396,7 +396,7 @@ namespace TBYS_WebParts.KiraciEslestirWP
                 if (kiraci != null)
                 {
                     KiraEkstreAktarma kiraEkstreAktarma = new KiraEkstreAktarma();
-                    kiraEkstreAktarma = new Model.Services.TBYS.KiraEkstreAktarmaService().GetById(KiraEkstreAktarmaIdQS.ConvertToInt());
+                    kiraEkstreAktarma = new Model.Services.TBYS.KiraEkstreAktarmaService(LoggingContext).GetById(KiraEkstreAktarmaIdQS.ConvertToInt());
                     if (kiraEkstreAktarma != null)
                     {
                         kiraEkstreAktarma.KiraciId = kiraci.Id;
