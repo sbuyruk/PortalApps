@@ -204,7 +204,7 @@ namespace TBYS_WebParts.OdemePlaniWP
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             OdemePlani opl = new OdemePlani();
-            List<OdemePlani> odemePlaniListesi = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
+            List<OdemePlani> odemePlaniListesi = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeId(kiraSozlesme.Id);
             //if (odemePlaniListesi.Count > 0)
             //{
             //    OdemeYapDiv.Attributes["style"] = "display:block";
@@ -427,7 +427,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             if (kiraSozlesme != null)
             {
                 Kiraci kiraci = new Kiraci();
-                kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
+                kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(kiraSozlesme.KiraciId);
                 if (kiraci != null)
                 {
                     RedirectToPage(ProjeConstants.PAGE_KIRACI_GIRIS + "?DestinationApp=KD&SenderApp=KL&KiraciId=" + KiraciIdQS);

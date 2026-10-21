@@ -315,11 +315,11 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
                     decimal odemeTutari = ekstreAktarma.Tutar;
 
                     KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                    kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetByKiraciIdAndDate(ekstreAktarma.KiraciId, odemeTarihi);
+                    kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetByKiraciIdAndDate(ekstreAktarma.KiraciId, odemeTarihi);
                     if (kiraSozlesme == null)
                     {
                         kiraSozlesme = new KiraSozlesme();
-                        kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetNearestByKiraciIdAndDate(ekstreAktarma.KiraciId, odemeTarihi);
+                        kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetNearestByKiraciIdAndDate(ekstreAktarma.KiraciId, odemeTarihi);
 
                     }
                     if (kiraSozlesme != null)
@@ -748,7 +748,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
                     OdemePlani odemePlani = new OdemePlani();
-                    bool odemePlaniVarMi = new Model.Services.TBYS.OdemePlaniService().Exists(kiraSozlesme.Id);
+                    bool odemePlaniVarMi = new Model.Services.TBYS.OdemePlaniService(LoggingContext).Exists(kiraSozlesme.Id);
                     if (odemePlaniVarMi)
                     {
                         OdemePlaniGoruntule(kiraSozlesme, kiraci);
