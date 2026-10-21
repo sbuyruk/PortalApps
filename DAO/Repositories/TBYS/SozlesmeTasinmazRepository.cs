@@ -157,5 +157,12 @@ namespace DAO.Repositories.TBYS
         {
             return db.DeleteFromDb(queryBuilder.BuildDelete("SozlesmeTasinmaz_Table", id), "");
         }
+
+        public DataTable SelectByTasinmazId(int tasinmazId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT TOP (1) * FROM SozlesmeTasinmaz_Table WITH (UPDLOCK, HOLDLOCK) WHERE TasinmazId=@TasinmazId ORDER BY Id");
+            query.AddParameter("@TasinmazId", tasinmazId);
+            return db.SelectFromDb(query, transaction, context);
+        }
     }
 }

@@ -1,4 +1,8 @@
 using DAO.Repositories.TBYS;
+using DAO.Ortak;
+using DAO.Repositories.Ortak;
+using Utility.Logging;
+using System.Globalization;
 using Model.Ortak;
 using Model.TBYS;
 using System;
@@ -154,6 +158,73 @@ namespace Model.Services.TBYS
             }
 
             return isDeleted;
+        }
+
+        public Sigorta GetLatestByTasinmazId(int tasinmazId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return Map(repository.SelectLatestByTasinmazId(tasinmazId, transaction, context));
+        }
+
+        public int Save(Sigorta item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            RequireTransaction(transaction, context);
+            if (item == null) throw new ArgumentNullException("item", "Kaydedilecek sigorta gereklidir.");
+            item.OlusturmaTarihi = DateTime.Now;
+            item.Olusturan = UtilityHelper.GetCurrentUserName();
+            item.Id = repository.Insert(item, transaction, context);
+            if (item.Id <= 0) throw new InvalidOperationException("Sigorta kaydı oluşturulamadı.");
+            DataTable saved = repository.SelectById(item.Id, transaction, context);
+            if (saved == null) throw new InvalidOperationException("Kaydedilen sigorta okunamadı.");
+            RecordAudit("INSERT", item.Id, null, saved, transaction, context);
+            return item.Id;
+        }
+
+        public bool Update(Sigorta item, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            RequireTransaction(transaction, context);
+            if (item == null || item.Id <= 0) return false;
+            DataTable oldValues = repository.SelectById(item.Id, transaction, context);
+            Sigorta old = Map(oldValues);
+            if (old == null) return false;
+            item.OlusturmaTarihi = old.OlusturmaTarihi;
+            item.Olusturan = old.Olusturan;
+            item.DegistirmeTarihi = DateTime.Now;
+            item.Degistiren = UtilityHelper.GetCurrentUserName();
+            if (!repository.Update(item, transaction, context)) return false;
+            DataTable saved = repository.SelectById(item.Id, transaction, context);
+            if (saved == null) throw new InvalidOperationException("Güncellenen sigorta okunamadı.");
+            RecordAudit("UPDATE", item.Id, oldValues, saved, transaction, context);
+            return true;
+        }
+
+        private static void RequireTransaction(SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction", "Veritabanı işlem bağlamı gereklidir.");
+            if (context == null) throw new ArgumentNullException("context", "Bu işlem için TBYS log bağlamı gereklidir.");
+        }
+
+        private static void RecordAudit(string operation, int entityId, DataTable oldValues, DataTable current, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            RequireTransaction(transaction, context);
+            PortalLogRepository log = new PortalLogRepository();
+            int auditId = log.RecordAudit(context, operation, "Sigorta", entityId.ToString(CultureInfo.InvariantCulture), transaction);
+            if (auditId <= 0) return;
+            foreach (string field in new[] { "TasinmazId", "BolumId", "SigortaCinsi", "SigortaBasTar", "SigortaBitTar", "SigortaBedeli", "Prim", "KullanimSekli" })
+            {
+                string oldValue = AuditValue(oldValues, field);
+                string newValue = AuditValue(current, field);
+                if (!string.Equals(oldValue, newValue, StringComparison.Ordinal))
+                    log.RecordAuditChange(auditId, field, oldValue, newValue, transaction);
+            }
+        }
+
+        private static string AuditValue(DataTable table, string field)
+        {
+            if (table == null || table.Rows.Count == 0 || table.Rows[0][field] == DBNull.Value) return null;
+            object value = table.Rows[0][field];
+            if (value is DateTime) return ((DateTime)value).ToString("o", CultureInfo.InvariantCulture);
+            return value is decimal ? ((decimal)value).ToString("G29", CultureInfo.InvariantCulture)
+                : Convert.ToString(value, CultureInfo.InvariantCulture);
         }
 
         private static Sigorta Map(DataTable table)
