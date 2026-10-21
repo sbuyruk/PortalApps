@@ -362,7 +362,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             string[] headers = { "Sıra", "Adres" };
             UtilityHelper.SetTableHeaders(KiralikTable,headers);
             SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-            DataTable dataTable = new SozlesmeTasinmazService().GetBySozlesmeIdReturnDataTable(kiraSozlesme.Id);
+            DataTable dataTable = new SozlesmeTasinmazService(LoggingContext).GetBySozlesmeIdReturnDataTable(kiraSozlesme.Id);
             if (dataTable!=null)
             {
                 int sira=0;
@@ -623,7 +623,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
 
                     }
                     SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-                    bool sozlesmeTasinmazSilindi = new Model.Services.TBYS.SozlesmeTasinmazService().DeleteBySozlesmeId(st, kiraSozlesme.Id);
+                    bool sozlesmeTasinmazSilindi = new Model.Services.TBYS.SozlesmeTasinmazService(LoggingContext).DeleteBySozlesmeId(st, kiraSozlesme.Id);
                 }
             }
             catch (Exception e)
@@ -959,7 +959,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                     yeniSozlesme.Id = yeniId;
                     //eski sözlesme tasinmaz bilgilerini al
                     SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-                    List<SozlesmeTasinmaz> stlist = new Model.Services.TBYS.SozlesmeTasinmazService().GetBySozlesmeId(eskiKiraSozlesmeId);
+                    List<SozlesmeTasinmaz> stlist = new Model.Services.TBYS.SozlesmeTasinmazService(LoggingContext).GetBySozlesmeId(eskiKiraSozlesmeId);
                     //yeni sözlesmeye aktar ve kaydet
                     foreach (SozlesmeTasinmaz item in stlist)
                     {
@@ -967,7 +967,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                         yeniST.SozlesmeId = yeniSozlesme.Id;
                         yeniST.TasinmazId = item.TasinmazId;
                         yeniST.BolumId = item.BolumId;
-                    new Model.Services.TBYS.SozlesmeTasinmazService().Save(yeniST);
+                    new Model.Services.TBYS.SozlesmeTasinmazService(LoggingContext).Save(yeniST);
                     }
                 }
                 //yeni sözlesmeye git

@@ -700,7 +700,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 if (birSozlesmeId > 0)
                 {
                     SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-                    List<SozlesmeTasinmaz> stList = new Model.Services.TBYS.SozlesmeTasinmazService().GetBySozlesmeId(birSozlesmeId);
+                    List<SozlesmeTasinmaz> stList = new Model.Services.TBYS.SozlesmeTasinmazService(LoggingContext).GetBySozlesmeId(birSozlesmeId);
                     foreach (SozlesmeTasinmaz item in stList)
                     {
                         SozlesmeTasinmaz ekST = new SozlesmeTasinmaz();
@@ -708,7 +708,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
                         ekST.BolumId = item.BolumId;
                         ekST.TasinmazId = item.TasinmazId;
                         ekST.Olusturan = UtilityHelper.GetCurrentUserLoginName();
-                        new Model.Services.TBYS.SozlesmeTasinmazService().Save(ekST);
+                        new Model.Services.TBYS.SozlesmeTasinmazService(LoggingContext).Save(ekST);
                     }
 
                     RedirectToPage(ProjeConstants.PAGE_BITENKIRASOZLESMESI + "?DestinationApp=KS&SenderApp=KD&KiraSozlesmeId=" + yeniKayitbitenKiraSozlesme.Id);
