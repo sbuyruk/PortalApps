@@ -401,7 +401,7 @@ namespace TBYS_WebParts.KiraciEslestirWP
                     {
                         kiraEkstreAktarma.KiraciId = kiraci.Id;
                         kiraEkstreAktarma.OdemeSebebiId = kiraEkstreAktarma.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_DIGER_INT ? ProjeConstants.ODEMESEBEBI_KIRA_TEMINAT_INT : kiraEkstreAktarma.OdemeSebebiId;
-                        new Model.Services.TBYS.KiraEkstreAktarmaService().Update(kiraEkstreAktarma);
+                        new Model.Services.TBYS.KiraEkstreAktarmaService(LoggingContext).Update(kiraEkstreAktarma);
                         RedirectToPage(ProjeConstants.PAGE_KIRAEKSTRE_LIST+ "?SecilenId="+ KiraEkstreAktarmaIdQS);
                     }
                 }

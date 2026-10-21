@@ -1,5 +1,11 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
+## Güncel parça: kira ekstresi aktarım akışı
+
+Dal: `codex/tbys-bank-statement-workflow`. Başlangıç commit'i: `0fc78713` (PR #473 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. `KiraEkstreAktarmaRepository` transaction-aware CRUD ve bağlamlı SQL yürütücüsüne geçirildi; `KiraEkstreAktarmaService` bağlamlı CRUD/audit overload'ları kazandı. Ekstre yükleme, kiracı eşleştirme ve banka ekstresi ekranlarındaki yazma çağrıları bağlamlı servise geçirildi.
+
+Audit yalnızca entity başlığı üretir; ekstredeki ad, telefon, açıklama ve tutar ayrıntıları audit değerlerine alınmadı. Üretilmiş ASCX dosyaları değişmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve `git diff --check` yapıldı. Build ve TEST kullanıcıya aittir.
+
 ## Güncel parça: hukuki takip transaction bağlantısı
 
 Dal: `codex/tbys-legal-tracking-batch`. Başlangıç commit'i: `c73ca1fd` (PR #472 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. `HukukiTakipRepository` transaction-aware CRUD overload'larına, `HukukiTakipService` bağlamlı CRUD ve audit akışına geçirildi. Hukuki takip listesi ile ana kira sözleşmesi ekranındaki üç hukuki takip çağrısı bağlamlı servisi kullanıyor.
