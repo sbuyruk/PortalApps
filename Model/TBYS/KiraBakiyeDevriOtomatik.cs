@@ -241,7 +241,14 @@ namespace Model.TBYS
             sozlesmeListesi = sozlesmeListesi.OrderBy(x => x.SozBasTar).ToList();
             foreach (KiraSozlesme kiraSozlesme in sozlesmeListesi)
             {
-                TBYSOrtak.BakiyeBorcHesapla(kiraSozlesme);
+                if (context == null)
+                {
+                    TBYSOrtak.BakiyeBorcHesapla(kiraSozlesme);
+                }
+                else
+                {
+                    TBYSOrtak.BakiyeBorcHesapla(kiraSozlesme, context);
+                }
             }
         }
 

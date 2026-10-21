@@ -41,6 +41,15 @@ namespace Model.Ortak
             }
         }
 
+        public static bool BakiyeBorcHesapla(KiraSozlesme kiraSozlesme, PortalLogContext context)
+        {
+            if (kiraSozlesme == null || context == null) return false;
+            if (kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK))
+                return BakiyeBorcHesaplaGunlukGecikmeZammi(kiraSozlesme, context);
+            BakiyeBorcHesaplaAylik(kiraSozlesme);
+            return true;
+        }
+
         /// <summary>
         /// KiraSozlesmesini parametre olarak alir.
         /// Bu KSnin ödeme planinda;
@@ -275,6 +284,52 @@ namespace Model.Ortak
                 }
             }
         }
+
+        public static bool BakiyeBorcHesaplaGunlukGecikmeZammi(KiraSozlesme kiraSozlesme, PortalLogContext context)
+        {
+            if (kiraSozlesme == null || context == null) return false;
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                bool updated = BakiyeBorcHesaplaGunlukGecikmeZammi(kiraSozlesme, context, transaction);
+                if (updated) transaction.Complete();
+                return updated;
+            }
+        }
+
+        private static bool BakiyeBorcHesaplaGunlukGecikmeZammi(KiraSozlesme kiraSozlesme, PortalLogContext context, SqlTransactionContext transaction)
+        {
+            Model.Services.TBYS.OdemeAyrintiService ayrintiService = new Model.Services.TBYS.OdemeAyrintiService(context);
+            if (!ayrintiService.DeleteBySozlesmeId(kiraSozlesme.Id, transaction)) return false;
+            Model.Services.TBYS.OdemePlaniService planService = new Model.Services.TBYS.OdemePlaniService(context);
+            List<OdemePlani> planlar = planService.GetBySozlesmeId(kiraSozlesme.Id, transaction);
+            decimal faizToplami = 0m;
+            decimal anaParaToplami = 0m;
+            decimal devirFaiz = 0m;
+            foreach (OdemePlani odemePlani in planlar)
+            {
+                if (odemePlani.Sira == 0)
+                {
+                    anaParaToplami = odemePlani.AnaPara;
+                    devirFaiz = odemePlani.FaizTutari;
+                    continue;
+                }
+
+                GunlukGecikmeZammiHesaplaRecursiveDegil(kiraSozlesme, odemePlani, ref anaParaToplami, context, transaction);
+                anaParaToplami -= odemePlani.KiraBedeli;
+                decimal gecikmeZammiTutari = ayrintiService.GetSumDelayAmount(odemePlani.Id, transaction);
+                decimal gecikmeZammiOrani = ayrintiService.GetLastDelayRate(odemePlani.Id, transaction);
+                faizToplami += gecikmeZammiTutari + devirFaiz;
+                devirFaiz = 0;
+                odemePlani.AnaPara = anaParaToplami;
+                odemePlani.FaizTutari = gecikmeZammiTutari;
+                odemePlani.FaizliBakiye = anaParaToplami + faizToplami;
+                odemePlani.FaizOrani = gecikmeZammiOrani;
+                odemePlani.OdenenTutar = new Model.Services.TBYS.OdemeService(context).GetSumBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlani.Id, transaction);
+                if (!planService.Update(odemePlani, transaction)) return false;
+                if (odemePlani.VadeBitTar >= DateTime.Today) break;
+            }
+            return true;
+        }
         private static void OdemeAyrintiKaydetVeyaGuncelle(DateTime ilkTarih, DateTime sonTarih, KiraSozlesme kiraSozlesme, OdemePlani odemePlani, GecikmeZammi gz, int odemeId, DateTime odemeTarihi,
             DateTime sonOdemeTarihi, int aySayisi, int gunSayisi,
             decimal anaPara, decimal odenenTutar, decimal kalanAnaPara, decimal gecikmeZammiTutari, string aciklama)
@@ -373,6 +428,39 @@ namespace Model.Ortak
             else //gecikme zammi listesi bos
             {
                 MessageHelper.PublishMessage("Gecikme zammi orani bulunamadi, islem yapabilmek için Gecikme Zammi Oranlarini giriniz.", ProjeConstants.MESAJ_HATA);
+            }
+        }
+
+        private static void GunlukGecikmeZammiHesaplaRecursiveDegil(KiraSozlesme kiraSozlesme, OdemePlani odemePlani,
+            ref decimal anaPara, PortalLogContext context, SqlTransactionContext transaction)
+        {
+            DateTime ilkTarih = odemePlani.VadeBasTar;
+            DateTime ikinciTarih = odemePlani.VadeBitTar;
+            List<GecikmeZammi> gecikmeZammiListesi = new GecikmeZammiService(context).GetByDateRange(ilkTarih, ikinciTarih, transaction);
+            foreach (GecikmeZammi gecikmeZammi in gecikmeZammiListesi)
+            {
+                List<Odeme> odemeler = new Model.Services.TBYS.OdemeService(context)
+                    .GetByKiraciVadeBasTarVadeBitTar(kiraSozlesme.Id, kiraSozlesme.KiraciId, ilkTarih, ikinciTarih, transaction);
+                if (odemeler.Count > 0)
+                {
+                    foreach (Odeme odeme in odemeler)
+                    {
+                        ikinciTarih = odeme.OdemeTarihi;
+                        int aySayisi = (ikinciTarih - ilkTarih).Days >= (odemePlani.VadeBitTar - odemePlani.VadeBasTar).Days ? 1 : 0;
+                        int gunSayisi = aySayisi < 1 ? Math.Max(0, (ikinciTarih.AddDays(1) - ilkTarih).Days) : 0;
+                        GecikmeZammiHesabi(ilkTarih, ikinciTarih, kiraSozlesme, odemePlani, gecikmeZammi, odeme, aySayisi, gunSayisi, ref anaPara, context, transaction);
+                        ilkTarih = odeme.OdemeTarihi.AddDays(1);
+                    }
+                    ilkTarih = ikinciTarih.AddDays(1);
+                    ikinciTarih = gecikmeZammi.BitisTarihi > ProjeConstants.NULL_TARIH ? gecikmeZammi.BitisTarihi : odemePlani.VadeBitTar;
+                    GecikmeZammiHesabi(ilkTarih, ikinciTarih, kiraSozlesme, odemePlani, gecikmeZammi, null, 0, Math.Max(0, (ikinciTarih.AddDays(1) - ilkTarih).Days), ref anaPara, context, transaction);
+                }
+                else
+                {
+                    int aySayisi = (ikinciTarih - ilkTarih).Days >= (odemePlani.VadeBitTar - odemePlani.VadeBasTar).Days ? 1 : 0;
+                    int gunSayisi = aySayisi < 1 ? Math.Max(0, (ikinciTarih.AddDays(1) - ilkTarih).Days) : 0;
+                    GecikmeZammiHesabi(ilkTarih, ikinciTarih, kiraSozlesme, odemePlani, gecikmeZammi, null, aySayisi, gunSayisi, ref anaPara, context, transaction);
+                }
             }
         }
         //public static void GunlukGecikmeZammiHesaplaRecursive(KiraSozlesme kiraSozlesme, OdemePlani odemePlani, DateTime ilkTarih, DateTime ikinciTarih,
@@ -479,6 +567,48 @@ namespace Model.Ortak
             }
 
 
+        }
+
+        private static void GecikmeZammiHesabi(DateTime ilkTarih, DateTime ikinciTarih, KiraSozlesme kiraSozlesme, OdemePlani odemePlani, GecikmeZammi gz, Odeme odeme, int aySayisi, int gunSayisi, ref decimal anaPara, PortalLogContext context, SqlTransactionContext transaction)
+        {
+            if (odemePlani.Sira <= 0) return;
+            IFormatProvider cultureInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+            decimal odenenTutar = odeme == null ? 0 : odeme.OdenenTutar;
+            decimal kalanAnaPara = anaPara + odenenTutar;
+            decimal gecikmeZammiTutari = anaPara * aySayisi * gz.ZamOrani / 100 + anaPara * gunSayisi * (gz.ZamOrani / 30) / 100;
+            string ayAciklama = anaPara.ToString("N", cultureInfo) + "TL x " + aySayisi + "ay x " + gz.ZamOrani.ToString("N", cultureInfo) + "/100 ";
+            string gunAciklama = anaPara.ToString("N", cultureInfo) + "TL x " + gunSayisi + "gün x (" + gz.ZamOrani.ToString("N", cultureInfo) + "/30)/100 ";
+            string aciklama = (anaPara * aySayisi * gz.ZamOrani / 100) < 0 ? ayAciklama : gunAciklama;
+            gecikmeZammiTutari = gecikmeZammiTutari > 0 ? 0 : gecikmeZammiTutari;
+            OdemeAyrintiKaydetVeyaGuncelle(ilkTarih, ikinciTarih, kiraSozlesme, odemePlani, gz, odeme, aySayisi, gunSayisi, kalanAnaPara, gecikmeZammiTutari, aciklama, context, transaction);
+            anaPara = kalanAnaPara;
+        }
+
+        private static void OdemeAyrintiKaydetVeyaGuncelle(DateTime ilkTarih, DateTime sonTarih, KiraSozlesme kiraSozlesme, OdemePlani odemePlani, GecikmeZammi gz, Odeme odeme, int aySayisi, int gunSayisi, decimal kalanAnaPara, decimal gecikmeZammiTutari, string aciklama, PortalLogContext context, SqlTransactionContext transaction)
+        {
+            int odemeId = odeme == null ? 0 : odeme.Id;
+            OdemeAyrintiService service = new OdemeAyrintiService(context);
+            OdemeAyrinti ayrinti = service.GetByPlanAndDelay(kiraSozlesme, odemePlani.Id, gz.Id, odemeId, transaction) ?? new OdemeAyrinti();
+            ayrinti.IlkTarih = ilkTarih;
+            ayrinti.SonTarih = sonTarih;
+            ayrinti.KiraciId = kiraSozlesme.KiraciId;
+            ayrinti.SozlesmeId = odemePlani.SozlesmeId;
+            ayrinti.OdemePlaniId = odemePlani.Id;
+            ayrinti.OdemeId = odemeId;
+            ayrinti.GecikmeZammiId = gz.Id;
+            ayrinti.OdemePlaniSirasi = odemePlani.Sira;
+            ayrinti.SonOdemeTarihi = odemePlani.VadeBitTar;
+            ayrinti.GecikmeZammiDegisimTar = gz.BaslangicTarihi;
+            ayrinti.OdemeTarihi = odeme == null ? new DateTime() : odeme.OdemeTarihi;
+            ayrinti.AySayisi = aySayisi;
+            ayrinti.GunSayisi = gunSayisi;
+            ayrinti.GecikmeZammiOrani = gz.ZamOrani;
+            ayrinti.AnaPara = kalanAnaPara - (odeme == null ? 0 : odeme.OdenenTutar);
+            ayrinti.OdenenTutar = odeme == null ? 0 : odeme.OdenenTutar;
+            ayrinti.KalanAnaPara = kalanAnaPara;
+            ayrinti.GecikmeZammiTutari = gecikmeZammiTutari;
+            ayrinti.Aciklama = aciklama;
+            if (ayrinti.Id == 0) service.Save(ayrinti, transaction); else service.Update(ayrinti, transaction);
         }
         public static bool OdemeYap(KiraSozlesme kiraSozlesme, DateTime odemetarihi, decimal odenenTutar, string aciklama, ref int odemeId)
         {

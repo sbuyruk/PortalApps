@@ -277,7 +277,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
             sozlesmeListesi = sozlesmeListesi.OrderBy(x => x.SozBasTar).ToList();
             foreach (var kiraSozlesme in sozlesmeListesi)
             {
-                TBYSOrtak.BakiyeBorcHesapla(kiraSozlesme);
+                TBYSOrtak.BakiyeBorcHesapla(kiraSozlesme, LoggingContext);
             }
         }
         private string CreateDataTable(string jsonData)
