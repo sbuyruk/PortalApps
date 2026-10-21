@@ -1,6 +1,40 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
-## Güncel parça: bağış ve bağışçı kayıtları, ilişkilendirme ve çıkarma
+## Güncel parça: bağışçı talepleri, yakınları ve taahhütleri
+
+Dal: `codex/tbys-donor-related-audit`. Başlangıç commit'i: `a34f67f868828d6705397a8f342957919fe95e8e`. Kod değişikliğinden önce yerel master temizdi ve GitHub master ile aynı commit'teydi. Önceki bağış/bağışçı parçası PR #462 ile birleştirildi. Kullanıcı toplu test yapacağını bildirmişti; bu parçanın çalışma zamanı doğrulaması henüz yapılmadı.
+
+BagisciTalepleriService, BagisciYakinlariService ve TasinmazTaahhutService bağlamlı kurucu ve transaction-aware Save/Update/Delete kullanır. Üç repository aynı bağlamla SQL izi üretir. Bağlamlı yazmada eski kayıt, bağlı kayıt doğrulamaları, iş yazması, audit başlığı ve ayrıntılar aynı SqlTransactionContext içindedir. Audit yazma hatası iş verisini de geri alır. Logging kapalı olsa da iş transaction'ı çalışır ve eski OlayKayit yoluna dönülmez. Bağlamsız eski çağıranlar korunur.
+
+Talep ve yakın ekleme/güncellemede pozitif BagisciId ve mevcut bağışçı gereklidir. Taahhüt hem bağımsız hem ilişkili kaydı destekler: BagisciId/TasinmazId sıfır olabilir; pozitifse ilgili kayıt aynı transaction'dan kilitlenerek doğrulanır, negatif kimlik reddedilir. Taahhüt güncellemesinde TasinmazId seçimini değiştirmek mevcut ekran davranışı gibi mümkündür. Güncelleme oluşturulma bilgilerini korur; eski kaydın bağışçısı arada değişmişse ilişkiyi eski bağışçıya döndürmez. Silmede mevcut kayıt yeniden okunur ve beklenen bağışçı (taahhütte ayrıca taşınmaz) kimliği kontrol edilir. Arayüzde talep ve taahhüt güncelleme/silme ekran bağışçısını da kontrol eder.
+
+BagisciTaahhutleriWP içindeki bağışçıdan taahhüt oluşturma artık AddDonorToPledgeList metodundadır. Bağışçı bilgisi, pozitif T.C. kimlik numarası için mevcut taahhüt kontrolü, ilçe eşlemesi, yeni kayıt ve audit aynı transaction'dadır. Ortak IlceService'in ayrı bağlantılı sorgusu bu transaction yolundan çağrılmaz; mevcut IlAdi eşitliği + IlceAdi LIKE eşlemesi repository'de aynı transaction ile yapılır. İlçe bulunamazsa önceki akış gibi yer kimlikleri sıfır kalır. Pozitif T.C. için mevcut kayıt varsa yeni kayıt yazılmaz; sıfır T.C. için önceki tekrar ekleme davranışı korunur. T.C. değeri teknik SQL izi/audit ayrıntısına yazılmaz. Bu kontrol yalnızca bu özel ekleme akışıdır; genel Save yeni bir global benzersizlik kuralı getirmez.
+
+Audit izin listeleri:
+
+- BagisciTalepleri: yalnızca BagisciId. Talep, Irtibat, Aciklama ve Tarih (modelde serbest string) ayrıntıya alınmaz.
+- BagisciYakinlari: yalnızca BagisciId. AdSoyad, Telefon ve serbest YakinlikDerecesi ayrıntıya alınmaz.
+- TasinmazTaahhut: BagisciId, TasinmazId, Ili, Ilcesi, EvrakTarihi, Sag_vefat. T.C. kimlik numarası, ad-soyad, adres, telefon, doğum/vefat tarihleri, EvrakSayisi ve serbest TaahhutAciklama ayrıntıya alınmaz.
+
+Yalnızca izinli alanların gerçek değişimi ayrıntı üretir. Talep metni veya yakının telefonunu değiştirmek gibi işlemlerde UPDATE başlığı vardır, ayrıntı sayısı sıfır olabilir; bu hata değildir. Kimin, hangi tarihte, hangi entity/Id üzerinde işlem yaptığı audit başlığında korunur. Eski/yeni değerler transaction'dan okunan veritabanı satırlarından alınır; NULL ile sıfır ayrıdır ve tarihler kültürden bağımsız biçimlenir. EntityId gerçek uygulama Id değeridir.
+
+Bağlam aktarılan çağıranlar: BagisciTalepleriWP, BagisciYakinlariWP, BagisciTaahhutleriWP, TaahhutListesiWP, TasinmazBagisciKartiWP, TasinmazBagisciListesiWP, TasinmazBagisciBilgiListesiWP ve KPSSorguListesiWP'nin taahhüt adaylarını okuyan sorgusu. Son ekrandaki KPS servis çağrıları veya diğer KPS yazmaları dönüştürülmedi. İlk dört ekrandaki bağışçı/bağış/taşınmaz okumaları da mevcut bağlamlı servislere taşındı; ortak il/ilçe ekran okumaları aynı kaldı.
+
+Dinamik yakın silme düğmesi ve talep/taahhüt silme olayları sonucu kontrol eder; başarısızlıkta başarılı yönlendirme yapılmaz. Yeni exception'lar ortak güvenli Türkçe mesaj ve başvuru koduyla bildirilir. ThreadAbortException yönlendirme sırasında hata olarak kaydedilmez. Taahhüt ekranındaki boş taşınmaz seçimi sıfır olarak alınır; SelectedItem null erişimi yapılmaz. Yeni kontrol veya üretilmiş ASCX çıktısı değişikliği yoktur.
+
+Kullanıcı TEST kontrolleri:
+
+1. Talep ekleme/güncelleme/silme ve yakın ekleme/silme yapın. Doğru entity/Id/OperationId ile INSERT/UPDATE/DELETE başlıkları oluşmalı. Talep, irtibat, telefon, ad-soyad ve açıklama audit ayrıntısında bulunmamalı. Yakın için yeni düzenleme ekranı eklenmedi; servis Update yolu hazırdır.
+2. Taahhüt ekleyin, EvrakTarihi veya taşınmaz seçimini değiştirin, silin. Ayrıntıda yalnızca değişen izinli alanların gerçek eski/yeni değerleri görünmeli. Sıfır kimlikle bağlantısız taahhüt servis yolu korunmalı; pozitif ama bulunmayan bağlantı kaydı yazılmamalı.
+3. Talep/yakın ekleme sırasında geçersiz bağışçı kimliğiyle kayıt oluşmamalı. Bağışçı silme ile bu yeni ekleme yollarını birlikte deneyin; kayıt eklenmişse bağlı bağışçı silinememeli. Diğer henüz dönüştürülmemiş legacy yazıcılar bu kontrolle tamamlanmış sayılmaz.
+4. Bağışçıyı taahhüt listesine ekleme işlemini deneyin. Pozitif T.C. ile mevcut kayıt varsa çoğaltmamalı. Bağışçı/taahhüt/ilçe SELECT izleri aynı OperationId altında görünmeli; T.C. değeri log ayrıntısında olmamalı. Sıfır T.C. tekrar davranışı ve ilçe bulunamayan durum önceki davranışla uyumlu olmalı.
+5. Kontrollü iş/audit yazma hatasında yeni kayıt, güncelleme/silme ve tüm audit değişiklikleri birlikte rollback olmalı; bağımsız teknik Error kaydı korunmalı. Logging kapalıyken eski OlayKayit çağrısı oluşmamalı.
+6. Talep/taahhüt ekranının bağışçısıyla eşleşmeyen kayıt kimliğinde güncelleme/silme yapılmamalı. Değişmiş veya kaybolmuş kayıtta hatalı başarı mesajı verilmemeli.
+7. Dönüştürülen çağıranlardaki liste, kart ve taahhüt aday sorgularının sonuçları korunmalı; SQL izi doğru WebPart/metotla görünmeli. Başarılı yönlendirme hata olarak loglanmamalı. Önceki bağışçı silme bağımlılık kontrollerini talep/yakın/taahhüt için tekrar doğrulayın.
+
+Sözleşme ve ödeme zincirleri, envanterden çıkarma ve kalan TBYS çağıranları sonraki parçalardır; TBYS geçişi bütünüyle tamamlandı kabul edilmez. Mevcut EnabledProjects=TBYS varsa web.config değişmez; tek tek etkinleştirmede ilgili WebPart adları TBYS: ön ekiyle kullanılır. Yeni dosya/şema/tanılama altyapısı eklenmedi; üretilmiş ASCX dosyaları değişmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve git diff --check yapıldı. Build ve TEST kullanıcıya aittir.
+
+## Önceki parça: bağış ve bağışçı kayıtları, ilişkilendirme ve çıkarma
 
 Dal: `codex/tbys-donor-donation-audit`. Başlangıç commit'i: `429d3203dea7cf6ea4c3728892f8b8a28929bc52`. Kod değişikliğinden önce yerel master temizdi ve GitHub master ile aynı commit'teydi. Önceki sigorta/onarım parçası PR #461 ile birleştirildi. Kullanıcı toplu test yapacağını bildirmişti; bu parçanın çalışma zamanı doğrulaması henüz yapılmadı.
 

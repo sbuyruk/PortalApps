@@ -1,4 +1,5 @@
 using DAO.Ortak;
+using Utility.Logging;
 using System;
 using System.Data;
 
@@ -6,7 +7,7 @@ namespace DAO.Repositories.TBYS
 {
     public class TasinmazTaahhutRepository
     {
-        private readonly DbClass db;
+        private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
         public TasinmazTaahhutRepository() : this(new DbClass()) { }
@@ -14,7 +15,13 @@ namespace DAO.Repositories.TBYS
         public TasinmazTaahhutRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
+            this.db = new TbysSqlExecutor(db, "TasinmazTaahhutRepository");
+            queryBuilder = new CrudQueryBuilder();
+        }
+
+        public TasinmazTaahhutRepository(PortalLogContext context)
+        {
+            db = new TbysSqlExecutor(context, "TasinmazTaahhutRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -125,6 +132,43 @@ namespace DAO.Repositories.TBYS
         public bool Delete(int id)
         {
             return db.DeleteFromDb(queryBuilder.BuildDelete("TasinmazTaahhut_Table", id), "");
+        }
+
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM TasinmazTaahhut_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
+        public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Insert(queryBuilder.BuildInsert(entity, "TasinmazTaahhut_Table"), transaction, context);
+        }
+
+        public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Update2Db(queryBuilder.BuildUpdate(entity, "TasinmazTaahhut_Table"), transaction, context);
+        }
+
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.DeleteFromDb(queryBuilder.BuildDelete("TasinmazTaahhut_Table", id), transaction, context);
+        }
+
+        public DataTable SelectByTcKimlikNo(long tcKimlikNo, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT TOP (1) * FROM TasinmazTaahhut_Table WITH (UPDLOCK, HOLDLOCK) WHERE TCKimlikNo > 0 AND TCKimlikNo=@TCKimlikNo ORDER BY Id");
+            query.AddParameter("@TCKimlikNo", tcKimlikNo);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
+        public DataTable SelectDonorDistrict(string province, string district, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT TOP (1) Id, IlId FROM Ilce_Table WHERE IlAdi=@Province AND IlceAdi LIKE @District ORDER BY IlceAdi, Id");
+            query.AddParameter("@Province", province);
+            query.AddParameter("@District", "%" + district + "%");
+            return db.SelectFromDb(query, transaction, context);
         }
     }
 }

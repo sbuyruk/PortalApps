@@ -356,7 +356,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
         private void BagisciTalepleriniDoldur(TasinmazBagisci bagisci)
         {
             BagisciTalepleri bt = new BagisciTalepleri();
-            List<BagisciTalepleri> bagisciListesi = new BagisciTalepleriService().GetByBagisciId(bagisci.Id);
+            List<BagisciTalepleri> bagisciListesi = new BagisciTalepleriService(LoggingContext).GetByBagisciId(bagisci.Id);
             BagisciTalepleriTable.Rows.Clear();
             BagisciTalepleriTable.BorderWidth = 2;
             TableHeaderRow headerRow = new TableHeaderRow();
@@ -412,7 +412,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
         private void BagisciYakinlariniDoldur(TasinmazBagisci bagisci)
         {
             BagisciYakinlari bt = new BagisciYakinlari();
-            List<BagisciYakinlari> bagisciListesi = new BagisciYakinlariService().GetByBagisciId(bagisci.Id);
+            List<BagisciYakinlari> bagisciListesi = new BagisciYakinlariService(LoggingContext).GetByBagisciId(bagisci.Id);
             BagisciYakinlariTable.Rows.Clear();
             BagisciYakinlariTable.BorderWidth = 2;
             TableHeaderRow headerRow = new TableHeaderRow();
@@ -463,7 +463,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
         private void TaahhutleriDoldur(TasinmazBagisci bagisci)
         {
             TasinmazTaahhut bt = new TasinmazTaahhut();
-            List<TasinmazTaahhut> taahhutListesi = new Model.Services.TBYS.TasinmazTaahhutService().GetByBagisciId(bagisci.Id);
+            List<TasinmazTaahhut> taahhutListesi = new Model.Services.TBYS.TasinmazTaahhutService(LoggingContext).GetByBagisciId(bagisci.Id);
             TaahhutTable.Rows.Clear();
             TaahhutTable.BorderWidth = 2;
             TableHeaderRow headerRow = new TableHeaderRow();
@@ -500,7 +500,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             TaahhutTable.Controls.Add(headerRow1);
 
             TasinmazTaahhut tt = new TasinmazTaahhut();
-            List<TasinmazTaahhut> list = new Model.Services.TBYS.TasinmazTaahhutService().GetByBagisciId(bagisci.Id);
+            List<TasinmazTaahhut> list = new Model.Services.TBYS.TasinmazTaahhutService(LoggingContext).GetByBagisciId(bagisci.Id);
             foreach (TasinmazTaahhut item in list)
             {
                 TableRow row = new TableRow();

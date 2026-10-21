@@ -141,7 +141,7 @@ namespace TBYS_WebParts.TasinmazBagisciBilgiListesiWP
 
                 string talepler = string.Empty;
                 BagisciTalepleri bagisciTalepleridao = new BagisciTalepleri();
-                List<BagisciTalepleri> talepList = new BagisciTalepleriService().GetByBagisciId(tasinmazBagisci.Id);
+                List<BagisciTalepleri> talepList = new BagisciTalepleriService(LoggingContext).GetByBagisciId(tasinmazBagisci.Id);
            
                 foreach (BagisciTalepleri talep in talepList)
                 {
