@@ -1,5 +1,11 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
+## Güncel parça: hukuki takip transaction bağlantısı
+
+Dal: `codex/tbys-legal-tracking-batch`. Başlangıç commit'i: `c73ca1fd` (PR #472 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. `HukukiTakipRepository` transaction-aware CRUD overload'larına, `HukukiTakipService` bağlamlı CRUD ve audit akışına geçirildi. Hukuki takip listesi ile ana kira sözleşmesi ekranındaki üç hukuki takip çağrısı bağlamlı servisi kullanıyor.
+
+Audit yalnızca entity başlığı üretir; hukuki takip açıklaması ve borç ayrıntıları audit değerlerine alınmadı. Üretilmiş ASCX dosyaları değişmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve `git diff --check` yapıldı. Build ve TEST kullanıcıya aittir.
+
 ## Güncel parça: kiracı CRUD ve ekran bağlantıları
 
 Dal: `codex/tbys-tenant-crud-workflow`. Başlangıç commit'i: `f0d79a25` (PR #471 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. `KiraciRepository` transaction-aware INSERT/UPDATE/DELETE overload'ları ve `KiraciService` bağlamlı CRUD/audit akışı eklendi. Kiracı giriş ekranının üç yazma çağrısı ile beş ödeme/kira ekranındaki kiracı okumaları bağlamlı servislere geçirildi. Bu dalda 8 kod dosyası ve envanter olmak üzere 9 dosya değişti.

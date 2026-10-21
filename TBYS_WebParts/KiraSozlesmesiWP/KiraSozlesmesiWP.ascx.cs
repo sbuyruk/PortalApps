@@ -836,7 +836,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             bool islemBaslatildi = false;
             try
             {
-                HukukiTakipService hukukiTakipService = new HukukiTakipService();
+                HukukiTakipService hukukiTakipService = new HukukiTakipService(LoggingContext);
                 HukukiTakip hukukiTakip = hukukiTakipService.GetBySozlesmeId(kiraSozlesme.Id);
                 if (hukukiTakip != null)
                 {
@@ -865,7 +865,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             try
             {
                 HukukiTakip hukukiTakip = new HukukiTakip();
-                HukukiTakipService hukukiTakipService = new HukukiTakipService();
+                HukukiTakipService hukukiTakipService = new HukukiTakipService(LoggingContext);
                 hukukiTakip.SozlesmeId = kiraSozlesme.Id;
                 hukukiTakip.KiraciId = kiraSozlesme.KiraciId;
                 hukukiTakip.BorcAnaPara = DevirAnaParaHesapla(kiraSozlesme);
@@ -1401,7 +1401,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
             try
             {
                 HukukiTakip hukukiTakip = new HukukiTakip();
-                HukukiTakipService hukukiTakipService = new HukukiTakipService();
+                HukukiTakipService hukukiTakipService = new HukukiTakipService(LoggingContext);
                 hukukiTakip.SozlesmeId = kiraSozlesme.Id;
                 hukukiTakip.KiraciId = kiraSozlesme.KiraciId;
                 hukukiTakip.BorcAnaPara = DevirAnaParaHesapla(kiraSozlesme);

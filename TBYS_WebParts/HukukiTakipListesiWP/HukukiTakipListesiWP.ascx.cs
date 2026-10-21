@@ -211,7 +211,7 @@ namespace TBYS_WebParts.HukukiTakipListesiWP
         }
         private string TabloJson()
         {
-            HukukiTakipService hukukiTakipService = new HukukiTakipService();
+            HukukiTakipService hukukiTakipService = new HukukiTakipService(LoggingContext);
             string json = hukukiTakipService.GetActiveListAsJson();
 
             return json;
@@ -219,7 +219,7 @@ namespace TBYS_WebParts.HukukiTakipListesiWP
         }
         private DataTable HukukiTakipDataTable()
         {
-            HukukiTakipService hukukiTakipService = new HukukiTakipService();
+            HukukiTakipService hukukiTakipService = new HukukiTakipService(LoggingContext);
             DataTable dataTable = hukukiTakipService.GetActiveList();
 
             return dataTable;
