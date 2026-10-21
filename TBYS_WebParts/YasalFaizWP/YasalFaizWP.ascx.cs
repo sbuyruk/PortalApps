@@ -460,7 +460,7 @@ namespace TBYS_WebParts.YasalFaizWP
         //                    {
         //                        yasalFaiz.FaizOrani = faizOrani.ConvertToDecimal();
         //                        yasalFaiz.Degistiren = CurrentUserName;
-        //                        if (new Model.Services.TBYS.YasalFaizService().Update(yasalFaiz))
+        //                        if (new Model.Services.TBYS.YasalFaizService(LoggingContext).Update(yasalFaiz))
         //                        {
         //                            MessageHelper.PublishMessage("Kayit Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
         //                            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();

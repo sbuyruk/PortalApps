@@ -280,7 +280,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
                 //if (sozlesmeYenilendiMi)
                 //{
                 //    KiraSozlesme oncekiKiraSozlesme = new KiraSozlesme();
-                //    oncekiKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetByKiraciIdAndDate(kiraciId.ConvertToInt(), sozBitTar.ConvertToDatetime().AddMonths(-1));
+                //    oncekiKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetByKiraciIdAndDate(kiraciId.ConvertToInt(), sozBitTar.ConvertToDatetime().AddMonths(-1));
                 //    if (oncekiKiraSozlesme != null)
                 //    {
                 //        kiraBedeli = oncekiKiraSozlesme.KiraBedeli;
@@ -353,7 +353,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             YasalFaiz yasalFaiz = new YasalFaiz();
             //tarih = tarih.AddMonths(1);//bir önceki ay geliyor
             //DateTime gelecekAy = DateTime.Today.AddMonths(1);
-            yasalFaiz = new Model.Services.TBYS.YasalFaizService().GetByYearMonth(tarih.Year, tarih.Month);
+            yasalFaiz = new Model.Services.TBYS.YasalFaizService(LoggingContext).GetByYearMonth(tarih.Year, tarih.Month);
             if (yasalFaiz != null)
             {
                 tufe = yasalFaiz.Tufe;

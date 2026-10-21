@@ -212,7 +212,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
             if (bagis != null)
             {
                 TasinmazBagisci bagisci = new TasinmazBagisci();
-                bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(bagis.BagisciId);
+                bagisci = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetById(bagis.BagisciId);
                 if (bagisci != null)
                 {
                     BagisciBilgileriniDoldur(bagisci);
@@ -574,7 +574,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
                 foreach (KiraSozlesme item in kiraSozlesmeListesi)
                 {
                     Kiraci kiraci = new Kiraci();
-                    kiraci = new Model.Services.TBYS.KiraciService().GetById(item.KiraciId);
+                    kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(item.KiraciId);
                     TableRow row = new TableRow();
                     TableCell adiCell = new TableCell();
                     adiCell.Text = kiraci.Adi + " " + kiraci.Soyadi;
@@ -610,7 +610,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
             OnarimTable.Controls.Add(headerRow1);
 
             Onarim onarim = new Onarim();
-            List<Onarim> onarimListesi = new Model.Services.TBYS.OnarimService().GetByTasinmazId(tasinmazId);
+            List<Onarim> onarimListesi = new Model.Services.TBYS.OnarimService(LoggingContext).GetByTasinmazId(tasinmazId);
             if (onarimListesi == null)
             {
                 TableHeaderCell cell1 = new TableHeaderCell();
