@@ -1,4 +1,5 @@
 using DAO.Ortak;
+using Utility.Logging;
 using System;
 using System.Data;
 using Utility.HelperClasses;
@@ -8,7 +9,7 @@ namespace DAO.Repositories.TBYS
 {
     public class KiraSozlesmeRepository
     {
-        private readonly DbClass db;
+        private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
         public KiraSozlesmeRepository() : this(new DbClass()) { }
@@ -16,7 +17,13 @@ namespace DAO.Repositories.TBYS
         public KiraSozlesmeRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
+            this.db = new TbysSqlExecutor(db, "KiraSozlesmeRepository");
+            queryBuilder = new CrudQueryBuilder();
+        }
+
+        public KiraSozlesmeRepository(PortalLogContext context)
+        {
+            db = new TbysSqlExecutor(context, "KiraSozlesmeRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -87,7 +94,7 @@ namespace DAO.Repositories.TBYS
                 WHERE 1 > 0
                 {0} {1} {2}
                 ORDER BY DosyaNo, S.Id", aktifStr, kiraciStr, bolgeStr);
-            return db.SelectFromDb(sql, "");
+            return db.SelectFromDb(new SqlQuery(sql), "");
         }
         public DataTable SelectList(int kiraciId, int aktif, int bolgeId)
         {
@@ -105,7 +112,7 @@ namespace DAO.Repositories.TBYS
                 WHERE 1 > 0
                 {0} {1} {2}
                 ORDER BY DosyaNo, S.Id", aktifStr, kiraciStr, bolgeStr);
-            return db.SelectFromDb(sql, "");
+            return db.SelectFromDb(new SqlQuery(sql), "");
         }
         public DataTable SelectRentIncreaseDue(int bolgeId, string tarih)
         {
@@ -122,7 +129,7 @@ namespace DAO.Repositories.TBYS
                     {0}
                     AND (CONVERT(int,ArtisAyi) = DATEPART(MM,{1}) AND YEAR(SozBitTar)=DATEPART(YYYY,{1}))
                 ORDER BY S.BolgeId, SozBitTar", bolgeStr, tarih);
-            return db.SelectFromDb(sql, "");
+            return db.SelectFromDb(new SqlQuery(sql), "");
         }
         public DataTable SelectRealizedRentIncreases(int bolgeId, string baslangic, string bitis)
         {
@@ -141,7 +148,7 @@ namespace DAO.Repositories.TBYS
                 WHERE A.Aktif=1 AND A.SozBasTar >={0} AND A.SozBasTar<{1}
                     {2}
                 ORDER BY A.BolgeId, SozBitTar DESC", baslangic, bitis, bolgeStr);
-            return db.SelectFromDb(sql, "");
+            return db.SelectFromDb(new SqlQuery(sql), "");
         }
         public DataTable SelectListByYear(int yil)
         {
@@ -163,7 +170,7 @@ namespace DAO.Repositories.TBYS
                     LEFT JOIN Il_Table E ON E.IlAdi=D.Ili
                 WHERE YEAR(S.IlkSozlesmeTar)={0}
                 ORDER BY DosyaNo", yil);
-            return db.SelectFromDb(sql, "");
+            return db.SelectFromDb(new SqlQuery(sql), "");
         }
         public DataTable SelectCompletedListByYear(int yil)
         {
@@ -186,7 +193,7 @@ namespace DAO.Repositories.TBYS
                 WHERE YEAR(S.DurumDegismeTar)={0}
                     AND S.SozlesmeDurumu in ({1},{2})
                 ORDER BY DosyaNo", yil, ProjeConstants.KIRASOZLESME_DURUMU_BITTI.ReturnQuotedValue(), ProjeConstants.KIRASOZLESME_DURUMU_FESIH.ReturnQuotedValue());
-            return db.SelectFromDb(sql, "");
+            return db.SelectFromDb(new SqlQuery(sql), "");
         }
         public DataTable SelectActiveByKiraciId(int kiraciId)
         {
@@ -209,7 +216,7 @@ namespace DAO.Repositories.TBYS
         public DataTable SelectByKiraciIdAndDate(int kiraciId, string tarih)
         {
             string sql = string.Format("SELECT * FROM KiraSozlesme_Table WHERE KiraciId={0} AND ({1} >= SozBasTar AND {1} < SozBitTar)", kiraciId.ReturnQuotedValue(), tarih);
-            return db.SelectFromDb(sql, "");
+            return db.SelectFromDb(new SqlQuery(sql), "");
         }
         public DataTable SelectCompletedByKiraciId(int kiraciId)
         {
@@ -220,10 +227,10 @@ namespace DAO.Repositories.TBYS
         public DataTable SelectNearestByKiraciIdAndDate(int kiraciId, string tarih)
         {
             string sql = string.Format("SELECT * FROM KiraSozlesme_Table WHERE KiraciId={0} AND SozBitTar >= {1} ORDER BY SozBasTar", kiraciId.ReturnQuotedValue(), tarih);
-            DataTable table = db.SelectFromDb(sql, "");
+            DataTable table = db.SelectFromDb(new SqlQuery(sql), "");
             if (table != null) return table;
             sql = string.Format("SELECT * FROM KiraSozlesme_Table WHERE KiraciId={0} AND SozBasTar < {1} ORDER BY SozBasTar DESC", kiraciId.ReturnQuotedValue(), tarih);
-            return db.SelectFromDb(sql, "");
+            return db.SelectFromDb(new SqlQuery(sql), "");
         }
         public DataTable SelectByTasinmazId(int tasinmazId)
         {
@@ -234,7 +241,7 @@ namespace DAO.Repositories.TBYS
                     LEFT OUTER JOIN Bagis_Table C ON C.TasinmazId=B.TasinmazId
                 WHERE A.Aktif=1 AND B.TasinmazId={0}
                 ORDER BY B.TasinmazId", tasinmazId.ReturnQuotedValue());
-            return db.SelectFromDb(sql, "");
+            return db.SelectFromDb(new SqlQuery(sql), "");
         }
         public DataTable SelectAddressById(int sozlesmeId)
         {
@@ -244,7 +251,7 @@ namespace DAO.Repositories.TBYS
                     LEFT JOIN SozlesmeTasinmaz_Table B On B.SozlesmeId=A.Id
                     LEFT JOIN Tasinmaz_Table C On C.Id=B.TasinmazId
                 WHERE A.Id= {0}", sozlesmeId.ReturnQuotedValue());
-            return db.SelectFromDb(sql, "");
+            return db.SelectFromDb(new SqlQuery(sql), "");
         }
         public DataTable SelectSecurityDepositSummaryByRegionAndPurpose(int bolgeId, string kiralamaAmaci)
         {
@@ -257,7 +264,7 @@ namespace DAO.Repositories.TBYS
                 WHERE A.Aktif=1 {0} {1}
                 GROUP BY A.BolgeId, B.KiralamaAmaci
                 ORDER BY BolgeId", bolgeStr, purposeStr);
-            return db.SelectFromDb(sql, "");
+            return db.SelectFromDb(new SqlQuery(sql), "");
         }
         public DataTable SelectTenantCountAndRentTotal(int bolgeId, int ay, int yil)
         {
@@ -276,7 +283,7 @@ namespace DAO.Repositories.TBYS
                     LEFT JOIN Bolge_Table H ON H.Id=C.BolgeId
                 WHERE YEAR(A.OdemeTarihi) ={0} AND MONTH(A.OdemeTarihi) ={1} {2}
                 GROUP BY H.KisaAdi,B.KiralamaAmaci", yil, ay, bolgeStr);
-            return db.SelectFromDb(sql, "");
+            return db.SelectFromDb(new SqlQuery(sql), "");
         }
         public DataTable SelectTenantCountByRegionAndDate(int bolgeId, int ay, int yil)
         {
@@ -300,7 +307,7 @@ namespace DAO.Repositories.TBYS
                 WHERE 1>0 {0} AND A.SozBasTar<{2} AND A.SozBitTar>={1}
                     AND (A.SozlesmeDurumu='Devam Ediyor' OR (A.SozlesmeDurumu!='Devam Ediyor' AND A.SozlesmeDurumu!='Yenilendi' AND A.DurumDegismeTar BETWEEN {1} AND {2}) OR (A.SozlesmeDurumu='Yenilendi' AND A.SozBitTar>{2}))
                 ORDER BY A.BolgeId,A.DosyaNo,B.Adi", region, firstDay.ConvertToDatetimeEmptyIfNull().ReturnQuotedValue(), lastDay.ConvertToDatetimeEmptyIfNull().ReturnQuotedValue(), plan);
-            return db.SelectFromDb(sql, "");
+            return db.SelectFromDb(new SqlQuery(sql), "");
         }
         public DataTable SelectByKiraciAdi(string adi)
         {
@@ -308,7 +315,7 @@ namespace DAO.Repositories.TBYS
                 FROM KiraSozlesme_Table A INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId
                 WHERE A.KiraciId > 0 AND B.Adi ={0}
                 GROUP BY DosyaNo, Adi + Soyadi HAVING COUNT(Adi + Soyadi)>1", adi.ReturnQuotedValue());
-            return db.SelectFromDb(sql, "");
+            return db.SelectFromDb(new SqlQuery(sql), "");
         }
         public DataTable SelectTransferRequiredActiveContracts()
         {
@@ -328,19 +335,19 @@ namespace DAO.Repositories.TBYS
             string sql = dosyaNo > 0
                 ? string.Format("SELECT * FROM KiraSozlesme_Table WHERE Aktif=1 AND DosyaNo > {0} ORDER BY DosyaNo,Id", dosyaNo.ReturnQuotedValue())
                 : string.Format("SELECT * FROM KiraSozlesme_Table WHERE Aktif=1 AND DosyaNo IS NULL AND Id > {0} ORDER BY DosyaNo,Id", id.ReturnQuotedValue());
-            return db.SelectFromDb(sql, "");
+            return db.SelectFromDb(new SqlQuery(sql), "");
         }
         public DataTable SelectPreviousByTenant(int kiraciId, string sozBasTar)
         {
             string sql = string.Format("SELECT * FROM KiraSozlesme_Table WHERE KiraciId={0} AND SozBastar < {1} ORDER BY SozBasTar DESC", kiraciId.ReturnQuotedValue(), sozBasTar);
-            return db.SelectFromDb(sql, "");
+            return db.SelectFromDb(new SqlQuery(sql), "");
         }
         public DataTable SelectPrevious(int id, int dosyaNo)
         {
             string sql = dosyaNo > 0
                 ? string.Format("SELECT * FROM KiraSozlesme_Table WHERE Aktif=1 AND DosyaNo < {0} ORDER BY DosyaNo DESC,Id DESC", dosyaNo.ReturnQuotedValue())
                 : string.Format("SELECT * FROM KiraSozlesme_Table WHERE Aktif=1 AND DosyaNo IS NULL AND Id < {0} ORDER BY DosyaNo DESC,Id DESC", id.ReturnQuotedValue());
-            return db.SelectFromDb(sql, "");
+            return db.SelectFromDb(new SqlQuery(sql), "");
         }
         public DataTable SelectMax()
         {
@@ -359,14 +366,14 @@ namespace DAO.Repositories.TBYS
             string sql = dosyaNo > 0
                 ? string.Format("SELECT * FROM KiraSozlesme_Table WHERE Aktif=0 AND DosyaNo > {0} ORDER BY DosyaNo,Id", dosyaNo.ReturnQuotedValue())
                 : string.Format("SELECT * FROM KiraSozlesme_Table WHERE Aktif=0 AND DosyaNo IS NULL AND Id > {0} ORDER BY DosyaNo,Id", id.ReturnQuotedValue());
-            return db.SelectFromDb(sql, "");
+            return db.SelectFromDb(new SqlQuery(sql), "");
         }
         public DataTable SelectPreviousCompleted(int id, int dosyaNo)
         {
             string sql = dosyaNo > 0
                 ? string.Format("SELECT * FROM KiraSozlesme_Table WHERE Aktif=0 AND DosyaNo < {0} ORDER BY DosyaNo DESC,Id DESC", dosyaNo.ReturnQuotedValue())
                 : string.Format("SELECT * FROM KiraSozlesme_Table WHERE Aktif=0 AND DosyaNo IS NULL AND Id < {0} ORDER BY DosyaNo DESC,Id DESC", id.ReturnQuotedValue());
-            return db.SelectFromDb(sql, "");
+            return db.SelectFromDb(new SqlQuery(sql), "");
         }
         public DataTable SelectMaxCompleted()
         {
@@ -379,6 +386,27 @@ namespace DAO.Repositories.TBYS
             return db.SelectFromDb(new SqlQuery(@"
                 SELECT * FROM KiraSozlesme_Table
                 WHERE DosyaNo=(SELECT MIN(DosyaNo) FROM KiraSozlesme_Table WHERE Aktif=0 AND DosyaNo>0)"), "");
+        }
+
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM KiraSozlesme_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
+        public bool UpdateTenant(int id, int tenantId, DateTime changedAt, string changedBy,
+            SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                UPDATE KiraSozlesme_Table SET KiraciId=@TenantId, DegistirmeTarihi=@ChangedAt, Degistiren=@ChangedBy
+                WHERE Id=@Id;
+                IF @@ROWCOUNT <> 1 THROW 50001, N'Sözleşmenin kiracı bilgisi güncellenemedi.', 1;");
+            query.AddParameter("@Id", id);
+            query.AddParameter("@TenantId", tenantId);
+            query.AddParameter("@ChangedAt", changedAt);
+            query.AddParameter("@ChangedBy", changedBy);
+            return db.Update2Db(query, transaction, context);
         }
     }
 }

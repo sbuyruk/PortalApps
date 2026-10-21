@@ -181,20 +181,27 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         {
 
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt(), LoggingContext);
             if (kiraSozlesme != null)
             {
                 SecileniKaydet(kiraSozlesme);
                 SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
                 SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-                List<SozlesmeTasinmaz> list = new Model.Services.TBYS.SozlesmeTasinmazService().GetBySozlesmeId(kiraSozlesme.Id);
+                List<SozlesmeTasinmaz> list = new Model.Services.TBYS.SozlesmeTasinmazService(LoggingContext).GetBySozlesmeId(kiraSozlesme.Id);
                 TamamBtn.Visible = list.Count > 0;
 
-                SecilenKiraciyiKaydet(kiraSozlesme);
                 Kiraci kiraci = new Kiraci();
-                kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId);
-                AdiLbl.Text = kiraci.Adi + " " + kiraci.Soyadi + " (" + kiraci.Id + ")";
-                KiraciAdiSoyadiLbl.Text = kiraci.Adi + " " + kiraci.Soyadi + " (" + kiraci.Adres + ")";
+                kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraSozlesme.KiraciId, LoggingContext);
+                if (kiraci != null)
+                {
+                    AdiLbl.Text = kiraci.Adi + " " + kiraci.Soyadi + " (" + kiraci.Id + ")";
+                    KiraciAdiSoyadiLbl.Text = kiraci.Adi + " " + kiraci.Soyadi + " (" + kiraci.Adres + ")";
+                }
+                else
+                {
+                    AdiLbl.Text = "Kiracı seçiniz.";
+                    KiraciAdiSoyadiLbl.Text = string.Empty;
+                }
             }
         }
         private void SozlesmeTasinmazTablosunuDoldur(KiraSozlesme kiraSozlesme)
@@ -203,7 +210,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
             PopUpTable.Rows.Clear();
 
             SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-            List<SozlesmeTasinmaz> list = new Model.Services.TBYS.SozlesmeTasinmazService().GetBySozlesmeId(kiraSozlesme.Id);
+            List<SozlesmeTasinmaz> list = new Model.Services.TBYS.SozlesmeTasinmazService(LoggingContext).GetBySozlesmeId(kiraSozlesme.Id);
             SiraNoCell.Text = "Sira";
             AdresCell.Text = "Adres";
             int siraNo = 1;
@@ -235,13 +242,13 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 BagimsizBolumIdCell.Visible = false;
 
                 Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = new TasinmazService().SelectById(sozlesmeTasinmaz.TasinmazId);
+                tasinmaz = new TasinmazService(LoggingContext).SelectById(sozlesmeTasinmaz.TasinmazId);
                 string adres = string.Empty;
                 if (tasinmaz != null)
                 {
                     adres = tasinmaz.Adres;
                     BagimsizBolum bb = new BagimsizBolum();
-                    bb = new BagimsizBolumService().GetById(sozlesmeTasinmaz.BolumId);
+                    bb = new BagimsizBolumService(LoggingContext).GetById(sozlesmeTasinmaz.BolumId);
                     if (bb != null)
                     {
                         adres += " " + bb.BolumNo;
@@ -282,13 +289,23 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 cikarBtn.CssClass = "btn btn-xs btn-danger";
                 cikarBtn.Click += delegate
                 {
-                    //int tasinmazId = sozlesmeTasinmaz.TasinmazId; //TODO commentledim, bu dogru mu
-                new Model.Services.TBYS.SozlesmeTasinmazService().Delete(sozlesmeTasinmaz);
-                    string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                    int queryIndex = newUrl.IndexOf("?");
-                    if (queryIndex > 0)
-                        newUrl = newUrl.Substring(0, queryIndex);
-                    Page.Response.Redirect(newUrl + "?KiraSozlesmeId=" + KiraSozlesmeIdQS, true);
+                    try
+                    {
+                        if (!new Model.Services.TBYS.SozlesmeTasinmazService(LoggingContext).Delete(sozlesmeTasinmaz))
+                        {
+                            MessageHelper.PublishMessage("Sözleşme bağlantısı çıkarılamadı. Sayfayı yenileyip tekrar deneyiniz.", ProjeConstants.MESAJ_HATA);
+                            return;
+                        }
+                        string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                        int queryIndex = newUrl.IndexOf("?");
+                        if (queryIndex > 0) newUrl = newUrl.Substring(0, queryIndex);
+                        Page.Response.Redirect(newUrl + "?KiraSozlesmeId=" + KiraSozlesmeIdQS, true);
+                    }
+                    catch (System.Threading.ThreadAbortException) { throw; }
+                    catch (Exception error)
+                    {
+                        TbysWebPartLog.ReportError(LoggingContext, "TBYS.SozlesmeTasinmazWP.Delete", error);
+                    }
                 };
                 cikarCell.Controls.Add(cikarBtn);
                 row.Controls.Add(cikarCell);
@@ -298,67 +315,16 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         }
         private void SecileniKaydet(KiraSozlesme kiraSozlesme)
         {
-            if (kiraSozlesme != null)
+            if (kiraSozlesme == null) return;
+            IdLbl.Text = kiraSozlesme.Id.ToString();
+            int propertyId = TasinmazIdQS.ConvertToInt();
+            int tenantId = KiraciIdQS.ConvertToInt();
+            SozlesmeTasinmaz item = new SozlesmeTasinmaz
             {
-                IdLbl.Text = kiraSozlesme.Id.ToString();
-                int tasinmazId = TasinmazIdQS.ConvertToInt();
-                if (tasinmazId > 0)
-                {
-                    Tasinmaz tasinmaz = new Tasinmaz();
-                    tasinmaz = new TasinmazService().SelectById(tasinmazId);
-                    if (tasinmaz != null)
-                    {
-
-                        BagimsizBolum babo = new BagimsizBolum();
-                        babo = new BagimsizBolumService().GetById(BolumIdQS.ConvertToInt());
-                        //BagimsizBolum bolüm varsa
-                        if (babo != null)
-                        {
-                            SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-                            List<SozlesmeTasinmaz> list = new SozlesmeTasinmazService().GetBySozlesmeIdTasinmazId(kiraSozlesme.Id, tasinmaz.Id, babo.Id);
-                            if (list.Count < 1)// bu bagimsizbolum  vt'da yoksa insert et varsa bisey yapma varsa
-                            {
-                                st.SozlesmeId = kiraSozlesme.Id;
-                                st.TasinmazId = tasinmaz.Id;
-                                st.BolumId = babo.Id;
-                                int tId = new Model.Services.TBYS.SozlesmeTasinmazService().Save(st);
-                            }
-                        }
-
-                        else //bagimsiz bolum parametre olarak gelmediyse
-                        {
-                            SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-                            List<SozlesmeTasinmaz> list = new SozlesmeTasinmazService().GetBySozlesmeIdTasinmazId(kiraSozlesme.Id, tasinmaz.Id, 0);
-                            if (list.Count < 1)
-                            {
-                                st.SozlesmeId = kiraSozlesme.Id;
-                                st.TasinmazId = tasinmaz.Id;
-                                st.BolumId = 0;
-                                new Model.Services.TBYS.SozlesmeTasinmazService().Save(st);
-                            }//if list.count
-                        }// else bagimsiz bolum parametre olarak gelmediyse
-
-                    }//if tasinmaz != null
-                }//if !string.IsNullOrEmpty(tasinmazId)
-            }
-        }
-        private void SecilenKiraciyiKaydet(KiraSozlesme kiraSozlesme)
-        {
-            if ((kiraSozlesme != null) && !string.IsNullOrEmpty(KiraciIdQS))
-            {
-                IdLbl.Text = kiraSozlesme.Id.ToString();
-                int kiraciId = KiraciIdQS.ConvertToInt();
-                if (kiraciId > 0)
-                {
-                    Kiraci kiraci = new Kiraci();
-                    kiraci = new Model.Services.TBYS.KiraciService().GetById(kiraciId);
-                    if (kiraci != null)
-                    {
-                        kiraSozlesme.KiraciId = kiraci.Id;
-                        new Model.Services.TBYS.KiraSozlesmeService().Update(kiraSozlesme);
-                    }
-                }
-            }
+                SozlesmeId = kiraSozlesme.Id, TasinmazId = propertyId, BolumId = BolumIdQS.ConvertToInt()
+            };
+            new SozlesmeTasinmazService(LoggingContext).ApplySelection(item, tenantId);
+            if (tenantId > 0) kiraSozlesme.KiraciId = tenantId;
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
@@ -369,7 +335,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         protected void TamamBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(KiraSozlesmeIdQS.ConvertToInt(), LoggingContext);
             string sozlesmePage = ProjeConstants.PAGE_KIRASOZLESMESI;
             if (kiraSozlesme != null)
             {
@@ -407,7 +373,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         private void TasinmazSecimiModalShow()
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            var jsonData = new TasinmazService().SelectTasinmazBolumNoReturnJson(ProjeConstants.TASINMAZ_ENVANTERDE, ProjeConstants.KIRADURUMU_KIRAYAUYGUN);
+            var jsonData = new TasinmazService(LoggingContext).SelectTasinmazBolumNoReturnJson(ProjeConstants.TASINMAZ_ENVANTERDE, ProjeConstants.KIRADURUMU_KIRAYAUYGUN);
             var jsString = CreateTasinmazModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
             UtilityHelper.ScriptCalistir("TasinmazSecimiModal();");
@@ -458,7 +424,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         private void KiraciSecimiModalShow()
         {
             Kiraci kiraci = new Kiraci();
-            var jsonData = new Model.Services.TBYS.KiraciService().GetAllReturnJson();
+            var jsonData = new Model.Services.TBYS.KiraciService().GetAllReturnJson(LoggingContext);
             var jsString = CreateKiraciModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
             UtilityHelper.ScriptCalistir("KiraciSecimiModal();");
@@ -507,7 +473,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         private void EnvanterdeOlmayanTasinmazSecimiModalShow()
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            var jsonData = new TasinmazService().SelectEnvanterdeOlmayanTasinmazReturnJson();
+            var jsonData = new TasinmazService(LoggingContext).SelectEnvanterdeOlmayanTasinmazReturnJson();
             var jsString = CreateEnvanterdeOlmayanTasinmazModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
             UtilityHelper.ScriptCalistir("EnvanterdeOlmayanTasinmazSecimiModal();");
