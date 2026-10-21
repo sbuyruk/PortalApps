@@ -227,6 +227,12 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@KiraciId", kiraciId);
             return db.SelectFromDb(query, "");
         }
+        public DataTable SelectAllByKiraciId(int kiraciId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM KiraSozlesme_Table WITH (UPDLOCK, HOLDLOCK) WHERE KiraciId=@KiraciId ORDER BY SozBasTar DESC, DosyaNo");
+            query.AddParameter("@KiraciId", kiraciId);
+            return db.SelectFromDb(query, transaction, context);
+        }
         public DataTable SelectByKiraciIdAndDate(int kiraciId, string tarih)
         {
             string sql = string.Format("SELECT * FROM KiraSozlesme_Table WHERE KiraciId={0} AND ({1} >= SozBasTar AND {1} < SozBitTar)", kiraciId.ReturnQuotedValue(), tarih);
@@ -355,6 +361,13 @@ namespace DAO.Repositories.TBYS
         {
             string sql = string.Format("SELECT * FROM KiraSozlesme_Table WHERE KiraciId={0} AND SozBastar < {1} ORDER BY SozBasTar DESC", kiraciId.ReturnQuotedValue(), sozBasTar);
             return db.SelectFromDb(new SqlQuery(sql), "");
+        }
+        public DataTable SelectPreviousByTenant(int kiraciId, string sozBasTar, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT TOP (1) * FROM KiraSozlesme_Table WITH (UPDLOCK, HOLDLOCK) WHERE KiraciId=@KiraciId AND SozBastar < @SozBasTar ORDER BY SozBasTar DESC");
+            query.AddParameter("@KiraciId", kiraciId);
+            query.AddParameter("@SozBasTar", sozBasTar);
+            return db.SelectFromDb(query, transaction, context);
         }
         public DataTable SelectPrevious(int id, int dosyaNo)
         {

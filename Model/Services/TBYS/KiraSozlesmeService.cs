@@ -216,6 +216,7 @@ namespace Model.Services.TBYS
         public KiraSozlesme GetActiveByKiraciId(int kiraciId) { return Map(repository.SelectActiveByKiraciId(kiraciId)); }
         public KiraSozlesme GetByKiraciId(int kiraciId) { return Map(repository.SelectByKiraciId(kiraciId)); }
         public List<KiraSozlesme> GetAllByKiraciId(int kiraciId) { return new KiraSozlesme().ToList<KiraSozlesme>(repository.SelectAllByKiraciId(kiraciId)); }
+        public List<KiraSozlesme> GetAllByKiraciId(int kiraciId, SqlTransactionContext transaction) { return new KiraSozlesme().ToList<KiraSozlesme>(repository.SelectAllByKiraciId(kiraciId, transaction, context)); }
         public KiraSozlesme GetByKiraciIdAndDate(int kiraciId, DateTime tarih) { return Map(repository.SelectByKiraciIdAndDate(kiraciId, tarih.ReturnTRDateFormat())); }
         public KiraSozlesme GetCompletedByKiraciId(int kiraciId) { return Map(repository.SelectCompletedByKiraciId(kiraciId)); }
         public KiraSozlesme GetNearestByKiraciIdAndDate(int kiraciId, DateTime tarih) { return Map(repository.SelectNearestByKiraciIdAndDate(kiraciId, tarih.ReturnTRDateFormat())); }
@@ -228,6 +229,7 @@ namespace Model.Services.TBYS
         public DataTable GetTransferRequiredActiveContracts() { return repository.SelectTransferRequiredActiveContracts(); }
         public KiraSozlesme GetNext(int id, int dosyaNo) { return Map(repository.SelectNext(id, dosyaNo)) ?? GetMin(); }
         public KiraSozlesme GetPreviousByTenant(int kiraciId, DateTime sozBasTar) { return Map(repository.SelectPreviousByTenant(kiraciId, sozBasTar.ReturnTRDateFormat())); }
+        public KiraSozlesme GetPreviousByTenant(int kiraciId, DateTime sozBasTar, SqlTransactionContext transaction) { return Map(repository.SelectPreviousByTenant(kiraciId, sozBasTar.ReturnTRDateFormat(), transaction, context)); }
         public KiraSozlesme GetPrevious(int id, int dosyaNo) { return Map(repository.SelectPrevious(id, dosyaNo)) ?? GetMax(); }
         public KiraSozlesme GetMax() { return Map(repository.SelectMax()); }
         public KiraSozlesme GetMin() { return Map(repository.SelectMin()); }

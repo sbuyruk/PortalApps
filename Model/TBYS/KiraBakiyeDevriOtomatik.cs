@@ -1,4 +1,5 @@
 using Model.Ortak;
+using DAO.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,6 +90,37 @@ namespace Model.TBYS
         /// <returns>Devir uygulandıysa true, atlandıysa false.</returns>
         public bool DevirAl(KiraSozlesme kiraSozlesme, bool atlaBayrakKontrolu = false)
         {
+            if (context != null)
+            {
+                if (kiraSozlesme == null)
+                {
+                    return false;
+                }
+
+                decimal eskiDevirAnaPara = kiraSozlesme.DevirAnaPara;
+                decimal eskiDevirFaizTutari = kiraSozlesme.DevirFaizTutari;
+                decimal eskiDevirFaizliBakiye = kiraSozlesme.DevirFaizliBakiye;
+                bool result;
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    result = DevirAl(kiraSozlesme, atlaBayrakKontrolu, transaction);
+                    if (result) transaction.Complete();
+                }
+
+                if (result)
+                {
+                    OdemeleriHesaplaOdemePlaniniGuncelle(kiraSozlesme.KiraciId);
+                    OtomatikDevirOlayKaydet(kiraSozlesme,
+                        eskiDevirAnaPara, eskiDevirFaizTutari, eskiDevirFaizliBakiye);
+                }
+
+                return result;
+            }
+            return DevirAlLegacy(kiraSozlesme, atlaBayrakKontrolu);
+        }
+
+        private bool DevirAl(KiraSozlesme kiraSozlesme, bool atlaBayrakKontrolu, SqlTransactionContext transaction)
+        {
             if (kiraSozlesme == null)
             {
                 return false;
@@ -99,7 +131,7 @@ namespace Model.TBYS
                 return false;
             }
 
-            KiraSozlesme oncekiKiraSozlesmesi = KiraSozlesmeService.GetPreviousByTenant(kiraSozlesme.KiraciId, kiraSozlesme.SozBasTar);
+            KiraSozlesme oncekiKiraSozlesmesi = KiraSozlesmeService.GetPreviousByTenant(kiraSozlesme.KiraciId, kiraSozlesme.SozBasTar, transaction);
             if (oncekiKiraSozlesmesi == null)
             {
                 return false;
@@ -107,7 +139,7 @@ namespace Model.TBYS
 
             OdemePlani odemePlaniDao = new OdemePlani();
 
-            List<OdemePlani> oncekiOdemePlaniList = OdemePlaniService.GetBySozlesmeId(oncekiKiraSozlesmesi.Id);
+            List<OdemePlani> oncekiOdemePlaniList = OdemePlaniService.GetBySozlesmeId(oncekiKiraSozlesmesi.Id, transaction);
             if (oncekiOdemePlaniList == null || oncekiOdemePlaniList.Count == 0)
             {
                 return false;
@@ -126,21 +158,17 @@ namespace Model.TBYS
                 return false;
             }
 
-            decimal eskiDevirAnaPara = kiraSozlesme.DevirAnaPara;
-            decimal eskiDevirFaizTutari = kiraSozlesme.DevirFaizTutari;
-            decimal eskiDevirFaizliBakiye = kiraSozlesme.DevirFaizliBakiye;
-
             kiraSozlesme.DevirAnaPara = yeniDevirAnaPara;
             kiraSozlesme.DevirFaizliBakiye = yeniDevirFaizliBakiye;
             kiraSozlesme.DevirFaizTutari = yeniDevirFaizTutari;
 
-            bool devirAlanlariGuncellendi = KiraSozlesmeService.Update(kiraSozlesme);
+            bool devirAlanlariGuncellendi = KiraSozlesmeService.Update(kiraSozlesme, transaction);
             if (!devirAlanlariGuncellendi)
             {
                 return false;
             }
 
-            List<OdemePlani> odemePlaniList = OdemePlaniService.GetBySozlesmeId(kiraSozlesme.Id);
+            List<OdemePlani> odemePlaniList = OdemePlaniService.GetBySozlesmeId(kiraSozlesme.Id, transaction);
             if (odemePlaniList == null || odemePlaniList.Count == 0)
             {
                 return false;
@@ -164,16 +192,45 @@ namespace Model.TBYS
             odemePlani.FaizTutari = kiraSozlesme.DevirFaizTutari;
             odemePlani.FaizliBakiye = kiraSozlesme.DevirFaizliBakiye;
 
-            if (!OdemePlaniService.Update(odemePlani))
+            if (!OdemePlaniService.Update(odemePlani, transaction))
             {
                 return false;
             }
 
+            return true;
+        }
+
+        private bool DevirAlLegacy(KiraSozlesme kiraSozlesme, bool atlaBayrakKontrolu)
+        {
+            if (kiraSozlesme == null) return false;
+            if (atlaBayrakKontrolu) return false;
+            KiraSozlesme oncekiKiraSozlesmesi = KiraSozlesmeService.GetPreviousByTenant(kiraSozlesme.KiraciId, kiraSozlesme.SozBasTar);
+            if (oncekiKiraSozlesmesi == null) return false;
+            List<OdemePlani> oncekiOdemePlaniList = OdemePlaniService.GetBySozlesmeId(oncekiKiraSozlesmesi.Id);
+            if (oncekiOdemePlaniList == null || oncekiOdemePlaniList.Count == 0) return false;
+            OdemePlani oncekiOdemePlani = oncekiOdemePlaniList[oncekiOdemePlaniList.Count - 1];
+            decimal yeniDevirAnaPara = oncekiOdemePlani.AnaPara;
+            decimal yeniDevirFaizliBakiye = oncekiOdemePlani.FaizliBakiye;
+            decimal yeniDevirFaizTutari = yeniDevirFaizliBakiye - yeniDevirAnaPara;
+            if (yeniDevirAnaPara == kiraSozlesme.DevirAnaPara && yeniDevirFaizliBakiye == kiraSozlesme.DevirFaizliBakiye) return false;
+            decimal eskiDevirAnaPara = kiraSozlesme.DevirAnaPara;
+            decimal eskiDevirFaizTutari = kiraSozlesme.DevirFaizTutari;
+            decimal eskiDevirFaizliBakiye = kiraSozlesme.DevirFaizliBakiye;
+            kiraSozlesme.DevirAnaPara = yeniDevirAnaPara;
+            kiraSozlesme.DevirFaizliBakiye = yeniDevirFaizliBakiye;
+            kiraSozlesme.DevirFaizTutari = yeniDevirFaizTutari;
+            if (!KiraSozlesmeService.Update(kiraSozlesme)) return false;
+            List<OdemePlani> odemePlaniList = OdemePlaniService.GetBySozlesmeId(kiraSozlesme.Id);
+            if (odemePlaniList == null || odemePlaniList.Count == 0) return false;
+            OdemePlani odemePlani = odemePlaniList[0];
+            if (odemePlani == null) return false;
+            if (odemePlani.AnaPara == kiraSozlesme.DevirAnaPara && odemePlani.FaizTutari == kiraSozlesme.DevirFaizTutari && odemePlani.FaizliBakiye == kiraSozlesme.DevirFaizliBakiye) return false;
+            odemePlani.AnaPara = kiraSozlesme.DevirAnaPara;
+            odemePlani.FaizTutari = kiraSozlesme.DevirFaizTutari;
+            odemePlani.FaizliBakiye = kiraSozlesme.DevirFaizliBakiye;
+            if (!OdemePlaniService.Update(odemePlani)) return false;
             OdemeleriHesaplaOdemePlaniniGuncelle(kiraSozlesme.KiraciId);
-
-            OtomatikDevirOlayKaydet(kiraSozlesme,
-                eskiDevirAnaPara, eskiDevirFaizTutari, eskiDevirFaizliBakiye);
-
+            OtomatikDevirOlayKaydet(kiraSozlesme, eskiDevirAnaPara, eskiDevirFaizTutari, eskiDevirFaizliBakiye);
             return true;
         }
 

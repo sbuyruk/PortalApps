@@ -24,6 +24,7 @@ namespace Model.Services.TBYS
         public OdemePlani GetById(int id) { return Map(repository.SelectById(id)); }
         public List<OdemePlani> GetAll() { return ToList(repository.SelectAll()); }
         public List<OdemePlani> GetBySozlesmeId(int id) { return ToList(repository.SelectBySozlesmeId(id)); }
+        public List<OdemePlani> GetBySozlesmeId(int id, SqlTransactionContext transaction) { return ToList(repository.SelectBySozlesmeId(id, transaction, context)); }
         public OdemePlani GetBySozlesmeIdSira(int id, int sira) { return Map(repository.SelectBySozlesmeIdSira(id, sira)); }
         public OdemePlani GetBySozlesmeIdOdemeTarihi(int id, DateTime tarih) { return Map(repository.SelectBySozlesmeIdOdemeTarihi(id, tarih)); }
         public bool Exists(int id) { return ToList(repository.SelectExists(id)).Count > 0; }
