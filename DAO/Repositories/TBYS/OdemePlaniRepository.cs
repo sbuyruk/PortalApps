@@ -1,4 +1,5 @@
 using DAO.Ortak;
+using Utility.Logging;
 using System;
 using System.Data;
 
@@ -6,7 +7,7 @@ namespace DAO.Repositories.TBYS
 {
     public class OdemePlaniRepository
     {
-        private readonly DbClass db;
+        private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
         public OdemePlaniRepository()
@@ -17,7 +18,13 @@ namespace DAO.Repositories.TBYS
         public OdemePlaniRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
+            this.db = new TbysSqlExecutor(db, "OdemePlaniRepository");
+            queryBuilder = new CrudQueryBuilder();
+        }
+
+        public OdemePlaniRepository(PortalLogContext context)
+        {
+            db = new TbysSqlExecutor(context, "OdemePlaniRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -97,6 +104,42 @@ namespace DAO.Repositories.TBYS
         public bool Delete(int id)
         {
             return db.DeleteFromDb(queryBuilder.BuildDelete("OdemePlani_Table", id), "");
+        }
+
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery q = new SqlQuery("SELECT * FROM OdemePlani_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id");
+            q.AddParameter("@Id", id);
+            return db.SelectFromDb(q, transaction, context);
+        }
+
+        public DataTable SelectBySozlesmeId(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery q = new SqlQuery("SELECT * FROM OdemePlani_Table WITH (UPDLOCK, HOLDLOCK) WHERE SozlesmeId=@SozlesmeId ORDER BY Sira");
+            q.AddParameter("@SozlesmeId", id);
+            return db.SelectFromDb(q, transaction, context);
+        }
+
+        public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Insert(queryBuilder.BuildInsert(entity, "OdemePlani_Table"), transaction, context);
+        }
+
+        public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Update2Db(queryBuilder.BuildUpdate(entity, "OdemePlani_Table"), transaction, context);
+        }
+
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.DeleteFromDb(queryBuilder.BuildDelete("OdemePlani_Table", id), "", transaction, context);
+        }
+
+        public bool DeleteBySozlesmeId(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery q = new SqlQuery("DELETE OdemePlani_Table WHERE SozlesmeId=@SozlesmeId");
+            q.AddParameter("@SozlesmeId", id);
+            return db.DeleteFromDb(q, "", transaction, context);
         }
     }
 }

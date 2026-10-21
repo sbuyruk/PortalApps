@@ -1,5 +1,13 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
+## Güncel parça: ödeme planı CRUD transaction altyapısı
+
+Dal: `codex/tbys-payment-plan-audit`. Başlangıç commit'i: `5825eeb8` (PR #465 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. Ödeme planı ekranının üretme, sözleşmeye bağlı silme ve iki güncelleme çağrısı bağlamlı kurucuya geçirildi; diğer okuma ekranları ve tahsilat zinciri sonraki parçalarda ele alınacak.
+
+`OdemePlaniRepository` TBYS SQL yürütücüsüne ve bağlamlı kurucuya geçirildi. Transaction-aware sözleşme planı okuma, ekleme, güncelleme ve silme overload'ları eklendi. `OdemePlaniService` bağlamlı CRUD'ta aynı `SqlTransactionContext` üzerinden çalışıyor; eski ve yeni değerlerden sınırlı audit ayrıntıları üretiyor. Audit alanları sözleşme, dönem, vade, kira, ödeme, ana para, faiz, bakiye ve sıra alanlarıyla sınırlı; serbest açıklama alanı alınmıyor. Sözleşmeye bağlı toplu silmede her gerçek plan satırı ayrı entity audit'iyle kaydediliyor.
+
+Bağlamsız çağrılar ve eski OlayKayit davranışı korunuyor. Üretilmiş ASCX dosyaları değişmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve `git diff --check` yapıldı. Build ve TEST kullanıcıya aittir.
+
 ## Güncel parça: ana kira sözleşmesi CRUD transaction altyapısı
 
 Dal: `codex/tbys-main-lease-workflow`. Başlangıç commit'i: `53cc3a25` (PR #464 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. Bu parça ana kira ekranının tüm çok adımlı akışını henüz bağlamlı servise taşımıyor; sonraki parçalarda ekran çağrıları ve ödeme planı zinciri ayrıca ele alınacak.
