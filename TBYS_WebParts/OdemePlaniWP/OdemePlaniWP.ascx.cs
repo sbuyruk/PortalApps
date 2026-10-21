@@ -161,7 +161,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                         KiraciIdQS = kiraSozlesme.KiraciId.ToString();
                     if (!Page.IsPostBack)
                     {
-                        TBYSOrtak.BakiyeBorcHesapla(kiraSozlesme);
+                        TBYSOrtak.BakiyeBorcHesapla(kiraSozlesme, LoggingContext);
                         if (kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK))
                         {
                             GecikmeZammiTipiLbl.Text = "Gecikme Zammı : " + ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK;
