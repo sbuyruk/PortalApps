@@ -148,7 +148,7 @@ namespace TBYS_WebParts.OdemePlaniListesiWP
                 int kiraSozlesmeId = row["SozlesmeId"].ConvertToInt();
 
                 SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-                List<SozlesmeTasinmaz> stList = new Model.Services.TBYS.SozlesmeTasinmazService().GetBySozlesmeId(kiraSozlesmeId);
+                List<SozlesmeTasinmaz> stList = new Model.Services.TBYS.SozlesmeTasinmazService(LoggingContext).GetBySozlesmeId(kiraSozlesmeId);
                 foreach (SozlesmeTasinmaz item in stList)
                 {
                     int tasinmazId = item.TasinmazId;

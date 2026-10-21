@@ -692,7 +692,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         private bool SozlesmesiVarMi(Tasinmaz tasinmaz)
         {
             SozlesmeTasinmaz sozlesmeTasinmaz = new SozlesmeTasinmaz();
-                            List<SozlesmeTasinmaz> liste = new Model.Services.TBYS.SozlesmeTasinmazService().GetByTasinmazId(tasinmaz.Id);
+                            List<SozlesmeTasinmaz> liste = new Model.Services.TBYS.SozlesmeTasinmazService(LoggingContext).GetByTasinmazId(tasinmaz.Id);
             return (liste.Count > 0);
         }
 
@@ -973,7 +973,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
 //                    if (!SozlesmesiVarMi(tasinmaz))
 //                    {
-//                        if (new Model.Services.TBYS.TasinmazService().Delete(tasinmaz))
+//                        if (new Model.Services.TBYS.TasinmazService(LoggingContext).Delete(tasinmaz))
 //                        {
 
 //                            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -1068,7 +1068,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             else
             {
                 TasinmazBagisci bagisci = new TasinmazBagisci();
-                bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(bagis.BagisciId);
+                bagisci = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetById(bagis.BagisciId);
                 if (bagisci == null)
                 {
                     MessageHelper.PublishMessage("Bağışçı Bulunamadı. Bu taşınmazın ilişkilendirildiği bağışçı bulunamadı. Lütfen Bağışçı sayfasından bağışçı ataması yapınız.", ProjeConstants.MESAJ_HATA);
