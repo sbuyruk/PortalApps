@@ -679,7 +679,7 @@ namespace TBYS_WebParts.OdemeGirisWP
         private string GetKiraciData()
         {
             Kiraci kiraci = new Kiraci();
-            string json = new Model.Services.TBYS.KiraciService().GetAllReturnJson();
+            string json = new Model.Services.TBYS.KiraciService(LoggingContext).GetAllReturnJson();
 
             return json;
         }

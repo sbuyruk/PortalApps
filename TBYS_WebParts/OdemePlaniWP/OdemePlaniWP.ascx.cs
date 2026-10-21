@@ -562,7 +562,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             bool retval = false;
 
             OdemePlani odemePlaniDao = new OdemePlani();
-            List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
+            List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeId(kiraSozlesme.Id);
             if (list.Count > 0)
             {
                 retval = true;
@@ -575,7 +575,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
 
             OdemePlani odemePlani = new OdemePlani();
-            odemePlani = new Model.Services.TBYS.OdemePlaniService().GetById(odemePlaniId);
+            odemePlani = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetById(odemePlaniId);
 
             if (odemePlani != null)
             {

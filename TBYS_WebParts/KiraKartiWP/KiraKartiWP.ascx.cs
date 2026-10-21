@@ -292,7 +292,7 @@ namespace TBYS_WebParts.KiraKartiWP
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
 
-            var kiraSozlesmeList = new Model.Services.TBYS.KiraSozlesmeService().GetAllByKiraciId(KiraciIdQS.ConvertToInt());
+            var kiraSozlesmeList = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetAllByKiraciId(KiraciIdQS.ConvertToInt());
             Color color = System.Drawing.Color.White;
 
             int tempKirasozlesmeId = 0;
