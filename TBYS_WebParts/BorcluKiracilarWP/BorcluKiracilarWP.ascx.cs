@@ -289,7 +289,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
 
 
             OdemePlani opl = new OdemePlani();
-            DataTable dataTable = new Model.Services.TBYS.OdemePlaniRaporService().GetBorcluByBolgeTarih(BolgeIdQS, vadeBastar, vadeBittar, AySayisiBasQS.ConvertToInt(), AySayisiBitQS.ConvertToInt());
+            DataTable dataTable = new Model.Services.TBYS.OdemePlaniRaporService(LoggingContext).GetBorcluByBolgeTarih(BolgeIdQS, vadeBastar, vadeBittar, AySayisiBasQS.ConvertToInt(), AySayisiBitQS.ConvertToInt());
 
             if (dataTable != null)
             {

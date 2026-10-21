@@ -1,5 +1,11 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
+## Güncel parça: ödeme planı rapor servisi bağlamı
+
+Dal: `codex/tbys-report-service-context`. Başlangıç commit'i: `cc0b9fbf` (PR #482 sonrası). `OdemePlaniRaporRepository` `TbysSqlExecutor` ve bağlam kurucusuna geçirildi; `OdemePlaniRaporService` bağlamlı kurucu kazandı. Borçlu kiracı, sözleşme listesi, gelir ve ödeme planı raporlarındaki yedi WebPart çağrısı `LoggingContext` ile bağlandı.
+
+Bu servis yalnızca SELECT çalıştırdığı için transaction CRUD eklenmedi. Üretilmiş ASCX dosyaları değişmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve `git diff --check` yapıldı. Build ve TEST kullanıcıya aittir.
+
 ## Güncel parça: ödeme planı ve kiracı okumaları
 
 Dal: `codex/tbys-report-read-wiring-2`. Başlangıç commit'i: `6d178554` (PR #481 sonrası). Sekiz WebPart’ta mevcut bağlam kurucusu bulunan `OdemePlaniService`, `KiraciService`, `KiraSozlesmeService`, `KiraEkstreAktarmaService` ve `SozlesmeTasinmazService` okumaları `LoggingContext` ile çalışacak şekilde geçirildi. Rapor servislerinin bağımsız geçişi ayrı bir parça olarak bırakıldı.
