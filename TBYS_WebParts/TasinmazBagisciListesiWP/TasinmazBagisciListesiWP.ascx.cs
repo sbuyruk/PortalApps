@@ -395,7 +395,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
         private DataTable GetBagisciData()
         {
             TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-            DataTable dataTable = new TasinmazBagisciReportService().GetAllCountBagisAdediByBolge(BolgeIdQS);
+            DataTable dataTable = new TasinmazBagisciReportService(LoggingContext).GetAllCountBagisAdediByBolge(BolgeIdQS);
             return dataTable;
         }
         protected void YeniKayitBtn_Click(object sender, EventArgs e)
@@ -539,7 +539,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
 
                 TableCell TasinmazCell = new TableCell();
                 Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = new TasinmazService().GetById(item.TasinmazId);
+                tasinmaz = new TasinmazService(LoggingContext).GetById(item.TasinmazId);
                 TasinmazCell.Text = tasinmaz != null ? tasinmaz.Adres + " " + tasinmaz.Ilcesi + "/" + tasinmaz.Ili : string.Empty;
                 row.Controls.Add(TasinmazCell);
 
@@ -558,7 +558,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
         {
             int bagisciId= ParamBagisciIdLbl.Value.ConvertToInt();
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(bagisciId);
+            bagisci = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetById(bagisciId);
             if (bagisci != null)
             {
                 TaahhutTablosunuDoldur(bagisci);

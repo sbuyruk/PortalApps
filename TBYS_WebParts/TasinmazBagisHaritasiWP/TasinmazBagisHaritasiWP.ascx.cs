@@ -217,14 +217,14 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
         {
 
             TasinmazBagisci dao = new TasinmazBagisci();
-            List<TasinmazBagisci> list = new Model.Services.TBYS.TasinmazBagisciService().GetByIlAdi(ilAdi);
+            List<TasinmazBagisci> list = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetByIlAdi(ilAdi);
 
             return list;
         }
         private List<Tasinmaz> GetTasinmazData(string ilAdi)
         {
             Tasinmaz dao = new Tasinmaz();
-            List<Tasinmaz> list = new TasinmazService().SelectByIlAdi(ilAdi);
+            List<Tasinmaz> list = new TasinmazService(LoggingContext).SelectByIlAdi(ilAdi);
 
             return list;
         }

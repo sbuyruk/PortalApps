@@ -135,7 +135,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
         protected void Page_Load(object sender, EventArgs e)
         {
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
+            bagisci = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetById(BagisciIdQS.ConvertToInt());
             if (bagisci != null)
             {
                 BagisciBilgileriniDoldur(bagisci);
@@ -282,7 +282,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             TitleLbl.Text = bagisci.Adi + " " + bagisci.Soyadi + " Bağışçı Bilgileri";
 
             Bagis bagis = new Bagis();
-            DataTable dataTable = new BagisService().GetSatisVsDahilTasinmazByBagisciId(bagisci.Id);
+            DataTable dataTable = new BagisService(LoggingContext).GetSatisVsDahilTasinmazByBagisciId(bagisci.Id);
             if (dataTable != null)
             {
                 TasinmazTable.Rows.Clear();
@@ -348,7 +348,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
                 footerRow.CssClass = "table-dark";
                 TableCell tahminiRayicCell = new TableCell();
                 tahminiRayicCell.ColumnSpan = 4;
-            tahminiRayicCell.Text = "Tahmini Rayiç Bedelleri Toplamı : " + new BagisService().GetSumTahminiRayicByBagisciId(bagisci.Id).ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
+            tahminiRayicCell.Text = "Tahmini Rayiç Bedelleri Toplamı : " + new BagisService(LoggingContext).GetSumTahminiRayicByBagisciId(bagisci.Id).ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
                 footerRow.Controls.Add(tahminiRayicCell);
                 TasinmazTable.Controls.Add(footerRow);
             }
@@ -529,7 +529,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
         protected void ExportToExcel()
         {
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
+            bagisci = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetById(BagisciIdQS.ConvertToInt());
             string filename = "TasinmazBagisciKarti" + bagisci.Adi.ReplaceTrChars() + bagisci.Soyadi.ReplaceTrChars() + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls";
             Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
             Page.Response.Charset = "windows-1254";//ISO-8859-9
@@ -587,7 +587,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
+            bagisci = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetById(BagisciIdQS.ConvertToInt());
             BagisciBilgileriniDoldur(bagisci);
             TasinmazListesiniDoldur(bagisci);
             BagisciTalepleriniDoldur(bagisci);

@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Globalization;
-using System.Transactions;
 using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
@@ -158,7 +157,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
                     MesajQS = string.Empty;
                 }
                 TasinmazBagisci bagisci = new TasinmazBagisci();
-                bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
+                bagisci = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetById(BagisciIdQS.ConvertToInt());
                 if (bagisci != null)
                 {
                     BagisciTasinmazlarTablosunuDoldur(bagisci);
@@ -230,7 +229,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
             TitleLbl.Text = bagisci.Adi + " " + bagisci.Soyadi + " Tarafından Yapılan Bağışlar";
 
             Bagis bagis = new Bagis();
-            DataTable dataTable = new BagisService().GetSatisVsDahilTasinmazByBagisciId(bagisci.Id);
+            DataTable dataTable = new BagisService(LoggingContext).GetSatisVsDahilTasinmazByBagisciId(bagisci.Id);
             if (dataTable != null)
             {
                 BagisTasinmazLarTable.Rows.Clear();
@@ -250,7 +249,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
                     string tahminiRayicDegeri = dataRow["TahminiRayicDegeri"].ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
 
                     Tasinmaz satirTasinmazi = new Tasinmaz();
-                    satirTasinmazi = new TasinmazService().Select(tasinmazIdStr.ConvertToInt());
+                    satirTasinmazi = new TasinmazService(LoggingContext).Select(tasinmazIdStr.ConvertToInt());
                     if (satirTasinmazi != null && satirTasinmazi.EnvanterdeMi == 0)
                     {
                         kiraDurumu = satirTasinmazi.EnvanterdenCikmaSebebi;
@@ -323,7 +322,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
                         CikarMesajiLbl.Text = "Seçilen Taşınmazı Bağışlardan Çıkarmak İstediğinizden Emin misiniz?";
                         //TasinmazIdLbl.Text = tasinmazIdStr;
                         Tasinmaz tasinmaz = new Tasinmaz();
-                        tasinmaz = new TasinmazService().Select(tasinmazIdStr.ConvertToInt());
+                        tasinmaz = new TasinmazService(LoggingContext).Select(tasinmazIdStr.ConvertToInt());
                         TasinmazAdresLbl.Text = tasinmaz.Adres + " " + tasinmaz.Ilcesi + "/" + tasinmaz.Ili +"</br>";
 
                         BagisIdQS = bagisIdStr;
@@ -342,23 +341,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
         }
         private bool BagisSil(Bagis bagis)
         {
-            bool isSaved = false;
-            try
-            {
-                if (bagis != null)
-                {
-                    isSaved = new Model.Services.TBYS.BagisService().Delete(bagis);
-
-                }
-            }
-            catch (Exception ex)
-            {
-                if (ex is System.Threading.ThreadAbortException) throw;
-                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciBagislariWP.BagisSil", ex);
-                ReportError("Unhandled", ex);
-            }
-
-            return isSaved;
+            return bagis != null && new Model.Services.TBYS.BagisService(LoggingContext).Delete(bagis);
         }
         private void RedirectToPage(string pageUrl)
         {
@@ -382,42 +365,28 @@ namespace TBYS_WebParts.BagisciBagislariWP
         {
             try
             {
-                Bagis bagis = new Bagis();
-                bagis = new Model.Services.TBYS.BagisService().GetById(BagisIdQS.ConvertToInt());
-                if (bagis != null)
+                Bagis bagis = new Model.Services.TBYS.BagisService(LoggingContext).GetById(BagisIdQS.ConvertToInt());
+                if (bagis == null || bagis.BagisciId != BagisciIdQS.ConvertToInt())
                 {
-                    int bagisciId = bagis.BagisciId;
-                    bool isDeleted = BagisSil(bagis);
-                    if (isDeleted)
-                    {
-                        TasinmazBagisci bagisci = new TasinmazBagisci();
-                        bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(BagisciIdQS.ConvertToInt());
-                        if (bagisci != null)
-                        {
-                            BagisciTasinmazlarTablosunuDoldur(bagisci);
-                            var closePopup = "CloseModal();";
-                            UtilityHelper.ScriptCalistir(closePopup);
-                        }
-                        else
-                        {
-                            MessageHelper.PublishMessage("Bağışçı bulunamadı", ProjeConstants.MESAJ_HATA);
-                            var closePopup = "CloseModal();";
-                            UtilityHelper.ScriptCalistir(closePopup);
-                        }
-
-                        MessageHelper.PublishMessage("Bağışlardan Çıkarıldı", ProjeConstants.MESAJ_BASARILI, 2000);
-                    }
+                    MessageHelper.PublishMessage("Bağış ilişkisi değişmiş veya bulunamıyor. Sayfayı yenileyip tekrar deneyiniz.", ProjeConstants.MESAJ_HATA);
+                    return;
                 }
+                if (!BagisSil(bagis))
+                {
+                    MessageHelper.PublishMessage("Bağış ilişkisi çıkarılamadı. Sayfayı yenileyip tekrar deneyiniz.", ProjeConstants.MESAJ_HATA);
+                    return;
+                }
+                TasinmazBagisci donor = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetById(BagisciIdQS.ConvertToInt());
+                if (donor != null) BagisciTasinmazlarTablosunuDoldur(donor);
+                UtilityHelper.ScriptCalistir("CloseModal();");
+                MessageHelper.PublishMessage("Bağışlardan çıkarıldı.", ProjeConstants.MESAJ_BASARILI, 2000);
             }
-            catch (Exception exception)
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
             {
-                if (exception is System.Threading.ThreadAbortException) throw;
-                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciBagislariWP.CikarNowBtn_Click", exception);
-                var closePopup = "CloseModal();";
-                UtilityHelper.ScriptCalistir(closePopup);
-                ReportError("Bagis.TasinmazSil", exception);
+                UtilityHelper.ScriptCalistir("CloseModal();");
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciBagislariWP.CikarNowBtn_Click", error);
             }
-
         }
         protected void BackBtn_Click(object sender, EventArgs e)
         {
@@ -502,54 +471,23 @@ namespace TBYS_WebParts.BagisciBagislariWP
         }
         protected void TasinmazEkleNowBtnBtn_Click(object sender, EventArgs e)
         {
-            //paramTasinmazIdLbl daki TasinmazId'sini al
-            //Bagislarda tasinmazId var mi bak
-            //Seçileni ekle
-            int tasinmazId = paramTasinmazIdLbl.Value.ConvertToInt();
-
-            Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService().Select(tasinmazId);
-            bool kaydedildiMi = false;
-            Bagis bagis = null;
-            if (tasinmaz != null)
+            try
             {
-                using (TransactionScope scope = new TransactionScope())
-                {
-                    bagis = new Bagis();
-                    bagis = new BagisService().GetByTasinmazId(tasinmazId);
-                    if (bagis == null)
-                    {
-                        bagis = new Bagis();
-                        bagis.BagisciId = BagisciIdQS.ConvertToInt();
-                        bagis.BagisTarihi = tasinmaz.EnvantereGirisTarihi.ConvertToDatetime();
-                        bagis.BagisYili = bagis.BagisTarihi.Year;
-                        bagis.Olusturan = CurrentUserName;
-                        bagis.TasinmazId = paramTasinmazIdLbl.Value.ConvertToInt();
-                        bagis.Envanterde = true;
-                        int bagisId = new Model.Services.TBYS.BagisService().Save(bagis);
-                        kaydedildiMi = bagisId > 0;
-                    }
-                    else
-                    {
-                        bagis.BagisciId = BagisciIdQS.ConvertToInt();
-                        bagis.TasinmazId = tasinmazId;
-                        bagis.Degistiren = CurrentUserName;
-                        kaydedildiMi = new Model.Services.TBYS.BagisService().Update(bagis);
-                    }
-                    if (kaydedildiMi)
-                        scope.Complete();
-                }
-                if (kaydedildiMi && bagis != null)
-                {
-                    MessageHelper.PublishMessage("Bağış Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
-                    RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_BAGISLARI + "?Mesaj=true" + "&DestinationApp=TBD&BagisciId=" + bagis.BagisciId);
-                }
+                Bagis bagis = new BagisService(LoggingContext).AssignToProperty(
+                    paramTasinmazIdLbl.Value.ConvertToInt(), BagisciIdQS.ConvertToInt());
+                MessageHelper.PublishMessage("Bağış kaydedildi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_BAGISLARI + "?Mesaj=true&DestinationApp=TBD&BagisciId=" + bagis.BagisciId);
+            }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciBagislariWP.TasinmazEkleNowBtnBtn_Click", error);
             }
         }
         private List<TasinmazListItem> GetModalDataList()
         {
             Tasinmaz tasinmazDao = new Tasinmaz();
-            DataTable dataTableModal = new TasinmazService().SelectBagiscisiOlmayanTasinmazlarByBagsciIdReturnDT();
+            DataTable dataTableModal = new TasinmazService(LoggingContext).SelectBagiscisiOlmayanTasinmazlarByBagsciIdReturnDT();
 
             int SiraNo = 1;
             List<TasinmazListItem> list = new List<TasinmazListItem>();

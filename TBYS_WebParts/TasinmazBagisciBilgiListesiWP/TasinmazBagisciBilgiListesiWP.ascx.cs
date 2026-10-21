@@ -117,7 +117,7 @@ namespace TBYS_WebParts.TasinmazBagisciBilgiListesiWP
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             TasinmazBagisci tasinmazBagisciDao = new TasinmazBagisci();
             List<BagisciListItem> returnList = new List<BagisciListItem>();
-            List<TasinmazBagisci> bagisciListesi = new Model.Services.TBYS.TasinmazBagisciService().GetAllBySagVefat(SagVefatDDL.SelectedItem.Text);
+            List<TasinmazBagisci> bagisciListesi = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetAllBySagVefat(SagVefatDDL.SelectedItem.Text);
             int SiraNo = 1;
 
 
@@ -153,7 +153,7 @@ namespace TBYS_WebParts.TasinmazBagisciBilgiListesiWP
                 bagisciListItem.Talepleri = talepler;
                 string bagislari = string.Empty;
                 decimal tahminiRayicToplami = 0m;
-                DataTable dataTable = new BagisService().GetByBagisciIdGroupByKullanimSekli(tasinmazBagisci.Id);
+                DataTable dataTable = new BagisService(LoggingContext).GetByBagisciIdGroupByKullanimSekli(tasinmazBagisci.Id);
                 if (dataTable!=null)
                 {
                     foreach (DataRow row in dataTable.Rows)
