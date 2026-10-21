@@ -543,7 +543,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                 if (!OdemePlaniVarMi(kiraSozlesme))
                 {
                     OdemePlani op = new OdemePlani();
-                    isSaved = new Model.Services.TBYS.OdemePlaniService().CreatePaymentPlan(kiraSozlesme);
+                    isSaved = new Model.Services.TBYS.OdemePlaniService(LoggingContext).CreatePaymentPlan(kiraSozlesme);
                 }
                 else// odeme plani var
                 {
@@ -815,7 +815,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                 OdemePlani op = list[0];
                 if (op.SozlesmeId == kiraSozlesme.Id)
                 {
-                    silindi = new Model.Services.TBYS.OdemePlaniService().DeleteBySozlesmeId(op, kiraSozlesme.Id);
+                    silindi = new Model.Services.TBYS.OdemePlaniService(LoggingContext).DeleteBySozlesmeId(op, kiraSozlesme.Id);
                     if (silindi)
                     {
                         //Odemeler de silinsin
@@ -911,7 +911,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             if (odemePlani != null)
             {
                 odemePlani.KiraBedeli = YeniKiraBedeliTxt.Text.ConvertToDecimal();
-                new Model.Services.TBYS.OdemePlaniService().Update(odemePlani);
+                new Model.Services.TBYS.OdemePlaniService(LoggingContext).Update(odemePlani);
                 RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + KiraSozlesmeIdQS);
             }
         }
@@ -948,7 +948,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             {
                 odemePlani.VadeBasTar = VadeBasTarTxt.Value.ConvertToDatetime();
                 odemePlani.VadeBitTar = VadeBitTarTxt.Value.ConvertToDatetime();
-                new Model.Services.TBYS.OdemePlaniService().Update(odemePlani);
+                new Model.Services.TBYS.OdemePlaniService(LoggingContext).Update(odemePlani);
                 RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + KiraSozlesmeIdQS);
             }
         }
