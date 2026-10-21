@@ -395,6 +395,21 @@ namespace DAO.Repositories.TBYS
             return db.SelectFromDb(query, transaction, context);
         }
 
+        public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Insert(queryBuilder.BuildInsert(entity, "KiraSozlesme_Table"), transaction, context);
+        }
+
+        public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.Update2Db(queryBuilder.BuildUpdate(entity, "KiraSozlesme_Table"), transaction, context);
+        }
+
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            return db.DeleteFromDb(queryBuilder.BuildDelete("KiraSozlesme_Table", id), "", transaction, context);
+        }
+
         public bool UpdateTenant(int id, int tenantId, DateTime changedAt, string changedBy,
             SqlTransactionContext transaction, PortalLogContext context)
         {
