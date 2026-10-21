@@ -1,4 +1,7 @@
 using DAO.Repositories.TBYS;
+using DAO.Ortak;
+using DAO.Repositories.Ortak;
+using Utility.Logging;
 using Model.Ortak;
 using Model.TBYS;
 using System;
@@ -13,8 +16,10 @@ namespace Model.Services.TBYS
     public class KiraEkstreAktarmaService
     {
         private readonly KiraEkstreAktarmaRepository repository;
+        private readonly PortalLogContext context;
         public KiraEkstreAktarmaService() : this(new KiraEkstreAktarmaRepository()) { }
         public KiraEkstreAktarmaService(KiraEkstreAktarmaRepository repository) { if (repository == null) throw new ArgumentNullException("repository"); this.repository = repository; }
+        public KiraEkstreAktarmaService(PortalLogContext context) : this(new KiraEkstreAktarmaRepository(context)) { this.context = context; }
         public KiraEkstreAktarma GetById(int id) { return Map(repository.SelectById(id)); }
         public List<KiraEkstreAktarma> GetAll() { return ToList(repository.SelectAll()); }
         public List<KiraEkstreAktarma> GetByKiraciAdi(string adi) { return ToList(repository.SelectByKiraciAdi(adi)); }
@@ -36,9 +41,12 @@ namespace Model.Services.TBYS
         public DataTable GetByIdDetailed(int id) { return repository.SelectByIdDetailed(id); }
         public DataTable GetByDateAndPaymentReason(DateTime tarih, int odemeSebebiId) { return repository.SelectByDateAndPaymentReason(StartOfDay(tarih), UtilityHelper.TariheSaatEkle(StartOfDay(tarih), "23:59"), odemeSebebiId == ProjeConstants.HEPSI_INT ? (int?)null : odemeSebebiId); }
         public DataTable GetSumByDateAndPaymentReason(DateTime tarih, int odemeSebebiId) { return repository.SelectSumByDateAndPaymentReason(StartOfDay(tarih), UtilityHelper.TariheSaatEkle(StartOfDay(tarih), "23:59"), odemeSebebiId == ProjeConstants.HEPSI_INT ? (int?)null : odemeSebebiId); }
-        public int Save(KiraEkstreAktarma item) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item); if (item.Id > 0 && ProjeConstants.TBYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRAEKSTREAKTARMA); return item.Id; }
-        public bool Update(KiraEkstreAktarma item) { if (item == null || item.Id == 0) return false; KiraEkstreAktarma old = GetById(item.Id); item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); bool ok = repository.Update(item); if (ok && ProjeConstants.TBYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRAEKSTREAKTARMA); return ok; }
-        public bool Delete(KiraEkstreAktarma item) { if (item == null || item.Id == 0) return false; KiraEkstreAktarma old = GetById(item.Id); if (old == null) return false; bool ok = repository.Delete(item.Id); if (ok && ProjeConstants.TBYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRAEKSTREAKTARMA); return ok; }
+        public int Save(KiraEkstreAktarma item) { if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { int id = Save(item, tx); tx.Complete(); return id; } if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item); if (item.Id > 0 && ProjeConstants.TBYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRAEKSTREAKTARMA); return item.Id; }
+        public int Save(KiraEkstreAktarma item, SqlTransactionContext tx) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item, tx, context); if (item.Id > 0 && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "INSERT", "KiraEkstreAktarma", item.Id.ToString(), tx); return item.Id; }
+        public bool Update(KiraEkstreAktarma item) { if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Update(item, tx); if (ok) tx.Complete(); return ok; } if (item == null || item.Id == 0) return false; KiraEkstreAktarma old = GetById(item.Id); item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); bool result = repository.Update(item); if (result && ProjeConstants.TBYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRAEKSTREAKTARMA); return result; }
+        public bool Update(KiraEkstreAktarma item, SqlTransactionContext tx) { if (item == null || item.Id == 0) return false; item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); bool ok = repository.Update(item, tx, context); if (ok && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "UPDATE", "KiraEkstreAktarma", item.Id.ToString(), tx); return ok; }
+        public bool Delete(KiraEkstreAktarma item) { if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Delete(item, tx); if (ok) tx.Complete(); return ok; } if (item == null || item.Id == 0) return false; KiraEkstreAktarma old = GetById(item.Id); if (old == null) return false; bool result = repository.Delete(item.Id); if (result && ProjeConstants.TBYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRAEKSTREAKTARMA); return result; }
+        public bool Delete(KiraEkstreAktarma item, SqlTransactionContext tx) { if (item == null || item.Id == 0) return false; bool ok = repository.Delete(item.Id, tx, context); if (ok && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "DELETE", "KiraEkstreAktarma", item.Id.ToString(), tx); return ok; }
         private static List<KiraEkstreAktarma> ToList(DataTable t) { return new KiraEkstreAktarma().ToList<KiraEkstreAktarma>(t); }
         private static KiraEkstreAktarma Map(DataTable t) { return ToList(t).FirstOrDefault(); }
         private static DateTime StartOfDay(DateTime value) { return new DateTime(value.Year, value.Month, value.Day); }
