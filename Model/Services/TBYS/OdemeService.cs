@@ -43,6 +43,15 @@ namespace Model.Services.TBYS
             }
             return 0;
         }
+        public decimal GetSumBySozlesmeIdOdemePlaniId(int sozlesmeId, int odemePlaniId, SqlTransactionContext transaction)
+        {
+            DataTable dataTable = repository.SelectSumBySozlesmeIdOdemePlaniId(sozlesmeId, odemePlaniId, transaction, context);
+            if (dataTable != null && dataTable.Rows.Count > 0)
+            {
+                return dataTable.Rows[0]["Toplam"].ToString().ConvertToDecimal();
+            }
+            return 0;
+        }
         public int Save(Odeme item) { if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { int id = Save(item, tx); tx.Complete(); return id; } if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item); if (item.Id > 0 && ProjeConstants.TBYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_ODEME); return item.Id; }
         public int Save(Odeme item, SqlTransactionContext tx) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item, tx, context); if (item.Id > 0) Audit("INSERT", item.Id, tx); return item.Id; }
         public bool Update(Odeme item) { if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Update(item, tx); if (ok) tx.Complete(); return ok; } if (item == null) throw new ArgumentNullException("item"); Odeme old = GetById(item.Id); bool result = false; if (item.Id != 0) { item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); result = repository.Update(item); } if (result && ProjeConstants.TBYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.TBYS, ProjeConstants.TBYS_ODEME); return result; }
@@ -54,6 +63,60 @@ namespace Model.Services.TBYS
         public bool DeleteBySozlesmeId(int id, SqlTransactionContext tx) { return repository.DeleteBySozlesmeId(id, tx, context); }
 
         public Odeme OdemeyiKaydetOdemePlaniniGuncelle(KiraSozlesme kiraSozlesme, OdemePlani odemePlani, DateTime odemeTarihi, decimal odenenTutar, string aciklama, string kullanici)
+        {
+            if (context != null)
+            {
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    Odeme sonuc = OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, kullanici, transaction);
+                    if (sonuc != null && sonuc.Id > 0) transaction.Complete();
+                    return sonuc;
+                }
+            }
+
+            return OdemeyiKaydetOdemePlaniniGuncelleLegacy(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, kullanici);
+        }
+
+        private Odeme OdemeyiKaydetOdemePlaniniGuncelle(KiraSozlesme kiraSozlesme, OdemePlani odemePlani, DateTime odemeTarihi, decimal odenenTutar, string aciklama, string kullanici, SqlTransactionContext transaction)
+        {
+            Odeme odeme = null;
+            try
+            {
+                odeme = new Odeme
+                {
+                    SozlesmeId = kiraSozlesme.Id,
+                    KiraciId = kiraSozlesme.KiraciId,
+                    OdemePlaniId = odemePlani.Id,
+                    OdemeTarihi = odemeTarihi,
+                    OdenenTutar = odenenTutar,
+                    Aciklama = aciklama,
+                    Olusturan = kullanici
+                };
+                odeme.Id = Save(odeme, transaction);
+                if (odeme.Id > 0)
+                {
+                    decimal toplamOdenen = GetSumBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlani.Id, transaction);
+                    odemePlani.OdenenTutar = toplamOdenen;
+                    odemePlani.Aciklama += aciklama + Environment.NewLine;
+                    odemePlani.Degistiren = kullanici;
+                    if (!new OdemePlaniService(context).Update(odemePlani, transaction))
+                    {
+                        throw new InvalidOperationException("Ödeme planı güncellenemedi.");
+                    }
+                }
+            }
+            catch (Exception exception1)
+            {
+                ExceptionHelper exHelper = new ExceptionHelper();
+                exHelper.Exceptions.Add(new Exception("Ödeme Kaydedilemedi"));
+                exHelper.Exceptions.Add(exception1);
+                exHelper.PublishException();
+                odeme = null;
+            }
+            return odeme;
+        }
+
+        private Odeme OdemeyiKaydetOdemePlaniniGuncelleLegacy(KiraSozlesme kiraSozlesme, OdemePlani odemePlani, DateTime odemeTarihi, decimal odenenTutar, string aciklama, string kullanici)
         {
             Odeme odeme = null;
             try

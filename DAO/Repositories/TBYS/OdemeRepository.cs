@@ -185,6 +185,17 @@ namespace DAO.Repositories.TBYS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectSumBySozlesmeIdOdemePlaniId(int sozlesmeId, int odemePlaniId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT SUM(OdenenTutar) Toplam FROM Odeme_Table WITH (UPDLOCK, HOLDLOCK)
+                WHERE SozlesmeId=@SozlesmeId
+                    AND OdemePlaniId=@OdemePlaniId");
+            query.AddParameter("@SozlesmeId", sozlesmeId);
+            query.AddParameter("@OdemePlaniId", odemePlaniId);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
         public bool DeleteBySozlesmeId(int id)
         {
             SqlQuery q = new SqlQuery("DELETE Odeme_Table WHERE SozlesmeId=@SozlesmeId");
