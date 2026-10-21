@@ -1,5 +1,11 @@
 # TBYS loglama ve mesaj dönüşümü — envanter ve ilerleme
 
+## Güncel parça: ödeme iş akışı repository ve servis paketi
+
+Dal: `codex/tbys-payment-workflow-batch`. Başlangıç commit'i: `5d2941bc` (PR #466 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. Sekiz dosyada `Odeme`, `OdemeAyrinti`, `OdemeAyristirma` ve `OdemeSebebiTanim` repository/servis çiftleri TBYS SQL yürütücüsüne ve bağlamlı transaction CRUD overload'larına geçirildi. Bağlamlı yazmalarda audit başlığı aynı transaction üzerinden kaydediliyor; bağlamsız eski OlayKayit çağrıları korunuyor.
+
+Bu parça ilgili WebPart çağrılarını toplu olarak değiştirmiyor; ödeme kaydetme/silme/güncelleme zincirlerinin transaction-aware servis API'leri hazırlandı. Üretilmiş ASCX dosyaları değişmedi. Codex build/test/debug çalıştırmadı; yalnızca statik kaynak incelemesi ve `git diff --check` yapıldı. Build ve TEST kullanıcıya aittir.
+
 ## Güncel parça: ödeme planı CRUD transaction altyapısı
 
 Dal: `codex/tbys-payment-plan-audit`. Başlangıç commit'i: `5825eeb8` (PR #465 sonrası). Kod değişikliğinden önce yerel `master` temizdi ve GitHub `master` ile aynı commit'teydi. Ödeme planı ekranının üretme, sözleşmeye bağlı silme ve iki güncelleme çağrısı bağlamlı kurucuya geçirildi; diğer okuma ekranları ve tahsilat zinciri sonraki parçalarda ele alınacak.

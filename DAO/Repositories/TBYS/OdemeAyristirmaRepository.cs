@@ -1,4 +1,5 @@
 using DAO.Ortak;
+using Utility.Logging;
 using System;
 using System.Data;
 
@@ -6,7 +7,7 @@ namespace DAO.Repositories.TBYS
 {
     public class OdemeAyristirmaRepository
     {
-        private readonly DbClass db;
+        private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
         public OdemeAyristirmaRepository()
@@ -17,9 +18,11 @@ namespace DAO.Repositories.TBYS
         public OdemeAyristirmaRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
+            this.db = new TbysSqlExecutor(db, "OdemeAyristirmaRepository");
             queryBuilder = new CrudQueryBuilder();
         }
+
+        public OdemeAyristirmaRepository(PortalLogContext context) { db = new TbysSqlExecutor(context, "OdemeAyristirmaRepository"); queryBuilder = new CrudQueryBuilder(); }
 
         public DataTable SelectById(int id)
         {
@@ -59,5 +62,10 @@ namespace DAO.Repositories.TBYS
         {
             return db.DeleteFromDb(queryBuilder.BuildDelete("OdemeAyristirma_Table", id), "");
         }
+
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context) { SqlQuery q = new SqlQuery("SELECT * FROM OdemeAyristirma_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, transaction, context); }
+        public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context) { return db.Insert(queryBuilder.BuildInsert(entity, "OdemeAyristirma_Table"), transaction, context); }
+        public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context) { return db.Update2Db(queryBuilder.BuildUpdate(entity, "OdemeAyristirma_Table"), transaction, context); }
+        public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context) { return db.DeleteFromDb(queryBuilder.BuildDelete("OdemeAyristirma_Table", id), "", transaction, context); }
     }
 }
