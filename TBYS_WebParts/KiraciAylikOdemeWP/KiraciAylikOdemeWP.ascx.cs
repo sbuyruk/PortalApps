@@ -302,7 +302,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
 				DateTime bitTarih = BitisTarihiTxt.Text.ConvertToDatetime().Date;
                 int bolgeId = BolgeDDL.SelectedItem.Value.ConvertToInt();
                 Odeme odemeDao = new Odeme();
-				DataTable dataTable = new Model.Services.TBYS.OdemeService().GetByKiraciAyYilReturnDataTable(bolgeId, KiraciIdQS.ConvertToInt(), basTarih, bitTarih);
+				DataTable dataTable = new Model.Services.TBYS.OdemeService(LoggingContext).GetByKiraciAyYilReturnDataTable(bolgeId, KiraciIdQS.ConvertToInt(), basTarih, bitTarih);
 
 				if (dataTable != null && dataTable.Rows.Count > 0)
 				{
