@@ -327,14 +327,14 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
 
             DataTable dataTable;
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService().GetById(SecilenIdQS.ConvertToInt());
+            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(SecilenIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
                 AktifQS = kiraSozlesme.Aktif?ProjeConstants.KIRASOZLESME_AKTIF_INT.ToString():ProjeConstants.KIRASOZLESME_AKTIF_DEGIL_INT.ToString();
             }
 
             kiraSozlesme = new KiraSozlesme();
-            dataTable = new Model.Services.TBYS.KiraSozlesmeService().GetListReturnDataTable(0, AktifQS.ConvertToInt(),BolgeIdQS);
+            dataTable = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetListReturnDataTable(0, AktifQS.ConvertToInt(),BolgeIdQS);
 
             int SiraNo = 1;
             KiraSozlesmeListItem tempSozlesmeItem = null;
