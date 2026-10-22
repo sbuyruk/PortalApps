@@ -91,6 +91,8 @@
     <Compile Include="Logging\NbysRegularFeedback.cs" />
     <Compile Include="Logging\NbysGiftFeedback.cs" />
     <Compile Include="Logging\NbysDocumentFeedback.cs" />
+    <Compile Include="Logging\NbysReferralDocument.cs" />
+    <Compile Include="Logging\NbysReferralFeedback.cs" />
     <Compile Include="Logging\NbysWebPartLog.cs" />
     <Compile Include="ArmaganAraWP\ArmaganAraWP.ascx.cs">
       <DependentUpon>ArmaganAraWP.ascx</DependentUpon>

@@ -1,3 +1,6 @@
+using Utility.Logging;
+using NBYS_WebParts.Logging;
+using System.Globalization;
 using Model.IKYS;
 using Model.NBYS;
 using Model.Ortak;
@@ -16,6 +19,30 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurListesiWP
     [ToolboxItemAttribute(false)]
     public partial class BagisaVesileOlanTesekkurListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("NBYS", "BagisaVesileOlanTesekkurListesiWP"); } }
+        private bool canProcess = true;
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, () => { if (canProcess) action(); });
+        }
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            InitializeControl();
+            ChromeType = PartChromeType.None;
+        }
+        protected void CloseBtn_Click(object sender, EventArgs e)
+        {
+            ExecuteAction("CloseBtn_Click", () => RedirectToPage(ProjeConstants.PAGE_HOME));
+        }
+        private void RedirectToPage(string pageUrl)
+        {
+            string current = Page.Request.Url.GetLeftPart(UriPartial.Path);
+            string target = current.Substring(0, current.LastIndexOf('/') + 1) + pageUrl;
+            Page.Response.Redirect(target, false);
+            System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -25,12 +52,6 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurListesiWP
         {
         }
 
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            InitializeControl();
-            this.ChromeType = PartChromeType.None;
-        }
         private string SecilenIdQS
         {
             get
@@ -47,7 +68,8 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurListesiWP
                         ViewState["SecilenId"] = 0;
                     }
                 }
-                return ViewState["SecilenId"].ToString();
+                int id;
+                return int.TryParse(Convert.ToString(ViewState["SecilenId"]), out id) && id > 0 ? id.ToString(CultureInfo.InvariantCulture) : "0";
             }
 
             set
@@ -58,49 +80,36 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurListesiWP
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
+            ExecuteAction("Page_Load", () =>
             {
-                TabloOlustur();
-            }
+                if (!Page.IsPostBack) { NbysWebPartLog.RecordOpened(LoggingContext); TabloOlustur(); }
+            });
         }
-
 
         private void TabloOlustur()
         {
-            List<BagisaVesileOlanTesekkurListItem> list = GetData();
-            var serializer = new JavaScriptSerializer();
-            string jsonData = serializer.Serialize(list);
-            bool jasonDataBosMu = string.IsNullOrWhiteSpace(jsonData.Replace("[", "").Replace("]", "").Replace("{", "").Replace("}", ""));
-            if (!jasonDataBosMu)
-            {
-                var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
-                UtilityHelper.ScriptCalistir(jsString);
-            }
-            else
-            {
-                TableDataLbl.Text = "Teşekkür Belgesi bulunmamaktadır.";
-            }
+            var list = GetData();
+            string json = new JavaScriptSerializer().Serialize(list);
+            TableDataLbl.Text = list.Count == 0 ? "Teşekkür kaydı bulunmamaktadır." : string.Empty;
+            UtilityHelper.ScriptCalistir(CreateDataTable(json));
         }
         private List<BagisaVesileOlanTesekkurListItem> GetData()
         {
             List<BagisaVesileOlanTesekkurListItem> list = new List<BagisaVesileOlanTesekkurListItem>();
-            DataTable dataTable = new BagisaVesileOlanTesekkurService().GetListTable();
+            DataTable dataTable = new BagisaVesileOlanTesekkurService(LoggingContext).GetListTable();
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
                 {
-                    DateTime belgeTarihi;
-                    if (DateTime.TryParse(row["BelgeTarihi"].ToString(), out belgeTarihi))
-                    {
-                        row["BelgeTarihi"] = belgeTarihi.ToString("dd.MM.yyyy");
-                    }
+                    string belgeTarihi = row.IsNull("BelgeTarihi") ? string.Empty
+                        : Convert.ToDateTime(row["BelgeTarihi"]).ToString("dd.MM.yyyy", new CultureInfo("tr-TR"));
                     list.Add(new BagisaVesileOlanTesekkurListItem
                     {
                         BelgeId = Convert.ToInt32(row["Id"]),
                         Adi = row["Adi"].ToString(),
                         Soyadi = row["Soyadi"].ToString(),
                         VerilmeSebebi = row["VerilmeSebebi"].ToString(),
-                        BelgeTarihi = belgeTarihi.ToString("dd.MM.yyyy"),
+                        BelgeTarihi = belgeTarihi,
                         ImzalayanAdiSoyadi = row["ImzalayanAdiSoyadi"].ToString(),
                         Aciklama = row["Aciklama"].ToString(),
                         Duzenle = "<a href='" + ProjeConstants.PAGE_BAGISAVESILE_GIRIS + "?SecilenId=" + row["Id"] + @"' class='btn btn-sm btn-primary'>Düzenle</a>",
@@ -110,47 +119,18 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurListesiWP
                 }
             }
             return list;
+
         }
         protected void SilNowBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("SilNowBtn_Click", () =>
             {
-                int silId = HiddenSecilenId.Value.ConvertToInt();
-                if (silId < 1)
-                {
-                    throw new Exception("Silinecek kayıt bulunamadı");
-                }
-                BagisaVesileOlanTesekkur bagisaVesileOlanTesekkur = new BagisaVesileOlanTesekkur() { Id = silId };
-                bool silindi = new BagisaVesileOlanTesekkurService().Delete(bagisaVesileOlanTesekkur);
-                if (silindi)
-                {
-                    MessageHelper.PublishMessage("Teşekkür belgesi silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
-                    TabloOlustur();
-                }
-                else
-                {
-                    throw new Exception("Silme işlemi başarısız oldu");
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
-        }
-        protected void CloseBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+                int id;
+                if (!int.TryParse(HiddenSecilenId.Value, out id) || id <= 0)
+                { Messages.Warning("Silinecek teşekkür kaydını listeden seçin."); return; }
+                NbysReferralWriteResult result = new BagisaVesileOlanTesekkurService(LoggingContext).Remove(id);
+                NbysReferralFeedback.Write(LoggingContext, result, "Teşekkür kaydı silindi.", TabloOlustur);
+            });
         }
 
         private string CreateDataTable(string jsonData)
@@ -190,6 +170,7 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurListesiWP
                         { data: 'Sil'},
 
                     ],
+                    columnDefs: [{ targets: [1, 2, 3, 4, 5, 6], render: $.fn.dataTable.render.text() }],
                     pageLength: 8,
                     'order': [[4, 'desc']],//sort date desc
                     'language': {

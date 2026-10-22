@@ -221,3 +221,10 @@ Belge üretimi/basımı, rapor hedef ekranları ve SMS/gönderim sonraki kapsamd
 Kullanıcı #516 sonrasında belge/basım grubuna devam edilmesini istedi. Temiz ve güncel 21270d5d2c06e9aa7fc38cb3f29ac2511971a80f üzerinden codex/nbys-belge-basim-log-transaction-mesaj açıldı.
 TesekkurBasimiWP, BeratBasimiWP, TesekkurBelgesiYazisiWP, BeratBelgesiYazisiWP ve DuzenliBagisciBelgesiBasimiWP taşındı. Belge/etiket kayıt kümesi sabitlendi; seçime bağlı durum güncellemesi küme/yetki doğrulaması ve merkezi audit ile tek SQL transaction'a alındı. Yanlış tüm-bölge UPDATE'leri ve iç hatadan sonra tam başarı mesajı kaldırıldı.
 Dosya/SQL/rapor dış etkileri atomik kabul edilmez; kısmi sonuçlar tek güvenli mesajla açıklanır. Mesaj farkları, merkez/bölge erişimi değişikliği, dosya kaldırma, yapılandırma ve TEST noktaları LoglamaGecisBelgeBasim.md içindedir. Harici rapor hedefleri, FTKYazilariWP, bağışa vesile olanlar ve SMS tamamlanmış sayılmaz. Codex build/test/debug çalıştırmadı.
+
+## Bağışa vesile olanlara teşekkür işlem grubu
+
+Kullanıcı #517 sonrasında devam edilmesini istedi. Temiz ve güncel ad6f89609a31fec40d6fa640ecf64d49159981b0 üzerinden codex/nbys-bagisa-vesile-transaction-belge açıldı.
+BagisaVesileOlanTesekkurGirisiWP, BagisaVesileOlanTesekkurListesiWP ve BagisaVesileOlanArmaganBelgesiWP taşındı. Kayıt/güncelleme/silme ve audit aynı transaction'dadır. İlk oluşturma bilgileri ve form dışı telefon/adres korunur; audit ayrıntısı yalnızca BelgeTarihi'dir. Kaynakta bölge alanı bulunmayan entity için yeni bölge yetkisi icat edilmedi.
+İki ekranın Word üretimi ortaklaştırıldı. Birleşik ekranda commit edilen Id dosya adımından önce korunur; dosya hatasından sonra aynı formdan tekrar denemede yeni kayıt eklenmez. Tek mesajla SQL/SharePoint kısmi sonuçları, beklenen doğrulamalar ve güvenli teknik hata/başvuru kodu ayrılır. Eski kök code-behind kopyası Compile listesinde değildir ve değiştirilmedi.
+Mesaj farkları, yapılandırma, kalıcı idempotency sınırı, Word ve TEST inceleme noktaları LoglamaGecisBagisaVesile.md içindedir. FTK yazıları, SMS ve kalan rapor/ortak ekranlar sonraki kapsamdır. Codex build/test/debug çalıştırmadı.
