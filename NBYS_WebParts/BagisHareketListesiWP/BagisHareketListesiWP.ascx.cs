@@ -1,3 +1,5 @@
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.Ortak;
@@ -18,6 +20,15 @@ namespace NBYS_WebParts.BagisHareketListesiWP
     [ToolboxItemAttribute(false)]
     public partial class BagisHareketListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "BagisHareketListesiWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -107,22 +118,16 @@ namespace NBYS_WebParts.BagisHareketListesiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
                 if (!Page.IsPostBack)
                 {
                     DDLDoldur();
                     SetDDLValues();
                     TabloOlustur();
                 }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
-
-
+            });
         }
         private void DDLDoldur()
         {
@@ -161,7 +166,7 @@ namespace NBYS_WebParts.BagisHareketListesiWP
             {
                 IliDDL.Items.Clear();
 
-                List<Il> list = new IlService().GetAll();
+                List<Il> list = new IlService().GetAll(LoggingContext);
                 IliDDL.Items.Add(new ListItem(ProjeConstants.HEPSI, ProjeConstants.IL_HEPSI.ToString()));
                 foreach (Il il in list)
                 {
@@ -172,51 +177,42 @@ namespace NBYS_WebParts.BagisHareketListesiWP
         }
         private void SetDDLValues()
         {
-            try
+            //açılışta ay ve yılı querystring ile gelen ay ve yıla eşitle, boş geldiyse geçen aya/yıla eşitle
+
+            //ay
+            string ay = !string.IsNullOrEmpty(SecilenAyQS) ? SecilenAyQS : DateTime.Today.Month.ReturnEmptyIfNull().ToString();
+            ListItem AyItem = new ListItem();
+            if (!string.IsNullOrEmpty(ay))
+                AyItem = AyDDL.Items.FindByValue(ay);
+
+            if (AyItem != null)
             {
-                //açılışta ay ve yılı querystring ile gelen ay ve yıla eşitle, boş geldiyse geçen aya/yıla eşitle
-
-                //ay
-                string ay = !string.IsNullOrEmpty(SecilenAyQS) ? SecilenAyQS : DateTime.Today.Month.ReturnEmptyIfNull().ToString();
-                ListItem AyItem = new ListItem();
-                if (!string.IsNullOrEmpty(ay))
-                    AyItem = AyDDL.Items.FindByValue(ay);
-
-                if (AyItem != null)
-                {
-                    AyDDL.SelectedValue = AyItem.Value;
-                    SecilenAyQS = AyItem.Value;
-                }
-
-                //yil
-                string yil = !string.IsNullOrEmpty(SecilenYilQS) ? SecilenYilQS : DateTime.Today.Year.ReturnEmptyIfNull().ToString();
-                ListItem YilItem = new ListItem();
-                if (!string.IsNullOrEmpty(yil))
-                    YilItem = YilDDL.Items.FindByValue(yil);
-
-                if (YilItem != null)
-                {
-                    YilDDL.SelectedValue = YilItem.Value;
-                    SecilenYilQS = YilItem.Value;
-                }
-
-                //il
-                string il = !string.IsNullOrEmpty(SecilenIlQS) ? SecilenIlQS : ProjeConstants.IL_HEPSI.ToString();
-                ListItem IlItem = new ListItem();
-                if (!string.IsNullOrEmpty(il))
-                    IlItem = IliDDL.Items.FindByValue(il);
-
-                if (IlItem != null)
-                {
-                    IliDDL.SelectedValue = IlItem.Value;
-                    SecilenIlQS = IlItem.Value;
-                }
-
+                AyDDL.SelectedValue = AyItem.Value;
+                SecilenAyQS = AyItem.Value;
             }
-            catch (Exception ex)
+
+            //yil
+            string yil = !string.IsNullOrEmpty(SecilenYilQS) ? SecilenYilQS : DateTime.Today.Year.ReturnEmptyIfNull().ToString();
+            ListItem YilItem = new ListItem();
+            if (!string.IsNullOrEmpty(yil))
+                YilItem = YilDDL.Items.FindByValue(yil);
+
+            if (YilItem != null)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                YilDDL.SelectedValue = YilItem.Value;
+                SecilenYilQS = YilItem.Value;
+            }
+
+            //il
+            string il = !string.IsNullOrEmpty(SecilenIlQS) ? SecilenIlQS : ProjeConstants.IL_HEPSI.ToString();
+            ListItem IlItem = new ListItem();
+            if (!string.IsNullOrEmpty(il))
+                IlItem = IliDDL.Items.FindByValue(il);
+
+            if (IlItem != null)
+            {
+                IliDDL.SelectedValue = IlItem.Value;
+                SecilenIlQS = IlItem.Value;
             }
 
 
@@ -226,36 +222,25 @@ namespace NBYS_WebParts.BagisHareketListesiWP
         {
             NakitBagisHareket nbh = new NakitBagisHareket();
             int ilId = IliDDL.SelectedItem.Value.ConvertToInt();
-            DataTable dt = new NakitBagisHareketService().ListByDurumTarih(AyDDL.SelectedItem.Value, YilDDL.SelectedItem.Value, ilId);
+            DataTable dt = new NakitBagisHareketService(LoggingContext).ListByDurumTarih(AyDDL.SelectedItem.Value, YilDDL.SelectedItem.Value, ilId);
             return dt;
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("CloseBtn_Click", () =>
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("IliDDL_SelectedIndexChanged", () =>
             {
                 SecilenIlQS = IliDDL.SelectedItem.Value.ToString();
                 TabloOlustur();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
-
+            });
         }
         private void TabloOlustur()
         {
@@ -267,19 +252,9 @@ namespace NBYS_WebParts.BagisHareketListesiWP
         {
             string jSon = string.Empty;
 
-            try
-            {
-                NakitBagisHareket nbh = new NakitBagisHareket();
-                int ilId = IliDDL.SelectedItem.Value.ConvertToInt();
-                jSon = new NakitBagisHareketService().ListByDurumTarihJson(AyDDL.SelectedItem.Value, YilDDL.SelectedItem.Value, ilId);
-
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
+            NakitBagisHareket nbh = new NakitBagisHareket();
+            int ilId = IliDDL.SelectedItem.Value.ConvertToInt();
+            jSon = new NakitBagisHareketService(LoggingContext).ListByDurumTarihJson(AyDDL.SelectedItem.Value, YilDDL.SelectedItem.Value, ilId);
             return jSon;
         }
         private string CreateDataTable(string jsonData)
@@ -364,41 +339,26 @@ namespace NBYS_WebParts.BagisHareketListesiWP
         }
         protected void YilDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("YilDDL_SelectedIndexChanged", () =>
             {
                 SecilenYilQS = YilDDL.SelectedItem.Value.ToString();
                 TabloOlustur();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void AyDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("AyDDL_SelectedIndexChanged", () =>
             {
                 SecilenAyQS = AyDDL.SelectedItem.Value.ToString();
                 TabloOlustur();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ExcelBtn_Click", () =>
             {
                 ExportToExcel();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void ExportToExcel()
         {

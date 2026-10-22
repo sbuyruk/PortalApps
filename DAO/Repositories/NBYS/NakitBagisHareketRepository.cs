@@ -11,6 +11,7 @@ namespace DAO.Repositories.NBYS
     {
         private const string TableName = "NakitBagisHareket_Table";
         private readonly DbClass db;
+        private readonly PortalLogContext readContext;
         private readonly CrudQueryBuilder queryBuilder;
 
         public NakitBagisHareketRepository() : this(new DbClass())
@@ -25,23 +26,55 @@ namespace DAO.Repositories.NBYS
             queryBuilder = new CrudQueryBuilder();
         }
 
+        // This constructor is for migrated read-only workflows.
+        public NakitBagisHareketRepository(PortalLogContext context)
+        {
+            if (context == null || context.Project != "NBYS")
+                throw new ArgumentException("NBYS log bağlamı gereklidir.", "context");
+            readContext = context;
+            queryBuilder = new CrudQueryBuilder();
+        }
+
+        private DbClass LegacyWriteDb
+        {
+            get
+            {
+                RequireLegacyWrite();
+                return db;
+            }
+        }
+
+        private void RequireLegacyWrite()
+        {
+            if (readContext != null)
+                throw new InvalidOperationException("Bu erişim yalnızca okuma işlemlerini destekler.");
+        }
+
+        private DataTable Select(SqlQuery query,
+            [System.Runtime.CompilerServices.CallerMemberName] string method = "")
+        {
+            return readContext == null ? db.SelectFromDb(query, "") :
+                PortalSqlReadExecutor.Select(query, readContext, "NakitBagisHareketRepository." + method);
+        }
         public int Insert<T>(T entity)
         {
-            return db.Insert(queryBuilder.BuildInsert(entity, TableName));
+            return LegacyWriteDb.Insert(queryBuilder.BuildInsert(entity, TableName));
         }
 
         public int Insert<T>(T entity, SqlTransactionContext transaction)
         {
+            RequireLegacyWrite();
             return transaction.Insert(queryBuilder.BuildInsert(entity, TableName));
         }
 
         public bool Update<T>(T entity)
         {
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName));
+            return LegacyWriteDb.Update2Db(queryBuilder.BuildUpdate(entity, TableName));
         }
 
         public bool Update<T>(T entity, SqlTransactionContext transaction)
         {
+            RequireLegacyWrite();
             return transaction.Update(queryBuilder.BuildUpdate(entity, TableName));
         }
 
@@ -58,7 +91,7 @@ namespace DAO.Repositories.NBYS
             if ((object)gift != null)
                 queries.Add(queryBuilder.BuildUpdate(gift, "Armagan_Table"));
 
-            db.ExecuteTransaction(queries);
+            LegacyWriteDb.ExecuteTransaction(queries);
         }
 
         public void DeleteWithArchive<TDonationArchive, TGiftArchive>(
@@ -85,7 +118,7 @@ namespace DAO.Repositories.NBYS
                 queries.Add(queryBuilder.BuildInsert(giftArchive, "SilinenKayit_Table"));
             }
 
-            db.ExecuteTransaction(queries);
+            LegacyWriteDb.ExecuteTransaction(queries);
         }
 
         public bool MergeDonor<TDonation, TDonationArchive, TGift, TGiftArchive, TDonorArchive>(
@@ -129,20 +162,20 @@ namespace DAO.Repositories.NBYS
             queries.Add(queryBuilder.BuildDelete("NakitBagisci_Table", sourceDonorId));
             queries.Add(queryBuilder.BuildInsert(donorArchive, "SilinenKayit_Table"));
 
-            db.ExecuteTransaction(queries);
+            LegacyWriteDb.ExecuteTransaction(queries);
             return true;
         }
 
         public bool Delete(int id)
         {
-            return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), "");
+            return LegacyWriteDb.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), "");
         }
 
         public DataTable SelectById(int id)
         {
             SqlQuery query = new SqlQuery("SELECT * FROM NakitBagisHareket_Table WHERE Id=@Id");
             query.AddParameter("@Id", id);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction)
@@ -157,21 +190,21 @@ namespace DAO.Repositories.NBYS
 
         public DataTable SelectAll()
         {
-            return db.SelectFromDb(new SqlQuery("SELECT * FROM NakitBagisHareket_Table"), "");
+            return Select(new SqlQuery("SELECT * FROM NakitBagisHareket_Table"));
         }
 
         public DataTable SelectByBagisciId(int bagisciId)
         {
             SqlQuery query = new SqlQuery("SELECT * FROM NakitBagisHareket_Table WHERE BagisciId=@BagisciId");
             query.AddParameter("@BagisciId", bagisciId);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectByEkstreAktarmaId(int ekstreAktarmaId)
         {
             SqlQuery query = new SqlQuery("SELECT * FROM NakitBagisHareket_Table WHERE EkstreAktarmaId=@EkstreAktarmaId");
             query.AddParameter("@EkstreAktarmaId", ekstreAktarmaId);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectByEkstreAktarmaId(
@@ -194,7 +227,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@BagisciId", bagisciId);
             query.AddParameter("@Baslangic", LegacyDateValue(baslangic));
             query.AddParameter("@Bitis", LegacyDateValue(bitis));
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectLastByBagisciIdTarih(int bagisciId, DateTime baslangic, DateTime bitis)
@@ -205,7 +238,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@BagisciId", bagisciId);
             query.AddParameter("@Baslangic", LegacyDateValue(baslangic));
             query.AddParameter("@Bitis", LegacyDateValue(bitis));
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectSumByBagisciIdTarih(int bagisciId, DateTime baslangic, DateTime bitis)
@@ -216,7 +249,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@BagisciId", bagisciId);
             query.AddParameter("@Baslangic", baslangic);
             query.AddParameter("@Bitis", bitis);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectSumByBagisciIdTarih(
@@ -245,7 +278,7 @@ namespace DAO.Repositories.NBYS
                 WHERE A.BagisciId=@BagisciId AND B.Id IS NULL
                 ORDER BY BagisMiktari DESC");
             query.AddParameter("@BagisciId", bagisciId);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectByFilter(string filter)
@@ -269,7 +302,7 @@ namespace DAO.Repositories.NBYS
                     OR D.Adres LIKE @Filter
                 ORDER BY A.BagisTarihi DESC");
             query.AddParameter("@Filter", "%" + (filter ?? string.Empty) + "%");
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectByDurumTarih(string ay, string yil, int? ilId)
@@ -293,7 +326,7 @@ namespace DAO.Repositories.NBYS
                 query.AddParameter("@Ay", ay);
             if (ilId.HasValue)
                 query.AddParameter("@IlId", ilId.Value);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectIadeEdilenBagislar(string ay, string yil)
@@ -316,7 +349,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@Yil", yil);
             if (!string.IsNullOrEmpty(ay))
                 query.AddParameter("@Ay", ay);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectSumByTarihBolge(DateTime baslangic, DateTime bitis, int? bolgeId)
@@ -332,7 +365,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@Bitis", LegacyDateValue(bitis));
             if (bolgeId.HasValue)
                 query.AddParameter("@BolgeId", bolgeId.Value);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectSumByTarihBanka(DateTime baslangic, DateTime bitis, string banka)
@@ -353,7 +386,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@Bitis", LegacyDateValue(bitis));
             if (!string.IsNullOrEmpty(banka))
                 query.AddParameter("@Banka", banka);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectMaxByTarihBanka(DateTime baslangic, DateTime bitis, string banka)
@@ -369,7 +402,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@Bitis", LegacyDateValue(bitis));
             if (!string.IsNullOrEmpty(banka))
                 query.AddParameter("@Banka", banka);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectCountByTarihBolge(int yil, int ay)
@@ -385,7 +418,7 @@ namespace DAO.Repositories.NBYS
                 GROUP BY D.KisaAdi, MONTH(A.BagisTarihi)");
             query.AddParameter("@Yil", yil);
             query.AddParameter("@Ay", ay);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectCountSumByTarih(DateTime baslangic, DateTime bitis)
@@ -404,7 +437,7 @@ namespace DAO.Repositories.NBYS
                 ORDER BY D.KisaAdi");
             query.AddParameter("@Baslangic", LegacyDateValue(baslangic));
             query.AddParameter("@Bitis", LegacyDateValue(bitis));
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectCountSumByYilIl(int baslangicYili, int bitisYili)
@@ -419,7 +452,7 @@ namespace DAO.Repositories.NBYS
                 ORDER BY C.Bolge, C.IlAdi, YEAR(A.BagisTarihi)");
             query.AddParameter("@BaslangicYili", baslangicYili);
             query.AddParameter("@BitisYili", bitisYili);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectCountSumByBanka(DateTime baslangic, DateTime bitis)
@@ -434,7 +467,7 @@ namespace DAO.Repositories.NBYS
                 ORDER BY Toplam DESC, B.BankaGrup");
             query.AddParameter("@Baslangic", LegacyDateValue(baslangic));
             query.AddParameter("@Bitis", LegacyDateValue(bitis));
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectDailyTotalsByBank(DateTime bagisTarihi, string bankaGrup, string dovizCinsi)
@@ -454,7 +487,7 @@ namespace DAO.Repositories.NBYS
                 query.AddParameter("@BankaGrup", bankaGrup);
             if (!string.IsNullOrEmpty(dovizCinsi))
                 query.AddParameter("@DovizCinsi", dovizCinsi);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectDailySum(DateTime bagisTarihi, string bankaGrup, string dovizCinsi)
@@ -472,7 +505,7 @@ namespace DAO.Repositories.NBYS
                 query.AddParameter("@BankaGrup", bankaGrup);
             if (!string.IsNullOrEmpty(dovizCinsi))
                 query.AddParameter("@DovizCinsi", dovizCinsi);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectDailyTlTotalByBankGroup2(DateTime bagisTarihi, string bankaGrup2, string tlDovizCinsi)
@@ -489,7 +522,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@BagisTarihi", LegacyDateValue(bagisTarihi));
             if (!string.IsNullOrEmpty(bankaGrup2))
                 query.AddParameter("@BankaGrup2", bankaGrup2);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectCurrencyDonationsByDateBankGroup2(
@@ -508,7 +541,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@Bitis", LegacyDateValue(bitis));
             if (!string.IsNullOrEmpty(bankaGrup2))
                 query.AddParameter("@BankaGrup2", bankaGrup2);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectBankGroup2ByDateCurrency(DateTime baslangic, DateTime bitis, string dovizCinsi)
@@ -524,13 +557,13 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@Bitis", LegacyDateValue(bitis));
             if (!string.IsNullOrEmpty(dovizCinsi))
                 query.AddParameter("@DovizCinsi", dovizCinsi);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectCurrencyTotalsByDateBank(
             DateTime baslangic, DateTime bitis, string bankaGrup, string tlDovizCinsi)
         {
-            return db.SelectFromDb(BuildCurrencyTotalsQuery(baslangic, bitis, bankaGrup, tlDovizCinsi), "");
+            return Select(BuildCurrencyTotalsQuery(baslangic, bitis, bankaGrup, tlDovizCinsi));
         }
 
         public DataTable SelectCurrencyTotalsByDateBank(
@@ -580,7 +613,7 @@ namespace DAO.Repositories.NBYS
                 WHERE A.BagisciId=@BagisciId
                 ORDER BY BagisTarihi DESC");
             query.AddParameter("@BagisciId", bagisciId);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectProvinceYearSummary(int? ilId, DateTime tarih)
@@ -598,7 +631,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@Tarih", LegacyDateValue(tarih));
             if (ilId.HasValue)
                 query.AddParameter("@IlId", ilId.Value);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectByRegionDate(int? bolgeId, DateTime baslangic, DateTime bitis)
@@ -623,7 +656,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@Bitis", LegacyDateValue(bitis));
             if (bolgeId.HasValue)
                 query.AddParameter("@BolgeId", bolgeId.Value);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectDonorDonationDetails(int bagisciId)
@@ -644,7 +677,7 @@ namespace DAO.Repositories.NBYS
                 WHERE B.Id=@BagisciId
                 ORDER BY BagisTarihi DESC");
             query.AddParameter("@BagisciId", bagisciId);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectDonationReport(
@@ -719,7 +752,7 @@ namespace DAO.Repositories.NBYS
             if (tuzelKisi.HasValue)
                 query.AddParameter("@TuzelKisi", tuzelKisi.Value ? 1 : 0);
 
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         private static void AppendWhere(StringBuilder builder, bool condition, string clause)

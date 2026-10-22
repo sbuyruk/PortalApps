@@ -16,6 +16,8 @@ namespace Model.Services.NBYS
     {
         private readonly NakitBagisHareketRepository repository;
 
+        public NakitBagisHareketService(PortalLogContext context) : this(new NakitBagisHareketRepository(context)) { }
+
         public NakitBagisHareketService() : this(new NakitBagisHareketRepository())
         {
         }

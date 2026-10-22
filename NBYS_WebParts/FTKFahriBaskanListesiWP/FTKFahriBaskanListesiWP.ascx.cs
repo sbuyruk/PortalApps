@@ -1,3 +1,5 @@
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.NBYS;
 using Model.Services.NBYS;
 using Model.Ortak;
@@ -18,6 +20,15 @@ namespace NBYS_WebParts.FTKFahriBaskanListesiWP
     [ToolboxItemAttribute(false)]
     public partial class FTKFahriBaskanListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "FTKFahriBaskanListesiWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -36,14 +47,11 @@ namespace NBYS_WebParts.FTKFahriBaskanListesiWP
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
                 TabloOlustur();
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.PublishMessage(ex.Message, ProjeConstants.MESAJ_HATA);
-            }
+            });
         }
         private void TabloOlustur()
         {
@@ -54,43 +62,29 @@ namespace NBYS_WebParts.FTKFahriBaskanListesiWP
         {
             string jSon = string.Empty;
 
-            try
-            {
-                List<UyeListItem> list = GetDataList(true);
-                var serializer = new JavaScriptSerializer();
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
+            List<UyeListItem> list = GetDataList(true);
+            var serializer = new JavaScriptSerializer();
+            jSon = serializer.Serialize(list);
             return jSon;
         }
         protected void YeniKayitBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FTKKISI_GIRISI);
+            ExecuteAction("YeniKayitBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FTKKISI_GIRISI);
+            });
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl);
         }
         private List<UyeListItem> GetDataList(bool duzenleVarmi)
         {
             int SiraNo = 1;
             List<UyeListItem> list = new List<UyeListItem>();
-            FTKKisiService ftkKisiService = new FTKKisiService();
+            FTKKisiService ftkKisiService = new FTKKisiService(LoggingContext);
             DataTable dataTable = ftkKisiService.GetAllTable();
             if (dataTable != null)
             {
@@ -155,15 +149,10 @@ namespace NBYS_WebParts.FTKFahriBaskanListesiWP
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ExcelBtn_Click", () =>
             {
                 ExportToExcel();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void ExportToExcel()
         {
@@ -200,17 +189,12 @@ namespace NBYS_WebParts.FTKFahriBaskanListesiWP
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("CloseBtn_Click", () =>
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
 
     }

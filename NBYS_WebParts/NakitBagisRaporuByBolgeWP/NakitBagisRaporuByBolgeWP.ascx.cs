@@ -1,3 +1,5 @@
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.NBYS;
 using Model.Services.NBYS;
 using System;
@@ -15,6 +17,15 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
     [ToolboxItemAttribute(false)]
     public partial class NakitBagisRaporuByBolgeWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "NakitBagisRaporuByBolgeWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -57,18 +68,20 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            if (!Page.IsPostBack)
+            ExecuteAction("Page_Load", () =>
             {
-                DateTime today = DateTime.Today;
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
+                if (!Page.IsPostBack)
+                {
+                    DateTime today = DateTime.Today;
 
-                DateTime bastar = new DateTime(today.Year, today.Month, 1);
-                SecilenYilQS = bastar.Year.ToString();
-                FillYear();
-                SetDDLValues();
-                FillTable();
-            }
-
+                    DateTime bastar = new DateTime(today.Year, today.Month, 1);
+                    SecilenYilQS = bastar.Year.ToString();
+                    FillYear();
+                    SetDDLValues();
+                    FillTable();
+                }
+            });
         }
         protected void FillTable()
         {
@@ -78,232 +91,223 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
             int yil = YilDDL.SelectedItem.Value.ConvertToInt();
 
 
-            TableHeaderCell.Text = yil + " YILI NAKIT BAGIS RAPORU";
+            TableHeaderCell.Text = yil + " YILI NAKİT BAĞIŞ RAPORU";
 
             SetCellValues(yil);
 
         }
         private void SetCellValues(int yil)
         {
-            try
+            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+            int AnkToplamAdet = 0;
+            Decimal AnkToplamTutar = 0;
+            int IstToplamAdet = 0;
+            Decimal IstToplamTutar = 0;
+            int IzmToplamAdet = 0;
+            Decimal IzmToplamTutar = 0;
+            int MerToplamAdet = 0;
+            Decimal MerToplamTutar = 0;
+            int ErzToplamAdet = 0;
+            Decimal ErzToplamTutar = 0;
+            int YurtdisiToplamAdet = 0;
+            Decimal YurtdisiToplamTutar = 0;
+            NakitBagisHareketService nbh = new NakitBagisHareketService(LoggingContext);
+            for (int i = 1; i <= 12; i++)
             {
-                IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-                int AnkToplamAdet = 0;
-                Decimal AnkToplamTutar = 0;
-                int IstToplamAdet = 0;
-                Decimal IstToplamTutar = 0;
-                int IzmToplamAdet = 0;
-                Decimal IzmToplamTutar = 0;
-                int MerToplamAdet = 0;
-                Decimal MerToplamTutar = 0;
-                int ErzToplamAdet = 0;
-                Decimal ErzToplamTutar = 0;
-                int YurtdisiToplamAdet = 0;
-                Decimal YurtdisiToplamTutar = 0;
-                NakitBagisHareketService nbh = new NakitBagisHareketService();
-                for (int i = 1; i <= 12; i++)
+
+                DataTable dataTable = nbh.GetCountByTarihBolge(yil, i);
+                if (dataTable != null)
                 {
-
-                    DataTable dataTable = nbh.GetCountByTarihBolge(yil, i);
-                    if (dataTable != null)
+                    if (dataTable.Rows.Count > 0)
                     {
-                        if (dataTable.Rows.Count > 0)
+                        TableRow tableRow = new TableRow();
+                        TableCell AyCell = new TableCell();
+                        DateTime tarih = new DateTime(DateTime.Now.Year, i, 1);
+                        string aystr = tarih.ToString("MMMM");
+                        AyCell.CssClass = "fw-bold text-end";
+                        AyCell.Text = aystr;
+                        tableRow.Controls.Add(AyCell);
+
+                        TableCell AnkAdetCell = new TableCell();
+                        tableRow.Controls.Add(AnkAdetCell);
+                        TableCell AnkTutarCell = new TableCell();
+                        AnkTutarCell.CssClass = "text-end";
+                        tableRow.Controls.Add(AnkTutarCell);
+
+                        TableCell IstAdetCell = new TableCell();
+                        tableRow.Controls.Add(IstAdetCell);
+                        TableCell IstTutarCell = new TableCell();
+                        IstTutarCell.CssClass = "text-end";
+                        tableRow.Controls.Add(IstTutarCell);
+
+                        TableCell IzmAdetCell = new TableCell();
+                        tableRow.Controls.Add(IzmAdetCell);
+                        TableCell IzmTutarCell = new TableCell();
+                        IzmTutarCell.CssClass = "text-end";
+                        tableRow.Controls.Add(IzmTutarCell);
+
+                        TableCell MerAdetCell = new TableCell();
+                        tableRow.Controls.Add(MerAdetCell);
+                        TableCell MerTutarCell = new TableCell();
+                        MerTutarCell.CssClass = "text-end";
+                        tableRow.Controls.Add(MerTutarCell);
+
+                        TableCell ErzAdetCell = new TableCell();
+                        tableRow.Controls.Add(ErzAdetCell);
+                        TableCell ErzTutarCell = new TableCell();
+                        ErzTutarCell.CssClass = "text-end";
+                        tableRow.Controls.Add(ErzTutarCell);
+
+                        TableCell YurtdisiAdetCell = new TableCell();
+                        tableRow.Controls.Add(YurtdisiAdetCell);
+                        TableCell YurtdisiTutarCell = new TableCell();
+                        YurtdisiTutarCell.CssClass = "text-end";
+                        tableRow.Controls.Add(YurtdisiTutarCell);
+
+
+                        int AyToplamAdet = 0;
+                        Decimal AyToplamTutar = 0;
+                        foreach (DataRow row in dataTable.Rows)
                         {
-                            TableRow tableRow = new TableRow();
-                            TableCell AyCell = new TableCell();
-                            DateTime tarih = new DateTime(DateTime.Now.Year, i, 1);
-                            string aystr = tarih.ToString("MMMM");
-                            AyCell.CssClass = "fw-bold text-end";
-                            AyCell.Text = aystr;
-                            tableRow.Controls.Add(AyCell);
-
-                            TableCell AnkAdetCell = new TableCell();
-                            tableRow.Controls.Add(AnkAdetCell);
-                            TableCell AnkTutarCell = new TableCell();
-                            AnkTutarCell.CssClass = "text-end";
-                            tableRow.Controls.Add(AnkTutarCell);
-
-                            TableCell IstAdetCell = new TableCell();
-                            tableRow.Controls.Add(IstAdetCell);
-                            TableCell IstTutarCell = new TableCell();
-                            IstTutarCell.CssClass = "text-end";
-                            tableRow.Controls.Add(IstTutarCell);
-
-                            TableCell IzmAdetCell = new TableCell();
-                            tableRow.Controls.Add(IzmAdetCell);
-                            TableCell IzmTutarCell = new TableCell();
-                            IzmTutarCell.CssClass = "text-end";
-                            tableRow.Controls.Add(IzmTutarCell);
-
-                            TableCell MerAdetCell = new TableCell();
-                            tableRow.Controls.Add(MerAdetCell);
-                            TableCell MerTutarCell = new TableCell();
-                            MerTutarCell.CssClass = "text-end";
-                            tableRow.Controls.Add(MerTutarCell);
-
-                            TableCell ErzAdetCell = new TableCell();
-                            tableRow.Controls.Add(ErzAdetCell);
-                            TableCell ErzTutarCell = new TableCell();
-                            ErzTutarCell.CssClass = "text-end";
-                            tableRow.Controls.Add(ErzTutarCell);
-
-                            TableCell YurtdisiAdetCell = new TableCell();
-                            tableRow.Controls.Add(YurtdisiAdetCell);
-                            TableCell YurtdisiTutarCell = new TableCell();
-                            YurtdisiTutarCell.CssClass = "text-end";
-                            tableRow.Controls.Add(YurtdisiTutarCell);
-
-
-                            int AyToplamAdet = 0;
-                            Decimal AyToplamTutar = 0;
-                            foreach (DataRow row in dataTable.Rows)
+                            int adet = Int32.Parse(row["Adet"].ReturnZeroIfNull().ToString());
+                            Decimal tutar = Decimal.Parse(row["Toplam"].ReturnZeroIfNull().ToString());
+                            string tutarStr = tutar.ToString("N", culturInfo);
+                            string adetStr = adet.ToString();
+                            string bolge = row["Bolge"].ReturnEmptyIfNull().ToString();
+                            AyToplamAdet += adet;
+                            AyToplamTutar += tutar;
+                            if (bolge.Equals(ProjeConstants.BOLGE_ANKARA))
                             {
-                                int adet = Int32.Parse(row["Adet"].ReturnZeroIfNull().ToString());
-                                Decimal tutar = Decimal.Parse(row["Toplam"].ReturnZeroIfNull().ToString());
-                                string tutarStr = tutar.ToString("N", culturInfo);
-                                string adetStr = adet.ToString();
-                                string bolge = row["Bolge"].ReturnEmptyIfNull().ToString();
-                                AyToplamAdet += adet;
-                                AyToplamTutar += tutar;
-                                if (bolge.Equals(ProjeConstants.BOLGE_ANKARA))
-                                {
-                                    AnkTutarCell.Text = tutarStr;
-                                    AnkAdetCell.Text = adetStr;
-                                    AnkToplamAdet += adet;
-                                    AnkToplamTutar += tutar;
-                                }
-                                else if (bolge.Equals(ProjeConstants.BOLGE_ISTANBUL))
-                                {
-                                    IstTutarCell.Text = tutarStr;
-                                    IstAdetCell.Text = adetStr;
-                                    IstToplamAdet += adet;
-                                    IstToplamTutar += tutar;
-                                }
-                                else if (bolge.Equals(ProjeConstants.BOLGE_IZMIR))
-                                {
-                                    IzmTutarCell.Text = tutarStr;
-                                    IzmAdetCell.Text = adetStr;
-                                    IzmToplamAdet += adet;
-                                    IzmToplamTutar += tutar;
-                                }
-                                else if (bolge.Equals(ProjeConstants.BOLGE_MERSIN))
-                                {
-                                    MerTutarCell.Text = tutarStr;
-                                    MerAdetCell.Text = adetStr;
-                                    MerToplamAdet += adet;
-                                    MerToplamTutar += tutar;
-                                }
-                                else if (bolge.Equals(ProjeConstants.BOLGE_ERZURUM))
-                                {
-                                    ErzTutarCell.Text = tutarStr;
-                                    ErzAdetCell.Text = adetStr;
-                                    ErzToplamAdet += adet;
-                                    ErzToplamTutar += tutar;
-                                }
-                                else if (bolge.Equals(ProjeConstants.BOLGE_YURTDISI))
-                                {
-                                    YurtdisiTutarCell.Text = tutarStr;
-                                    YurtdisiAdetCell.Text = adetStr;
-                                    YurtdisiToplamAdet += adet;
-                                    YurtdisiToplamTutar += tutar;
-                                }
-                            }//foreach
+                                AnkTutarCell.Text = tutarStr;
+                                AnkAdetCell.Text = adetStr;
+                                AnkToplamAdet += adet;
+                                AnkToplamTutar += tutar;
+                            }
+                            else if (bolge.Equals(ProjeConstants.BOLGE_ISTANBUL))
+                            {
+                                IstTutarCell.Text = tutarStr;
+                                IstAdetCell.Text = adetStr;
+                                IstToplamAdet += adet;
+                                IstToplamTutar += tutar;
+                            }
+                            else if (bolge.Equals(ProjeConstants.BOLGE_IZMIR))
+                            {
+                                IzmTutarCell.Text = tutarStr;
+                                IzmAdetCell.Text = adetStr;
+                                IzmToplamAdet += adet;
+                                IzmToplamTutar += tutar;
+                            }
+                            else if (bolge.Equals(ProjeConstants.BOLGE_MERSIN))
+                            {
+                                MerTutarCell.Text = tutarStr;
+                                MerAdetCell.Text = adetStr;
+                                MerToplamAdet += adet;
+                                MerToplamTutar += tutar;
+                            }
+                            else if (bolge.Equals(ProjeConstants.BOLGE_ERZURUM))
+                            {
+                                ErzTutarCell.Text = tutarStr;
+                                ErzAdetCell.Text = adetStr;
+                                ErzToplamAdet += adet;
+                                ErzToplamTutar += tutar;
+                            }
+                            else if (bolge.Equals(ProjeConstants.BOLGE_YURTDISI))
+                            {
+                                YurtdisiTutarCell.Text = tutarStr;
+                                YurtdisiAdetCell.Text = adetStr;
+                                YurtdisiToplamAdet += adet;
+                                YurtdisiToplamTutar += tutar;
+                            }
+                        }//foreach
 
-                            TableCell AyToplamAdetCell = new TableCell();
-                            AyToplamAdetCell.CssClass = "fw-bold text-end";
-                            AyToplamAdetCell.Text = AyToplamAdet + "";
-                            tableRow.Controls.Add(AyToplamAdetCell);
-                            TableCell AyToplamTutarCell = new TableCell();
-                            AyToplamTutarCell.Text = AyToplamTutar.ToString("N", culturInfo);
-                            AyToplamTutarCell.CssClass = "fw-bold text-end";
-                            tableRow.Controls.Add(AyToplamTutarCell);
+                        TableCell AyToplamAdetCell = new TableCell();
+                        AyToplamAdetCell.CssClass = "fw-bold text-end";
+                        AyToplamAdetCell.Text = AyToplamAdet + "";
+                        tableRow.Controls.Add(AyToplamAdetCell);
+                        TableCell AyToplamTutarCell = new TableCell();
+                        AyToplamTutarCell.Text = AyToplamTutar.ToString("N", culturInfo);
+                        AyToplamTutarCell.CssClass = "fw-bold text-end";
+                        tableRow.Controls.Add(AyToplamTutarCell);
 
-                            NBTable.Controls.Add(tableRow);
+                        NBTable.Controls.Add(tableRow);
 
 
-                        }//if
-                    }//if 
-                }//for
+                    }//if
+                }//if
+            }//for
 
-                TableRow toplamRow = new TableRow();
+            TableRow toplamRow = new TableRow();
 
-                TableCell ToplamBaslikCell = new TableCell();
-                ToplamBaslikCell.CssClass = "fw-bold text-end";
-                ToplamBaslikCell.Text = "Toplam";
-                toplamRow.Controls.Add(ToplamBaslikCell);
+            TableCell ToplamBaslikCell = new TableCell();
+            ToplamBaslikCell.CssClass = "fw-bold text-end";
+            ToplamBaslikCell.Text = "Toplam";
+            toplamRow.Controls.Add(ToplamBaslikCell);
 
-                TableCell AnkToplamAdetCell = new TableCell();
-                AnkToplamAdetCell.CssClass = "fw-bold text-end";
-                AnkToplamAdetCell.Text = AnkToplamAdet + "";
-                toplamRow.Controls.Add(AnkToplamAdetCell);
-                TableCell AnkToplamTutarCell = new TableCell();
-                AnkToplamTutarCell.Text = AnkToplamTutar.ToString("N", culturInfo);
-                AnkToplamTutarCell.CssClass = "fw-bold text-end";
-                toplamRow.Controls.Add(AnkToplamTutarCell);
+            TableCell AnkToplamAdetCell = new TableCell();
+            AnkToplamAdetCell.CssClass = "fw-bold text-end";
+            AnkToplamAdetCell.Text = AnkToplamAdet + "";
+            toplamRow.Controls.Add(AnkToplamAdetCell);
+            TableCell AnkToplamTutarCell = new TableCell();
+            AnkToplamTutarCell.Text = AnkToplamTutar.ToString("N", culturInfo);
+            AnkToplamTutarCell.CssClass = "fw-bold text-end";
+            toplamRow.Controls.Add(AnkToplamTutarCell);
 
-                TableCell IstToplamAdetCell = new TableCell();
-                IstToplamAdetCell.CssClass = "fw-bold text-end";
-                IstToplamAdetCell.Text = IstToplamAdet + "";
-                toplamRow.Controls.Add(IstToplamAdetCell);
-                TableCell IstToplamTutarCell = new TableCell();
-                IstToplamTutarCell.Text = IstToplamTutar.ToString("N", culturInfo);
-                IstToplamTutarCell.CssClass = "fw-bold text-end";
-                toplamRow.Controls.Add(IstToplamTutarCell);
+            TableCell IstToplamAdetCell = new TableCell();
+            IstToplamAdetCell.CssClass = "fw-bold text-end";
+            IstToplamAdetCell.Text = IstToplamAdet + "";
+            toplamRow.Controls.Add(IstToplamAdetCell);
+            TableCell IstToplamTutarCell = new TableCell();
+            IstToplamTutarCell.Text = IstToplamTutar.ToString("N", culturInfo);
+            IstToplamTutarCell.CssClass = "fw-bold text-end";
+            toplamRow.Controls.Add(IstToplamTutarCell);
 
-                TableCell IzmToplamAdetCell = new TableCell();
-                IzmToplamAdetCell.CssClass = "fw-bold text-end";
-                IzmToplamAdetCell.Text = IzmToplamAdet + "";
-                toplamRow.Controls.Add(IzmToplamAdetCell);
-                TableCell IzmToplamTutarCell = new TableCell();
-                IzmToplamTutarCell.Text = IzmToplamTutar.ToString("N", culturInfo);
-                IzmToplamTutarCell.CssClass = "fw-bold text-end";
-                toplamRow.Controls.Add(IzmToplamTutarCell);
+            TableCell IzmToplamAdetCell = new TableCell();
+            IzmToplamAdetCell.CssClass = "fw-bold text-end";
+            IzmToplamAdetCell.Text = IzmToplamAdet + "";
+            toplamRow.Controls.Add(IzmToplamAdetCell);
+            TableCell IzmToplamTutarCell = new TableCell();
+            IzmToplamTutarCell.Text = IzmToplamTutar.ToString("N", culturInfo);
+            IzmToplamTutarCell.CssClass = "fw-bold text-end";
+            toplamRow.Controls.Add(IzmToplamTutarCell);
 
-                TableCell MerToplamAdetCell = new TableCell();
-                MerToplamAdetCell.CssClass = "fw-bold text-end";
-                MerToplamAdetCell.Text = MerToplamAdet + "";
-                toplamRow.Controls.Add(MerToplamAdetCell);
-                TableCell MerToplamTutarCell = new TableCell();
-                MerToplamTutarCell.Text = MerToplamTutar.ToString("N", culturInfo);
-                MerToplamTutarCell.CssClass = "fw-bold text-end";
-                toplamRow.Controls.Add(MerToplamTutarCell);
+            TableCell MerToplamAdetCell = new TableCell();
+            MerToplamAdetCell.CssClass = "fw-bold text-end";
+            MerToplamAdetCell.Text = MerToplamAdet + "";
+            toplamRow.Controls.Add(MerToplamAdetCell);
+            TableCell MerToplamTutarCell = new TableCell();
+            MerToplamTutarCell.Text = MerToplamTutar.ToString("N", culturInfo);
+            MerToplamTutarCell.CssClass = "fw-bold text-end";
+            toplamRow.Controls.Add(MerToplamTutarCell);
 
-                TableCell ErzToplamAdetCell = new TableCell();
-                ErzToplamAdetCell.CssClass = "fw-bold text-end";
-                ErzToplamAdetCell.Text = ErzToplamAdet + "";
-                toplamRow.Controls.Add(ErzToplamAdetCell);
-                TableCell ErzToplamTutarCell = new TableCell();
-                ErzToplamTutarCell.Text = ErzToplamTutar.ToString("N", culturInfo);
-                ErzToplamTutarCell.CssClass = "fw-bold text-end";
-                toplamRow.Controls.Add(ErzToplamTutarCell);
+            TableCell ErzToplamAdetCell = new TableCell();
+            ErzToplamAdetCell.CssClass = "fw-bold text-end";
+            ErzToplamAdetCell.Text = ErzToplamAdet + "";
+            toplamRow.Controls.Add(ErzToplamAdetCell);
+            TableCell ErzToplamTutarCell = new TableCell();
+            ErzToplamTutarCell.Text = ErzToplamTutar.ToString("N", culturInfo);
+            ErzToplamTutarCell.CssClass = "fw-bold text-end";
+            toplamRow.Controls.Add(ErzToplamTutarCell);
 
 
-                TableCell YurtdisiToplamAdetCell = new TableCell();
-                YurtdisiToplamAdetCell.CssClass = "fw-bold text-end";
-                YurtdisiToplamAdetCell.Text = YurtdisiToplamAdet + "";
-                toplamRow.Controls.Add(YurtdisiToplamAdetCell);
-                TableCell YurtdisiToplamTutarCell = new TableCell();
-                YurtdisiToplamTutarCell.Text = YurtdisiToplamTutar.ToString("N", culturInfo);
-                YurtdisiToplamTutarCell.CssClass = "fw-bold text-end";
-                toplamRow.Controls.Add(YurtdisiToplamTutarCell);
+            TableCell YurtdisiToplamAdetCell = new TableCell();
+            YurtdisiToplamAdetCell.CssClass = "fw-bold text-end";
+            YurtdisiToplamAdetCell.Text = YurtdisiToplamAdet + "";
+            toplamRow.Controls.Add(YurtdisiToplamAdetCell);
+            TableCell YurtdisiToplamTutarCell = new TableCell();
+            YurtdisiToplamTutarCell.Text = YurtdisiToplamTutar.ToString("N", culturInfo);
+            YurtdisiToplamTutarCell.CssClass = "fw-bold text-end";
+            toplamRow.Controls.Add(YurtdisiToplamTutarCell);
 
-                TableCell EnToplamAdetCell = new TableCell();
-                EnToplamAdetCell.CssClass = "text-danger fw-bold text-end text-end";
-                EnToplamAdetCell.Text = AnkToplamAdet + IstToplamAdet + IzmToplamAdet + MerToplamAdet + YurtdisiToplamAdet + "";
-                toplamRow.Controls.Add(EnToplamAdetCell);
-                TableCell EnToplamTutarCell = new TableCell();
-                EnToplamTutarCell.Text = (AnkToplamTutar + IstToplamTutar + IzmToplamTutar + MerToplamTutar + YurtdisiToplamTutar).ToString("N", culturInfo);
-                EnToplamTutarCell.CssClass = "text-danger fw-bold text-end";
-                toplamRow.Controls.Add(EnToplamTutarCell);
+            TableCell EnToplamAdetCell = new TableCell();
+            EnToplamAdetCell.CssClass = "text-danger fw-bold text-end text-end";
+            EnToplamAdetCell.Text = AnkToplamAdet + IstToplamAdet + IzmToplamAdet + MerToplamAdet + YurtdisiToplamAdet + "";
+            toplamRow.Controls.Add(EnToplamAdetCell);
+            TableCell EnToplamTutarCell = new TableCell();
+            EnToplamTutarCell.Text = (AnkToplamTutar + IstToplamTutar + IzmToplamTutar + MerToplamTutar + YurtdisiToplamTutar).ToString("N", culturInfo);
+            EnToplamTutarCell.CssClass = "text-danger fw-bold text-end";
+            toplamRow.Controls.Add(EnToplamTutarCell);
 
-                NBTable.Controls.Add(toplamRow);
-            }
-            catch (Exception e)
-            {
-
-                ExceptionHelper eh = new ExceptionHelper(e);
-                eh.PublishException();
-            }
+            NBTable.Controls.Add(toplamRow);
         }
         private void FillYear()
         {
@@ -315,24 +319,16 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
         }
         private void SetDDLValues()
         {
-            try
-            {
-                //yil
-                string yil = !string.IsNullOrEmpty(SecilenYilQS) ? SecilenYilQS : DateTime.Today.Year.ReturnEmptyIfNull().ToString();
-                ListItem YilItem = new ListItem();
-                if (!string.IsNullOrEmpty(yil))
-                    YilItem = YilDDL.Items.FindByValue(yil);
+            //yil
+            string yil = !string.IsNullOrEmpty(SecilenYilQS) ? SecilenYilQS : DateTime.Today.Year.ReturnEmptyIfNull().ToString();
+            ListItem YilItem = new ListItem();
+            if (!string.IsNullOrEmpty(yil))
+                YilItem = YilDDL.Items.FindByValue(yil);
 
-                if (YilItem != null)
-                {
-                    YilDDL.SelectedValue = YilItem.Value;
-                    SecilenYilQS = YilItem.Value;
-                }
-            }
-            catch (Exception ex)
+            if (YilItem != null)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                YilDDL.SelectedValue = YilItem.Value;
+                SecilenYilQS = YilItem.Value;
             }
 
 
@@ -340,21 +336,19 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
+            ExecuteAction("CloseBtn_Click", () =>
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                Page.Response.Redirect(newUrl);
+            });
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ExcelBtn_Click", () =>
             {
                 ExportToExcel();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void ExportToExcel()
         {
@@ -377,7 +371,10 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
         }
         protected void YilDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FillTable();
+            ExecuteAction("YilDDL_SelectedIndexChanged", () =>
+            {
+                FillTable();
+            });
         }
     }
 }

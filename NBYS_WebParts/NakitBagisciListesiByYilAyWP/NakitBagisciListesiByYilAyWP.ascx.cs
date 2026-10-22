@@ -1,3 +1,5 @@
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.Ortak;
@@ -21,6 +23,15 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
     [ToolboxItemAttribute(false)]
     public partial class NakitBagisciListesiByYilAyWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "NakitBagisciListesiByYilAyWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -103,11 +114,12 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
                 if (!Page.IsPostBack)
                 {
-                    
+
                     DateTime d1 = DateTime.Now;
                     DateTime d2 = DateTime.Now;
                     DateTime d3 = DateTime.Now;
@@ -119,12 +131,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
 
                     TabloOlustur();
                 }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
 
         private void AyDDLDoldur()
@@ -154,19 +161,17 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
+            ExecuteAction("CloseBtn_Click", () =>
+            {
 
+            });
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ExcelBtn_Click", () =>
             {
                 ExportToExcel();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void ExportToExcel()
         {
@@ -203,7 +208,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
         }
         private void TabloOlustur()
         {
-            
+
             var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
@@ -212,20 +217,10 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
         {
             string jSon = string.Empty;
 
-            try
-            {
-                List<NakitBagisciListItem> list = GetDataList();
-                var serializer = new JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(list);
-
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
+            List<NakitBagisciListItem> list = GetDataList();
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            jSon = serializer.Serialize(list);
             return jSon;
         }
         private string CreateDataTable(string jsonData)
@@ -317,19 +312,19 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
             DateTime ilkTarih = new DateTime(yil, ay, 1);
             DateTime sonTarih = AyDDL.SelectedItem.Value.ConvertToInt() == 0 ? ilkTarih.AddYears(1).AddDays(-1) :
                 ilkTarih.AddMonths(1).AddDays(-1);
-            DataTable dataTable = new NakitBagisHareketService().GetByRegionDate(BolgeIdQS, ilkTarih, sonTarih);
-            
+            DataTable dataTable = new NakitBagisHareketService(LoggingContext).GetByRegionDate(BolgeIdQS, ilkTarih, sonTarih);
+
             BaslikTH.InnerText = string.Empty;
             List<NakitBagisciListItem> list = new List<NakitBagisciListItem>();
-           
+
             if (dataTable != null)
             {
-                Bolge bolge = new BolgeService().GetById(BolgeIdQS);
+                Bolge bolge = new BolgeService().GetById(BolgeIdQS, LoggingContext);
                 if (bolge == null || bolge.Id == ProjeConstants.BOLGE_GENELMUDURLUK_INT)
                 {
-                    BaslikTH.InnerText = ilkTarih.ToString("dd.MM.yyyy") + " - " + sonTarih.ToString("dd.MM.yyyy") + " Tarihleri Arasi Nakit Bagislar";
+                    BaslikTH.InnerText = ilkTarih.ToString("dd.MM.yyyy") + " - " + sonTarih.ToString("dd.MM.yyyy") + " Tarihleri Arası Nakit Bağışlar";
                 }
-                
+
                 foreach (DataRow row in dataTable.Rows)
                 {
 
@@ -359,7 +354,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
                     bagisItem.Ilcesi = ilcesi;
                     bagisItem.Adres = adres;
                     bagisItem.NakitBagisciId = nakitBagisciId;
-                    bagisItem.BelgeIstemiyor = belgeIstemiyor ? "Belge Istemiyor" : string.Empty;
+                    bagisItem.BelgeIstemiyor = belgeIstemiyor ? "Belge istemiyor" : string.Empty;
                     bagisItem.Armagan = armagan;
                     bagisItem.CokluBagis = cokluBagis;
                     bagisItem.ArmaganDurumu = armaganDurumu;
@@ -389,24 +384,24 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
 
         protected void AyDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            ExecuteAction("AyDDL_SelectedIndexChanged", () =>
+            {
+                TabloOlustur();
+            });
         }
         protected void YilDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            ExecuteAction("YilDDL_SelectedIndexChanged", () =>
+            {
+                TabloOlustur();
+            });
         }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ModalDoldurBtn_Click", () =>
             {
                 ModalTabloOlustur();
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
-
-            }
+            });
         }
         private void ModalTabloOlustur()
         {
@@ -419,25 +414,16 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
         {
             string jSon = string.Empty;
 
-            try
-            {
-                List<NakitBagisciListItem> list = GetModalDataList();
-                var serializer = new JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
+            List<NakitBagisciListItem> list = GetModalDataList();
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            jSon = serializer.Serialize(list);
             return jSon;
         }
         private string CreateModalDataTable(string jsonData)
         {
             string tableString = @"
-                
+
 
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
                 jQuery(document).ready(function () {
@@ -469,9 +455,15 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
         private List<NakitBagisciListItem> GetModalDataList()
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            DataTable dataTable = new NakitBagisHareketService().GetDonorDonationDetails(paramNakitBagisciIdLbl.Value.ConvertToInt());
+            DataTable dataTable = new NakitBagisHareketService(LoggingContext).GetDonorDonationDetails(paramNakitBagisciIdLbl.Value.ConvertToInt());
 
             List<NakitBagisciListItem> list = new List<NakitBagisciListItem>();
+            if (dataTable == null || dataTable.Rows.Count == 0)
+            {
+                AdiLbl.Text = string.Empty;
+                Messages.Info("Seçilen bağışçıya ait bağış kaydı bulunamadı.");
+                return list;
+            }
             DataRow row0 = dataTable.Rows[0];
             int nakitBagisciId0 = row0["NakitBagisciId"].ConvertToInt();
             string adi0 = row0["Adi"].ToString();
@@ -507,7 +499,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
                     bagisItem.Ilcesi = ilcesi;
                     bagisItem.Adres = adres;
                     bagisItem.NakitBagisciId = nakitBagisciId;
-                    bagisItem.BelgeIstemiyor = belgeIstemiyor ? "Belge Istemiyor" : string.Empty;
+                    bagisItem.BelgeIstemiyor = belgeIstemiyor ? "Belge istemiyor" : string.Empty;
                     bagisItem.Armagan = armagan;
                     bagisItem.CokluBagis = cokluBagis;
                     bagisItem.ArmaganDurumu = armaganDurumu;

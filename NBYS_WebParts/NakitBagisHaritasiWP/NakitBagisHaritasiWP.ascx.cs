@@ -1,3 +1,5 @@
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.Ortak;
@@ -15,6 +17,15 @@ namespace NBYS_WebParts.NakitBagisHaritasiWP
     [ToolboxItemAttribute(false)]
     public partial class NakitBagisHaritasiWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "NakitBagisHaritasiWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -33,13 +44,30 @@ namespace NBYS_WebParts.NakitBagisHaritasiWP
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            ExecuteAction("Page_Load", () =>
+            {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
+
+            });
         }
         protected void KayitGetirBtn_Click(object sender, EventArgs e)
         {
-            string ingIlAdi = paramLbl.Value;
-            Il il = new IlService().GetByEnglishName(ingIlAdi);
-            FillData2IlinfoTable(il.Id);
-
+            ExecuteAction("KayitGetirBtn_Click", () =>
+            {
+                string ingIlAdi = paramLbl.Value;
+                if (string.IsNullOrWhiteSpace(ingIlAdi))
+                {
+                    Messages.Warning("Bağış bilgilerini görüntülemek için haritadan bir il seçin.");
+                    return;
+                }
+                Il il = new IlService().GetByEnglishName(ingIlAdi, LoggingContext);
+                if (il == null)
+                {
+                    Messages.Warning("Seçilen il bulunamadı. Haritayı yenileyip tekrar seçin.");
+                    return;
+                }
+                FillData2IlinfoTable(il.Id);
+            });
         }
 
         private void createHeaderColumns()
@@ -51,7 +79,7 @@ namespace NBYS_WebParts.NakitBagisHaritasiWP
 
             TableCell yilCell = new TableCell();
             yilCell.CssClass = "btn-default";
-            yilCell.Text = "Yil";
+            yilCell.Text = "Yıl";
             IlinfoTableHeader.Controls.Add(yilCell);
 
             TableCell bagisSayisiCell = new TableCell();
@@ -72,7 +100,7 @@ namespace NBYS_WebParts.NakitBagisHaritasiWP
             //createHeaderColumns();
             DateTime now = DateTime.Now.AddYears(-4);
             DateTime sorguTar = new DateTime(now.Year, 1, 1);
-            DataTable dataTable = new NakitBagisHareketService().GetProvinceYearSummary(ilId, sorguTar);
+            DataTable dataTable = new NakitBagisHareketService(LoggingContext).GetProvinceYearSummary(ilId, sorguTar);
 
             int SiraNo = 1;
             if (dataTable != null)
@@ -116,18 +144,34 @@ namespace NBYS_WebParts.NakitBagisHaritasiWP
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
+            ExecuteAction("CloseBtn_Click", () =>
+            {
 
+            });
         }
         protected void SelectedIlBtn_Click(object sender, EventArgs e)
         {
-            string ingIlAdi = paramLbl.Value;
-            Il il = new IlService().GetByEnglishName(ingIlAdi);
-            TitleLbl.CssClass = "btn-primary";
-            TitleLbl.Text = il.IlAdi + " İli Nakit Bağış Bilgileri ";
+            ExecuteAction("SelectedIlBtn_Click", () =>
+            {
+                string ingIlAdi = paramLbl.Value;
+                if (string.IsNullOrWhiteSpace(ingIlAdi))
+                {
+                    Messages.Warning("Bağış bilgilerini görüntülemek için haritadan bir il seçin.");
+                    return;
+                }
+                Il il = new IlService().GetByEnglishName(ingIlAdi, LoggingContext);
+                if (il == null)
+                {
+                    Messages.Warning("Seçilen il bulunamadı. Haritayı yenileyip tekrar seçin.");
+                    return;
+                }
+                TitleLbl.CssClass = "btn-primary";
+                TitleLbl.Text = il.IlAdi + " İli Nakit Bağış Bilgileri ";
 
-            FillData2IlinfoTable(il.Id);
-            //ShowModal("Test");
-            ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "OpenModal();", true);
+                FillData2IlinfoTable(il.Id);
+                //ShowModal("Test");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "OpenModal();", true);
+            });
         }
     }
 }

@@ -1,3 +1,4 @@
+using Utility.Logging;
 using DAO.Repositories.Ortak;
 using DAO.Ortak;
 using Model.Ortak;
@@ -39,6 +40,11 @@ namespace Model.Services.Ortak
             return new Il().ToList<Il>(repository.SelectAll());
         }
 
+        public List<Il> GetAll(PortalLogContext context)
+        {
+            return new Il().ToList<Il>(repository.SelectAll(context));
+        }
+
         public List<Il> GetAllOrderByRegion()
         {
             return new Il().ToList<Il>(repository.SelectAllOrderByRegion());
@@ -59,6 +65,11 @@ namespace Model.Services.Ortak
         public Il GetByEnglishName(string name)
         {
             return Map(repository.SelectByEnglishName(name));
+        }
+
+        public Il GetByEnglishName(string name, PortalLogContext context)
+        {
+            return Map(repository.SelectByEnglishName(name, context));
         }
 
         public List<Il> GetByRegion(int regionId, bool orderByName)

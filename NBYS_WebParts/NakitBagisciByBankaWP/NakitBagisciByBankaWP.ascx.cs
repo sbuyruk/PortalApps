@@ -1,3 +1,5 @@
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.NBYS;
@@ -15,6 +17,15 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP
     [ToolboxItemAttribute(false)]
     public partial class NakitBagisciByBankaWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "NakitBagisciByBankaWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -145,8 +156,9 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
                 if (!Page.IsPostBack)
                 {
                     DateTime today = DateTime.Today;
@@ -164,48 +176,34 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP
                     NakitBagisciTablosunuDoldur();
                     //SMSTablosunuDoldur();
                 }
-
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         private void SetDDLValues()
         {
-            try
+            //acilista ay ve yili querystring ile gelen ay ve yila esitle bos geldiyse gecen aya/yila esitle
+
+            //ay
+            string ay = !string.IsNullOrEmpty(SecilenAyQS) ? SecilenAyQS : DateTime.Today.Month.ReturnEmptyIfNull().ToString();
+            ListItem AyItem = new ListItem();
+            if (!string.IsNullOrEmpty(ay))
+                AyItem = AyDDL.Items.FindByValue(ay);
+
+            if (AyItem != null)
             {
-                //acilista ay ve yili querystring ile gelen ay ve yila esitle bos geldiyse gecen aya/yila esitle
-
-                //ay
-                string ay = !string.IsNullOrEmpty(SecilenAyQS) ? SecilenAyQS : DateTime.Today.Month.ReturnEmptyIfNull().ToString();
-                ListItem AyItem = new ListItem();
-                if (!string.IsNullOrEmpty(ay))
-                    AyItem = AyDDL.Items.FindByValue(ay);
-
-                if (AyItem != null)
-                {
-                    AyDDL.SelectedValue = AyItem.Value;
-                    SecilenAyQS = AyItem.Value;
-                }
-
-                //yil
-                string yil = !string.IsNullOrEmpty(SecilenYilQS) ? SecilenYilQS : DateTime.Today.Year.ReturnEmptyIfNull().ToString();
-                ListItem YilItem = new ListItem();
-                if (!string.IsNullOrEmpty(yil))
-                    YilItem = YilDDL.Items.FindByValue(yil);
-
-                if (YilItem != null)
-                {
-                    YilDDL.SelectedValue = YilItem.Value;
-                    SecilenYilQS = YilItem.Value;
-                }
+                AyDDL.SelectedValue = AyItem.Value;
+                SecilenAyQS = AyItem.Value;
             }
-            catch (Exception ex)
+
+            //yil
+            string yil = !string.IsNullOrEmpty(SecilenYilQS) ? SecilenYilQS : DateTime.Today.Year.ReturnEmptyIfNull().ToString();
+            ListItem YilItem = new ListItem();
+            if (!string.IsNullOrEmpty(yil))
+                YilItem = YilDDL.Items.FindByValue(yil);
+
+            if (YilItem != null)
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
+                YilDDL.SelectedValue = YilItem.Value;
+                SecilenYilQS = YilItem.Value;
             }
 
 
@@ -286,7 +284,7 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP
                 bittar = new DateTime(yil, 12, 31);
             }
 
-            NakitBagisHareketService nbh = new NakitBagisHareketService();
+            NakitBagisHareketService nbh = new NakitBagisHareketService(LoggingContext);
             DataTable dataTable = nbh.GetCountSumByBanka(bastar, bittar);
             if (dataTable != null)
             {
@@ -312,7 +310,7 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP
                     tableRow.Controls.Add(bankaCell);
 
                     int eskiBagisAdet1 = 0;
-                    NakitBagisHareketService nbh1 = new NakitBagisHareketService();
+                    NakitBagisHareketService nbh1 = new NakitBagisHareketService(LoggingContext);
 
                     Decimal eskiBagisTutar1 = nbh1.GetTotalByTarihBanka(bastar, bittar, banka, ref eskiBagisAdet1);
                     eskiBagisAdetToplam1 += eskiBagisAdet1;
@@ -540,20 +538,29 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
+            ExecuteAction("CloseBtn_Click", () =>
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                Page.Response.Redirect(newUrl);
+            });
         }
         protected void AyDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            NakitBagisciTablosunuDoldur();
-            //SMSTablosunuDoldur();
+            ExecuteAction("AyDDL_SelectedIndexChanged", () =>
+            {
+                NakitBagisciTablosunuDoldur();
+                //SMSTablosunuDoldur();
+            });
         }
 
         protected void YilDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            NakitBagisciTablosunuDoldur();
-            //SMSTablosunuDoldur();
+            ExecuteAction("YilDDL_SelectedIndexChanged", () =>
+            {
+                NakitBagisciTablosunuDoldur();
+                //SMSTablosunuDoldur();
+            });
         }
     }
 }
