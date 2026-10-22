@@ -105,7 +105,7 @@ namespace Model.Services.NBYS
             item.Id = repository.Insert(item, transaction);
             if (item.Id <= 0)
                 throw new InvalidOperationException("Ekstre aktarımı veritabanına eklenemedi.");
-            if (ProjeConstants.NBYS_SAVE_LOG)
+            if (!repository.HasLogContext && ProjeConstants.NBYS_SAVE_LOG)
                 new OlayKayit().GirisOlayKaydet(item, ProjeConstants.NBYS,
                     ProjeConstants.NBYS_EKSTREAKTARMA, transaction);
             return item.Id;

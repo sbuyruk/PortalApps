@@ -1,5 +1,9 @@
 # NBYS merkezi loglama geçişi — envanter ve parça 1
 
+## Son kontrol düzeltmeleri (#522 sonrası)
+
+Temiz ve uzak master ile aynı f8c408811c96fc8dcdde0f75028f7256b7622ee3 üzerinden codex/nbys-son-kontrol-log-rapor-duzeltme açıldı. Ekstre transaction eklemesinde merkezî audit sonrasında eski OlayKayit yolunun da çalışması engellendi. Döviz bağış raporunun yıllık ve aylık dönem sonu kayıp kayıtları, başlangıç dahil/bitiş hariç aralık ve typed tarih parametreleriyle düzeltildi. Eski tüketicilerin dahil bitiş davranışı korunur. Yeni/değişen kullanıcı mesajı yoktur. İnceleme ve TEST noktaları LoglamaGecisSonKontrolDuzeltmeleri.md içindedir. Codex build/test/debug çalıştırmadı.
+
 ## Ortak erişim kapanış parçası (#521 sonrası)
 
 Temiz ve uzak master ile aynı 04c2bec7b87e5479089cc6a49768086a77c7bff6 üzerinden codex/nbys-kapanis-ortak-erisim-audit açıldı. Dokuz ekranın yönerge parametresi okumaları bağlamlı yapıldı. ASCX ekran sayımının dışında kalan NakitBagisciKarti'nin tüm veri okumaları, etkinlik/teknik logları ve mevcut bölge kuralıyla sunucu yetki kontrolü düzenlendi. Düzenli bağışçı için bağlamlı salt okuma yolu eklendi. Kartın beklenen uyarıları teknik hatadan ayrıldı; teknik hatada tek modal mesajı/başvuru kodu kullanılır. Ekstre dosyasının beklenen doğrulaması ayrıca FileValidation/Error üretmez; güvenli uyarı korunur.
