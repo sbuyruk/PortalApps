@@ -9,13 +9,19 @@ namespace DAO.Ortak
     // Explicit-context reads bypass the legacy SQL logger.
     internal static class PortalSqlReadExecutor
     {
-        internal static DataTable Select(SqlQuery query, PortalLogContext context, string repositoryMethod)
+        internal static DataTable Select(SqlQuery query, PortalLogContext context, string repositoryMethod, SqlTransactionContext transaction = null)
         {
             if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
             Stopwatch clock = Stopwatch.StartNew();
             bool succeeded = false;
             try
             {
+                if (transaction != null)
+                {
+                    DataTable result = transaction.Select(query);
+                    succeeded = true;
+                    return result;
+                }
                 using (SqlConnection connection = new SqlConnection(DBProcess.getConnectString()))
                 using (SqlCommand command = new SqlCommand(query.Sql, connection))
                 using (SqlDataAdapter adapter = new SqlDataAdapter(command))

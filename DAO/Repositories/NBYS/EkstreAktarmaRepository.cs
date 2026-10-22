@@ -1,3 +1,4 @@
+using Utility.Logging;
 using DAO.Ortak;
 using System;
 using System.Collections.Generic;
@@ -7,11 +8,20 @@ namespace DAO.Repositories.NBYS
 {
     public class EkstreAktarmaRepository
     {
+        public bool HasLogContext { get { return logContext != null; } }
         private const string TableName = "EkstreAktarma_Table";
         private readonly DbClass db;
+        private readonly PortalLogContext logContext;
         private readonly CrudQueryBuilder queryBuilder;
 
         public EkstreAktarmaRepository() : this(new DbClass()) { }
+
+        public EkstreAktarmaRepository(PortalLogContext context)
+        {
+            if (context == null || context.Project != "NBYS") throw new ArgumentException("NBYS log bağlamı gereklidir.", "context");
+            logContext = context;
+            queryBuilder = new CrudQueryBuilder();
+        }
 
         public EkstreAktarmaRepository(DbClass db)
         {
@@ -30,7 +40,7 @@ namespace DAO.Repositories.NBYS
         {
             SqlQuery query = new SqlQuery("SELECT * FROM EkstreAktarma_Table WHERE Id=@Id");
             query.AddParameter("@Id", id);
-            return db.SelectFromDb(query, "");
+            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "EkstreAktarmaRepository").Select(query);
         }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction)
@@ -41,12 +51,12 @@ namespace DAO.Repositories.NBYS
             SqlQuery query = new SqlQuery(
                 "SELECT * FROM EkstreAktarma_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id");
             query.AddParameter("@Id", id);
-            return transaction.Select(query);
+            return SelectInTransaction(query, transaction);
         }
 
         public DataTable SelectAll()
         {
-            return db.SelectFromDb(new SqlQuery("SELECT * FROM EkstreAktarma_Table"), "");
+            return Select(new SqlQuery("SELECT * FROM EkstreAktarma_Table"), "");
         }
 
         public DataTable SelectList(DateTime processDate, bool excludeTransferred, string bankName)
@@ -61,7 +71,7 @@ namespace DAO.Repositories.NBYS
                 ORDER BY AktarildiMi,BagisTarihi DESC,Id,Adi");
             query.AddParameter("@IslemTarihi", processDate);
             if (!string.IsNullOrEmpty(bankName)) query.AddParameter("@BankaAdi", bankName);
-            return db.SelectFromDb(query, "");
+            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "EkstreAktarmaRepository").Select(query);
         }
 
         public DataTable SelectByBankAndReceipt(string bankNamePart, string receiptNumber)
@@ -70,7 +80,7 @@ namespace DAO.Repositories.NBYS
                 WHERE BankaAdi LIKE @BankaAdi AND FisNo=@FisNo");
             query.AddParameter("@BankaAdi", "%" + bankNamePart + "%");
             query.AddParameter("@FisNo", receiptNumber);
-            return db.SelectFromDb(query, "");
+            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "EkstreAktarmaRepository").Select(query);
         }
 
         public DataTable SelectByBankAndReceipt(string bankNamePart, string receiptNumber,
@@ -81,7 +91,7 @@ namespace DAO.Repositories.NBYS
                 WHERE BankaAdi LIKE @BankaAdi AND FisNo=@FisNo");
             query.AddParameter("@BankaAdi", "%" + bankNamePart + "%");
             query.AddParameter("@FisNo", receiptNumber);
-            return transaction.Select(query);
+            return SelectInTransaction(query, transaction);
         }
 
         public DataTable SelectByIds(IList<int> ids, bool includeIdDescending)
@@ -95,7 +105,7 @@ namespace DAO.Repositories.NBYS
             SqlQuery query = new SqlQuery("SELECT * FROM EkstreAktarma_Table WHERE Id IN (" +
                 string.Join(",", parameters) + ") " + orderBy);
             for (int i = 0; i < ids.Count; i++) query.AddParameter(parameters[i], ids[i]);
-            return db.SelectFromDb(query, "");
+            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "EkstreAktarmaRepository").Select(query);
         }
 
         public bool ExistsByBankAndProcessDate(string bankName, DateTime processDate)
@@ -104,7 +114,7 @@ namespace DAO.Repositories.NBYS
                 WHERE BankaAdi=@BankaAdi AND IslemTarihi=@IslemTarihi AND ElleKayit<>1");
             query.AddParameter("@BankaAdi", bankName);
             query.AddParameter("@IslemTarihi", processDate);
-            DataTable table = db.SelectFromDb(query, "");
+            DataTable table = logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "EkstreAktarmaRepository").Select(query);
             return table != null && table.Rows.Count > 0;
         }
 
@@ -117,20 +127,47 @@ namespace DAO.Repositories.NBYS
                 ORDER BY IslemTarihi");
             query.AddParameter("@StartDate", startDate);
             query.AddParameter("@EndDate", endDate);
-            return db.SelectFromDb(query, "");
+            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "EkstreAktarmaRepository").Select(query);
         }
 
-        public int Insert<T>(T entity) { return db.Insert(queryBuilder.BuildInsert(entity, TableName)); }
+        public int Insert<T>(T entity) { return LegacyWriteDb.Insert(queryBuilder.BuildInsert(entity, TableName)); }
         public int Insert<T>(T entity, SqlTransactionContext transaction)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
-            return transaction.Insert(queryBuilder.BuildInsert(entity, TableName));
+            return logContext == null ? transaction.Insert(queryBuilder.BuildInsert(entity, TableName))
+                : new NbysTransactionalWriter(logContext, TableName).Insert(queryBuilder.BuildInsert(entity, TableName), transaction);
         }
-        public bool Update<T>(T entity) { return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName)); }
+        public bool Update<T>(T entity) { return LegacyWriteDb.Update2Db(queryBuilder.BuildUpdate(entity, TableName)); }
         public bool Update<T>(T entity, SqlTransactionContext transaction)
         {
-            return transaction.Update(queryBuilder.BuildUpdate(entity, TableName));
+            return logContext == null ? transaction.Update(queryBuilder.BuildUpdate(entity, TableName))
+                : new NbysTransactionalWriter(logContext, TableName).Update(queryBuilder.BuildUpdate(entity, TableName), NbysTransactionalWriter.Id(entity), transaction);
         }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), ""); }
+        public bool Delete(int id, SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            return logContext == null ? transaction.Update(queryBuilder.BuildDelete(TableName, id))
+                : new NbysTransactionalWriter(logContext, TableName).Delete(id, transaction);
+        }
+        public bool Delete(int id) { return LegacyWriteDb.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), ""); }
+        private DataTable Select(SqlQuery query, string ignored,
+            [System.Runtime.CompilerServices.CallerMemberName] string method = "")
+        {
+            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "EkstreAktarmaRepository").Select(query, method: method);
+        }
+        private DbClass LegacyWriteDb
+        {
+            get
+            {
+                if (logContext != null) throw new InvalidOperationException("Yazma işlemi için transaction gereklidir.");
+                return db;
+            }
+        }
+        private DataTable SelectInTransaction(SqlQuery query, SqlTransactionContext transaction,
+            [System.Runtime.CompilerServices.CallerMemberName] string method = "")
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            return logContext == null ? transaction.Select(query) : new NbysSqlExecutor(logContext, "EkstreAktarmaRepository").Select(query, transaction, method);
+        }
     }
 }

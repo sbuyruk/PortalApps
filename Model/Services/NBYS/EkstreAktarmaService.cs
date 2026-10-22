@@ -1,3 +1,4 @@
+using Utility.Logging;
 using DAO.Repositories.NBYS;
 using DAO.Ortak;
 using Model.NBYS;
@@ -14,6 +15,8 @@ namespace Model.Services.NBYS
     public class EkstreAktarmaService
     {
         private readonly EkstreAktarmaRepository repository;
+        public EkstreAktarmaService(PortalLogContext context) : this(new EkstreAktarmaRepository(context)) { }
+
         public EkstreAktarmaService() : this(new EkstreAktarmaRepository()) { }
         public EkstreAktarmaService(EkstreAktarmaRepository repository)
         {
@@ -88,7 +91,7 @@ namespace Model.Services.NBYS
             item.OlusturmaTarihi = DateTime.Now;
             item.Olusturan = UtilityHelper.GetCurrentUserName();
             item.Id = repository.Insert(item);
-            if (item.Id > 0 && ProjeConstants.NBYS_SAVE_LOG)
+            if (item.Id > 0 && !repository.HasLogContext && ProjeConstants.NBYS_SAVE_LOG)
                 new OlayKayit().GirisOlayKaydet(item, ProjeConstants.NBYS, ProjeConstants.NBYS_EKSTREAKTARMA);
             return item.Id;
         }
@@ -124,7 +127,7 @@ namespace Model.Services.NBYS
                 item.Degistiren = UtilityHelper.GetCurrentUserName();
                 updated = repository.Update(item);
             }
-            if (updated && ProjeConstants.NBYS_UPDATE_LOG)
+            if (updated && !repository.HasLogContext && ProjeConstants.NBYS_UPDATE_LOG)
                 new OlayKayit().GuncellemeOlayKaydet(item, previous, ProjeConstants.NBYS, ProjeConstants.NBYS_EKSTREAKTARMA);
             return updated;
         }
@@ -143,7 +146,7 @@ namespace Model.Services.NBYS
             item.Degistiren = UtilityHelper.GetCurrentUserName();
 
             bool updated = repository.Update(item, transaction);
-            if (updated && ProjeConstants.NBYS_UPDATE_LOG)
+            if (updated && !repository.HasLogContext && ProjeConstants.NBYS_UPDATE_LOG)
             {
                 new OlayKayit().GuncellemeOlayKaydet(
                     previous,
@@ -162,7 +165,7 @@ namespace Model.Services.NBYS
             EkstreAktarma previous = GetById(item.Id);
             if (previous == null) return false;
             bool deleted = repository.Delete(item.Id);
-            if (deleted && ProjeConstants.NBYS_DELETE_LOG)
+            if (deleted && !repository.HasLogContext && ProjeConstants.NBYS_DELETE_LOG)
                 new OlayKayit().SilmeOlayKaydet(previous, ProjeConstants.NBYS, ProjeConstants.NBYS_EKSTREAKTARMA);
             return deleted;
         }

@@ -16,6 +16,8 @@ namespace Model.Services.NBYS
     {
         private readonly BankaTanimRepository repository;
 
+        public BankaTanimService(PortalLogContext context) : this(new BankaTanimRepository(context)) { }
+
         public BankaTanimService() : this(new BankaTanimRepository())
         {
         }

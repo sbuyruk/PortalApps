@@ -1,0 +1,94 @@
+using DAO.Ortak;
+using DAO.Repositories.Ortak;
+using System;
+using System.Data;
+using System.Globalization;
+using Utility.Logging;
+
+namespace DAO.Repositories.NBYS
+{
+    // Only explicitly migrated callers use this path. Audit never opens a separate business connection.
+    internal sealed class NbysTransactionalWriter
+    {
+        private readonly PortalLogContext context;
+        private readonly NbysSqlExecutor sql;
+        private readonly string table;
+        private readonly string[] fields;
+
+        internal NbysTransactionalWriter(PortalLogContext context, string table)
+        {
+            this.context = context;
+            this.table = table;
+            sql = new NbysSqlExecutor(context, "NbysTransactionalWriter");
+            switch (table)
+            {
+                case "EkstreAktarma_Table": fields = new[] { "NakitBagisciId", "NakitBagisHareketId", "AktarildiMi", "BagisTarihi", "Tutar", "DovizCinsi", "DovizTutari", "DovizKuru", "KurTarihi", "ElleKayit", "TuzelKisi", "BelgeIstemiyor" }; break;
+                case "NakitBagisci_Table": fields = new[] { "Ili", "Ilcesi", "TuzelKisi", "Sag", "Ulasilamiyor", "BelgeIstemiyor", "DergiGonderilmesin" }; break;
+                case "NakitBagisHareket_Table": fields = new[] { "BagisciId", "ArmaganId", "EkstreAktarmaId", "BankaId", "BagisTarihi", "BagisMiktari", "DovizCinsi", "DovizTutari", "DovizKuru", "KurTarihi" }; break;
+                case "Armagan_Table": fields = new[] { "BagisciId", "ArmaganTanimId", "Tarih", "Durum", "BagisMiktari", "DovizCinsi", "CokluBagis", "KacinciBelge" }; break;
+                default: throw new ArgumentException("Geçersiz kayıt türü.", "table");
+            }
+        }
+
+        internal int Insert(SqlQuery query, SqlTransactionContext transaction)
+        {
+            int id = sql.Insert(query, transaction);
+            if (id <= 0) throw new InvalidOperationException("Kayıt oluşturulamadı.");
+            Audit("INSERT", id, null, Snapshot(id, transaction), transaction);
+            return id;
+        }
+
+        internal bool Update(SqlQuery query, int id, SqlTransactionContext transaction)
+        {
+            DataTable previous = Snapshot(id, transaction);
+            if (previous == null) throw new InvalidOperationException("Güncellenecek kayıt bulunamadı.");
+            if (!sql.Write(query, "UPDATE", transaction)) throw new InvalidOperationException("Kayıt güncellenemedi.");
+            Audit("UPDATE", id, previous, Snapshot(id, transaction), transaction);
+            return true;
+        }
+
+        internal bool Delete(int id, SqlTransactionContext transaction)
+        {
+            DataTable previous = Snapshot(id, transaction);
+            if (previous == null) return false;
+            SqlQuery query = new SqlQuery("DELETE FROM " + table + " WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            if (!sql.Write(query, "DELETE", transaction)) throw new InvalidOperationException("Kayıt silinemedi.");
+            Audit("DELETE", id, previous, null, transaction);
+            return true;
+        }
+
+        internal static int Id<T>(T item)
+        {
+            return Convert.ToInt32(item.GetType().GetProperty("Id").GetValue(item, null));
+        }
+
+        private DataTable Snapshot(int id, SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            SqlQuery query = new SqlQuery("SELECT * FROM " + table + " WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return sql.Select(query, transaction);
+        }
+
+        private void Audit(string operation, int id, DataTable previous, DataTable saved, SqlTransactionContext transaction)
+        {
+            if (operation != "DELETE" && saved == null) throw new InvalidOperationException("Kaydedilen kayıt okunamadı.");
+            PortalLogRepository log = new PortalLogRepository();
+            int auditId = log.RecordAudit(context, operation, table.Substring(0, table.Length - 6), id.ToString(CultureInfo.InvariantCulture), transaction);
+            if (auditId <= 0) return;
+            foreach (string field in fields)
+            {
+                string before = Value(previous, field), after = Value(saved, field);
+                if (before != after) log.RecordAuditChange(auditId, field, before, after, transaction);
+            }
+        }
+
+        private static string Value(DataTable rows, string field)
+        {
+            if (rows == null || rows.Rows[0].IsNull(field)) return null;
+            object value = rows.Rows[0][field];
+            return value is DateTime ? ((DateTime)value).ToString("o", CultureInfo.InvariantCulture) : Convert.ToString(value, CultureInfo.InvariantCulture);
+        }
+    }
+}

@@ -1,3 +1,5 @@
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.Ortak;
@@ -19,6 +21,15 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
     [ToolboxItemAttribute(false)]
     public partial class NakitBagisciEslestirWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "NakitBagisciEslestirWP"); }
+        }
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -61,7 +72,6 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
         {
             get
             {
-
                 if (ViewState["IslemTarihi"] == null)
                 {
                     if (Page.Request.QueryString["IslemTarihi"] != null)
@@ -108,7 +118,6 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
         {
             get
             {
-
                 if (ViewState["SenderApp"] == null)
                 {
                     if (Page.Request.QueryString["SenderApp"] != null)
@@ -132,7 +141,6 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
         {
             get
             {
-
                 if (ViewState["BagisciAdi"] == null)
                 {
                     if (Page.Request.QueryString["BagisciAdi"] != null)
@@ -156,7 +164,6 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
         {
             get
             {
-
                 if (ViewState["DuzenliBagisciId"] == null)
                 {
                     if (Page.Request.QueryString["DuzenliBagisciId"] != null)
@@ -178,13 +185,15 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
+
                 if (!Page.IsPostBack)
                 {
                     if (!string.IsNullOrEmpty(EkstreAktarmaIdQS))
                     {
-                        EkstreAktarma ekstreAktarma = new EkstreAktarmaService().GetById(EkstreAktarmaIdQS.ConvertToInt());
+                        EkstreAktarma ekstreAktarma = new EkstreAktarmaService(LoggingContext).GetById(EkstreAktarmaIdQS.ConvertToInt());
                         BagisciAraTxt.Text = ekstreAktarma != null ? ekstreAktarma.Adi : "";
 
                     }
@@ -198,42 +207,38 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
                     }
                 }
                 TabloOlustur(true);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void BagisciAraTxt_TextChanged(object sender, EventArgs e)
         {
-            TabloOlustur(true);
+            ExecuteAction("BagisciAraTxt_TextChanged", () =>
+            {
+                TabloOlustur(true);
+            });
         }
         protected void BagisciAraBtn_Click(object sender, EventArgs e)
         {
-            TabloOlustur(true);
+            ExecuteAction("BagisciAraBtn_Click", () =>
+            {
+                TabloOlustur(true);
+            });
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("CloseBtn_Click", () =>
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void BackBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("BackBtn_Click", () =>
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-                EkstreAktarma ekstreAktarma = new EkstreAktarmaService().GetById(EkstreAktarmaIdQS.ConvertToInt());
+                EkstreAktarma ekstreAktarma = new EkstreAktarmaService(LoggingContext).GetById(EkstreAktarmaIdQS.ConvertToInt());
                 if ((ekstreAktarma != null) && (SenderAppQS.Equals("EkstreListesi")))//ekstrelistesinden'dan geldiyse
                 {
                     newUrl += "/" + ProjeConstants.PAGE_EKSTRE_LIST + "?EkstreAktarmaId=" + EkstreAktarmaIdQS + "&IslemTarihi=" + ekstreAktarma.IslemTarihi.ConvertToDatetimeEmptyIfNull() + "&Banka=" + BankaQS;
@@ -247,30 +252,21 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
                     newUrl += "/" + ProjeConstants.PAGE_EKSTRE_LIST;
                 }
                 Page.Response.Redirect(newUrl, true);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void EkstreListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?IslemTarihi=" + IslemTarihiQS + "&EkstreAktarmaId =" + EkstreAktarmaIdQS + "&Banka=" + BankaQS);
+            ExecuteAction("EkstreListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?IslemTarihi=" + IslemTarihiQS + "&EkstreAktarmaId =" + EkstreAktarmaIdQS + "&Banka=" + BankaQS);
+            });
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl);
+
         }
         #region Bagisci CustomDataTable
         private void TabloOlustur(bool isSelectable)
@@ -284,18 +280,10 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
         {
             string json = string.Empty;
 
-            try
-            {
-                List<NakitBagisciListItem> list = GetDataList(isSelectable);
-                var serializer = new JavaScriptSerializer();
-                json = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
+            List<NakitBagisciListItem> list = GetDataList(isSelectable);
+            var serializer = new JavaScriptSerializer();
+            json = serializer.Serialize(list);
+
             return string.IsNullOrEmpty(json) ? "[{}]" : json;
         }
         private List<NakitBagisciListItem> GetDataList(bool isSelectable)
@@ -307,7 +295,6 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
             {
                 foreach (DataRow row in dataTable.Rows)
                 {
-                    
                     int nakitBagisciId = row["NakitBagisciId"].ReturnZeroIfNull().ConvertToInt();
                     string adi = "<a href=# onclick=OpenModal(" + nakitBagisciId + "); class='text-link'>" + row["Adi"].ToString() + "</a>";
                     string TcKimlik = row["TcKimlikNo"].ToString();
@@ -316,8 +303,7 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
                     string telefon = row["Telefon1"].ToString();
                     string adres = row["Adres"].ToString();
                     string secUrl = !string.IsNullOrEmpty(EkstreAktarmaIdQS) ?"<a href=EkstreAktarmaEdit.aspx?SenderApp=NBE&EkstreAktarmaId=" + EkstreAktarmaIdQS + "&NakitBagisciId=" + nakitBagisciId + "&Param=" + spaceStr + "class='btn btn-outline-success'>Seç</a>"
-                        : "<a href=DuzenliNakitBagisciListesi.aspx?SenderApp=NBE&NakitBagisciId=" + nakitBagisciId + "&DuzenliBagisciId=" + DuzenliBagisciIdQS + "&Param=" + spaceStr + "class='btn btn-outline-success'>Seç</a>";
-
+                    : "<a href=DuzenliNakitBagisciListesi.aspx?SenderApp=NBE&NakitBagisciId=" + nakitBagisciId + "&DuzenliBagisciId=" + DuzenliBagisciIdQS + "&Param=" + spaceStr + "class='btn btn-outline-success'>Seç</a>";
 
                     NakitBagisciListItem nakitBagisciListItem = new NakitBagisciListItem();
                     nakitBagisciListItem.NakitBagisciId = nakitBagisciId;
@@ -341,7 +327,7 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
             DataTable dataTable = null;
             if (!string.IsNullOrEmpty(BagisciAraTxt.Text) && BagisciAraTxt.Text.Length > 3)
             {
-                NakitBagisciService service = new NakitBagisciService();
+                NakitBagisciService service = new NakitBagisciService(LoggingContext);
                 dataTable = service.Search(BagisciAraTxt.Text, 0);
             }
             return dataTable;
@@ -350,7 +336,6 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
         {
             string tableString = @"
             jQuery(document).ready(function() {
-
                 jQuery('#CustomDataTable').DataTable({
                     'initComplete': function(settings, json) {//tablo yüklendiginde
                         var api = this.api();
@@ -389,7 +374,7 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
             destroy: true,
             autoWidth: false,
             dom: 'frtip',
-            
+
                 });
             });";
             return tableString;
@@ -404,7 +389,7 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
         }
         private string CreateModalDataTable(string jsonData, int nakitBagisciId)
         {
-            NakitBagisci nb = new NakitBagisciService().GetById(nakitBagisciId);
+            NakitBagisci nb = new NakitBagisciService(LoggingContext).GetById(nakitBagisciId);
             string bagisciAdi = nb != null ? (nb.Adi + nb.Soyadi).ReplaceTrChars() : "Bagisci";
             string filename = bagisciAdi + "-" + DateTime.Today.Day + "-" + DateTime.Today.Month + "-" + DateTime.Today.Year;
             string tableString = @"
@@ -456,7 +441,7 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
                           format: {
                               body: function(data, row, column, node) {
                                   data = $('<p>' + data + '</p>').text();
-                                    
+
                                   return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
                               }
                           }
@@ -478,7 +463,6 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
                 },
                     , 'pageLength', 'colvis'
                 ]
-
             });
         });
         ";
@@ -488,27 +472,20 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             int rowCount = 0;
-            var json = new NakitBagisHareketService().GetDonorDetailJson(nakitBagisciId.ConvertToInt(), ref rowCount);
-            decimal toplamTutar = new NakitBagisHareketService().GetTotalByBagisciIdDateRange(
-                ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
+            var json = new NakitBagisHareketService(LoggingContext).GetDonorDetailJson(nakitBagisciId.ConvertToInt(), ref rowCount);
+            decimal toplamTutar = new NakitBagisHareketService(LoggingContext).GetTotalByBagisciIdDateRange(
+            ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
             BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır" :
-                "Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + "TL bağışı bulunmaktadır";
+            "Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + "TL bağışı bulunmaktadır";
             return json;
         }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ModalDoldurBtn_Click", () =>
             {
-
                 TabloModalOlustur(paramNakitBagisciIdLbl.Value);
                 NakitBagisciFormunuDoldur(paramNakitBagisciIdLbl.Value);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
-
-            }
+            });
         }
         private void NakitBagisciFormunuDoldur(string nakitBagisciIdStr)
         {
@@ -516,7 +493,7 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
             {
                 int nakitBagisciId = nakitBagisciIdStr.ConvertToInt();
 
-                NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisciId);
+                NakitBagisci nakitBagisci = new NakitBagisciService(LoggingContext).GetById(nakitBagisciId);
                 if (nakitBagisci != null)
                 {
                     //NakitBagisciIdLbl.Text = nakitBagisciId.ToString();
@@ -533,17 +510,15 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
                     AdresCell.Text = nakitBagisci.Adres.ReturnEmptyIfNull().ToString();
 
                     int ilId = nakitBagisci.Ili.ConvertToInt();
-                    Il il = new IlService().GetById(ilId);
+                    Il il = new IlService().GetById(ilId, LoggingContext);
                     if (il != null)
                     {
-
                         IlIlceCell.Text = il.IlAdi.ReturnEmptyIfNull().ToString();
                     }
                     int ilceId = nakitBagisci.Ilcesi.ConvertToInt();
-                    Ilce ilce = new IlceService().GetById(ilceId);
+                    Ilce ilce = new IlceService().GetById(ilceId, LoggingContext);
                     if (ilce != null)
                     {
-
                         IlIlceCell.Text += " " + ilce.IlceAdi.ReturnEmptyIfNull().ToString();
                     }
                     TelefonCell.Text = nakitBagisci.Telefon1.ReturnEmptyIfNull().ToString();

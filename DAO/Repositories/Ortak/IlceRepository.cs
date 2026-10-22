@@ -9,9 +9,22 @@ namespace DAO.Repositories.Ortak
     public class IlceRepository
     {
         private readonly DbClass db;
+        private readonly PortalLogContext logContext;
 
         public IlceRepository() : this(new DbClass())
         {
+        }
+
+        public IlceRepository(SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+
+        }
+
+        public IlceRepository(PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context");
+            logContext = context;
         }
 
         public IlceRepository(DbClass db)
@@ -48,7 +61,7 @@ namespace DAO.Repositories.Ortak
             SqlQuery query = new SqlQuery(
                 "SELECT * FROM Ilce_Table WHERE Id=@Id ORDER BY IlceAdi");
             query.AddParameter("@Id", id);
-            return transaction.Select(query);
+            return SelectInTransaction(query, transaction);
         }
 
         public DataTable SelectByProvinceId(int provinceId)
@@ -113,7 +126,7 @@ namespace DAO.Repositories.Ortak
                 "AND LOWER(IlAdi)=LOWER(@IlAdi) ORDER BY IlceAdi");
             query.AddParameter("@IlceAdi", districtName);
             query.AddParameter("@IlAdi", provinceName);
-            return transaction.Select(query);
+            return SelectInTransaction(query, transaction);
         }
 
         public DataTable SelectByProvinceAndDistrictContains(string provinceName, string districtName)
@@ -149,6 +162,12 @@ namespace DAO.Repositories.Ortak
             if (provinceId >= 1)
                 query.AddParameter("@IlId", provinceId);
             return db.SelectFromDb(query, "");
+        }
+        private DataTable SelectInTransaction(SqlQuery query, SqlTransactionContext transaction,
+            [System.Runtime.CompilerServices.CallerMemberName] string method = "")
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            return logContext == null ? transaction.Select(query) : PortalSqlReadExecutor.Select(query, logContext, "IlceRepository." + method, transaction);
         }
     }
 }

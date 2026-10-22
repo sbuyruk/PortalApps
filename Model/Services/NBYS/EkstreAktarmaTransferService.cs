@@ -1,3 +1,5 @@
+using Utility.Logging;
+using System.Linq;
 using DAO.Ortak;
 using Model.NBYS;
 using Model.Ortak;
@@ -13,6 +15,7 @@ namespace Model.Services.NBYS
 {
     public static class EkstreAktarmaTransferService
     {
+        private enum RowTransferResult { Completed, AlreadyTransferred, NotFound }
         public enum ArmaganTransferResult
         {
             NoGiftRequired,
@@ -21,134 +24,58 @@ namespace Model.Services.NBYS
             TechnicalFailure
         }
 
-        public static ExceptionHelper SaveAll(List<int> idlist, string currentUser)//List<EkstreAktarma> listEkstreAktarma, string currentUser)
+        public static ExceptionHelper SaveAll(List<int> ids, string currentUser, PortalLogContext context = null)
         {
-            ExceptionHelper exceptionHelper = new ExceptionHelper();
-
-
-            foreach (int itemId in idlist)//EkstreAktarma ekstreAktarma in listEkstreAktarma)
+            ExceptionHelper result = new ExceptionHelper();
+            foreach (int id in ids.Distinct().OrderBy(value => value))
             {
-
                 try
                 {
-                    EkstreAktarma ekstreAktarma = new EkstreAktarmaService().GetById(itemId);
-                    if (ekstreAktarma!=null && ekstreAktarma.AktarildiMi==false)
-                    {
-                        if (SaveEkstreAktarma(ekstreAktarma, currentUser))
-                            exceptionHelper.SuccessCount++;
-                        else
-                            exceptionHelper.AlreadyProcessedCount++;
-                    }
-                    else if (ekstreAktarma != null && ekstreAktarma.AktarildiMi)
-                    {
-                        exceptionHelper.AlreadyProcessedCount++;
-                    }
+                    RowTransferResult outcome = SaveEkstreAktarma(id, currentUser, context);
+                    if (outcome == RowTransferResult.Completed) result.SuccessCount++;
+                    else if (outcome == RowTransferResult.NotFound) result.SkippedCount++;
+                    else result.AlreadyProcessedCount++;
                 }
-                catch (Exception e)
+                catch (System.Threading.ThreadAbortException) { throw; }
+                catch (Exception error)
                 {
-                    exceptionHelper.Exceptions.Add(e);
+                    result.Exceptions.Add(new InvalidOperationException("Ekstre aktarılamadı. Kayıt kimliği: " + id, error));
+                    result.ErrorCount++;
                 }
-                //break;
-
             }
-
-            return exceptionHelper;
+            return result;
         }
-        public static ExceptionHelper SaveAll(List<EkstreAktarma> ekstrelist, string currentUser)//List<EkstreAktarma> listEkstreAktarma, string currentUser)
+
+        public static ExceptionHelper SaveAll(List<EkstreAktarma> items, string currentUser, PortalLogContext context = null)
         {
-            ExceptionHelper exceptionHelper = new ExceptionHelper();
-
-
-            foreach (EkstreAktarma ekstreAktarma in ekstrelist)//EkstreAktarma ekstreAktarma in listEkstreAktarma)
-            {
-
-                try
-                {
-                    if (ekstreAktarma != null && ekstreAktarma.AktarildiMi == false)
-                    {
-                        if (SaveEkstreAktarma(ekstreAktarma, currentUser))
-                            exceptionHelper.SuccessCount++;
-                        else
-                            exceptionHelper.AlreadyProcessedCount++;
-                    }
-                    else if (ekstreAktarma != null && ekstreAktarma.AktarildiMi)
-                    {
-                        exceptionHelper.AlreadyProcessedCount++;
-                    }
-                }
-                catch (Exception e)
-                {
-                    exceptionHelper.Exceptions.Add(e);
-                }
-                //break;
-
-            }
-
-            return exceptionHelper;
+            return SaveAll(items.Where(item => item != null).Select(item => item.Id).ToList(), currentUser, context);
         }
-        private static void WriteText(string text)
+
+        private static RowTransferResult SaveEkstreAktarma(int id, string currentUser, PortalLogContext context)
         {
-            using (StreamWriter sw = new StreamWriter("C:\\test\\debug.txt", true))
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                sw.WriteLine(text);
+                EkstreAktarma current = EkstreService(context, transaction).GetById(id, transaction);
+                if (current == null) return RowTransferResult.NotFound;
+                if (current.AktarildiMi) return RowTransferResult.AlreadyTransferred;
+                int donorId = current.NakitBagisciId > 0 ? current.NakitBagisciId
+                    : SaveNakitBagisciFromEkstre(current, currentUser, transaction, context);
+                NakitBagisci donor = DonorService(context, transaction).GetById(donorId, transaction);
+                if (donor == null) throw new InvalidOperationException("Aktarılacak bağışçı bulunamadı.");
+                NakitBagisHareket donation = SaveBagisFromEkstreAktarma(current, donorId, currentUser, transaction, context);
+                if (donation.Id <= 0) throw new InvalidOperationException("Bağış kaydı oluşturulamadı.");
+                if (donation.BagisciId != donorId) throw new InvalidOperationException("Ekstre ve bağışın bağışçı bağlantıları tutarsız.");
+                ArmaganTransferResult giftResult = SaveArmaganYeniWithResult(current, ref donation, currentUser, transaction, context);
+                if (giftResult == ArmaganTransferResult.TechnicalFailure) throw new InvalidOperationException("Armağan oluşturulamadı.");
+                if (donor.Adi.Contains(ProjeConstants.NAKITBAGISCI_BILINMEYEN))
+                    current.Aciklama += "-NBYS- Adı BİLİNMEYEN bağışçı olduğundan armağan oluşturulmadı ";
+                current.NakitBagisHareketId = donation.Id;
+                current.NakitBagisciId = donorId;
+                current.AktarildiMi = true;
+                if (!EkstreService(context, transaction).Update(current, transaction)) throw new InvalidOperationException("Ekstre kaydı güncellenemedi.");
+                transaction.Complete();
             }
-        }
-        private static bool SaveEkstreAktarma(EkstreAktarma ekstreAktarma, string currentUser)
-        {
-            if (!ekstreAktarma.AktarildiMi) //zaten aktarilmis olanlar bir kez daha aktarilmasin
-            {
-                using (SqlTransactionContext transaction = new SqlTransactionContext())
-                {
-                    EkstreAktarma currentEkstreAktarma = new EkstreAktarmaService().GetById(
-                        ekstreAktarma.Id, transaction);
-                    if (currentEkstreAktarma == null || currentEkstreAktarma.AktarildiMi)
-                        return false;
-
-                    ekstreAktarma = currentEkstreAktarma;
-                    var nakitBagisciId = 0;
-
-                    if (ekstreAktarma.NakitBagisciId > 0)//NakitBagisciId si dolu olarak gelen ekstreAktarma (Yani elle yeni kayit girisi yapilmis ve NakitBagisci popup window dan secilmis )
-                    {
-                        nakitBagisciId = ekstreAktarma.NakitBagisciId;
-                    }
-                    else
-                    {
-                        nakitBagisciId = SaveNakitBagisciFromEkstre(
-                            ekstreAktarma, currentUser, transaction); // NakitBagisci_Table tablosuna aktarim
-                    }
-
-                    var nakitBagisHareket = SaveBagisFromEkstreAktarma(
-                        ekstreAktarma, nakitBagisciId, currentUser, transaction); //NakitBagisHareket_Table tablosuna aktarim
-
-                    //bool isArmaganSaved = SaveArmagan(ekstreAktarma.BagisTarihi, ekstreAktarma.TuzelKisi, nakitBagisciId, nakitBagisHareketId, currentUser);//Armagan tablosuna aktarim
-                    ArmaganTransferResult armaganResult = SaveArmaganYeniWithResult(
-                        ekstreAktarma, ref nakitBagisHareket, currentUser, transaction);//Armagan tablosuna aktarim
-                    if (armaganResult == ArmaganTransferResult.TechnicalFailure)
-                        throw new InvalidOperationException(
-                            "Armagan aktarimi teknik bir hata nedeniyle tamamlanamadi.");
-
-                    if (nakitBagisHareket.Id > 0)
-                    {
-                        NakitBagisci nakitBagisci = new NakitBagisciService().GetById(
-                            nakitBagisciId, transaction);
-                        if (nakitBagisci.Adi.Contains(ProjeConstants.NAKITBAGISCI_BILINMEYEN))// adi bilinmeyen bagisci için eksrteAktarma tablosuna aciklama yaz
-                        {
-                            ekstreAktarma.Aciklama += "-NBYS- Adı BİLİNMEYEN bağışçı olduğundan armağan oluşturulmadı ";
-                        }
-
-                        ekstreAktarma.NakitBagisHareketId = nakitBagisHareket.Id;
-                        ekstreAktarma.NakitBagisciId = nakitBagisciId;
-
-                        ekstreAktarma.AktarildiMi = true;
-                        if (!new EkstreAktarmaService().Update(ekstreAktarma, transaction))
-                            throw new InvalidOperationException("EkstreAktarma kaydı güncellenemedi.");
-                        transaction.Complete();
-                        return true;
-                    }
-                }
-            }
-
-            return false;
+            return RowTransferResult.Completed;
         }
 
         public static bool SaveArmagan(DateTime bagisTarihi, bool tuzelKisiMi, int nakitBagisciId, int nakitbagisHareketId, string currentUser)
@@ -306,10 +233,10 @@ namespace Model.Services.NBYS
             EkstreAktarma ekstreAktarma,
             ref NakitBagisHareket nakitBagisHareket,
             string currentUser,
-            SqlTransactionContext transaction = null)
+            SqlTransactionContext transaction = null, PortalLogContext context = null)
         {
             return SaveArmaganYeniWithResult(
-                ekstreAktarma, ref nakitBagisHareket, currentUser, transaction)
+                ekstreAktarma, ref nakitBagisHareket, currentUser, transaction, context)
                 == ArmaganTransferResult.Created;
         }
 
@@ -317,12 +244,13 @@ namespace Model.Services.NBYS
             EkstreAktarma ekstreAktarma,
             ref NakitBagisHareket nakitBagisHareket,
             string currentUser,
-            SqlTransactionContext transaction = null)
+            SqlTransactionContext transaction = null, PortalLogContext context = null)
         {
+            if (context != null && transaction == null) throw new ArgumentNullException("transaction", "Log bağlamlı aktarım için transaction gereklidir.");
             bool isArmaganSaved = false;
             bool armaganAlreadyExists = false;
             bool armaganTechnicalFailure = false;
-            NakitBagisciService nakitBagisciService = new NakitBagisciService();
+            NakitBagisciService nakitBagisciService = DonorService(context, transaction);
             NakitBagisci nakitBagisci = transaction == null
                 ? nakitBagisciService.GetById(nakitBagisHareket.BagisciId)
                 : nakitBagisciService.GetById(nakitBagisHareket.BagisciId, transaction);
@@ -337,8 +265,8 @@ namespace Model.Services.NBYS
 
                 //Su ana kadar aldigi ArmaganTanimId leri bul
                 List<Armagan> alinanArmaganListesi = transaction == null
-                    ? new ArmaganService().GetByBagisciId(nakitBagisci.Id)
-                    : new ArmaganService().GetByBagisciId(nakitBagisci.Id, transaction);
+                    ? GiftService(context, transaction).GetByBagisciId(nakitBagisci.Id)
+                    : GiftService(context, transaction).GetByBagisciId(nakitBagisci.Id, transaction);
                 List<int> alinanArmaganTanimIdListesi = new List<int>();
                 foreach (Armagan item in alinanArmaganListesi)
                 {
@@ -349,7 +277,7 @@ namespace Model.Services.NBYS
                 decimal bagisTutari = nakitBagisHareket.BagisMiktari;
                 //Geçmisten bugüne kadar olan toplam bagis tutarini bul
                 NakitBagisHareket nbh = new NakitBagisHareket();
-                NakitBagisHareketService nakitBagisHareketService = new NakitBagisHareketService();
+                NakitBagisHareketService nakitBagisHareketService = DonationService(context, transaction);
                 decimal toplamBagis = transaction == null
                     ? nakitBagisHareketService.GetTotalByBagisciIdDateRange(
                         ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ConvertToDatetime(),
@@ -363,16 +291,16 @@ namespace Model.Services.NBYS
 
                 //Geçmisten bugüne kadar olan toplam bagis tutarina göre Çoklu Bagis armagani hakediyor mu
                 ArmaganTanim cokluBagisanHakedilenArmaganTanim = transaction == null
-                    ? new ArmaganTanimService().GetByAmount(toplamBagis, ekstreAktarma.TuzelKisi)
-                    : new ArmaganTanimService().GetByAmount(toplamBagis, ekstreAktarma.TuzelKisi, transaction);
+                    ? GiftDefinitionService(context, transaction).GetByAmount(toplamBagis, ekstreAktarma.TuzelKisi)
+                    : GiftDefinitionService(context, transaction).GetByAmount(toplamBagis, ekstreAktarma.TuzelKisi, transaction);
 
 
                 bool cokluBagistanArmaganHakediyorMu = cokluBagisanHakedilenArmaganTanim != null 
                     && cokluBagisanHakedilenArmaganTanim.Id != ProjeConstants.ARMAGAN_YOKID;
 
                 ArmaganTanim tekliBagistanHakedilenArmaganTanim = transaction == null
-                    ? new ArmaganTanimService().GetByAmount(bagisTutari, ekstreAktarma.TuzelKisi)
-                    : new ArmaganTanimService().GetByAmount(bagisTutari, ekstreAktarma.TuzelKisi, transaction);
+                    ? GiftDefinitionService(context, transaction).GetByAmount(bagisTutari, ekstreAktarma.TuzelKisi)
+                    : GiftDefinitionService(context, transaction).GetByAmount(bagisTutari, ekstreAktarma.TuzelKisi, transaction);
                 bool tekliBagisArmaganHakediyorMu = tekliBagistanHakedilenArmaganTanim != null 
                     && tekliBagistanHakedilenArmaganTanim.Id != ProjeConstants.ARMAGAN_YOKID;
                 
@@ -393,7 +321,7 @@ namespace Model.Services.NBYS
                         armaganId = ArmaganiKaydet(
                             nakitBagisHareket, nakitBagisci, nakitBagisHareket.BagisMiktari,
                             tekliBagistanHakedilenArmaganTanim.Id, currentUser,
-                            transaction: transaction);
+                            transaction: transaction, context: context);
                         isArmaganSaved = armaganId > 0;
                         armaganTechnicalFailure = !isArmaganSaved;
                         nakitBagisHareket.Aciklama += "-NBYS- Hem tekli hem çoklu bağıştan "+tekliBagistanHakedilenArmaganTanim.Armagan+ " hakediyor, Tekli bağıştan armağan verildi ";
@@ -414,7 +342,7 @@ namespace Model.Services.NBYS
                         armaganId = ArmaganiKaydet(
                             nakitBagisHareket, nakitBagisci, toplamBagis,
                             cokluBagisanHakedilenArmaganTanim.Id, currentUser, true,
-                            transaction: transaction);
+                            transaction: transaction, context: context);
                         isArmaganSaved = armaganId > 0;
                         armaganTechnicalFailure = armaganTechnicalFailure || !isArmaganSaved;
                         nakitBagisHareket.Aciklama += "-NBYS-"+ nakitBagisHareket.BagisTarihi.ConvertToDatetimeEmptyIfNull() +
@@ -435,7 +363,7 @@ namespace Model.Services.NBYS
                         armaganId = ArmaganiKaydet(
                             nakitBagisHareket, nakitBagisci, nakitBagisHareket.BagisMiktari,
                             tekliBagistanHakedilenArmaganTanim.Id, currentUser,
-                            transaction: transaction);
+                            transaction: transaction, context: context);
                         isArmaganSaved = armaganId > 0;
                         armaganTechnicalFailure = armaganTechnicalFailure || !isArmaganSaved;
                         nakitBagisHareket.Aciklama += "-NBYS- tekli bağıştan hak ettiği " + tekliBagistanHakedilenArmaganTanim.Armagan + " oluşturuldu.";
@@ -447,7 +375,7 @@ namespace Model.Services.NBYS
                     if (armaganId > 0)
                     {
                         nakitBagisHareket.ArmaganId = armaganId;
-                        NakitBagisHareketService service = new NakitBagisHareketService();
+                        NakitBagisHareketService service = DonationService(context, transaction);
                         bool hareketGuncellendi = transaction == null
                             ? service.Update(nakitBagisHareket)
                             : service.Update(nakitBagisHareket, transaction);
@@ -468,16 +396,17 @@ namespace Model.Services.NBYS
         }
         public static int ArmaganiKaydet(NakitBagisHareket nakitBagisHareket, NakitBagisci nakitBagisci, decimal bagisTutari,
             int hakedilenArmaganTanimId, string currentUser, bool cokluBagis=false, int duzenliBagisBelgeSirasi=0,
-            SqlTransactionContext transaction = null)
+            SqlTransactionContext transaction = null, PortalLogContext context = null)
         {
+            if (context != null && transaction == null) throw new ArgumentNullException("transaction", "Log bağlamlı aktarım için transaction gereklidir.");
             if (transaction != null && duzenliBagisBelgeSirasi > 0)
                 throw new InvalidOperationException("Düzenli bağış armağanı bu transaction akışında desteklenmiyor.");
 
             //Armagan_Table'dan bu bagisciId ve hakedilenArmaganTanimId kaç tane armagan aldğını bul
             int mevcutArmaganSayisi = duzenliBagisBelgeSirasi > 0 ? 0
                 : transaction == null
-                    ? new ArmaganService().CountByBagisciIdAndTanimId(nakitBagisci.Id, hakedilenArmaganTanimId)
-                    : new ArmaganService().CountByBagisciIdAndTanimId(
+                    ? GiftService(context, transaction).CountByBagisciIdAndTanimId(nakitBagisci.Id, hakedilenArmaganTanimId)
+                    : GiftService(context, transaction).CountByBagisciIdAndTanimId(
                         nakitBagisci.Id, hakedilenArmaganTanimId, transaction);
 
             int armaganId = 0;
@@ -502,14 +431,14 @@ namespace Model.Services.NBYS
                 armagan.Durum = ProjeConstants.DURUM_EDEVLETTENBELGEGONDERILDI;
             }
             List<Armagan> iadeEdilmisArmaganListesi = transaction == null
-                ? new ArmaganService().GetByBagisciIdAndDurum(nakitBagisci.Id, ProjeConstants.DURUM_PARAIADE)
-                : new ArmaganService().GetByBagisciIdAndDurum(
+                ? GiftService(context, transaction).GetByBagisciIdAndDurum(nakitBagisci.Id, ProjeConstants.DURUM_PARAIADE)
+                : GiftService(context, transaction).GetByBagisciIdAndDurum(
                     nakitBagisci.Id, ProjeConstants.DURUM_PARAIADE, transaction);
             if (iadeEdilmisArmaganListesi.Count > 0)
             {
                 armagan.Durum = ProjeConstants.DURUM_DAHAONCEIADE;
             }
-            ArmaganService service = new ArmaganService();
+            ArmaganService service = GiftService(context, transaction);
             armaganId = duzenliBagisBelgeSirasi > 0
                 ? service.SaveDuzenliBagisIfMissing(armagan)
                 : transaction == null ? service.Save(armagan) : service.Save(armagan, transaction);
@@ -520,10 +449,10 @@ namespace Model.Services.NBYS
         private static int SaveNakitBagisciFromEkstre(
             EkstreAktarma ekstreAktarma,
             string currentUser,
-            SqlTransactionContext transaction = null)
+            SqlTransactionContext transaction = null, PortalLogContext context = null)
         {
             var nakitBagisciId = 0;
-            NakitBagisciService service = new NakitBagisciService();
+            NakitBagisciService service = DonorService(context, transaction);
             NakitBagisci nakitBagisci = new NakitBagisci();
             if (ekstreAktarma.Adi != ProjeConstants.NAKITBAGISCI_BILINMEYEN)
             {
@@ -535,18 +464,18 @@ namespace Model.Services.NBYS
                 {
                     nakitBagisciId = nakitBagisci.Id;
                     nakitBagisciId = SaveBagisciFromEkstreAktarma(
-                        nakitBagisci, ekstreAktarma, false, currentUser, transaction);
+                        nakitBagisci, ekstreAktarma, false, currentUser, transaction, context);
                 }
                 else //bagisci tablosunda tc kimlikno ile bulunamadi
                 {
                     nakitBagisci = new NakitBagisci();
 
-                    nakitBagisciId = GetUserIdByTelefonAndAd(ekstreAktarma, transaction);// telefon ve isime bakiyor
+                    nakitBagisciId = GetUserIdByTelefonAndAd(ekstreAktarma, transaction, context);// telefon ve isime bakiyor
 
                     if (nakitBagisciId == 0) //bu kisi kesin olarak yeni bagisci (Telefon ve isimden bulunamadi ise)
                     {
                         nakitBagisciId = SaveBagisciFromEkstreAktarma(
-                            nakitBagisci, ekstreAktarma, true, currentUser, transaction);
+                            nakitBagisci, ekstreAktarma, true, currentUser, transaction, context);
                     }
                     else //nakitBagisciId bos veya 0 degil, öyleyse bu bagisçiyi select edelim 22.ocak.2020
                     {
@@ -554,30 +483,20 @@ namespace Model.Services.NBYS
                             ? service.GetById(nakitBagisciId)
                             : service.GetById(nakitBagisciId, transaction);
                         nakitBagisciId = SaveBagisciFromEkstreAktarma(
-                            nakitBagisci, ekstreAktarma, false, currentUser, transaction);
+                            nakitBagisci, ekstreAktarma, false, currentUser, transaction, context);
                     }
                 }
             }
             else
             {
-                nakitBagisciId = BilinmeyenBagisciOlusturAtomicId(transaction);// GetBilinmeyenBagisciId();
+                nakitBagisciId = BilinmeyenBagisciOlusturAtomicId(transaction, context);// GetBilinmeyenBagisciId();
             }
             return nakitBagisciId;
         }
-        private static int BilinmeyenBagisciOlusturAtomicId(SqlTransactionContext transaction = null)
+        private static int BilinmeyenBagisciOlusturAtomicId(SqlTransactionContext transaction = null, PortalLogContext context = null)
         {
-            try
-            {
-                NakitBagisciService service = new NakitBagisciService();
-                return transaction == null
-                    ? service.CreateBilinmeyenBagisci()
-                    : service.CreateBilinmeyenBagisci(transaction);
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.PublishMessage(ex.Message, ProjeConstants.MESAJ_HATA);
-                throw;
-            }
+            NakitBagisciService service = DonorService(context, transaction);
+            return transaction == null ? service.CreateBilinmeyenBagisci() : service.CreateBilinmeyenBagisci(transaction);
         }
         //private static int GetBilinmeyenBagisciId()
         //{
@@ -600,7 +519,7 @@ namespace Model.Services.NBYS
         //}
         private static int GetUserIdByTelefonAndAd(
             EkstreAktarma ekstreAktarma,
-            SqlTransactionContext transaction = null)
+            SqlTransactionContext transaction = null, PortalLogContext context = null)
         {
             var nakitBagisciId = 0;
             var adi = ekstreAktarma.Adi;
@@ -610,7 +529,7 @@ namespace Model.Services.NBYS
                 var telefon1 = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString());
                 if (!string.IsNullOrEmpty(telefon1)) //telefon1 bos degil ise ise kontrol ediliyor adi ve telefon1 bulunur ise ayni kisi olarak kabul ediliyor, yeni kayit atilmiyor
                 {
-                    nakitBagisciId = GetUserId(adi, telefon1, transaction);
+                    nakitBagisciId = GetUserId(adi, telefon1, transaction, context);
                     if (nakitBagisciId != 0)
                     {
                         return nakitBagisciId;
@@ -621,7 +540,7 @@ namespace Model.Services.NBYS
                     var telefon2 = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon2.ReturnEmptyIfNull().ToString()); //telefon1 ve adi eslesmedi ise, telefon2 ve adi esleisiyor mu bakiliyor
                     if (!string.IsNullOrEmpty(telefon2))
                     {
-                        nakitBagisciId = telefon2.Length > 3 ? GetUserId(adi, telefon2, transaction) : 0;
+                        nakitBagisciId = telefon2.Length > 3 ? GetUserId(adi, telefon2, transaction, context) : 0;
                     }
                 }
             }
@@ -630,10 +549,10 @@ namespace Model.Services.NBYS
         private static int GetUserId(
             string adi,
             string telefon,
-            SqlTransactionContext transaction = null)
+            SqlTransactionContext transaction = null, PortalLogContext context = null)
         {
             var nakitBagisciId = 0;
-            NakitBagisciService service = new NakitBagisciService();
+            NakitBagisciService service = DonorService(context, transaction);
             NakitBagisci nakitBagisci = null;
             if (telefon.Length > 3)
             {
@@ -674,7 +593,7 @@ namespace Model.Services.NBYS
             }
             return nakitBagisciId;
         }
-        private static int GetIlId(string value, SqlTransactionContext transaction = null)
+        private static int GetIlId(string value, SqlTransactionContext transaction = null, PortalLogContext context = null)
         {
             //il ziraat bankasi dosyasinda id olarak geliyor. diger bankalarda il adi olarak geliyor.
             int ilId = 0;
@@ -683,8 +602,8 @@ namespace Model.Services.NBYS
             if (!isInt)
             {
                 Il il = transaction == null
-                    ? new IlService().GetByName(value)
-                    : new IlService().GetByName(value, transaction);
+                    ? ProvinceService(context, transaction).GetByName(value)
+                    : ProvinceService(context, transaction).GetByName(value, transaction);
                 if (il != null)
                 {
                     ilId = il.Id;
@@ -695,7 +614,7 @@ namespace Model.Services.NBYS
         }
         private static int GetIlceId(
             EkstreAktarma ekstreAktarma,
-            SqlTransactionContext transaction = null)
+            SqlTransactionContext transaction = null, PortalLogContext context = null)
         {
             //
             int ilceId = 0;
@@ -704,8 +623,8 @@ namespace Model.Services.NBYS
             if (isInt)
             {
                 Ilce ilce = transaction == null
-                    ? new IlceService().GetById(ilceId)
-                    : new IlceService().GetById(ilceId, transaction);
+                    ? DistrictService(context, transaction).GetById(ilceId)
+                    : DistrictService(context, transaction).GetById(ilceId, transaction);
                 if (ilce != null)
                 {
                     ilceId = ilce.Id;
@@ -718,12 +637,12 @@ namespace Model.Services.NBYS
             EkstreAktarma ekstreAktarma,
             int nakitBagisciId,
             string currentUser,
-            SqlTransactionContext transaction = null)
+            SqlTransactionContext transaction = null, PortalLogContext context = null)
         {
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
             NakitBagisHareket kayitliNakitBagishareket = new NakitBagisHareket();
-            NakitBagisHareketService service = new NakitBagisHareketService();
+            NakitBagisHareketService service = DonationService(context, transaction);
             kayitliNakitBagishareket = transaction == null
                 ? service.GetByEkstreAktarmaId(ekstreAktarma.Id)
                 : service.GetByEkstreAktarmaId(ekstreAktarma.Id, transaction);
@@ -734,13 +653,13 @@ namespace Model.Services.NBYS
             if (kayitliNakitBagishareket==null)
             {
                 BankaTanim bankaTanim = transaction == null
-                    ? new BankaTanimService().GetByName(ekstreAktarma.BankaAdi)
-                    : new BankaTanimService().GetByName(ekstreAktarma.BankaAdi, transaction);
+                    ? BankService(context, transaction).GetByName(ekstreAktarma.BankaAdi)
+                    : BankService(context, transaction).GetByName(ekstreAktarma.BankaAdi, transaction);
 
                 Ilce ilce = transaction == null
-                    ? new IlceService().GetByProvinceAndDistrictName(
+                    ? DistrictService(context, transaction).GetByProvinceAndDistrictName(
                         ekstreAktarma.Ili, ekstreAktarma.Ilcesi)
-                    : new IlceService().GetByProvinceAndDistrictName(
+                    : DistrictService(context, transaction).GetByProvinceAndDistrictName(
                         ekstreAktarma.Ili, ekstreAktarma.Ilcesi, transaction);
 
                 
@@ -762,7 +681,7 @@ namespace Model.Services.NBYS
                 }
 
                 nakitBagisHareket.Telefon = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString());
-                nakitBagisHareket.Ili = GetIlId(ekstreAktarma.Ili, transaction);
+                nakitBagisHareket.Ili = GetIlId(ekstreAktarma.Ili, transaction, context);
                 nakitBagisHareket.Ilcesi = ilce != null ? ilce.Id : 0;
                 nakitBagisHareket.Olusturan = currentUser;
                 nakitBagisHareket.Aciklama = ekstreAktarma.Aciklama;
@@ -789,10 +708,10 @@ namespace Model.Services.NBYS
             EkstreAktarma ekstreAktarma,
             bool isNew,
             string currentUser,
-            SqlTransactionContext transaction = null)
+            SqlTransactionContext transaction = null, PortalLogContext context = null)
         {
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            NakitBagisciService service = new NakitBagisciService();
+            NakitBagisciService service = DonorService(context, transaction);
             if (nakitBagisci == null)
             {
                 nakitBagisci = new NakitBagisci();
@@ -800,15 +719,15 @@ namespace Model.Services.NBYS
             if (isNew)
             {
                 Ilce ilce = transaction == null
-                    ? new IlceService().GetByProvinceAndDistrictName(
+                    ? DistrictService(context, transaction).GetByProvinceAndDistrictName(
                         ekstreAktarma.Ili, ekstreAktarma.Ilcesi)
-                    : new IlceService().GetByProvinceAndDistrictName(
+                    : DistrictService(context, transaction).GetByProvinceAndDistrictName(
                         ekstreAktarma.Ili, ekstreAktarma.Ilcesi, transaction);
 
                 nakitBagisci.Adi = ekstreAktarma.Adi.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
                 nakitBagisci.Adres = ekstreAktarma.Adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
-                nakitBagisci.Ilcesi = ilce != null ? ilce.Id : GetIlceId(ekstreAktarma, transaction);//ekstreAktarma.Ilcesi;
-                nakitBagisci.Ili = GetIlId(ekstreAktarma.Ili, transaction);//ekstreAktarma.Ili;
+                nakitBagisci.Ilcesi = ilce != null ? ilce.Id : GetIlceId(ekstreAktarma, transaction, context);//ekstreAktarma.Ilcesi;
+                nakitBagisci.Ili = GetIlId(ekstreAktarma.Ili, transaction, context);//ekstreAktarma.Ili;
                 nakitBagisci.TCKimlikNo = (nakitBagisci.TCKimlikNo < 1) && (ekstreAktarma.TCKimlikNo > 0) ? ekstreAktarma.TCKimlikNo : nakitBagisci.TCKimlikNo;
                 nakitBagisci.Telefon1 = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString());
                 nakitBagisci.Telefon2 = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon2.ReturnEmptyIfNull().ToString());
@@ -834,15 +753,15 @@ namespace Model.Services.NBYS
             else
             {
                 Ilce ilce = transaction == null
-                    ? new IlceService().GetByProvinceAndDistrictName(
+                    ? DistrictService(context, transaction).GetByProvinceAndDistrictName(
                         ekstreAktarma.Ili, ekstreAktarma.Ilcesi)
-                    : new IlceService().GetByProvinceAndDistrictName(
+                    : DistrictService(context, transaction).GetByProvinceAndDistrictName(
                         ekstreAktarma.Ili, ekstreAktarma.Ilcesi, transaction);
 
                 nakitBagisci.Adi = string.IsNullOrEmpty(nakitBagisci.Adi) ? ekstreAktarma.Adi.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo) : nakitBagisci.Adi;
                 nakitBagisci.Adres = string.IsNullOrEmpty(nakitBagisci.Adres) ? ekstreAktarma.Adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo) : nakitBagisci.Adres;
-                nakitBagisci.Ilcesi = nakitBagisci.Ilcesi==0 ? ilce != null ? ilce.Id : GetIlceId(ekstreAktarma, transaction) : nakitBagisci.Ilcesi;//ekstreAktarma.Ilcesi;
-                nakitBagisci.Ili = nakitBagisci.Ili==0 ? GetIlId(ekstreAktarma.Ili, transaction) : nakitBagisci.Ili;//ekstreAktarma.Ili;
+                nakitBagisci.Ilcesi = nakitBagisci.Ilcesi==0 ? ilce != null ? ilce.Id : GetIlceId(ekstreAktarma, transaction, context) : nakitBagisci.Ilcesi;//ekstreAktarma.Ilcesi;
+                nakitBagisci.Ili = nakitBagisci.Ili==0 ? GetIlId(ekstreAktarma.Ili, transaction, context) : nakitBagisci.Ili;//ekstreAktarma.Ili;
                 nakitBagisci.TCKimlikNo = nakitBagisci.TCKimlikNo < 1 ? ekstreAktarma.TCKimlikNo : nakitBagisci.TCKimlikNo;
                 nakitBagisci.Telefon1 = string.IsNullOrEmpty(nakitBagisci.Telefon1) ? UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString()) : nakitBagisci.Telefon1;
                 nakitBagisci.Telefon2 = string.IsNullOrEmpty(nakitBagisci.Telefon2) ? UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon2.ReturnEmptyIfNull().ToString()) : nakitBagisci.Telefon2;
@@ -866,6 +785,46 @@ namespace Model.Services.NBYS
             }
 
             return nakitBagisci.Id;
+        }
+        private static EkstreAktarmaService EkstreService(PortalLogContext context, SqlTransactionContext transaction = null)
+        {
+            if (context != null) return new EkstreAktarmaService(new DAO.Repositories.NBYS.EkstreAktarmaRepository(context));
+            return transaction == null ? new EkstreAktarmaService() : new EkstreAktarmaService(new DAO.Repositories.NBYS.EkstreAktarmaRepository(transaction));
+        }
+        private static NakitBagisciService DonorService(PortalLogContext context, SqlTransactionContext transaction = null)
+        {
+            if (context != null) return new NakitBagisciService(new DAO.Repositories.NBYS.NakitBagisciRepository(context));
+            return transaction == null ? new NakitBagisciService() : new NakitBagisciService(new DAO.Repositories.NBYS.NakitBagisciRepository(transaction));
+        }
+        private static NakitBagisHareketService DonationService(PortalLogContext context, SqlTransactionContext transaction = null)
+        {
+            if (context != null) return new NakitBagisHareketService(new DAO.Repositories.NBYS.NakitBagisHareketRepository(context));
+            return transaction == null ? new NakitBagisHareketService() : new NakitBagisHareketService(new DAO.Repositories.NBYS.NakitBagisHareketRepository(transaction));
+        }
+        private static ArmaganService GiftService(PortalLogContext context, SqlTransactionContext transaction = null)
+        {
+            if (context != null) return new ArmaganService(new DAO.Repositories.NBYS.ArmaganRepository(context));
+            return transaction == null ? new ArmaganService() : new ArmaganService(new DAO.Repositories.NBYS.ArmaganRepository(transaction));
+        }
+        private static ArmaganTanimService GiftDefinitionService(PortalLogContext context, SqlTransactionContext transaction = null)
+        {
+            if (context != null) return new ArmaganTanimService(new DAO.Repositories.NBYS.ArmaganTanimRepository(context));
+            return transaction == null ? new ArmaganTanimService() : new ArmaganTanimService(new DAO.Repositories.NBYS.ArmaganTanimRepository(transaction));
+        }
+        private static BankaTanimService BankService(PortalLogContext context, SqlTransactionContext transaction = null)
+        {
+            if (context != null) return new BankaTanimService(new DAO.Repositories.NBYS.BankaTanimRepository(context));
+            return transaction == null ? new BankaTanimService() : new BankaTanimService(new DAO.Repositories.NBYS.BankaTanimRepository(transaction));
+        }
+        private static IlService ProvinceService(PortalLogContext context, SqlTransactionContext transaction = null)
+        {
+            if (context != null) return new IlService(new DAO.Repositories.Ortak.IlRepository(context));
+            return transaction == null ? new IlService() : new IlService(new DAO.Repositories.Ortak.IlRepository(transaction));
+        }
+        private static IlceService DistrictService(PortalLogContext context, SqlTransactionContext transaction = null)
+        {
+            if (context != null) return new IlceService(new DAO.Repositories.Ortak.IlceRepository(context));
+            return transaction == null ? new IlceService() : new IlceService(new DAO.Repositories.Ortak.IlceRepository(transaction));
         }
     }
 }

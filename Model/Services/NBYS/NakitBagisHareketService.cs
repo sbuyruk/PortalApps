@@ -52,7 +52,7 @@ namespace Model.Services.NBYS
             bagisHareket.Olusturan = UtilityHelper.GetCurrentUserName();
             bagisHareket.Id = repository.Insert(bagisHareket);
 
-            if (bagisHareket.Id > 0 && ProjeConstants.NBYS_SAVE_LOG)
+            if (bagisHareket.Id > 0 && !repository.HasLogContext && ProjeConstants.NBYS_SAVE_LOG)
             {
                 new OlayKayit().GirisOlayKaydet(
                     bagisHareket, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISHAREKET);
@@ -75,7 +75,7 @@ namespace Model.Services.NBYS
             bagisHareket.Olusturan = UtilityHelper.GetCurrentUserName();
             bagisHareket.Id = repository.Insert(bagisHareket, transaction);
 
-            if (bagisHareket.Id > 0 && ProjeConstants.NBYS_SAVE_LOG)
+            if (bagisHareket.Id > 0 && !repository.HasLogContext && ProjeConstants.NBYS_SAVE_LOG)
             {
                 new OlayKayit().GirisOlayKaydet(
                     bagisHareket,
@@ -99,7 +99,7 @@ namespace Model.Services.NBYS
                 bagisHareket.Degistiren = UtilityHelper.GetCurrentUserName();
                 updated = repository.Update(bagisHareket);
             }
-            if (updated && ProjeConstants.NBYS_UPDATE_LOG)
+            if (updated && !repository.HasLogContext && ProjeConstants.NBYS_UPDATE_LOG)
             {
                 new OlayKayit().GuncellemeOlayKaydet(
                     bagisHareket, previous, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISHAREKET);
@@ -121,7 +121,7 @@ namespace Model.Services.NBYS
             bagisHareket.DegistirmeTarihi = DateTime.Now;
             bagisHareket.Degistiren = UtilityHelper.GetCurrentUserName();
             bool updated = repository.Update(bagisHareket, transaction);
-            if (updated && ProjeConstants.NBYS_UPDATE_LOG)
+            if (updated && !repository.HasLogContext && ProjeConstants.NBYS_UPDATE_LOG)
             {
                 new OlayKayit().GuncellemeOlayKaydet(
                     previous,
@@ -228,7 +228,7 @@ namespace Model.Services.NBYS
                 return false;
 
             bool deleted = repository.Delete(bagisHareket.Id);
-            if (deleted && ProjeConstants.NBYS_DELETE_LOG)
+            if (deleted && !repository.HasLogContext && ProjeConstants.NBYS_DELETE_LOG)
             {
                 new OlayKayit().SilmeOlayKaydet(
                     previous, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISHAREKET);

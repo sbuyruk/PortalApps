@@ -10,6 +10,7 @@ namespace DAO.Repositories.NBYS
 {
     public class NakitBagisciRepository
     {
+        public bool HasLogContext { get { return readContext != null; } }
         private const string TableName = "NakitBagisci_Table";
         private readonly DbClass db;
         private readonly PortalLogContext readContext;
@@ -32,7 +33,7 @@ namespace DAO.Repositories.NBYS
             crudQueryBuilder = new CrudQueryBuilder();
         }
 
-        // Migrated read path; writes use NbysBagisciWriteRepository explicitly.
+        // Explicit-context writes require a supplied transaction and use centralized audit.
         public NakitBagisciRepository(PortalLogContext context)
         {
             if (context == null || context.Project != "NBYS")
@@ -66,8 +67,9 @@ namespace DAO.Repositories.NBYS
 
         public int Insert<T>(T entity, SqlTransactionContext transaction)
         {
-            RequireLegacyWrite();
-            return transaction.Insert(crudQueryBuilder.BuildInsert(entity, TableName));
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            return readContext == null ? transaction.Insert(crudQueryBuilder.BuildInsert(entity, TableName))
+                : new NbysTransactionalWriter(readContext, TableName).Insert(crudQueryBuilder.BuildInsert(entity, TableName), transaction);
         }
 
         public bool Update<T>(T entity)
@@ -78,8 +80,9 @@ namespace DAO.Repositories.NBYS
 
         public bool Update<T>(T entity, SqlTransactionContext transaction)
         {
-            RequireLegacyWrite();
-            return transaction.Update(crudQueryBuilder.BuildUpdate(entity, TableName));
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            return readContext == null ? transaction.Update(crudQueryBuilder.BuildUpdate(entity, TableName))
+                : new NbysTransactionalWriter(readContext, TableName).Update(crudQueryBuilder.BuildUpdate(entity, TableName), NbysTransactionalWriter.Id(entity), transaction);
         }
 
         public bool Delete(int id)
@@ -164,13 +167,12 @@ namespace DAO.Repositories.NBYS
             string modifiedBy,
             SqlTransactionContext transaction)
         {
-            RequireLegacyWrite();
             if (transaction == null)
                 throw new ArgumentNullException("transaction");
 
             SqlQuery insert = crudQueryBuilder.BuildInsert(entity, TableName);
             NormalizeLegacyNullStrings(entity, insert);
-            int id = transaction.Insert(insert);
+            int id = readContext == null ? transaction.Insert(insert) : new NbysTransactionalWriter(readContext, TableName).Insert(insert, transaction);
             if (id <= 0)
                 throw new InvalidOperationException("Bilinmeyen bagisci kimligi gecersiz.");
 
@@ -184,7 +186,8 @@ namespace DAO.Repositories.NBYS
             update.AddParameter("@Aciklama", namePrefix + " Bagisçi Id= " + idText);
             update.AddParameter("@DegistirmeTarihi", modifiedAt);
             update.AddParameter("@Degistiren", modifiedBy ?? string.Empty);
-            transaction.Update(update);
+            if (readContext == null) transaction.Update(update);
+            else new NbysTransactionalWriter(readContext, TableName).Update(update, id, transaction);
             return id;
         }
 
@@ -203,10 +206,10 @@ namespace DAO.Repositories.NBYS
                 throw new ArgumentNullException("transaction");
 
             SqlQuery query = new SqlQuery(@"SELECT *
-                               FROM NakitBagisci_Table
+                               FROM NakitBagisci_Table WITH (UPDLOCK, HOLDLOCK)
                                WHERE Id = @Id");
             query.AddParameter("@Id", id);
-            return transaction.Select(query);
+            return SelectInTransaction(query, transaction);
         }
 
         public DataTable SelectAll()
@@ -230,10 +233,10 @@ namespace DAO.Repositories.NBYS
             if (transaction == null)
                 throw new ArgumentNullException("transaction");
             SqlQuery query = new SqlQuery(@"SELECT *
-                               FROM NakitBagisci_Table
+                               FROM NakitBagisci_Table WITH (UPDLOCK, HOLDLOCK)
                                WHERE TCKimlikNo != 0 AND TCKimlikNo = @TCKimlikNo");
             query.AddParameter("@TCKimlikNo", tcKimlikno);
-            return transaction.Select(query);
+            return SelectInTransaction(query, transaction);
         }
 
         public DataTable SelectImportCandidates(string fullName)
@@ -248,10 +251,10 @@ namespace DAO.Repositories.NBYS
         public DataTable SelectImportCandidates(string fullName, SqlTransactionContext transaction)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
-            SqlQuery query = new SqlQuery(@"SELECT * FROM NakitBagisci_Table
+            SqlQuery query = new SqlQuery(@"SELECT * FROM NakitBagisci_Table WITH (UPDLOCK, HOLDLOCK)
                 WHERE LTRIM(RTRIM(ISNULL(Adi,'') + ' ' + ISNULL(Soyadi,''))) = @FullName");
             query.AddParameter("@FullName", fullName);
-            return transaction.Select(query);
+            return SelectInTransaction(query, transaction);
         }
 
         public DataTable SelectBagisiOlmayanBagisciById(int bagisciId)
@@ -285,11 +288,11 @@ namespace DAO.Repositories.NBYS
             if (transaction == null)
                 throw new ArgumentNullException("transaction");
             SqlQuery query = new SqlQuery(@"SELECT *
-                               FROM NakitBagisci_Table
+                               FROM NakitBagisci_Table WITH (UPDLOCK, HOLDLOCK)
                                WHERE Adi = @Adi AND (Telefon1 = @Telefon OR Telefon2 = @Telefon)");
             query.AddParameter("@Adi", adi ?? string.Empty);
             query.AddParameter("@Telefon", telefon ?? string.Empty);
-            return transaction.Select(query);
+            return SelectInTransaction(query, transaction);
         }
 
         public DataTable SelectByTelefon(string telefon)
@@ -459,6 +462,12 @@ namespace DAO.Repositories.NBYS
                     parameter.Value = string.Empty;
                 }
             }
+        }
+        private DataTable SelectInTransaction(SqlQuery query, SqlTransactionContext transaction,
+            [System.Runtime.CompilerServices.CallerMemberName] string method = "")
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            return readContext == null ? transaction.Select(query) : new NbysSqlExecutor(readContext, "NakitBagisciRepository").Select(query, transaction, method);
         }
     }
 }
