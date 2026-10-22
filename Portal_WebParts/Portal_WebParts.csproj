@@ -98,6 +98,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DavaDurusmaListesiWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Logging\PortalWebPartLog.cs" />
+    <Compile Include="Logging\PortalDuyuruImage.cs" />
     <Compile Include="DuyuruGirisiWP\DuyuruGirisiWP.ascx.cs">
       <DependentUpon>DuyuruGirisiWP.ascx</DependentUpon>
     </Compile>

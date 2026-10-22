@@ -1,4 +1,6 @@
 using DAO.Ortak;
+using Utility.Logging;
+using System.Runtime.CompilerServices;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,6 +10,19 @@ namespace DAO.Repositories.Portal
 {
     public class DuyuruRepository
     {
+        private readonly PortalDuyuruSqlExecutor sql;
+        public DuyuruRepository(PortalLogContext context)
+        {
+            sql = new PortalDuyuruSqlExecutor(context, "DuyuruRepository");
+        }
+        private DataTable Select(SqlQuery query, [CallerMemberName] string method = "")
+        {
+            return sql == null ? db.SelectFromDb(query, "") : sql.Select(query, method: method);
+        }
+        private void RequireLegacyWrite()
+        {
+            if (sql != null) throw new InvalidOperationException("Duyuru yazmaları transaction servisi üzerinden yapılmalıdır.");
+        }
         private readonly DbClass db;
         private readonly CrudQueryBuilder queryBuilder;
 
@@ -29,19 +44,19 @@ namespace DAO.Repositories.Portal
         {
             SqlQuery q = new SqlQuery("SELECT * FROM Duyuru_Table WHERE Id=@Id");
             q.AddParameter("@Id", id);
-            return db.SelectFromDb(q, "");
+            return Select(q);
         }
 
         public DataTable SelectAll()
         {
-            return db.SelectFromDb(new SqlQuery("SELECT * FROM Duyuru_Table"), "");
+            return Select(new SqlQuery("SELECT * FROM Duyuru_Table"));
         }
 
         public DataTable SelectByDate(DateTime now)
         {
             SqlQuery q = new SqlQuery("SELECT * FROM Duyuru_Table WHERE YayinBasTar<=@Now AND YayinBitTar>=@Now ORDER BY YayinBasTar,YayinBitTar DESC");
             q.AddParameter("@Now", now);
-            return db.SelectFromDb(q, "");
+            return Select(q);
         }
 
         public DataTable SelectByRepeat(DateTime now, string tekrar)
@@ -67,26 +82,29 @@ namespace DAO.Repositories.Portal
             q.AddParameter("@Saat", now.ToString("HH:mm:ss"));
             q.AddParameter("@Gun", now.Day);
             q.AddParameter("@Ay", now.Month);
-            return db.SelectFromDb(q, "");
+            return Select(q);
         }
 
         public DataTable SelectAnnouncementList()
         {
-            return db.SelectFromDb(new SqlQuery("SELECT ROW_NUMBER() OVER (ORDER BY Id) AS Sirano, Id,Baslik,Metin,YayinBasTar,YayinBitTar,Tekrar,Popup,Aktif,FORMAT(YayinBasTar,'dd.MM.yyyy hh:mm') BaslamaTarihi,FORMAT(YayinBitTar,'dd.MM.yyyy hh:mm') BitisTarihi,DuyuruAlicilari,Aciklama,Resim,Olusturan,OlusturmaTarihi,Degistiren,DegistirmeTarihi FROM Duyuru_Table ORDER BY Aktif DESC,YayinBasTar DESC,Popup"), "");
+            return Select(new SqlQuery("SELECT ROW_NUMBER() OVER (ORDER BY Id) AS Sirano, Id,Baslik,Metin,YayinBasTar,YayinBitTar,Tekrar,Popup,Aktif,FORMAT(YayinBasTar,'dd.MM.yyyy hh:mm') BaslamaTarihi,FORMAT(YayinBitTar,'dd.MM.yyyy hh:mm') BitisTarihi,DuyuruAlicilari,Aciklama,Resim,Olusturan,OlusturmaTarihi,Degistiren,DegistirmeTarihi FROM Duyuru_Table ORDER BY Aktif DESC,YayinBasTar DESC,Popup"));
         }
 
         public int Insert<T>(T entity)
         {
+            RequireLegacyWrite();
             return db.Insert(queryBuilder.BuildInsert(entity, "Duyuru_Table"));
         }
 
         public bool Update<T>(T entity)
         {
+            RequireLegacyWrite();
             return db.Update2Db(queryBuilder.BuildUpdate(entity, "Duyuru_Table"));
         }
 
         public bool Delete(int id)
         {
+            RequireLegacyWrite();
             return db.DeleteFromDb(queryBuilder.BuildDelete("Duyuru_Table", id), "");
         }
     }

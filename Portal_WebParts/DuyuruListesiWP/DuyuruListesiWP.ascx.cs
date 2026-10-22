@@ -1,4 +1,7 @@
 using Model.Ortak;
+using Portal_WebParts.Logging;
+using Utility.Logging;
+using Model.Services.Portal;
 using Model.Portal;
 using System;
 using System.Collections.Generic;
@@ -18,6 +21,14 @@ namespace Portal_WebParts.DuyuruListesiWP
     [ToolboxItemAttribute(false)]
     public partial class DuyuruListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("Portal", "DuyuruListesiWP"); }
+        }
+        private void ExecuteAction(string operation, Action action)
+        {
+            PortalWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -59,30 +70,23 @@ namespace Portal_WebParts.DuyuruListesiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                PortalWebPartLog.RecordOpened(LoggingContext);
+                var manager = ScriptManager.GetCurrent(Page);
+                if (manager != null) manager.RegisterPostBackControl(ExcelBtn);
                 if (!Page.IsPostBack)
                 {
                     TabloOlustur();
                 }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ExcelBtn_Click", () =>
             {
                 ExportToExcel();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void ExportToExcel()
         {
@@ -92,13 +96,6 @@ namespace Portal_WebParts.DuyuruListesiWP
             GridView1.DataSource = GetDataList();
             GridView1.DataBind();
 
-            Page.Response.Clear();
-            Page.Response.Buffer = true;
-            Page.Response.AddHeader("content-disposition",
-             "attachment;filename=DuyuruListesi" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls");
-            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
-            Page.Response.Charset = "windows-1254";//ISO-8859-9
-            Page.Response.ContentType = "application/vnd.ms-excel";
             StringWriter sw = new StringWriter();
             HtmlTextWriter hw = new HtmlTextWriter(sw);
 
@@ -111,6 +108,13 @@ namespace Portal_WebParts.DuyuruListesiWP
 
             //style to format numbers to string
             string style = @"<style> .textmode { mso-number-format:\@; } </style>";
+            Page.Response.Clear();
+            Page.Response.Buffer = true;
+            Page.Response.AddHeader("content-disposition",
+             "attachment;filename=DuyuruListesi" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls");
+            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
+            Page.Response.Charset = "windows-1254";//ISO-8859-9
+            Page.Response.ContentType = "application/vnd.ms-excel";
             Page.Response.Write(style);
             Page.Response.Output.Write(sw.ToString());
             Page.Response.Flush();
@@ -119,50 +123,44 @@ namespace Portal_WebParts.DuyuruListesiWP
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("CloseBtn_Click", () =>
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void YeniDuyuruBtn_Click(object sender, EventArgs e)
         {
-
-            RedirectToPage(ProjeConstants.PAGE_DUYURU_GIRIS + "?DestinationApp=DG");
+            ExecuteAction("YeniDuyuruBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_DUYURU_GIRIS + "?DestinationApp=DG");
+            });
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
+
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
                 Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+
         }
         protected void HiddenOkuyanlarBtn_Click(object sender, EventArgs e)
         {
-            int duyuruId = paramDuyuruIdLbl.Value.ConvertToInt();
-            if (duyuruId > 0)
+            ExecuteAction("HiddenOkuyanlarBtn_Click", () =>
             {
-                Duyuru duyuru = new Duyuru();
-                duyuru = new Model.Services.Portal.DuyuruService().GetById(duyuruId);
-                if (duyuru != null)
+                int duyuruId = paramDuyuruIdLbl.Value.ConvertToInt();
+                if (duyuruId > 0)
                 {
-                    DuyuruLbl.Text = duyuru.Baslik;
-                    KayitGetirModal(duyuru.Id);
+                    Duyuru duyuru = new Duyuru();
+                    duyuru = new Model.Services.Portal.DuyuruService(LoggingContext).GetById(duyuruId);
+                    if (duyuru != null)
+                    {
+                        DuyuruLbl.Text = System.Web.HttpUtility.HtmlEncode(duyuru.Baslik);
+                        KayitGetirModal(duyuru.Id);
+                    }
                 }
-            }
+            });
         }
         private void KayitGetirModal(int duyuruId)
         {
@@ -173,8 +171,8 @@ namespace Portal_WebParts.DuyuruListesiWP
         private string OkuyanlarListesiJson(int duyuruId)
         {
             DuyuruOkuma duyuruOkumaDao = new DuyuruOkuma();
-            string jSon = new Model.Services.Portal.DuyuruOkumaService().GetByDuyuruId(duyuruId);
-            return jSon;
+            string jSon = new Model.Services.Portal.DuyuruOkumaService(LoggingContext).GetByDuyuruId(duyuruId);
+            return (jSon ?? "[]").Replace("<", "\\u003c");
         }
         private string CreateModalDataTable(string jsonData)
         {
@@ -189,8 +187,8 @@ namespace Portal_WebParts.DuyuruListesiWP
                     jQuery('#CustomModalDataTable').DataTable({
                         data: " + jsonData + @",
                         columns: [
-                            { data: 'Adi' },
-                            { data: 'Soyadi' },
+                            { data: 'Adi', render: jQuery.fn.dataTable.render.text() },
+                            { data: 'Soyadi', render: jQuery.fn.dataTable.render.text() },
                             { data: 'OkumaTarihi' },
                         ],
                         columnDefs:[{targets:2, render:function(data){
@@ -219,21 +217,8 @@ namespace Portal_WebParts.DuyuruListesiWP
         }
         private string TabloJson()
         {
-            string jSon = string.Empty;
-
-            try
-            {
-                List<DuyuruListItem> list = GetDataList();
-                var serializer = new JavaScriptSerializer();
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
-            return jSon;
+            var serializer = new JavaScriptSerializer();
+            return serializer.Serialize(GetDataList()).Replace("<", "\\u003c");
         }
         private string CreateDataTable(string jsonData)
         {
@@ -259,7 +244,7 @@ namespace Portal_WebParts.DuyuruListesiWP
                         },
                         data: " + jsonData + @",
                         columns: [
-                            { data: 'Baslik' },
+                            { data: 'Baslik', render: jQuery.fn.dataTable.render.text() },
                             { data: 'YayinBasTar' },
                             { data: 'YayinBitTar' },
                             { data: 'Tekrar' },
@@ -286,7 +271,7 @@ namespace Portal_WebParts.DuyuruListesiWP
         private List<DuyuruListItem> GetDataList()
         {
             Duyuru duyuruDao = new Duyuru();
-            List<Duyuru> list = new Model.Services.Portal.DuyuruService().GetAnnouncementList();
+            List<Duyuru> list = new Model.Services.Portal.DuyuruService(LoggingContext).GetAnnouncementList();
 
             List<DuyuruListItem> yeniListe = new List<DuyuruListItem>();
             foreach (var item in list)
@@ -302,7 +287,7 @@ namespace Portal_WebParts.DuyuruListesiWP
                 listItem.Okunma = "<a href=# onclick=OkuyanlarClicked('" + item.Id + "'); class='btn btn-outline-warning' >Okuyanlar</a>";
                 listItem.Duyuru = "<a href=" + ProjeConstants.PAGE_DUYURU_GIRIS + "?DestinationApp=DD&DuyuruId=" + item.Id +
                          " class='btn btn-outline-primary'>Duyuru</a>";
-                listItem.Secildi = SecilenIdQS.Equals(item.Id);
+                listItem.Secildi = SecilenIdQS.ConvertToInt() == item.Id;
                 yeniListe.Add(listItem);
             }
             return yeniListe;

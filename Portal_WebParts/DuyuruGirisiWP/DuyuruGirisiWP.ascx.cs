@@ -2,6 +2,9 @@ using Microsoft.SharePoint;
 using Model.IKYS;
 using Model.Services.IKYS;
 using Model.Ortak;
+using Portal_WebParts.Logging;
+using Utility.Logging;
+using Model.Services.Portal;
 using Model.Portal;
 using System;
 using System.Collections.Generic;
@@ -18,6 +21,14 @@ namespace Portal_WebParts.DuyuruGirisiWP
     [ToolboxItemAttribute(false)]
     public partial class DuyuruGirisiWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("Portal", "DuyuruGirisiWP"); }
+        }
+        private void ExecuteAction(string operation, Action action)
+        {
+            PortalWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -113,65 +124,24 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 ViewState["DestinationApp"] = value;
             }
         }
-        private string MesajQS
-        {
-            get
-            {
 
-                if (ViewState["Mesaj"] == null)
-                {
-                    if (Page.Request.QueryString["Mesaj"] != null)
-                    {
-                        ViewState["Mesaj"] = Page.Request.QueryString["Mesaj"];
-                    }
-                    else
-                    {
-                        ViewState["Mesaj"] = string.Empty;
-                    }
-                }
-                return ViewState["Mesaj"].ToString();
-            }
-
-            set
-            {
-                ViewState["Mesaj"] = value;
-            }
-        }
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                PortalWebPartLog.RecordOpened(LoggingContext);
+                var manager = System.Web.UI.ScriptManager.GetCurrent(Page);
+                if (manager != null) { manager.RegisterPostBackControl(KaydetBtn); manager.RegisterPostBackControl(GuncelleBtn); }
                 if (!Page.IsPostBack)
                 {
-                    if (string.IsNullOrEmpty(DuyuruIdQS) && !DestinationAppQS.Equals("DD"))
-                    {
-                        KaydetBtn.Visible = true;
-                        GuncelleBtn.Visible = false;
-                        SilBtn.Visible = false;
-                        DuyuruGirisiAc();
-                    }
-                    else if (DestinationAppQS.Equals("DD"))
-                    {
-                        KaydetBtn.Visible = false;
-                        GuncelleBtn.Visible = true;
-                        SilBtn.Visible = true;
-                        DuyuruDuzenlemeyiAc();
-                        if (!string.IsNullOrEmpty(MesajQS))
-                        {
-                            MessageHelper.PublishMessage("Duyuru Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
-                            MesajQS = string.Empty;
-                        }
-                    }
+                    bool editing = DuyuruIdQS.ConvertToInt() > 0;
+                    KaydetBtn.Visible = !editing;
+                    GuncelleBtn.Visible = SilBtn.Visible = editing;
+                    if (editing) DuyuruDuzenlemeyiAc();
+                    else DuyuruGirisiAc();
                 }
                 SecilenPersonelTablosunuDoldur();
-
-            }
-            catch (Exception ex)
-            {
-
-                ExceptionHelper exhelper = new ExceptionHelper(ex);
-                exhelper.PublishException();
-            }
+            });
         }
 
         private void DuyuruDuzenlemeyiAc()
@@ -191,10 +161,10 @@ namespace Portal_WebParts.DuyuruGirisiWP
             SecilmeyenPersonelList.Clear();
             SecilenPersonelList.Clear();
             Personel personelDao = new Personel();
-            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu, LoggingContext);
 
             Duyuru duyuru = new Duyuru();
-            duyuru = new Model.Services.Portal.DuyuruService().GetById(DuyuruIdQS.ConvertToInt());
+            duyuru = new Model.Services.Portal.DuyuruService(LoggingContext).GetById(DuyuruIdQS.ConvertToInt());
             if (duyuru != null)
             {
                 int sirano = 1;
@@ -206,7 +176,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
                     pI.Adi = personel.Adi;
                     pI.Soyadi = personel.Soyadi;
                     pI.SiraNo = sirano++;
-                    if (duyuru.DuyuruAlicilari.Contains("," + personel.Id + ","))
+                    if (PortalDuyuruWriteService.IsRecipient(duyuru.DuyuruAlicilari, personel.Id))
                     {
                         if (!SecilenPersonelList.Contains(pI))
                         {
@@ -227,7 +197,8 @@ namespace Portal_WebParts.DuyuruGirisiWP
         private void DuyuruFormunuDoldur()
         {
             Duyuru duyuru = new Duyuru();
-            duyuru = new Model.Services.Portal.DuyuruService().GetById(DuyuruIdQS.ConvertToInt());
+            duyuru = new Model.Services.Portal.DuyuruService(LoggingContext).GetById(DuyuruIdQS.ConvertToInt());
+            if (duyuru == null) throw new PortalInputException("Duyuru bulunamadı. Listeyi yenileyip tekrar seçin.");
             BaslikTxt.Text = duyuru.Baslik;
             MetinTxt.Text= duyuru.Metin;
             DateTime basTar = duyuru.YayinBasTar;
@@ -343,7 +314,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
             SecilmeyenPersonelList.Clear();
             SecilenPersonelList.Clear();
             Personel personelDao = new Personel();
-            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu, LoggingContext);
             int sirano = 1;
             foreach (Personel personel in list)
             {
@@ -361,7 +332,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
 
             SecilmeyenPersonelList.Clear();
             Personel personelDao = new Personel();
-            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu, LoggingContext);
             int sirano = 1;
             foreach (Personel personel in list)
             {
@@ -384,19 +355,20 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 {
                     TableRow row = new TableRow();
                     TableCell adSoyadCell = new TableCell();
-                    adSoyadCell.Text = pI.Adi + " " + pI.Soyadi;
+                    adSoyadCell.Text = System.Web.HttpUtility.HtmlEncode(pI.Adi + " " + pI.Soyadi);
                     row.Controls.Add(adSoyadCell);
 
                     TableCell SilCell = new TableCell();
                     LinkButton SilBtn = new LinkButton();
-                    SilBtn.Text = "Çikar";
+                    SilBtn.Text = "Çıkar";
 
-                    SilBtn.ID = "SilBtn" + SiraNo++;
-                    TableUpdatePanel.ContentTemplateContainer.Controls.Add(SilBtn);
+                    SilBtn.ID = "SilBtn" + pI.Id;
                     SilBtn.CssClass = "btn btn-outline-danger";
                     SilBtn.CausesValidation = false;
                     SilBtn.Click += delegate
                     {
+                        ExecuteAction("RemoveRecipient", () =>
+                        {
                         SecilenPersonelList.Remove(pI);
                         if (!SecilmeyenPersonelList.Contains(pI))
                         {
@@ -404,6 +376,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
                         }
                         PersonelDDLDoldur();
                         SecilenPersonelTablosunuDoldur();
+                        });
                     };
                     SilCell.Controls.Add(SilBtn);
                     row.Controls.Add(SilCell);
@@ -418,11 +391,14 @@ namespace Portal_WebParts.DuyuruGirisiWP
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-
+            ExecuteAction("CloseBtn_Click", () => RedirectToPage(ProjeConstants.PAGE_DUYURU_LIST));
         }
         protected void BasSaatDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BitisSaatiDDLDoldur();
+            ExecuteAction("BasSaatDDL_SelectedIndexChanged", () =>
+            {
+                BitisSaatiDDLDoldur();
+            });
         }
         protected void BitSaatDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -434,240 +410,116 @@ namespace Portal_WebParts.DuyuruGirisiWP
         }
         protected void PersonelDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-            Personel personel = new Personel();
-            personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt());
-            if (personel != null)
+            ExecuteAction("PersonelDDL_SelectedIndexChanged", () =>
             {
-                IsBilgileri ib = new IsBilgileri();
-                ib = new IsBilgileriService().GetByPersonelId(personel.Id);
-                if (ib != null)
-                {
-                    PersonelItem pI = SecilmeyenPersonelList.Where(t => t.Id == personel.Id).FirstOrDefault();
-                    if (!SecilenPersonelList.Contains(pI))
-                    {
-                        SecilenPersonelList.Add(pI);
-                        SecilmeyenPersonelList.Remove(pI);
-                        SecilenPersonelTablosunuDoldur();
-                    }
-                    PersonelDDL.Items.RemoveAt(PersonelDDL.SelectedIndex);
-
-                }
-
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Personel Bulunamadi!", ProjeConstants.MESAJ_HATA);
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_PERSONEL_LIST;
-                Page.Response.Redirect(newUrl);
-            }
+                int id = PersonelDDL.SelectedValue.ConvertToInt();
+                if (id <= 0) return;
+                PersonelItem item = SecilmeyenPersonelList.FirstOrDefault(person => person.Id == id);
+                if (item == null) throw new PortalInputException("Personel seçimi geçerli değil. Listeyi yenileyin.");
+                SecilenPersonelList.Add(item);
+                SecilmeyenPersonelList.Remove(item);
+                PersonelDDLDoldur();
+                SecilenPersonelTablosunuDoldur();
+            });
         }
-        protected void KaydetBtn_Click(object sender, EventArgs e)
-        {
-            try
+        protected void KaydetBtn_Click(object sender, EventArgs e) {
+            ExecuteAction("KaydetBtn_Click", () =>
             {
-                bool kayitGeceliMi = false;
-                kayitGeceliMi = AlanlariGecerle();
-                if (kayitGeceliMi)
-                {
-                    Duyuru duyuru = DuyuruyuKaydet();
-                    if (duyuru != null)
-                    {
-                        ResmiKaydet(duyuru);
-                        RedirectToPage(ProjeConstants.PAGE_DUYURU_LIST + "?Mesaj=true&SecilenId=" + duyuru.Id );
-                    }
-
-                }
-                else
-                {
-                    MessageHelper.PublishMessage("Lütfen Duyuru bilgilerini tamamladiktan sonra kaydedin.", ProjeConstants.MESAJ_HATA, 2000);
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exhelper = new ExceptionHelper(ex);
-                exhelper.Exceptions.Add(new Exception("Duyuru kayit edilemedi."));
-                exhelper.PublishException();
-            }
+                SaveAnnouncement(false);
+            });
         }
-        protected void GuncelleBtn_Click(object sender, EventArgs e)
-        {
-            try
+        protected void GuncelleBtn_Click(object sender, EventArgs e) {
+            ExecuteAction("GuncelleBtn_Click", () =>
             {
-                bool kayitGecerliMi = false;
-                kayitGecerliMi = AlanlariGecerle();
-                if (kayitGecerliMi)
-                {
-                    if (DuyuruyuGuncelle())
-                    {
-                        
-                    }
-                }
-                else
-                {
-                    MessageHelper.PublishMessage("Lütfen Duyuru bilgilerini tamamladiktan sonra kaydedin.", ProjeConstants.MESAJ_HATA, 2000);
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exhelper = new ExceptionHelper(ex);
-                exhelper.Exceptions.Add(new Exception("Duyuru kayit edilemedi."));
-                exhelper.PublishException();
-            }
+                SaveAnnouncement(true);
+            });
         }
         protected void SilBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("SilBtn_Click", () =>
             {
-
-                SilLbl.Text = "Lütfen Dikkat: Duyuru Silinecek";
-                SilmeMesajiLbl.Text = "Duyuruyu Silmek Istediginizden Emin misiniz?";
+                SilLbl.Text = "Duyuru silinecek";
+                SilmeMesajiLbl.Text = "Duyuruyu silmek istediğinizden emin misiniz?";
                 DeleteNowBtn.Visible = true;
-                var openPopup = "OpenModal();";
-                System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openPopup, true);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exhelper = new ExceptionHelper(ex);
-                exhelper.Exceptions.Add(new Exception("Duyuru silinemedi."));
-                exhelper.PublishException();
-            }
+                UtilityHelper.ScriptCalistir("OpenModal();");
+            });
         }
         protected void DuyuruListBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_DUYURU_LIST+"?DuyuruId="+DuyuruIdQS);
-        }
-        private void ResmiKaydet(Duyuru duyuru)
-        {
-            if (xFileUpload.HasFile)
+            ExecuteAction("DuyuruListBtn_Click", () =>
             {
-                string resim = "Duyuru" + duyuru.Id;
-                
-                duyuru.Resim= SaveImageFiles2SP(resim);
-                
-            }
-            new Model.Services.Portal.DuyuruService().Update(duyuru);
+                RedirectToPage(ProjeConstants.PAGE_DUYURU_LIST + "?SecilenId=" + DuyuruIdQS.ConvertToInt());
+            });
         }
-        private string SaveImageFiles2SP(string fotoFile)
+        private void SaveAnnouncement(bool update)
         {
-            string SPImageListName = ProjeConstants.RESIMLER_DUYURU;
-
-            SPWeb web = Microsoft.SharePoint.SPContext.Current.Web;
-            SPList listExists = web.Lists.TryGetList(SPImageListName);
-            ExceptionHelper exhelper = new ExceptionHelper();
-            exhelper = UtilityHelper.uploadFile2SP(xFileUpload, "", fotoFile + "", SPImageListName, exhelper, ProjeConstants.RESIM_DIGER_EN, ProjeConstants.RESIM_DIGER_BOY);
-            if (exhelper.HasException())
-            {
-                Exception ex = new Exception("Resim Kaydedilemedi.");
-                exhelper.Exceptions.Add(ex);
-                exhelper.PublishException();
-                return string.Empty;   
-            }
-            else
-            {                
-                MessageHelper.PublishMessage("Islem Tamamlandi.Resim yüklendi.", ProjeConstants.MESAJ_BASARILI);
-                return fotoFile;
-            }
-        }
-        private Duyuru DuyuruyuKaydet()
-        {
-            int duyuruId = 0;
+            Duyuru input = ReadForm(update);
+            bool imageAttempted = false, imageUploaded = false, committed = false;
             try
             {
-
-                Duyuru duyuru = new Duyuru();
-                duyuru.Baslik = BaslikTxt.Text;
-                duyuru.Metin = MetinTxt.Text;
-                string bassaat = BasSaatDDL.SelectedItem.Value;
-                string bitsaat = BitSaatDDL.SelectedItem.Value;
-                DateTime bastar = YayinBasTarTxt.Value.ConvertToDatetime();
-                DateTime bittar = YayinBitTarTxt.Value.ConvertToDatetime();
-                duyuru.YayinBasTar = UtilityHelper.TariheSaatEkle(bastar, bassaat);
-                duyuru.YayinBitTar = UtilityHelper.TariheSaatEkle(bittar, bitsaat);
-                duyuru.Tekrar = TekrarlaDDL.SelectedItem.Value;
-                duyuru.DuyuruAlicilari = DuyuruAlicilariniAl();
-                duyuru.Aktif = AktifChk.Checked;
-                duyuru.Popup = PopupChk.Checked;
-                duyuru.Olusturan = UtilityHelper.GetCurrentUserLoginName();
-                duyuruId = duyuru.Id = new Model.Services.Portal.DuyuruService().Save(duyuru);
-
-                if (duyuruId > 0)
+                if (xFileUpload.HasFile)
                 {
-                    duyuru.Degistiren = UtilityHelper.GetCurrentUserLoginName();
-                    new Model.Services.Portal.DuyuruService().Update(duyuru);
-                    if (duyuru != null)
-                    {
-                        DuyuruGosterim dg = new DuyuruGosterim();
-                        new Model.Services.Portal.DuyuruGosterimService().SaveDuyuru(dg, duyuru);
-                    }
+                    imageAttempted = true;
+                    input.Resim = PortalDuyuruImage.Upload(xFileUpload);
+                    imageUploaded = true;
                 }
-                return duyuru;
+                int savedId;
+                PortalDuyuruResult result = new PortalDuyuruWriteService(LoggingContext).Save(input, imageUploaded, out savedId);
+                if (result != PortalDuyuruResult.Completed)
+                {
+                    if (imageUploaded)
+                        Messages.Warning("Resim kitaplığa yüklendi; duyuru kaydedilmedi. Kaydı ve resim kitaplığını kontrol edin.");
+                    else ShowWarning(result);
+                    return;
+                }
+                committed = true;
+                DuyuruIdQS = savedId.ToString();
+                DestinationAppQS = "DD";
+                KaydetBtn.Visible = false;
+                GuncelleBtn.Visible = true;
+                SilBtn.Visible = true;
+                DuyuruFormunuDoldur();
+                Messages.Success(update ? "Duyuru güncellendi." : "Duyuru kaydedildi.", 4000);
             }
-            catch (Exception ex)
+            catch (PortalInputException) when (!committed) { throw; }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
             {
-                ExceptionHelper exhelper = new ExceptionHelper(ex);
-                exhelper.Exceptions.Add(new Exception("Duyuru kayit edilemedi."));
-                exhelper.PublishException();
-                return null;
+                string message = committed ? "Duyuru kaydedildi; ekran yenilenemedi. Sayfayı yenileyin."
+                    : imageAttempted ? "Duyuru işlemi tamamlanamadı. Kaydı ve resim kitaplığını kontrol edip tekrar deneyin."
+                    : "Duyuru kaydedilemedi. Listeyi kontrol edip tekrar deneyin.";
+                PortalWebPartLog.ReportError(LoggingContext, "Portal.DuyuruGirisiWP.Save", error, message);
             }
-           
         }
-        private bool DuyuruyuGuncelle()
+
+        private Duyuru ReadForm(bool update)
         {
-            bool guncellendiMi = false;
-            try
-            {
-
-                Duyuru duyuru = new Duyuru();
-                duyuru = new Model.Services.Portal.DuyuruService().GetById(DuyuruIdQS.ConvertToInt());
-                if (duyuru == null)
-                {
-                    MessageHelper.PublishMessage("Duyuru bulunamadi", ProjeConstants.MESAJ_HATA, 5000);
-                }
-                else
-                {
-
-                    duyuru.Baslik = BaslikTxt.Text;
-                    duyuru.Metin = MetinTxt.Text;
-                    string bassaat = BasSaatDDL.SelectedItem.Value;
-                    string bitsaat = BitSaatDDL.SelectedItem.Value;
-                    DateTime bastar = YayinBasTarTxt.Value.ConvertToDatetime();
-                    DateTime bittar = YayinBitTarTxt.Value.ConvertToDatetime();
-                    duyuru.YayinBasTar = UtilityHelper.TariheSaatEkle(bastar, bassaat);
-                    duyuru.YayinBitTar = UtilityHelper.TariheSaatEkle(bittar, bitsaat);
-                    duyuru.Tekrar = TekrarlaDDL.SelectedItem.Value;
-                    duyuru.DuyuruAlicilari = DuyuruAlicilariniAl();
-                    duyuru.Aktif = AktifChk.Checked;
-                    duyuru.Popup = PopupChk.Checked;
-                    duyuru.Degistiren = UtilityHelper.GetCurrentUserLoginName();
-                    guncellendiMi = new Model.Services.Portal.DuyuruService().Update(duyuru);
-
-                    if (guncellendiMi)
-                    {
-                        if (duyuru != null)
-                        {
-                            ResmiKaydet(duyuru);
-                            DuyuruGosterim duyuruGosterim = new DuyuruGosterim();
-                            new Model.Services.Portal.DuyuruGosterimService().SaveDuyuru(duyuruGosterim, duyuru);
-                            
-                        }
-                        MessageHelper.PublishMessage("Duyuru güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage("Duyuru güncellenemedi", ProjeConstants.MESAJ_HATA, 5000);
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exhelper = new ExceptionHelper(ex);
-                exhelper.Exceptions.Add(new Exception("Duyuru güncellenemedi."));
-                exhelper.PublishException();
-            }
-            return guncellendiMi;
+            DateTime start, end;
+            TimeSpan startTime, endTime;
+            var culture = new System.Globalization.CultureInfo("tr-TR");
+            if (string.IsNullOrWhiteSpace(BaslikTxt.Text) || string.IsNullOrWhiteSpace(MetinTxt.Text))
+                throw new PortalInputException("Duyuru başlığını ve metnini girin.");
+            if (!DateTime.TryParse(YayinBasTarTxt.Value, culture, System.Globalization.DateTimeStyles.None, out start)
+                || !DateTime.TryParse(YayinBitTarTxt.Value, culture, System.Globalization.DateTimeStyles.None, out end)
+                || !TimeSpan.TryParse(BasSaatDDL.SelectedValue, out startTime)
+                || !TimeSpan.TryParse(BitSaatDDL.SelectedValue, out endTime))
+                throw new PortalInputException("Yayın başlangıç ve bitiş tarihlerini ve saatlerini kontrol edin.");
+            start = start.Date.Add(startTime); end = end.Date.Add(endTime);
+            if (start < new DateTime(1753, 1, 1) || end < start)
+                throw new PortalInputException("Yayın bitişi başlangıçtan önce olamaz. Tarih ve saatleri kontrol edin.");
+            if (SecilenPersonelList.Count == 0)
+                throw new PortalInputException("Duyuru için en az bir alıcı seçin.");
+            int id = update ? DuyuruIdQS.ConvertToInt() : 0;
+            if (update && id <= 0) throw new PortalInputException("Duyuru bulunamadı. Listeden tekrar seçin.");
+            return new Duyuru { Id = id, Baslik = BaslikTxt.Text, Metin = MetinTxt.Text,
+                YayinBasTar = start, YayinBitTar = end, Tekrar = TekrarlaDDL.SelectedValue,
+                DuyuruAlicilari = DuyuruAlicilariniAl(), Aktif = AktifChk.Checked, Popup = PopupChk.Checked };
+        }
+        private void ShowWarning(PortalDuyuruResult result)
+        {
+            if (result == PortalDuyuruResult.NotFound) Messages.Warning("Duyuru bulunamadı. Listeyi yenileyip tekrar seçin.");
+            else if (result == PortalDuyuruResult.Forbidden) Messages.Warning("Bu duyuru işlemi için yetkiniz yok.");
+            else Messages.Warning("Duyuru bilgilerini ve alıcıları kontrol edin.");
         }
         private string DuyuruAlicilariniAl()
         {
@@ -684,108 +536,58 @@ namespace Portal_WebParts.DuyuruGirisiWP
             }
             return idstr.ToString();
         }
-        private bool AlanlariGecerle()
-        {
-            bool isGecerli = false;
-            try
-            {
-                isGecerli = !string.IsNullOrEmpty(BaslikTxt.Text) ||
-                    !string.IsNullOrEmpty(MetinTxt.Text) ||
-                    !string.IsNullOrEmpty(YayinBasTarTxt.Value) ||
-                    !string.IsNullOrEmpty(YayinBitTarTxt.Value);
-            }
-            catch
-            {
-                throw;
-            }
-            return isGecerli;
-        }
         protected void DeleteNowBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("DeleteNowBtn_Click", () =>
             {
-                if (!string.IsNullOrEmpty(DuyuruIdQS))
-                {
-                    Duyuru duyuru = new Duyuru();
-                    duyuru = new Model.Services.Portal.DuyuruService().GetById(DuyuruIdQS.ConvertToInt());
-                    if (duyuru != null)
-                    {
-                        new Model.Services.Portal.DuyuruService().Delete(duyuru);
-                        RedirectToPage(ProjeConstants.PAGE_DUYURU_LIST);
-                    }
-                    //duyuruyu sil,
-                    //resmi sil
-                    //duyru listesine git
-                }
-                else
-                {
-                    MessageHelper.PublishMessage("Duyuru bulunamadi.", ProjeConstants.MESAJ_HATA, 2000);
-                }
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Duyuru Silinemedi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
-            }
+                PortalDuyuruResult result = new PortalDuyuruWriteService(LoggingContext).Delete(DuyuruIdQS.ConvertToInt());
+                if (result != PortalDuyuruResult.Completed) { ShowWarning(result); return; }
+                KaydetBtn.Visible = GuncelleBtn.Visible = SilBtn.Visible = DeleteNowBtn.Visible = false;
+                Messages.Success("Duyuru silindi. Duyuru listesine dönebilirsiniz.", 4000);
+            });
         }
         protected void SecilenResmiSilBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("SecilenResmiSilBtn_Click", () =>
             {
-                if (!string.IsNullOrEmpty(DuyuruIdQS))
+                PortalDuyuruResult result = new PortalDuyuruWriteService(LoggingContext).ClearImage(DuyuruIdQS.ConvertToInt());
+                if (result == PortalDuyuruResult.Unchanged) { Messages.Info("Duyuruda kaldırılacak resim yok."); return; }
+                if (result != PortalDuyuruResult.Completed) { ShowWarning(result); return; }
+                try { DuyuruFormunuDoldur(); }
+                catch (System.Threading.ThreadAbortException) { throw; }
+                catch (Exception error)
                 {
-                    Duyuru duyuru = new Duyuru();
-                    duyuru = new Model.Services.Portal.DuyuruService().GetById(DuyuruIdQS.ConvertToInt());
-                    if (duyuru != null)
-                    {
-                        duyuru.Resim=null;
-                        new Model.Services.Portal.DuyuruService().Update(duyuru);
-                    }
-                    //duyuruyu sil,
-                    //resmi sil
-                    //duyru listesine git
+                    PortalWebPartLog.ReportError(LoggingContext, "Portal.DuyuruGirisiWP.RefreshAfterImage", error,
+                        "Resim duyurudan kaldırıldı; ekran yenilenemedi. Sayfayı yenileyin.");
+                    return;
                 }
-                else
-                {
-                    MessageHelper.PublishMessage("Duyuru bulunamadi.", ProjeConstants.MESAJ_HATA, 2000);
-                }
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Duyuru Silinemedi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
-            }
+                Messages.Success("Resim duyurudan kaldırıldı.", 4000);
+            });
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path);
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl);
         }
         protected void HepsiniEkleBtn_Click(object sender, EventArgs e)
         {
-            TümPersoneliSecilenPersonelListesineEkle();
-            SecilenPersonelTablosunuDoldur();
-            PersonelDDLDoldur();
+            ExecuteAction("HepsiniEkleBtn_Click", () =>
+            {
+                TümPersoneliSecilenPersonelListesineEkle();
+                SecilenPersonelTablosunuDoldur();
+                PersonelDDLDoldur();
+            });
         }
 
         protected void HepsiniCikarBtn_Click(object sender, EventArgs e)
         {
-            TümPersoneliSecilenmeyenPersonelListesieEkle();
-            SecilenPersonelTablosunuDoldur();
-            PersonelDDLDoldur();
+            ExecuteAction("HepsiniCikarBtn_Click", () =>
+            {
+                TümPersoneliSecilenmeyenPersonelListesieEkle();
+                SecilenPersonelTablosunuDoldur();
+                PersonelDDLDoldur();
+            });
         }
         [Serializable]
         class PersonelItem
