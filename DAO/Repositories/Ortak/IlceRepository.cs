@@ -33,6 +33,8 @@ namespace DAO.Repositories.Ortak
         {
             SqlQuery query = new SqlQuery("SELECT * FROM Ilce_Table WHERE Id=@Id ORDER BY IlceAdi");
             query.AddParameter("@Id", id);
+            if (context != null && context.Project == "NBYS")
+                return PortalSqlReadExecutor.Select(query, context, "IlceRepository.SelectById");
             Stopwatch clock = Stopwatch.StartNew();
             bool succeeded = false;
             try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
@@ -55,6 +57,14 @@ namespace DAO.Repositories.Ortak
                 "SELECT * FROM Ilce_Table WHERE IlId=@IlId ORDER BY IlceAdi");
             query.AddParameter("@IlId", provinceId);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectByProvinceId(int provinceId, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM Ilce_Table WHERE IlId=@IlId ORDER BY IlceAdi");
+            query.AddParameter("@IlId", provinceId);
+            return PortalSqlReadExecutor.Select(query, context, "IlceRepository.SelectByProvinceId");
         }
 
         public DataTable SelectAll()

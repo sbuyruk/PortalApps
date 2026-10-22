@@ -1,3 +1,5 @@
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.Ortak;
@@ -17,6 +19,17 @@ namespace NBYS_WebParts.NakitBagisciEditWP
     [ToolboxItemAttribute(false)]
     public partial class NakitBagisciEditWP : WebPart
     {
+        private bool canEditCurrentDonor;
+
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "NakitBagisciEditWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -147,17 +160,24 @@ namespace NBYS_WebParts.NakitBagisciEditWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
                 if (NakitBagisciIdQS.ConvertToInt()>0)
                 {
-                    Bolge kullanicininBolgesi = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                    Bolge kullanicininBolgesi = new NbysBagisciWriteService(LoggingContext).GetUserRegion();
                     BolgeIdQS = kullanicininBolgesi == null ? 0 : kullanicininBolgesi.Id;
+                    if (kullanicininBolgesi == null)
+                    {
+                        KaydetBtn.Visible = false;
+                        Messages.Warning("Bölge yetkiniz bulunamadı. Lütfen sistem yöneticisine başvurun.");
+                        return;
+                    }
                     bool kullaniciGenelMdluktenMi = (kullanicininBolgesi.Id == ProjeConstants.BOLGE_HEPSI_INT || kullanicininBolgesi.Id == ProjeConstants.BOLGE_GENELMUDURLUK_INT);
-                    bool kullaniciYetkiliMi = NBYSOrtak.YetkiKontrolu(kullanicininBolgesi, NakitBagisciIdQS.ConvertToInt());
+                    bool kullaniciYetkiliMi = new NbysBagisciWriteService(LoggingContext).CanReadDonor(NakitBagisciIdQS.ConvertToInt(), kullanicininBolgesi);
                     if (kullaniciGenelMdluktenMi || kullaniciYetkiliMi)
                     {
+                        canEditCurrentDonor = true;
                         if (!Page.IsPostBack)
                         {
                             FillIlData();
@@ -173,20 +193,15 @@ namespace NBYS_WebParts.NakitBagisciEditWP
                     else
                     {
                         KaydetBtn.Visible = false;
-                        MessageHelper.PublishMessage("Bağışçı bölgenizde olmadığından bilgilerine erişemezsiniz", ProjeConstants.MESAJ_HATA);
+                        Messages.Warning("Bu bağışçının bilgilerini görüntüleme yetkiniz yok.");
                     }
                 }
                 else
                 {
                     KaydetBtn.Visible = false;
-                    MessageHelper.PublishMessage("Bağışçı bulunamadı", ProjeConstants.MESAJ_HATA);
+                    Messages.Warning("Bağışçı bulunamadı. Listeyi yenileyip tekrar seçin.");
                 }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
 
         
@@ -197,7 +212,7 @@ namespace NBYS_WebParts.NakitBagisciEditWP
             {
                 IliDDL.Items.Clear();
                 IliDDL.Items.Add(new ListItem("", ProjeConstants.IL_BOS.ToString()));
-                List<Il> list = new IlService().GetAll();
+                List<Il> list = new IlService().GetAll(LoggingContext);
                 TextInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true).TextInfo;
 
                 foreach (Il il in list)
@@ -216,7 +231,7 @@ namespace NBYS_WebParts.NakitBagisciEditWP
                 int ilId = IliDDL.SelectedValue.ConvertToInt();
                 IlcesiDDL.Items.Clear();
                 IlcesiDDL.Items.Add(new ListItem("", ProjeConstants.ILCE_BOS.ToString()));
-                List<Ilce> list = new IlceService().GetByProvinceId(ilId);
+                List<Ilce> list = new IlceService().GetByProvinceId(ilId, LoggingContext);
                 foreach (Ilce ilce in list)
                 {
                     IlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));
@@ -233,7 +248,7 @@ namespace NBYS_WebParts.NakitBagisciEditWP
             {
                 int nakitBagisciId = NakitBagisciIdQS.ConvertToInt();
 
-                NakitBagisciService service = new NakitBagisciService();
+                NakitBagisciService service = new NakitBagisciService(LoggingContext);
                 NakitBagisci nakitBagisci = service.GetById(nakitBagisciId);
                 if (nakitBagisci != null)
                 {
@@ -272,53 +287,45 @@ namespace NBYS_WebParts.NakitBagisciEditWP
         }
         protected void KaydetBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("KaydetBtn_Click", () =>
             {
-                bool isSaved = false;
+                if (!canEditCurrentDonor) return;
                 if (string.IsNullOrWhiteSpace(AdiTxt.Text))
                 {
-                    //System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
-                    //    typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.danger('Bağışçı Adı boş olamaz. Lütfen bağışçı adını giriniz.')", true);
-                    MessageHelper.PublishMessage("Bağışçı Adı boş olamaz. Lütfen bağışçı adını giriniz.", ProjeConstants.MESAJ_HATA);
+                    Messages.Warning("Bağışçı adını girin.");
+                    return;
                 }
+                long identityNumber;
+                if (!string.IsNullOrWhiteSpace(TCKimlikNoTxt.Text) && (!System.Text.RegularExpressions.Regex.IsMatch(TCKimlikNoTxt.Text, "^[0-9]+$") || !long.TryParse(TCKimlikNoTxt.Text, out identityNumber)))
+                {
+                    Messages.Warning("T.C. kimlik numarasını yalnızca rakam kullanarak girin.");
+                    return;
+                }
+                int id = NakitBagisciIdQS.ConvertToInt();
+                NakitBagisci item = id > 0 ? new NakitBagisciService(LoggingContext).GetById(id) : new NakitBagisci();
+                if (item == null)
+                {
+                    Messages.Warning("Bağışçı bulunamadı. Listeyi yenileyip tekrar seçin.");
+                    return;
+                }
+                if (IliDDL.SelectedItem == null || IlcesiDDL.SelectedItem == null)
+                {
+                    Messages.Warning("İl ve ilçe seçenekleri yüklenemedi. Sayfayı yenileyip tekrar deneyin.");
+                    return;
+                }
+                FillDonorFromForm(item);
+                NbysBagisciSaveResult result = new NbysBagisciWriteService(LoggingContext).Save(item);
+                if (result == NbysBagisciSaveResult.NotFound)
+                    Messages.Warning("Bağışçı bulunamadı. Listeyi yenileyip tekrar seçin.");
+                else if (result == NbysBagisciSaveResult.Forbidden)
+                    Messages.Warning("Bu bağışçının bilgilerini değiştirme yetkiniz yok.");
+                else if (result == NbysBagisciSaveResult.NameRequired)
+                    Messages.Warning("Bağışçı adını girin.");
                 else
-                {
-                    int nakitBagisciId = NakitBagisciIdQS.ConvertToInt();
-                    NakitBagisci nakitBagisci = new NakitBagisci();
-
-                    if (nakitBagisciId == 0)
-                    {
-                        isSaved = SaveNakitBagisci(nakitBagisci);
-                    }
-                    else
-                    {
-                        NakitBagisciService service = new NakitBagisciService();
-                        nakitBagisci = service.GetById(nakitBagisciId);
-                        isSaved = UpdateNakitBagisci(nakitBagisci);
-                    }
-
-                }
-
-                if (isSaved)
-                {
-                    //System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.success('Nakit Bağışçı Bilgisi Kaydedildi.')", true);
-                    MessageHelper.PublishMessage("Nakit Bağışçı Bilgisi Kaydedildi.", ProjeConstants.MESAJ_BASARILI, 4000);
-
-                }
-                else
-                {
-                    //System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.danger('Nakit Bağışçı Bilgisi Kaydedilemedi.')", true);
-                    MessageHelper.PublishMessage("Nakit Bağışçı Bilgisi Kaydedilemedi.", ProjeConstants.MESAJ_HATA);
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
-
+                    Messages.Success("Bağışçı bilgileri kaydedildi.", 4000);
+            });
         }
-        private bool SaveNakitBagisci(NakitBagisci nakitBagisci)
+        private void FillDonorFromForm(NakitBagisci nakitBagisci)
         {
             nakitBagisci.Adi = AdiTxt.Text.ReturnEmptyIfNull().ToString();
             nakitBagisci.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
@@ -343,56 +350,24 @@ namespace NBYS_WebParts.NakitBagisciEditWP
             var user = UtilityHelper.GetCurrentUserLoginName();
             nakitBagisci.Degistiren = user;
 
-            NakitBagisciService service = new NakitBagisciService();
-            return service.Save(nakitBagisci) > 0;
         }
-        private bool UpdateNakitBagisci(NakitBagisci nakitBagisci)
-        {
-            bool oncekiTuzelKisi = nakitBagisci.TuzelKisi;
-            nakitBagisci.Adi = AdiTxt.Text.ReturnEmptyIfNull().ToString();
-            nakitBagisci.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
-            nakitBagisci.Adres = AdresTxt.Text.ReturnEmptyIfNull().ToString();
-            nakitBagisci.Meslek = MeslekTxt.Text.ReturnEmptyIfNull().ToString();
-            nakitBagisci.Ili = IliDDL.SelectedItem.Value.ConvertToInt();
-            nakitBagisci.Ilcesi = IlcesiDDL.SelectedItem.Value.ConvertToInt();
-            nakitBagisci.Telefon1 = Telefon1Txt.Text.ReturnEmptyIfNull().ToString();
-            nakitBagisci.Telefon2 = Telefon2Txt.Text.ReturnEmptyIfNull().ToString();
-            nakitBagisci.Eposta = EPostaTxt.Text.ReturnEmptyIfNull().ToString();
-            nakitBagisci.PostaKodu = PostaKoduTxt.Text.ReturnEmptyIfNull().ToString();
-            if (nakitBagisci.TuzelKisi != TuzelKisiChk.Checked)
-            {
-                nakitBagisci.TuzelKisi = TuzelKisiChk.Checked;
-            }
 
-            nakitBagisci.Sag = SagChk.Checked;
-            nakitBagisci.Aciklama = AciklamaTxt.Text.ReturnEmptyIfNull().ToString();
-            nakitBagisci.Ulasilamiyor = UlasilamiyorChk.Checked;
-            nakitBagisci.BelgeIstemiyor = BelgeIstemiyorChk.Checked;
-            nakitBagisci.DergiGonderilmesin = DergiGonderilmesinChk.Checked;
-            var user = UtilityHelper.GetCurrentUserLoginName();
-            nakitBagisci.Degistiren = user;
-
-            NakitBagisciService service = new NakitBagisciService();
-            return service.Update(nakitBagisci, oncekiTuzelKisi, user);
-        }
       
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("CloseBtn_Click", () =>
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FillIlceData();
+            ExecuteAction("IliDDL_SelectedIndexChanged", () =>
+            {
+                FillIlceData();
+            });
         }
     }
 }

@@ -1,3 +1,5 @@
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.NBYS;
@@ -17,6 +19,15 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
     [ToolboxItemAttribute(false)]
     public partial class NakitBagisciBagislariWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "NakitBagisciBagislariWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -81,8 +92,9 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
                 if (!Page.IsPostBack)
                 {
                     if (!string.IsNullOrEmpty(ParamQS))
@@ -92,34 +104,30 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
                     }
                 }
                 //TabloOlustur();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void BagisciAraTxt_TextChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            ExecuteAction("BagisciAraTxt_TextChanged", () =>
+            {
+                TabloOlustur();
+            });
         }
         protected void BagisciAraBtn_Click(object sender, EventArgs e)
         {
-            TabloOlustur();
+            ExecuteAction("BagisciAraBtn_Click", () =>
+            {
+                TabloOlustur();
+            });
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("CloseBtn_Click", () =>
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
 
         #region Bagisci listesi CustomDataTable
@@ -141,18 +149,9 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
         {
             string json = string.Empty;
 
-            try
-            {
-                List<NakitBagisciListItem> list = BagisciGetDataList();
-                var serializer = new JavaScriptSerializer();
-                json = list.Count > 0 ? serializer.Serialize(list) : string.Empty;
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
+            List<NakitBagisciListItem> list = BagisciGetDataList();
+            var serializer = new JavaScriptSerializer();
+            json = list.Count > 0 ? serializer.Serialize(list) : string.Empty;
             return json;
         }
         private List<NakitBagisciListItem> BagisciGetDataList()
@@ -197,7 +196,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
             DataTable dataTable = null;
             if (!string.IsNullOrEmpty(BagisciAraTxt.Text) && BagisciAraTxt.Text.Length > 3)
             {
-                NakitBagisciService service = new NakitBagisciService();
+                NakitBagisciService service = new NakitBagisciService(LoggingContext);
                 dataTable = service.SearchByName(BagisciAraTxt.Text);
             }
             return dataTable;
@@ -268,7 +267,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
         }
         private string CreateBagisDataTable(string jsonData, int nakitBagisciId)
         {
-            NakitBagisci nb = new NakitBagisciService().GetById(nakitBagisciId);
+            NakitBagisci nb = new NakitBagisciService(LoggingContext).GetById(nakitBagisciId);
 
             string bagisciIdi = nb == null ? string.Empty : nb.Adi + " " + nb.Soyadi + " ";
             BagisciAdiLbl.Text = bagisciIdi;
@@ -313,9 +312,9 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             int rowCount = 0;
-            var json = new NakitBagisHareketService().GetDonorDetailJson(nakitBagisciId.ConvertToInt(), ref rowCount);
+            var json = new NakitBagisHareketService(LoggingContext).GetDonorDetailJson(nakitBagisciId.ConvertToInt(), ref rowCount);
 
-            decimal toplamTutar = new NakitBagisHareketService().GetTotalByBagisciIdDateRange(
+            decimal toplamTutar = new NakitBagisHareketService(LoggingContext).GetTotalByBagisciIdDateRange(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
 
             BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır." :
@@ -324,7 +323,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
         }
         protected void BagisListesiGosterBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("BagisListesiGosterBtn_Click", () =>
             {
                 int nakitBagisciId = paramNakitBagisciIdLbl.Value.ConvertToInt();
                 if (nakitBagisciId > 0)
@@ -333,14 +332,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
 
                     BagisTablosuOlustur(paramNakitBagisciIdLbl.Value);
                 }
-
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
-
-            }
+            });
         }
         #endregion
         #region class

@@ -45,6 +45,7 @@
     <AssemblyOriginatorKeyFile>daokey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Repositories\NBYS\NbysBagisciWriteRepository.cs" />
     <Compile Include="Ortak\PortalSqlReadExecutor.cs" />
     <Compile Include="Repositories\NBYS\NbysSqlExecutor.cs" />
     <Compile Include="Repositories\Portal\ToplantiRepository.cs" />

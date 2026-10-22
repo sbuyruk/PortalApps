@@ -1,3 +1,5 @@
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.Ortak;
@@ -19,6 +21,15 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
     [ToolboxItemAttribute(false)]
     public partial class NakitBagisciListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "NakitBagisciListesiWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -83,8 +94,9 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
                 if (!Page.IsPostBack)
                 {
                     FillIlData();
@@ -92,12 +104,7 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
                     SetDDLValues();
                     TabloOlustur();
                 }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         private void FillBagisZamaniDDL()
         {
@@ -114,7 +121,7 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
             {
                 IliDDL.Items.Clear();
 
-                List<Il> list = new IlService().GetAll();
+                List<Il> list = new IlService().GetAll(LoggingContext);
                 IliDDL.Items.Add(new ListItem(ProjeConstants.HEPSI, ProjeConstants.IL_HEPSI.ToString()));
                 foreach (Il il in list)
                 {
@@ -125,30 +132,22 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
         }
         private void SetDDLValues()
         {
-            try
+            //acilista ili querystringde gelen ile esitle
+
+            //il
+            string il = !string.IsNullOrEmpty(SecilenIlQS) ? SecilenIlQS : ProjeConstants.IL_HEPSI.ToString();
+            ListItem IlItem = new ListItem();
+            if (!string.IsNullOrEmpty(il))
+                IlItem = IliDDL.Items.FindByValue(il);
+
+            if (IlItem != null)
             {
-                //acilista ili querystringde gelen ile esitle
-
-                //il
-                string il = !string.IsNullOrEmpty(SecilenIlQS) ? SecilenIlQS : ProjeConstants.IL_HEPSI.ToString();
-                ListItem IlItem = new ListItem();
-                if (!string.IsNullOrEmpty(il))
-                    IlItem = IliDDL.Items.FindByValue(il);
-
-                if (IlItem != null)
-                {
-                    IliDDL.SelectedValue = IlItem.Value;
-                    SecilenIlQS = IlItem.Value;
-                }
-
-                ListItem item = BagisZamaniDDL.Items.FindByValue("OncekiAyTamami");
-                BagisZamaniDDL.SelectedValue = item.Value;
+                IliDDL.SelectedValue = IlItem.Value;
+                SecilenIlQS = IlItem.Value;
             }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+
+            ListItem item = BagisZamaniDDL.Items.FindByValue("OncekiAyTamami");
+            BagisZamaniDDL.SelectedValue = item.Value;
 
 
 
@@ -161,7 +160,7 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
         }
         private string GetBagisciData()
         {
-            NakitBagisciService service = new NakitBagisciService();
+            NakitBagisciService service = new NakitBagisciService(LoggingContext);
 
             string selectedOption = BagisZamaniDDL.SelectedValue;
 
@@ -327,12 +326,18 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
+            ExecuteAction("CloseBtn_Click", () =>
+            {
 
+            });
         }
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SecilenIlQS = IliDDL.SelectedItem.Value.ToString();
-            TabloOlustur();
+            ExecuteAction("IliDDL_SelectedIndexChanged", () =>
+            {
+                SecilenIlQS = IliDDL.SelectedItem.Value.ToString();
+                TabloOlustur();
+            });
         }
         private void TabloModalOlustur(string nakitBagisciId)
         {
@@ -384,8 +389,8 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             int rowCount = 0;
-            var json = new NakitBagisHareketService().GetDonorDetailJson(nakitBagisciId.ConvertToInt(), ref rowCount);
-            decimal toplamTutar = new NakitBagisHareketService().GetTotalByBagisciIdDateRange(
+            var json = new NakitBagisHareketService(LoggingContext).GetDonorDetailJson(nakitBagisciId.ConvertToInt(), ref rowCount);
+            decimal toplamTutar = new NakitBagisHareketService(LoggingContext).GetTotalByBagisciIdDateRange(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
             BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır" :
                 "Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + "TL bağışı bulunmaktadır";
@@ -393,15 +398,10 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ExcelBtn_Click", () =>
             {
                 ExportToExcel();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void ExportToExcel()
         {
@@ -437,18 +437,11 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
         }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ModalDoldurBtn_Click", () =>
             {
-
                 TabloModalOlustur(paramNakitBagisciIdLbl.Value);
                 NakitBagisciFormunuDoldur(paramNakitBagisciIdLbl.Value);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
-
-            }
+            });
         }
         private void NakitBagisciFormunuDoldur(string nakitBagisciIdStr)
         {
@@ -456,7 +449,7 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
             {
                 int nakitBagisciId = nakitBagisciIdStr.ConvertToInt();
 
-                NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisciId);
+                NakitBagisci nakitBagisci = new NakitBagisciService(LoggingContext).GetById(nakitBagisciId);
                 if (nakitBagisci != null)
                 {
                     //NakitBagisciIdLbl.Text = nakitBagisciId.ToString();
@@ -473,14 +466,14 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
                     AdresCell.Text = nakitBagisci.Adres.ReturnEmptyIfNull().ToString();
 
                     int ilId = nakitBagisci.Ili.ConvertToInt();
-                    Il il = new IlService().GetById(ilId);
+                    Il il = new IlService().GetById(ilId, LoggingContext);
                     if (il != null)
                     {
 
                         IlIlceCell.Text = il.IlAdi.ReturnEmptyIfNull().ToString();
                     }
                     int ilceId = nakitBagisci.Ilcesi.ConvertToInt();
-                    Ilce ilce = new IlceService().GetById(ilceId);
+                    Ilce ilce = new IlceService().GetById(ilceId, LoggingContext);
                     if (ilce != null)
                     {
 

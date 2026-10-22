@@ -32,6 +32,13 @@ namespace DAO.Repositories.Ortak
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectById(int id, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM Il_Table WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return PortalSqlReadExecutor.Select(query, context, "IlRepository.SelectById");
+        }
+
         public DataTable SelectById(int id, SqlTransactionContext transaction)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");

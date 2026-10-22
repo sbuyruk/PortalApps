@@ -46,6 +46,11 @@ namespace Model.Services.Ortak
             return new Ilce().ToList<Ilce>(repository.SelectByProvinceId(provinceId));
         }
 
+        public List<Ilce> GetByProvinceId(int provinceId, PortalLogContext context)
+        {
+            return new Ilce().ToList<Ilce>(repository.SelectByProvinceId(provinceId, context));
+        }
+
         public List<Ilce> GetAll()
         {
             return new Ilce().ToList<Ilce>(repository.SelectAll());
