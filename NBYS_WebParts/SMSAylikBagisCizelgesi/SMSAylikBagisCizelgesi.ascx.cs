@@ -1,14 +1,17 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
-using Model.NBYS;
-using Model.Ortak;
+﻿using Model.NBYS;
 using Model.Services.NBYS;
+using NBYS_WebParts.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
+using System.Web;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace NBYS_WebParts.SMSAylikBagisCizelgesi
@@ -16,553 +19,208 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi
     [ToolboxItemAttribute(false)]
     public partial class SMSAylikBagisCizelgesi : WebPart
     {
-        // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
-        // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
-        // for production. Because the SecurityPermission attribute bypasses the security check for callers of
-        // your constructor, it's not recommended for production purposes.
-        // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
-        public SMSAylikBagisCizelgesi()
+        private PortalLogContext LoggingContext
         {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "SMSAylikBagisCizelgesi"); }
         }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysReportFeedback.Execute(LoggingContext, operation, action);
+        }
+
+        private List<SMSAylikBagis> yearRows;
+        private bool canEdit;
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
             InitializeControl();
-            this.ChromeType = PartChromeType.None;
+            ChromeType = PartChromeType.None;
         }
-        private string CurrentUserName
+
+        private int SelectedYear
         {
             get
             {
-                if (ViewState["CurrentUserName"] == null)
-                {
-                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
-                }
-                return ViewState["CurrentUserName"].ToString();
-            }
-
-            set
-            {
-                ViewState["CurrentUserName"] = value;
+                string value = Convert.ToString(ViewState["SmsYear"] ?? Page.Request.QueryString["SecilenYil"]
+                    ?? DateTime.Today.Year.ToString(CultureInfo.InvariantCulture));
+                int year;
+                if (!int.TryParse(value, out year) || !NbysSmsWriteService.ValidYear(year)
+                    || YilDDL.Items.FindByValue(year.ToString(CultureInfo.InvariantCulture)) == null)
+                    throw new NbysReportInputException("Listeden geçerli bir yıl seçin.");
+                return year;
             }
         }
-        private string SecilenYilQS
+
+        private List<SMSAylikBagis> GetYearRows()
         {
-            get
+            if (yearRows == null)
             {
-                if (ViewState["SecilenYil"] == null)
-                {
-                    if (Page.Request.QueryString["SecilenYil"] != null)
-                    {
-                        ViewState["SecilenYil"] = Page.Request.QueryString["SecilenYil"];
-                    }
-                    else
-                    {
-                        ViewState["SecilenYil"] = DateTime.Today.Year;
-                    }
-                }
-                return ViewState["SecilenYil"].ToString();
+                yearRows = new SMSAylikBagisService(LoggingContext).GetByYear(SelectedYear);
+                if (!NbysSmsWriteService.ValidRows(yearRows))
+                    throw new NbysReportInputException("Çizelgede aynı aya ait birden fazla kayıt veya geçersiz ay var. Kayıtları kontrol ettirin.");
             }
-
-            set
-            {
-                ViewState["SecilenYil"] = value;
-            }
+            return yearRows;
         }
+
+        private void RenderYear()
+        {
+            NbysSmsTable.Fill(AyrintiTable, GetYearRows(), SelectedYear, true, CreateEditButton);
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            try
+            ExecuteAction("Page_Load", () =>
             {
                 if (!Page.IsPostBack)
                 {
-                    YilDDLDoldur();
-                    SetDDLValues();
+                    NbysWebPartLog.RecordOpened(LoggingContext);
+                    YilDDL.Items.Clear();
+                    for (int year = 2019; year <= DateTime.Today.Year; year++)
+                        YilDDL.Items.Add(new ListItem(year.ToString(CultureInfo.InvariantCulture), year.ToString(CultureInfo.InvariantCulture)));
+                    YilDDL.SelectedValue = SelectedYear.ToString(CultureInfo.InvariantCulture);
+                    ViewState["SmsYear"] = SelectedYear;
                 }
-
-                SecilenYilVerileriniOlustur();
-                CizelgeyiDoldur(SecilenYilQS.ConvertToInt());
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper eh = new ExceptionHelper(ex);
-                eh.PublishException();
-            }
-        }
-
-        private void SecilenYilVerileriniOlustur()
-        {
-            SMSAylikBagisService smsService = new SMSAylikBagisService();
-            int yil = SecilenYilQS.ConvertToInt();
-            List<SMSAylikBagis> list = smsService.GetByYear(SecilenYilQS.ConvertToInt());
-            if (list.Count < 1)
-            {
-                for (int i = 1; i < 13; i++)
+                ScriptManager manager = ScriptManager.GetCurrent(Page);
+                if (manager != null) manager.RegisterPostBackControl(ExcelBtn);
+                NbysSmsWriteService service = new NbysSmsWriteService(LoggingContext);
+                canEdit = service.CanWrite();
+                UpdateBtn.Enabled = canEdit;
+                if (!Page.IsPostBack && canEdit)
                 {
-                    SMSAylikBagis smsAylikBagis = new SMSAylikBagis();
-                    smsAylikBagis.Ay = i;
-                    smsAylikBagis.DovizCinsi = "TL";
-                    smsAylikBagis.IslemTarihi = DateTime.Now;
-                    smsAylikBagis.Olusturan = CurrentUserName;
-                    int ay = i;
-                    smsAylikBagis.SMSTutari = SMSTutariBul(ay,yil);
-                    smsAylikBagis.TurkcellSMSAdedi = 0;
-                    smsAylikBagis.VodafoneSMSAdedi = 0;
-                    smsAylikBagis.TurkTelekomSMSAdedi = 0;
-                    smsAylikBagis.Yil = SecilenYilQS.ConvertToInt();
-                    smsAylikBagis.Aciklama = "";
-                    smsService.Save(smsAylikBagis);
+                    int created;
+                    NbysSmsWriteResult result = service.EnsureYear(SelectedYear, out created);
+                    NbysSmsFeedback.Write(LoggingContext, result, created + " aya ait SMS çizelgesi kaydı oluşturuldu.", RenderYear, false);
+                    return;
                 }
-            }
-        }
-
-        private decimal SMSTutariBul(int ay, int yil)
-        {
-            decimal smsBedeli;
-            DateTime smstarihi= new DateTime(yil,ay,1);
-            if (smstarihi > ProjeConstants.SMS_2024)
-            {
-                smsBedeli = ProjeConstants.SMS_TUTAR_2024;
-            }
-            else if (smstarihi > ProjeConstants.SMS_2023)
-            {
-                smsBedeli = ProjeConstants.SMS_TUTAR_2023;
-            }
-            else
-            {
-                smsBedeli = ProjeConstants.SMS_TUTAR_2022;
-            }
-            return smsBedeli;
-        }
-
-        private void CizelgeyiDoldur(int yil)
-        {
-            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            SMSAylikBagisService smsAylikBagisService = new SMSAylikBagisService();
-            List<SMSAylikBagis> list = smsAylikBagisService.GetByYear(yil);
-            
-            int ToplamTurkcellSMSAdedi = 0;
-            decimal ToplamTurkcellSMSTutari = 0;
-            int ToplamVodafoneSMSAdedi = 0;
-            decimal ToplamVodafoneSMSTutari = 0;
-            int ToplamTurkTelekomSMSAdedi = 0;
-            decimal ToplamTurkTelekomSMSTutari = 0;
-            int ToplamSMSAdedi = 0;
-            decimal ToplamSMSTutari = 0;
-
-            foreach (SMSAylikBagis item in list)
-            {
-                TableRow row = new TableRow();
-
-                TableCell AyCell = new TableCell();
-                AyCell.Text = new DateTime(SecilenYilQS.ConvertToInt(), item.Ay, 1).ToString("MMMM", culturInfo);
-
-                ToplamTurkcellSMSAdedi += item.TurkcellSMSAdedi;
-                TableCell TurkcellSMSAdediCell = new TableCell();
-                TurkcellSMSAdediCell.Text = item.TurkcellSMSAdedi.ToString();
-                TurkcellSMSAdediCell.CssClass = "text-end";
-
-                ToplamTurkcellSMSTutari += item.TurkcellSMSAdedi * item.SMSTutari;
-                TableCell TurkcellSMSTutariCell = new TableCell();
-                TurkcellSMSTutariCell.Text = (item.TurkcellSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                TurkcellSMSTutariCell.CssClass = "text-end";
-
-                ToplamVodafoneSMSAdedi += item.VodafoneSMSAdedi;
-                TableCell VodafoneSMSAdediCell = new TableCell();
-                VodafoneSMSAdediCell.Text = item.VodafoneSMSAdedi.ToString();
-                VodafoneSMSAdediCell.CssClass = "text-end";
-
-                ToplamVodafoneSMSTutari += item.VodafoneSMSAdedi * item.SMSTutari;
-                TableCell VodafoneSMSTutariCell = new TableCell();
-                VodafoneSMSTutariCell.Text = (item.VodafoneSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                VodafoneSMSTutariCell.CssClass = "text-end";
-
-                ToplamTurkTelekomSMSAdedi += item.TurkTelekomSMSAdedi;
-                TableCell TurkTelekomSMSAdediCell = new TableCell();
-                TurkTelekomSMSAdediCell.Text = item.TurkTelekomSMSAdedi.ToString();
-                TurkTelekomSMSAdediCell.CssClass = "text-end";
-
-                ToplamTurkTelekomSMSTutari += item.TurkTelekomSMSAdedi * item.SMSTutari;
-                TableCell TurkTelekomSMSTutariCell = new TableCell();
-                TurkTelekomSMSTutariCell.Text = (item.TurkTelekomSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                TurkTelekomSMSTutariCell.CssClass = "text-end";
-
-                int ayToplamSMSAdedi = item.TurkcellSMSAdedi + item.VodafoneSMSAdedi + item.TurkTelekomSMSAdedi;
-                ToplamSMSAdedi += ayToplamSMSAdedi;
-                TableCell AyToplamSMSAdediCell = new TableCell();
-                AyToplamSMSAdediCell.Text = ayToplamSMSAdedi.ToString();
-                AyToplamSMSAdediCell.CssClass = "text-end";
-
-                ToplamSMSTutari += (ayToplamSMSAdedi * item.SMSTutari);
-                TableCell AyToplamSMSTutariCell = new TableCell();
-                AyToplamSMSTutariCell.Text = (ayToplamSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                AyToplamSMSTutariCell.CssClass = "text-end";
-
-                TableCell DuzenleCell = new TableCell();
-
-                LinkButton duzenleBtn = new LinkButton();
-                duzenleBtn.CausesValidation = false;
-                duzenleBtn.Text = "Düzenle";
-                duzenleBtn.CssClass = "btn btn-outline-primary";
-                duzenleBtn.Click += delegate
+                RenderYear();
+                if (!Page.IsPostBack)
                 {
-                    HiddenSMSAylikBagisId.Value = item.Id.ToString();
-                    PopupMesajLbl.Text = new DateTime(item.Yil, item.Ay, 1).ToString("MMMM", culturInfo) + " " + item.Yil + " SMS Bagislari";
-                    SMSAdediniDegistirDiv.Attributes["style"] = "display: block";
-                    TurkcellSMSTxt.Text = item.TurkcellSMSAdedi.ToString();
-                    VodafoneSMSTxt.Text = item.VodafoneSMSAdedi.ToString();
-                    TurkTelekomSMSTxt.Text = item.TurkTelekomSMSAdedi.ToString();
-                    var openPopup = "OpenModalOnay();";
-                    System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openPopup, true);
-                };
-                DuzenleCell.Controls.Add(duzenleBtn);
-
-                row.Controls.Add(AyCell);
-                row.Controls.Add(TurkcellSMSAdediCell);
-                row.Controls.Add(TurkcellSMSTutariCell);
-                row.Controls.Add(VodafoneSMSAdediCell);
-                row.Controls.Add(VodafoneSMSTutariCell);
-                row.Controls.Add(TurkTelekomSMSAdediCell);
-                row.Controls.Add(TurkTelekomSMSTutariCell);
-                row.Controls.Add(AyToplamSMSAdediCell);
-                row.Controls.Add(AyToplamSMSTutariCell);
-                //bool isYetkili = KullaniciGrubundanKontrolEt();
-                row.Controls.Add(DuzenleCell);
-                AyrintiTable.Controls.Add(row);
-            }
-
-            TableRow toplamRow = new TableRow();
-            TableCell AyBaslikCell = new TableCell();
-            AyBaslikCell.Text = "Toplam";
-            AyBaslikCell.CssClass = "text-end fw-bold";
-            
-            TableCell ToplamTurkcellSMSAdediCell = new TableCell();
-            ToplamTurkcellSMSAdediCell.Text = ToplamTurkcellSMSAdedi.ToString();
-            ToplamTurkcellSMSAdediCell.CssClass = "text-end fw-bold";
-            
-            TableCell ToplamTurkcellSMSTutariCell = new TableCell();
-            ToplamTurkcellSMSTutariCell.Text = (ToplamTurkcellSMSTutari).ToString("N", culturInfo);
-            ToplamTurkcellSMSTutariCell.CssClass = "text-end fw-bold";
-
-            TableCell ToplamVodafoneSMSAdediCell = new TableCell();
-            ToplamVodafoneSMSAdediCell.Text = ToplamVodafoneSMSAdedi.ToString();
-            ToplamVodafoneSMSAdediCell.CssClass = "text-end fw-bold";
-
-
-            TableCell ToplamVodafoneSMSTutariCell = new TableCell();
-            ToplamVodafoneSMSTutariCell.Text = ToplamVodafoneSMSTutari.ToString("N", culturInfo);
-            ToplamVodafoneSMSTutariCell.CssClass = "text-end fw-bold";
-
-            TableCell ToplamTurkTelekomSMSAdediCell = new TableCell();
-            ToplamTurkTelekomSMSAdediCell.Text = ToplamTurkTelekomSMSAdedi.ToString();
-            ToplamTurkTelekomSMSAdediCell.CssClass = "text-end fw-bold";
-
-            TableCell ToplamTurkTelekomSMSTutariCell = new TableCell();
-            ToplamTurkTelekomSMSTutariCell.Text = ToplamTurkTelekomSMSTutari.ToString("N", culturInfo);
-            ToplamTurkTelekomSMSTutariCell.CssClass = "text-end fw-bold";
-
-            TableCell ToplamSMSAdediCell = new TableCell();
-            ToplamSMSAdediCell.Text = ToplamSMSAdedi.ToString();
-            ToplamSMSAdediCell.CssClass = "text-end fw-bold";
-
-
-            TableCell ToplamSMSTutariCell = new TableCell();
-            ToplamSMSTutariCell.Text = ToplamSMSTutari.ToString("N", culturInfo);
-            ToplamSMSTutariCell.CssClass = "text-end fw-bold";
-
-            toplamRow.Controls.Add(AyBaslikCell);
-            toplamRow.Controls.Add(ToplamTurkcellSMSAdediCell);
-            toplamRow.Controls.Add(ToplamTurkcellSMSTutariCell);
-            toplamRow.Controls.Add(ToplamVodafoneSMSAdediCell);
-            toplamRow.Controls.Add(ToplamVodafoneSMSTutariCell);
-            toplamRow.Controls.Add(ToplamTurkTelekomSMSAdediCell);
-            toplamRow.Controls.Add(ToplamTurkTelekomSMSTutariCell);
-            toplamRow.Controls.Add(ToplamSMSAdediCell);
-            toplamRow.Controls.Add(ToplamSMSTutariCell);
-            AyrintiTable.Controls.Add(toplamRow);
-        }
-
-        //private bool KullaniciGrubundanKontrolEt(SPUser kullanici)
-        //{
-        //    bool yetkiliMi = false;
-        //    SPSite site = new SPSite(SPContext.Current.Web.Url);
-        //    SPWeb web = site.OpenWeb();
-        //    SPListItem item;
-
-        //    SPFieldUserValue usersField = new SPFieldUserValue(mainWeb, item["Users"].ToString());
-
-        //    bool isUser = SPUtility.IsLoginValid(site, usersField.User.LoginName);
-        //    List<SPUser> users = new List<SPUser>();
-
-        //    if (isUser)
-        //    {
-        //        // add a single user to the list
-        //        users.Add(usersField.User);
-        //    }
-        //    else
-        //    {
-        //        SPGroup group = web.Groups.GetByID(usersField.LookupId);
-
-        //        foreach (SPUser user in group.Users)
-        //        {
-
-        //        }
-        //    }
-        //    return yetkiliMi;
-        //}
-
-        /// <summary>
-        /// LinkButton Düzenle excele aktarirken hata verdiginden
-        /// CizelgeyiDoldur() metodu ile ayni islemi Linkbutton olmadan yapiyor
-        /// </summary>
-        /// <param name="yil"></param>
-        private void ExcelIcinCizelgeyiDoldur(int yil)
-        {
-            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            SMSAylikBagisService smsAylikBagisService = new SMSAylikBagisService();
-            List<SMSAylikBagis> list = smsAylikBagisService.GetByYear(yil);
-
-            int ToplamTurkcellSMSAdedi = 0;
-            decimal ToplamTurkcellSMSTutari = 0;
-            int ToplamVodafoneSMSAdedi = 0;
-            decimal ToplamVodafoneSMSTutari = 0;
-            int ToplamTurkTelekomSMSAdedi = 0;
-            decimal ToplamTurkTelekomSMSTutari = 0;
-            int ToplamSMSAdedi = 0;
-            decimal ToplamSMSTutari = 0;
-
-            foreach (SMSAylikBagis item in list)
-            {
-                TableRow row = new TableRow();
-
-                TableCell AyCell = new TableCell();
-                AyCell.Text = new DateTime(SecilenYilQS.ConvertToInt(), item.Ay, 1).ToString("MMMM", culturInfo);
-
-                ToplamTurkcellSMSAdedi += item.TurkcellSMSAdedi;
-                TableCell TurkcellSMSAdediCell = new TableCell();
-                TurkcellSMSAdediCell.Text = item.TurkcellSMSAdedi.ToString();
-                TurkcellSMSAdediCell.CssClass = "text-end";
-
-                ToplamTurkcellSMSTutari += item.TurkcellSMSAdedi * item.SMSTutari;
-                TableCell TurkcellSMSTutariCell = new TableCell();
-                TurkcellSMSTutariCell.Text = (item.TurkcellSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                TurkcellSMSTutariCell.CssClass = "text-end";
-
-                ToplamVodafoneSMSAdedi += item.VodafoneSMSAdedi;
-                TableCell VodafoneSMSAdediCell = new TableCell();
-                VodafoneSMSAdediCell.Text = item.VodafoneSMSAdedi.ToString();
-                VodafoneSMSAdediCell.CssClass = "text-end";
-
-                ToplamVodafoneSMSTutari += item.VodafoneSMSAdedi * item.SMSTutari;
-                TableCell VodafoneSMSTutariCell = new TableCell();
-                VodafoneSMSTutariCell.Text = (item.VodafoneSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                VodafoneSMSTutariCell.CssClass = "text-end";
-
-                ToplamTurkTelekomSMSAdedi += item.TurkcellSMSAdedi;
-                TableCell TurkTelekomSMSAdediCell = new TableCell();
-                TurkTelekomSMSAdediCell.Text = item.TurkTelekomSMSAdedi.ToString();
-                TurkTelekomSMSAdediCell.CssClass = "text-end";
-
-                ToplamTurkTelekomSMSTutari += item.TurkcellSMSAdedi * item.SMSTutari;
-                TableCell TurkTelekomSMSTutariCell = new TableCell();
-                TurkTelekomSMSTutariCell.Text = (item.TurkTelekomSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                TurkTelekomSMSTutariCell.CssClass = "text-end";
-
-                int ayToplamSMSAdedi = item.TurkcellSMSAdedi + item.VodafoneSMSAdedi + item.TurkTelekomSMSAdedi;
-                ToplamSMSAdedi += ayToplamSMSAdedi;
-                TableCell AyToplamSMSAdediCell = new TableCell();
-                AyToplamSMSAdediCell.Text = ayToplamSMSAdedi.ToString();
-                AyToplamSMSAdediCell.CssClass = "text-end";
-
-                ToplamSMSTutari += (ayToplamSMSAdedi * item.SMSTutari);
-                TableCell AyToplamSMSTutariCell = new TableCell();
-                AyToplamSMSTutariCell.Text = (ayToplamSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                AyToplamSMSTutariCell.CssClass = "text-end";
-
-                TableCell DuzenleCell = new TableCell();
-
-                LinkButton duzenleBtn = new LinkButton();
-                duzenleBtn.CausesValidation = false;
-                duzenleBtn.Text = "Düzenle";
-                duzenleBtn.CssClass = "btn btn-outline-primary";
-                duzenleBtn.Click += delegate
-                {
-                    HiddenSMSAylikBagisId.Value = item.Id.ToString();
-                    PopupMesajLbl.Text = new DateTime(item.Yil, item.Ay, 1).ToString("MMMM", culturInfo) + " " + item.Yil + " SMS Bagislari";
-                    SMSAdediniDegistirDiv.Attributes["style"] = "display: block";
-                    TurkcellSMSTxt.Text = item.TurkcellSMSAdedi.ToString();
-                    VodafoneSMSTxt.Text = item.VodafoneSMSAdedi.ToString();
-                    TurkTelekomSMSTxt.Text = item.TurkTelekomSMSAdedi.ToString();
-                    var openPopup = "OpenModalOnay();";
-                    System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openPopup, true);
-                };
-                DuzenleCell.Controls.Add(duzenleBtn);
-
-                row.Controls.Add(AyCell);
-                row.Controls.Add(TurkcellSMSAdediCell);
-                row.Controls.Add(TurkcellSMSTutariCell);
-                row.Controls.Add(VodafoneSMSAdediCell);
-                row.Controls.Add(VodafoneSMSTutariCell);
-                row.Controls.Add(TurkTelekomSMSAdediCell);
-                row.Controls.Add(TurkTelekomSMSTutariCell);
-                row.Controls.Add(AyToplamSMSAdediCell);
-                row.Controls.Add(AyToplamSMSTutariCell);
-                //bool isYetkili = KullaniciGrubundanKontrolEt();
-                row.Controls.Add(DuzenleCell);
-                AyrintiTable.Controls.Add(row);
-            }
-
-            TableRow toplamRow = new TableRow();
-            TableCell AyBaslikCell = new TableCell();
-            AyBaslikCell.Text = "Toplam";
-            AyBaslikCell.CssClass = "text-end fw-bold";
-
-            TableCell ToplamTurkcellSMSAdediCell = new TableCell();
-            ToplamTurkcellSMSAdediCell.Text = ToplamTurkcellSMSAdedi.ToString();
-            ToplamTurkcellSMSAdediCell.CssClass = "text-end fw-bold";
-
-            TableCell ToplamTurkcellSMSTutariCell = new TableCell();
-            ToplamTurkcellSMSTutariCell.Text = (ToplamTurkcellSMSTutari).ToString("N", culturInfo);
-            ToplamTurkcellSMSTutariCell.CssClass = "text-end fw-bold";
-
-            TableCell ToplamVodafoneSMSAdediCell = new TableCell();
-            ToplamVodafoneSMSAdediCell.Text = ToplamVodafoneSMSAdedi.ToString();
-            ToplamVodafoneSMSAdediCell.CssClass = "text-end fw-bold";
-
-
-            TableCell ToplamVodafoneSMSTutariCell = new TableCell();
-            ToplamVodafoneSMSTutariCell.Text = ToplamVodafoneSMSTutari.ToString("N", culturInfo);
-            ToplamVodafoneSMSTutariCell.CssClass = "text-end fw-bold";
-
-            TableCell ToplamTurkTelekomSMSAdediCell = new TableCell();
-            ToplamTurkTelekomSMSAdediCell.Text = ToplamTurkTelekomSMSAdedi.ToString();
-            ToplamTurkTelekomSMSAdediCell.CssClass = "text-end fw-bold";
-
-            TableCell ToplamTurkTelekomSMSTutariCell = new TableCell();
-            ToplamTurkTelekomSMSTutariCell.Text = ToplamTurkTelekomSMSTutari.ToString("N", culturInfo);
-            ToplamTurkTelekomSMSTutariCell.CssClass = "text-end fw-bold";
-
-            TableCell ToplamSMSAdediCell = new TableCell();
-            ToplamSMSAdediCell.Text = ToplamSMSAdedi.ToString();
-            ToplamSMSAdediCell.CssClass = "text-end fw-bold";
-
-
-            TableCell ToplamSMSTutariCell = new TableCell();
-            ToplamSMSTutariCell.Text = ToplamSMSTutari.ToString("N", culturInfo);
-            ToplamSMSTutariCell.CssClass = "text-end fw-bold";
-
-            toplamRow.Controls.Add(AyBaslikCell);
-            toplamRow.Controls.Add(ToplamTurkcellSMSAdediCell);
-            toplamRow.Controls.Add(ToplamTurkcellSMSTutariCell);
-            toplamRow.Controls.Add(ToplamVodafoneSMSAdediCell);
-            toplamRow.Controls.Add(ToplamVodafoneSMSTutariCell);
-            toplamRow.Controls.Add(ToplamTurkTelekomSMSAdediCell);
-            toplamRow.Controls.Add(ToplamTurkTelekomSMSTutariCell);
-            toplamRow.Controls.Add(ToplamSMSAdediCell);
-            toplamRow.Controls.Add(ToplamSMSTutariCell);
-            ExcelTable.Controls.Add(toplamRow);
-        }
-        private void SetDDLValues()
-        {
-            try
-            {
-                string yil = !string.IsNullOrEmpty(SecilenYilQS) ? SecilenYilQS : DateTime.Today.Year.ReturnEmptyIfNull().ToString();
-                ListItem YilItem = new ListItem();
-                if (!string.IsNullOrEmpty(yil))
-                    YilItem = YilDDL.Items.FindByValue(yil);
-
-                if (YilItem != null)
-                {
-                    YilDDL.SelectedValue = YilItem.Value;
-                    SecilenYilQS = YilItem.Value;
+                    int missing = 12 - GetYearRows().Count;
+                    if (missing > 0) Messages.Warning(missing + " ayın kaydı bulunmuyor. Kayıtların tamamlanması için yetkili birime başvurun.");
+                    else if (!canEdit) Messages.Info("Bu çizelgeyi yalnızca görüntüleyebilirsiniz.");
                 }
-            }
-            catch (Exception)
-            {
+            });
+        }
 
-                //TODO
-            }
-        }
-        private void YilDDLDoldur()
-        {
-            var year = DateTime.Now.Year;
-            int ilkYear = 2019;
-            for (int i = ilkYear; i <= year; i++)
-            {
-                YilDDL.Items.Add(new ListItem(i.ToString(), i.ToString()));
-            }
-        }
-        protected void ExportToExcel()
-        {
-            ExcelTableDiv.Attributes["style"] = "display: block";
-            ExcelIcinCizelgeyiDoldur(SecilenYilQS.ConvertToInt());
-            string filename = "SMSAylikCizelge" + DateTime.Now.Day.ToString()
-                + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString()
-                + new Random().Next() + ".xls";
-            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
-            Page.Response.Charset = "windows-1254";//ISO-8859-9
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-
-            //Get the HTML for the control.             
-            ExcelTableDiv.RenderControl(hw);
-            //Write the HTML back to the browser.
-            //Response.ContentType = application/vnd.ms-excel;
-            Page.Response.ContentType = "application/ms-excel";
-            Page.Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            this.EnableViewState = false;
-            string s = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<title></title>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=windows-1254\" />\n<style>\n</style>\n</head>\n<body>\n";
-            Page.Response.Write(s + tw.ToString());
-            Page.Response.End();
-            ExcelTableDiv.Attributes["style"] = "display: none";
-        }
-        protected void CloseBtn_Click(object sender, EventArgs e)
-        {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
-        }
         protected void YilDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SecilenYilQS = YilDDL.SelectedItem.Value.ToString();
-            RedirectToPage(ProjeConstants.PAGE_SMSAYLIKCIZELGE + "?SecilenYil=" + SecilenYilQS);
-        }
-        private void RedirectToPage(string pageUrl)
-        {
-            try
+            ExecuteAction("YilDDL_SelectedIndexChanged", () =>
             {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                int index = currentUrl.LastIndexOf("?") < 0 ? currentUrl.Length : currentUrl.LastIndexOf("?");
+                int year;
+                if (!int.TryParse(YilDDL.SelectedValue, out year) || !NbysSmsWriteService.ValidYear(year))
+                    throw new NbysReportInputException("Listeden geçerli bir yıl seçin.");
+                var query = HttpUtility.ParseQueryString(Page.Request.Url.Query);
+                query["SecilenYil"] = year.ToString(CultureInfo.InvariantCulture);
+                UriBuilder url = new UriBuilder(Page.Request.Url) { Query = query.ToString() };
+                Page.Response.Redirect(url.Uri.AbsoluteUri, false);
+                HttpContext.Current.ApplicationInstance.CompleteRequest();
+            });
+        }
 
-                string rawUrl = currentUrl.Substring(0, index);
-                string newUrl = rawUrl.Substring(0, rawUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
+        protected void CloseBtn_Click(object sender, EventArgs e)
+        {
+            ExecuteAction("CloseBtn_Click", () =>
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+                string url = Page.Request.Url.GetLeftPart(UriPartial.Path);
+                Page.Response.Redirect(url.Substring(0, url.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME, false);
+                HttpContext.Current.ApplicationInstance.CompleteRequest();
+            });
         }
+
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            ExportToExcel();
+            ExecuteAction("ExcelBtn_Click", ExportToExcel);
         }
+
+        protected void ExportToExcel()
+        {
+            string content;
+            try
+            {
+                ExcelTableDiv.Attributes["style"] = "display: block";
+                NbysSmsTable.Fill(ExcelTable, GetYearRows(), SelectedYear, true);
+                using (StringWriter writer = new StringWriter())
+                using (HtmlTextWriter html = new HtmlTextWriter(writer))
+                {
+                    ExcelTableDiv.RenderControl(html);
+                    content = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=windows-1254\" /></head><body>"
+                        + writer.ToString() + "</body></html>";
+                }
+            }
+            finally { ExcelTableDiv.Attributes["style"] = "display: none"; }
+            Page.Response.Clear();
+            Page.Response.Buffer = true;
+            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
+            Page.Response.Charset = "windows-1254";
+            Page.Response.ContentType = "application/vnd.ms-excel";
+            Page.Response.AddHeader("Content-Disposition", "attachment;filename=SMSAylikCizelge-" + SelectedYear + ".xls");
+            Page.Response.Write(content);
+            Page.Response.End();
+        }
+
+        private Control CreateEditButton(SMSAylikBagis item)
+        {
+            if (!canEdit) return new Label { Text = "-" };
+            LinkButton button = new LinkButton
+            {
+                ID = "EditSms_" + item.Id.ToString(CultureInfo.InvariantCulture), Text = "Düzenle",
+                CausesValidation = false, CssClass = "btn btn-outline-primary", EnableViewState = false
+            };
+            button.Click += (sender, args) => ExecuteAction("OpenMonth", () =>
+            {
+                // Store only the fields needed to identify and compare the server-read row.
+                ViewState["SmsOriginal"] = new SMSAylikBagis
+                {
+                    Id = item.Id, Yil = item.Yil, Ay = item.Ay, TurkcellSMSAdedi = item.TurkcellSMSAdedi,
+                    VodafoneSMSAdedi = item.VodafoneSMSAdedi, TurkTelekomSMSAdedi = item.TurkTelekomSMSAdedi,
+                    SMSTutari = item.SMSTutari, DovizCinsi = item.DovizCinsi, IslemTarihi = item.IslemTarihi,
+                    OlusturmaTarihi = item.OlusturmaTarihi, DegistirmeTarihi = item.DegistirmeTarihi
+                };
+                HiddenSMSAylikBagisId.Value = item.Id.ToString(CultureInfo.InvariantCulture);
+                PopupMesajLbl.Text = new DateTime(item.Yil, item.Ay, 1).ToString("MMMM yyyy", new CultureInfo(ProjeConstants.CULTUREINFO)) + " SMS bağışları";
+                SMSAdediniDegistirDiv.Attributes["style"] = "display: block";
+                TurkcellSMSTxt.Text = item.TurkcellSMSAdedi.ToString(CultureInfo.InvariantCulture);
+                VodafoneSMSTxt.Text = item.VodafoneSMSAdedi.ToString(CultureInfo.InvariantCulture);
+                TurkTelekomSMSTxt.Text = item.TurkTelekomSMSAdedi.ToString(CultureInfo.InvariantCulture);
+                ScriptManager.RegisterStartupScript(Page, GetType(), Guid.NewGuid().ToString(), "OpenModalOnay();", true);
+            });
+            return button;
+        }
+
         protected void UpdateBtn_Click(object sender, EventArgs e)
         {
-            SMSAylikBagisService smsAylikBagisService = new SMSAylikBagisService();
-            int smsAylikBagisId = HiddenSMSAylikBagisId.Value.ConvertToInt();
-            SMSAylikBagis smsAylikBagis = smsAylikBagisService.GetById(smsAylikBagisId);
-            if (smsAylikBagis != null)
+            ExecuteAction("UpdateBtn_Click", () =>
             {
-                smsAylikBagis.TurkcellSMSAdedi = TurkcellSMSTxt.Text.ConvertToInt();
-                smsAylikBagis.VodafoneSMSAdedi = VodafoneSMSTxt.Text.ConvertToInt();
-                smsAylikBagis.TurkTelekomSMSAdedi = TurkTelekomSMSTxt.Text.ConvertToInt();
-                smsAylikBagis.Degistiren = CurrentUserName;
-                smsAylikBagisService.Update(smsAylikBagis);
-                RedirectToPage(ProjeConstants.PAGE_SMSAYLIKCIZELGE + "?SecilenYil=" + SecilenYilQS);
-            }
+                if (!canEdit) { NbysSmsFeedback.CanContinue(NbysSmsWriteResult.Forbidden); return; }
+                SMSAylikBagis original = ViewState["SmsOriginal"] as SMSAylikBagis;
+                int id, turkcell, vodafone, telekom;
+                if (!int.TryParse(HiddenSMSAylikBagisId.Value, out id) || original == null || id != original.Id || original.Yil != SelectedYear)
+                {
+                    NbysSmsFeedback.CanContinue(NbysSmsWriteResult.InvalidSelection);
+                    return;
+                }
+                if (!int.TryParse(TurkcellSMSTxt.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out turkcell)
+                    || !int.TryParse(VodafoneSMSTxt.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out vodafone)
+                    || !int.TryParse(TurkTelekomSMSTxt.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out telekom)
+                    || turkcell < 0 || vodafone < 0 || telekom < 0)
+                {
+                    SMSAdediniDegistirDiv.Attributes["style"] = "display: block";
+                    ScriptManager.RegisterStartupScript(Page, GetType(), Guid.NewGuid().ToString(), "OpenModalOnay();", true);
+                    NbysSmsFeedback.CanContinue(NbysSmsWriteResult.InvalidCounts);
+                    return;
+                }
+                NbysSmsWriteResult result = new NbysSmsWriteService(LoggingContext).UpdateCounts(original, turkcell, vodafone, telekom);
+                NbysSmsFeedback.Write(LoggingContext, result, "Aylık SMS adetleri kaydedildi.", () =>
+                {
+                    ViewState.Remove("SmsOriginal");
+                    HiddenSMSAylikBagisId.Value = string.Empty;
+                    SMSAdediniDegistirDiv.Attributes["style"] = "display: none";
+                    yearRows = null;
+                    RenderYear();
+                });
+            });
         }
     }
 }

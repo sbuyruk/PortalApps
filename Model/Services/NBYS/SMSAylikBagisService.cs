@@ -7,12 +7,15 @@ using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace Model.Services.NBYS
 {
     public class SMSAylikBagisService
     {
         private readonly SMSAylikBagisRepository repository;
+
+        public SMSAylikBagisService(PortalLogContext context) : this(new SMSAylikBagisRepository(context)) { }
 
         public SMSAylikBagisService() : this(new SMSAylikBagisRepository())
         {
