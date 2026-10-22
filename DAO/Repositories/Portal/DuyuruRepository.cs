@@ -10,10 +10,10 @@ namespace DAO.Repositories.Portal
 {
     public class DuyuruRepository
     {
-        private readonly PortalDuyuruSqlExecutor sql;
+        private readonly PortalSqlExecutor sql;
         public DuyuruRepository(PortalLogContext context)
         {
-            sql = new PortalDuyuruSqlExecutor(context, "DuyuruRepository");
+            sql = new PortalSqlExecutor(context, "DuyuruRepository");
         }
         private DataTable Select(SqlQuery query, [CallerMemberName] string method = "")
         {

@@ -1,3 +1,6 @@
+using Portal_WebParts.Logging;
+using Utility.Logging;
+using Model.Services.Portal;
 using Model.IKYS;
 using Model.Services.IKYS;
 using Model.Portal;
@@ -16,6 +19,8 @@ namespace Portal_WebParts.ToplantiListesiWP
     [ToolboxItemAttribute(false)]
     public partial class ToplantiListesiWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("Portal", "ToplantiListesiWP")); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -98,23 +103,23 @@ namespace Portal_WebParts.ToplantiListesiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            PortalWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
             {
+                if (!Page.IsPostBack) PortalWebPartLog.RecordOpened(LogContext);
                 if (!Page.IsPostBack)
                 {
                     BitisTarihiTxt.Text = DateTime.Today.AddMonths(12).ConvertToDatetimeEmptyIfNull();
                     BaslangicTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
                     TabloOlustur();
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.PublishMessage(ex.Message, ProjeConstants.MESAJ_HATA);
-            }
+            });
         }
         protected void BitisTarihiTxt_TextChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            PortalWebPartLog.ExecuteAction(LogContext, "BitisTarihiTxt_TextChanged", () =>
+            {
+                TabloOlustur();
+            });
         }
         private void TabloOlustur()
         {
@@ -126,27 +131,25 @@ namespace Portal_WebParts.ToplantiListesiWP
         {
             string jSon = string.Empty;
 
-            try
-            {
-                List<ToplantiListItem> list = GetDataList();
-                var serializer = new JavaScriptSerializer();
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
+            List<ToplantiListItem> list = GetDataList();
+            var serializer = new JavaScriptSerializer();
+            jSon = serializer.Serialize(list).Replace("<", "\\u003c").Replace(">", "\\u003e").Replace("&", "\\u0026");
+
             return jSon;
         }
         private List<ToplantiListItem> GetDataList()
         {
+            DateTime start, end;
+            var culture = System.Globalization.CultureInfo.GetCultureInfo("tr-TR");
+            if (!DateTime.TryParse(BaslangicTarihiTxt.Text, culture, System.Globalization.DateTimeStyles.None, out start)
+                || !DateTime.TryParse(BitisTarihiTxt.Text, culture, System.Globalization.DateTimeStyles.None, out end)
+                || end.Date < start.Date || end.Date == DateTime.MaxValue.Date)
+                throw new PortalInputException("Geçerli bir başlangıç ve bitiş tarihi girin; bitiş başlangıçtan önce olamaz.");
             string seperator = "; ";
             List<ToplantiListItem> toplantiList = new List<ToplantiListItem>();
             Toplanti toplantiDao = new Toplanti();
-            DataTable dataTable = new Model.Services.Portal.ToplantiService().GetByParticipantMeetingDate(0,
-                ProjeConstants.HEPSI, null, BaslangicTarihiTxt.Text.ConvertToDatetime(), BitisTarihiTxt.Text.ConvertToDatetime());
+            DataTable dataTable = new Model.Services.Portal.ToplantiService(LogContext).GetByParticipantMeetingDate(0,
+                ProjeConstants.HEPSI, null, start.Date, end.Date.AddDays(1).AddMilliseconds(-3));
 
             if (dataTable != null)
             {
@@ -175,7 +178,6 @@ namespace Portal_WebParts.ToplantiListesiWP
 
                     string baslangicTarihi = basTar.ToString("dd.MM.yyyy HH:mm");
                     string bitisTarihi = bitTar.ToString("dd.MM.yyyy HH:mm");
-
 
                     string toplantiKoordinatorStr = ParseKoordinator(toplantiKoordinator, toplantiYetkilisi);
                     string toplantiYeriStr = ParseToplantiYeri(toplantiYeri, toplantiYeriDiger);
@@ -219,7 +221,6 @@ namespace Portal_WebParts.ToplantiListesiWP
                         toplantiListItem.CevrimIci = cevrimIci ? "Evet" : "Hayir";
                         toplantiListItem.Aciklama = aciklama;
 
-
                         toplantiListItem.Katilimci += string.IsNullOrEmpty(katilimci) ? string.Empty : katilimci + seperator;
                         toplantiListItem.BilgiVerilenler += string.IsNullOrEmpty(bilgiVerilenAdiSoyadi) ? string.Empty : bilgiVerilenAdiSoyadi + seperator;
                         //kullanici bilgisini al
@@ -231,7 +232,6 @@ namespace Portal_WebParts.ToplantiListesiWP
                         }
                         else
                             toplantiListItem.Duzenle = ToplantiYetkisineGoreDegerAta(toplantiId, toplantiYetkilisi, currentuser, olusturan);
-
 
                         tempToplantiListItem = toplantiListItem;
                         toplantiList.Add(tempToplantiListItem);
@@ -290,7 +290,7 @@ namespace Portal_WebParts.ToplantiListesiWP
                         'thousands': '.'
                     },
                     responsive: true,
-                    dom: 'frtip',                    
+                    dom: 'frtip',
                     'createdRow': function(row, data, dataIndex) {
                         if (data.PasifToplanti)
                         {
@@ -302,14 +302,13 @@ namespace Portal_WebParts.ToplantiListesiWP
                             var dateMomentObject = moment(data.BaslangicTarihi, 'DD.MM.YYYY HH:mm'); // 1st argument - string, 2nd argument - format
                             var toplantiGunu = dateMomentObject.toDate()
 
-                            //var toplantiGunu = new Date(parseInt(data.BaslangicTarihi.substr(6))); 
+                            //var toplantiGunu = new Date(parseInt(data.BaslangicTarihi.substr(6)));
                             toplantiGunu.setHours(0, 0, 0, 0);
 
-                            if(toplantiGunu.getTime() == today.getTime()){ 
-                               $(row).addClass('bugunku-toplanti'); 
+                            if(toplantiGunu.getTime() == today.getTime()){
+                               $(row).addClass('bugunku-toplanti');
                             }
                         }
-
 
                     },//set row color
                 });
@@ -337,7 +336,7 @@ namespace Portal_WebParts.ToplantiListesiWP
 
                     ToplantiParametre toplantiParametre = new ToplantiParametre();
                     string adiSoyadi = personel.Adi + " " + personel.Soyadi;
-                    List<ToplantiParametre> adminliste = new Model.Services.Portal.ToplantiParametreService().GetByGroupValue(ProjeConstants.PARAM_TOPLANTIYONETICISI, adiSoyadi);
+                    List<ToplantiParametre> adminliste = new Model.Services.Portal.ToplantiParametreService(LogContext).GetByGroupValue(ProjeConstants.PARAM_TOPLANTIYONETICISI, adiSoyadi);
 
                     if (adminliste.Count > 0)
                     {
@@ -345,29 +344,27 @@ namespace Portal_WebParts.ToplantiListesiWP
                     }
                     else
                     {
-                        List<ToplantiParametre> liste = new Model.Services.Portal.ToplantiParametreService().GetByGroupValue(ProjeConstants.PARAM_TOPLANTIYETKILISI, adiSoyadi);
+                        List<ToplantiParametre> liste = new Model.Services.Portal.ToplantiParametreService(LogContext).GetByGroupValue(ProjeConstants.PARAM_TOPLANTIYETKILISI, adiSoyadi);
                         if (liste.Count > 0)
                         {
 
                             IsBilgileri ib = new IsBilgileri();
-                            ib = new IsBilgileriService().GetByPersonelId(personel.Id);
+                            ib = new IsBilgileriService().GetByPersonelId(personel.Id, LogContext);
 
                             if (ib != null)
                             {
                                 goruntuleyenininBirimi = ib.BirimId;
                             }
 
-                            ib = new IsBilgileriService().GetByPersonelId(toplantiYetkilisi);
+                            ib = new IsBilgileriService().GetByPersonelId(toplantiYetkilisi, LogContext);
 
                             if (ib != null)
                             {
                                 toplantiYetkilisiBirimi = ib.BirimId;
                             }
-                            ///sonuc = "<a href=" + ProjeConstants.PAGE_TOPLANTI_GIRIS + "?ToplantiId=" + toplantiId + " class='btn btn-outline-primary'>Düzenle</a>"; 
+                            ///sonuc = "<a href=" + ProjeConstants.PAGE_TOPLANTI_GIRIS + "?ToplantiId=" + toplantiId + " class='btn btn-outline-primary'>Düzenle</a>";
                         }
                     }
-
-
 
                 }
                 if ((toplantiYetkilisiBirimi != 0 && goruntuleyenininBirimi != 0 && toplantiYetkilisiBirimi == goruntuleyenininBirimi) ||
@@ -385,62 +382,56 @@ namespace Portal_WebParts.ToplantiListesiWP
 
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), LogContext);
 
             }
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = new PersonelService().GetByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName, LogContext);
                 if (personel != null)
                     PersonelIdQS = personel.Id.ToString();
                 else
-                    MessageHelper.PublishMessage("Personel bulunamadi", ProjeConstants.MESAJ_HATA);
+                    throw new PortalInputException("Personel kaydı bulunamadı.");
             }
 
             return personel;
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl);
+
         }
         protected void YeniKayitBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_TOPLANTI_GIRIS);
+            PortalWebPartLog.ExecuteAction(LogContext, "YeniKayitBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_TOPLANTI_GIRIS);
+            });
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            PortalWebPartLog.ExecuteAction(LogContext, "CloseBtn_Click", () =>
             {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void ToplantiTakvimiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_TOPLANTI_TAKVIM);
+            PortalWebPartLog.ExecuteAction(LogContext, "ToplantiTakvimiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_TOPLANTI_TAKVIM);
+            });
         }
         private string ParseToplantiYeri(int yeri, string diger)
         {
             string yeriStr = string.Empty;
             ToplantiParametre toplantiParametre = new ToplantiParametre();
-            toplantiParametre = new Model.Services.Portal.ToplantiParametreService().GetById(yeri);
+            toplantiParametre = new Model.Services.Portal.ToplantiParametreService(LogContext).GetById(yeri);
             if (toplantiParametre != null)
             {
                 if (toplantiParametre.Deger.Equals(ProjeConstants.PARAM_DIGER))
@@ -453,19 +444,18 @@ namespace Portal_WebParts.ToplantiListesiWP
                 }
             }
 
-
             return yeriStr;
         }
         private string ParseKoordinator(int koordinator, int yetkili)
         {
             string koordinatorStr = string.Empty;
-            BirimTanim birimTanim = new BirimTanimService().GetById(koordinator);
+            BirimTanim birimTanim = new BirimTanimService().GetById(koordinator, LogContext);
             if (birimTanim != null)
             {
                 koordinatorStr = birimTanim.KisaAdi;
             }
             Personel yetkiliPer = new Personel();
-            yetkiliPer = new PersonelService().GetById(yetkili);
+            yetkiliPer = new PersonelService().GetById(yetkili, LogContext);
             string yetkiliPerAdiSoyadi = yetkiliPer != null ? " </br> (" + yetkiliPer.Adi + " " + yetkiliPer.Soyadi + ")" : string.Empty;
 
             return koordinatorStr + yetkiliPerAdiSoyadi;
@@ -492,7 +482,10 @@ namespace Portal_WebParts.ToplantiListesiWP
 
         protected void BaslangicTarihiTxt_TextChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            PortalWebPartLog.ExecuteAction(LogContext, "BaslangicTarihiTxt_TextChanged", () =>
+            {
+                TabloOlustur();
+            });
         }
     }
 }

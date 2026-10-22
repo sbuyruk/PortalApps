@@ -1,3 +1,6 @@
+using Portal_WebParts.Logging;
+using Utility.Logging;
+using Model.Services.Portal;
 using Model.IKYS;
 using Model.Services.IKYS;
 using Model.MTS;
@@ -16,6 +19,8 @@ namespace Portal_WebParts.ToplantiKatilimTutanagiWP
     [ToolboxItemAttribute(false)]
     public partial class ToplantiKatilimTutanagiWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("Portal", "ToplantiKatilimTutanagiWP")); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -57,21 +62,29 @@ namespace Portal_WebParts.ToplantiKatilimTutanagiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            KatilimciListesiniDoldur();
+            PortalWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
+            {
+                if (!Page.IsPostBack) PortalWebPartLog.RecordOpened(LogContext);
+                var manager = System.Web.UI.ScriptManager.GetCurrent(Page);
+                if (manager != null) manager.RegisterPostBackControl(ExcelBtn);
+                KatilimciListesiniDoldur();
+            });
         }
 
         private void KatilimciListesiniDoldur()
         {
             Toplanti toplanti = new Toplanti();
-            toplanti = new Model.Services.Portal.ToplantiService().GetById(ToplantiIdQS.ConvertToInt());
+            toplanti = new Model.Services.Portal.ToplantiService(LogContext).GetById(ToplantiIdQS.ConvertToInt());
+            if (toplanti == null) throw new PortalInputException("Toplantı bulunamadı. Tutanak için toplantı listesinden yeniden seçim yapın.");
             if (toplanti != null)
             {
-                BaslikCell.Text = "TOPLANTI KATILIM TUTANAGI <br style='mso-data-placement:same-cell;' />(" + toplanti.ToplantiKonusu + ") <br style='mso-data-placement:same-cell;' />(" + toplanti.BaslangicTarihi.ToString("dd.MM.yyyy") + ")";
+                BaslikCell.Text = "TOPLANTI KATILIM TUTANAGI <br style='mso-data-placement:same-cell;' />(" + System.Web.HttpUtility.HtmlEncode(toplanti.ToplantiKonusu) + ") <br style='mso-data-placement:same-cell;' />(" + toplanti.BaslangicTarihi.ToString("dd.MM.yyyy") + ")";
                 ToplantiKatilim toplantiKatilim = new ToplantiKatilim();
-                List<ToplantiKatilim> katilimciListesi = new Model.Services.Portal.ToplantiKatilimService().GetByMeeting(toplanti.Id);
+                List<ToplantiKatilim> katilimciListesi = new Model.Services.Portal.ToplantiKatilimService(LogContext).GetByMeeting(toplanti.Id);
                 int siraNo = 0;
                 foreach (var item in katilimciListesi)
                 {
+                    if (item.Bilgi) continue;
                     TableRow tableRow = new TableRow();
                     TableCell siraNoCell = new TableCell();
                     TableCell adiSoyadiCell = new TableCell();
@@ -99,7 +112,7 @@ namespace Portal_WebParts.ToplantiKatilimTutanagiWP
 
                     siraNoCell.Text = (++siraNo).ToString();
                     Personel personel = new Personel();
-                    DataTable dataTable = new PersonelService().GetPersonelReturnDataTable(item.KatilimciId);
+                    DataTable dataTable = new PersonelService().GetPersonelReturnDataTable(item.KatilimciId, LogContext);
                     if (dataTable != null)
                     {
                         adiSoyadiCell.Text = dataTable.Rows[0]["Adi"].ReturnEmptyIfNull().ToString() + " " + dataTable.Rows[0]["Soyadi"].ReturnEmptyIfNull().ToString();
@@ -142,7 +155,6 @@ namespace Portal_WebParts.ToplantiKatilimTutanagiWP
 
                     siraNoCell.Text = (++siraNo).ToString();
 
-
                     tableRow.Controls.Add(siraNoCell);
                     tableRow.Controls.Add(adiSoyadiCell);
                     tableRow.Controls.Add(unvanCell);
@@ -157,37 +169,37 @@ namespace Portal_WebParts.ToplantiKatilimTutanagiWP
 
         protected void ExportToExcel()
         {
-
-
-            string filename = "ToplantiKatilimTutanagi" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls";
-            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
-            Page.Response.Charset = "windows-1254";//ISO-8859-9
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-
-            //Get the HTML for the control.             
-            MainCardDiv.RenderControl(hw);
-            //Write the HTML back to the browser.
-            //Response.ContentType = application/vnd.ms-excel;
-            Page.Response.ContentType = "application/ms-excel";
-            Page.Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            this.EnableViewState = false;
-
-            string s = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<title></title>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=windows-1254\" />\n<style>\n</style>\n</head>\n<body>\n";
-            Page.Response.Write(s + tw.ToString());
-
+            string html;
+            using (var text = new System.IO.StringWriter())
+            using (var writer = new System.Web.UI.HtmlTextWriter(text))
+            {
+                MainCardDiv.RenderControl(writer);
+                html = "<!DOCTYPE html><html><head><meta charset='utf-8'/></head><body>" + text + "</body></html>";
+            }
+            // Render fully before changing the response into a download.
+            Page.Response.Clear();
+            Page.Response.ContentEncoding = System.Text.Encoding.UTF8;
+            Page.Response.Charset = "utf-8";
+            Page.Response.ContentType = "application/vnd.ms-excel";
+            Page.Response.AddHeader("Content-Disposition", "attachment; filename=ToplantiKatilimTutanagi-" + DateTime.Now.ToString("yyyyMMdd") + ".xls");
+            Page.Response.Write(html);
             Page.Response.End();
-
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            ExportToExcel();
+            PortalWebPartLog.ExecuteAction(LogContext, "ExcelBtn_Click", () =>
+            {
+                ExportToExcel();
+            });
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
+            PortalWebPartLog.ExecuteAction(LogContext, "CloseBtn_Click", () =>
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                Page.Response.Redirect(newUrl);
+            });
         }
     }
 }

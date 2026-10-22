@@ -1,3 +1,6 @@
+using Portal_WebParts.Logging;
+using Utility.Logging;
+using Model.Services.Portal;
 using Model.MTS;
 using Model.Ortak;
 using Model.Portal;
@@ -16,6 +19,8 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
     [ToolboxItemAttribute(false)]
     public partial class ToplantiParametreGirisiWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("Portal", "ToplantiParametreGirisiWP")); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -34,11 +39,15 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
+            PortalWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
             {
-                ToplantiGrupDDLDoldur();
-                TabloyuGuncelle();
-            }
+                if (!Page.IsPostBack) PortalWebPartLog.RecordOpened(LogContext);
+                if (!Page.IsPostBack)
+                {
+                    ToplantiGrupDDLDoldur();
+                    TabloyuGuncelle();
+                }
+            });
         }
 
         private void ToplantiGrupDDLDoldur()
@@ -55,13 +64,16 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
         }
         protected void ToplantiGrupDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TabloyuGuncelle();
+            PortalWebPartLog.ExecuteAction(LogContext, "ToplantiGrupDDL_SelectedIndexChanged", () =>
+            {
+                TabloyuGuncelle();
+            });
         }
         private void TabloyuGuncelle()
         {
             string toplantiParametreGrubu = ToplantiGrupDDL.SelectedItem.Value;
             ToplantiParametre toplantiDao = new ToplantiParametre();
-            List<ToplantiParametre> toplantiParametreList = new Model.Services.Portal.ToplantiParametreService().GetByGroup(toplantiParametreGrubu);
+            List<ToplantiParametre> toplantiParametreList = new Model.Services.Portal.ToplantiParametreService(LogContext).GetByGroup(toplantiParametreGrubu);
 
             GrupLbl.Text = toplantiParametreGrubu;
             YeniSiraTxt.Text = toplantiParametreList.Count > 0 ? (toplantiParametreList.Max(x => x.Sira) + 1).ToString() : "1";
@@ -81,7 +93,7 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
               $('#CustomDataTable').DataTable().destroy();
             }
             $('#CustomDataTable tbody').empty();
-            
+
             jQuery('#CustomDataTable').DataTable({
             data: " + jsonData + @",
             columns: [
@@ -106,18 +118,10 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
         {
             string jSon = string.Empty;
 
-            try
-            {
-                List<ParametreListItem> list = GetDataList(toplantiParametreList);
-                var serializer = new JavaScriptSerializer();
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
+            List<ParametreListItem> list = GetDataList(toplantiParametreList);
+            var serializer = new JavaScriptSerializer();
+            jSon = serializer.Serialize(list).Replace("<", "\\u003c").Replace(">", "\\u003e").Replace("&", "\\u0026");
+
             return jSon;
         }
         private List<ParametreListItem> GetDataList(List<ToplantiParametre> toplantiParametreList)
@@ -139,9 +143,12 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
+            PortalWebPartLog.ExecuteAction(LogContext, "CloseBtn_Click", () =>
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                Page.Response.Redirect(newUrl);
+            });
         }
 
         private class ParametreListItem
@@ -156,128 +163,129 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
 
         protected void DuzenleSilBtn_Click(object sender, EventArgs e)
         {
-            GuncelleNowBtn.Visible = false;
-            SilNowBtn.Visible = false;
-            int parametreId = parametreIdLbl.Value.ConvertToInt();
-
-            string islemTipi = paramIslemTipiLbl.Value;
-            if (islemTipi.Equals(ProjeConstants.GUNCELLE))
+            PortalWebPartLog.ExecuteAction(LogContext, "DuzenleSilBtn_Click", () =>
             {
-                if (parametreId > 0)
+                GuncelleNowBtn.Visible = false;
+                SilNowBtn.Visible = false;
+                int parametreId = parametreIdLbl.Value.ConvertToInt();
+
+                string islemTipi = paramIslemTipiLbl.Value;
+                if (islemTipi.Equals(ProjeConstants.GUNCELLE))
                 {
-                    ToplantiParametre rp = new Model.Services.Portal.ToplantiParametreService().GetById(parametreId);
-                    if (rp != null)
+                    if (parametreId > 0)
                     {
-                        ParametreTxt.Text = rp.Deger;
-                        SiraTxt.Text = rp.Sira.ToString();
-                        ModalLbl.Text = "Parametre Düzenleme";
-                        SilDiv.Attributes["style"] = "display:none";
-                        DuzenleDiv.Attributes["style"] = "display:block";
-                        ModalLbl.CssClass = "col-form-label text-primary fw-bold";
-                        GuncelleNowBtn.Visible = true;
-                        SilNowBtn.Visible = false;
+                        ToplantiParametre rp = new Model.Services.Portal.ToplantiParametreService(LogContext).GetById(parametreId);
+                        if (rp != null)
+                        {
+                            ParametreTxt.Text = rp.Deger;
+                            SiraTxt.Text = rp.Sira.ToString();
+                            ModalLbl.Text = "Parametre Düzenleme";
+                            SilDiv.Attributes["style"] = "display:none";
+                            DuzenleDiv.Attributes["style"] = "display:block";
+                            ModalLbl.CssClass = "col-form-label text-primary fw-bold";
+                            GuncelleNowBtn.Visible = true;
+                            SilNowBtn.Visible = false;
+                            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "OpenModalOnay();", true);
+                        }
+                        else
+                        {
+                            throw new PortalInputException("Parametre bulunamadı.");
+                        }
+                    }
+                    else
+                    {
+                        throw new PortalInputException("Parametre bulunamadı.");
+                    }
+
+                }
+                else if (islemTipi.Equals(ProjeConstants.SIL))
+                {
+                    bool silinebilirMi = true;
+                    string toplantiParametreGrubu = ToplantiGrupDDL.SelectedItem.Value;
+
+                    switch (toplantiParametreGrubu)
+                    {
+
+                        case ProjeConstants.PARAM_TOPLANTIYERI:
+                            {
+                                Toplanti toplanti = new Toplanti();
+                                List<Toplanti> list = new Model.Services.Portal.ToplantiService(LogContext).GetByYeri(parametreId);
+                                silinebilirMi = list.Count < 1;
+                                break;
+                            }
+
+                    }
+
+                    if (silinebilirMi)
+                    {
+                        ModalLbl.Text = "Parametre Silinecek";
+                        SilDiv.Attributes["style"] = "display:block";
+                        DuzenleDiv.Attributes["style"] = "display:none";
+                        ModalLbl.CssClass = "col-form-label text-danger fw-bold";
+                        GuncelleNowBtn.Visible = false;
+                        SilNowBtn.Visible = true;
                         System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "OpenModalOnay();", true);
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Parametre bulunamadi", ProjeConstants.MESAJ_HATA);
+                        ModalLbl.Text = "Parametre Silinemez";
+                        MessageLbl.Text = "Silmek istediginiz parametreyi kullanan randevular bulunmaktadir.";
+                        SilDiv.Attributes["style"] = "display:block";
+                        DuzenleDiv.Attributes["style"] = "display:none";
+                        ModalLbl.CssClass = "col-form-label text-info fw-bold";
+                        GuncelleNowBtn.Visible = false;
+                        SilNowBtn.Visible = false;
+                        System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "OpenModalOnay();", true);
                     }
-                }
-                else
-                {
-                    MessageHelper.PublishMessage("Parametre bulunamadi", ProjeConstants.MESAJ_HATA);
-                }
-
-            }
-            else if (islemTipi.Equals(ProjeConstants.SIL))
-            {
-                bool silinebilirMi = true;
-                string toplantiParametreGrubu = ToplantiGrupDDL.SelectedItem.Value;
-
-                switch (toplantiParametreGrubu)
-                {
-
-                    case ProjeConstants.PARAM_TOPLANTIYERI:
-                        {
-                            Toplanti toplanti = new Toplanti();
-                            List<Toplanti> list = new Model.Services.Portal.ToplantiService().GetByYeri(parametreId);
-                            silinebilirMi = list.Count < 1;
-                            break;
-                        }
 
                 }
-
-                if (silinebilirMi)
-                {
-                    ModalLbl.Text = "Parametre Silinecek";
-                    SilDiv.Attributes["style"] = "display:block";
-                    DuzenleDiv.Attributes["style"] = "display:none";
-                    ModalLbl.CssClass = "col-form-label text-danger fw-bold";
-                    GuncelleNowBtn.Visible = false;
-                    SilNowBtn.Visible = true;
-                    System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "OpenModalOnay();", true);
-                }
-                else
-                {
-                    ModalLbl.Text = "Parametre Silinemez";
-                    MessageLbl.Text = "Silmek istediginiz parametreyi kullanan randevular bulunmaktadir.";
-                    SilDiv.Attributes["style"] = "display:block";
-                    DuzenleDiv.Attributes["style"] = "display:none";
-                    ModalLbl.CssClass = "col-form-label text-info fw-bold";
-                    GuncelleNowBtn.Visible = false;
-                    SilNowBtn.Visible = false;
-                    System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "OpenModalOnay();", true);
-                }
-
-            }
-
+            });
         }
 
         protected void GuncelleNowBtn_Click(object sender, EventArgs e)
         {
-            int parametreId = parametreIdLbl.Value.ConvertToInt();
-            ToplantiParametre toplantiParametre = new ToplantiParametre();
-            toplantiParametre = new Model.Services.Portal.ToplantiParametreService().GetById(parametreId);
-            if (toplantiParametre != null)
+            PortalWebPartLog.ExecuteAction(LogContext, "GuncelleNowBtn_Click", () =>
             {
-                List<ToplantiParametre> list = AyniIsimdeVarMi(toplantiParametre.Grup, ParametreTxt.Text);
-                bool varMi = false;
-                foreach (var item in list)
-                {
-                    if (item.Id != toplantiParametre.Id)
-                    {
-                        varMi = true;
-                        break;
-                    }
-                }
-                if (varMi)//ayni Deger'li parametre varsa güncellemesin 
-                {
-                    CloseModal();
-                    TabloyuGuncelle();
-                    MessageHelper.PublishMessage("Güncellenmedi, ayni isimde parametre zaten var.", ProjeConstants.MESAJ_HATA, 2000);
-                }
-                else
-                {
-                    toplantiParametre.Deger = ParametreTxt.Text;
-                    toplantiParametre.Sira = SiraTxt.Text.ConvertToInt();
-                    if (new Model.Services.Portal.ToplantiParametreService().Update(toplantiParametre))
-                    {
-                        CloseModal();
-                        MessageHelper.PublishMessage("Parametre güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
-                        TabloyuGuncelle();
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage("Parametre güncellenemedi!", ProjeConstants.MESAJ_HATA);
-                    }
-                }
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Parametre bulunamadi!", ProjeConstants.MESAJ_HATA);
-            }
+                int order;
+                if (!int.TryParse(SiraTxt.Text, out order)) throw new PortalInputException("Sıra alanına tam sayı girin.");
+                SaveParameter(new ToplantiParametre { Id = parametreIdLbl.Value.ConvertToInt(), Deger = ParametreTxt.Text, Sira = order }, false, "Parametre güncellendi.", true);
+            });
         }
 
+        private void SaveParameter(ToplantiParametre item, bool delete, string message, bool existing)
+        {
+            if (existing && item.Id <= 0) throw new PortalInputException("İşlem yapılacak parametreyi seçin.");
+            PortalToplantiResult result;
+            try { result = new PortalToplantiWriteService(LogContext).SaveParameter(item, delete); }
+            catch (Exception error)
+            {
+                PortalWebPartLog.ReportError(LogContext, "Portal.ToplantiParameter.Save", error,
+                    "İşlemin sonucu doğrulanamadı. Tekrar işlem yapmadan önce parametre listesini yenileyin.");
+                return;
+            }
+            switch (result)
+            {
+                case PortalToplantiResult.Completed: break;
+                case PortalToplantiResult.Duplicate: throw new PortalInputException("Bu grupta aynı adlı parametre zaten var. Farklı bir ad girin.");
+                case PortalToplantiResult.NotFound: throw new PortalInputException("Parametre bulunamadı. Lütfen listeyi yenileyin.");
+                case PortalToplantiResult.InUse: throw new PortalInputException("Bu parametre kullanımda veya sistem için gerekli. İşlem yapılamadı.");
+                case PortalToplantiResult.Forbidden: throw new PortalInputException("İşlem için oturumunuzu yenileyin.");
+                default: throw new PortalInputException("Parametre grubunu seçin ve adını girin.");
+            }
+            try
+            {
+                CloseModal();
+                YeniDegerTxt.Text = string.Empty;
+                TabloyuGuncelle();
+            }
+            catch (Exception error)
+            {
+                PortalWebPartLog.ReportError(LogContext, "Portal.ToplantiParameter.Refresh", error,
+                    message + " Liste yenilenemedi. İşlemi tekrar kaydetmeyin; sayfayı yenileyin.");
+                return;
+            }
+            Messages.Success(message);
+        }
         private void CloseModal()
         {
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "CloseModal();", true);
@@ -285,74 +293,26 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
 
         protected void SilNowBtn_Click(object sender, EventArgs e)
         {
-            int parametreId = parametreIdLbl.Value.ConvertToInt();
-            ToplantiParametre toplantiParametre = new ToplantiParametre();
-            toplantiParametre = new Model.Services.Portal.ToplantiParametreService().GetById(parametreId);
-            CloseModal();
-            if (toplantiParametre != null)
+            PortalWebPartLog.ExecuteAction(LogContext, "SilNowBtn_Click", () =>
             {
-                bool silindiMi = new Model.Services.Portal.ToplantiParametreService().Delete(toplantiParametre);
-                if (silindiMi)
-                {
-                    TabloyuGuncelle();
-                    MessageHelper.PublishMessage("Parametre silindi", ProjeConstants.MESAJ_BASARILI, 2000);
-                }
-                else
-                {
-                    MessageHelper.PublishMessage("Parametre silinemedi!", ProjeConstants.MESAJ_HATA);
-                }
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Parametre bulunamadi!", ProjeConstants.MESAJ_HATA);
-            }
-
+                SaveParameter(new ToplantiParametre { Id = parametreIdLbl.Value.ConvertToInt() }, true, "Parametre silindi.", true);
+            });
         }
 
         protected void KaydetBtn_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(GrupLbl.Text))
+            PortalWebPartLog.ExecuteAction(LogContext, "KaydetBtn_Click", () =>
             {
-                try
-                {
-                    List<ToplantiParametre> list = AyniIsimdeVarMi(GrupLbl.Text, YeniDegerTxt.Text);
-                    if (list.Count > 0)
-                    {
-                        TabloyuGuncelle();
-                        MessageHelper.PublishMessage("Kaydedilemedi, ayni isimde bir parametre zaten var.", ProjeConstants.MESAJ_HATA, 2000);
-                    }
-                    else
-                    {
-                        ToplantiParametre toplantiParametre = new ToplantiParametre();
-                        toplantiParametre.Grup = GrupLbl.Text;
-                        toplantiParametre.Sira = YeniSiraTxt.Text.ConvertToInt();
-                        toplantiParametre.Deger = YeniDegerTxt.Text;
-                        toplantiParametre.Olusturan = UtilityHelper.GetCurrentUserName();
-                        int id = new Model.Services.Portal.ToplantiParametreService().Save(toplantiParametre);
-                        if (id > 0)
-                        {
-                            TabloyuGuncelle();
-                            MessageHelper.PublishMessage("Parametre kaydedildi.", ProjeConstants.MESAJ_BASARILI, 2000);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-
-                    MessageHelper.PublishMessage("Parametre kaydedilemedi." + ex.Message, ProjeConstants.MESAJ_HATA);
-                }
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Yeni kayit yapabilmek için parametre grubunu seçmelisiniz.", ProjeConstants.MESAJ_BILGI, 2000);
-            }
-
+                int order;
+                if (!int.TryParse(YeniSiraTxt.Text, out order)) throw new PortalInputException("Sıra alanına tam sayı girin.");
+                SaveParameter(new ToplantiParametre { Grup = GrupLbl.Text, Deger = YeniDegerTxt.Text, Sira = order }, false, "Parametre kaydedildi.", false);
+            });
         }
 
         private List<ToplantiParametre> AyniIsimdeVarMi(string grup, string deger)
         {
             ToplantiParametre toplantiParametreDAO = new ToplantiParametre();
-            List<ToplantiParametre> list = new Model.Services.Portal.ToplantiParametreService().GetByGroupValue(grup, deger);
+            List<ToplantiParametre> list = new Model.Services.Portal.ToplantiParametreService(LogContext).GetByGroupValue(grup, deger);
             return list;
         }
     }

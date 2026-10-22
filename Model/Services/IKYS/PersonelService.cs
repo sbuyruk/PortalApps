@@ -118,6 +118,7 @@ namespace Model.Services.IKYS
         public List<Personel> GetActiveEmployeesByRegion(int bolgeId) { return MapList(repository.SelectActiveEmployeesByRegion(bolgeId)); }
         public DataTable GetActiveEmployeesReturnDataTable(Personel.PersonelTipi type) { return repository.SelectActiveEmployeesReturnDataTable((int)type, type == Personel.PersonelTipi.Tumu); }
         public DataTable GetPersonelReturnDataTable(int personelId) { return repository.SelectPersonelReturnDataTable(personelId); }
+        public DataTable GetPersonelReturnDataTable(int personelId, PortalLogContext context) { return repository.SelectPersonelReturnDataTable(personelId, context); }
         public DataTable GetEmployeeListReturnDataTable(Personel.PersonelTipi type) { return repository.SelectEmployeeListReturnDataTable((int)type, type == Personel.PersonelTipi.Tumu); }
         public DataTable GetEmployeeListReturnDataTable(Personel.PersonelTipi type, PortalLogContext context) { return repository.SelectEmployeeListReturnDataTable((int)type, type == Personel.PersonelTipi.Tumu, context); }
         public DataTable GetFormerEmployeeListReturnDataTable() { return repository.SelectFormerEmployeeListReturnDataTable(); }
@@ -133,7 +134,9 @@ namespace Model.Services.IKYS
         public List<Personel> GetByBirthday(int gun, int ay) { return MapList(repository.SelectByDogumGunu(gun, ay)); }
         public List<Personel> GetByMarriageDate(int gun, int ay) { return MapList(repository.SelectByEvlilikTarihi(gun, ay)); }
         public DataTable GetUnselectedMeetingParticipants(int toplantiId) { return repository.SelectUnselectedMeetingParticipants(toplantiId); }
+        public DataTable GetUnselectedMeetingParticipants(int toplantiId, PortalLogContext context) { return repository.SelectUnselectedMeetingParticipants(toplantiId, context); }
         public List<Personel> GetMeetingParticipants(int toplantiId, bool bilgiVerildi) { return MapList(repository.SelectMeetingParticipants(toplantiId, bilgiVerildi)); }
+        public List<Personel> GetMeetingParticipants(int toplantiId, bool bilgiVerildi, PortalLogContext context) { return MapList(repository.SelectMeetingParticipants(toplantiId, bilgiVerildi, context)); }
         private static void RecordChanges(Personel old, Personel current, int auditId, SqlTransactionContext transaction)
         {
             PortalLogRepository log = new PortalLogRepository();

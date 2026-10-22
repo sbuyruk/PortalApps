@@ -10,13 +10,13 @@ namespace DAO.Repositories.Portal
     public sealed class PortalDuyuruWriteRepository
     {
         private readonly PortalLogContext context;
-        private readonly PortalDuyuruSqlExecutor sql;
+        private readonly PortalSqlExecutor sql;
         private readonly CrudQueryBuilder builder = new CrudQueryBuilder();
 
         public PortalDuyuruWriteRepository(PortalLogContext context)
         {
             this.context = context;
-            sql = new PortalDuyuruSqlExecutor(context, "PortalDuyuruWriteRepository");
+            sql = new PortalSqlExecutor(context, "PortalDuyuruWriteRepository");
         }
 
         public void LockAnnouncement(int id, SqlTransactionContext transaction)

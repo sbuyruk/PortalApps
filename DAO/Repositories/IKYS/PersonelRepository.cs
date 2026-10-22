@@ -167,6 +167,15 @@ namespace DAO.Repositories.IKYS
                 WHERE P.Id=@PersonelId ORDER BY I.ProtokolSiraNo"); query.AddParameter("@PersonelId", personelId); return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectPersonelReturnDataTable(int personelId, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"SELECT P.Id PersonelId,P.Adi,Soyadi,P.PerId,P.SicilNo,P.Tahsili,P.KullaniciAdi,P.Asker_sivil,
+                U.Adi Unvan,G.Adi Gorev,B.Adi BirimSube,B.Id BirimId,I.IzinDonemiBasTar,I.ProtokolSiraNo,H.CepTelefonu,H.InternetEPosta
+                FROM Personel_Table P INNER JOIN IsBilgileri_Table I ON P.Id=I.PersonelId LEFT JOIN UnvanTanim_Table U ON I.UnvanId=U.Id
+                LEFT JOIN BirimTanim_Table B ON I.BirimId=B.Id LEFT JOIN GorevTanim_Table G ON I.GorevId=G.Id LEFT JOIN IletisimBilgileri_Table H ON H.PersonelId=P.Id
+                WHERE P.Id=@PersonelId ORDER BY I.ProtokolSiraNo"); query.AddParameter("@PersonelId", personelId); return PortalSqlReadExecutor.Select(query, context, "PersonelRepository.SelectPersonelReturnDataTable");
+        }
+
         public DataTable SelectEmployeeListReturnDataTable(int personelTipi, bool includeAllTypes)
         {
             string typeFilter = includeAllTypes ? "" : " AND A.Tipi=@Tipi";
@@ -266,7 +275,11 @@ namespace DAO.Repositories.IKYS
         public DataTable SelectByDogumGunu(int gun, int ay) { SqlQuery q = new SqlQuery("SELECT * FROM Personel_Table A INNER JOIN Kimlik_Table B ON B.PersonelId=A.Id INNER JOIN IsBilgileri_Table C ON C.PersonelId=A.Id WHERE DATEPART(D,B.DogumTar)=@Gun AND DATEPART(M,B.DogumTar)=@Ay AND C.CalismaDurumu=1 AND B.DogumGunuKutlama=1 ORDER BY C.ProtokolSiraNo"); q.AddParameter("@Gun", gun); q.AddParameter("@Ay", ay); return db.SelectFromDb(q, ""); }
         public DataTable SelectByEvlilikTarihi(int gun, int ay) { SqlQuery q = new SqlQuery("SELECT * FROM Personel_Table A INNER JOIN Kimlik_Table B ON B.PersonelId=A.Id INNER JOIN IsBilgileri_Table C ON C.PersonelId=A.Id WHERE B.EvlilikTar>'01.01.1900' AND DATEPART(D,B.EvlilikTar)=@Gun AND DATEPART(M,B.EvlilikTar)=@Ay AND C.CalismaDurumu=1 AND B.EvlilikKutlama=1 ORDER BY C.ProtokolSiraNo"); q.AddParameter("@Gun", gun); q.AddParameter("@Ay", ay); return db.SelectFromDb(q, ""); }
         public DataTable SelectUnselectedMeetingParticipants(int toplantiId) { return db.SelectFromDb(new SqlQuery("SELECT A.Id KatilimciId,A.Adi,A.Soyadi FROM Personel_Table A INNER JOIN IsBilgileri_Table B ON B.PersonelId=A.Id WHERE B.CalismaDurumu=1 ORDER BY B.ProtokolSiraNo,A.Adi,A.Soyadi"), ""); }
+
+        public DataTable SelectUnselectedMeetingParticipants(int toplantiId, PortalLogContext context) { return PortalSqlReadExecutor.Select(new SqlQuery("SELECT A.Id KatilimciId,A.Adi,A.Soyadi FROM Personel_Table A INNER JOIN IsBilgileri_Table B ON B.PersonelId=A.Id WHERE B.CalismaDurumu=1 ORDER BY B.ProtokolSiraNo,A.Adi,A.Soyadi"), context, "PersonelRepository.SelectUnselectedMeetingParticipants"); }
         public DataTable SelectMeetingParticipants(int toplantiId, bool bilgiVerildi) { SqlQuery q = new SqlQuery("SELECT A.* FROM Personel_Table A INNER JOIN ToplantiKatilim_Table B ON B.KatilimciId=A.Id LEFT JOIN IsBilgileri_Table C ON C.PersonelId=A.Id WHERE B.ToplantiId=@ToplantiId AND B.Bilgi=@Bilgi ORDER BY C.ProtokolSiraNo,A.Adi"); q.AddParameter("@ToplantiId", toplantiId); q.AddParameter("@Bilgi", bilgiVerildi); return db.SelectFromDb(q, ""); }
+
+        public DataTable SelectMeetingParticipants(int toplantiId, bool bilgiVerildi, PortalLogContext context) { SqlQuery q = new SqlQuery("SELECT A.* FROM Personel_Table A INNER JOIN ToplantiKatilim_Table B ON B.KatilimciId=A.Id LEFT JOIN IsBilgileri_Table C ON C.PersonelId=A.Id WHERE B.ToplantiId=@ToplantiId AND B.Bilgi=@Bilgi ORDER BY C.ProtokolSiraNo,A.Adi"); q.AddParameter("@ToplantiId", toplantiId); q.AddParameter("@Bilgi", bilgiVerildi); return PortalSqlReadExecutor.Select(q, context, "PersonelRepository.SelectMeetingParticipants"); }
         private static string AddIds(SqlQuery query, IList<int> ids, string prefix) { List<string> names = new List<string>(); for (int i = 0; i < ids.Count; i++) { string name = prefix + i; names.Add(name); query.Parameters.Add(new SqlParameter(name, SqlDbType.Int) { Value = ids[i] }); } return string.Join(",", names); }
     }
 }

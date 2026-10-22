@@ -1,3 +1,6 @@
+using Portal_WebParts.Logging;
+using Utility.Logging;
+using Model.Services.Portal;
 using Model.IKYS;
 using Model.Services.IKYS;
 using Model.Portal;
@@ -13,6 +16,8 @@ namespace Portal_WebParts.ToplantiViewerWP
     [ToolboxItemAttribute(false)]
     public partial class ToplantiViewerWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("Portal", "ToplantiViewerWP")); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -100,11 +105,15 @@ namespace Portal_WebParts.ToplantiViewerWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
+            PortalWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
             {
-                KayitGetir();
+                if (!Page.IsPostBack) PortalWebPartLog.RecordOpened(LogContext);
+                if (!Page.IsPostBack)
+                {
+                    KayitGetir();
 
-            }
+                }
+            });
         }
         private void KayitGetir()
         {
@@ -116,17 +125,21 @@ namespace Portal_WebParts.ToplantiViewerWP
         private string ToplantiListesiniGetir()
         {
             Toplanti toplanti = new Toplanti();
-            string json = new Model.Services.Portal.ToplantiService().GetCalendarJson();
+            string json = new Model.Services.Portal.ToplantiService(LogContext).GetCalendarJson();
             return json;
         }
         private string CreateJsString(string jsonData)
         {
-            string initialDate = string.IsNullOrEmpty(InitialDateQS) ?
-                DateTime.Today.ToString("yyyy-MM-dd").ReturnQuotedValue().ToString() :
-                InitialDateQS.ReturnQuotedValue().ToString();
-            string calendarView = string.IsNullOrEmpty(CalendarViewQS) ? "'dayGridMonth'" : CalendarViewQS.ReturnQuotedValue().ToString();
+            DateTime date;
+            if (string.IsNullOrWhiteSpace(InitialDateQS)) date = DateTime.Today;
+            else if (!DateTime.TryParseExact(InitialDateQS, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None, out date)) throw new PortalInputException("Takvim tarihi geçerli değil.");
+            string initialDate = "'" + date.ToString("yyyy-MM-dd") + "'";
+            string view = CalendarViewQS;
+            if (view != "timeGridWeek" && view != "timeGridDay" && view != "listWeek") view = "dayGridMonth";
+            string calendarView = "'" + view + "'";
             string calendarStr =
-                @" 
+                @"
                 var toplantiId=0;
                 document.addEventListener('DOMContentLoaded', function() {
                     var calendarEl = document.getElementById('calendar');
@@ -147,7 +160,7 @@ namespace Portal_WebParts.ToplantiViewerWP
                         eventClick: function(info) {
                             info.jsEvent.preventDefault(); // don't let the browser navigate
                             toplantiId=info.event.id;
-                            ToplantiDetaylariModal(info.event.id);                        
+                            ToplantiDetaylariModal(info.event.id);
                         }
                     });
                     calendar.render();
@@ -158,46 +171,50 @@ namespace Portal_WebParts.ToplantiViewerWP
         }
         protected void ToplantiDetaylariBtn_Click(object sender, EventArgs e)
         {
-            IcKatilimcilarCell.Text = string.Empty;
-            BilgiCell.Text = string.Empty;
-            int toplantiId = string.IsNullOrEmpty(paramToplantiIdLbl.Text) ? ToplantiIdQS.ConvertToInt() : paramToplantiIdLbl.Text.ConvertToInt();
-            Toplanti toplanti = new Toplanti();
-            toplanti = new Model.Services.Portal.ToplantiService().GetById(toplantiId);
-            if (toplanti != null)
+            PortalWebPartLog.ExecuteAction(LogContext, "ToplantiDetaylariBtn_Click", () =>
             {
-                IdLbl.Text = " ( Toplanti No: " + toplanti.Id.ToString() + " )";
-                ToplantiKonusuCell.Text = toplanti.ToplantiKonusu;
-                ToplantiYetkilisiCell.Text = ParseToplantiYetkilisi(toplanti.ToplantiYetkilisi);
-                KoordinatorCell.Text = ParseKoordinator(toplanti.Koordinator);
-                BaslangicZamaniCell.Text = toplanti.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm");
-                BitisZamaniCell.Text = toplanti.BitisTarihi.ToString("dd.MM.yyyy HH:mm");
-                DisKatilimcilarCell.Text = toplanti.DisKatilimcilar.Replace(",", "</br>");
-
-                Personel personel = new Personel();
-                List<Personel> list = new PersonelService().GetMeetingParticipants(toplanti.Id, false);
-                foreach (var item in list)
+                IcKatilimcilarCell.Text = string.Empty;
+                BilgiCell.Text = string.Empty;
+                int toplantiId = string.IsNullOrEmpty(paramToplantiIdLbl.Text) ? ToplantiIdQS.ConvertToInt() : paramToplantiIdLbl.Text.ConvertToInt();
+                Toplanti toplanti = new Toplanti();
+                toplanti = new Model.Services.Portal.ToplantiService(LogContext).GetById(toplantiId);
+                if (toplanti == null) throw new PortalInputException("Toplantı bulunamadı. Takvimi yenileyin.");
+                if (toplanti != null)
                 {
-                    IcKatilimcilarCell.Text += item.Adi + " " + item.Soyadi + "</br>";
-                }
-                list = new PersonelService().GetMeetingParticipants(toplanti.Id, true);
-                foreach (var item in list)
-                {
-                    BilgiCell.Text += item.Adi + " " + item.Soyadi + "</br>";
-                }
+                    IdLbl.Text = " ( Toplanti No: " + toplanti.Id.ToString() + " )";
+                    ToplantiKonusuCell.Text = System.Web.HttpUtility.HtmlEncode(toplanti.ToplantiKonusu);
+                    ToplantiYetkilisiCell.Text = ParseToplantiYetkilisi(toplanti.ToplantiYetkilisi);
+                    KoordinatorCell.Text = ParseKoordinator(toplanti.Koordinator);
+                    BaslangicZamaniCell.Text = toplanti.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm");
+                    BitisZamaniCell.Text = toplanti.BitisTarihi.ToString("dd.MM.yyyy HH:mm");
+                    DisKatilimcilarCell.Text = System.Web.HttpUtility.HtmlEncode(toplanti.DisKatilimcilar ?? string.Empty).Replace(",", "<br/>");
 
-                ToplantiYeriCell.Text = ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger);
-                AciklamaCell.Text = toplanti.Aciklama;
-                CevrimIciCell.Text = toplanti.CevrimIci ? "Evet" : "Hayir";
-                IkramOnayiCell.Text = toplanti.IkramOnayi ? "Evet" : "Hayir";
-                IkramMalzemesiCell.Text = toplanti.IkramOnayi ? toplanti.IkramMalzemesi : "-";
-            }
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "OpenToplantiModal();", true);
+                    Personel personel = new Personel();
+                    List<Personel> list = new PersonelService().GetMeetingParticipants(toplanti.Id, false, LogContext);
+                    foreach (var item in list)
+                    {
+                        IcKatilimcilarCell.Text += System.Web.HttpUtility.HtmlEncode(item.Adi + " " + item.Soyadi) + "<br/>";
+                    }
+                    list = new PersonelService().GetMeetingParticipants(toplanti.Id, true, LogContext);
+                    foreach (var item in list)
+                    {
+                        BilgiCell.Text += System.Web.HttpUtility.HtmlEncode(item.Adi + " " + item.Soyadi) + "<br/>";
+                    }
+
+                    ToplantiYeriCell.Text = ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger);
+                    AciklamaCell.Text = System.Web.HttpUtility.HtmlEncode(toplanti.Aciklama);
+                    CevrimIciCell.Text = toplanti.CevrimIci ? "Evet" : "Hayır";
+                    IkramOnayiCell.Text = toplanti.IkramOnayi ? "Evet" : "Hayır";
+                    IkramMalzemesiCell.Text = toplanti.IkramOnayi ? System.Web.HttpUtility.HtmlEncode(toplanti.IkramMalzemesi) : "-";
+                }
+                System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "OpenToplantiModal();", true);
+            });
         }
         private string ParseToplantiYeri(int yeri, string diger)
         {
             string yeriStr = string.Empty;
             ToplantiParametre toplantiParametre = new ToplantiParametre();
-            toplantiParametre = new Model.Services.Portal.ToplantiParametreService().GetById(yeri);
+            toplantiParametre = new Model.Services.Portal.ToplantiParametreService(LogContext).GetById(yeri);
             if (toplantiParametre != null)
             {
                 if (toplantiParametre.Deger.Equals(ProjeConstants.PARAM_DIGER))
@@ -215,7 +232,7 @@ namespace Portal_WebParts.ToplantiViewerWP
         private string ParseKoordinator(int koordinator)
         {
             string koordinatorStr = string.Empty;
-            BirimTanim birimTanim = new BirimTanimService().GetById(koordinator);
+            BirimTanim birimTanim = new BirimTanimService().GetById(koordinator, LogContext);
             if (birimTanim != null)
             {
                 koordinatorStr = birimTanim.KisaAdi;
@@ -226,7 +243,7 @@ namespace Portal_WebParts.ToplantiViewerWP
         {
             string yetkiliStr = string.Empty;
             Personel personel = new Personel();
-            personel = new PersonelService().GetById(toplantiYetkilisi);
+            personel = new PersonelService().GetById(toplantiYetkilisi, LogContext);
             if (personel != null)
             {
                 yetkiliStr = personel.Adi + " " + personel.Soyadi;

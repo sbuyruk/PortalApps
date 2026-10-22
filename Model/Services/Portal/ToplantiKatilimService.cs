@@ -1,3 +1,4 @@
+using Utility.Logging;
 using DAO.Repositories.Portal;
 using Model.Ortak;
 using Model.Portal;
@@ -10,6 +11,7 @@ namespace Model.Services.Portal
 {
     public class ToplantiKatilimService
     {
+        public ToplantiKatilimService(PortalLogContext context) : this(new ToplantiKatilimRepository(context)) { }
         private readonly ToplantiKatilimRepository r;
 
         public ToplantiKatilimService()

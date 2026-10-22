@@ -9,12 +9,12 @@ using Utility.Logging;
 namespace DAO.Repositories.Portal
 {
     // Explicit-context path: no legacy SQL writer, and no SQL text/values in traces.
-    internal sealed class PortalDuyuruSqlExecutor
+    internal sealed class PortalSqlExecutor
     {
         private readonly PortalLogContext context;
         private readonly string repositoryName;
 
-        internal PortalDuyuruSqlExecutor(PortalLogContext context, string repositoryName)
+        internal PortalSqlExecutor(PortalLogContext context, string repositoryName)
         {
             if (context == null || context.Project != "Portal")
                 throw new ArgumentException("Portal log bağlamı gereklidir.", "context");
