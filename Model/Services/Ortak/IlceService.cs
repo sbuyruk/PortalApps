@@ -93,6 +93,12 @@ namespace Model.Services.Ortak
             return table == null || table.Rows.Count == 0 ? 0 : Convert.ToInt32(table.Rows[0]["Adet"]);
         }
 
+        public int CountByRegion(int regionId, PortalLogContext context)
+        {
+            DataTable table = repository.SelectCountByRegion(regionId, context);
+            return table == null || table.Rows.Count == 0 ? 0 : Convert.ToInt32(table.Rows[0]["Adet"]);
+        }
+
         public System.Collections.Generic.List<Ilce> GetWithFTK(int provinceId)
         {
             return new Ilce().ToList<Ilce>(repository.SelectWithFTK(provinceId));

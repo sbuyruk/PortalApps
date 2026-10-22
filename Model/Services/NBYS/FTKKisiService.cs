@@ -38,6 +38,13 @@ namespace Model.Services.NBYS
             return Map(repository.SelectByIdentityNumber(identityNumber)).FirstOrDefault();
         }
 
+        public FTKKisi GetByName(string name, string surname, int excludedId)
+        {
+            name = string.IsNullOrEmpty(name) ? "#${}?" : name.Trim();
+            surname = string.IsNullOrEmpty(surname) ? "#${}?" : surname.Trim();
+            return Map(repository.SelectByName(name, surname, excludedId)).FirstOrDefault();
+        }
+
         public DataTable GetMembersTable(int provinceId, int districtId, int operationId, bool onlyActive)
         {
             int repositoryOperationId = operationId == ProjeConstants.HEPSI_INT ? -1 : operationId;

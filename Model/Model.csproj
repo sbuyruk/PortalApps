@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Services\NBYS\NbysDonationWriteService.cs" />
     <Compile Include="Services\NBYS\NbysEkstreWriteService.cs" />
+    <Compile Include="Services\NBYS\NbysFtkWriteService.cs" />
     <Compile Include="Services\NBYS\NbysBagisciWriteService.cs" />
     <Compile Include="Services\Portal\ToplantiService.cs" />
     <Compile Include="Services\Portal\ToplantiKatilimService.cs" />

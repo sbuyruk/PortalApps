@@ -195,3 +195,11 @@ Dosya başına import ve satır başına bağışa aktarma sınırları korunara
 Aktarılmış/bağış bağlantılı kayıtların değiştirilmesi/silinmesi engellendi. Dosya ve toplu aktarım sonuçları tek bildirimde sayılarla gösterilir; biçim/mükerrerlik uyarıları teknik arızadan ayrılır, URL ile sahte başarı yolu kaldırılır.
 Bu kapsam bağımsız düzenli bağışçı dosya yükleme/yazma, SMS gönderimi ve belge/basım akışlarını tamamlamaz. Armağan hak kazanma algoritması yeniden tasarlanmadı.
 Audit alan listeleri, mesaj farkları, etkinleştirme ve TEST adımları LoglamaGecisBankaEkstreAktarim.md içindedir. Codex build/test/debug çalıştırmadı; çalışma zamanı sonucu kullanıcı doğrulamasını bekler.
+
+## FTK kişi, kurul işlemleri ve rapor grubu
+
+PR #510 master'a alındıktan sonra kullanıcı devam istedi. Temiz ve güncel 848fa2ef77806af57e06524841dcba4ca46f7129 üzerinden codex/nbys-ftk-islemleri-log-transaction-mesaj açıldı.
+FTKKisiGirisiWP, FTKIslemleriWP, FTKListesiWP, FTKKuruluOlmayanIlIlceListesiWP, FTKHaritasiWP ve BolgelereGoreFTKRaporuWP aynı daldadır.
+Kişi yazmaları ve geçmiş bağlantısı kontrolü; kurul işlemi, sayaç ve bütün üye geçmişi; son kaydın düzeltilmesi ve onaydaki üyelerin toplu görev sonlandırması transaction ve merkezi audit yoluna alındı. Liste/rapor/harita ve yer/bölge okumaları açık bağlamlıdır.
+Beklenen doğrulamalar ayrı Türkçe uyarılardır; teknik hatalar güvenli tek mesaj/başvuru koduyla gösterilir. Mesaj farkları, yeni referans/boş üye korumaları, FTK uygulama kilidi, audit alan listeleri ve TEST adımları LoglamaGecisFtkIslemleri.md içindedir.
+FTKYazilariWP belge/SharePoint/e-posta kapsamıyla sonraki parçada kalır. Düzenli bağışçı, SMS ve diğer belge/basım akışları tamamlanmış sayılmaz. Codex build/test/debug çalıştırmadı; çalışma zamanı sonucu kullanıcı doğrulamasını bekler.

@@ -1,3 +1,6 @@
+using System.Globalization;
+using Utility.Logging;
+using NBYS_WebParts.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.Ortak;
@@ -18,6 +21,16 @@ namespace NBYS_WebParts.FTKListesiWP
     [ToolboxItemAttribute(false)]
     public partial class FTKListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "FTKListesiWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -37,7 +50,6 @@ namespace NBYS_WebParts.FTKListesiWP
         {
             get
             {
-
                 if (ViewState["KurulusTarihi"] == null)
                 {
                     if (Page.Request.QueryString["KurulusTarihi"] != null)
@@ -61,7 +73,6 @@ namespace NBYS_WebParts.FTKListesiWP
         {
             get
             {
-
                 if (ViewState["GuncellemeTarihi"] == null)
                 {
                     if (Page.Request.QueryString["GuncellemeTarihi"] != null)
@@ -85,7 +96,6 @@ namespace NBYS_WebParts.FTKListesiWP
         {
             get
             {
-
                 if (ViewState["Grup"] == null)
                 {
                     if (Page.Request.QueryString["Grup"] != null)
@@ -110,7 +120,6 @@ namespace NBYS_WebParts.FTKListesiWP
         {
             get
             {
-
                 if (ViewState["BolgeId"] == null)
                 {
                     if (Page.Request.QueryString["BolgeId"] != null)
@@ -134,7 +143,6 @@ namespace NBYS_WebParts.FTKListesiWP
         {
             get
             {
-
                 if (ViewState["CurrentUserName"] == null)
                 {
                     ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
@@ -151,7 +159,6 @@ namespace NBYS_WebParts.FTKListesiWP
         {
             get
             {
-
                 if (ViewState["IliId"] == null)
                 {
                     if (Page.Request.QueryString["IliId"] != null)
@@ -175,7 +182,6 @@ namespace NBYS_WebParts.FTKListesiWP
         {
             get
             {
-
                 if (ViewState["IlcesiId"] == null)
                 {
                     if (Page.Request.QueryString["IlcesiId"] != null)
@@ -197,24 +203,28 @@ namespace NBYS_WebParts.FTKListesiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
+            ExecuteAction("Page_Load", () =>
             {
-                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
-                BolgeIdQS = bolge == null ? 0 : bolge.Id;
-                KurulusTarihiTxt.Text = KurulusTarihiQS;
-                GuncellemeTarihiTxt.Text = GuncellemeTarihiQS;
-                GrupDDLDoldur();
-                UtilityHelper.SetDDLValue(GrupDDL, GrupQS);
-                BolgeDDLDoldur();
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
+                if (!Page.IsPostBack)
+                {
+                    Bolge bolge = new Bolge().ToList<Bolge>(new DAO.Repositories.NBYS.NbysBagisciWriteRepository(LoggingContext).SelectUserRegion(LoggingContext.UserLogin)).FirstOrDefault();
+                    BolgeIdQS = bolge == null ? 0 : bolge.Id;
+                    KurulusTarihiTxt.Text = KurulusTarihiQS;
+                    GuncellemeTarihiTxt.Text = GuncellemeTarihiQS;
+                    GrupDDLDoldur();
+                    UtilityHelper.SetDDLValue(GrupDDL, GrupQS);
+                    BolgeDDLDoldur();
 
-                UtilityHelper.SetDDLValue(BolgeDDL, BolgeIdQS.ToString());
-                IlDDLDoldur();
-                UtilityHelper.SetDDLValue(IliDDL, IliIdQS);
-                IlceDDLDoldur();
-                UtilityHelper.SetDDLValue(IlcesiDDL, IlcesiIdQS);
-                TabloOlustur();
-            }
-            //TabloOlustur();
+                    UtilityHelper.SetDDLValue(BolgeDDL, BolgeIdQS.ToString());
+                    IlDDLDoldur();
+                    UtilityHelper.SetDDLValue(IliDDL, IliIdQS);
+                    IlceDDLDoldur();
+                    UtilityHelper.SetDDLValue(IlcesiDDL, IlcesiIdQS);
+                    TabloOlustur();
+                }
+                //TabloOlustur();
+            });
         }
         private void GrupDDLDoldur()
         {
@@ -229,15 +239,14 @@ namespace NBYS_WebParts.FTKListesiWP
         private void BolgeDDLDoldur()
         {
             BolgeDDL.Items.Clear();
-            List<Bolge> list = new BolgeService().GetActive(BolgeIdQS);
+            List<Bolge> list = new BolgeService().GetActive(BolgeIdQS, LoggingContext);
             foreach (Bolge item in list)
             {
                 if (string.IsNullOrEmpty(item.Adi.Trim()))
-                    continue;
+                continue;
                 BolgeDDL.Items.Add(new ListItem(item.Adi, item.Id.ToString()));
             }
 
-            
         }
         private void IlDDLDoldur()
         {
@@ -248,11 +257,11 @@ namespace NBYS_WebParts.FTKListesiWP
 
             int bolgeId = !string.IsNullOrEmpty(BolgeDDL.SelectedItem.Value) ? BolgeDDL.SelectedItem.Value.ConvertToInt() : 0;
 
-            List<Il> list = new IlService().GetByRegion(bolgeId, true);
+            List<Il> list = new IlService().GetByRegion(bolgeId, true, LoggingContext);
             foreach (Il il in list)
             {
                 if (string.IsNullOrEmpty(il.IlAdi.Trim()))
-                    continue;
+                continue;
                 IliDDL.Items.Add(new ListItem(il.IlAdi, il.Id.ToString()));
             }
 
@@ -261,7 +270,6 @@ namespace NBYS_WebParts.FTKListesiWP
         {
             IlcesiDDL.Items.Clear();
 
-
             ListItem li0 = new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString());
             ListItem li1 = new ListItem(ProjeConstants.VALILIK, ProjeConstants.VALILIK_INT.ToString());
             ListItem li2 = new ListItem(ProjeConstants.SADECE_ILCELER, ProjeConstants.SADECE_ILCELER_INT.ToString());
@@ -269,11 +277,11 @@ namespace NBYS_WebParts.FTKListesiWP
             IlcesiDDL.Items.Add(li1);
             IlcesiDDL.Items.Add(li2);
 
-            List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt());
+            List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt(), LoggingContext);
             foreach (Ilce ilce in list)
             {
                 if (ilce.IlceAdi.ToUpper().Equals(ProjeConstants.ILCE_MERKEZ.ToUpper()))
-                    continue;
+                continue;
                 IlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));
             }
         }
@@ -286,34 +294,26 @@ namespace NBYS_WebParts.FTKListesiWP
         private string TabloJson()
         {
             string jSon = string.Empty;
-            try
-            {
-                List<FTKListItem> list = GetDataList();
-                var serializer = new JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
+
+            List<FTKListItem> list = GetDataList();
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            jSon = serializer.Serialize(list);
+
             return jSon;
         }
         private List<FTKListItem> GetDataList()
         {
             List<FTKListItem> ftkList = new List<FTKListItem>();
-            FTKService ftkService = new FTKService();
+            FTKService ftkService = new FTKService(LoggingContext);
             DataTable dataTable = ftkService.GetLatestTable(BolgeIdQS, IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt(),
-                KurulusTarihiTxt.Text, GuncellemeTarihiTxt.Text);
+            KurulusTarihiTxt.Text, GuncellemeTarihiTxt.Text);
             int tempIlceId = 999999;
             int tempIlId = 888888;
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
                 {
-
                     int ftkId = row["FTKId"].ConvertToInt();
                     int sayac = row["Sayac"].ConvertToInt();
                     int iliId = row["Ili"].ConvertToInt();
@@ -479,24 +479,17 @@ namespace NBYS_WebParts.FTKListesiWP
                             }
                         },
                         , 'pageLength', 'colvis'
-                    ],                                        
+                    ],
                 });
             ";
             return tableString;
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl);
+
         }
         private class FTKListItem
         {
@@ -518,56 +511,82 @@ namespace NBYS_WebParts.FTKListesiWP
         }
         protected void BolgeDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BolgeIdQS = BolgeDDL.SelectedItem != null ? BolgeDDL.SelectedItem.Value.ConvertToInt() : BolgeIdQS;
-            IlDDLDoldur();
-            UtilityHelper.SetDDLValue(IliDDL, IliIdQS);
-            TabloyuGoster();
-
+            ExecuteAction("BolgeDDL_SelectedIndexChanged", () =>
+            {
+                BolgeIdQS = BolgeDDL.SelectedItem != null ? BolgeDDL.SelectedItem.Value.ConvertToInt() : BolgeIdQS;
+                IlDDLDoldur();
+                UtilityHelper.SetDDLValue(IliDDL, IliIdQS);
+                TabloyuGoster();
+            });
         }
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            IliIdQS = IliDDL.SelectedItem != null ? IliDDL.SelectedItem.Value : IliIdQS;
-            IlceDDLDoldur();
-            UtilityHelper.SetDDLValue(IlcesiDDL, IlcesiIdQS);
-            TabloyuGoster();
+            ExecuteAction("IliDDL_SelectedIndexChanged", () =>
+            {
+                IliIdQS = IliDDL.SelectedItem != null ? IliDDL.SelectedItem.Value : IliIdQS;
+                IlceDDLDoldur();
+                UtilityHelper.SetDDLValue(IlcesiDDL, IlcesiIdQS);
+                TabloyuGoster();
+            });
         }
         protected void IlcesiDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            IlcesiIdQS = IlcesiDDL.SelectedItem != null ? IlcesiDDL.SelectedItem.Value : IlcesiIdQS;
-            TabloyuGoster();
+            ExecuteAction("IlcesiDDL_SelectedIndexChanged", () =>
+            {
+                IlcesiIdQS = IlcesiDDL.SelectedItem != null ? IlcesiDDL.SelectedItem.Value : IlcesiIdQS;
+                TabloyuGoster();
+            });
         }
         protected void GrupDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TabloyuGoster();
+            ExecuteAction("GrupDDL_SelectedIndexChanged", () =>
+            {
+                TabloyuGoster();
+            });
         }
         protected void KurulusTarihiTxt_TextChanged(object sender, EventArgs e)
         {
-            TabloyuGoster();
+            ExecuteAction("KurulusTarihiTxt_TextChanged", () =>
+            {
+                TabloyuGoster();
+            });
         }
         protected void FTKGuncellemeTarihiTxt_TextChanged(object sender, EventArgs e)
         {
-            TabloyuGoster();
+            ExecuteAction("FTKGuncellemeTarihiTxt_TextChanged", () =>
+            {
+                TabloyuGoster();
+            });
         }
         protected void FTKIslemleriBtn_Click(object sender, EventArgs e)
         {
-            FTKIslem fTKIslem = new FTKIslemService().GetByLocation(IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt());
-            string ftkIslemId = fTKIslem == null ? string.Empty : fTKIslem.Id.ToString();
-            RedirectToPage(ProjeConstants.PAGE_FTKISLEMLERI + "?FTKIslemId=" + ftkIslemId + "&IliId=" + IliIdQS + "&IlcesiId=" + IlcesiIdQS);
+            ExecuteAction("FTKIslemleriBtn_Click", () =>
+            {
+                FTKIslem fTKIslem = new FTKIslemService(LoggingContext).GetByLocation(IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt());
+                string ftkIslemId = fTKIslem == null ? string.Empty : fTKIslem.Id.ToString();
+                RedirectToPage(ProjeConstants.PAGE_FTKISLEMLERI + "?FTKIslemId=" + ftkIslemId + "&IliId=" + IliIdQS + "&IlcesiId=" + IlcesiIdQS);
+            });
         }
         protected void BolgelereGoreFTKRaporuBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_BOLGELEREGORE_FTK_DAGILIMI);
+            ExecuteAction("BolgelereGoreFTKRaporuBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_BOLGELEREGORE_FTK_DAGILIMI);
+            });
         }
 
         protected void YonergeBtn_Click(object sender, EventArgs e)
         {
-
+            ExecuteAction("YonergeBtn_Click", () =>
+            {
+            });
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-
+            ExecuteAction("CloseBtn_Click", () =>
+            {
+            });
         }
-
 
     }
 }

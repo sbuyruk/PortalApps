@@ -87,6 +87,7 @@
   <ItemGroup>
     <Compile Include="Logging\NbysDonationFeedback.cs" />
     <Compile Include="Logging\NbysEkstreFeedback.cs" />
+    <Compile Include="Logging\NbysFtkFeedback.cs" />
     <Compile Include="Logging\NbysWebPartLog.cs" />
     <Compile Include="ArmaganAraWP\ArmaganAraWP.ascx.cs">
       <DependentUpon>ArmaganAraWP.ascx</DependentUpon>

@@ -1,3 +1,7 @@
+using System.Globalization;
+using System.Linq;
+using Utility.Logging;
+using NBYS_WebParts.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.Ortak;
@@ -15,6 +19,16 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
     [ToolboxItemAttribute(false)]
     public partial class FTKKisiGirisiWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "FTKKisiGirisiWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -34,7 +48,6 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
         {
             get
             {
-
                 if (ViewState["FTKKisiId"] == null)
                 {
                     if (Page.Request.QueryString["FTKKisiId"] != null)
@@ -58,7 +71,6 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
         {
             get
             {
-
                 if (ViewState["IliId"] == null)
                 {
                     if (Page.Request.QueryString["IliId"] != null)
@@ -82,7 +94,6 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
         {
             get
             {
-
                 if (ViewState["IlcesiId"] == null)
                 {
                     if (Page.Request.QueryString["IlcesiId"] != null)
@@ -106,7 +117,6 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
         {
             get
             {
-
                 if (ViewState["CurrentUserName"] == null)
                 {
                     ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
@@ -121,14 +131,18 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            if (!Page.IsPostBack)
+            ExecuteAction("Page_Load", () =>
             {
-                YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_FTKYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_FTKKISI_GIRISI);
-                IlkACilis();
-            }
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
+
+                if (!Page.IsPostBack)
+                {
+                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_FTKYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_FTKKISI_GIRISI);
+                    IlkACilis();
+                }
+            });
         }
-        private void IlkACilis()
+        private void IlkACilis(bool refreshAfterWrite = false)
         {
             IlDDLDoldur();
             IlIlceDoldur();
@@ -136,7 +150,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
             UyelikDurumuDDLDoldur();
             if (string.IsNullOrEmpty(FTKKisiIdQS))
             {
-                TitleLbl.Text = "FTK Kisi Girisi";
+                TitleLbl.Text = "FTK Kişi Girişi";
                 TitleLbl.CssClass = "col-form-label text-success fw-bold mb-1";
                 IdLbl.Text = string.Empty;
                 KaydetBtn.Visible = true;
@@ -146,18 +160,18 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
 
                 SilBtn.Visible = false;
 
-                MessageHelper.PublishMessage("Yeni üye bilgilerini girerek kayit yapabilirsiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                Messages.Info("Yeni üyenin bilgilerini girin.", 2000);
             }
             else
             {
-                TitleLbl.Text = "FTK Kisi Düzenle";
+                TitleLbl.Text = "FTK Kişi Düzenleme";
                 TitleLbl.CssClass = "col-form-label text-primary fw-bold mb-1";
                 //IdLbl.Text = FTKKisiIdQS.ToString();
                 KaydetBtn.Visible = false;
                 GuncelleBtn.Visible = true;
                 YeniKayitBtn.Visible = true;
                 SilBtn.Visible = true;
-                FTKKisiFormunuDoldur();
+                FTKKisiFormunuDoldur(!refreshAfterWrite);
             }
         }
         private void IlIlceDoldur()
@@ -172,7 +186,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
                     if (!string.IsNullOrEmpty(IlcesiIdQS))
                     {
                         if (IlcesiDDL.Items.FindByValue(IlcesiIdQS) != null)
-                            IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByValue(IlcesiIdQS).Value;
+                        IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByValue(IlcesiIdQS).Value;
                     }
                 }
             }
@@ -200,7 +214,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
         private void IlDDLDoldur()
         {
             IliDDL.Items.Clear();
-            List<Il> list = new IlService().GetAll();
+            List<Il> list = new IlService().GetAll(LoggingContext);
             IliDDL.Items.Add(new ListItem(string.Empty));
             foreach (Il il in list)
             {
@@ -212,291 +226,171 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
         private void IlceDDLDoldur()
         {
             IlcesiDDL.Items.Clear();
-            List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt());
+            List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt(), LoggingContext);
             ListItem li0 = new ListItem(ProjeConstants.VALILIK, ProjeConstants.VALILIK_INT.ToString());
             IlcesiDDL.Items.Add(li0);
             foreach (Ilce ilce in list)
             {
                 if (ilce.IlceAdi.ToUpper().Equals(ProjeConstants.ILCE_MERKEZ.ToUpper()))
-                    continue;
+                continue;
                 IlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));
             }
         }
-        private bool FTKKisiFormunuDoldur()
+        private bool FTKKisiFormunuDoldur(bool reportMissing = true)
         {
-            FTKKisi ftkkisi = new FTKKisiService().GetById(FTKKisiIdQS.ConvertToInt());
+            FTKKisi ftkkisi = new FTKKisiService(LoggingContext).GetById(FTKKisiIdQS.ConvertToInt());
             bool formDolduMu = false;
-            try
+
+            if (ftkkisi != null)
             {
-                if (ftkkisi != null)
+                IdLbl.Text = ftkkisi.Id.ToString();
+                AdiTxt.Text = ftkkisi.Adi;
+                SoyadiTxt.Text = ftkkisi.Soyadi;
+                TCKimlikNoTxt.Text = ftkkisi.TCKimlikNo.ToString();
+                DogumTarihiTxt.Text = ftkkisi.DogumTarihi.ConvertToDatetimeEmptyIfNull();
+                Telefon1Txt.Text = ftkkisi.Telefon1;
+                Telefon2Txt.Text = ftkkisi.Telefon2;
+
+                UnvaniTxt.Text = ftkkisi.Unvani;
+                ValiChk.Checked = ftkkisi.Vali;
+                KaymakamChk.Checked = ftkkisi.Kaymakam;
+                AdresTxt.Text = ftkkisi.Adres;
+                AciklamaTxt.Text = ftkkisi.Aciklama;
+
+                FTKKisiIdQS = ftkkisi.Id.ToString();
+                ListItem ilItem = IliDDL.Items.FindByValue(ftkkisi.Ili.ToString());
+                if (ilItem != null)
                 {
-                    IdLbl.Text = ftkkisi.Id.ToString();
-                    AdiTxt.Text = ftkkisi.Adi;
-                    SoyadiTxt.Text = ftkkisi.Soyadi;
-                    TCKimlikNoTxt.Text = ftkkisi.TCKimlikNo.ToString();
-                    DogumTarihiTxt.Text = ftkkisi.DogumTarihi.ConvertToDatetimeEmptyIfNull();
-                    Telefon1Txt.Text = ftkkisi.Telefon1;
-                    Telefon2Txt.Text = ftkkisi.Telefon2;
-
-                    UnvaniTxt.Text = ftkkisi.Unvani;
-                    ValiChk.Checked = ftkkisi.Vali;
-                    KaymakamChk.Checked = ftkkisi.Kaymakam;
-                    AdresTxt.Text = ftkkisi.Adres;
-                    AciklamaTxt.Text = ftkkisi.Aciklama;
-
-                    FTKKisiIdQS = ftkkisi.Id.ToString();
-                    ListItem ilItem = IliDDL.Items.FindByValue(IliDDL.Items.FindByValue(ftkkisi.Ili.ToString()).Value);
-                    if (ilItem != null)
-                    {
-                        IliDDL.SelectedValue = ilItem.Value;
-                        IlceDDLDoldur();
-                        UtilityHelper.SetDDLValue(IliDDL, ftkkisi.Ili.ToString());
-                        UtilityHelper.SetDDLValue(IlcesiDDL, ftkkisi.Ilcesi.ToString());
-                        IliIdQS = ftkkisi.Ili.ToString();
-                        IlcesiIdQS = ftkkisi.Ilcesi.ToString();
-                    }
-                    KartNoTxt.Text = ftkkisi.KartNo;
-                    UtilityHelper.SetDDLValue(FTKGoreviDDL, ftkkisi.FTKGorevi.ToString());
-                    UtilityHelper.SetDDLValue(UyelikDurumuDDL, ftkkisi.UyelikDurumu);
-
+                    IliDDL.SelectedValue = ilItem.Value;
+                    IlceDDLDoldur();
+                    UtilityHelper.SetDDLValue(IliDDL, ftkkisi.Ili.ToString());
+                    UtilityHelper.SetDDLValue(IlcesiDDL, ftkkisi.Ilcesi.ToString());
+                    IliIdQS = ftkkisi.Ili.ToString();
+                    IlcesiIdQS = ftkkisi.Ilcesi.ToString();
                 }
-                else
-                {
-                    MessageHelper.PublishMessage("Kişi Bulunamadı", ProjeConstants.MESAJ_HATA);
-                }
+                KartNoTxt.Text = ftkkisi.KartNo;
+                UtilityHelper.SetDDLValue(FTKGoreviDDL, ftkkisi.FTKGorevi.ToString());
+                UtilityHelper.SetDDLValue(UyelikDurumuDDL, ftkkisi.UyelikDurumu);
+                formDolduMu = true;
             }
-            catch (Exception exception)
+            else
             {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
-                formDolduMu = false;
+                if (!reportMissing) throw new InvalidOperationException("Kaydedilen kişi yenileme sırasında bulunamadı.");
+                GuncelleBtn.Enabled = false; SilBtn.Enabled = false;
+                Messages.Warning("Kişi kaydı bulunamadı. Listeyi yenileyip tekrar seçin.");
             }
+
             return formDolduMu;
         }
         protected void KaydetBtn_Click(object sender, EventArgs e)
         {
-            ExceptionHelper exceptionHelper = new ExceptionHelper();
-            try
+            ExecuteAction("KaydetBtn_Click", () =>
             {
-                FTKKisi ftkKisi = KaydetFTKKisiData2Db(exceptionHelper);
-                if (ftkKisi != null) //kaydettikten sonra önceki sayfaya dön
-                {
-                    FTKKisiIdQS = ftkKisi.Id.ToString();
-                    IlkACilis();
-                    MessageHelper.PublishMessage("Kişi Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
-                }
-                else
-                {
-                    throw (new Exception("Kişi kaydedilemedi."));
-                }
-            }
-            catch (Exception ex)
-            {
-                exceptionHelper.Exceptions.Add(ex);
-                exceptionHelper.PublishException();
-            }
+                SavePerson(false);
+            });
         }
-        private FTKKisi KaydetFTKKisiData2Db(ExceptionHelper exceptionHelper)
-        {
-            FTKKisi yeniFTKKisi = null;
-            if (string.IsNullOrEmpty(AdiTxt.Text))
-            {
-                MessageHelper.PublishMessage("Kişi Adı Boş Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
-            }
-            else if (string.IsNullOrEmpty(SoyadiTxt.Text))
-            {
-                MessageHelper.PublishMessage("Kişi Soyadı Boş Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
-            }
-            else
-            {
-                if (KayitVarMi(TCKimlikNoTxt.Text.ConvertToLong()))
-                {
-                    exceptionHelper.Exceptions.Add(new Exception("Bu TCKimlik numaralı bir kayıt zaten var."));
-                }
-                else
-                {
-                    yeniFTKKisi = new FTKKisi();
-                    yeniFTKKisi.Adi = AdiTxt.Text;
-                    yeniFTKKisi.Soyadi = SoyadiTxt.Text;
-                    yeniFTKKisi.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
-                    yeniFTKKisi.DogumTarihi = DogumTarihiTxt.Text.ConvertToDatetime();
-                    yeniFTKKisi.Telefon1 = Telefon1Txt.Text;
-                    yeniFTKKisi.Telefon2 = Telefon2Txt.Text;
-                    yeniFTKKisi.KartNo = KartNoTxt.Text;
-                    yeniFTKKisi.Unvani = UnvaniTxt.Text;
-                    yeniFTKKisi.Vali = ValiChk.Checked;
-                    yeniFTKKisi.Kaymakam = KaymakamChk.Checked;
-                    yeniFTKKisi.Adres = AdresTxt.Text;
 
-                    yeniFTKKisi.Ilcesi = IlcesiDDL.SelectedValue.ConvertToInt();
-                    ListItem ilItem = IliDDL.SelectedItem;
-                    yeniFTKKisi.Ili = ilItem.Value.ConvertToInt();
-                    yeniFTKKisi.Aciklama = AciklamaTxt.Text;
-
-                    yeniFTKKisi.FTKGorevi = FTKGoreviDDL.SelectedItem.Value.ConvertToInt();
-                    yeniFTKKisi.KartNo = KartNoTxt.Text;
-                    yeniFTKKisi.UyelikDurumu = UyelikDurumuDDL.SelectedItem.Value;
-
-                    yeniFTKKisi.Olusturan = CurrentUserName;
-                    int ftkUyeId = new FTKKisiService().Save(yeniFTKKisi);
-                    yeniFTKKisi.Id = ftkUyeId;
-                    FTKKisiIdQS = yeniFTKKisi.Id.ToString();
-                    IliIdQS = yeniFTKKisi.Ili.ToString();
-                    IlcesiIdQS = yeniFTKKisi.Ilcesi.ToString();
-                    return yeniFTKKisi;
-                }
-            }
-            return yeniFTKKisi;
-        }
         protected void GuncelleBtn_Click(object sender, EventArgs e)
         {
-            ExceptionHelper exceptionHelper = new ExceptionHelper();
-            try
+            ExecuteAction("GuncelleBtn_Click", () =>
             {
-
-                bool guncellendiMi = GuncelleFTKKisiData2Db(exceptionHelper);
-                if (guncellendiMi)
-                {
-                    MessageHelper.PublishMessage("Kişi Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
-                }
-                else
-                {
-                    throw (new Exception("Kişi Güncellenemedi."));
-
-                }
-            }
-            catch (Exception ex)
-            {
-                exceptionHelper.Exceptions.Add(ex);
-                exceptionHelper.PublishException();
-            }
+                SavePerson(true);
+            });
         }
-        private bool GuncelleFTKKisiData2Db(ExceptionHelper exceptionHelper)
+
+        private void SavePerson(bool update)
         {
-            bool guncellendiMi = false;
-            FTKKisiService ftkKisiService = new FTKKisiService();
-            FTKKisi ftkKisi = ftkKisiService.GetById(FTKKisiIdQS.ConvertToInt());
-            if ((ftkKisi.TCKimlikNo != TCKimlikNoTxt.Text.ConvertToLong()) && KayitVarMi(TCKimlikNoTxt.Text.ConvertToLong()))
+            long identity = 0;
+            if (!string.IsNullOrWhiteSpace(TCKimlikNoTxt.Text) && (!long.TryParse(TCKimlikNoTxt.Text, out identity) || identity < 0))
+            { Messages.Warning("T.C. kimlik numarasını rakamlarla girin."); return; }
+            DateTime birth = new DateTime(1901, 1, 1);
+            if (!string.IsNullOrWhiteSpace(DogumTarihiTxt.Text) && (!DateTime.TryParse(DogumTarihiTxt.Text,
+            CultureInfo.GetCultureInfo(ProjeConstants.CULTUREINFO), DateTimeStyles.None, out birth) || birth.Year < 1901))
+            { Messages.Warning("Geçerli bir doğum tarihi girin veya alanı boş bırakın."); return; }
+            int id = 0;
+            if (update && (!int.TryParse(FTKKisiIdQS, out id) || id <= 0))
+            { Messages.Warning("Güncellenecek kişi geçerli değil. Listeyi yenileyip tekrar seçin."); return; }
+            FTKKisi input = new FTKKisi
             {
-                exceptionHelper.Exceptions.Add(new Exception("Bu TCKimlik numaralı bir kayıt zaten var."));
-            }
-            else
+                Id = id, Adi = AdiTxt.Text.Trim(), Soyadi = SoyadiTxt.Text.Trim(), TCKimlikNo = identity, DogumTarihi = birth,
+                Telefon1 = Telefon1Txt.Text, Telefon2 = Telefon2Txt.Text, KartNo = KartNoTxt.Text, Unvani = UnvaniTxt.Text,
+                Vali = ValiChk.Checked, Kaymakam = KaymakamChk.Checked, Adres = AdresTxt.Text, Aciklama = AciklamaTxt.Text,
+                Ili = IliDDL.SelectedValue.ConvertToInt(), Ilcesi = IlcesiDDL.SelectedValue.ConvertToInt(),
+                FTKGorevi = FTKGoreviDDL.SelectedValue.ConvertToInt(), UyelikDurumu = UyelikDurumuDDL.SelectedValue
+            };
+            int savedId;
+            NbysFtkWriteResult result = new NbysFtkWriteService(LoggingContext).SavePerson(input, out savedId);
+            NbysFtkFeedback.Show(LoggingContext, result, update ? "Kişi güncellendi." : "Kişi kaydedildi.", () =>
             {
-
-                if (ftkKisi != null)
-                {
-                    ftkKisi.Adi = AdiTxt.Text;
-                    ftkKisi.Soyadi = SoyadiTxt.Text;
-                    ftkKisi.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
-                    ftkKisi.DogumTarihi = DogumTarihiTxt.Text.ConvertToDatetime();
-                    ftkKisi.Telefon1 = Telefon1Txt.Text;
-                    ftkKisi.Telefon2 = Telefon2Txt.Text;
-                    ftkKisi.KartNo = KartNoTxt.Text;
-                    ftkKisi.Unvani = UnvaniTxt.Text;
-                    ftkKisi.Vali = ValiChk.Checked;
-                    ftkKisi.Kaymakam = KaymakamChk.Checked;
-                    ftkKisi.Ilcesi = IlcesiDDL.SelectedValue.ConvertToInt();
-                    ListItem ilItem = IliDDL.SelectedItem;
-                    ftkKisi.Ili = ilItem.Value.ConvertToInt();
-
-                    ftkKisi.Adres = AdresTxt.Text;
-                    ftkKisi.Aciklama = AciklamaTxt.Text;
-
-                    ftkKisi.FTKGorevi = FTKGoreviDDL.SelectedItem.Value.ConvertToInt();
-                    ftkKisi.KartNo = KartNoTxt.Text;
-
-                    ftkKisi.UyelikDurumu = UyelikDurumuDDL.SelectedItem.Value;
-
-                    ftkKisi.Degistiren = CurrentUserName;
-                    guncellendiMi = ftkKisiService.Update(ftkKisi);
-                    FTKKisiIdQS = ftkKisi.Id.ToString();
-                    IliIdQS = ftkKisi.Ili.ToString();
-                    IlcesiIdQS = ftkKisi.Ilcesi.ToString();
-                }
-            }
-            return guncellendiMi;
+                FTKKisiIdQS = savedId.ToString(); IliIdQS = input.Ili.ToString(); IlcesiIdQS = input.Ilcesi.ToString();
+                IlkACilis(true);
+            });
         }
+
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("CloseBtn_Click", () =>
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         private bool AdSoyadVarMi(string adi, string soyadi)
         {
-            FTKKisi uyeDao = new FTKKisiService().GetByName(adi, soyadi);
-            if (uyeDao == null)
-            {
-                return false;
-            }
-            else
-                return true;
+            FTKKisi person = new FTKKisiService(LoggingContext).GetByName(adi, soyadi, FTKKisiIdQS.ConvertToInt());
+            return person != null;
         }
-        private bool KayitVarMi(long tckimlikno)
-        {
-            if (tckimlikno < 1)
-            {
-                return false;
-            }
-            else
-            {
-                FTKKisi uyeDao = new FTKKisiService().GetByIdentityNumber(tckimlikno);
-                if (uyeDao == null)
-                {
-                    return false;
-                }
-                else
-                    return true;
-            }
 
-        }
         protected void SoyadiTxt_TextChanged(object sender, EventArgs e)
         {
-            if (AdSoyadVarMi(AdiTxt.Text, SoyadiTxt.Text))
+            ExecuteAction("SoyadiTxt_TextChanged", () =>
             {
-                MessageHelper.PublishMessage("Bu AD ve SOYADI içeren bir kayıt zaten var. Lütfen kaydetmeden önce kontrol ediniz ", ProjeConstants.MESAJ_HATA);
-            }
+                // A save postback can also raise TextChanged; its result has one notification.
+                if (!string.Equals(Page.Request.Form["__EVENTTARGET"], SoyadiTxt.UniqueID, StringComparison.Ordinal)) return;
+                if (AdSoyadVarMi(AdiTxt.Text, SoyadiTxt.Text))
+                {
+                    Messages.Warning("Aynı ad ve soyadla bir kayıt var. Kaydetmeden önce mevcut kişiyi kontrol edin.");
+                }
+            });
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl);
+
         }
         protected void FtkKisiListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FTKKISI_LIST + "?SecilenId=" + FTKKisiIdQS);
+            ExecuteAction("FtkKisiListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FTKKISI_LIST + "?SecilenId=" + FTKKisiIdQS);
+            });
         }
         protected void FTKFahriBaskanListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FTKFAHRIBASKAN_LIST + "?SecilenId=" + FTKKisiIdQS);
+            ExecuteAction("FTKFahriBaskanListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FTKFAHRIBASKAN_LIST + "?SecilenId=" + FTKKisiIdQS);
+            });
         }
         protected void FTKIslemleriBtn_Click(object sender, EventArgs e)
         {
-            FTKIslem fTKIslem = new FTKIslemService().GetByLocation(IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt());
-            string ftkIslemId = fTKIslem == null ? string.Empty : fTKIslem.Id.ToString();
-            RedirectToPage(ProjeConstants.PAGE_FTKISLEMLERI + "?FTKIslemId=" + ftkIslemId + "&IliId=" + IliIdQS + "&IlcesiId=" + IlcesiIdQS);
+            ExecuteAction("FTKIslemleriBtn_Click", () =>
+            {
+                FTKIslem fTKIslem = new FTKIslemService(LoggingContext).GetByLocation(IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt());
+                string ftkIslemId = fTKIslem == null ? string.Empty : fTKIslem.Id.ToString();
+                RedirectToPage(ProjeConstants.PAGE_FTKISLEMLERI + "?FTKIslemId=" + ftkIslemId + "&IliId=" + IliIdQS + "&IlcesiId=" + IlcesiIdQS);
+            });
         }
 
         protected void FTKGoreviDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ValiKaymakamSec();
+            ExecuteAction("FTKGoreviDDL_SelectedIndexChanged", () =>
+            {
+                ValiKaymakamSec();
+            });
         }
 
         private void ValiKaymakamSec()
@@ -534,76 +428,58 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
         }
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            IlceDDLDoldur();
-            ValiKaymakamSec();
+            ExecuteAction("IliDDL_SelectedIndexChanged", () =>
+            {
+                IlceDDLDoldur();
+                ValiKaymakamSec();
+            });
         }
         protected void IlcesiDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ValiKaymakamSec();
+            ExecuteAction("IlcesiDDL_SelectedIndexChanged", () =>
+            {
+                ValiKaymakamSec();
+            });
         }
         protected void SilBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("SilBtn_Click", () =>
             {
-                FTKKisi ftkkisi = new FTKKisiService().GetById(FTKKisiIdQS.ConvertToInt());
-                if (ftkkisi != null)
-                {
-                    SilPopupAc(sender);
-                }
-            }
-            catch (Exception e1)
-            {
-                ExceptionHelper eh = new ExceptionHelper();
-                Exception e2 = new Exception("Kisi silinemedi");
-                eh.Exceptions.Add(e2);
-                eh.Exceptions.Add(e1);
-                eh.PublishException();
-            }
+                FTKKisi person = new FTKKisiService(LoggingContext).GetById(FTKKisiIdQS.ConvertToInt());
+                if (person == null) { Messages.Warning("Kişi kaydı bulunamadı. Listeyi yenileyin."); return; }
+                SilPopupAc(sender);
+            });
         }
         private void SilPopupAc(object sender)
         {
             ParamVnLbl.Text = FTKKisiIdQS;
             string openModal = "OpenSilModal();";
             SilMesajiLbl.Visible = true;
-            SilMesajiLbl.Text = "Onayladiginiz takdirde FTK personeline ait tüm bilgiler silinecektir.</br>Silmek istediginizden eminmisiniz?";
+            SilMesajiLbl.Text = "Kişi kaydını silmek istiyor musunuz? FTK geçmişinde kullanılan kayıtlar korunur.";
             SilModalBaslikLbl.Text = "Silmeyi Onayla";
             SilNowBtn.Visible = true;
             UtilityHelper.ScriptCalistir(openModal);
         }
         protected void SilNowBtn_Click(object sender, EventArgs e)
         {
-            bool silindi = false;
-            try
+            ExecuteAction("SilNowBtn_Click", () =>
             {
-                FTKKisiService ftkKisiService = new FTKKisiService();
-                FTKKisi ftkkisi = ftkKisiService.GetById(FTKKisiIdQS.ConvertToInt());
-
-                if (ftkkisi != null)
+                NbysFtkWriteResult result = new NbysFtkWriteService(LoggingContext).DeletePerson(FTKKisiIdQS.ConvertToInt());
+                NbysFtkFeedback.Show(LoggingContext, result, "Kişi silindi.", () =>
                 {
-                    silindi = ftkKisiService.Delete(ftkkisi);
-                    FTKIslem fTKIslemleri = new FTKIslemService().GetByLocation(IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt());
-                    string ftkIslemId = fTKIslemleri == null ? string.Empty : fTKIslemleri.Id.ToString();
-                    RedirectToPage(ProjeConstants.PAGE_FTKISLEMLERI + "?FTKIslemId=" + ftkIslemId + "&IliId=" + IliIdQS + "&IlcesiId=" + IlcesiIdQS);
-
-                }
-                if (!silindi)
-                {
-                    MessageHelper.PublishMessage("Kisi Silinemedi", ProjeConstants.MESAJ_HATA);
-                }
-            }
-            catch (Exception e1)
-            {
-                ExceptionHelper eh = new ExceptionHelper();
-                Exception e2 = new Exception("Kisi silinemedi");
-                eh.Exceptions.Add(e2);
-                eh.Exceptions.Add(e1);
-                eh.PublishException();
-            }
+                    UtilityHelper.ScriptCalistir("bootstrap.Modal.getOrCreateInstance(document.getElementById('SilModalDiv')).hide();");
+                    KaydetBtn.Visible = false; GuncelleBtn.Visible = false; SilBtn.Visible = false; YeniKayitBtn.Visible = true;
+                    TitleLbl.Text = "Kişi silindi";
+                });
+            });
         }
 
         protected void YeniKayitBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FTKKISI_GIRISI + "?IliId=" + IliIdQS + "&IlcesiId=" + IlcesiIdQS);
+            ExecuteAction("YeniKayitBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FTKKISI_GIRISI + "?IliId=" + IliIdQS + "&IlcesiId=" + IlcesiIdQS);
+            });
         }
     }
 }

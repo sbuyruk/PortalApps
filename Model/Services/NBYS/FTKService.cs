@@ -1,3 +1,4 @@
+using Utility.Logging;
 using DAO.Repositories.NBYS;
 using Model.NBYS;
 using Model.Ortak;
@@ -13,6 +14,7 @@ namespace Model.Services.NBYS
     public class FTKService
     {
         private readonly FTKRepository repository;
+        public FTKService(PortalLogContext context) : this(new FTKRepository(context)) { }
         public FTKService() : this(new FTKRepository()) { }
         public FTKService(FTKRepository repository)
         {

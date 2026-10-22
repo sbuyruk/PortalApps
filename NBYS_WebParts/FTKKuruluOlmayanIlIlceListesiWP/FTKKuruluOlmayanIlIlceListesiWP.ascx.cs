@@ -1,3 +1,7 @@
+using System.Globalization;
+using System.Linq;
+using Utility.Logging;
+using NBYS_WebParts.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.Ortak;
@@ -17,6 +21,16 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
     [ToolboxItemAttribute(false)]
     public partial class FTKKuruluOlmayanIlIlceListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "FTKKuruluOlmayanIlIlceListesiWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -36,7 +50,6 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
         {
             get
             {
-
                 if (ViewState["BolgeId"] == null)
                 {
                     if (Page.Request.QueryString["BolgeId"] != null)
@@ -60,7 +73,6 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
         {
             get
             {
-
                 if (ViewState["IliId"] == null)
                 {
                     if (Page.Request.QueryString["IliId"] != null)
@@ -84,7 +96,6 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
         {
             get
             {
-
                 if (ViewState["IlcesiId"] == null)
                 {
                     if (Page.Request.QueryString["IlcesiId"] != null)
@@ -108,7 +119,6 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
         {
             get
             {
-
                 if (ViewState["CurrentUserName"] == null)
                 {
                     ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
@@ -123,32 +133,34 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
+            ExecuteAction("Page_Load", () =>
             {
-                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
-                BolgeIdQS = bolge == null ? 0 : bolge.Id;
-                BolgeDDLDoldur();
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
+                if (!Page.IsPostBack)
+                {
+                    Bolge bolge = new Bolge().ToList<Bolge>(new DAO.Repositories.NBYS.NbysBagisciWriteRepository(LoggingContext).SelectUserRegion(LoggingContext.UserLogin)).FirstOrDefault();
+                    BolgeIdQS = bolge == null ? 0 : bolge.Id;
+                    BolgeDDLDoldur();
 
-                UtilityHelper.SetDDLValue(BolgeDDL, BolgeIdQS.ToString());
-                IlDDLDoldur();
-                UtilityHelper.SetDDLValue(IliDDL, IliIdQS);
-                IlceDDLDoldur();
-                UtilityHelper.SetDDLValue(IlcesiDDL, IlcesiIdQS);
-                TabloOlustur();
-            }
-
+                    UtilityHelper.SetDDLValue(BolgeDDL, BolgeIdQS.ToString());
+                    IlDDLDoldur();
+                    UtilityHelper.SetDDLValue(IliDDL, IliIdQS);
+                    IlceDDLDoldur();
+                    UtilityHelper.SetDDLValue(IlcesiDDL, IlcesiIdQS);
+                    TabloOlustur();
+                }
+            });
         }
         private void BolgeDDLDoldur()
         {
             BolgeDDL.Items.Clear();
-            List<Bolge> list = new BolgeService().GetActive(BolgeIdQS);
+            List<Bolge> list = new BolgeService().GetActive(BolgeIdQS, LoggingContext);
             foreach (Bolge item in list)
             {
                 if (string.IsNullOrEmpty(item.Adi.Trim()))
-                    continue;
+                continue;
                 BolgeDDL.Items.Add(new ListItem(item.Adi, item.Id.ToString()));
             }
-
 
         }
         private void IlDDLDoldur()
@@ -160,18 +172,17 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
 
             int bolgeId = !string.IsNullOrEmpty(BolgeDDL.SelectedItem.Value) ? BolgeDDL.SelectedItem.Value.ConvertToInt() : 0;
 
-            List<Il> list = new IlService().GetByRegion(bolgeId, true);
+            List<Il> list = new IlService().GetByRegion(bolgeId, true, LoggingContext);
             foreach (Il il in list)
             {
                 if (string.IsNullOrEmpty(il.IlAdi.Trim()))
-                    continue;
+                continue;
                 IliDDL.Items.Add(new ListItem(il.IlAdi, il.Id.ToString()));
             }
         }
         private void IlceDDLDoldur()
         {
             IlcesiDDL.Items.Clear();
-
 
             ListItem li0 = new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString());
             ListItem li1 = new ListItem(ProjeConstants.VALILIK, ProjeConstants.VALILIK_INT.ToString());
@@ -180,11 +191,11 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
             IlcesiDDL.Items.Add(li1);
             IlcesiDDL.Items.Add(li2);
 
-            List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt());
+            List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt(), LoggingContext);
             foreach (Ilce ilce in list)
             {
                 if (ilce.IlceAdi.ToUpper().Equals(ProjeConstants.ILCE_MERKEZ.ToUpper()))
-                    continue;
+                continue;
                 IlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));
             }
         }
@@ -197,41 +208,32 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
         private string TabloJson()
         {
             string jSon = string.Empty;
-            try
+
+            List<IlIlceItem> list = new List<IlIlceItem>();
+            if (IlcesiIdQS.ConvertToInt() != ProjeConstants.SADECE_ILCELER_INT)
             {
-
-
-                List<IlIlceItem> list = new List<IlIlceItem>();
-                if (IlcesiIdQS.ConvertToInt() != ProjeConstants.SADECE_ILCELER_INT)
-                {
-                    List<IlIlceItem> illist = GetIlDataList();
-                    list.AddRange(illist);
-                }
-
-                IlcesiIdQS = IlcesiDDL.SelectedValue;
-                if (IlcesiIdQS.ConvertToInt() != ProjeConstants.VALILIK_INT)
-                {
-                    List<IlIlceItem> ilcelist = new List<IlIlceItem>();
-                    ilcelist = GetIlceDataList();
-                    list.AddRange(ilcelist);
-                }
-
-                var serializer = new JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(list);
+                List<IlIlceItem> illist = GetIlDataList();
+                list.AddRange(illist);
             }
-            catch (Exception exception)
+
+            IlcesiIdQS = IlcesiDDL.SelectedValue;
+            if (IlcesiIdQS.ConvertToInt() != ProjeConstants.VALILIK_INT)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
+                List<IlIlceItem> ilcelist = new List<IlIlceItem>();
+                ilcelist = GetIlceDataList();
+                list.AddRange(ilcelist);
             }
+
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            jSon = serializer.Serialize(list);
+
             return jSon;
         }
         private List<IlIlceItem> GetIlDataList()
         {
             List<IlIlceItem> liste = new List<IlIlceItem>();
-            FTKService ftkService = new FTKService();
+            FTKService ftkService = new FTKService(LoggingContext);
             DataTable dataTable = ftkService.GetProvincesWithoutFTK(BolgeDDL.SelectedItem.Value.ConvertToInt(), IliDDL.SelectedItem.Value.ConvertToInt());
             if (dataTable != null)
             {
@@ -243,7 +245,6 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
 
                     string ilAdi = row["IlAdi"].ToString();
                     string ilceAdi = ProjeConstants.VALILIK;
-
 
                     IlIlceItem ilIlceListItem = new IlIlceItem();
                     ilIlceListItem.Bolge = bolge;
@@ -260,7 +261,7 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
         private List<IlIlceItem> GetIlceDataList()
         {
             List<IlIlceItem> liste = new List<IlIlceItem>();
-            FTKService ftkService = new FTKService();
+            FTKService ftkService = new FTKService(LoggingContext);
             DataTable dataTable = ftkService.GetDistrictsWithoutFTK(BolgeDDL.SelectedItem.Value.ConvertToInt(), IliDDL.SelectedItem.Value.ConvertToInt());
             if (dataTable != null)
             {
@@ -371,24 +372,17 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
                             }
                         },
                         , 'pageLength', 'colvis'
-                    ],                                        
+                    ],
                 });
             ";
             return tableString;
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl);
+
         }
         private class IlIlceItem
         {
@@ -400,38 +394,57 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-
+            ExecuteAction("CloseBtn_Click", () =>
+            {
+            });
         }
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            IliIdQS = IliDDL.SelectedItem.Value;
-            IlceDDLDoldur();
-            TabloOlustur();
+            ExecuteAction("IliDDL_SelectedIndexChanged", () =>
+            {
+                IliIdQS = IliDDL.SelectedItem.Value;
+                IlceDDLDoldur();
+                TabloOlustur();
+            });
         }
         protected void IlcesiDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            IlcesiIdQS = IlcesiDDL.SelectedItem.Value;
-            TabloOlustur();
+            ExecuteAction("IlcesiDDL_SelectedIndexChanged", () =>
+            {
+                IlcesiIdQS = IlcesiDDL.SelectedItem.Value;
+                TabloOlustur();
+            });
         }
 
         protected void BolgeDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            IlDDLDoldur();
-            TabloOlustur();
+            ExecuteAction("BolgeDDL_SelectedIndexChanged", () =>
+            {
+                IlDDLDoldur();
+                TabloOlustur();
+            });
         }
         protected void FTKIslemleriBtn_Click(object sender, EventArgs e)
         {
-            FTKIslem fTKIslem = new FTKIslemService().GetByLocation(IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt());
-            string ftkIslemId = fTKIslem == null ? string.Empty : fTKIslem.Id.ToString();
-            RedirectToPage(ProjeConstants.PAGE_FTKISLEMLERI + "?FTKIslemId=" + ftkIslemId + "&IliId=" + IliIdQS + "&IlcesiId=" + IlcesiIdQS);
+            ExecuteAction("FTKIslemleriBtn_Click", () =>
+            {
+                FTKIslem fTKIslem = new FTKIslemService(LoggingContext).GetByLocation(IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt());
+                string ftkIslemId = fTKIslem == null ? string.Empty : fTKIslem.Id.ToString();
+                RedirectToPage(ProjeConstants.PAGE_FTKISLEMLERI + "?FTKIslemId=" + ftkIslemId + "&IliId=" + IliIdQS + "&IlcesiId=" + IlcesiIdQS);
+            });
         }
         protected void BolgelereGoreFTKRaporuBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_BOLGELEREGORE_FTK_DAGILIMI);
+            ExecuteAction("BolgelereGoreFTKRaporuBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_BOLGELEREGORE_FTK_DAGILIMI);
+            });
         }
         protected void YonergeBtn_Click(object sender, EventArgs e)
         {
-
+            ExecuteAction("YonergeBtn_Click", () =>
+            {
+            });
         }
     }
 }

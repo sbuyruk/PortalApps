@@ -1,3 +1,4 @@
+using Utility.Logging;
 using DAO.Repositories.NBYS;
 using Model.NBYS;
 using Model.Ortak;
@@ -13,6 +14,7 @@ namespace Model.Services.NBYS
     public class FTKIslemService
     {
         private readonly FTKIslemRepository repository;
+        public FTKIslemService(PortalLogContext context) : this(new FTKIslemRepository(context)) { }
         public FTKIslemService() : this(new FTKIslemRepository()) { }
         public FTKIslemService(FTKIslemRepository repository)
         {
