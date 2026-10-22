@@ -8,6 +8,7 @@ using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace Model.Services.NBYS
 {
@@ -406,6 +407,13 @@ namespace Model.Services.NBYS
         {
             return repository.SelectCurrencyTotalsByDateBank(
                 baslangic, bitis, bankaGrup, ProjeConstants.DOVIZ_TL);
+        }
+
+        public DataTable GetCurrencyTotalsByDateBank(DateTime baslangic, DateTime bitis, string bankaGrup,
+            PortalLogContext context)
+        {
+            return repository.SelectCurrencyTotalsByDateBank(
+                baslangic, bitis, bankaGrup, ProjeConstants.DOVIZ_TL, context);
         }
 
         public DataTable GetDonorDetailRows(int bagisciId)

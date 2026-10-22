@@ -1,6 +1,7 @@
 using DAO.Ortak;
 using System;
 using System.Data;
+using Utility.Logging;
 
 namespace DAO.Repositories.NBYS
 {
@@ -57,6 +58,13 @@ namespace DAO.Repositories.NBYS
         {
             return db.SelectFromDb(new SqlQuery(
                 "SELECT BankaGrup FROM BankaTanim_Table GROUP BY BankaGrup"), "");
+        }
+
+        public DataTable SelectGroups(PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(
+                "SELECT BankaGrup FROM BankaTanim_Table GROUP BY BankaGrup");
+            return new NbysSqlExecutor(context, "BankaTanimRepository").Select(query);
         }
 
         public DataTable SelectGroups2()

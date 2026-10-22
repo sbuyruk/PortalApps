@@ -8,6 +8,7 @@ using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace Model.Services.NBYS
 {
@@ -53,6 +54,16 @@ namespace Model.Services.NBYS
             DataTable table = repository.SelectGroups();
             return table.AsEnumerable()
                 .Select(row => row.Field<string>("BankaGrup"))
+                .ToList();
+        }
+
+        public List<string> GetGroups(PortalLogContext context)
+        {
+            DataTable table = repository.SelectGroups(context);
+            if (table == null) return new List<string>();
+            return table.AsEnumerable()
+                .Select(row => row.Field<string>("BankaGrup"))
+                .Where(group => !string.IsNullOrWhiteSpace(group))
                 .ToList();
         }
 
