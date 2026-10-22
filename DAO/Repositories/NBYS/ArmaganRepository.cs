@@ -238,6 +238,13 @@ namespace DAO.Repositories.NBYS
             string durum, DateTime baslangic, DateTime bitis, int? armaganTanimId,
             int? bolgeId, int? ilId)
         {
+            return SelectByDurumTarih(durum, baslangic, bitis, armaganTanimId, bolgeId, ilId, null);
+        }
+
+        public DataTable SelectByDurumTarih(
+            string durum, DateTime baslangic, DateTime bitis, int? armaganTanimId,
+            int? bolgeId, int? ilId, SqlTransactionContext transaction)
+        {
             string durumKosulu = durum == null ? string.Empty : " AND A.Durum=@Durum";
             string tanimKosulu = armaganTanimId.HasValue ? " AND A.ArmaganTanimId=@ArmaganTanimId" : string.Empty;
             string bolgeKosulu = bolgeId.HasValue
@@ -257,8 +264,8 @@ namespace DAO.Repositories.NBYS
                     A.BelgeGecersizMi, A.IadeMiktari, A.DovizCinsi,
                     A.BagisMiktariYazmasin, A.KacinciBelge,
                     IIF(A.DuzenliBagis=1,'Düzenli Bağış',IIF(A.CokluBagis=1,'Çoklu Bağış','Bağış')) CokluBagis
-                FROM Armagan_Table A
-                INNER JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
+                FROM Armagan_Table A" + (transaction == null ? "" : " WITH (UPDLOCK, HOLDLOCK)") + @"
+                INNER JOIN NakitBagisci_Table B" + (transaction == null ? "" : " WITH (HOLDLOCK)") + @" ON B.Id=A.BagisciId
                 LEFT JOIN ArmaganTanim_Table D ON D.Id=A.ArmaganTanimId
                 LEFT JOIN Il_Table E ON E.Id=B.Ili
                 LEFT JOIN Ilce_Table F ON F.Id=B.Ilcesi AND F.IlId=E.Id
@@ -270,6 +277,11 @@ namespace DAO.Repositories.NBYS
             if (armaganTanimId.HasValue) query.AddParameter("@ArmaganTanimId", armaganTanimId.Value);
             if (bolgeId.HasValue) query.AddParameter("@BolgeId", bolgeId.Value);
             if (ilId.HasValue) query.AddParameter("@IlId", ilId.Value);
+            if (transaction != null)
+            {
+                if (logContext == null) throw new InvalidOperationException("Belge işlemi için log bağlamı gereklidir.");
+                return new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query, transaction);
+            }
             return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query);
         }
 

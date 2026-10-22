@@ -93,7 +93,7 @@
                     <asp:HyperLink ID="AdresEtiketLnk" runat="server" CssClass="btn-link m-3" Visible="false">Adres Etiketleri</asp:HyperLink>
                 </div>--%>
                 <div class="card-footer">
-                    <asp:CheckBox ID="BeratDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                    <asp:CheckBox ID="BeratDurumChk" runat="server" Checked="false" Text=" Seçili kayıtların durumunu Gönderildi olarak güncelle" Enabled="False" />
                     <asp:LinkButton ID="DosyaOlusturBtn" runat="server" CssClass="btn btn-outline-success" OnClick="DosyaOlusturBtn_Click">Berat Belgelerini Oluştur</asp:LinkButton>
                 </div>
             </div>

@@ -50,6 +50,7 @@
     <Compile Include="Services\NBYS\NbysFtkWriteService.cs" />
     <Compile Include="Services\NBYS\NbysRegularWriteService.cs" />
     <Compile Include="Services\NBYS\NbysGiftWriteService.cs" />
+    <Compile Include="Services\NBYS\NbysDocumentWriteService.cs" />
     <Compile Include="Services\NBYS\NbysBagisciWriteService.cs" />
     <Compile Include="Services\Portal\ToplantiService.cs" />
     <Compile Include="Services\Portal\ToplantiKatilimService.cs" />
