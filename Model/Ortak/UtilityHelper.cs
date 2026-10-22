@@ -766,10 +766,16 @@ namespace Model.Ortak
         }
         public static string YonergeURLGetir(string grup, string lib, string anahtar)
         {
+            return YonergeURLGetir(grup, lib, anahtar, null);
+        }
+
+        public static string YonergeURLGetir(string grup, string lib, string anahtar, Utility.Logging.PortalLogContext context)
+        {
 
             string url = UtilityHelper.URLGetir();
             string yonergeUrl = url + "/../" + lib + "/yonerge/default.pdf";
-            NBYSParametre param = new NBYSParametreService().GetByGroupAndKey(grup, anahtar);
+            NBYSParametreService service = context == null ? new NBYSParametreService() : new NBYSParametreService(context);
+            NBYSParametre param = service.GetByGroupAndKey(grup, anahtar);
             if (param != null)
             {
                 yonergeUrl = url + "/../" + lib + "/yonerge/" + param.Deger;

@@ -1,3 +1,6 @@
+using Model.Services.NBYS;
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.Services.TBYS;
 using Model.TBYS;
 using System;
@@ -13,6 +16,16 @@ namespace NBYS_WebParts.TasinmazArmaganWP
     [ToolboxItemAttribute(false)]
     public partial class TasinmazArmaganWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "TasinmazArmaganWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysReportFeedback.Execute(LoggingContext, operation, action);
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -78,27 +91,37 @@ namespace NBYS_WebParts.TasinmazArmaganWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
+            ExecuteAction("Page_Load", () =>
             {
-                DurumDoldur();
-                FormuDoldur();
-            }
-
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
+                if (!Page.IsPostBack)
+                {
+                    DurumDoldur();
+                    FormuDoldur();
+                }
+            });
         }
         private void FormuDoldur()
         {
+            int selectedId;
+            if (!int.TryParse(BagisIdQS, out selectedId) || selectedId <= 0) throw new NbysReportInputException("Geçerli bir bağış kaydı seçin.");
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             Bagis bagis = new Bagis();
-            bagis = new Model.Services.TBYS.BagisService().GetById(BagisIdQS.ConvertToInt());
+            bagis = new Model.Services.TBYS.BagisService(LoggingContext).GetById(BagisIdQS.ConvertToInt());
             if (bagis != null)
             {
                 ArmaganIdTxt.Text = string.IsNullOrEmpty(bagis.ArmaganId) ? "" : bagis.ArmaganId.ToString();
                 AciklamaTxt.Text = bagis.ArmaganAciklama;
                 ArmaganTarihiTxt.Value = bagis.ArmaganTarihi.ConvertToDatetimeEmptyIfNull();
                 BagisTarihiTxt.Text = bagis.BagisTarihi.ConvertToDatetimeEmptyIfNull();
-                DurumDDL.SelectedValue = bagis.ArmaganDurumu;
+                if (!string.IsNullOrEmpty(bagis.ArmaganDurumu))
+                {
+                    if (DurumDDL.Items.FindByValue(bagis.ArmaganDurumu) == null)
+                        DurumDDL.Items.Add(new ListItem(bagis.ArmaganDurumu, bagis.ArmaganDurumu));
+                    DurumDDL.SelectedValue = bagis.ArmaganDurumu;
+                }
                 TasinmazBagisci bagisci = new TasinmazBagisci();
-                bagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(bagis.BagisciId);
+                bagisci = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetById(bagis.BagisciId);
                 if (bagisci != null)
                 {
                     AdiSoyadiTxt.Text = bagisci.Adi + " " + bagisci.Soyadi;
@@ -108,20 +131,24 @@ namespace NBYS_WebParts.TasinmazArmaganWP
 
                 }
                 Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = new TasinmazService().GetById(bagis.TasinmazId);
+                tasinmaz = new TasinmazService(LoggingContext).GetById(bagis.TasinmazId);
                 if (tasinmaz != null)
                 {
                     TasinmazCinsiTxt.Text = tasinmaz.Cinsi;
                     TahminiRayicTxt.Text = tasinmaz.TahminiRayicDegeri.ToString("N", culturInfo);
                     TasinmazAdresiTxt.Text = tasinmaz.Adres + " " + tasinmaz.Ilcesi + "/" + tasinmaz.Ili;
-                    ArmaganIdTxt.Text = bagis.BagisTarihi.Year + "-" + tasinmaz.Id;
+                    if (string.IsNullOrEmpty(bagis.ArmaganId)) ArmaganIdTxt.Text = bagis.BagisTarihi.Year + "-" + tasinmaz.Id;
                 }
 
             }
+            else throw new NbysReportInputException("Bağış kaydı bulunamadı. Listeyi yenileyip tekrar seçin.");
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_HOME);
+            ExecuteAction("CloseBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_HOME);
+            });
         }
         private void DurumDoldur()
         {
@@ -137,7 +164,7 @@ namespace NBYS_WebParts.TasinmazArmaganWP
             DurumDDL.Items.Add(ProjeConstants.DURUM_DAHAONCEIADE);
 
             //acilista durumu querystring ile gelene esitle
-            ListItem DurumItem = new ListItem();
+            ListItem DurumItem = null;
             if (!string.IsNullOrEmpty(SecilenDurumQS))
                 DurumItem = DurumDDL.Items.FindByValue(SecilenDurumQS);
 
@@ -146,42 +173,38 @@ namespace NBYS_WebParts.TasinmazArmaganWP
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(System.UriPartial.Path);
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl, false);
+            System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
         }
         protected void KaydetBtn_Click(object sender, EventArgs e)
         {
-            Bagis bagis = new Bagis();
-            bagis = new Model.Services.TBYS.BagisService().GetById(BagisIdQS.ConvertToInt());
-            if (bagis != null)
+            ExecuteAction("KaydetBtn_Click", () =>
             {
-                bagis.ArmaganId = ArmaganIdTxt.Text;
-                bagis.ArmaganDurumu = DurumDDL.SelectedItem.Value;
-                bagis.ArmaganTarihi = ArmaganTarihiTxt.Value.ConvertToDatetime();
-                bagis.ArmaganAciklama = AciklamaTxt.Text;
-                if (new Model.Services.TBYS.BagisService().Update(bagis))
-                {
-                    RedirectToPage(ProjeConstants.PAGE_TASINMAZARMAGAN_LIST + "?ArmaganId=" + bagis.ArmaganId);
-                }
-            }
-
+                int id;
+                DateTime date;
+                if (!int.TryParse(BagisIdQS, out id) || id <= 0) throw new NbysReportInputException("Geçerli bir bağış kaydı seçin.");
+                if (!DateTime.TryParse(ArmaganTarihiTxt.Value, new CultureInfo(ProjeConstants.CULTUREINFO), DateTimeStyles.None, out date))
+                    throw new NbysReportInputException("Geçerli bir armağan tarihi girin.");
+                NbysReportWriteResult result = new NbysReportWriteService(LoggingContext).SetPropertyGift(id,
+                    ArmaganIdTxt.Text.Trim(), DurumDDL.SelectedValue, date, AciklamaTxt.Text);
+                NbysReportFeedback.Write(LoggingContext, result, "Taşınmaz armağan bilgileri kaydedildi.", FormuDoldur);
+            });
         }
         protected void BelgeBasimiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.RAPOR_TASINMAZARMAGANBELGESI_URL + "?BagisId=" + BagisIdQS);
+            ExecuteAction("BelgeBasimiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.RAPOR_TASINMAZARMAGANBELGESI_URL + "?BagisId=" + System.Web.HttpUtility.UrlEncode(BagisIdQS));
+            });
         }
         protected void ArmaganListBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_TASINMAZARMAGAN_LIST + "?ArmaganId=" + ArmaganIdTxt.Text);
+            ExecuteAction("ArmaganListBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_TASINMAZARMAGAN_LIST + "?ArmaganId=" + System.Web.HttpUtility.UrlEncode(ArmaganIdTxt.Text));
+            });
         }
     }
 }

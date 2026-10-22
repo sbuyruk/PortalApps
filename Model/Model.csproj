@@ -45,6 +45,7 @@
     <AssemblyOriginatorKeyFile>modelkey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Services\NBYS\NbysReportWriteService.cs" />
     <Compile Include="Services\NBYS\NbysDonationWriteService.cs" />
     <Compile Include="Services\NBYS\NbysEkstreWriteService.cs" />
     <Compile Include="Services\NBYS\NbysFtkWriteService.cs" />
