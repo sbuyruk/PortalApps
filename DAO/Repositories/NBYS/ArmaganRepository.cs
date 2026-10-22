@@ -308,6 +308,11 @@ namespace DAO.Repositories.NBYS
 
         public DataTable SelectByFilter(string filter, int excludedDonorId)
         {
+            return SelectByFilter(filter, excludedDonorId, null);
+        }
+
+        public DataTable SelectByFilter(string filter, int excludedDonorId, int? regionId)
+        {
             SqlQuery query = new SqlQuery(@"SELECT A.Id ArmaganId,B.Armagan,A.Durum,A.Tarih,
                     CONVERT(varchar,FORMAT(A.Tarih,'dd.MM.yyyy')) BelgeTarihi,
                     A.BagisMiktari,C.Id NakitBagisciId,C.Adi,C.Soyadi,C.TCKimlikNo,
@@ -320,10 +325,11 @@ namespace DAO.Repositories.NBYS
                 INNER JOIN NakitBagisci_Table C ON C.Id=A.BagisciId
                 LEFT JOIN Il_Table D ON D.Id=C.Ili
                 LEFT JOIN Ilce_Table E ON E.Id=C.Ilcesi AND E.IlId=D.Id
-                WHERE A.BelgeGecersizMi!=1 AND C.Id!=@ExcludedDonorId AND A.Id=@Filter
-                ORDER BY A.Tarih DESC");
+                WHERE A.BelgeGecersizMi!=1 AND C.Id!=@ExcludedDonorId AND A.Id=@Filter"
+                + (regionId.HasValue ? " AND D.BolgeId=@RegionId" : string.Empty) + " ORDER BY A.Tarih DESC");
             query.AddParameter("@ExcludedDonorId", excludedDonorId);
             query.AddParameter("@Filter", filter);
+            if (regionId.HasValue) query.AddParameter("@RegionId", regionId.Value);
             return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query);
         }
 

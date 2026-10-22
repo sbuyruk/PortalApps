@@ -1,3 +1,5 @@
+using Utility.Logging;
+using NBYS_WebParts.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.Ortak;
@@ -17,6 +19,26 @@ namespace NBYS_WebParts.ArmaganListesiWP
     [ToolboxItemAttribute(false)]
     public partial class ArmaganListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "ArmaganListesiWP"); }
+        }
+        private bool canProcess = true;
+        private Bolge userRegion;
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, () => { if (canProcess) action(); });
+        }
+        private void StopForWarning(string message)
+        {
+            canProcess = false;
+            Messages.Warning(message);
+        }
+        private bool CanReadDonor(int donorId)
+        {
+            return new NbysBagisciWriteService(LoggingContext).CanReadDonor(donorId, userRegion);
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -33,27 +55,8 @@ namespace NBYS_WebParts.ArmaganListesiWP
         }
         private int BolgeIdQS
         {
-            get
-            {
-
-                if (ViewState["BolgeId"] == null)
-                {
-                    if (Page.Request.QueryString["BolgeId"] != null)
-                    {
-                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
-                    }
-                    else
-                    {
-                        ViewState["BolgeId"] = string.Empty;
-                    }
-                }
-                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
-            }
-
-            set
-            {
-                ViewState["BolgeId"] = value;
-            }
+            get { return ViewState["BolgeId"] is int ? (int)ViewState["BolgeId"] : -1; }
+            set { ViewState["BolgeId"] = value; }
         }
         private string CurrentUserName
         {
@@ -88,7 +91,8 @@ namespace NBYS_WebParts.ArmaganListesiWP
                         ViewState["SecilenId"] = "0";
                     }
                 }
-                return ViewState["SecilenId"].ToString();
+                int selectedId;
+                return int.TryParse(Convert.ToString(ViewState["SecilenId"]), out selectedId) && selectedId > 0 ? selectedId.ToString(CultureInfo.InvariantCulture) : "0";
             }
 
             set
@@ -267,43 +271,45 @@ namespace NBYS_WebParts.ArmaganListesiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
+            ExecuteAction("Page_Load", () =>
             {
-                YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_ARMAGANOLUSTURMA);
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
+                userRegion = new NbysBagisciWriteService(LoggingContext).GetUserRegion();
+                if (userRegion == null) { StopForWarning("Bölge bilginiz bulunamadı. Yetki bilgilerinizi kontrol ettirin."); return; }
+                BolgeIdQS = userRegion.Id;
 
-                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
-                BolgeIdQS = bolge == null ? 0 : bolge.Id;
-                SecilenIdQS = string.IsNullOrEmpty(SecilenIdQS) ? "0" : SecilenIdQS;
-                DDLleriDoldur();
-                SetDDLValues(); //ay ve yili querystringden al
-                SetSecilenBasTarBitTar();
-                TabloOlustur();
-            }
+                if (!Page.IsPostBack)
+                {
+                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_ARMAGANOLUSTURMA);
+
+
+                    SecilenIdQS = string.IsNullOrEmpty(SecilenIdQS) ? "0" : SecilenIdQS;
+                    DDLleriDoldur();
+                    SetDDLValues(); //ay ve yili querystringden al
+                    SetSecilenBasTarBitTar();
+                    TabloOlustur();
+                }
+            });
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-
+            ExecuteAction("CloseBtn_Click", () =>
+            {
+            });
         }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ModalDoldurBtn_Click", () =>
             {
-                int armaganId = paramArmaganIdLbl.Value.ConvertToInt();
-
-                Armagan armagan = new Armagan();
-                armagan = new ArmaganService().GetById(armaganId);
-                if (armagan == null || armagan.Id < 1)
-                    return;
-                ModalNakitBagisciFormunuDoldur(armagan);
-                //ModalNakitBagisTablosunuDoldur(paramArmaganIdLbl.Value);
-                TabloModalOlustur(armagan.BagisciId.ToString());
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
-
-            }
+                int id;
+                if (!int.TryParse(paramArmaganIdLbl.Value, out id) || id <= 0)
+                { Messages.Warning("Detayını görmek istediğiniz armağanı seçin."); return; }
+                Armagan gift = new ArmaganService(LoggingContext).GetById(id);
+                if (gift == null) { Messages.Warning("Armağan kaydı bulunamadı. Listeyi yenileyin."); return; }
+                if (!CanReadDonor(gift.BagisciId)) { Messages.Warning("Bu armağanın bağışçı detayını görüntüleme yetkiniz yok."); return; }
+                ModalNakitBagisciFormunuDoldur(gift);
+                TabloModalOlustur(gift.BagisciId.ToString());
+            });
         }
         private void TabloModalOlustur(string nakitBagisciId)
         {
@@ -313,7 +319,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
         }
         private string CreateModalDataTable(string jsonData, int nakitBagisciId)
         {
-            NakitBagisci nb = new NakitBagisciService().GetById(nakitBagisciId);
+            NakitBagisci nb = new NakitBagisciService(LoggingContext).GetById(nakitBagisciId);
             string bagisciAdi = nb != null ? (nb.Adi + nb.Soyadi).ReplaceTrChars() : "Bagisci";
             string filename = bagisciAdi + "-" + DateTime.Today.Day + "-" + DateTime.Today.Month + "-" + DateTime.Today.Year;
             string tableString = @"
@@ -347,8 +353,6 @@ namespace NBYS_WebParts.ArmaganListesiWP
                 ],
                 responsive: true,
                 dom: 'frtip',
-                
-
             });
         });
         ";
@@ -358,8 +362,8 @@ namespace NBYS_WebParts.ArmaganListesiWP
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             int rowCount = 0;
-            var json = new NakitBagisHareketService().GetDonorDetailJson(nakitBagisciId.ConvertToInt(), ref rowCount);
-            decimal toplamTutar = new NakitBagisHareketService().GetTotalByBagisciIdDateRange(
+            var json = new NakitBagisHareketService(LoggingContext).GetDonorDetailJson(nakitBagisciId.ConvertToInt(), ref rowCount);
+            decimal toplamTutar = new NakitBagisHareketService(LoggingContext).GetTotalByBagisciIdDateRange(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
             BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır" :
                 "Bağışçının " + ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime() + " tarihinden itibaren " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + " TL bağışı bulunmaktadır";
@@ -426,10 +430,10 @@ namespace NBYS_WebParts.ArmaganListesiWP
         {
             if (armagan!=null)
             {
-                
+
                 if (armagan != null)
                 {
-                    NakitBagisci nakitBagisci = new NakitBagisciService().GetById(armagan.BagisciId);
+                    NakitBagisci nakitBagisci = new NakitBagisciService(LoggingContext).GetById(armagan.BagisciId);
                     //NakitBagisciIdLbl.Text = nakitBagisciId.ToString();
                     TableRow row = new TableRow();
                     TableCell AdiCell = new TableCell();
@@ -444,7 +448,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
                     AdresCell.Text = nakitBagisci.Adres.ReturnEmptyIfNull().ToString();
 
                     int ilId = nakitBagisci.Ili.ConvertToInt();
-                    Il il = new IlService().GetById(ilId);
+                    Il il = new IlService().GetById(ilId, LoggingContext);
                     if (il != null)
                     {
 
@@ -453,7 +457,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
 
 
                     int ilceId = nakitBagisci.Ilcesi.ConvertToInt();
-                    Ilce ilce = new IlceService().GetById(ilceId);
+                    Ilce ilce = new IlceService().GetById(ilceId, LoggingContext);
                     if (ilce != null)
                     {
 
@@ -485,7 +489,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
             IlDDLDoldur();
             ArmaganTanimDDLDoldur();
         }
-        
+
         private void AyDDLDoldur()
         {
             AyDDL.Items.Add(new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString()));
@@ -541,7 +545,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
             {
                 IliDDL.Items.Clear();
 
-                List<Il> list = new IlService().GetByRegion(BolgeIdQS.ConvertToInt(), false);
+                List<Il> list = new IlService().GetByRegion(BolgeIdQS, false, LoggingContext);
                 IliDDL.Items.Add(new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString()));
                 foreach (Il il in list)
                 {
@@ -550,85 +554,31 @@ namespace NBYS_WebParts.ArmaganListesiWP
             }
 
         }
+        private static void SelectFilter(DropDownList list, string value, string fallback)
+        {
+            ListItem item = list.Items.FindByValue(value) ?? list.Items.FindByValue(fallback);
+            if (item == null) throw new InvalidOperationException("Liste filtresi bulunamadı.");
+            list.ClearSelection(); item.Selected = true;
+        }
         private void SetDDLValues()
         {
-            try
-            {
-
-                //ay
-                string ay = !string.IsNullOrEmpty(SecilenAyQS) ? SecilenAyQS : DateTime.Today.Month.ReturnEmptyIfNull().ToString();
-                ListItem ayItem = new ListItem();
-                if (!string.IsNullOrEmpty(ay))
-                    ayItem = AyDDL.Items.FindByValue(ay);
-
-                if (ayItem != null)
-                {
-                    AyDDL.SelectedValue = ayItem.Value;
-                    SecilenAyQS = ayItem.Value;
-                }
-
-                //yil
-                string yil = !string.IsNullOrEmpty(SecilenYilQS) ? SecilenYilQS : DateTime.Today.Year.ReturnEmptyIfNull().ToString();
-                ListItem yilItem = new ListItem();
-                if (!string.IsNullOrEmpty(yil))
-                    yilItem = YilDDL.Items.FindByValue(yil);
-
-                if (yilItem != null)
-                {
-                    YilDDL.SelectedValue = yilItem.Value;
-                    SecilenYilQS = yilItem.Value;
-                }
-
-                //ArmaganTanim
-                string armaganTanim = !string.IsNullOrEmpty(SecilenArmaganTanimIdQS) ? SecilenArmaganTanimIdQS : ProjeConstants.HEPSI;
-                ListItem ArmaganTanimItem = new ListItem();
-                if (!string.IsNullOrEmpty(armaganTanim))
-                    ArmaganTanimItem = ArmaganDDL.Items.FindByValue(armaganTanim);
-
-                if (ArmaganTanimItem != null)
-                {
-                    ArmaganDDL.SelectedValue = ArmaganTanimItem.Value;
-                    SecilenArmaganTanimIdQS = ArmaganTanimItem.Value;
-                }
-
-                //Durum
-                string durum = !string.IsNullOrEmpty(SecilenDurumQS) ? SecilenDurumQS : ProjeConstants.HEPSI;
-                ListItem DurumItem = new ListItem();
-                if (!string.IsNullOrEmpty(durum))
-                    DurumItem = DurumDDL.Items.FindByValue(durum);
-
-                if (DurumItem != null)
-                {
-                    DurumDDL.SelectedValue = DurumItem.Value;
-                    SecilenDurumQS = DurumItem.Value;
-                }
-                //Il
-                int ili = SecilenIlQS.ConvertToInt()>0 ? SecilenIlQS.ConvertToInt() : ProjeConstants.HEPSI_INT;
-                ListItem ilListItem = new ListItem();
-                if (ili>0)
-                    ilListItem = IliDDL.Items.FindByValue(ili.ToString());
-
-                if (ilListItem != null)
-                {
-                    IliDDL.SelectedValue = ilListItem.Value;
-                    SecilenIlQS = ilListItem.Value;
-                }
-            }
-            catch (Exception)
-            {
-
-                //TODO
-            }
-
-
-
+            SelectFilter(AyDDL, SecilenAyQS, DateTime.Today.Month.ToString(CultureInfo.InvariantCulture));
+            SelectFilter(YilDDL, SecilenYilQS, DateTime.Today.Year.ToString(CultureInfo.InvariantCulture));
+            SelectFilter(ArmaganDDL, SecilenArmaganTanimIdQS, ProjeConstants.HEPSI);
+            SelectFilter(DurumDDL, SecilenDurumQS, ProjeConstants.HEPSI);
+            SelectFilter(IliDDL, SecilenIlQS, ProjeConstants.HEPSI_INT.ToString());
+            SecilenAyQS = AyDDL.SelectedValue;
+            SecilenYilQS = YilDDL.SelectedValue;
+            SecilenArmaganTanimIdQS = ArmaganDDL.SelectedValue;
+            SecilenDurumQS = DurumDDL.SelectedValue;
+            SecilenIlQS = IliDDL.SelectedValue;
         }
         private void ArmaganTanimDDLDoldur()
         {
             if (ArmaganDDL.SelectedItem == null)
             {
                 ArmaganDDL.Items.Clear();
-                List<ArmaganTanim> list = new ArmaganTanimService().GetAll();
+                List<ArmaganTanim> list = new ArmaganTanimService(LoggingContext).GetAll();
                 //Tum armaganlar secenegi
                 ArmaganDDL.Items.Add(new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI));
                 foreach (ArmaganTanim arm in list)
@@ -674,93 +624,81 @@ namespace NBYS_WebParts.ArmaganListesiWP
 
         protected void AyDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SecilenAyQS = AyDDL.SelectedItem.Value.ToString();
-            SetSecilenBasTarBitTar();
-            TabloOlustur();
+            ExecuteAction("AyDDL_SelectedIndexChanged", () =>
+            {
+                SecilenAyQS = AyDDL.SelectedItem.Value.ToString();
+                SetSecilenBasTarBitTar();
+                TabloOlustur();
+            });
         }
         protected void YilDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SecilenYilQS = YilDDL.SelectedItem.Value.ToString();
-            SetSecilenBasTarBitTar();
-            TabloOlustur();
+            ExecuteAction("YilDDL_SelectedIndexChanged", () =>
+            {
+                SecilenYilQS = YilDDL.SelectedItem.Value.ToString();
+                SetSecilenBasTarBitTar();
+                TabloOlustur();
+            });
         }
         protected void ArmaganDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SecilenArmaganTanimIdQS = ArmaganDDL.SelectedItem.Value.ToString();
-            TabloOlustur();
+            ExecuteAction("ArmaganDDL_SelectedIndexChanged", () =>
+            {
+                SecilenArmaganTanimIdQS = ArmaganDDL.SelectedItem.Value.ToString();
+                TabloOlustur();
+            });
         }
         protected void DurumDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SecilenDurumQS = DurumDDL.SelectedItem.Value.ToString();
-            TabloOlustur();
+            ExecuteAction("DurumDDL_SelectedIndexChanged", () =>
+            {
+                SecilenDurumQS = DurumDDL.SelectedItem.Value.ToString();
+                TabloOlustur();
+            });
         }
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SecilenIlQS = IliDDL.SelectedItem.Value.ToString();
-            TabloOlustur();
+            ExecuteAction("IliDDL_SelectedIndexChanged", () =>
+            {
+                SecilenIlQS = IliDDL.SelectedItem.Value.ToString();
+                TabloOlustur();
+            });
         }
         protected void IadeEdildiYapBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("IadeEdildiYapBtn_Click", () =>
             {
-                Armagan armagan = new Armagan();
-                armagan = new ArmaganService().GetById(paramArmaganIdLbl.Value.ConvertToInt());
-                if (armagan != null)
-                {
-                    armagan.Durum = ProjeConstants.DURUM_DAHAONCEIADE;
-                if (new ArmaganService().Update(armagan))
-                    {
-                        TabloOlustur();
-                        MessageHelper.PublishMessage(" Armağan Durumu " + ProjeConstants.DURUM_DAHAONCEIADE
-                            + " Olarak Değiştirildi", ProjeConstants.MESAJ_BASARILI, 2000);
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage(" Armağan Durumu Değiştirilemedi.", ProjeConstants.MESAJ_HATA);
-                    }
-                }
-                else
-                {
-                    MessageHelper.PublishMessage(" Armağan Bulunamadı ", ProjeConstants.MESAJ_HATA);
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exh = new ExceptionHelper();
-                exh.Exceptions.Add(new Exception("Armağan durumu kaydedilirken hata oluştu. "));
-                exh.Exceptions.Add(ex);
-                exh.PublishException();
-            }
+                int id;
+                if (!int.TryParse(paramArmaganIdLbl.Value, out id) || id <= 0)
+                { Messages.Warning("Belgesi iade edilen armağan kaydını seçin."); return; }
+                NbysGiftWriteResult result = new NbysGiftWriteService(LoggingContext).MarkCertificateReturned(id);
+                NbysGiftFeedback.Show(LoggingContext, result, "Armağanın durumu ‘Belgesi İade Edildi’ olarak güncellendi.", TabloOlustur);
+            });
         }
         protected void EtiketOlusturBtn_Click(object sender, EventArgs e)
         {
-            var queryString = string.Format("?Bastar={0}&Bittar={1}", SecilenBastarQS, SecilenBittarQS);
-            RedirectToPage(ProjeConstants.PAGE_ARMAGANETIKET_VIEWER + queryString);
-            TabloOlustur();
+            ExecuteAction("EtiketOlusturBtn_Click", () =>
+            {
+                var queryString = string.Format("?Bastar={0}&Bittar={1}", SecilenBastarQS, SecilenBittarQS);
+                RedirectToPage(ProjeConstants.PAGE_ARMAGANETIKET_VIEWER + queryString);
+            });
         }
         protected void ArmaganListesiBtn_Click(object sender, EventArgs e)
         {
-
-            string tarihStr = SecilenBastarQS.ConvertToDatetimeEmptyIfNull() + " - " + SecilenBittarQS.ConvertToDatetimeEmptyIfNull();
-            var queryString = string.Format("?Bastar={0}&Bittar={1}&TarihStr={2}", SecilenBastarQS, SecilenBittarQS, tarihStr);
-            RedirectToPage(ProjeConstants.PAGE_ARMAGANLISTESI_VIEWER + queryString);
-            TabloOlustur();
+            ExecuteAction("ArmaganListesiBtn_Click", () =>
+            {
+                string tarihStr = SecilenBastarQS.ConvertToDatetimeEmptyIfNull() + " - " + SecilenBittarQS.ConvertToDatetimeEmptyIfNull();
+                var queryString = string.Format("?Bastar={0}&Bittar={1}&TarihStr={2}", SecilenBastarQS, SecilenBittarQS, tarihStr);
+                RedirectToPage(ProjeConstants.PAGE_ARMAGANLISTESI_VIEWER + queryString);
+            });
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                //string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            //string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
 
-                string newUrl = "http://tskgv-portal/YonetimBirimleri/BasinTanitimHalklaIliskilerSubesi/Sayfalar" + "/" + pageUrl;
-                ResponseHelper.Redirect(newUrl, "_blank", "");
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string newUrl = "http://tskgv-portal/YonetimBirimleri/BasinTanitimHalklaIliskilerSubesi/Sayfalar" + "/" + pageUrl;
+            ResponseHelper.Redirect(newUrl, "_blank", "");
         }
         #region Liste Olusturma
         private void TabloOlustur()
@@ -792,8 +730,8 @@ namespace NBYS_WebParts.ArmaganListesiWP
                 bittar = new DateTime(yil, ay, basGun.Day);
 
             }
-            int ili = SecilenIlQS.ConvertToInt();
-            var json = new ArmaganService().ListByDurumTarihJson(DurumDDL.SelectedItem.Text, bastar, bittar, ArmaganDDL.SelectedItem.Value, ref rowCount, BolgeIdQS, ili);
+            int ili = IliDDL.SelectedValue.ConvertToInt();
+            var json = new ArmaganService(LoggingContext).ListByDurumTarihJson(DurumDDL.SelectedItem.Text, bastar, bittar, ArmaganDDL.SelectedItem.Value, ref rowCount, BolgeIdQS, ili);
             return json;
 
         }
@@ -824,7 +762,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
             }
 
             string queryStr = "&SecilenAy=" + SecilenAyQS + "&SecilenYil="
-                + SecilenYilQS + "&SecilenArmaganTanimId=" + SecilenArmaganTanimIdQS + "&SecilenDurum=" + SecilenDurumQS + "&SecilenIl=" + SecilenIlQS;
+                + SecilenYilQS + "&SecilenArmaganTanimId=" + SecilenArmaganTanimIdQS + "&SecilenDurum=" + System.Web.HttpUtility.UrlEncode(SecilenDurumQS) + "&SecilenIl=" + SecilenIlQS;
 
             string tableString = @"
                 if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
