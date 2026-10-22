@@ -153,3 +153,11 @@ Kaynakta SqlTransactionContext bulunan servis/repository dosyaları (varlığı,
 - DAO\Repositories\NBYS\NakitBagisHareketRepository.cs
 - DAO\Repositories\NBYS\NBYSParametreRepository.cs
 - DAO\Repositories\NBYS\NbysSqlExecutor.cs
+
+
+## Parametre testi ve ikinci parçanın gerçek kapsamı
+
+Kullanıcı NBYSParametreGirisiWP testini başarılı bildirdi.
+İkinci parça dalı codex/nbys-banka-doviz-log-mesaj; başlangıç 4f1816e938d9d598a72488363a3dd6c8beffe3b6.
+Banka tanımları için ayrı bir ekleme/düzenleme WebPart'ı ve yazma çağıranı bulunmadığından ikinci parça mevcut DovizleYapilanBagislarWP, banka grubu okuması ve rapor SELECT'i ile sınırlandı. Banka CRUD/audit tamamlandı kabul edilmez.
+Mesaj değişiklikleri, kalan banka okuyucuları, etkinleştirme, mevcut tarih filtresi sınırı ve TEST adımları LoglamaGecisParca2.md içindedir.

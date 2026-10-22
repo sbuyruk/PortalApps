@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using Utility.Logging;
 
 namespace DAO.Repositories.NBYS
 {
@@ -529,6 +530,19 @@ namespace DAO.Repositories.NBYS
         public DataTable SelectCurrencyTotalsByDateBank(
             DateTime baslangic, DateTime bitis, string bankaGrup, string tlDovizCinsi)
         {
+            return db.SelectFromDb(BuildCurrencyTotalsQuery(baslangic, bitis, bankaGrup, tlDovizCinsi), "");
+        }
+
+        public DataTable SelectCurrencyTotalsByDateBank(
+            DateTime baslangic, DateTime bitis, string bankaGrup, string tlDovizCinsi, PortalLogContext context)
+        {
+            SqlQuery query = BuildCurrencyTotalsQuery(baslangic, bitis, bankaGrup, tlDovizCinsi);
+            return new NbysSqlExecutor(context, "NakitBagisHareketRepository").Select(query);
+        }
+
+        private static SqlQuery BuildCurrencyTotalsQuery(
+            DateTime baslangic, DateTime bitis, string bankaGrup, string tlDovizCinsi)
+        {
             string bankaKosulu = string.IsNullOrEmpty(bankaGrup) || bankaGrup == "0"
                 ? string.Empty
                 : " AND BankaGrup=@BankaGrup";
@@ -546,7 +560,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@Bitis", LegacyDateValue(bitis));
             if (!string.IsNullOrEmpty(bankaGrup) && bankaGrup != "0")
                 query.AddParameter("@BankaGrup", bankaGrup);
-            return db.SelectFromDb(query, "");
+            return query;
         }
 
         public DataTable SelectDonorDetailRows(int bagisciId)

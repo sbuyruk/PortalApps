@@ -1,4 +1,6 @@
 using Model.NBYS;
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.Ortak;
 using Model.Services.NBYS;
 using System;
@@ -17,6 +19,22 @@ namespace NBYS_WebParts.DovizleYapilanBagislarWP
     [ToolboxItemAttribute(false)]
     public partial class DovizleYapilanBagislarWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "DovizleYapilanBagislarWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            try { action(); }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                NbysWebPartLog.ReportError(LoggingContext, "NBYS.DovizleYapilanBagislarWP." + operation, error,
+                    "Bağış raporu görüntülenemedi. Lütfen tekrar deneyin.");
+            }
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -35,37 +53,39 @@ namespace NBYS_WebParts.DovizleYapilanBagislarWP
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
+            ExecuteAction("Page_Load", () =>
             {
-                BankaDDLDoldur();
-                AyDDLDoldur();
-                YilDDLDoldur();
-                TabloOlustur();
-            }
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
+                if (!Page.IsPostBack)
+                {
+                    BankaDDLDoldur();
+                    AyDDLDoldur();
+                    YilDDLDoldur();
+                    TabloOlustur();
+                }
+            });
         }
         private void TabloOlustur()
         {
+            int year;
+            int month;
+            if (YilDDL.SelectedItem == null || AyDDL.SelectedItem == null || BankaDDL.SelectedItem == null ||
+                !int.TryParse(YilDDL.SelectedValue, out year) || year < 1901 || year > 9998 ||
+                !int.TryParse(AyDDL.SelectedValue, out month) || month < 0 || month > 12)
+            {
+                Messages.Warning("Raporu görüntülemek için geçerli bir yıl, ay ve banka seçin.");
+                return;
+            }
             var jsonData = TabloJson(); //veri çekilip json'a çevriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
             UtilityHelper.ScriptCalistir(jsString);
+            if (jsonData == "[]") Messages.Info("Seçilen filtrelere uygun döviz bağışı bulunamadı.");
         }
         private string TabloJson()
         {
-            string jSon = string.Empty;
-
-            try
-            {
-                List<DovizleBagisListItem> list = GetDataList();
-                var serializer = new JavaScriptSerializer();
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
-            return jSon;
+            List<DovizleBagisListItem> list = GetDataList();
+            var serializer = new JavaScriptSerializer();
+            return serializer.Serialize(list);
         }
         private string CreateDataTable(string jsonData)
         {
@@ -168,7 +188,7 @@ namespace NBYS_WebParts.DovizleYapilanBagislarWP
             }
             string bankaGrup = BankaDDL.SelectedItem.Value;
             NakitBagisHareketService nakitBagisHareket = new NakitBagisHareketService();
-            DataTable dataTable = nakitBagisHareket.GetCurrencyTotalsByDateBank(bastar, bittar, bankaGrup);
+            DataTable dataTable = nakitBagisHareket.GetCurrencyTotalsByDateBank(bastar, bittar, bankaGrup, LoggingContext);
 
             List<DovizleBagisListItem> list = new List<DovizleBagisListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -198,7 +218,7 @@ namespace NBYS_WebParts.DovizleYapilanBagislarWP
             {
                 BankaDDL.Items.Clear();
                 BankaDDL.Items.Add(new ListItem("Tüm Bankalar", "0"));
-                List<string> list = new BankaTanimService().GetGroups();
+                List<string> list = new BankaTanimService().GetGroups(LoggingContext);
                 foreach (string banka in list)
                 {
                     BankaDDL.Items.Add(new ListItem(banka, banka));
@@ -232,29 +252,47 @@ namespace NBYS_WebParts.DovizleYapilanBagislarWP
         }
         protected void BagisTarihiTxt_TextChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            ExecuteAction("BagisTarihiTxt_TextChanged", () =>
+            {
+                TabloOlustur();
+            });
         }
         protected void BankaDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            ExecuteAction("BankaDDL_SelectedIndexChanged", () =>
+            {
+                TabloOlustur();
+            });
         }
         protected void AyDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            ExecuteAction("AyDDL_SelectedIndexChanged", () =>
+            {
+                TabloOlustur();
+            });
         }
         protected void YilDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            ExecuteAction("YilDDL_SelectedIndexChanged", () =>
+            {
+                TabloOlustur();
+            });
         }
         protected void YenileBtn_Click(object sender, EventArgs e)
         {
-            TabloOlustur();
+            ExecuteAction("YenileBtn_Click", () =>
+            {
+                TabloOlustur();
+            });
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
+            ExecuteAction("CloseBtn_Click", () =>
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                Page.Response.Redirect(newUrl);
+            });
         }
         private class DovizleBagisListItem
         {
