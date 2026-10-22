@@ -42,6 +42,13 @@ namespace DAO.Repositories.Ortak
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectByKey(string key, Utility.Logging.PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM OrtakParametre_Table WHERE Anahtar=@Anahtar ORDER BY Sira, Deger");
+            query.AddParameter("@Anahtar", key);
+            return PortalSqlReadExecutor.Select(query, context, "OrtakParametreRepository.SelectByKey");
+        }
+
         public DataTable SelectByGroup(string group)
         {
             SqlQuery query = new SqlQuery("SELECT * FROM OrtakParametre_Table WHERE Grup=@Grup ORDER BY Sira, Deger");

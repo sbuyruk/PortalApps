@@ -1,3 +1,4 @@
+using Utility.Logging;
 using DAO.Ortak;
 using System;
 using System.Data;
@@ -7,6 +8,20 @@ namespace DAO.Repositories.Portal
 {
     public class ToplantiRepository
     {
+        private readonly PortalSqlExecutor sql;
+        public ToplantiRepository(PortalLogContext context)
+        {
+            sql = new PortalSqlExecutor(context, "ToplantiRepository");
+            b = new CrudQueryBuilder();
+        }
+        private DataTable Select(SqlQuery query, [System.Runtime.CompilerServices.CallerMemberName] string method = "")
+        {
+            return sql == null ? db.SelectFromDb(query, "") : sql.Select(query, method: method);
+        }
+        private void RequireLegacyWrite()
+        {
+            if (sql != null) throw new InvalidOperationException("Toplantı yazma servisi kullanılmalıdır.");
+        }
         private readonly DbClass db;
         private readonly CrudQueryBuilder b;
 
@@ -28,19 +43,19 @@ namespace DAO.Repositories.Portal
         {
             var q = new SqlQuery("SELECT * FROM Toplanti_Table WHERE Id=@Id");
             q.AddParameter("@Id", id);
-            return db.SelectFromDb(q, "");
+            return Select(q);
         }
 
         public DataTable SelectAll()
         {
-            return db.SelectFromDb(new SqlQuery("SELECT * FROM Toplanti_Table ORDER BY ToplantiKonusu"), "");
+            return Select(new SqlQuery("SELECT * FROM Toplanti_Table ORDER BY ToplantiKonusu"));
         }
 
         public DataTable SelectByYeri(int id)
         {
             var q = new SqlQuery("SELECT * FROM Toplanti_Table WHERE ToplantiYeri=@Yeri");
             q.AddParameter("@Yeri", id);
-            return db.SelectFromDb(q, "");
+            return Select(q);
         }
 
         public DataTable SelectByStart(int y, DateTime d)
@@ -48,7 +63,7 @@ namespace DAO.Repositories.Portal
             var q = new SqlQuery("SELECT * FROM Toplanti_Table WHERE ToplantiYeri=@Yeri AND BaslangicTarihi<=@Tarih AND BitisTarihi>=@Tarih");
             q.AddParameter("@Yeri", y);
             q.AddParameter("@Tarih", d);
-            return db.SelectFromDb(q, "");
+            return Select(q);
         }
 
         public DataTable SelectByEnd(int y, DateTime d)
@@ -57,7 +72,7 @@ namespace DAO.Repositories.Portal
             q.AddParameter("@Diger", ProjeConstants.PARAM_DIGER_INT);
             q.AddParameter("@Yeri", y);
             q.AddParameter("@Tarih", d);
-            return db.SelectFromDb(q, "");
+            return Select(q);
         }
 
         public DataTable SelectByParticipantMeeting(int id, string aktif, int? meeting)
@@ -72,7 +87,7 @@ namespace DAO.Repositories.Portal
             if (meeting.HasValue)
                 q.AddParameter("@ToplantiId", meeting.Value);
 
-            return db.SelectFromDb(q, "");
+            return Select(q);
         }
 
         public DataTable SelectByParticipantMeetingDate(int id, string aktif, int? meeting, DateTime from, DateTime to)
@@ -90,14 +105,14 @@ namespace DAO.Repositories.Portal
             if (meeting.HasValue)
                 q.AddParameter("@ToplantiId", meeting.Value);
 
-            return db.SelectFromDb(q, "");
+            return Select(q);
         }
 
         public DataTable SelectByParticipant(int id)
         {
             var q = new SqlQuery("SELECT C.Adi,C.Soyadi,B.KatilimciId,A.Id ToplantiId,B.Id KatilimId,D.ProtokolSiraNo,A.* FROM Toplanti_Table A LEFT JOIN ToplantiKatilim_Table B ON A.Id=B.ToplantiId LEFT JOIN Personel_Table C ON C.Id=B.KatilimciId LEFT JOIN IsBilgileri_Table D ON D.PersonelId=C.Id WHERE B.KatilimciId=@Id ORDER BY A.Id,ProtokolSiraNo,Adi,Soyadi");
             q.AddParameter("@Id", id);
-            return db.SelectFromDb(q, "");
+            return Select(q);
         }
 
         public DataTable SelectByParticipantDate(int id, DateTime from, DateTime to)
@@ -106,21 +121,24 @@ namespace DAO.Repositories.Portal
             q.AddParameter("@Id", id);
             q.AddParameter("@From", from);
             q.AddParameter("@To", to);
-            return db.SelectFromDb(q, "");
+            return Select(q);
         }
 
         public int Insert<T>(T x)
         {
+            RequireLegacyWrite();
             return db.Insert(b.BuildInsert(x, "Toplanti_Table"));
         }
 
         public bool Update<T>(T x)
         {
+            RequireLegacyWrite();
             return db.Update2Db(b.BuildUpdate(x, "Toplanti_Table"));
         }
 
         public bool Delete(int id)
         {
+            RequireLegacyWrite();
             return db.DeleteFromDb(b.BuildDelete("Toplanti_Table", id), "");
         }
     }

@@ -38,6 +38,11 @@ namespace Model.Services.Ortak
         {
             return Map(repository.SelectByKey(key));
         }
+        public OrtakParametre GetByKey(string key, Utility.Logging.PortalLogContext context)
+        {
+            return Map(repository.SelectByKey(key, context));
+        }
+
 
         public List<OrtakParametre> GetByGroup(string group)
         {

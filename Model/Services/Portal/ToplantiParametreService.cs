@@ -1,3 +1,4 @@
+using Utility.Logging;
 using DAO.Repositories.Portal;
 using Model.Ortak;
 using Model.Portal;
@@ -10,6 +11,7 @@ namespace Model.Services.Portal
 {
     public class ToplantiParametreService
     {
+        public ToplantiParametreService(PortalLogContext context) : this(new ToplantiParametreRepository(context)) { }
         private readonly ToplantiParametreRepository r;
 
         public ToplantiParametreService()

@@ -45,6 +45,8 @@
     <AssemblyOriginatorKeyFile>modelkey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Services\Portal\PortalToplantiNotificationService.cs" />
+    <Compile Include="Services\Portal\PortalToplantiWriteService.cs" />
     <Compile Include="Services\NBYS\NbysSmsWriteService.cs" />
     <Compile Include="Services\NBYS\NbysFtkNotificationService.cs" />
     <Compile Include="Services\NBYS\NbysSupportReadService.cs" />

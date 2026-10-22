@@ -1,3 +1,4 @@
+using Utility.Logging;
 using DAO.Repositories.Portal;
 using Model.MTS;
 using Model.Ortak;
@@ -15,6 +16,7 @@ namespace Model.Services.Portal
 {
     public class ToplantiService
     {
+        public ToplantiService(PortalLogContext context) : this(new ToplantiRepository(context)) { }
         private readonly ToplantiRepository r;
 
         public ToplantiService()
@@ -97,7 +99,7 @@ namespace Model.Services.Portal
                     });
                 }
 
-            return ToJson(e);
+            return ToJson(e).Replace("<", "\\u003c").Replace(">", "\\u003e").Replace("&", "\\u0026");
         }
 
         public int Save(Toplanti x)
