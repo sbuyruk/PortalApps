@@ -7,12 +7,20 @@ using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Utility.Logging;
+using DAO.Ortak;
 
 namespace Model.Services.NBYS
 {
+    public enum NbysReferralWriteResult { Completed, Unchanged, NotFound, InvalidSelection, NameRequired, InvalidDate, InvalidIdentity }
+
     public class BagisaVesileOlanTesekkurService
     {
         private readonly BagisaVesileOlanTesekkurRepository repository;
+        private readonly PortalLogContext context;
+
+        public BagisaVesileOlanTesekkurService(PortalLogContext context)
+            : this(new BagisaVesileOlanTesekkurRepository(context)) { this.context = context; }
 
         public BagisaVesileOlanTesekkurService()
             : this(new BagisaVesileOlanTesekkurRepository())
@@ -87,6 +95,67 @@ namespace Model.Services.NBYS
                     previous, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISCI);
             return deleted;
         }
+
+        public NbysReferralWriteResult Persist(BagisaVesileOlanTesekkur item)
+        {
+            if (context == null) throw new InvalidOperationException("Merkezi kayıt işlemi için log bağlamı gereklidir.");
+            if (item == null || item.Id < 0) return NbysReferralWriteResult.InvalidSelection;
+            if (string.IsNullOrWhiteSpace(item.Adi)) return NbysReferralWriteResult.NameRequired;
+            if (item.BelgeTarihi < new DateTime(1753, 1, 1)) return NbysReferralWriteResult.InvalidDate;
+            if (item.TCKimlikNo < 0) return NbysReferralWriteResult.InvalidIdentity;
+            int id = item.Id;
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                BagisaVesileOlanTesekkur previous = id > 0 ? Map(repository.SelectById(id, transaction)).FirstOrDefault() : null;
+                if (id > 0 && previous == null) return NbysReferralWriteResult.NotFound;
+                if (previous != null)
+                {
+                    if (SameForm(previous, item)) return NbysReferralWriteResult.Unchanged;
+                    // These fields are not edited by either form. Preserve the actual stored values.
+                    item.Telefon = previous.Telefon;
+                    item.Adres = previous.Adres;
+                    item.Olusturan = previous.Olusturan;
+                    item.OlusturmaTarihi = previous.OlusturmaTarihi;
+                    item.Degistiren = context.UserLogin;
+                    item.DegistirmeTarihi = DateTime.Now;
+                    repository.Update(item, id, transaction);
+                }
+                else
+                {
+                    item.Olusturan = context.UserLogin;
+                    item.OlusturmaTarihi = DateTime.Now;
+                    id = repository.Insert(item, transaction);
+                }
+                transaction.Complete();
+            }
+            item.Id = id;
+            return NbysReferralWriteResult.Completed;
+        }
+
+        public NbysReferralWriteResult Remove(int id)
+        {
+            if (context == null) throw new InvalidOperationException("Merkezi kayıt işlemi için log bağlamı gereklidir.");
+            if (id <= 0) return NbysReferralWriteResult.InvalidSelection;
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                if (Map(repository.SelectById(id, transaction)).FirstOrDefault() == null) return NbysReferralWriteResult.NotFound;
+                repository.Delete(id, transaction);
+                transaction.Complete();
+            }
+            return NbysReferralWriteResult.Completed;
+        }
+
+        private static bool SameForm(BagisaVesileOlanTesekkur first, BagisaVesileOlanTesekkur second)
+        {
+            return first.BelgeTarihi == second.BelgeTarihi && first.TCKimlikNo == second.TCKimlikNo
+                && Equal(first.Adi, second.Adi) && Equal(first.Soyadi, second.Soyadi) && Equal(first.Unvan, second.Unvan)
+                && Equal(first.Aciklama, second.Aciklama) && Equal(first.VerilmeSebebi, second.VerilmeSebebi)
+                && Equal(first.BelgeMetni1, second.BelgeMetni1) && Equal(first.BelgeMetni2, second.BelgeMetni2)
+                && Equal(first.ImzalayanAdiSoyadi, second.ImzalayanAdiSoyadi)
+                && Equal(first.ImzalayanUnvan, second.ImzalayanUnvan) && Equal(first.ImzalayanMakam, second.ImzalayanMakam);
+        }
+
+        private static bool Equal(string first, string second) { return (first ?? string.Empty) == (second ?? string.Empty); }
 
         private static List<BagisaVesileOlanTesekkur> Map(DataTable table)
         {
