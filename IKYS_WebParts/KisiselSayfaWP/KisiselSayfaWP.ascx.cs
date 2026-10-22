@@ -1242,7 +1242,8 @@ namespace IKYS_WebParts.KisiselSayfaWP
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
+                Page.Response.Redirect(newUrl, false);
+                System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
             }
             catch (Exception ex)
             {
@@ -1260,9 +1261,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
+            RedirectToPage(ProjeConstants.PAGE_HOME);
         }
         #region GorevOnayListesi
         private void TabloOlustur(Personel personel)
