@@ -85,6 +85,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logging\NbysWebPartLog.cs" />
     <Compile Include="ArmaganAraWP\ArmaganAraWP.ascx.cs">
       <DependentUpon>ArmaganAraWP.ascx</DependentUpon>
     </Compile>
