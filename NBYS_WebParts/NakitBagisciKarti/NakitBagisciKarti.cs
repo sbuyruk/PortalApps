@@ -1,4 +1,6 @@
 using Model.NBYS;
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.Ortak;
 using Model.Services.NBYS;
 using Model.Services.Ortak;
@@ -22,6 +24,11 @@ namespace NBYS_WebParts.NakitBagisciKarti
     public class NakitBagisciKarti : CompositeControl
     {
         private readonly CultureInfo culture = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+        private PortalLogContext loggingContext;
+        private PortalLogContext LoggingContext
+        {
+            get { return loggingContext ?? (loggingContext = PortalLogContext.FromCurrentRequest("NBYS", "NakitBagisciKarti")); }
+        }
         private HiddenField bagisciIdField;
         private LinkButton loadButton;
         private Literal content;
@@ -65,35 +72,36 @@ namespace NBYS_WebParts.NakitBagisciKarti
             base.OnPreRender(e);
             EnsureChildControls();
             RegisterStyles();
-            ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(loadButton);
+            ScriptManager manager = ScriptManager.GetCurrent(Page);
+            if (manager != null) manager.RegisterAsyncPostBackControl(loadButton);
         }
 
         private void LoadButton_Click(object sender, EventArgs e)
         {
-            int bagisciId;
-            if (!int.TryParse(bagisciIdField.Value, out bagisciId) || bagisciId < 1)
-            {
-                content.Text = ErrorContent("Geçerli bir bağışçı seçilemedi.");
-                updatePanel.Update();
-                ShowModal();
-                return;
-            }
-
             try
             {
-                NakitBagisci bagisci = new NakitBagisciService().GetById(bagisciId);
-                if (bagisci == null)
-                {
-                    content.Text = ErrorContent("Bağışçı kaydı bulunamadı.");
-                }
+                NbysWebPartLog.RecordOpened(LoggingContext);
+                int bagisciId;
+                if (!int.TryParse(bagisciIdField.Value, out bagisciId) || bagisciId < 1)
+                    content.Text = ErrorContent("Geçerli bir bağışçı seçin.", true);
                 else
                 {
-                    content.Text = BuildContent(bagisci);
+                    var access = new NbysBagisciWriteService(LoggingContext);
+                    var region = access.GetUserRegion();
+                    if (!access.CanReadDonor(bagisciId, region))
+                        content.Text = ErrorContent("Bağışçı kaydı bulunamadı veya bu kaydı görüntüleme yetkiniz yok. Seçiminizi kontrol edin.", true);
+                    else
+                    {
+                        NakitBagisci bagisci = new NakitBagisciService(LoggingContext).GetById(bagisciId);
+                        content.Text = bagisci == null ? ErrorContent("Bağışçı kaydı bulunamadı. Listeyi yenileyin.", true) : BuildContent(bagisci);
+                    }
                 }
             }
-            catch
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
             {
-                content.Text = ErrorContent("Bağışçı kartı yüklenirken bir hata oluştu.");
+                PortalTechnicalLog.WriteError(LoggingContext, "NBYS.NakitBagisciKarti.Load", error);
+                content.Text = ErrorContent("Bağışçı kartı yüklenemedi. Tekrar deneyin. Başvuru kodu: " + LoggingContext.OperationId.ToString("N"));
             }
 
             updatePanel.Update();
@@ -102,27 +110,27 @@ namespace NBYS_WebParts.NakitBagisciKarti
 
         private string BuildContent(NakitBagisci bagisci)
         {
-            List<NakitBagisHareket> donations = new NakitBagisHareketService()
+            List<NakitBagisHareket> donations = new NakitBagisHareketService(LoggingContext)
                 .GetByBagisciId(bagisci.Id)
                 .OrderByDescending(x => x.BagisTarihi)
                 .ToList();
-            List<Armagan> gifts = new ArmaganService()
+            List<Armagan> gifts = new ArmaganService(LoggingContext)
                 .GetByBagisciId(bagisci.Id)
                 .OrderByDescending(x => x.Tarih)
                 .ToList();
-            DuzenliNakitBagisci regular = new DuzenliNakitBagisciService()
+            DuzenliNakitBagisci regular = new DuzenliNakitBagisciService(LoggingContext)
                 .GetActiveByBagisciId(bagisci.Id);
 
-            Dictionary<int, string> banks = new BankaTanimService().GetAll()
+            Dictionary<int, string> banks = new BankaTanimService(LoggingContext).GetAll()
                 .ToDictionary(x => x.Id, x => x.Banka ?? string.Empty);
-            Dictionary<int, string> giftNames = new ArmaganTanimService().GetAll()
+            Dictionary<int, string> giftNames = new ArmaganTanimService(LoggingContext).GetAll()
                 .ToDictionary(x => x.Id, x => x.Armagan ?? string.Empty);
 
             decimal total = donations.Sum(x => x.BagisMiktari);
             decimal refunds = donations.Where(x => x.IadeEdildiMi).Sum(x => x.IadeMiktari);
             decimal net = total - refunds;
-            string province = LocationName<Il>(bagisci.Ili, new IlService().GetById, x => x.IlAdi);
-            string district = LocationName<Ilce>(bagisci.Ilcesi, new IlceService().GetById, x => x.IlceAdi);
+            string province = LocationName<Il>(bagisci.Ili, id => new IlService().GetById(id, LoggingContext), x => x.IlAdi);
+            string district = LocationName<Ilce>(bagisci.Ilcesi, id => new IlceService().GetById(id, LoggingContext), x => x.IlceAdi);
             string fullName = ((bagisci.Adi ?? string.Empty) + " " + (bagisci.Soyadi ?? string.Empty)).Trim();
             string initials = Initials(bagisci.Adi, bagisci.Soyadi);
 
@@ -325,11 +333,11 @@ window.NakitBagisciKartiAc = function (bagisciId) {{
                 "<div class='modal-body nbk-empty'>Bağışçı bilgileri yükleniyor...</div>";
         }
 
-        private string ErrorContent(string message)
+        private string ErrorContent(string message, bool warning = false)
         {
             return "<div class='modal-header nbk-header bg-primary text-white'><h4 class='modal-title'>Nakit Bağışçı Kartı</h4>" +
                 "<button type='button' class='btn-close btn-close-white' data-bs-dismiss='modal' aria-label='Kapat'></button></div>" +
-                "<div class='modal-body'><div class='alert alert-danger mb-0'>" + E(message) + "</div></div>";
+                "<div class='modal-body'><div class='alert " + (warning ? "alert-warning" : "alert-danger") + " mb-0'>" + E(message) + "</div></div>";
         }
 
         private static string Metric(string label, string value, string css)

@@ -34,8 +34,7 @@ namespace NBYS_WebParts.Logging
             if (refreshError != null && System.Web.HttpContext.Current != null)
                 System.Web.HttpContext.Current.Items["PortalApps.NBYS.FailedWebPart." + context.WebPart] = true;
             NbysImportValidationException[] validation = result.Exceptions.OfType<NbysImportValidationException>().ToArray();
-            foreach (NbysImportValidationException warning in validation)
-                PortalTechnicalLog.WriteError(context, "NBYS." + context.WebPart + ".FileValidation", warning);
+            // Expected file validation remains a warning; technical failures are reported below.
             if (validation.Length > 0) summary += " " + string.Join(" ", validation.Select(error => error.Message).Distinct());
             Exception[] errors = result.Exceptions.Where(error => error != null && !(error is ImportAlreadyProcessedException)
                 && !(error is NbysImportValidationException)).ToArray();

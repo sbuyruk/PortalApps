@@ -1,5 +1,11 @@
 # NBYS merkezi loglama geçişi — envanter ve parça 1
 
+## Ortak erişim kapanış parçası (#521 sonrası)
+
+Temiz ve uzak master ile aynı 04c2bec7b87e5479089cc6a49768086a77c7bff6 üzerinden codex/nbys-kapanis-ortak-erisim-audit açıldı. Dokuz ekranın yönerge parametresi okumaları bağlamlı yapıldı. ASCX ekran sayımının dışında kalan NakitBagisciKarti'nin tüm veri okumaları, etkinlik/teknik logları ve mevcut bölge kuralıyla sunucu yetki kontrolü düzenlendi. Düzenli bağışçı için bağlamlı salt okuma yolu eklendi. Kartın beklenen uyarıları teknik hatadan ayrıldı; teknik hatada tek modal mesajı/başvuru kodu kullanılır. Ekstre dosyasının beklenen doğrulaması ayrıca FileValidation/Error üretmez; güvenli uyarı korunur.
+
+Kapsam, mesaj farkları, derlenmeyen eski kopya, statik inceleme sınırı ve TEST noktaları LoglamaGecisKapanisOrtakErisim.md içindedir. 55/55 ekran bağlamı çalışma zamanı doğrulaması değildir; NBYS kapanışı TEST değerlendirmesine bağlıdır. Portal'a geçilmedi. Codex build/test/debug çalıştırmadı.
+
 Dal: codex/nbys-parametre-log-transaction-mesaj
 Başlangıç: e96e78959fbd585703d2154a701ad6e999c59fef (22 Ekim 2026).
 Değişiklik öncesinde master çalışma ağacı temizdi; git ls-remote ile GitHub master'ın aynı commit olduğu doğrulandı.

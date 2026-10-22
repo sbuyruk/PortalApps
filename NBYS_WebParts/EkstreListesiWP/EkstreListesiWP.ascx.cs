@@ -157,7 +157,7 @@ namespace NBYS_WebParts.EkstreListesiWP
 
                 if (!Page.IsPostBack)
                 {
-                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_ARMAGANOLUSTURMA);
+                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_ARMAGANOLUSTURMA, LoggingContext);
                     TumunuSecChk.Checked = SelectAllQS.ConvertToBool();
                     if (!string.IsNullOrEmpty(IslemTarihiQS))
                     {

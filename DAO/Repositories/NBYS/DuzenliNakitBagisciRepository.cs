@@ -1,5 +1,7 @@
 using DAO.Ortak;
 using System.Data;
+using System;
+using Utility.Logging;
 
 namespace DAO.Repositories.NBYS
 {
@@ -7,6 +9,12 @@ namespace DAO.Repositories.NBYS
     {
         private const string TableName = "DuzenliNakitBagisci_Table";
         private readonly DbClass db;
+        private readonly NbysSqlExecutor sql;
+
+        public DuzenliNakitBagisciRepository(PortalLogContext context)
+        {
+            sql = new NbysSqlExecutor(context, "DuzenliNakitBagisciRepository");
+        }
         private readonly CrudQueryBuilder queryBuilder = new CrudQueryBuilder();
 
         public DuzenliNakitBagisciRepository() : this(new DbClass())
@@ -22,12 +30,13 @@ namespace DAO.Repositories.NBYS
         {
             SqlQuery query = new SqlQuery("SELECT * FROM DuzenliNakitBagisci_Table WHERE Id=@Id");
             query.AddParameter("@Id", id);
-            return db.SelectFromDb(query, "");
+            return sql == null ? db.SelectFromDb(query, "") : sql.Select(query);
         }
 
         public DataTable SelectAll()
         {
-            return db.SelectFromDb(new SqlQuery("SELECT * FROM DuzenliNakitBagisci_Table"), "");
+            SqlQuery query = new SqlQuery("SELECT * FROM DuzenliNakitBagisci_Table");
+            return sql == null ? db.SelectFromDb(query, "") : sql.Select(query);
         }
 
         public DataTable SelectActiveByBagisciId(int bagisciId)
@@ -35,21 +44,29 @@ namespace DAO.Repositories.NBYS
             SqlQuery query = new SqlQuery(
                 "SELECT * FROM DuzenliNakitBagisci_Table WHERE Aktif=1 AND BagisciId=@BagisciId");
             query.AddParameter("@BagisciId", bagisciId);
-            return db.SelectFromDb(query, "");
+            return sql == null ? db.SelectFromDb(query, "") : sql.Select(query);
         }
 
         public int Insert<T>(T entity)
         {
+            RequireLegacyWrite();
             return db.Insert(queryBuilder.BuildInsert(entity, TableName));
         }
 
         public bool Update<T>(T entity)
         {
+            RequireLegacyWrite();
             return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName));
+        }
+
+        private void RequireLegacyWrite()
+        {
+            if (sql != null) throw new InvalidOperationException("Bağlamlı yazma için transaction kullanan düzenli bağışçı servisi gereklidir.");
         }
 
         public bool Delete(int id)
         {
+            RequireLegacyWrite();
             return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), "");
         }
     }

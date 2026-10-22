@@ -137,7 +137,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
 
                 if (!Page.IsPostBack)
                 {
-                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_FTKYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_FTKKISI_GIRISI);
+                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_FTKYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_FTKKISI_GIRISI, LoggingContext);
                     IlkACilis();
                 }
             });
