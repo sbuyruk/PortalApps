@@ -1,3 +1,4 @@
+using Utility.Logging;
 using DAO.Repositories.Ortak;
 using Model.Ortak;
 using System;
@@ -25,6 +26,11 @@ namespace Model.Services.Ortak
         public Bolge GetById(int id)
         {
             return Map(repository.SelectById(id));
+        }
+
+        public Bolge GetById(int id, PortalLogContext context)
+        {
+            return Map(repository.SelectById(id, context));
         }
 
         public Bolge GetByDonorId(int donorId)

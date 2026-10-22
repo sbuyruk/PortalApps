@@ -161,3 +161,11 @@ Kullanıcı NBYSParametreGirisiWP testini başarılı bildirdi.
 İkinci parça dalı codex/nbys-banka-doviz-log-mesaj; başlangıç 4f1816e938d9d598a72488363a3dd6c8beffe3b6.
 Banka tanımları için ayrı bir ekleme/düzenleme WebPart'ı ve yazma çağıranı bulunmadığından ikinci parça mevcut DovizleYapilanBagislarWP, banka grubu okuması ve rapor SELECT'i ile sınırlandı. Banka CRUD/audit tamamlandı kabul edilmez.
 Mesaj değişiklikleri, kalan banka okuyucuları, etkinleştirme, mevcut tarih filtresi sınırı ve TEST adımları LoglamaGecisParca2.md içindedir.
+
+## Kullanıcı talebiyle toplu geçiş kapsamı
+
+Kullanıcı daha geniş dallarla ilerlenmesini istedi. Banka/döviz parçası master'a alındıktan sonra temiz/güncel f0066ca6a67b6402d54969300955643fb20293f8 üzerinden codex/nbys-liste-rapor-toplu-gecis açıldı.
+Bu dal 10 salt okuma ekranını birlikte taşır: BagisHareketListesiWP, BagisIadeListesiWP, NakitBagisciByBankaWP, NakitBagisciByTarihWP, NakitBagisciListesiByYilAyWP, NakitBagisHaritasiWP, NakitBagisRaporuByBolgeWP, NakitBagisRaporuByYil_il, FTKKisiListesiWP, FTKFahriBaskanListesiWP.
+Açılış/hata kayıtları, ilgili SELECT zincirleri, filtre/modal/Excel yolları ve mevcut mesaj incelemesi aynı daldadır. Eski yukarıdaki tablo başlangıç envanteridir; bu 10 ekran artık ExceptionHelper/ham hata sunumundan NbysWebPartLog/Messages yoluna taşınmıştır.
+Transaction/audit gerektiren yazma akışları sonraki ilişkili işlem gruplarıdır. Bu dal salt okuma ekranlarına audit eklendiği veya NBYS'nin tümünün tamamlandığı anlamına gelmez.
+Mesaj değişiklikleri, etkinleştirme listesi, statik kontroller ve toplu TEST adımları LoglamaGecisTopluListeRapor.md dosyasındadır. Yeni dalın çalışma zamanı sonucu henüz kullanıcı tarafından doğrulanmadı.

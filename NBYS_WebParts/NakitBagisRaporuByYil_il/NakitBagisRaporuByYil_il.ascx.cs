@@ -1,3 +1,5 @@
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.NBYS;
 using Model.Services.NBYS;
 using System;
@@ -14,6 +16,15 @@ namespace NBYS_WebParts.NakitBagisRaporuByYil_il
     [ToolboxItemAttribute(false)]
     public partial class NakitBagisRaporuByYil_il : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "NakitBagisRaporuByYil_il"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -31,86 +42,81 @@ namespace NBYS_WebParts.NakitBagisRaporuByYil_il
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            RaporTableDoldur();
+            ExecuteAction("Page_Load", () =>
+            {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
+                RaporTableDoldur();
+            });
         }
         private void RaporTableDoldur()
         {
             int ilkYil = 2017;
             int sonYil = 2021;
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            NakitBagisHareketService nakitBagisHareket = new NakitBagisHareketService();
+            NakitBagisHareketService nakitBagisHareket = new NakitBagisHareketService(LoggingContext);
             RaporTableHeaders(ilkYil, sonYil);
             DataTable dataTable = nakitBagisHareket.GetCountSumByYilIl(ilkYil, sonYil);
             int counter = 0;
-            try
+            bool artti = false;
+            while (counter < dataTable.Rows.Count)
             {
-                bool artti = false;
-                while (counter < dataTable.Rows.Count)
+
+                DataRow row = dataTable.Rows[counter];
+                string bolge = row["Bolge"].ToString();
+                string il = row["IlAdi"].ToString();
+                TableRow tableRow = new TableRow();
+                TableCell bolgeCell = new TableCell();
+                bolgeCell.Text = bolge;
+                TableCell ilCell = new TableCell();
+                ilCell.Text = il;
+                tableRow.Controls.Add(bolgeCell);
+                tableRow.Controls.Add(ilCell);
+                for (int i = ilkYil; i <= sonYil; i++)
                 {
+                    row = dataTable.Rows[counter];
+                    int yil = row["Yil"].ReturnEmptyIfZeroOrNull().ConvertToInt();
+                    TableCell yilCell = new TableCell();
+                    yilCell.Text = i.ToString();
+                    //tableRow.Controls.Add(yilCell);
 
-                    DataRow row = dataTable.Rows[counter];
-                    string bolge = row["Bolge"].ToString();
-                    string il = row["IlAdi"].ToString();
-                    TableRow tableRow = new TableRow();
-                    TableCell bolgeCell = new TableCell();
-                    bolgeCell.Text = bolge;
-                    TableCell ilCell = new TableCell();
-                    ilCell.Text = il;
-                    tableRow.Controls.Add(bolgeCell);
-                    tableRow.Controls.Add(ilCell);
-                    for (int i = ilkYil; i <= sonYil; i++)
+                    TableCell adetCell = new TableCell();
+                    adetCell.HorizontalAlign = HorizontalAlign.Right;
+                    TableCell tutarCell = new TableCell();
+                    tutarCell.HorizontalAlign = HorizontalAlign.Right;
+                    tableRow.Controls.Add(adetCell);
+                    tableRow.Controls.Add(tutarCell);
+                    if (yil == i)
                     {
-                        row = dataTable.Rows[counter];
-                        int yil = row["Yil"].ReturnEmptyIfZeroOrNull().ConvertToInt();
-                        TableCell yilCell = new TableCell();
-                        yilCell.Text = i.ToString();
-                        //tableRow.Controls.Add(yilCell);
+                        string adet = row["Adet"].ReturnEmptyIfZeroOrNull().ToString();
 
-                        TableCell adetCell = new TableCell();
-                        adetCell.HorizontalAlign = HorizontalAlign.Right;
-                        TableCell tutarCell = new TableCell();
-                        tutarCell.HorizontalAlign = HorizontalAlign.Right;
-                        tableRow.Controls.Add(adetCell);
-                        tableRow.Controls.Add(tutarCell);
-                        if (yil == i)
-                        {
-                            string adet = row["Adet"].ReturnEmptyIfZeroOrNull().ToString();
+                        adetCell.Text = adet;
+                        string tutar = row["Tutar"].ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo); ;
 
-                            adetCell.Text = adet;
-                            string tutar = row["Tutar"].ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo); ;
+                        tutarCell.Text = tutar;
 
-                            tutarCell.Text = tutar;
-
-                        }
-                        else
-                        {
-
-                            continue;
-                        }
-                        if (dataTable.Rows.Count > counter + 1)
-                        {
-                            counter++;
-                            artti = true;
-                        }
-
-                    }
-                    RaporTable.Rows.Add(tableRow);
-                    if (artti)
-                    {
-
-                        artti = false;
                     }
                     else
                     {
-                        counter++;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
 
-                ExceptionHelper exh = new ExceptionHelper(ex);
-                exh.PublishException();
+                        continue;
+                    }
+                    if (dataTable.Rows.Count > counter + 1)
+                    {
+                        counter++;
+                        artti = true;
+                    }
+
+                }
+                RaporTable.Rows.Add(tableRow);
+                if (artti)
+                {
+
+                    artti = false;
+                }
+                else
+                {
+                    counter++;
+                }
             }
         }
 
@@ -146,26 +152,21 @@ namespace NBYS_WebParts.NakitBagisRaporuByYil_il
 
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                int index = currentUrl.LastIndexOf("?") < 0 ? currentUrl.Length : currentUrl.LastIndexOf("?");
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            int index = currentUrl.LastIndexOf("?") < 0 ? currentUrl.Length : currentUrl.LastIndexOf("?");
 
-                string rawUrl = currentUrl.Substring(0, index);
-                string newUrl = rawUrl.Substring(0, rawUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string rawUrl = currentUrl.Substring(0, index);
+            string newUrl = rawUrl.Substring(0, rawUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl);
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
+            ExecuteAction("CloseBtn_Click", () =>
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                Page.Response.Redirect(newUrl);
+            });
         }
     }
 }

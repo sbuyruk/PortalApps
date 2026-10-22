@@ -1,3 +1,5 @@
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.NBYS;
@@ -16,6 +18,15 @@ namespace NBYS_WebParts.BagisIadeListesiWP
     [ToolboxItemAttribute(false)]
     public partial class BagisIadeListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "BagisIadeListesiWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -34,20 +45,16 @@ namespace NBYS_WebParts.BagisIadeListesiWP
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
                 if (!Page.IsPostBack)
                 {
                     AyDDLDoldur();
                     YilDDLDoldur();
                     TabloOlustur();
                 }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
 
         private void AyDDLDoldur()
@@ -93,24 +100,15 @@ namespace NBYS_WebParts.BagisIadeListesiWP
         private string TabloJson()
         {
             string jSon = string.Empty;
-            try
-            {
-                NakitBagisHareket nbh = new NakitBagisHareket();
-                jSon = new NakitBagisHareketService().ListIadeEdilenBagislarJson(AyDDL.SelectedItem.Value, YilDDL.SelectedItem.Value);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
+            NakitBagisHareket nbh = new NakitBagisHareket();
+            jSon = new NakitBagisHareketService(LoggingContext).ListIadeEdilenBagislarJson(AyDDL.SelectedItem.Value, YilDDL.SelectedItem.Value);
             return jSon;
         }
 
         private DataTable GetIadeEdilenBagislarDataTable()
         {
             NakitBagisHareket nbh = new NakitBagisHareket();
-            return new NakitBagisHareketService().ListIadeEdilenBagislar(AyDDL.SelectedItem.Value, YilDDL.SelectedItem.Value);
+            return new NakitBagisHareketService(LoggingContext).ListIadeEdilenBagislar(AyDDL.SelectedItem.Value, YilDDL.SelectedItem.Value);
         }
 
         private string CreateDataTable(string jsonData)
@@ -171,56 +169,36 @@ namespace NBYS_WebParts.BagisIadeListesiWP
 
         protected void AyDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("AyDDL_SelectedIndexChanged", () =>
             {
                 TabloOlustur();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
 
         protected void YilDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("YilDDL_SelectedIndexChanged", () =>
             {
                 TabloOlustur();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
 
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("CloseBtn_Click", () =>
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
 
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ExcelBtn_Click", () =>
             {
                 ExportToExcel();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
 
         protected void ExportToExcel()

@@ -1,3 +1,4 @@
+using Utility.Logging;
 using DAO.Repositories.NBYS;
 using Model.NBYS;
 using Model.Ortak;
@@ -13,6 +14,8 @@ namespace Model.Services.NBYS
     public class FTKKisiService
     {
         private readonly FTKKisiRepository repository;
+
+        public FTKKisiService(PortalLogContext context) : this(new FTKKisiRepository(context)) { }
         public FTKKisiService() : this(new FTKKisiRepository()) { }
         public FTKKisiService(FTKKisiRepository repository)
         {

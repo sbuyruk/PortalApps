@@ -1,3 +1,4 @@
+using Utility.Logging;
 using DAO.Ortak;
 using System;
 using System.Data;
@@ -44,6 +45,11 @@ namespace DAO.Repositories.Ortak
             return db.SelectFromDb(new SqlQuery("SELECT * FROM Il_Table"), "");
         }
 
+        public DataTable SelectAll(PortalLogContext context)
+        {
+            return PortalSqlReadExecutor.Select(new SqlQuery("SELECT * FROM Il_Table"), context, "IlRepository.SelectAll");
+        }
+
         public DataTable SelectAllOrderByRegion()
         {
             return db.SelectFromDb(new SqlQuery(
@@ -74,6 +80,14 @@ namespace DAO.Repositories.Ortak
                 "SELECT * FROM Il_Table WHERE LOWER(IngIlAdi)=LOWER(@IngIlAdi)");
             query.AddParameter("@IngIlAdi", name);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectByEnglishName(string name, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM Il_Table WHERE LOWER(IngIlAdi)=LOWER(@IngIlAdi)");
+            query.AddParameter("@IngIlAdi", name);
+            return PortalSqlReadExecutor.Select(query, context, "IlRepository.SelectByEnglishName");
         }
 
         public DataTable SelectByRegion(int regionId, bool orderByName)

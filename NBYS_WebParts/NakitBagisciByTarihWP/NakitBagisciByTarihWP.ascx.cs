@@ -1,3 +1,5 @@
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.NBYS;
@@ -15,6 +17,15 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
     [ToolboxItemAttribute(false)]
     public partial class NakitBagisciByTarihWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "NakitBagisciByTarihWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -96,21 +107,16 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
                 if (!Page.IsPostBack)
                 {
                     setDefaultValues();
                     FillSonucTable();
                     //SMSTablosunuDoldur();
                 }
-
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         private void setDefaultValues()
         {
@@ -122,12 +128,24 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
         }
         private void FillSonucTable()
         {
+            DateTime bastar = BasTarTxt.Value.ConvertToDatetime();
+            DateTime bittar = BitTarTxt.Value.ConvertToDatetime();
+            if (bastar.Year < 1901 || bittar.Year < 1901)
+            {
+                Messages.Warning("Geçerli bir başlangıç ve bitiş tarihi girin.");
+                return;
+            }
+            if (bastar > bittar)
+            {
+                Messages.Warning("Başlangıç tarihi bitiş tarihinden sonra olamaz. Tarihleri kontrol edin.");
+                return;
+            }
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
 
             SonucTable.Rows.Clear();
             TableHeaderRow headerThRow = new TableHeaderRow();
             TableHeaderCell headerCell = new TableHeaderCell();
-            headerCell.Text = BasTarTxt.Value.ConvertToDatetimeEmptyIfNull() + "-" + BitTarTxt.Value.ConvertToDatetimeEmptyIfNull() + " TARIHLERI ARASINDA YAPILAN NAKIT BAGISLAR";
+            headerCell.Text = BasTarTxt.Value.ConvertToDatetimeEmptyIfNull() + "-" + BitTarTxt.Value.ConvertToDatetimeEmptyIfNull() + " TARİHLERİ ARASINDA YAPILAN NAKİT BAĞIŞLAR";
             headerCell.ColumnSpan = 7;
             headerThRow.Controls.Add(headerCell);
             SonucTable.Controls.Add(headerThRow);
@@ -177,9 +195,8 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
             SonucTable.Controls.Add(th);
             SonucTable.Controls.Add(th1);
 
-            DateTime bastar = BasTarTxt.Value.ConvertToDatetime();
-            DateTime bittar = BitTarTxt.Value.ConvertToDatetime();
-            NakitBagisHareketService nbh = new NakitBagisHareketService();
+
+            NakitBagisHareketService nbh = new NakitBagisHareketService(LoggingContext);
             DataTable dataTable = nbh.GetCountSumByTarih(bastar, bittar);
             if (dataTable != null)
             {
@@ -205,7 +222,7 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
                     tableRow.Controls.Add(bolgeCell);
 
                     int toplamAdet = 0;
-                    NakitBagisHareketService nbh1 = new NakitBagisHareketService();
+                    NakitBagisHareketService nbh1 = new NakitBagisHareketService(LoggingContext);
 
                     Decimal toplamTutar = nbh1.GetTotalByTarihBolge(bastar, bittar, bolgeId, ref toplamAdet);
                     toplamAdetToplam += toplamAdet;
@@ -397,15 +414,21 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
         //}
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
+            ExecuteAction("CloseBtn_Click", () =>
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                Page.Response.Redirect(newUrl);
+            });
         }
 
         protected void ListeleBtn_Click(object sender, EventArgs e)
         {
-            FillSonucTable();
-            //SMSTablosunuDoldur();
+            ExecuteAction("ListeleBtn_Click", () =>
+            {
+                FillSonucTable();
+                //SMSTablosunuDoldur();
+            });
         }
     }
 }
