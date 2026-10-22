@@ -1,3 +1,4 @@
+using Utility.Logging;
 using DAO.Repositories.NBYS;
 using DAO.Ortak;
 using Model.NBYS;
@@ -29,6 +30,11 @@ namespace Model.Services.NBYS
         public ArmaganTanim GetById(int id)
         {
             return Map(repository.SelectById(id)).FirstOrDefault();
+        }
+
+        public ArmaganTanim GetById(int id, PortalLogContext context)
+        {
+            return Map(repository.SelectById(id, context)).FirstOrDefault();
         }
 
         public List<ArmaganTanim> GetAll()

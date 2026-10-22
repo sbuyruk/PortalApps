@@ -1,3 +1,5 @@
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.Ortak;
@@ -16,6 +18,15 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
     [ToolboxItemAttribute(false)]
     public partial class NakitBagisHareketSilmeWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "NakitBagisHareketSilmeWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -102,40 +113,13 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                 ViewState["SecilenYil"] = value;
             }
         }
-        private string MesajQS
-        {
-            get
-            {
 
-                if (ViewState["Mesaj"] == null)
-                {
-                    if (Page.Request.QueryString["Mesaj"] != null)
-                    {
-                        ViewState["Mesaj"] = Page.Request.QueryString["Mesaj"];
-                    }
-                    else
-                    {
-                        ViewState["Mesaj"] = string.Empty;
-                    }
-                }
-                return ViewState["Mesaj"].ToString();
-            }
-
-            set
-            {
-                ViewState["Mesaj"] = value;
-            }
-        }
         private IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
-                if (!string.IsNullOrEmpty(MesajQS))
-                {
-                    MessageHelper.PublishMessage("Bağış Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
-                    MesajQS = string.Empty;
-                }
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
                 if (!Page.IsPostBack)
                 {
                     YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_BAGISSIL);
@@ -149,18 +133,12 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                     UtilityHelper.SetDDLValue(AyDDL, SecilenAyQS);
                     TabloOlustur();
                 }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
-
+            });
         }
         private string BagisHareketListesiJson()
         {
             NakitBagisHareket nbh = new NakitBagisHareket();
-            var json = new NakitBagisHareketService().ListByDurumTarihJson(AyDDL.SelectedItem.Value, SecilenYilQS, ProjeConstants.IL_HEPSI);
+            var json = new NakitBagisHareketService(LoggingContext).ListByDurumTarihJson(AyDDL.SelectedItem.Value, SecilenYilQS, ProjeConstants.IL_HEPSI);
             return json;
         }
         private void TabloOlustur()
@@ -178,8 +156,8 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                     columns: [
                         { data: 'Adi','width': '20%' },
                         { data: 'TCKimlikNo' },
-                        { data: 'BagisMiktari', 
-                            'width': '10%', 
+                        { data: 'BagisMiktari',
+                            'width': '10%',
                             'className': 'text-end' ,
                             //render: $.fn.dataTable.render.number( '.', ',', 2 ) //format money as ###.###,00
                         },
@@ -210,7 +188,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                         if (isLinkVisible) {
                             return '<a href=""#"" onclick=""CallButtonClick(' + data + ');"" class=""btn btn-outline-danger"">Kayit Sil</a>';
                         } else {
-                            return 'Silme süresi dolmus';
+                            return 'Silme süresi dolmuş';
                         }
                     }
                 },
@@ -233,62 +211,22 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
         }
         protected void AyDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("AyDDL_SelectedIndexChanged", () =>
             {
                 SecilenAyQS = AyDDL.SelectedItem.Value.ToString();
                 TabloOlustur();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void YilDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("YilDDL_SelectedIndexChanged", () =>
             {
                 SecilenYilQS = YilDDL.SelectedItem.Value.ToString();
                 AyDDLDoldur();
                 TabloOlustur();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
-        private bool TekrarArmaganHesapla(NakitBagisHareket silinenNbh, string currentUser)
-        {
-            bool isArmaganSaved = false;
-            //NakitBagisHareket nbhQuery = new NakitBagisHareket();
-            //List<NakitBagisHareket> nbhList = nbhQuery.SelectByArmaganId(silinenNbh.ArmaganId);
-            ////eger hala bu bagiscinin yaptigi nbh varsa yeniden armagan hesapla
-            //if (nbhList.Count > 0)
-            //{
-            //    NakitBagisHareket kalanNbh1 = nbhList[0];
-            //    NakitBagisci kalanNakitBagisci = new NakitBagisci();
-            //    kalanNakitBagisci = kalanNakitBagisci.Select<NakitBagisci>(kalanNbh1.BagisciId);
 
-            //    try
-            //    {
-            //        isArmaganSaved = EkstreAktarma.SaveArmagan(silinenNbh.BagisTarihi, kalanNakitBagisci.TuzelKisi, kalanNakitBagisci.Id, silinenNbh.Id, currentUser);//Armagan tablosuna aktarim
-            //        //if (isArmaganSaved)
-            //        //{
-            //        //    RedirectToPage(ProjeConstants.PAGE_BAGISIADE+"?Mesaj=true&Param="+BagisAraTxt.Text);87
-            //        //    KayitGetir();
-            //        //}
-            //    }
-            //    catch (Exception exception)
-            //    {
-            //        ExceptionHelper ex = new ExceptionHelper(exception);
-            //        ex.PublishException();
-            //        TabloOlustur();
-            //    }
-            //}
-            return isArmaganSaved;
-
-        }
         private void AyDDLDoldur()
         {
             AyDDL.Items.Clear();
@@ -325,27 +263,27 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
 
 
             NakitBagisHareket nbh = new NakitBagisHareket();
-            nbh = new NakitBagisHareketService().GetById(paramBagisHareketIdLbl.Value.ConvertToInt());
+            nbh = new NakitBagisHareketService(LoggingContext).GetById(paramBagisHareketIdLbl.Value.ConvertToInt());
 
             if (nbh != null)//bu bagis varsa
             {
 
-                NakitBagisci nb = new NakitBagisciService().GetById(nbh.BagisciId);
+                NakitBagisci nb = new NakitBagisciService(LoggingContext).GetById(nbh.BagisciId);
                 string bagisciAdi = nb == null ? "" : nb.Adi + " " + nb.Soyadi + " tarafından bağışlanan ";
                 string silmeMsg = bagisciAdi + nbh.BagisMiktari.ToString("N", culturInfo) + " " + nbh.DovizCinsi + " silinecek. (Hatırlatma: Silme yerine 'Bağış İadesi' de yapabilirsiniz.) ";
                 Armagan armagan = new Armagan();
-                armagan = new ArmaganService().GetById(nbh.ArmaganId);
+                armagan = new ArmaganService().GetById(nbh.ArmaganId, LoggingContext);
 
                 string armaganiVarMsg = string.Empty;
                 if (armagan != null) //bu armagan varsa
                 {
-                    ArmaganTanim at = new ArmaganTanimService().GetById(armagan.ArmaganTanimId);
+                    ArmaganTanim at = new ArmaganTanimService().GetById(armagan.ArmaganTanimId, LoggingContext);
                     string armaganTanim = at == null ? "" : " Bu bağışa ait " + at.Armagan + " bulunmaktadır.";
-                    if (armagan.Durum.Equals(ProjeConstants.DURUM_GONDERILMEDI))
+                    if (armagan.Durum == ProjeConstants.DURUM_GONDERILMEDI)
                     {
-                        armaganiVarMsg = armaganTanim + " (Armağan Durumu: '" + armagan.Durum + "'). Onayladığınız takdirde armağan silinecektir.";
+                        armaganiVarMsg = armaganTanim + " (Armağan Durumu: '" + armagan.Durum + "'). Onayladığınızda başka kayda bağlı olmayan armağan da silinecektir.";
                     }
-                    else 
+                    else
                     {
                         armaganiVarMsg = armaganTanim + " Armağan Durumu: '" + armagan.Durum + "' olduğundan, silmeniz durumunda bu armağan silinmeyecektir.";
                     }
@@ -362,114 +300,57 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
 
             }
         }
-        /// <summary>
-        /// NakitBagisHareketKaydini sil
-        /// SilinenKayit_Table'a yaz
-        /// Bu bagisa karsilik bir Armagan  berati var mi bak
-        ///     varsa Armagan Kaydini Sil 
-        ///     Armagan Gonderildi ise silme 
-        ///     armagan silindi ise tekrar armagan Hesapla 
-        /// Nakit bagiscinin baska bagisi yoksa Nakit Bagisciyi sil 
-        ///     baska bagisi varsa silme
-        /// </summary>
+        // Business data, references, archives and audit commit together.
         private void SecilenBagisiSil()
         {
-            string currentUser = UtilityHelper.GetCurrentUserLoginName();
-            NakitBagisHareket nbh = new NakitBagisHareket();
-            nbh = new NakitBagisHareketService().GetById(paramBagisHareketIdLbl.Value.ConvertToInt());
-            if (nbh != null)
+            NbysDonationWriteResult result = new NbysDonationWriteService(LoggingContext).Delete(
+                paramBagisHareketIdLbl.Value.ConvertToInt(), SilmeSebebiTxt.Value);
+            NbysDonationFeedback.Show(LoggingContext, result, "Bağış silindi.", () =>
             {
-                #region SilinenKayit_Table'a yaz
-                SilinenKayit skNBH = new SilinenKayit();
-                skNBH.Silen = currentUser;
-                skNBH.SilinmeSebebi = SilmeSebebiTxt.Value;
-                skNBH.TabloAdi = "NakitBagisHareket_Table";
-                skNBH.SilinmeTarihi = DateTime.Now;
-                skNBH.SilinenKayitBilgisi = " #BagisHareketId=" + nbh.Id + " #BagisciId=" + nbh.BagisciId + " #BagisTarihi=" + nbh.BagisTarihi + " #BagisMiktari=" + nbh.BagisMiktari;
-                #endregion
-                #region Armagan_Table dan sil
-
-                Armagan silinecekArmagan = null;
-                SilinenKayit skArmagan = null;
-                if (nbh.ArmaganId > 0)
-                {
-                    Armagan armagan = new Armagan();
-                    armagan = new ArmaganService().GetById(nbh.ArmaganId);
-                    if (armagan != null && armagan.Durum.Equals(ProjeConstants.DURUM_GONDERILMEDI))
-                    {
-                        //silinenKayit_Table'a yaz
-                        silinecekArmagan = armagan;
-                        skArmagan = new SilinenKayit();
-                        skArmagan.Silen = currentUser;
-                        skArmagan.SilinmeSebebi = SilmeSebebiTxt.Value;
-                        skArmagan.TabloAdi = "Armagan_Table";
-                        skArmagan.SilinmeTarihi = DateTime.Now;
-                        skArmagan.SilinenKayitBilgisi = " #ArmaganId=" + armagan.Id + " #BagisciId=" + armagan.BagisciId + " #BagisHareketId=" + nbh.Id + " #BagisTarihi=" + nbh.BagisTarihi + " #BagisMiktari=" + nbh.BagisMiktari;
-                    }
-                }
-
-                #endregion
-                new NakitBagisHareketService().DeleteWithArchive(
-                    nbh, skNBH, silinecekArmagan, skArmagan);
-
-                //bağış silindi ise bağışçinin da baska bagisi yoksa bağışçiyi da sil
-                NakitBagisciService nakitBagisciService = new NakitBagisciService();
-                NakitBagisci bagisci = nakitBagisciService.GetBagisiOlmayanById(nbh.BagisciId);
-                if (bagisci != null)
-                {
-                    //silinen bağışçi bilgilerini silinenKayit_Table'a yaz
-                    SilinenKayit skBagisci = new SilinenKayit();
-                    skBagisci.Silen = currentUser;
-                    skBagisci.SilinmeSebebi = "Bağış silindiğinden";
-                    skBagisci.TabloAdi = "NakitBagisci_Table";
-                    skBagisci.SilinmeTarihi = DateTime.Now;
-                    skBagisci.SilinenKayitBilgisi = " #BagisciId=" + bagisci.Id + " #Adi=" + bagisci.Adi + " #TCKimlikNo=" + bagisci.TCKimlikNo + " #Telefon=" + bagisci.Telefon1 + " " + bagisci.Telefon2 + " #Adres=" + bagisci.Adres;
-                    new SilinenKayitService().Save(skBagisci);
-                    nakitBagisciService.Delete(bagisci);
-                }
-                if (silinecekArmagan != null)//armagan tablosunda islem oldu mu. //yeniden armagan hesaplanacak
-                    TekrarArmaganHesapla(nbh, UtilityHelper.GetCurrentUserLoginName());
                 UtilityHelper.ScriptCalistir("CloseModal();");
-                MessageHelper.PublishMessage("Bağış Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
-                RedirectToPage(ProjeConstants.PAGE_BAGISSIL + "?Mesaj=true");//+ BagisAraTxt.Text);
-                //KayitGetir();
-
-            }
-
+                TabloOlustur();
+            });
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
+            ExecuteAction("CloseBtn_Click", () =>
+            {
 
+            });
         }
         protected void BagisSilBtn_Click(object sender, EventArgs e)
         {
-            SilmedenOnceOnayAl();
+            ExecuteAction("BagisSilBtn_Click", () =>
+            {
+                SilmedenOnceOnayAl();
+            });
         }
         protected void BagisSilNowBtn_Click(object sender, EventArgs e)
         {
-            SecilenBagisiSil();
+            ExecuteAction("BagisSilNowBtn_Click", () =>
+            {
+                SecilenBagisiSil();
+            });
         }
         protected void BagisHareketListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_ARMAGAN_LIST);
+            ExecuteAction("BagisHareketListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_ARMAGAN_LIST);
+            });
         }
         protected void ArmaganListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_BAGISHAREKET_LIST);
+            ExecuteAction("ArmaganListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_BAGISHAREKET_LIST);
+            });
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl);
         }
         private void TabloModalOlustur(string nakitBagisciId)
         {
@@ -521,8 +402,8 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             int rowCount = 0;
-            var json = new NakitBagisHareketService().GetDonorDetailJson(nakitBagisciId.ConvertToInt(), ref rowCount);
-            decimal toplamTutar = new NakitBagisHareketService().GetTotalByBagisciIdDateRange(
+            var json = new NakitBagisHareketService(LoggingContext).GetDonorDetailJson(nakitBagisciId.ConvertToInt(), ref rowCount);
+            decimal toplamTutar = new NakitBagisHareketService(LoggingContext).GetTotalByBagisciIdDateRange(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
             BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır" :
                 "Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + "TL bağışı bulunmaktadır";
@@ -530,18 +411,11 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
         }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ModalDoldurBtn_Click", () =>
             {
-
                 TabloModalOlustur(paramNakitBagisciIdLbl.Value);
                 NakitBagisciFormunuDoldur(paramNakitBagisciIdLbl.Value);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
-
-            }
+            });
         }
         private void NakitBagisciFormunuDoldur(string nakitBagisciIdStr)
         {
@@ -549,7 +423,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
             {
                 int nakitBagisciId = nakitBagisciIdStr.ConvertToInt();
 
-                NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisciId);
+                NakitBagisci nakitBagisci = new NakitBagisciService(LoggingContext).GetById(nakitBagisciId);
                 if (nakitBagisci != null)
                 {
                     //NakitBagisciIdLbl.Text = nakitBagisciId.ToString();
@@ -566,14 +440,14 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                     AdresCell.Text = nakitBagisci.Adres.ReturnEmptyIfNull().ToString();
 
                     int ilId = nakitBagisci.Ili.ConvertToInt();
-                    Il il = new IlService().GetById(ilId);
+                    Il il = new IlService().GetById(ilId, LoggingContext);
                     if (il != null)
                     {
 
                         IlIlceCell.Text = il.IlAdi.ReturnEmptyIfNull().ToString();
                     }
                     int ilceId = nakitBagisci.Ilcesi.ConvertToInt();
-                    Ilce ilce = new IlceService().GetById(ilceId);
+                    Ilce ilce = new IlceService().GetById(ilceId, LoggingContext);
                     if (ilce != null)
                     {
 

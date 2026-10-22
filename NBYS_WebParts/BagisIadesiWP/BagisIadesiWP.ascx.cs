@@ -1,3 +1,5 @@
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.Ortak;
@@ -18,6 +20,15 @@ namespace NBYS_WebParts.BagisIadesiWP
     [ToolboxItemAttribute(false)]
     public partial class BagisIadesiWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "BagisIadesiWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -58,8 +69,9 @@ namespace NBYS_WebParts.BagisIadesiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
                 if (!Page.IsPostBack)
                 {
                     YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_BAGISIADE);
@@ -69,14 +81,7 @@ namespace NBYS_WebParts.BagisIadesiWP
                         TabloOlustur();
                     }
                 }
-
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
-
+            });
         }
         private List<BagisHareketListItem> GetDataList()
         {
@@ -84,7 +89,7 @@ namespace NBYS_WebParts.BagisIadesiWP
             NakitBagisHareket bagisHareketDao = new NakitBagisHareket();
             if (!string.IsNullOrEmpty(BagisAraTxt.Text))
             {
-                DataTable dataTable = new NakitBagisHareketService().Search(BagisAraTxt.Text, null);
+                DataTable dataTable = new NakitBagisHareketService(LoggingContext).Search(BagisAraTxt.Text, null);
 
                 IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
                 DataView dataView = new DataView(dataTable);
@@ -160,22 +165,11 @@ namespace NBYS_WebParts.BagisIadesiWP
         {
             string jSon = string.Empty;
 
-            try
-            {
-
-                List<BagisHareketListItem> list = GetDataList();
-                var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(list);
-                return jSon;
-
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
+            List<BagisHareketListItem> list = GetDataList();
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            jSon = serializer.Serialize(list);
+            return jSon;
             return jSon;
         }
         private string CreateDataTable(string jsonData)
@@ -216,39 +210,14 @@ namespace NBYS_WebParts.BagisIadesiWP
         ";
             return tableString;
         }
-        private bool TekrarArmaganHesapla(NakitBagisHareket silinenNbh, string currentUser)
-        {
-            bool isArmaganSaved = false;
-            //NakitBagisHareket nbhQuery = new NakitBagisHareket();
-            //List<NakitBagisHareket> nbhList = nbhQuery.SelectByArmaganId(silinenNbh.ArmaganId);
-            ////eger hala bu bagiscinin yaptigi nbh varsa yeniden armagan hesapla
-            //if (nbhList.Count > 0)
-            //{
-            //    NakitBagisHareket kalanNbh1 = nbhList[0];
-            //    NakitBagisci kalanNakitBagisci = new NakitBagisci();
-            //    kalanNakitBagisci = kalanNakitBagisci.Select<NakitBagisci>(kalanNbh1.BagisciId);
 
-            //    try
-            //    {
-            //        isArmaganSaved = EkstreAktarma.SaveArmagan(silinenNbh.BagisTarihi, kalanNakitBagisci.TuzelKisi, kalanNakitBagisci.Id, silinenNbh.Id, currentUser);//Armagan tablosuna aktarim
-            //    }
-            //    catch (Exception exception)
-            //    {
-            //        ExceptionHelper ex = new ExceptionHelper(exception);
-            //        ex.PublishException();
-            //        TabloOlustur();
-            //    }
-            //}
-            return isArmaganSaved;
-
-        }
         private void NakitBagisciFormunuDoldur(string nakitBagisciIdStr)
         {
             if (!string.IsNullOrEmpty(nakitBagisciIdStr))
             {
                 int nakitBagisciId = nakitBagisciIdStr.ConvertToInt();
 
-                NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisciId);
+                NakitBagisci nakitBagisci = new NakitBagisciService(LoggingContext).GetById(nakitBagisciId);
                 if (nakitBagisci != null)
                 {
                     //NakitBagisciIdLbl.Text = nakitBagisciId.ToString();
@@ -265,14 +234,14 @@ namespace NBYS_WebParts.BagisIadesiWP
                     AdresCell.Text = nakitBagisci.Adres.ReturnEmptyIfNull().ToString();
 
                     int ilId = nakitBagisci.Ili.ConvertToInt();
-                    Il il = new IlService().GetById(ilId);
+                    Il il = new IlService().GetById(ilId, LoggingContext);
                     if (il != null)
                     {
 
                         IlIlceCell.Text = il.IlAdi.ReturnEmptyIfNull().ToString();
                     }
                     int ilceId = nakitBagisci.Ilcesi.ConvertToInt();
-                    Ilce ilce = new IlceService().GetById(ilceId);
+                    Ilce ilce = new IlceService().GetById(ilceId, LoggingContext);
                     if (ilce != null)
                     {
 
@@ -342,251 +311,165 @@ namespace NBYS_WebParts.BagisIadesiWP
         private string GetModalDataJson(string nakitBagisciId)
         {
             int rowCount = 0;
-            var json = new NakitBagisHareketService().GetDonorDetailJson(nakitBagisciId.ConvertToInt(), ref rowCount);
+            var json = new NakitBagisHareketService(LoggingContext).GetDonorDetailJson(nakitBagisciId.ConvertToInt(), ref rowCount);
             return json;
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
+            ExecuteAction("CloseBtn_Click", () =>
+            {
 
+            });
         }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ModalDoldurBtn_Click", () =>
             {
                 NakitBagisciFormunuDoldur(paramNakitBagisciIdLbl.Value);
                 TabloModalOlustur(paramNakitBagisciIdLbl.Value);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
-
-            }
+            });
         }
         protected void BagisAraTxt_TextChanged(object sender, EventArgs e)
         {
-            ParamQS = BagisAraTxt.Text;
-            TabloOlustur();
+            ExecuteAction("BagisAraTxt_TextChanged", () =>
+            {
+                ParamQS = BagisAraTxt.Text;
+                TabloOlustur();
+            });
         }
         protected void BagisiIadeEtBtn_Click(object sender, EventArgs e)
         {
-            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-
-            NakitBagisHareket nbh = new NakitBagisHareket();
-            nbh = new NakitBagisHareketService().GetById(paramBagisHareketIdLbl.Value.ConvertToInt());
-
-            if (nbh != null)//bu bagis varsa
+            ExecuteAction("BagisiIadeEtBtn_Click", () =>
             {
-                bool isLinkVisible = DateTime.Today <= nbh.BagisTarihi.AddYears(2);
-                //(DateTime.Today.Year == nbh.BagisTarihi.Year && DateTime.Today.Month == nbh.BagisTarihi.Month) 
-                //    || (DateTime.Today.Year == nbh.BagisTarihi.Year && DateTime.Today.Month - 1 == nbh.BagisTarihi.Month);
-                if (isLinkVisible)
+                IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+
+                NakitBagisHareket nbh = new NakitBagisHareket();
+                nbh = new NakitBagisHareketService(LoggingContext).GetById(paramBagisHareketIdLbl.Value.ConvertToInt());
+
+                if (nbh != null)//bu bagis varsa
                 {
-                    NakitBagisci nb = new NakitBagisciService().GetById(nbh.BagisciId);
-                    string bagisciAdi = nb == null ? "" : nb.Adi + " " + nb.Soyadi + " tarafından bağışlanan ";
-                    string iadeMiktariMsg = bagisciAdi + nbh.BagisMiktari.ToString("N", culturInfo) + " " + nbh.DovizCinsi + " iade edilecek. ";
-                    Armagan armagan = new Armagan();
-                    armagan = new ArmaganService().GetById(nbh.ArmaganId);
-
-                    string armaganiVarMsg = string.Empty;
-                    if (armagan != null) //bu armagan varsa
+                    bool isLinkVisible = DateTime.Today <= nbh.BagisTarihi.AddYears(2);
+                    //(DateTime.Today.Year == nbh.BagisTarihi.Year && DateTime.Today.Month == nbh.BagisTarihi.Month)
+                    //    || (DateTime.Today.Year == nbh.BagisTarihi.Year && DateTime.Today.Month - 1 == nbh.BagisTarihi.Month);
+                    if (isLinkVisible)
                     {
-                        ArmaganTanim at = new ArmaganTanimService().GetById(armagan.ArmaganTanimId);
-                        string armaganTanim = at == null ? "" : " Bu bağışa ait " + at.Armagan + " bulunmaktadır.";
+                        NakitBagisci nb = new NakitBagisciService(LoggingContext).GetById(nbh.BagisciId);
+                        string bagisciAdi = nb == null ? "" : nb.Adi + " " + nb.Soyadi + " tarafından bağışlanan ";
+                        string iadeMiktariMsg = bagisciAdi + nbh.BagisMiktari.ToString("N", culturInfo) + " " + nbh.DovizCinsi + " iade olarak kaydedilecek. ";
+                        Armagan armagan = new Armagan();
+                        armagan = new ArmaganService().GetById(nbh.ArmaganId, LoggingContext);
+
+                        string armaganiVarMsg = string.Empty;
+                        if (armagan != null) //bu armagan varsa
+                        {
+                            ArmaganTanim at = new ArmaganTanimService().GetById(armagan.ArmaganTanimId, LoggingContext);
+                            string armaganTanim = at == null ? "" : " Bu bağışa ait " + at.Armagan + " bulunmaktadır.";
 
 
-                        if (armagan.Durum.Equals(ProjeConstants.DURUM_GONDERILMEDI))
-                        {
-                            armaganiVarMsg = armaganTanim + " (Armağan Durumu: '" + armagan.Durum + "'). Onayladığınız takdirde para iade edilecek ve armağan silinecektir.";
+                            if (armagan.Durum == ProjeConstants.DURUM_GONDERILMEDI)
+                            {
+                                armaganiVarMsg = armaganTanim + " (Armağan Durumu: '" + armagan.Durum + "'). Onayladığınız takdirde bağış iade olarak kaydedilecek ve armağan geçersiz olarak işaretlenecektir.";
+                            }
+                            else
+                            {
+                                armaganiVarMsg = armaganTanim + " Armağan Durumu: '" + armagan.Durum + "' olduğundan, onayladığınız takdirde iade kaydı oluşturulacak; armağan korunacaktır.";
+                            }
+
                         }
-                        else
-                        {
-                            armaganiVarMsg = armaganTanim + " Armağan Durumu: '" + armagan.Durum + "' olduğundan, onayladığınız takdirde para iade edilecek ancak armağan silinmeyecektir.";
-                        }
-                        
+                        IadeTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
+                        IadeMesajiLbl.Text = iadeMiktariMsg + armaganiVarMsg;
+                        UtilityHelper.ScriptCalistir("ParaIadeModalOnay();");
                     }
-                    IadeTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
-                    IadeMesajiLbl.Text = iadeMiktariMsg + armaganiVarMsg;
-                    UtilityHelper.ScriptCalistir("ParaIadeModalOnay();");
+                    else
+                    {
+                        Messages.Warning("İade süresi dolmuş. Bağış iadesi kaydedilemez.");
+                    }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("İade süresi dolmuş. Para iadesi yapılamaz.", ProjeConstants.MESAJ_HATA);
+                    IadeSebebiTxt.Visible = false;
+                    IadeTarihiTxt.Visible = false;
+                    IadeMesajiLbl.Text = " Seçilen bağış bilgilerine ulaşılamadı";
+                    BagisiIadeEtNowBtn.Visible = false;
+                    UtilityHelper.ScriptCalistir("ParaIadeModalOnay();");
                 }
-            }
-            else
-            {
-                IadeSebebiTxt.Visible = false;
-                IadeTarihiTxt.Visible = false;
-                IadeMesajiLbl.Text = " Seçilen bağış bilgilerine ulaşılamadı";
-                BagisiIadeEtNowBtn.Visible = false;
-                UtilityHelper.ScriptCalistir("ParaIadeModalOnay();");
-            }
+            });
         }
         protected void BagisiIadeEtNowBtn_Click(object sender, EventArgs e)
         {
-            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            try
+            ExecuteAction("BagisiIadeEtNowBtn_Click", () =>
             {
-                //nakit bagis hareket kaydini pasif yap
-                //
-                //Armagan kaydini pasif yap
-
-                NakitBagisHareket nbh = new NakitBagisHareket();
-                nbh = new NakitBagisHareketService().GetById(paramBagisHareketIdLbl.Value.ConvertToInt());
-
-
-
-                if (nbh != null)
+                NbysDonationWriteResult result = new NbysDonationWriteService(LoggingContext).Refund(
+                    paramBagisHareketIdLbl.Value.ConvertToInt(), IadeTarihiTxt.Text.ConvertToDatetime(), IadeSebebiTxt.Value, false);
+                NbysDonationFeedback.Show(LoggingContext, result, "Bağış iadesi kaydedildi.", () =>
                 {
-                    NakitBagisci nb = new NakitBagisciService().GetById(nbh.BagisciId);
-                    if (nb != null)
-                    {
-                        nbh.IadeEdildiMi = true;
-                        nbh.IadeMiktari = nbh.BagisMiktari;
-                        nbh.IadeSebebi = IadeSebebiTxt.Value;
-                        nbh.IadeTarihi = IadeTarihiTxt.Text.ConvertToDatetime();
-                        nbh.Aciklama = nbh.Aciklama + nb.Adi + " tarafından " + nbh.BagisTarihi.ConvertToDatetimeEmptyIfNull() + " tarihinde yapılan " +
-                            nbh.BagisMiktari.ToString("N", culturInfo) + " " + nbh.DovizCinsi + " bağış iade edilmiştir.";
-                        nbh.BagisMiktari = 0;
-                        nbh.IadeEden = UtilityHelper.GetCurrentUserLoginName();
-
-                        //güncellenecek alanları nesnelerde güncelle
-                        Armagan armagan = new Armagan();
-                        armagan = new ArmaganService().GetById(nbh.ArmaganId);
-                        Armagan guncellenecekArmagan = null;
-                        if (armagan != null && armagan.Durum.Equals(ProjeConstants.DURUM_GONDERILMEDI))//armağan varsa ve durumu gönderilmedi ise 
-                        {
-                            armagan.BelgeGecersizMi = ProjeConstants.TRUE_INT;
-                            armagan.GecersizYapan = UtilityHelper.GetCurrentUserLoginName();
-                            armagan.GecersizYapmaTarihi = DateTime.Now;
-                            armagan.GecersizNBHareketId = nbh.Id;
-                            armagan.Durum = ProjeConstants.DURUM_PARAIADE;
-                            armagan.ArmaganBagisMiktari = armagan.BagisMiktari; //bağış iadesi öncesi armağana hak kazandığı tutar
-                            armagan.IadeMiktari = armagan.IadeMiktari + nbh.IadeMiktari;//iade edilen tutar
-                            armagan.BagisMiktari = 0;//bağış miktarını sıfır yap
-                            armagan.Aciklama = armagan.Aciklama + nb.Adi + " adlı bağışçıya ait bağış iade edilmiştir. ";
-                            guncellenecekArmagan = armagan;
-                        }
-
-                        //Bağış ve varsa armağan değişikliklerini tek transaction içinde kaydet.
-                        new NakitBagisHareketService().UpdateRefund(nbh, guncellenecekArmagan);
-
-                        if (guncellenecekArmagan != null)//armagan tablosunda islem oldu mu. //yeniden armagan hesaplanacak
-                            TekrarArmaganHesapla(nbh, UtilityHelper.GetCurrentUserLoginName());
-                        RedirectToPage(ProjeConstants.PAGE_BAGISIADE + "?Param=" + BagisAraTxt.Text);
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage(" Bağışçı bulunamadı. Para iadesi yapılamadı. ", ProjeConstants.MESAJ_HATA);
-                        TabloOlustur();
-                    }
-                }
-                else
-                {
-                    MessageHelper.PublishMessage("Bağış kaydı bulunamadı. Para iadesi yapılamadı.", ProjeConstants.MESAJ_HATA);
+                    UtilityHelper.ScriptCalistir("bootstrap.Modal.getOrCreateInstance(document.getElementById('ParaIadeModalOnayDiv')).hide();");
                     TabloOlustur();
-                }
-
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exh = new ExceptionHelper();
-                exh.Exceptions.Add(new Exception("Armağan durumu kaydedilirken hata oluştu. "));
-                exh.Exceptions.Add(ex);
-                exh.PublishException();
-            }
+                });
+            });
         }
         protected void IadeDegistirBtn_Click(object sender, EventArgs e)
         {
-            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-
-            NakitBagisHareket nbh = new NakitBagisHareket();
-            nbh = new NakitBagisHareketService().GetById(paramBagisHareketIdLbl.Value.ConvertToInt());
-
-            if (nbh != null)//bu bagis varsa
+            ExecuteAction("IadeDegistirBtn_Click", () =>
             {
+                IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
 
-                NakitBagisci nb = new NakitBagisciService().GetById(nbh.BagisciId);
-                string bagisciAdi = nb == null ? "" : nb.Adi + " " + nb.Soyadi;
-
-                IadeTarihiDegistirTxt.Text = nbh.IadeTarihi.ConvertToDatetimeEmptyIfNull();
-                IadeSebebiDegistirTxt.Value = nbh.IadeSebebi;
-                OnayMesajiDegistirLbl.Text = bagisciAdi + " tarafından yapılan bağışın iade sebebi ve iade tarihini güncelleyebilirsiniz.";
-                UtilityHelper.ScriptCalistir("ParaIadeDegistirModalOnay();");
-            }
-            else
-            {
-                IadeSebebiDegistirTxt.Visible = false;
-                IadeTarihiDegistirTxt.Visible = false;
-                IadeMesajiDegistirLbl.Text = " Seçilen bağış bilgilerine ulaşılamadı";
-                IadeDegistirNowBtn.Visible = false;
-                UtilityHelper.ScriptCalistir("ParaIadeDegistirModalOnay();");
-            }
-        }
-        protected void IadeDegistirNowBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
                 NakitBagisHareket nbh = new NakitBagisHareket();
-                nbh = new NakitBagisHareketService().GetById(paramBagisHareketIdLbl.Value.ConvertToInt());
+                nbh = new NakitBagisHareketService(LoggingContext).GetById(paramBagisHareketIdLbl.Value.ConvertToInt());
 
-                if (nbh != null)
+                if (nbh != null)//bu bagis varsa
                 {
-                    NakitBagisci nb = new NakitBagisciService().GetById(nbh.BagisciId);
-                    if (nb != null)
-                    {
-                        nbh.IadeSebebi = IadeSebebiDegistirTxt.Value;
-                        nbh.IadeTarihi = IadeTarihiDegistirTxt.Text.ConvertToDatetime();
-                        nbh.Aciklama += " İade tarihi ve sebebi güncellenmiştir.";
-                        bool updated = new NakitBagisHareketService().Update(nbh);
-                        if (updated)
-                        {
-                            RedirectToPage(ProjeConstants.PAGE_BAGISIADE + "?Param=" + BagisAraTxt.Text);
-                        }
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage(" Bağışçı bulunamadı. Para iadesi güncellenemedi. ", ProjeConstants.MESAJ_HATA);
-                        TabloOlustur();
-                    }
+
+                    NakitBagisci nb = new NakitBagisciService(LoggingContext).GetById(nbh.BagisciId);
+                    string bagisciAdi = nb == null ? "" : nb.Adi + " " + nb.Soyadi;
+
+                    IadeTarihiDegistirTxt.Text = nbh.IadeTarihi.ConvertToDatetimeEmptyIfNull();
+                    IadeSebebiDegistirTxt.Value = nbh.IadeSebebi;
+                    OnayMesajiDegistirLbl.Text = bagisciAdi + " tarafından yapılan bağışın iade sebebi ve iade tarihini güncelleyebilirsiniz.";
+                    UtilityHelper.ScriptCalistir("ParaIadeDegistirModalOnay();");
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Bağış kaydı bulunamadı. Para iadesi güncellenemedi.", ProjeConstants.MESAJ_HATA);
-                    TabloOlustur();
+                    IadeSebebiDegistirTxt.Visible = false;
+                    IadeTarihiDegistirTxt.Visible = false;
+                    IadeMesajiDegistirLbl.Text = " Seçilen bağış bilgilerine ulaşılamadı";
+                    IadeDegistirNowBtn.Visible = false;
+                    UtilityHelper.ScriptCalistir("ParaIadeDegistirModalOnay();");
                 }
-
-            }
-            catch (Exception ex)
+            });
+        }
+        protected void IadeDegistirNowBtn_Click(object sender, EventArgs e)
+        {
+            ExecuteAction("IadeDegistirNowBtn_Click", () =>
             {
-                ExceptionHelper exh = new ExceptionHelper();
-                exh.Exceptions.Add(new Exception("İade güncellenirken hata oluştu. "));
-                exh.Exceptions.Add(ex);
-                exh.PublishException();
-            }
+                NbysDonationWriteResult result = new NbysDonationWriteService(LoggingContext).Refund(
+                    paramBagisHareketIdLbl.Value.ConvertToInt(), IadeTarihiDegistirTxt.Text.ConvertToDatetime(), IadeSebebiDegistirTxt.Value, true);
+                NbysDonationFeedback.Show(LoggingContext, result, "İade bilgileri güncellendi.", () =>
+                {
+                    UtilityHelper.ScriptCalistir("bootstrap.Modal.getOrCreateInstance(document.getElementById('ParaIadeDegistirModalOnayDiv')).hide();");
+                    TabloOlustur();
+                });
+            });
         }
         protected void BagisHareketListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_ARMAGAN_LIST);
+            ExecuteAction("BagisHareketListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_ARMAGAN_LIST);
+            });
         }
         protected void ArmaganListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_BAGISHAREKET_LIST);
+            ExecuteAction("ArmaganListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_BAGISHAREKET_LIST);
+            });
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl);
         }
         private class BagisHareketListItem
         {
@@ -610,8 +493,11 @@ namespace NBYS_WebParts.BagisIadesiWP
 
         protected void AraBtn_Click(object sender, EventArgs e)
         {
-            ParamQS = BagisAraTxt.Text;
-            TabloOlustur();
+            ExecuteAction("AraBtn_Click", () =>
+            {
+                ParamQS = BagisAraTxt.Text;
+                TabloOlustur();
+            });
         }
     }
 }
