@@ -181,14 +181,11 @@ namespace NBYS_WebParts.DovizleYapilanBagislarWP
 
             int ay = AyDDL.SelectedItem.Value.ConvertToInt() < 1 ? 1 : AyDDL.SelectedItem.Value.ConvertToInt();
             DateTime bastar = new DateTime(YilDDL.SelectedItem.Value.ConvertToInt(), ay, 1);
-            DateTime bittar = bastar.AddMonths(1).AddDays(-1);
-            if (AyDDL.SelectedItem.Value.ConvertToInt() < 1)
-            {
-                bittar= new DateTime(YilDDL.SelectedItem.Value.ConvertToInt(), 12, 1);
-            }
+            DateTime bitisHaric = AyDDL.SelectedItem.Value.ConvertToInt() < 1
+                ? bastar.AddYears(1) : bastar.AddMonths(1);
             string bankaGrup = BankaDDL.SelectedItem.Value;
             NakitBagisHareketService nakitBagisHareket = new NakitBagisHareketService();
-            DataTable dataTable = nakitBagisHareket.GetCurrencyTotalsByDateBank(bastar, bittar, bankaGrup, LoggingContext);
+            DataTable dataTable = nakitBagisHareket.GetCurrencyTotalsByDateBank(bastar, bitisHaric, bankaGrup, LoggingContext, endExclusive: true);
 
             List<DovizleBagisListItem> list = new List<DovizleBagisListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);

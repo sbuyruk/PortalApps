@@ -412,10 +412,10 @@ namespace Model.Services.NBYS
         }
 
         public DataTable GetCurrencyTotalsByDateBank(DateTime baslangic, DateTime bitis, string bankaGrup,
-            PortalLogContext context)
+            PortalLogContext context, bool endExclusive = false)
         {
             return repository.SelectCurrencyTotalsByDateBank(
-                baslangic, bitis, bankaGrup, ProjeConstants.DOVIZ_TL, context);
+                baslangic, bitis, bankaGrup, ProjeConstants.DOVIZ_TL, context, endExclusive);
         }
 
         public DataTable GetDonorDetailRows(int bagisciId)

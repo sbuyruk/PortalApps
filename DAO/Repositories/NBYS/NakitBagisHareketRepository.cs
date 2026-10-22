@@ -576,14 +576,15 @@ namespace DAO.Repositories.NBYS
         }
 
         public DataTable SelectCurrencyTotalsByDateBank(
-            DateTime baslangic, DateTime bitis, string bankaGrup, string tlDovizCinsi, PortalLogContext context)
+            DateTime baslangic, DateTime bitis, string bankaGrup, string tlDovizCinsi, PortalLogContext context,
+            bool endExclusive = false)
         {
-            SqlQuery query = BuildCurrencyTotalsQuery(baslangic, bitis, bankaGrup, tlDovizCinsi);
+            SqlQuery query = BuildCurrencyTotalsQuery(baslangic, bitis, bankaGrup, tlDovizCinsi, endExclusive);
             return new NbysSqlExecutor(context, "NakitBagisHareketRepository").Select(query);
         }
 
         private static SqlQuery BuildCurrencyTotalsQuery(
-            DateTime baslangic, DateTime bitis, string bankaGrup, string tlDovizCinsi)
+            DateTime baslangic, DateTime bitis, string bankaGrup, string tlDovizCinsi, bool endExclusive = false)
         {
             string bankaKosulu = string.IsNullOrEmpty(bankaGrup) || bankaGrup == "0"
                 ? string.Empty
@@ -594,12 +595,13 @@ namespace DAO.Repositories.NBYS
                 FROM NakitBagisHareket_Table A
                 LEFT JOIN BankaTanim_Table B ON B.Id=A.BankaId
                 WHERE DovizCinsi!=@TlDovizCinsi
-                    AND BagisTarihi>=@Baslangic AND BagisTarihi<=@Bitis" + bankaKosulu + @"
+                    AND BagisTarihi>=@Baslangic AND BagisTarihi" + (endExclusive ? "<" : "<=") + "@Bitis" + bankaKosulu + @"
                 GROUP BY DovizCinsi, B.BankaGrup
                 ORDER BY Banka");
             query.AddParameter("@TlDovizCinsi", tlDovizCinsi);
-            query.AddParameter("@Baslangic", LegacyDateValue(baslangic));
-            query.AddParameter("@Bitis", LegacyDateValue(bitis));
+            // The migrated report uses typed dates and an exclusive upper bound.
+            query.AddParameter("@Baslangic", endExclusive ? (object)baslangic : LegacyDateValue(baslangic));
+            query.AddParameter("@Bitis", endExclusive ? (object)bitis : LegacyDateValue(bitis));
             if (!string.IsNullOrEmpty(bankaGrup) && bankaGrup != "0")
                 query.AddParameter("@BankaGrup", bankaGrup);
             return query;
