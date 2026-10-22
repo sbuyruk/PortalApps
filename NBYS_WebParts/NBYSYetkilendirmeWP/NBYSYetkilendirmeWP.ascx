@@ -66,7 +66,8 @@
             </div>
         </div>
         <div class="card-footer">
-            <asp:LinkButton CssClass="btn btn-outline-success float-left" ID="KaydetBtn" runat="server" Text="Kaydet" OnClick="KaydetBtn_Click" />
+            <p>Bu ekran mevcut yetki ayarlarını yalnızca görüntüler. Değişiklik kaydedilmez.</p>
+            <asp:LinkButton Enabled="false" CssClass="btn btn-outline-success float-left" ID="KaydetBtn" runat="server" Text="Kaydet" OnClick="KaydetBtn_Click" />
         </div>
     </div>
 </div>

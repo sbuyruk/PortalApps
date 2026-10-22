@@ -66,7 +66,7 @@
                 <div>
                     <div class="text-center">
                         <h3>
-                            <asp:Label ID="SilLbl" class="col-form-label text-danger" runat="server" Text="Dosya Silinecek"></asp:Label></h3>
+                            <asp:Label ID="SilLbl" class="col-form-label text-danger" runat="server" Text="Dosya Kaldırılacak"></asp:Label></h3>
                     </div>
                     <div class="card-body text-center">
                         <div class="form-group">
@@ -76,13 +76,13 @@
                             <asp:Label ID="EtiketDosyaAdiLbl" CssClass="col-form-label" runat="server" Text=""></asp:Label>
                         </div>
                         <div class="form-group">
-                            <asp:Label ID="SilMesajiLbl" CssClass="col-form-label text-danger" runat="server" Text="Seçilen Dosyaları Silmek İstiyor musunuz?"></asp:Label>
+                            <asp:Label ID="SilMesajiLbl" CssClass="col-form-label text-danger" runat="server" Text="Seçilen dosyaları geri dönüşüm kutusuna taşımak istiyor musunuz?"></asp:Label>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <asp:LinkButton CssClass="btn btn-danger" ID="DosyayiSilNowBtn" runat="server" CausesValidation="false" Text="Dosyayı Sil" OnClientClick="{return true;};" OnClick="DosyayiSilNowBtn_Click" Visible="false" />
+                <asp:LinkButton CssClass="btn btn-danger" ID="DosyayiSilNowBtn" runat="server" CausesValidation="false" Text="Geri Dönüşüm Kutusuna Taşı" OnClientClick="{return true;};" OnClick="DosyayiSilNowBtn_Click" Visible="false" />
                 <button type="button" class="btn btn-default float-end" data-bs-dismiss="modal">Kapat</button>
             </div>
         </div>
