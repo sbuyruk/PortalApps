@@ -177,3 +177,12 @@ NakitBagisciEditWP, NakitBagisciListesiWP, NakitBagisciBulmaWP ve NakitBagisciBa
 Bağışçı güncellemesi, tüzel kişi değişikliğindeki mevcut aylık armağan hesabı ve bağış hareketi ArmaganId bağlantıları tek transaction ve audit yoluna alındı. Liste/arama/detay okumaları aynı NBYS bağlamını kullanır.
 İade/silme/birleştirme ve ekstre yazmaları bu parçayla tamamlanmış sayılmaz. Mevcut düzenleme ekranında kimliksiz yeni kayıt girişi kapalıdır; bu dal yeni oluşturma ekranı açmaz.
 Alan izin listeleri, mesaj değişiklikleri, etkinleştirme ve TEST adımları LoglamaGecisBagisciYonetimi.md dosyasındadır. Çalışma zamanı sonucu henüz doğrulanmadı.
+
+## İade, silme ve birleştirme işlem grubu
+
+Kullanıcı bağışçı yönetimi parçasını tamamlandı bildirdi ve devam istedi.
+Temiz ve güncel f6afc6f8ea92a71070d99916639b243ba2df5927 üzerinden codex/nbys-iade-silme-birlestirme-audit açıldı.
+BagisIadesiWP, NakitBagisHareketSilmeWP ve NakitBagisciBirlestirmeWP aynı daldadır. İş okumaları, doğrudan bağlantı düzeltmeleri, iş yazmaları, arşiv ve audit aynı transaction'a alındı; birleştirmede tüm seçim tek işlemdir.
+Süre/yetki/seçim kontrolleri kayıt anında yapılır. Silmede kalan referanslar korunur; birleştirmede geçersiz armağan geçmişi, ekstre ve düzenli bağışçı bağlantıları da taşınır.
+Boş yeniden armağan hesaplama yardımcıları ve Mesaj querystring'inden sahte başarı üretimi kaldırıldı. Yeni hak kazanma algoritması eklenmedi.
+Ayrıntılı davranış farkları, alan izin listeleri, mesaj değişiklikleri ve TEST adımları LoglamaGecisIadeSilmeBirlestirme.md dosyasındadır. Çalışma zamanı sonucu henüz doğrulanmadı.

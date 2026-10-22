@@ -1,3 +1,4 @@
+using Utility.Logging;
 using DAO.Ortak;
 using System;
 using System.Data;
@@ -28,6 +29,14 @@ namespace DAO.Repositories.NBYS
                 "SELECT * FROM Armagan_Table WHERE BelgeGecersizMi!=1 AND Id=@Id");
             query.AddParameter("@Id", id);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectById(int id, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM Armagan_Table WHERE BelgeGecersizMi!=1 AND Id=@Id");
+            query.AddParameter("@Id", id);
+            return PortalSqlReadExecutor.Select(query, context, "ArmaganRepository.SelectById");
         }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction)

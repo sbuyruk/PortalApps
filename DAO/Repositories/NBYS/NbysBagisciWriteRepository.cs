@@ -114,6 +114,130 @@ namespace DAO.Repositories.NBYS
                 new[] { "BagisciId", "ArmaganTanimId", "Tarih", "Durum", "BagisMiktari", "DovizCinsi", "CokluBagis" }, transaction, "SaveGift");
         }
 
+        public DataTable SelectDonationOwner(int id, SqlTransactionContext transaction)
+        {
+            RequireTransaction(transaction);
+            SqlQuery query = new SqlQuery("SELECT BagisciId FROM NakitBagisHareket_Table WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return sql.Select(query, transaction);
+        }
+
+        public DataTable SelectDonation(int id, SqlTransactionContext transaction)
+        {
+            return ReadStoredRecord("NakitBagisHareket_Table", id, transaction);
+        }
+
+        public DataTable SelectGift(int id, SqlTransactionContext transaction)
+        {
+            RequireTransaction(transaction);
+            SqlQuery query = new SqlQuery("SELECT * FROM Armagan_Table WITH (UPDLOCK, HOLDLOCK) WHERE BelgeGecersizMi!=1 AND Id=@Id");
+            query.AddParameter("@Id", id);
+            return sql.Select(query, transaction);
+        }
+
+        public DataTable SelectDonorRows(string table, int donorId, SqlTransactionContext transaction)
+        {
+            RequireTransaction(transaction);
+            string field = DonorField(table);
+            SqlQuery query = new SqlQuery("SELECT * FROM " + table + " WITH (UPDLOCK, HOLDLOCK) WHERE " + field + "=@Id ORDER BY Id");
+            query.AddParameter("@Id", donorId);
+            return sql.Select(query, transaction);
+        }
+
+        public bool HasGiftReferences(int giftId, int excludedDonationId, SqlTransactionContext transaction)
+        {
+            RequireTransaction(transaction);
+            SqlQuery query = new SqlQuery(@"SELECT Id FROM NakitBagisHareket_Table WITH (UPDLOCK, HOLDLOCK)
+                WHERE ArmaganId=@ArmaganId AND Id<>@ExcludedId
+                UNION ALL SELECT Id FROM DuzenliNakitBagisci_Table WITH (UPDLOCK, HOLDLOCK) WHERE ArmaganId=@ArmaganId");
+            query.AddParameter("@ArmaganId", giftId);
+            query.AddParameter("@ExcludedId", excludedDonationId);
+            DataTable rows = sql.Select(query, transaction);
+            return rows != null && rows.Rows.Count > 0;
+        }
+
+        public int SaveDonation<T>(T item, int id, SqlTransactionContext transaction)
+        {
+            return Save(item, id, "NakitBagisHareket_Table", "NakitBagisHareket",
+                new[] { "BagisciId", "ArmaganId", "BagisTarihi", "BagisMiktari", "IadeEdildiMi", "IadeMiktari", "IadeTarihi" },
+                transaction, "SaveDonation");
+        }
+
+        public int SaveRefundGift<T>(T item, int id, SqlTransactionContext transaction)
+        {
+            return Save(item, id, "Armagan_Table", "Armagan",
+                new[] { "BagisciId", "ArmaganTanimId", "Durum", "BelgeGecersizMi", "GecersizNBHareketId", "BagisMiktari", "ArmaganBagisMiktari", "IadeMiktari" },
+                transaction, "SaveRefundGift");
+        }
+
+        public int SaveArchive<T>(T item, SqlTransactionContext transaction)
+        {
+            return Save(item, 0, "SilinenKayit_Table", "SilinenKayit", new[] { "TabloAdi" }, transaction, "SaveArchive");
+        }
+
+        public void MoveDonorReference(string table, int rowId, int targetId, SqlTransactionContext transaction)
+        {
+            RequireTransaction(transaction);
+            string field = DonorField(table);
+            DataTable previous = ReadStoredRecord(table, rowId, transaction);
+            if (previous == null) throw new InvalidOperationException("Birleştirilecek bağlantı kaydı bulunamadı.");
+            SqlQuery query = new SqlQuery("UPDATE " + table + " SET " + field + "=@DonorId, Degistiren=@User, DegistirmeTarihi=@ModifiedAt WHERE Id=@Id");
+            query.AddParameter("@DonorId", targetId);
+            query.AddParameter("@Id", rowId);
+            query.AddParameter("@User", context.UserLogin);
+            query.AddParameter("@ModifiedAt", DateTime.Now);
+            if (!sql.Write(query, "UPDATE", transaction)) throw new InvalidOperationException("Bağışçı bağlantısı güncellenemedi.");
+            DataTable saved = ReadStoredRecord(table, rowId, transaction);
+            RecordAudit("UPDATE", table.Substring(0, table.Length - "_Table".Length), rowId, previous, saved, new[] { field }, transaction);
+        }
+
+        public DataTable SelectDonationReferences(string table, int donationId, SqlTransactionContext transaction)
+        {
+            RequireTransaction(transaction);
+            if (table != "EkstreAktarma_Table" && table != "DuzenliNakitBagisci_Table")
+                throw new ArgumentException("Geçersiz bağış bağlantısı.", "table");
+            SqlQuery query = new SqlQuery("SELECT * FROM " + table + " WITH (UPDLOCK, HOLDLOCK) WHERE NakitBagisHareketId=@Id ORDER BY Id");
+            query.AddParameter("@Id", donationId);
+            return sql.Select(query, transaction);
+        }
+
+        public void ClearDonationReference(string table, int rowId, SqlTransactionContext transaction)
+        {
+            RequireTransaction(transaction);
+            if (table != "EkstreAktarma_Table" && table != "DuzenliNakitBagisci_Table")
+                throw new ArgumentException("Geçersiz bağış bağlantısı.", "table");
+            DataTable previous = ReadStoredRecord(table, rowId, transaction);
+            if (previous == null) throw new InvalidOperationException("Bağış bağlantı kaydı bulunamadı.");
+            SqlQuery query = new SqlQuery("UPDATE " + table + " SET NakitBagisHareketId=0, Degistiren=@User, DegistirmeTarihi=@ModifiedAt WHERE Id=@Id");
+            query.AddParameter("@Id", rowId);
+            query.AddParameter("@User", context.UserLogin);
+            query.AddParameter("@ModifiedAt", DateTime.Now);
+            if (!sql.Write(query, "UPDATE", transaction)) throw new InvalidOperationException("Bağış bağlantısı kaldırılamadı.");
+            DataTable saved = ReadStoredRecord(table, rowId, transaction);
+            RecordAudit("UPDATE", table.Substring(0, table.Length - "_Table".Length), rowId, previous, saved, new[] { "NakitBagisHareketId" }, transaction);
+        }
+
+        public void DeleteRow(string table, int id, SqlTransactionContext transaction)
+        {
+            RequireTransaction(transaction);
+            if (table != "NakitBagisci_Table" && table != "NakitBagisHareket_Table" && table != "Armagan_Table")
+                throw new ArgumentException("Geçersiz silme türü.", "table");
+            DataTable previous = ReadStoredRecord(table, id, transaction);
+            if (previous == null) throw new InvalidOperationException("Silinecek kayıt bulunamadı.");
+            if (!sql.Write(builder.BuildDelete(table, id), "DELETE", transaction)) throw new InvalidOperationException("Kayıt silinemedi.");
+            string[] fields = table == "NakitBagisci_Table" ? new[] { "Ili", "Ilcesi", "TuzelKisi" }
+                : table == "Armagan_Table" ? new[] { "BagisciId", "ArmaganTanimId", "Durum", "BagisMiktari" }
+                : new[] { "BagisciId", "ArmaganId", "BagisTarihi", "BagisMiktari", "IadeEdildiMi", "IadeMiktari" };
+            RecordAudit("DELETE", table.Substring(0, table.Length - "_Table".Length), id, previous, null, fields, transaction);
+        }
+
+        private static string DonorField(string table)
+        {
+            if (table == "EkstreAktarma_Table") return "NakitBagisciId";
+            if (table == "NakitBagisHareket_Table" || table == "Armagan_Table" || table == "DuzenliNakitBagisci_Table") return "BagisciId";
+            throw new ArgumentException("Geçersiz bağışçı bağlantısı.", "table");
+        }
+
         public void LinkDonation(int donationId, int giftId, string user, DateTime modifiedAt,
             SqlTransactionContext transaction)
         {
@@ -155,7 +279,8 @@ namespace DAO.Repositories.NBYS
             [System.Runtime.CompilerServices.CallerMemberName] string method = "")
         {
             RequireTransaction(transaction);
-            if (table != "NakitBagisci_Table" && table != "Armagan_Table" && table != "NakitBagisHareket_Table")
+            if (table != "NakitBagisci_Table" && table != "Armagan_Table" && table != "NakitBagisHareket_Table"
+                && table != "SilinenKayit_Table" && table != "EkstreAktarma_Table" && table != "DuzenliNakitBagisci_Table")
                 throw new ArgumentException("Geçersiz kayıt türü.", "table");
             SqlQuery query = new SqlQuery("SELECT * FROM " + table + " WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id");
             query.AddParameter("@Id", id);
@@ -166,7 +291,7 @@ namespace DAO.Repositories.NBYS
             string[] fields, SqlTransactionContext transaction)
         {
             RequireTransaction(transaction);
-            if (saved == null || saved.Rows.Count == 0) throw new InvalidOperationException("Kaydedilen kayıt okunamadı.");
+            if (operation != "DELETE" && (saved == null || saved.Rows.Count == 0)) throw new InvalidOperationException("Kaydedilen kayıt okunamadı.");
             PortalLogRepository log = new PortalLogRepository();
             int auditId = log.RecordAudit(context, operation, entity, id.ToString(CultureInfo.InvariantCulture), transaction);
             if (auditId <= 0) return;
