@@ -161,7 +161,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
 
                 if (!Page.IsPostBack) // sayfa ilk kez açiliyorsa (bu sayfanin içindeki butona basilma ani hariç)
                 {
-                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_FTKYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_FTKISLEMLERI);
+                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_FTKYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_FTKISLEMLERI, LoggingContext);
                     IlilceBolgeDDLDoldur();
                     FTKListQS.Clear();
                     if (string.IsNullOrEmpty(FTKIslemIdQS))

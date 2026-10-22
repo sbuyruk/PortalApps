@@ -1,4 +1,5 @@
 using DAO.Repositories.NBYS;
+using Utility.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using System;
@@ -12,6 +13,10 @@ namespace Model.Services.NBYS
     public class DuzenliNakitBagisciService
     {
         private readonly DuzenliNakitBagisciRepository repository;
+
+        public DuzenliNakitBagisciService(PortalLogContext context) : this(new DuzenliNakitBagisciRepository(context))
+        {
+        }
 
         public DuzenliNakitBagisciService() : this(new DuzenliNakitBagisciRepository())
         {

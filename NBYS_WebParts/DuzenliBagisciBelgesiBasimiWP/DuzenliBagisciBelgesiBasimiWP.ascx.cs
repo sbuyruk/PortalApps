@@ -204,7 +204,7 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
                 _scriptMan.AsyncPostBackTimeout = 36000;
                 if (!Page.IsPostBack)
                 {
-                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_DUZENLIBAGISCI_LIST);
+                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_DUZENLIBAGISCI_LIST, LoggingContext);
                     FillDropDownList();
                     SetDDLValues(); //ay ve yili querystringden al
                     SetSecilenBasTarBitTar();

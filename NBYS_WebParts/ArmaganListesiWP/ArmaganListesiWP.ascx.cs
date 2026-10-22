@@ -280,7 +280,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
 
                 if (!Page.IsPostBack)
                 {
-                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_ARMAGANOLUSTURMA);
+                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_ARMAGANOLUSTURMA, LoggingContext);
 
 
                     SecilenIdQS = string.IsNullOrEmpty(SecilenIdQS) ? "0" : SecilenIdQS;

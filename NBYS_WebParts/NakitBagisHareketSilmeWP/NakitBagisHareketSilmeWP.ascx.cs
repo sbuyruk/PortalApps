@@ -122,7 +122,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                 if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
                 if (!Page.IsPostBack)
                 {
-                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_BAGISSIL);
+                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_BAGISSIL, LoggingContext);
                     YilDDLDoldur();
                     string buYil = DateTime.Today.Year.ToString();
                     SecilenYilQS = string.IsNullOrEmpty(SecilenYilQS) ? buYil : SecilenYilQS;

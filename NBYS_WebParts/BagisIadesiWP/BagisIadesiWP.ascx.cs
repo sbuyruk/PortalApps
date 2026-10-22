@@ -74,7 +74,7 @@ namespace NBYS_WebParts.BagisIadesiWP
                 if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
                 if (!Page.IsPostBack)
                 {
-                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_BAGISIADE);
+                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_BAGISIADE, LoggingContext);
                     if (!string.IsNullOrEmpty(ParamQS))
                     {
                         BagisAraTxt.Text = ParamQS;
