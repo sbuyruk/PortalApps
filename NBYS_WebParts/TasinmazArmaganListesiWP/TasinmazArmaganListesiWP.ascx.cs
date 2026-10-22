@@ -1,3 +1,5 @@
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.Ortak;
 using Model.TBYS;
 using System;
@@ -18,6 +20,16 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
     [ToolboxItemAttribute(false)]
     public partial class TasinmazArmaganListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "TasinmazArmaganListesiWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysReportFeedback.Execute(LoggingContext, operation, action);
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -59,18 +71,14 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
                 if (!Page.IsPostBack)
                 {
                     TabloOlustur();
                 }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         private void TabloOlustur()
         {
@@ -82,19 +90,10 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
         {
             string jSon = string.Empty;
 
-            try
-            {
-                List<TasinmazBagisciListItem> list = GetDataList();
-                var serializer = new JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
+            List<TasinmazBagisciListItem> list = GetDataList();
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            jSon = serializer.Serialize(list);
             return jSon;
         }
         private string CreateDataTable(string jsonData)
@@ -163,15 +162,10 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ExcelBtn_Click", () =>
             {
                 ExportToExcel();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void ExportToExcel()
         {
@@ -180,14 +174,6 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
 
             GridView1.DataSource = GetDataList();
             GridView1.DataBind();
-
-            Page.Response.Clear();
-            Page.Response.Buffer = true;
-            Page.Response.AddHeader("content-disposition",
-             "attachment;filename=TasinmazArmaganListesi" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls");
-            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
-            Page.Response.Charset = "windows-1254";//ISO-8859-9
-            Page.Response.ContentType = "application/vnd.ms-excel";
             StringWriter sw = new StringWriter();
             HtmlTextWriter hw = new HtmlTextWriter(sw);
 
@@ -197,6 +183,15 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
                 GridView1.Rows[i].Attributes.Add("class", "textmode");
             }
             GridView1.RenderControl(hw);
+
+            Page.Response.Clear();
+            Page.Response.Buffer = true;
+            Page.Response.AddHeader("content-disposition",
+             "attachment;filename=TasinmazArmaganListesi" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls");
+            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
+            Page.Response.Charset = "windows-1254";//ISO-8859-9
+            Page.Response.ContentType = "application/vnd.ms-excel";
+
 
             //style to format numbers to string
             string style = @"<style> .textmode { mso-number-format:\@; } </style>";
@@ -208,29 +203,26 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_HOME);
+            ExecuteAction("CloseBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_HOME);
+            });
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(System.UriPartial.Path);
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl, false);
+            System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
         }
         private List<TasinmazBagisciListItem> GetDataList()
         {
             TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-            DataTable dataTable = new Model.Services.TBYS.TasinmazBagisciReportService().GetTasinmazBagisci(false);
+            DataTable dataTable = new Model.Services.TBYS.TasinmazBagisciReportService(LoggingContext).GetTasinmazBagisci(GizliBagislarHaricChk.Checked);
             int SiraNo = 1;
             List<TasinmazBagisciListItem> list = new List<TasinmazBagisciListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+            if (dataTable == null) return list;
             DataView dataView = new DataView(dataTable);
             foreach (DataRowView row in dataView)
             {
@@ -328,7 +320,10 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
 
         protected void GizliBagislarHaricChk_CheckedChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            ExecuteAction("GizliBagislarHaricChk_CheckedChanged", () =>
+            {
+                TabloOlustur();
+            });
         }
     }
 }

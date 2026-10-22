@@ -26,6 +26,7 @@ namespace DAO.Repositories.NBYS
                 case "NakitBagisci_Table": fields = new[] { "Ili", "Ilcesi", "TuzelKisi", "Sag", "Ulasilamiyor", "BelgeIstemiyor", "DergiGonderilmesin" }; break;
                 case "NakitBagisHareket_Table": fields = new[] { "BagisciId", "ArmaganId", "EkstreAktarmaId", "BankaId", "BagisTarihi", "BagisMiktari", "DovizCinsi", "DovizTutari", "DovizKuru", "KurTarihi" }; break;
                 case "Armagan_Table": fields = new[] { "BagisciId", "ArmaganTanimId", "Tarih", "Durum", "BagisMiktari", "DovizCinsi", "CokluBagis", "KacinciBelge", "DuzenliBagis", "BagisMiktariYazmasin" }; break;
+                case "Bagis_Table": fields = new[] { "ArmaganDurumu", "ArmaganTarihi" }; break;
                 case "BagisaVesileOlanTesekkur_Table": fields = new[] { "BelgeTarihi" }; break;
                 case "DuzenliNakitBagisci_Table": fields = new[] { "BagisciId", "BagisAdedi", "BagisToplami", "BaslamaTarihi", "BitisTarihi", "Tutar", "Aktif", "ArmaganId", "NakitBagisHareketId" }; break;
                 case "FTKKisi_Table": fields = new[] { "Ili", "Ilcesi", "Vali", "Kaymakam", "FTKGorevi", "UyelikDurumu" }; break;

@@ -1,3 +1,8 @@
+using System.Linq;
+using System.Security;
+using System.Web;
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using DocumentFormat.OpenXml.Packaging;
 using Microsoft.SharePoint;
 using Model.Ortak;
@@ -22,6 +27,16 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
     [ToolboxItemAttribute(false)]
     public partial class TasinmazBagisciAdresListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "TasinmazBagisciAdresListesiWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysReportFeedback.Execute(LoggingContext, operation, action);
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -36,50 +51,26 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
-        private string LibraryNameQS
-        {
-            get
-            {
+        private string LibraryNameQS { get { return ProjeConstants.NBYSBELGELERI_LIB; } }
+        private DataTable labelRows;
+        private int shortenedAddressCount;
+        private bool labelFileSaved;
 
-                if (ViewState["LibraryName"] == null)
-                {
-                    if (Page.Request.QueryString["LibraryName"] != null)
-                    {
-                        ViewState["LibraryName"] = Page.Request.QueryString["LibraryName"];
-                    }
-                    else
-                    {
-                        ViewState["LibraryName"] = ProjeConstants.NBYSBELGELERI_LIB;
-                    }
-                }
-                return ViewState["LibraryName"].ToString();
-            }
-
-            set
-            {
-                ViewState["LibraryName"] = value;
-            }
-        }
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
                 //time out olmasin diye
                 ScriptManager _scriptMan = ScriptManager.GetCurrent(Page);
-                _scriptMan.AsyncPostBackTimeout = 36000;
+                if (_scriptMan != null) _scriptMan.AsyncPostBackTimeout = 36000;
                 if (!Page.IsPostBack)
                 {
                     EtiketAdediDDLDoldur();
                     TabloOlustur();
 
                 }
-
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         private void EtiketAdediDDLDoldur()
         {
@@ -92,7 +83,10 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
+            ExecuteAction("CloseBtn_Click", () =>
+            {
 
+            });
         }
         private void TabloOlustur()
         {
@@ -177,19 +171,10 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
         {
             string jSon = string.Empty;
 
-            try
-            {
-                List<AdresListItem> list = GetDataList();
-                var serializer = new JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
+            List<AdresListItem> list = GetDataList();
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            jSon = serializer.Serialize(list);
             return jSon;
         }
         private void TasinmazBagisciFormunuDoldur(string tasinmazBagisciIdStr)
@@ -199,7 +184,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
                 int tasinmazBagisciId = tasinmazBagisciIdStr.ConvertToInt();
 
                 TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-                tasinmazBagisci = new Model.Services.TBYS.TasinmazBagisciService().GetById(tasinmazBagisciId);
+                tasinmazBagisci = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetById(tasinmazBagisciId);
                 if (tasinmazBagisci != null)
                 {
                     TableRow row = new TableRow();
@@ -248,19 +233,16 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
         }
         private MemoryStream GetTemplateStream(string templateFileName)
         {
-            string siteUrl = SPContext.Current.Web.Url;
-            using (SPSite spSite = new SPSite(siteUrl))
-            using (SPWeb web = spSite.OpenWeb())
+            using (SPSite site = new SPSite(SPContext.Current.Web.Url))
+            using (SPWeb web = site.OpenWeb())
             {
-                string fileUrl = web.Url + "/" + LibraryNameQS + "/" + templateFileName;
-                MemoryStream memStr = new MemoryStream();
-                SPFile file = web.GetFile(fileUrl);
-                if (file != null && file.Exists)
-                {
-                    byte[] byteArray = file.OpenBinary();
-                    memStr.Write(byteArray, 0, byteArray.Length);
-                }
-                return memStr;
+                SPFile file = web.GetFile(web.Url + "/" + LibraryNameQS + "/" + templateFileName);
+                if (file == null || !file.Exists) throw new InvalidOperationException("Adres etiketi şablonu bulunamadı.");
+                byte[] bytes = file.OpenBinary();
+                MemoryStream stream = new MemoryStream();
+                stream.Write(bytes, 0, bytes.Length);
+                stream.Position = 0;
+                return stream;
             }
         }
         public MemoryStream SearchAndReplace(MemoryStream templateStream, Dictionary<string, string> dict)
@@ -275,8 +257,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
 
                 foreach (KeyValuePair<string, string> item in dict)
                 {
-                    Regex regexText = new Regex(item.Key);
-                    docText = regexText.Replace(docText, item.Value);
+                    docText = docText.Replace(item.Key, SecurityElement.Escape(item.Value ?? string.Empty));
                 }
 
                 using (StreamWriter sw = new StreamWriter(
@@ -289,86 +270,51 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
         }
         private IEnumerable<DocumentFormat.OpenXml.Wordprocessing.Table> GetTemplateTables(MemoryStream templateStream)
         {
-            //using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(templateStream, true))
-            //{
-            WordprocessingDocument wordDoc = WordprocessingDocument.Open(templateStream, true);
-            var body = wordDoc.MainDocumentPart.Document.Body;
-            var tables = body.Elements<DocumentFormat.OpenXml.Wordprocessing.Table>();
-            return tables;
-            //}
-
+            using (WordprocessingDocument document = WordprocessingDocument.Open(templateStream, false))
+            {
+                return document.MainDocumentPart.Document.Body.Elements<DocumentFormat.OpenXml.Wordprocessing.Table>()
+                    .Select(table => (DocumentFormat.OpenXml.Wordprocessing.Table)table.CloneNode(true)).ToList();
+            }
         }
         private MemoryStream AddAdresEtiketData2DestinationStream(MemoryStream destinationStream, IEnumerable<DocumentFormat.OpenXml.Wordprocessing.Table> templateTables)
         {
-            DataTable dataTable = GetDataTable();
-            if (dataTable != null)
+            int copies;
+            if (!int.TryParse(EtiketAdediDDL.SelectedValue, out copies) || (copies != 1 && copies != 3 && copies != 21))
+                throw new NbysReportInputException("Geçerli bir etiket adedi seçin.");
+            int index = 1;
+            shortenedAddressCount = 0;
+            foreach (DataRow row in labelRows.Rows)
             {
-                int index = 1;
-                List<string> uzunAdresliler = new List<string>();
-                foreach (DataRow row in dataTable.Rows)
+                string name = Convert.ToString(row["AdiSoyadi"]);
+                string address = Convert.ToString(row["Adres"]);
+                string province = Convert.ToString(row["Ili"]);
+                string district = Convert.ToString(row["Ilcesi"]);
+                bool hidden = row["Gizli"].ReturnEmptyIfNull().ConvertToBool();
+                if (!hidden && address.Length > 110) shortenedAddressCount++;
+                for (int copy = 0; copy < copies; copy++)
                 {
-                    string adiSoyadi = row["AdiSoyadi"].ToString();
-                    string adres = row == null ? "" : row["Adres"].ToString();
-                    string ili = row == null ? "" : row["Ili"].ToString();
-                    string ilcesi = row == null ? "" : row["Ilcesi"].ToString();
-                    string semtIlceIl = ilcesi + @"/" + ili;
-                    int etiket = EtiketAdediDDL.SelectedItem.Value.ConvertToInt();
-                    bool gizli = row["Gizli"].ReturnEmptyIfNull().ConvertToBool();
-                    for (int i = 0; i < etiket; i++)
+                    if (index > 21)
                     {
-                        //create key value pair, key represents words to be replace and 
-                        //values represent values in document in place of keys.
-                        Dictionary<string, string> keyValues = new Dictionary<string, string>();
-                        if (gizli)
-                        {
-                            keyValues.Add("AdSoyad" + index + "Var", ProjeConstants.GIZLI_STRING);
-                            keyValues.Add("Adres" + index + "Var", ProjeConstants.GIZLI_STRING);
-                            keyValues.Add("SemtIlceIl" + index + "Var", ProjeConstants.GIZLI_STRING);
-                        }
-                        else
-                        {
-                            keyValues.Add("AdSoyad" + index + "Var", adiSoyadi);
-                            keyValues.Add("Adres" + index + "Var", string.IsNullOrEmpty(adres) ? "Adresi yok" : adres.Substring(0, adres.Length > 110 ? 110 : adres.Length - 1));
-                            keyValues.Add("SemtIlceIl" + index + "Var", semtIlceIl);
-                        }
-                        SearchAndReplace(destinationStream, keyValues);
-                        index++;
-                    }
-
-                    if (!string.IsNullOrEmpty(adres) && adres.Trim().Length > 110)
-                    {
-                        uzunAdresliler.Add(adiSoyadi);
-                    }
-
-                    if (index >= 21)//sayfa bitti yeni sayfa ekle
-                    {
-                        destinationStream = AddTable2DestinationStream(destinationStream, templateTables);
+                        AddTable2DestinationStream(destinationStream, templateTables);
                         index = 1;
                     }
-
-                }
-                if (index < 21)
-                {
-                    //Sayfada 21 den az kayit varsa template alanlarini temizle adsoyad vs
-                    for (int i = index; i < 22; i++)
-                    {
-                        Dictionary<string, string> keyValues = new Dictionary<string, string>();
-                        keyValues.Add("AdSoyad" + i + "Var", "");
-                        keyValues.Add("Adres" + i + "Var", "");
-                        keyValues.Add("SemtIlceIl" + i + "Var", "");
-                        destinationStream = SearchAndReplace(destinationStream, keyValues);
-                    }
-
-                }
-                if (uzunAdresliler.Count > 0)
-                {
-                    string message = string.Join(Environment.NewLine, uzunAdresliler);
-                    MessageHelper.PublishMessage(message + Environment.NewLine +
-                        " adresi çok uzun oldugundan kesilerek kisaltildi. Lütfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
+                    Dictionary<string, string> values = new Dictionary<string, string>();
+                    values.Add("AdSoyad" + index + "Var", hidden ? ProjeConstants.GIZLI_STRING : name);
+                    values.Add("Adres" + index + "Var", hidden ? ProjeConstants.GIZLI_STRING :
+                        (string.IsNullOrEmpty(address) ? "Adresi yok" : address.Substring(0, Math.Min(110, address.Length))));
+                    values.Add("SemtIlceIl" + index + "Var", hidden ? ProjeConstants.GIZLI_STRING : district + "/" + province);
+                    SearchAndReplace(destinationStream, values);
+                    index++;
                 }
             }
-
-
+            for (; index <= 21; index++)
+            {
+                Dictionary<string, string> values = new Dictionary<string, string>();
+                values.Add("AdSoyad" + index + "Var", "");
+                values.Add("Adres" + index + "Var", "");
+                values.Add("SemtIlceIl" + index + "Var", "");
+                SearchAndReplace(destinationStream, values);
+            }
             return destinationStream;
         }
         private MemoryStream AddTable2DestinationStream(MemoryStream destinationStream, IEnumerable<DocumentFormat.OpenXml.Wordprocessing.Table> templateTables)
@@ -390,91 +336,65 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
         }
         protected void AddToSharePoint(MemoryStream memStream, string fileName)
         {
-            //string url = System.Web.HttpContext.Current.Request.Url.ToString();
-            using (SPSite spSite = new SPSite(SPContext.Current.Web.Url))
-            {
-                //Get the document library object
-                SPList docLib = SPContext.Current.Web.Lists[LibraryNameQS];
-                SPFile file = docLib.RootFolder.Files.Add(fileName, memStream, true);
-                file.Update();
-            }
+            memStream.Position = 0;
+            SPList library = SPContext.Current.Web.Lists[LibraryNameQS];
+            library.RootFolder.Files.Add(fileName, memStream, false);
+            labelFileSaved = true;
         }
         private bool YeniAdresEtiketDosyasiOlustur(string dosyaAdi)
         {
-            bool isYaziOlusturuldu;
-            try
+            using (MemoryStream template = GetTemplateStream(ProjeConstants.NBYS_TASINMAZBAGISCI_ADRESETIKETI_TEMPLATE))
             {
-                MemoryStream templateStream = GetTemplateStream(ProjeConstants.NBYS_TASINMAZBAGISCI_ADRESETIKETI_TEMPLATE);
-                IEnumerable<DocumentFormat.OpenXml.Wordprocessing.Table> templateTables = GetTemplateTables(templateStream);
-                MemoryStream destinationStream = AddAdresEtiketData2DestinationStream(templateStream, templateTables);
-
-                destinationStream.Seek(0, SeekOrigin.Begin);
-                destinationStream.Position = 0;
-
-                AddToSharePoint(destinationStream, dosyaAdi);
-
-                string dosyaUrl = SPContext.Current.Web.Url + @"/" + LibraryNameQS + @"/" + dosyaAdi;
-
-                string sourceString = System.Web.HttpContext.Current.Request.Url.AbsoluteUri;
-                string removeString = System.Web.HttpContext.Current.Request.Url.AbsolutePath;
-
-                int index = sourceString.IndexOf(removeString);
-                string rootUrl = (index < 0)
-                    ? sourceString
-                    : sourceString.Substring(0, index);
-
-                AdresEtiketLnk.Text = dosyaAdi;
-                AdresEtiketLnk.NavigateUrl = rootUrl + "/_layouts/15/download.aspx?SourceUrl=" + dosyaUrl;
-
-                AdresEtiketLnk.Visible = true;
-                isYaziOlusturuldu = true;
+                if (template.Length == 0) throw new InvalidOperationException("Adres etiketi şablonu bulunamadı.");
+                var tables = GetTemplateTables(template).ToList();
+                if (tables.Count == 0) throw new InvalidOperationException("Adres etiketi şablonunda tablo bulunamadı.");
+                AddAdresEtiketData2DestinationStream(template, tables);
+                AddToSharePoint(template, dosyaAdi);
             }
-            catch (Exception ex)
-            {
-                AdresEtiketLnk.Text = "Dosya Olusturulamadi";
-                AdresEtiketLnk.ForeColor = Color.Red;
-                isYaziOlusturuldu = false;
-                ExceptionHelper exh = new ExceptionHelper(ex);
-                exh.PublishException();
-            }
-            return isYaziOlusturuldu;
+            string url = SPContext.Current.Web.Url + "/" + LibraryNameQS + "/" + dosyaAdi;
+            AdresEtiketLnk.Text = dosyaAdi;
+            AdresEtiketLnk.NavigateUrl = new Uri(SPContext.Current.Web.Url).GetLeftPart(UriPartial.Authority)
+                + "/_layouts/15/download.aspx?SourceUrl=" + HttpUtility.UrlEncode(url);
+            AdresEtiketLnk.Visible = true;
+            return true;
         }
         protected void AdresEtiketiBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("AdresEtiketiBtn_Click", () =>
             {
-                AdresEtiketLnk.Visible = true;
-                AdresEtiketLnk.Text = "Dosya Oluşturuluyor...";
-                // Dosya adlari 
-                string zaman = DateTime.Now.ToString("dd-MM-yyyy-HH-mm");
-                string etiketDosyaAdi = "Bagisci-Adres-Etiketi(" + zaman + ").docx";
-                bool etiketOlustuMu = YeniAdresEtiketDosyasiOlustur(etiketDosyaAdi);
-                if (etiketOlustuMu)
-                    MessageHelper.PublishMessage("Bağışçı adres etiketleri hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
-                else
+                AdresEtiketLnk.Visible = false;
+                labelFileSaved = false;
+                labelRows = GetDataTable();
+                if (labelRows == null || labelRows.Rows.Count == 0)
+                    throw new NbysReportInputException("Seçilen filtrelere uygun bağışçı bulunamadı. Filtreleri değiştirip tekrar deneyin.");
+                int copies;
+                if (!int.TryParse(EtiketAdediDDL.SelectedValue, out copies) || (copies != 1 && copies != 3 && copies != 21))
+                    throw new NbysReportInputException("Geçerli bir etiket adedi seçin.");
+                try
                 {
-                    MessageHelper.PublishMessage("Adres etiketleri oluşturulamadı.", ProjeConstants.MESAJ_BILGI, 3000);
+                    string name = "Bagisci-Adres-Etiketi-" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + "-" + Guid.NewGuid().ToString("N") + ".docx";
+                    YeniAdresEtiketDosyasiOlustur(name);
+                    string message = "Adres etiketleri hazırlandı. Dosya bağlantısından indirebilirsiniz.";
+                    if (shortenedAddressCount > 0)
+                        Messages.Warning(message + " " + shortenedAddressCount + " adres kısaltıldı; yazdırmadan önce etiketleri kontrol edin.");
+                    else Messages.Success(message, 5000);
                 }
-
-            }
-            catch (Exception ex)
-            {
-                Exception ex1 = new Exception("Adres etiketleri oluşturulmada hata");
-                ExceptionHelper exh = new ExceptionHelper(ex);
-                exh.PublishException();
-            }
+                catch (System.Threading.ThreadAbortException) { throw; }
+                catch (Exception error)
+                {
+                    System.Web.HttpContext.Current.Items["PortalApps.NBYS.FailedWebPart." + LoggingContext.WebPart] = true;
+                    NbysWebPartLog.ReportError(LoggingContext, "NBYS.TasinmazBagisciAdresListesiWP.CreateLabels", error,
+                        labelFileSaved ? "Dosya kitaplığa kaydedildi; ekran tamamlanamadı. Belge kitaplığını kontrol edin."
+                        : "Adres etiketleri hazırlanamadı. Lütfen tekrar deneyin.");
+                }
+            });
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ExcelBtn_Click", () =>
             {
                 ExportToExcel();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         private List<AdresListItem> GetDataList()
         {
@@ -482,6 +402,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
             int SiraNo = 0;
             List<AdresListItem> list = new List<AdresListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+            if (dataTable == null) return list;
             DataView dataView = new DataView(dataTable);
             foreach (DataRowView row in dataView)
             {
@@ -522,7 +443,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
         private DataTable GetDataTable()
         {
             TasinmazBagisci bagisci = new TasinmazBagisci();
-            DataTable dataTable = new Model.Services.TBYS.TasinmazBagisciReportService().GetAllCountBagisAdedi(VefatEdenlerHaricChk.Checked, GizliBagislarHaricChk.Checked);
+            DataTable dataTable = new Model.Services.TBYS.TasinmazBagisciReportService(LoggingContext).GetAllCountBagisAdedi(VefatEdenlerHaricChk.Checked, GizliBagislarHaricChk.Checked);
             return dataTable;
         }
         protected void ExportToExcel()
@@ -531,14 +452,6 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
             GridView1.AllowPaging = false;
             GridView1.DataSource = GetDataTable();
             GridView1.DataBind();
-
-            Page.Response.Clear();
-            Page.Response.Buffer = true;
-            Page.Response.AddHeader("content-disposition",
-             "attachment;filename=TasinmazBagisciAdresListesi.xls");
-            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
-            Page.Response.Charset = "windows-1254";//ISO-8859-9
-            Page.Response.ContentType = "application/vnd.ms-excel";
             StringWriter sw = new StringWriter();
             HtmlTextWriter hw = new HtmlTextWriter(sw);
 
@@ -548,6 +461,15 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
                 GridView1.Rows[i].Attributes.Add("class", "textmode");
             }
             GridView1.RenderControl(hw);
+
+            Page.Response.Clear();
+            Page.Response.Buffer = true;
+            Page.Response.AddHeader("content-disposition",
+             "attachment;filename=TasinmazBagisciAdresListesi.xls");
+            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
+            Page.Response.Charset = "windows-1254";//ISO-8859-9
+            Page.Response.ContentType = "application/vnd.ms-excel";
+
 
             //style to format numbers to string
             string style = @"<style> .textmode { mso-number-format:\@; } </style>";
@@ -559,17 +481,15 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
         }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ModalDoldurBtn_Click", () =>
             {
+                int selectedId;
+                if (!int.TryParse(paramTasinmazBagisciIdLbl.Value, out selectedId) || selectedId <= 0)
+                    throw new NbysReportInputException("Bağışçıyı listeden yeniden seçin.");
+
                 TabloModalOlustur(paramTasinmazBagisciIdLbl.Value.ConvertToInt());
                 TasinmazBagisciFormunuDoldur(paramTasinmazBagisciIdLbl.Value);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
-
-            }
+            });
         }
         private class AdresListItem
         {
@@ -587,11 +507,17 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
 
         protected void VefatEdenlerHaricChk_CheckedChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            ExecuteAction("VefatEdenlerHaricChk_CheckedChanged", () =>
+            {
+                TabloOlustur();
+            });
         }
         protected void GizliBagislarHaricChk_CheckedChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            ExecuteAction("GizliBagislarHaricChk_CheckedChanged", () =>
+            {
+                TabloOlustur();
+            });
         }
 
         //modal
@@ -605,18 +531,8 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
         {
             string jSon = string.Empty;
 
-            try
-            {
-                Bagis bagis = new Bagis();
-                jSon = new Model.Services.TBYS.BagisService().GetTasinmazByBagisciIdAsJson(tasinmazBagisciId);
-
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
+            Bagis bagis = new Bagis();
+            jSon = new Model.Services.TBYS.BagisService(LoggingContext).GetTasinmazByBagisciIdAsJson(tasinmazBagisciId);
             return jSon;
         }
         private string CreateModalDataTable(string jsonData)
@@ -645,7 +561,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
                     'thousands': '.'
                 },
                 responsive: true,
-                dom: 'rtip',                
+                dom: 'rtip',
             });
             ";
 

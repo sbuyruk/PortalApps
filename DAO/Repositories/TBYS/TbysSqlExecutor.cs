@@ -29,8 +29,8 @@ namespace DAO.Repositories.TBYS
         internal TbysSqlExecutor(PortalLogContext context, string repositoryName)
         {
             if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
-            if (context.Project != "TBYS")
-                throw new ArgumentException("Bu veritabanı erişimi yalnızca TBYS log bağlamını kabul eder.", "context");
+            if (context.Project != "TBYS" && context.Project != "NBYS")
+                throw new ArgumentException("Bu veritabanı erişimi TBYS veya NBYS log bağlamını kabul eder.", "context");
             if (string.IsNullOrWhiteSpace(repositoryName))
                 throw new ArgumentException("Repository adı gereklidir.", "repositoryName");
             this.context = context;
@@ -58,6 +58,7 @@ namespace DAO.Repositories.TBYS
         internal int Insert(SqlQuery query, [CallerMemberName] string method = "")
         {
             if (legacy != null) return legacy.Insert(query);
+            RequireTbysWriteContext();
             return Trace("INSERT", method, () =>
             {
                 using (SqlConnection connection = new SqlConnection(DBProcess.getConnectString()))
@@ -74,13 +75,21 @@ namespace DAO.Repositories.TBYS
         internal bool Update2Db(SqlQuery query, [CallerMemberName] string method = "")
         {
             if (legacy != null) return legacy.Update2Db(query);
+            RequireTbysWriteContext();
             return Trace("UPDATE", method, () => ExecuteNonQuery(query), result => result);
         }
 
         internal bool DeleteFromDb(SqlQuery query, string description, [CallerMemberName] string method = "")
         {
             if (legacy != null) return legacy.DeleteFromDb(query, description);
+            RequireTbysWriteContext();
             return Trace("DELETE", method, () => ExecuteNonQuery(query), result => result);
+        }
+
+        private void RequireTbysWriteContext()
+        {
+            // NBYS reuses property reports through this adapter; its writes have a dedicated transaction path.
+            if (context.Project != "TBYS") throw new InvalidOperationException("Bu bağlam yalnızca taşınmaz verilerini okumak için kullanılabilir.");
         }
 
         private static bool ExecuteNonQuery(SqlQuery query)

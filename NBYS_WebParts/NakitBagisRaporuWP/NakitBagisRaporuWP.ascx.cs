@@ -1,3 +1,5 @@
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.Ortak;
@@ -22,6 +24,16 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
     [ToolboxItemAttribute(false)]
     public partial class NakitBagisRaporuWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "NakitBagisRaporuWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysReportFeedback.Execute(LoggingContext, operation, action);
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -40,8 +52,9 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
                 if (!Page.IsPostBack)
                 {
                     BagisTarihiBaslangicTxt.Text = DateTime.Now.AddYears(-10).ToString("yyyy-MM-dd");
@@ -52,19 +65,14 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
                     SonBagisDDLDoldur();
                     SagDDLDoldur();
                     UlasilamiyorDDLDoldur();
-                    TuzelKisiDDLDDLDoldur();    
+                    TuzelKisiDDLDDLDoldur();
                     BelgeIstemiyorDDLDoldur();
                     IlleriDoldur();
                     IlceleriDoldur();
                     ArmaganlariDoldur();
                     TabloOlustur();
                 }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
 
         private void IlleriDoldur()
@@ -72,7 +80,7 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
             IliDDL.Items.Clear();
             IliDDL.Items.Add(new ListItem("Hepsi", ProjeConstants.HEPSI_INT.ToString()));
 
-            List<Il> iller = new IlService().GetAll().Where(x => !string.IsNullOrWhiteSpace(x.IlAdi)).OrderBy(x => x.IlAdi).ToList();
+            List<Il> iller = new IlService().GetAll(LoggingContext).Where(x => !string.IsNullOrWhiteSpace(x.IlAdi)).OrderBy(x => x.IlAdi).ToList();
             foreach (var item in iller)
             {
                 IliDDL.Items.Add(new ListItem(item.IlAdi, item.Id.ToString()));
@@ -87,7 +95,7 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
             int ilId = IliDDL.SelectedItem.Value.ConvertToInt();
             if (ilId <= ProjeConstants.HEPSI_INT) return;
 
-            List<Ilce> ilceler = new IlceService().GetByProvinceId(ilId).OrderBy(x => x.IlceAdi).ToList();
+            List<Ilce> ilceler = new IlceService().GetByProvinceId(ilId, LoggingContext).OrderBy(x => x.IlceAdi).ToList();
             foreach (var item in ilceler)
             {
                 IlcesiDDL.Items.Add(new ListItem(item.IlceAdi, item.Id.ToString()));
@@ -138,7 +146,7 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
             ArmaganDDL.Items.Clear();
             ArmaganDDL.Items.Add(new ListItem("Hepsi", ProjeConstants.HEPSI_INT.ToString()));
 
-            List<ArmaganTanim> armaganlar = new ArmaganTanimService().GetActive().OrderBy(x => x.Armagan).ToList();
+            List<ArmaganTanim> armaganlar = new ArmaganTanimService(LoggingContext).GetActive().OrderBy(x => x.Armagan).ToList();
             foreach (var item in armaganlar)
             {
                 ArmaganDDL.Items.Add(new ListItem(item.Armagan, item.Id.ToString()));
@@ -147,34 +155,24 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
 
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("IliDDL_SelectedIndexChanged", () =>
             {
                 IlceleriDoldur();
                 //TabloOlustur();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
 
         protected void ListeleBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ListeleBtn_Click", () =>
             {
                 TabloOlustur();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
 
         protected void TemizleBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("TemizleBtn_Click", () =>
             {
                 BagisTarihiBaslangicTxt.Text = string.Empty;
                 BagisTarihiBitisTxt.Text = string.Empty;
@@ -190,25 +188,15 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
                 IlceleriDoldur();
 
                 TabloOlustur();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
 
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ExcelBtn_Click", () =>
             {
                 ExportToExcel();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
 
         private void ExportToExcel()
@@ -218,13 +206,6 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
             List<NakitBagisRaporuListItem> list = GetDataList();
             GridView1.DataSource = list;
             GridView1.DataBind();
-
-            Page.Response.Clear();
-            Page.Response.Buffer = true;
-            Page.Response.AddHeader("content-disposition", "attachment;filename=NakitBagisRaporu.xls");
-            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
-            Page.Response.Charset = "windows-1254";
-            Page.Response.ContentType = "application/vnd.ms-excel";
             StringWriter sw = new StringWriter();
             HtmlTextWriter hw = new HtmlTextWriter(sw);
 
@@ -233,6 +214,14 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
                 GridView1.Rows[i].Attributes.Add("class", "textmode");
             }
             GridView1.RenderControl(hw);
+
+            Page.Response.Clear();
+            Page.Response.Buffer = true;
+            Page.Response.AddHeader("content-disposition", "attachment;filename=NakitBagisRaporu.xls");
+            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
+            Page.Response.Charset = "windows-1254";
+            Page.Response.ContentType = "application/vnd.ms-excel";
+
 
             string style = @"<style> .textmode { mso-number-format:\@; } </style>";
             Page.Response.Write(style);
@@ -252,19 +241,10 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
         {
             string jSon = string.Empty;
 
-            try
-            {
-                List<NakitBagisRaporuListItem> list = GetDataList();
-                var serializer = new JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
+            List<NakitBagisRaporuListItem> list = GetDataList();
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            jSon = serializer.Serialize(list);
             return jSon;
         }
 
@@ -286,7 +266,7 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
                             { data: 'ToplamBagisMiktari' },
                             { data: 'SonBagisTarihi' },
                             { data: 'Ili' },
-                            { data: 'Ilcesi' }, 
+                            { data: 'Ilcesi' },
                             { data: 'Telefon' },
                             { data: 'Adres' }
                         ],
@@ -298,7 +278,7 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
                             { 'width': '10%', 'targets': 1 },
                             { 'width': '10%', 'targets': 2 },
                             { 'width': '10%', 'targets': 3 },
-                            { 'width': '10%', 'targets': 4 },   
+                            { 'width': '10%', 'targets': 4 },
                             { 'width': '15%', 'targets': 5 },
                             { 'width': '25%', 'targets': 6 }
                         ],
@@ -357,6 +337,12 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
             decimal ? minMiktar = TryParseDecimal(BagisMiktariMinTxt.Text);
             decimal? maxMiktar = TryParseDecimal(BagisMiktariMaxTxt.Text);
 
+            if (basTarih.HasValue && basTarih.Value < new DateTime(1753, 1, 1)
+                || bitTarih.HasValue && bitTarih.Value < new DateTime(1753, 1, 1))
+                throw new NbysReportInputException("Geçerli bir tarih aralığı girin.");
+            if (basTarih > bitTarih) throw new NbysReportInputException("Başlangıç tarihi bitiş tarihinden sonra olamaz.");
+            if (minMiktar > maxMiktar) throw new NbysReportInputException("En küçük tutar en büyük tutardan fazla olamaz.");
+
             int armaganId = ArmaganDDL.SelectedItem != null ? ArmaganDDL.SelectedItem.Value.ConvertToInt() : ProjeConstants.HEPSI_INT;
 
             int ilId = IliDDL.SelectedItem != null ? IliDDL.SelectedItem.Value.ConvertToInt() : ProjeConstants.HEPSI_INT;
@@ -367,7 +353,7 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
             bool? ulasilamiyor = TryParseBool(UlasilamiyorDDL.SelectedItem != null ? (UlasilamiyorDDL.SelectedItem.Value.Equals(ProjeConstants.HEPSI)?null: UlasilamiyorDDL.SelectedItem.Value) : string.Empty);
             bool? tuzelKisi = TryParseBool(TuzelKisiDDL.SelectedItem != null ? (TuzelKisiDDL.SelectedItem.Value.Equals(ProjeConstants.HEPSI)?null: TuzelKisiDDL.SelectedItem.Value) : string.Empty);
 
-            NakitBagisHareketService nakitBagisHareket = new NakitBagisHareketService();
+            NakitBagisHareketService nakitBagisHareket = new NakitBagisHareketService(LoggingContext);
             DataTable dataTable = nakitBagisHareket.GetDonationReport(
                 basTarih, bitTarih,
                 minMiktar, maxMiktar,
@@ -402,16 +388,16 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
         {
             if (string.IsNullOrWhiteSpace(value)) return null;
             DateTime result;
-            if (DateTime.TryParse(value, out result)) return result;
-            return null;
+            if (DateTime.TryParse(value, new CultureInfo(ProjeConstants.CULTUREINFO), DateTimeStyles.None, out result)) return result;
+            throw new NbysReportInputException("Tarihleri gün.ay.yıl biçiminde girin veya boş bırakın.");
         }
 
         private decimal? TryParseDecimal(string value)
         {
             if (string.IsNullOrWhiteSpace(value)) return null;
             decimal result;
-            if (decimal.TryParse(value, out result)) return result;
-            return null;
+            if (decimal.TryParse(value, NumberStyles.Number, new CultureInfo(ProjeConstants.CULTUREINFO), out result)) return result;
+            throw new NbysReportInputException("Bağış tutarlarını sayı olarak girin veya boş bırakın.");
         }
 
         private bool? TryParseBool(string value)
@@ -463,16 +449,14 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
         #region Modal işlemleri
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ModalDoldurBtn_Click", () =>
             {
-                ModalTabloOlustur();
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
+                int selectedId;
+                if (!int.TryParse(paramNakitBagisciIdLbl.Value, out selectedId) || selectedId <= 0)
+                    throw new NbysReportInputException("Bağışçıyı listeden yeniden seçin.");
 
-            }
+                ModalTabloOlustur();
+            });
         }
         private void ModalTabloOlustur()
         {
@@ -485,25 +469,16 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
         {
             string jSon = string.Empty;
 
-            try
-            {
-                List<NakitBagisciListItem> list = GetModalDataList();
-                var serializer = new JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
+            List<NakitBagisciListItem> list = GetModalDataList();
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            jSon = serializer.Serialize(list);
             return jSon;
         }
         private string CreateModalDataTable(string jsonData)
         {
             string tableString = @"
-                
+
 
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
                 jQuery(document).ready(function () {
@@ -535,7 +510,7 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
         private List<NakitBagisciListItem> GetModalDataList()
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            DataTable dataTable = new NakitBagisHareketService().GetDonorDonationDetails(paramNakitBagisciIdLbl.Value.ConvertToInt());
+            DataTable dataTable = new NakitBagisHareketService(LoggingContext).GetDonorDonationDetails(paramNakitBagisciIdLbl.Value.ConvertToInt());
 
             List<NakitBagisciListItem> list = new List<NakitBagisciListItem>();
             DataRow row0 = dataTable.Rows[0];
@@ -564,7 +539,7 @@ namespace NBYS_WebParts.NakitBagisRaporuWP
 
                     NakitBagisciListItem bagisItem = new NakitBagisciListItem();
                     bagisItem.AdiSoyadi = (adi + " " + soyadi).Trim();
-                    
+
                     bagisItem.BagisTarihi = bagisTarihi;
                     bagisItem.BagisMiktari = bagisMiktari.ToString("N", culturInfo);
 
