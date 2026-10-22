@@ -1,3 +1,4 @@
+using Utility.Logging;
 using DAO.Repositories.NBYS;
 using System;
 using System.Data;
@@ -9,6 +10,8 @@ namespace Model.Services.NBYS
     public class NakitBagisciReportService
     {
         private readonly NakitBagisciReportRepository repository;
+
+        public NakitBagisciReportService(PortalLogContext context) : this(new NakitBagisciReportRepository(context)) { }
 
         public NakitBagisciReportService()
             : this(new NakitBagisciReportRepository())

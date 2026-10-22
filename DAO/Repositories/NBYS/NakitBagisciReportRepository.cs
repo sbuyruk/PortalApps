@@ -1,3 +1,4 @@
+using Utility.Logging;
 using DAO.Ortak;
 using System;
 using System.Data;
@@ -23,10 +24,17 @@ namespace DAO.Repositories.NBYS
     public class NakitBagisciReportRepository
     {
         private readonly DbClass db;
+        private readonly PortalLogContext context;
 
         public NakitBagisciReportRepository()
             : this(new DbClass())
         {
+        }
+
+        public NakitBagisciReportRepository(PortalLogContext context)
+        {
+            if (context == null || context.Project != "NBYS") throw new ArgumentException("NBYS log bağlamı gereklidir.", "context");
+            this.context = context;
         }
 
         public NakitBagisciReportRepository(DbClass db)
@@ -69,7 +77,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@BaslangicTarihi", NormalizeLegacyDateParameter(baslangicTarihi));
             query.AddParameter("@MinimumBagisMiktari", minimumBagisMiktari);
             query.AddParameter("@SonBagisAyFarki", sonBagisAyFarki);
-            return db.SelectFromDb(query, "");
+            return Select(query, "");
         }
 
         public DataTable SelectSecilmemisKatilimcilar(DateTime minimumBagisTarihi, decimal minimumBagisMiktari)
@@ -88,7 +96,7 @@ namespace DAO.Repositories.NBYS
                 ORDER BY A.Id");
             query.AddParameter("@MinimumBagisTarihi", minimumBagisTarihi);
             query.AddParameter("@MinimumBagisMiktari", minimumBagisMiktari);
-            return db.SelectFromDb(query, "");
+            return Select(query, "");
         }
 
         public DataTable SelectDuzenliBagisci(
@@ -150,12 +158,12 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@SadeceBelgeOlusturulmadi", sadeceBelgeOlusturulmadi);
             query.AddParameter("@DurumFiltrele", durumFiltrele);
             query.AddParameter("@Durum", durum ?? string.Empty);
-            return db.SelectFromDb(query, "");
+            return Select(query, "");
         }
 
         public DataTable SelectDuzenliBagisBelgeEsikleri()
         {
-            return db.SelectFromDb(new SqlQuery(@"SELECT 12 BagisAdedi UNION SELECT 24 UNION SELECT 36
+            return Select(new SqlQuery(@"SELECT 12 BagisAdedi UNION SELECT 24 UNION SELECT 36
                 UNION SELECT BagisAdedi FROM DuzenliNakitBagisci_Table
                     WHERE Aktif=1 AND BagisAdedi>0 AND BagisAdedi%12=0
                 ORDER BY BagisAdedi"), "");
@@ -168,7 +176,7 @@ namespace DAO.Repositories.NBYS
                 : CreateBagisciAdresRaporQuery();
 
             AddAdresRaporParameters(query, kriter);
-            return db.SelectFromDb(query, "");
+            return Select(query, "");
         }
 
         private static SqlQuery CreateYeniBagisciAdresRaporQuery()
@@ -271,6 +279,11 @@ namespace DAO.Repositories.NBYS
                 return value.Substring(1, value.Length - 2);
 
             return value;
+        }
+        private DataTable Select(SqlQuery query, string ignored,
+            [System.Runtime.CompilerServices.CallerMemberName] string method = "")
+        {
+            return context == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(context, "NakitBagisciReportRepository").Select(query, method: method);
         }
     }
 }
