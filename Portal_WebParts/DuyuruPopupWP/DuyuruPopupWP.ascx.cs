@@ -1,6 +1,9 @@
 using Model.IKYS;
 using Model.Services.IKYS;
 using Model.Ortak;
+using Portal_WebParts.Logging;
+using Utility.Logging;
+using Model.Services.Portal;
 using Model.Portal;
 using System;
 using System.Collections.Generic;
@@ -18,6 +21,14 @@ namespace Portal_WebParts.DuyuruPopupWP
     [ToolboxItemAttribute(false)]
     public partial class DuyuruPopupWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("Portal", "DuyuruPopupWP"); }
+        }
+        private void ExecuteAction(string operation, Action action)
+        {
+            PortalWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -74,64 +85,28 @@ namespace Portal_WebParts.DuyuruPopupWP
                 ViewState["CurrentUserName"] = value;
             }
         }
-        //private List<Duyuru> DuyuruListesi
-        //{
-        //    get
-        //    {
-
-        //        if (ViewState["DuyuruListesi"] == null)
-        //        {
-        //            Duyuru kisiselDuyuruListesi = new Duyuru();
-        //            DateTime now = DateTime.Now;
-        //            DuyuruListesi = new List<Duyuru>();
-        //            List<Duyuru> tekrarYokDuyuruList = duyuruDao.SelectByTarihReturnList(now, ProjeConstants.DUYURU_TEKRAR_YOK);
-        //            List<Duyuru> yillikDuyuruList = duyuruDao.SelectByTarihReturnList(now, ProjeConstants.DUYURU_TEKRARLA_YIL);
-        //            List<Duyuru> aylikDuyuruList = duyuruDao.SelectByTarihReturnList(now, ProjeConstants.DUYURU_TEKRARLA_AY);
-        //            List<Duyuru> haftalikDuyuruList = duyuruDao.SelectByTarihReturnList(now, ProjeConstants.DUYURU_TEKRARLA_HAFTA);
-        //            DuyuruListesi.AddRange(tekrarYokDuyuruList);
-        //            DuyuruListesi.AddRange(yillikDuyuruList);
-        //            DuyuruListesi.AddRange(aylikDuyuruList);
-        //            DuyuruListesi.AddRange(haftalikDuyuruList);
-
-        //            Personel personel = new Personel();
-        //            string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-        //            personel = personel.SelectByUserName(userName);
-        //            if (personel != null)
-        //            {
-        //                string personelIdStr = personel.Id.ToString();
-        //                List<Duyuru> kisiselListe = DuyuruListesi.Where(x => x.DuyuruAlicilari.Contains("," + personelIdStr + ",")).ToList();
-
-        //                ViewState["DuyuruListesi"] = kisiselListe;
-        //            }
-        //            ViewState["DuyuruListesi"] = DuyuruListesi;
-
-        //        }
-        //        return (List<Duyuru>)ViewState["DuyuruListesi"];
-        //    }
-
-        //    set
-        //    {
-        //        ViewState["DuyuruListesi"] = value;
-        //    }
-        //}
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (!Page.IsPostBack)
+            ExecuteAction("Page_Load", () =>
             {
-                List<Duyuru> duyuruListesi = GetDuyuruList();
-                if (duyuruListesi.Count > 0)
+                PortalWebPartLog.RecordOpened(LoggingContext);
+                //if (!Page.IsPostBack)
                 {
-                    Personel personel = new Personel();
-                    string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                    personel = new PersonelService().GetByUserName(userName);
-                    if (personel != null)
-                        foreach (Duyuru duyuru in duyuruListesi)
-                        {
-                            ModalFormuOlusturVeGoster(duyuru, true);
-                            DuyuruKayanYaziDoldur(duyuru, personel);
-                        }
+                    List<Duyuru> duyuruListesi = GetDuyuruList();
+                    if (duyuruListesi.Count > 0)
+                    {
+                        Personel personel = new Personel();
+                        string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
+                        personel = new PersonelService().GetByUserName(userName, LoggingContext);
+                        if (personel != null)
+                            foreach (Duyuru duyuru in duyuruListesi)
+                            {
+                                ModalFormuOlusturVeGoster(duyuru, true);
+                                DuyuruKayanYaziDoldur(duyuru, personel);
+                            }
+                    }
                 }
-            }
+            });
         }
 
         private List<Duyuru> GetDuyuruList()
@@ -140,24 +115,24 @@ namespace Portal_WebParts.DuyuruPopupWP
             DateTime now = DateTime.Now;
             List<Duyuru> duyuruListesi = new List<Duyuru>();
             List<Duyuru> kisiselDuyuruListesi = new List<Duyuru>();
-            List<Duyuru> tekrarYokDuyuruList = new Model.Services.Portal.DuyuruService().GetByRepeat(now, ProjeConstants.DUYURU_TEKRAR_YOK);
-            List<Duyuru> yillikDuyuruList = new Model.Services.Portal.DuyuruService().GetByRepeat(now, ProjeConstants.DUYURU_TEKRARLA_YIL);
-            List<Duyuru> aylikDuyuruList = new Model.Services.Portal.DuyuruService().GetByRepeat(now, ProjeConstants.DUYURU_TEKRARLA_AY);
-            List<Duyuru> haftalikDuyuruList = new Model.Services.Portal.DuyuruService().GetByRepeat(now, ProjeConstants.DUYURU_TEKRARLA_HAFTA);
+            List<Duyuru> tekrarYokDuyuruList = new Model.Services.Portal.DuyuruService(LoggingContext).GetByRepeat(now, ProjeConstants.DUYURU_TEKRAR_YOK);
+            List<Duyuru> yillikDuyuruList = new Model.Services.Portal.DuyuruService(LoggingContext).GetByRepeat(now, ProjeConstants.DUYURU_TEKRARLA_YIL);
+            List<Duyuru> aylikDuyuruList = new Model.Services.Portal.DuyuruService(LoggingContext).GetByRepeat(now, ProjeConstants.DUYURU_TEKRARLA_AY);
+            List<Duyuru> haftalikDuyuruList = new Model.Services.Portal.DuyuruService(LoggingContext).GetByRepeat(now, ProjeConstants.DUYURU_TEKRARLA_HAFTA);
             duyuruListesi.AddRange(tekrarYokDuyuruList);
             duyuruListesi.AddRange(yillikDuyuruList);
             duyuruListesi.AddRange(aylikDuyuruList);
             duyuruListesi.AddRange(haftalikDuyuruList);
 
-            kisiselDuyuruListesi = duyuruListesi;
+            kisiselDuyuruListesi = new List<Duyuru>();
 
             Personel personel = new Personel();
             string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-            personel = new PersonelService().GetByUserName(userName);
+            personel = new PersonelService().GetByUserName(userName, LoggingContext);
             if (personel != null)
             {
                 string personelIdStr = personel.Id.ToString();
-                List<Duyuru> kisiselListe = duyuruListesi.Where(x => x.DuyuruAlicilari.Contains("," + personelIdStr + ",")).ToList();
+                List<Duyuru> kisiselListe = duyuruListesi.Where(x => PortalDuyuruWriteService.IsRecipient(x.DuyuruAlicilari, personel.Id)).ToList();
 
                 kisiselDuyuruListesi = kisiselListe;
             }
@@ -167,7 +142,7 @@ namespace Portal_WebParts.DuyuruPopupWP
 
         private void DuyuruKayanYaziDoldur(Duyuru duyuru, Personel personel)
         {
-            string[] alicilar = duyuru.DuyuruAlicilari.Split(',');
+            string[] alicilar = (duyuru.DuyuruAlicilari ?? string.Empty).Split(',');
             KayanYaziyaDuyuruEkle(duyuru);
         }
 
@@ -186,6 +161,12 @@ namespace Portal_WebParts.DuyuruPopupWP
         }
 
 
+        private void RememberVersion(int id)
+        {
+            var ids = ViewState["Portal.PresentedVersions"] as List<int> ?? new List<int>();
+            if (!ids.Contains(id) && ids.Count < 200) ids.Add(id);
+            ViewState["Portal.PresentedVersions"] = ids;
+        }
         private void ModalFormuOlusturVeGoster(Duyuru duyuru, bool startup)
         {
             if (startup && !duyuru.Popup)
@@ -195,17 +176,18 @@ namespace Portal_WebParts.DuyuruPopupWP
             else
             {
                 DuyuruGosterim dg = new DuyuruGosterim();
-                dg = new Model.Services.Portal.DuyuruGosterimService().GetByDuyuruId(duyuru.Id);
+                dg = new Model.Services.Portal.DuyuruGosterimService(LoggingContext).GetByDuyuruId(duyuru.Id);
                 int dgId = 0;
                 if (dg != null)
                 {
+                    RememberVersion(dg.Id);
                     duyuru.Metin = dg.Metin;
                     duyuru.Baslik = dg.Baslik;
                     duyuru.Resim = dg.Resim;
                     dgId = dg.Id;
                 }
 
-               
+
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string hostUrl = currentUrl.Substring(0, currentUrl.LastIndexOf(System.Web.HttpContext.Current.Request.Url.AbsolutePath));
                 string imgUrl = string.IsNullOrEmpty(duyuru.Resim)
@@ -265,7 +247,7 @@ namespace Portal_WebParts.DuyuruPopupWP
                     resimImg.Attributes["class"] = "img-thumbnail";
                     resimImg.Attributes["src"] = imgUrl;
                     resimImg.Attributes["style"] = "height:300px";
-                    resimDiv.Controls.Add(resimImg); 
+                    resimDiv.Controls.Add(resimImg);
                 }
 
                 HtmlGenericControl metinDiv = new HtmlGenericControl("div");
@@ -304,7 +286,7 @@ namespace Portal_WebParts.DuyuruPopupWP
                 KapatBtn.Attributes.Add("data-bs-dismiss", "modal");
                 KapatBtn.Attributes.Add("data-bs-toggle", "tooltip");
                 string chkId = OkudumChk.ClientID;
-                KapatBtn.Attributes.Add("onclick", "DuyuruyuKapatClicked(" + duyuru.Id + "," + dgId + ",'" + okudumDiv + "','" + chkId + "','" + startup + "');");
+                KapatBtn.Attributes.Add("onclick", "DuyuruyuKapatClicked(" + duyuru.Id + "," + dgId + ",'" + okudumDiv.ClientID + "','" + chkId + "'," + startup.ToString().ToLowerInvariant() + ");");
 
                 modalFooterDiv.Controls.Add(KapatBtn);
 
@@ -343,7 +325,7 @@ namespace Portal_WebParts.DuyuruPopupWP
                 }
                 if (!Page.IsPostBack || !startup) //kayan duyuruya tiklandiysa göster ama modal butona basildiginda olan postbackde göstermes
                 {
-                    var openDuyuruPopupModal = "OpenDuyuruPopupModal(" + modalDiv.ClientID + "," + duyuru.Id + "," + dgId + "," + clickedx + ",'" + okudumDiv.ClientID + "');";
+                    var openDuyuruPopupModal = "OpenDuyuruPopupModal(document.getElementById('" + modalDiv.ClientID + "')," + duyuru.Id + "," + dgId + "," + clickedx + ",'" + okudumDiv.ClientID + "');";
                     UtilityHelper.ScriptCalistir(openDuyuruPopupModal);
                 }
             }
@@ -351,41 +333,51 @@ namespace Portal_WebParts.DuyuruPopupWP
 
         protected void OpenPopupBtn_Click(object sender, EventArgs e)
         {
-            ModalPlaceHolder.Controls.Clear();
-            if (!string.IsNullOrEmpty(paramDuyuruIdLbl.Value))
+            ExecuteAction("OpenPopupBtn_Click", () =>
             {
-                Duyuru duyuru = new Duyuru();
-                duyuru = new Model.Services.Portal.DuyuruService().GetById(paramDuyuruIdLbl.Value.ConvertToInt());
-                if (duyuru != null)
-                {
-                    ModalFormuOlusturVeGoster(duyuru, false);
-                }
-            }
+                ModalPlaceHolder.Controls.Clear();
+                int id = paramDuyuruIdLbl.Value.ConvertToInt();
+                Duyuru duyuru = GetDuyuruList().FirstOrDefault(item => item.Id == id);
+                if (duyuru == null) throw new PortalInputException("Duyuru bulunamadı veya bu duyuruyu görüntüleme yetkiniz yok.");
+                ModalFormuOlusturVeGoster(duyuru, false);
+            });
         }
 
         protected void DuyuruyuOkudumBtn_Click(object sender, EventArgs e)
         {
-
-            string[] okunanDuyurular = paramOkunanDuyuruListesiLbl.Value.Split(',');
-            List<string> okunanDuyuruListesi = new List<string>(okunanDuyurular);
-            foreach (string item in okunanDuyuruListesi)
+            ExecuteAction("DuyuruyuOkudumBtn_Click", () =>
             {
-                DuyuruGosterim dg = new DuyuruGosterim();
-                dg = new Model.Services.Portal.DuyuruGosterimService().GetById(item.ConvertToInt());
-                if (dg != null)
+                string[] tokens = (paramOkunanDuyuruListesiLbl.Value ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (tokens.Length == 0) return;
+                if (tokens.Length > 200) throw new PortalInputException("Duyuru seçimi geçerli değil. Sayfayı yenileyin.");
+                var ids = new List<int>();
+                var presented = ViewState["Portal.PresentedVersions"] as List<int> ?? new List<int>();
+                foreach (string token in tokens)
                 {
-                    DuyuruOkuma duyuruOkuma = new DuyuruOkuma();
-                    duyuruOkuma.Olusturan = UtilityHelper.GetCurrentUserLoginName();
-                    duyuruOkuma.OkumaTarihi = DateTime.Now;
-                    Personel personel = new Personel();
-                    string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                    personel = new PersonelService().GetByUserName(userName);
-                    duyuruOkuma.PersonelId = personel == null ? 0 : personel.Id;
-                    duyuruOkuma.DuyuruId = dg.DuyuruId;
-                    duyuruOkuma.DuyuruGosterimId = dg.Id;
-                    new Model.Services.Portal.DuyuruOkumaService().Save(duyuruOkuma);
+                    int id;
+                    if (!int.TryParse(token, out id) || !presented.Contains(id))
+                        throw new PortalInputException("Duyuru seçimi değişmiş. Sayfayı yenileyip tekrar açın.");
+                    ids.Add(id);
                 }
-            }
+                PortalDuyuruResult result = new PortalDuyuruWriteService(LoggingContext).MarkRead(ids);
+                if (result != PortalDuyuruResult.Completed && result != PortalDuyuruResult.Unchanged)
+                    Messages.Warning("Duyurular okundu olarak işaretlenemedi. Duyuru veya alıcı bilgisi değişmiş olabilir; sayfayı yenileyin.");
+                else
+                {
+                    try
+                    {
+                        foreach (int id in ids.Distinct())
+                            UtilityHelper.ScriptCalistir("setCookie('DuyuruGosterildi" + id + "',new Date());");
+                    }
+                    catch (System.Threading.ThreadAbortException) { throw; }
+                    catch (Exception error)
+                    {
+                        PortalWebPartLog.ReportError(LoggingContext, "Portal.DuyuruPopupWP.RefreshAfterRead", error,
+                            "Okundu bilgisi kayıtlı; ekran güncellenemedi. Sayfayı yenileyin.");
+                    }
+                }
+                paramOkunanDuyuruListesiLbl.Value = string.Empty;
+            });
         }
     }
 }

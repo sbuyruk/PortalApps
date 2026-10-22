@@ -1,4 +1,6 @@
 using DAO.Ortak;
+using Utility.Logging;
+using System.Runtime.CompilerServices;
 using System;
 using System.Data;
 
@@ -6,6 +8,19 @@ namespace DAO.Repositories.Portal
 {
     public class DuyuruGosterimRepository
     {
+        private readonly PortalDuyuruSqlExecutor sql;
+        public DuyuruGosterimRepository(PortalLogContext context)
+        {
+            sql = new PortalDuyuruSqlExecutor(context, "DuyuruGosterimRepository");
+        }
+        private DataTable Select(SqlQuery query, [CallerMemberName] string method = "")
+        {
+            return sql == null ? db.SelectFromDb(query, "") : sql.Select(query, method: method);
+        }
+        private void RequireLegacyWrite()
+        {
+            if (sql != null) throw new InvalidOperationException("Duyuru yazmaları transaction servisi üzerinden yapılmalıdır.");
+        }
         private readonly DbClass db;
         private readonly CrudQueryBuilder b;
 
@@ -27,33 +42,36 @@ namespace DAO.Repositories.Portal
         {
             var q = new SqlQuery("SELECT * FROM DuyuruGosterim_Table WHERE Id=@Id");
             q.AddParameter("@Id", id);
-            return db.SelectFromDb(q, "");
+            return Select(q);
         }
 
         public DataTable SelectAll()
         {
-            return db.SelectFromDb(new SqlQuery("SELECT * FROM DuyuruGosterim_Table"), "");
+            return Select(new SqlQuery("SELECT * FROM DuyuruGosterim_Table"));
         }
 
         public DataTable SelectByDuyuruId(int id)
         {
             var q = new SqlQuery("SELECT * FROM DuyuruGosterim_Table WHERE DuyuruId=@DuyuruId ORDER BY Id DESC");
             q.AddParameter("@DuyuruId", id);
-            return db.SelectFromDb(q, "");
+            return Select(q);
         }
 
         public int Insert<T>(T x)
         {
+            RequireLegacyWrite();
             return db.Insert(b.BuildInsert(x, "DuyuruGosterim_Table"));
         }
 
         public bool Update<T>(T x)
         {
+            RequireLegacyWrite();
             return db.Update2Db(b.BuildUpdate(x, "DuyuruGosterim_Table"));
         }
 
         public bool Delete(int id)
         {
+            RequireLegacyWrite();
             return db.DeleteFromDb(b.BuildDelete("DuyuruGosterim_Table", id), "");
         }
     }

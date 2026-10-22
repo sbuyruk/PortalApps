@@ -63,7 +63,7 @@
             if (okudumChk) {
                 if (duyuruGosterimId > 0) {
                     okunanDuyuruListesi += duyuruGosterimId + ',';
-                    setCookie(duyuruCookie, new Date());
+                    // The durable cookie is set only after the server commits.
                 }
             }
         }

@@ -1,4 +1,5 @@
 using DAO.Repositories.Portal;
+using Utility.Logging;
 using Model.Ortak;
 using Model.Portal;
 using System;
@@ -13,6 +14,8 @@ namespace Model.Services.Portal
     public class DuyuruService
     {
         private readonly DuyuruRepository repository;
+        public DuyuruService(PortalLogContext context) : this(new DuyuruRepository(context)) { }
+
         public DuyuruService() : this(new DuyuruRepository()) { }
         public DuyuruService(DuyuruRepository repository) { if (repository == null) throw new ArgumentNullException("repository"); this.repository = repository; }
         public Duyuru GetById(int id) { return Map(repository.SelectById(id)); }

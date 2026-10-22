@@ -1,4 +1,5 @@
 using DAO.Repositories.Portal;
+using Utility.Logging;
 using Model.Ortak;
 using Model.Portal;
 using System;
@@ -11,6 +12,8 @@ namespace Model.Services.Portal
     public class DuyuruOkumaService
     {
         private readonly DuyuruOkumaRepository r;
+
+        public DuyuruOkumaService(PortalLogContext context) : this(new DuyuruOkumaRepository(context)) { }
 
         public DuyuruOkumaService()
             : this(new DuyuruOkumaRepository())
