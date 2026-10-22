@@ -90,7 +90,7 @@
                 </div>
 
                 <div class="card-footer">
-                    <asp:CheckBox ID="TesekkurDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                    <asp:CheckBox ID="TesekkurDurumChk" runat="server" Checked="false" Text=" Seçili kayıtların durumunu Gönderildi olarak güncelle" Enabled="False" />
                     <asp:LinkButton ID="DosyaOlusturBtn" runat="server" CssClass="btn btn-outline-success" OnClick="DosyaOlusturBtn_Click">Teşekkür Belgelerini Oluştur</asp:LinkButton>
                     <asp:LinkButton ID="AdresOlusturBtn" runat="server" CssClass="btn btn-outline-info" OnClick="AdresOlusturBtn_Click">Adres Oluştur</asp:LinkButton>
                 </div>

@@ -1,3 +1,6 @@
+using System.Linq;
+using Utility.Logging;
+using NBYS_WebParts.Logging;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.SharePoint;
@@ -23,6 +26,33 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
     [ToolboxItemAttribute(false)]
     public partial class TesekkurBelgesiYazisiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("NBYS", "TesekkurBelgesiYazisiWP"); } }
+        private Bolge userRegion;
+        private bool canProcess = true;
+        private NbysDocumentBatch documentBatch;
+        private int shortenedAddressCount;
+        private bool documentSaved;
+        private NbysDocumentBatch GetDocumentBatch()
+        {
+            if (documentBatch == null) documentBatch = new NbysDocumentWriteService(LoggingContext).Prepare(GetBasTar(), GetBitTar(), ProjeConstants.ARMAGAN_TESEKKURID, BolgeDDL.SelectedValue.ConvertToInt());
+            return documentBatch;
+        }
+        private string AddressNote()
+        {
+            return shortenedAddressCount > 0 ? " " + shortenedAddressCount + " adres kısaltıldı; etiketleri kontrol edin." : string.Empty;
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, () => { if (canProcess) action(); });
+        }
+        private void SetFilter(System.Web.UI.WebControls.DropDownList list, string value, string fallback)
+        {
+            var item = list.Items.FindByValue(value) ?? list.Items.FindByValue(fallback) ?? list.Items.Cast<System.Web.UI.WebControls.ListItem>().FirstOrDefault();
+            if (item == null) throw new InvalidOperationException("Filtre seçeneği bulunamadı.");
+            list.ClearSelection(); item.Selected = true;
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -159,21 +189,30 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                 ViewState["SecilenBittar"] = value;
             }
         }
-        
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            //time out olmasin diye
-            ScriptManager _scriptMan = ScriptManager.GetCurrent(Page);
-            _scriptMan.AsyncPostBackTimeout = 36000;
-            if (!Page.IsPostBack)
+            ExecuteAction("Page_Load", () =>
             {
-                FillDropDownList();
-                SetDDLValues(); //ay ve yili querystringden al
-                SetSecilenBasTarBitTar();
-                FormuDoldur();
-                FillDurumValues();
-            }
-            TabloOlustur();
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
+                userRegion = new NbysBagisciWriteService(LoggingContext).GetUserRegion();
+                if (userRegion == null) { canProcess = false; Messages.Warning("Bölge bilginiz bulunamadı. Yetki bilgilerinizi kontrol ettirin."); return; }
+                if (Page.IsPostBack && !NbysDocumentWriteService.IsCentral(userRegion.Id)
+                    && BolgeDDL.SelectedValue != userRegion.Id.ToString())
+                { canProcess = false; Messages.Warning("Bölge yetkiniz değişmiş. Sayfayı yeniden açıp seçiminizi kontrol edin."); return; }
+                //time out olmasin diye
+                ScriptManager _scriptMan = ScriptManager.GetCurrent(Page);
+                _scriptMan.AsyncPostBackTimeout = 36000;
+                if (!Page.IsPostBack)
+                {
+                    FillDropDownList();
+                    SetDDLValues(); //ay ve yili querystringden al
+                    SetSecilenBasTarBitTar();
+                    FormuDoldur();
+                    FillDurumValues();
+                }
+                TabloOlustur();
+            });
         }
         private void FormuDoldur()
         {
@@ -218,7 +257,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
         private void BolgeDDLDoldur()
         {
             BolgeDDL.Items.Clear();
-            List<Bolge> list = new BolgeService().GetActive(ProjeConstants.BOLGE_HEPSI_INT);
+            List<Bolge> list = new BolgeService().GetActive(userRegion.Id, LoggingContext);
             foreach (Bolge item in list)
             {
                 if (string.IsNullOrEmpty(item.Adi.Trim()))
@@ -229,47 +268,47 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
         }
         private void SetDDLValues()
         {
-            try
-            {
-
-                string ay = !string.IsNullOrEmpty(SecilenAyQS) ? SecilenAyQS : DateTime.Today.Month.ToString();
-                UtilityHelper.SetDDLValue(AyDDL, ay);
-                SecilenAyQS = ay;
-                //yil
-                string yil = !string.IsNullOrEmpty(SecilenYilQS) ? SecilenYilQS : DateTime.Today.Year.ReturnEmptyIfNull().ToString();
-                UtilityHelper.SetDDLValue(YilDDL, yil);
-                SecilenYilQS = yil;
-
-            }
-            catch (Exception)
-            {
-
-                //TODO
-            }
+            SetFilter(AyDDL, SecilenAyQS, DateTime.Today.Month.ToString());
+            SetFilter(YilDDL, SecilenYilQS, DateTime.Today.Year.ToString());
+            SecilenAyQS = AyDDL.SelectedValue;
+            SecilenYilQS = YilDDL.SelectedValue;
+            SetFilter(BolgeDDL, userRegion.Id.ToString(), userRegion.Id.ToString());
         }
         protected void AyDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SecilenAyQS = AyDDL.SelectedItem.Value.ToString();
-            SetSecilenBasTarBitTar();
-            FillDurumValues();
-            //KayitGetir();
+            ExecuteAction("AyDDL_SelectedIndexChanged", () =>
+            {
+                SecilenAyQS = AyDDL.SelectedItem.Value.ToString();
+                SetSecilenBasTarBitTar();
+                FillDurumValues();
+                //KayitGetir();
+            });
         }
         protected void YilDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SecilenYilQS = YilDDL.SelectedItem.Value.ToString();
-            SetSecilenBasTarBitTar();
-            FillDurumValues();
-            //KayitGetir();
+            ExecuteAction("YilDDL_SelectedIndexChanged", () =>
+            {
+                SecilenYilQS = YilDDL.SelectedItem.Value.ToString();
+                SetSecilenBasTarBitTar();
+                FillDurumValues();
+                //KayitGetir();
+            });
         }
         protected void GunDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SetSecilenBasTarBitTar();
-            FillDurumValues();
+            ExecuteAction("GunDDL_SelectedIndexChanged", () =>
+            {
+                SetSecilenBasTarBitTar();
+                FillDurumValues();
+            });
         } 
         protected void BolgeDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SetSecilenBasTarBitTar();
-            FillDurumValues();
+            ExecuteAction("BolgeDDL_SelectedIndexChanged", () =>
+            {
+                SetSecilenBasTarBitTar();
+                FillDurumValues();
+            });
         }
         private void SetSecilenBasTarBitTar()
         {
@@ -318,7 +357,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             DateTime bastar = GetBasTar();
             DateTime bittar = GetBitTar();
 
-            var json = new ArmaganService().ListByDurumTarihJson(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), ref rowCount, BolgeDDL.SelectedItem.Value.ConvertToInt(), ProjeConstants.HEPSI_INT);
+            var json = new ArmaganService(LoggingContext).ListByDurumTarihJson(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), ref rowCount, BolgeDDL.SelectedItem.Value.ConvertToInt(), ProjeConstants.HEPSI_INT);
             TableDataLbl.Text = rowCount + " adet Tesekkür Belgesi mevcut";
             if (rowCount > 0)
             {
@@ -333,7 +372,6 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             return json;
         }
 
-       
         private string CreateDataTable(string jsonData)
         {
 
@@ -364,7 +402,6 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                     },
                     responsive: true,
                     dom: 'frtip',   
-
                 });
 
             ";
@@ -375,51 +412,22 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
         //
         private DateTime GetBasTar()
         {
-
-            int ay = AyDDL.SelectedItem.Value.ConvertToInt();
-            int yil = YilDDL.SelectedItem.Value.ConvertToInt();
-
-            DateTime bastar = DateTime.Today;
-
-            if (ay == 0)
-            {
-                bastar = new DateTime(yil, 1, 1);
-            }
-            else
-            {
-                bastar = new DateTime(yil, ay, 1);
-
-            }
-            return bastar;
+            SetSecilenBasTarBitTar();
+            return SecilenBastarQS.ConvertToDatetime();
         }
         private DateTime GetBitTar()
         {
-            int ay = AyDDL.SelectedItem.Value.ConvertToInt();
-            int yil = YilDDL.SelectedItem.Value.ConvertToInt();
-
-            DateTime bastar = DateTime.Today;
-            DateTime bittar = DateTime.Today;
-
-            if (ay == 0)
-            {
-                bastar = new DateTime(yil, 1, 1);
-                bittar = bastar.AddYears(1).AddDays(-1);
-            }
-            else
-            {
-
-                bastar = new DateTime(yil, ay, 1);
-                DateTime basGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
-                bittar = new DateTime(yil, ay, basGun.Day);
-
-            }
-            return bittar;
+            SetSecilenBasTarBitTar();
+            return SecilenBittarQS.ConvertToDatetime();
         }
         private void FillDurumValues()
         {
+            TesekkurTable.Controls.Clear();
+            DosyaOlusturBtn.Visible = false;
+            TesekkurDurumChk.Visible = false;
 
             //DataTable tesekkur = armagan.SelectCountDurumByBolge(SecilenAyQS, SecilenYilQS, ProjeConstants.ARMAGAN_TESEKKURID, "");
-            DataTable dataTable = new ArmaganService().CountDurumByBolge(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_TESEKKURID, BolgeDDL.SelectedItem.Value.ConvertToInt());
+            DataTable dataTable = new ArmaganService(LoggingContext).CountDurumByBolge(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_TESEKKURID, BolgeDDL.SelectedItem.Value.ConvertToInt());
             FillTable(dataTable);
 
         }
@@ -470,114 +478,73 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                int index = currentUrl.LastIndexOf("?") < 0 ? currentUrl.Length : currentUrl.LastIndexOf("?");
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            int index = currentUrl.LastIndexOf("?") < 0 ? currentUrl.Length : currentUrl.LastIndexOf("?");
 
-                string rawUrl = currentUrl.Substring(0, index);
-                string newUrl = rawUrl.Substring(0, rawUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string rawUrl = currentUrl.Substring(0, index);
+            string newUrl = rawUrl.Substring(0, rawUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl, false);
+            System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
+            ExecuteAction("CloseBtn_Click", () =>
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                Page.Response.Redirect(newUrl, false);
+                System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
+            });
         }
         protected void DosyaOlusturBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("DosyaOlusturBtn_Click", () =>
             {
-
-                // Dosya adlari 
-                string bolge = BolgeDDL.SelectedItem.Value;
-                string zaman = DateTime.Now.ToString("dd-MM-yyyy-HH-mm");
-                string yaziDosyaAdi = "TesekkurBelgesi-" + bolge + "-(" + zaman + ").docx";
-                bool isYaziOlusturuldu = TesekkurBelgesiDosyasiOlustur(yaziDosyaAdi);
-                if (isYaziOlusturuldu)
-                {
-                    MessageHelper.PublishMessage("Tesekkür belgeleri hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
-                }
-                else
-                {
-                    MessageHelper.PublishMessage("Tesekkür belgeleri olusturulamadi.", ProjeConstants.MESAJ_HATA, 3000);
-                }
-            }
-            catch (Exception ex)
-            {
-                Exception ex1 = new Exception("Belge olusturmada hata");
-                ExceptionHelper exh = new ExceptionHelper(ex);
-                exh.PublishException();
-            }
+                DosyaLnk.Visible = false;
+                var batch = GetDocumentBatch();
+                string name = "TesekkurBelgesi-" + BolgeDDL.SelectedValue + "-(" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss-fff") + ")-" + Guid.NewGuid().ToString("N").Substring(0, 8) + ".docx";
+                NbysDocumentFeedback.Run(LoggingContext, batch, () => { TesekkurBelgesiDosyasiOlustur(name); }, TesekkurDurumChk.Checked,
+                    FillDurumValues, "Belgeler hazırlandı. Dosya bağlantısından indirebilirsiniz.", AddressNote, () => documentSaved);
+            });
         }
         protected void AdresOlusturBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("AdresOlusturBtn_Click", () =>
             {
-                // Dosya adlari 
-                string bolge = BolgeDDL.SelectedItem.Value;
-                string zaman = DateTime.Now.ToString("dd-MM-yyyy-HH-mm");
-                string etiketDosyaAdi = "Adres-EtiketiTES-"+bolge+"-(" + zaman + ").docx";
-
-                bool etiketOlustuMu = YeniAdresEtiketDosyasiOlustur(etiketDosyaAdi);
-                if (etiketOlustuMu)
-                    MessageHelper.PublishMessage("TAdres etiketleri hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
-                else
-                {
-                    MessageHelper.PublishMessage("Adres etiketleri olusturulamadi.", ProjeConstants.MESAJ_HATA, 3000);
-                }
-            }
-            catch (Exception ex)
-            {
-                Exception ex1 = new Exception("Yazi ve Adres olusturmada hata");
-                ExceptionHelper exh = new ExceptionHelper(ex);
-                exh.PublishException();
-            }
+                AdresEtiketLnk.Visible = false;
+                var batch = GetDocumentBatch();
+                string name = "Adres-Etiketi-" + BolgeDDL.SelectedValue + "-(" + DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss-fff") + ")-" + Guid.NewGuid().ToString("N").Substring(0, 8) + ".docx";
+                NbysDocumentFeedback.Run(LoggingContext, batch, () => { YeniAdresEtiketDosyasiOlustur(name); }, false,
+                    () => { }, "Adres etiketleri hazırlandı. Dosya bağlantısından indirebilirsiniz.", AddressNote, () => documentSaved);
+            });
         }
         private bool YeniAdresEtiketDosyasiOlustur(string dosyaAdi)
         {
-            bool isYaziOlusturuldu = false;
-            try
-            {
-                MemoryStream templateStream = GetTemplateStream("AdresEtiketiTemplate.docx");
-                IEnumerable<DocumentFormat.OpenXml.Wordprocessing.Table> templateTables = GetTemplateTables(templateStream);
-                MemoryStream destinationStream = AddAdresEtiketData2DestinationStream(templateStream, templateTables);
+            MemoryStream templateStream = GetTemplateStream("AdresEtiketiTemplate.docx");
+            IEnumerable<DocumentFormat.OpenXml.Wordprocessing.Table> templateTables = GetTemplateTables(templateStream);
+            MemoryStream destinationStream = AddAdresEtiketData2DestinationStream(templateStream, templateTables);
 
-                destinationStream.Seek(0, SeekOrigin.Begin);
-                destinationStream.Position = 0;
+            destinationStream.Seek(0, SeekOrigin.Begin);
+            destinationStream.Position = 0;
 
-                AddToSharePoint(destinationStream, dosyaAdi);
+            AddToSharePoint(destinationStream, dosyaAdi);
 
-                string dosyaUrl = SPContext.Current.Web.Url + @"/" + ProjeConstants.NBYSBELGELERI_LIB + @"/" + dosyaAdi;
+            string dosyaUrl = SPContext.Current.Web.Url + @"/" + ProjeConstants.NBYSBELGELERI_LIB + @"/" + dosyaAdi;
 
-                string sourceString = System.Web.HttpContext.Current.Request.Url.AbsoluteUri;
-                string removeString = System.Web.HttpContext.Current.Request.Url.AbsolutePath;
+            string sourceString = System.Web.HttpContext.Current.Request.Url.AbsoluteUri;
+            string removeString = System.Web.HttpContext.Current.Request.Url.AbsolutePath;
 
-                int index = sourceString.IndexOf(removeString);
-                string rootUrl = (index < 0)
-                    ? sourceString
-                    : sourceString.Remove(index, removeString.Length);
+            int index = sourceString.IndexOf(removeString);
+            string rootUrl = (index < 0)
+                ? sourceString
+                : sourceString.Remove(index, removeString.Length);
 
-                AdresEtiketLnk.Text = dosyaAdi;
-                AdresEtiketLnk.NavigateUrl = rootUrl + "/_layouts/15/download.aspx?SourceUrl=" + dosyaUrl;
+            AdresEtiketLnk.Text = dosyaAdi;
+            AdresEtiketLnk.NavigateUrl = rootUrl + "/_layouts/15/download.aspx?SourceUrl=" + dosyaUrl;
 
-                AdresEtiketLnk.Visible = true;
-                isYaziOlusturuldu = true;
-            }
-            catch (Exception ex)
-            {
-                isYaziOlusturuldu = false;
-                ExceptionHelper exh = new ExceptionHelper(ex);
-                exh.PublishException();
-            }
-            return isYaziOlusturuldu;
+            AdresEtiketLnk.Visible = true;
+
+            return true;
         }
         private MemoryStream GetTemplateStream(string templateFileName)
         {
@@ -593,69 +560,43 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                     byte[] byteArray = file.OpenBinary();
                     memStr.Write(byteArray, 0, byteArray.Length);
                 }
+                if (memStr.Length == 0) throw new InvalidOperationException("Belge şablonu bulunamadı veya boş. Şablon kitaplığını kontrol edin.");
+                memStr.Position = 0;
                 return memStr;
             }
+
         }
         private bool TesekkurBelgesiDosyasiOlustur(string dosyaAdi)
         {
-            bool isYaziOlusturuldu = false;
-            try
-            {
-                MemoryStream templateStream = GetTemplateStream();
-                IEnumerable<Paragraph> templateParagraphs = GetTemplateParagraphs(templateStream);
-                MemoryStream destinationStream = AddData2DestinationStream(templateStream, templateParagraphs);
-                destinationStream.Seek(0, SeekOrigin.Begin);
-                destinationStream.Position = 0;
+            MemoryStream templateStream = GetTemplateStream();
+            IEnumerable<Paragraph> templateParagraphs = GetTemplateParagraphs(templateStream);
+            MemoryStream destinationStream = AddData2DestinationStream(templateStream, templateParagraphs);
+            destinationStream.Seek(0, SeekOrigin.Begin);
+            destinationStream.Position = 0;
 
-                AddToSharePoint(destinationStream, dosyaAdi);
-                string dosyaUrl = SPContext.Current.Web.Url + @"/" + ProjeConstants.NBYSBELGELERI_LIB + @"/" + dosyaAdi;
+            AddToSharePoint(destinationStream, dosyaAdi);
+            string dosyaUrl = SPContext.Current.Web.Url + @"/" + ProjeConstants.NBYSBELGELERI_LIB + @"/" + dosyaAdi;
 
-                string sourceString = System.Web.HttpContext.Current.Request.Url.AbsoluteUri;
-                string removeString = System.Web.HttpContext.Current.Request.Url.AbsolutePath;
+            string sourceString = System.Web.HttpContext.Current.Request.Url.AbsoluteUri;
+            string removeString = System.Web.HttpContext.Current.Request.Url.AbsolutePath;
 
-                int index = sourceString.IndexOf(removeString);
-                string rootUrl = (index < 0)
-                    ? sourceString
-                    : sourceString.Remove(index, removeString.Length);
+            int index = sourceString.IndexOf(removeString);
+            string rootUrl = (index < 0)
+                ? sourceString
+                : sourceString.Remove(index, removeString.Length);
 
-                DosyaLnk.Text = dosyaAdi;
-                DosyaLnk.NavigateUrl = rootUrl + "/_layouts/15/download.aspx?SourceUrl=" + dosyaUrl;
-                DosyaLnk.Visible = true;
-                isYaziOlusturuldu = true;
-                if (TesekkurDurumChk.Checked)
-                {
-                    try
-                    {
-                        bool isUpdated = new ArmaganService().UpdateDurumByBolge(ProjeConstants.DURUM_KONTROLEDILDI, ProjeConstants.DURUM_GONDERILDI, SecilenBastarQS, SecilenBittarQS, ProjeConstants.ARMAGAN_TESEKKURID, ProjeConstants.BOLGE_HEPSI_INT);
-                        if (isUpdated)
-                        {
-                            MessageHelper.PublishMessage("Belgelerin durumu '" + ProjeConstants.DURUM_GONDERILDI + "' olarak degistirildi.", ProjeConstants.MESAJ_BASARILI, 2000);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        ExceptionHelper exHelper = new ExceptionHelper(ex);
-                        exHelper.PublishException();
-                    }
-                }
+            DosyaLnk.Text = dosyaAdi;
+            DosyaLnk.NavigateUrl = rootUrl + "/_layouts/15/download.aspx?SourceUrl=" + dosyaUrl;
+            DosyaLnk.Visible = true;
 
-                FillDurumValues();
-
-            }
-            catch (Exception ex)
-            {
-                isYaziOlusturuldu = false;
-                ExceptionHelper exh = new ExceptionHelper(ex);
-                exh.PublishException();
-            }
-            return isYaziOlusturuldu;
+            return true;
         }
         private MemoryStream AddData2DestinationStream(MemoryStream templateStream, IEnumerable<Paragraph> templateParagraphs)
         {
             MemoryStream destinationStream = null;
             DateTime bastar = GetBasTar();
             DateTime bittar = GetBitTar();
-            DataTable dataTable = new ArmaganService().ListByDurumTarih(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), BolgeDDL.SelectedItem.Value.ConvertToInt(), ProjeConstants.HEPSI_INT);
+            DataTable dataTable = GetDocumentBatch().Rows;
 
             if (dataTable != null)
             {
@@ -691,7 +632,6 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                     destinationStream = CopyAndSearchAndReplace(templateStream, templateParagraphs, keyValues);
                 }
             }
-
 
             return destinationStream;
         }
@@ -733,7 +673,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             DateTime bastar = GetBasTar();
             DateTime bittar = GetBitTar();
-            DataTable dataTable = new ArmaganService().ListByDurumTarih(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), BolgeDDL.SelectedItem.Value.ConvertToInt(), ProjeConstants.HEPSI_INT);
+            DataTable dataTable = GetDocumentBatch().Rows;
             if (dataTable != null)
             {
                 int index = 1;
@@ -782,10 +722,9 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                 if (uzunAdresliler.Count > 0)
                 {
                     string message = string.Join(Environment.NewLine, uzunAdresliler);
-                    MessageHelper.PublishMessage(message + " adresi çok uzun oldugundan kesilerek kisaltildi. Lütfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
+                    shortenedAddressCount++;
                 }
             }
-
 
             return destinationStream;
         }
@@ -808,41 +747,30 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
         }
         private IEnumerable<Paragraph> GetTemplateParagraphs(MemoryStream templateStream)
         {
-            //using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(templateStream, true))
-            //{
-            try
+            templateStream.Position = 0;
+            using (WordprocessingDocument document = WordprocessingDocument.Open(templateStream, false))
             {
-                WordprocessingDocument wordDoc = WordprocessingDocument.Open(templateStream, true);
-                var body = wordDoc.MainDocumentPart.Document.Body;
-                var paras = body.Elements<Paragraph>();
-                return paras;
+                if (document.MainDocumentPart == null || document.MainDocumentPart.Document.Body == null)
+                    throw new InvalidOperationException("Belge şablonu geçerli bir belge gövdesi içermiyor.");
+                return document.MainDocumentPart.Document.Body.Elements<Paragraph>()
+                    .Select(item => (Paragraph)item.CloneNode(true)).ToList();
             }
-            catch (Exception ex)
-            {
-
-                ExceptionHelper eh = new ExceptionHelper(ex);
-                eh.PublishException();
-                return null;
-            }
-            //}
-
         }
         private IEnumerable<DocumentFormat.OpenXml.Wordprocessing.Table> GetTemplateTables(MemoryStream templateStream)
         {
-            //using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(templateStream, true))
-            //{
-            WordprocessingDocument wordDoc = WordprocessingDocument.Open(templateStream, true);
-            var body = wordDoc.MainDocumentPart.Document.Body;
-            var tables = body.Elements<DocumentFormat.OpenXml.Wordprocessing.Table>();
-            return tables;
-            //}
-
+            templateStream.Position = 0;
+            using (WordprocessingDocument document = WordprocessingDocument.Open(templateStream, false))
+            {
+                if (document.MainDocumentPart == null || document.MainDocumentPart.Document.Body == null)
+                    throw new InvalidOperationException("Belge şablonu geçerli bir belge gövdesi içermiyor.");
+                return document.MainDocumentPart.Document.Body.Elements<DocumentFormat.OpenXml.Wordprocessing.Table>()
+                    .Select(item => (DocumentFormat.OpenXml.Wordprocessing.Table)item.CloneNode(true)).ToList();
+            }
         }
         private MemoryStream GetTemplateStream()
         {
             MemoryStream memStr = new MemoryStream();
-            try
-            {
+
                 string siteUrl = SPContext.Current.Web.Url;
                 using (SPSite spSite = new SPSite(siteUrl))
                 using (SPWeb web = spSite.OpenWeb())
@@ -855,14 +783,9 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                         memStr.Write(byteArray, 0, byteArray.Length);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Exception e1 = new Exception("GetTemplateStream() hatasi");
-                ExceptionHelper eh = new ExceptionHelper(ex);
-                eh.Exceptions.Add(e1);
-                eh.PublishException();
-            }
+
+            if (memStr.Length == 0) throw new InvalidOperationException("Belge şablonu bulunamadı veya boş. Şablon kitaplığını kontrol edin.");
+            memStr.Position = 0;
             return memStr;
         }
         // To search and replace content in a document part.
@@ -892,14 +815,12 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
         }
         protected void AddToSharePoint(MemoryStream memStream, string fileName)
         {
-            //string url = System.Web.HttpContext.Current.Request.Url.ToString();
-            using (SPSite spSite = new SPSite(SPContext.Current.Web.Url))
-            {
-                //Get the document library object
-                SPList docLib = SPContext.Current.Web.Lists[ProjeConstants.NBYSBELGELERI_LIB];
-                SPFile file = docLib.RootFolder.Files.Add(fileName, memStream, true);
-                file.Update();
-            }
+            if (memStream == null || memStream.Length == 0) throw new InvalidOperationException("Boş belge kaydedilemez.");
+            memStream.Position = 0;
+            SPList library = SPContext.Current.Web.Lists[ProjeConstants.NBYSBELGELERI_LIB];
+            SPFile file = library.RootFolder.Files.Add(fileName, memStream, false);
+            if (file == null || !file.Exists) throw new InvalidOperationException("Belge kitaplığa kaydedilemedi.");
+            documentSaved = true;
         }
     }
 }

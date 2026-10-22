@@ -1,3 +1,6 @@
+using System.Linq;
+using Utility.Logging;
+using NBYS_WebParts.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.NBYS;
@@ -14,6 +17,20 @@ namespace NBYS_WebParts.TesekkurBasimiWP
     [ToolboxItemAttribute(false)]
     public partial class TesekkurBasimiWP : WebPart
     {
+        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("NBYS", "TesekkurBasimiWP"); } }
+        private Bolge userRegion;
+        private bool canProcess = true;
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, () => { if (canProcess) action(); });
+        }
+        private void SetFilter(System.Web.UI.WebControls.DropDownList list, string value, string fallback)
+        {
+            var item = list.Items.FindByValue(value) ?? list.Items.FindByValue(fallback) ?? list.Items.Cast<System.Web.UI.WebControls.ListItem>().FirstOrDefault();
+            if (item == null) throw new InvalidOperationException("Filtre seçeneği bulunamadı.");
+            list.ClearSelection(); item.Selected = true;
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -151,8 +168,13 @@ namespace NBYS_WebParts.TesekkurBasimiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
+                userRegion = new NbysBagisciWriteService(LoggingContext).GetUserRegion();
+                if (userRegion == null) { canProcess = false; Messages.Warning("Bölge bilginiz bulunamadı. Yetki bilgilerinizi kontrol ettirin."); return; }
+                if (!NbysDocumentWriteService.IsCentral(userRegion.Id))
+                { canProcess = false; Messages.Warning("Bu toplu rapor ekranı genel müdürlük yetkisi gerektirir. Bölgeye göre belge hazırlama ekranını kullanın."); return; }
                 if (!Page.IsPostBack)
                 {
                     FillDropDownList();
@@ -160,13 +182,7 @@ namespace NBYS_WebParts.TesekkurBasimiWP
                     SetSecilenBasTarBitTar();
                     FillDurumValues();
                 }
-
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         private void FillDropDownList()
         {
@@ -207,43 +223,30 @@ namespace NBYS_WebParts.TesekkurBasimiWP
         }
         private void SetDDLValues()
         {
-            try
-            {
-                string gun = !string.IsNullOrEmpty(SecilenGunQS) ? SecilenGunQS : DateTime.Today.Day.ToString();
-                UtilityHelper.SetDDLValue(GunDDL, gun);
-                SecilenGunQS = gun;
-
-                string ay = !string.IsNullOrEmpty(SecilenAyQS) ? SecilenAyQS : DateTime.Today.Month.ToString();
-                UtilityHelper.SetDDLValue(AyDDL, ay);
-                SecilenAyQS = ay;
-                //yil
-                string yil = !string.IsNullOrEmpty(SecilenYilQS) ? SecilenYilQS : DateTime.Today.Year.ReturnEmptyIfNull().ToString();
-                UtilityHelper.SetDDLValue(YilDDL, yil);
-                SecilenYilQS = yil;
-
-
-            }
-            catch (Exception)
-            {
-
-                //TODO
-            }
-
-
-
+            SetFilter(AyDDL, SecilenAyQS, DateTime.Today.Month.ToString());
+            SetFilter(YilDDL, SecilenYilQS, DateTime.Today.Year.ToString());
+            SecilenAyQS = AyDDL.SelectedValue;
+            SecilenYilQS = YilDDL.SelectedValue;
+            SetFilter(GunDDL, SecilenGunQS, DateTime.Today.Day <= 15 ? "1" : "2");
+            SecilenGunQS = GunDDL.SelectedValue;
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
+            ExecuteAction("CloseBtn_Click", () =>
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                Page.Response.Redirect(newUrl, false);
+                System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
+            });
         }
         private void FillDurumValues()
         {
+            TesekkurTable.Controls.Clear();
             setButtonsToFalse();
 
             //DataTable tesekkur = armagan.SelectCountDurumByBolge(SecilenAyQS, SecilenYilQS, ProjeConstants.ARMAGAN_TESEKKURID, "");
-            DataTable tesekkur = new ArmaganService().CountDurumByBolge(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_TESEKKURID, ProjeConstants.BOLGE_HEPSI_INT);
+            DataTable tesekkur = new ArmaganService(LoggingContext).CountDurumByBolge(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_TESEKKURID, ProjeConstants.BOLGE_HEPSI_INT);
             FillTable(tesekkur, TesekkurTable, TesekkurBtn, AdresEtiketBtn, TesekkurDurumChk);
 
         }
@@ -294,51 +297,54 @@ namespace NBYS_WebParts.TesekkurBasimiWP
         }
         protected void AyDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-            SecilenAyQS = AyDDL.SelectedItem.Value.ToString();
-            SetSecilenBasTarBitTar();
-            FillDurumValues();
-            //KayitGetir();
+            ExecuteAction("AyDDL_SelectedIndexChanged", () =>
+            {
+                SecilenAyQS = AyDDL.SelectedItem.Value.ToString();
+                SetSecilenBasTarBitTar();
+                FillDurumValues();
+                //KayitGetir();
+            });
         }
         protected void YilDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SecilenYilQS = YilDDL.SelectedItem.Value.ToString();
-            SetSecilenBasTarBitTar();
-            FillDurumValues();
-            //KayitGetir();
+            ExecuteAction("YilDDL_SelectedIndexChanged", () =>
+            {
+                SecilenYilQS = YilDDL.SelectedItem.Value.ToString();
+                SetSecilenBasTarBitTar();
+                FillDurumValues();
+                //KayitGetir();
+            });
         }
         protected void AdresEtiketBtn_Click(object sender, EventArgs e)
         {
-            FillDurumValues();
-            var queryString = string.Format("?Bastar={0}&Bittar={1}&ArmaganTanimId={2}", SecilenBastarQS, SecilenBittarQS, ProjeConstants.ARMAGAN_TESEKKURID);
-            RedirectToPage(ProjeConstants.PAGE_BERATETIKET_VIEWER + queryString);
+            ExecuteAction("AdresEtiketBtn_Click", () =>
+            {
+                FillDurumValues();
+                var queryString = string.Format("?Bastar={0}&Bittar={1}&ArmaganTanimId={2}", SecilenBastarQS, SecilenBittarQS, ProjeConstants.ARMAGAN_TESEKKURID);
+                RedirectToPage(ProjeConstants.PAGE_BERATETIKET_VIEWER + queryString);
+            });
         }
         protected void TesekkurBtn_Click(object sender, EventArgs e)
         {
-            if (TesekkurDurumChk.Checked)
+            ExecuteAction("TesekkurBtn_Click", () =>
             {
-                try
-                {
-                    bool isUpdated = new ArmaganService().UpdateDurumByBolge(ProjeConstants.DURUM_KONTROLEDILDI, ProjeConstants.DURUM_GONDERILDI, SecilenBastarQS, SecilenBittarQS, ProjeConstants.ARMAGAN_TESEKKURID, ProjeConstants.BOLGE_HEPSI_INT);
-
-                }
-                catch (Exception ex)
-                {
-                    ExceptionHelper exHelper = new ExceptionHelper(ex);
-                    exHelper.PublishException();
-                }
-            }
-            FillDurumValues();
-            var queryString = string.Format("?Bastar={0}&Bittar={1}", SecilenBastarQS, SecilenBittarQS);
-            RedirectToPage(ProjeConstants.PAGE_TESEKKURBELGESI_VIEWER + queryString);
+                var batch = new NbysDocumentWriteService(LoggingContext).Prepare(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(),
+                    ProjeConstants.ARMAGAN_TESEKKURID, ProjeConstants.BOLGE_HEPSI_INT);
+                var queryString = string.Format("?Bastar={0}&Bittar={1}", SecilenBastarQS, SecilenBittarQS);
+                NbysDocumentFeedback.Run(LoggingContext, batch,
+                    () => RedirectToPage(ProjeConstants.PAGE_TESEKKURBELGESI_VIEWER + queryString), TesekkurDurumChk.Checked,
+                    FillDurumValues, "Rapor açma isteği hazırlandı. Baskı ve teslimat sonucunu rapor ekranından kontrol edin.");
+            });
         }
         protected void GunDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-            SecilenGunQS = GunDDL.SelectedItem.Value.ToString();
-            SetSecilenBasTarBitTar();
-            FillDurumValues();
-            //KayitGetir();
+            ExecuteAction("GunDDL_SelectedIndexChanged", () =>
+            {
+                SecilenGunQS = GunDDL.SelectedItem.Value.ToString();
+                SetSecilenBasTarBitTar();
+                FillDurumValues();
+                //KayitGetir();
+            });
         }
         private void SetSecilenBasTarBitTar()
         {
@@ -368,18 +374,10 @@ namespace NBYS_WebParts.TesekkurBasimiWP
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                //string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                string newUrl = "http://tskgv-portal/YonetimBirimleri/BasinTanitimHalklaIliskilerSubesi/Sayfalar" + "/" + pageUrl;
-                ResponseHelper.Redirect(newUrl, "_blank", "");
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            //string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            string newUrl = "http://tskgv-portal/YonetimBirimleri/BasinTanitimHalklaIliskilerSubesi/Sayfalar" + "/" + pageUrl;
+            ResponseHelper.Redirect(newUrl, "_blank", "");
         }
     }
 }

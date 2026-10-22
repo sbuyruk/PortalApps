@@ -72,7 +72,7 @@
                             </asp:Table>
                         </div>
                         <div class="card-footer">
-                            <asp:CheckBox ID="AnkAltinDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:CheckBox ID="AnkAltinDurumChk" runat="server" Checked="false" Text=" Seçili kayıtların durumunu Gönderildi olarak güncelle" Enabled="False" />
                             <asp:Button ID="AnkAltinBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Altın Madalya Beratları" OnClick="AnkAltinBtn_Click" />
                             <asp:Button ID="AnkAltinEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="AnkAltinEtiketBtn_Click" />
                         </div>
@@ -84,7 +84,7 @@
                             </asp:Table>
                         </div>
                         <div class="card-footer">
-                            <asp:CheckBox ID="AnkGumusDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:CheckBox ID="AnkGumusDurumChk" runat="server" Checked="false" Text=" Seçili kayıtların durumunu Gönderildi olarak güncelle" Enabled="False" />
                             <asp:Button ID="AnkGumusBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Gümüş Madalya Beratları" OnClick="AnkGumusBtn_Click" />
                             <asp:Button ID="AnkGumusEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="AnkGumusEtiketBtn_Click" />
                         </div>
@@ -96,7 +96,7 @@
                             </asp:Table>
                         </div>
                         <div class="card-footer">
-                            <asp:CheckBox ID="AnkBronzDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:CheckBox ID="AnkBronzDurumChk" runat="server" Checked="false" Text=" Seçili kayıtların durumunu Gönderildi olarak güncelle" Enabled="False" />
                             <asp:Button ID="AnkBronzBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Bronz Madalya Beratları" OnClick="AnkBronzBtn_Click" />
                             <asp:Button ID="AnkBronzEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="AnkBronzEtiketBtn_Click" />
                         </div>
@@ -111,7 +111,7 @@
                             </asp:Table>
                         </div>
                         <div class="card-footer">
-                            <asp:CheckBox ID="IstAltinDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:CheckBox ID="IstAltinDurumChk" runat="server" Checked="false" Text=" Seçili kayıtların durumunu Gönderildi olarak güncelle" Enabled="False" />
                             <asp:Button ID="IstAltinBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Altın Madalya Beratları" OnClick="IstAltinBtn_Click" />
                             <asp:Button ID="IstAltinEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="IstAltinEtiketBtn_Click" />
                         </div>
@@ -123,7 +123,7 @@
                             </asp:Table>
                         </div>
                         <div class="card-footer">
-                            <asp:CheckBox ID="IstGumusDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:CheckBox ID="IstGumusDurumChk" runat="server" Checked="false" Text=" Seçili kayıtların durumunu Gönderildi olarak güncelle" Enabled="False" />
                             <asp:Button ID="IstGumusBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Gümüş Madalya Beratları" OnClick="IstGumusBtn_Click" />
                             <asp:Button ID="IstGumusEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="IstGumusEtiketBtn_Click" />
                         </div>
@@ -135,7 +135,7 @@
                             </asp:Table>
                         </div>
                         <div class="card-footer">
-                            <asp:CheckBox ID="IstBronzDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:CheckBox ID="IstBronzDurumChk" runat="server" Checked="false" Text=" Seçili kayıtların durumunu Gönderildi olarak güncelle" Enabled="False" />
                             <asp:Button ID="IstBronzBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Bronz Madalya Beratları" OnClick="IstBronzBtn_Click" />
                             <asp:Button ID="IstBronzEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="IstBronzEtiketBtn_Click" />
                         </div>
@@ -150,7 +150,7 @@
                             </asp:Table>
                         </div>
                         <div class="card-footer">
-                            <asp:CheckBox ID="IzmAltinDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:CheckBox ID="IzmAltinDurumChk" runat="server" Checked="false" Text=" Seçili kayıtların durumunu Gönderildi olarak güncelle" Enabled="False" />
                             <asp:Button ID="IzmAltinBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Altın Madalya Beratları" OnClick="IzmAltinBtn_Click" />
                             <asp:Button ID="IzmAltinEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="IzmAltinEtiketBtn_Click" />
                         </div>
@@ -162,7 +162,7 @@
                             </asp:Table>
                         </div>
                         <div class="card-footer">
-                            <asp:CheckBox ID="IzmGumusDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:CheckBox ID="IzmGumusDurumChk" runat="server" Checked="false" Text=" Seçili kayıtların durumunu Gönderildi olarak güncelle" Enabled="False" />
                             <asp:Button ID="IzmGumusBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Gümüş Madalya Beratları" OnClick="IzmGumusBtn_Click" />
                             <asp:Button ID="IzmGumusEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="IzmGumusEtiketBtn_Click" />
                         </div>
@@ -174,7 +174,7 @@
                             </asp:Table>
                         </div>
                         <div class="card-footer">
-                            <asp:CheckBox ID="IzmBronzDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:CheckBox ID="IzmBronzDurumChk" runat="server" Checked="false" Text=" Seçili kayıtların durumunu Gönderildi olarak güncelle" Enabled="False" />
                             <asp:Button ID="IzmBronzBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Bronz Madalya Beratları" OnClick="IzmBronzBtn_Click" />
                             <asp:Button ID="IzmBronzEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="IzmBronzEtiketBtn_Click" />
                         </div>
@@ -189,7 +189,7 @@
                             </asp:Table>
                         </div>
                         <div class="card-footer">
-                            <asp:CheckBox ID="MerAltinDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:CheckBox ID="MerAltinDurumChk" runat="server" Checked="false" Text=" Seçili kayıtların durumunu Gönderildi olarak güncelle" Enabled="False" />
                             <asp:Button ID="MerAltinBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Altın Madalya Beratları" OnClick="MerAltinBtn_Click" />
                             <asp:Button ID="MerAltinEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="MerAltinEtiketBtn_Click" />
                         </div>
@@ -201,7 +201,7 @@
                             </asp:Table>
                         </div>
                         <div class="card-footer">
-                            <asp:CheckBox ID="MerGumusDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:CheckBox ID="MerGumusDurumChk" runat="server" Checked="false" Text=" Seçili kayıtların durumunu Gönderildi olarak güncelle" Enabled="False" />
                             <asp:Button ID="MerGumusBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Gümüş Madalya Beratları" OnClick="MerGumusBtn_Click" />
                             <asp:Button ID="MerGumusEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="MerGumusEtiketBtn_Click" />
                         </div>
@@ -213,7 +213,7 @@
                             </asp:Table>
                         </div>
                         <div class="card-footer">
-                            <asp:CheckBox ID="MerBronzDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:CheckBox ID="MerBronzDurumChk" runat="server" Checked="false" Text=" Seçili kayıtların durumunu Gönderildi olarak güncelle" Enabled="False" />
                             <asp:Button ID="MerBronzBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Bronz Madalya Beratları" OnClick="MerBronzBtn_Click" />
                             <asp:Button ID="MerBronzEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="MerBronzEtiketBtn_Click" />
                         </div>
@@ -228,7 +228,7 @@
                             </asp:Table>
                         </div>
                         <div class="card-footer">
-                            <asp:CheckBox ID="ErzAltinDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:CheckBox ID="ErzAltinDurumChk" runat="server" Checked="false" Text=" Seçili kayıtların durumunu Gönderildi olarak güncelle" Enabled="False" />
                             <asp:Button ID="ErzAltinBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Altın Madalya Beratları" OnClick="ErzAltinBtn_Click" />
                             <asp:Button ID="ErzAltinEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="ErzAltinEtiketBtn_Click" />
                         </div>
@@ -240,7 +240,7 @@
                             </asp:Table>
                         </div>
                         <div class="card-footer">
-                            <asp:CheckBox ID="ErzGumusDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:CheckBox ID="ErzGumusDurumChk" runat="server" Checked="false" Text=" Seçili kayıtların durumunu Gönderildi olarak güncelle" Enabled="False" />
                             <asp:Button ID="ErzGumusBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Gümüş Madalya Beratları" OnClick="ErzGumusBtn_Click" />
                             <asp:Button ID="ErzGumusEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="ErzGumusEtiketBtn_Click" />
                         </div>
@@ -252,7 +252,7 @@
                             </asp:Table>
                         </div>
                         <div class="card-footer">
-                            <asp:CheckBox ID="ErzBronzDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:CheckBox ID="ErzBronzDurumChk" runat="server" Checked="false" Text=" Seçili kayıtların durumunu Gönderildi olarak güncelle" Enabled="False" />
                             <asp:Button ID="ErzBronzBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Bronz Madalya Beratları" OnClick="ErzBronzBtn_Click" />
                             <asp:Button ID="ErzBronzEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="ErzBronzEtiketBtn_Click" />
                         </div>

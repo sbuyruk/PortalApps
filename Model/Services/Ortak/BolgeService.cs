@@ -59,6 +59,11 @@ namespace Model.Services.Ortak
             return Map(regionId > 0 ? repository.SelectById(regionId) : repository.SelectFirst());
         }
 
+        public Bolge GetSelected(int regionId, PortalLogContext context)
+        {
+            return Map(regionId > 0 ? repository.SelectById(regionId, context) : repository.SelectFirst(context));
+        }
+
         private static Bolge Map(DataTable table)
         {
             return new Bolge().ToList<Bolge>(table).FirstOrDefault();

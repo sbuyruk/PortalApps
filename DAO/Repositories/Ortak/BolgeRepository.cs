@@ -76,5 +76,10 @@ namespace DAO.Repositories.Ortak
         {
             return db.SelectFromDb(new SqlQuery("SELECT * FROM Bolge_Table"), "");
         }
+
+        public DataTable SelectFirst(PortalLogContext context)
+        {
+            return PortalSqlReadExecutor.Select(new SqlQuery("SELECT * FROM Bolge_Table"), context, "BolgeRepository.SelectFirst");
+        }
     }
 }

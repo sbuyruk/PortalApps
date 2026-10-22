@@ -215,3 +215,9 @@ Kullanıcı armağan yönetimine devam edilmesini istedi. Temiz ve güncel 0fd5b
 ArmaganEditWP, ArmaganListesiWP ve ArmaganAraWP birlikte ele alındı. Düzenleme/belge iadesi ortak transaction/audit servisine taşındı; sahiplik, bölge yetkisi ve para iadesi durumu yazma sırasında yeniden doğrulanır. Liste/arama/modal iş verisi okumaları açık log bağlamlıdır; bölge bilgisi her istekte sunucudan alınır.
 Mesajlar Türkçe doğrulama/iş kuralı uyarısı, tekrar istekte Info, commit sonrası tek başarı ve teknik hata için güvenli başvuru kodu olarak ayrıldı. Yeni armağan ekleme açılmadı; ölü ekleme yolu kaldırıldı. Ayrıntılar, mesaj değişiklikleri, yapılandırma ve inceleme/test noktaları LoglamaGecisArmaganYonetimi.md içindedir.
 Belge üretimi/basımı, rapor hedef ekranları ve SMS/gönderim sonraki kapsamdır. OpenXML sürüm yükseltmesi ertelidir; bu parça referans değiştirmez. Codex build/test/debug çalıştırmadı; çalışma zamanı sonucu kullanıcı doğrulamasını bekler.
+
+## Belge ve basım işlem grubu
+
+Kullanıcı #516 sonrasında belge/basım grubuna devam edilmesini istedi. Temiz ve güncel 21270d5d2c06e9aa7fc38cb3f29ac2511971a80f üzerinden codex/nbys-belge-basim-log-transaction-mesaj açıldı.
+TesekkurBasimiWP, BeratBasimiWP, TesekkurBelgesiYazisiWP, BeratBelgesiYazisiWP ve DuzenliBagisciBelgesiBasimiWP taşındı. Belge/etiket kayıt kümesi sabitlendi; seçime bağlı durum güncellemesi küme/yetki doğrulaması ve merkezi audit ile tek SQL transaction'a alındı. Yanlış tüm-bölge UPDATE'leri ve iç hatadan sonra tam başarı mesajı kaldırıldı.
+Dosya/SQL/rapor dış etkileri atomik kabul edilmez; kısmi sonuçlar tek güvenli mesajla açıklanır. Mesaj farkları, merkez/bölge erişimi değişikliği, dosya kaldırma, yapılandırma ve TEST noktaları LoglamaGecisBelgeBasim.md içindedir. Harici rapor hedefleri, FTKYazilariWP, bağışa vesile olanlar ve SMS tamamlanmış sayılmaz. Codex build/test/debug çalıştırmadı.

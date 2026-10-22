@@ -46,7 +46,7 @@
                         </asp:Table>
                     </div>
                     <div class="card-footer">
-                        <asp:CheckBox ID="TesekkurDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                        <asp:CheckBox ID="TesekkurDurumChk" runat="server" Checked="false" Text=" Seçili kayıtların durumunu Gönderildi olarak güncelle" Enabled="False" />
                         <asp:Button ID="TesekkurBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Teşekkür Belgeleri" OnClick="TesekkurBtn_Click" />
                         <asp:Button ID="AdresEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="AdresEtiketBtn_Click" />
                     </div>
