@@ -1,3 +1,5 @@
+extern alias OpenXmlLegacy;
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -64,7 +66,7 @@ namespace Utility.HelperClasses
                     return ConvertToDatetable(document, ilkKacSatirHaric, sonKacSatirHaric, hasTitle, true);
                 }
             }
-            catch (OpenXmlPackageException error) { throw new InvalidDataException("Dosya geçerli bir Excel çalışma kitabı değil.", error); }
+            catch (OpenXmlLegacy::DocumentFormat.OpenXml.Packaging.OpenXmlPackageException error) { throw new InvalidDataException("Dosya geçerli bir Excel çalışma kitabı değil.", error); }
         }
         public static DataTable ReadXLSXAsDataTable(string filePath, bool hasTitle)
         {
