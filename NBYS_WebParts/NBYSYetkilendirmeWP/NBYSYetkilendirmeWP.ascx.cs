@@ -1,3 +1,7 @@
+using Model.Services.NBYS;
+using System.Linq;
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.Portal;
 using System;
 using System.Collections.Generic;
@@ -11,6 +15,16 @@ namespace NBYS_WebParts.NBYSYetkilendirmeWP
     [ToolboxItemAttribute(false)]
     public partial class NBYSYetkilendirmeWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "NBYSYetkilendirmeWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysReportFeedback.Execute(LoggingContext, operation, action);
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -29,39 +43,50 @@ namespace NBYS_WebParts.NBYSYetkilendirmeWP
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            YetkileriGetir();
+            ExecuteAction("Page_Load", () =>
+            {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
+                KaydetBtn.Enabled = false;
+                BelgeIstemiyorChk.Enabled = false;
+                UlasilamiyorChk.Enabled = false;
+                if (!Page.IsPostBack) YetkileriGetir();
+            });
         }
 
         private void YetkileriGetir()
         {
-            ProgramYetki programYetki = new ProgramYetki();
-            string bolgeler = "(7,8,9)";
-            List<ProgramYetki> list = new Model.Services.Portal.ProgramYetkiService().GetByProgramModul(ProjeConstants.NBYS, ProjeConstants.NBYS_BOLGE_NAKITBAGISCILISTESI, bolgeler);
-            foreach (var item in list)
+            List<ProgramYetki> list = new NbysSupportReadService(LoggingContext).GetPermissionSettings();
+            var declined = list.Where(item => string.Equals(item.Kosul, "Belge Istemiyor", StringComparison.Ordinal)).ToList();
+            var unreachable = list.Where(item => string.Equals(item.Kosul, "Ulasilamiyor", StringComparison.Ordinal)).ToList();
+            if (declined.Select(item => item.Deger).Distinct().Count() > 1 || unreachable.Select(item => item.Deger).Distinct().Count() > 1)
             {
-                if (item.Kosul.Equals("Belge Istemiyor"))
-                    BelgeIstemiyorChk.Checked = item.Deger;
-                if (item.Kosul.Equals("Ulasilamiyor"))
-                    UlasilamiyorChk.Checked = item.Deger;
+                BelgeIstemiyorChk.Visible = UlasilamiyorChk.Visible = false;
+                Messages.Warning("Bölge yetkileri farklı olduğundan ortak bir seçim gösterilemiyor. Yetki kayıtlarını bölge bazında kontrol edin.");
+                return;
             }
+            BelgeIstemiyorChk.Checked = declined.Any() && declined[0].Deger;
+            UlasilamiyorChk.Checked = unreachable.Any() && unreachable[0].Deger;
+            BelgeIstemiyorChk.Visible = declined.Any();
+            UlasilamiyorChk.Visible = unreachable.Any();
+            if (list.Count == 0) Messages.Info("Bu kapsam için kayıtlı yetki ayarı bulunamadı.");
+            else if (!declined.Any() || !unreachable.Any()) Messages.Info("Bazı yetki ayarları kayıtlı olmadığı için gösterilmedi. Yetki kayıtlarını kontrol edin.");
         }
 
         protected void KaydetBtn_Click(object sender, EventArgs e)
         {
+            ExecuteAction("KaydetBtn_Click", () =>
+            {
+                Messages.Info("Bu ekran yalnızca mevcut yetkileri gösterir. Yetki değişikliği kaydedilmedi.");
+            });
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("CloseBtn_Click", () =>
             {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path);
+                Page.Response.Redirect(currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME, false);
+                System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
+            });
         }
     }
 }
