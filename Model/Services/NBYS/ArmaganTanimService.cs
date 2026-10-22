@@ -16,6 +16,8 @@ namespace Model.Services.NBYS
     {
         private readonly ArmaganTanimRepository repository;
 
+        public ArmaganTanimService(PortalLogContext context) : this(new ArmaganTanimRepository(context)) { }
+
         public ArmaganTanimService() : this(new ArmaganTanimRepository())
         {
         }

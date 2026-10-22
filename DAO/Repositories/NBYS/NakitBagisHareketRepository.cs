@@ -9,6 +9,7 @@ namespace DAO.Repositories.NBYS
 {
     public class NakitBagisHareketRepository
     {
+        public bool HasLogContext { get { return readContext != null; } }
         private const string TableName = "NakitBagisHareket_Table";
         private readonly DbClass db;
         private readonly PortalLogContext readContext;
@@ -26,7 +27,13 @@ namespace DAO.Repositories.NBYS
             queryBuilder = new CrudQueryBuilder();
         }
 
-        // This constructor is for migrated read-only workflows.
+        // Explicit-context writes require a supplied transaction and use centralized audit.
+        public NakitBagisHareketRepository(SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            queryBuilder = new CrudQueryBuilder();
+        }
+
         public NakitBagisHareketRepository(PortalLogContext context)
         {
             if (context == null || context.Project != "NBYS")
@@ -63,8 +70,9 @@ namespace DAO.Repositories.NBYS
 
         public int Insert<T>(T entity, SqlTransactionContext transaction)
         {
-            RequireLegacyWrite();
-            return transaction.Insert(queryBuilder.BuildInsert(entity, TableName));
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            return readContext == null ? transaction.Insert(queryBuilder.BuildInsert(entity, TableName))
+                : new NbysTransactionalWriter(readContext, TableName).Insert(queryBuilder.BuildInsert(entity, TableName), transaction);
         }
 
         public bool Update<T>(T entity)
@@ -74,8 +82,9 @@ namespace DAO.Repositories.NBYS
 
         public bool Update<T>(T entity, SqlTransactionContext transaction)
         {
-            RequireLegacyWrite();
-            return transaction.Update(queryBuilder.BuildUpdate(entity, TableName));
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            return readContext == null ? transaction.Update(queryBuilder.BuildUpdate(entity, TableName))
+                : new NbysTransactionalWriter(readContext, TableName).Update(queryBuilder.BuildUpdate(entity, TableName), NbysTransactionalWriter.Id(entity), transaction);
         }
 
         public void UpdateRefund<TDonation, TGift>(TDonation donation, TGift gift)
@@ -185,7 +194,7 @@ namespace DAO.Repositories.NBYS
 
             SqlQuery query = new SqlQuery("SELECT * FROM NakitBagisHareket_Table WHERE Id=@Id");
             query.AddParameter("@Id", id);
-            return transaction.Select(query);
+            return SelectInTransaction(query, transaction);
         }
 
         public DataTable SelectAll()
@@ -217,7 +226,7 @@ namespace DAO.Repositories.NBYS
             SqlQuery query = new SqlQuery(
                 "SELECT * FROM NakitBagisHareket_Table WHERE EkstreAktarmaId=@EkstreAktarmaId");
             query.AddParameter("@EkstreAktarmaId", ekstreAktarmaId);
-            return transaction.Select(query);
+            return SelectInTransaction(query, transaction);
         }
 
         public DataTable SelectByBagisciIdTarih(int bagisciId, DateTime baslangic, DateTime bitis)
@@ -267,7 +276,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@BagisciId", bagisciId);
             query.AddParameter("@Baslangic", baslangic);
             query.AddParameter("@Bitis", bitis);
-            return transaction.Select(query);
+            return SelectInTransaction(query, transaction);
         }
 
         public DataTable SelectArmaganiOlmayanByBagisciId(int bagisciId)
@@ -775,6 +784,12 @@ namespace DAO.Repositories.NBYS
         private static string LegacyDateValue(DateTime value)
         {
             return value == DateTime.MinValue ? string.Empty : value.ToString();
+        }
+        private DataTable SelectInTransaction(SqlQuery query, SqlTransactionContext transaction,
+            [System.Runtime.CompilerServices.CallerMemberName] string method = "")
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            return readContext == null ? transaction.Select(query) : new NbysSqlExecutor(readContext, "NakitBagisHareketRepository").Select(query, transaction, method);
         }
     }
 }

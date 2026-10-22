@@ -8,9 +8,16 @@ namespace DAO.Repositories.Ortak
     public class IlRepository
     {
         private readonly DbClass db;
+        private readonly PortalLogContext logContext;
 
         public IlRepository() : this(new DbClass())
         {
+        }
+
+        public IlRepository(PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context");
+            logContext = context;
         }
 
         public IlRepository(DbClass db)
@@ -44,7 +51,7 @@ namespace DAO.Repositories.Ortak
             if (transaction == null) throw new ArgumentNullException("transaction");
             SqlQuery query = new SqlQuery("SELECT * FROM Il_Table WHERE Id=@Id");
             query.AddParameter("@Id", id);
-            return transaction.Select(query);
+            return SelectInTransaction(query, transaction);
         }
 
         public DataTable SelectAll()
@@ -78,7 +85,7 @@ namespace DAO.Repositories.Ortak
             SqlQuery query = new SqlQuery(
                 "SELECT * FROM Il_Table WHERE LOWER(IlAdi)=LOWER(@IlAdi)");
             query.AddParameter("@IlAdi", name);
-            return transaction.Select(query);
+            return SelectInTransaction(query, transaction);
         }
 
         public DataTable SelectByEnglishName(string name)
@@ -137,6 +144,12 @@ namespace DAO.Repositories.Ortak
                 "WHERE A.Id BETWEEN 0 AND 81 AND A.IlAdi != '' " +
                 "AND A.Id IN (SELECT Ili FROM FTK_Table) " +
                 "GROUP BY A.Bolge ORDER BY A.Bolge"), "");
+        }
+        private DataTable SelectInTransaction(SqlQuery query, SqlTransactionContext transaction,
+            [System.Runtime.CompilerServices.CallerMemberName] string method = "")
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            return logContext == null ? transaction.Select(query) : PortalSqlReadExecutor.Select(query, logContext, "IlRepository." + method, transaction);
         }
     }
 }

@@ -1,3 +1,5 @@
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.Ortak;
@@ -16,6 +18,15 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
     [ToolboxItemAttribute(false)]
     public partial class EkstreAktarmaEditWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "EkstreAktarmaEditWP"); }
+        }
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -103,7 +114,6 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
         {
             get
             {
-
                 if (ViewState["SenderApp"] == null)
                 {
                     if (Page.Request.QueryString["SenderApp"] != null)
@@ -127,7 +137,6 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
         {
             get
             {
-
                 if (ViewState["Param"] == null)
                 {
                     if (Page.Request.QueryString["Param"] != null)
@@ -150,8 +159,10 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
         private IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
+
                 if (!Page.IsPostBack)
                 {
                     BankaDDLDoldur();
@@ -167,12 +178,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                         OpenDuzenle();
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         private void OpenDuzenle()
         {
@@ -206,9 +212,9 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             if (!string.IsNullOrEmpty(NakitBagisciIdQS))
             {
                 long ektreAktarmaTCKimlikNo = 0;
-                EkstreAktarma ekstreAktarma = new EkstreAktarmaService().GetById(EkstreAktarmaIdQS.ConvertToInt());
+                EkstreAktarma ekstreAktarma = new EkstreAktarmaService(LoggingContext).GetById(EkstreAktarmaIdQS.ConvertToInt());
                 ektreAktarmaTCKimlikNo = ekstreAktarma == null ? 0 : ekstreAktarma.TCKimlikNo.ReturnZeroIfNull().ConvertToInt();
-                NakitBagisci nb = new NakitBagisciService().GetById(NakitBagisciIdQS.ConvertToInt());
+                NakitBagisci nb = new NakitBagisciService(LoggingContext).GetById(NakitBagisciIdQS.ConvertToInt());
                 if (nb != null)
                 {
                     NakitBagisciIdLbl.Text = nb.Id.ToString();
@@ -238,7 +244,14 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             int ekstreAktarmaId = EkstreAktarmaIdQS.ConvertToInt();
-            EkstreAktarma ekstreAktarma = new EkstreAktarmaService().GetById(ekstreAktarmaId);
+            EkstreAktarma ekstreAktarma = new EkstreAktarmaService(LoggingContext).GetById(ekstreAktarmaId);
+            if (ekstreAktarma == null)
+            {
+                KaydetBtn.Enabled = false; EslestirBtn.Enabled = false;
+                Messages.Warning("Ekstre kaydı bulunamadı. Listeye dönüp tekrar seçin."); return;
+            }
+            KaydetBtn.Enabled = !ekstreAktarma.AktarildiMi;
+            EslestirBtn.Enabled = !ekstreAktarma.AktarildiMi;
 
             NakitBagisciIdLbl.Text = ekstreAktarma.NakitBagisciId.ToString();
             AdiTxt.Text = ekstreAktarma.Adi.ReturnEmptyIfNull().ToString().TrimStart().TrimEnd();
@@ -259,7 +272,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             {
                 IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByText(ilcestr).Value;
             }
-            string bankaStr = ekstreAktarma.BankaAdi.ReturnEmptyIfNull().ToString();//culturInfo.ToUpper(ekstreAktarma.BankaAdi.ReturnEmptyIfNull().ToString()); 
+            string bankaStr = ekstreAktarma.BankaAdi.ReturnEmptyIfNull().ToString();//culturInfo.ToUpper(ekstreAktarma.BankaAdi.ReturnEmptyIfNull().ToString());
             if (BankaDDL.Items.FindByText(bankaStr) != null)
             {
                 BankaDDL.SelectedValue = BankaDDL.Items.FindByText(bankaStr).Value;
@@ -296,7 +309,6 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
         }
         private void ExtreAktarmaFormunuTemizle()
         {
-
             AdiTxt.Text = string.Empty;
             TCKimlikNoTxt.Text = string.Empty;
             Telefon1Txt.Text = string.Empty;
@@ -324,7 +336,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             {
                 IliDDL.Items.Clear();
                 IliDDL.Items.Add(new ListItem("", ProjeConstants.IL_BOS.ToString()));
-                List<Il> list = new IlService().GetAll();
+                List<Il> list = new IlService().GetAll(LoggingContext);
                 TextInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true).TextInfo;
 
                 foreach (Il il in list)
@@ -337,13 +349,12 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
         }
         private void IlceDDLDoldur()
         {
-
             if (IliDDL.SelectedItem != null)
             {
                 int ilId = IliDDL.SelectedValue.ConvertToInt();
                 IlcesiDDL.Items.Clear();
                 IlcesiDDL.Items.Add(new ListItem("", ProjeConstants.ILCE_BOS.ToString()));
-                List<Ilce> list = new IlceService().GetByProvinceId(ilId);
+                List<Ilce> list = new IlceService().GetByProvinceId(ilId, LoggingContext);
                 TextInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true).TextInfo;
                 foreach (Ilce ilce in list)
                 {
@@ -356,11 +367,10 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
         }
         private void BankaDDLDoldur()
         {
-
             if (BankaDDL.SelectedItem == null)
             {
                 BankaDDL.Items.Clear();
-                List<BankaTanim> list = new BankaTanimService().GetAll();
+                List<BankaTanim> list = new BankaTanimService(LoggingContext).GetAll();
                 //TextInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true).TextInfo;
                 foreach (BankaTanim banka in list)
                 {
@@ -384,60 +394,39 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
         }
         protected void KaydetBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("KaydetBtn_Click", () =>
             {
-                bool isSaved = false;
-                if (string.IsNullOrWhiteSpace(AdiTxt.Text))
+                if (string.IsNullOrWhiteSpace(AdiTxt.Text)) { Messages.Warning("Bağışçı adını girin."); return; }
+                int id;
+                if (!string.IsNullOrWhiteSpace(EkstreAktarmaIdQS) && (!int.TryParse(EkstreAktarmaIdQS, out id) || id <= 0))
+                { Messages.Warning("Ekstre kaydı geçerli değil. Listeyi yenileyip tekrar seçin."); return; }
+                DateTime date;
+                CultureInfo culture = CultureInfo.GetCultureInfo(ProjeConstants.CULTUREINFO);
+                if (!DateTime.TryParse(BagisTarihiTxt.Value, culture, DateTimeStyles.None, out date) || date.Year < 1901
+                || !DateTime.TryParse(IslemTarihiTxt.Text, culture, DateTimeStyles.None, out date) || date.Year < 1901)
+                { Messages.Warning("Geçerli bir bağış tarihi ve işlem tarihi girin."); return; }
+                decimal amount;
+                if (!decimal.TryParse(TutarTlTxt.Text, NumberStyles.Number, culture, out amount))
+                { Messages.Warning("Geçerli bir bağış tutarı girin."); return; }
+                long identity;
+                if (!string.IsNullOrWhiteSpace(TCKimlikNoTxt.Text) && !long.TryParse(TCKimlikNoTxt.Text, out identity))
+                { Messages.Warning("T.C. kimlik numarasını rakamlarla girin."); return; }
+                if (DovizCinsiDDL.SelectedValue != ProjeConstants.DOVIZ_TL
+                    && (!decimal.TryParse(DovizTutariTxt.Text, NumberStyles.Number, culture, out amount)
+                        || !decimal.TryParse(DovizKuruTxt.Text, NumberStyles.Number, culture, out amount)
+                        || !DateTime.TryParse(KurTarihiTxt.Text, culture, DateTimeStyles.None, out date) || date.Year < 1901))
+                { Messages.Warning("Geçerli bir döviz tutarı, döviz kuru ve kur tarihi girin."); return; }
+                NbysEkstreWriteResult result = new NbysEkstreWriteService(LoggingContext).Save(ReadForm());
+                NbysEkstreFeedback.WriteResult(LoggingContext, result, "Ekstre kaydı kaydedildi.", () =>
                 {
-                    MessageHelper.PublishMessage("Bağışçı Adı boş olamaz. Lütfen bağışçı adını giriniz.", ProjeConstants.MESAJ_HATA);
-                }
-                else
-                {
-                    int ekstreAktarmaId = EkstreAktarmaIdQS.ConvertToInt();
-                    EkstreAktarma ekstreAktarma = new EkstreAktarmaService().GetById(ekstreAktarmaId);
-                    if (ekstreAktarma == null || ekstreAktarmaId == 0)
-                    {
-                        isSaved = SaveEkstreAktarma();
-                        if (isSaved)
-                        {
-                            ExtreAktarmaFormunuTemizle();
-                            BankaDDLDoldur();
-                            IlDDLoldur();
-                        }
-                    }
-                    else
-                    {
-                        isSaved = updateEksterAktarma(ekstreAktarma);
-                    }
-                }
-
-                if (isSaved)
-                {
-                    if (SenderAppQS.Equals("EkstreListesi") || SenderAppQS.Equals("NBE"))
-                    {
-                        RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?EkstreAktarmaId=" + EkstreAktarmaIdQS + "&IslemTarihi=" + IslemTarihiTxt.Text.ConvertToDatetimeEmptyIfNull() +
-                            "&Banka=" + BankaQS + "&Mesaj=true?Islem=kaydet");
-                    }
-                    MessageHelper.PublishMessage("Ekstre Aktarma Bilgisi Kaydedildi.", ProjeConstants.MESAJ_BASARILI, 2000);
-
-                }
-                else
-                {
-                    //System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.danger('Ekstre Aktarma Bilgisi Kaydedilemedi.')", true);
-                    MessageHelper.PublishMessage("Baðýþçý Adý boþ olamaz. Lütfen baðýþçý adýný giriniz.", ProjeConstants.MESAJ_HATA);
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
-
+                    if (string.IsNullOrEmpty(EkstreAktarmaIdQS)) { ExtreAktarmaFormunuTemizle(); BankaDDLDoldur(); IlDDLoldur(); }
+                    else ExtreAktarmaFormunuDoldur();
+                });
+            });
         }
-        private bool SaveEkstreAktarma()
+        private EkstreAktarma ReadForm()
         {
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            bool isSaved = false;
             EkstreAktarma ekstreAktarma = new EkstreAktarma();
             ekstreAktarma.Adi = AdiTxt.Text.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
             ekstreAktarma.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
@@ -467,67 +456,24 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             {
                 ekstreAktarma.NakitBagisciId = nakitBagisciId;
             }
-            int saveId = new EkstreAktarmaService().Save(ekstreAktarma);
-            if (saveId > 0)
-                isSaved = true;
-            return isSaved;
+            ekstreAktarma.Id = EkstreAktarmaIdQS.ConvertToInt();
+            return ekstreAktarma;
         }
-        private bool updateEksterAktarma(EkstreAktarma ekstreAktarma)
-        {
-            CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
 
-            bool isSaved = false;
-            ekstreAktarma.Adi = AdiTxt.Text.ReturnEmptyIfNull().ToString().TrimStart().TrimEnd().ToUpper(culturInfo);
-            ekstreAktarma.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
-            ekstreAktarma.Telefon1 = UtilityHelper.TelefonFormatla(Telefon1Txt.Text.ReturnEmptyIfNull().ToString());
-            ekstreAktarma.Telefon2 = UtilityHelper.TelefonFormatla(Telefon2Txt.Text.ReturnEmptyIfNull().ToString());
-            ekstreAktarma.Adres = AdresTxt.Text.ReturnEmptyIfNull().ToString().ToUpper(culturInfo);
-            ekstreAktarma.Ili = IliDDL.SelectedItem.Text.ReturnEmptyIfNull().ToString();
-            ekstreAktarma.Ilcesi = IlcesiDDL.SelectedItem.Text.ReturnEmptyIfNull().ToString();
-            ekstreAktarma.BankaAdi = BankaDDL.SelectedItem.Text.ReturnEmptyIfNull().ToString();
-            ekstreAktarma.Eposta = EPostaTxt.Text.ReturnEmptyIfNull().ToString();
-            ekstreAktarma.PostaKodu = PostaKoduTxt.Text.ReturnEmptyIfNull().ToString();
-            ekstreAktarma.Tutar = TutarTlTxt.Text.ConvertToDecimal();
-            ekstreAktarma.DovizCinsi = DovizCinsiDDL.SelectedItem == null ? ProjeConstants.DOVIZ_TL : DovizCinsiDDL.SelectedItem.Value;
-            ekstreAktarma.DovizTutari = DovizTutariTxt.Text.ConvertToDecimal();
-            ekstreAktarma.DovizKuru = DovizKuruTxt.Text.ConvertToDecimal();
-            ekstreAktarma.KurTarihi = KurTarihiTxt.Text.ConvertToDatetime();
-            ekstreAktarma.FisNo = FisNoTxt.Text;
-            ekstreAktarma.TuzelKisi = TuzelKisiChk.Checked;
-            ekstreAktarma.BelgeIstemiyor = BelgeIstemiyorChk.Checked;
-            ekstreAktarma.Degistiren = UtilityHelper.GetCurrentUserLoginName();
-            ekstreAktarma.Aciklama = AciklamaTxt.Text;
-            ekstreAktarma.BagisTarihi = BagisTarihiTxt.Value.ConvertToDatetime();
-            ekstreAktarma.IslemTarihi = IslemTarihiTxt.Text.ConvertToDatetime();
-            int nakitBagisciId = NakitBagisciIdLbl.Text.ConvertToInt();
-            if (nakitBagisciId > 0 && ekstreAktarma.NakitBagisciId<1)
-            {
-                ekstreAktarma.NakitBagisciId = nakitBagisciId;
-            }
-            isSaved = new EkstreAktarmaService().Update(ekstreAktarma);
-            return isSaved;
-        }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl);
+
         }
         protected void BackBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("BackBtn_Click", () =>
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-                EkstreAktarma ekstreAktarma = new EkstreAktarmaService().GetById(EkstreAktarmaIdQS.ConvertToInt());
+                EkstreAktarma ekstreAktarma = new EkstreAktarmaService(LoggingContext).GetById(EkstreAktarmaIdQS.ConvertToInt());
                 if (SenderAppQS.Equals("NBB"))//NakitBagisciBulma'dan geldiyse
                 {
                     newUrl += "/" + ProjeConstants.PAGE_NAKITBAGISCI_BULMA + "?Param=" + ParamQS;
@@ -541,75 +487,89 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                     newUrl += "/" + ProjeConstants.PAGE_EKSTRE_LIST;
                 }
                 Page.Response.Redirect(newUrl, true);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-
+            ExecuteAction("CloseBtn_Click", () =>
+            {
+            });
         }
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            IlceDDLDoldur();
+            ExecuteAction("IliDDL_SelectedIndexChanged", () =>
+            {
+                IlceDDLDoldur();
+            });
         }
         protected void ChkBilinmeyen_CheckedChanged(object sender, EventArgs e)
         {
-            if (ChkBilinmeyen.Checked)
+            ExecuteAction("ChkBilinmeyen_CheckedChanged", () =>
             {
-                AdiTxt.Text = ProjeConstants.NAKITBAGISCI_BILINMEYEN;
-                AdiTxt.Attributes["class"] += " makeDisabled ";
-                TCKimlikNoTxt.Attributes["class"] += " makeDisabled ";
-            }
-            else
-            {
-                AdiTxt.Text = string.Empty;
-                AdiTxt.Attributes["class"] = AdiTxt.Attributes["class"].ReturnEmptyIfNull().ToString().Replace("makeDisabled", "");
-                TCKimlikNoTxt.Attributes["class"] = TCKimlikNoTxt.Attributes["class"].ReturnEmptyIfNull().ToString().Replace("makeDisabled", "");
-            }
-
+                if (ChkBilinmeyen.Checked)
+                {
+                    AdiTxt.Text = ProjeConstants.NAKITBAGISCI_BILINMEYEN;
+                    AdiTxt.Attributes["class"] += " makeDisabled ";
+                    TCKimlikNoTxt.Attributes["class"] += " makeDisabled ";
+                }
+                else
+                {
+                    AdiTxt.Text = string.Empty;
+                    AdiTxt.Attributes["class"] = AdiTxt.Attributes["class"].ReturnEmptyIfNull().ToString().Replace("makeDisabled", "");
+                    TCKimlikNoTxt.Attributes["class"] = TCKimlikNoTxt.Attributes["class"].ReturnEmptyIfNull().ToString().Replace("makeDisabled", "");
+                }
+            });
         }
         protected void NakitBagisciSecildiBtn_Click(object sender, EventArgs e)
         {
-            NakitBagisci nb = new NakitBagisciService().GetById(NakitBagisciIdQS.ConvertToInt());
+            ExecuteAction("NakitBagisciSecildiBtn_Click", () =>
+            {
+                NakitBagisci nb = new NakitBagisciService(LoggingContext).GetById(NakitBagisciIdQS.ConvertToInt());
+            });
         }
 
         protected void EkstreListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?SenderApp=EAE&IslemTarihi=" + IslemTarihiTxt.Text + "&EkstreAktarmaId=" + EkstreAktarmaIdQS + "&Banka=" + BankaQS);
+            ExecuteAction("EkstreListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?SenderApp=EAE&IslemTarihi=" + IslemTarihiTxt.Text + "&EkstreAktarmaId=" + EkstreAktarmaIdQS + "&Banka=" + BankaQS);
+            });
         }
         protected void HesaplaBtn_Click(object sender, EventArgs e)
         {
-            decimal dtutar = DovizTutariTxt.Text.ConvertToDecimal();
-            decimal dkur = DovizKuruTxt.Text.ConvertToDecimal();
+            ExecuteAction("HesaplaBtn_Click", () =>
+            {
+                decimal dtutar = DovizTutariTxt.Text.ConvertToDecimal();
+                decimal dkur = DovizKuruTxt.Text.ConvertToDecimal();
 
-            var tutarTl = dkur * dtutar;
-            HesaplananTlLbl.Text = tutarTl.ToString("N", culturInfo);
-            TutaraYazBtn.Visible = tutarTl > 0;
+                var tutarTl = dkur * dtutar;
+                HesaplananTlLbl.Text = tutarTl.ToString("N", culturInfo);
+                TutaraYazBtn.Visible = tutarTl > 0;
+            });
         }
 
         protected void EslestirBtn_Click(object sender, EventArgs e)
         {
-            EkstreAktarma ekstreAktarma = new EkstreAktarmaService().GetById(EkstreAktarmaIdQS.ConvertToInt()); 
-            ekstreAktarma.NakitBagisciId = NakitBagisciIdLbl.Text.ConvertToInt();
-            EkstreAktarmaService eas = new EkstreAktarmaService();
-            eas.Update(ekstreAktarma);
-
-            RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?IslemTarihi=" + IslemTarihiTxt.Text + "&EkstreAktarmaId =" + EkstreAktarmaIdQS + "&Banka=" + BankaQS);
+            ExecuteAction("EslestirBtn_Click", () =>
+            {
+                NbysEkstreWriteResult result = new NbysEkstreWriteService(LoggingContext).Match(
+                EkstreAktarmaIdQS.ConvertToInt(), NakitBagisciIdLbl.Text.ConvertToInt());
+                NbysEkstreFeedback.WriteResult(LoggingContext, result, "Ekstre bağışçıyla eşleştirildi.", ExtreAktarmaFormunuDoldur);
+            });
         }
         protected void DovizCinsiDDLIli_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (DovizCinsiDDL.SelectedItem.Value.Equals(ProjeConstants.DOVIZ_TL))
+            ExecuteAction("DovizCinsiDDLIli_SelectedIndexChanged", () =>
             {
-                DovizDiv.Attributes["style"] = "display:none";
-            }
-            else
-            {
-                DovizDiv.Attributes["style"] = "display:block";
-            }
+                if (DovizCinsiDDL.SelectedItem.Value.Equals(ProjeConstants.DOVIZ_TL))
+                {
+                    DovizDiv.Attributes["style"] = "display:none";
+                }
+                else
+                {
+                    DovizDiv.Attributes["style"] = "display:block";
+                }
+            });
         }
     }
 }

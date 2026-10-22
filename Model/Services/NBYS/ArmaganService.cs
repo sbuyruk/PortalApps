@@ -16,6 +16,8 @@ namespace Model.Services.NBYS
     {
         private readonly ArmaganRepository repository;
 
+        public ArmaganService(PortalLogContext context) : this(new ArmaganRepository(context)) { }
+
         public ArmaganService() : this(new ArmaganRepository())
         {
         }
@@ -238,7 +240,7 @@ namespace Model.Services.NBYS
             armagan.Olusturan = UtilityHelper.GetCurrentUserName();
             armagan.Id = repository.Insert(armagan);
 
-            if (armagan.Id > 0 && ProjeConstants.NBYS_SAVE_LOG)
+            if (armagan.Id > 0 && !repository.HasLogContext && ProjeConstants.NBYS_SAVE_LOG)
             {
                 new OlayKayit().GirisOlayKaydet(
                     armagan, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGAN);
@@ -257,7 +259,7 @@ namespace Model.Services.NBYS
             armagan.Olusturan = UtilityHelper.GetCurrentUserName();
             armagan.Id = repository.Insert(armagan, transaction);
 
-            if (armagan.Id > 0 && ProjeConstants.NBYS_SAVE_LOG)
+            if (armagan.Id > 0 && !repository.HasLogContext && ProjeConstants.NBYS_SAVE_LOG)
             {
                 new OlayKayit().GirisOlayKaydet(
                     armagan,
@@ -286,7 +288,7 @@ namespace Model.Services.NBYS
             armagan.Olusturan = UtilityHelper.GetCurrentUserName();
             DataTable result = repository.InsertDuzenliBagisIfMissing(armagan);
             armagan.Id = Convert.ToInt32(result.Rows[0]["Id"]);
-            if (Convert.ToBoolean(result.Rows[0]["Olusturuldu"]) && ProjeConstants.NBYS_SAVE_LOG)
+            if (Convert.ToBoolean(result.Rows[0]["Olusturuldu"]) && !repository.HasLogContext && ProjeConstants.NBYS_SAVE_LOG)
             {
                 new OlayKayit().GirisOlayKaydet(
                     armagan, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGAN);
@@ -307,7 +309,7 @@ namespace Model.Services.NBYS
                 armagan.Degistiren = UtilityHelper.GetCurrentUserName();
                 updated = repository.Update(armagan);
             }
-            if (updated && ProjeConstants.NBYS_UPDATE_LOG)
+            if (updated && !repository.HasLogContext && ProjeConstants.NBYS_UPDATE_LOG)
             {
                 new OlayKayit().GuncellemeOlayKaydet(
                     armagan, previous, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGAN);
@@ -328,7 +330,7 @@ namespace Model.Services.NBYS
             armagan.DegistirmeTarihi = DateTime.Now;
             armagan.Degistiren = UtilityHelper.GetCurrentUserName();
             bool updated = repository.Update(armagan, transaction);
-            if (updated && ProjeConstants.NBYS_UPDATE_LOG)
+            if (updated && !repository.HasLogContext && ProjeConstants.NBYS_UPDATE_LOG)
             {
                 new OlayKayit().GuncellemeOlayKaydet(
                     previous,
@@ -352,7 +354,7 @@ namespace Model.Services.NBYS
                 return false;
 
             bool deleted = repository.Delete(armagan.Id);
-            if (deleted && ProjeConstants.NBYS_DELETE_LOG)
+            if (deleted && !repository.HasLogContext && ProjeConstants.NBYS_DELETE_LOG)
             {
                 new OlayKayit().SilmeOlayKaydet(
                     previous, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGAN);

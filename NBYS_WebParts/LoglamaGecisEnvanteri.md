@@ -186,3 +186,12 @@ BagisIadesiWP, NakitBagisHareketSilmeWP ve NakitBagisciBirlestirmeWP aynı dalda
 Süre/yetki/seçim kontrolleri kayıt anında yapılır. Silmede kalan referanslar korunur; birleştirmede geçersiz armağan geçmişi, ekstre ve düzenli bağışçı bağlantıları da taşınır.
 Boş yeniden armağan hesaplama yardımcıları ve Mesaj querystring'inden sahte başarı üretimi kaldırıldı. Yeni hak kazanma algoritması eklenmedi.
 Ayrıntılı davranış farkları, alan izin listeleri, mesaj değişiklikleri ve TEST adımları LoglamaGecisIadeSilmeBirlestirme.md dosyasındadır. Çalışma zamanı sonucu henüz doğrulanmadı.
+
+## Banka yükleme, ekstre ve bağışa aktarma işlem grubu
+
+Kullanıcı geniş kapsamlı banka/ekstre zincirine devam edilmesini istedi. Temiz ve güncel 0bf73c6150fa1fb1d05830ebe28e063c85445780 üzerinden codex/nbys-banka-ekstre-aktarim-log-mesaj açıldı.
+BankaDosyasiYuklemeWP, EkstreListesiWP, EkstreAktarmaEditWP ve NakitBagisciEslestirWP aynı daldadır.
+Dosya başına import ve satır başına bağışa aktarma sınırları korunarak açık bağlamlı SQL izleri ve aynı transaction'da merkezi audit eklendi. Manuel ekleme/düzenleme/eşleştirme ve seçim grubunun tamamını kapsayan arşivli ekstre silme transaction'a bağlandı.
+Aktarılmış/bağış bağlantılı kayıtların değiştirilmesi/silinmesi engellendi. Dosya ve toplu aktarım sonuçları tek bildirimde sayılarla gösterilir; biçim/mükerrerlik uyarıları teknik arızadan ayrılır, URL ile sahte başarı yolu kaldırılır.
+Bu kapsam bağımsız düzenli bağışçı dosya yükleme/yazma, SMS gönderimi ve belge/basım akışlarını tamamlamaz. Armağan hak kazanma algoritması yeniden tasarlanmadı.
+Audit alan listeleri, mesaj farkları, etkinleştirme ve TEST adımları LoglamaGecisBankaEkstreAktarim.md içindedir. Codex build/test/debug çalıştırmadı; çalışma zamanı sonucu kullanıcı doğrulamasını bekler.

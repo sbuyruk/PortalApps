@@ -1,3 +1,5 @@
+using NBYS_WebParts.Logging;
+using Utility.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.NBYS;
@@ -24,6 +26,15 @@ namespace NBYS_WebParts.EkstreListesiWP
     [ToolboxItemAttribute(false)]
     public partial class EkstreListesiWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "EkstreListesiWP"); }
+        }
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -42,7 +53,6 @@ namespace NBYS_WebParts.EkstreListesiWP
         {
             get
             {
-
                 if (ViewState["IslemTarihi"] == null)
                 {
                     if (Page.Request.QueryString["IslemTarihi"] != null)
@@ -62,29 +72,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                 ViewState["IslemTarihi"] = value;
             }
         }
-        private string IslemQS
-        {
-            get
-            {
-                if (ViewState["Islem"] == null)
-                {
-                    if (Page.Request.QueryString["Islem"] != null)
-                    {
-                        ViewState["Islem"] = Page.Request.QueryString["Islem"];
-                    }
-                    else
-                    {
-                        ViewState["Islem"] = string.Empty;
-                    }
-                }
-                return ViewState["Islem"].ToString();
-            }
 
-            set
-            {
-                ViewState["Islem"] = value;
-            }
-        }
         private string AktarilanlarHaricQS
         {
             get
@@ -131,30 +119,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                 ViewState["Banka"] = value;
             }
         }
-        private string MesajQS
-        {
-            get
-            {
 
-                if (ViewState["Mesaj"] == null)
-                {
-                    if (Page.Request.QueryString["Mesaj"] != null)
-                    {
-                        ViewState["Mesaj"] = Page.Request.QueryString["Mesaj"];
-                    }
-                    else
-                    {
-                        ViewState["Mesaj"] = string.Empty;
-                    }
-                }
-                return ViewState["Mesaj"].ToString();
-            }
-
-            set
-            {
-                ViewState["Mesaj"] = value;
-            }
-        }
         private string SelectAllQS
         {
             get
@@ -180,70 +145,43 @@ namespace NBYS_WebParts.EkstreListesiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            ScriptManager sm = ScriptManager.GetCurrent(this.Page);
-            if (sm != null)
+            ExecuteAction("Page_Load", () =>
             {
-                sm.AsyncPostBackTimeout = 600; // saniye cinsinden (örnek: 5 dakika)
-            }
-            try
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
+
+                ScriptManager sm = ScriptManager.GetCurrent(this.Page);
+                if (sm != null)
                 {
-                    if (!Page.IsPostBack)
-                    {
+                    sm.AsyncPostBackTimeout = 600; // saniye cinsinden (örnek: 5 dakika)
+                }
+
+                if (!Page.IsPostBack)
+                {
                     YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_ARMAGANOLUSTURMA);
-                    if (!string.IsNullOrEmpty(MesajQS))
-                        {
-                            if (IslemQS.ToLower().Equals("silme"))
-                            {
-                                if (MesajQS.ToLower().Equals("true"))
-                                    MessageHelper.PublishMessage("Kayıt Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
-                                else
-                                    MessageHelper.PublishMessage("Kayıt Silinemedi", ProjeConstants.MESAJ_HATA);
-                            }
-                            else if (IslemQS.ToLower().Equals("kaydet"))
-                            {
-                                if (MesajQS.ToLower().Equals("true"))
-                                    MessageHelper.PublishMessage("Aktarma tamamlandı.", ProjeConstants.MESAJ_BASARILI, 2000);
-                                else if (MesajQS.ToLower().Equals("dahaonce"))
-                                    MessageHelper.PublishMessage("Bu kayıt daha önce aktarılmıştı, tekrar aktarılmadı.", ProjeConstants.MESAJ_BILGI, 4000);
-                                else if (MesajQS.ToLower().Equals("karisik"))
-                                    MessageHelper.PublishMessage("Bazı kayıtlar aktarıldı, bazıları daha önce aktarıldığı için atlandı.", ProjeConstants.MESAJ_BILGI, 4000);
-                                else
-                                    MessageHelper.PublishMessage("Aktarma yapılamadı.", ProjeConstants.MESAJ_HATA);
-                            }
-                            MesajQS = string.Empty;
-                        }
-                        TumunuSecChk.Checked = SelectAllQS.ConvertToBool();
-                        if (!string.IsNullOrEmpty(IslemTarihiQS))
-                        {
-                            IslemTarihiTxt.Text = IslemTarihiQS;
-                        }
-                        else
-                        {
-                            DateTime today = DateTime.Now;
-                            IslemTarihiTxt.Text = today.ToString(ProjeConstants.DATE_TR);
-                        }
-
-                        BankaDDLDoldur();
-                        if (!string.IsNullOrEmpty(BankaQS))
-                        {
-                            if (BankaDDL.Items.FindByValue(BankaQS) != null)
-                                BankaDDL.SelectedValue = BankaDDL.Items.FindByValue(BankaQS).Value;
-                        }
-                        BankaEtiketleriniBaslat();
-                        AktarilanBankalariOkLe(IslemTarihiTxt.Text.ConvertToDatetime());
-
-                        AktarilanlarHaricChk.Checked = AktarilanlarHaricQS.ConvertToBool();
-                        TabloOlustur();
+                    TumunuSecChk.Checked = SelectAllQS.ConvertToBool();
+                    if (!string.IsNullOrEmpty(IslemTarihiQS))
+                    {
+                        IslemTarihiTxt.Text = IslemTarihiQS;
+                    }
+                    else
+                    {
+                        DateTime today = DateTime.Now;
+                        IslemTarihiTxt.Text = today.ToString(ProjeConstants.DATE_TR);
                     }
 
-                }
-                catch (Exception ex)
-                {
-                    ExceptionHelper exHelper = new ExceptionHelper(ex);
-                    exHelper.PublishException();
-                }
-            
+                    BankaDDLDoldur();
+                    if (!string.IsNullOrEmpty(BankaQS))
+                    {
+                        if (BankaDDL.Items.FindByValue(BankaQS) != null)
+                            BankaDDL.SelectedValue = BankaDDL.Items.FindByValue(BankaQS).Value;
+                    }
+                    BankaEtiketleriniBaslat();
+                    AktarilanBankalariOkLe(IslemTarihiTxt.Text.ConvertToDatetime());
 
+                    AktarilanlarHaricChk.Checked = AktarilanlarHaricQS.ConvertToBool();
+                    TabloOlustur();
+                }
+            });
         }
         private void BankaEtiketleriniBaslat()
         {
@@ -296,8 +234,7 @@ namespace NBYS_WebParts.EkstreListesiWP
         }
         private void AktarilanBankalariOkLe(DateTime islemTarihi)
         {
-
-            EkstreAktarmaService ekstreAktarma = new EkstreAktarmaService();
+            EkstreAktarmaService ekstreAktarma = new EkstreAktarmaService(LoggingContext);
             bool isAkbankAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_AKBANK, islemTarihi);
             if (isAkbankAktarildi)
             {
@@ -386,7 +323,6 @@ namespace NBYS_WebParts.EkstreListesiWP
                 GarantiEkstreOkLbl.ForeColor = System.Drawing.Color.Red;
                 GarantiEkstreOkLbl.Text = "X";
             }
-
 
             bool isHalkBankAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_HALKBANK, islemTarihi);
             if (isHalkBankAktarildi)
@@ -561,95 +497,50 @@ namespace NBYS_WebParts.EkstreListesiWP
         }
         protected void SecilenListeyiKaydet()
         {
-            string value = paramArray.Value;
-
-            string currentUser = UtilityHelper.GetCurrentUserLoginName();
-            if (!string.IsNullOrEmpty(value))
+            ExecuteAction("SecilenListeyiKaydet", () =>
             {
-                EkstreAktarmaService eaDao = new EkstreAktarmaService();
-                int rowCount = 0;
-                List<EkstreAktarma> aktarilmayanlar = eaDao.GetByIdList(value, false, ref rowCount);
-                if (aktarilmayanlar.Count > 0)
-                {
-                    //var numbers = value?.Split(',')?.Select(Int32.Parse)?.ToList();
-                    var exceptionHelper = EkstreAktarmaTransferService.SaveAll(aktarilmayanlar, currentUser); //seçilenler diğer tablolara dağıtılıyor
-                   
-                    if (exceptionHelper.Exceptions.Count > 0)
-                    {
-                        TabloOlustur();
-
-                        exceptionHelper.PublishException();
-                    }
-                    else
-                    {
-                        UtilityHelper.ScriptCalistir("CloseModalOnay();");
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), "HideLoader", "$('#customLoader').hide();", true);
-                        string mesaj = exceptionHelper.SuccessCount > 0 && exceptionHelper.AlreadyProcessedCount > 0
-                            ? "karisik"
-                            : exceptionHelper.AlreadyProcessedCount > 0
-                                ? "dahaonce"
-                                : "true";
-                        RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?Mesaj=" + mesaj + "&Islem=kaydet&basarili=true&IslemTarihi=" + IslemTarihiQS + "&AktarilanlarHaric=" + AktarilanlarHaricQS + "&Banka=" + BankaQS);
-                    }
-                    //RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST);
-                }
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Hiç kayıt seçilmedi. Devam etmek için en az bir kayıt seçiniz.", ProjeConstants.MESAJ_BILGI);
-            }
+                int[] ids = SelectedIds();
+                if (ids == null) return;
+                ExceptionHelper result = EkstreAktarmaTransferService.SaveAll(ids.ToList(), LoggingContext.UserLogin, LoggingContext);
+                string summary = string.Format("Aktarım sonucu: {0} kayıt aktarıldı, {1} kayıt önceden aktarılmış, {2} kayıt bulunamadı, {3} kayıt aktarılamadı.",
+                result.SuccessCount, result.AlreadyProcessedCount, result.SkippedCount, result.ErrorCount);
+                NbysEkstreFeedback.Batch(LoggingContext, result, summary, RefreshAfterWrite);
+            });
         }
         protected void SecilenListeyiSil()
         {
-            string value = paramArray.Value;
-            //string[] idList = value.Split(',');
-            //foreach (string item in idList)
-            //{
-
-            //}
-
-            string currentUser = UtilityHelper.GetCurrentUserLoginName();
-            if (!string.IsNullOrEmpty(value))
+            ExecuteAction("SecilenListeyiSil", () =>
             {
-                try
-                {
-                    EkstreAktarmaService eaDao = new EkstreAktarmaService();
-                    int rowCount = 0;
-                    List<EkstreAktarma> silinecekler = eaDao.GetByIdList(value, true, ref rowCount);
-                    string mesaj = string.Empty;
-                    int counter = 0;
-                    foreach (EkstreAktarma item in silinecekler)
-                    {
-                        mesaj += " #" + counter + ":" + item.Adi;// + " BagisTarihi:" + item.BagisTarihi + " BagisMiktari:" + item.Tutar + " IslemTarihi:" + item.IslemTarihi.ConvertToDatetimeEmptyIfNull();
-                        eaDao.Delete(item);
-                        counter++; 
-                    }
-                    SilinenKayit sk = new SilinenKayit();
-                    sk.Silen = currentUser;
-                    sk.SilinmeSebebi = counter + " adet kayit silindi";
-                    sk.TabloAdi = "EkstreAktarma_Table";
-                    sk.SilinmeTarihi = DateTime.Now;
-                    if (mesaj.Length > 2000)
-                    {
-                        mesaj = mesaj.Substring(0, 1990);
-                    }
-                    sk.SilinenKayitBilgisi = mesaj;
-                    new SilinenKayitService().Save(sk);
-
-                    RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?IslemTarihi=" + IslemTarihiQS + "&AktarilanlarHaric=" + AktarilanlarHaricQS + "&Banka=" + BankaQS + "&Mesaj=true&Islem=Silme&Basarili=true");
-                }
-                catch (Exception ex)
-                {
-                    ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "CloseModalOnay();", true);
-                    ExceptionHelper exHelper = new ExceptionHelper(ex);
-                    exHelper.PublishException();
-                }
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Hiç kayıt seçilmedi. Devam etmek için en az bir kayıt seçiniz.", ProjeConstants.MESAJ_BILGI);
-            }
+                int[] ids = SelectedIds();
+                if (ids == null) return;
+                NbysEkstreWriteResult result = new NbysEkstreWriteService(LoggingContext).Delete(ids);
+                NbysEkstreFeedback.WriteResult(LoggingContext, result, ids.Length + " ekstre kaydı silindi.", RefreshAfterWrite);
+            });
         }
+        private int[] SelectedIds()
+        {
+            string[] values = (paramArray.Value ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            List<int> ids = new List<int>();
+            foreach (string value in values)
+            {
+                int id;
+                if (!int.TryParse(value.Trim(), out id) || id <= 0)
+                { Messages.Warning("Seçim geçerli değil. Listeyi yenileyip kayıtları tekrar seçin."); return null; }
+                if (!ids.Contains(id)) ids.Add(id);
+            }
+            if (ids.Count == 0) { Messages.Warning("İşlem için en az bir kayıt seçin."); return null; }
+            return ids.ToArray();
+        }
+
+        private void RefreshAfterWrite()
+        {
+            paramArray.Value = string.Empty;
+            TumunuSecChk.Checked = false;
+            SelectAllQS = "False";
+            UtilityHelper.ScriptCalistir("CloseModalOnay(); $('#customLoader').hide();");
+            TabloOlustur();
+        }
+
         private void BankaDDLDoldur()
         {
             List<EkstreAktarmaListItem> returnlist = new List<EkstreAktarmaListItem>();
@@ -659,7 +550,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                 BankaDDL.Items.Clear();
                 ListItem li = new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString());
                 BankaDDL.Items.Add(li);
-                List<BankaTanim> list = new BankaTanimService().GetAll();
+                List<BankaTanim> list = new BankaTanimService(LoggingContext).GetAll();
                 //TextInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true).TextInfo;
                 foreach (BankaTanim banka in list)
                 {
@@ -678,7 +569,7 @@ namespace NBYS_WebParts.EkstreListesiWP
             {
                 islemTarihiDateTime = DateTime.Today;
             }
-            EkstreAktarmaService ea = new EkstreAktarmaService();
+            EkstreAktarmaService ea = new EkstreAktarmaService(LoggingContext);
             int rowCount = 0;
             string banka = BankaDDL.SelectedItem.Text;
             DataTable dataTable = ea.GetListTable(islemTarihiDateTime, AktarilanlarHaricQS.ConvertToBool(), banka, ref rowCount);
@@ -717,7 +608,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                     ekstreAktarmaListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_EKSTRE_AKTARMAEDIT + "?SenderApp=KD&SenderApp=KL&EkstreAktarmaId=" + ekstreAktarmaListItem.EkstreAktarmaId + " class='btn btn-outline-primary'>Düzenle</a>";
                     ekstreAktarmaListItem.Eslestir = "<a href=" + ProjeConstants.PAGE_NAKITBAGISCI_ESLESTIR + "?SenderApp=KD&SenderApp=KL&EkstreAktarmaId=" + ekstreAktarmaListItem.EkstreAktarmaId + " class='btn btn-outline-primary'>Eşleştir</a>";
 
-                   bool aktarildiMi = dataRow["AktarildiMi"].ConvertToBool();
+                    bool aktarildiMi = dataRow["AktarildiMi"].ConvertToBool();
                     ekstreAktarmaListItem.AktarildiMi = aktarildiMi.ToString();
                     if (aktarildiMi)
                     {
@@ -728,7 +619,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                     else
                     {
                         ekstreAktarmaListItem.SecKaydet = SecCheckBoxLinki(ProjeConstants.KAYDET,
-                            aktarildiMi, ekstreAktarmaListItem.EkstreAktarmaId.ConvertToInt());
+                        aktarildiMi, ekstreAktarmaListItem.EkstreAktarmaId.ConvertToInt());
                     }
                     returnlist.Add(ekstreAktarmaListItem);
                 }
@@ -740,11 +631,10 @@ namespace NBYS_WebParts.EkstreListesiWP
             string retVal;
             if (aktarildiMi)
             {
-                
                 if (kaydetSil.Equals(ProjeConstants.KAYDET))
                 {
                     retVal = "<input id=chk type=checkbox checked disabled class='ekstre-aktarildi row-checkbox' />";
-                    
+
                 }
                 else
                 {
@@ -763,74 +653,67 @@ namespace NBYS_WebParts.EkstreListesiWP
                 {
                     retVal = @"<input id=chk class='ekstre-aktarilmadi row-checkbox' onchange=addRemoveEkstreIdToDeleteList(" + ekstreAktarmaId + ",this); type=checkbox  "+ tumusecildi +" />";
                 }
-                
+
             }
             return retVal;
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl);
+
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
+            ExecuteAction("CloseBtn_Click", () =>
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                Page.Response.Redirect(newUrl);
+            });
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ExcelBtn_Click", () =>
             {
                 ExportToExcel();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void ExportToExcel()
         {
-            GridView GridView1 = new GridView();
-            GridView1.AllowPaging = false;
-            List<NakitBagisci> list = new List<NakitBagisci>();
-            GridView1.DataSource = GetDataList(); ;
-            GridView1.DataBind();
-
-            Page.Response.Clear();
-            Page.Response.Buffer = true;
-            Page.Response.AddHeader("content-disposition",
-             "attachment;filename=EkstreAktarmaListesi_" + IslemTarihiQS.ConvertToDatetimeEmptyIfNull() + ".xls");
-            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
-            Page.Response.Charset = "windows-1254";//ISO-8859-9
-            Page.Response.ContentType = "application/vnd.ms-excel";
-            StringWriter sw = new StringWriter();
-            HtmlTextWriter hw = new HtmlTextWriter(sw);
-
-            for (int i = 0; i < GridView1.Rows.Count; i++)
+            ExecuteAction("ExportToExcel", () =>
             {
-                //Apply text style to each Row
-                GridView1.Rows[i].Attributes.Add("class", "textmode");
-            }
-            GridView1.RenderControl(hw);
+                GridView GridView1 = new GridView();
+                GridView1.AllowPaging = false;
+                List<NakitBagisci> list = new List<NakitBagisci>();
+                GridView1.DataSource = GetDataList(); ;
+                GridView1.DataBind();
 
-            //style to format numbers to string
-            string style = @"<style> .textmode { mso-number-format:\@; } </style>";
-            Page.Response.Write(style);
-            Page.Response.Output.Write(sw.ToString());
-            Page.Response.Flush();
-            Page.Response.End();
+                Page.Response.Clear();
+                Page.Response.Buffer = true;
+                Page.Response.AddHeader("content-disposition",
+                "attachment;filename=EkstreAktarmaListesi_" + IslemTarihiQS.ConvertToDatetimeEmptyIfNull() + ".xls");
+                Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
+                Page.Response.Charset = "windows-1254";//ISO-8859-9
+                Page.Response.ContentType = "application/vnd.ms-excel";
+                StringWriter sw = new StringWriter();
+                HtmlTextWriter hw = new HtmlTextWriter(sw);
 
+                for (int i = 0; i < GridView1.Rows.Count; i++)
+                {
+                    //Apply text style to each Row
+                    GridView1.Rows[i].Attributes.Add("class", "textmode");
+                }
+                GridView1.RenderControl(hw);
+
+                //style to format numbers to string
+                string style = @"<style> .textmode { mso-number-format:\@; } </style>";
+                Page.Response.Write(style);
+                Page.Response.Output.Write(sw.ToString());
+                Page.Response.Flush();
+                Page.Response.End();
+            });
         }
         private class EkstreAktarmaListItem
         {
@@ -858,54 +741,57 @@ namespace NBYS_WebParts.EkstreListesiWP
         }
         protected void IslemTarihiTxt_TextChanged(object sender, EventArgs e)
         {
-            IslemTarihiQS = IslemTarihiTxt.Text.ConvertToDatetimeEmptyIfNull();
-            RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?IslemTarihi=" + IslemTarihiQS + "&AktarilanlarHaric=" + AktarilanlarHaricQS + "&Banka=" + BankaQS);
+            ExecuteAction("IslemTarihiTxt_TextChanged", () =>
+            {
+                IslemTarihiQS = IslemTarihiTxt.Text.ConvertToDatetimeEmptyIfNull();
+                RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?IslemTarihi=" + IslemTarihiQS + "&AktarilanlarHaric=" + AktarilanlarHaricQS + "&Banka=" + BankaQS);
+            });
         }
         protected void AktarilanlarHaricChk_CheckedChanged(object sender, EventArgs e)
         {
-            AktarilanlarHaricQS = AktarilanlarHaricChk.Checked.ToString();
-            RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?IslemTarihi=" + IslemTarihiQS + "&AktarilanlarHaric=" + AktarilanlarHaricQS + "&Banka=" + BankaQS);
+            ExecuteAction("AktarilanlarHaricChk_CheckedChanged", () =>
+            {
+                AktarilanlarHaricQS = AktarilanlarHaricChk.Checked.ToString();
+                RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?IslemTarihi=" + IslemTarihiQS + "&AktarilanlarHaric=" + AktarilanlarHaricQS + "&Banka=" + BankaQS);
+            });
         }
         protected void BankaDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BankaQS = BankaDDL.SelectedItem.Value;
-            RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?IslemTarihi=" + IslemTarihiQS + "&AktarilanlarHaric=" + AktarilanlarHaricQS + "&Banka=" + BankaQS);
+            ExecuteAction("BankaDDL_SelectedIndexChanged", () =>
+            {
+                BankaQS = BankaDDL.SelectedItem.Value;
+                RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?IslemTarihi=" + IslemTarihiQS + "&AktarilanlarHaric=" + AktarilanlarHaricQS + "&Banka=" + BankaQS);
+            });
         }
         protected void SecilenleriSilBtn_Click(object sender, EventArgs e)
         {
-
-            string value = paramArray.Value;
-            if (string.IsNullOrEmpty(value))
+            ExecuteAction("SecilenleriSilBtn_Click", () =>
             {
-                MessageHelper.PublishMessage("Silmek için kayıt seçiniz.", ProjeConstants.MESAJ_BILGI, 2000);
-                return;
-            }
-            string[] idList = value.Split(',');
-            if (idList.Length < 1)
-            {
-                MessageHelper.PublishMessage("Silmek için kayıt seçiniz.", ProjeConstants.MESAJ_BILGI, 2000);
-            }
-            else
-            {
-                ModalTitleLbl.Text = "Seçilen Kayıtlar Silinecek";
-                ModalSubTitleLbl.Text = idList.Length + " adet kaydı silmek için seçtiniz.";
-                UyariMesajiLbl.Text = "Lütfen silmeden önce dikkatle inceleyiniz.";
+                int[] ids = SelectedIds();
+                if (ids == null) return;
+                ModalTitleLbl.Text = "Seçilen kayıtlar silinecek";
+                ModalSubTitleLbl.Text = ids.Length + " kayıt seçildi.";
+                UyariMesajiLbl.Text = "Devam etmeden önce seçiminizi kontrol edin.";
                 SilNowBtn.Visible = true;
                 KaydetNowBtn.Visible = false;
-                var openPopup = "OpenModalOnay();";
-                UtilityHelper.ScriptCalistir( openPopup);
-            }
-
+                UtilityHelper.ScriptCalistir("OpenModalOnay();");
+            });
         }
         protected void SilNowBtn_Click(object sender, EventArgs e)
         {
-            SecilenListeyiSil();
+            ExecuteAction("SilNowBtn_Click", () =>
+            {
+                SecilenListeyiSil();
+            });
         }
         protected void TumunuSecChk_CheckedChanged(object sender, EventArgs e)
         {
-            SelectAllQS = TumunuSecChk.Checked.ToString();
-            //paramArray.Value = TumunuSecChk.Checked ? GetAllIds() : string.Empty;
-            TabloOlustur();
+            ExecuteAction("TumunuSecChk_CheckedChanged", () =>
+            {
+                SelectAllQS = TumunuSecChk.Checked.ToString();
+                //paramArray.Value = TumunuSecChk.Checked ? GetAllIds() : string.Empty;
+                TabloOlustur();
+            });
         }
         private void TabloOlustur()
         {
@@ -917,19 +803,11 @@ namespace NBYS_WebParts.EkstreListesiWP
         {
             string jSon = string.Empty;
 
-            try
-            {
-                List<EkstreAktarmaListItem> list = GetDataList();
-                var serializer = new JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
+            List<EkstreAktarmaListItem> list = GetDataList();
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            jSon = serializer.Serialize(list);
+
             return jSon;
         }
         private string CreateDataTable(string jsonData)
@@ -968,16 +846,15 @@ namespace NBYS_WebParts.EkstreListesiWP
                             { data: 'Telefon' },
                             { data: 'BagisTarihi' },
                             { data: 'Tutar' },
-                            { data: 'Aciklama' },               
-                            { data: 'Duzenle' },               
-                            { data: 'Eslestir' },               
+                            { data: 'Aciklama' },
+                            { data: 'Duzenle' },
+                            { data: 'Eslestir' },
                         ],
                         'columnDefs': [
                             { 'width': '20%', 'targets': 4 },
                             { 'width': '25%', 'targets': 8 },
                             { targets: 7, className: 'dt-body-right'},
                             { targets: 0, render:function(data,type,row,data){
-                                
                                 if (row.AktarildiMi == 'True')
                                 {
                                     return '<input id=chk type=checkbox checked disabled class=ekstre-aktarildi />';
@@ -987,7 +864,6 @@ namespace NBYS_WebParts.EkstreListesiWP
                                     var isChecked='';
                                     if ('" + SelectAllQS.ConvertToBool() + @"'=='True')
                                     {
-                                    
                                         isChecked='checked';
                                         EkleCikar(row.EkstreAktarmaId,isChecked);
                                     }else
@@ -995,7 +871,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                                         isChecked='';
                                         EkleCikar(row.EkstreAktarmaId,isChecked);
                                     }
-                                    
+
                                     return ('<input id=chk class=ekstre-aktarilmadi '+isChecked+' onchange=addRemoveEkstreIdToList('+row.EkstreAktarmaId+',this); type=checkbox />');
                                 }
 
@@ -1020,7 +896,6 @@ namespace NBYS_WebParts.EkstreListesiWP
                             }
                         },//set row color
 
-
                         });
                     });
 
@@ -1031,38 +906,24 @@ namespace NBYS_WebParts.EkstreListesiWP
 
         protected void SecilenleriKaydetBtn_Click(object sender, EventArgs e)
         {
-
-            string value = paramArray.Value;
-            string[] idList = value.Split(',');
-
-            if (idList.Length < 1)
+            ExecuteAction("SecilenleriKaydetBtn_Click", () =>
             {
-                MessageHelper.PublishMessage("Kaydetmek için kayıt seçiniz.", ProjeConstants.MESAJ_BILGI, 2000);
-            }
-            else
-            {
-                ModalTitleLbl.Text = "Seçilen Kayıtlar Aktarılacak";
-                ModalSubTitleLbl.Text = idList.Length + " adet satırı kaydetmek için seçtiniz.";
-                UyariMesajiLbl.Text = "Lütfen kaydetmeden önce dikkatle inceleyiniz.";
+                int[] ids = SelectedIds();
+                if (ids == null) return;
+                ModalTitleLbl.Text = "Seçilen kayıtlar aktarılacak";
+                ModalSubTitleLbl.Text = ids.Length + " kayıt seçildi.";
+                UyariMesajiLbl.Text = "Devam etmeden önce seçiminizi kontrol edin.";
+                SilNowBtn.Visible = false;
                 KaydetNowBtn.Visible = true;
-                var openPopup = "OpenModalOnay();";
-                UtilityHelper.ScriptCalistir(openPopup);
-            }
+                UtilityHelper.ScriptCalistir("OpenModalOnay();");
+            });
         }
         protected void KaydetNowBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("KaydetNowBtn_Click", () =>
             {
-                
                 SecilenListeyiKaydet();
-
-
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
 
     }

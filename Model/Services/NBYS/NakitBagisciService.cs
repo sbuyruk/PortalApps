@@ -40,7 +40,7 @@ namespace Model.Services.NBYS
             nakitBagisci.Olusturan = UtilityHelper.GetCurrentUserName();
             nakitBagisci.Id = repository.Insert(nakitBagisci);
 
-            if (nakitBagisci.Id > 0 && ProjeConstants.NBYS_SAVE_LOG)
+            if (nakitBagisci.Id > 0 && !repository.HasLogContext && ProjeConstants.NBYS_SAVE_LOG)
             {
                 OlayKayit olayKayit = new OlayKayit();
                 olayKayit.GirisOlayKaydet(
@@ -63,7 +63,7 @@ namespace Model.Services.NBYS
             nakitBagisci.Olusturan = UtilityHelper.GetCurrentUserName();
             nakitBagisci.Id = repository.Insert(nakitBagisci, transaction);
 
-            if (nakitBagisci.Id > 0 && ProjeConstants.NBYS_SAVE_LOG)
+            if (nakitBagisci.Id > 0 && !repository.HasLogContext && ProjeConstants.NBYS_SAVE_LOG)
             {
                 new OlayKayit().GirisOlayKaydet(
                     nakitBagisci,
@@ -179,7 +179,7 @@ namespace Model.Services.NBYS
                 isSaved = repository.Update(nakitBagisci);
             }
 
-            if (isSaved && ProjeConstants.NBYS_UPDATE_LOG)
+            if (isSaved && !repository.HasLogContext && ProjeConstants.NBYS_UPDATE_LOG)
             {
                 OlayKayit olayKayit = new OlayKayit();
                 olayKayit.GuncellemeOlayKaydet(
@@ -206,7 +206,7 @@ namespace Model.Services.NBYS
             nakitBagisci.DegistirmeTarihi = DateTime.Now;
             nakitBagisci.Degistiren = UtilityHelper.GetCurrentUserName();
             bool updated = repository.Update(nakitBagisci, transaction);
-            if (updated && ProjeConstants.NBYS_UPDATE_LOG)
+            if (updated && !repository.HasLogContext && ProjeConstants.NBYS_UPDATE_LOG)
             {
                 new OlayKayit().GuncellemeOlayKaydet(
                     previous,
@@ -254,7 +254,7 @@ namespace Model.Services.NBYS
                 return false;
 
             bool isDeleted = repository.Delete(nakitBagisci.Id);
-            if (isDeleted && ProjeConstants.NBYS_DELETE_LOG)
+            if (isDeleted && !repository.HasLogContext && ProjeConstants.NBYS_DELETE_LOG)
             {
                 OlayKayit olayKayit = new OlayKayit();
                 olayKayit.SilmeOlayKaydet(

@@ -7,12 +7,27 @@ namespace DAO.Repositories.NBYS
 {
     public class BankaTanimRepository
     {
+        public bool HasLogContext { get { return logContext != null; } }
         private const string TableName = "BankaTanim_Table";
         private readonly DbClass db;
+        private readonly PortalLogContext logContext;
         private readonly CrudQueryBuilder queryBuilder;
 
         public BankaTanimRepository() : this(new DbClass())
         {
+        }
+
+        public BankaTanimRepository(SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            queryBuilder = new CrudQueryBuilder();
+        }
+
+        public BankaTanimRepository(PortalLogContext context)
+        {
+            if (context == null || context.Project != "NBYS") throw new ArgumentException("NBYS log bağlamı gereklidir.", "context");
+            logContext = context;
+            queryBuilder = new CrudQueryBuilder();
         }
 
         public BankaTanimRepository(DbClass db)
@@ -27,12 +42,12 @@ namespace DAO.Repositories.NBYS
         {
             SqlQuery query = new SqlQuery("SELECT * FROM BankaTanim_Table WHERE Id=@Id");
             query.AddParameter("@Id", id);
-            return db.SelectFromDb(query, "");
+            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "BankaTanimRepository").Select(query);
         }
 
         public DataTable SelectAll()
         {
-            return db.SelectFromDb(new SqlQuery(
+            return Select(new SqlQuery(
                 "SELECT * FROM BankaTanim_Table ORDER BY Banka"), "");
         }
 
@@ -41,7 +56,7 @@ namespace DAO.Repositories.NBYS
             SqlQuery query = new SqlQuery(
                 "SELECT * FROM BankaTanim_Table WHERE Banka=@Banka");
             query.AddParameter("@Banka", name);
-            return db.SelectFromDb(query, "");
+            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "BankaTanimRepository").Select(query);
         }
 
         public DataTable SelectByName(string name, SqlTransactionContext transaction)
@@ -51,12 +66,12 @@ namespace DAO.Repositories.NBYS
             SqlQuery query = new SqlQuery(
                 "SELECT * FROM BankaTanim_Table WHERE Banka=@Banka");
             query.AddParameter("@Banka", name);
-            return transaction.Select(query);
+            return SelectInTransaction(query, transaction);
         }
 
         public DataTable SelectGroups()
         {
-            return db.SelectFromDb(new SqlQuery(
+            return Select(new SqlQuery(
                 "SELECT BankaGrup FROM BankaTanim_Table GROUP BY BankaGrup"), "");
         }
 
@@ -69,23 +84,42 @@ namespace DAO.Repositories.NBYS
 
         public DataTable SelectGroups2()
         {
-            return db.SelectFromDb(new SqlQuery(
+            return Select(new SqlQuery(
                 "SELECT BankaGrup2 FROM BankaTanim_Table GROUP BY BankaGrup2"), "");
         }
 
         public int Insert<T>(T entity)
         {
-            return db.Insert(queryBuilder.BuildInsert(entity, TableName));
+            return LegacyWriteDb.Insert(queryBuilder.BuildInsert(entity, TableName));
         }
 
         public bool Update<T>(T entity)
         {
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName));
+            return LegacyWriteDb.Update2Db(queryBuilder.BuildUpdate(entity, TableName));
         }
 
         public bool Delete(int id)
         {
-            return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), "");
+            return LegacyWriteDb.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), "");
+        }
+        private DataTable Select(SqlQuery query, string ignored,
+            [System.Runtime.CompilerServices.CallerMemberName] string method = "")
+        {
+            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "BankaTanimRepository").Select(query, method: method);
+        }
+        private DbClass LegacyWriteDb
+        {
+            get
+            {
+                if (logContext != null) throw new InvalidOperationException("Yazma işlemi için transaction gereklidir.");
+                return db;
+            }
+        }
+        private DataTable SelectInTransaction(SqlQuery query, SqlTransactionContext transaction,
+            [System.Runtime.CompilerServices.CallerMemberName] string method = "")
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            return logContext == null ? transaction.Select(query) : new NbysSqlExecutor(logContext, "BankaTanimRepository").Select(query, transaction, method);
         }
     }
 }
