@@ -203,3 +203,10 @@ FTKKisiGirisiWP, FTKIslemleriWP, FTKListesiWP, FTKKuruluOlmayanIlIlceListesiWP, 
 Kişi yazmaları ve geçmiş bağlantısı kontrolü; kurul işlemi, sayaç ve bütün üye geçmişi; son kaydın düzeltilmesi ve onaydaki üyelerin toplu görev sonlandırması transaction ve merkezi audit yoluna alındı. Liste/rapor/harita ve yer/bölge okumaları açık bağlamlıdır.
 Beklenen doğrulamalar ayrı Türkçe uyarılardır; teknik hatalar güvenli tek mesaj/başvuru koduyla gösterilir. Mesaj farkları, yeni referans/boş üye korumaları, FTK uygulama kilidi, audit alan listeleri ve TEST adımları LoglamaGecisFtkIslemleri.md içindedir.
 FTKYazilariWP belge/SharePoint/e-posta kapsamıyla sonraki parçada kalır. Düzenli bağışçı, SMS ve diğer belge/basım akışları tamamlanmış sayılmaz. Codex build/test/debug çalıştırmadı; çalışma zamanı sonucu kullanıcı doğrulamasını bekler.
+
+## Düzenli bağışçı işlem grubu
+
+Kullanıcı FTK parçasını tamamlandı bildirdi ve devam istedi. Temiz ve güncel 75a61ca8ecfbc037f598d3c937cb560a841293b8 üzerinden codex/nbys-duzenli-bagisci-transaction-audit açıldı.
+DuzenliBagisciDosyaYuklemeWP ve DuzenliNakitBagisciListesiWP'nin yükleme/eşleştirme/belge kaydı zinciri taşındı. Satır başına transaction ve kısmi sonuç korunur; armağan ve iki bağlantı tek transaction'dır. Okumalar açık bağlamlı, audit iş transaction'ındadır.
+Boş/çoklu aday eşleştirmesi, beklenen doğrulamalar, tekrar belge oluşturma, yanlış tam başarı ve çift hata bildirimi düzeltildi. Excel için sayısal türleri ve tarih sistemini koruyan ayrı okuma yolu eklendi; eski okuyucu çağrıları korunur.
+Mesaj farkları, audit listeleri, yapılandırma, eşleşmeyen satırların tekrar yükleme sınırı ve TEST adımları LoglamaGecisDuzenliBagisci.md içindedir. Belgeyi basma/gönderme, ArmaganEditWP, SMS ve diğer belge akışları tamamlanmış sayılmaz. Codex build/test/debug çalıştırmadı; çalışma zamanı sonucu kullanıcı doğrulamasını bekler.

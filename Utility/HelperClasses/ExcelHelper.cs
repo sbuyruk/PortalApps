@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.OleDb;
 using System.IO;
 using System.Linq;
+using System.Globalization;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 namespace Utility.HelperClasses
@@ -52,6 +53,18 @@ namespace Utility.HelperClasses
             }
 
             return dataTable;
+        }
+
+        public static DataTable ReadXLSXAsTypedDataTable(Stream file, int ilkKacSatirHaric, int sonKacSatirHaric, bool hasTitle)
+        {
+            try
+            {
+                using (SpreadsheetDocument document = SpreadsheetDocument.Open(file, false))
+                {
+                    return ConvertToDatetable(document, ilkKacSatirHaric, sonKacSatirHaric, hasTitle, true);
+                }
+            }
+            catch (OpenXmlPackageException error) { throw new InvalidDataException("Dosya geçerli bir Excel çalışma kitabı değil.", error); }
         }
         public static DataTable ReadXLSXAsDataTable(string filePath, bool hasTitle)
         {
@@ -129,11 +142,16 @@ namespace Utility.HelperClasses
             return index;
         }
         private static DataTable ConvertToDatetable(SpreadsheetDocument spreadSheetDocument,
-            int ilkKacSatirHaric, int sonKacSatirHaric, bool hasTitle)
+            int ilkKacSatirHaric, int sonKacSatirHaric, bool hasTitle, bool preserveNumbers = false)
         {
             DataTable dataTable = new DataTable();
 
             WorkbookPart workbookPart = spreadSheetDocument.WorkbookPart;
+            if (preserveNumbers)
+            {
+                WorkbookProperties properties = workbookPart.Workbook.WorkbookProperties;
+                dataTable.ExtendedProperties["Excel.Date1904"] = properties != null && properties.Date1904 != null && properties.Date1904.Value;
+            }
             IEnumerable<Sheet> sheets = spreadSheetDocument.WorkbookPart.Workbook.GetFirstChild<Sheets>().Elements<Sheet>();
             string relationshipId = sheets.First().Id.Value;
             WorksheetPart worksheetPart = (WorksheetPart)spreadSheetDocument.WorkbookPart.GetPartById(relationshipId);
@@ -168,6 +186,7 @@ namespace Utility.HelperClasses
                     if (idx > maxColumnIndex) maxColumnIndex = idx;
                 }
             }
+            if (preserveNumbers && !rows.Any()) return dataTable;
             var headerCells = rows.ElementAt(0).Descendants<Cell>().ToList();
             for (int col = 0; col <= maxColumnIndex; col++)
             {
@@ -175,15 +194,15 @@ namespace Utility.HelperClasses
                 if (hasTitle && headerCell != null)
                 {
                     string cellValue = GetCellValue(spreadSheetDocument, headerCell);
-                    dataTable.Columns.Add(cellValue.Equals("0") ? "Col_" + col : cellValue + "_" + col);
+                    dataTable.Columns.Add(cellValue.Equals("0") ? "Col_" + col : cellValue + "_" + col, preserveNumbers ? typeof(object) : typeof(string));
                 }
                 else
                 {
-                    dataTable.Columns.Add("Column_" + col);
+                    dataTable.Columns.Add("Column_" + col, preserveNumbers ? typeof(object) : typeof(string));
                 }
             }
 
-            foreach (Row row in rows)
+            foreach (Row row in preserveNumbers && hasTitle ? rows.Skip(1) : rows)
             {
                 DataRow dataRow = dataTable.NewRow();
                 for (int i = 0; i < row.Descendants<Cell>().Count(); i++)
@@ -192,7 +211,14 @@ namespace Utility.HelperClasses
                     //SB bos hücreyi atlama sorununu düzeltmek için asagisi eklendi, üstteki satir kaldirildi
                     Cell cell = row.Descendants<Cell>().ElementAt(i);
                     int actualCellIndex = CellReferenceToIndex(cell);
-                    dataRow[actualCellIndex] = GetCellValue(spreadSheetDocument, cell);
+                    string cellValue = preserveNumbers && cell.DataType != null && cell.DataType.Value == CellValues.InlineString
+                        ? (cell.InlineString == null ? string.Empty : cell.InlineString.InnerText)
+                        : GetCellValue(spreadSheetDocument, cell);
+                    decimal number;
+                    if (preserveNumbers && (cell.DataType == null || cell.DataType.Value == CellValues.Number)
+                        && decimal.TryParse(cellValue, NumberStyles.Float, CultureInfo.InvariantCulture, out number))
+                        dataRow[actualCellIndex] = number;
+                    else dataRow[actualCellIndex] = cellValue;
                 }
 
                 dataTable.Rows.Add(dataRow);

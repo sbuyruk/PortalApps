@@ -1,3 +1,6 @@
+using System.Linq;
+using Utility.Logging;
+using NBYS_WebParts.Logging;
 using Microsoft.SharePoint.JSGrid;
 using Model.NBYS;
 using Model.Ortak;
@@ -18,6 +21,15 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
     [ToolboxItemAttribute(false)]
     public partial class DuzenliBagisciDosyaYuklemeWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "DuzenliBagisciDosyaYuklemeWP"); }
+        }
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -32,12 +44,10 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
-        bool dosyaAktarildi = false;
         private string CurrentUserName
         {
             get
             {
-
                 if (ViewState["CurrentUserName"] == null)
                 {
                     ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
@@ -53,241 +63,58 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
         private CultureInfo cultureInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
+
                 if (!Page.IsPostBack)
                 {
                     YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_DUZENLIBAGISCI_LIST);
                 }
-
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
-
+            });
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("CloseBtn_Click", () =>
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl,false);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
-
+            });
         }
         protected void KaydetBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("KaydetBtn_Click", () =>
             {
                 DosyayiKaydet();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void DuzenliBagisciListesiBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("DuzenliBagisciListesiBtn_Click", () =>
             {
                 RedirectToPage(ProjeConstants.PAGE_DUZENLIBAGISCI_LIST);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         private void DosyayiKaydet()
         {
-            if (!dosyaAktarildi && DosyaFU.HasFile)
-            {
-                var exceptionHelper = Kaydet(DosyaFU.FileContent, DateTime.Now, CurrentUserName);
-                if (exceptionHelper.Exceptions.Count > 0)
-                {
-                    DosyaFU.Enabled = false;
-                    KaydetBtn.Enabled = false;
-                    exceptionHelper.PublishException();
-                }
-                else
-                {
-                    DosyaFU.Enabled = false;
-                    KaydetBtn.Enabled = false;
-                    MessageHelper.PublishMessage("Dosya başarıyla yüklendi.", ProjeConstants.MESAJ_BASARILI,2000);
-                }
-
-            }
+            if (!DosyaFU.HasFile) { Messages.Warning("Yüklenecek Excel dosyasını seçin."); return; }
+            if (!string.Equals(Path.GetExtension(DosyaFU.FileName), ".xlsx", StringComparison.OrdinalIgnoreCase))
+            { Messages.Warning("Düzenli bağışçı şablonuna uygun .xlsx dosyası seçin."); return; }
+            NbysRegularImportResult result = new NbysRegularWriteService(LoggingContext).Import(DosyaFU.FileContent);
+            NbysRegularFeedback.Import(LoggingContext, result);
         }
-        public ExceptionHelper Kaydet(Stream fileStream, DateTime processTime, string currentUser)
-        {
-            ExceptionHelper exceptionHelper = new ExceptionHelper();
-            
-            try
-            {
 
-                var data = ExcelHelper.ReadXLSXAsDataTable(fileStream, ProjeConstants.DUZENLIBAGISCI_ILKKACSATIRHARIC, ProjeConstants.DUZENLIBAGISCI_SONKACSATIRHARIC, true);
-                if (data != null)
-                {
-
-                    foreach (DataRow row in data.Rows)
-                    {
-                        string aciklamaStr = string.Empty;
-                        var tutar = row[6].ReturnZeroIfNull().ToString().Replace("₺","").ConvertToDecimal();
-                        if (tutar < 1)
-                        {
-                            continue; //tutar 1 den azsa atla
-                        }
-                        var aciklama = row[0].ReturnEmptyIfNull().ToString().Replace("'", "");
-                        var adi = row[1].ReturnEmptyIfNull().ToString();
-                        var eposta = row[2].ReturnEmptyIfNull().ToString();
-                        var telefon = row[3].ReturnEmptyIfNull().ToString();
-                        var TCKimlikNo = row[4].ReturnEmptyIfNull().ConvertToLong();
-                        var adres = row[5].ReturnEmptyIfNull().ConvertToLong();
-                        var bagisadedi = row[7].ReturnZeroIfNull().ConvertToInt();
-                        var toplambagis = row[8].ReturnZeroIfNull().ToString().Replace("₺", "").ConvertToDecimal();
-                        var baslamaTarihi = row[9].ReturnEmptyIfNull().ConvertToDatetime();
-
-                        try
-                        {
-                            int bagisciId = 0;
-                            string eslesmeBilgisi = string.Empty;
-                            NakitBagisciService service = new NakitBagisciService();
-                            NakitBagisci bagisci = service.GetByTcKimlikNo(TCKimlikNo);
-                            if (bagisci==null)
-                            {
-                                bagisci = service.GetByAdAndTelefon(adi.Trim(), telefon);
-
-                                if (bagisci == null)
-                                {
-                                    bagisci = service.GetByTelefon(telefon);
-                                    if (bagisci == null)
-                                    {
-                                        bagisci = service.GetByEposta(eposta);
-                                        if (bagisci == null)
-                                        {
-
-
-                                            //Bağışçı bulunamadı
-                                            //Bu durumda yeni bağışçı oluşturmak doğru değil, çünkü 12 aydır bağış yaptığına göre mutlaka bir kaydı vardır.
-                                            bagisciId = -1;
-                                            eslesmeBilgisi = " # Bağışçı Bulunamadı ";
-                                        }
-                                        else
-                                        {
-                                            bagisciId = bagisci.Id;
-                                            eslesmeBilgisi = " # Epostadan Bulundu";
-                                        }
-
-
-                                    }
-                                    else
-                                    {
-                                        bagisciId = bagisci.Id;
-                                        eslesmeBilgisi = " # Telefondan Bulundu";
-                                    }
-
-                                }
-                                else
-                                {
-                                    bagisciId = bagisci.Id;
-                                    eslesmeBilgisi = " # Ad ve Telefondan Bulundu";
-                                }
-                            }
-                            else
-                            {
-                                bagisciId = bagisci.Id;
-                                eslesmeBilgisi = " # TCKN ile bulundu";
-                            }
-
-                            DuzenliNakitBagisciService duzenliBagisciService = new DuzenliNakitBagisciService();
-                            DuzenliNakitBagisci duzenliNakitBagisci = duzenliBagisciService.GetActiveByBagisciId(bagisciId);
-                            bool updated = false;   
-
-                            //Aktif düzenli bağışçı kaydı yoksa
-                            if (duzenliNakitBagisci == null)
-                            {
-                                duzenliNakitBagisci = new DuzenliNakitBagisci();
-                                duzenliNakitBagisci.BagisciId = bagisciId;
-                                duzenliNakitBagisci.TCKimlikNo = TCKimlikNo;
-                                duzenliNakitBagisci.BagisciAdi = adi;
-                                duzenliNakitBagisci.Tutar = tutar;
-                                duzenliNakitBagisci.BaslamaTarihi = baslamaTarihi;
-                                duzenliNakitBagisci.Aktif = true;
-                                duzenliNakitBagisci.Telefon = telefon;
-                                duzenliNakitBagisci.EPosta = eposta;
-                                duzenliNakitBagisci.EslesmeBilgisi = eslesmeBilgisi;
-                                duzenliNakitBagisci.Aciklama = aciklama;
-                                duzenliNakitBagisci.BagisAdedi = bagisadedi;
-                                duzenliNakitBagisci.BagisToplami = toplambagis;
-                                int id = duzenliBagisciService.Save(duzenliNakitBagisci);
-                                if (id < 1)
-                                {
-                                    aciklamaStr= string.IsNullOrEmpty(aciklama) ? " Yeni Düzenli Bağışçı yaratılmadı -> " + adi : aciklama;
-                                    Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} -> Düzenli bağışçı kaydı oluşturulamadı.", ProjeConstants.PAGE_DUZENLIBAGISCI_YUKLEME, aciklamaStr));
-                                    exceptionHelper.Exceptions.Add(exception);
-                                }
-                            }
-                            else
-                            {
-                                duzenliNakitBagisci.BagisciId = bagisciId;
-                                duzenliNakitBagisci.TCKimlikNo = TCKimlikNo;
-                                duzenliNakitBagisci.BagisciAdi = adi;
-                                duzenliNakitBagisci.Tutar = tutar;
-                                duzenliNakitBagisci.BaslamaTarihi = baslamaTarihi;
-                                duzenliNakitBagisci.Aktif = true;
-                                duzenliNakitBagisci.Telefon = telefon;
-                                duzenliNakitBagisci.EPosta = eposta;
-                                duzenliNakitBagisci.EslesmeBilgisi = eslesmeBilgisi;
-                                duzenliNakitBagisci.Aciklama = aciklama;
-                                duzenliNakitBagisci.BagisAdedi = bagisadedi;
-                                duzenliNakitBagisci.BagisToplami = toplambagis;
-                                updated = duzenliBagisciService.Update(duzenliNakitBagisci);
-
-                            }
-
-                        }
-                        catch (Exception ex)
-                        {
-                            aciklamaStr = string.IsNullOrEmpty(aciklama) ? adi : aciklama;
-                            Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} ->", ProjeConstants.PAGE_DUZENLIBAGISCI_YUKLEME, aciklamaStr), ex);
-                            exceptionHelper.Exceptions.Add(exception);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                exceptionHelper.Exceptions.Add(ex);
-            }
-            return exceptionHelper;
-        }
-        
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                int index = currentUrl.LastIndexOf("?") < 0 ? currentUrl.Length : currentUrl.LastIndexOf("?");
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            int index = currentUrl.LastIndexOf("?") < 0 ? currentUrl.Length : currentUrl.LastIndexOf("?");
 
-                string rawUrl = currentUrl.Substring(0, index);
-                string newUrl = rawUrl.Substring(0, rawUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string rawUrl = currentUrl.Substring(0, index);
+            string newUrl = rawUrl.Substring(0, rawUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl);
+
         }
     }
-    
+
 }

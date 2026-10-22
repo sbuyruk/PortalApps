@@ -50,6 +50,7 @@
     <Compile Include="Repositories\NBYS\NbysSqlExecutor.cs" />
     <Compile Include="Repositories\NBYS\NbysTransactionalWriter.cs" />
     <Compile Include="Repositories\NBYS\NbysFtkWriteRepository.cs" />
+    <Compile Include="Repositories\NBYS\NbysRegularWriteRepository.cs" />
     <Compile Include="Repositories\Portal\ToplantiRepository.cs" />
     <Compile Include="Repositories\Portal\ToplantiKatilimRepository.cs" />
     <Compile Include="Repositories\Portal\ToplantiParametreRepository.cs" />
