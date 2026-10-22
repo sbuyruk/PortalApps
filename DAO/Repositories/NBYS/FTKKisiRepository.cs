@@ -85,10 +85,19 @@ namespace DAO.Repositories.NBYS
             return Select(query);
         }
 
+        public DataTable SelectByName(string name, string surname, int excludedId)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM FTKKisi_Table WHERE Adi=@Adi AND Soyadi=@Soyadi AND Id<>@Id");
+            query.AddParameter("@Adi", name);
+            query.AddParameter("@Soyadi", surname);
+            query.AddParameter("@Id", excludedId);
+            return Select(query);
+        }
+
         public DataTable SelectMembers(int provinceId, int districtId, int operationId,
             bool onlyActive, string activeStatus)
         {
-            string operationFilter = operationId < 0 ? string.Empty : " AND A.Id=@FTKIslemId";
+            string operationFilter = operationId < 0 || (readContext != null && operationId == 0) ? string.Empty : " AND A.Id=@FTKIslemId";
             string activeFilter = onlyActive ? " AND UyelikDurumu=@UyelikDurumu" : string.Empty;
             SqlQuery query = new SqlQuery(@"SELECT A.Id FTKIslemId, C.Id Id, C.Id FTKKisiId, A.*, C.*
                 FROM FTKKisi_Table C

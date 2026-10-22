@@ -117,6 +117,19 @@ namespace DAO.Repositories.Ortak
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectByRegion(int regionId, bool orderByName, PortalLogContext context)
+        {
+            bool all = regionId == Utility.ProjeGlobal.ProjeConstants.HEPSI_INT ||
+                regionId == Utility.ProjeGlobal.ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM Il_Table WHERE Id BETWEEN 1 AND 81" +
+                (all ? "" : " AND BolgeId=@BolgeId") +
+                (orderByName ? " ORDER BY IlAdi" : ""));
+            if (!all)
+                query.AddParameter("@BolgeId", regionId);
+            return PortalSqlReadExecutor.Select(query, context, "IlRepository.SelectByRegion");
+        }
+
         public DataTable SelectCountByRegion(int regionId)
         {
             bool all = regionId == Utility.ProjeGlobal.ProjeConstants.HEPSI_INT ||
@@ -127,6 +140,18 @@ namespace DAO.Repositories.Ortak
             if (!all)
                 query.AddParameter("@BolgeId", regionId);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectCountByRegion(int regionId, PortalLogContext context)
+        {
+            bool all = regionId == Utility.ProjeGlobal.ProjeConstants.HEPSI_INT ||
+                regionId == Utility.ProjeGlobal.ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+            SqlQuery query = new SqlQuery(
+                "SELECT COUNT(Id) Adet FROM Il_Table WHERE Id BETWEEN 1 AND 81" +
+                (all ? "" : " AND BolgeId=@BolgeId"));
+            if (!all)
+                query.AddParameter("@BolgeId", regionId);
+            return PortalSqlReadExecutor.Select(query, context, "IlRepository.SelectCountByRegion");
         }
 
         public DataTable SelectWithFTK()

@@ -1,3 +1,4 @@
+using Utility.Logging;
 using DAO.Ortak;
 using System;
 using System.Data;
@@ -8,9 +9,17 @@ namespace DAO.Repositories.NBYS
     {
         private const string TableName = "FTK_Table";
         private readonly DbClass db;
+        private readonly PortalLogContext context;
         private readonly CrudQueryBuilder queryBuilder;
 
         public FTKRepository() : this(new DbClass()) { }
+
+        public FTKRepository(PortalLogContext context)
+        {
+            if (context == null || context.Project != "NBYS") throw new ArgumentException("NBYS log bağlamı gereklidir.", "context");
+            this.context = context;
+            queryBuilder = new CrudQueryBuilder();
+        }
 
         public FTKRepository(DbClass db)
         {
@@ -23,7 +32,7 @@ namespace DAO.Repositories.NBYS
         {
             SqlQuery query = new SqlQuery("SELECT * FROM FTK_Table WHERE Id=@Id");
             query.AddParameter("@Id", id);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectLatest(int? regionId, int? provinceId, int? districtId,
@@ -50,7 +59,7 @@ namespace DAO.Repositories.NBYS
             if (provinceId.HasValue) query.AddParameter("@Ili", provinceId.Value);
             if (districtsOnly || districtId.HasValue)
                 query.AddParameter("@Ilcesi", districtsOnly ? governorshipDistrictId : districtId.Value);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectByLocationAndUpdateDate(int provinceId, int districtId, DateTime updateDate)
@@ -60,7 +69,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@Ili", provinceId);
             query.AddParameter("@Ilcesi", districtId);
             query.AddParameter("@GuncellemeTarihi", updateDate);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectMaxCounter(int provinceId, int districtId)
@@ -69,7 +78,7 @@ namespace DAO.Repositories.NBYS
                 "SELECT MAX(Sayac) Sayac FROM FTK_Table WHERE Ili=@Ili AND Ilcesi=@Ilcesi");
             query.AddParameter("@Ili", provinceId);
             query.AddParameter("@Ilcesi", districtId);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectEstablishedProvinceCount(int regionId, int governorshipDistrictId)
@@ -78,7 +87,7 @@ namespace DAO.Repositories.NBYS
                 WHERE BolgeId=@BolgeId AND Ilcesi=@Ilcesi GROUP BY BolgeId,Ili,Ilcesi");
             query.AddParameter("@BolgeId", regionId);
             query.AddParameter("@Ilcesi", governorshipDistrictId);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectEstablishedDistrictCount(int regionId)
@@ -86,7 +95,7 @@ namespace DAO.Repositories.NBYS
             SqlQuery query = new SqlQuery(@"SELECT BolgeId,Ili,Ilcesi FROM FTK_Table
                 WHERE Ilcesi>0 AND BolgeId=@BolgeId GROUP BY BolgeId,Ili,Ilcesi");
             query.AddParameter("@BolgeId", regionId);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectUpdatedLocationCount(int regionId, DateTime updatedSince)
@@ -97,7 +106,7 @@ namespace DAO.Repositories.NBYS
                 GROUP BY BolgeId,Ili,Ilcesi");
             query.AddParameter("@BolgeId", regionId);
             query.AddParameter("@GuncellemeTarihi", updatedSince);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectEstablishedLocationCount(int regionId, DateTime establishedSince)
@@ -107,7 +116,7 @@ namespace DAO.Repositories.NBYS
                 GROUP BY BolgeId,Ili,Ilcesi");
             query.AddParameter("@BolgeId", regionId);
             query.AddParameter("@KurulusTarihi", establishedSince);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public bool DeleteByOperationAndCounter(int operationId, int counter)
@@ -116,7 +125,7 @@ namespace DAO.Repositories.NBYS
                 "DELETE FROM FTK_Table WHERE FTKIslemId=@FTKIslemId AND Sayac=@Sayac");
             query.AddParameter("@FTKIslemId", operationId);
             query.AddParameter("@Sayac", counter);
-            return db.DeleteFromDb(query, "");
+            return LegacyWriteDb.DeleteFromDb(query, "");
         }
 
         public DataTable SelectProvincesWithoutFTK(int? regionId, int? provinceId, int governorshipDistrictId)
@@ -131,7 +140,7 @@ namespace DAO.Repositories.NBYS
             if (regionId.HasValue) query.AddParameter("@BolgeId", regionId.Value);
             if (provinceId.HasValue) query.AddParameter("@IlId", provinceId.Value);
             query.AddParameter("@Ilcesi", governorshipDistrictId);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectDistrictsWithoutFTK(int? regionId, int? provinceId, string centralDistrictName)
@@ -147,11 +156,25 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@Merkez", centralDistrictName);
             if (regionId.HasValue) query.AddParameter("@BolgeId", regionId.Value);
             if (provinceId.HasValue) query.AddParameter("@IlId", provinceId.Value);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
-        public int Insert<T>(T entity) { return db.Insert(queryBuilder.BuildInsert(entity, TableName)); }
-        public bool Update<T>(T entity) { return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName)); }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), ""); }
+        public int Insert<T>(T entity) { return LegacyWriteDb.Insert(queryBuilder.BuildInsert(entity, TableName)); }
+        public bool Update<T>(T entity) { return LegacyWriteDb.Update2Db(queryBuilder.BuildUpdate(entity, TableName)); }
+        public bool Delete(int id) { return LegacyWriteDb.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), ""); }
+        private DataTable Select(SqlQuery query,
+            [System.Runtime.CompilerServices.CallerMemberName] string method = "")
+        {
+            return context == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(context, "FTKRepository").Select(query, method: method);
+        }
+
+        private DbClass LegacyWriteDb
+        {
+            get
+            {
+                if (context != null) throw new InvalidOperationException("FTK yazmaları transaction destekli işlem servisini kullanmalıdır.");
+                return db;
+            }
+        }
     }
 }

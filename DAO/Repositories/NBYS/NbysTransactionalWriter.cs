@@ -26,6 +26,9 @@ namespace DAO.Repositories.NBYS
                 case "NakitBagisci_Table": fields = new[] { "Ili", "Ilcesi", "TuzelKisi", "Sag", "Ulasilamiyor", "BelgeIstemiyor", "DergiGonderilmesin" }; break;
                 case "NakitBagisHareket_Table": fields = new[] { "BagisciId", "ArmaganId", "EkstreAktarmaId", "BankaId", "BagisTarihi", "BagisMiktari", "DovizCinsi", "DovizTutari", "DovizKuru", "KurTarihi" }; break;
                 case "Armagan_Table": fields = new[] { "BagisciId", "ArmaganTanimId", "Tarih", "Durum", "BagisMiktari", "DovizCinsi", "CokluBagis", "KacinciBelge" }; break;
+                case "FTKKisi_Table": fields = new[] { "Ili", "Ilcesi", "Vali", "Kaymakam", "FTKGorevi", "UyelikDurumu" }; break;
+                case "FTKIslem_Table": fields = new[] { "Ili", "Ilcesi", "BolgeId", "KurulusTarihi", "GuncellemeTarihi" }; break;
+                case "FTK_Table": fields = new[] { "FTKIslemId", "Ili", "Ilcesi", "BolgeId", "KurulusTarihi", "GuncellemeTarihi", "Sayac", "KisiId", "FTKGorevi" }; break;
                 default: throw new ArgumentException("Geçersiz kayıt türü.", "table");
             }
         }

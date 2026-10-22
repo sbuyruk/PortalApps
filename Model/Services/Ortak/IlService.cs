@@ -82,9 +82,20 @@ namespace Model.Services.Ortak
             return new Il().ToList<Il>(repository.SelectByRegion(regionId, orderByName));
         }
 
+        public List<Il> GetByRegion(int regionId, bool orderByName, PortalLogContext context)
+        {
+            return new Il().ToList<Il>(repository.SelectByRegion(regionId, orderByName, context));
+        }
+
         public int CountByRegion(int regionId)
         {
             DataTable table = repository.SelectCountByRegion(regionId);
+            return table == null || table.Rows.Count == 0 ? 0 : Convert.ToInt32(table.Rows[0]["Adet"]);
+        }
+
+        public int CountByRegion(int regionId, PortalLogContext context)
+        {
+            DataTable table = repository.SelectCountByRegion(regionId, context);
             return table == null || table.Rows.Count == 0 ? 0 : Convert.ToInt32(table.Rows[0]["Adet"]);
         }
 

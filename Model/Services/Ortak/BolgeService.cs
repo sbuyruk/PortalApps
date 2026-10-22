@@ -43,6 +43,11 @@ namespace Model.Services.Ortak
             return new Bolge().ToList<Bolge>(repository.SelectActive(regionId));
         }
 
+        public List<Bolge> GetActive(int regionId, PortalLogContext context)
+        {
+            return new Bolge().ToList<Bolge>(repository.SelectActive(regionId, context));
+        }
+
         public List<Bolge> GetAll()
         {
             return new Bolge().ToList<Bolge>(repository.SelectAll());

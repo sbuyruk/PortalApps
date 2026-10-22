@@ -151,6 +151,18 @@ namespace DAO.Repositories.Ortak
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectCountByRegion(int regionId, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(
+                "SELECT COUNT(A.Id) Adet FROM Ilce_Table A " +
+                "INNER JOIN Il_Table B ON B.Id=A.IlId " +
+                "WHERE B.Id BETWEEN 1 AND 81 AND B.BolgeId=@BolgeId " +
+                "AND IlceAdi!=@Merkez");
+            query.AddParameter("@BolgeId", regionId);
+            query.AddParameter("@Merkez", Utility.ProjeGlobal.ProjeConstants.ILCE_MERKEZ);
+            return PortalSqlReadExecutor.Select(query, context, "IlceRepository.SelectCountByRegion");
+        }
+
         public DataTable SelectWithFTK(int provinceId)
         {
             SqlQuery query = new SqlQuery(

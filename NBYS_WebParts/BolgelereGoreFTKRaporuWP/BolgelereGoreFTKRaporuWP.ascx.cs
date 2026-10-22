@@ -1,3 +1,6 @@
+using System.Linq;
+using Utility.Logging;
+using NBYS_WebParts.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.Ortak;
@@ -15,6 +18,16 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
     [ToolboxItemAttribute(false)]
     public partial class BolgelereGoreFTKRaporuWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "BolgelereGoreFTKRaporuWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -34,7 +47,6 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
         {
             get
             {
-
                 if (ViewState["BolgeId"] == null)
                 {
                     if (Page.Request.QueryString["BolgeId"] != null)
@@ -58,7 +70,6 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
         {
             get
             {
-
                 if (ViewState["CurrentUserName"] == null)
                 {
                     ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
@@ -73,38 +84,38 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            if (!Page.IsPostBack)
+            ExecuteAction("Page_Load", () =>
             {
-                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
-                BolgeIdQS = bolge == null ? 0 : bolge.Id;
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
 
+                if (!Page.IsPostBack)
+                {
+                    Bolge bolge = new Bolge().ToList<Bolge>(new DAO.Repositories.NBYS.NbysBagisciWriteRepository(LoggingContext).SelectUserRegion(LoggingContext.UserLogin)).FirstOrDefault();
+                    BolgeIdQS = bolge == null ? 0 : bolge.Id;
 
-                KurulusTarihiTxt.Text = (new DateTime(2017, 01, 01)).ConvertToDatetimeEmptyIfNull();
-                GuncellemeTarihiTxt.Text = (new DateTime(2017, 01, 01)).ConvertToDatetimeEmptyIfNull();
+                    KurulusTarihiTxt.Text = (new DateTime(2017, 01, 01)).ConvertToDatetimeEmptyIfNull();
+                    GuncellemeTarihiTxt.Text = (new DateTime(2017, 01, 01)).ConvertToDatetimeEmptyIfNull();
 
-
-            }
-            TabloyuDoldur();
+                }
+                TabloyuDoldur();
+            });
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("CloseBtn_Click", () =>
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
 
         protected void FTKGuncellemeTarihiTxt_TextChanged(object sender, EventArgs e)
         {
-            TabloyuDoldur();
+            ExecuteAction("FTKGuncellemeTarihiTxt_TextChanged", () =>
+            {
+                TabloyuDoldur();
+            });
         }
 
         private int ankIl, ankIlce, istIl, istIlce, izmIl, izmIlce, merIl, merIlce, erzIl, erzIlce, toplamIl, toplamIlce;
@@ -126,7 +137,6 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
 
         private void TabloyuDoldur()
         {
-
             IlSayilariniDoldur();
             IlceSayilariniDoldur();
             KuruluIlSayilariniDoldur();
@@ -143,12 +153,12 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
 
         private int IlSayisiGetir(int bolgeId)
         {
-            int ilSayisi = new IlService().CountByRegion(bolgeId);
+            int ilSayisi = new IlService().CountByRegion(bolgeId, LoggingContext);
             return ilSayisi;
         }
         private int IlceSayisiGetir(int bolgeId)
         {
-            int ilceSayisi = new IlceService().CountByRegion(bolgeId);
+            int ilceSayisi = new IlceService().CountByRegion(bolgeId, LoggingContext);
             return ilceSayisi;
         }
         private void KuruluIlSayilariniDoldur()
@@ -201,19 +211,19 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
         }
         private int KOIlSayisiGetir(int bolgeId)
         {
-            FTKService ftkService = new FTKService();
+            FTKService ftkService = new FTKService(LoggingContext);
             int ilSayisi = ftkService.GetEstablishedProvinceCount(bolgeId);
             return ilSayisi;
         }
         private int KOIlceSayisiGetir(int bolgeId)
         {
-            FTKService ftkService = new FTKService();
+            FTKService ftkService = new FTKService(LoggingContext);
             int ilSayisi = ftkService.GetEstablishedDistrictCount(bolgeId);
             return ilSayisi;
         }
         private void GuncellenenIlIlceSayisiniDoldur()
         {
-            FTKService ftkService = new FTKService();
+            FTKService ftkService = new FTKService(LoggingContext);
             ankGuncellenen = ftkService.GetUpdatedLocationCount(ProjeConstants.BOLGE_ANKARA_INT, GuncellemeTarihiTxt.Text.ConvertToDatetime());
             HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, AnkGuncellenenCell, ankGuncellenen, ProjeConstants.BOLGE_ANKARA_INT, GUNCELLENEN);
             istGuncellenen = ftkService.GetUpdatedLocationCount(ProjeConstants.BOLGE_ISTANBUL_INT, GuncellemeTarihiTxt.Text.ConvertToDatetime());
@@ -229,7 +239,7 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
         }
         private void YeniKurulanIlIlceSayisiniDoldur()
         {
-            FTKService ftkService = new FTKService();
+            FTKService ftkService = new FTKService(LoggingContext);
             ankYeniKurulan = ftkService.GetEstablishedLocationCount(ProjeConstants.BOLGE_ANKARA_INT, KurulusTarihiTxt.Text.ConvertToDatetime());
             HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, AnkYeniKurulanCell, ankYeniKurulan, ProjeConstants.BOLGE_ANKARA_INT, YENI_KURULAN);
             istYeniKurulan = ftkService.GetEstablishedLocationCount(ProjeConstants.BOLGE_ISTANBUL_INT, KurulusTarihiTxt.Text.ConvertToDatetime());
@@ -312,7 +322,7 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
             HyperLink cellLnk = new HyperLink();
             cellLnk.Text = ((int)value).ToString();
             string queryString = string.Empty;
-            
+
             if (ozellik.Equals(KURULU_ILLER))
             {
                 queryString = "&Grup=" + ProjeConstants.FTK_GRUPLAMA_IL_ILCEYE_GORE_INT + "&IlcesiId=" + ProjeConstants.VALILIK_INT;
@@ -364,25 +374,24 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl);
+
         }
         protected void FTKListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FTK_LIST);
+            ExecuteAction("FTKListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FTK_LIST);
+            });
         }
         protected void FTKIslemleriBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FTKISLEMLERI);
+            ExecuteAction("FTKIslemleriBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FTKISLEMLERI);
+            });
         }
     }
 }

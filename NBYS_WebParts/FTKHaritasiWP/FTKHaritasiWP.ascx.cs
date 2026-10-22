@@ -1,3 +1,7 @@
+using System.Globalization;
+using System.Linq;
+using Utility.Logging;
+using NBYS_WebParts.Logging;
 using Model.NBYS;
 using Model.Services.NBYS;
 using Model.Ortak;
@@ -16,6 +20,16 @@ namespace NBYS_WebParts.FTKHaritasiWP
     [ToolboxItemAttribute(false)]
     public partial class FTKHaritasiWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "FTKHaritasiWP"); }
+        }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, action);
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -32,13 +46,19 @@ namespace NBYS_WebParts.FTKHaritasiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
+            ExecuteAction("Page_Load", () =>
+            {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
+            });
         }
         protected void FTKUyeleriBtn_Click(object sender, EventArgs e)
         {
-            string ingIlAdi = paramLbl.Value;
-            Il il = new IlService().GetByEnglishName(ingIlAdi);
-            FTKUyeTableDoldur(il);
-
+            ExecuteAction("FTKUyeleriBtn_Click", () =>
+            {
+                string ingIlAdi = paramLbl.Value;
+                Il il = new IlService().GetByEnglishName(ingIlAdi, LoggingContext);
+                FTKUyeTableDoldur(il);
+            });
         }
         private void FTKUyeTableHeaders()
         {
@@ -57,9 +77,12 @@ namespace NBYS_WebParts.FTKHaritasiWP
         }
         private void FTKUyeTableDoldur(Il il)
         {
+            if (il == null) { Messages.Warning("Seçilen il bulunamadı. Haritadan tekrar seçin."); return; }
+            FTKUyeTableHeader.Controls.Clear();
+            FTKUyeTable.Controls.Clear();
             FTKUyeTableHeaders();
 
-            FTKService ftkService = new FTKService();
+            FTKService ftkService = new FTKService(LoggingContext);
             List<FTK> list = ftkService.GetLatest(il.Id, ProjeConstants.VALILIK_INT);
             int sira = 1;
             foreach (var item in list)
@@ -105,27 +128,25 @@ namespace NBYS_WebParts.FTKHaritasiWP
         }
         protected void SelectedIlBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("SelectedIlBtn_Click", () =>
             {
                 string ingIlAdi = paramLbl.Value;
-                Il il = new IlService().GetByEnglishName(ingIlAdi);
-                FTKUyeTitleLbl.Text = il.IlAdi + " linde Bulunan FTK Üyeleri";
+                Il il = new IlService().GetByEnglishName(ingIlAdi, LoggingContext);
+                if (il == null) { Messages.Warning("Seçilen il bulunamadı. Haritadan tekrar seçin."); return; }
+                FTKUyeTitleLbl.Text = il.IlAdi + " ilindeki FTK üyeleri";
                 FTKUyeTableDoldur(il);
                 //ShowModal("Test");
                 ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "OpenModal();", true);
-            }
-            catch (Exception exception)
-            {
-
-                ExceptionHelper eh = new ExceptionHelper(exception);
-                eh.PublishException();
-            }
+            });
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
+            ExecuteAction("CloseBtn_Click", () =>
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                Page.Response.Redirect(newUrl);
+            });
         }
 
     }
