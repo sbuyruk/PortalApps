@@ -85,6 +85,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logging\NbysSmsTable.cs" />
+    <Compile Include="Logging\NbysSmsFeedback.cs" />
     <Compile Include="Logging\NbysReportFeedback.cs" />
     <Compile Include="Logging\NbysDonationFeedback.cs" />
     <Compile Include="Logging\NbysEkstreFeedback.cs" />

@@ -1,13 +1,17 @@
 ﻿using Model.NBYS;
-using Model.Ortak;
 using Model.Services.NBYS;
+using NBYS_WebParts.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
+using System.Web;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
+using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace NBYS_WebParts.SMSAylikCizelgeReadOnlyWP
@@ -15,329 +19,133 @@ namespace NBYS_WebParts.SMSAylikCizelgeReadOnlyWP
     [ToolboxItemAttribute(false)]
     public partial class SMSAylikCizelgeReadOnlyWP : WebPart
     {
-        // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
-        // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
-        // for production. Because the SecurityPermission attribute bypasses the security check for callers of
-        // your constructor, it's not recommended for production purposes.
-        // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
-        public SMSAylikCizelgeReadOnlyWP()
+        private PortalLogContext LoggingContext
         {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "SMSAylikCizelgeReadOnlyWP"); }
         }
+
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysReportFeedback.Execute(LoggingContext, operation, action);
+        }
+
+        private List<SMSAylikBagis> yearRows;
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
             InitializeControl();
-            this.ChromeType = PartChromeType.None;
+            ChromeType = PartChromeType.None;
         }
-        private string CurrentUserName
+
+        private int SelectedYear
         {
             get
             {
-
-                if (ViewState["CurrentUserName"] == null)
-                {
-                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
-                }
-                return ViewState["CurrentUserName"].ToString();
-            }
-
-            set
-            {
-                ViewState["CurrentUserName"] = value;
+                string value = Convert.ToString(ViewState["SmsYear"] ?? Page.Request.QueryString["SecilenYil"]
+                    ?? DateTime.Today.Year.ToString(CultureInfo.InvariantCulture));
+                int year;
+                if (!int.TryParse(value, out year) || !NbysSmsWriteService.ValidYear(year)
+                    || YilDDL.Items.FindByValue(year.ToString(CultureInfo.InvariantCulture)) == null)
+                    throw new NbysReportInputException("Listeden geçerli bir yıl seçin.");
+                return year;
             }
         }
-        private string SecilenYilQS
+
+        private List<SMSAylikBagis> GetYearRows()
         {
-            get
+            if (yearRows == null)
             {
-
-                if (ViewState["SecilenYil"] == null)
-                {
-                    if (Page.Request.QueryString["SecilenYil"] != null)
-                    {
-                        ViewState["SecilenYil"] = Page.Request.QueryString["SecilenYil"];
-                    }
-                    else
-                    {
-                        ViewState["SecilenYil"] = DateTime.Today.Year;
-                    }
-                }
-                return ViewState["SecilenYil"].ToString();
+                yearRows = new SMSAylikBagisService(LoggingContext).GetByYear(SelectedYear);
+                if (!NbysSmsWriteService.ValidRows(yearRows))
+                    throw new NbysReportInputException("Çizelgede aynı aya ait birden fazla kayıt veya geçersiz ay var. Kayıtları kontrol ettirin.");
             }
-
-            set
-            {
-                ViewState["SecilenYil"] = value;
-            }
+            return yearRows;
         }
+
+        private void RenderYear()
+        {
+            NbysSmsTable.Fill(AyrintiTable, GetYearRows(), SelectedYear, false);
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            try
+            ExecuteAction("Page_Load", () =>
             {
                 if (!Page.IsPostBack)
                 {
-                    YilDDLDoldur();
-                    SetDDLValues();
+                    NbysWebPartLog.RecordOpened(LoggingContext);
+                    YilDDL.Items.Clear();
+                    for (int year = Math.Max(2019, DateTime.Today.Year - 1); year <= DateTime.Today.Year; year++)
+                        YilDDL.Items.Add(new ListItem(year.ToString(CultureInfo.InvariantCulture), year.ToString(CultureInfo.InvariantCulture)));
+                    YilDDL.SelectedValue = SelectedYear.ToString(CultureInfo.InvariantCulture);
+                    ViewState["SmsYear"] = SelectedYear;
                 }
-
-                SecilenYilVerileriniOlustur();
-                CizelgeyiDoldur(SecilenYilQS.ConvertToInt());
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper eh = new ExceptionHelper(ex);
-                eh.PublishException();
-            }
-        }
-
-        private void SecilenYilVerileriniOlustur()
-        {
-            int yil = SecilenYilQS.ConvertToInt();
-            SMSAylikBagisService smsService = new SMSAylikBagisService();
-            List<SMSAylikBagis> list = smsService.GetByYear(SecilenYilQS.ConvertToInt());
-            if (list.Count < 1)
-            {
-                for (int i = 1; i < 13; i++)
+                ScriptManager manager = ScriptManager.GetCurrent(Page);
+                if (manager != null) manager.RegisterPostBackControl(ExcelBtn);
+                RenderYear();
+                if (!Page.IsPostBack)
                 {
-                    SMSAylikBagis smsAylikBagis = new SMSAylikBagis();
-                    smsAylikBagis.Ay = i;
-                    smsAylikBagis.DovizCinsi = "TL";
-                    smsAylikBagis.IslemTarihi = DateTime.Now;
-                    smsAylikBagis.Olusturan = CurrentUserName;
-                    int ay = i;
-                    smsAylikBagis.SMSTutari = SMSTutariBul(ay, yil);
-                    smsAylikBagis.TurkcellSMSAdedi = 0;
-                    smsAylikBagis.VodafoneSMSAdedi = 0;
-                    smsAylikBagis.TurkTelekomSMSAdedi = 0;
-                    smsAylikBagis.Yil = SecilenYilQS.ConvertToInt();
-                    smsAylikBagis.Aciklama = "";
-                    smsService.Save(smsAylikBagis);
+                    int missing = 12 - GetYearRows().Count;
+                    if (missing > 0) Messages.Warning(missing + " ayın kaydı bulunmuyor. Kayıtların tamamlanması için yetkili birime başvurun.");
                 }
-            }
-        }
-        private decimal SMSTutariBul(int ay, int yil)
-        {
-            decimal smsBedeli;
-            DateTime smstarihi = new DateTime(yil, ay, 1);
-            if (smstarihi > ProjeConstants.SMS_2024)
-            {
-                smsBedeli = ProjeConstants.SMS_TUTAR_2024;
-            }
-            else if(smstarihi > ProjeConstants.SMS_2023)
-            {
-                smsBedeli = ProjeConstants.SMS_TUTAR_2023;
-            }
-            else 
-            {
-                smsBedeli = ProjeConstants.SMS_TUTAR_2022;
-            }
-            return smsBedeli;
-        }
-        private void CizelgeyiDoldur(int yil)
-        {
-            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            SMSAylikBagisService smsAylikBagisService = new SMSAylikBagisService();
-            List<SMSAylikBagis> list = smsAylikBagisService.GetByYear(yil);
-
-            foreach (SMSAylikBagis item in list)
-            {
-                TableRow row = new TableRow();
-
-                TableCell AyCell = new TableCell();
-                AyCell.Text = new DateTime(SecilenYilQS.ConvertToInt(), item.Ay, 1).ToString("MMMM", culturInfo);
-
-                TableCell TurkcellSMSAdediCell = new TableCell();
-                TurkcellSMSAdediCell.Text = item.TurkcellSMSAdedi.ToString();
-                TurkcellSMSAdediCell.CssClass = "text-end";
-                TableCell TurkcellSMSTutariCell = new TableCell();
-                TurkcellSMSTutariCell.Text = (item.TurkcellSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                TurkcellSMSTutariCell.CssClass = "text-end";
-
-                TableCell VodafoneSMSAdediCell = new TableCell();
-                VodafoneSMSAdediCell.Text = item.VodafoneSMSAdedi.ToString();
-                VodafoneSMSAdediCell.CssClass = "text-end";
-                TableCell VodafoneSMSTutariCell = new TableCell();
-                VodafoneSMSTutariCell.Text = (item.VodafoneSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                VodafoneSMSTutariCell.CssClass = "text-end";
-
-                TableCell TurkTelekomSMSAdediCell = new TableCell();
-                TurkTelekomSMSAdediCell.Text = item.TurkTelekomSMSAdedi.ToString();
-                TurkTelekomSMSAdediCell.CssClass = "text-end";
-                TableCell TurkTelekomSMSTutariCell = new TableCell();
-                TurkTelekomSMSTutariCell.Text = (item.TurkTelekomSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                TurkTelekomSMSTutariCell.CssClass = "text-end";
-
-                int toplamSMSAdedi = item.TurkcellSMSAdedi + item.VodafoneSMSAdedi + item.TurkTelekomSMSAdedi;
-                TableCell ToplamSMSAdediCell = new TableCell();
-                ToplamSMSAdediCell.Text = toplamSMSAdedi.ToString();
-                ToplamSMSAdediCell.CssClass = "text-end";
-                TableCell ToplamSMSTutariCell = new TableCell();
-                ToplamSMSTutariCell.Text = (toplamSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                ToplamSMSTutariCell.CssClass = "text-end";
-
-
-                row.Controls.Add(AyCell);
-                row.Controls.Add(TurkcellSMSAdediCell);
-                row.Controls.Add(TurkcellSMSTutariCell);
-                row.Controls.Add(VodafoneSMSAdediCell);
-                row.Controls.Add(VodafoneSMSTutariCell);
-                row.Controls.Add(TurkTelekomSMSAdediCell);
-                row.Controls.Add(TurkTelekomSMSTutariCell);
-                row.Controls.Add(ToplamSMSAdediCell);
-                row.Controls.Add(ToplamSMSTutariCell);
-                AyrintiTable.Controls.Add(row);
-            }
+            });
         }
 
-
-        /// <summary>
-        /// LinkButton Düzenle excele aktarirken hata verdiginden
-        /// CizelgeyiDoldur() metodu ile ayni islemi Linkbutton olmadan yapiyor
-        /// </summary>
-        /// <param name="yil"></param>
-        private void ExcelIcinCizelgeyiDoldur(int yil)
-        {
-            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            SMSAylikBagisService smsAylikBagisService = new SMSAylikBagisService();
-            List<SMSAylikBagis> list = smsAylikBagisService.GetByYear(yil);
-
-            foreach (SMSAylikBagis item in list)
-            {
-                TableRow row = new TableRow();
-
-                TableCell AyCell = new TableCell();
-                AyCell.Text = new DateTime(SecilenYilQS.ConvertToInt(), item.Ay, 1).ToString("MMMM", culturInfo);
-
-                TableCell TurkcellSMSAdediCell = new TableCell();
-                TurkcellSMSAdediCell.Text = item.TurkcellSMSAdedi.ToString();
-                TurkcellSMSAdediCell.CssClass = "text-end";
-                TableCell TurkcellSMSTutariCell = new TableCell();
-                TurkcellSMSTutariCell.Text = (item.TurkcellSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                TurkcellSMSTutariCell.CssClass = "text-end";
-
-                TableCell VodafoneSMSAdediCell = new TableCell();
-                VodafoneSMSAdediCell.Text = item.VodafoneSMSAdedi.ToString();
-                VodafoneSMSAdediCell.CssClass = "text-end";
-                TableCell VodafoneSMSTutariCell = new TableCell();
-                VodafoneSMSTutariCell.Text = (item.VodafoneSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                VodafoneSMSTutariCell.CssClass = "text-end";
-
-                TableCell TurkTelekomSMSAdediCell = new TableCell();
-                TurkTelekomSMSAdediCell.Text = item.TurkTelekomSMSAdedi.ToString();
-                TurkTelekomSMSAdediCell.CssClass = "text-end";
-                TableCell TurkTelekomSMSTutariCell = new TableCell();
-                TurkTelekomSMSTutariCell.Text = (item.TurkTelekomSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                TurkTelekomSMSTutariCell.CssClass = "text-end";
-
-                int toplamSMSAdedi = item.TurkcellSMSAdedi + item.VodafoneSMSAdedi + item.TurkTelekomSMSAdedi;
-                TableCell ToplamSMSAdediCell = new TableCell();
-                ToplamSMSAdediCell.Text = toplamSMSAdedi.ToString();
-                ToplamSMSAdediCell.CssClass = "text-end";
-                TableCell ToplamSMSTutariCell = new TableCell();
-                ToplamSMSTutariCell.Text = (toplamSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                ToplamSMSTutariCell.CssClass = "text-end";
-
-                row.Controls.Add(AyCell);
-                row.Controls.Add(TurkcellSMSAdediCell);
-                row.Controls.Add(TurkcellSMSTutariCell);
-                row.Controls.Add(VodafoneSMSAdediCell);
-                row.Controls.Add(VodafoneSMSTutariCell);
-                row.Controls.Add(TurkTelekomSMSAdediCell);
-                row.Controls.Add(TurkTelekomSMSTutariCell);
-                row.Controls.Add(ToplamSMSAdediCell);
-                row.Controls.Add(ToplamSMSTutariCell);
-
-                ExcelTable.Controls.Add(row);
-            }
-        }
-        private void SetDDLValues()
-        {
-            try
-            {
-                string yil = !string.IsNullOrEmpty(SecilenYilQS) ? SecilenYilQS : DateTime.Today.Year.ReturnEmptyIfNull().ToString();
-                ListItem YilItem = new ListItem();
-                if (!string.IsNullOrEmpty(yil))
-                    YilItem = YilDDL.Items.FindByValue(yil);
-
-                if (YilItem != null)
-                {
-                    YilDDL.SelectedValue = YilItem.Value;
-                    SecilenYilQS = YilItem.Value;
-                }
-            }
-            catch (Exception)
-            {
-
-                //TODO
-            }
-        }
-        private void YilDDLDoldur()
-        {
-            var year = DateTime.Now.Year;
-            int ikiYilOnce = year - 1;
-            for (int i = ikiYilOnce; i <= year; i++)
-            {
-                YilDDL.Items.Add(new ListItem(i.ToString(), i.ToString()));
-            }
-        }
-        protected void ExportToExcel()
-        {
-            ExcelTableDiv.Attributes["style"] = "display: block";
-            ExcelIcinCizelgeyiDoldur(SecilenYilQS.ConvertToInt());
-            string filename = "SMSAylikCizelge" + DateTime.Now.Day.ToString()
-                + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString()
-                + new Random().Next() + ".xls";
-            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
-            Page.Response.Charset = "windows-1254";//ISO-8859-9
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-
-            //Get the HTML for the control.             
-            ExcelTableDiv.RenderControl(hw);
-            //Write the HTML back to the browser.
-            //Response.ContentType = application/vnd.ms-excel;
-            Page.Response.ContentType = "application/ms-excel";
-            Page.Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            this.EnableViewState = false;
-            string s = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<title></title>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=windows-1254\" />\n<style>\n</style>\n</head>\n<body>\n";
-            Page.Response.Write(s + tw.ToString());
-            Page.Response.End();
-            ExcelTableDiv.Attributes["style"] = "display: none";
-        }
-        protected void CloseBtn_Click(object sender, EventArgs e)
-        {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
-        }
         protected void YilDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SecilenYilQS = YilDDL.SelectedItem.Value.ToString();
-            RedirectToPage(ProjeConstants.PAGE_SMSAYLIKCIZELGE + "?SecilenYil=" + SecilenYilQS);
-        }
-        private void RedirectToPage(string pageUrl)
-        {
-            try
+            ExecuteAction("YilDDL_SelectedIndexChanged", () =>
             {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                int index = currentUrl.LastIndexOf("?") < 0 ? currentUrl.Length : currentUrl.LastIndexOf("?");
+                int year;
+                if (!int.TryParse(YilDDL.SelectedValue, out year) || !NbysSmsWriteService.ValidYear(year))
+                    throw new NbysReportInputException("Listeden geçerli bir yıl seçin.");
+                var query = HttpUtility.ParseQueryString(Page.Request.Url.Query);
+                query["SecilenYil"] = year.ToString(CultureInfo.InvariantCulture);
+                UriBuilder url = new UriBuilder(Page.Request.Url) { Query = query.ToString() };
+                Page.Response.Redirect(url.Uri.AbsoluteUri, false);
+                HttpContext.Current.ApplicationInstance.CompleteRequest();
+            });
+        }
 
-                string rawUrl = currentUrl.Substring(0, index);
-                string newUrl = rawUrl.Substring(0, rawUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
+        protected void CloseBtn_Click(object sender, EventArgs e)
+        {
+            ExecuteAction("CloseBtn_Click", () =>
             {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+                string url = Page.Request.Url.GetLeftPart(UriPartial.Path);
+                Page.Response.Redirect(url.Substring(0, url.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME, false);
+                HttpContext.Current.ApplicationInstance.CompleteRequest();
+            });
         }
+
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            ExportToExcel();
+            ExecuteAction("ExcelBtn_Click", ExportToExcel);
         }
 
+        protected void ExportToExcel()
+        {
+            string content;
+            try
+            {
+                ExcelTableDiv.Attributes["style"] = "display: block";
+                NbysSmsTable.Fill(ExcelTable, GetYearRows(), SelectedYear, false);
+                using (StringWriter writer = new StringWriter())
+                using (HtmlTextWriter html = new HtmlTextWriter(writer))
+                {
+                    ExcelTableDiv.RenderControl(html);
+                    content = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=windows-1254\" /></head><body>"
+                        + writer.ToString() + "</body></html>";
+                }
+            }
+            finally { ExcelTableDiv.Attributes["style"] = "display: none"; }
+            Page.Response.Clear();
+            Page.Response.Buffer = true;
+            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
+            Page.Response.Charset = "windows-1254";
+            Page.Response.ContentType = "application/vnd.ms-excel";
+            Page.Response.AddHeader("Content-Disposition", "attachment;filename=SMSAylikCizelge-" + SelectedYear + ".xls");
+            Page.Response.Write(content);
+            Page.Response.End();
+        }
     }
 }
