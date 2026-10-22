@@ -1,0 +1,138 @@
+using DAO.Ortak;
+using DAO.Repositories.NBYS;
+using Model.NBYS;
+using Model.Ortak;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using Utility.HelperClasses;
+using Utility.Logging;
+using Utility.ProjeGlobal;
+
+namespace Model.Services.NBYS
+{
+    public enum NbysBagisciSaveResult { Saved, NotFound, Forbidden, NameRequired }
+
+    public sealed class NbysBagisciWriteService
+    {
+        private readonly NbysBagisciWriteRepository repository;
+        private readonly PortalLogContext context;
+
+        public NbysBagisciWriteService(PortalLogContext context)
+        {
+            this.context = context;
+            repository = new NbysBagisciWriteRepository(context);
+        }
+
+        public Bolge GetUserRegion()
+        {
+            return Map<Bolge>(repository.SelectUserRegion(context.UserLogin)).FirstOrDefault();
+        }
+
+        public bool CanReadDonor(int donorId, Bolge userRegion)
+        {
+            if (userRegion == null) return false;
+            if (userRegion.Id == ProjeConstants.BOLGE_HEPSI_INT || userRegion.Id == ProjeConstants.BOLGE_GENELMUDURLUK_INT) return true;
+            Bolge donorRegion = Map<Bolge>(repository.SelectDonorRegion(donorId)).FirstOrDefault();
+            return donorRegion != null && donorRegion.Id == userRegion.Id;
+        }
+
+        public NbysBagisciSaveResult Save(NakitBagisci item)
+        {
+            if (item == null) throw new ArgumentNullException("item", "Bağışçı bilgisi gereklidir.");
+            if (string.IsNullOrWhiteSpace(item.Adi)) return NbysBagisciSaveResult.NameRequired;
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                Bolge userRegion = Map<Bolge>(repository.SelectUserRegion(context.UserLogin, transaction)).FirstOrDefault();
+                if (userRegion == null) return NbysBagisciSaveResult.Forbidden;
+                int userRegionId = userRegion.Id;
+                NakitBagisci previous = item.Id > 0 ? Map<NakitBagisci>(repository.SelectDonor(item.Id, transaction)).FirstOrDefault() : null;
+                if (item.Id > 0 && previous == null) return NbysBagisciSaveResult.NotFound;
+                int provinceId = previous == null ? item.Ili : previous.Ili;
+                if (userRegionId != ProjeConstants.BOLGE_HEPSI_INT && userRegionId != ProjeConstants.BOLGE_GENELMUDURLUK_INT)
+                {
+                    DataTable region = repository.SelectProvinceRegion(provinceId, transaction);
+                    if (userRegionId <= 0 || region == null || region.Rows[0].IsNull("BolgeId")
+                        || Convert.ToInt32(region.Rows[0]["BolgeId"]) != userRegionId)
+                        return NbysBagisciSaveResult.Forbidden;
+                }
+                string user = UtilityHelper.GetCurrentUserName();
+                if (previous == null)
+                {
+                    item.Olusturan = user;
+                    item.OlusturmaTarihi = DateTime.Now;
+                }
+                else
+                {
+                    // The form does not edit surname; retain the value locked in this transaction.
+                    item.Soyadi = previous.Soyadi;
+                    item.Olusturan = previous.Olusturan;
+                    item.OlusturmaTarihi = previous.OlusturmaTarihi;
+                    item.Degistiren = user;
+                    item.DegistirmeTarihi = DateTime.Now;
+                }
+                item.Id = repository.SaveDonor(item, item.Id, transaction);
+                if (previous != null && previous.TuzelKisi != item.TuzelKisi)
+                    RecalculatePendingGifts(item, user, transaction);
+                transaction.Complete();
+            } // Commit completes in Dispose, before the UI receives Saved.
+            return NbysBagisciSaveResult.Saved;
+        }
+
+        private void RecalculatePendingGifts(NakitBagisci donor, string user, SqlTransactionContext transaction)
+        {
+            if (donor.Adi.Contains(ProjeConstants.NAKITBAGISCI_BILINMEYEN)) return;
+            List<Armagan> pending = Map<Armagan>(repository.SelectGifts(donor.Id, ProjeConstants.DURUM_GONDERILMEDI, transaction));
+            // Keep the existing monthly entitlement rule, including its inclusive midnight end.
+            foreach (Armagan pendingGift in pending)
+            {
+                DateTime start = new DateTime(pendingGift.Tarih.Year, pendingGift.Tarih.Month, 1);
+                DateTime end = start.AddMonths(1).AddDays(-1);
+                List<NakitBagisHareket> donations = Map<NakitBagisHareket>(repository.SelectPeriodDonations(donor.Id, start, end, transaction));
+                decimal amount = donations.Sum(donation => donation.BagisMiktari);
+                ArmaganTanim definition = Map<ArmaganTanim>(repository.SelectGiftDefinition(amount, donor.TuzelKisi, transaction)).FirstOrDefault();
+                // As in the existing rule, no entitlement leaves the period gift unchanged.
+                if (definition == null || definition.Id == ProjeConstants.ARMAGAN_YOKID) continue;
+                Armagan gift = Map<Armagan>(repository.SelectPeriodGifts(donor.Id, start, end, null, transaction)).FirstOrDefault()
+                    ?? new Armagan();
+                gift.CokluBagis = false;
+                gift.BagisciId = donor.Id;
+                gift.BagisMiktari = amount;
+                gift.DovizCinsi = ProjeConstants.DOVIZ_TL;
+                gift.Tarih = pendingGift.Tarih;
+                gift.ArmaganTanimId = definition.Id;
+                gift.Durum = donor.BelgeIstemiyor ? ProjeConstants.DURUM_BELGE_ISTEMIYOR : ProjeConstants.DURUM_GONDERILMEDI;
+                if (definition.Id == ProjeConstants.ARMAGAN_TESEKKURID && donations.Count == 1
+                    && donations[0].BankaId == ProjeConstants.BANKA_EDEVLETBAGIS_INT)
+                    gift.Durum = ProjeConstants.DURUM_EDEVLETTENBELGEGONDERILDI;
+                if (Map<Armagan>(repository.SelectGifts(donor.Id, ProjeConstants.DURUM_PARAIADE, transaction)).Count > 0)
+                    gift.Durum = ProjeConstants.DURUM_DAHAONCEIADE;
+                if (definition.Id != ProjeConstants.ARMAGAN_TESEKKURID && Map<Armagan>(repository.SelectPeriodGifts(
+                    donor.Id, new DateTime(2005, 1, 1), start, definition.Id, transaction)).Count > 0)
+                    gift.ArmaganTanimId = ProjeConstants.ARMAGAN_TESEKKURID;
+                // Preserve GetDonorStatus precedence from the existing SaveOrUpdate path.
+                if (donor.BelgeIstemiyor) gift.Durum = ProjeConstants.DURUM_BELGE_ISTEMIYOR;
+                else if (donor.Ulasilamiyor) gift.Durum = ProjeConstants.DURUM_ULASILAMADI;
+                if (gift.Id <= 0)
+                {
+                    gift.Olusturan = user;
+                    gift.OlusturmaTarihi = DateTime.Now;
+                }
+                else
+                {
+                    gift.Degistiren = user;
+                    gift.DegistirmeTarihi = DateTime.Now;
+                }
+                gift.Id = repository.SaveGift(gift, gift.Id, transaction);
+                foreach (NakitBagisHareket donation in donations)
+                    repository.LinkDonation(donation.Id, gift.Id, user, DateTime.Now, transaction);
+            }
+        }
+
+        private static List<T> Map<T>(DataTable table) where T : new()
+        {
+            return new NakitBagisci().ToList<T>(table);
+        }
+    }
+}

@@ -29,6 +29,11 @@ namespace Model.Services.Ortak
             return Map(repository.SelectById(id));
         }
 
+        public Il GetById(int id, PortalLogContext context)
+        {
+            return Map(repository.SelectById(id, context));
+        }
+
         public Il GetById(int id, SqlTransactionContext transaction)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");

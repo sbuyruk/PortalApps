@@ -169,3 +169,11 @@ Bu dal 10 salt okuma ekranını birlikte taşır: BagisHareketListesiWP, BagisIa
 Açılış/hata kayıtları, ilgili SELECT zincirleri, filtre/modal/Excel yolları ve mevcut mesaj incelemesi aynı daldadır. Eski yukarıdaki tablo başlangıç envanteridir; bu 10 ekran artık ExceptionHelper/ham hata sunumundan NbysWebPartLog/Messages yoluna taşınmıştır.
 Transaction/audit gerektiren yazma akışları sonraki ilişkili işlem gruplarıdır. Bu dal salt okuma ekranlarına audit eklendiği veya NBYS'nin tümünün tamamlandığı anlamına gelmez.
 Mesaj değişiklikleri, etkinleştirme listesi, statik kontroller ve toplu TEST adımları LoglamaGecisTopluListeRapor.md dosyasındadır. Yeni dalın çalışma zamanı sonucu henüz kullanıcı tarafından doğrulanmadı.
+
+## Bağışçı yönetimi işlem grubu
+
+Kullanıcı önceki toplu parça için tamamlandı/devam talimatı verdi. Temiz ve güncel 2b6b0e7ca6450ea519148f132c00c6d3828ce1e1 üzerinden codex/nbys-bagisci-yonetimi-transaction-audit açıldı.
+NakitBagisciEditWP, NakitBagisciListesiWP, NakitBagisciBulmaWP ve NakitBagisciBagislariWP aynı daldadır.
+Bağışçı güncellemesi, tüzel kişi değişikliğindeki mevcut aylık armağan hesabı ve bağış hareketi ArmaganId bağlantıları tek transaction ve audit yoluna alındı. Liste/arama/detay okumaları aynı NBYS bağlamını kullanır.
+İade/silme/birleştirme ve ekstre yazmaları bu parçayla tamamlanmış sayılmaz. Mevcut düzenleme ekranında kimliksiz yeni kayıt girişi kapalıdır; bu dal yeni oluşturma ekranı açmaz.
+Alan izin listeleri, mesaj değişiklikleri, etkinleştirme ve TEST adımları LoglamaGecisBagisciYonetimi.md dosyasındadır. Çalışma zamanı sonucu henüz doğrulanmadı.

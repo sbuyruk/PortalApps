@@ -1,3 +1,4 @@
+using Utility.Logging;
 using DAO.Ortak;
 using System;
 using System.Data;
@@ -11,6 +12,7 @@ namespace DAO.Repositories.NBYS
     {
         private const string TableName = "NakitBagisci_Table";
         private readonly DbClass db;
+        private readonly PortalLogContext readContext;
         private readonly CrudQueryBuilder crudQueryBuilder;
 
         public NakitBagisciRepository()
@@ -30,37 +32,66 @@ namespace DAO.Repositories.NBYS
             crudQueryBuilder = new CrudQueryBuilder();
         }
 
+        // Migrated read path; writes use NbysBagisciWriteRepository explicitly.
+        public NakitBagisciRepository(PortalLogContext context)
+        {
+            if (context == null || context.Project != "NBYS")
+                throw new ArgumentException("NBYS log bağlamı gereklidir.", "context");
+            readContext = context;
+            crudQueryBuilder = new CrudQueryBuilder();
+        }
+
+        private DbClass LegacyWriteDb
+        {
+            get { RequireLegacyWrite(); return db; }
+        }
+
+        private void RequireLegacyWrite()
+        {
+            if (readContext != null)
+                throw new InvalidOperationException("Bu erişim yalnızca okuma işlemlerini destekler.");
+        }
+
+        private DataTable Select(SqlQuery query,
+            [System.Runtime.CompilerServices.CallerMemberName] string method = "")
+        {
+            return readContext == null ? db.SelectFromDb(query, "") :
+                PortalSqlReadExecutor.Select(query, readContext, "NakitBagisciRepository." + method);
+        }
         public int Insert<T>(T entity)
         {
             SqlQuery query = crudQueryBuilder.BuildInsert(entity, TableName);
-            return db.Insert(query);
+            return LegacyWriteDb.Insert(query);
         }
 
         public int Insert<T>(T entity, SqlTransactionContext transaction)
         {
+            RequireLegacyWrite();
             return transaction.Insert(crudQueryBuilder.BuildInsert(entity, TableName));
         }
 
         public bool Update<T>(T entity)
         {
             SqlQuery query = crudQueryBuilder.BuildUpdate(entity, TableName);
-            return db.Update2Db(query);
+            return LegacyWriteDb.Update2Db(query);
         }
 
         public bool Update<T>(T entity, SqlTransactionContext transaction)
         {
+            RequireLegacyWrite();
             return transaction.Update(crudQueryBuilder.BuildUpdate(entity, TableName));
         }
 
         public bool Delete(int id)
         {
             SqlQuery query = crudQueryBuilder.BuildDelete(TableName, id);
-            return db.DeleteFromDb(query, "");
+            return LegacyWriteDb.DeleteFromDb(query, "");
         }
 
         // Both commands use the same connection and transaction; the identity never leaves this operation.
         public int CreateBilinmeyenBagisci<T>(T entity, string namePrefix, DateTime modifiedAt, string modifiedBy)
         {
+            RequireLegacyWrite();
             SqlQuery insert = crudQueryBuilder.BuildInsert(entity, TableName);
             NormalizeLegacyNullStrings(entity, insert);
             insert.Sql += ";SELECT SCOPE_IDENTITY()";
@@ -133,6 +164,7 @@ namespace DAO.Repositories.NBYS
             string modifiedBy,
             SqlTransactionContext transaction)
         {
+            RequireLegacyWrite();
             if (transaction == null)
                 throw new ArgumentNullException("transaction");
 
@@ -162,7 +194,7 @@ namespace DAO.Repositories.NBYS
                                FROM NakitBagisci_Table
                                WHERE Id = @Id");
             query.AddParameter("@Id", id);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction)
@@ -181,7 +213,7 @@ namespace DAO.Repositories.NBYS
         {
             SqlQuery query = new SqlQuery(@"SELECT *
                                FROM NakitBagisci_Table");
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectByTcKimlikno(long tcKimlikno)
@@ -190,7 +222,7 @@ namespace DAO.Repositories.NBYS
                                FROM NakitBagisci_Table
                                WHERE TCKimlikNo != 0 AND TCKimlikNo = @TCKimlikNo");
             query.AddParameter("@TCKimlikNo", tcKimlikno);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectByTcKimlikno(long tcKimlikno, SqlTransactionContext transaction)
@@ -210,7 +242,7 @@ namespace DAO.Repositories.NBYS
             SqlQuery query = new SqlQuery(@"SELECT * FROM NakitBagisci_Table
                 WHERE LTRIM(RTRIM(ISNULL(Adi,'') + ' ' + ISNULL(Soyadi,''))) = @FullName");
             query.AddParameter("@FullName", fullName);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectImportCandidates(string fullName, SqlTransactionContext transaction)
@@ -232,7 +264,7 @@ namespace DAO.Repositories.NBYS
                     AND B.BagisciId IS NULL
                 ORDER BY BagisTarihi DESC");
             query.AddParameter("@BagisciId", bagisciId);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectByAdAndTelefon(string adi, string telefon)
@@ -242,7 +274,7 @@ namespace DAO.Repositories.NBYS
                                WHERE Adi = @Adi AND (Telefon1 = @Telefon OR Telefon2 = @Telefon)");
             query.AddParameter("@Adi", adi ?? string.Empty);
             query.AddParameter("@Telefon", telefon ?? string.Empty);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectByAdAndTelefon(
@@ -266,7 +298,7 @@ namespace DAO.Repositories.NBYS
                                FROM NakitBagisci_Table
                                WHERE Telefon1 = @Telefon OR Telefon2 = @Telefon");
             query.AddParameter("@Telefon", telefon ?? string.Empty);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectByEposta(string eposta)
@@ -275,7 +307,7 @@ namespace DAO.Repositories.NBYS
                                FROM NakitBagisci_Table
                                WHERE EPosta = @Eposta");
             query.AddParameter("@Eposta", eposta ?? string.Empty);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectByAd(string adi)
@@ -284,7 +316,7 @@ namespace DAO.Repositories.NBYS
                                FROM NakitBagisci_Table
                                WHERE Adi LIKE @Adi");
             query.AddParameter("@Adi", "%" + adi + "%");
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectByIl(int? ilId)
@@ -311,7 +343,7 @@ namespace DAO.Repositories.NBYS
 	                LEFT OUTER JOIN Ilce_Table C ON C.Id = A.Ilcesi AND C.IlId = B.Id
                 WHERE @IlId IS NULL OR A.Ili = @IlId");
             query.AddParameter("@IlId", ilId.HasValue ? (object)ilId.Value : DBNull.Value);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectByIlBagisTarihi(int? ilId, string baslangicTarihi, string bitisTarihi)
@@ -332,7 +364,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@BaslangicTarihi", NormalizeLegacyDateParameter(baslangicTarihi));
             query.AddParameter("@BitisTarihi", NormalizeLegacyDateParameter(bitisTarihi));
             query.AddParameter("@IlId", ilId.HasValue ? (object)ilId.Value : DBNull.Value);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectByIlBagisTarihiYeni(int? ilId, string baslangicTarihi, string bitisTarihi)
@@ -374,7 +406,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@BaslangicTarihi", NormalizeLegacyDateParameter(baslangicTarihi));
             query.AddParameter("@BitisTarihi", NormalizeLegacyDateParameter(bitisTarihi));
             query.AddParameter("@IlId", ilId.HasValue ? (object)ilId.Value : DBNull.Value);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectByFilter(string filter, int eksiId)
@@ -399,7 +431,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@ExcludedId", eksiId);
             query.AddParameter("@Filter", "%" + filter + "%");
 
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         private static object NormalizeLegacyDateParameter(string value)
