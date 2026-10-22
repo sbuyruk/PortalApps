@@ -165,6 +165,13 @@ namespace Model.Services.NBYS
             return new Armagan().ToJSON(repository.SelectByFilter(filter, excludedDonorId));
         }
 
+        public string SearchJson(string filter, int excludedDonorId, int regionId)
+        {
+            int? region = regionId == ProjeConstants.BOLGE_HEPSI_INT || regionId == ProjeConstants.BOLGE_GENELMUDURLUK_INT
+                ? (int?)null : regionId;
+            return new Armagan().ToJSON(repository.SelectByFilter(filter, excludedDonorId, region));
+        }
+
         public DataTable ListVerilenArmaganlarGroupByBagisci()
         {
             return repository.SelectVerilenArmaganlarGroupByBagisci();

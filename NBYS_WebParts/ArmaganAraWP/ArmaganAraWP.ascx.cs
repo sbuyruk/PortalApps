@@ -1,3 +1,5 @@
+using Utility.Logging;
+using NBYS_WebParts.Logging;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.Ortak;
@@ -15,6 +17,26 @@ namespace NBYS_WebParts.ArmaganAraWP
     [ToolboxItemAttribute(false)]
     public partial class ArmaganAraWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "ArmaganAraWP"); }
+        }
+        private bool canProcess = true;
+        private Bolge userRegion;
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, () => { if (canProcess) action(); });
+        }
+        private void StopForWarning(string message)
+        {
+            canProcess = false;
+            Messages.Warning(message);
+        }
+        private bool CanReadDonor(int donorId)
+        {
+            return new NbysBagisciWriteService(LoggingContext).CanReadDonor(donorId, userRegion);
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -46,7 +68,8 @@ namespace NBYS_WebParts.ArmaganAraWP
                         ViewState["SecilenId"] = "0";
                     }
                 }
-                return ViewState["SecilenId"].ToString();
+                int selectedId;
+                return int.TryParse(Convert.ToString(ViewState["SecilenId"]), out selectedId) && selectedId > 0 ? selectedId.ToString(CultureInfo.InvariantCulture) : "0";
             }
 
             set
@@ -80,8 +103,11 @@ namespace NBYS_WebParts.ArmaganAraWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
+                userRegion = new NbysBagisciWriteService(LoggingContext).GetUserRegion();
+                if (userRegion == null) { StopForWarning("Bölge bilginiz bulunamadı. Yetki bilgilerinizi kontrol ettirin."); return; }
                 if (!Page.IsPostBack)
                 {
                     if (!string.IsNullOrEmpty(ParamQS))
@@ -90,28 +116,28 @@ namespace NBYS_WebParts.ArmaganAraWP
                         TabloOlustur();
                     }
                 }
-
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         private string GetArmaganData()
         {
-            string json = string.Empty;
-            if (!string.IsNullOrEmpty(ArmaganAraTxt.Text) && ArmaganAraTxt.Text.ConvertToInt() > 0)
-            {
-                json = new ArmaganService().SearchJson(ArmaganAraTxt.Text.Trim(), 0);
-            }
-            return string.IsNullOrEmpty(json) ? "[]" : json;
+            int id;
+            if (!int.TryParse(ArmaganAraTxt.Text.Trim(), out id) || id <= 0)
+            { Messages.Warning("Aramak için pozitif bir armağan numarası girin."); return "[]"; }
+            string json = new ArmaganService(LoggingContext).SearchJson(id.ToString(CultureInfo.InvariantCulture), 0, userRegion.Id);
+            if (string.IsNullOrEmpty(json) || json == "[]")
+            { Messages.Info("Yetki alanınızda bu numarayla eşleşen armağan bulunamadı."); return "[]"; }
+            return json;
         }
+        private bool searchPerformed;
         private void TabloOlustur()
         {
+            if (searchPerformed) return;
+            searchPerformed = true;
+
             var jsonData = GetArmaganData(); //veri çekilip json'a çevriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
             UtilityHelper.ScriptCalistir(jsString);
+
         }
         private string CreateDataTable(string jsonData)
         {
@@ -202,9 +228,6 @@ namespace NBYS_WebParts.ArmaganAraWP
                 },
                     , 'pageLength', 'colvis'
                 ]
-
-
-
             });
         });
         ";
@@ -212,40 +235,35 @@ namespace NBYS_WebParts.ArmaganAraWP
         }
         protected void ArmaganAraTxt_TextChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            ExecuteAction("ArmaganAraTxt_TextChanged", () =>
+            {
+                TabloOlustur();
+            });
         }
         protected void ArmaganAraBtn_Click(object sender, EventArgs e)
         {
-            TabloOlustur();
+            ExecuteAction("ArmaganAraBtn_Click", () =>
+            {
+                TabloOlustur();
+            });
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("CloseBtn_Click", () =>
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+                Page.Response.Redirect(newUrl, false);
+                System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
+            });
         }
-        
+
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl, false);
+                System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
         }
         private void TabloModalOlustur(string nakitBagisciId)
         {
@@ -255,7 +273,7 @@ namespace NBYS_WebParts.ArmaganAraWP
         }
         private string CreateModalDataTable(string jsonData, int nakitBagisciId)
         {
-            NakitBagisci nb = new NakitBagisciService().GetById(nakitBagisciId);
+            NakitBagisci nb = new NakitBagisciService(LoggingContext).GetById(nakitBagisciId);
             string bagisciAdi = nb != null ? (nb.Adi + nb.Soyadi).ReplaceTrChars() : "Bagisci";
             string filename = bagisciAdi + "-" + DateTime.Today.Day + "-" + DateTime.Today.Month + "-" + DateTime.Today.Year;
             string tableString = @"
@@ -307,7 +325,7 @@ namespace NBYS_WebParts.ArmaganAraWP
                           format: {
                               body: function(data, row, column, node) {
                                   data = $('<p>' + data + '</p>').text();
-                                    
+
                                   return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
                               }
                           }
@@ -329,7 +347,6 @@ namespace NBYS_WebParts.ArmaganAraWP
                 },
                     , 'pageLength', 'colvis'
                 ]
-
             });
         });
         ";
@@ -339,8 +356,8 @@ namespace NBYS_WebParts.ArmaganAraWP
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             int rowCount = 0;
-            var json = new NakitBagisHareketService().GetDonorDetailJson(nakitBagisciId.ConvertToInt(), ref rowCount);
-            decimal toplamTutar = new NakitBagisHareketService().GetTotalByBagisciIdDateRange(
+            var json = new NakitBagisHareketService(LoggingContext).GetDonorDetailJson(nakitBagisciId.ConvertToInt(), ref rowCount);
+            decimal toplamTutar = new NakitBagisHareketService(LoggingContext).GetTotalByBagisciIdDateRange(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
             BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır" :
                 "Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + " TL bağışı bulunmaktadır";
@@ -348,18 +365,17 @@ namespace NBYS_WebParts.ArmaganAraWP
         }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ModalDoldurBtn_Click", () =>
             {
-
-                TabloModalOlustur(paramNakitBagisciIdLbl.Value);
-                NakitBagisciFormunuDoldur(paramNakitBagisciIdLbl.Value);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
-
-            }
+                int donorId;
+                if (!int.TryParse(paramNakitBagisciIdLbl.Value, out donorId) || donorId <= 0)
+                { Messages.Warning("Detayını görmek istediğiniz bağışçıyı seçin."); return; }
+                if (!CanReadDonor(donorId)) { Messages.Warning("Bu bağışçının detayını görüntüleme yetkiniz yok."); return; }
+                if (new NakitBagisciService(LoggingContext).GetById(donorId) == null)
+                { Messages.Warning("Bağışçı kaydı bulunamadı. Yeniden arama yapın."); return; }
+                TabloModalOlustur(donorId.ToString());
+                NakitBagisciFormunuDoldur(donorId.ToString());
+            });
         }
         private void NakitBagisciFormunuDoldur(string nakitBagisciIdStr)
         {
@@ -367,7 +383,7 @@ namespace NBYS_WebParts.ArmaganAraWP
             {
                 int nakitBagisciId = nakitBagisciIdStr.ConvertToInt();
 
-                NakitBagisci nakitBagisci = new NakitBagisciService().GetById(nakitBagisciId);
+                NakitBagisci nakitBagisci = new NakitBagisciService(LoggingContext).GetById(nakitBagisciId);
                 if (nakitBagisci != null)
                 {
                     //NakitBagisciIdLbl.Text = nakitBagisciId.ToString();
@@ -384,14 +400,14 @@ namespace NBYS_WebParts.ArmaganAraWP
                     AdresCell.Text = nakitBagisci.Adres.ReturnEmptyIfNull().ToString();
 
                     int ilId = nakitBagisci.Ili.ConvertToInt();
-                    Il il = new IlService().GetById(ilId);
+                    Il il = new IlService().GetById(ilId, LoggingContext);
                     if (il != null)
                     {
 
                         IlIlceCell.Text = il.IlAdi.ReturnEmptyIfNull().ToString();
                     }
                     int ilceId = nakitBagisci.Ilcesi.ConvertToInt();
-                    Ilce ilce = new IlceService().GetById(ilceId);
+                    Ilce ilce = new IlceService().GetById(ilceId, LoggingContext);
                     if (ilce != null)
                     {
 

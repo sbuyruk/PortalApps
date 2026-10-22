@@ -1,3 +1,6 @@
+using Utility.Logging;
+using NBYS_WebParts.Logging;
+using System.Globalization;
 using Model.NBYS;
 using Model.Ortak;
 using Model.Services.NBYS;
@@ -14,6 +17,26 @@ namespace NBYS_WebParts.ArmaganEditWP
     [ToolboxItemAttribute(false)]
     public partial class ArmaganEditWP : WebPart
     {
+        private PortalLogContext LoggingContext
+        {
+            get { return PortalLogContext.FromCurrentRequest("NBYS", "ArmaganEditWP"); }
+        }
+        private bool canProcess = true;
+        private Bolge userRegion;
+        private void ExecuteAction(string operation, Action action)
+        {
+            NbysWebPartLog.ExecuteAction(LoggingContext, operation, () => { if (canProcess) action(); });
+        }
+        private void StopForWarning(string message)
+        {
+            canProcess = false;
+            Messages.Warning(message);
+        }
+        private bool CanReadDonor(int donorId)
+        {
+            return new NbysBagisciWriteService(LoggingContext).CanReadDonor(donorId, userRegion);
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -215,83 +238,41 @@ namespace NBYS_WebParts.ArmaganEditWP
         }
         private int BolgeIdQS
         {
-            get
-            {
-
-                if (ViewState["BolgeId"] == null)
-                {
-                    if (Page.Request.QueryString["BolgeId"] != null)
-                    {
-                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
-                    }
-                    else
-                    {
-                        ViewState["BolgeId"] = string.Empty;
-                    }
-                }
-                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
-            }
-
-            set
-            {
-                ViewState["BolgeId"] = value;
-            }
+            get { return ViewState["BolgeId"] is int ? (int)ViewState["BolgeId"] : -1; }
+            set { ViewState["BolgeId"] = value; }
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("Page_Load", () =>
             {
-                int armaganId = ArmaganIdQS.ConvertToInt();
-
-                Armagan armagan = new Armagan();
-                armagan = new ArmaganService().GetById(armaganId);
-                if (armagan != null)
-                {
-                    Bolge kullanicininBolgesi = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
-                    BolgeIdQS = kullanicininBolgesi == null ? 0 : kullanicininBolgesi.Id;
-                    bool kullaniciGmtenmi = (kullanicininBolgesi.Id == ProjeConstants.BOLGE_HEPSI_INT || kullanicininBolgesi.Id == ProjeConstants.BOLGE_GENELMUDURLUK_INT);
-                    bool kullaniciYetkiliMi = NBYSOrtak.YetkiKontrolu(kullanicininBolgesi, armagan.BagisciId);
-                    if (kullaniciGmtenmi || kullaniciYetkiliMi)
-                    {
-                        DurumDDL.Parent.Controls.Add(new System.Web.UI.LiteralControl(
-                            "<small class=\"form-text text-muted\">Para iadesi için Bağış İadesi ekranındaki para iadesi işlemini kullanın.</small>"));
-                        if (!Page.IsPostBack)
-                        {
-                            FillDropDownList();
-                            if (!string.IsNullOrEmpty(ArmaganIdQS))
-                            {
-                                FillArmaganForm(armagan);
-                            }
-
-                        }
-                        if (armagan.Durum == ProjeConstants.DURUM_PARAIADE)
-                        {
-                            // İade edilmiş kaydın durumu korunur; diğer alanları düzenlenebilir.
-                            DurumDDL.Enabled = false;
-                        }
-                        else
-                        {
-                            // Seçenek görünür kalsın, ancak yeni iade durumu bu ekrandan seçilemesin.
-                            DurumDDL.Items.FindByValue(ProjeConstants.DURUM_PARAIADE).Attributes["disabled"] = "disabled";
-                        }
-                    }
-                    else
-                    {
-                        KaydetBtn.Visible = false;
-                        MessageHelper.PublishMessage("Armağan, Bölgenizdeki bir bağışçıya ait değil.", ProjeConstants.MESAJ_HATA);
-                    }
-                }
-                else
+                if (!Page.IsPostBack) NbysWebPartLog.RecordOpened(LoggingContext);
+                userRegion = new NbysBagisciWriteService(LoggingContext).GetUserRegion();
+                BolgeIdQS = userRegion == null ? -1 : userRegion.Id;
+                int id;
+                if (!int.TryParse(ArmaganIdQS, out id) || id <= 0)
                 {
                     KaydetBtn.Visible = false;
-                    MessageHelper.PublishMessage("Armağan bulunamadı", ProjeConstants.MESAJ_HATA);
+                    StopForWarning("Geçerli bir armağan kaydı seçin."); return;
                 }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+                Armagan gift = new ArmaganService(LoggingContext).GetById(id);
+                if (gift == null)
+                {
+                    KaydetBtn.Visible = false;
+                    StopForWarning("Armağan kaydı bulunamadı. Listeyi yenileyip tekrar seçin."); return;
+                }
+                if (!CanReadDonor(gift.BagisciId))
+                {
+                    KaydetBtn.Visible = false;
+                    StopForWarning("Bu armağan kaydını görüntüleme veya düzenleme yetkiniz yok."); return;
+                }
+                KaydetBtn.Visible = true;
+                DurumDDL.Parent.Controls.Add(new System.Web.UI.LiteralControl(
+                    "<small class=\"form-text text-muted\">Para iadesi için Bağış İadesi ekranını kullanın.</small>"));
+                if (!Page.IsPostBack) { FillDropDownList(); FillArmaganForm(gift); }
+                DurumDDL.Enabled = gift.Durum != ProjeConstants.DURUM_PARAIADE;
+                ListItem refundItem = DurumDDL.Items.FindByValue(ProjeConstants.DURUM_PARAIADE);
+                if (refundItem != null) refundItem.Attributes["disabled"] = "disabled";
+            });
         }
         private void FillArmaganForm(Armagan armagan)
         {
@@ -300,15 +281,23 @@ namespace NBYS_WebParts.ArmaganEditWP
             if (armagan != null)
             {
                 IdLbl.Text = armagan.Id.ToString();
-                NakitBagisci nakitBagisci = new NakitBagisciService().GetById(armagan.BagisciId);
+                NakitBagisci nakitBagisci = new NakitBagisciService(LoggingContext).GetById(armagan.BagisciId);
                 if (nakitBagisci != null)
                 {
                     AdiTxt.Text = nakitBagisci.Adi.ReturnEmptyIfNull().ToString();
                 }
-                BagisMiktariTxt.Text = armagan.BagisMiktari.ReturnZeroIfNull().ToString();
+                BagisMiktariTxt.Text = armagan.BagisMiktari.ToString(new CultureInfo(ProjeConstants.CULTUREINFO));
 
-                ArmaganDDL.Items.FindByValue(armagan.ArmaganTanimId.ReturnZeroIfNull().ToString()).Selected = true;
-                DurumDDL.Items.FindByValue(armagan.Durum.ReturnZeroIfNull().ToString()).Selected = true;
+                ListItem definition = ArmaganDDL.Items.FindByValue(armagan.ArmaganTanimId.ToString());
+                if (definition == null) throw new InvalidOperationException("Kayıtlı armağan türü bulunamadı.");
+                ArmaganDDL.ClearSelection(); definition.Selected = true;
+                ListItem status = DurumDDL.Items.FindByValue(armagan.Durum ?? string.Empty);
+                if (status == null)
+                {
+                    status = new ListItem(armagan.Durum ?? string.Empty, armagan.Durum ?? string.Empty);
+                    DurumDDL.Items.Add(status);
+                }
+                DurumDDL.ClearSelection(); status.Selected = true;
                 BagisTarihiTxt.Value = armagan.Tarih.ToString("dd.MM.yyyy");
                 AciklamaTxt.Text = armagan.Aciklama.ReturnEmptyIfNull().ToString();
                 BelgedeYazanIsimTxt.Text = armagan.BelgedeYazanIsim.ReturnEmptyIfNull().ToString();
@@ -340,7 +329,7 @@ namespace NBYS_WebParts.ArmaganEditWP
             if (ArmaganDDL.SelectedItem == null)
             {
                 ArmaganDDL.Items.Clear();
-                List<ArmaganTanim> list = new ArmaganTanimService().GetAll();
+                List<ArmaganTanim> list = new ArmaganTanimService(LoggingContext).GetAll();
                 foreach (ArmaganTanim arm in list)
                 {
                     ArmaganDDL.Items.Add(new ListItem(arm.Armagan, arm.Id.ToString()));
@@ -350,172 +339,82 @@ namespace NBYS_WebParts.ArmaganEditWP
         }
         protected void ArmaganDLL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ArmaganDLL_SelectedIndexChanged", () =>
             {
                 FillArmaganTanim();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void DurumDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("DurumDDL_SelectedIndexChanged", () =>
             {
                 FillArmaganTanim();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void KaydetBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("KaydetBtn_Click", () =>
             {
-                bool isSaved = false;
-                if (string.IsNullOrEmpty(ArmaganIdQS))
+                if (!Page.IsValid) return;
+                int id, definitionId;
+                decimal amount;
+                DateTime date;
+                if (!int.TryParse(ArmaganIdQS, out id) || id <= 0)
+                { Messages.Warning("Geçerli bir armağan kaydı seçin."); return; }
+                if (!int.TryParse(ArmaganDDL.SelectedValue, out definitionId))
+                { Messages.Warning("Geçerli bir armağan türü seçin."); return; }
+                if (!decimal.TryParse(BagisMiktariTxt.Text, NumberStyles.Number, new CultureInfo(ProjeConstants.CULTUREINFO), out amount) || amount < 0)
+                { Messages.Warning("Bağış miktarı sıfır veya pozitif bir sayı olmalıdır."); return; }
+                if (!DateTime.TryParseExact(BagisTarihiTxt.Value, "dd.MM.yyyy", new CultureInfo(ProjeConstants.CULTUREINFO), DateTimeStyles.None, out date)
+                    || date < new DateTime(1753, 1, 1))
+                { Messages.Warning("Geçerli bir bağış tarihi girin."); return; }
+                Armagan input = new Armagan { Id = id, ArmaganTanimId = definitionId, BagisMiktari = amount,
+                    Durum = DurumDDL.SelectedValue, Tarih = date, Aciklama = AciklamaTxt.Text,
+                    BelgedeYazanIsim = BelgedeYazanIsimTxt.Text, BagisMiktariYazmasin = BagisMiktariYazmasinChk.Checked };
+                NbysGiftWriteResult result = new NbysGiftWriteService(LoggingContext).Update(input);
+                NbysGiftFeedback.Show(LoggingContext, result, "Armağan kaydı güncellendi.", () =>
                 {
-                    //System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
-                    //    typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.danger('Armağan Kaydı bulunamadı.')", true);
-                    MessageHelper.PublishMessage("Armağan kaydı bulunamadı", ProjeConstants.MESAJ_HATA);
-                }
-                else
-                {
-                    int armaganId = ArmaganIdQS.ConvertToInt();
-                    Armagan armagan = new Armagan();
-                    armagan = new ArmaganService().GetById(armaganId);
-                    if (armagan == null)
-                    {
-                        MessageHelper.PublishMessage("Armağan kaydı bulunamadı", ProjeConstants.MESAJ_HATA);
-                        return;
-                    }
-                    if (armagan.Durum != ProjeConstants.DURUM_PARAIADE &&
-                        DurumDDL.SelectedValue == ProjeConstants.DURUM_PARAIADE)
-                    {
-                        MessageHelper.PublishMessage("Para iadesi için Bağış İadesi ekranındaki para iadesi işlemini kullanın.", ProjeConstants.MESAJ_HATA);
-                        return;
-                    }
-                    if (armaganId == 0)
-                    {
-                        isSaved = saveArmagan(armagan);
-                    }
-                    else
-                    {
-                        armagan = new ArmaganService().GetById(armaganId);
-                        isSaved = UpdateArmagan(armagan);
-                    }
-
-                }
-
-                if (isSaved)
-                {
-                    //System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.success('Armağan Kaydedildi.')", true);
-                    MessageHelper.PublishMessage("Armağan kaydı güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
-                }
-                else
-                {
-                    //System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.danger('Armağan Kaydedilemedi.')", true);
-                    MessageHelper.PublishMessage("Armağan Kaydedilemedi", ProjeConstants.MESAJ_HATA);
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
-
-        }
-        private bool saveArmagan(Armagan armagan)
-        {
-            bool isSaved = false;
-            armagan.ArmaganTanimId = ArmaganDDL.SelectedValue.ConvertToInt();
-            armagan.BagisMiktari = BagisMiktariTxt.Text.ConvertToDecimal();
-            armagan.Durum = DurumDDL.SelectedValue.ReturnZeroIfNull().ToString();
-            armagan.Tarih = BagisTarihiTxt.Value.ConvertToDatetime();
-            armagan.Aciklama = AciklamaTxt.Text.ReturnEmptyIfNull().ToString();
-            armagan.Olusturan = CurrentUserName;
-            armagan.BelgedeYazanIsim = BelgedeYazanIsimTxt.Text.ReturnEmptyIfNull().ToString();
-            armagan.BagisMiktariYazmasin = BagisMiktariYazmasinChk.Checked;
-            armagan.Id = new ArmaganService().Save(armagan);
-            if (armagan.Id > 0)
-                isSaved = true;
-            return isSaved;
-        }
-        private bool UpdateArmagan(Armagan armagan)
-        {
-            armagan.ArmaganTanimId = ArmaganDDL.SelectedValue.ConvertToInt();
-            armagan.BagisMiktari = BagisMiktariTxt.Text.ConvertToDecimal();
-            if (armagan.Durum != ProjeConstants.DURUM_PARAIADE)
-                armagan.Durum = DurumDDL.SelectedValue.ReturnZeroIfNull().ToString();
-            armagan.Tarih = BagisTarihiTxt.Value.ConvertToDatetime();
-            armagan.Aciklama = AciklamaTxt.Text.ReturnEmptyIfNull().ToString();
-            armagan.BelgedeYazanIsim = BelgedeYazanIsimTxt.Text.ReturnEmptyIfNull().ToString();
-            armagan.BagisMiktariYazmasin = BagisMiktariYazmasinChk.Checked;
-            armagan.Degistiren = CurrentUserName;
-
-            bool isSaved = new ArmaganService().Update(armagan);
-
-            return isSaved;
+                    Armagan saved = new ArmaganService(LoggingContext).GetById(id);
+                    if (saved == null) throw new InvalidOperationException("Güncellenen armağan okunamadı.");
+                    FillArmaganForm(saved);
+                    DurumDDL.Enabled = saved.Durum != ProjeConstants.DURUM_PARAIADE;
+                });
+            });
         }
         protected void ArmaganListesiBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("ArmaganListesiBtn_Click", () =>
             {
                 string queryStr = "?SecilenId=" + ArmaganIdQS + "&SecilenAy=" + SecilenAyQS + "&SecilenYil="
-                + SecilenYilQS + "&SecilenArmaganTanimId=" + SecilenArmaganTanimIdQS + "&SecilenDurum=" + SecilenDurumQS + "&SecilenIl=" + SecilenIlQS;
+                + SecilenYilQS + "&SecilenArmaganTanimId=" + SecilenArmaganTanimIdQS + "&SecilenDurum=" + System.Web.HttpUtility.UrlEncode(SecilenDurumQS) + "&SecilenIl=" + SecilenIlQS;
                 RedirectToPage(ProjeConstants.PAGE_ARMAGAN_LIST + queryStr);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void DuzenliBagisciListesiBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("DuzenliBagisciListesiBtn_Click", () =>
             {
                 string queryStr = "?SecilenId=" + DuzenliBagisciIdQS + "&SecilenAy=" + SecilenAyQS + "&SecilenYil="
                 + SecilenYilQS;
                 RedirectToPage(ProjeConstants.PAGE_DUZENLIBAGISCI_LIST + queryStr);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            ExecuteAction("CloseBtn_Click", () =>
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+                Page.Response.Redirect(newUrl, false);
+                System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
+            });
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl, false);
+            System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
         }
     }
 }

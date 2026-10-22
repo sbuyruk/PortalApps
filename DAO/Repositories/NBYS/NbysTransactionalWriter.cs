@@ -25,7 +25,7 @@ namespace DAO.Repositories.NBYS
                 case "EkstreAktarma_Table": fields = new[] { "NakitBagisciId", "NakitBagisHareketId", "AktarildiMi", "BagisTarihi", "Tutar", "DovizCinsi", "DovizTutari", "DovizKuru", "KurTarihi", "ElleKayit", "TuzelKisi", "BelgeIstemiyor" }; break;
                 case "NakitBagisci_Table": fields = new[] { "Ili", "Ilcesi", "TuzelKisi", "Sag", "Ulasilamiyor", "BelgeIstemiyor", "DergiGonderilmesin" }; break;
                 case "NakitBagisHareket_Table": fields = new[] { "BagisciId", "ArmaganId", "EkstreAktarmaId", "BankaId", "BagisTarihi", "BagisMiktari", "DovizCinsi", "DovizTutari", "DovizKuru", "KurTarihi" }; break;
-                case "Armagan_Table": fields = new[] { "BagisciId", "ArmaganTanimId", "Tarih", "Durum", "BagisMiktari", "DovizCinsi", "CokluBagis", "KacinciBelge", "DuzenliBagis" }; break;
+                case "Armagan_Table": fields = new[] { "BagisciId", "ArmaganTanimId", "Tarih", "Durum", "BagisMiktari", "DovizCinsi", "CokluBagis", "KacinciBelge", "DuzenliBagis", "BagisMiktariYazmasin" }; break;
                 case "DuzenliNakitBagisci_Table": fields = new[] { "BagisciId", "BagisAdedi", "BagisToplami", "BaslamaTarihi", "BitisTarihi", "Tutar", "Aktif", "ArmaganId", "NakitBagisHareketId" }; break;
                 case "FTKKisi_Table": fields = new[] { "Ili", "Ilcesi", "Vali", "Kaymakam", "FTKGorevi", "UyelikDurumu" }; break;
                 case "FTKIslem_Table": fields = new[] { "Ili", "Ilcesi", "BolgeId", "KurulusTarihi", "GuncellemeTarihi" }; break;
