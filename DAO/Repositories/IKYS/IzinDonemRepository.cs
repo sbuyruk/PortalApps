@@ -62,6 +62,13 @@ namespace DAO.Repositories.IKYS
             SqlQuery q = new SqlQuery("SELECT Id IzinDonemId, Id,PersonelId, BaslangicTarihi, BitisTarihi, Adi, IzinTipi, IzinHakki, KullanilanIzin, KalanIzin, Birim,Aciklama, Olusturan, OlusturmaTarihi, Degistiren, DegistirmeTarihi FROM IzinDonem_Table" + where + " ORDER BY BaslangicTarihi DESC");
             if (personelId != 0) q.AddParameter("@PersonelId", personelId); if (izinTipi != 0) q.AddParameter("@IzinTipi", izinTipi); return PortalSqlReadExecutor.Select(q, context, "IzinDonem.SelectByPersonelId");
         }
+        public DataTable SelectByPersonelId(int personelId, int izinTipi, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            string where = ""; if (personelId != 0) where += " PersonelId=@PersonelId"; if (izinTipi != 0) where += (where.Length == 0 ? "" : " AND ") + "IzinTipi=@IzinTipi"; if (where.Length > 0) where = " WHERE " + where;
+            SqlQuery q = new SqlQuery("SELECT Id IzinDonemId, Id,PersonelId, BaslangicTarihi, BitisTarihi, Adi, IzinTipi, IzinHakki, KullanilanIzin, KalanIzin, Birim,Aciklama, Olusturan, OlusturmaTarihi, Degistiren, DegistirmeTarihi FROM IzinDonem_Table WITH (UPDLOCK, HOLDLOCK)" + where + " ORDER BY BaslangicTarihi DESC");
+            if (personelId != 0) q.AddParameter("@PersonelId", personelId); if (izinTipi != 0) q.AddParameter("@IzinTipi", izinTipi); return PortalSqlReadExecutor.Select(q, context, "IzinDonem.SelectByPersonelId", transaction);
+        }
         public DataTable SelectSumKalanIzinByPersonelId(int personelId, bool sadeceEskiDonemler)
         {
             string oldFilter = sadeceEskiDonemler ? " AND BitisTarihi < GETDATE() " : "";

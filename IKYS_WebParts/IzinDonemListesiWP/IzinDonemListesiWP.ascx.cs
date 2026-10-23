@@ -21,12 +21,8 @@ namespace IKYS_WebParts.IzinDonemListesiWP
         private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "IzinDonemListesiWP"); } }
         private void ReportError(string operation, Exception error)
         {
+            if (error is System.Threading.ThreadAbortException) return;
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
             PortalTechnicalLog.WriteError(context, operation, error);
             Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
@@ -86,6 +82,10 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                 ViewState["CurrentUserName"] = value;
             }
         }
+        private int SecilenPersonelId
+        {
+            get { return PersonelDDL.SelectedItem == null ? 0 : PersonelDDL.SelectedItem.Value.ConvertToInt(); }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -100,7 +100,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                     }
                     FillPersonelDDL();
                 }
-                Personel personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt());
+                Personel personel = new PersonelService().GetById(SecilenPersonelId, LoggingContext);
                 if (personel != null)
                 {
                     FillIzinDonemTable();
@@ -150,10 +150,11 @@ namespace IKYS_WebParts.IzinDonemListesiWP
         {
             IzinTableHeaders();
 
-            Personel personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt());
+            Personel personel = new PersonelService().GetById(SecilenPersonelId, LoggingContext);
             if (personel != null)
             {
                 DataTable dataTable = new IzinDonemService().GetByPersonelIdReturnDataTable(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, LoggingContext);
+                if (dataTable == null) return;
                 int sira = 0;
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -422,7 +423,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
         private void FillPersonelDDL()
         {
             PersonelDDL.Items.Clear();
-            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu, LoggingContext);
             foreach (Personel item in list)
             {
                 ListItem li = new ListItem(item.Adi.ReturnEmptyIfNull().ToString() + " " + item.Soyadi.ReturnEmptyIfNull().ToString(), item.Id.ReturnZeroIfNull().ToString());
@@ -431,13 +432,14 @@ namespace IKYS_WebParts.IzinDonemListesiWP
         }
         protected void PersonelDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Personel personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt());
-            if (personel != null)
+            try
             {
                 FillIzinDonemTable();
             }
-
-
+            catch (Exception error)
+            {
+                ReportError("IzinDonem.PersonelChanged", error);
+            }
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
@@ -447,62 +449,50 @@ namespace IKYS_WebParts.IzinDonemListesiWP
         }
         protected void UpdateNowBtn_Click(object sender, EventArgs e)
         {
-            int izinDonemId = IzinDonemIdLbl.Text.ConvertToInt();
-            IzinDonem izinDonemi = new IzinDonemService().GetById(izinDonemId, LoggingContext);
-            if (izinDonemi != null)
+            try
             {
-                try
+                if (!DonemDegerleriGecerli()) return;
+                if (!DonemiGuncelle(IzinDonemIdLbl.Text.ConvertToInt(), SecilenPersonelId))
                 {
-                    //int girildiginden emin ol
-                    int value = 0;
-                    bool validated = false;
-                    if ((int.TryParse(IzinHakkiTxt.Text, out value)) &&
-                            (int.TryParse(KullanilanIzinTxt.Text, out value)) &&
-                            (int.TryParse(KalanIzinTxt.Text, out value)))
-                    {
-                        izinDonemi.IzinHakki = IzinHakkiTxt.Text;
-                        izinDonemi.KullanilanIzin = KullanilanIzinTxt.Text;
-                        izinDonemi.KalanIzin = KalanIzinTxt.Text;
-                        validated = true;
-                    }
-
-                    if (validated)
-                    {
-                        bool issaved;
-                        if (PortalLogSettings.IsEnabled(LoggingContext))
-                        {
-                            using (SqlTransactionContext transaction = new SqlTransactionContext())
-                            {
-                                issaved = new IzinDonemService().Update(izinDonemi, transaction, LoggingContext);
-                                if (issaved) transaction.Complete();
-                            }
-                        }
-                        else
-                        {
-                            issaved = new IzinDonemService().Update(izinDonemi);
-                        }
-                        if (issaved)
-                        {
-                            Messages.Success("Kayıt Tamamlandı", 2000);
-                            FillIzinDonemTable();
-                        }
-                        else
-                        {
-                        Messages.Error("Kayıt Yapılamadı. Lütfen tekrar deneyin.");
-                        }
-                    }
-                    else
-                    {
-                        Messages.Error("Kayıt Yapılamadı. İzin Hakkı, Kullanılan İzin ve Kalan İzin değerlerine lütfen tamsayı giriniz");
-                    }
+                    Messages.Error("İzin dönemi bulunamadı veya seçilen personele ait değil. Listeyi yenileyin.");
+                    return;
                 }
-                catch (Exception)
-                {
+                Messages.Success("Kayıt Tamamlandı", 2000);
+                FillIzinDonemTable();
+            }
+            catch (Exception error)
+            {
+                ReportError("IzinDonem.Update", error);
+            }
+        }
 
-                    Messages.Error("İzin Hakkı, Kullanılan İzin ve Kalan İzin bilgilerine lütfen tamsayı giriniz");
-                }
+        private bool DonemDegerleriGecerli()
+        {
+            int value;
+            if (int.TryParse(IzinHakkiTxt.Text, out value)
+                && int.TryParse(KullanilanIzinTxt.Text, out value)
+                && int.TryParse(KalanIzinTxt.Text, out value)) return true;
+            Messages.Error("İzin Hakkı, Kullanılan İzin ve Kalan İzin değerlerine lütfen tamsayı giriniz.");
+            return false;
+        }
 
-
+        private bool DonemiGuncelle(int izinDonemId, int personelId)
+        {
+            PortalLogContext context = LoggingContext;
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                IzinDonemService service = new IzinDonemService();
+                IzinDonem donem = service.GetById(izinDonemId, transaction, context);
+                if (donem == null || personelId <= 0 || donem.PersonelId != personelId
+                    || donem.IzinTipi != ProjeConstants.IZINTIPI_UCRETLI_INT) return false;
+                donem.IzinHakki = IzinHakkiTxt.Text;
+                donem.KullanilanIzin = KullanilanIzinTxt.Text;
+                donem.KalanIzin = KalanIzinTxt.Text;
+                donem.Degistiren = CurrentUserName;
+                if (!service.Update(donem, transaction, context))
+                    throw new InvalidOperationException("İzin dönemi güncellenemedi.");
+                transaction.Complete();
+                return true;
             }
         }
         /// <summary>
@@ -518,16 +508,43 @@ namespace IKYS_WebParts.IzinDonemListesiWP
         /// <param name="e"></param>
         protected void DonemEkleBtn_Click(object sender, EventArgs e)
         {
-
             try
             {
-                Personel personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt());
+                Personel personel = new PersonelService().GetById(SecilenPersonelId, LoggingContext);
                 if (personel == null)
                 {
-                    Exception ex = new Exception("Personel bulunamadı. ");
-                    throw (ex);
+                    Messages.Error("Personel bulunamadı. Listeyi yenileyin.");
+                    return;
                 }
-
+                IsBilgileri bilgi = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
+                if (bilgi == null)
+                {
+                    Messages.Error("Personelin iş bilgileri bulunamadı.");
+                    return;
+                }
+                List<IzinDonem> list = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, LoggingContext);
+                IzinDonem enEskiDonem = list.LastOrDefault();
+                DonemBasTarTxt.Value = string.Empty;
+                DonemBitTarTxt.Value = string.Empty;
+                if (enEskiDonem != null)
+                {
+                    DateTime iseBaslama = !string.IsNullOrEmpty(bilgi.IzinDonemiBasTar.ConvertToDatetimeEmptyIfNull())
+                        ? bilgi.IzinDonemiBasTar : bilgi.BaslamaTar;
+                    if (string.IsNullOrEmpty(iseBaslama.ConvertToDatetimeEmptyIfNull()))
+                    {
+                        Messages.Error("İşe başlama veya izin dönemi başlangıç tarihi belirlenemedi.");
+                        return;
+                    }
+                    DateTime baslangic = iseBaslama.AddYears(1);
+                    DateTime bitis = enEskiDonem.BaslangicTarihi.AddDays(-1);
+                    if (bitis < baslangic)
+                    {
+                        Messages.Error("İşe başladığından bu yana olan tüm dönemler zaten tanımlı. Yeni izin dönemi eklenemez.");
+                        return;
+                    }
+                    DonemBasTarTxt.Value = baslangic.ConvertToDatetimeEmptyIfNull();
+                    DonemBitTarTxt.Value = bitis.ConvertToDatetimeEmptyIfNull();
+                }
                 BasBitTarDiv.Attributes["style"] = "display:block";
                 IzinHakkiTxt.Enabled = true;
                 KullanilanIzinTxt.Enabled = true;
@@ -538,134 +555,91 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                 IzinDonemIdLbl.Text = "";
                 ModalSubTitleLbl.Text = string.Empty;
                 ModalTitleLbl.Text = personel.Adi + " " + personel.Soyadi;
-
-            List<IzinDonem> list = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, LoggingContext);
-                IzinDonem izinDonemi = null;
-
-                //modal açilista Dönem basi ve sonunu dolu getirsin en eski dönemden önceki bir yil degerini doldursun
-                izinDonemi = list.FirstOrDefault<IzinDonem>();//en eski dönem (baslangiçTarihine göre sirali oldugundan)
-                if (izinDonemi != null)
-                {
-
-                    IsBilgileri ib = new IsBilgileriService().GetByPersonelId(personel.Id);
-                    if (ib != null)
-                    {
-                        DateTime iseBaslamaTar = !string.IsNullOrEmpty(ib.IzinDonemiBasTar.ConvertToDatetimeEmptyIfNull()) ? ib.IzinDonemiBasTar : ib.BaslamaTar;
-                        DateTime bastar = iseBaslamaTar.AddYears(1);
-                        DateTime bittar = izinDonemi.BaslangicTarihi.AddDays(-1);
-
-                        if (bittar < bastar)
-                        {
-                            Exception ex = new Exception("İşe başladığından bu yana olan tüm dönemler zaten tanımlı. Yeni izin dönemi eklenemez.");
-                            throw (ex);
-
-                        }
-                        DonemBasTarTxt.Value = bastar.ConvertToDatetimeEmptyIfNull();
-                        DonemBitTarTxt.Value = bittar.ConvertToDatetimeEmptyIfNull();
-                    }
-
-
-                }
                 IzinHakkiTxt.Text = "0";
                 KullanilanIzinTxt.Text = "0";
                 KalanIzinTxt.Text = "0";
-
-                var openPopup = "OpenModal();";
-                System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openPopup, true);
-
+                System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
+                    typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "OpenModal();", true);
             }
-            catch (Exception exception)
+            catch (Exception error)
             {
-                ReportError("Unhandled", exception);
+                ReportError("IzinDonem.Prepare", error);
             }
-
         }
         protected void DonemEkleNowBtn_Click(object sender, EventArgs e)
         {
-
-            IzinDonem izinDonemi = new IzinDonem();
             try
             {
-                //int girildiginden emin ol
-                int value = 0;
-                bool validated = false;
-                if ((int.TryParse(IzinHakkiTxt.Text, out value)) &&
-                        (int.TryParse(KullanilanIzinTxt.Text, out value)) &&
-                        (int.TryParse(KalanIzinTxt.Text, out value)))
+                if (!DonemDegerleriGecerli()) return;
+                DateTime baslangic;
+                DateTime bitis;
+                if (!DateTime.TryParse(DonemBasTarTxt.Value, System.Globalization.CultureInfo.GetCultureInfo("tr-TR"),
+                        System.Globalization.DateTimeStyles.None, out baslangic)
+                    || !DateTime.TryParse(DonemBitTarTxt.Value, System.Globalization.CultureInfo.GetCultureInfo("tr-TR"),
+                        System.Globalization.DateTimeStyles.None, out bitis)
+                    || bitis < baslangic)
                 {
-                    izinDonemi.IzinHakki = IzinHakkiTxt.Text;
-                    izinDonemi.KullanilanIzin = KullanilanIzinTxt.Text;
-                    izinDonemi.KalanIzin = KalanIzinTxt.Text;
-                    validated = true;
+                    Messages.Error("Geçerli başlangıç ve bitiş tarihleri giriniz. Bitiş tarihi başlangıçtan önce olamaz.");
+                    return;
                 }
-
-                if (validated)
-                {
-                    Personel personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt());
-                    if (personel == null)
-                    {
-                        Exception ex = new Exception("Personel bulunamadı. ");
-                        throw (ex);
-                    }
-
-                    izinDonemi.PersonelId = personel.Id;
-                    izinDonemi.IzinTipi = ProjeConstants.IZINTIPI_UCRETLI_INT;
-                    DateTime bastar = DonemBasTarTxt.Value.ConvertToDatetime();
-                    DateTime bittar = DonemBitTarTxt.Value.ConvertToDatetime();
-
-                    IsBilgileri ib = new IsBilgileriService().GetByPersonelId(personel.Id);
-                    if (ib != null)
-                    {
-                        List<IzinDonem> list = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, LoggingContext);
-                        IzinDonem enEskiIzinDonemi = list.LastOrDefault();
-
-                        DateTime iseBaslamaTar = ib.BaslamaTar != null ? ib.BaslamaTar : ib.IzinDonemiBasTar;
-                        if (bastar < iseBaslamaTar)
-                        {
-                            Exception ex = new Exception("İzin Dönemi Başı İşe başlama tarihinden küçük olamaz");
-                            throw (ex);
-                        }
-                        if (bittar > enEskiIzinDonemi.BaslangicTarihi)
-                        {
-                            Exception ex = new Exception("İzin Dönemi sonu itibari ile dönemler arası çakışma var");
-                            throw (ex);
-                        }
-                    }
-                    izinDonemi.BaslangicTarihi = bastar;
-                    izinDonemi.BitisTarihi = bittar;
-                    izinDonemi.Birim = ProjeConstants.IZIN_BIRIMI_GUN;
-                    izinDonemi.Adi = bastar.Year + "-" + bittar.Year + " İzin Dönemi";
-                    izinDonemi.Aciklama = AciklamaTxt.Text;
-                    izinDonemi.Olusturan = CurrentUserName;
-                    bool issaved;
-                    if (PortalLogSettings.IsEnabled(LoggingContext))
-                    {
-                        using (SqlTransactionContext transaction = new SqlTransactionContext())
-                        {
-                            izinDonemi.Id = new IzinDonemService().Save(izinDonemi, transaction, LoggingContext);
-                            issaved = izinDonemi.Id > 0;
-                            if (issaved) transaction.Complete();
-                        }
-                    }
-                    else
-                    {
-                        izinDonemi.Id = new IzinDonemService().Save(izinDonemi);
-                        issaved = izinDonemi.Id > 0;
-                    }
-                    if (issaved)
-                    {
-                        Messages.Success("Kayıt Tamamlandı", 2000);
-                        FillIzinDonemTable();
-                    }
-                }
-                else
-                {
-                    Messages.Error("Kayıt Yapılamadı. İzin Hakkı, Kullanılan İzin ve Kalan İzin değerlerine lütfen tamsayı giriniz");
-                }
+                if (DonemiKaydet(SecilenPersonelId, baslangic, bitis) <= 0) return;
+                Messages.Success("Kayıt Tamamlandı", 2000);
+                FillIzinDonemTable();
             }
-            catch (Exception exception)
+            catch (Exception error)
             {
-                ReportError("Unhandled", exception);
+                ReportError("IzinDonem.Create", error);
+            }
+        }
+
+        private int DonemiKaydet(int personelId, DateTime baslangic, DateTime bitis)
+        {
+            PortalLogContext context = LoggingContext;
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                Personel personel = new PersonelService().GetById(personelId, transaction, context);
+                if (personel == null)
+                {
+                    Messages.Error("Personel bulunamadı. Listeyi yenileyin.");
+                    return 0;
+                }
+                IsBilgileri bilgi = new IsBilgileriService().GetByPersonelId(personel.Id, transaction, context);
+                if (bilgi == null)
+                {
+                    Messages.Error("Personelin iş bilgileri bulunamadı.");
+                    return 0;
+                }
+                DateTime iseBaslama = !string.IsNullOrEmpty(bilgi.BaslamaTar.ConvertToDatetimeEmptyIfNull())
+                    ? bilgi.BaslamaTar : bilgi.IzinDonemiBasTar;
+                if (string.IsNullOrEmpty(iseBaslama.ConvertToDatetimeEmptyIfNull()) || baslangic < iseBaslama)
+                {
+                    Messages.Error("İzin dönemi başlangıcı geçerli işe başlama tarihinden önce olamaz.");
+                    return 0;
+                }
+                IzinDonemService service = new IzinDonemService();
+                List<IzinDonem> donemler = service.GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, transaction, context);
+                IzinDonem enEskiDonem = donemler.LastOrDefault();
+                if (enEskiDonem != null && bitis >= enEskiDonem.BaslangicTarihi)
+                {
+                    Messages.Error("Yeni dönem mevcut en eski dönemden önce bitmelidir. Dönemler çakışamaz.");
+                    return 0;
+                }
+                IzinDonem donem = new IzinDonem();
+                donem.PersonelId = personel.Id;
+                donem.IzinTipi = ProjeConstants.IZINTIPI_UCRETLI_INT;
+                donem.BaslangicTarihi = baslangic;
+                donem.BitisTarihi = bitis;
+                donem.Birim = ProjeConstants.IZIN_BIRIMI_GUN;
+                donem.Adi = baslangic.Year + "-" + bitis.Year + " İzin Dönemi";
+                donem.Aciklama = AciklamaTxt.Text;
+                donem.Olusturan = CurrentUserName;
+                donem.IzinHakki = IzinHakkiTxt.Text;
+                donem.KullanilanIzin = KullanilanIzinTxt.Text;
+                donem.KalanIzin = KalanIzinTxt.Text;
+                int id = service.Save(donem, transaction, context);
+                if (id <= 0) throw new InvalidOperationException("İzin dönemi oluşturulamadı.");
+                transaction.Complete();
+                return id;
             }
         }
     }
