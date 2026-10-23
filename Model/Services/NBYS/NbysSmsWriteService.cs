@@ -56,7 +56,7 @@ namespace Model.Services.NBYS
                 if (!ValidRows(current)) return NbysSmsWriteResult.InvalidYearData;
                 for (int month = 1; month <= 12; month++)
                 {
-                    if (current.Any(item => item.Ay == month)) continue;
+                    if (current.Any(existingMonth => existingMonth.Ay == month)) continue;
                     SMSAylikBagis item = new SMSAylikBagis
                     {
                         Yil = year, Ay = month, DovizCinsi = ProjeConstants.DOVIZ_TL, SMSTutari = DefaultUnitAmount(year, month),
