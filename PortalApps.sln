@@ -41,7 +41,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFYS_WebParts", "MFYS_WebPa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{0E6EEB74-B26E-4458-8636-E1EDDFC4DFFE}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\..\Documents\14082026.xlsx = ..\..\..\Documents\14082026.xlsx
 		NBYS_WebParts\NakitBagisHareketRaporWP\NakitBagisHareketRaporTasarim.html = NBYS_WebParts\NakitBagisHareketRaporWP\NakitBagisHareketRaporTasarim.html
 	EndProjectSection
 EndProject
