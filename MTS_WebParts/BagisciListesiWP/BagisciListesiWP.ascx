@@ -22,18 +22,17 @@
     function setDataSet(myset) {
         myjsons = myset;
     }
-    var myjsons = [{
-        "AdiSoyadi": "", "Telefon": "", "Adres": "", "Il": "", "Ilce": ""}];
+    var myjsons = [];
     jQuery(document).ready(function () {
 
         jQuery('#CustomDataTable').DataTable({
             data: myjsons,
             columns: [
-                { data: "AdiSoyadi" },
-                { data: "Telefon", "width": "14%" },
-                { data: "Adres" },
-                { data: "Il" },
-                { data: "Ilce" },
+                { data: "AdiSoyadi" , render: jQuery.fn.dataTable.render.text() },
+                { data: "Telefon", "width": "14%", render: jQuery.fn.dataTable.render.text() },
+                { data: "Adres" , render: jQuery.fn.dataTable.render.text() },
+                { data: "Il" , render: jQuery.fn.dataTable.render.text() },
+                { data: "Ilce" , render: jQuery.fn.dataTable.render.text() },
             ],
             "order": [[1, 'desc'],[0, 'asc']],
             "language": {
@@ -67,8 +66,7 @@
                     exportOptions: {
                         columns: ':visible'
                     }
-                },
-                , 'pageLength', "colvis"
+                }, 'pageLength', "colvis"
             ]
         });
     });

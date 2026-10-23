@@ -18,6 +18,8 @@ namespace Model.Services.MTS
         {
         }
 
+        public AniObjesiDagitimService(Utility.Logging.PortalLogContext context) : this(new AniObjesiDagitimRepository(context)) { }
+
         public AniObjesiDagitimService(AniObjesiDagitimRepository repository)
         {
             this.repository = repository ?? throw new ArgumentNullException("repository");

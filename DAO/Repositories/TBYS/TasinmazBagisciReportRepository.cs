@@ -55,6 +55,11 @@ namespace DAO.Repositories.TBYS
             return db.SelectFromDb(new SqlQuery("SELECT A.Id KatilimciId,A.Adi,A.Soyadi,A.Adres,A.Telefon1 Telefon,A.Sag_vefat,A.Ilcesi Ilce,A.Ili Il FROM TasinmazBagisci_Table A WHERE Sag_vefat='Sag' ORDER BY A.Adi"), "");
         }
 
+        public DataTable SelectUnselectedParticipants(Utility.Logging.PortalLogContext context)
+        {
+            return PortalSqlReadExecutor.Select(new SqlQuery("SELECT A.Id KatilimciId,A.Adi,A.Soyadi,A.Adres,A.Telefon1 Telefon,A.Sag_vefat,A.Ilcesi Ilce,A.Ili Il FROM TasinmazBagisci_Table A WHERE Sag_vefat='Sag' ORDER BY A.Adi"), context, "TasinmazBagisciReportRepository.SelectUnselectedParticipants");
+        }
+
         public DataTable SelectDeprecatedByBolge(string bolge, string allRegion, string authorizedUnit)
         {
             string filter = string.IsNullOrEmpty(bolge) || bolge.Equals(allRegion) || bolge.Equals(authorizedUnit) ? string.Empty : " WHERE E.Bolge=@Bolge ";

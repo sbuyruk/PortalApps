@@ -4,8 +4,8 @@
 
 ## Parçalar
 
-1. **Liste ekranları ve ortak altyapı — bu dal:** `codex/mts-listeler-log-altyapi`. FaaliyetListesiWP, FaaliyetListesiROWP, AcikTarihliFaaliyetListesiWP, KisiListesiWP, AramaGorusmeListesiWP, MtsOlayListesiWP.
-2. **Kişi, kurum/görev ve iletişim:** KisiGirisiWP, KisiKartiWP, AramaGirisiWP, BagisciListesiWP; kişi/kurum/görev ilişkileri, arama kaydı ve faaliyet bağlantısı, gerekli transaction/audit yolları.
+1. **Liste ekranları ve ortak altyapı — PR #531 ile master'a alındı:** `codex/mts-listeler-log-altyapi`. FaaliyetListesiWP, FaaliyetListesiROWP, AcikTarihliFaaliyetListesiWP, KisiListesiWP, AramaGorusmeListesiWP, MtsOlayListesiWP.
+2. **Kişi, kurum/görev ve iletişim — bu dal:** `codex/mts-kisi-arama-transaction`. KisiGirisiWP, KisiKartiWP, AramaGirisiWP, BagisciListesiWP; kişi/kurum/görev okumaları, arama kaydı ve faaliyet bağlantısı, transaction/audit yolları. Ayrıntılar: [LoglamaGecisKisiArama.md](LoglamaGecisKisiArama.md).
 3. **Faaliyet ve stok yazma bütünlüğü:** FaaliyetGirisiWP; katılım, anı objesi dağıtımı/iadesi, depo stok güncellemeleri, silme/iptal ve takvim tarih değişikliği servisleri. Aynı işleme bağlı faaliyet/katılım/stok yazıları ayrı transaction'lara bölünmeyecek. Bu bağımlılık nedeniyle stok işleri kapanış dalına bırakılmayacak.
 4. **Takvim, kart ve kapanış:** FaaliyetKartiWP, FaaliyetViewerWP, FaaliyetViewerCustomWP, FaaliyetROViewerWP, HaftalikGorunumWP; üçüncü parçanın tarih değiştirme servislerinin ekranlara bağlanması, salt okuma bağımlılıkları ve son tarama. TestWP/VisualWebPart1/VisualWebPart2 için kullanım/paketleme durumu da incelenecek. Örnek ekranın varlığı üretim akışı sayılmayacak.
 

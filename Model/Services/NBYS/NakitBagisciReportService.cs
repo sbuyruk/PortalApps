@@ -93,5 +93,12 @@ namespace Model.Services.NBYS
                 DateTime.Today.AddYears(-2),
                 ProjeConstants.NAKITBAGISCI_SORGUBAGISTUTARI);
         }
+
+        public DataTable GetSecilmemisFaaliyetKatilimcilari(Utility.Logging.PortalLogContext context)
+        {
+            return repository.SelectSecilmemisKatilimcilar(
+                DateTime.Today.AddYears(-2),
+                ProjeConstants.NAKITBAGISCI_SORGUBAGISTUTARI, context);
+        }
     }
 }

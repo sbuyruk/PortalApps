@@ -1,3 +1,5 @@
+using MTS_WebParts.Logging;
+using Utility.Logging;
 using Microsoft.SharePoint;
 using Model.IKYS;
 using Model.MTS;
@@ -23,6 +25,8 @@ namespace MTS_WebParts.KisiKartiWP
     [ToolboxItemAttribute(false)]
     public partial class KisiKartiWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("MTS", "KisiKartiWP")); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -61,43 +65,40 @@ namespace MTS_WebParts.KisiKartiWP
                 ViewState["KatilimciId"] = value;
             }
         }
-      
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            MtsWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
             {
+                if (!Page.IsPostBack) MtsWebPartLog.RecordOpened(LogContext);
                 if (!Page.IsPostBack)
                 {
                     KisiKartiniOlustur();
 
                 }
-
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(exception);
-                exHelper.PublishException();
-            }
+            });
         }
+
+        private static string H(string value) { return System.Web.HttpUtility.HtmlEncode(value ?? string.Empty); }
 
         private void KisiKartiniOlustur()
         {
             Kisi kisi = new Kisi();
-            kisi = new Model.Services.MTS.KisiService().GetById(KatilimciIdQS.ConvertToInt());
+            kisi = new Model.Services.MTS.KisiService(LogContext).GetById(KatilimciIdQS.ConvertToInt());
             if (kisi != null)
             {
                 KatilimciItem katilimci = new KatilimciItem();
                 katilimci.KatilimciId = kisi.Id.ToString() ;
                 katilimci.AdiSoyadi = kisi.Adi + " " + kisi.Soyadi;
                 katilimci.Adresi = kisi.Adres;
-                Il il = new IlService().GetById(kisi.Ili);
-                Ilce ilce = new IlceService().GetById(kisi.Ilcesi);
+                Il il = new IlService().GetById(kisi.Ili, LogContext);
+                Ilce ilce = new IlceService().GetById(kisi.Ilcesi, LogContext);
                 katilimci.IlcesiIli = ilce == null ? "" : ilce.IlceAdi + " " + (il == null ? "" : il.IlAdi.ToUpper());
-                string telefon1 = string.IsNullOrEmpty(kisi.Telefon1.ToString()) ? "" : String.Format("{0:(###) ### ####}", kisi.Telefon1)
+                string telefon1 = string.IsNullOrEmpty(kisi.Telefon1) ? "" : String.Format("{0:(###) ### ####}", kisi.Telefon1)
                     + (string.IsNullOrEmpty(kisi.Dahili1) ? "" : " /" + kisi.Dahili1.Trim());
-                string telefon2 = string.IsNullOrEmpty(kisi.Telefon2.ToString()) ? "" : String.Format("{0:(###) ### ####}", kisi.Telefon2)
+                string telefon2 = string.IsNullOrEmpty(kisi.Telefon2) ? "" : String.Format("{0:(###) ### ####}", kisi.Telefon2)
                         + (string.IsNullOrEmpty(kisi.Dahili2) ? "" : " /" + kisi.Dahili2.Trim());
-                string telefon3 = string.IsNullOrEmpty(kisi.Telefon3.ToString()) ? "" : String.Format("{0:(###) ### ####}", kisi.Telefon3)
+                string telefon3 = string.IsNullOrEmpty(kisi.Telefon3) ? "" : String.Format("{0:(###) ### ####}", kisi.Telefon3)
                         + (string.IsNullOrEmpty(kisi.Dahili3) ? "" : " /" + kisi.Dahili3.Trim());
                 katilimci.Telefon = telefon1 + " - " + telefon2 + " - " + telefon3;
                 katilimci.Unvani = kisi.Unvani;
@@ -106,7 +107,7 @@ namespace MTS_WebParts.KisiKartiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Kisi Bulunamadi", ProjeConstants.MESAJ_HATA);
+                throw new MtsInputException("Kişi bulunamadı. Listeden yeniden seçin.");
             }
         }
 
@@ -115,7 +116,7 @@ namespace MTS_WebParts.KisiKartiWP
 
             if (katilimci != null)
             {
-                IdLbl.Text = " ( " + katilimci.KatilimciId.ToString() + " )";
+                IdLbl.Text = H(" ( " + katilimci.KatilimciId.ToString() + " )");
                 TabloyaKatilimciBilgileriniDoldur(katilimci);
                 TabloyaFaaliyetBilgileriniDoldur();
                 TabloyaAramaBilgileriniDoldur();
@@ -130,7 +131,7 @@ namespace MTS_WebParts.KisiKartiWP
             System.IO.StringWriter tw = new System.IO.StringWriter();
             System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
 
-            //Get the HTML for the control.             
+            //Get the HTML for the control.
             MainCardDiv.RenderControl(hw);
             //Write the HTML back to the browser.
             //Response.ContentType = application/vnd.ms-excel;
@@ -160,7 +161,7 @@ namespace MTS_WebParts.KisiKartiWP
         }
         private void TabloyaKatilimciBilgileriniDoldur(KatilimciItem katilimci)
         {
-            BaslikTH.Text = (katilimci.AdiSoyadi).ToUpper();
+            BaslikTH.Text = H((katilimci.AdiSoyadi).ToUpper());
             BaslikTH.HorizontalAlign = HorizontalAlign.Center;
             BaslikTarihCell.Text = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
             TableRow row1 = new TableRow();
@@ -204,15 +205,15 @@ namespace MTS_WebParts.KisiKartiWP
             row3.Controls.Add(r3c4);
 
 
-            r1c1.Text = "Ünvani : " + katilimci.Unvani;
-            r2c1.Text = "Görevi : " + katilimci.Gorevi;
+            r1c1.Text = H("Ünvanı: " + katilimci.Unvani);
+            r2c1.Text = H("Görevi: " + katilimci.Gorevi);
             r3c1.Text = "";
 
-            r1c2.Text = "Kurumu : " + katilimci.Kurumu;
-            r2c2.Text = "Adresi : " + katilimci.Adresi;
-            r3c2.Text = "Ilçe/Il :" + katilimci.IlcesiIli;
+            r1c2.Text = H("Kurumu : " + katilimci.Kurumu);
+            r2c2.Text = H("Adresi : " + katilimci.Adresi);
+            r3c2.Text = H("İlçe/İl: " + katilimci.IlcesiIli);
 
-            r1c3.Text = katilimci.Telefon;
+            r1c3.Text = H(katilimci.Telefon);
 
             BorderEkle(row1);
             BorderEkle(row2);
@@ -224,14 +225,20 @@ namespace MTS_WebParts.KisiKartiWP
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
+            MtsWebPartLog.ExecuteAction(LogContext, "CloseBtn_Click", () =>
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path);
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                Page.Response.Redirect(newUrl);
+            });
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            KisiKartiniOlustur();
-            ExportToExcel();
+            MtsWebPartLog.ExecuteAction(LogContext, "ExcelBtn_Click", () =>
+            {
+                KisiKartiniOlustur();
+                ExportToExcel();
+            });
         }
         private void TabloyaFaaliyetBilgileriniDoldur()
         {
@@ -240,31 +247,31 @@ namespace MTS_WebParts.KisiKartiWP
             {
                 TableRow row = new TableRow();
                 TableCell nocell = new TableCell();
-                nocell.Text = item.FaaliyetId;
+                nocell.Text = H(item.FaaliyetId);
 
                 TableCell tarihcell = new TableCell();
-                tarihcell.Text = item.FaaliyetTarihi;
+                tarihcell.Text = H(item.FaaliyetTarihi);
 
                 TableCell yercell = new TableCell();
-                yercell.Text = item.FaaliyetYeri + " / " + item.FaaliyetKonusu;
+                yercell.Text = H(item.FaaliyetYeri + " / " + item.FaaliyetKonusu);
 
                 //TableCell konucell = new TableCell();
                 //konucell.Text = item.FaaliyetKonusu;
 
                 TableCell amaccell = new TableCell();
-                amaccell.Text = item.FaaliyetAmaci + " / " + item.FaaliyetDurumu;
+                amaccell.Text = H(item.FaaliyetAmaci + " / " + item.FaaliyetDurumu);
 
                 //TableCell durumcell = new TableCell();
                 //durumcell.Text = item.FaaliyetDurumu;
 
                 TableCell verilenaniobjesicell = new TableCell();
-                verilenaniobjesicell.Text = item.VerilenAniObjesi.Replace(";", "<br />"); ;
+                verilenaniobjesicell.Text = H(item.VerilenAniObjesi).Replace(";", "<br />");
 
                 TableCell getirilenaniobjesicell = new TableCell();
-                getirilenaniobjesicell.Text = item.GetirilenAniObjesi.Replace(";", "<br />"); ;
+                getirilenaniobjesicell.Text = H(item.GetirilenAniObjesi).Replace(";", "<br />");
 
                 TableCell katilimcicell = new TableCell();
-                katilimcicell.Text = item.Katilimci.Replace(";", "<br />");
+                katilimcicell.Text = H(item.Katilimci).Replace(";", "<br />");
 
                 TableCell faaliyetkarticell = new TableCell();
                 faaliyetkarticell.Text = item.FaaliyetKarti;
@@ -295,7 +302,7 @@ namespace MTS_WebParts.KisiKartiWP
         {
             List<FaaliyetListItem> faaliyetList = new List<FaaliyetListItem>();
             Faaliyet faaliyetDao = new Faaliyet();
-            DataTable dataTable = new Model.Services.MTS.FaaliyetService().GetByParticipant(KatilimciIdQS.ConvertToInt(), ProjeConstants.HEPSI_INT);
+            DataTable dataTable = new Model.Services.MTS.FaaliyetService(LogContext).GetByParticipant(KatilimciIdQS.ConvertToInt(), ProjeConstants.HEPSI_INT);
 
             if (dataTable != null)
             {
@@ -373,7 +380,7 @@ namespace MTS_WebParts.KisiKartiWP
         {
             string objeStr = string.Empty;
             AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-            DataTable dataTable = new Model.Services.MTS.AniObjesiDagitimService().GetDistributionTable(faaliyetId, katilimciId);
+            DataTable dataTable = new Model.Services.MTS.AniObjesiDagitimService(LogContext).GetDistributionTable(faaliyetId, katilimciId);
             if (dataTable != null)
             {
 
@@ -396,7 +403,7 @@ namespace MTS_WebParts.KisiKartiWP
         {
             string aniobjeStr = string.Empty;
             AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
-            getirilenAniObjesi = new Model.Services.MTS.AniObjesiDagitimService().GetGetirilen(faaliyetId, katilimciId);
+            getirilenAniObjesi = new Model.Services.MTS.AniObjesiDagitimService(LogContext).GetGetirilen(faaliyetId, katilimciId);
             if (getirilenAniObjesi != null)
             {
                 aniobjeStr = getirilenAniObjesi.GetirilenAniObjesi;
@@ -456,43 +463,43 @@ namespace MTS_WebParts.KisiKartiWP
             {
                 TableRow row = new TableRow();
                 TableCell nocell = new TableCell();
-                nocell.Text = item.Id.ToString();
+                nocell.Text = H(item.Id.ToString());
 
                 TableCell tarihcell = new TableCell();
-                tarihcell.Text = item.Tarih.ToString("dd.MM.yyyy HH:mm");
+                tarihcell.Text = H(item.Tarih.ToString("dd.MM.yyyy HH:mm"));
                 tarihcell.HorizontalAlign = HorizontalAlign.Left;
                 TableCell gorusmeSeklicell = new TableCell();
-                gorusmeSeklicell.Text = item.GorusmeSekli;
+                gorusmeSeklicell.Text = H(item.GorusmeSekli);
 
                 TableCell konucell = new TableCell();
-                konucell.Text = item.Konu;
+                konucell.Text = H(item.Konu);
 
                 TableCell faaliyetcell = new TableCell();
                 if (item.FaaliyetId > 0)
                 {
                     Faaliyet faaliyet = new Faaliyet();
-                    faaliyet = new Model.Services.MTS.FaaliyetService().GetById(item.FaaliyetId);
+                    faaliyet = new Model.Services.MTS.FaaliyetService(LogContext).GetById(item.FaaliyetId);
                     if (faaliyet != null)
                     {
                         string faaliyetTarihiStr = faaliyet.BaslangicTarihi.Year == faaliyet.BitisTarihi.Year &&
                             faaliyet.BaslangicTarihi.Month == faaliyet.BitisTarihi.Month && faaliyet.BaslangicTarihi.Day == faaliyet.BitisTarihi.Day ?
                                 faaliyet.BaslangicTarihi.ToString("dd.MM.yyyy") + " " + faaliyet.BaslangicTarihi.ToString("HH:mm") + "-" + faaliyet.BitisTarihi.ToString("HH:mm") :
                                 faaliyet.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm") + " - " + faaliyet.BitisTarihi.ToString("dd.MM.yyyy HH:mm");
-                        faaliyetcell.Text = faaliyetTarihiStr;
+                        faaliyetcell.Text = H(faaliyetTarihiStr);
                     }
 
                 }
                 else
                 {
                     if (item.RandevuIstendi)
-                        faaliyetcell.Text = "Istendi";
+                        faaliyetcell.Text = "Randevu istendi";
                     else
                     {
                         faaliyetcell.Text = "-";
                     }
                 }
                 TableCell gorusmecell = new TableCell();
-                gorusmecell.Text = item.GorusmeSaglandi ? "Evet" : "Hayir";
+                gorusmecell.Text = H(item.GorusmeSaglandi ? "Evet" : "Hayır");
 
                 row.Controls.Add(nocell);
                 row.Controls.Add(tarihcell);
@@ -510,40 +517,45 @@ namespace MTS_WebParts.KisiKartiWP
             List<AramaGorusme> aramaList = new List<AramaGorusme>();
             if (KatilimciIdQS.ConvertToInt() > 0)
             {
-                    aramaList = new Model.Services.MTS.AramaGorusmeService().GetByArayanId(KatilimciIdQS.ConvertToInt());
+                    aramaList = new Model.Services.MTS.AramaGorusmeService(LogContext).GetByArayanId(KatilimciIdQS.ConvertToInt());
             }
 
             return aramaList;
         }
         protected void KisiListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_KISI_LIST);
+            MtsWebPartLog.ExecuteAction(LogContext, "KisiListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_KISI_LIST);
+            });
         }
         protected void FaaliyetListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FAALIYET_LIST);
+            MtsWebPartLog.ExecuteAction(LogContext, "FaaliyetListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FAALIYET_LIST);
+            });
         }
         protected void FaaliyetTakvimiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM);
+            MtsWebPartLog.ExecuteAction(LogContext, "FaaliyetTakvimiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM);
+            });
         }
         protected void AramaListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_ARAMAGORUSME_LIST);
+            MtsWebPartLog.ExecuteAction(LogContext, "AramaListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_ARAMAGORUSME_LIST);
+            });
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path);
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl);
+
         }
         private class FaaliyetListItem
         {

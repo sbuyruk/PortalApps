@@ -18,6 +18,8 @@ namespace Model.Services.MTS
         {
         }
 
+        public MTSUnvanTanimService(Utility.Logging.PortalLogContext context) : this(new MTSUnvanTanimRepository(context)) { }
+
         public MTSUnvanTanimService(MTSUnvanTanimRepository repository)
         {
             if (repository == null)
