@@ -41,6 +41,25 @@ namespace Model.Ortak
         /// <returns></returns>
         public static string IzinSuresiHesapla(int izinTipi, DateTime bastar, DateTime bittar)
         {
+            return CalculateLeaveDuration(izinTipi, bastar, bittar, date => new ResmiTatilService().IsResmiTatil(date));
+        }
+
+        public static string IzinSuresiHesapla(int izinTipi, DateTime bastar, DateTime bittar, Utility.Logging.PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context");
+            return CalculateLeaveDuration(izinTipi, bastar, bittar, date => new ResmiTatilService().IsResmiTatil(date, context));
+        }
+
+        public static string IzinSuresiHesapla(int izinTipi, DateTime bastar, DateTime bittar,
+            DAO.Ortak.SqlTransactionContext transaction, Utility.Logging.PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            return CalculateLeaveDuration(izinTipi, bastar, bittar, date => new ResmiTatilService().IsResmiTatil(date, transaction, context));
+        }
+
+        private static string CalculateLeaveDuration(int izinTipi, DateTime bastar, DateTime bittar, Func<DateTime, bool> isHoliday)
+        {
             string sureStr = string.Empty;
             if ((izinTipi == ProjeConstants.IZINTIPI_BABALIK_INT) ||
                 (izinTipi == ProjeConstants.IZINTIPI_EVLENME_INT) ||
@@ -75,7 +94,7 @@ namespace Model.Ortak
                     //Cumartesi ve Pazar Günlerini izinden sayma
                     if (!date.DayOfWeek.Equals(DayOfWeek.Sunday) && !date.DayOfWeek.Equals(DayOfWeek.Saturday))
                     {
-                        bool tatil = new ResmiTatilService().IsResmiTatil(date);
+                        bool tatil = isHoliday(date);
                         if (!tatil)
                             sure++;
 

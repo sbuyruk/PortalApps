@@ -75,6 +75,14 @@ namespace DAO.Repositories.IKYS
             finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Personel.SelectByUserName", clock.ElapsedMilliseconds, succeeded); }
         }
 
+        public DataTable SelectByUserName(string userName, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            SqlQuery query = new SqlQuery("SELECT * FROM Personel_Table WITH (UPDLOCK, HOLDLOCK) WHERE KullaniciAdi=@KullaniciAdi ORDER BY Id");
+            query.AddParameter("@KullaniciAdi", userName);
+            return PortalSqlReadExecutor.Select(query, context, "PersonelRepository.SelectByUserName", transaction);
+        }
+
         public int Insert<T>(T entity) { return db.Insert(queryBuilder.BuildInsert(entity, "Personel_Table")); }
         public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
         {

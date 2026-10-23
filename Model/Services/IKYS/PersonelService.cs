@@ -56,6 +56,12 @@ namespace Model.Services.IKYS
         {
             return MapSingle(repository.SelectByUserName(userName, context));
         }
+        public Personel GetByUserName(string userName, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            return MapSingle(repository.SelectByUserName(userName, transaction, context));
+        }
         public bool TryRecordWebPartOpened(PortalLogContext context) { return new PortalLogRepository().TryRecordWebPartOpened(context); }
 
         public List<Personel> GetActiveEmployees(Personel.PersonelTipi personelTipi)
