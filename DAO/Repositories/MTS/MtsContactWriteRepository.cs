@@ -98,7 +98,7 @@ namespace DAO.Repositories.MTS
             Require(transaction); Fields(table);
             DataTable before = id > 0 ? Read(table, id, transaction) : null;
             if (id > 0 && before == null) throw new InvalidOperationException("Güncellenecek MTS kaydı bulunamadı.");
-            string[] dates = { "Tarih", "BaslangicTarihi", "BitisTarihi", "DogumTarihi" };
+            string[] dates = { "Tarih", "BaslangicTarihi", "BitisTarihi", "DogumTarihi", "VerilisTarihi", "SonIslemTarihi" };
             if (id > 0)
             {
                 if (!sql.Write(builder.BuildUpdate(item, table, dates), "UPDATE", transaction))
@@ -147,8 +147,10 @@ namespace DAO.Repositories.MTS
             {
                 case "Kisi_Table": return new[] { "MTSUnvanTanimId", "Ili", "Ilcesi", "Kutlama", "RandevuKisiti" };
                 case "AramaGorusme_Table": return new[] { "FaaliyetId", "Tarih", "GorusmeSekli", "GorusmeSaglandi", "RandevuIstendi" };
-                case "Faaliyet_Table": return new[] { "FaaliyetAmaciId", "FaaliyetDurumu", "BaslangicTarihi", "BitisTarihi", "AcikTarih" };
-                case "FaaliyetKatilim_Table": return new[] { "FaaliyetId", "KatilimciTipi" };
+                case "Faaliyet_Table": return new[] { "FaaliyetAmaciId", "FaaliyetDurumu", "BaslangicTarihi", "BitisTarihi", "AcikTarih", "TumGun", "TakvimeIslendi" };
+                case "FaaliyetKatilim_Table": return new[] { "FaaliyetId", "KatilimciTipi", "TakvimDaveti" };
+                case "AniObjesiDagitim_Table": return new[] { "AniObjesiId", "FaaliyetId", "Adet", "VerilenAlinan", "CikisDepoId", "VerilisTarihi" };
+                case "DepoStok_Table": return new[] { "AniObjesiId", "DepoId", "SonAdet", "SonIslemTarihi" };
                 default: throw new ArgumentException("Geçersiz MTS kayıt türü.", "table");
             }
         }

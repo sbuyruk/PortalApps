@@ -116,10 +116,9 @@ namespace Model.Services.MTS
 
         public List<string> GetDistinctPlaces()
         {
-            return repository.SelectDistinctPlaces()
-                .AsEnumerable()
-                .Select(row => row.Field<string>("FaaliyetYeri"))
-                .ToList();
+            DataTable rows = repository.SelectDistinctPlaces();
+            return rows == null ? new List<string>() : rows.AsEnumerable()
+                .Select(row => row.Field<string>("FaaliyetYeri")).Where(value => !string.IsNullOrWhiteSpace(value)).Distinct().ToList();
         }
 
         public int Save(Faaliyet item)
