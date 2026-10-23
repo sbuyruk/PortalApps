@@ -256,7 +256,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
         {
             IliDDL.Items.Clear();
 
-            List<Il> list = new IlService().GetAll();
+            List<Il> list = new IlService().GetAll(LoggingContext);
             foreach (Il il in list)
             {
                 if (string.IsNullOrEmpty(il.IlAdi.Trim()))
@@ -269,7 +269,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
         private void IlceDDLDoldur()
         {
             IlcesiDDL.Items.Clear();
-            List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt());
+            List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt(), LoggingContext);
             foreach (Ilce ilce in list)
             {
                 IlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));
@@ -503,8 +503,8 @@ namespace TBYS_WebParts.KiraciGirisiWP
         private Bolge BolgeGetir()
         {
             int ilId = IliDDL.SelectedItem.Value.ConvertToInt();
-            Il Il = new IlService().GetById(ilId);
-            Bolge bolge = new BolgeService().GetSelected(Il.BolgeId);
+            Il Il = new IlService().GetById(ilId, LoggingContext);
+            Bolge bolge = new BolgeService().GetSelected(Il.BolgeId, LoggingContext);
             return bolge;
         }
         protected void SilBtn_Click(object sender, EventArgs e)

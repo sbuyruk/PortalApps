@@ -260,7 +260,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             if (IliDDL.SelectedItem == null)
             {
                 IliDDL.Items.Clear();
-                List<Il> list = new IlService().GetAll();
+                List<Il> list = new IlService().GetAll(LoggingContext);
                 foreach (Il il in list)
                 {
                     IliDDL.Items.Add(new ListItem(il.IlAdi, il.Id.ToString()));
@@ -273,7 +273,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         private void IlceDDLDoldur()
         {
             IlcesiDDL.Items.Clear();
-            List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt());
+            List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt(), LoggingContext);
             foreach (Ilce ilce in list)
             {
                 IlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));
@@ -291,7 +291,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             if (DefinIliDDL.SelectedItem == null)
             {
                 DefinIliDDL.Items.Clear();
-                List<Il> list = new IlService().GetAll();
+                List<Il> list = new IlService().GetAll(LoggingContext);
                 foreach (Il il in list)
                 {
                     DefinIliDDL.Items.Add(new ListItem(il.IlAdi, il.Id.ToString()));
@@ -303,7 +303,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         private void DefinIlceDDLDoldur()
         {
             DefinIlcesiDDL.Items.Clear();
-            List<Ilce> list = new IlceService().GetByProvinceId(DefinIliDDL.SelectedValue.ConvertToInt());
+            List<Ilce> list = new IlceService().GetByProvinceId(DefinIliDDL.SelectedValue.ConvertToInt(), LoggingContext);
             foreach (Ilce ilce in list)
             {
                 DefinIlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));
@@ -338,8 +338,8 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         private Bolge BolgeGetir()
         {
             int ilId = IliDDL.SelectedItem.Value.ConvertToInt();
-            Il Il = new IlService().GetById(ilId);
-            Bolge bolge = new BolgeService().GetSelected(Il.BolgeId);
+            Il Il = new IlService().GetById(ilId, LoggingContext);
+            Bolge bolge = new BolgeService().GetSelected(Il.BolgeId, LoggingContext);
             return bolge;
         }
         private TasinmazBagisci SaveBagisciData2Db()

@@ -231,7 +231,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
                     SetAyYilValues();
                     if (BolgeIdQS == ProjeConstants.BOLGE_HEPSI_INT)
                     {
-                        Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                        Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName, LoggingContext);
                         BolgeIdQS = bolge == null ? 0 : bolge.Id;
                         TitleLbl.Text = "Borçlu Kiraci Listesi" + " (" + bolge.KisaAdi + " Bölgesi)";
                     }

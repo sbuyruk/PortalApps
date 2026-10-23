@@ -105,20 +105,20 @@ namespace TBYS_WebParts.KiradaOlanTasinmazlarWP
         private decimal TahminiRayicToplaminiBul()
         {
             decimal toplam = 0;
-            TasinmazService tasinmazService = new TasinmazService();
+            TasinmazService tasinmazService = new TasinmazService(LoggingContext);
             toplam = tasinmazService.SelectTahminiRayicToplamiByKirayaUygunluk(ProjeConstants.KIRADURUMU_KIRAYAUYGUN);
             return toplam;
         }
         private decimal EmlakBeyanToplaminiBul()
         {
             decimal toplam = 0;
-            TasinmazService tasinmazService = new TasinmazService();
+            TasinmazService tasinmazService = new TasinmazService(LoggingContext);
             toplam = tasinmazService.SelectEmlakBeyanToplamiByKirayaUygunluk(ProjeConstants.KIRADURUMU_KIRAYAUYGUN);
             return toplam;
         }
         private void TabloyuDoldur(string kirayaUygunluk)
         {
-            TasinmazService tasinmazService = new TasinmazService();
+            TasinmazService tasinmazService = new TasinmazService(LoggingContext);
             int AnkApt = tasinmazService.SelectTasinmazAdetByBolgeCinsiKirayaUygunluk(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_APT, kirayaUygunluk, ProjeConstants.MULKIYETSEKLI_HEPSI);
             int IstApt = tasinmazService.SelectTasinmazAdetByBolgeCinsiKirayaUygunluk(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_APT, kirayaUygunluk, ProjeConstants.MULKIYETSEKLI_HEPSI);
             int IzmApt = tasinmazService.SelectTasinmazAdetByBolgeCinsiKirayaUygunluk(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_APT, kirayaUygunluk, ProjeConstants.MULKIYETSEKLI_HEPSI);

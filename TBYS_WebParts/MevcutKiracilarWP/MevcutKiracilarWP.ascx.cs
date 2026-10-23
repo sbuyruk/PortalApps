@@ -177,7 +177,7 @@ namespace TBYS_WebParts.MevcutKiracilarWP
             {
                 if (BolgeIdQS==ProjeConstants.BOLGE_HEPSI_INT)
                 {
-                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName, LoggingContext);
                     BolgeIdQS = bolge == null ? 0 : bolge.Id;
                 }
                 SetAyYilValues();
@@ -300,7 +300,7 @@ namespace TBYS_WebParts.MevcutKiracilarWP
         private decimal MetrekareToplami(int kiraSozlesmeId)
         {
             SozlesmeTasinmaz sozlesmeTasinmaz = new SozlesmeTasinmaz();
-            decimal metrekare = new SozlesmeTasinmazService().GetSumMetrekareBySozlesmeId(kiraSozlesmeId);
+            decimal metrekare = new SozlesmeTasinmazService(LoggingContext).GetSumMetrekareBySozlesmeId(kiraSozlesmeId);
             return metrekare;
         }
 

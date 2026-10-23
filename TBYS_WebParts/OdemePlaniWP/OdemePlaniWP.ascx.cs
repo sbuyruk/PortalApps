@@ -470,24 +470,33 @@ namespace TBYS_WebParts.OdemePlaniWP
         }
         protected void OdemePlaniEkleBtn_Click(object sender, EventArgs e)
         {
-            KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
-            // kira sozlesmesinin sozbastar ve sozbittar alanlari dolu degilse 
-            if (string.IsNullOrEmpty(kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull()) || string.IsNullOrEmpty(kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull()))
+            try
             {
-                MessageHelper.PublishMessage("Bu sözleşme için ödeme Plani oluşturulamaz. Ödeme Plani oluşturabilmek için, Lütfen Kira Sözleşmesinde Sözleşme Başlangıç ve Bitiş tarihini giriniz", ProjeConstants.MESAJ_HATA);
-            }
-            else
-            {
-                bool planOlustu = OdemePlaniniKontrolEtVeOlustur();
-                if (planOlustu)
+                KiraSozlesme kiraSozlesme = new KiraSozlesme();
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
+                // kira sozlesmesinin sozbastar ve sozbittar alanlari dolu degilse
+                if (string.IsNullOrEmpty(kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull()) || string.IsNullOrEmpty(kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull()))
                 {
-                    //Page.Response.Redirect("/pages/OdemePlani.aspx?KiraSozlesmeId=" + kiraSozlesme.Id);
-                    string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                    string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-                    newUrl += "/" + ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraciId=" + KiraciIdQS + "&KiraSozlesmeId=" + kiraSozlesme.Id;
-                    Page.Response.Redirect(newUrl, true);
+                    MessageHelper.PublishMessage("Bu sözleşme için ödeme Plani oluşturulamaz. Ödeme Plani oluşturabilmek için, Lütfen Kira Sözleşmesinde Sözleşme Başlangıç ve Bitiş tarihini giriniz", ProjeConstants.MESAJ_HATA);
                 }
+                else
+                {
+                    bool planOlustu = OdemePlaniniKontrolEtVeOlustur();
+                    if (planOlustu)
+                    {
+                        //Page.Response.Redirect("/pages/OdemePlani.aspx?KiraSozlesmeId=" + kiraSozlesme.Id);
+                        string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                        string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
+                        newUrl += "/" + ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraciId=" + KiraciIdQS + "&KiraSozlesmeId=" + kiraSozlesme.Id;
+                        Page.Response.Redirect(newUrl, true);
+                    }
+                }
+
+            }
+            catch (Exception error)
+            {
+                if (error is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.OdemePlaniWP.OdemePlaniEkleBtn_Click", error);
             }
         }
         private void EnableDisableOdemePlaniEkleBtn()
@@ -495,7 +504,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             OdemePlaniEkleBtn.Visible = true;
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
-            // kira sozlesmesinin sozbastar ve sozbittar alanlari dolu degilse 
+            // kira sozlesmesinin sozbastar ve sozbittar alanlari dolu degilse
             if (string.IsNullOrEmpty(kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull()) || string.IsNullOrEmpty(kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull()))
             {
                 OdemePlaniEkleBtn.Visible = false;
@@ -533,7 +542,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             bool isSaved = false;
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
-            // kira sozlesmesinin sozbastar ve sozbittar alanlari dolu degilse 
+            // kira sozlesmesinin sozbastar ve sozbittar alanlari dolu degilse
             if (string.IsNullOrEmpty(kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull()) || string.IsNullOrEmpty(kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull()))
             {
                 OdemePlaniEkleBtn.Visible = false;

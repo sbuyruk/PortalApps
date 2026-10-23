@@ -161,5 +161,11 @@ namespace DAO.Repositories.TBYS
         public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context) { return db.Update2Db(queryBuilder.BuildUpdate(entity, "OdemeAyrinti_Table"), transaction, context); }
         public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context) { return db.DeleteFromDb(queryBuilder.BuildDelete("OdemeAyrinti_Table", id), transaction, context); }
         public bool DeleteBySozlesmeId(int id, SqlTransactionContext transaction, PortalLogContext context) { SqlQuery q = new SqlQuery("DELETE OdemeAyrinti_Table WHERE SozlesmeId=@SozlesmeId"); q.AddParameter("@SozlesmeId", id); return db.DeleteFromDb(q, transaction, context); }
+        public DataTable SelectBySozlesmeId(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM OdemeAyrinti_Table WITH (UPDLOCK, HOLDLOCK) WHERE SozlesmeId=@SozlesmeId ORDER BY Id");
+            query.AddParameter("@SozlesmeId", id);
+            return db.SelectFromDb(query, transaction, context);
+        }
     }
 }

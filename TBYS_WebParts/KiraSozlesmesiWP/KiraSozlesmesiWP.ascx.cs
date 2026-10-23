@@ -180,7 +180,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
         {
             if (!Page.IsPostBack)
             {
-                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName, LoggingContext);
                 BolgeIdQS = bolge == null ? 0 : bolge.Id;
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
                 kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
@@ -827,7 +827,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             Kiraci kiraci = new Kiraci();
             kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(yeniSozlesme.KiraciId);
             string ili = kiraci == null ? "" : kiraci.Ili;
-            Il il = new IlService().GetByName(kiraci.Ili);
+            Il il = new IlService().GetByName(kiraci.Ili, LoggingContext);
             int bolgeId = il == null ? 0 : il.BolgeId;
             return bolgeId;
         }

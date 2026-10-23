@@ -131,12 +131,12 @@ namespace TBYS_WebParts.TeminatListesiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName, LoggingContext);
                     BolgeIdQS = bolge == null ? 0 : bolge.Id;
                     TitleLbl.Text = "Taahhüt Listesi";
                     if (BolgeIdQS != ProjeConstants.BOLGE_HEPSI_INT && BolgeIdQS != ProjeConstants.BOLGE_GENELMUDURLUK_INT)
                     {
-                        Bolge bolgeDao = new BolgeService().GetSelected(bolge.Id);
+                        Bolge bolgeDao = new BolgeService().GetSelected(bolge.Id, LoggingContext);
                         TitleLbl.Text = bolgeDao == null ? "Teminat Listesi" : "Teminat Listesi" + " (" + bolge.KisaAdi + " Bölgesi )";
                     }
                     TabloOlustur();

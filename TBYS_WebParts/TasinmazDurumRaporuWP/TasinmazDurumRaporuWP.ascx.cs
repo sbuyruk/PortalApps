@@ -98,7 +98,7 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+            Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName, LoggingContext);
             BolgeIdQS = bolge == null ? 0 : bolge.Id;
             TasinmazDurumuTablosunuDoldur();
             decimal tahminiRayicToplami = TahminiRayicToplaminiBul();
@@ -179,7 +179,7 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP
                 TasinmazService tasinmazService = new TasinmazService(LoggingContext);
 
                 // Get active regions based on user permission/context
-                var bolgeList = new BolgeService().GetActive(BolgeIdQS);
+                var bolgeList = new BolgeService().GetActive(BolgeIdQS, LoggingContext);
 
                 // Insert a row per bolge before totals row
                 int insertIndex = headerRows;

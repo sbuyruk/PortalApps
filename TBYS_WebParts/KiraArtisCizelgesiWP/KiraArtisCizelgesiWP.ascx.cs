@@ -105,7 +105,7 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
         {
             try
             {
-                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName, LoggingContext);
                 BolgeIdQS = bolge == null ? 0 : bolge.Id;
                 if (!Page.IsPostBack)
                 {

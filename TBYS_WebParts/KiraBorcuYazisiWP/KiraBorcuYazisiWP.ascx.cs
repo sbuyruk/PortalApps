@@ -194,7 +194,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
         private void BolgeDDLDoldur()
         {
             BolgeDDL.Items.Clear();
-            List<Bolge> list = new BolgeService().GetActive(BolgeIdQS);
+            List<Bolge> list = new BolgeService().GetActive(BolgeIdQS, LoggingContext);
             foreach (Bolge item in list)
             {
                 if (string.IsNullOrEmpty(item.Adi.Trim()))

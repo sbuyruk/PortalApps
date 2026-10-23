@@ -60,6 +60,11 @@ namespace Model.Services.Ortak
             return Map(repository.SelectByName(name));
         }
 
+        public Il GetByName(string name, PortalLogContext context)
+        {
+            return Map(repository.SelectByName(name, context));
+        }
+
         public Il GetByName(string name, SqlTransactionContext transaction)
         {
             if (transaction == null)

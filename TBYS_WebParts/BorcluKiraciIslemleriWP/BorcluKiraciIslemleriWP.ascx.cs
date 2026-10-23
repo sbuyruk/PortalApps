@@ -235,7 +235,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
 
                     SetAyYilValues();
                     IslemSaatiSaatiDDLDoldur();
-                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName, LoggingContext);
                     BolgeIdQS = bolge == null ? 0 : bolge.Id;
                     if (bolge!=null)
                         TitleLbl.Text = "Borçlu Kiraci Listesi" + " (" + bolge.KisaAdi + " Bölgesi)";
@@ -292,13 +292,13 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
             BorcluKiracilarTableHeaderRows();
             string birim = string.Empty;
             
-            Personel personel = IKYSOrtak.PersonelGetir(CurrentUserName);
+            Personel personel = IKYSOrtak.PersonelGetir(CurrentUserName, LoggingContext);
             if (personel != null)
             {
-                IsBilgileri isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id);
+                IsBilgileri isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
                 if (isBilgileri != null)
                 {
-                    BirimTanim birimTanim = new BirimTanimService().GetById(isBilgileri.BirimId);
+                    BirimTanim birimTanim = new BirimTanimService().GetById(isBilgileri.BirimId, LoggingContext);
                     birim = birimTanim.Adi;
                 }
             }

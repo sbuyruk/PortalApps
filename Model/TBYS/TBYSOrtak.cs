@@ -292,7 +292,7 @@ namespace Model.Ortak
                 //int sayac = 0;
                 //GunlukGecikmeZammiHesaplaRecursive(kiraSozlesme, odemePlani, odemePlani.VadeBasTar, odemePlani.VadeBitTar, ref anaParaBakiye, ref faizliBakiyeToplami, ref sayac);
                 OdemeAyrinti odemeAyrintiDao = new OdemeAyrinti();
-                
+
                 GunlukGecikmeZammiHesaplaRecursiveDegil(kiraSozlesme, odemePlani, ref anaParaToplami);
                 anaParaToplami = anaParaToplami - odemePlani.KiraBedeli;
                 var gecikmeZammiTutari = new Model.Services.TBYS.OdemeAyrintiService().GetSumDelayAmount(odemePlani.Id);
@@ -326,7 +326,7 @@ namespace Model.Ortak
                     }
 
                 }
-                
+
                 odemePlani.AnaPara = anaParaToplami;
                 odemePlani.FaizTutari = gecikmeZammiTutari;
                 odemePlani.FaizliBakiye = anaParaToplami+faizToplami;// anaParaToplami + gecikmeZammiTutari +devirFaiz ;
@@ -465,11 +465,11 @@ namespace Model.Ortak
                         //son ödemeden vade bitimine kadar kalan anaparanin faizi
                         ilkTarih = ikinciTarih.AddDays(1);
                         ikinciTarih = gecikmeZammi.BitisTarihi > ProjeConstants.NULL_TARIH ? gecikmeZammi.BitisTarihi : odemePlani.VadeBitTar;
-                        
+
                         int gunSayisi = (ikinciTarih.AddDays(1) - ilkTarih).Days;
                         gunSayisi = gunSayisi < 0 ? 0 : gunSayisi;
                         GecikmeZammiHesabi(kiraSozlesme, odemePlani, ilkTarih, ikinciTarih, null, 0, gunSayisi, gecikmeZammi, ref anaPara);
-                        
+
                     }
                     else // hiç ödeme yok
                     {
@@ -780,54 +780,47 @@ namespace Model.Ortak
         {
             odemeId = 0;
             if (kiraSozlesme == null || context == null) return false;
-            try
+            int savedId;
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                using (SqlTransactionContext transaction = new SqlTransactionContext())
-                {
-                    Model.Services.TBYS.OdemePlaniService odemePlaniService = new Model.Services.TBYS.OdemePlaniService(context);
-                    List<OdemePlani> planlar = odemePlaniService.GetBySozlesmeId(kiraSozlesme.Id, transaction);
-                    if (planlar == null || planlar.Count < 2) return false;
+                Model.Services.TBYS.OdemePlaniService odemePlaniService = new Model.Services.TBYS.OdemePlaniService(context);
+                List<OdemePlani> planlar = odemePlaniService.GetBySozlesmeId(kiraSozlesme.Id, transaction);
+                if (planlar == null || planlar.Count < 2) return false;
 
-                    DateTime odemeTarihi = odemetarihi;
-                    OdemePlani odemePlani = planlar[1];
-                    if (odemeTarihi < odemePlani.OdemeBasTar)
-                    {
-                        odemePlani = planlar.FirstOrDefault(x => x.Sira > 0);
-                    }
-                    else if (odemeTarihi > odemePlani.OdemeBitTar)
-                    {
-                        if (kiraSozlesme.OdemeSekli == ProjeConstants.KIRA_ODMSEKLI_YILLIK && odemeTarihi < kiraSozlesme.SozBitTar)
-                        {
-                            odemePlani = odemePlaniService.GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi, transaction)
-                                ?? planlar.LastOrDefault(x => x.Sira > 0);
-                        }
-                        else
-                        {
-                            odemePlani = planlar.LastOrDefault(x => x.Sira > 0);
-                        }
-                    }
-                    else
+                DateTime odemeTarihi = odemetarihi;
+                OdemePlani odemePlani = planlar[1];
+                if (odemeTarihi < odemePlani.OdemeBasTar)
+                {
+                    odemePlani = planlar.FirstOrDefault(x => x.Sira > 0);
+                }
+                else if (odemeTarihi > odemePlani.OdemeBitTar)
+                {
+                    if (kiraSozlesme.OdemeSekli == ProjeConstants.KIRA_ODMSEKLI_YILLIK && odemeTarihi < kiraSozlesme.SozBitTar)
                     {
                         odemePlani = odemePlaniService.GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi, transaction)
                             ?? planlar.LastOrDefault(x => x.Sira > 0);
                     }
-
-                    if (odemePlani == null) return false;
-                    Odeme odeme = new Model.Services.TBYS.OdemeService(context)
-                        .OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName(), transaction);
-                    if (odeme == null || odeme.Id <= 0) return false;
-                    odemeId = odeme.Id;
-                    transaction.Complete();
-                    return true;
+                    else
+                    {
+                        odemePlani = planlar.LastOrDefault(x => x.Sira > 0);
+                    }
                 }
+                else
+                {
+                    odemePlani = odemePlaniService.GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi, transaction)
+                        ?? planlar.LastOrDefault(x => x.Sira > 0);
+                }
+
+                if (odemePlani == null) return false;
+                Odeme odeme = new Model.Services.TBYS.OdemeService(context)
+                    .OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName(), transaction);
+                if (odeme == null || odeme.Id <= 0) return false;
+                savedId = odeme.Id;
+                transaction.Complete();
             }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.Exceptions.Add(new Exception("Ödeme Yapılamadı."));
-                exHelper.PublishException();
-                return false;
-            }
+
+            odemeId = savedId;
+            return true;
         }
 
         public static void TeminatIslemleriniHesaplaVeKaydet(KiraSozlesme kiraSozlesme)

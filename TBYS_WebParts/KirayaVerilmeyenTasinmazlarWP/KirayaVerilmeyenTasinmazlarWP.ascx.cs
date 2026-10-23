@@ -98,7 +98,7 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+            Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName, LoggingContext);
             BolgeIdQS = bolge == null ? 0 : bolge.Id;
             string kirayaUygunluk = ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL;
             TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDCM,  "Çiplak Mülkiyet Tasinmazlar", 1, kirayaUygunluk);
@@ -118,7 +118,7 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
         }
         private void GenelToplamiBul()
         {
-            TasinmazService tasinmazService = new TasinmazService();
+            TasinmazService tasinmazService = new TasinmazService(LoggingContext);
             int AnkTopTM = tasinmazService.SelectTasinmazAdetByBolgeKirayaUygunlukCinsi(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_TM);
             int AnkTopCM = tasinmazService.SelectTasinmazAdetByBolgeKirayaUygunlukCinsi(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_CM);
             int IstTopTM = tasinmazService.SelectTasinmazAdetByBolgeKirayaUygunlukCinsi(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_TM);
@@ -248,20 +248,20 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
         private decimal TahminiRayicToplaminiBul()
         {
             decimal toplam = 0;
-            TasinmazService tasinmazService = new TasinmazService();
+            TasinmazService tasinmazService = new TasinmazService(LoggingContext);
             toplam = tasinmazService.SelectTahminiRayicToplamiByKirayaUygunluk(ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL);
             return toplam;
         }
         private decimal EmlakBeyanToplaminiBul()
         {
             decimal toplam = 0;
-            TasinmazService tasinmazService = new TasinmazService();
+            TasinmazService tasinmazService = new TasinmazService(LoggingContext);
             toplam = tasinmazService.SelectEmlakBeyanToplamiByKirayaUygunluk(ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL);
             return toplam;
         }
         private void TabloyuDoldur(string kiraDurumu, string rowTitle, int sira, string kirayaUygunluk)
         {
-            TasinmazService tasinmazService = new TasinmazService();
+            TasinmazService tasinmazService = new TasinmazService(LoggingContext);
             int GMIshaniTM = tasinmazService.SelectTasinmazAdetByBolgeCinsiKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int IstIshaniTM = tasinmazService.SelectTasinmazAdetByBolgeCinsiKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int IzmIshaniTM = tasinmazService.SelectTasinmazAdetByBolgeCinsiKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);

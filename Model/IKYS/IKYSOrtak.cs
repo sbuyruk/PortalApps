@@ -494,6 +494,21 @@ namespace Model.Ortak
             }
         }
 
+        public static Bolge BolgeGetirByUserName(string currentUserName, Utility.Logging.PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
+            Personel personel = PersonelGetir(currentUserName, context);
+            if (personel == null)
+            {
+                Messages.Error("Personel bulunamadı.");
+                return null;
+            }
+            IsBilgileri isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id, context);
+            if (isBilgileri == null) return null;
+            BirimTanim birim = new BirimTanimService().GetById(isBilgileri.BirimId, context);
+            return birim == null ? null : new Model.Services.Ortak.BolgeService().GetById(birim.BolgeId, context);
+        }
+
         #endregion IKYS
 
         public static void IzinTalepOlusturmaEPostasiGonder(Personel personel, int izinTalepId, Utility.Logging.PortalLogContext context)

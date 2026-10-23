@@ -67,7 +67,7 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
         protected void BagiscilarBtn_Click(object sender, EventArgs e)
         {
             string ingIlAdi = paramLbl.Value;
-            Il il = new IlService().GetByEnglishName(ingIlAdi);
+            Il il = new IlService().GetByEnglishName(ingIlAdi, LoggingContext);
             BagisciTableDoldur(il.IlAdi);
 
         }
@@ -233,7 +233,7 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
             try
             {
                 string ingIlAdi = paramLbl.Value;
-                Il il = new IlService().GetByEnglishName(ingIlAdi);
+                Il il = new IlService().GetByEnglishName(ingIlAdi, LoggingContext);
                 TasinmazTitleLbl.Text = il.IlAdi + " Ilinde Bulunan Tasinmazlar";
                 BagisciTitleLbl.Text = il.IlAdi + " Ilinde Ikamet Eden Bagisçilar";
                 TasinmazTableDoldur(il.IlAdi);
