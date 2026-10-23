@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+using Utility.Logging;
 using DAO.Ortak;
 using System;
 using System.Collections.Generic;
@@ -10,9 +12,27 @@ namespace DAO.Repositories.MTS
     {
         private const string TableName = "Faaliyet_Table";
         private readonly DbClass db;
+        private readonly PortalLogContext context;
         private readonly CrudQueryBuilder queryBuilder;
 
         public FaaliyetRepository() : this(new DbClass()) { }
+        public FaaliyetRepository(PortalLogContext context) : this(new DbClass())
+        {
+            if (context == null || context.Project != "MTS") throw new ArgumentException("MTS log bağlamı gereklidir.", "context");
+            this.context = context;
+        }
+
+        private DataTable Read(SqlQuery query, string identifier, [CallerMemberName] string method = "")
+        {
+            return context == null ? db.SelectFromDb(query, identifier)
+                : PortalSqlReadExecutor.Select(query, context, "FaaliyetRepository." + method);
+        }
+
+        private void RequireLegacyWrite()
+        {
+            if (context != null) throw new InvalidOperationException("MTS yazma işlemi transaction hizmeti üzerinden yapılmalıdır.");
+        }
+
         public FaaliyetRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
@@ -23,7 +43,7 @@ namespace DAO.Repositories.MTS
         {
             SqlQuery query = new SqlQuery("SELECT * FROM " + TableName + " WHERE Id=@Id");
             query.AddParameter("@Id", id);
-            return db.SelectFromDb(query, "");
+            return Read(query, "");
         }
 
         public DataTable SelectById(int id, Utility.Logging.PortalLogContext context)
@@ -32,17 +52,17 @@ namespace DAO.Repositories.MTS
             query.AddParameter("@Id", id);
             return PortalSqlReadExecutor.Select(query, context, "FaaliyetRepository.SelectById");
         }
-        public DataTable SelectAll() { return db.SelectFromDb(new SqlQuery("SELECT * FROM " + TableName + " ORDER BY Id"), ""); }
-        public int Insert<T>(T entity) { return db.Insert(queryBuilder.BuildInsert(entity, TableName)); }
-        public bool Update<T>(T entity) { return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName)); }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), ""); }
+        public DataTable SelectAll() { return Read(new SqlQuery("SELECT * FROM " + TableName + " ORDER BY Id"), ""); }
+        public int Insert<T>(T entity) { RequireLegacyWrite(); return db.Insert(queryBuilder.BuildInsert(entity, TableName)); }
+        public bool Update<T>(T entity) { RequireLegacyWrite(); return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName)); }
+        public bool Delete(int id) { RequireLegacyWrite(); return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), ""); }
 
         public DataTable SelectByAcikTarih(string acikTarih)
         {
             string filter = acikTarih != ProjeConstants.HEPSI ? " WHERE AcikTarih = @AcikTarih" : "";
             SqlQuery query = new SqlQuery("SELECT * FROM Faaliyet_Table" + filter + " ORDER BY FaaliyetKonusu");
             if (!string.IsNullOrEmpty(filter)) query.AddParameter("@AcikTarih", acikTarih == ProjeConstants.FAALIYET_ACIKTARIHLI);
-            return db.SelectFromDb(query, "");
+            return Read(query, "");
         }
 
         public DataTable SelectByDate(DateTime start, DateTime end)
@@ -51,7 +71,7 @@ namespace DAO.Repositories.MTS
                 WHERE BaslangicTarihi <= @BitisTarihi AND BitisTarihi >= @BaslangicTarihi ORDER BY BaslangicTarihi");
             query.AddParameter("@BaslangicTarihi", start);
             query.AddParameter("@BitisTarihi", end);
-            return db.SelectFromDb(query, "");
+            return Read(query, "");
         }
 
         public DataTable SelectParticipants(int faaliyetId, int monthBefore, string acikTarihli, DateTime basTar, DateTime bitTar, string faaliyetAmaci, string gorevde, DateTime referansTarihi)
@@ -76,7 +96,7 @@ namespace DAO.Repositories.MTS
             query.Sql += " WHERE " + string.Join(" AND ", filters);
             if (!string.IsNullOrEmpty(faaliyetAmaci) && faaliyetAmaci != ProjeConstants.HEPSI) query.Sql += " AND B.FaaliyetAmaciId IN " + faaliyetAmaci;
             query.Sql += " ORDER BY B.BaslangicTarihi DESC, C.KatilimciTipi, C.Adi, C.Soyadi";
-            return db.SelectFromDb(query, "");
+            return Read(query, "");
         }
 
         public DataTable SelectByParticipant(int katilimciId, int faaliyetId, string gorevde)
@@ -94,12 +114,12 @@ namespace DAO.Repositories.MTS
             if (katilimciId > 0) { filters.Add("A.KatilimciId = @KatilimciId"); query.AddParameter("@KatilimciId", katilimciId); }
             if (faaliyetId > 0) { filters.Add("A.FaaliyetId = @FaaliyetId"); query.AddParameter("@FaaliyetId", faaliyetId); }
             query.Sql += " WHERE " + string.Join(" AND ", filters) + " ORDER BY B.BaslangicTarihi DESC, C.KatilimciTipi, C.Adi, C.Soyadi";
-            return db.SelectFromDb(query, "");
+            return Read(query, "");
         }
 
         public DataTable SelectDistinctPlaces()
         {
-            return db.SelectFromDb(new SqlQuery("SELECT DISTINCT(FaaliyetYeriStr) FaaliyetYeri FROM Faaliyet_Table"), "");
+            return Read(new SqlQuery("SELECT DISTINCT(FaaliyetYeriStr) FaaliyetYeri FROM Faaliyet_Table"), "");
         }
     }
 }

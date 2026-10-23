@@ -1,3 +1,5 @@
+using MTS_WebParts.Logging;
+using Utility.Logging;
 using Model.MTS;
 using System;
 using System.Collections.Generic;
@@ -17,6 +19,8 @@ namespace MTS_WebParts.KisiListesiWP
     [ToolboxItemAttribute(false)]
     public partial class KisiListesiWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("MTS", "KisiListesiWP")); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -56,70 +60,60 @@ namespace MTS_WebParts.KisiListesiWP
                 ViewState["SecilenId"] = value;
             }
         }
+        protected override void OnPreRender(EventArgs e)
+        {
+            MtsWebPartLog.ExecuteAction(LogContext, "LoadList", TabloOlustur);
+            if (MtsWebPartLog.HasFailed(LogContext))
+                UtilityHelper.ScriptCalistir("jQuery('#CustomDataTable').hide();");
+            base.OnPreRender(e);
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            MtsWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
             {
-                TabloOlustur();
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.PublishMessage(ex.Message, ProjeConstants.MESAJ_HATA);
-            }
+                if (!Page.IsPostBack) MtsWebPartLog.RecordOpened(LogContext);
+            });
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path);
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl);
+
         }
-        
+
         private void TabloOlustur()
         {
             List<Kisi> list = new List<Kisi>();
             var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
             //var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, 
+            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
                 typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(),"setDataSet("+ jsonData +");", true);
         }
         private string TabloJson()
         {
             string jSon = string.Empty;
 
-            try
-            {
-                List<KisiListItem> list = GetDataList();
-                var serializer = new JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
-            return jSon;
+            List<KisiListItem> list = GetDataList();
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            jSon = serializer.Serialize(list);
+
+            return jSon.Replace("<", "\\u003c").Replace(">", "\\u003e").Replace("&", "\\u0026");
         }
         private List<KisiListItem> GetDataList()
         {
 
             Kisi kisi = new Kisi();
 
-            System.Data.DataTable dataTable = new Model.Services.MTS.KisiService().GetAllData();
+            System.Data.DataTable dataTable = new Model.Services.MTS.KisiService(LogContext).GetAllData();
             int SiraNo = 1;
 
             List<KisiListItem> list = new List<KisiListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
 
+            if (dataTable == null) return list;
             foreach (DataRow row in dataTable.Rows)
             {
                 string kisiId = row["Id"].ToString();
@@ -133,9 +127,6 @@ namespace MTS_WebParts.KisiListesiWP
                 string unvani = row["Unvani"].ToString();
                 string gorevi = row["Gorevi"].ToString();
 
-                long telefon1 = row["Telefon1"].ReturnEmptyIfZeroOrNull().ToString().Replace("(", "").Replace(")", "").Replace(" ", "").ConvertToLong();
-                long telefon2 = row["Telefon2"].ReturnEmptyIfZeroOrNull().ToString().Replace("(", "").Replace(")", "").Replace(" ", "").ConvertToLong();
-                long telefon3 = row["Telefon3"].ReturnEmptyIfZeroOrNull().ToString().Replace("(", "").Replace(")", "").Replace(" ", "").ConvertToLong();
 
                 string dahili1 = row["Dahili1"].ToString();
                 string dahili2 = row["Dahili2"].ToString();
@@ -156,14 +147,11 @@ namespace MTS_WebParts.KisiListesiWP
                 kisiItem.AdiSoyadi = (adi + " " + soyadi).Trim();
                 kisiItem.TCKimlikNo = tCKimlikNo;
                 kisiItem.Kurumu = string.IsNullOrEmpty(mtsKurumTanim) ?kurumu: mtsKurumTanim;
-                kisiItem.Unvani = string.IsNullOrEmpty(mtsUnvanTanim) ? unvani : mtsUnvanTanim; 
+                kisiItem.Unvani = string.IsNullOrEmpty(mtsUnvanTanim) ? unvani : mtsUnvanTanim;
                 kisiItem.Gorevi = string.IsNullOrEmpty(mtsGorevTanim) ? gorevi : mtsGorevTanim; ;
-                kisiItem.Telefon1 = telefon1 < 1 ?"": String.Format("{0:(###) ### ####}", telefon1)
-                    + (string.IsNullOrEmpty(dahili1) ? "" : " /" + dahili1.Trim());
-                kisiItem.Telefon2 = telefon2 < 1 ? "" : String.Format("{0:(###) ### ####}", telefon2)
-                    + (string.IsNullOrEmpty(dahili2) ? "" : " /" + dahili2.Trim());
-                kisiItem.Telefon3 = telefon3 < 1 ? "" : String.Format("{0:(###) ### ####}", telefon3)
-                    + (string.IsNullOrEmpty(dahili3) ? "" : " /" + dahili3.Trim());
+                kisiItem.Telefon1 = FormatPhone(Convert.ToString(row["Telefon1"]), dahili1);
+                kisiItem.Telefon2 = FormatPhone(Convert.ToString(row["Telefon2"]), dahili2);
+                kisiItem.Telefon3 = FormatPhone(Convert.ToString(row["Telefon3"]), dahili3);
                 kisiItem.TelAciklama1 = telAciklama1;
                 kisiItem.TelAciklama2 = telAiklama2;
                 kisiItem.TelAciklama3 = aciklama3;
@@ -172,7 +160,7 @@ namespace MTS_WebParts.KisiListesiWP
                 kisiItem.Adres = adres;
                 kisiItem.Aciklama = aciklama;
                 kisiItem.Arama = "<a href=" + ProjeConstants.PAGE_ARAMAGORUSME_GIRIS + "?ArayanId=" + kisiId + " class='btn btn-outline-success'>Yeni Ara./Gör. Ekle</a>";
-                kisiItem.KisiKarti = "<a  target='_blank' href=" + ProjeConstants.PAGE_KISI_KARTI + "?KatilimciId=" + kisiId + " class='btn btn-outline-info'>Kisi Karti</a>"; 
+                kisiItem.KisiKarti = "<a  target='_blank' href=" + ProjeConstants.PAGE_KISI_KARTI + "?KatilimciId=" + kisiId + " class='btn btn-outline-info'>Kişi Kartı</a>";
                 kisiItem.Duzenle = "<a href=" + ProjeConstants.PAGE_KISI_GIRIS + "?KisiId=" + kisiId + " class='btn btn-outline-primary'>Düzenle</a>";
                 kisiItem.Secildi = SecilenIdQS.Equals(kisiItem.KisiId);
                 list.Add(kisiItem);
@@ -183,19 +171,17 @@ namespace MTS_WebParts.KisiListesiWP
 
         protected void YeniKayitBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_KISI_GIRIS);
-        }        
+            MtsWebPartLog.ExecuteAction(LogContext, "YeniKayitBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_KISI_GIRIS);
+            });
+        }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            try
+            MtsWebPartLog.ExecuteAction(LogContext, "ExcelBtn_Click", () =>
             {
                 ExportToExcel();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void ExportToExcel()
         {
@@ -232,22 +218,31 @@ namespace MTS_WebParts.KisiListesiWP
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            MtsWebPartLog.ExecuteAction(LogContext, "CloseBtn_Click", () =>
             {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path);
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void RandevuTakvimiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM);
+            MtsWebPartLog.ExecuteAction(LogContext, "RandevuTakvimiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM);
+            });
         }
+        private static string FormatPhone(string value, string extension)
+        {
+            string phone = (value ?? string.Empty).Trim();
+            if (phone.Length == 0 || phone == "0") return string.Empty;
+            string digits = phone.Replace("(", "").Replace(")", "").Replace(" ", "");
+            long number;
+            if (digits.Length == 10 && long.TryParse(digits, out number))
+                phone = string.Format("{0:(###) ### ####}", number);
+            return phone + (string.IsNullOrWhiteSpace(extension) ? string.Empty : " /" + extension.Trim());
+        }
+
         private class KisiListItem
         {
             public string Sirano { get; set; }

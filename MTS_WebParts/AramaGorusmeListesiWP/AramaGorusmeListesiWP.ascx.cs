@@ -1,3 +1,5 @@
+using MTS_WebParts.Logging;
+using Utility.Logging;
 using Model.IKYS;
 using Model.MTS;
 using Model.NBYS;
@@ -20,6 +22,8 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
     [ToolboxItemAttribute(false)]
     public partial class AramaGorusmeListesiWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("MTS", "AramaGorusmeListesiWP")); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -83,47 +87,61 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
                 ViewState["ArayanId"] = value;
             }
         }
-       
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            MtsWebPartLog.ExecuteAction(LogContext, "LoadList", TabloOlustur);
+            if (MtsWebPartLog.HasFailed(LogContext))
+                UtilityHelper.ScriptCalistir("jQuery('#CustomDataTable').hide();");
+            base.OnPreRender(e);
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
+            MtsWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
             {
-                BitisTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
-                BaslangicTarihiTxt.Text = DateTime.Today.AddYears(-1).ConvertToDatetimeEmptyIfNull();
-                AramaGorusmeDDLDoldur();
-                KatilimciBilgileriniDoldur();
+                if (!Page.IsPostBack) MtsWebPartLog.RecordOpened(LogContext);
+                if (!Page.IsPostBack)
+                {
+                    BitisTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
+                    BaslangicTarihiTxt.Text = DateTime.Today.AddYears(-1).ConvertToDatetimeEmptyIfNull();
+                    AramaGorusmeDDLDoldur();
+                    KatilimciBilgileriniDoldur();
 
-            }
-            TabloOlustur();
+                }
+            });
         }
         private bool KatilimciBilgileriniDoldur()
         {
-            bool katilimciBulundu = false;
-           
+            if (string.IsNullOrWhiteSpace(ArayanIdQS)) return false;
+            int personId;
+            if (!int.TryParse(ArayanIdQS, out personId) || personId <= 0)
+                throw new MtsInputException("Geçerli bir kişi seçin.");
+
             Kisi kisi = new Kisi();
-            kisi = new Model.Services.MTS.KisiService().GetById(ArayanIdQS.ConvertToInt());
+            kisi = new Model.Services.MTS.KisiService(LogContext).GetById(personId);
             if (kisi != null)
             {
                 string kurum = string.Empty;
                 string gorev = string.Empty;
-                string kurumGorevStr = new Model.Services.MTS.MTSKurumGorevService().GetByKisiId(kisi.Id, ref kurum, ref gorev);
+                string kurumGorevStr = new Model.Services.MTS.MTSKurumGorevService(LogContext).GetByKisiId(kisi.Id, ref kurum, ref gorev);
                 if (string.IsNullOrEmpty(kurumGorevStr))
                 {
                     kurumGorevStr = kisi.Kurumu + " / " + kisi.Gorevi;
                 }
-                AdiSoyadiLnk.Text = (kisi.Adi + " " + kisi.Soyadi).Trim() + " (" + kurumGorevStr + " " + kisi.Unvani + ")";
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                AdiSoyadiLnk.Text = System.Web.HttpUtility.HtmlEncode((kisi.Adi + " " + kisi.Soyadi).Trim() + " (" + kurumGorevStr + " " + kisi.Unvani + ")");
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path);
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/";
                 AdiSoyadiLnk.NavigateUrl = newUrl + ProjeConstants.PAGE_KISI_KARTI + "?KatilimciId=" + ArayanIdQS;
 
             }
             else
             {
-                //MessageHelper.PublishMessage("Kisi Bulunamadi", ProjeConstants.MESAJ_HATA);
+                throw new MtsInputException("Seçilen kişi bulunamadı. Kişi listesinden yeniden seçin.");
             }
-            return katilimciBulundu;
+            return true;
         }
-       
+
 
         private void AramaGorusmeDDLDoldur()
         {
@@ -141,45 +159,33 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                int index = currentUrl.LastIndexOf("?") < 0 ? currentUrl.Length : currentUrl.LastIndexOf("?");
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path);
+            int index = currentUrl.LastIndexOf("?") < 0 ? currentUrl.Length : currentUrl.LastIndexOf("?");
 
-                string rawUrl = currentUrl.Substring(0, index);
-                string newUrl = rawUrl.Substring(0, rawUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string rawUrl = currentUrl.Substring(0, index);
+            string newUrl = rawUrl.Substring(0, rawUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl);
+
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
+            MtsWebPartLog.ExecuteAction(LogContext, "CloseBtn_Click", () =>
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path);
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                Page.Response.Redirect(newUrl);
+            });
         }
         private string GetJson()
         {
             string jSon = string.Empty;
 
-            try
-            {
-                List<AramaListItem> list = GetDataList();
-                var serializer = new JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
-            return jSon;
+            List<AramaListItem> list = GetDataList();
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            jSon = serializer.Serialize(list);
+
+            return jSon.Replace("<", "\\u003c").Replace(">", "\\u003e").Replace("&", "\\u0026");
         }
         private void TabloOlustur()
         {
@@ -188,13 +194,13 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
         }
         private List<AramaListItem> GetDataList()
         {
-            DateTime bitis = BitisTarihiTxt.Text.ConvertToDatetime();
-            bitis = UtilityHelper.TariheSaatEkle(bitis, "23:59");
-            BaslikLbl.InnerText = BaslangicTarihiTxt.Text + " - " + BitisTarihiTxt.Text + "Tarihleri Arasinda Yapilan Arama/Görüsmeler";
-            AramaGorusmeService aramaService = new AramaGorusmeService();
+            DateTime baslangic, bitis;
+            MtsWebPartLog.ReadDateRange(BaslangicTarihiTxt.Text, BitisTarihiTxt.Text, out baslangic, out bitis);
+            BaslikLbl.InnerText = BaslangicTarihiTxt.Text + " - " + BitisTarihiTxt.Text + " tarihleri arasındaki arama ve görüşmeler";
+            AramaGorusmeService aramaService = new AramaGorusmeService(LogContext);
 
             DataTable dataTable = aramaService.GetByFilter(ArayanIdQS.ConvertToInt(), GorusmeSekliDDL.SelectedItem.Value,
-                BaslangicTarihiTxt.Text.ConvertToDatetime(), bitis);
+                baslangic, bitis);
 
             List<AramaListItem> list = new List<AramaListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -229,10 +235,10 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
                     if (faaliyetId > 0)
                     {
                         aramaItem.FaaliyetId = faaliyetId.ToString();
-                        Faaliyet faaliyet = new FaaliyetService().GetById(faaliyetId);
+                        Faaliyet faaliyet = new FaaliyetService(LogContext).GetById(faaliyetId);
                         if (faaliyet != null)
                         {
-                            string acikTarihli = faaliyet.AcikTarih ? " (Açik)" : string.Empty;
+                            string acikTarihli = faaliyet.AcikTarih ? " (Açık tarihli)" : string.Empty;
                             aramaItem.Faaliyet = "<a target=_blank href=" + ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + faaliyetId + " class='btn btn-outline-secondary'>Faaliyet"+acikTarihli+"</a>";
                         }
                         else
@@ -244,7 +250,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
                     }
                     else if (randevuIstendi)
                     {
-                        aramaItem.Faaliyet = "Istendi";
+                        aramaItem.Faaliyet = "Randevu istendi";
                     }
 
                     aramaItem.Duzenle = "<a href=" + ProjeConstants.PAGE_ARAMAGORUSME_GIRIS + "?AramaGorusmeId=" + aramaId + "&ArayanId=" + arayanId + " class='btn btn-outline-success'>Arama/Görüsme</a>";
@@ -256,7 +262,10 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
         }
         protected void YeniKisiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_KISI_GIRIS);
+            MtsWebPartLog.ExecuteAction(LogContext, "YeniKisiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_KISI_GIRIS);
+            });
         }
         private class AramaListItem
         {
@@ -276,46 +285,72 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
 
         protected void BaslangicTarihiTxt_TextChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            MtsWebPartLog.ExecuteAction(LogContext, "BaslangicTarihiTxt_TextChanged", () =>
+            {
+
+            });
         }
 
         protected void BitisTarihiTxt_TextChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            MtsWebPartLog.ExecuteAction(LogContext, "BitisTarihiTxt_TextChanged", () =>
+            {
+
+            });
         }
 
         protected void GorusmeSekliDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            MtsWebPartLog.ExecuteAction(LogContext, "GorusmeSekliDDL_SelectedIndexChanged", () =>
+            {
+
+            });
         }
 
         protected void HepsiBtn_Click(object sender, EventArgs e)
         {
-            ArayanIdQS = string.Empty;
-            AdiSoyadiLnk.Text = string.Empty;
-            TabloOlustur();
+            MtsWebPartLog.ExecuteAction(LogContext, "HepsiBtn_Click", () =>
+            {
+                ArayanIdQS = string.Empty;
+                AdiSoyadiLnk.Text = string.Empty;
+            });
         }
         protected void KisiListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_KISI_LIST);
+            MtsWebPartLog.ExecuteAction(LogContext, "KisiListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_KISI_LIST);
+            });
         }
         protected void FaaliyetListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FAALIYET_LIST);
+            MtsWebPartLog.ExecuteAction(LogContext, "FaaliyetListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FAALIYET_LIST);
+            });
         }
         protected void FaaliyetTakvimiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM);
+            MtsWebPartLog.ExecuteAction(LogContext, "FaaliyetTakvimiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM);
+            });
         }
 
         protected void YeniAramaGirisiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_ARAMAGORUSME_GIRIS);
+            MtsWebPartLog.ExecuteAction(LogContext, "YeniAramaGirisiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_ARAMAGORUSME_GIRIS);
+            });
         }
         #region Katilimci Seçimi
         protected void KatilimciSecBtn_Click(object sender, EventArgs e)
         {
-            KatilimciModalAc();
+            MtsWebPartLog.ExecuteAction(LogContext, "KatilimciSecBtn_Click", () =>
+            {
+                KatilimciModalAc();
+            });
         }
         private void KatilimciModalAc()
         {
@@ -333,20 +368,12 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
         {
             string jSon = string.Empty;
 
-            try
-            {
-                List<KatilimciListItem> list = GetModalDataList();
-                var serializer = new JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
-            return jSon;
+            List<KatilimciListItem> list = GetModalDataList();
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            jSon = serializer.Serialize(list);
+
+            return jSon.Replace("<", "\\u003c").Replace(">", "\\u003e").Replace("&", "\\u0026");
         }
         private string CreateModalDataTable(string jsonData)
         {
@@ -359,8 +386,8 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
             jQuery('#CustomModalDataTable').DataTable({
             data: " + jsonData + @",
             columns: [
-                { data: 'AdiSoyadi' },
-                { data: 'Kurumu' },
+                { data: 'AdiSoyadi', render: jQuery.fn.dataTable.render.text() },
+                { data: 'Kurumu', render: jQuery.fn.dataTable.render.text() },
                 { data: 'KatilimciSec' }
             ],
             'language': {
@@ -390,7 +417,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
         private List<KatilimciListItem> GetModalDataList()
         {
             Kisi kisi = new Kisi();
-            DataTable dataTableDis = new Model.Services.MTS.KisiService().GetUnselectedParticipants(ProjeConstants.HEPSI_INT);
+            DataTable dataTableDis = new Model.Services.MTS.KisiService(LogContext).GetUnselectedParticipants(ProjeConstants.HEPSI_INT);
             int SiraNo = 1;
             List<KatilimciListItem> list = new List<KatilimciListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -422,7 +449,13 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
         }
         protected void SecilenKatilimciyiGetirBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_ARAMAGORUSME_LIST + "?ArayanId=" + paramFaaliyetKatilimciIdLbl.Value );
+            MtsWebPartLog.ExecuteAction(LogContext, "SecilenKatilimciyiGetirBtn_Click", () =>
+            {
+                int personId;
+                if (!int.TryParse(paramFaaliyetKatilimciIdLbl.Value, out personId) || personId <= 0)
+                    throw new MtsInputException("Listeden bir kişi seçin.");
+                RedirectToPage(ProjeConstants.PAGE_ARAMAGORUSME_LIST + "?ArayanId=" + personId);
+            });
         }
         private class KatilimciListItem
         {

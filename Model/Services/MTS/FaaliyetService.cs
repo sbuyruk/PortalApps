@@ -19,6 +19,8 @@ namespace Model.Services.MTS
         {
         }
 
+        public FaaliyetService(Utility.Logging.PortalLogContext context) : this(new FaaliyetRepository(context)) { }
+
         public FaaliyetService(FaaliyetRepository repository)
         {
             this.repository = repository ?? throw new ArgumentNullException("repository");

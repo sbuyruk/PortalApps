@@ -16,6 +16,8 @@ namespace Model.Services.MTS
         {
         }
 
+        public MTSKurumGorevService(Utility.Logging.PortalLogContext context) : this(new MTSKurumGorevRepository(context)) { }
+
         public MTSKurumGorevService(MTSKurumGorevRepository repository)
         {
             this.repository = repository ?? throw new ArgumentNullException("repository");

@@ -1,3 +1,5 @@
+using MTS_WebParts.Logging;
+using Utility.Logging;
 using Model.IKYS;
 using Model.MTS;
 using Model.NBYS;
@@ -19,6 +21,8 @@ namespace MTS_WebParts.MtsOlayListesiWP
     [ToolboxItemAttribute(false)]
     public partial class MtsOlayListesiWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("MTS", "MtsOlayListesiWP")); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -40,7 +44,7 @@ namespace MTS_WebParts.MtsOlayListesiWP
             {
                 if (ViewState["SorguZamani"] == null)
                 {
-                    ViewState["SorguZamani"] = false;
+                    ViewState["SorguZamani"] = DateTime.Today;
                 }
                 return ViewState["SorguZamani"].ConvertToDatetime();
             }
@@ -50,48 +54,43 @@ namespace MTS_WebParts.MtsOlayListesiWP
                 ViewState["SorguZamani"] = value;
             }
         }
+        protected override void OnPreRender(EventArgs e)
+        {
+            MtsWebPartLog.ExecuteAction(LogContext, "LoadList", TabloOlustur);
+            if (MtsWebPartLog.HasFailed(LogContext))
+                UtilityHelper.ScriptCalistir("jQuery('#CustomDataTable').hide();");
+            base.OnPreRender(e);
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
+            MtsWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
             {
-                //RefreshTimer.Interval = 10000;
-                //RefreshTimer.Enabled = true;
-                TabloOlustur();
-            }
-            var jsonData = TabloJson();
-            UtilityHelper.ScriptCalistir("ClearTableData();");
-            UtilityHelper.ScriptCalistir("SetTableData(" + jsonData + ");");
+                if (!Page.IsPostBack) MtsWebPartLog.RecordOpened(LogContext);
+            });
         }
         private void TabloOlustur()
         {
             var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
-            UtilityHelper.ScriptCalistir(jsString);
+            UtilityHelper.ScriptCalistir("jQuery('#CustomDataTable').show();" + jsString);
         }
         private string TabloJson()
         {
             string jSon = string.Empty;
 
-            try
-            {
-                SorguZamaniQS = DateTime.Today;
-                List<Olay> olayList = GetDataList(SorguZamaniQS);
-                List<OlayListItem> oliList = OlayListItemDoldur(olayList);
-                var serializer = new JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(oliList);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
-            return jSon;
+            SorguZamaniQS = DateTime.Today;
+            List<Olay> olayList = GetDataList(SorguZamaniQS);
+            List<OlayListItem> oliList = OlayListItemDoldur(olayList);
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            jSon = serializer.Serialize(oliList);
+
+            return jSon.Replace("<", "\\u003c").Replace(">", "\\u003e").Replace("&", "\\u0026");
         }
         private List<Olay> GetDataList(DateTime tarih)
         {
-            List<Olay> list = new Model.Services.Ortak.OlayService().GetByDateAndProgram(tarih, ProjeConstants.MTS);
+            List<Olay> list = new Model.Services.Ortak.OlayService().GetByDateAndProgram(tarih, ProjeConstants.MTS, LogContext);
             return list;
         }
         private List<OlayListItem> OlayListItemDoldur(List<Olay> list)
@@ -111,107 +110,53 @@ namespace MTS_WebParts.MtsOlayListesiWP
             }
             return olayList;
         }
-       
+
         public string ParseAciklama(Olay olay)
         {
-            var words = olay.Aciklama.Split(ProjeConstants.DELIMITER).ToList();
-            int faaliyetId = 0;
-            int katilimciId = 0;
-            int katilimciTipi = 0;
-            Faaliyet faaliyet = null;
-            string katilimci = string.Empty;
-            string aniObjesiStr=string.Empty;
-            string getirilenAniObjesiStr = string.Empty;
-            foreach (string item in words)
+            int faaliyetId = 0, katilimciId = 0;
+            foreach (string field in (olay.Aciklama ?? string.Empty).Split(ProjeConstants.DELIMITER))
             {
-                bool contains = item.Contains("FaaliyetId");
-                if (contains)
-                {
-                    faaliyetId = item.Split('=')[1].ConvertToInt();
-                    break;
-                }else
-                if (item.Contains("KatilimciId")){
-                    katilimciId = item.Split('=')[1].ConvertToInt();
-                }
-                else
-                if (item.Contains("KatilimciTipi"))
-                {
-                    katilimciTipi = item.Split('=')[1].ConvertToInt();
-                }
+                string[] pair = field.Split(new[] { '=' }, 2);
+                int id;
+                if (pair.Length != 2 || !int.TryParse(pair[1].Trim(), out id) || id <= 0) continue;
+                if (pair[0].Trim() == "FaaliyetId") faaliyetId = id;
+                else if (pair[0].Trim() == "KatilimciId") katilimciId = id;
             }
-            if (faaliyetId > 0)
+            Faaliyet faaliyet = faaliyetId > 0 ? new Model.Services.MTS.FaaliyetService(LogContext).GetById(faaliyetId) : null;
+            Kisi kisi = katilimciId > 0 ? new Model.Services.MTS.KisiService().GetById(katilimciId, LogContext) : null;
+            var details = new System.Text.StringBuilder();
+            if (kisi != null) details.Append(" — Katılımcı: ").Append(H(kisi.Adi + " " + kisi.Soyadi));
+            else if (katilimciId > 0) details.Append(" — İlgili kişi kaydı artık bulunmuyor.");
+            if (faaliyetId > 0 && faaliyet == null) details.Append(" — İlgili faaliyet kaydı artık bulunmuyor.");
+            if (faaliyet != null && kisi != null)
             {
-                faaliyet = new Faaliyet();
-                faaliyet = new Model.Services.MTS.FaaliyetService().GetById(faaliyetId);
+                var service = new Model.Services.MTS.AniObjesiDagitimService();
+                DataTable rows = service.GetEventDistribution(faaliyetId, katilimciId, LogContext);
+                if (rows != null)
+                    foreach (DataRow row in rows.Rows)
+                        details.Append(" — Verilen anı objesi: ").Append(H(Convert.ToString(row["Adi"])))
+                            .Append(" (").Append(Convert.ToInt32(row["Adet"])).Append(")");
+                var received = service.GetGetirilen(faaliyetId, katilimciId, LogContext);
+                if (received != null && !string.IsNullOrEmpty(received.GetirilenAniObjesi))
+                    details.Append(" — Getirilen anı objesi: ").Append(H(received.GetirilenAniObjesi));
             }
-            if (katilimciId > 0)
-            {
-
-                Kisi kisi = new Kisi();
-                kisi = new Model.Services.MTS.KisiService().GetById(katilimciId);
-                if (kisi != null)
-                {
-                    katilimci = kisi.Adi + " " + kisi.Soyadi;
-
-                    //Burada verilen ani objeleri aliniyor
-                    AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-                    DataTable dataTable = new Model.Services.MTS.AniObjesiDagitimService().GetDistributionTable(faaliyetId, kisi.Id);
-                    if (dataTable != null)
-                    {
-                        string objeStr = string.Empty;
-                        foreach (DataRow row in dataTable.Rows)
-                        {
-                            int adet = row["Adet"].ReturnZeroIfNull().ConvertToInt();
-                            if (adet > 0)
-                            {
-                                string deger = row["Adi"].ToString();
-                                objeStr += " - " + deger + "(" + adet + ")";
-                            }
-
-                        }
-                        aniObjesiStr = objeStr;
-                    }
-
-                    //Getirilen Ani Objeleri ayrica aliniyor
-                    AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
-                    getirilenAniObjesi = new Model.Services.MTS.AniObjesiDagitimService().GetGetirilen(faaliyetId, kisi.Id);
-                    if (getirilenAniObjesi != null)
-                    {
-                        getirilenAniObjesiStr = getirilenAniObjesi.GetirilenAniObjesi;
-                    }
-                }
-                else
-                {
-                    MessageHelper.PublishMessage("Kisi Bulunamadi", ProjeConstants.MESAJ_HATA);
-                }
-
-            }
-            string faaliyetStr = faaliyet == null ?
-                            string.Empty :
-                             "<strong>"+ faaliyet.FaaliyetKonusu + "</strong> konulu ve  <strong>" + faaliyet.BaslangicTarihi + "</strong> tarihli faaliyetin ";
-            string ayrintiStr = (string.IsNullOrEmpty(katilimci) ? string.Empty : "- Katilimci : " + katilimci) +
-                (string.IsNullOrEmpty(aniObjesiStr) ? string.Empty : "- Verilen Ani Objesi : " + aniObjesiStr)+
-                (string.IsNullOrEmpty(getirilenAniObjesiStr) ? string.Empty : "- Getirilen Ani Objesi : " + getirilenAniObjesiStr);
-            string retval = "(" + olay.IslemTarihi.ConvertToDDMMYYYHHmmFormat() + ") -" +
-               faaliyetStr + "  <strong>" +
-               olay.IslemKonusu + "</strong> bölümünde " +
-               olay.IslemYapan + " tarafindan  <strong> " +
-               olay.IslemTipi + "</strong> islemi yapilmistir." + ayrintiStr;
-            return retval;
+            string activity = faaliyet == null ? string.Empty : "<strong>" + H(faaliyet.FaaliyetKonusu)
+                + "</strong> konulu, " + faaliyet.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm") + " tarihli faaliyetin ";
+            return "(" + olay.IslemTarihi.ConvertToDDMMYYYHHmmFormat() + ") — " + activity + "<strong>"
+                + H(olay.IslemKonusu) + "</strong> bölümünde " + H(olay.IslemYapan) + " tarafından <strong>"
+                + H(olay.IslemTipi) + "</strong> işlemi yapılmıştır." + details;
         }
+
+        private static string H(string value) { return System.Web.HttpUtility.HtmlEncode(value ?? string.Empty); }
 
         private string CreateDataTable(string jsonData)
         {
             string tableString = @"
-                function SetTableData(myset) {
-                     table.rows.add(myset);
-                }
-                function ClearTableData() {
-                    table.clear();
-                }
+                if (jQuery.fn.DataTable.isDataTable('#CustomDataTable')) jQuery('#CustomDataTable').DataTable().destroy();
+                jQuery('#CustomDataTable tbody').empty();
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 var table=jQuery('#CustomDataTable').DataTable({
-                   
+
                     data: " + jsonData + @",
                     columns: [
                         { data: 'IslemTarihi' },
@@ -222,6 +167,7 @@ namespace MTS_WebParts.MtsOlayListesiWP
                     ],
                     'columnDefs': [
                         { type: 'turkish', targets: [1,2,3,4] },
+                        { targets: [0,1,2,4], render: jQuery.fn.dataTable.render.text() },
                     ],
                     'order': [[0, 'desc']],//sort date desc
                     'language': {
@@ -230,8 +176,8 @@ namespace MTS_WebParts.MtsOlayListesiWP
                         'thousands': '.'
                     },
                     responsive: true,
-                    dom: 'frtip',                    
-                    
+                    dom: 'frtip',
+
                 });
 
             ";
@@ -240,33 +186,19 @@ namespace MTS_WebParts.MtsOlayListesiWP
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            MtsWebPartLog.ExecuteAction(LogContext, "CloseBtn_Click", () =>
             {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path);
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void RefreshTimer_Tick(object sender, EventArgs e)
         {
-
-            List<Olay> list = GetDataList(SorguZamaniQS);
-            List<OlayListItem> listItems = OlayListItemDoldur(list);
-
-            if (listItems.Count > 0)
+            MtsWebPartLog.ExecuteAction(LogContext, "RefreshTimer_Tick", () =>
             {
-                var jsonData = TabloJson();
-                UtilityHelper.ScriptCalistir("ClearTableData();");
-                UtilityHelper.ScriptCalistir("SetTableData(" + jsonData + ");");
-                
-            }
-
-
+                // The list is refreshed once in OnPreRender, including empty results.
+            });
         }
         private class OlayListItem
         {

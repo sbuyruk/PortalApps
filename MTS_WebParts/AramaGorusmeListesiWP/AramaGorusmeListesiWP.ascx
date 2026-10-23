@@ -44,10 +44,12 @@
 
     function setDataSet(myset) {
         myjsons = myset;
+        jQuery('#CustomDataTable').show();
+        if (jQuery.fn.DataTable.isDataTable('#CustomDataTable')) {
+            jQuery('#CustomDataTable').DataTable().clear().rows.add(myset).draw();
+        }
     }
-    var myjsons = [{
-        "AramaGorusmeId": "", "AdiSoyadi": "", "Tarih": "", "Konu": "", "Kurumu": "", "Faaliyet": "", "Duzenle": ""
-    }];
+    var myjsons = [];
 
     jQuery(document).ready(function () {
         jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
@@ -65,11 +67,11 @@
             },
             data: myjsons,
             columns: [
-                { data: "AramaId" },
-                { data: "AdiSoyadi" },
-                { data: "Tarih" },
-                { data: "Konu" },
-                { data: "Kurumu" },
+                { data: "AramaId" , render: jQuery.fn.dataTable.render.text() },
+                { data: "AdiSoyadi" , render: jQuery.fn.dataTable.render.text() },
+                { data: "Tarih" , render: jQuery.fn.dataTable.render.text() },
+                { data: "Konu" , render: jQuery.fn.dataTable.render.text() },
+                { data: "Kurumu" , render: jQuery.fn.dataTable.render.text() },
                 { data: "Faaliyet" },
                 { data: "Duzenle" },
             ],
@@ -105,8 +107,7 @@
                     exportOptions: {
                         columns: ':visible'
                     }
-                },
-                , 'pageLength', "colvis"
+                }, 'pageLength', "colvis"
             ],
             "createdRow": function (row, data, dataIndex) {
                 if (!data.GorusmeSaglandi) {

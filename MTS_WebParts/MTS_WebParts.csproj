@@ -76,6 +76,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logging\MtsWebPartLog.cs" />
     <Compile Include="AcikTarihliFaaliyetListesiWP\AcikTarihliFaaliyetListesiWP.ascx.cs">
       <DependentUpon>AcikTarihliFaaliyetListesiWP.ascx</DependentUpon>
     </Compile>
@@ -393,6 +394,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DAO\DAO.csproj">
+      <Project>{1fa61ade-6fb6-4fea-95f1-d99c7523d18a}</Project>
+      <Name>DAO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{84f644d0-0931-4536-9edc-cbe7a773f546}</Project>
       <Name>Model</Name>

@@ -18,6 +18,8 @@ namespace Model.Services.MTS
         {
         }
 
+        public AramaGorusmeService(Utility.Logging.PortalLogContext context) : this(new AramaGorusmeRepository(context)) { }
+
         public AramaGorusmeService(AramaGorusmeRepository repository)
         {
             this.repository = repository ?? throw new ArgumentNullException("repository");

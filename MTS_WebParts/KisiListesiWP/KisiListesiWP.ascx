@@ -15,9 +15,12 @@
     }
     function setDataSet(myset) {
         myjsons = myset;
+        jQuery('#CustomDataTable').show();
+        if (jQuery.fn.DataTable.isDataTable('#CustomDataTable')) {
+            jQuery('#CustomDataTable').DataTable().clear().rows.add(myset).draw();
+        }
     }
-    var myjsons = [{
-        "KisiId": "","AdiSoyadi": "",  "Kurumu": "", "Unvani": "", "Gorevi": "", "Telefon1": "", "Arama": "", "KisiKarti": "", "Duzenle": ""}];
+    var myjsons = [];
     jQuery(document).ready(function () {
 
         jQuery('#CustomDataTable').DataTable({
@@ -34,12 +37,12 @@
             },
             data: myjsons,
             columns: [
-                { data: "KisiId" },
-                { data: "AdiSoyadi" },
-                { data: "Kurumu" },
-                { data: "Unvani" },
-                { data: "Gorevi" },
-                { data: "Telefon1", "width": "14%" },
+                { data: "KisiId" , render: jQuery.fn.dataTable.render.text() },
+                { data: "AdiSoyadi" , render: jQuery.fn.dataTable.render.text() },
+                { data: "Kurumu" , render: jQuery.fn.dataTable.render.text() },
+                { data: "Unvani" , render: jQuery.fn.dataTable.render.text() },
+                { data: "Gorevi" , render: jQuery.fn.dataTable.render.text() },
+                { data: "Telefon1", "width": "14%" , render: jQuery.fn.dataTable.render.text() },
                 { data: "Arama"},
                 { data: "KisiKarti" },
                 { data: "Duzenle" },
@@ -84,8 +87,7 @@
                     exportOptions: {
                         columns: ':visible'
                     }
-                },
-                , 'pageLength', "colvis"
+                }, 'pageLength', "colvis"
             ]
             
 
