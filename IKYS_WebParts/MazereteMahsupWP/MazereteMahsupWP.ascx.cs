@@ -251,7 +251,6 @@ namespace IKYS_WebParts.MazereteMahsupWP
         }
 
 
-
         private void MahsupTablosunaEkle(IzinHareket izinHareket, int asilIzinTipi, int kullanildigiDonem, int mahsupDonemi,
             string aciklama, SqlTransactionContext transaction, PortalLogContext context)
         {
@@ -382,11 +381,11 @@ namespace IKYS_WebParts.MazereteMahsupWP
                 bool isMahsup = true;
                 TableCell MahsupCell = new TableCell();
                 TableCell DilekceCell = new TableCell();
-               
+
                 if (ucretliKalanIzin <= 0)
                 {
                     //SB 07.10.2022 Yillik izni bitmis de olsa mazerete mahsup edilebilsin
-                    
+
                     //UcretliKalanIzinCell.Font.Bold = true;
                     //isMahsup = false;
                     //MahsupCell.Text = "Mahsup edilemez";
@@ -659,7 +658,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
             System.IO.StringWriter tw = new System.IO.StringWriter();
             System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
 
-            //Get the HTML for the control.             
+            //Get the HTML for the control.
             IzinTable.RenderControl(hw);
             //Write the HTML back to the browser.
             //Response.ContentType = application/vnd.ms-excel;

@@ -56,9 +56,6 @@ namespace DAO.Repositories.IKYS
             return TraceSelect(new SqlQuery("SELECT * FROM IzinTalep_Table"), "IzinTalep.SelectAll", context);
         }
 
-        public int Insert<T>(T item) { return db.Insert(queryBuilder.BuildInsert(item, "IzinTalep_Table")); }
-        public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "IzinTalep_Table")); }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("IzinTalep_Table", id), ""); }
 
         public int Insert<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
         {

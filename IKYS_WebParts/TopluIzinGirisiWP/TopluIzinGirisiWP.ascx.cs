@@ -21,11 +21,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
@@ -129,7 +125,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
         {
             PersonelDDL.Items.Clear();
             Personel personel = new Personel();
-            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu, LoggingContext);
 
             foreach (Personel item in list)
             {
@@ -242,93 +238,41 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
         /// Buldugu döneme ait IzinDonem_Table'da kayit yoksa, ekler
         /// </summary>
         /// <returns></returns>
-        private bool YeniIzinHareketiKaydet(Personel personel, int izinTipi)
+        private void YeniIzinHareketiKaydet(Personel personel, int izinTipi, SqlTransactionContext transaction, PortalLogContext context)
         {
-            bool isSaved = false;
-            try
+            IzinHareket hareket = new IzinHareket();
+            hareket.PersonelId = personel.Id;
+            hareket.BaslangicTarihi = IzinBasTarTxt.Value.ConvertToDatetime();
+            hareket.BitisTarihi = IzinBitTarTxt.Value.ConvertToDatetime();
+            hareket.Aciklama = AciklamaTxt.Text;
+            hareket.IzinTipi = izinTipi;
+            hareket.Birim = ProjeConstants.IZIN_BIRIMI_GUN;
+            if (izinTipi == ProjeConstants.IZINTIPI_MAZERET_INT)
             {
-
-                IzinHareket izinHareket = new IzinHareket();
-                izinHareket.PersonelId = personel.Id;
-
-                izinHareket.BaslangicTarihi = IzinBasTarTxt.Value.ConvertToDatetime();
-                izinHareket.Aciklama = AciklamaTxt.Text;
-                izinHareket.IzinTipi = izinTipi;
-                if (izinHareket.IzinTipi != ProjeConstants.IZINTIPI_MAZERET_INT)
-                {
-                    TimeSpan izinBitisSaati = new TimeSpan(0, 0, 0, 0);
-                    DateTime bitisTar = (IzinBitTarTxt.Value.ConvertToDatetime() + izinBitisSaati);
-                    izinHareket.BitisTarihi = bitisTar.ConvertToDatetime();
-                    izinHareket.Birim = ProjeConstants.IZIN_BIRIMI_GUN;
-                    izinHareket.Sure = IKYSOrtak.IzinSuresiHesapla(izinHareket.IzinTipi, izinHareket.BaslangicTarihi, izinHareket.BitisTarihi);
-                }
-                else if (izinHareket.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT)
-                {
-                    DateTime izinTarihi = izinHareket.BaslangicTarihi;
-                    string basSaat = IzinBasSaatDDL.SelectedItem.Text;
-                    izinHareket.BaslangicTarihi = UtilityHelper.TariheSaatEkle(izinTarihi, basSaat);
-                    string bitSaat = IzinBitSaatDDL.SelectedItem.Text;
-                    izinHareket.BitisTarihi = UtilityHelper.TariheSaatEkle(izinTarihi, bitSaat);
-                    izinHareket.Birim = ProjeConstants.IZIN_BIRIMI_SAAT;
-                    izinHareket.Sure = IKYSOrtak.IzinSuresiHesapla(izinHareket.IzinTipi, izinHareket.BaslangicTarihi, izinHareket.BitisTarihi);
-                }
-                izinHareket.IzinDonemId = 0;
-                //sadece Mazeret ve Ucretli izinler için Dönem hesapla
-                if ((izinHareket.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT) ||
-                   (izinHareket.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT))
-                {
-                    bool loggingEnabled = PortalLogSettings.IsEnabled(LoggingContext);
-                    using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
-                    {
-                        IzinDonemService izinDonemService = new IzinDonemService();
-                        IzinDonem izinDonemi = transaction == null
-                            ? izinDonemService.GetByIzinTarihi(personel.Id, izinHareket.IzinTipi, izinHareket.BaslangicTarihi)
-                            : izinDonemService.GetByIzinTarihi(personel.Id, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, transaction, LoggingContext);
-                        if (izinDonemi == null)
-                        {
-                            izinDonemi = transaction == null
-                                ? izinDonemService.CreateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName)
-                                : izinDonemService.CreateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName, transaction, LoggingContext);
-                        }
-                        else
-                        {
-                            izinDonemi = transaction == null
-                                ? izinDonemService.UpdateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName)
-                                : izinDonemService.UpdateForPersonel(personel, izinHareket.IzinTipi, izinHareket.BaslangicTarihi, CurrentUserName, transaction, LoggingContext);
-                        }
-                        string yeniSure = IKYSOrtak.IzinSuresiHesapla(izinHareket.IzinTipi, izinHareket.BaslangicTarihi, izinHareket.BitisTarihi);
-                        bool izinDonemiGuncellendi;
-                        if (transaction == null)
-                            izinDonemiGuncellendi = izinDonemService.UpdateUsedLeave(izinDonemi, yeniSure, true, CurrentUserName);
-                        else
-                            izinDonemiGuncellendi = izinDonemService.UpdateUsedLeave(izinDonemi, yeniSure, true, CurrentUserName, transaction, LoggingContext);
-
-                        izinHareket.IzinDonemId = izinDonemi != null ? izinDonemi.Id : 0;
-                        izinHareket.Olusturan = CurrentUserName;
-                        int izinHareketId = transaction == null
-                            ? new IzinHareketService().Save(izinHareket, LoggingContext)
-                            : new IzinHareketService().Save(izinHareket, transaction, LoggingContext);
-                        if (izinHareketId > 0 && izinDonemiGuncellendi)
-                        {
-                            isSaved = true;
-                            if (transaction != null)
-                                transaction.Complete();
-                        }
-                    }
-                    return isSaved;
-                }
-                izinHareket.Olusturan = CurrentUserName;
-                int id = new IzinHareketService().Save(izinHareket, LoggingContext);
-                if (id > 0)
-                    isSaved = true;
+                hareket.BitisTarihi = hareket.BaslangicTarihi;
+                hareket.BaslangicTarihi = UtilityHelper.TariheSaatEkle(hareket.BaslangicTarihi, IzinBasSaatDDL.SelectedItem.Text);
+                hareket.BitisTarihi = UtilityHelper.TariheSaatEkle(hareket.BitisTarihi, IzinBitSaatDDL.SelectedItem.Text);
+                hareket.Birim = ProjeConstants.IZIN_BIRIMI_SAAT;
             }
-            catch (Exception ex)
+            if (hareket.BitisTarihi < hareket.BaslangicTarihi) throw new InvalidOperationException("İzin bitişi başlangıçtan önce olamaz.");
+            hareket.Sure = IKYSOrtak.IzinSuresiHesapla(izinTipi, hareket.BaslangicTarihi, hareket.BitisTarihi, transaction, context);
+            if (izinTipi == ProjeConstants.IZINTIPI_MAZERET_INT || izinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT)
             {
-                ReportError("Unhandled", ex);
+                IzinDonemService service = new IzinDonemService();
+                IzinDonem donem = service.GetByIzinTarihi(personel.Id, izinTipi, hareket.BaslangicTarihi, transaction, context);
+                donem = donem == null
+                    ? service.CreateForPersonel(personel, izinTipi, hareket.BaslangicTarihi, CurrentUserName, transaction, context)
+                    : service.UpdateForPersonel(personel, izinTipi, hareket.BaslangicTarihi, CurrentUserName, transaction, context);
+                if (donem == null) throw new InvalidOperationException("Personelin izin dönemi hazırlanamadı.");
+                if (!service.UpdateUsedLeave(donem, hareket.Sure, true, CurrentUserName, transaction, context))
+                    throw new InvalidOperationException("İzin bakiyesi güncellenemedi.");
+                hareket.IzinDonemId = donem.Id;
             }
-            return isSaved;
+            hareket.Olusturan = CurrentUserName;
+            if (new IzinHareketService().Save(hareket, transaction, context) <= 0)
+                throw new InvalidOperationException("Toplu izin hareketi oluşturulamadı.");
         }
-        
+
         protected void IzinTanimDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             SetLayoutByIzinTipi();
@@ -380,7 +324,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
             }
         }
         /// <summary>
-        /// 
+        ///
         /// izinbastartxt dolu mu kontrol et
         /// izinbittartxt dolu mu kontrol et
         /// calisan personel listesini al
@@ -397,44 +341,57 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
         /// <returns>bool</returns>
         private bool TopluIzinGir()
         {
-            bool isSaved = false;
-            if (UygulanacakGrupRL.SelectedValue.Equals("Tum"))
+            PortalLogContext context = LoggingContext;
+            bool tumu = UygulanacakGrupRL.SelectedValue.Equals("Tum");
+            bool secilen = UygulanacakGrupRL.SelectedValue.Equals("Secilen");
+            if (!tumu && !secilen) throw new InvalidOperationException("İzin uygulanacak grup seçilmelidir.");
+            int izinTipi = IzinTanimDDL.SelectedItem == null ? 0 : IzinTanimDDL.SelectedItem.Value.ConvertToInt();
+            if (izinTipi <= 0) throw new InvalidOperationException("İzin türü seçilmelidir.");
+            DateTime baslangic;
+            DateTime bitis;
+            if (!DateTime.TryParse(IzinBasTarTxt.Value, System.Globalization.CultureInfo.GetCultureInfo("tr-TR"),
+                    System.Globalization.DateTimeStyles.None, out baslangic)
+                || !DateTime.TryParse(IzinBitTarTxt.Value, System.Globalization.CultureInfo.GetCultureInfo("tr-TR"),
+                    System.Globalization.DateTimeStyles.None, out bitis))
+                throw new InvalidOperationException("Geçerli izin başlangıç ve bitiş tarihleri girilmelidir.");
+            List<Personel> personeller = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu, context);
+            int tamamlanan = 0;
+            List<string> basarisizlar = new List<string>();
+            foreach (Personel personel in personeller)
             {
-                Personel personelDao = new Personel();
-                List<Personel> tumCalisanPersonelList = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
-                foreach (Personel personel in tumCalisanPersonelList)
+                bool listede = SecilenPersonelList.Contains(personel.Id);
+                if ((tumu && listede) || (secilen && !listede)) continue;
+                try
                 {
-                    if (SecilenPersonelList.Contains(personel.Id))
+                    using (SqlTransactionContext transaction = new SqlTransactionContext())
                     {
-                        continue;
+                        Personel guncel = new PersonelService().GetById(personel.Id, transaction, context);
+                        if (guncel == null) throw new InvalidOperationException("Personel bulunamadı.");
+                        YeniIzinHareketiKaydet(guncel, izinTipi, transaction, context);
+                        transaction.Complete();
                     }
-                    else
-                    {
-                        int izinTipi = IzinTanimDDL.SelectedItem.Value.ConvertToInt();
-                        isSaved = YeniIzinHareketiKaydet(personel, izinTipi);
-                    }
+                    tamamlanan++;
+                }
+                catch (System.Threading.ThreadAbortException) { throw; }
+                catch (Exception error)
+                {
+                    PortalTechnicalLog.WriteError(context, "TopluIzin.Personel." + personel.Id, error);
+                    basarisizlar.Add(System.Web.HttpUtility.HtmlEncode(personel.Adi + " " + personel.Soyadi) + " (" + personel.Id + ")");
                 }
             }
-            else if (UygulanacakGrupRL.SelectedValue.Equals("Secilen"))
+            if (basarisizlar.Count > 0)
             {
-                Personel personelDao = new Personel();
-                List<Personel> tumCalisanPersonelList = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
-                foreach (Personel personel in tumCalisanPersonelList)
-                {
-                    if (SecilenPersonelList.Contains(personel.Id))
-                    {
-                        int izinTipi = IzinTanimDDL.SelectedItem.Value.ConvertToInt();
-                        isSaved = YeniIzinHareketiKaydet(personel, izinTipi);
-
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
+                MessageHelper.PublishMessage(tamamlanan + " personelin kaydı tamamlandı; " + basarisizlar.Count
+                    + " personelin kaydı tamamlanamadı. Tamamlanan kayıtlar korunmuştur; yeniden yalnız başarısız personelleri seçiniz. Başarısız personeller: "
+                    + string.Join(", ", basarisizlar) + ". Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+                return false;
             }
-
-            return isSaved;
+            if (tamamlanan == 0)
+            {
+                MessageHelper.PublishMessage("İzin uygulanacak personel bulunamadı.", ProjeConstants.MESAJ_BILGI);
+                return false;
+            }
+            return true;
         }
         protected void IzinBasSaatDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -443,7 +400,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
         protected void PersonelDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             Personel personel = new Personel();
-            personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt());
+            personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt(), LoggingContext);
             if (personel != null)
             {
                 if (!SecilenPersonelList.Contains(personel.Id))
@@ -469,7 +426,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
             foreach (int item in SecilenPersonelList)
             {
                 Personel personel = new Personel();
-                personel = new PersonelService().GetById(item);
+                personel = new PersonelService().GetById(item, LoggingContext);
 
                 if (personel != null)
                 {

@@ -11,24 +11,31 @@ namespace Model.IKYS
         public PersonelItem()
         {
         }
+        public PersonelItem(Utility.Logging.PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
+            LoggingContext = context;
+        }
 
+        [field: NonSerialized]
+        internal Utility.Logging.PortalLogContext LoggingContext { get; set; }
         public int PersonelId { get; set; }
         private Personel _PersonelBilgileri
         {
             get
             {
-                return new PersonelService().GetById(PersonelId);
+                return (LoggingContext == null ? new PersonelService().GetById(PersonelId) : new PersonelService().GetById(PersonelId, LoggingContext));
             }
             set
             {
-                _PersonelBilgileri = value; 
+                _PersonelBilgileri = value;
             }
         }
         private Kimlik _KimlikBilgileri
         {
             get
             {
-                return new KimlikService().GetById(PersonelId);
+                return (LoggingContext == null ? new KimlikService().GetById(PersonelId) : new KimlikService().GetById(PersonelId, LoggingContext));
             }
             set
             {
@@ -39,7 +46,7 @@ namespace Model.IKYS
         {
             get
             {
-                IsBilgileriItem isBilgileriItem = new IsBilgileriItem();
+                IsBilgileriItem isBilgileriItem = new IsBilgileriItem { LoggingContext = LoggingContext };
                 isBilgileriItem.PersonelId = PersonelId;
                 return isBilgileriItem;
             }
@@ -52,7 +59,7 @@ namespace Model.IKYS
         {
             get
             {
-                return new IletisimBilgileriService().GetByPersonelId(PersonelId);
+                return (LoggingContext == null ? new IletisimBilgileriService().GetByPersonelId(PersonelId) : new IletisimBilgileriService().GetByPersonelId(PersonelId, LoggingContext));
             }
             set
             {
@@ -63,7 +70,7 @@ namespace Model.IKYS
         {
             get
             {
-                return new AileService().GetByPersonelId(PersonelId);
+                return (LoggingContext == null ? new AileService().GetByPersonelId(PersonelId) : new AileService().GetByPersonelId(PersonelId, LoggingContext));
             }
             set
             {

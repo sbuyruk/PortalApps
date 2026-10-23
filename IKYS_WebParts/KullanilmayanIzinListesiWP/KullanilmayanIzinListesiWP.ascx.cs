@@ -20,7 +20,7 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
     public partial class KullanilmayanIzinListesiWP : WebPart
     {
         private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "KullanilmayanIzinListesiWP"); } }
-        private void ReportError(string operation, Exception error) { PortalLogContext context = LoggingContext; if (!PortalLogSettings.IsEnabled(context)) { new ExceptionHelper(error).PublishException(); return; } PortalTechnicalLog.WriteError(context, operation, error); Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N")); }
+        private void ReportError(string operation, Exception error) { PortalLogContext context = LoggingContext; if (error is System.Threading.ThreadAbortException) return; PortalTechnicalLog.WriteError(context, operation, error); Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N")); }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -214,8 +214,8 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
             string birimListesiStr = string.Empty;
             if (AuthQS.Equals("IKYS"))
             {
-                BirimTanim rootBirimTanim = new BirimTanimService().GetRoot();
-                Personel personel = new PersonelService().GetById(rootBirimTanim.AmirId);
+                BirimTanim rootBirimTanim = new BirimTanimService().GetRoot(LoggingContext);
+                Personel personel = new PersonelService().GetById(rootBirimTanim.AmirId, LoggingContext);
                 birimListesiStr = BirimListesiGetir(personel, rootBirimTanim);
             }
             else
@@ -223,7 +223,7 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
                 Personel personel = PersonelGetir();
                 birimListesiStr = BirimListesiGetir(personel, null);
             }
-            dataTable = new PersonelService().GetActiveEmployeesByUnitReturnDT(birimListesiStr);
+            dataTable = new PersonelService().GetActiveEmployeesByUnitReturnDT(birimListesiStr, LoggingContext);
             int sira = 0;
             if (dataTable != null)
             {
@@ -249,7 +249,7 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
                     TableHeaderCell iseGirisCell = new TableHeaderCell();
                     iseGirisCell.Text = izinDonemiBasTar;
                     row1.Controls.Add(iseGirisCell);
-                    
+
                     TableHeaderCell izinDonemiCell = new TableHeaderCell();
                     izinDonemiCell.Text = "İzin Dönemi";
                     row1.Controls.Add(izinDonemiCell);
@@ -267,7 +267,7 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
                     row1.Controls.Add(kalanIzinCell);
 
                     baslikCell.BorderStyle = BorderStyle.Solid;
-                    siraCell.BorderStyle = BorderStyle.Solid;                    
+                    siraCell.BorderStyle = BorderStyle.Solid;
                     adiSoyadiCell.BorderStyle = BorderStyle.Solid;
                     iseGirisCell.BorderStyle = BorderStyle.Solid;
                     izinDonemiCell.BorderStyle = BorderStyle.Solid;
@@ -355,10 +355,10 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
                     toplamLblCell.BorderStyle = BorderStyle.Solid;
                     toplamLblCell.ColumnSpan = 3;
                     toplamLblCell.Text = "Toplam";
-                    
+
                     TableHeaderCell toplamCell = new TableHeaderCell();
                     toplamCell.BorderStyle = BorderStyle.Solid;
-                    toplamCell.Text = toplam.ToString()+" Gün"; 
+                    toplamCell.Text = toplam.ToString()+" Gün";
 
                     toplamRow.Controls.Add(toplamLblCell);
                     toplamRow.Controls.Add(toplamCell);
@@ -376,13 +376,13 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
 
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), LoggingContext);
 
             }
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = new PersonelService().GetByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName, LoggingContext);
             }
             PersonelIdQS = personel.Id.ToString();
             return personel;
@@ -390,7 +390,7 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
         private string parentBirimGetir(int parentId)
         {
             string retVal = parentId + ",";
-            List<BirimTanim> list = new BirimTanimService().GetByParentId(parentId);
+            List<BirimTanim> list = new BirimTanimService().GetByParentId(parentId, LoggingContext);
             foreach (BirimTanim item in list)
             {
                 //retVal += item.Id + ",";
@@ -409,11 +409,11 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
 
             if (personel != null)
             {
-                IsBilgileri ib = new IsBilgileriService().GetByPersonelId(personel.Id);
+                IsBilgileri ib = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
                 if (ib != null)
                 {
                     int birimId = birimTanim != null ? birimTanim.Id : ib.BirimId;
-                    BirimTanim bt = birimTanim != null ? birimTanim : new BirimTanimService().GetById(birimId);
+                    BirimTanim bt = birimTanim != null ? birimTanim : new BirimTanimService().GetById(birimId, LoggingContext);
                     if ((bt != null) && (bt.AmirId == personel.Id))
                     {
                         string birim = parentBirimGetir(birimId);
@@ -488,7 +488,7 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
             System.IO.StringWriter tw = new System.IO.StringWriter();
             System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
 
-            //Get the HTML for the control.             
+            //Get the HTML for the control.
             IzinTable.RenderControl(hw);
             //Write the HTML back to the browser.
             //Response.ContentType = application/vnd.ms-excel;

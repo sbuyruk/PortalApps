@@ -21,11 +21,7 @@ namespace IKYS_WebParts.YoklamaListesiWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
@@ -208,7 +204,6 @@ namespace IKYS_WebParts.YoklamaListesiWP
                 string aciklama = row["Aciklama"].ToString();
 
 
-
                 YoklamaListItem yoklamaListItem = new YoklamaListItem();
                 yoklamaListItem.YoklamaId = yoklamaId.ToString();
                 yoklamaListItem.AdiSoyadi = adiSoyadi;
@@ -305,13 +300,13 @@ namespace IKYS_WebParts.YoklamaListesiWP
 
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), LoggingContext);
 
             }
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = new PersonelService().GetByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName, LoggingContext);
             }
             PersonelIdQS = personel.Id.ToString();
             return personel;

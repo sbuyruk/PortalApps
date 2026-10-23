@@ -21,11 +21,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
@@ -251,7 +247,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                         ib = new IletisimBilgileriService().GetByPersonelId(PersonelIdQS.ConvertToInt(), LoggingContext);
                         if (ib != null)
                         {
-                            Ilce ilce = new IlceService().GetById(ib.Ilcesi);
+                            Ilce ilce = new IlceService().GetById(ib.Ilcesi, LoggingContext);
                             string ilcestr = ilce.IlceAdi;
                             AdresTxt.Text = ib.Adres + " " + ib.Semt + " " + ilcestr;
                         }
@@ -351,11 +347,11 @@ namespace IKYS_WebParts.YoklamaGirisiWP
         {
             PersonelDDL.Items.Clear();
             List<Personel> list = new List<Personel>();
-           
+
             if (AuthQS.Equals("IKYS"))
             {
                 Personel perdao = new Personel();
-                list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
+                list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu, LoggingContext);
             }
             else if (AuthQS.Equals("BIRIM"))
             {
@@ -408,13 +404,13 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                 }
 
                 BirimTanim bt = new BirimTanim();
-                bt = new BirimTanimService().GetById(BirimTanimIdQS.ConvertToInt());
+                bt = new BirimTanimService().GetById(BirimTanimIdQS.ConvertToInt(), LoggingContext);
                 if (bt != null)
                 {
                     birimListesiStr = BirimListesiGetir(bt);
                 }
                 Personel perdao = new Personel();
-                list = new PersonelService().GetActiveEmployeesByUnitReturnList(birimListesiStr);
+                list = new PersonelService().GetActiveEmployeesByUnitReturnList(birimListesiStr, LoggingContext);
             }
             return list;
         }
@@ -434,7 +430,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
         {
             string retVal = parentId + ",";
             BirimTanim bt = new BirimTanim();
-            List<BirimTanim> list = new BirimTanimService().GetByParentId(parentId);
+            List<BirimTanim> list = new BirimTanimService().GetByParentId(parentId, LoggingContext);
             foreach (BirimTanim item in list)
             {
                 //retVal += item.Id + ",";
@@ -450,7 +446,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
         private void FillBulunmamaSebebiDDL()
         {
             BulunmamaSebebiDDL.Items.Clear();
-            List<BulunmamaSebebi> list = new BulunmamaSebebiService().GetAll();
+            List<BulunmamaSebebi> list = new BulunmamaSebebiService().GetAll(LoggingContext);
 
             foreach (BulunmamaSebebi item in list)
             {
@@ -580,7 +576,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = new PersonelService().GetByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName, LoggingContext);
                 PersonelIdQS = personel.Id.ToString();
             }
 
@@ -617,9 +613,9 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                             }
                             else
                             {
-                                IKYSOrtak.GorevOnayEPostasiGonder(personel, yoklama.Id, "SehirIci");
+                                IKYSOrtak.GorevOnayEPostasiGonder(personel, yoklama.Id, "SehirIci", LoggingContext);
                             }
-                            
+
                             SaveBtn.Visible = false;
                             if ((BulunmamaSebebiDDL.SelectedItem.Value.ConvertToInt() == ProjeConstants.BULUNMAMASEBEBI_GOREVLI_INT)
                                 && AciklamaTxt.Text.Contains(ProjeConstants.BULUNMAMASEBEBI_GOREVLI_UZAKTANCALISMA))
@@ -830,7 +826,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                 ib = new IletisimBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
                 if (ib != null)
                 {
-                    Ilce ilce = new IlceService().GetById(ib.Ilcesi);
+                    Ilce ilce = new IlceService().GetById(ib.Ilcesi, LoggingContext);
                     string ilcestr = ilce.IlceAdi;
                     AdresTxt.Text = ib.Adres + " " + ib.Semt + " " + ilcestr;
                 }

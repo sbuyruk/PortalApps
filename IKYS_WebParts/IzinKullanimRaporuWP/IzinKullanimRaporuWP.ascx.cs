@@ -18,7 +18,7 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
     public partial class IzinKullanimRaporuWP : WebPart
     {
         private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "IzinKullanimRaporuWP"); } }
-        private void ReportError(string operation, Exception error) { PortalLogContext context = LoggingContext; if (!PortalLogSettings.IsEnabled(context)) { new ExceptionHelper(error).PublishException(); return; } PortalTechnicalLog.WriteError(context, operation, error); Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N")); }
+        private void ReportError(string operation, Exception error) { PortalLogContext context = LoggingContext; if (error is System.Threading.ThreadAbortException) return; PortalTechnicalLog.WriteError(context, operation, error); Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N")); }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -143,8 +143,8 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
             string birimListesiStr = string.Empty;
             if (AuthQS.Equals("IKYS"))
             {
-                BirimTanim rootBirimTanim = new BirimTanimService().GetRoot();
-                Personel personel = new PersonelService().GetById(rootBirimTanim.AmirId);
+                BirimTanim rootBirimTanim = new BirimTanimService().GetRoot(LoggingContext);
+                Personel personel = new PersonelService().GetById(rootBirimTanim.AmirId, LoggingContext);
                 birimListesiStr = BirimListesiGetir(personel, rootBirimTanim);
             }
             else
@@ -152,7 +152,7 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
                 Personel personel = PersonelGetir();
                 birimListesiStr = BirimListesiGetir(personel, null);
             }
-            dataTable = new PersonelService().GetActiveEmployeesByUnitReturnDT(birimListesiStr);
+            dataTable = new PersonelService().GetActiveEmployeesByUnitReturnDT(birimListesiStr, LoggingContext);
             int birimIdTemp = 0;
             int sira = 0;
             if (dataTable != null)
@@ -225,7 +225,7 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
                         }
                         else
                         {
-                            int eskiDonemlerdenKalanIzin= IKYSOrtak.KalanIzinToplamiGetir(personelId, true) ;//
+                            int eskiDonemlerdenKalanIzin= IKYSOrtak.KalanIzinToplamiGetir(personelId, true, LoggingContext) ;//
 
                             izinHakki = izinDonemi.IzinHakki +
                                 " " + izinDonemi.Birim +
@@ -233,9 +233,8 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
                                 : (eskiDonemlerdenKalanIzin < 0 ? "<strong style = 'color:red;'> ("  + eskiDonemlerdenKalanIzin + " " +izinDonemi.Birim + ") </strong>" : string.Empty));
 
                             kullanilanIzin = izinDonemi.KullanilanIzin + " " + izinDonemi.Birim;
-                            kalanIzin = IKYSOrtak.KalanIzinToplamiGetir(personelId, false) + " " + izinDonemi.Birim; //izinDonemi.KalanIzin + " " + izinDonemi.Birim;
+                            kalanIzin = IKYSOrtak.KalanIzinToplamiGetir(personelId, false, LoggingContext) + " " + izinDonemi.Birim; //izinDonemi.KalanIzin + " " + izinDonemi.Birim;
                         }
-
 
 
                     }
@@ -273,7 +272,7 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
         {
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                Personel personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
+                Personel personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), LoggingContext);
                 PersonelIdQS = personel.Id.ToString();
                 return personel;
 
@@ -281,7 +280,7 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                Personel personel = new PersonelService().GetByUserName(userName);
+                Personel personel = new PersonelService().GetByUserName(userName, LoggingContext);
                 PersonelIdQS = personel.Id.ToString();
                 return personel;
             }
@@ -289,7 +288,7 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
         private string parentBirimGetir(int parentId)
         {
             string retVal = parentId + ",";
-            List<BirimTanim> list = new BirimTanimService().GetByParentId(parentId);
+            List<BirimTanim> list = new BirimTanimService().GetByParentId(parentId, LoggingContext);
             foreach (BirimTanim item in list)
             {
                 //retVal += item.Id + ",";
@@ -308,11 +307,11 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
 
             if (personel != null)
             {
-                IsBilgileri ib = new IsBilgileriService().GetByPersonelId(personel.Id);
+                IsBilgileri ib = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
                 if (ib != null)
                 {
                     int birimId = birimTanim != null ? birimTanim.Id : ib.BirimId;
-                    BirimTanim bt = birimTanim != null ? birimTanim : new BirimTanimService().GetById(birimId);
+                    BirimTanim bt = birimTanim != null ? birimTanim : new BirimTanimService().GetById(birimId, LoggingContext);
                     if ((bt != null) && (bt.AmirId == personel.Id))
                     {
                         string birim = parentBirimGetir(birimId);

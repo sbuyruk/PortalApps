@@ -21,7 +21,7 @@ namespace DAO.Repositories.IKYS
             return TraceSelect(query, "IletisimBilgileri.SelectById", transaction, context);
         }
         public DataTable SelectAll() { return db.SelectFromDb(new SqlQuery("SELECT * FROM IletisimBilgileri_Table"), ""); }
-        public int Insert<T>(T item) { return db.Insert(queryBuilder.BuildInsert(item, "IletisimBilgileri_Table")); }
+
         public int Insert<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
@@ -29,13 +29,13 @@ namespace DAO.Repositories.IKYS
             try { int id = transaction.Insert(queryBuilder.BuildInsert(item, "IletisimBilgileri_Table")); succeeded = id > 0; return id; }
             finally { PortalTechnicalLog.WriteSqlTrace(context, "INSERT", "IletisimBilgileri.Insert", clock.ElapsedMilliseconds, succeeded); }
         }
-        public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "IletisimBilgileri_Table")); }
+
         public bool Update<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
             return TraceWrite(queryBuilder.BuildUpdate(item, "IletisimBilgileri_Table"), "UPDATE", "IletisimBilgileri.Update", transaction, context);
         }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("IletisimBilgileri_Table", id), ""); }
+
         public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
@@ -67,5 +67,11 @@ namespace DAO.Repositories.IKYS
             try { succeeded = transaction.Update(query); return succeeded; }
             finally { PortalTechnicalLog.WriteSqlTrace(context, operation, name, clock.ElapsedMilliseconds, succeeded); }
         }
+
+        public DataTable SelectById(int id, PortalLogContext context)
+        { SqlQuery q = new SqlQuery("SELECT * FROM IletisimBilgileri_Table WHERE Id=@Id"); q.AddParameter("@Id", id); return PortalSqlReadExecutor.Select(q, context, "IletisimBilgileri.SelectById"); }
+
+        public DataTable SelectAll(PortalLogContext context)
+        { return PortalSqlReadExecutor.Select(new SqlQuery("SELECT * FROM IletisimBilgileri_Table"), context, "IletisimBilgileri.SelectAll"); }
     }
 }

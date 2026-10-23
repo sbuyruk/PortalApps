@@ -28,13 +28,13 @@ namespace DAO.Repositories.IKYS
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
         { if (transaction == null) throw new ArgumentNullException("transaction"); SqlQuery query = new SqlQuery("SELECT * FROM Mahsup_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id"); query.AddParameter("@Id", id); return TraceSelect(query, "Mahsup.SelectById", transaction, context); }
         public DataTable SelectAll() { return db.SelectFromDb(new SqlQuery("SELECT * FROM Mahsup_Table"), ""); }
-        public int Insert<T>(T item) { return db.Insert(queryBuilder.BuildInsert(item, "Mahsup_Table")); }
+
         public int Insert<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
         { if (transaction == null) throw new ArgumentNullException("transaction"); Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false; try { int id = transaction.Insert(queryBuilder.BuildInsert(item, "Mahsup_Table")); succeeded = id > 0; return id; } finally { PortalTechnicalLog.WriteSqlTrace(context, "INSERT", "Mahsup.Insert", clock.ElapsedMilliseconds, succeeded); } }
-        public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "Mahsup_Table")); }
+
         public bool Update<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
         { if (transaction == null) throw new ArgumentNullException("transaction"); return TraceWrite(queryBuilder.BuildUpdate(item, "Mahsup_Table"), "UPDATE", "Mahsup.Update", transaction, context); }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("Mahsup_Table", id), ""); }
+
         public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
         { if (transaction == null) throw new ArgumentNullException("transaction"); return TraceWrite(queryBuilder.BuildDelete("Mahsup_Table", id), "DELETE", "Mahsup.Delete", transaction, context); }
 
@@ -73,8 +73,20 @@ namespace DAO.Repositories.IKYS
         private static DataTable TraceSelect(SqlQuery query, string name, SqlTransactionContext transaction, PortalLogContext context)
         { Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false; try { DataTable result = transaction.Select(query); succeeded = true; return result; } finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", name, clock.ElapsedMilliseconds, succeeded); } }
         private DataTable TraceSelect(SqlQuery query, string name, PortalLogContext context)
-        { Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false; try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; } finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", name, clock.ElapsedMilliseconds, succeeded); } }
+        {
+            return PortalSqlReadExecutor.Select(query, context, name);
+        }
         private static bool TraceWrite(SqlQuery query, string operation, string name, SqlTransactionContext transaction, PortalLogContext context)
         { Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false; try { succeeded = transaction.Update(query); return succeeded; } finally { PortalTechnicalLog.WriteSqlTrace(context, operation, name, clock.ElapsedMilliseconds, succeeded); } }
+
+        public DataTable SelectById(int id, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM Mahsup_Table WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return PortalSqlReadExecutor.Select(query, context, "Mahsup.SelectById");
+        }
+
+        public DataTable SelectAll(PortalLogContext context)
+        { return PortalSqlReadExecutor.Select(new SqlQuery("SELECT * FROM Mahsup_Table"), context, "Mahsup.SelectAll"); }
     }
 }

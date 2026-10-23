@@ -20,11 +20,7 @@ namespace IKYS_WebParts.GorevTanimEditWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
@@ -277,21 +273,7 @@ namespace IKYS_WebParts.GorevTanimEditWP
                     bool isupdated = new GorevTanimService().Update(gorev, LoggingContext);
                     if (isupdated)
                     {
-                        if (!PortalLogSettings.IsEnabled(LoggingContext))
-                        {
-                            IsBilgileri ib = new IsBilgileriService().GetByPersonelId(oncekiPersonelId);
-                            if (ib != null)
-                            {
-                                ib.GorevId = 0;
-                                new IsBilgileriService().Update(ib);
-                            }
-                            ib = new IsBilgileriService().GetByPersonelId(gorev.PersonelId);
-                            if (ib != null)
-                            {
-                                ib.GorevId = gorev.Id;
-                                new IsBilgileriService().Update(ib);
-                            }
-                        }
+
                         MessageHelper.PublishMessage("Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
 

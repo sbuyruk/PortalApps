@@ -25,11 +25,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
@@ -139,7 +135,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
         {
             try
             {
-                new GorevOnayService().UpdateAllSecildiToFalse();
+                new GorevOnayService().SetSelectedIds(string.Empty, LoggingContext);
             }
             catch (Exception ex)
             {
@@ -180,7 +176,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
 
             List<GorevOnayListItem> list = new List<GorevOnayListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            Personel personel = IKYSOrtak.PersonelGetir(CurrentUserName);
+            Personel personel = IKYSOrtak.PersonelGetir(CurrentUserName, LoggingContext);
             DataView dataView = new DataView(dataTable);
             foreach (DataRowView row in dataView)
             {
@@ -281,7 +277,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                             gorevOnayListItem.RaporAl = "<a href=" + ProjeConstants.RAPOR_GOREVONAYBELGESI_URL + "?GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Rapor Al</a>";
                             gorevOnayListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVONAY_GIRIS + "?GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Düzenle</a>";
                         }
-                        
+
                     }
                 }
 
@@ -291,12 +287,10 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                 list.Add(gorevOnayListItem);
 
 
-
-
             }
             return list;
         }
- 
+
         private bool SureVeYevmiyeHesabiDogruMu(int gorevOnayId)
         {
             GorevOnay gorevOnay = new GorevOnayService().GetById(gorevOnayId, LoggingContext);
@@ -310,7 +304,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                 var bastar = gorevOnay.BaslangicTarihi;
                 var bittar = gorevOnay.BitisTarihi;
                 decimal sure = (gorevOnay.Sure).Replace("gün", "").Replace("Gün", "").ConvertToDecimal();
-                decimal yevmiye = gorevOnay.Yevmiye.Replace(".", "").ConvertToDecimal(); 
+                decimal yevmiye = gorevOnay.Yevmiye.Replace(".", "").ConvertToDecimal();
 
                 double dakika = (bittar - bastar).TotalMinutes;
                 double saat = (dakika / 60)%24;
@@ -331,7 +325,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                     return true;
 
             }
-            return false; // dogrulama yapilamiyor 
+            return false; // dogrulama yapilamiyor
         }
 
         protected void CloseBtn_Click(object sender, EventArgs e)
@@ -351,12 +345,11 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             {
                 MessageHelper.PublishMessage("Toplu rapor almak için görevleri seçmeniz gerekli, henüz hiç görev seçmediniz",ProjeConstants.MESAJ_HATA);
             }
-            
+
         }
 
         private void SecilenleriKaydet()
         {
-            SecildiFalseYap();
             string idler = paramidArray.Value.Equals(",")?string.Empty: paramidArray.Value;
             if (idler.Length > 1)
             {
@@ -364,7 +357,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             }
 
 
-            bool secilenlerKaydedildi = new GorevOnayService().UpdateAllSecildiToTrue(idler);
+            bool secilenlerKaydedildi = new GorevOnayService().SetSelectedIds(idler, LoggingContext);
         }
 
         protected void OdendiYapBtn_Click(object sender, EventArgs e)
@@ -383,7 +376,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                     return;
                 }
 
-                new GorevOnayService().UpdateAllOdendiToTrue(idler);
+                new GorevOnayService().SetPaidIds(idler, LoggingContext);
                 TabloOlustur();
             }
             catch (Exception ex)
@@ -394,7 +387,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
 
         private bool SecilenGorevVarMi()
         {
-            List<GorevOnay> liste = new GorevOnayService().GetAllBySecildi(true);
+            List<GorevOnay> liste = new GorevOnayService().GetAllBySecildi(true, LoggingContext);
             return liste.Count > 0;
         }
 

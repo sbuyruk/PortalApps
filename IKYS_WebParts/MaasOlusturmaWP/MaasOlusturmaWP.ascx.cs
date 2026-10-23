@@ -30,11 +30,7 @@ namespace IKYS_WebParts.MaasOlusturmaWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
@@ -139,8 +135,8 @@ namespace IKYS_WebParts.MaasOlusturmaWP
             DateTime tarih = TarihDDL.SelectedItem.Value.ConvertToDatetime();
 
             UcretTanim ucretTanim = new UcretTanim();
-            int grupId= new UcretTanimService().GetGrupIdByTarih(tarih);
-            DataTable dataTable = new UcretTanimService().GetMaasListesi(grupId,tarih);
+            int grupId= new UcretTanimService().GetGrupIdByTarih(tarih, LoggingContext);
+            DataTable dataTable = new UcretTanimService().GetMaasListesi(grupId,tarih, LoggingContext);
             return dataTable;
         }
         private List<MaasListItem> GetDataList()
@@ -223,10 +219,10 @@ namespace IKYS_WebParts.MaasOlusturmaWP
                                 listItem.DereceKademeIlerlemeTarihi = new DateTime(tarih.Year, tarih.Month, dereceKademeIlerlemeTarihi.Day).ToString("dd.MM.yyyy"); // DereceKademeDegisim'in tarihi, maasin olusturuldugu tarih olacak
                                 listItem.Kademe = kademe + 1; // Kademe'yi 1 artir
                                 Personel personel = new Personel();
-                                personel = new PersonelService().GetById(personelId);
+                                personel = new PersonelService().GetById(personelId, LoggingContext);
                                 //maasi yeni kademeye göre bul
                                 UcretTanim ucretTanim = new UcretTanim();
-                                ucret = new UcretTanimService().GetUcretByGrupDereceKademe(personel,grupId, derece, listItem.Kademe);
+                                ucret = new UcretTanimService().GetUcretByGrupDereceKademe(personel,grupId, derece, listItem.Kademe, LoggingContext);
                                 listItem.Ucret = ucret.ToString("N", culturInfo); // Ucret'i güncelle
                                 listItem.Ikramiye = ucret.ToString("N", culturInfo);
                                 ikramiye = IkramiyeChk.Checked ? ucret : 0;
@@ -351,7 +347,7 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
 
 
             UcretTanim ucretTanim = new UcretTanim();
-            DataTable dataTable = new UcretTanimService().GetByGrup();
+            DataTable dataTable = new UcretTanimService().GetByGrup(LoggingContext);
             foreach (DataRow row in dataTable.Rows)
             {
                 DateTime bastar = row["BaslangicTarihi"].ConvertToDatetime();
@@ -375,11 +371,15 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
         {
             UtilityHelper.SetDDLValue(TarihDDL, (string.IsNullOrEmpty(TarihDDL.SelectedItem.Value) ? DateTime.Today.ToString("dd.MM.yyyy") : TarihDDL.SelectedItem.Value));
             DateTime tarih = TarihDDL.SelectedItem.Value.ConvertToDatetime();
-            List<MaasListItem> list=GetDataList();
+
             PortalLogContext context = LoggingContext;
-            bool loggingEnabled = PortalLogSettings.IsEnabled(context);
-            using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
+
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
+                if (new MaasHareketService().GetByTarih(tarih, transaction, context) != null)
+                    throw new InvalidOperationException("Bu tarih için maaş zaten oluşturulmuş.");
+                List<MaasListItem> list = GetDataList(transaction, context);
+                if (list.Count == 0) throw new InvalidOperationException("Maaş oluşturulacak personel bulunamadı.");
                 foreach (MaasListItem item in list)
                 {
                     MaasHareket maasHareket = new MaasHareket();
@@ -405,10 +405,7 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
                         dereceKademeDegisim.DegisimTarihi = new DateTime(tarih.Year, tarih.Month, item.DereceKademeIlerlemeTarihi.ConvertToDatetime().Day); // DereceKademeDegisim'in tarihi, maasin olusturuldugu tarih olacak
                         dereceKademeDegisim.Degisim = "Kademe Yükseltme";
                         dereceKademeDegisim.Derece = item.Derece; // Derece'yi de ayni sekilde al
-                        if (transaction == null)
-                            new DereceKademeDegisimService().Save(dereceKademeDegisim);
-                        else
-                            new DereceKademeDegisimService().Save(dereceKademeDegisim, transaction, context);
+                        new DereceKademeDegisimService().Save(dereceKademeDegisim, transaction, context);
                         maasHareket.DereceKademeIlerlemeTarihi = dereceKademeDegisim.DegisimTarihi;
                         //IsBligileri_Table'da Derece,Kademe ve DereceKademeIlerlemeTarihi alanlari güncellensin
                         //IsBilgileri personelIsBilgileri = new IsBilgileri();
@@ -431,30 +428,28 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
                 maasHareket.ProtokolSiraNo = item.ProtokolSiraNo;
                 maasHareket.GrupId = item.GrupId;
                 maasHareket.Tarih = TarihDDL.SelectedItem.Value.ConvertToDatetime();
-                    if (transaction == null)
-                        new MaasHareketService().Save(maasHareket);
-                    else
-                        new MaasHareketService().Save(maasHareket, transaction, context);
+                    new MaasHareketService().Save(maasHareket, transaction, context);
                 }
-                if (transaction != null) transaction.Complete();
+                transaction.Complete();
             }
         }
 
         private void TabloyuSil()
         {
-            MaasHareket maasHareket = new MaasHareket();
-            // ilk olarak bu tarihe ait kayit MaasHareket_Table'da var mi kontrol et
-                maasHareket = new MaasHareketService().GetByTarih(TarihDDL.SelectedItem.Value.ConvertToDatetime(), LoggingContext);
-            if (maasHareket == null)
+            PortalLogContext context = LoggingContext;
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-            MessageHelper.PublishMessage("Silinecek bir maaş kaydı bulunamadı.", ProjeConstants.MESAJ_BILGI);
-                return;
+                MaasHareketService service = new MaasHareketService();
+                MaasHareket item = service.GetByTarih(TarihDDL.SelectedItem.Value.ConvertToDatetime(), transaction, context);
+                if (item == null)
+                {
+                    MessageHelper.PublishMessage("Silinecek bir maaş kaydı bulunamadı.", ProjeConstants.MESAJ_BILGI);
+                    return;
+                }
+                if (!service.DeleteByGrupId(item, item.GrupId, transaction, context))
+                    throw new InvalidOperationException("Maaş tablosu silinemedi.");
+                transaction.Complete();
             }
-            // Eger varsa, grupId'sini belirle
-            int grupId = maasHareket.GrupId;
-            // MaasHareket_Table'dan grupId'ye göre sil
-            bool isDeleted = new MaasHareketService().DeleteByGrupId(new MaasHareket(), grupId);
-
         }
         private void KaydetModalAc()
         {
@@ -592,5 +587,122 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
             public int PersonelId  { get; set; }
         }
         #endregion
+
+        private DataTable GetDataTable(SqlTransactionContext transaction, PortalLogContext context)
+        {
+            UtilityHelper.SetDDLValue(TarihDDL, (string.IsNullOrEmpty(TarihDDL.SelectedItem.Value)?DateTime.Today.ToString("dd.MM.yyyy"): TarihDDL.SelectedItem.Value));
+            DateTime tarih = TarihDDL.SelectedItem.Value.ConvertToDatetime();
+
+            UcretTanim ucretTanim = new UcretTanim();
+            int grupId= new UcretTanimService().GetGrupIdByTarih(tarih, transaction, context);
+            DataTable dataTable = new UcretTanimService().GetMaasListesi(grupId,tarih, transaction, context);
+            return dataTable;
+        }
+
+        private List<MaasListItem> GetDataList(SqlTransactionContext transaction, PortalLogContext context)
+        {
+            UtilityHelper.SetDDLValue(TarihDDL, (string.IsNullOrEmpty(TarihDDL.SelectedItem.Value) ? DateTime.Today.ToString("dd.MM.yyyy") : TarihDDL.SelectedItem.Value));
+            DateTime tarih = TarihDDL.SelectedItem.Value.ConvertToDatetime();
+            //ilk olarak bu tarihe ait kayit MaasHareket_Table'da var mi kontrol et
+            MaasHareket maasHareket = new MaasHareket();
+            maasHareket = new MaasHareketService().GetByTarih(tarih, transaction, context);
+            if (maasHareket != null)
+            {
+                //eger varsa, o tarihe ait maas listesi zaten olusturulmus demektir.
+                //o yüzden bu tarihe ait maas listesi tekrar olusturulmayacak.
+                // olusturulan kayitlar MaasHareket_Table'dan çekilecek.
+                List<MaasHareket> maaslist = new MaasHareketService().GetMaasListesiByTarih(tarih, transaction, context);
+                List<MaasListItem> hazirliste = new List<MaasListItem>();
+                foreach (MaasHareket item in maaslist)
+                {
+                    MaasListItem listItem = new MaasListItem();
+                    listItem.PersonelId = item.PersonelId;
+                    listItem.Adi = item.Adi.Trim();
+                    listItem.Soyadi = item.Soyadi.Trim();
+                    listItem.AdiSoyadi = item.Adi + " " + item.Soyadi;
+
+                    listItem.Unvan = item.Unvan;
+                    listItem.Derece = item.Derece;
+                    listItem.Kademe = item.Kademe;
+                    listItem.DereceKademeIlerlemeTarihi = item.DereceKademeIlerlemeTarihi.ToString("dd.MM.yyyy");
+
+                    listItem.DereceKademe = listItem.Derece + "/" + listItem.Kademe;
+                    listItem.ProtokolSiraNo = item.ProtokolSiraNo;
+                    listItem.GrupId = item.GrupId;
+                    listItem.Ucret = item.Ucret.ToString("N", culturInfo);
+                    listItem.Ikramiye = item.Ikramiye.ToString("N", culturInfo);
+                    listItem.Agi = item.Agi.ToString("N", culturInfo);
+                    listItem.Toplam = (item.Ucret + item.Agi).ToString("N", culturInfo);
+                    hazirliste.Add(listItem);
+                }
+                return hazirliste;
+            }
+            else
+            {
+                DataTable dataTable = GetDataTable(transaction, context);
+                List<MaasListItem> yeniliste = new List<MaasListItem>();
+                if (dataTable != null)
+                {
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        int personelId = row["PersonelId"].ConvertToInt();
+                        int derece = row["Derece"].ConvertToInt();
+                        int kademe = row["Kademe"].ConvertToInt();
+                        int protokolSiraNo = row["ProtokolSiraNo"].ReturnZeroIfNull().ConvertToInt();
+                        string adi = row["Adi"].ToString();
+                        string soyadi = row["Soyadi"].ToString();
+                        string unvan = row["Unvan"].ToString();
+                        decimal ucret = row["Ucret"].ConvertToDecimal();
+                        decimal ikramiye = IkramiyeChk.Checked?ucret:0;
+                        decimal agi = row["Agi"].ConvertToDecimal();
+                        int grupId = row["GrupId"].ConvertToInt();
+                        DateTime dereceKademeIlerlemeTarihi = row["DereceKademeIlerlemeTarihi"].ReturnEmptyIfNull().ConvertToDatetime();
+
+                        MaasListItem listItem = new MaasListItem();
+                        listItem.PersonelId = personelId;
+                        listItem.Adi = adi.Trim();
+                        listItem.Soyadi = soyadi.Trim();
+                        listItem.AdiSoyadi = adi.Trim() + " " + soyadi.Trim();
+                        listItem.Unvan = unvan;
+                        listItem.DereceKademeIlerlemeTarihi = dereceKademeIlerlemeTarihi.ToString("dd.MM.yyyy");
+                        listItem.DereceKademeIlerlemeTarihiOrj = dereceKademeIlerlemeTarihi.ToString("dd.MM.yyyy");
+                        listItem.Derece = derece;
+                        listItem.Kademe = kademe;
+                        listItem.Ucret = ucret.ToString("N", culturInfo);
+                        listItem.Ikramiye = ikramiye.ToString("N", culturInfo);
+                        //DereceKademeIlerlemeTarihi'nin ay'i TarihDDLDen seçilen tarihin ay'i ile ayniysa
+                        //Kademeyi bir artir, kademe 10'dan büyük vey aesitse artirma
+                        if (kademe < 10)
+                        {
+                            if (dereceKademeIlerlemeTarihi.Month == tarih.Month && dereceKademeIlerlemeTarihi.Year < tarih.Year) // ayni yilda iki kez maas olusturulmayacak, bu yüzden tarih yili kontrolü de yapiliyor
+                            {
+                                listItem.DereceKademeIlerlemeTarihi = new DateTime(tarih.Year, tarih.Month, dereceKademeIlerlemeTarihi.Day).ToString("dd.MM.yyyy"); // DereceKademeDegisim'in tarihi, maasin olusturuldugu tarih olacak
+                                listItem.Kademe = kademe + 1; // Kademe'yi 1 artir
+                                Personel personel = new Personel();
+                                personel = new PersonelService().GetById(personelId, transaction, context);
+                                //maasi yeni kademeye göre bul
+                                UcretTanim ucretTanim = new UcretTanim();
+                                ucret = new UcretTanimService().GetUcretByGrupDereceKademe(personel,grupId, derece, listItem.Kademe, transaction, context);
+                                listItem.Ucret = ucret.ToString("N", culturInfo); // Ucret'i güncelle
+                                listItem.Ikramiye = ucret.ToString("N", culturInfo);
+                                ikramiye = IkramiyeChk.Checked ? ucret : 0;
+                            }
+                        }
+
+                        listItem.DereceKademe = listItem.Derece + "/" + listItem.Kademe;
+                        listItem.ProtokolSiraNo = protokolSiraNo;
+                        listItem.GrupId = grupId;
+
+
+                        listItem.Agi = agi.ToString("N", culturInfo);
+                        listItem.Toplam = (ucret + ikramiye + agi).ToString("N", culturInfo);
+                        yeniliste.Add(listItem);
+                    }
+                    return yeniliste;
+                }
+            }
+            // Ensure all code paths return a value
+            return new List<MaasListItem>();
+        }
     }
 }

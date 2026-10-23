@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
-using Utility.ProjeGlobal;
 using Utility.Logging;
 
 namespace Model.Services.IKYS
@@ -24,40 +23,11 @@ namespace Model.Services.IKYS
         }
         public Egitim GetById(int id) { return Map(repository.SelectById(id)); }
         public List<Egitim> GetAll() { return ToList(repository.SelectAll()); }
-        public int Save(Egitim item)
-        {
-            if (item == null) throw new ArgumentNullException("item");
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-            if (item.Id > 0 && ProjeConstants.IKYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_EGITIM);
-            return item.Id;
-        }
-        public bool Update(Egitim item)
-        {
-            if (item == null) throw new ArgumentNullException("item");
-            Egitim old = GetById(item.Id);
-            bool ok = false;
-            if (item.Id != 0)
-            {
-                item.DegistirmeTarihi = DateTime.Now;
-                item.Degistiren = UtilityHelper.GetCurrentUserName();
-                ok = repository.Update(item);
-            }
-            if (ok && ProjeConstants.IKYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.IKYS, ProjeConstants.IKYS_EGITIM);
-            return ok;
-        }
-        public bool Delete(Egitim item)
-        {
-            if (item == null || item.Id == 0) return false;
-            Egitim old = GetById(item.Id);
-            if (old == null) return false;
-            bool ok = repository.Delete(item.Id);
-            if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.IKYS, ProjeConstants.IKYS_EGITIM);
-            return ok;
-        }
+
+
         public List<Egitim> GetByPersonelId(int personelId) { return ToList(repository.SelectByPersonelId(personelId)); }
-        public List<Egitim> GetByPersonelId(int personelId, PortalLogContext context) { return ToList(repository.SelectByPersonelId(personelId, context)); }
+        public List<Egitim> GetByPersonelId(int personelId, PortalLogContext context)
+        { return ToList(repository.SelectByPersonelId(personelId, context)); }
         public bool TryRecordWebPartOpened(PortalLogContext context) { return new PortalLogRepository().TryRecordWebPartOpened(context); }
         public int Save(Egitim item, PortalLogContext context)
         {
@@ -114,6 +84,8 @@ namespace Model.Services.IKYS
             AddChange(log, auditId, "PersonelId", old == null ? null : old.PersonelId.ToString(CultureInfo.InvariantCulture), current == null ? null : current.PersonelId.ToString(CultureInfo.InvariantCulture), transaction);
             AddChange(log, auditId, "Seviye", old == null ? null : old.Seviye, current == null ? null : current.Seviye, transaction);
             AddChange(log, auditId, "MezuniyetTar", old == null ? null : AuditDate(old.MezuniyetTar), current == null ? null : AuditDate(current.MezuniyetTar), transaction);
+            AddChange(log, auditId, "Okul", old == null ? null : Convert.ToString(old.Okul, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.Okul, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "Aciklama", old == null ? null : Convert.ToString(old.Aciklama, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.Aciklama, CultureInfo.InvariantCulture), transaction);
         }
         private static string AuditDate(DateTime value)
         {
@@ -126,5 +98,11 @@ namespace Model.Services.IKYS
         }
         private static Egitim Map(DataTable table) { return ToList(table).FirstOrDefault(); }
         private static List<Egitim> ToList(DataTable table) { return new Egitim().ToList<Egitim>(table); }
+
+        public Egitim GetById(int id, PortalLogContext context)
+        { return Map(repository.SelectById(id, context)); }
+
+        public List<Egitim> GetAll(PortalLogContext context)
+        { return ToList(repository.SelectAll(context)); }
     }
 }

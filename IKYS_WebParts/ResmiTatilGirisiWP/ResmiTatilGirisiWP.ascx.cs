@@ -19,11 +19,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
@@ -322,7 +318,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
                     bittar = new DateTime(yil, BitAyDDL.SelectedItem.Value.ConvertToInt(), BitGunTxt.Text.ConvertToInt());
                     bastar = bastar + basSaatTS;
                     bittar = bittar + bitSaatTS;
-                    
+
                     bastar = new DateTime(yil, bastar.Month, bastar.Day) + basSaatTS;
                     bittar = new DateTime(yil, bittar.Month, bittar.Day) + bitSaatTS;
                     resmiTatil.Yil = 0;
@@ -394,7 +390,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             BitSaatDDL.Items.Add(li2);
             ListItem li1 = new ListItem("13:00", "13:00");
             BitSaatDDL.Items.Add(li1);
-            
+
         }
         private const string GIRILEN_YIL_GECERLI = "0";
         private const string TUM_YILLAR_GECERLI = "1";
@@ -532,13 +528,13 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             try
             {
                 bool isSaved = ResmiTatiliGüncelle();
-                
+
                 if (isSaved)
                 {
                     UtilityHelper.ScriptCalistir("CloseModal();");
                     MessageHelper.PublishMessage("Tatil Bilgileri Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
-                    
+
 
             }
             catch (Exception exception)

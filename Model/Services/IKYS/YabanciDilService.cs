@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
-using Utility.ProjeGlobal;
 using Utility.Logging;
 
 namespace Model.Services.IKYS
@@ -20,11 +19,11 @@ namespace Model.Services.IKYS
         public YabanciDilService(YabanciDilRepository repository) { if (repository == null) throw new ArgumentNullException("repository"); this.repository = repository; }
         public YabanciDil GetById(int id) { return Map(repository.SelectById(id)); }
         public List<YabanciDil> GetAll() { return ToList(repository.SelectAll()); }
-        public int Save(YabanciDil item) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item); if (item.Id > 0 && ProjeConstants.IKYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_YABANCIDIL); return item.Id; }
-        public bool Update(YabanciDil item) { if (item == null) throw new ArgumentNullException("item"); YabanciDil old = GetById(item.Id); bool ok = false; if (item.Id != 0) { item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); ok = repository.Update(item); } if (ok && ProjeConstants.IKYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.IKYS, ProjeConstants.IKYS_YABANCIDIL); return ok; }
-        public bool Delete(YabanciDil item) { if (item == null || item.Id == 0) return false; YabanciDil old = GetById(item.Id); if (old == null) return false; bool ok = repository.Delete(item.Id); if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.IKYS, ProjeConstants.IKYS_YABANCIDIL); return ok; }
+
+
         public List<YabanciDil> GetByPersonelId(int personelId) { return ToList(repository.SelectByPersonelId(personelId)); }
-        public List<YabanciDil> GetByPersonelId(int personelId, PortalLogContext context) { return ToList(repository.SelectByPersonelId(personelId, context)); }
+        public List<YabanciDil> GetByPersonelId(int personelId, PortalLogContext context)
+        { return ToList(repository.SelectByPersonelId(personelId, context)); }
         public bool TryRecordWebPartOpened(PortalLogContext context) { return new PortalLogRepository().TryRecordWebPartOpened(context); }
         public int Save(YabanciDil item, PortalLogContext context)
         {
@@ -81,6 +80,9 @@ namespace Model.Services.IKYS
             AddChange(log, auditId, "PersonelId", old == null ? null : old.PersonelId.ToString(CultureInfo.InvariantCulture), current == null ? null : current.PersonelId.ToString(CultureInfo.InvariantCulture), transaction);
             AddChange(log, auditId, "Dil", old == null ? null : old.Dil, current == null ? null : current.Dil, transaction);
             AddChange(log, auditId, "SinavTarihi", old == null ? null : AuditDate(old.SinavTarihi), current == null ? null : AuditDate(current.SinavTarihi), transaction);
+            AddChange(log, auditId, "SinavAdi", old == null ? null : Convert.ToString(old.SinavAdi, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.SinavAdi, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "SinavNotu", old == null ? null : Convert.ToString(old.SinavNotu, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.SinavNotu, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "Aciklama", old == null ? null : Convert.ToString(old.Aciklama, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.Aciklama, CultureInfo.InvariantCulture), transaction);
         }
         private static string AuditDate(DateTime value)
         {
@@ -93,5 +95,11 @@ namespace Model.Services.IKYS
         }
         private static YabanciDil Map(DataTable table) { return ToList(table).FirstOrDefault(); }
         private static List<YabanciDil> ToList(DataTable table) { return new YabanciDil().ToList<YabanciDil>(table); }
+
+        public YabanciDil GetById(int id, PortalLogContext context)
+        { return Map(repository.SelectById(id, context)); }
+
+        public List<YabanciDil> GetAll(PortalLogContext context)
+        { return ToList(repository.SelectAll(context)); }
     }
 }

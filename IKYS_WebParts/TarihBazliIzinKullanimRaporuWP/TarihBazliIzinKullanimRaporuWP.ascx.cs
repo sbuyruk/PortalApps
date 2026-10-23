@@ -21,11 +21,7 @@ namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
@@ -227,9 +223,9 @@ namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
             if (AuthQS.Equals("IKYS"))
             {
                 BirimTanim rootBirimTanim = new BirimTanim();
-                rootBirimTanim = new BirimTanimService().GetRoot();
+                rootBirimTanim = new BirimTanimService().GetRoot(LoggingContext);
                 Personel personel = new Personel();
-                personel = new PersonelService().GetById(rootBirimTanim.AmirId);
+                personel = new PersonelService().GetById(rootBirimTanim.AmirId, LoggingContext);
                 birimListesiStr = BirimListesiGetir(personel, rootBirimTanim);
             }
             else
@@ -237,7 +233,7 @@ namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
                 Personel personel = PersonelGetir();
                 birimListesiStr = BirimListesiGetir(personel, null);
             }
-            dataTable = new PersonelService().GetActiveEmployeesByUnitReturnDT(birimListesiStr);
+            dataTable = new PersonelService().GetActiveEmployeesByUnitReturnDT(birimListesiStr, LoggingContext);
             int birimIdTemp = 0;
             int sira = 0;
             if (dataTable != null)
@@ -319,7 +315,6 @@ namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
                         }
 
 
-
                     }
                     TableCell IzinDonemiCell = new TableCell();
 
@@ -357,13 +352,13 @@ namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
 
             if (!string.IsNullOrEmpty(PersonelIdQS))
             {
-                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), LoggingContext);
 
             }
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = new PersonelService().GetByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName, LoggingContext);
             }
             PersonelIdQS = personel.Id.ToString();
             return personel;
@@ -372,7 +367,7 @@ namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
         {
             string retVal = parentId + ",";
             BirimTanim bt = new BirimTanim();
-            List<BirimTanim> list = new BirimTanimService().GetByParentId(parentId);
+            List<BirimTanim> list = new BirimTanimService().GetByParentId(parentId, LoggingContext);
             foreach (BirimTanim item in list)
             {
                 //retVal += item.Id + ",";
@@ -392,12 +387,12 @@ namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
             if (personel != null)
             {
                 IsBilgileri ib = new IsBilgileri();
-                ib = new IsBilgileriService().GetByPersonelId(personel.Id);
+                ib = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
                 if (ib != null)
                 {
                     int birimId = birimTanim != null ? birimTanim.Id : ib.BirimId;
                     BirimTanim bt = new BirimTanim();
-                    bt = birimTanim != null ? birimTanim : new BirimTanimService().GetById(birimId);
+                    bt = birimTanim != null ? birimTanim : new BirimTanimService().GetById(birimId, LoggingContext);
                     if ((bt != null) && (bt.AmirId == personel.Id))
                     {
                         string birim = parentBirimGetir(birimId);
@@ -494,7 +489,7 @@ namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
             System.IO.StringWriter tw = new System.IO.StringWriter();
             System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
 
-            //Get the HTML for the control.             
+            //Get the HTML for the control.
             IzinTable.RenderControl(hw);
             //Write the HTML back to the browser.
             //Response.ContentType = application/vnd.ms-excel;

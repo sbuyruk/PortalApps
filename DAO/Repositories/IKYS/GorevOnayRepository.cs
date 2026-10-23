@@ -34,49 +34,98 @@ namespace DAO.Repositories.IKYS
             return db.SelectFromDb(new SqlQuery("SELECT * FROM GorevOnay_Table"), "");
         }
 
-        public int Insert<T>(T entity)
-        {
-            return db.Insert(queryBuilder.BuildInsert(entity, "GorevOnay_Table"));
-        }
 
-        public bool Update<T>(T entity)
+        public DataTable SelectById(int id, PortalLogContext context)
         {
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, "GorevOnay_Table"));
+            SqlQuery query = new SqlQuery("SELECT * FROM GorevOnay_Table WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return PortalSqlReadExecutor.Select(query, context, "GorevOnay.SelectById");
         }
-
-        public bool Delete(int id)
-        {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("GorevOnay_Table", id), "");
-        }
-        public DataTable SelectById(int id, PortalLogContext context) { return TraceSelect("GorevOnay.SelectById", () => SelectById(id), context); }
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context) { if (transaction == null) throw new ArgumentNullException("transaction"); SqlQuery q = new SqlQuery("SELECT * FROM GorevOnay_Table WITH (UPDLOCK,HOLDLOCK) WHERE Id=@Id"); q.AddParameter("@Id", id); Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { DataTable result=transaction.Select(q); ok=true; return result; } finally { PortalTechnicalLog.WriteSqlTrace(context,"SELECT","GorevOnay.SelectById",clock.ElapsedMilliseconds,ok); } }
-        public DataTable SelectAll(PortalLogContext context) { return TraceSelect("GorevOnay.SelectAll", () => SelectAll(), context); }
+        public DataTable SelectAll(PortalLogContext context)
+        {
+            return PortalSqlReadExecutor.Select(new SqlQuery("SELECT * FROM GorevOnay_Table"), context, "GorevOnay.SelectAll");
+        }
         public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context) { return TraceInsert(queryBuilder.BuildInsert(entity,"GorevOnay_Table"),transaction,context); }
         public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context) { return TraceWrite(queryBuilder.BuildUpdate(entity,"GorevOnay_Table"),"UPDATE","GorevOnay.Update",transaction,context); }
         public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context) { return TraceWrite(queryBuilder.BuildDelete("GorevOnay_Table",id),"DELETE","GorevOnay.Delete",transaction,context); }
-        public DataTable SelectAllReturnDataTable(int personelId, DateTime since, PortalLogContext context) { return TraceSelect("GorevOnay.SelectAllReturnDataTable", () => SelectAllReturnDataTable(personelId,since), context); }
-        public DataTable SelectAllByPersonelReturnDataTable(int personelId, PortalLogContext context) { return TraceSelect("GorevOnay.SelectAllByPersonelReturnDataTable", () => SelectAllByPersonelReturnDataTable(personelId), context); }
-        public DataTable SelectByTarihReturnDataTable(DateTime baslangic, DateTime bitis, PortalLogContext context) { return TraceSelect("GorevOnay.SelectByTarihReturnDataTable", () => SelectByTarihReturnDataTable(baslangic,bitis), context); }
-        public DataTable SelectByPersonelTarih(int personelId, DateTime baslangic, DateTime bitis, PortalLogContext context) { return TraceSelect("GorevOnay.SelectByPersonelTarih", () => SelectByPersonelTarih(personelId,baslangic,bitis), context); }
-        public DataTable SelectForDateConflict(int personelId, DateTime baslangic, DateTime bitis, int gorevOnayId, PortalLogContext context) { return TraceSelect("GorevOnay.SelectForDateConflict", () => SelectForDateConflict(personelId,baslangic,bitis,gorevOnayId), context); }
+        public DataTable SelectAllReturnDataTable(int personelId, DateTime since, PortalLogContext context)
+        {
+            string personelFilter = personelId > 0 ? " AND A.PersonelId=@PersonelId" : string.Empty;
+            SqlQuery query = new SqlQuery(@"
+                SELECT A.Id GorevOnayId, P.Adi+' '+P.Soyadi AdiSoyadi, A.Secildi,A.UlasimAraci,
+                    A.PersonelId,A.GorevinSebebi,A.GorevinYeri,A.BaslangicTarihi,A.BitisTarihi,A.Sure,A.Avans,A.Yevmiye,A.ParaBirimi,
+                    A.AracTahsisi,A.AracPlakasi,A.PerSubeImza,A.PerSubeVekil,A.OnayImza,A.OnayMakam,A.OnayMakamVekil,
+                    A.UlasimAraci,A.Transfer,A.Konaklama,
+                    A.AmirOnayi,A.GMImza,A.GMVekil, A.Aciklama, A.OnayRedAciklama,A.Odendi,A.OncekiId
+                FROM GorevOnay_Table A
+                    INNER JOIN Personel_Table P On A.PersonelId=P.Id
+                WHERE A.BitisTarihi>=@Since" + personelFilter + @"
+                ORDER BY A.BaslangicTarihi DESC, A.BitisTarihi DESC");
+            query.AddParameter("@Since", since);
+            if (personelId > 0) query.AddParameter("@PersonelId", personelId);
+            return PortalSqlReadExecutor.Select(query, context, "GorevOnay.SelectAllReturnDataTable");
+        }
+        public DataTable SelectAllByPersonelReturnDataTable(int personelId, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT A.Id GorevOnayId, A.PersonelId, P.Adi+' '+P.Soyadi AdiSoyadi,
+                    A.GorevinSebebi, A.BaslangicTarihi, A.BitisTarihi, A.GorevinYeri,
+                    A.AmirOnayi, A.Odendi
+                FROM GorevOnay_Table A
+                    INNER JOIN Personel_Table P ON P.Id=A.PersonelId
+                WHERE A.PersonelId=@PersonelId
+                ORDER BY A.BitisTarihi DESC");
+            query.AddParameter("@PersonelId", personelId);
+            return PortalSqlReadExecutor.Select(query, context, "GorevOnay.SelectAllByPersonelReturnDataTable");
+        }
+        public DataTable SelectByTarihReturnDataTable(DateTime baslangic, DateTime bitis, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT B.Adi+' ' + B.Soyadi AdiSoyadi,
+                    A.PersonelId, A.BaslangicTarihi, A.BitisTarihi,A.Sure,A.GorevinYeri GidilecekYer,A.GorevinSebebi,
+                    C.BirimId,D.KisaAdi GorevYeri, D.Vekil
+                FROM GorevOnay_Table A
+                    INNER JOIN Personel_Table B ON B.Id= A.PersonelId
+                    LEFT JOIN IsBilgileri_Table C ON C.PersonelId= A.PersonelId
+                    INNER JOIN GorevTanim_Table D ON D.Id= C.GorevId
+                WHERE BaslangicTarihi<=@BaslangicTarihi AND BitisTarihi>=@BitisTarihi
+                ORDER BY ProtokolSiraNo,BitisTarihi, BaslangicTarihi");
+            query.AddParameter("@BaslangicTarihi", baslangic);
+            query.AddParameter("@BitisTarihi", bitis);
+            return PortalSqlReadExecutor.Select(query, context, "GorevOnay.SelectByTarihReturnDataTable");
+        }
+        public DataTable SelectByPersonelTarih(int personelId, DateTime baslangic, DateTime bitis, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT *
+                FROM GorevOnay_Table A
+                WHERE PersonelId=@PersonelId
+                    AND BaslangicTarihi<=@BaslangicTarihi AND BitisTarihi>=@BitisTarihi
+                ORDER BY BitisTarihi DESC");
+            query.AddParameter("@PersonelId", personelId);
+            query.AddParameter("@BaslangicTarihi", baslangic);
+            query.AddParameter("@BitisTarihi", bitis);
+            return PortalSqlReadExecutor.Select(query, context, "GorevOnay.SelectByPersonelTarih");
+        }
+        public DataTable SelectForDateConflict(int personelId, DateTime baslangic, DateTime bitis, int gorevOnayId, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT TOP 1 *
+                FROM GorevOnay_Table
+                WHERE PersonelId=@PersonelId AND AmirOnayi<>@Reddedildi
+                    AND BitisTarihi>=@BitisTarihi AND BaslangicTarihi<=@BaslangicTarihi AND Id<>@GorevOnayId");
+            query.AddParameter("@PersonelId", personelId);
+            query.AddParameter("@BitisTarihi", bitis);
+            query.AddParameter("@BaslangicTarihi", baslangic);
+            query.AddParameter("@GorevOnayId", gorevOnayId);
+            query.AddParameter("@Reddedildi", 2);
+            return PortalSqlReadExecutor.Select(query, context, "GorevOnay.SelectForDateConflict");
+        }
         private DataTable TraceSelect(string name, Func<DataTable> action, PortalLogContext context) { Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { DataTable result=action(); ok=true; return result; } finally { PortalTechnicalLog.WriteSqlTrace(context,"SELECT",name,clock.ElapsedMilliseconds,ok); } }
         private static int TraceInsert(SqlQuery query, SqlTransactionContext transaction, PortalLogContext context) { if(transaction==null) throw new ArgumentNullException("transaction"); Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { int id=transaction.Insert(query); ok=id>0; return id; } finally { PortalTechnicalLog.WriteSqlTrace(context,"INSERT","GorevOnay.Insert",clock.ElapsedMilliseconds,ok); } }
         private static bool TraceWrite(SqlQuery query,string operation,string name,SqlTransactionContext transaction,PortalLogContext context) { if(transaction==null) throw new ArgumentNullException("transaction"); Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { ok=transaction.Update(query); return ok; } finally { PortalTechnicalLog.WriteSqlTrace(context,operation,name,clock.ElapsedMilliseconds,ok); } }
 
-        public bool UpdateAllSecildiToFalse()
-        {
-            return db.Update2Db("UPDATE GorevOnay_Table SET Secildi=0");
-        }
-
-        public bool UpdateAllSecildiToTrue(IList<int> ids)
-        {
-            return UpdateFlag(ids, "Secildi");
-        }
-
-        public bool UpdateAllOdendiToTrue(IList<int> ids)
-        {
-            return UpdateFlag(ids, "Odendi");
-        }
 
         public DataTable SelectAllReturnDataTable(int personelId, DateTime since)
         {
@@ -230,19 +279,59 @@ namespace DAO.Repositories.IKYS
             return db.SelectFromDb(query, "");
         }
 
-        private bool UpdateFlag(IList<int> ids, string columnName)
+
+        public DataTable SelectAllBySecildi(bool secildi, PortalLogContext context)
         {
-            if (ids == null || ids.Count == 0) return false;
-            SqlQuery query = new SqlQuery("UPDATE GorevOnay_Table SET " + columnName + "=1 WHERE Id IN (");
+            SqlQuery query = new SqlQuery("SELECT * FROM GorevOnay_Table WHERE Secildi=@Secildi");
+            query.AddParameter("@Secildi", secildi);
+            return PortalSqlReadExecutor.Select(query, context, "GorevOnay.SelectAllBySecildi");
+        }
+
+        public DataTable SelectBekleyenAmirOnayi(PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT A.Id GorevOnayId, A.PersonelId, P.Adi+' '+P.Soyadi AdiSoyadi,
+                    A.GorevinSebebi, A.GorevinYeri, A.BaslangicTarihi, A.BitisTarihi, A.Sure, A.Aciklama,
+                    A.UlasimAraci, A.Transfer, A.Konaklama, A.AmirOnayi, A.OnayRedAciklama
+                FROM GorevOnay_Table A
+                    INNER JOIN Personel_Table P ON A.PersonelId=P.Id
+                WHERE (A.AmirOnayi=@OnayBekliyor OR A.AmirOnayi=@Reddedildi OR A.AmirOnayi=@Onaylandi)
+                ORDER BY A.BaslangicTarihi DESC, A.BitisTarihi DESC");
+            query.AddParameter("@OnayBekliyor", 0);
+            query.AddParameter("@Reddedildi", 2);
+            query.AddParameter("@Onaylandi", 1);
+            return PortalSqlReadExecutor.Select(query, context, "GorevOnay.SelectBekleyenAmirOnayi");
+        }
+
+        public DataTable SelectBekleyenAmirOnayiByBirimIds(IList<int> birimIds, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT A.Id GorevOnayId, A.PersonelId, P.Adi+' '+P.Soyadi AdiSoyadi,
+                    A.GorevinSebebi, A.GorevinYeri, A.BaslangicTarihi, A.BitisTarihi, A.Sure, A.Aciklama,
+                    A.UlasimAraci, A.Transfer, A.Konaklama, A.AmirOnayi, A.OnayRedAciklama
+                FROM GorevOnay_Table A
+                    INNER JOIN Personel_Table P ON A.PersonelId=P.Id
+                    INNER JOIN IsBilgileri_Table I ON I.PersonelId=P.Id
+                WHERE (A.AmirOnayi=@OnayBekliyor OR A.AmirOnayi=@Reddedildi OR A.AmirOnayi=@Onaylandi)
+                    AND I.BirimId IN (");
             List<string> parameters = new List<string>();
-            for (int i = 0; i < ids.Count; i++)
+            for (int i = 0; i < birimIds.Count; i++)
             {
-                string parameterName = "@Id" + i;
+                string parameterName = "@BirimId" + i;
                 parameters.Add(parameterName);
-                query.Parameters.Add(new SqlParameter(parameterName, SqlDbType.Int) { Value = ids[i] });
+                query.Parameters.Add(new SqlParameter(parameterName, SqlDbType.Int) { Value = birimIds[i] });
             }
-            query.Sql += string.Join(",", parameters) + ")";
-            return db.Update2Db(query);
+            query.Sql += string.Join(",", parameters) + ") ORDER BY A.BaslangicTarihi DESC, A.BitisTarihi DESC";
+            query.AddParameter("@OnayBekliyor", 0);
+            query.AddParameter("@Reddedildi", 2);
+            query.AddParameter("@Onaylandi", 1);
+            return PortalSqlReadExecutor.Select(query, context, "GorevOnay.SelectBekleyenAmirOnayiByBirimIds");
+        }
+        public DataTable SelectForFlagUpdate(SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            return PortalSqlReadExecutor.Select(new SqlQuery("SELECT * FROM GorevOnay_Table WITH (UPDLOCK, HOLDLOCK)"),
+                context, "GorevOnay.SelectForFlagUpdate", transaction);
         }
     }
 }

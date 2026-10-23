@@ -23,11 +23,7 @@ namespace IKYS_WebParts.PersonelKartiWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
@@ -166,7 +162,7 @@ namespace IKYS_WebParts.PersonelKartiWP
 
             #region Aile bilgileri
             List<Aile> aileList = new AileService().GetByPersonelId(personel.Id, LoggingContext);
-            List<Meslek> meslekler = PortalLogSettings.IsEnabled(LoggingContext) && aileList.Count > 0
+            List<Meslek> meslekler = aileList.Count > 0
                 ? new MeslekService().GetAll(LoggingContext) : null;
             int sayac = 0;
             foreach (Aile item in aileList)
@@ -177,7 +173,7 @@ namespace IKYS_WebParts.PersonelKartiWP
                 else if (yakinlikDerecesi.Equals("2"))
                     yakinlikDerecesi = ProjeConstants.PER_YAKINLIKDERECESI_COCUK;
                 Meslek meslek = meslekler == null
-                    ? new MeslekService().GetById(item.Meslek)
+                    ? new MeslekService().GetById(item.Meslek, LoggingContext)
                     : meslekler.FirstOrDefault(value => value.Id == item.Meslek);
                 AddRow(sayac++, yakinlikDerecesi, item.Adi, item.Soyadi, item.DogumTar.ConvertToDatetimeEmptyIfNull(), meslek == null ? "" : meslek.Adi);
 

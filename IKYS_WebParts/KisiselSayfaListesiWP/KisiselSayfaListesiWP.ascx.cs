@@ -21,11 +21,7 @@ namespace IKYS_WebParts.KisiselSayfaListesiWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
@@ -289,8 +285,8 @@ namespace IKYS_WebParts.KisiselSayfaListesiWP
         private DataTable GetData()
         {
             Personel personel = PersonelGetir();
-            string birimListesiStr = IKYSOrtak.BirimListesiGetir(personel);
-            DataTable dataTable = new PersonelService().GetActiveEmployeesByUnitReturnDT(birimListesiStr);
+            string birimListesiStr = IKYSOrtak.BirimListesiGetir(personel, LoggingContext);
+            DataTable dataTable = new PersonelService().GetActiveEmployeesByUnitReturnDT(birimListesiStr, LoggingContext);
             return dataTable;
         }
 

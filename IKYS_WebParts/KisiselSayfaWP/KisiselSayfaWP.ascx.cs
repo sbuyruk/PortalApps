@@ -23,11 +23,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
@@ -144,7 +140,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                 new PersonelService().TryRecordWebPartOpened(LoggingContext);
 
                 if (personel != null)
-                {                    
+                {
                     FillHeader(personel);
                     FillKimlikTable(personel);
                     FillIsyeriTable(personel);
@@ -160,7 +156,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                 // FillIzinTalepleriTable()'in postbackde de çalismasi gerekiyor aksi halde sil trigger doesn't fire
 
                 IsBilgileri ib = new IsBilgileri();
-                ib = new IsBilgileriService().GetByPersonelId(personel.Id);
+                ib = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
                 if (ib != null)//SB 27.10.2021 Yesim hanim isten ayrilan personelin de izin bilgilerini görmek istedi //if (ib.CalismaDurumu == ProjeConstants.PER_CALISIYOR_INT)
                 {
                     FillIzinTalepleriTable(personel);//Tikkat! bu metodu if !postback içine alinca talep tablosundaki sil ve kapat butonlari delegate etmiyor
@@ -200,7 +196,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
         private void FillKimlikTable(Personel personel)
         {
             Kimlik kimlik = new Kimlik();
-            kimlik = new KimlikService().GetByPersonelId(personel.Id);
+            kimlik = new KimlikService().GetByPersonelId(personel.Id, LoggingContext);
             if (kimlik != null)
             {
                 KimlikR1H1.Text = "TC Kimlik No";
@@ -208,7 +204,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                 KimlikR1H3.Text = "Dogum Tarihi";
                 KimlikR1H4.Text = kimlik.DogumTar.ConvertToDatetimeEmptyIfNull();
                 KimlikR1H5.Text = "Dogum Yeri";
-                Ilce ilce = new IlceService().GetById(kimlik.DogumYeri.ConvertToInt()) ?? new Ilce();
+                Ilce ilce = new IlceService().GetById(kimlik.DogumYeri.ConvertToInt(), LoggingContext) ?? new Ilce();
                 KimlikR1H6.Text = ilce.IlceAdi + "/" + ilce.IlAdi;
                 KimlikR1H7.Text = "Sicil No";
                 KimlikR1H8.Text = personel.SicilNo.ReturnEmptyIfNull().ToString();
@@ -235,13 +231,13 @@ namespace IKYS_WebParts.KisiselSayfaWP
         private void FillIsyeriTable(Personel personel)
         {
             IsBilgileri isBilgileri = new IsBilgileri();
-            isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id);
+            isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
             if (isBilgileri != null)
             {
                 IsR1H1.Text = "Ünvan";
                 int unvanId = isBilgileri.UnvanId;
                 UnvanTanim ut = new UnvanTanim();
-                ut = new UnvanTanimService().GetById(unvanId);
+                ut = new UnvanTanimService().GetById(unvanId, LoggingContext);
                 if (ut != null)
                 {
 
@@ -250,7 +246,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                 IsR1H3.Text = "Görev";
                 int gorevId = isBilgileri.GorevId;
                 GorevTanim gt = new GorevTanim();
-                gt = new GorevTanimService().GetById(gorevId);
+                gt = new GorevTanimService().GetById(gorevId, LoggingContext);
                 if (gt != null)
                 {
                     IsR1H4.Text = gt.Adi;
@@ -259,7 +255,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                 IsR1H5.Text = "Birim";
                 int birimId = isBilgileri.BirimId;
                 BirimTanim bt = new BirimTanim();
-                bt = new BirimTanimService().GetById(birimId);
+                bt = new BirimTanimService().GetById(birimId, LoggingContext);
                 if (bt != null)
                 {
                     IsR1H6.Text = bt.Adi;
@@ -285,7 +281,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
         private void DereceKademeBilgileriniDoldur(Personel personel)
         {
             DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisim();
-            dereceKademeDegisim = new DereceKademeDegisimService().GetByPersonelId(personel.Id);
+            dereceKademeDegisim = new DereceKademeDegisimService().GetByPersonelId(personel.Id, LoggingContext);
             if (dereceKademeDegisim != null)
             {
 
@@ -298,7 +294,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
         private void FillIletisimTable(Personel personel)
         {
             IletisimBilgileri iletisimBilgileri = new IletisimBilgileri();
-            iletisimBilgileri = new IletisimBilgileriService().GetByPersonelId(personel.Id);
+            iletisimBilgileri = new IletisimBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
             if (iletisimBilgileri != null)
             {
                 TableRow row = new TableRow();
@@ -306,7 +302,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                 TableCell IlR1H2 = new TableCell();
                 IlR1H1.Font.Bold = true;
                 IlR1H1.Text = "Adres";
-                Ilce ilce = new IlceService().GetById(iletisimBilgileri.Ilcesi.ConvertToInt()) ?? new Ilce();
+                Ilce ilce = new IlceService().GetById(iletisimBilgileri.Ilcesi.ConvertToInt(), LoggingContext) ?? new Ilce();
                 IlR1H2.Text = iletisimBilgileri.Adres.ToString() + " " + iletisimBilgileri.Semt.ToString() +
                     " " + iletisimBilgileri.PostaKodu + ilce.IlceAdi + "/" + ilce.IlAdi;
                 row.Controls.Add(IlR1H1);
@@ -413,7 +409,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
             HeaderCell6.Visible = true;
 
             Aile aileDao = new Aile();
-            List<Aile> list = new AileService().GetByPersonelId(personel.Id);
+            List<Aile> list = new AileService().GetByPersonelId(personel.Id, LoggingContext);
             int SiraNo = 1;
             foreach (Aile aile in list)
             {
@@ -451,7 +447,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                 row.Controls.Add(OkulCell);
 
                 TableCell MeslekCell = new TableCell();
-                Meslek meslek = new MeslekService().GetById(aile.Meslek);
+                Meslek meslek = new MeslekService().GetById(aile.Meslek, LoggingContext);
                 MeslekCell.Text = meslek.Adi.ReturnEmptyIfNull().ToString();
                 row.Controls.Add(MeslekCell);
 
@@ -478,7 +474,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
             PersonelImg.Src = imgUrl;
 
             IsBilgileri ib = new IsBilgileri();
-            ib = new IsBilgileriService().GetByPersonelId(personel.Id);
+            ib = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
             if (ib.CalismaDurumu == ProjeConstants.PER_CALISIYOR_INT)
             {
                 KisiselSayfaLbl.Text = personel.Adi + " " + personel.Soyadi;
@@ -493,7 +489,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
         private void FillUcretliIzinDonemleriTable(Personel personel)
         {
             IsBilgileri ib = new IsBilgileri();
-            ib = new IsBilgileriService().GetByPersonelId(personel.Id);
+            ib = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
             string baslamaTarStr = ib == null ? "" : ib.BaslamaTar.ConvertToDatetimeEmptyIfNull();
             string izinDonemiBasTarStr = ib == null ? "" : ib.IzinDonemiBasTar.ConvertToDatetimeEmptyIfNull();
 
@@ -501,9 +497,9 @@ namespace IKYS_WebParts.KisiselSayfaWP
             if (!string.IsNullOrEmpty(izinDonemiBasTarStr))
             {
 
-                DateTime izinDonemiBasTar = izinDonemiBasTarStr.ConvertToDatetime();// ib.IzinDonemiBasTar;                      
+                DateTime izinDonemiBasTar = izinDonemiBasTarStr.ConvertToDatetime();// ib.IzinDonemiBasTar;
                 IzinDonem izinDonemDao = new IzinDonem();
-                List<IzinDonem> izinDonemiList = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
+                List<IzinDonem> izinDonemiList = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, LoggingContext);
 
                 IzinHareket izinHareket = new IzinHareket();
 
@@ -520,7 +516,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                     {
                         DateTime today = DateTime.Today;
                         IzinDonem buIzinDonemi = new IzinDonem();
-                        buIzinDonemi = new IzinDonemService().GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, today);
+                        buIzinDonemi = new IzinDonemService().GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, today, LoggingContext);
                         if ((buIzinDonemi != null) && (buIzinDonemi.Id == izinDonemi.Id))
                         {
                             printed = true;
@@ -531,7 +527,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                         IzinDonemiCell.Text = izinDonemi.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinDonemi.BitisTarihi.ConvertToDatetimeEmptyIfNull();
 
                         Mahsup mahsup = new Mahsup();
-                        List<Mahsup> mahsupList = new MahsupService().GetByDonemId(izinDonemi.Id);
+                        List<Mahsup> mahsupList = new MahsupService().GetByDonemId(izinDonemi.Id, LoggingContext);
                         if (mahsupList.Count > 0)
                             IzinDonemiCell.Text += "(M)";
                         row.Controls.Add(IzinDonemiCell);
@@ -563,7 +559,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
         {
             DateTime today = DateTime.Today;
             IsBilgileri ib = new IsBilgileri();
-            ib = new IsBilgileriService().GetByPersonelId(personel.Id);
+            ib = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
             string baslamaTarStr = ib == null ? "" : ib.BaslamaTar.ConvertToDatetimeEmptyIfNull();
             string izinDonemiBasTarStr = ib == null ? "" : ib.IzinDonemiBasTar.ConvertToDatetimeEmptyIfNull();
 
@@ -573,7 +569,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
 
                 DateTime izinDonemiBasTar = izinDonemiBasTarStr.ConvertToDatetime();// ib.IzinDonemiBasTar;
                 IzinDonem izinDonemDao = new IzinDonem();
-                List<IzinDonem> izinDonemiList = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT);
+                List<IzinDonem> izinDonemiList = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT, LoggingContext);
 
                 IzinHareket izinHareket = new IzinHareket();
 
@@ -589,7 +585,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                     else
                     {
                         IzinDonem buIzinDonemi = new IzinDonem();
-                        buIzinDonemi = new IzinDonemService().GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT, today);
+                        buIzinDonemi = new IzinDonemService().GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT, today, LoggingContext);
                         if ((buIzinDonemi != null) && (buIzinDonemi.Id == izinDonemi.Id))
                         {
                             printed = true;
@@ -736,7 +732,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
             DateTime today = DateTime.Today;
             DateTime threeMonthsLater = DateTime.Today.AddMonths(3);
             IsBilgileri ib = new IsBilgileri();
-            ib = new IsBilgileriService().GetByPersonelId(personel.Id);
+            ib = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
             string baslamaTarStr = ib == null ? "" : ib.BaslamaTar.ConvertToDatetimeEmptyIfNull();
             string izinDonemiBasTarStr = ib == null ? "" : ib.IzinDonemiBasTar.ConvertToDatetimeEmptyIfNull();
 
@@ -746,12 +742,12 @@ namespace IKYS_WebParts.KisiselSayfaWP
 
                 IzinHareket izinHareket = new IzinHareket();
                 IzinDonem izinDonem = new IzinDonem();
-                izinDonem = new IzinDonemService().GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, today);
+                izinDonem = new IzinDonemService().GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, today, LoggingContext);
                 if (izinDonem != null)
                 {
                     DateTime izinDonemiBasi = izinDonem != null ? izinDonem.BaslangicTarihi : today.AddYears(-1);
                     DateTime izinDonemiSonu = izinDonem != null ? izinDonem.BitisTarihi : today.AddMonths(1); ;
-                    DataTable dataTable = new IzinHareketService().GetByIzinDonemiReturnDataTable(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, izinDonemiBasi, threeMonthsLater);//3 ay içinde yeni izin dönemi basliyor olabilir
+                    DataTable dataTable = new IzinHareketService().GetByIzinDonemiReturnDataTable(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, izinDonemiBasi, threeMonthsLater, LoggingContext);//3 ay içinde yeni izin dönemi basliyor olabilir
                     //DataTable dataTable = izinHareket.SelectByIzinDonemiReturnDataTable(izinDonem == null ? 0 : izinDonem.Id, personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
                     int SiraNo = 1;
                     if (dataTable == null)
@@ -855,7 +851,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
             DateTime today = DateTime.Today;
             DateTime threeMonthsLater = DateTime.Today.AddMonths(3);
             IsBilgileri ib = new IsBilgileri();
-                ib = new IsBilgileriService().GetByPersonelId(personel.Id);
+                ib = new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
             string baslamaTarStr = ib == null ? "" : ib.BaslamaTar.ConvertToDatetimeEmptyIfNull();
             string izinDonemiBasTarStr = ib == null ? "" : ib.IzinDonemiBasTar.ConvertToDatetimeEmptyIfNull();
 
@@ -866,14 +862,14 @@ namespace IKYS_WebParts.KisiselSayfaWP
 
                 IzinHareket izinHareket = new IzinHareket();
                 IzinDonem izinDonem = new IzinDonem();
-                izinDonem = new IzinDonemService().GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT, today);
+                izinDonem = new IzinDonemService().GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT, today, LoggingContext);
 
                 if (izinDonem != null)
                 {
                     //DateTime izinDonemiBasi = izinDonem != null ? izinDonem.BaslangicTarihi : today.AddYears(-1);
                     DateTime izinDonemiSonu = izinDonem != null ? izinDonem.BitisTarihi : today.AddMonths(1); ;
                     //DataTable dataTable = izinHareket.SelectByIzinDonemiReturnDataTable(personel.Id,ProjeConstants.IZINTIPI_MAZERET_INT, izinDonemiBasi, threeMonthsLater);//3 ay içinde yeni izin dönemi basliyor olabilir
-                    DataTable dataTable = new IzinHareketService().GetByIzinDonemiReturnDataTable(izinDonem == null ? 0 : izinDonem.Id, personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT);
+                    DataTable dataTable = new IzinHareketService().GetByIzinDonemiReturnDataTable(izinDonem == null ? 0 : izinDonem.Id, personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT, LoggingContext);
                     int SiraNo = 1;
                     if (dataTable == null)
                     {
@@ -980,7 +976,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
             DigerIzinlerTableHeaders();
             IzinHareket izinHareket = new IzinHareket();
 
-            List<IzinHareket> list = new IzinHareketService().GetDigerByPersonelId(personel.Id);
+            List<IzinHareket> list = new IzinHareketService().GetDigerByPersonelId(personel.Id, LoggingContext);
             int SiraNo = 1;
             foreach (var item in list)
             {
@@ -991,7 +987,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
 
                 TableCell IzinTipiCell = new TableCell();
                 IzinTanim it = new IzinTanim();
-                it = new IzinTanimService().GetById(item.IzinTipi);
+                it = new IzinTanimService().GetById(item.IzinTipi, LoggingContext);
                 IzinTipiCell.Text = it == null ? "" : it.Adi;
                 row.Controls.Add(IzinTipiCell);
 
@@ -1144,7 +1140,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                         else if (izinTipiId.Equals(ProjeConstants.IZINTIPI_MAZERET_INT))
                         {
                             IzinDonem id = new IzinDonem();
-                            id = new IzinDonemService().GetById(izinDonemId);
+                            id = new IzinDonemService().GetById(izinDonemId, LoggingContext);
                             string kalanIzin = string.Empty;
                             if (id != null)
                             {
@@ -1194,7 +1190,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
         {
             string sonuctaKalanIzin = string.Empty;
             IzinDonem izinDonemi = new IzinDonem();
-            izinDonemi = new IzinDonemService().GetById(izinDonemId);
+            izinDonemi = new IzinDonemService().GetById(izinDonemId, LoggingContext);
             if (izinDonemi != null)
             {
                 if (izinDonemi.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT)
@@ -1222,7 +1218,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
         {
             Personel personel = new Personel();
             int personelId = string.IsNullOrEmpty(PersonelIdQS) ? 0 : PersonelIdQS.ConvertToInt();
-            personel = new PersonelService().GetById(personelId);
+            personel = new PersonelService().GetById(personelId, LoggingContext);
             if (personel != null)
             {
                 FillIzinTalepleriTable(personel);
@@ -1331,7 +1327,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                         'thousands': '.'
                     },
                     responsive: true,
-                    dom: 'frtip',               
+                    dom: 'frtip',
                 });
             });
             ";
@@ -1451,7 +1447,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                         'thousands': '.'
                     },
                     responsive: true,
-                    dom: 'frtip',               
+                    dom: 'frtip',
                 });
             });
             ";
@@ -1468,7 +1464,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
             {
                 List<DereceKademeListItem> list = new List<DereceKademeListItem>();
                 DereceKademeDegisim dereceKademe = new DereceKademeDegisim();
-                DataTable dataTable = new DereceKademeDegisimService().GetAllByPersonelIdReturnDataTable(personel.Id);
+                DataTable dataTable = new DereceKademeDegisimService().GetAllByPersonelIdReturnDataTable(personel.Id, LoggingContext);
                 foreach (DataRow row in dataTable.Rows)
                 {
                     string derece = row["Derece"].ReturnEmptyIfNull().ToString();

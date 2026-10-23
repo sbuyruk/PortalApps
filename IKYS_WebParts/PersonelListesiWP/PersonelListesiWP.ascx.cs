@@ -27,7 +27,7 @@ namespace IKYS_WebParts.PersonelListesiWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context)) { new ExceptionHelper(error).PublishException(); return; }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
@@ -371,9 +371,7 @@ namespace IKYS_WebParts.PersonelListesiWP
             PersonelTipi personelTipi = (PersonelTipi)PersonelTipiDDL.SelectedItem.Value.ConvertToInt();
             Personel personel = new Personel();
             PersonelService service = new PersonelService();
-            DataTable dataTable = PortalLogSettings.IsEnabled(LoggingContext)
-                ? service.GetEmployeeListReturnDataTable(personelTipi, LoggingContext)
-                : service.GetEmployeeListReturnDataTable(personelTipi);
+            DataTable dataTable = service.GetEmployeeListReturnDataTable(personelTipi, LoggingContext);
             return dataTable;
         }
         private class PersonelListItem

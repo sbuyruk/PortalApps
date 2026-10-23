@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
-using Utility.ProjeGlobal;
 using Utility.Logging;
 
 namespace Model.Services.IKYS
@@ -24,40 +23,11 @@ namespace Model.Services.IKYS
         }
         public IsTecrube GetById(int id) { return Map(repository.SelectById(id)); }
         public List<IsTecrube> GetAll() { return ToList(repository.SelectAll()); }
-        public int Save(IsTecrube item)
-        {
-            if (item == null) throw new ArgumentNullException("item");
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-            if (item.Id > 0 && ProjeConstants.IKYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_ISTECRUBE);
-            return item.Id;
-        }
-        public bool Update(IsTecrube item)
-        {
-            if (item == null) throw new ArgumentNullException("item");
-            IsTecrube old = GetById(item.Id);
-            bool ok = false;
-            if (item.Id != 0)
-            {
-                item.DegistirmeTarihi = DateTime.Now;
-                item.Degistiren = UtilityHelper.GetCurrentUserName();
-                ok = repository.Update(item);
-            }
-            if (ok && ProjeConstants.IKYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.IKYS, ProjeConstants.IKYS_ISTECRUBE);
-            return ok;
-        }
-        public bool Delete(IsTecrube item)
-        {
-            if (item == null || item.Id == 0) return false;
-            IsTecrube old = GetById(item.Id);
-            if (old == null) return false;
-            bool ok = repository.Delete(item.Id);
-            if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.IKYS, ProjeConstants.IKYS_ISTECRUBE);
-            return ok;
-        }
+
+
         public List<IsTecrube> GetByPersonelId(int personelId) { return ToList(repository.SelectByPersonelId(personelId)); }
-        public List<IsTecrube> GetByPersonelId(int personelId, PortalLogContext context) { return ToList(repository.SelectByPersonelId(personelId, context)); }
+        public List<IsTecrube> GetByPersonelId(int personelId, PortalLogContext context)
+        { return ToList(repository.SelectByPersonelId(personelId, context)); }
         public bool TryRecordWebPartOpened(PortalLogContext context) { return new PortalLogRepository().TryRecordWebPartOpened(context); }
         public int Save(IsTecrube item, PortalLogContext context)
         {
@@ -114,6 +84,9 @@ namespace Model.Services.IKYS
             AddChange(log, auditId, "PersonelId", old == null ? null : old.PersonelId.ToString(CultureInfo.InvariantCulture), current == null ? null : current.PersonelId.ToString(CultureInfo.InvariantCulture), transaction);
             AddChange(log, auditId, "BasTar", old == null ? null : AuditDate(old.BasTar), current == null ? null : AuditDate(current.BasTar), transaction);
             AddChange(log, auditId, "BitTar", old == null ? null : AuditDate(old.BitTar), current == null ? null : AuditDate(current.BitTar), transaction);
+            AddChange(log, auditId, "Isyeri", old == null ? null : Convert.ToString(old.Isyeri, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.Isyeri, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "Gorevi", old == null ? null : Convert.ToString(old.Gorevi, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.Gorevi, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "Adres", old == null ? null : Convert.ToString(old.Adres, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.Adres, CultureInfo.InvariantCulture), transaction);
         }
         private static string AuditDate(DateTime value)
         {
@@ -126,5 +99,11 @@ namespace Model.Services.IKYS
         }
         private static IsTecrube Map(DataTable table) { return ToList(table).FirstOrDefault(); }
         private static List<IsTecrube> ToList(DataTable table) { return new IsTecrube().ToList<IsTecrube>(table); }
+
+        public IsTecrube GetById(int id, PortalLogContext context)
+        { return Map(repository.SelectById(id, context)); }
+
+        public List<IsTecrube> GetAll(PortalLogContext context)
+        { return ToList(repository.SelectAll(context)); }
     }
 }

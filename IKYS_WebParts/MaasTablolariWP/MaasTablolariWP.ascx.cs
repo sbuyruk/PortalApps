@@ -40,11 +40,7 @@ namespace IKYS_WebParts.MaasTablolariWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
@@ -91,9 +87,7 @@ namespace IKYS_WebParts.MaasTablolariWP
             int grupId = TarihDDL.SelectedItem.Value.ConvertToInt();
             UcretTanim ucretTanim = new UcretTanim();
             int derece = 1;
-            IEnumerable<int> kademeler = PortalLogSettings.IsEnabled(LoggingContext)
-                ? GetGrupUcretleri(grupId).Where(x => x.Derece == derece).Select(x => x.Kademe).Distinct().OrderBy(x => x)
-                : Enumerable.Range(1, new UcretTanimService().GetKademe(derece, grupId).Rows.Count);
+            IEnumerable<int> kademeler = GetGrupUcretleri(grupId).Where(x => x.Derece == derece).Select(x => x.Kademe).Distinct().OrderBy(x => x);
             foreach (int i in kademeler)
             {
 
@@ -111,9 +105,7 @@ namespace IKYS_WebParts.MaasTablolariWP
         private void UcretTanimTablosunuDoldur(int grupId,int kademe, Table table)
         {
             UcretTanim ucretTanim = new UcretTanim();
-            List<UcretTanim> list = PortalLogSettings.IsEnabled(LoggingContext)
-                ? GetGrupUcretleri(grupId).Where(x => x.Kademe == kademe).ToList()
-                : new UcretTanimService().GetByKademe(grupId, kademe);
+            List<UcretTanim> list = GetGrupUcretleri(grupId).Where(x => x.Kademe == kademe).ToList();
             TableRow row = new TableRow();
             TableCell kademeCell = new TableCell();
             kademeCell.Text = kademe.ToString();

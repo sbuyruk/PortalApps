@@ -13,15 +13,15 @@ namespace DAO.Repositories.IKYS
         public DataTable SelectById(int id) { SqlQuery q = new SqlQuery("SELECT * FROM Meslek_Table WHERE Id=@Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, ""); }
         public DataTable SelectAll() { return db.SelectFromDb(new SqlQuery("SELECT * FROM Meslek_Table"), ""); }
         public DataTable SelectAll(PortalLogContext context)
-        {
-            Stopwatch clock = Stopwatch.StartNew();
-            bool succeeded = false;
-            try { DataTable result = db.SelectFromDb(new SqlQuery("SELECT * FROM Meslek_Table"), ""); succeeded = true; return result; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Meslek.SelectAll", clock.ElapsedMilliseconds, succeeded); }
-        }
-        public int Insert<T>(T item) { return db.Insert(queryBuilder.BuildInsert(item, "Meslek_Table")); }
-        public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "Meslek_Table")); }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("Meslek_Table", id), ""); }
+        { return PortalSqlReadExecutor.Select(new SqlQuery("SELECT * FROM Meslek_Table"), context, "Meslek.SelectAll"); }
+
+
         public DataTable SelectByPersonelId(int personelId) { SqlQuery q = new SqlQuery("SELECT * FROM Meslek_Table WHERE PersonelId=@PersonelId ORDER BY Id"); q.AddParameter("@PersonelId", personelId); return db.SelectFromDb(q, ""); }
+
+        public DataTable SelectById(int id, PortalLogContext context)
+        { SqlQuery q = new SqlQuery("SELECT * FROM Meslek_Table WHERE Id=@Id"); q.AddParameter("@Id", id); return PortalSqlReadExecutor.Select(q, context, "Meslek.SelectById"); }
+
+        public DataTable SelectByPersonelId(int personelId, PortalLogContext context)
+        { SqlQuery q = new SqlQuery("SELECT * FROM Meslek_Table WHERE PersonelId=@PersonelId ORDER BY Id"); q.AddParameter("@PersonelId", personelId); return PortalSqlReadExecutor.Select(q, context, "Meslek.SelectByPersonelId"); }
     }
 }

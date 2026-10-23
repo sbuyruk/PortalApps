@@ -27,11 +27,7 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
@@ -242,7 +238,7 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
         private string parentBirimGetir(int parentId)
         {
             string retVal = parentId + ",";
-            List<BirimTanim> list = new BirimTanimService().GetByParentId(parentId);
+            List<BirimTanim> list = new BirimTanimService().GetByParentId(parentId, LoggingContext);
             foreach (BirimTanim item in list)
             {
                 //retVal += item.Id + ",";
@@ -257,23 +253,12 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
         }
         private string BirimListesiGetir(int birimId)
         {
-            if (PortalLogSettings.IsEnabled(LoggingContext))
-            {
                 List<BirimTanim> all = GetBirimler();
                 if (!all.Any(item => item.Id == birimId)) return string.Empty;
                 List<int> ids = new List<int>();
                 CollectBirimIds(birimId, all.ToLookup(item => item.ParentId), new HashSet<int>(), ids);
                 return string.Join(",", ids);
             }
-            string birimIdStr = string.Empty;
-            BirimTanim bt = new BirimTanimService().GetById(birimId);
-            if (bt != null)
-            {
-                string birim = parentBirimGetir(birimId);
-                birimIdStr = string.IsNullOrEmpty(birim) ? "" : birim.Substring(0, birim.Length - 1);
-            }
-            return birimIdStr;
-        }
         private static void CollectBirimIds(int birimId, ILookup<int, BirimTanim> children, HashSet<int> visited, List<int> ids)
         {
             if (!visited.Add(birimId)) return;

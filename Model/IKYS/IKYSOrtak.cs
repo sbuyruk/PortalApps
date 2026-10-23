@@ -39,10 +39,7 @@ namespace Model.Ortak
         /// <param name="bastar"></param>
         /// <param name="bittar"></param>
         /// <returns></returns>
-        public static string IzinSuresiHesapla(int izinTipi, DateTime bastar, DateTime bittar)
-        {
-            return CalculateLeaveDuration(izinTipi, bastar, bittar, date => new ResmiTatilService().IsResmiTatil(date));
-        }
+
 
         public static string IzinSuresiHesapla(int izinTipi, DateTime bastar, DateTime bittar, Utility.Logging.PortalLogContext context)
         {
@@ -126,96 +123,6 @@ namespace Model.Ortak
         }
 
 
-        public static string IzinHakkiHesapla(Personel personel, int izinTipi, DateTime izinDonemiBasi, DateTime izinDonemBasTar)
-        {
-            string izinHakiiSaatVeyaGun = string.Empty;
-            if (izinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT)
-            {
-                izinHakiiSaatVeyaGun = UcretliIzinHakkiHesapla(personel, izinDonemiBasi, izinDonemBasTar).ToString();
-            }
-            else if (izinTipi == ProjeConstants.IZINTIPI_MAZERET_INT)
-            {
-                izinHakiiSaatVeyaGun = ProjeConstants.IZIN_SURESI_MAZERET.ToString();
-            }
-            return izinHakiiSaatVeyaGun;
-        }
-        public static int UcretliIzinHakkiHesapla(Personel personel, DateTime izinDonemiBasi, DateTime izinDonemBasTar)
-        {
-            int hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_1_5;
-            int ilkcalistigiYilSayisi = izinDonemiBasi.Year - izinDonemBasTar.Year;
-
-            //ilk yil izin hakki 0 gün
-            if (ilkcalistigiYilSayisi < 1)
-            {
-                hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_0;
-            }
-            else
-            {
-                if (personel.Asker_sivil == ProjeConstants.PER_ASKER_INT)
-                {
-                    hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_ASKER;
-                }
-                else
-                {
-                    try
-                    {
-                        //izinDonemiBasi'ndan ise baslamatar cikararak calistigi yil suresini bul
-                        IsBilgileri ib = new IsBilgileri();
-                        ib = new IsBilgileriService().GetByPersonelId(personel.Id);
-                        if (ib != null)
-                        {
-
-                            //DateTime iseBaslamaTar = ib.IzinDonemiBasTar!=null? ib.IzinDonemiBasTar:ib.BaslamaTar;
-
-                            if (izinDonemiBasi < izinDonemBasTar)
-                            {
-                                Exception ex = new Exception("Izin Dönemi Basi Ise baslama tarihinden küçük olamaz");
-                                throw (ex);
-
-                            }
-                            int calistigiYilSayisi = izinDonemiBasi.Year - izinDonemBasTar.Year;
-                            //int ilkcalistigiYilSayisi = izinDonemiBasi.Year - izinDonemBasTar.Year;
-                            int oncekiPrimgunSayisi = 0;
-                            oncekiPrimgunSayisi = ib.VakifOncesiPrimGunSayisi;
-                            if (oncekiPrimgunSayisi >= 360)
-                            {
-                                int ekGun = oncekiPrimgunSayisi / 360;
-                                calistigiYilSayisi += ekGun;
-                            }
-                            /*
-                                (1)  1 – 5 yil olanlara (5 yil dâhil) 14 is günü, 
-                                (2)  6 – 15 yil olanlara 20 is günü, 
-                                (3)  15 yil ve daha fazla olanlara 26 is günü, yillik ücretli izin verilir. 
-                            */
-
-                            if ((calistigiYilSayisi >= 1) && (calistigiYilSayisi <= 5))
-                            {
-                                hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_1_5;
-                            }
-                            else if ((calistigiYilSayisi > 5) && (calistigiYilSayisi < 15))
-                            {
-                                hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_6_15;
-                            }
-                            else if (calistigiYilSayisi >= 15)
-                            {
-                                hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_16PLUS;
-                            }
-
-                        }
-
-                    }
-                    catch (Exception exception)
-                    {
-                        ExceptionHelper exHelper = new ExceptionHelper(exception);
-                        exHelper.PublishException();
-                    }
-
-                }
-            }
-
-            return hakEdilenIzinGunSayisi;
-
-        }
         // Uses the work snapshot already read by the caller's transaction; no database access.
         public static string IzinHakkiHesapla(Personel personel, int izinTipi, DateTime izinDonemiBasi,
             DateTime izinDonemBasTar, IsBilgileri isBilgileri)
@@ -376,121 +283,8 @@ namespace Model.Ortak
             }
 
         }
-        public static void IzinTalepOlusturmaEPostasiGonder(Personel personel, int izinTalepId)
-        {
-            IzinTalep izinTalep = new IzinTalep();
-            izinTalep = new IzinTalepService().GetById(izinTalepId);
-            if (izinTalep != null)
-            {
-                //EPostayi hazirla
-                string to = personel.KullaniciAdi + "@tskgv.local";
-                string from = "ikys@tskgv.local";
-                string bastarBittar = izinTalep.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinTalep.BitisTarihi.ConvertToDatetimeEmptyIfNull();
-                //  string izintipi=izinTalep.IzinTipi?Pr
-                IzinTanim izintipi = new IzinTanim();
-                izintipi = new IzinTanimService().GetById(izinTalep.IzinTipi);
-                string izintipiStr = izintipi == null ? "" : izintipi.Adi;
 
-                string subject = bastarBittar + " tarihleri arasindaki " + izintipiStr + " Izin talebiniz. ";
-                string userurl = "<a href = 'http://tskgv-portal/KullaniciUygulamalari/Sayfalar/KisiselSayfa.aspx'>kisisel sayfanizdan </a>";
 
-                string body = izintipiStr + " Izin talebiniz olusturulmustur. <br>Lütfen " + userurl + " talebinizin durumunu takip ediniz.";
-
-                IletisimBilgileri ib = new IletisimBilgileri();
-                ib = new IletisimBilgileriService().GetByPersonelId(personel.Id);
-                if (ib != null)
-                {
-                    to = ib.IntranetEPosta;
-                }
-                //Izin sahibine eposta gönder
-                string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
-                MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
-
-                //IKYS Onay grubuna eposta gönder
-                to = "izinonaymailgrubu@tskgv.local";
-                subject = personel.Adi + " " + personel.Soyadi + " Yeni " + izintipiStr + " izin talebi ";
-                string url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/IzinTalepListesi.aspx'>Izin Talepleri </a>";
-                if (izinTalep.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT)
-                {
-                    url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/MazeretIzinTalepListesi.aspx'>Izin Talepleri </a>";
-                }
-                body = personel.Adi + " " + personel.Soyadi + " " + bastarBittar + " tarihleri arasinda " + izintipiStr + " izin talebinde bulunmustur. <br>Lütfen kontrol-red islemleri için " + url + " sayfasina gidiniz";
-                MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
-            }
-
-        }
-        public static void GorevOnayEPostasiGonder(Personel personel, int gorevOnayId, string tip)
-        {
-            GorevOnayEPostasiGonder(personel, gorevOnayId, tip,null, "Giriş");
-        }
-
-        public static void GorevOnayEPostasiGonder(Personel personel, int gorevOnayId, string tip, List<string> ekEpostaAdresleri, string durum,bool isAddMailGrubuToAdress=true)
-        {
-            string from = "ikys@tskgv.local";
-            string personelEposta = new IletisimBilgileriService().GetByPersonelId(personel.Id)?.InternetEPosta;
-            List<string> personelEpostaAdresleri = new List<string>();
-            List<string> amirEpostaAdresleri = new List<string>();
-            if (ekEpostaAdresleri != null)
-            {
-                foreach (string eposta in ekEpostaAdresleri.Where(a => !string.IsNullOrWhiteSpace(a)).Distinct(StringComparer.OrdinalIgnoreCase))
-                {
-                    if (!string.IsNullOrWhiteSpace(personelEposta) && eposta.Equals(personelEposta, StringComparison.OrdinalIgnoreCase))
-                        personelEpostaAdresleri.Add(eposta);
-                    else
-                        amirEpostaAdresleri.Add(eposta);
-                }
-            }
-            string subject = string.Empty;
-            string rootUrl = UtilityHelper.RootURLGetir();
-            string personelSayfa = isAddMailGrubuToAdress ? "GorevOnayListesiKisisel.aspx" : ProjeConstants.PAGE_GOREVONAY_LIST;
-            string amirSayfa = isAddMailGrubuToAdress ? ProjeConstants.PAGE_BEKLEYENISLEMLER : ProjeConstants.PAGE_GOREVONAY_LIST;
-            string durumStr= durum.Equals("Onay") ? "onaylanmistir." : durum.Equals("Red") ? "reddedilmistir." : "girilmiştir.";
-            if (tip.Equals("SehirIci"))
-            {
-                Yoklama yoklama = new Yoklama();
-                yoklama = new YoklamaService().GetById(gorevOnayId);
-                if (yoklama != null)
-                {
-                    string bastarBittar = yoklama.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + yoklama.BitisTarihi.ConvertToDatetimeEmptyIfNull();
-                    subject = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Sehir Içi Görev " + durumStr;
-                    string personelUrl = string.Format("<a href = '{0}/KullaniciUygulamalari/Sayfalar/{1}'>Görev onay listesi </a>", rootUrl, personelSayfa);
-                    string amirUrl = string.Format("<a href = '{0}/KullaniciUygulamalari/Sayfalar/{1}'>Görev onay işlemleri </a>", rootUrl, amirSayfa);
-                    string personelBody = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Sehir Içi Görev " + durumStr + " <br>Görev durumunu " + personelUrl + " üzerinden takip edebilirsiniz.";
-                    string amirBody = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Sehir Içi Görev " + durumStr + " <br>Yoklama islemlerini " + amirUrl + " üzerinden yapabilirsiniz.";
-
-                    string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
-                    string amirTo = (isAddMailGrubuToAdress ? "gorevonaymailgrubu@tskgv.org.tr;" : string.Empty) + string.Join(";", amirEpostaAdresleri);
-                    if (personelEpostaAdresleri.Count > 0)
-                        MailHelper.EPostaGonder(from, string.Join(";", personelEpostaAdresleri), subject, personelBody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
-                    if (!string.IsNullOrEmpty(amirTo))
-                        MailHelper.EPostaGonder(from, amirTo, subject, amirBody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
-
-                }
-            }
-            else
-            {
-                GorevOnay gorevOnay = new GorevOnay();
-                gorevOnay = new GorevOnayService().GetById(gorevOnayId);
-                if (gorevOnay != null)
-                {
-                    string bastarBittar = gorevOnay.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + gorevOnay.BitisTarihi.ConvertToDatetimeEmptyIfNull();
-                    subject = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Yurt Içi/Yurt Disi Görev " + durumStr;
-                    string personelUrl = string.Format("<a href = '{0}/KullaniciUygulamalari/Sayfalar/{1}'>Görev onay listesi </a>", rootUrl, personelSayfa);
-                    string amirUrl = string.Format("<a href = '{0}/KullaniciUygulamalari/Sayfalar/{1}'>Görev onay işlemleri </a>", rootUrl, amirSayfa);
-                    string personelBody = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Yurt Içi/Yurt Disi Görev " + durumStr + " <br>Görev durumunu " + personelUrl + " üzerinden takip edebilirsiniz.";
-                    string amirBody = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Yurt Içi/Yurt Disi Görev " + durumStr + " <br>Görev onay islemlerini " + amirUrl + " üzerinden yapabilirsiniz.";
-                    StringBuilder tabloSB = EpostaTablosunuOlustur(gorevOnay);
-                    personelBody += "</br>" + tabloSB.ToString();
-                    amirBody += "</br>" + tabloSB.ToString();
-                    string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
-                    string amirTo = (isAddMailGrubuToAdress ? "gorevonaymailgrubu@tskgv.org.tr;" : string.Empty) + string.Join(";", amirEpostaAdresleri);
-                    if (personelEpostaAdresleri.Count > 0)
-                        MailHelper.EPostaGonder(from, string.Join(";", personelEpostaAdresleri), subject, personelBody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
-                    if (!string.IsNullOrEmpty(amirTo))
-                        MailHelper.EPostaGonder(from, amirTo, subject, amirBody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
-                }
-            }
-        }
         private static StringBuilder EpostaTablosunuOlustur(GorevOnay gorevOnay)
         {
             System.Text.StringBuilder sb = new StringBuilder();
@@ -573,31 +367,7 @@ namespace Model.Ortak
             sb.Append("<p style='color:gray; font-family: arial;font-size:xx-small;'>IKYS &trade; Bilgi Sistemleri Kismi </p> ");
             return sb;
         }
-        public static void BilgiSistemMailGrubunaEPostaGonder(PersonelItem personelItem, string baslik)
-        {
-            string userto = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_BILGISISTEM_MAILGRUBU);
 
-            string from = "IKYS <ikys@tskgv.local>";
-            string subject = baslik;
-
-
-            string grupAdi = userto.Split('@')[0];
-            bool grupMu = UtilityHelper.IsGroup("TSKGV", grupAdi);//böyle bir grup var mi
-            if (grupMu)// varsa
-            {
-                List<UserPrincipal> uplist = UtilityHelper.GetGroupMembers("TSKGV", grupAdi);
-                var emaillist = uplist.Select(item => item.EmailAddress).ToList();
-                string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
-                foreach (var eposta in emaillist)
-                {
-
-                    StringBuilder tabloSB = PersonelBilgileriTablosunuOlustur(personelItem, baslik);
-
-                    MailHelper.EPostaGonder(from, eposta, subject, "</br>" + tabloSB.ToString(), smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
-
-                }
-            }
-        }
         private static StringBuilder PersonelBilgileriTablosunuOlustur(PersonelItem personelItem, string baslik)
         {
             System.Text.StringBuilder sb = new StringBuilder();
@@ -660,44 +430,8 @@ namespace Model.Ortak
             sb.Append("<p style='color:gray; font-family: arial;font-size:xx-small;'>TYS &trade; Bilgi Sistem Kismi </p> ");
             return sb;
         }
-        private static string UstBirimGetir(int parentId)
-        {
-            string retVal = parentId + ",";
-            List<BirimTanim> list = new BirimTanimService().GetByParentId(parentId);
-            foreach (BirimTanim item in list)
-            {
-                //retVal += item.Id + ",";
-                string val = UstBirimGetir(item.Id);
-                if (string.IsNullOrEmpty(val))
-                {
-                    return retVal;
-                }
-                retVal += val;
-            }
-            return retVal;
-        }
-        public static string BirimListesiGetir(Personel personel)
-        {
-            string birimIdStr = string.Empty;
 
-            if (personel != null)
-            {
-                IsBilgileri ib = new IsBilgileri();
-                ib = new IsBilgileriService().GetByPersonelId(personel.Id);
-                if (ib != null)
-                {
-                    int birimId = ib.BirimId;
-                    BirimTanim bt = new BirimTanimService().GetById(birimId);
-                    if ((bt != null) && (bt.AmirId == personel.Id))
-                    {
-                        string birim = UstBirimGetir(birimId);
-                        birimIdStr = string.IsNullOrEmpty(birim) ? "" : birim.Substring(0, birim.Length - 1);
-                    }
 
-                }
-            }
-            return birimIdStr;
-        }
         public static Personel PersonelGetir(string currentUserName)
         {
             Personel personel = new Personel();
@@ -759,13 +493,243 @@ namespace Model.Ortak
                 return null;
             }
         }
-        public static int KalanIzinToplamiGetir(int personelId, bool sadeceEskiDonemler)
+
+        #endregion IKYS
+
+        public static void IzinTalepOlusturmaEPostasiGonder(Personel personel, int izinTalepId, Utility.Logging.PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
+            try
+            {
+                IzinTalep izinTalep = new IzinTalep();
+                izinTalep = new IzinTalepService().GetById(izinTalepId, context);
+                if (izinTalep != null)
+                {
+                    //EPostayi hazirla
+                    string to = personel.KullaniciAdi + "@tskgv.local";
+                    string from = "ikys@tskgv.local";
+                    string bastarBittar = izinTalep.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinTalep.BitisTarihi.ConvertToDatetimeEmptyIfNull();
+                    //  string izintipi=izinTalep.IzinTipi?Pr
+                    IzinTanim izintipi = new IzinTanim();
+                    izintipi = new IzinTanimService().GetById(izinTalep.IzinTipi, context);
+                    string izintipiStr = izintipi == null ? "" : izintipi.Adi;
+
+                    string subject = bastarBittar + " tarihleri arasindaki " + izintipiStr + " Izin talebiniz. ";
+                    string userurl = "<a href = 'http://tskgv-portal/KullaniciUygulamalari/Sayfalar/KisiselSayfa.aspx'>kisisel sayfanizdan </a>";
+
+                    string body = izintipiStr + " Izin talebiniz olusturulmustur. <br>Lütfen " + userurl + " talebinizin durumunu takip ediniz.";
+
+                    IletisimBilgileri ib = new IletisimBilgileri();
+                    ib = new IletisimBilgileriService().GetByPersonelId(personel.Id, context);
+                    if (ib != null)
+                    {
+                        to = ib.IntranetEPosta;
+                    }
+                    //Izin sahibine eposta gönder
+                    string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL, context);
+                    MailHelper.EPostaGonderVeyaHataVer(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
+
+                    //IKYS Onay grubuna eposta gönder
+                    to = "izinonaymailgrubu@tskgv.local";
+                    subject = personel.Adi + " " + personel.Soyadi + " Yeni " + izintipiStr + " izin talebi ";
+                    string url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/IzinTalepListesi.aspx'>Izin Talepleri </a>";
+                    if (izinTalep.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT)
+                    {
+                        url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/MazeretIzinTalepListesi.aspx'>Izin Talepleri </a>";
+                    }
+                    body = personel.Adi + " " + personel.Soyadi + " " + bastarBittar + " tarihleri arasinda " + izintipiStr + " izin talebinde bulunmustur. <br>Lütfen kontrol-red islemleri için " + url + " sayfasina gidiniz";
+                    MailHelper.EPostaGonderVeyaHataVer(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
+                }
+
+
+            }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                Utility.Logging.PortalTechnicalLog.WriteError(context, "IKYS.Notification", error);
+                Messages.Warning("Bilgiler kaydedildi ancak bildirim e-postası gönderilemedi. Başvuru kodu: " + context.OperationId.ToString("N"));
+            }
+        }
+
+        public static void GorevOnayEPostasiGonder(Personel personel, int gorevOnayId, string tip, Utility.Logging.PortalLogContext context)
+        {
+            GorevOnayEPostasiGonder(personel, gorevOnayId, tip, null, "Giriş", true, context);
+        }
+
+        public static void GorevOnayEPostasiGonder(Personel personel, int gorevOnayId, string tip, List<string> ekEpostaAdresleri, string durum, bool isAddMailGrubuToAdress, Utility.Logging.PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
+            try
+            {
+                string from = "ikys@tskgv.local";
+                string personelEposta = new IletisimBilgileriService().GetByPersonelId(personel.Id, context)?.InternetEPosta;
+                List<string> personelEpostaAdresleri = new List<string>();
+                List<string> amirEpostaAdresleri = new List<string>();
+                if (ekEpostaAdresleri != null)
+                {
+                    foreach (string eposta in ekEpostaAdresleri.Where(a => !string.IsNullOrWhiteSpace(a)).Distinct(StringComparer.OrdinalIgnoreCase))
+                    {
+                        if (!string.IsNullOrWhiteSpace(personelEposta) && eposta.Equals(personelEposta, StringComparison.OrdinalIgnoreCase))
+                            personelEpostaAdresleri.Add(eposta);
+                        else
+                            amirEpostaAdresleri.Add(eposta);
+                    }
+                }
+                string subject = string.Empty;
+                string rootUrl = UtilityHelper.RootURLGetir();
+                string personelSayfa = isAddMailGrubuToAdress ? "GorevOnayListesiKisisel.aspx" : ProjeConstants.PAGE_GOREVONAY_LIST;
+                string amirSayfa = isAddMailGrubuToAdress ? ProjeConstants.PAGE_BEKLEYENISLEMLER : ProjeConstants.PAGE_GOREVONAY_LIST;
+                string durumStr= durum.Equals("Onay") ? "onaylanmistir." : durum.Equals("Red") ? "reddedilmistir." : "girilmiştir.";
+                if (tip.Equals("SehirIci"))
+                {
+                    Yoklama yoklama = new Yoklama();
+                    yoklama = new YoklamaService().GetById(gorevOnayId, context);
+                    if (yoklama != null)
+                    {
+                        string bastarBittar = yoklama.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + yoklama.BitisTarihi.ConvertToDatetimeEmptyIfNull();
+                        subject = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Sehir Içi Görev " + durumStr;
+                        string personelUrl = string.Format("<a href = '{0}/KullaniciUygulamalari/Sayfalar/{1}'>Görev onay listesi </a>", rootUrl, personelSayfa);
+                        string amirUrl = string.Format("<a href = '{0}/KullaniciUygulamalari/Sayfalar/{1}'>Görev onay işlemleri </a>", rootUrl, amirSayfa);
+                        string personelBody = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Sehir Içi Görev " + durumStr + " <br>Görev durumunu " + personelUrl + " üzerinden takip edebilirsiniz.";
+                        string amirBody = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Sehir Içi Görev " + durumStr + " <br>Yoklama islemlerini " + amirUrl + " üzerinden yapabilirsiniz.";
+
+                        string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL, context);
+                        string amirTo = (isAddMailGrubuToAdress ? "gorevonaymailgrubu@tskgv.org.tr;" : string.Empty) + string.Join(";", amirEpostaAdresleri);
+                        if (personelEpostaAdresleri.Count > 0)
+                            MailHelper.EPostaGonderVeyaHataVer(from, string.Join(";", personelEpostaAdresleri), subject, personelBody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
+                        if (!string.IsNullOrEmpty(amirTo))
+                            MailHelper.EPostaGonderVeyaHataVer(from, amirTo, subject, amirBody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
+
+                    }
+                }
+                else
+                {
+                    GorevOnay gorevOnay = new GorevOnay();
+                    gorevOnay = new GorevOnayService().GetById(gorevOnayId, context);
+                    if (gorevOnay != null)
+                    {
+                        string bastarBittar = gorevOnay.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + gorevOnay.BitisTarihi.ConvertToDatetimeEmptyIfNull();
+                        subject = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Yurt Içi/Yurt Disi Görev " + durumStr;
+                        string personelUrl = string.Format("<a href = '{0}/KullaniciUygulamalari/Sayfalar/{1}'>Görev onay listesi </a>", rootUrl, personelSayfa);
+                        string amirUrl = string.Format("<a href = '{0}/KullaniciUygulamalari/Sayfalar/{1}'>Görev onay işlemleri </a>", rootUrl, amirSayfa);
+                        string personelBody = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Yurt Içi/Yurt Disi Görev " + durumStr + " <br>Görev durumunu " + personelUrl + " üzerinden takip edebilirsiniz.";
+                        string amirBody = personel.Adi + " " + personel.Soyadi + " için " + bastarBittar + " tarihleri arasinda Yurt Içi/Yurt Disi Görev " + durumStr + " <br>Görev onay islemlerini " + amirUrl + " üzerinden yapabilirsiniz.";
+                        StringBuilder tabloSB = EpostaTablosunuOlustur(gorevOnay);
+                        personelBody += "</br>" + tabloSB.ToString();
+                        amirBody += "</br>" + tabloSB.ToString();
+                        string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL, context);
+                        string amirTo = (isAddMailGrubuToAdress ? "gorevonaymailgrubu@tskgv.org.tr;" : string.Empty) + string.Join(";", amirEpostaAdresleri);
+                        if (personelEpostaAdresleri.Count > 0)
+                            MailHelper.EPostaGonderVeyaHataVer(from, string.Join(";", personelEpostaAdresleri), subject, personelBody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
+                        if (!string.IsNullOrEmpty(amirTo))
+                            MailHelper.EPostaGonderVeyaHataVer(from, amirTo, subject, amirBody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
+                    }
+                }
+
+            }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                Utility.Logging.PortalTechnicalLog.WriteError(context, "IKYS.Notification", error);
+                Messages.Warning("Bilgiler kaydedildi ancak bildirim e-postası gönderilemedi. Başvuru kodu: " + context.OperationId.ToString("N"));
+            }
+        }
+
+        public static void BilgiSistemMailGrubunaEPostaGonder(PersonelItem personelItem, string baslik, Utility.Logging.PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
+            try
+            {
+                personelItem.LoggingContext = context;
+                string userto = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_BILGISISTEM_MAILGRUBU, context);
+
+                string from = "IKYS <ikys@tskgv.local>";
+                string subject = baslik;
+
+
+                string grupAdi = userto.Split('@')[0];
+                bool grupMu = UtilityHelper.IsGroup("TSKGV", grupAdi);//böyle bir grup var mi
+                if (grupMu)// varsa
+                {
+                    List<UserPrincipal> uplist = UtilityHelper.GetGroupMembers("TSKGV", grupAdi);
+                    var emaillist = uplist.Select(item => item.EmailAddress).ToList();
+                    string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL, context);
+                    foreach (var eposta in emaillist)
+                    {
+
+                        StringBuilder tabloSB = PersonelBilgileriTablosunuOlustur(personelItem, baslik);
+
+                        MailHelper.EPostaGonderVeyaHataVer(from, eposta, subject, "</br>" + tabloSB.ToString(), smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
+
+                    }
+                }
+
+            }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                Utility.Logging.PortalTechnicalLog.WriteError(context, "IKYS.Notification", error);
+                Messages.Warning("Bilgiler kaydedildi ancak bildirim e-postası gönderilemedi. Başvuru kodu: " + context.OperationId.ToString("N"));
+            }
+        }
+
+        private static string UstBirimGetir(int parentId, Utility.Logging.PortalLogContext context)
+        {
+            string retVal = parentId + ",";
+            List<BirimTanim> list = new BirimTanimService().GetByParentId(parentId, context);
+            foreach (BirimTanim item in list)
+            {
+                //retVal += item.Id + ",";
+                string val = UstBirimGetir(item.Id, context);
+                if (string.IsNullOrEmpty(val))
+                {
+                    return retVal;
+                }
+                retVal += val;
+            }
+            return retVal;
+        }
+
+        public static string BirimListesiGetir(Personel personel, Utility.Logging.PortalLogContext context)
+        {
+            string birimIdStr = string.Empty;
+
+            if (personel != null)
+            {
+                IsBilgileri ib = new IsBilgileri();
+                ib = new IsBilgileriService().GetByPersonelId(personel.Id, context);
+                if (ib != null)
+                {
+                    int birimId = ib.BirimId;
+                    BirimTanim bt = new BirimTanimService().GetById(birimId, context);
+                    if ((bt != null) && (bt.AmirId == personel.Id))
+                    {
+                        string birim = UstBirimGetir(birimId, context);
+                        birimIdStr = string.IsNullOrEmpty(birim) ? "" : birim.Substring(0, birim.Length - 1);
+                    }
+
+                }
+            }
+            return birimIdStr;
+        }
+
+        public static Personel PersonelGetir(string currentUserName, Utility.Logging.PortalLogContext context)
+        {
+            Personel personel = new Personel();
+            {
+                string userName = currentUserName.Substring(currentUserName.LastIndexOf("\\") + 1, currentUserName.Length - currentUserName.LastIndexOf("\\") - 1);
+                personel = new PersonelService().GetByUserName(userName, context);
+            }
+            return personel;
+        }
+
+        public static int KalanIzinToplamiGetir(int personelId, bool sadeceEskiDonemler, Utility.Logging.PortalLogContext context)
         {
 
             IzinDonem izinDonemDao = new IzinDonem();
             int kalanIzinToplami = 0;
 
-            DataTable dataTable = new IzinDonemService().GetSumKalanIzinByPersonelId(personelId, sadeceEskiDonemler);
+            DataTable dataTable = new IzinDonemService().GetSumKalanIzinByPersonelId(personelId, sadeceEskiDonemler, context);
             if (dataTable != null)
             {
                 DataRow dataRow = dataTable.Rows[0];
@@ -775,6 +739,9 @@ namespace Model.Ortak
 
             return kalanIzinToplami;
         }
-        #endregion IKYS
+        public static void GorevOnayEPostasiGonder(Personel personel, int gorevOnayId, string tip, List<string> ekEpostaAdresleri, string durum, Utility.Logging.PortalLogContext context)
+        {
+            GorevOnayEPostasiGonder(personel, gorevOnayId, tip, ekEpostaAdresleri, durum, true, context);
+        }
     }
 }

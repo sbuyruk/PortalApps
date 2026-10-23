@@ -587,7 +587,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                         'thousands': '.'
                     },
                     responsive: true,
-                    dom: 'frtip',                    
+                    dom: 'frtip',
                     'createdRow': function(row, data, dataIndex) {
                         if (data.OnayDurumu=='" + ProjeConstants.ONAYDURUMU_KAYIT + @"')
                         {
