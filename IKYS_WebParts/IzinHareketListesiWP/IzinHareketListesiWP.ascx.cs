@@ -20,7 +20,7 @@ namespace IKYS_WebParts.IzinHareketListesiWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context)) { new ExceptionHelper(error).PublishException(); return; }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
@@ -103,9 +103,7 @@ namespace IKYS_WebParts.IzinHareketListesiWP
         private List<IzinHareketItemList> GetDataList()
         {
             IzinHareketService service = new IzinHareketService();
-            DataTable dataTable = PortalLogSettings.IsEnabled(LoggingContext)
-                ? service.GetByIzinDonemiReturnDataTable(0, 0, 0, LoggingContext)
-                : service.GetByIzinDonemiReturnDataTable(0, 0, 0);
+            DataTable dataTable = service.GetByIzinDonemiReturnDataTable(0, 0, 0, LoggingContext);
             List<IzinHareketItemList> returnlist = new List<IzinHareketItemList>();
 
             if (dataTable != null)

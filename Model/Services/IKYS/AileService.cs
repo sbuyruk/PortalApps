@@ -20,7 +20,7 @@ namespace Model.Services.IKYS
         public AileService(AileRepository repository) { if (repository == null) throw new ArgumentNullException("repository"); this.repository = repository; }
         public Aile GetById(int id) { return Map(repository.SelectById(id)); }
         public List<Aile> GetAll() { return ToList(repository.SelectAll()); }
-        public int Save(Aile item) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item); if (item.Id > 0 && ProjeConstants.IKYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_AILE); return item.Id; }
+
         public bool TryRecordWebPartOpened(PortalLogContext context) { return new PortalLogRepository().TryRecordWebPartOpened(context); }
         public int Save(Aile item, PortalLogContext context)
         {
@@ -38,7 +38,7 @@ namespace Model.Services.IKYS
             }
             return item.Id;
         }
-        public bool Update(Aile item) { if (item == null) throw new ArgumentNullException("item"); Aile old = GetById(item.Id); bool ok = false; if (item.Id != 0) { item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); ok = repository.Update(item); } if (ok && ProjeConstants.IKYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.IKYS, ProjeConstants.IKYS_AILE); return ok; }
+
         public bool Update(Aile item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
@@ -56,7 +56,7 @@ namespace Model.Services.IKYS
                 return true;
             }
         }
-        public bool Delete(Aile item) { if (item == null || item.Id == 0) return false; Aile old = GetById(item.Id); if (old == null) return false; bool ok = repository.Delete(item.Id); if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.IKYS, ProjeConstants.IKYS_AILE); return ok; }
+
         public bool Delete(Aile item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
@@ -73,7 +73,8 @@ namespace Model.Services.IKYS
             }
         }
         public List<Aile> GetByPersonelId(int personelId) { return ToList(repository.SelectByPersonelId(personelId)); }
-        public List<Aile> GetByPersonelId(int personelId, PortalLogContext context) { return ToList(repository.SelectByPersonelId(personelId, context)); }
+        public List<Aile> GetByPersonelId(int personelId, PortalLogContext context)
+        { return ToList(repository.SelectByPersonelId(personelId, context)); }
         public Aile GetEnGencCocukByPersonelId(int personelId) { return Map(repository.SelectEnGencCocukByPersonelId(personelId, ProjeConstants.PER_YAKINLIKDERECESI_COCUK_INT)); }
         private static void RecordChanges(Aile old, Aile current, int auditId, SqlTransactionContext transaction)
         {
@@ -82,6 +83,13 @@ namespace Model.Services.IKYS
             AddChange(log, auditId, "PersonelId", old == null ? null : old.PersonelId.ToString(CultureInfo.InvariantCulture), current == null ? null : current.PersonelId.ToString(CultureInfo.InvariantCulture), transaction);
             AddChange(log, auditId, "YakinlikDerecesi", old == null ? null : old.YakinlikDerecesi.ToString(CultureInfo.InvariantCulture), current == null ? null : current.YakinlikDerecesi.ToString(CultureInfo.InvariantCulture), transaction);
             AddChange(log, auditId, "Meslek", old == null ? null : old.Meslek.ToString(CultureInfo.InvariantCulture), current == null ? null : current.Meslek.ToString(CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "Adi", old == null ? null : Convert.ToString(old.Adi, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.Adi, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "Soyadi", old == null ? null : Convert.ToString(old.Soyadi, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.Soyadi, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "TcKimlikNo", old == null ? null : Convert.ToString(old.TcKimlikNo, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.TcKimlikNo, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "DogumTar", old == null ? null : old.DogumTar.ToString("o", CultureInfo.InvariantCulture), current == null ? null : current.DogumTar.ToString("o", CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "Tahsil", old == null ? null : Convert.ToString(old.Tahsil, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.Tahsil, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "Okul", old == null ? null : Convert.ToString(old.Okul, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.Okul, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "Telefon", old == null ? null : Convert.ToString(old.Telefon, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.Telefon, CultureInfo.InvariantCulture), transaction);
         }
         private static void AddChange(PortalLogRepository log, int auditId, string field, string oldValue, string newValue, SqlTransactionContext transaction)
         {
@@ -90,5 +98,14 @@ namespace Model.Services.IKYS
         }
         private static Aile Map(DataTable table) { return ToList(table).FirstOrDefault(); }
         private static List<Aile> ToList(DataTable table) { return new Aile().ToList<Aile>(table); }
+
+        public Aile GetById(int id, PortalLogContext context)
+        { return Map(repository.SelectById(id, context)); }
+
+        public List<Aile> GetAll(PortalLogContext context)
+        { return ToList(repository.SelectAll(context)); }
+
+        public Aile GetEnGencCocukByPersonelId(int personelId, PortalLogContext context)
+        { return Map(repository.SelectEnGencCocukByPersonelId(personelId, ProjeConstants.PER_YAKINLIKDERECESI_COCUK_INT, context)); }
     }
 }

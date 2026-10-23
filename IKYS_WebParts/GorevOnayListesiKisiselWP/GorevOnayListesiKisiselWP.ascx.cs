@@ -22,11 +22,7 @@ namespace IKYS_WebParts.GorevOnayListesiKisiselWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
@@ -67,7 +63,7 @@ namespace IKYS_WebParts.GorevOnayListesiKisiselWP
         {
             string currentUserName = UtilityHelper.GetCurrentUserLoginName();
             Personel personel = string.IsNullOrWhiteSpace(currentUserName)
-                ? null : IKYSOrtak.PersonelGetir(currentUserName);
+                ? null : IKYSOrtak.PersonelGetir(currentUserName, LoggingContext);
             if (personel == null || personel.Id <= 0)
             {
                 Messages.Error("Personel bulunamadı");

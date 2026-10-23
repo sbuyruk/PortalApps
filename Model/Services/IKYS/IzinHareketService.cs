@@ -9,7 +9,6 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using Utility.HelperClasses;
-using Utility.ProjeGlobal;
 using Utility.Logging;
 using System.Diagnostics;
 using System.Globalization;
@@ -70,27 +69,7 @@ namespace Model.Services.IKYS
         {
             return ToList(repository.SelectAll(context));
         }
-        public int Save(IzinHareket item)
-        {
-            if (item == null)
-            {
-                throw new ArgumentNullException("item");
-            }
 
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-
-            if (item.Id > 0 && ProjeConstants.IKYS_SAVE_LOG)
-            {
-                new OlayKayit().GirisOlayKaydet(
-                    item,
-                    ProjeConstants.IKYS,
-                    ProjeConstants.IKYS_IZINHAREKET);
-            }
-
-            return item.Id;
-        }
         public int Save(IzinHareket item, PortalLogContext context) { if(context==null) throw new ArgumentNullException("context"); if(item==null) throw new ArgumentNullException("item"); item.OlusturmaTarihi=DateTime.Now; item.Olusturan=UtilityHelper.GetCurrentUserName(); using(SqlTransactionContext transaction=new SqlTransactionContext()) { item.Id=repository.Insert(item,transaction,context); int auditId=new PortalLogRepository().RecordAudit(context,"INSERT","IzinHareket",item.Id.ToString(CultureInfo.InvariantCulture),transaction); RecordChanges(null,item,auditId,transaction); transaction.Complete(); } return item.Id; }
         public int Save(
             IzinHareket item,
@@ -130,14 +109,15 @@ namespace Model.Services.IKYS
             RecordChanges(null, item, auditId, transaction);
             return item.Id;
         }
-        public bool Update(IzinHareket item) { if (item == null) throw new ArgumentNullException("item"); IzinHareket old = GetById(item.Id); bool ok = false; if (item.Id != 0) { item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); ok = repository.Update(item); } if (ok && ProjeConstants.IKYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINHAREKET); return ok; }
+
         public bool Update(IzinHareket item, PortalLogContext context) { if(context==null) throw new ArgumentNullException("context"); if(item==null||item.Id<=0) return false; using(SqlTransactionContext transaction=new SqlTransactionContext()) { IzinHareket old=Map(repository.SelectById(item.Id,transaction,context)); if(old==null) return false; item.DegistirmeTarihi=DateTime.Now; item.Degistiren=UtilityHelper.GetCurrentUserName(); if(!repository.Update(item,transaction,context)) return false; int auditId=new PortalLogRepository().RecordAudit(context,"UPDATE","IzinHareket",item.Id.ToString(CultureInfo.InvariantCulture),transaction); RecordChanges(old,item,auditId,transaction); transaction.Complete(); return true; } }
         public bool Update(IzinHareket item, SqlTransactionContext transaction, PortalLogContext context) { if(transaction==null) throw new ArgumentNullException("transaction"); if(context==null) throw new ArgumentNullException("context"); if(item==null||item.Id<=0) return false; IzinHareket old=Map(repository.SelectById(item.Id,transaction,context)); if(old==null) return false; item.DegistirmeTarihi=DateTime.Now; item.Degistiren=UtilityHelper.GetCurrentUserName(); if(!repository.Update(item,transaction,context)) return false; int auditId=new PortalLogRepository().RecordAudit(context,"UPDATE","IzinHareket",item.Id.ToString(CultureInfo.InvariantCulture),transaction); RecordChanges(old,item,auditId,transaction); return true; }
-        public bool Delete(IzinHareket item) { if (item == null || item.Id == 0) return false; IzinHareket old = GetById(item.Id); if (old == null) return false; bool ok = repository.Delete(item.Id); if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINHAREKET); return ok; }
+
         public bool Delete(IzinHareket item, PortalLogContext context) { if(context==null) throw new ArgumentNullException("context"); if(item==null||item.Id<=0) return false; using(SqlTransactionContext transaction=new SqlTransactionContext()) { IzinHareket old=Map(repository.SelectById(item.Id,transaction,context)); if(old==null||!repository.Delete(item.Id,transaction,context)) return false; int auditId=new PortalLogRepository().RecordAudit(context,"DELETE","IzinHareket",item.Id.ToString(CultureInfo.InvariantCulture),transaction); RecordChanges(old,null,auditId,transaction); transaction.Complete(); return true; } }
         public bool Delete(IzinHareket item, SqlTransactionContext transaction, PortalLogContext context) { if(transaction==null) throw new ArgumentNullException("transaction"); if(context==null) throw new ArgumentNullException("context"); if(item==null||item.Id<=0) return false; IzinHareket old=Map(repository.SelectById(item.Id,transaction,context)); if(old==null||!repository.Delete(item.Id,transaction,context)) return false; int auditId=new PortalLogRepository().RecordAudit(context,"DELETE","IzinHareket",item.Id.ToString(CultureInfo.InvariantCulture),transaction); RecordChanges(old,null,auditId,transaction); return true; }
         public List<IzinHareket> GetByTarih(DateTime tarih) { return ToList(repository.SelectByTarih(tarih)); }
-        public List<IzinHareket> GetByTarih(DateTime tarih, PortalLogContext context) { return ToList(repository.SelectByTarih(tarih,context)); }
+        public List<IzinHareket> GetByTarih(DateTime tarih, PortalLogContext context)
+        { return ToList(repository.SelectByTarih(tarih, context)); }
         public IzinHareket GetByIzinTalepId(int id)
         {
             return Map(repository.SelectByIzinTalepId(id));
@@ -170,15 +150,9 @@ namespace Model.Services.IKYS
             return repository.SelectByTarihReturnDataTable(baslangic, bitis);
         }
 
-        public DataTable GetByTarihReturnDataTable(
-            DateTime baslangic,
-            DateTime bitis,
-            PortalLogContext context)
+        public DataTable GetByTarihReturnDataTable(DateTime baslangic, DateTime bitis, PortalLogContext context)
         {
-            return Trace(
-                context,
-                "IzinHareket.SelectByTarih",
-                () => repository.SelectByTarihReturnDataTable(baslangic, bitis));
+            return repository.SelectByTarihReturnDataTable(baslangic, bitis, context);
         }
 
         public IzinHareket GetByPersonelTarih(
@@ -189,17 +163,9 @@ namespace Model.Services.IKYS
             return Map(repository.SelectByPersonelTarih(personelId, baslangic, bitis));
         }
 
-        public IzinHareket GetByPersonelTarih(
-            int personelId,
-            DateTime baslangic,
-            DateTime bitis,
-            PortalLogContext context)
+        public IzinHareket GetByPersonelTarih(int personelId, DateTime baslangic, DateTime bitis, PortalLogContext context)
         {
-            return Map(repository.SelectByPersonelTarih(
-                personelId,
-                baslangic,
-                bitis,
-                context));
+            return Map(repository.SelectByPersonelTarih(personelId, baslangic, bitis, context));
         }
 
         public DataTable GetByIzinTipiTarihReturnDataTable(
@@ -210,16 +176,9 @@ namespace Model.Services.IKYS
             return repository.SelectByIzinTipiTarih(izinTipi, ilkTarih, bitis);
         }
 
-        public DataTable GetByIzinTipiTarihReturnDataTable(
-            int izinTipi,
-            DateTime ilkTarih,
-            DateTime bitis,
-            PortalLogContext context)
+        public DataTable GetByIzinTipiTarihReturnDataTable(int izinTipi, DateTime ilkTarih, DateTime bitis, PortalLogContext context)
         {
-            return Trace(
-                context,
-                "IzinHareket.SelectByIzinTipiTarih",
-                () => repository.SelectByIzinTipiTarih(izinTipi, ilkTarih, bitis));
+            return repository.SelectByIzinTipiTarih(izinTipi, ilkTarih, bitis, context);
         }
 
         public DataTable GetByIzinDonemiReturnDataTable(
@@ -239,11 +198,7 @@ namespace Model.Services.IKYS
             return repository.SelectByPersonelIdDonemId(personelId, izinDonemId, izinTipi);
         }
 
-        public DataTable GetByIzinDonemiReturnDataTable(
-            int izinDonemId,
-            int personelId,
-            int izinTipi,
-            PortalLogContext context)
+        public DataTable GetByIzinDonemiReturnDataTable(int izinDonemId, int personelId, int izinTipi, PortalLogContext context)
         {
             return repository.SelectByPersonelIdDonemId(personelId, izinDonemId, izinTipi, context);
         }
@@ -262,14 +217,9 @@ namespace Model.Services.IKYS
             return ToList(repository.SelectDigerByPersonelId(personelId));
         }
 
-        public List<IzinHareket> GetDigerByPersonelId(
-            int personelId,
-            PortalLogContext context)
+        public List<IzinHareket> GetDigerByPersonelId(int personelId, PortalLogContext context)
         {
-            return Trace(
-                context,
-                "IzinHareket.SelectDigerByPersonelId",
-                () => ToList(repository.SelectDigerByPersonelId(personelId)));
+            return ToList(repository.SelectDigerByPersonelId(personelId, context));
         }
         private static void RecordChanges(IzinHareket old, IzinHareket current, int auditId, SqlTransactionContext transaction)
         {
@@ -286,6 +236,12 @@ namespace Model.Services.IKYS
             Add(log, auditId, "Birim", old == null ? (object)null : old.Birim, current == null ? (object)null : current.Birim, transaction);
             Add(log, auditId, "Adres", old == null ? (object)null : old.Adres, current == null ? (object)null : current.Adres, transaction);
             Add(log, auditId, "Aciklama", old == null ? (object)null : old.Aciklama, current == null ? (object)null : current.Aciklama, transaction);
+            Add(log, auditId, "VekilImza", old == null ? null : Convert.ToString(old.VekilImza, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.VekilImza, CultureInfo.InvariantCulture), transaction);
+            Add(log, auditId, "AmirImza", old == null ? null : Convert.ToString(old.AmirImza, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.AmirImza, CultureInfo.InvariantCulture), transaction);
+            Add(log, auditId, "OnayImza", old == null ? null : Convert.ToString(old.OnayImza, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.OnayImza, CultureInfo.InvariantCulture), transaction);
+            Add(log, auditId, "OncekiIzinStr", old == null ? null : Convert.ToString(old.OncekiIzinStr, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.OncekiIzinStr, CultureInfo.InvariantCulture), transaction);
+            Add(log, auditId, "KullanilanIzinStr", old == null ? null : Convert.ToString(old.KullanilanIzinStr, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.KullanilanIzinStr, CultureInfo.InvariantCulture), transaction);
+            Add(log, auditId, "KalanIzinStr", old == null ? null : Convert.ToString(old.KalanIzinStr, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.KalanIzinStr, CultureInfo.InvariantCulture), transaction);
         }
         private static void Add(PortalLogRepository log,int id,string field,object oldValue,object newValue,SqlTransactionContext transaction) { string a=oldValue==null?null:Convert.ToString(oldValue,CultureInfo.InvariantCulture); string b=newValue==null?null:Convert.ToString(newValue,CultureInfo.InvariantCulture); if(!string.Equals(a,b,StringComparison.Ordinal)) log.RecordAuditChange(id,field,a,b,transaction); }
         public bool TryRecordWebPartOpened(PortalLogContext context)
@@ -307,5 +263,16 @@ namespace Model.Services.IKYS
         }
         private static IzinHareket Map(DataTable table) { return ToList(table).FirstOrDefault(); }
         private static List<IzinHareket> ToList(DataTable table) { return new IzinHareket().ToList<IzinHareket>(table); }
+
+        public DataTable GetByIzinDonemiReturnDataTable(int personelId, int izinTipi, DateTime baslangic, DateTime bitis, PortalLogContext context)
+        {
+            return repository.SelectByIzinDonemi(personelId, izinTipi, baslangic, bitis, context);
+        }
+
+        public string GetByPersonelIdDonemIdReturnJson(int personelId, int donemId, int izinTanimId, PortalLogContext context)
+        {
+            return ConvertDataTableToString(
+                repository.SelectByPersonelIdDonemId(personelId, donemId, izinTanimId, context));
+        }
     }
 }

@@ -22,11 +22,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
@@ -119,12 +115,12 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                     else
                     {
                         //publish etmeden önce Burayı değiştirmeyi unutma
-                        Personel personel = IKYSOrtak.PersonelGetir(CurrentUserName);
+                        Personel personel = IKYSOrtak.PersonelGetir(CurrentUserName, LoggingContext);
                         //Personel personel = new Personel();//PersonelGetir();
                         //personel = personel.Select(1192);
                         if (personel != null && personel.Id > 0)
                         {
-                            List<BirimTanim> amirOlduguBirimler = new BirimTanimService().GetByAmirId(personel.Id);
+                            List<BirimTanim> amirOlduguBirimler = new BirimTanimService().GetByAmirId(personel.Id, LoggingContext);
                             if (amirOlduguBirimler != null && amirOlduguBirimler.Count > 0)
                             {
                                 AmirBirimIdList = string.Join(",", amirOlduguBirimler.Select(b => b.Id));
@@ -155,7 +151,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
         private Personel PersonelGetir()
         {
             string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-            return new PersonelService().GetByUserName(userName);
+            return new PersonelService().GetByUserName(userName, LoggingContext);
         }
         private void TabloOlustur()
         {
@@ -188,8 +184,8 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
 
             GorevOnayService gorevOnayService = new GorevOnayService();
             DataTable dataTable = AuthQS.Equals("IKYS")
-                ? gorevOnayService.GetBekleyenAmirOnayi()
-                : gorevOnayService.GetBekleyenAmirOnayiByBirimIds(AmirBirimIdList);
+                ? gorevOnayService.GetBekleyenAmirOnayi(LoggingContext)
+                : gorevOnayService.GetBekleyenAmirOnayiByBirimIds(AmirBirimIdList, LoggingContext);
 
             List<BekleyenIslemListItem> list = new List<BekleyenIslemListItem>();
 
@@ -433,7 +429,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                         MessageHelper.PublishMessage("Görev onaylandı.", ProjeConstants.MESAJ_BILGI);
                     }
                     else
-                    {                       
+                    {
                         MessageHelper.PublishMessage("Onaylama işlemi başarısız oldu.", ProjeConstants.MESAJ_HATA);
                     }
                 }
@@ -486,7 +482,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                     Personel amir = null;
                     if (isBilgileri != null)
                     {
-                        BirimTanim birimTanim = new BirimTanimService().GetById(isBilgileri.BirimId);
+                        BirimTanim birimTanim = new BirimTanimService().GetById(isBilgileri.BirimId, LoggingContext);
                         amir = new PersonelService().GetById(birimTanim.AmirId, LoggingContext);
                         if (birimTanim != null)
                         {
@@ -498,7 +494,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                     }
                     //amire mail gönder
                     //personele  mail gönder
-                    IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Onay");
+                    IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Onay", LoggingContext);
 
                 }
             }
@@ -520,7 +516,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                     Personel amir = null;
                     if (isBilgileri != null)
                     {
-                        BirimTanim birimTanim = new BirimTanimService().GetById(isBilgileri.BirimId);
+                        BirimTanim birimTanim = new BirimTanimService().GetById(isBilgileri.BirimId, LoggingContext);
                         amir = new PersonelService().GetById(birimTanim.AmirId, LoggingContext);
                         if (birimTanim != null)
                         {
@@ -532,7 +528,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                     }
                     //amire mail gönder
                     //personele  mail gönder
-                    IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Red");
+                    IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Red", LoggingContext);
 
                 }
             }

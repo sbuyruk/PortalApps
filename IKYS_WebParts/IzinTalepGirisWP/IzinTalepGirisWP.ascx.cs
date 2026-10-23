@@ -437,7 +437,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 else if (izinTipi.Equals(ProjeConstants.IZINTIPI_MAZERET))
                 {
                     IzinDonem id = new IzinDonem();
-                    id = new IzinDonemService().GetById(izinDonemId);
+                    id = new IzinDonemService().GetById(izinDonemId, LoggingContext);
                     string kalanIzin = string.Empty;
                     if (id != null)
                     {
@@ -499,7 +499,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 else if (izinTipi.Equals(ProjeConstants.IZINTIPI_MAZERET))
                 {
                     IzinDonem id = new IzinDonem();
-                    id = new IzinDonemService().GetById(izinDonemId);
+                    id = new IzinDonemService().GetById(izinDonemId, LoggingContext);
                     string kalanIzin = string.Empty;
                     if (id != null)
                     {
@@ -561,7 +561,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 else if (izinTipi.Equals(ProjeConstants.IZINTIPI_MAZERET))
                 {
                     IzinDonem id = new IzinDonem();
-                    id = new IzinDonemService().GetById(izinDonemId);
+                    id = new IzinDonemService().GetById(izinDonemId, LoggingContext);
                     string kalanIzin = string.Empty;
                     if (id != null)
                     {
@@ -623,7 +623,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 else if (izinTipi.Equals(ProjeConstants.IZINTIPI_MAZERET))
                 {
                     IzinDonem id = new IzinDonem();
-                    id = new IzinDonemService().GetById(izinDonemId);
+                    id = new IzinDonemService().GetById(izinDonemId, LoggingContext);
                     string kalanIzin = string.Empty;
                     if (id != null)
                     {
@@ -685,7 +685,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 else if (izinTipi.Equals(ProjeConstants.IZINTIPI_MAZERET))
                 {
                     IzinDonem id = new IzinDonem();
-                    id = new IzinDonemService().GetById(izinDonemId);
+                    id = new IzinDonemService().GetById(izinDonemId, LoggingContext);
                     string kalanIzin = string.Empty;
                     if (id != null)
                     {
@@ -711,7 +711,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
         {
             string sonuctaKalanIzin = string.Empty;
             IzinDonem izinDonemi = new IzinDonem();
-            izinDonemi = new IzinDonemService().GetById(izinDonemId);
+            izinDonemi = new IzinDonemService().GetById(izinDonemId, LoggingContext);
             if (izinDonemi != null)
             {
                 if (izinDonemi.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT)
@@ -747,7 +747,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
         {
             PersonelDDL.Items.Clear();
             Personel personel = new Personel();
-            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu, LoggingContext);
 
             foreach (Personel item in list)
             {
@@ -770,7 +770,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
         {
             VekilImzaDDL.Items.Clear();
             Personel personel = new Personel();
-            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu, LoggingContext);
             ListItem bosLi = new ListItem(ProjeConstants.BOS, ProjeConstants.BOS_INT.ToString());
             VekilImzaDDL.Items.Add(bosLi);
             foreach (Personel item in list)
@@ -790,7 +790,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
         {
             AmirImzaDDL.Items.Clear();
             Personel personel = new Personel();
-            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu, LoggingContext);
             ListItem bosLi = new ListItem(ProjeConstants.BOS, ProjeConstants.BOS_INT.ToString());
             AmirImzaDDL.Items.Add(bosLi);
             foreach (Personel item in list)
@@ -826,7 +826,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
         private void FillIzinTanim()
         {
             IzinTanimDDL.Items.Clear();
-            List<IzinTanim> list = new IzinTanimService().GetAll();
+            List<IzinTanim> list = new IzinTanimService().GetAll(LoggingContext);
             foreach (IzinTanim item in list)
             {
                 ListItem li = new ListItem(item.Adi.ReturnEmptyIfNull().ToString(), item.Id.ReturnZeroIfNull().ToString());
@@ -900,7 +900,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             {
                 IzinTalepIdLbl.Text = izinTalep.Id.ReturnEmptyIfNull().ToString();
                 IzinTanim it = new IzinTanim();
-                it = new IzinTanimService().GetById(izinTalep.IzinTipi);
+                it = new IzinTanimService().GetById(izinTalep.IzinTipi, LoggingContext);
                 IzinTipiLbl.Text = it.Adi;
                 SelectDDLValue(VekilImzaDDL, izinTalep.VekilImza.ToString());
                 SelectDDLValue(AmirImzaDDL, izinTalep.AmirImza.ToString());
@@ -966,10 +966,10 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 AciklamaTxt.Text = "Süt İzni (Günde 1 Buçuk saat)";
                 KullanilmayanLbl.Text = "Not: Süt izni girdiğiniz saatten başlayarak günlük 1 buçuk saat olarak uygulanır.";
                 IletisimBilgileri ib = new IletisimBilgileri();
-                ib = new IletisimBilgileriService().GetByPersonelId(PersonelIdQS.ConvertToInt());
+                ib = new IletisimBilgileriService().GetByPersonelId(PersonelIdQS.ConvertToInt(), LoggingContext);
                 if (ib != null)
                 {
-                    Ilce ilce = new IlceService().GetById(ib.Ilcesi);
+                    Ilce ilce = new IlceService().GetById(ib.Ilcesi, LoggingContext);
                     string ilcestr = ilce.IlceAdi;
                     AdresTxt.Text = ib.Adres + " " + ib.Semt + " " + ilcestr;
                 }
@@ -1257,7 +1257,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
         {
             try
             {
-            
+
                 IzinTanimIdQS = IzinTanimDDL.SelectedItem.Value;
                 SetDefaultVekilAmirOnay();
                 KalanIzinKontrolIslemleri();
@@ -1333,7 +1333,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                             {
                                 if (EPostaGonderChk.Checked)
                                 {
-                                    IKYSOrtak.IzinTalepOlusturmaEPostasiGonder(personel, izinTalepId);
+                                    IKYSOrtak.IzinTalepOlusturmaEPostasiGonder(personel, izinTalepId, LoggingContext);
                                 }
                                 TabloyuDoldur();
                                 SaveBtn.Visible = false;
@@ -1409,12 +1409,12 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 return false;
             }
             IsBilgileri isBilgileri = new IsBilgileri();
-            isBilgileri= new IsBilgileriService().GetByPersonelId(personel.Id);
+            isBilgileri= new IsBilgileriService().GetByPersonelId(personel.Id, LoggingContext);
             if (isBilgileri == null )
             {
                 MessageHelper.PublishMessage("Personelin iş bilgileri bulunamadı. İzin talebi oluşturulamaz.", ProjeConstants.MESAJ_HATA);
                 return false;
-            }else if ((isBilgileri.IzinDonemiBasTar==null) || 
+            }else if ((isBilgileri.IzinDonemiBasTar==null) ||
                 (isBilgileri.IzinDonemiBasTar < ProjeConstants.REFERANS_TARIHI))
             {
                 MessageHelper.PublishMessage("Personel İzin Başlama Tarihi Geçersiz. İzin talebi oluşturulamaz.", ProjeConstants.MESAJ_HATA);
@@ -1444,7 +1444,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 UyariLbl.Text = string.Empty;
                 UcretliIzinDilekceBtn.Visible = false;
 
-                Aile aile = new AileService().GetEnGencCocukByPersonelId(personel.Id);
+                Aile aile = new AileService().GetEnGencCocukByPersonelId(personel.Id, LoggingContext);
 
                 if (aile != null)
                 {
@@ -1553,20 +1553,20 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 }
                 else if (izinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT)
                 {
-                    KullanilanIzinLbl.Text = izinDonemi.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinDonemi.BitisTarihi.ConvertToDatetimeEmptyIfNull() 
+                    KullanilanIzinLbl.Text = izinDonemi.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinDonemi.BitisTarihi.ConvertToDatetimeEmptyIfNull()
                         + " İzin döneminde, " + izinDonemi.IzinHakki.ConvertToInt() + " " + izinDonemi.Birim + " " + ProjeConstants.IZINTIPI_UCRETLI + " izninizden kullandığınız izin süresi : "
                         + izinDonemi.KullanilanIzin.ConvertToInt() + " " + izinDonemi.Birim + "dür. " + System.Environment.NewLine;
 
                     int kalanIzinInt = izinDonemi.KalanIzin.ConvertToInt();
-                    int kalanIzinToplami = IKYSOrtak.KalanIzinToplamiGetir(personel.Id,false);
+                    int kalanIzinToplami = IKYSOrtak.KalanIzinToplamiGetir(personel.Id,false, LoggingContext);
                     int gecmisDonemlerdenKalanIzin = kalanIzinToplami - kalanIzinInt;
 
                     if (kalanIzinInt < 0)
                     {
                         if (gecmisDonemlerdenKalanIzin > 0)
                         {
-                           
-                            
+
+
                             if (gecmisDonemlerdenKalanIzin >= Math.Abs(kalanIzinInt))
                             {
                                 KullanilanIzinLbl.Text = izinDonemi.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinDonemi.BitisTarihi.ConvertToDatetimeEmptyIfNull()
@@ -1581,7 +1581,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                                    + " İzin dönemine ait izninizin tamamını kullandınız. İlave olarak geçmiş dönemlerden kalan izin hakkınızdan karşılanan " + gecmisDonemlerdenKalanIzin + " gün ve fazladan kullandığınız "
                                    + (Math.Abs(kalanIzinInt)- gecmisDonemlerdenKalanIzin) + " gün ile birlikte, bu izin döneminde kullandığınız izin toplamı     "
                                    + izinDonemi.KullanilanIzin.ConvertToInt() + " gündür. " + System.Environment.NewLine;
-                                
+
                                 GecmisDonemlerdenKalanIznLbl.Text = " Geçmis dönemlerden kalan <strong>" + gecmisDonemlerdenKalanIzin + "</strong> gün izninizi kullandiniz.";
                             }
                         }
@@ -1591,15 +1591,15 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                                   + " İzin dönemine ait izninizin tamamını kullandınız. İlave olarak fazladan kullandığınız "
                                   + Math.Abs(kalanIzinInt)  + " gün ile birlikte, bu izin döneminde kullandığınız izin toplamı "
                                   + izinDonemi.KullanilanIzin.ConvertToInt() + " gündür. " + System.Environment.NewLine;
-                            
+
                             GecmisDonemlerdenKalanIznLbl.Text = " Geçmiş Dönemlerden kalan kullanilmamis izniniz bulunmamaktadır.";
-                        } 
+                        }
                     }
                     else
                     {
                         if (gecmisDonemlerdenKalanIzin > 0)
                         {
-                            
+
                                 GecmisDonemlerdenKalanIznLbl.Text = " Geçmiş dönemlerden kalan <strong>" + gecmisDonemlerdenKalanIzin + "</strong> gün izniniz bulunmaktadır.";
                          }
                         else if (gecmisDonemlerdenKalanIzin == 0)
@@ -1609,8 +1609,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                             GecmisDonemlerdenKalanIznLbl.Text = " Bu yılki izninizden  <strong>" + Math.Abs(gecmisDonemlerdenKalanIzin)+ "</strong> gün geçmiş dönemlerde kullandınız.";
                         }
                     }
-                    
-                     
+
 
                     DateTime bitisTarihi = IzinBitTarTxt.Value.ConvertToDatetime();
                     string sureStr = IKYSOrtak.IzinSuresiHesapla(izinTipi, baslangicTarihi, bitisTarihi, LoggingContext);
@@ -1686,7 +1685,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             KullanilmayanLbl.Text = string.Empty;
         }
 
-        
+
         private bool ValidateInputs(int izinTipi)
         {
             bool isValidated = true;
@@ -1750,11 +1749,11 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             try
             {
                 Personel personel = new Personel();
-                personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt());
+                personel = new PersonelService().GetById(PersonelDDL.SelectedItem.Value.ConvertToInt(), LoggingContext);
                 if (personel != null)
                 {
                     PersonelIdQS = personel.Id.ToString();
-               
+
                     PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
                     SetLayoutByIzinTipi();
                     TabloyuDoldur();
@@ -1780,7 +1779,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             string rootUrl = (index < 0) ? currentUrl : currentUrl.Remove(index, rawUrl.Length);
 
             IzinDonem izinDonemi = new IzinDonem();
-            izinDonemi = new IzinDonemService().GetById(IzinDonemIdQS.ConvertToInt());
+            izinDonemi = new IzinDonemService().GetById(IzinDonemIdQS.ConvertToInt(), LoggingContext);
             if (izinDonemi != null)
             {
 
@@ -1803,7 +1802,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             string rootUrl = (index < 0) ? currentUrl : currentUrl.Remove(index, rawUrl.Length);
 
             IzinDonem izinDonemi = new IzinDonem();
-            izinDonemi = new IzinDonemService().GetById(IzinDonemIdQS.ConvertToInt());
+            izinDonemi = new IzinDonemService().GetById(IzinDonemIdQS.ConvertToInt(), LoggingContext);
             if (izinDonemi != null)
             {
                 if (ValidateInputs(ProjeConstants.IZINTIPI_UCRETLI_INT))

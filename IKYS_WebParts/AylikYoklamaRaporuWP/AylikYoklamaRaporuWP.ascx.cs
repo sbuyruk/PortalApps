@@ -24,11 +24,7 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
@@ -279,7 +275,7 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP
 
                     //renk = renk.ToArgb().Equals(Color.White.ToArgb()) ? Color.LightGray : Color.White;
                 }
-                
+
                 renk = item.BulunmamaSebebi.Contains(ProjeConstants.IZINTIPI_MAZERET) ? Color.FromArgb(221, 235, 247): Color.LightGray;
                 siraCell.BackColor = renk;
                 adiSoyadiCell.BackColor = renk;
@@ -487,7 +483,7 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP
             int yil = SecilenYilQS.ConvertToInt();
             DateTime basTar = new DateTime(yil, ay, 1);
             DateTime bitTar = basTar.AddMonths(1).AddMinutes(-1);
-            dataTable = new IzinHareketService().GetByIzinTipiTarihReturnDataTable(ProjeConstants.IZINTIPI_MAZERET_INT, basTar, bitTar);
+            dataTable = new IzinHareketService().GetByIzinTipiTarihReturnDataTable(ProjeConstants.IZINTIPI_MAZERET_INT, basTar, bitTar, LoggingContext);
             List<AylikYoklamaListItem> mazeretList = new List<AylikYoklamaListItem>();
             if (dataTable != null)
             {
@@ -556,7 +552,7 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP
             System.IO.StringWriter tw = new System.IO.StringWriter();
             System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
 
-            //Get the HTML for the control.             
+            //Get the HTML for the control.
             AylikYoklamaTable.RenderControl(hw);
             //Write the HTML back to the browser.
             //Response.ContentType = application/vnd.ms-excel;

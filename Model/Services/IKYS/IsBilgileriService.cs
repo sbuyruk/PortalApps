@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using Utility.ProjeGlobal;
 using Utility.Logging;
 using System.Globalization;
 
@@ -21,7 +20,7 @@ namespace Model.Services.IKYS
         public IsBilgileri GetById(int id) { return Map(repository.SelectById(id)); }
         public IsBilgileri GetById(int id, SqlTransactionContext transaction, PortalLogContext context) { if (transaction == null) throw new ArgumentNullException("transaction"); if (context == null) throw new ArgumentNullException("context"); return Map(repository.SelectById(id, transaction, context)); }
         public List<IsBilgileri> GetAll() { return ToList(repository.SelectAll()); }
-        public int Save(IsBilgileri item) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item); if (item.Id > 0 && ProjeConstants.IKYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_ISBILGILERI); return item.Id; }
+
         public int Save(IsBilgileri item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
@@ -44,7 +43,7 @@ namespace Model.Services.IKYS
             RecordChanges(null, item, auditId, transaction);
             return item.Id;
         }
-        public bool Update(IsBilgileri item) { if (item == null) throw new ArgumentNullException("item"); IsBilgileri old = GetById(item.Id); bool ok = false; if (item.Id != 0) { item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); ok = repository.Update(item); } if (ok && ProjeConstants.IKYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.IKYS, ProjeConstants.IKYS_ISBILGILERI); return ok; }
+
         public bool Update(IsBilgileri item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
@@ -70,7 +69,7 @@ namespace Model.Services.IKYS
             RecordChanges(old, item, auditId, transaction);
             return true;
         }
-        public bool Delete(IsBilgileri item) { if (item == null || item.Id == 0) return false; IsBilgileri old = GetById(item.Id); if (old == null) return false; bool ok = repository.Delete(item.Id); if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.IKYS, ProjeConstants.IKYS_ISBILGILERI); return ok; }
+
         public bool Delete(IsBilgileri item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
@@ -83,10 +82,12 @@ namespace Model.Services.IKYS
             }
         }
         public IsBilgileri GetByPersonelId(int personelId) { return Map(repository.SelectByPersonelId(personelId)); }
-        public IsBilgileri GetByPersonelId(int personelId, PortalLogContext context) { return Map(repository.SelectByPersonelId(personelId, context)); }
+        public IsBilgileri GetByPersonelId(int personelId, PortalLogContext context)
+        { return Map(repository.SelectByPersonelId(personelId, context)); }
         public IsBilgileri GetByPersonelId(int personelId, SqlTransactionContext transaction, PortalLogContext context) { if (transaction == null) throw new ArgumentNullException("transaction"); if (context == null) throw new ArgumentNullException("context"); return Map(repository.SelectByPersonelId(personelId, transaction, context)); }
         public IsBilgileri GetByGorevId(int gorevId) { return Map(repository.SelectByGorevId(gorevId)); }
-        public IsBilgileri GetByGorevId(int gorevId, PortalLogContext context) { return Map(repository.SelectByGorevId(gorevId, context)); }
+        public IsBilgileri GetByGorevId(int gorevId, PortalLogContext context)
+        { return Map(repository.SelectByGorevId(gorevId, context)); }
         public DataTable GetAllFromIsYeriBilgileri() { return repository.SelectAllFromIsYeriBilgileri(); }
         private static void RecordChanges(IsBilgileri old, IsBilgileri current, int auditId, SqlTransactionContext transaction)
         {
@@ -97,9 +98,28 @@ namespace Model.Services.IKYS
             AddChange(log, auditId, "GorevId", old == null ? null : old.GorevId.ToString(CultureInfo.InvariantCulture), current == null ? null : current.GorevId.ToString(CultureInfo.InvariantCulture), transaction);
             AddChange(log, auditId, "BirimId", old == null ? null : old.BirimId.ToString(CultureInfo.InvariantCulture), current == null ? null : current.BirimId.ToString(CultureInfo.InvariantCulture), transaction);
             AddChange(log, auditId, "CalismaDurumu", old == null ? null : old.CalismaDurumu.ToString(CultureInfo.InvariantCulture), current == null ? null : current.CalismaDurumu.ToString(CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "BaslamaTar", old == null ? null : old.BaslamaTar.ToString("o", CultureInfo.InvariantCulture), current == null ? null : current.BaslamaTar.ToString("o", CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "IzinDonemiBasTar", old == null ? null : old.IzinDonemiBasTar.ToString("o", CultureInfo.InvariantCulture), current == null ? null : current.IzinDonemiBasTar.ToString("o", CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "AyrilmaTar", old == null ? null : old.AyrilmaTar.ToString("o", CultureInfo.InvariantCulture), current == null ? null : current.AyrilmaTar.ToString("o", CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "AyrilmaSebebi", old == null ? null : Convert.ToString(old.AyrilmaSebebi, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.AyrilmaSebebi, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "ProtokolSiraNo", old == null ? null : Convert.ToString(old.ProtokolSiraNo, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.ProtokolSiraNo, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "SGKSicilNo", old == null ? null : Convert.ToString(old.SGKSicilNo, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.SGKSicilNo, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "SGKBasTar", old == null ? null : old.SGKBasTar.ToString("o", CultureInfo.InvariantCulture), current == null ? null : current.SGKBasTar.ToString("o", CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "VakifOncesiPrimGunSayisi", old == null ? null : Convert.ToString(old.VakifOncesiPrimGunSayisi, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.VakifOncesiPrimGunSayisi, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "EmeklilikTarihi", old == null ? null : old.EmeklilikTarihi.ToString("o", CultureInfo.InvariantCulture), current == null ? null : current.EmeklilikTarihi.ToString("o", CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "Aciklama", old == null ? null : Convert.ToString(old.Aciklama, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.Aciklama, CultureInfo.InvariantCulture), transaction);
         }
         private static void AddChange(PortalLogRepository log, int auditId, string field, string oldValue, string newValue, SqlTransactionContext transaction) { if (!string.Equals(oldValue, newValue, StringComparison.Ordinal)) log.RecordAuditChange(auditId, field, oldValue, newValue, transaction); }
         private static IsBilgileri Map(DataTable table) { return ToList(table).FirstOrDefault(); }
         private static List<IsBilgileri> ToList(DataTable table) { return new IsBilgileri().ToList<IsBilgileri>(table); }
+
+        public IsBilgileri GetById(int id, PortalLogContext context)
+        { return Map(repository.SelectById(id, context)); }
+
+        public List<IsBilgileri> GetAll(PortalLogContext context)
+        { return ToList(repository.SelectAll(context)); }
+
+        public DataTable GetAllFromIsYeriBilgileri(PortalLogContext context)
+        { return repository.SelectAllFromIsYeriBilgileri(context); }
     }
 }

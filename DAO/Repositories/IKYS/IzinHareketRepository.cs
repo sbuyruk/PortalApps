@@ -37,24 +37,12 @@ namespace DAO.Repositories.IKYS
             return db.SelectFromDb(new SqlQuery("SELECT * FROM IzinHareket_Table"), "");
         }
 
-        public int Insert<T>(T item)
-        {
-            return db.Insert(queryBuilder.BuildInsert(item, "IzinHareket_Table"));
-        }
-
-        public bool Update<T>(T item)
-        {
-            return db.Update2Db(queryBuilder.BuildUpdate(item, "IzinHareket_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("IzinHareket_Table", id), "");
-        }
 
         public DataTable SelectById(int id, PortalLogContext context)
         {
-            return TraceSelect("IzinHareket.SelectById", () => SelectById(id), context);
+            SqlQuery query = new SqlQuery("SELECT * FROM IzinHareket_Table WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return PortalSqlReadExecutor.Select(query, context, "IzinHareket.SelectById");
         }
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
         {
@@ -86,7 +74,7 @@ namespace DAO.Repositories.IKYS
         }
         public DataTable SelectAll(PortalLogContext context)
         {
-            return TraceSelect("IzinHareket.SelectAll", () => SelectAll(), context);
+            return PortalSqlReadExecutor.Select(new SqlQuery("SELECT * FROM IzinHareket_Table"), context, "IzinHareket.SelectAll");
         }
 
         public int Insert<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
@@ -118,15 +106,13 @@ namespace DAO.Repositories.IKYS
         }
 
         public DataTable SelectByTarih(DateTime tarih, PortalLogContext context)
-        {
-            return TraceSelect("IzinHareket.SelectByTarih", () => SelectByTarih(tarih), context);
-        }
+        { SqlQuery q = new SqlQuery("SELECT * FROM IzinHareket_Table WHERE IzinTipi!=2 AND BitisTarihi>=@Tarih ORDER BY BaslangicTarihi"); q.AddParameter("@Tarih", tarih); return PortalSqlReadExecutor.Select(q, context, "IzinHareket.SelectByTarih"); }
         public DataTable SelectByIzinTalepId(int id, PortalLogContext context)
         {
-            return TraceSelect(
-                "IzinHareket.SelectByIzinTalepId",
-                () => SelectByIzinTalepId(id),
-                context);
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM IzinHareket_Table WHERE IzinTalepId=@IzinTalepId");
+            query.AddParameter("@IzinTalepId", id);
+            return PortalSqlReadExecutor.Select(query, context, "IzinHareket.SelectByIzinTalepId");
         }
 
         public DataTable SelectByIzinTalepId(
@@ -161,25 +147,13 @@ namespace DAO.Repositories.IKYS
                     succeeded);
             }
         }
-        public DataTable SelectByPersonelTarih(
-            int personelId,
-            DateTime baslangic,
-            DateTime bitis,
-            PortalLogContext context)
+        public DataTable SelectByPersonelTarih(int personelId, DateTime baslangic, DateTime bitis, PortalLogContext context)
         {
-            return TraceSelect(
-                "IzinHareket.SelectByPersonelTarih",
-                () => SelectByPersonelTarih(personelId, baslangic, bitis),
-                context);
+            SqlQuery q = new SqlQuery("SELECT * FROM IzinHareket_Table WHERE PersonelId=@PersonelId AND IzinTipi!=2 AND IzinTipi!=8 AND BaslangicTarihi<=@BaslangicTarihi AND BitisTarihi>=@BitisTarihi ORDER BY BitisTarihi DESC"); q.AddParameter("@PersonelId", personelId); q.AddParameter("@BaslangicTarihi", baslangic); q.AddParameter("@BitisTarihi", bitis); return PortalSqlReadExecutor.Select(q, context, "IzinHareket.SelectByPersonelTarih");
         }
 
         public DataTable SelectDigerByPersonelId(int personelId, PortalLogContext context)
-        {
-            return TraceSelect(
-                "IzinHareket.SelectDigerByPersonelId",
-                () => SelectDigerByPersonelId(personelId),
-                context);
-        }
+        { SqlQuery q = new SqlQuery("SELECT *, B.Adi IzinTipiAdi FROM IzinHareket_Table A INNER JOIN IzinTanim_Table B ON B.Id=A.IzinTipi WHERE IzinTipi NOT IN (1,2) AND PersonelId=@PersonelId ORDER BY A.BaslangicTarihi DESC"); q.AddParameter("@PersonelId", personelId); return PortalSqlReadExecutor.Select(q, context, "IzinHareket.SelectDigerByPersonelId"); }
 
         private DataTable TraceSelect(
             string name,
@@ -312,5 +286,28 @@ namespace DAO.Repositories.IKYS
             q.AddParameter("@Since", new DateTime(sinceYear, 1, 1)); if (personelId > 0) q.AddParameter("@PersonelId", personelId); if (donemId > 0) q.AddParameter("@DonemId", donemId); if (izinTipi > 0) q.AddParameter("@IzinTipi", izinTipi); return PortalSqlReadExecutor.Select(q, context, "IzinHareket.SelectByPersonelIdDonemId");
         }
         public DataTable SelectDigerByPersonelId(int personelId) { SqlQuery q = new SqlQuery("SELECT *, B.Adi IzinTipiAdi FROM IzinHareket_Table A INNER JOIN IzinTanim_Table B ON B.Id=A.IzinTipi WHERE IzinTipi NOT IN (1,2) AND PersonelId=@PersonelId ORDER BY A.BaslangicTarihi DESC"); q.AddParameter("@PersonelId", personelId); return db.SelectFromDb(q, ""); }
+
+        public DataTable SelectByTarihReturnDataTable(DateTime baslangic, DateTime bitis, PortalLogContext context)
+        {
+            SqlQuery q = new SqlQuery(@"SELECT B.Adi+' ' + B.Soyadi AdiSoyadi,A.PersonelId,A.BaslangicTarihi,A.BitisTarihi,A.Sure,A.Birim,A.IzinTipi,C.Adi IzinTanim,D.BirimId,E.KisaAdi GorevYeri
+                FROM IzinHareket_Table A INNER JOIN Personel_Table B ON B.Id=A.PersonelId INNER JOIN IzinTanim_Table C ON C.Id=A.IzinTipi LEFT JOIN IsBilgileri_Table D ON D.PersonelId=A.PersonelId INNER JOIN BirimTanim_Table E ON E.Id=D.BirimId
+                WHERE A.BaslangicTarihi<=@BaslangicTarihi AND A.BitisTarihi>=@BitisTarihi ORDER BY ProtokolSiraNo,A.IzinTipi,A.BaslangicTarihi");
+            q.AddParameter("@BaslangicTarihi", baslangic); q.AddParameter("@BitisTarihi", bitis); return PortalSqlReadExecutor.Select(q, context, "IzinHareket.SelectByTarihReturnDataTable");
+        }
+
+        public DataTable SelectByIzinTipiTarih(int izinTipi, DateTime ilkTarih, DateTime bitis, PortalLogContext context)
+        {
+            SqlQuery q = new SqlQuery(@"SELECT B.Adi+' ' + B.Soyadi AdiSoyadi,A.BaslangicTarihi,A.BitisTarihi,A.Sure,A.Birim,A.IzinTipi,C.Adi IzinTanim,D.BirimId,E.KisaAdi GorevYeri,A.Aciklama,D.ProtokolSiraNo
+                FROM IzinHareket_Table A INNER JOIN Personel_Table B ON B.Id=A.PersonelId INNER JOIN IzinTanim_Table C ON C.Id=A.IzinTipi LEFT JOIN IsBilgileri_Table D ON D.PersonelId=A.PersonelId INNER JOIN BirimTanim_Table E ON E.Id=D.BirimId
+                WHERE A.Mahsup=0 AND A.IzinTipi=@IzinTipi AND A.BaslangicTarihi BETWEEN @IlkTarih AND @BitisTarihi ORDER BY D.ProtokolSiraNo,A.BaslangicTarihi");
+            q.AddParameter("@IzinTipi", izinTipi); q.AddParameter("@IlkTarih", ilkTarih); q.AddParameter("@BitisTarihi", bitis); return PortalSqlReadExecutor.Select(q, context, "IzinHareket.SelectByIzinTipiTarih");
+        }
+
+        public DataTable SelectByIzinDonemi(int personelId, int izinTipi, DateTime baslangic, DateTime bitis, PortalLogContext context)
+        {
+            string filters = personelId > 0 ? " AND A.PersonelId=@PersonelId" : ""; filters += izinTipi > 0 ? " AND A.IzinTipi=@IzinTipi" : "";
+            SqlQuery q = new SqlQuery("SELECT A.Id IzinHareketId,P.Adi+' '+P.Soyadi AdiSoyadi,A.PersonelId,A.BaslangicTarihi,A.BitisTarihi,A.Sure,A.Birim,A.IzinTalepId,CONVERT(varchar(10),@DonemBaslangic,104)+'-'+CONVERT(varchar(10),@DonemBitis,104) IzinDonemi,B.Adi IzinTipi,B.Id IzinTipiId,A.VekilImza,A.AmirImza,A.OnayImza,A.Adres,A.Aciklama,A.IzinDonemId,A.Mahsup FROM IzinHareket_Table A INNER JOIN Personel_Table P ON P.Id=A.PersonelId INNER JOIN IzinTanim_Table B ON B.Id=A.IzinTipi WHERE A.BaslangicTarihi BETWEEN @Baslangic AND @Bitis" + filters + " ORDER BY A.Id DESC");
+            q.AddParameter("@Baslangic", baslangic); q.AddParameter("@Bitis", bitis); q.AddParameter("@DonemBaslangic", baslangic); q.AddParameter("@DonemBitis", bitis); if (personelId > 0) q.AddParameter("@PersonelId", personelId); if (izinTipi > 0) q.AddParameter("@IzinTipi", izinTipi); return PortalSqlReadExecutor.Select(q, context, "IzinHareket.SelectByIzinDonemi");
+        }
     }
 }

@@ -500,8 +500,8 @@ namespace IKYS_WebParts.IzinDonemListesiWP
         /// Dönem Basi tarihine ise girdigi yil+1,
         /// Bitis Sonu tarihine son en eski izin dönemi baslama tarihini yaz
         /// izin hakki, kullanilan izin ve kalan izin hanelerine 0 gir, kullanici tarafindan girilecek
-        /// dönem basi sonu ve ise giris tarihlerinde olusacak çakismalare ve 
-        /// ise basladigi tarihten öncesine dönem girisini izin vermemek için 
+        /// dönem basi sonu ve ise giris tarihlerinde olusacak çakismalare ve
+        /// ise basladigi tarihten öncesine dönem girisini izin vermemek için
         /// modal pencereyi açtirma, mesaj ver
         /// </summary>
         /// <param name="sender"></param>

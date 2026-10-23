@@ -21,11 +21,7 @@ namespace IKYS_WebParts.BirimSemasiWP
         private void ReportError(Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, "BirimSemasi.Load", error);
             Messages.Error("Birim şeması yüklenemedi. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
@@ -97,17 +93,12 @@ namespace IKYS_WebParts.BirimSemasiWP
 
             BirimTanim birimTanim = new BirimTanim();
             PortalLogContext context = LoggingContext;
-            bool enabled = PortalLogSettings.IsEnabled(context);
-            var birimListesi = enabled
-                ? new BirimTanimService().GetByBirimKaldirildi(false, context)
-                : new BirimTanimService().GetByBirimKaldirildi(false);
-            Dictionary<int, Personel> activeManagers = enabled
-                ? new PersonelService().GetSchemaActiveManagers(context).ToDictionary(personel => personel.Id)
-                : null;
+            var birimListesi = new BirimTanimService().GetByBirimKaldirildi(false, context);
+            Dictionary<int, Personel> activeManagers = new PersonelService().GetSchemaActiveManagers(context).ToDictionary(personel => personel.Id);
 
             BirimTanim parent = birimListesi.Where(a => a.ParentId == 0).FirstOrDefault<BirimTanim>();
             Personel ilknode = new Personel();
-            ilknode = enabled ? new PersonelService().GetById(parent.AmirId, context) : new PersonelService().GetById(parent.AmirId);
+            ilknode = new PersonelService().GetById(parent.AmirId, context);
             string gmKullaniciAdi = ilknode == null ? "" : ilknode.KullaniciAdi.ReturnEmptyIfNull().ToString();
             string gmAdi = ilknode == null ? "" : ilknode.Adi.ReturnEmptyIfNull().ToString();
             string gmSoyadi = ilknode == null ? "" : ilknode.Soyadi.ReturnEmptyIfNull().ToString();
@@ -115,11 +106,10 @@ namespace IKYS_WebParts.BirimSemasiWP
 
             string gmfotostr = string.IsNullOrEmpty(gmKullaniciAdi) ? (!string.IsNullOrEmpty(gmAdi) ? gmAdi.Substring(0, 1) + gmSoyadi:"") : gmKullaniciAdi;
             gmfotostr = string.IsNullOrEmpty(gmfotostr) ? "person" : gmfotostr;
-            
+
             string gmimgUrl = newUrl + "/../" + ProjeConstants.RESIMLER_PERSONEL + "/" + gmfotostr.ReplaceTrChars() + ".jpg";
             string gmerrImgUrl = newUrl + "/../" + ProjeConstants.RESIMLER_PERSONEL + "/person.jpg";
 
-           
 
             csString += "a" + parent.Id + @" = {
                         text: {
@@ -136,15 +126,12 @@ namespace IKYS_WebParts.BirimSemasiWP
             foreach (BirimTanim item in birimListesi)
             {
                 Personel birimAmiri = new Personel();
-                if (enabled)
-                    activeManagers.TryGetValue(item.AmirId, out birimAmiri);
-                else
-                    birimAmiri = new PersonelService().GetActiveEmployee(item.AmirId);
+                activeManagers.TryGetValue(item.AmirId, out birimAmiri);
                 string amirKullaniciAdi = birimAmiri == null ? "" : birimAmiri.KullaniciAdi.ReturnEmptyIfNull().ToString();
                 string amirAdi = birimAmiri == null ? "" : birimAmiri.Adi.ReturnEmptyIfNull().ToString();
                 string amirSoyadi = birimAmiri == null ? "" : birimAmiri.Soyadi.ReturnEmptyIfNull().ToString();
                 string amirAdiSoyadi = amirAdi + " " + amirSoyadi;
-             
+
                 string fotostr = string.IsNullOrEmpty(amirKullaniciAdi) ? (!string.IsNullOrEmpty(amirAdi) ? amirAdi.Substring(0, 1) + amirSoyadi : "") : amirKullaniciAdi;
                 fotostr = string.IsNullOrEmpty(fotostr) ? "person": fotostr;
                 string imgUrl = newUrl + "/../"+ ProjeConstants.RESIMLER_PERSONEL + "/" + fotostr.ReplaceTrChars() + ".jpg";

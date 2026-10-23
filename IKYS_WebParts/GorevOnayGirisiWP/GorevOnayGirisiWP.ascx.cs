@@ -25,11 +25,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
@@ -418,7 +414,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
 
             if (AuthQS.Equals("IKYS"))
             {
-                list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
+                list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu, LoggingContext);
             }
             else if (AuthQS.Equals("BIRIM"))
             {
@@ -453,7 +449,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         private string ChildBirimGetir(int parentId)
         {
             string retVal = parentId + ",";
-            List<BirimTanim> list = new BirimTanimService().GetByParentId(parentId);
+            List<BirimTanim> list = new BirimTanimService().GetByParentId(parentId, LoggingContext);
             foreach (BirimTanim item in list)
             {
                 //retVal += item.Id + ",";
@@ -496,12 +492,12 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     }
                 }
 
-                BirimTanim bt = new BirimTanimService().GetById(BirimTanimIdQS.ConvertToInt());
+                BirimTanim bt = new BirimTanimService().GetById(BirimTanimIdQS.ConvertToInt(), LoggingContext);
                 if (bt != null)
                 {
                     birimListesiStr = BirimListesiGetir(bt);
                 }
-                list = new PersonelService().GetActiveEmployeesByUnitReturnList(birimListesiStr);
+                list = new PersonelService().GetActiveEmployeesByUnitReturnList(birimListesiStr, LoggingContext);
             }
             return list;
         }
@@ -585,7 +581,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         {
 
             PerSubeImzaDDL.Items.Clear();
-            DataTable dataTable = new PersonelService().GetActiveEmployeesByUnitReturnDataTable(ProjeConstants.PER_SUBE_INT, Personel.PersonelTipi.Kadrolu);//SelectCalisanPersonelReturnDataTable(PersonelTipi.Kadrolu);
+            DataTable dataTable = new PersonelService().GetActiveEmployeesByUnitReturnDataTable(ProjeConstants.PER_SUBE_INT, Personel.PersonelTipi.Kadrolu, LoggingContext);//SelectCalisanPersonelReturnDataTable(PersonelTipi.Kadrolu);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 int personelId = dataRow["PersonelId"].ConvertToInt();
@@ -603,7 +599,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         private void OnayImzaDDLDoldur()
         {
             OnayImzaDDL.Items.Clear();
-            DataTable dataTable = new PersonelService().GetActiveEmployeesByUnitReturnDataTable(ProjeConstants.PER_SUBE_INT, Personel.PersonelTipi.Kadrolu);//SelectCalisanPersonelReturnDataTable(PersonelTipi.Kadrolu);
+            DataTable dataTable = new PersonelService().GetActiveEmployeesByUnitReturnDataTable(ProjeConstants.PER_SUBE_INT, Personel.PersonelTipi.Kadrolu, LoggingContext);//SelectCalisanPersonelReturnDataTable(PersonelTipi.Kadrolu);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 int personelId = dataRow["PersonelId"].ConvertToInt();
@@ -720,7 +716,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 YevmiyeTxt.Text = gorevOnay.Yevmiye.ReturnEmptyIfNull().ToString();
                 GunlukYevmiyeTxt.Text = gorevOnay.GunlukYevmiye.ReturnEmptyIfNull().ToString();
                 AracPlakasiTxt.Text = gorevOnay.AracPlakasi.ReturnEmptyIfNull().ToString();
-                Harcirah harcirah = new HarcirahService().GetByParaBirimi(gorevOnay.ParaBirimi);
+                Harcirah harcirah = new HarcirahService().GetByParaBirimi(gorevOnay.ParaBirimi, LoggingContext);
                 UtilityHelper.SetDDLValue(UlkeDDL, harcirah.Ulke.ReturnEmptyIfNull().ToString());
             }
             else
@@ -759,7 +755,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             else
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = new PersonelService().GetByUserName(userName);
+                personel = new PersonelService().GetByUserName(userName, LoggingContext);
                 PersonelIdQS = personel.Id.ToString();
             }
 
@@ -941,7 +937,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             if (gorevTanim != null)
             {
                 string ulke = UlkeDDL.SelectedItem.Text;
-                List<Harcirah> list = new HarcirahService().GetByKadroUlkeTarih(gorevTanim.HarcirahGrupId, ulke, tarih);
+                List<Harcirah> list = new HarcirahService().GetByKadroUlkeTarih(gorevTanim.HarcirahGrupId, ulke, tarih, LoggingContext);
                 if (list.Count > 0)
                 {
                     return list.OrderByDescending(x => x.BaslangicTarihi).First();
@@ -1056,9 +1052,9 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     ParaBirimiTxt.Text = baslangicHarcirah.ParaBirimi.ToString();
                     YevmiyeParaBirimiTxt.Text = baslangicHarcirah.ParaBirimi.ToString();
                     YevmiyeTxt.Text = toplamTutar.ToString("N", culturInfo) + baslangicHarcirah.ParaBirimi;
-                    SureTxt.Text = toplamSure.ToString() + " gün"; 
+                    SureTxt.Text = toplamSure.ToString() + " gün";
                 }
-                else {                     
+                else {
                     GunlukYevmiyeTxt.Text = "0";
                     if (baslangicHarcirah != null)
                     {
@@ -1223,7 +1219,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                             Personel amir = null;
                             if (isBilgileri != null)
                             {
-                                BirimTanim birimTanim = new BirimTanimService().GetById(isBilgileri.BirimId);
+                                BirimTanim birimTanim = new BirimTanimService().GetById(isBilgileri.BirimId, LoggingContext);
                                 amir = new PersonelService().GetById(birimTanim.AmirId, LoggingContext);
                                 if (birimTanim != null)
                                 {
@@ -1238,12 +1234,12 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                             {
                                 //amire mail gönder
                                 //personele  mail gönder
-                                IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Giriş");
+                                IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Giriş", LoggingContext);
                             }
                             else
                             {
                                 //IKYS yetkili birim için mail gönder
-                                IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Giriş",false);
+                                IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Giriş",false, LoggingContext);
                             }
                         }
                     }

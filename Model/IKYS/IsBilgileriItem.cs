@@ -8,12 +8,14 @@ namespace Model.IKYS
     [Serializable]
     public class IsBilgileriItem : EntityBase
     {
+        [field: NonSerialized]
+        internal Utility.Logging.PortalLogContext LoggingContext { get; set; }
         public int PersonelId { get; set; }
         private IsBilgileri _IsBilgileri
         {
             get
             {
-                return new IsBilgileriService().GetByPersonelId(PersonelId);
+                return (LoggingContext == null ? new IsBilgileriService().GetByPersonelId(PersonelId) : new IsBilgileriService().GetByPersonelId(PersonelId, LoggingContext));
             }
             set
             {
@@ -24,7 +26,7 @@ namespace Model.IKYS
         {
             get
             {
-                return new UnvanTanimService().GetById(_IsBilgileri.UnvanId);
+                return (LoggingContext == null ? new UnvanTanimService().GetById(_IsBilgileri.UnvanId) : new UnvanTanimService().GetById(_IsBilgileri.UnvanId, LoggingContext));
             }
             set
             {
@@ -35,7 +37,7 @@ namespace Model.IKYS
         {
             get
             {
-                return new BirimTanimService().GetById(_IsBilgileri.BirimId);
+                return (LoggingContext == null ? new BirimTanimService().GetById(_IsBilgileri.BirimId) : new BirimTanimService().GetById(_IsBilgileri.BirimId, LoggingContext));
             }
             set
             {
@@ -46,7 +48,7 @@ namespace Model.IKYS
         {
             get
             {
-                return new BolgeService().GetById(_Birim.BolgeId);
+                return (LoggingContext == null ? new BolgeService().GetById(_Birim.BolgeId) : new BolgeService().GetById(_Birim.BolgeId, LoggingContext));
             }
             set
             {

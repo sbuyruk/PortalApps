@@ -25,7 +25,7 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context)) { new ExceptionHelper(error).PublishException(); return; }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
@@ -109,30 +109,22 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
         }
         private List<PersonelListItem> GetDataList()
         {
-            PersonelItemListFactory listFactory = PersonelItemListFactory.Instance;
-
-            List<PersonelItem> ayrilanlar = listFactory.AyrilanPersonelItemList;
             List<PersonelListItem> list = new List<PersonelListItem>();
-
-            Parallel.ForEach(ayrilanlar, item =>
+            DataTable table = GetDataTable();
+            if (table == null) return list;
+            foreach (DataRow row in table.Rows)
             {
-
-                PersonelListItem TabloData = new PersonelListItem();
-                TabloData.PersonelId = item.PersonelBilgileri.Id.ToString();
-                TabloData.ProtokolSiraNo = item.IsBilgileriItem.IsBilgileri.ProtokolSiraNo.ToString();
-                TabloData.Adi = item.PersonelBilgileri.Adi;
-                TabloData.Soyadi = item.PersonelBilgileri.Soyadi;
-                TabloData.Unvan = item.IsBilgileriItem.Unvan?.Adi;
-                TabloData.BirimSube = item.IsBilgileriItem.Birim?.Adi;
-
-                TabloData.Secildi = SecilenIdQS.Equals(TabloData.PersonelId);
-
-                //TabloData.PersonelKarti = "<a href=" + ProjeConstants.PAGE_PERSONEL_KARTI + "?PersonelId=" + TabloData.PersonelId + " class='btn btn-outline-primary'>Per.Karti</a>";
-                //TabloData.KisiselSayfa = "<a href=" + ProjeConstants.PAGE_KISISELSAYFA + "?PersonelId=" + TabloData.PersonelId + " class='btn btn-outline-primary'>Kisis.Say.</a>";
-                TabloData.Duzenle = "<a href=" + ProjeConstants.PAGE_ESKIPERSONEL_EDIT + "?DestinationApp=PerD&PersonelId=" + TabloData.PersonelId + " class='btn btn-outline-primary'>Düzenle</a>";
-
-                list.Add(TabloData);
-            });
+                PersonelListItem item = new PersonelListItem();
+                item.PersonelId = row["PersonelId"].ToString();
+                item.ProtokolSiraNo = row["ProtokolSiraNo"].ToString();
+                item.Adi = row["Adi"].ToString();
+                item.Soyadi = row["Soyadi"].ToString();
+                item.Unvan = row["Unvan"].ToString();
+                item.BirimSube = row["BirimSube"].ToString();
+                item.Secildi = SecilenIdQS.Equals(item.PersonelId);
+                item.Duzenle = "<a href=" + ProjeConstants.PAGE_ESKIPERSONEL_EDIT + "?DestinationApp=PerD&PersonelId=" + item.PersonelId + " class='btn btn-outline-primary'>Düzenle</a>";
+                list.Add(item);
+            }
             return list;
         }
         private class PersonelListItem
@@ -152,9 +144,7 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
         {
             Personel personel = new Personel();
             PersonelService service = new PersonelService();
-            DataTable dataTable = PortalLogSettings.IsEnabled(LoggingContext)
-                ? service.GetFormerEmployeeListReturnDataTable(LoggingContext)
-                : service.GetFormerEmployeeListReturnDataTable();
+            DataTable dataTable = service.GetFormerEmployeeListReturnDataTable(LoggingContext);
             return dataTable;
         }
 

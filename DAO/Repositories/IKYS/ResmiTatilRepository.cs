@@ -33,19 +33,19 @@ namespace DAO.Repositories.IKYS
         {
             return TraceSelect(new SqlQuery("SELECT Id ResimiTatilId,Gun,Ay,Yil,Tatil,BaslamaTarihi,BitisTarihi,IlanTarihi,IptalTarihi FROM ResmiTatil_Table ORDER BY BaslamaTarihi DESC"), "ResmiTatil.SelectAll", context);
         }
-        public int Insert<T>(T item) { return db.Insert(queryBuilder.BuildInsert(item, "ResmiTatil_Table")); }
+
         public int Insert<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
             return TraceInsert(queryBuilder.BuildInsert(item, "ResmiTatil_Table", PreservedDateColumns), "ResmiTatil.Insert", transaction, context);
         }
-        public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "ResmiTatil_Table")); }
+
         public bool Update<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
             return TraceWrite(queryBuilder.BuildUpdate(item, "ResmiTatil_Table", PreservedDateColumns), "UPDATE", "ResmiTatil.Update", transaction, context);
         }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("ResmiTatil_Table", id), ""); }
+
         public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
@@ -85,10 +85,7 @@ namespace DAO.Repositories.IKYS
 
         private DataTable TraceSelect(SqlQuery query, string name, PortalLogContext context)
         {
-            Stopwatch clock = Stopwatch.StartNew();
-            bool succeeded = false;
-            try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", name, clock.ElapsedMilliseconds, succeeded); }
+            return PortalSqlReadExecutor.Select(query, context, name);
         }
 
         private static DataTable TraceTransactionSelect(SqlQuery query, string name,
@@ -117,5 +114,14 @@ namespace DAO.Repositories.IKYS
             try { succeeded = transaction.Update(query); return succeeded; }
             finally { PortalTechnicalLog.WriteSqlTrace(context, operation, name, clock.ElapsedMilliseconds, succeeded); }
         }
+
+        public DataTable SelectAll(PortalLogContext context)
+        { return PortalSqlReadExecutor.Select(new SqlQuery("SELECT * FROM ResmiTatil_Table"), context, "ResmiTatil.SelectAll"); }
+
+        public DataTable SelectBySonIkiYil(DateTime baslangic, DateTime bitis, PortalLogContext context)
+        { SqlQuery q = new SqlQuery("SELECT * FROM ResmiTatil_Table WHERE Yil=0 OR BaslamaTarihi BETWEEN @Baslangic AND @Bitis ORDER BY MONTH(BaslamaTarihi),DAY(BaslamaTarihi)"); q.AddParameter("@Baslangic", baslangic); q.AddParameter("@Bitis", bitis); return PortalSqlReadExecutor.Select(q, context, "ResmiTatil.SelectBySonIkiYil"); }
+
+        public DataTable SelectByYil(int yil, PortalLogContext context)
+        { SqlQuery q = new SqlQuery("SELECT * FROM ResmiTatil_Table WHERE Yil=0 OR Yil=@Yil ORDER BY MONTH(BaslamaTarihi),DAY(BaslamaTarihi)"); q.AddParameter("@Yil", yil); return PortalSqlReadExecutor.Select(q, context, "ResmiTatil.SelectByYil"); }
     }
 }

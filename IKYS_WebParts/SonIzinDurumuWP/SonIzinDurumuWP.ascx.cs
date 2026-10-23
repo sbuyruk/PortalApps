@@ -21,11 +21,7 @@ namespace IKYS_WebParts.SonIzinDurumuWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
@@ -213,7 +209,7 @@ namespace IKYS_WebParts.SonIzinDurumuWP
         private DataTable GetDataTable()
         {
             Personel personel = new Personel();
-            DataTable dataTable = new PersonelService().GetEmployeeListReturnDataTable(Personel.PersonelTipi.Tumu);
+            DataTable dataTable = new PersonelService().GetEmployeeListReturnDataTable(Personel.PersonelTipi.Tumu, LoggingContext);
             return dataTable;
         }
         private class PersonelListItem
@@ -238,7 +234,7 @@ namespace IKYS_WebParts.SonIzinDurumuWP
             IzinDonem izinDonemDao = new IzinDonem();
             int kalanIzinToplami = 0;
 
-            DataTable dataTable = new IzinDonemService().GetSumKalanIzinByPersonelId(personelId, true);
+            DataTable dataTable = new IzinDonemService().GetSumKalanIzinByPersonelId(personelId, true, LoggingContext);
             if (dataTable != null)
             {
                 DataRow dataRow = dataTable.Rows[0];
@@ -258,7 +254,6 @@ namespace IKYS_WebParts.SonIzinDurumuWP
             izinDonemi = new IzinDonemService().GetByIzinTarihi(personelId, ProjeConstants.IZINTIPI_UCRETLI_INT, kontrolEdilecekTarih, LoggingContext);
 
             int kalanIzinToplami = izinDonemi==null?0:izinDonemi.KalanIzin.ConvertToInt();
-
 
 
             return kalanIzinToplami;

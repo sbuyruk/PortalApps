@@ -23,11 +23,7 @@ namespace IKYS_WebParts.ProtokolSirasiWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
@@ -210,8 +206,8 @@ $('#CustomDataTable').on( 'draw.dt', function () {
                 string[] idList = value.Split(',');
                 int sira = 1;
                 PortalLogContext context = LoggingContext;
-                bool loggingEnabled = PortalLogSettings.IsEnabled(context);
-                using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
+
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
                 {
                     foreach (string item in idList)
                     {
@@ -219,18 +215,14 @@ $('#CustomDataTable').on( 'draw.dt', function () {
                         if (personelId > 0)
                         {
                             IsBilgileriService service = new IsBilgileriService();
-                            IsBilgileri isb = transaction == null
-                                ? service.GetByPersonelId(personelId)
-                                : service.GetByPersonelId(personelId, transaction, context);
+                            IsBilgileri isb = service.GetByPersonelId(personelId, transaction, context);
                             if (isb == null) throw new InvalidOperationException("Personel iş bilgileri bulunamadı.");
                             isb.ProtokolSiraNo = sira++;
-                            bool updated = transaction == null
-                                ? service.Update(isb)
-                                : service.Update(isb, transaction, context);
+                            bool updated = service.Update(isb, transaction, context);
                             if (!updated) throw new InvalidOperationException("Protokol sırası güncellenemedi.");
                         }
                     }
-                    if (transaction != null) transaction.Complete();
+                    transaction.Complete();
                 }
                 TabloOlustur();
                 MessageHelper.PublishMessage("Sıralama kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);

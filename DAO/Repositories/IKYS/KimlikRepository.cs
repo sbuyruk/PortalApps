@@ -22,7 +22,7 @@ namespace DAO.Repositories.IKYS
             finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Kimlik.SelectById", clock.ElapsedMilliseconds, succeeded); }
         }
         public DataTable SelectAll() { return db.SelectFromDb(new SqlQuery("SELECT * FROM Kimlik_Table"), ""); }
-        public int Insert<T>(T item) { return db.Insert(queryBuilder.BuildInsert(item, "Kimlik_Table")); }
+
         public int Insert<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
@@ -30,7 +30,7 @@ namespace DAO.Repositories.IKYS
             try { int id = transaction.Insert(queryBuilder.BuildInsert(item, "Kimlik_Table")); succeeded = id > 0; return id; }
             finally { PortalTechnicalLog.WriteSqlTrace(context, "INSERT", "Kimlik.Insert", clock.ElapsedMilliseconds, succeeded); }
         }
-        public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "Kimlik_Table")); }
+
         public bool Update<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
@@ -38,19 +38,10 @@ namespace DAO.Repositories.IKYS
             try { succeeded = transaction.Update(queryBuilder.BuildUpdate(item, "Kimlik_Table")); return succeeded; }
             finally { PortalTechnicalLog.WriteSqlTrace(context, "UPDATE", "Kimlik.Update", clock.ElapsedMilliseconds, succeeded); }
         }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("Kimlik_Table", id), ""); }
+
         public DataTable SelectByPersonelId(int personelId) { SqlQuery q = new SqlQuery("SELECT * FROM Kimlik_Table WHERE PersonelId=@PersonelId ORDER BY Id"); q.AddParameter("@PersonelId", personelId); return db.SelectFromDb(q, ""); }
         public DataTable SelectByPersonelId(int personelId, PortalLogContext context)
-        {
-            SqlQuery query = new SqlQuery("SELECT * FROM Kimlik_Table WHERE PersonelId=@PersonelId ORDER BY Id");
-            query.AddParameter("@PersonelId", personelId);
-            if (context != null && context.Project == "Portal")
-                return PortalSqlReadExecutor.Select(query, context, "KimlikRepository.SelectByPersonelId");
-            Stopwatch clock = Stopwatch.StartNew();
-            bool succeeded = false;
-            try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Kimlik.SelectByPersonelId", clock.ElapsedMilliseconds, succeeded); }
-        }
+        { SqlQuery q = new SqlQuery("SELECT * FROM Kimlik_Table WHERE PersonelId=@PersonelId ORDER BY Id"); q.AddParameter("@PersonelId", personelId); return PortalSqlReadExecutor.Select(q, context, "KimlikRepository.SelectByPersonelId"); }
         public DataTable SelectByPersonelId(int personelId, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
@@ -62,13 +53,16 @@ namespace DAO.Repositories.IKYS
         }
         public DataTable SelectByTcKimlikNo(string kimlikNo) { SqlQuery q = new SqlQuery("SELECT * FROM Kimlik_Table WHERE TCKimlikNo=@TCKimlikNo ORDER BY Id"); q.AddParameter("@TCKimlikNo", kimlikNo); return db.SelectFromDb(q, ""); }
         public DataTable SelectByTcKimlikNo(string kimlikNo, PortalLogContext context)
-        {
-            SqlQuery query = new SqlQuery("SELECT * FROM Kimlik_Table WHERE TCKimlikNo=@TCKimlikNo ORDER BY Id");
-            query.AddParameter("@TCKimlikNo", kimlikNo);
-            Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
-            try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Kimlik.SelectByTcKimlikNo", clock.ElapsedMilliseconds, succeeded); }
-        }
+        { SqlQuery q = new SqlQuery("SELECT * FROM Kimlik_Table WHERE TCKimlikNo=@TCKimlikNo ORDER BY Id"); q.AddParameter("@TCKimlikNo", kimlikNo); return PortalSqlReadExecutor.Select(q, context, "Kimlik.SelectByTcKimlikNo"); }
         public DataTable SelectAllFromKimlik() { return db.SelectFromDb(new SqlQuery("SELECT * FROM KIMLIK_BILGILERI"), ""); }
+
+        public DataTable SelectById(int id, PortalLogContext context)
+        { SqlQuery q = new SqlQuery("SELECT * FROM Kimlik_Table WHERE Id=@Id"); q.AddParameter("@Id", id); return PortalSqlReadExecutor.Select(q, context, "Kimlik.SelectById"); }
+
+        public DataTable SelectAll(PortalLogContext context)
+        { return PortalSqlReadExecutor.Select(new SqlQuery("SELECT * FROM Kimlik_Table"), context, "Kimlik.SelectAll"); }
+
+        public DataTable SelectAllFromKimlik(PortalLogContext context)
+        { return PortalSqlReadExecutor.Select(new SqlQuery("SELECT * FROM KIMLIK_BILGILERI"), context, "Kimlik.SelectAllFromKimlik"); }
     }
 }

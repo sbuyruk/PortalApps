@@ -23,11 +23,7 @@ namespace IKYS_WebParts.GorevSemasiWP
         private void ReportError(Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, "GorevSemasi.Load", error);
             Messages.Error("Görev şeması yüklenemedi. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
@@ -98,16 +94,10 @@ namespace IKYS_WebParts.GorevSemasiWP
 
             BirimTanim birimTanimDao = new BirimTanim();
             PortalLogContext context = LoggingContext;
-            bool enabled = PortalLogSettings.IsEnabled(context);
-            var birimListesi = enabled
-                ? new BirimTanimService().GetByBirimKaldirildi(false, context)
-                : new BirimTanimService().GetByBirimKaldirildi(false);
-            Dictionary<int, Personel> managers = enabled
-                ? new PersonelService().GetSchemaManagers(context).ToDictionary(personel => personel.Id)
-                : null;
+            var birimListesi = new BirimTanimService().GetByBirimKaldirildi(false, context);
+            Dictionary<int, Personel> managers = new PersonelService().GetSchemaManagers(context).ToDictionary(personel => personel.Id);
             Dictionary<int, List<Personel>> employeesByUnit = null;
             Dictionary<int, GorevTanim> jobsByPerson = null;
-            if (enabled)
             {
                 employeesByUnit = new Dictionary<int, List<Personel>>();
                 DataTable employees = new PersonelService().GetSchemaEmployees(context);
@@ -142,10 +132,7 @@ namespace IKYS_WebParts.GorevSemasiWP
 
             BirimTanim parent = birimListesi.Where(a => a.ParentId == 0).FirstOrDefault<BirimTanim>();
             Personel ilknode = new Personel();
-            if (enabled)
-                managers.TryGetValue(parent.AmirId, out ilknode);
-            else
-                ilknode = new PersonelService().GetById(parent.AmirId);
+            managers.TryGetValue(parent.AmirId, out ilknode);
             string gmKullaniciAdi = ilknode == null ? "" : ilknode.KullaniciAdi.ReturnEmptyIfNull().ToString();
             string gmAdi = ilknode == null ? "" : ilknode.Adi.ReturnEmptyIfNull().ToString();
             string gmSoyadi = ilknode == null ? "" : ilknode.Soyadi.ReturnEmptyIfNull().ToString();
@@ -172,10 +159,7 @@ namespace IKYS_WebParts.GorevSemasiWP
             foreach (BirimTanim item in birimListesi)
             {
                 Personel birimAmiri = new Personel();
-                if (enabled)
-                    managers.TryGetValue(item.AmirId, out birimAmiri);
-                else
-                    birimAmiri = new PersonelService().GetById(item.AmirId);
+                managers.TryGetValue(item.AmirId, out birimAmiri);
                 if (birimAmiri == null)
                 {
                     birimAmiri=new Personel();
@@ -207,30 +191,24 @@ namespace IKYS_WebParts.GorevSemasiWP
                     csChartConfig += "a" + item.Id + ",";
                 }
 
-                
+
                 Personel personelDao = new Personel();
                 List<Personel> personelList;
-                if (enabled)
                 {
                     if (!employeesByUnit.TryGetValue(item.Id, out personelList))
                         personelList = new List<Personel>();
                 }
-                else
-                    personelList = new PersonelService().GetActiveEmployeesByUnit(item.Id, PersonelTipi.Tumu);
                 foreach (Personel personelItem in personelList)
                 {
                     GorevTanim gorevTanim = new GorevTanim();
-                    if (enabled)
-                        jobsByPerson.TryGetValue(personelItem.Id, out gorevTanim);
-                    else
-                        gorevTanim = new GorevTanimService().GetByPersonelId(personelItem.Id);
+                    jobsByPerson.TryGetValue(personelItem.Id, out gorevTanim);
                     if (gorevTanim != null)
                     {
                         string gorevliKullaniciAdi = personelItem == null ? "" : personelItem.KullaniciAdi.ReturnEmptyIfNull().ToString();
                         string gorevliAdi = personelItem == null ? "" : personelItem.Adi.ReturnEmptyIfNull().ToString();
                         string gorevliSoyadi = personelItem == null ? "" : personelItem.Soyadi.ReturnEmptyIfNull().ToString();
                         string gorevliAdiSoyadi = gorevliAdi + " " + gorevliSoyadi;
-                        
+
                         string gorevliFotostr = string.IsNullOrEmpty(gorevliKullaniciAdi) ? (!string.IsNullOrEmpty(gorevliAdi) ? gorevliAdi.Substring(0, 1) + gorevliSoyadi : "") : gorevliKullaniciAdi;
                         gorevliFotostr = string.IsNullOrEmpty(gorevliFotostr) ? "person" : gorevliFotostr;
                         string gorevliImageUrl = newUrl + "/../" + ProjeConstants.RESIMLER_PERSONEL + "/" + gorevliFotostr.ReplaceTrChars() + ".jpg";

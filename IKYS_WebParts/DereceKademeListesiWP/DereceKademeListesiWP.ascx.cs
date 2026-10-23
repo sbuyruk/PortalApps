@@ -24,11 +24,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
@@ -208,7 +204,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                         'thousands': '.'
                     },
                     responsive: true,
-                    dom: 'frtip',               
+                    dom: 'frtip',
                 });
             });
             ";
@@ -252,7 +248,6 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                         string jsSil = $"OpenModal({dereceKademeId},{personel.Id}, {jsDegisim}, {jsTarih}, {jsDerece}, {jsKademe}, {jsAciklama}, {jsAdSoyad}, {jsSilBtn})";
 
 
-
                         DereceKademeListItem item = new DereceKademeListItem
                         {
                             DegisimTarihi = degisimTarihi,
@@ -265,7 +260,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                         };
 
                         list.Add(item);
-                    } 
+                    }
                 }
 
                 return list;
@@ -325,7 +320,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             try
             {
                 // Bu kismi kendi veritabani ya da SharePoint listesi güncelleme kodu ile tamamlayin
-                DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisimService().GetById(id);
+                DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisimService().GetById(id, LoggingContext);
                 if (dereceKademeDegisim == null)
                 {
                     MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Bulunamadı.", ProjeConstants.MESAJ_HATA);
@@ -350,7 +345,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             try
             {
                 // Bu kismi kendi veritabani ya da SharePoint listesi güncelleme kodu ile tamamlayin
-                DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisimService().GetById(id);
+                DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisimService().GetById(id, LoggingContext);
                 if (dereceKademeDegisim == null)
                 {
                     MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Bulunamadı.", ProjeConstants.MESAJ_HATA);
@@ -369,7 +364,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
         {
             int gecerliDerece=GecerliDereceTxt.Text.ConvertToInt();
             DereceDDL.Items.Clear();
-            DataTable dataTable = new UcretTanimService().GetDerece();
+            DataTable dataTable = new UcretTanimService().GetDerece(LoggingContext);
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
@@ -389,7 +384,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             int gecerlikademe= GecerliKademeTxt.Text.ConvertToInt();
             KademeDDL.Items.Clear();
             int derece = DereceDDL.SelectedItem.Value.ConvertToInt();
-            DataTable dataTable = new UcretTanimService().GetKademe(derece, 1);
+            DataTable dataTable = new UcretTanimService().GetKademe(derece, 1, LoggingContext);
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)

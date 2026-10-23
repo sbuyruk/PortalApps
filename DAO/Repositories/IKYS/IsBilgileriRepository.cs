@@ -20,7 +20,7 @@ namespace DAO.Repositories.IKYS
             return TraceSelect(query, "IsBilgileri.SelectById", transaction, context);
         }
         public DataTable SelectAll() { return db.SelectFromDb(new SqlQuery("SELECT * FROM IsBilgileri_Table"), ""); }
-        public int Insert<T>(T item) { return db.Insert(queryBuilder.BuildInsert(item, "IsBilgileri_Table")); }
+
         public int Insert<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
@@ -28,13 +28,13 @@ namespace DAO.Repositories.IKYS
             try { int id = transaction.Insert(queryBuilder.BuildInsert(item, "IsBilgileri_Table")); succeeded = id > 0; return id; }
             finally { PortalTechnicalLog.WriteSqlTrace(context, "INSERT", "IsBilgileri.Insert", clock.ElapsedMilliseconds, succeeded); }
         }
-        public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "IsBilgileri_Table")); }
+
         public bool Update<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
             return TraceWrite(queryBuilder.BuildUpdate(item, "IsBilgileri_Table"), "UPDATE", "IsBilgileri.Update", transaction, context);
         }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("IsBilgileri_Table", id), ""); }
+
         public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
@@ -56,14 +56,7 @@ namespace DAO.Repositories.IKYS
         }
         public DataTable SelectByGorevId(int gorevId) { SqlQuery q = new SqlQuery("SELECT * FROM IsBilgileri_Table WHERE GorevId=@GorevId ORDER BY UnvanId"); q.AddParameter("@GorevId", gorevId); return db.SelectFromDb(q, ""); }
         public DataTable SelectByGorevId(int gorevId, PortalLogContext context)
-        {
-            SqlQuery query = new SqlQuery("SELECT * FROM IsBilgileri_Table WHERE GorevId=@GorevId ORDER BY UnvanId");
-            query.AddParameter("@GorevId", gorevId);
-            Stopwatch clock = Stopwatch.StartNew();
-            bool succeeded = false;
-            try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "IsBilgileri.SelectByGorevId", clock.ElapsedMilliseconds, succeeded); }
-        }
+        { SqlQuery q = new SqlQuery("SELECT * FROM IsBilgileri_Table WHERE GorevId=@GorevId ORDER BY UnvanId"); q.AddParameter("@GorevId", gorevId); return PortalSqlReadExecutor.Select(q, context, "IsBilgileri.SelectByGorevId"); }
         public DataTable SelectByGorevId(int gorevId, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
@@ -98,5 +91,14 @@ namespace DAO.Repositories.IKYS
             try { succeeded = transaction.Update(query); return succeeded; }
             finally { PortalTechnicalLog.WriteSqlTrace(context, operation, name, clock.ElapsedMilliseconds, succeeded); }
         }
+
+        public DataTable SelectById(int id, PortalLogContext context)
+        { SqlQuery q = new SqlQuery("SELECT * FROM IsBilgileri_Table WHERE Id=@Id"); q.AddParameter("@Id", id); return PortalSqlReadExecutor.Select(q, context, "IsBilgileri.SelectById"); }
+
+        public DataTable SelectAll(PortalLogContext context)
+        { return PortalSqlReadExecutor.Select(new SqlQuery("SELECT * FROM IsBilgileri_Table"), context, "IsBilgileri.SelectAll"); }
+
+        public DataTable SelectAllFromIsYeriBilgileri(PortalLogContext context)
+        { return PortalSqlReadExecutor.Select(new SqlQuery("SELECT * FROM IS_YERI_BILGILERI"), context, "IsBilgileri.SelectAllFromIsYeriBilgileri"); }
     }
 }

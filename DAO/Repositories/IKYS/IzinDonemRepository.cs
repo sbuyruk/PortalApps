@@ -23,9 +23,8 @@ namespace DAO.Repositories.IKYS
             return TraceSelect(q, "IzinDonem.SelectById", transaction, context);
         }
         public DataTable SelectAll() { return db.SelectFromDb(new SqlQuery("SELECT * FROM IzinDonem_Table ORDER BY BaslangicTarihi DESC"), ""); }
-        public int Insert<T>(T item) { return db.Insert(queryBuilder.BuildInsert(item, "IzinDonem_Table")); }
-        public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "IzinDonem_Table")); }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("IzinDonem_Table", id), ""); }
+
+
         public int Insert<T>(T item, SqlTransactionContext transaction, PortalLogContext context) { return TraceInsert(queryBuilder.BuildInsert(item, "IzinDonem_Table"), transaction, context); }
         public bool Update<T>(T item, SqlTransactionContext transaction, PortalLogContext context) { return TraceWrite(queryBuilder.BuildUpdate(item, "IzinDonem_Table"), "UPDATE", "IzinDonem.Update", transaction, context); }
         public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context) { return TraceWrite(queryBuilder.BuildDelete("IzinDonem_Table", id), "DELETE", "IzinDonem.Delete", transaction, context); }
@@ -95,5 +94,22 @@ namespace DAO.Repositories.IKYS
             try { succeeded = transaction.Update(query); return succeeded; }
             finally { PortalTechnicalLog.WriteSqlTrace(context, operation, name, clock.ElapsedMilliseconds, succeeded); }
         }
+
+        public DataTable SelectAll(PortalLogContext context)
+        { return PortalSqlReadExecutor.Select(new SqlQuery("SELECT * FROM IzinDonem_Table ORDER BY BaslangicTarihi DESC"), context, "IzinDonem.SelectAll"); }
+
+        public DataTable SelectOncekiYillaraAit(int personelId, PortalLogContext context)
+        {
+            SqlQuery q = new SqlQuery("SELECT * FROM IzinDonem_Table WHERE PersonelId=@PersonelId AND IzinTipi=1 AND BitisTarihi < GETDATE() AND KalanIzin!=0 ORDER BY BaslangicTarihi DESC"); q.AddParameter("@PersonelId", personelId); return PortalSqlReadExecutor.Select(q, context, "IzinDonem.SelectOncekiYillaraAit");
+        }
+
+        public DataTable SelectSumKalanIzinByPersonelId(int personelId, bool sadeceEskiDonemler, PortalLogContext context)
+        {
+            string oldFilter = sadeceEskiDonemler ? " AND BitisTarihi < GETDATE() " : "";
+            SqlQuery q = new SqlQuery("SELECT SUM(CONVERT(INT,IzinHakki)) IzinHakkiToplami,SUM(CONVERT(INT,KullanilanIzin)) KullanilanIzinToplami,SUM(CONVERT(INT,KalanIzin)) KalanIzinToplami FROM IzinDonem_Table WHERE IzinTipi=@IzinTipi AND PersonelId=@PersonelId" + oldFilter + " GROUP BY PersonelId"); q.AddParameter("@IzinTipi", 1); q.AddParameter("@PersonelId", personelId); return PortalSqlReadExecutor.Select(q, context, "IzinDonem.SelectSumKalanIzinByPersonelId");
+        }
+
+        public DataTable SelectByPersonelIdReturnDataTable(int personelId, int izinTipi, PortalLogContext context)
+        { return SelectByPersonelId(personelId, izinTipi, context); }
     }
 }

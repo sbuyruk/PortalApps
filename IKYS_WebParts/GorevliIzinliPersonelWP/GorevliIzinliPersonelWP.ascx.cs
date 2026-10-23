@@ -19,11 +19,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
@@ -221,7 +217,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
 
                     TableCell BittarCell = new TableCell();
                     string izinDevami = BitisTarihindeBaslayanIzniVarMi(personelId, bitTarDate);
-                    BittarCell.Text = bittar + (string.IsNullOrEmpty(izinDevami) ? string.Empty : "</br>" + izinDevami); 
+                    BittarCell.Text = bittar + (string.IsNullOrEmpty(izinDevami) ? string.Empty : "</br>" + izinDevami);
 
                     string gorevDevami = BitisTarihindeBaslayanGorevOnayiVarMi(personelId, bitTarDate);
                     BittarCell.Text = BittarCell.Text + (string.IsNullOrEmpty(gorevDevami) ? string.Empty : "</br>" + gorevDevami);
@@ -292,7 +288,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
             DateTime today = DateTime.Today;
             DateTime todaybas = UtilityHelper.TariheSaatEkle(today, "23:59");
             DateTime todaybit = UtilityHelper.TariheSaatEkle(today, "06:00");
-            DataTable dataTable = new YoklamaService().GetByTarih(todaybas, todaybit);
+            DataTable dataTable = new YoklamaService().GetByTarih(todaybas, todaybit, LoggingContext);
             if (dataTable == null)
             {
                 RaporluPerTable.Rows.Clear();
@@ -349,7 +345,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                     row.Controls.Add(BastarCell);
 
                     TableCell BittarCell = new TableCell();
-                    
+
 
                     TableCell SureCell = new TableCell();
                     DateTime bas = bastar.ConvertToDatetime();
@@ -454,7 +450,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
             DateTime todaybas = UtilityHelper.TariheSaatEkle(today, "17:00");
             DateTime todaybit = UtilityHelper.TariheSaatEkle(today, "07:00");
 
-            DataTable dataTable = new IzinHareketService().GetByTarihReturnDataTable(todaybas, todaybit);
+            DataTable dataTable = new IzinHareketService().GetByTarihReturnDataTable(todaybas, todaybit, LoggingContext);
 
             bool izinTableBos = true;
             if (dataTable != null)
@@ -511,7 +507,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                     row.Controls.Add(BastarCell);
 
                     TableCell BittarCell = new TableCell();
-                    
+
                     string izinDevami = BitisTarihindeBaslayanIzniVarMi(personelId, bitTarDate);
                     BittarCell.Text = bittar +(string.IsNullOrEmpty(izinDevami)?string.Empty:"</br>" +izinDevami);
                     string gorevDevami = BitisTarihindeBaslayanGorevOnayiVarMi(personelId, bitTarDate);
@@ -565,7 +561,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
 
             //iznin son günü cuma ise
             if (tarih.DayOfWeek.Equals(DayOfWeek.Friday))
-            {                
+            {
                 bastar = UtilityHelper.TariheSaatEkle(tarih.AddDays(3), "17:00");
                 bittar = UtilityHelper.TariheSaatEkle(tarih.AddDays(3), "07:00");
             }
@@ -582,12 +578,12 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                 bittar = UtilityHelper.TariheSaatEkle(tarih.AddDays(1), "07:00");
             }
 
-            ih = new IzinHareketService().GetByPersonelTarih(personelId, bastar, bittar);
+            ih = new IzinHareketService().GetByPersonelTarih(personelId, bastar, bittar, LoggingContext);
             if (ih != null)
             {
                 return ("(Devaminda izni var. </br>Dönüs tarihi: "+ih.BitisTarihi.AddDays(1).ConvertToDatetimeEmptyIfNull()+")");
             }
-            else 
+            else
                 return (string.Empty);
         }
         private string BitisTarihindeBaslayanGorevOnayiVarMi(int personelId, DateTime bitTarDate)
@@ -635,7 +631,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
 
             DateTime todaybas = UtilityHelper.TariheSaatEkle(today, "00:00");
             DateTime todaybit = UtilityHelper.TariheSaatEkle(today, "17:00");
-            DataTable dataTable = new IzinHareketService().GetByIzinTipiTarihReturnDataTable(ProjeConstants.IZINTIPI_MAZERET_INT, todaybas, todaybit);
+            DataTable dataTable = new IzinHareketService().GetByIzinTipiTarihReturnDataTable(ProjeConstants.IZINTIPI_MAZERET_INT, todaybas, todaybit, LoggingContext);
 
             bool izinTableBos = true;
             if (dataTable != null)
@@ -728,7 +724,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
             System.IO.StringWriter tw = new System.IO.StringWriter();
             System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
 
-            //Get the HTML for the control.             
+            //Get the HTML for the control.
             MainCardDiv.RenderControl(hw);
             //Write the HTML back to the browser.
             //Response.ContentType = application/vnd.ms-excel;

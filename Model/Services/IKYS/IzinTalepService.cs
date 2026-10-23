@@ -30,7 +30,10 @@ namespace Model.Services.IKYS
             return Map(repository.SelectById(id));
         }
 
-        public IzinTalep GetById(int id, PortalLogContext context) { return Map(repository.SelectById(id, context)); }
+        public IzinTalep GetById(int id, PortalLogContext context)
+        {
+            return Map(repository.SelectById(id, context));
+        }
         public IzinTalep GetById(int id, SqlTransactionContext transaction, PortalLogContext context) { if (transaction == null) throw new ArgumentNullException("transaction"); if (context == null) throw new ArgumentNullException("context"); return Map(repository.SelectById(id, transaction, context)); }
 
         public List<IzinTalep> GetAll()
@@ -38,17 +41,11 @@ namespace Model.Services.IKYS
             return new IzinTalep().ToList<IzinTalep>(repository.SelectAll());
         }
 
-        public List<IzinTalep> GetAll(PortalLogContext context) { return new IzinTalep().ToList<IzinTalep>(repository.SelectAll(context)); }
-
-        public int Save(IzinTalep item)
+        public List<IzinTalep> GetAll(PortalLogContext context)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-            if (item.Id > 0 && ProjeConstants.IKYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINTALEP);
-            return item.Id;
+            return new IzinTalep().ToList<IzinTalep>(repository.SelectAll(context));
         }
+
 
         public int Save(IzinTalep item, PortalLogContext context)
         {
@@ -91,20 +88,6 @@ namespace Model.Services.IKYS
             return item.Id;
         }
 
-        public bool Update(IzinTalep item)
-        {
-            if (item == null) throw new ArgumentNullException("item");
-            IzinTalep old = GetById(item.Id);
-            bool ok = false;
-            if (item.Id != 0)
-            {
-                item.DegistirmeTarihi = DateTime.Now;
-                item.Degistiren = UtilityHelper.GetCurrentUserName();
-                ok = repository.Update(item);
-            }
-            if (ok && ProjeConstants.IKYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINTALEP);
-            return ok;
-        }
 
         public bool Update(IzinTalep item, PortalLogContext context)
         {
@@ -138,15 +121,6 @@ namespace Model.Services.IKYS
             return true;
         }
 
-        public bool Delete(IzinTalep item)
-        {
-            if (item == null || item.Id == 0) return false;
-            IzinTalep old = GetById(item.Id);
-            if (old == null) return false;
-            bool ok = repository.Delete(item.Id);
-            if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINTALEP);
-            return ok;
-        }
 
         public bool Delete(IzinTalep item, PortalLogContext context)
         {
@@ -201,11 +175,14 @@ namespace Model.Services.IKYS
         }
 
         public IzinTalep GetByPersonelIdBasBitTar(int personelId, DateTime basTar, DateTime bitTar) { return Map(repository.SelectByPersonelIdBasBitTar(personelId, basTar, bitTar)); }
-        public IzinTalep GetByPersonelIdBasBitTar(int personelId, DateTime basTar, DateTime bitTar, PortalLogContext context) { return Map(repository.SelectByPersonelIdBasBitTar(personelId, basTar, bitTar, context)); }
+        public IzinTalep GetByPersonelIdBasBitTar(int personelId, DateTime basTar, DateTime bitTar, PortalLogContext context)
+        { return Map(repository.SelectByPersonelIdBasBitTar(personelId, basTar, bitTar, context)); }
         public IzinTalep GetIslemiDevamEden(int personelId, int izinTipi) { return Map(repository.SelectIslemiDevamEden(personelId, izinTipi)); }
-        public IzinTalep GetIslemiDevamEden(int personelId, int izinTipi, PortalLogContext context) { return Map(repository.SelectIslemiDevamEden(personelId, izinTipi, context)); }
+        public IzinTalep GetIslemiDevamEden(int personelId, int izinTipi, PortalLogContext context)
+        { return Map(repository.SelectIslemiDevamEden(personelId, izinTipi, context)); }
         public IzinTalep GetSonByPersonel(int izinTipi, int personelId) { return Map(repository.SelectSonByPersonel(izinTipi, personelId)); }
-        public IzinTalep GetSonByPersonel(int izinTipi, int personelId, PortalLogContext context) { return Map(repository.SelectSonByPersonel(izinTipi, personelId, context)); }
+        public IzinTalep GetSonByPersonel(int izinTipi, int personelId, PortalLogContext context)
+        { return Map(repository.SelectSonByPersonel(izinTipi, personelId, context)); }
 
         public bool TryRecordWebPartOpened(PortalLogContext context) { return new PortalLogRepository().TryRecordWebPartOpened(context); }
 
@@ -263,6 +240,13 @@ namespace Model.Services.IKYS
             AddChange(log, auditId, "Sure", old == null ? null : old.Sure, current == null ? null : current.Sure, transaction);
             AddChange(log, auditId, "OnayDurumu", old == null ? (int?)null : old.OnayDurumu, current == null ? (int?)null : current.OnayDurumu, transaction);
             AddChange(log, auditId, "Aktif", old == null ? (bool?)null : old.Aktif, current == null ? (bool?)null : current.Aktif, transaction);
+            AddChange(log, auditId, "Birim", old == null ? null : Convert.ToString(old.Birim, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.Birim, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "VekilImza", old == null ? null : Convert.ToString(old.VekilImza, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.VekilImza, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "AmirImza", old == null ? null : Convert.ToString(old.AmirImza, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.AmirImza, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "Adres", old == null ? null : Convert.ToString(old.Adres, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.Adres, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "Aciklama", old == null ? null : Convert.ToString(old.Aciklama, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.Aciklama, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "OnayImza", old == null ? null : Convert.ToString(old.OnayImza, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.OnayImza, CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "EPostaGonder", old == null ? null : Convert.ToString(old.EPostaGonder, CultureInfo.InvariantCulture), current == null ? null : Convert.ToString(current.EPostaGonder, CultureInfo.InvariantCulture), transaction);
         }
 
         private static void AddChange(PortalLogRepository log, int auditId, string field, object oldValue, object newValue, SqlTransactionContext transaction)
@@ -275,6 +259,11 @@ namespace Model.Services.IKYS
         private static IzinTalep Map(DataTable table)
         {
             return new IzinTalep().ToList<IzinTalep>(table).FirstOrDefault();
+        }
+
+        public string GetIzinTalepleriReturnJson(int personelId, int izinTipi, bool mazeretHaric, bool sadeceGecerliDonemTalepleri, PortalLogContext context)
+        {
+            return new IzinTalep().ToJSON(GetIzinTalepleri(personelId, izinTipi, mazeretHaric, sadeceGecerliDonemTalepleri, context));
         }
     }
 }

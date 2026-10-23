@@ -10,7 +10,6 @@ using System.Globalization;
 using System.Linq;
 using Utility.HelperClasses;
 using Utility.Logging;
-using Utility.ProjeGlobal;
 using static Model.IKYS.Personel;
 
 namespace Model.Services.IKYS
@@ -25,7 +24,8 @@ namespace Model.Services.IKYS
             this.repository = repository;
         }
         public GorevTanim GetById(int id) { return Map(repository.SelectById(id)); }
-        public GorevTanim GetById(int id, PortalLogContext context) { return Map(repository.SelectById(id, context)); }
+        public GorevTanim GetById(int id, PortalLogContext context)
+        { return Map(repository.SelectById(id, context)); }
         public GorevTanim GetById(int id, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
@@ -33,17 +33,10 @@ namespace Model.Services.IKYS
             return Map(repository.SelectById(id, transaction, context));
         }
         public List<GorevTanim> GetAll() { return ToList(repository.SelectAll()); }
-        public List<GorevTanim> GetAll(PortalLogContext context) { return ToList(repository.SelectAll(context)); }
+        public List<GorevTanim> GetAll(PortalLogContext context)
+        { return ToList(repository.SelectAll(context)); }
         public bool TryRecordWebPartOpened(PortalLogContext context) { return new PortalLogRepository().TryRecordWebPartOpened(context); }
-        public int Save(GorevTanim item)
-        {
-            if (item == null) throw new ArgumentNullException("item");
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-            if (item.Id > 0 && ProjeConstants.IKYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_GOREVTANIM);
-            return item.Id;
-        }
+
         public int Save(GorevTanim item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
@@ -60,20 +53,7 @@ namespace Model.Services.IKYS
             }
             return item.Id;
         }
-        public bool Update(GorevTanim item)
-        {
-            if (item == null) throw new ArgumentNullException("item");
-            GorevTanim old = GetById(item.Id);
-            bool ok = false;
-            if (item.Id != 0)
-            {
-                item.DegistirmeTarihi = DateTime.Now;
-                item.Degistiren = UtilityHelper.GetCurrentUserName();
-                ok = repository.Update(item);
-            }
-            if (ok && ProjeConstants.IKYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.IKYS, ProjeConstants.IKYS_GOREVTANIM);
-            return ok;
-        }
+
         public bool Update(GorevTanim item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
@@ -116,15 +96,7 @@ namespace Model.Services.IKYS
             ChangeAssignment(workRepository, item.PersonelId, item.Id, transaction, context, log);
             return true;
         }
-        public bool Delete(GorevTanim item)
-        {
-            if (item == null || item.Id == 0) return false;
-            GorevTanim old = GetById(item.Id);
-            if (old == null) return false;
-            bool ok = repository.Delete(item.Id);
-            if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.IKYS, ProjeConstants.IKYS_GOREVTANIM);
-            return ok;
-        }
+
         public bool Delete(GorevTanim item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
@@ -144,10 +116,7 @@ namespace Model.Services.IKYS
         }
         public GorevTanim GetByPersonelId(int personelId) { return Map(repository.SelectByPersonelId(personelId)); }
         public GorevTanim GetByPersonelId(int personelId, PortalLogContext context)
-        {
-            if (context == null) throw new ArgumentNullException("context");
-            return Map(repository.SelectByPersonelId(personelId, context));
-        }
+        { return Map(repository.SelectByPersonelId(personelId, context)); }
         public GorevTanim GetByPersonelId(int personelId, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
@@ -156,9 +125,11 @@ namespace Model.Services.IKYS
         }
         public List<GorevTanim> GetByBirimId(int birimId) { return ToList(repository.SelectByBirimId(birimId)); }
         public GorevTanim GetByGorevId(int gorevId) { return GetById(gorevId); }
-        public GorevTanim GetByGorevId(int gorevId, PortalLogContext context) { return GetById(gorevId, context); }
+        public GorevTanim GetByGorevId(int gorevId, PortalLogContext context)
+        { return GetById(gorevId, context); }
         public DataTable GetAllReturnDataTable(PersonelTipi personelTipi) { return repository.SelectAllReturnDataTable(personelTipi == PersonelTipi.Tumu ? (int?)null : (int)personelTipi); }
-        public DataTable GetAllReturnDataTable(PersonelTipi personelTipi, PortalLogContext context) { return repository.SelectAllReturnDataTable(personelTipi == PersonelTipi.Tumu ? (int?)null : (int)personelTipi, context); }
+        public DataTable GetAllReturnDataTable(PersonelTipi personelTipi, PortalLogContext context)
+        { return repository.SelectAllReturnDataTable(personelTipi == PersonelTipi.Tumu ? (int?)null : (int)personelTipi, context); }
         private static void ChangeAssignment(IsBilgileriRepository workRepository, int personelId, int gorevId,
             SqlTransactionContext transaction, PortalLogContext context, PortalLogRepository log)
         {
@@ -191,5 +162,8 @@ namespace Model.Services.IKYS
         }
         private static GorevTanim Map(DataTable table) { return ToList(table).FirstOrDefault(); }
         private static List<GorevTanim> ToList(DataTable table) { return new GorevTanim().ToList<GorevTanim>(table); }
+
+        public List<GorevTanim> GetByBirimId(int birimId, PortalLogContext context)
+        { return ToList(repository.SelectByBirimId(birimId, context)); }
     }
 }

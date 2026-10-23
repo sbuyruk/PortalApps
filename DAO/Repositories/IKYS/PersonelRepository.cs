@@ -62,14 +62,10 @@ namespace DAO.Repositories.IKYS
         }
         public DataTable SelectByUserName(string userName, PortalLogContext context)
         {
-            SqlQuery query = new SqlQuery("SELECT * FROM Personel_Table WHERE KullaniciAdi=@KullaniciAdi ORDER BY Id");
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM Personel_Table WHERE KullaniciAdi=@KullaniciAdi ORDER BY Id");
             query.AddParameter("@KullaniciAdi", userName);
-            if (context != null && (context.Project == "Portal" || context.Project == "MTS"))
-                return PortalSqlReadExecutor.Select(query, context, "PersonelRepository.SelectByUserName");
-            Stopwatch clock = Stopwatch.StartNew();
-            bool succeeded = false;
-            try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Personel.SelectByUserName", clock.ElapsedMilliseconds, succeeded); }
+            return PortalSqlReadExecutor.Select(query, context, "PersonelRepository.SelectByUserName");
         }
 
         public DataTable SelectByUserName(string userName, SqlTransactionContext transaction, PortalLogContext context)
@@ -80,7 +76,7 @@ namespace DAO.Repositories.IKYS
             return PortalSqlReadExecutor.Select(query, context, "PersonelRepository.SelectByUserName", transaction);
         }
 
-        public int Insert<T>(T entity) { return db.Insert(queryBuilder.BuildInsert(entity, "Personel_Table")); }
+
         public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
@@ -88,7 +84,7 @@ namespace DAO.Repositories.IKYS
             try { int id = transaction.Insert(queryBuilder.BuildInsert(entity, "Personel_Table")); succeeded = id > 0; return id; }
             finally { PortalTechnicalLog.WriteSqlTrace(context, "INSERT", "Personel.Insert", clock.ElapsedMilliseconds, succeeded); }
         }
-        public bool Update<T>(T entity) { return db.Update2Db(queryBuilder.BuildUpdate(entity, "Personel_Table")); }
+
         public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
@@ -96,7 +92,7 @@ namespace DAO.Repositories.IKYS
             try { succeeded = transaction.Update(queryBuilder.BuildUpdate(entity, "Personel_Table")); return succeeded; }
             finally { PortalTechnicalLog.WriteSqlTrace(context, "UPDATE", "Personel.Update", clock.ElapsedMilliseconds, succeeded); }
         }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("Personel_Table", id), ""); }
+
 
         public DataTable SelectActiveEmployees(int personelTipi)
         {
@@ -243,10 +239,7 @@ namespace DAO.Repositories.IKYS
         }
         private DataTable TraceSchemaSelect(SqlQuery query, string name, PortalLogContext context)
         {
-            Stopwatch clock = Stopwatch.StartNew();
-            bool succeeded = false;
-            try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", name, clock.ElapsedMilliseconds, succeeded); }
+            return PortalSqlReadExecutor.Select(query, context, name);
         }
         public DataTable SelectActiveEmployeesReturnDT() { return db.SelectFromDb(new SqlQuery("SELECT P.Id PersonelId,P.Id Id,P.Adi,Soyadi,P.PerId,P.SicilNo,P.Tahsili,P.KullaniciAdi,P.Asker_sivil,U.Adi Unvan,G.Adi Gorev,B.Id BirimId,B.Adi Birim,I.IzinDonemiBasTar FROM Personel_Table P INNER JOIN IsBilgileri_Table I ON I.PersonelId=P.Id LEFT JOIN UnvanTanim_Table U ON I.UnvanId=U.Id LEFT JOIN BirimTanim_Table B ON I.BirimId=B.Id LEFT JOIN GorevTanim_Table G ON I.GorevId=G.Id WHERE I.CalismaDurumu=1 ORDER BY B.Sira,I.ProtokolSiraNo"), ""); }
         public DataTable SelectActiveEmployeesReturnDT(PortalLogContext context) { return PortalSqlReadExecutor.Select(new SqlQuery("SELECT P.Id PersonelId,P.Id Id,P.Adi,Soyadi,P.PerId,P.SicilNo,P.Tahsili,P.KullaniciAdi,P.Asker_sivil,U.Adi Unvan,G.Adi Gorev,B.Id BirimId,B.Adi Birim,I.IzinDonemiBasTar FROM Personel_Table P INNER JOIN IsBilgileri_Table I ON I.PersonelId=P.Id LEFT JOIN UnvanTanim_Table U ON I.UnvanId=U.Id LEFT JOIN BirimTanim_Table B ON I.BirimId=B.Id LEFT JOIN GorevTanim_Table G ON I.GorevId=G.Id WHERE I.CalismaDurumu=1 ORDER BY B.Sira,I.ProtokolSiraNo"), context, "Personel.SelectActiveEmployeesReturnDT"); }
@@ -258,11 +251,7 @@ namespace DAO.Repositories.IKYS
 
         public DataTable SelectActiveEmployeesByUnitReturnDataTable(IList<int> birimIds, bool allUnits, PortalLogContext context)
         {
-            SqlQuery query = BuildActiveEmployeesByUnitQuery(birimIds, allUnits);
-            Stopwatch clock = Stopwatch.StartNew();
-            bool succeeded = false;
-            try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Personel.SelectActiveEmployeesByUnitReturnDataTable", clock.ElapsedMilliseconds, succeeded); }
+            return PortalSqlReadExecutor.Select(BuildActiveEmployeesByUnitQuery(birimIds, allUnits), context, "Personel.SelectActiveEmployeesByUnitReturnDataTable");
         }
 
         private static SqlQuery BuildActiveEmployeesByUnitQuery(IList<int> birimIds, bool allUnits)
@@ -296,5 +285,56 @@ namespace DAO.Repositories.IKYS
 
         public DataTable SelectMeetingParticipants(int toplantiId, bool bilgiVerildi, PortalLogContext context) { SqlQuery q = new SqlQuery("SELECT A.* FROM Personel_Table A INNER JOIN ToplantiKatilim_Table B ON B.KatilimciId=A.Id LEFT JOIN IsBilgileri_Table C ON C.PersonelId=A.Id WHERE B.ToplantiId=@ToplantiId AND B.Bilgi=@Bilgi ORDER BY C.ProtokolSiraNo,A.Adi"); q.AddParameter("@ToplantiId", toplantiId); q.AddParameter("@Bilgi", bilgiVerildi); return PortalSqlReadExecutor.Select(q, context, "PersonelRepository.SelectMeetingParticipants"); }
         private static string AddIds(SqlQuery query, IList<int> ids, string prefix) { List<string> names = new List<string>(); for (int i = 0; i < ids.Count; i++) { string name = prefix + i; names.Add(name); query.Parameters.Add(new SqlParameter(name, SqlDbType.Int) { Value = ids[i] }); } return string.Join(",", names); }
+
+        public DataTable SelectAll(PortalLogContext context)
+        {
+            return PortalSqlReadExecutor.Select(new SqlQuery("SELECT * FROM Personel_Table"), context, "Personel.SelectAll");
+        }
+
+        public DataTable SelectActiveEmployee(int personelId, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"SELECT P.* FROM Personel_Table P
+                INNER JOIN IsBilgileri_Table I ON P.Id=I.PersonelId
+                LEFT JOIN UnvanTanim_Table U ON I.UnvanId=U.Id LEFT JOIN BirimTanim_Table B ON I.BirimId=B.Id LEFT JOIN GorevTanim_Table G ON I.GorevId=G.Id
+                WHERE I.CalismaDurumu=1 AND P.Id=@PersonelId ORDER BY I.ProtokolSiraNo");
+            query.AddParameter("@PersonelId", personelId); return PortalSqlReadExecutor.Select(query, context, "Personel.SelectActiveEmployee");
+        }
+
+        public DataTable SelectActiveEmployeesByUnit(int birimId, int personelTipi, bool includeAllTypes, PortalLogContext context)
+        {
+            string typeFilter = includeAllTypes ? "" : " AND P.Tipi=@Tipi";
+            SqlQuery query = new SqlQuery(@"SELECT P.Id PersonelId,P.Adi,Soyadi,P.PerId,P.SicilNo,P.Tahsili,P.KullaniciAdi,P.Asker_sivil,
+                U.Adi Unvan,G.Adi Gorev,B.Adi BirimSube,B.Id BirimId,I.IzinDonemiBasTar,I.ProtokolSiraNo
+                FROM Personel_Table P INNER JOIN IsBilgileri_Table I ON P.Id=I.PersonelId LEFT JOIN UnvanTanim_Table U ON I.UnvanId=U.Id
+                LEFT JOIN BirimTanim_Table B ON I.BirimId=B.Id LEFT JOIN GorevTanim_Table G ON I.GorevId=G.Id
+                WHERE I.CalismaDurumu=1 AND I.BirimId=@BirimId" + typeFilter + " ORDER BY I.ProtokolSiraNo");
+            query.AddParameter("@BirimId", birimId); if (!includeAllTypes) query.AddParameter("@Tipi", personelTipi); return PortalSqlReadExecutor.Select(query, context, "Personel.SelectActiveEmployeesByUnit");
+        }
+
+        public DataTable SelectActiveEmployeesByRegion(int bolgeId, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM Personel_Table A INNER JOIN IsBilgileri_Table B ON B.PersonelId=A.Id INNER JOIN BirimTanim_Table C ON C.Id=B.BirimId WHERE B.CalismaDurumu=1 AND C.BolgeId=@BolgeId ORDER BY B.ProtokolSiraNo"); query.AddParameter("@BolgeId", bolgeId); return PortalSqlReadExecutor.Select(query, context, "Personel.SelectActiveEmployeesByRegion");
+        }
+
+        public DataTable SelectActiveEmployeesReturnDataTable(int personelTipi, bool includeAllTypes, PortalLogContext context)
+        {
+            string typeFilter = includeAllTypes ? "" : " AND P.Tipi=@Tipi";
+            SqlQuery query = new SqlQuery(@"SELECT P.Id PersonelId,P.Adi,Soyadi,P.PerId,P.SicilNo,P.Tahsili,P.KullaniciAdi,P.Asker_sivil,
+                U.Adi Unvan,G.Adi Gorev,B.Adi BirimSube,B.Id BirimId,I.IzinDonemiBasTar,I.ProtokolSiraNo
+                FROM Personel_Table P INNER JOIN IsBilgileri_Table I ON P.Id=I.PersonelId LEFT JOIN UnvanTanim_Table U ON I.UnvanId=U.Id
+                LEFT JOIN BirimTanim_Table B ON I.BirimId=B.Id LEFT JOIN GorevTanim_Table G ON I.GorevId=G.Id
+                WHERE I.CalismaDurumu=1" + typeFilter + " ORDER BY I.ProtokolSiraNo"); if (!includeAllTypes) query.AddParameter("@Tipi", personelTipi); return PortalSqlReadExecutor.Select(query, context, "Personel.SelectActiveEmployeesReturnDataTable");
+        }
+
+        public DataTable SelectManagers(PortalLogContext context)
+        { return PortalSqlReadExecutor.Select(new SqlQuery("SELECT P.Id PersonelId,P.Adi,Soyadi,P.PerId,P.SicilNo,P.Tahsili,P.KullaniciAdi,P.Asker_sivil,B.Adi BirimSube,B.Id BirimId FROM BirimTanim_Table B INNER JOIN Personel_Table P ON P.Id=B.AmirId INNER JOIN IsBilgileri_Table I ON I.PersonelId=B.AmirId WHERE I.CalismaDurumu=1 ORDER BY I.ProtokolSiraNo"), context, "Personel.SelectManagers"); }
+
+        public DataTable SelectActiveEmployeesByUnitReturnList(IList<int> birimIds, bool allUnits, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"SELECT P.* FROM Personel_Table P INNER JOIN IsBilgileri_Table I ON I.PersonelId=P.Id
+                LEFT JOIN BirimTanim_Table B ON B.Id=I.BirimId LEFT JOIN GorevTanim_Table G ON G.Id=I.GorevId LEFT JOIN IletisimBilgileri_Table L ON L.PersonelId=P.Id
+                WHERE I.CalismaDurumu=1"); query.Sql += allUnits ? "" : (birimIds.Count == 0 ? " AND I.BirimId IN ('')" : " AND I.BirimId IN (" + AddIds(query, birimIds, "@BirimId") + ")"); query.Sql += " ORDER BY B.Sira,I.ProtokolSiraNo"; return PortalSqlReadExecutor.Select(query, context, "Personel.SelectActiveEmployeesByUnitReturnList");
+        }
+
     }
 }

@@ -199,7 +199,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
             DataTable dataTable = new IzinTalepService().GetIzinTalepleriReturnDataTable(0, ProjeConstants.IZINTIPI_UCRETLI_INT, true, false, LoggingContext);
             return dataTable;
         }
-       
+
         private string CreateDataTable(string jsonData)
         {
             string tableString = @"
@@ -250,7 +250,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
                         'thousands': '.'
                     },
                     responsive: true,
-                    dom: 'frtip',                    
+                    dom: 'frtip',
                     'createdRow': function(row, data, dataIndex) {
                         if (data.OnayDurumu=='" + ProjeConstants.ONAYDURUMU_KAYIT+ @"')
                         {
@@ -647,7 +647,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
         }
         private class IzinTalepListItem
         {
-            
+
             public DateTime BaslangicTarihiHidden { get; set; }
             public string PersonelId { get; set; }
             public string IzinTalepId { get; set; }

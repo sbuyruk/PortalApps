@@ -187,9 +187,6 @@ namespace Utility.ProjeGlobal
         public const bool MTS_UPDATE_LOG = false;
         public const bool MTS_SAVE_LOG = false;
         //IKYS
-        public const bool IKYS_DELETE_LOG = true;
-        public const bool IKYS_UPDATE_LOG = true;
-        public const bool IKYS_SAVE_LOG = true;
         public static readonly bool AMIRONAYIETKINMI = true;
         //NBYS
         public const bool NBYS_DELETE_LOG = true;

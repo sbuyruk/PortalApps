@@ -144,7 +144,6 @@
     <Compile Include="IKYS\Personel.cs" />
     <Compile Include="IKYS\IKYSOrtak.cs" />
     <Compile Include="IKYS\PersonelItem.cs" />
-    <Compile Include="IKYS\PersonelItemListFactory.cs" />
     <Compile Include="IKYS\UnvanTanim.cs" />
     <Compile Include="IKYS\Yoklama.cs" />
     <Compile Include="MTS\AniObjesiDagitim.cs" />

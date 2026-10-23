@@ -26,11 +26,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
@@ -145,7 +141,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
                 ListItem li = new ListItem(item.Adi, item.Id.ReturnZeroIfNull().ToString());
                 OkulSeviyeDDL.Items.Add(li);
             }
-        } 
+        }
         private void YabanciDilDDLDoldur()
         {
             YabanciDilDDL.Items.Clear();
@@ -361,7 +357,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
         }
         private void FillYabanciDilTable(Personel personel)
         {
-           
+
 
             string[] headers = { "Sira", "Yabanci Dil","Sinav Adi","Sinav Notu","Sinav Tarihi","Açiklama" };
             UtilityHelper.SetTableHeaders(YabanciDilTable,headers);

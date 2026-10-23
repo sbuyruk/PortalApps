@@ -195,8 +195,8 @@ namespace IKYS_WebParts.IzinHareketEditWP
                         FillIzinHareketForm();
                         GorunumuAyarla();
                     }
-                
-                
+
+
                 }
                 int gunFarki = (DateTime.Today - IzinBitTarTxt.Value.ConvertToDatetime()).Days;
                 if (gunFarki > ProjeConstants.IZINDUZENLEMESURESI_GUN)
@@ -248,7 +248,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             if (izinHareket != null)
             {
                 IzinHareketIdLbl.Text = izinHareket.Id.ReturnEmptyIfNull().ToString();
-                IzinTanim it = new IzinTanimService().GetById(izinHareket.IzinTipi);
+                IzinTanim it = new IzinTanimService().GetById(izinHareket.IzinTipi, LoggingContext);
                 IzinTipiIdLbl.Text = it.Id.ToString();
                 IzinTipiLbl.Text = it.Adi;
                 SelectDDLValue(VekilImzaDDL, izinHareket.VekilImza.ToString());
@@ -328,7 +328,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
         private void FillVekilImzaDDL()
         {
             VekilImzaDDL.Items.Clear();
-            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu, LoggingContext);
             ListItem bosLi = new ListItem("", "0");
             VekilImzaDDL.Items.Add(bosLi);
             foreach (Personel item in list)
@@ -340,7 +340,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
         private void FillAmirImzaDDL()
         {
             AmirImzaDDL.Items.Clear();
-            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu, LoggingContext);
             ListItem bosLi = new ListItem("", "0");
             AmirImzaDDL.Items.Add(bosLi);
             foreach (Personel item in list)
@@ -352,7 +352,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
         private void FillOnayImzaDDL()
         {
             OnayImzaDDL.Items.Clear();
-            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu);
+            List<Personel> list = new PersonelService().GetActiveEmployees(Personel.PersonelTipi.Kadrolu, LoggingContext);
             ListItem bosLi = new ListItem("", "0");
             OnayImzaDDL.Items.Add(bosLi);
             foreach (Personel item in list)
@@ -680,13 +680,11 @@ namespace IKYS_WebParts.IzinHareketEditWP
                 }
 
 
-
             }
             catch (Exception exception)
             {
                 ReportError("Unhandled", exception);
             }
-
 
 
         }

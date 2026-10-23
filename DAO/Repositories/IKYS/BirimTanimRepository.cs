@@ -31,7 +31,7 @@ namespace DAO.Repositories.IKYS
         }
         public DataTable SelectAll() { return db.SelectFromDb(new SqlQuery("SELECT * FROM BirimTanim_Table ORDER BY ParentId,Sira"), ""); }
         public DataTable SelectAll(PortalLogContext context) { return TraceSelect(new SqlQuery("SELECT * FROM BirimTanim_Table ORDER BY ParentId,Sira"), "BirimTanim.SelectAll", context); }
-        public int Insert<T>(T item) { return db.Insert(queryBuilder.BuildInsert(item, "BirimTanim_Table")); }
+
         public int Insert<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
@@ -40,13 +40,13 @@ namespace DAO.Repositories.IKYS
             try { int id = transaction.Insert(queryBuilder.BuildInsert(item, "BirimTanim_Table")); succeeded = id > 0; return id; }
             finally { PortalTechnicalLog.WriteSqlTrace(context, "INSERT", "BirimTanim.Insert", clock.ElapsedMilliseconds, succeeded); }
         }
-        public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "BirimTanim_Table")); }
+
         public bool Update<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
             return TraceWrite(queryBuilder.BuildUpdate(item, "BirimTanim_Table"), "UPDATE", "BirimTanim.Update", transaction, context);
         }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("BirimTanim_Table", id), ""); }
+
         public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
@@ -72,10 +72,7 @@ namespace DAO.Repositories.IKYS
 
         private DataTable TraceSelect(SqlQuery query, string name, PortalLogContext context)
         {
-            Stopwatch clock = Stopwatch.StartNew();
-            bool succeeded = false;
-            try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", name, clock.ElapsedMilliseconds, succeeded); }
+            return PortalSqlReadExecutor.Select(query, context, name);
         }
 
         private static bool TraceWrite(SqlQuery query, string operation, string name,
@@ -86,5 +83,11 @@ namespace DAO.Repositories.IKYS
             try { succeeded = transaction.Update(query); return succeeded; }
             finally { PortalTechnicalLog.WriteSqlTrace(context, operation, name, clock.ElapsedMilliseconds, succeeded); }
         }
+
+        public DataTable SelectByParentId(int parentId, PortalLogContext context)
+        { SqlQuery q = new SqlQuery("SELECT * FROM BirimTanim_Table WHERE ParentId=@ParentId ORDER BY Sira"); q.AddParameter("@ParentId", parentId); return PortalSqlReadExecutor.Select(q, context, "BirimTanim.SelectByParentId"); }
+
+        public DataTable SelectRoot(PortalLogContext context)
+        { return PortalSqlReadExecutor.Select(new SqlQuery("SELECT * FROM BirimTanim_Table WHERE ParentId=0 ORDER BY Sira"), context, "BirimTanim.SelectRoot"); }
     }
 }
