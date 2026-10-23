@@ -24,11 +24,19 @@ namespace IKYS_WebParts.EskiPersonelWP
         private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "EskiPersonelWP"); } }
         private void ReportError(string operation, Exception error)
         {
+            if (error == null || error is System.Threading.ThreadAbortException) return;
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context)) { new ExceptionHelper(error).PublishException(); return; }
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
+
+        private void ExecutePersonelAction(string operation, Action action)
+        {
+            try { action(); }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error) { ReportError(operation, error); }
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -852,12 +860,7 @@ namespace IKYS_WebParts.EskiPersonelWP
 
                 IzinHareket izinHareket = new IzinHareket();
                 IzinDonem izinDonem = new IzinDonem();
-                izinDonem = new IzinDonemService().GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT, today);
-                if (izinDonem == null)
-                {
-                    izinDonem = new IzinDonem();
-                    new IzinDonemService().CreateForPersonel(personel, ProjeConstants.IZINTIPI_MAZERET_INT, today, CurrentUserName);
-                }
+                izinDonem = IzinDonemiGetirVeyaOlustur(personel, ProjeConstants.IZINTIPI_MAZERET_INT, today);
                 if (izinDonem != null)
                 {
                     //DateTime izinDonemiBasi = izinDonem != null ? izinDonem.BaslangicTarihi : today.AddYears(-1);
@@ -1474,105 +1477,90 @@ namespace IKYS_WebParts.EskiPersonelWP
 
         protected void UpdateKimlikBtn_Click(object sender, EventArgs e)
         {
-            SetActiveTab("KimlikLi");
-            bool personelUpdated = false;
-            bool kimlikUpdated = false;
-
-            int personelId = PersonelIdQS.ConvertToInt();
-            Personel personel = new Personel();
-            personel = new PersonelService().GetById(personelId);
-
-
-            if (personel != null)
+            ExecutePersonelAction("Personel.UpdateIdentity", () =>
             {
+                SetActiveTab("KimlikLi");
                 PortalLogContext context = LoggingContext;
-                bool loggingEnabled = PortalLogSettings.IsEnabled(context);
-                using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
+                bool updated = false;
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
                 {
-                    personelUpdated = transaction == null ? PersonelUpdate(personel) : PersonelUpdate(personel, transaction, context);
-                    kimlikUpdated = personelUpdated && (transaction == null ? KimlikUpdate(personel) : KimlikUpdate(personel, transaction, context));
-                    if (transaction != null && personelUpdated && kimlikUpdated) transaction.Complete();
+                    Personel personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), transaction, context);
+                    if (personel != null && PersonelUpdate(personel, transaction, context)
+                        && KimlikUpdate(personel, transaction, context))
+                    {
+                        IzinDonemiBilgileriniGuncelle(personel, transaction, context);
+                        transaction.Complete();
+                        updated = true;
+                    }
                 }
-            }
-            if (personelUpdated && kimlikUpdated)
-            {
-                IzinDonemiBilgileriniGuncelle(personel);
-                MessageHelper.PublishMessage("Personel bilgileri güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
-            }
-            else if (personelUpdated)
-            {
-                IzinDonemiBilgileriniGuncelle(personel);
-                MessageHelper.PublishMessage("Personel kimlik bilgileri eksik olarak güncellendi.", ProjeConstants.MESAJ_BILGI);
-            }
-
-            else if (kimlikUpdated)
-                MessageHelper.PublishMessage("Personel bilgisi eksik olarak güncellendi.", ProjeConstants.MESAJ_BILGI);
-            else
-                MessageHelper.PublishMessage("Personel bilgileri güncellenemedi.", ProjeConstants.MESAJ_HATA);
-
+                MessageHelper.PublishMessage(updated ? "Personel ve kimlik bilgileri güncellendi."
+                    : "Personel ve kimlik bilgileri güncellenemedi. Değişiklikler kaydedilmedi.",
+                    updated ? ProjeConstants.MESAJ_BASARILI : ProjeConstants.MESAJ_HATA);
+            });
         }
         protected void KadrosuzUpdateIsBilgileriBtn_Click(object sender, EventArgs e)
         {
-            SetActiveTab("KadrosuzIsBilgileriLi");
-            bool isBilgileriUpdated = false;
-            int personelId = PersonelIdQS.ConvertToInt();
-            Personel personel = new Personel();
-            personel = new PersonelService().GetById(personelId);
-            if (personel != null)
+            ExecutePersonelAction("Personel.UpdateTemporaryWork", () =>
             {
-                isBilgileriUpdated = KadrosuzIsBilgileriUpdate(personel);
-            }
-
-
+                SetActiveTab("KadrosuzIsBilgileriLi");
+                PortalLogContext context = LoggingContext;
+                Personel personel;
+                bool updated = false;
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), transaction, context);
+                    if (personel != null && KadrosuzIsBilgileriUpdate(personel, transaction, context))
+                    {
+                        transaction.Complete();
+                        updated = true;
+                    }
+                }
+                MessageHelper.PublishMessage(updated ? "İş bilgileri güncellendi." : "İş bilgileri güncellenemedi.",
+                    updated ? ProjeConstants.MESAJ_BASARILI : ProjeConstants.MESAJ_HATA);
+            });
         }
         protected void UpdateIsBilgileriBtn_Click(object sender, EventArgs e)
         {
-            SetActiveTab("IsBilgileriLi");
-            bool isBilgileriUpdated = false;
-            int personelId = PersonelIdQS.ConvertToInt();
-            Personel personel = new Personel();
-            personel = new PersonelService().GetById(personelId);
-            if (personel != null)
+            ExecutePersonelAction("Personel.UpdateWork", () =>
             {
+                SetActiveTab("IsBilgileriLi");
                 PortalLogContext context = LoggingContext;
-                bool loggingEnabled = PortalLogSettings.IsEnabled(context);
-                using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
+                Personel personel;
+                bool updated = false;
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
                 {
-                    isBilgileriUpdated = transaction == null ? IsBilgileriUpdate(personel) : IsBilgileriUpdate(personel, transaction, context);
-                    if (transaction != null && isBilgileriUpdated) transaction.Complete();
+                    personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), transaction, context);
+                    if (personel != null && IsBilgileriUpdate(personel, transaction, context))
+                    {
+                        IzinDonemiBilgileriniGuncelle(personel, transaction, context);
+                        transaction.Complete();
+                        updated = true;
+                    }
                 }
-            }
-
-            if (isBilgileriUpdated)
-            {
-                IzinDonemiBilgileriniGuncelle(personel);
-                MessageHelper.PublishMessage("Is bilgileri güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
-            }
-            else
-                MessageHelper.PublishMessage("Is bilgileri güncellenemedi.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage(updated ? "İş bilgileri güncellendi." : "İş bilgileri güncellenemedi.",
+                    updated ? ProjeConstants.MESAJ_BASARILI : ProjeConstants.MESAJ_HATA);
+            });
         }
         protected void UpdateIletisimBtn_Click(object sender, EventArgs e)
         {
-            SetActiveTab("IletisimLi");
-            bool iletisimUpdated = false;
-            int personelId = PersonelIdQS.ConvertToInt();
-            Personel personel = new Personel();
-            personel = new PersonelService().GetById(personelId);
-            if (personel != null)
+            ExecutePersonelAction("Personel.UpdateContact", () =>
             {
+                SetActiveTab("IletisimLi");
                 PortalLogContext context = LoggingContext;
-                bool loggingEnabled = PortalLogSettings.IsEnabled(context);
-                using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
+                Personel personel;
+                bool updated = false;
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
                 {
-                    iletisimUpdated = transaction == null ? IletisimBilgileriUpdate(personel) : IletisimBilgileriUpdate(personel, transaction, context);
-                    if (transaction != null && iletisimUpdated) transaction.Complete();
+                    personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), transaction, context);
+                    if (personel != null && IletisimBilgileriUpdate(personel, transaction, context))
+                    {
+                        transaction.Complete();
+                        updated = true;
+                    }
                 }
-            }
-
-            if (iletisimUpdated)
-                MessageHelper.PublishMessage("İletişim bilgileri güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
-            else
-                MessageHelper.PublishMessage("İletişim bilgileri güncellenemedi.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage(updated ? "İletişim bilgileri güncellendi." : "İletişim bilgileri güncellenemedi.",
+                    updated ? ProjeConstants.MESAJ_BASARILI : ProjeConstants.MESAJ_HATA);
+            });
         }
         protected void AileDuzenleBtn_Click(object sender, EventArgs e)
         {
@@ -1588,19 +1576,6 @@ namespace IKYS_WebParts.EskiPersonelWP
         }
         //PersonelIdQS ile personel varsa Update Yoksa save et
         //geriye personel dondur
-        private Personel PersonelSave()
-        {
-            Personel personel = new Personel();
-            personel.Adi = AdiTxt.Text;
-            personel.Soyadi = SoyadiTxt.Text;
-            personel.SicilNo = SicilNoTxt.Text.ConvertToInt();
-            personel.KullaniciAdi = KullaniciAdiTxt.Text;
-            personel.Asker_sivil = AskerSivilDDL.SelectedValue.ConvertToInt();
-            personel.Tahsili = TahsiliDDL.SelectedValue.ConvertToInt();
-            personel.Tipi = PersonelTipiDDL.SelectedItem.Value.ConvertToInt();
-            personel.Id = new PersonelService().Save(personel);
-            return personel;
-        }
         private Personel PersonelSave(SqlTransactionContext transaction, PortalLogContext context)
         {
             Personel personel = new Personel();
@@ -1614,22 +1589,6 @@ namespace IKYS_WebParts.EskiPersonelWP
             personel.Id = new PersonelService().Save(personel, transaction, context);
             return personel;
         }
-        private bool PersonelUpdate(Personel personel)
-        {
-            bool perSaved = false;
-            if (personel != null)
-            {
-                personel.Adi = AdiTxt.Text;
-                personel.Soyadi = SoyadiTxt.Text;
-                personel.SicilNo = SicilNoTxt.Text.ConvertToInt();
-                personel.KullaniciAdi = KullaniciAdiTxt.Text;
-                personel.Asker_sivil = AskerSivilDDL.SelectedValue.ConvertToInt();
-                personel.Tahsili = TahsiliDDL.SelectedValue.ConvertToInt();
-                personel.Tipi = PersonelTipiDDL.SelectedItem.Value.ConvertToInt();
-            perSaved = new PersonelService().Update(personel);
-            }
-            return perSaved;
-        }
         private bool PersonelUpdate(Personel personel, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (personel == null) return false;
@@ -1641,34 +1600,6 @@ namespace IKYS_WebParts.EskiPersonelWP
             personel.Tahsili = TahsiliDDL.SelectedValue.ConvertToInt();
             personel.Tipi = PersonelTipiDDL.SelectedItem.Value.ConvertToInt();
             return new PersonelService().Update(personel, transaction, context);
-        }
-        private Kimlik KimlikSave(Personel personel, string kimlikNo)
-        {
-            Kimlik kimlik = new Kimlik();
-
-            if (personel != null)
-            {
-            kimlik = new KimlikService().GetByPersonelId(personel.Id);
-                if (kimlik == null)
-                {
-                    kimlik = new Kimlik();
-                    kimlik.PersonelId = personel.Id;
-                    kimlik.TCKimlikNo = kimlikNo;
-                    kimlik.AnneAdi = AnneAdiTxt.Text;
-                    kimlik.BabaAdi = BabaAdiTxt.Text;
-                    kimlik.DogumYeri = DogumIlceDDL.SelectedValue;
-                    kimlik.DogumTar = DogumTarihiTxt.Value.ConvertToDatetime();
-                    kimlik.MedeniHali = MedeniHaliDDL.SelectedValue;
-                    kimlik.EvlilikTar = EvlilikTarihiTxt.Value.ConvertToDatetime();
-                    kimlik.Cinsiyet = CinsiyetDDL.SelectedValue;
-                    kimlik.KanGrubu = KanGrubuDDL.SelectedValue;
-                    kimlik.Olusturan = CurrentUserName;
-                    kimlik.EvlilikKutlama = true;
-                    kimlik.DogumGunuKutlama = true;
-                    kimlik.Id = new KimlikService().Save(kimlik);
-                }
-            }
-            return kimlik;
         }
         private Kimlik KimlikSave(Personel personel, string kimlikNo, SqlTransactionContext transaction, PortalLogContext context)
         {
@@ -1695,32 +1626,6 @@ namespace IKYS_WebParts.EskiPersonelWP
             }
             return kimlik;
         }
-        private bool KimlikUpdate(Personel personel)
-        {
-            bool kimlikUpdated = false;
-            if (personel != null)
-            {
-                Kimlik kimlik = new Kimlik();
-                kimlik = new KimlikService().GetByPersonelId(personel.Id);
-                if (kimlik != null)
-                {
-                    kimlik.TCKimlikNo = TCKimlikNoTxt.Text;
-                    kimlik.AnneAdi = AnneAdiTxt.Text;
-                    kimlik.BabaAdi = BabaAdiTxt.Text;
-                    kimlik.DogumYeri = DogumIlceDDL.SelectedValue;
-                    kimlik.DogumTar = DogumTarihiTxt.Value.ConvertToDatetime();
-                    kimlik.MedeniHali = MedeniHaliDDL.SelectedValue;
-                    kimlik.EvlilikTar = EvlilikTarihiTxt.Value.ConvertToDatetime();
-                    kimlik.Cinsiyet = CinsiyetDDL.SelectedValue;
-                    kimlik.KanGrubu = KanGrubuDDL.SelectedValue;
-                    kimlik.Degistiren = CurrentUserName;
-                    kimlik.DogumGunuKutlama = DogumGunuKutlamaChk.Checked;
-                    kimlik.EvlilikKutlama = EvlilikKutlamaChk.Checked;
-                    kimlikUpdated = new KimlikService().Update(kimlik);
-                }
-            }
-            return kimlikUpdated;
-        }
         private bool KimlikUpdate(Personel personel, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (personel == null) return false;
@@ -1740,25 +1645,6 @@ namespace IKYS_WebParts.EskiPersonelWP
             kimlik.EvlilikKutlama = EvlilikKutlamaChk.Checked;
             return new KimlikService().Update(kimlik, transaction, context);
         }
-        private IsBilgileri IsBilgileriSave(Personel personel)
-        {
-            IsBilgileri isBilgileri = new IsBilgileri();
-
-            if (personel != null)
-            {
-
-                isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id);
-                if (isBilgileri == null)
-                {
-                    isBilgileri = new IsBilgileri();
-                    isBilgileri.PersonelId = personel.Id;
-                    isBilgileri.CalismaDurumu = ProjeConstants.PER_CALISIYOR_INT;
-                    isBilgileri.Olusturan = CurrentUserName;
-                    isBilgileri.Id = new IsBilgileriService().Save(isBilgileri);
-                }
-            }
-            return isBilgileri;
-        }
         private IsBilgileri IsBilgileriSave(Personel personel, SqlTransactionContext transaction, PortalLogContext context)
         {
             IsBilgileri isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id, transaction, context);
@@ -1773,51 +1659,6 @@ namespace IKYS_WebParts.EskiPersonelWP
                 isBilgileri.Id = new IsBilgileriService().Save(isBilgileri, transaction, context);
             }
             return isBilgileri;
-        }
-        private bool IsBilgileriUpdate(Personel personel)
-        {
-
-            bool isSaved = false;
-            if (personel != null)
-            {
-                IsBilgileri isBilgileri = new IsBilgileri();
-                isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id);
-                if (isBilgileri != null)
-                {
-                    isBilgileri.UnvanId = UnvanTanimDDL.SelectedItem.Value.ConvertToInt();
-                    isBilgileri.GorevId = GorevTanimDDL.SelectedItem.Value.ConvertToInt();
-                    isBilgileri.BirimId = BirimIdTxt.Text.ConvertToInt();
-                    isBilgileri.BaslamaTar = IsbasTarTxt.Value.ConvertToDatetime();
-                    isBilgileri.AyrilmaTar = AyrilmaTarTxt.Value.ConvertToDatetime();
-                    isBilgileri.AyrilmaSebebi = AyrilmaSebebiDDL.SelectedItem.Value;
-                    isBilgileri.CalismaDurumu = CalismaDurumuDDL.SelectedItem.Value.ConvertToInt();
-                    isBilgileri.ProtokolSiraNo = ProtokolSirasiTxt.Text.ConvertToInt();
-                    isBilgileri.SGKSicilNo = SGKSicilNoTxt.Text;
-                    isBilgileri.SGKBasTar = SGKBasTarTxt.Value.ConvertToDatetime();
-                    isBilgileri.VakifOncesiPrimGunSayisi = VakifOncesiPrimGunSayisiTxt.Text.ConvertToInt();
-                    isBilgileri.EmeklilikTarihi = EmeklilikTarTxt.Value.ConvertToDatetime();
-                    isBilgileri.IzinDonemiBasTar = IzinDonemiBasTarTxt.Value.ConvertToDatetime();
-                    isBilgileri.Aciklama = IsBilgileriAciklamaTxt.Text;
-                    isBilgileri.Degistiren = CurrentUserName;
-                    isSaved = new IsBilgileriService().Update(isBilgileri);
-                    if (isSaved)
-                    {
-                        //Kadrodaki yerini kaydet
-                        if (isBilgileri.CalismaDurumu == ProjeConstants.PER_CALISIYOR_INT)
-                        {
-                            GorevTanim gt = new GorevTanim();
-                gt = new GorevTanimService().GetById(isBilgileri.GorevId);
-                            if (gt != null)
-                            {
-                                gt.PersonelId = personel.Id;
-                                new GorevTanimService().Update(gt);
-                            }
-                        }
-
-                    }
-                }
-            }
-            return isSaved;
         }
         private bool IsBilgileriUpdate(Personel personel, SqlTransactionContext transaction, PortalLogContext context)
         {
@@ -1852,67 +1693,47 @@ namespace IKYS_WebParts.EskiPersonelWP
             }
             return true;
         }
-        private bool KadrosuzIsBilgileriUpdate(Personel personel)
+        private bool KadrosuzIsBilgileriUpdate(Personel personel, SqlTransactionContext transaction,
+            PortalLogContext context)
         {
+            if (personel == null) return false;
+            IsBilgileri item = new IsBilgileriService().GetByPersonelId(personel.Id, transaction, context);
+            if (item == null) return false;
 
-            bool isSaved = false;
-            if (personel != null)
-            {
-                IsBilgileri isBilgileri = new IsBilgileri();
-                isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id);
-                if (isBilgileri != null)
-                {
-                    isBilgileri.BirimId = BirimDDL.SelectedItem.Value.ConvertToInt();
-                    isBilgileri.BaslamaTar = KadrosuzIsbasTarihiTxt.Value.ConvertToDatetime();
-                    isBilgileri.AyrilmaTar = KadrosuzAyrilmaTarihiTxt.Value.ConvertToDatetime();
-                    isBilgileri.AyrilmaSebebi = KadrosuzAyrilmaSebebiDDL.SelectedItem.Value;
-                    isBilgileri.CalismaDurumu = KadrosuzCalismaDurumuDDL.SelectedItem.Value.ConvertToInt();
-                    isBilgileri.Aciklama = KadrosuzIsBilgileriAciklamaTxt.Text;
-                    isBilgileri.Degistiren = CurrentUserName;
-                    isSaved = new IsBilgileriService().Update(isBilgileri);
+            item.BirimId = BirimDDL.SelectedItem.Value.ConvertToInt();
+            item.BaslamaTar = KadrosuzIsbasTarihiTxt.Value.ConvertToDatetime();
+            item.AyrilmaTar = KadrosuzAyrilmaTarihiTxt.Value.ConvertToDatetime();
+            item.AyrilmaSebebi = KadrosuzAyrilmaSebebiDDL.SelectedItem.Value;
+            item.CalismaDurumu = KadrosuzCalismaDurumuDDL.SelectedItem.Value.ConvertToInt();
+            item.Aciklama = KadrosuzIsBilgileriAciklamaTxt.Text;
+            item.Degistiren = CurrentUserName;
+            if (!new IsBilgileriService().Update(item, transaction, context)) return false;
 
-                }
-            }
-            return isSaved;
+            return true;
         }
-        private void IzinDonemiBilgileriniGuncelle(Personel personel)
+        private void IzinDonemiBilgileriniGuncelle(Personel personel, SqlTransactionContext transaction, PortalLogContext context)
         {
             DateTime today = DateTime.Today;
-            bool loggingEnabled = PortalLogSettings.IsEnabled(LoggingContext);
-            using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
+            IzinDonemService service = new IzinDonemService();
+            IzinDonem donem = service.GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, today, transaction, context);
+            if (donem == null)
+                service.CreateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName, transaction, context);
+            else
+                service.UpdateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName, transaction, context);
+        }
+
+        private IzinDonem IzinDonemiGetirVeyaOlustur(Personel personel, int izinTipi, DateTime tarih)
+        {
+            PortalLogContext context = LoggingContext;
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
                 IzinDonemService service = new IzinDonemService();
-                IzinDonem izinDonemi = transaction == null
-                    ? service.GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, today)
-                    : service.GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, today, transaction, LoggingContext);
-                if (izinDonemi == null)
-                    izinDonemi = transaction == null
-                        ? service.CreateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName)
-                        : service.CreateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName, transaction, LoggingContext);
-                else
-                    izinDonemi = transaction == null
-                        ? service.UpdateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName)
-                        : service.UpdateForPersonel(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName, transaction, LoggingContext);
-                if (izinDonemi != null && transaction != null)
-                    transaction.Complete();
+                IzinDonem donem = service.GetByIzinTarihi(personel.Id, izinTipi, tarih, transaction, context);
+                if (donem == null)
+                    donem = service.CreateForPersonel(personel, izinTipi, tarih, CurrentUserName, transaction, context);
+                if (donem != null) transaction.Complete();
+                return donem;
             }
-        }
-        private IletisimBilgileri IletisimBilgileriSave(Personel personel)
-        {
-            IletisimBilgileri iletisimBilgileri = new IletisimBilgileri();
-
-            if (personel != null)
-            {
-                iletisimBilgileri = new IletisimBilgileri();
-                iletisimBilgileri = new IletisimBilgileriService().GetByPersonelId(personel.Id);
-                if (iletisimBilgileri == null)
-                {
-                    iletisimBilgileri = new IletisimBilgileri();
-                    iletisimBilgileri.PersonelId = personel.Id;
-                iletisimBilgileri.Id = new IletisimBilgileriService().Save(iletisimBilgileri);
-                }
-            }
-            return iletisimBilgileri;
         }
         private IletisimBilgileri IletisimBilgileriSave(Personel personel, SqlTransactionContext transaction, PortalLogContext context)
         {
@@ -1923,36 +1744,6 @@ namespace IKYS_WebParts.EskiPersonelWP
                 iletisimBilgileri.Id = new IletisimBilgileriService().Save(iletisimBilgileri, transaction, context);
             }
             return iletisimBilgileri;
-        }
-        private bool IletisimBilgileriUpdate(Personel personel)
-        {
-
-            bool iletisimSaved = false;
-            if (personel != null)
-            {
-                IletisimBilgileri iletisimBilgileri = new IletisimBilgileri();
-                iletisimBilgileri = new IletisimBilgileriService().GetByPersonelId(personel.Id);
-                if (iletisimBilgileri != null)
-                {
-                    iletisimBilgileri.Adres = AdresTxt.Text;
-                    iletisimBilgileri.CepTelefonu = CepTelefonuTxt.Text;
-                    iletisimBilgileri.CepTelefonu2 = CepTelefonu2Txt.Text;
-                    iletisimBilgileri.DahiliTelefonu = DahiliTelefonuTxt.Text;
-                    iletisimBilgileri.EvTelefonu = EvTelefonuTxt.Text;
-                    iletisimBilgileri.Ili = IkametIliDDL.SelectedItem.Value;
-                    iletisimBilgileri.Ilcesi = IkametIlcesiDDL.SelectedItem.Value.ConvertToInt();
-                    iletisimBilgileri.InternetEPosta = InternetEPostaTxt.Text;
-                    iletisimBilgileri.IntranetEPosta = IntranetEPostaTxt.Text;
-                    iletisimBilgileri.OzelEPosta = OzelEPostaTxt.Text;
-                    iletisimBilgileri.PersonelId = personel.Id;
-                    iletisimBilgileri.PostaKodu = PostaKoduTxt.Text;
-                    iletisimBilgileri.Semt = SemtTxt.Text;
-                    iletisimBilgileri.Plaka = PlakaTxt.Text;
-
-                iletisimSaved = new IletisimBilgileriService().Update(iletisimBilgileri);
-                }
-            }
-            return iletisimSaved;
         }
         private bool IletisimBilgileriUpdate(Personel personel, SqlTransactionContext transaction, PortalLogContext context)
         {
@@ -1983,6 +1774,7 @@ namespace IKYS_WebParts.EskiPersonelWP
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
                 Page.Response.Redirect(newUrl);
             }
+            catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception ex)
             {
                 ReportError("RedirectToPage", ex);
@@ -2003,22 +1795,18 @@ namespace IKYS_WebParts.EskiPersonelWP
                 //kimlikNo = string.IsNullOrEmpty(kimlikNo) ? "" : kimlikNo.Trim();
 
                 PortalLogContext context = LoggingContext;
-                bool loggingEnabled = PortalLogSettings.IsEnabled(context);
-                kimlik = loggingEnabled ? new KimlikService().GetByTcKimlikNo(kimlikNo, context) : new KimlikService().GetByTcKimlikNo(kimlikNo);
+                kimlik = new KimlikService().GetByTcKimlikNo(kimlikNo, context);
                 if (kimlik == null)//Kayitli degilse
                 {
                     Personel personel;
                     IsBilgileri isb;
-                    using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
+                    using (SqlTransactionContext transaction = new SqlTransactionContext())
                     {
-                        personel = transaction == null ? PersonelSave() : PersonelSave(transaction, context);
-                        kimlik = transaction == null ? KimlikSave(personel, kimlikNo) : KimlikSave(personel, kimlikNo, transaction, context);
-                        isb = transaction == null ? IsBilgileriSave(personel) : IsBilgileriSave(personel, transaction, context);
-                        if (transaction == null)
-                            IletisimBilgileriSave(personel);
-                        else
-                            IletisimBilgileriSave(personel, transaction, context);
-                        if (transaction != null) transaction.Complete();
+                        personel = PersonelSave(transaction, context);
+                        kimlik = KimlikSave(personel, kimlikNo, transaction, context);
+                        isb = IsBilgileriSave(personel, transaction, context);
+                        IletisimBilgileriSave(personel, transaction, context);
+                        transaction.Complete();
                     }
                     //Aile, Egitim, Kurs,IsTecrube   tablolari ayrica save edilecek
 
@@ -2034,6 +1822,7 @@ namespace IKYS_WebParts.EskiPersonelWP
                 }
 
             }
+            catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception ex)
             {
                 ReportError("Personel.Save", ex);

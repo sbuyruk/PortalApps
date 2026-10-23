@@ -197,6 +197,32 @@ namespace Model.Ortak
             return hakEdilenIzinGunSayisi;
 
         }
+        // Uses the work snapshot already read by the caller's transaction; no database access.
+        public static string IzinHakkiHesapla(Personel personel, int izinTipi, DateTime izinDonemiBasi,
+            DateTime izinDonemBasTar, IsBilgileri isBilgileri)
+        {
+            if (izinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT)
+                return UcretliIzinHakkiHesapla(personel, izinDonemiBasi, izinDonemBasTar, isBilgileri).ToString(CultureInfo.InvariantCulture);
+            return izinTipi == ProjeConstants.IZINTIPI_MAZERET_INT
+                ? ProjeConstants.IZIN_SURESI_MAZERET.ToString() : string.Empty;
+        }
+
+        public static int UcretliIzinHakkiHesapla(Personel personel, DateTime izinDonemiBasi,
+            DateTime izinDonemBasTar, IsBilgileri isBilgileri)
+        {
+            if (personel == null) throw new ArgumentNullException("personel", "Personel bilgisi gereklidir.");
+            int yilSayisi = izinDonemiBasi.Year - izinDonemBasTar.Year;
+            if (yilSayisi < 1) return ProjeConstants.IZIN_SURESI_0;
+            if (personel.Asker_sivil == ProjeConstants.PER_ASKER_INT) return ProjeConstants.IZIN_SURESI_ASKER;
+            if (isBilgileri == null) throw new ArgumentNullException("isBilgileri", "İş bilgileri gereklidir.");
+            if (izinDonemiBasi < izinDonemBasTar)
+                throw new InvalidOperationException("İzin dönemi başlangıcı işe başlama tarihinden önce olamaz.");
+            if (isBilgileri.VakifOncesiPrimGunSayisi >= 360)
+                yilSayisi += isBilgileri.VakifOncesiPrimGunSayisi / 360;
+            if (yilSayisi >= 15) return ProjeConstants.IZIN_SURESI_16PLUS;
+            return yilSayisi > 5 ? ProjeConstants.IZIN_SURESI_6_15 : ProjeConstants.IZIN_SURESI_1_5;
+        }
+
         private static string KalacakIzinHesapla(int izinDonemId, string sure)
         {
             string sonuctaKalanIzin = string.Empty;

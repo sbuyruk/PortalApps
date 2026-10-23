@@ -92,13 +92,15 @@ namespace Model.Services.IKYS
         public IzinDonem CreateForPersonel(Personel personel, int izinTipi, DateTime tarih, string currentUserName, SqlTransactionContext transaction, PortalLogContext context)
         {
             DateTime izinDonemiBasTar; string birim;
-            if (!GetIzinBaslangic(personel, izinTipi, transaction, context, out izinDonemiBasTar, out birim)) return null;
+            IsBilgileri isBilgileri;
+            if (!GetIzinBaslangic(personel, izinTipi, transaction, context, out izinDonemiBasTar, out birim, out isBilgileri)) return null;
             DateTime donemBaslangici = new DateTime(tarih.Year - 1, izinDonemiBasTar.Month, izinDonemiBasTar.Day);
             DateTime donemSonu = donemBaslangici.AddYears(1).AddDays(-1);
             if (tarih > donemSonu) { donemBaslangici = donemBaslangici.AddYears(1); donemSonu = donemBaslangici.AddYears(1).AddDays(-1); }
             IzinDonem donem = GetByIzinTarihi(personel.Id, izinTipi, tarih, transaction, context);
             if (donem != null) return donem;
-            donem = new IzinDonem { PersonelId = personel.Id, IzinTipi = izinTipi, BaslangicTarihi = donemBaslangici, BitisTarihi = donemSonu, Birim = birim, Adi = donemBaslangici.Year + "-" + donemSonu.Year + " İzin Dönemi", Aciklama = " Otomatik Oluşturuldu ", IzinHakki = IKYSOrtak.IzinHakkiHesapla(personel, izinTipi, donemBaslangici, izinDonemiBasTar).ToString(), KullanilanIzin = "0", Olusturan = currentUserName, KalanIzin = IKYSOrtak.IzinHakkiHesapla(personel, izinTipi, donemBaslangici, izinDonemiBasTar).ToString() };
+            string izinHakki = IKYSOrtak.IzinHakkiHesapla(personel, izinTipi, donemBaslangici, izinDonemiBasTar, isBilgileri);
+            donem = new IzinDonem { PersonelId = personel.Id, IzinTipi = izinTipi, BaslangicTarihi = donemBaslangici, BitisTarihi = donemSonu, Birim = birim, Adi = donemBaslangici.Year + "-" + donemSonu.Year + " İzin Dönemi", Aciklama = " Otomatik Oluşturuldu ", IzinHakki = izinHakki, KullanilanIzin = "0", Olusturan = currentUserName, KalanIzin = izinHakki };
             donem.Id = Save(donem, transaction, context);
             return donem;
         }
@@ -114,14 +116,15 @@ namespace Model.Services.IKYS
         public IzinDonem UpdateForPersonel(Personel personel, int izinTipi, DateTime tarih, string currentUserName, SqlTransactionContext transaction, PortalLogContext context)
         {
             DateTime izinDonemiBasTar; string birim;
-            if (!GetIzinBaslangic(personel, izinTipi, transaction, context, out izinDonemiBasTar, out birim)) return null;
+            IsBilgileri isBilgileri;
+            if (!GetIzinBaslangic(personel, izinTipi, transaction, context, out izinDonemiBasTar, out birim, out isBilgileri)) return null;
             DateTime donemBaslangici = new DateTime(tarih.Year - 1, izinDonemiBasTar.Month, izinDonemiBasTar.Day);
             DateTime donemSonu = donemBaslangici.AddYears(1).AddDays(-1);
             if (tarih > donemSonu) { donemBaslangici = donemBaslangici.AddYears(1); donemSonu = donemBaslangici.AddYears(1).AddDays(-1); }
             IzinDonem donem = GetByIzinTarihi(personel.Id, izinTipi, tarih, transaction, context);
             if (donem == null) return null;
             donem.BaslangicTarihi = donemBaslangici; donem.BitisTarihi = donemSonu; donem.Birim = birim; donem.Adi = donemBaslangici.Year + "-" + donemSonu.Year + " İzin Dönemi"; donem.Aciklama = " İzin Dönemi Güncellendi. "; donem.Degistiren = currentUserName;
-            if (donem.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT) { donem.IzinHakki = IKYSOrtak.UcretliIzinHakkiHesapla(personel, donemBaslangici, izinDonemiBasTar).ToString(); donem.KalanIzin = (donem.IzinHakki.ConvertToInt() - donem.KullanilanIzin.ConvertToInt()).ToString(); }
+            if (donem.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT) { donem.IzinHakki = IKYSOrtak.UcretliIzinHakkiHesapla(personel, donemBaslangici, izinDonemiBasTar, isBilgileri).ToString(CultureInfo.InvariantCulture); donem.KalanIzin = (donem.IzinHakki.ConvertToInt() - donem.KullanilanIzin.ConvertToInt()).ToString(); }
             else if (donem.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT) { TimeSpan kalan = donem.IzinHakki.ConvertToTimeSpan() - donem.KullanilanIzin.ConvertToTimeSpan(); donem.KalanIzin = kalan.ToString(); }
             if (!Update(donem, transaction, context)) return null;
             return donem;
@@ -155,9 +158,24 @@ namespace Model.Services.IKYS
         {
             IsBilgileri ib = new IsBilgileriService().GetByPersonelId(personel.Id); string baslama = ib == null ? "" : ib.BaslamaTar.ConvertToDatetimeEmptyIfNull(); string izinBas = ib == null ? "" : ib.IzinDonemiBasTar.ConvertToDatetimeEmptyIfNull(); izinBas = string.IsNullOrEmpty(izinBas) ? baslama : izinBas; birim = ProjeConstants.IZIN_BIRIMI_GUN; baslangic = DateTime.MinValue; if (string.IsNullOrEmpty(izinBas)) return false; baslangic = izinBas.ConvertToDatetime(); if (izinTipi == ProjeConstants.IZINTIPI_MAZERET_INT) { baslangic = new DateTime(baslangic.Year, 1, 1); birim = ProjeConstants.IZIN_BIRIMI_SAAT; } return true;
         }
-        private bool GetIzinBaslangic(Personel personel, int izinTipi, SqlTransactionContext transaction, PortalLogContext context, out DateTime baslangic, out string birim)
+        private bool GetIzinBaslangic(Personel personel, int izinTipi, SqlTransactionContext transaction, PortalLogContext context, out DateTime baslangic, out string birim, out IsBilgileri isBilgileri)
         {
-            IsBilgileri ib = new IsBilgileriService().GetByPersonelId(personel.Id, transaction, context); string baslama = ib == null ? "" : ib.BaslamaTar.ConvertToDatetimeEmptyIfNull(); string izinBas = ib == null ? "" : ib.IzinDonemiBasTar.ConvertToDatetimeEmptyIfNull(); izinBas = string.IsNullOrEmpty(izinBas) ? baslama : izinBas; birim = ProjeConstants.IZIN_BIRIMI_GUN; baslangic = DateTime.MinValue; if (string.IsNullOrEmpty(izinBas)) return false; baslangic = izinBas.ConvertToDatetime(); if (izinTipi == ProjeConstants.IZINTIPI_MAZERET_INT) { baslangic = new DateTime(baslangic.Year, 1, 1); birim = ProjeConstants.IZIN_BIRIMI_SAAT; } return true;
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id, transaction, context);
+            string baslama = isBilgileri == null ? "" : isBilgileri.BaslamaTar.ConvertToDatetimeEmptyIfNull();
+            string izinBas = isBilgileri == null ? "" : isBilgileri.IzinDonemiBasTar.ConvertToDatetimeEmptyIfNull();
+            izinBas = string.IsNullOrEmpty(izinBas) ? baslama : izinBas;
+            birim = ProjeConstants.IZIN_BIRIMI_GUN;
+            baslangic = DateTime.MinValue;
+            if (string.IsNullOrEmpty(izinBas)) return false;
+            baslangic = izinBas.ConvertToDatetime();
+            if (izinTipi == ProjeConstants.IZINTIPI_MAZERET_INT)
+            {
+                baslangic = new DateTime(baslangic.Year, 1, 1);
+                birim = ProjeConstants.IZIN_BIRIMI_SAAT;
+            }
+            return true;
         }
         private static IzinDonem Map(DataTable table) { return ToList(table).FirstOrDefault(); }
         private static List<IzinDonem> ToList(DataTable table) { return new IzinDonem().ToList<IzinDonem>(table); }
