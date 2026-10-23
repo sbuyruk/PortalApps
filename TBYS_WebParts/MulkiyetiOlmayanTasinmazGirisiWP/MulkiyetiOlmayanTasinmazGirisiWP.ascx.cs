@@ -265,7 +265,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             if (IliDDL.SelectedItem == null)
             {
                 IliDDL.Items.Clear();
-                List<Il> list = new IlService().GetAll();
+                List<Il> list = new IlService().GetAll(LoggingContext);
                 foreach (Il il in list)
                 {
                     IliDDL.Items.Add(new ListItem(il.IlAdi, il.Id.ToString()));
@@ -278,7 +278,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
         private void IlceDDLDoldur()
         {
             IlcesiDDL.Items.Clear();
-                List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt());
+                List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt(), LoggingContext);
             foreach (Ilce ilce in list)
             {
                 IlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));

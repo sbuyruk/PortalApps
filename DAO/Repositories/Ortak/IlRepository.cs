@@ -78,6 +78,14 @@ namespace DAO.Repositories.Ortak
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectByName(string name, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(
+                "SELECT * FROM Il_Table WHERE LOWER(IlAdi)=LOWER(@IlAdi)");
+            query.AddParameter("@IlAdi", name);
+            return PortalSqlReadExecutor.Select(query, context, "IlRepository.SelectByName");
+        }
+
         public DataTable SelectByName(string name, SqlTransactionContext transaction)
         {
             if (transaction == null)

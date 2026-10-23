@@ -129,7 +129,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
         {
             IliDDL.Items.Clear();
 
-            List<Il> list = new IlService().GetAll();
+            List<Il> list = new IlService().GetAll(LoggingContext);
             foreach (Il il in list)
             {
                 if (string.IsNullOrEmpty(il.IlAdi.Trim()))
@@ -141,7 +141,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
         private void IlceDDLDoldur()
         {
             IlcesiDDL.Items.Clear();
-            List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt());
+            List<Ilce> list = new IlceService().GetByProvinceId(IliDDL.SelectedValue.ConvertToInt(), LoggingContext);
             foreach (Ilce ilce in list)
             {
                 IlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));
@@ -226,7 +226,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                 row.Controls.Add(AdiSoyadiCell);
 
                 TableCell IliIlcesiCell = new TableCell();
-                Ilce ilce = new IlceService().GetById(item.Ilcesi);
+                Ilce ilce = new IlceService().GetById(item.Ilcesi, LoggingContext);
                 IliIlcesiCell.Text = ilce != null ? ilce.IlAdi + "/" + ilce.IlceAdi : string.Empty;
                 row.Controls.Add(IliIlcesiCell);
 

@@ -546,80 +546,89 @@ namespace TBYS_WebParts.OdemeGirisWP
         }
         protected void OnaylaBtn_Click(object sender, EventArgs e)
         {
-            string ay = OdemeTarihiTxt.Text.ConvertToDatetime().Month.ToString();
-            string yil = OdemeTarihiTxt.Text.ConvertToDatetime().Year.ToString();
-            SecilenAyQS = ay;
-            SecilenYilQS = yil;
-            KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(SozlesmeDDL.SelectedItem.Value.ConvertToInt());
-            if (kiraSozlesme != null)
+            try
             {
-                DateTime odemeTarihi = UtilityHelper.TariheSaatEkle(OdemeTarihiTxt.Text.ConvertToDatetime(),
-                        string.IsNullOrEmpty(OdemeSaatiTxt.Text) ? "00:00" : OdemeSaatiTxt.Text);
-                if (kaydetGuncelleSilHdn.Value.Equals(ProjeConstants.KAYDET))
+                string ay = OdemeTarihiTxt.Text.ConvertToDatetime().Month.ToString();
+                string yil = OdemeTarihiTxt.Text.ConvertToDatetime().Year.ToString();
+                SecilenAyQS = ay;
+                SecilenYilQS = yil;
+                KiraSozlesme kiraSozlesme = new KiraSozlesme();
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(SozlesmeDDL.SelectedItem.Value.ConvertToInt());
+                if (kiraSozlesme != null)
                 {
-                    
-                    int odemeId = 0;
-                    bool odemeYapildiMi = TBYSOrtak.OdemeYap(kiraSozlesme, odemeTarihi, OdemeTutariTxt.Text.ConvertToDecimal(), AciklamaTxt.Text, ref odemeId, LoggingContext);
-                    if (odemeYapildiMi)
+                    DateTime odemeTarihi = UtilityHelper.TariheSaatEkle(OdemeTarihiTxt.Text.ConvertToDatetime(),
+                            string.IsNullOrEmpty(OdemeSaatiTxt.Text) ? "00:00" : OdemeSaatiTxt.Text);
+                    if (kaydetGuncelleSilHdn.Value.Equals(ProjeConstants.KAYDET))
                     {
-                        
 
-                        RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?Mesaj=true&KiraciId=" + KiraciIdQS + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS);
-
-                    }
-                }
-                else if (kaydetGuncelleSilHdn.Value.Equals(ProjeConstants.GUNCELLE))
-                {
-                    ModalLbl.Text = "Ödeme Güncellenecek";
-                    ModalLbl.CssClass= "col-form-label text-primary fw-bold";
-                    Odeme oncekiOdeme = new Odeme();
-                        oncekiOdeme = new Model.Services.TBYS.OdemeService(LoggingContext).GetById(OdemeIdQS.ConvertToInt());
-                    if (oncekiOdeme != null)
-                    {
-                        int yeniOdemePlaniId = OdemePlaniDDL.SelectedItem.Value.ConvertToInt();
-                        decimal yeniOdemeTutari = OdemeTutariTxt.Text.ConvertToDecimal();
-
-                        Odeme odemeDao = new Odeme();
-                        bool guncellendiMi = new Model.Services.TBYS.OdemeService(LoggingContext).OdemeyiVeOdemePlaniniGuncelle(kiraSozlesme.Id, oncekiOdeme.OdemePlaniId, yeniOdemePlaniId,
-                            oncekiOdeme.Id, odemeTarihi, yeniOdemeTutari, AciklamaTxt.Text, CurrentUserName);
-                        if (guncellendiMi)
+                        int odemeId = 0;
+                        bool odemeYapildiMi = TBYSOrtak.OdemeYap(kiraSozlesme, odemeTarihi, OdemeTutariTxt.Text.ConvertToDecimal(), AciklamaTxt.Text, ref odemeId, LoggingContext);
+                        if (odemeYapildiMi)
                         {
-                            RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?Mesaj=true&KiraciId=" + KiraciIdQS + "&Bastar=" + BastarQS+ "&Bittar=" + BittarQS);
+
+
+                            RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?Mesaj=true&KiraciId=" + KiraciIdQS + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS);
+
                         }
-                            
                     }
-                   
-                }
-                else if (kaydetGuncelleSilHdn.Value.Equals(ProjeConstants.SIL))
-                {
-                    if (kiraSozlesme != null)
+                    else if (kaydetGuncelleSilHdn.Value.Equals(ProjeConstants.GUNCELLE))
                     {
-                        Odeme silinecekOdeme = new Odeme();
-                        silinecekOdeme = new Model.Services.TBYS.OdemeService(LoggingContext).GetById(OdemeIdQS.ConvertToInt());
-
-                        Odeme odemeDao = new Odeme();
-                        bool silindiMi = new Model.Services.TBYS.OdemeService(LoggingContext).OdemeyiSilOdemePlaniniGuncelle(silinecekOdeme.Id, string.Empty, silinecekOdeme.OdemePlaniId, CurrentUserName);
-                        if (silindiMi)
+                        ModalLbl.Text = "Ödeme Güncellenecek";
+                        ModalLbl.CssClass= "col-form-label text-primary fw-bold";
+                        Odeme oncekiOdeme = new Odeme();
+                            oncekiOdeme = new Model.Services.TBYS.OdemeService(LoggingContext).GetById(OdemeIdQS.ConvertToInt());
+                        if (oncekiOdeme != null)
                         {
-                            RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?KiraciId=" + KiraciIdQS + "&Bastar=" + BastarQS+ "&Bittar=" + BittarQS);
+                            int yeniOdemePlaniId = OdemePlaniDDL.SelectedItem.Value.ConvertToInt();
+                            decimal yeniOdemeTutari = OdemeTutariTxt.Text.ConvertToDecimal();
+
+                            Odeme odemeDao = new Odeme();
+                            bool guncellendiMi = new Model.Services.TBYS.OdemeService(LoggingContext).OdemeyiVeOdemePlaniniGuncelle(kiraSozlesme.Id, oncekiOdeme.OdemePlaniId, yeniOdemePlaniId,
+                                oncekiOdeme.Id, odemeTarihi, yeniOdemeTutari, AciklamaTxt.Text, CurrentUserName);
+                            if (guncellendiMi)
+                            {
+                                RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?Mesaj=true&KiraciId=" + KiraciIdQS + "&Bastar=" + BastarQS+ "&Bittar=" + BittarQS);
+                            }
+
                         }
 
                     }
-                    else
+                    else if (kaydetGuncelleSilHdn.Value.Equals(ProjeConstants.SIL))
                     {
-                        MessageHelper.PublishMessage("Sözleşme Bulunamadı", ProjeConstants.MESAJ_HATA);
+                        if (kiraSozlesme != null)
+                        {
+                            Odeme silinecekOdeme = new Odeme();
+                            silinecekOdeme = new Model.Services.TBYS.OdemeService(LoggingContext).GetById(OdemeIdQS.ConvertToInt());
+
+                            Odeme odemeDao = new Odeme();
+                            bool silindiMi = new Model.Services.TBYS.OdemeService(LoggingContext).OdemeyiSilOdemePlaniniGuncelle(silinecekOdeme.Id, string.Empty, silinecekOdeme.OdemePlaniId, CurrentUserName);
+                            if (silindiMi)
+                            {
+                                RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?KiraciId=" + KiraciIdQS + "&Bastar=" + BastarQS+ "&Bittar=" + BittarQS);
+                            }
+
+                        }
+                        else
+                        {
+                            MessageHelper.PublishMessage("Sözleşme Bulunamadı", ProjeConstants.MESAJ_HATA);
+                        }
                     }
+
+
+                }
+                else
+                {
+                    MessageHelper.PublishMessage("Sözleşme Bulunamadı", ProjeConstants.MESAJ_HATA);
                 }
 
+                ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "CloseModalOnay();", true);
 
             }
-            else
+            catch (Exception error)
             {
-                MessageHelper.PublishMessage("Sözleşme Bulunamadı", ProjeConstants.MESAJ_HATA);
+                if (error is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.OdemeGirisWP.OnaylaBtn_Click", error);
             }
-
-            ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "CloseModalOnay();", true);
         }
         private void KiraciModalAc()
         {

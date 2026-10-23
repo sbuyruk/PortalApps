@@ -160,7 +160,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName, LoggingContext);
                     BolgeIdQS = bolge == null ? 0 : bolge.Id;
                     TabloOlustur();
                 }

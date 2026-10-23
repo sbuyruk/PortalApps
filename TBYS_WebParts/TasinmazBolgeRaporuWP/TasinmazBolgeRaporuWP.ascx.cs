@@ -100,7 +100,7 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+            Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName, LoggingContext);
             BolgeIdQS = bolge == null ? 0 : bolge.Id;
             switch (bolge.Id)
             {
@@ -192,7 +192,7 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
         private void TablolariDoldur(int bolgeId)
         {
             TasinmazService tasinmazService = new TasinmazService(LoggingContext);
-            List<Il> ilList = new IlService().GetByRegion(bolgeId, true);
+            List<Il> ilList = new IlService().GetByRegion(bolgeId, true, LoggingContext);
             int AptTMToplam = 0;
             int AptCMToplam = 0;
             int MeskenTMToplam = 0;

@@ -180,7 +180,7 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
                 if (!Page.IsPostBack)
                 {
                     AuthQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(UtilityHelper.GetCurrentUserLoginName());
-                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName, LoggingContext);
                     BolgeIdQS = bolge == null ? 0 : bolge.Id;
                     if (!string.IsNullOrEmpty(AuthQS) && !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM))
                     {

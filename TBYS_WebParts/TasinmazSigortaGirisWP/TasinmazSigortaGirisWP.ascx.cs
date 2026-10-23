@@ -247,7 +247,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             //önceki sayfayi tut, geri tusuna basildiginda gerekli
             if (!Page.IsPostBack)
             {
-                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName, LoggingContext);
                 BolgeIdQS = bolge == null ? 0 : bolge.Id;
                 if (String.IsNullOrEmpty(DestinationAppQS) || String.Equals(DestinationAppQS, ""))
                 {

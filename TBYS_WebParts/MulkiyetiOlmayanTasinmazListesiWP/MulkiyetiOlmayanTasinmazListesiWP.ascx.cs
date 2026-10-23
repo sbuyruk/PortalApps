@@ -108,7 +108,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazListesiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName, LoggingContext);
                     BolgeIdQS = bolge == null ? 0 : bolge.Id;
                     TabloOlustur();
                 }
@@ -183,7 +183,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazListesiWP
         private DataTable GetData()
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            DataTable dataTable = new TasinmazService().SelectEnvanterdeOlmayanTasinmazReturnDataTable();
+            DataTable dataTable = new TasinmazService(LoggingContext).SelectEnvanterdeOlmayanTasinmazReturnDataTable();
             return dataTable;
         }
         private string CreateDataTable(string jsonData)

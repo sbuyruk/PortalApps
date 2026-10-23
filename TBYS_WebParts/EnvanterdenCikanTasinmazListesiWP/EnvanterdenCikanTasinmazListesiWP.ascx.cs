@@ -170,7 +170,7 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP
         private DataTable GetDataTable()
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            DataTable dataTable = new TasinmazService().SelectAllEnvanterdenCikanReturnDataTable();
+            DataTable dataTable = new TasinmazService(LoggingContext).SelectAllEnvanterdenCikanReturnDataTable();
             return dataTable;
         }
         private string CreateDataTable(string jsonData)

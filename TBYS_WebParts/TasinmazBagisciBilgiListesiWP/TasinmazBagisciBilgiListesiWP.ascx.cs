@@ -181,10 +181,10 @@ namespace TBYS_WebParts.TasinmazBagisciBilgiListesiWP
         private string BolgeGetir(string ilAdi)
         {
             string bolgeAdi = string.Empty;
-            Il il = new IlService().GetByName(ilAdi);
+            Il il = new IlService().GetByName(ilAdi, LoggingContext);
             if (il != null)
             {
-                Bolge bolge = new BolgeService().GetSelected(il.BolgeId);
+                Bolge bolge = new BolgeService().GetSelected(il.BolgeId, LoggingContext);
                 bolgeAdi = bolge.KisaAdi;
             }
             return (bolgeAdi);

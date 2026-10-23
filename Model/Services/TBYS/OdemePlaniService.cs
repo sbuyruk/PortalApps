@@ -96,37 +96,35 @@ namespace Model.Services.TBYS
             string bitisAyi = sozlesmeBitis.ToString("MMMM", cultureInfo);
             DateTime vadeBaslangic = sozlesmeBaslangic;
             DateTime vadeBitis = vadeBaslangic.AddMonths(1).AddDays(-1);
-            try
+            decimal aylikKira = kiraSozlesme.KiraBedeli;
+            if (kiraSozlesme.OdemeSekli.Equals(ProjeConstants.KIRA_ODMSEKLI_YILLIK)) aylikKira = kiraSozlesme.KiraBedeli / taksitSayisi;
+            SaveCarryOver(kiraSozlesme, kiraSozlesme.DevirAnaPara, kiraSozlesme.DevirFaizTutari, "Önceki Sözlesmeden devir", 0, transaction);
+            for (int i = 1; i <= taksitSayisi; i++)
             {
-                decimal aylikKira = kiraSozlesme.KiraBedeli;
-                if (kiraSozlesme.OdemeSekli.Equals(ProjeConstants.KIRA_ODMSEKLI_YILLIK)) aylikKira = kiraSozlesme.KiraBedeli / taksitSayisi;
-                SaveCarryOver(kiraSozlesme, kiraSozlesme.DevirAnaPara, kiraSozlesme.DevirFaizTutari, "Önceki Sözlesmeden devir", 0, transaction);
-                for (int i = 1; i <= taksitSayisi; i++)
-                {
-                    int yil = vadeBaslangic.Year; string ay = vadeBaslangic.ToString("MMMM", cultureInfo);
-                    if ((ay + "/" + yil).Equals(bitisAyi + "/" + sozlesmeBitis.Year)) break;
-                    SaveNew(kiraSozlesme, yil, ay, vadeBaslangic, vadeBitis, sozlesmeBaslangic, sozlesmeBitis, aylikKira, i, transaction);
-                    vadeBaslangic = vadeBaslangic.AddMonths(1); vadeBitis = vadeBaslangic.AddMonths(1).AddDays(-1);
-                }
-                for (int i = taksitSayisi + 1; i <= 12; i++)
-                {
-                    int yil = vadeBaslangic.Year; string ay = vadeBaslangic.ToString("MMMM", cultureInfo);
-                    SaveNew(kiraSozlesme, yil, ay, vadeBaslangic, vadeBitis, sozlesmeBaslangic, sozlesmeBitis, 0, i, transaction);
-                    vadeBaslangic = vadeBaslangic.AddMonths(1); vadeBitis = vadeBaslangic.AddMonths(1).AddDays(-1);
-                }
-                return true;
+                int yil = vadeBaslangic.Year; string ay = vadeBaslangic.ToString("MMMM", cultureInfo);
+                if ((ay + "/" + yil).Equals(bitisAyi + "/" + sozlesmeBitis.Year)) break;
+                SaveNew(kiraSozlesme, yil, ay, vadeBaslangic, vadeBitis, sozlesmeBaslangic, sozlesmeBitis, aylikKira, i, transaction);
+                vadeBaslangic = vadeBaslangic.AddMonths(1); vadeBitis = vadeBaslangic.AddMonths(1).AddDays(-1);
             }
-            catch (Exception) { return false; }
+            for (int i = taksitSayisi + 1; i <= 12; i++)
+            {
+                int yil = vadeBaslangic.Year; string ay = vadeBaslangic.ToString("MMMM", cultureInfo);
+                SaveNew(kiraSozlesme, yil, ay, vadeBaslangic, vadeBitis, sozlesmeBaslangic, sozlesmeBitis, 0, i, transaction);
+                vadeBaslangic = vadeBaslangic.AddMonths(1); vadeBitis = vadeBaslangic.AddMonths(1).AddDays(-1);
+            }
+            return true;
         }
         private void SaveNew(KiraSozlesme kiraSozlesme, int yil, string ay, DateTime vadeBaslangic, DateTime vadeBitis, DateTime odemeBaslangic, DateTime odemeBitis, decimal aylikKira, int sira, SqlTransactionContext transaction)
         {
             OdemePlani item = new OdemePlani { SozlesmeId = kiraSozlesme.Id, Yil = yil, Ay = ay, VadeBasTar = vadeBaslangic, VadeBitTar = vadeBitis, KiraBedeli = aylikKira, AnaPara = 0, FaizTutari = 0, OdenenTutar = 0, OdemeBasTar = odemeBaslangic, OdemeBitTar = odemeBitis, Sira = sira, Aciklama = "" };
-            if (transaction == null) Save(item); else Save(item, transaction);
+            int id = transaction == null ? Save(item) : Save(item, transaction);
+            if (id <= 0) throw new InvalidOperationException("Ödeme planı satırı kaydedilemedi.");
         }
         private void SaveCarryOver(KiraSozlesme kiraSozlesme, decimal anaPara, decimal faizTutari, string aciklama, int sira, SqlTransactionContext transaction)
         {
             OdemePlani item = new OdemePlani { SozlesmeId = kiraSozlesme.Id, VadeBitTar = kiraSozlesme.SozBasTar.AddDays(-1), AnaPara = anaPara, FaizTutari = faizTutari, FaizliBakiye = anaPara + faizTutari, OdenenTutar = 0, Aciklama = aciklama, Sira = sira };
-            if (transaction == null) Save(item); else Save(item, transaction);
+            int id = transaction == null ? Save(item) : Save(item, transaction);
+            if (id <= 0) throw new InvalidOperationException("Ödeme planı satırı kaydedilemedi.");
         }
         private static List<OdemePlani> ToList(DataTable t) { return new OdemePlani().ToList<OdemePlani>(t); }
         private static OdemePlani Map(DataTable t) { return ToList(t).FirstOrDefault(); }

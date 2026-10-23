@@ -510,7 +510,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
                 row.Controls.Add(AdiSoyadiCell);
 
                 TableCell IliIlcesiCell = new TableCell();
-                Ilce ilce = new IlceService().GetById(item.Ilcesi);
+                Ilce ilce = new IlceService().GetById(item.Ilcesi, LoggingContext);
                 IliIlcesiCell.Text = ilce != null ? ilce.IlAdi + "/" + ilce.IlceAdi : string.Empty;
                 row.Controls.Add(IliIlcesiCell);
 

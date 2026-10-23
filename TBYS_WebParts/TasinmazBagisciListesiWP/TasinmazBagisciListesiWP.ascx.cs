@@ -159,12 +159,12 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName, LoggingContext);
                     BolgeIdQS = bolge == null ? 0 : bolge.Id;
                     TitleLbl.Text = "Taşınmaz Bağışçı Listesi";
                     if (BolgeIdQS!= ProjeConstants.BOLGE_HEPSI_INT && BolgeIdQS!=ProjeConstants.BOLGE_GENELMUDURLUK_INT)
                     {
-                        Bolge bolgeDao = new BolgeService().GetSelected(bolge.Id);
+                        Bolge bolgeDao = new BolgeService().GetSelected(bolge.Id, LoggingContext);
                         TitleLbl.Text = bolgeDao==null? "Taşınmaz Bağışçı Listesi" : "Bağışçı Listesi" + " (" + bolge.KisaAdi + " Bölgesi )";
                         YeniKayitBtn.Visible = false;
                     }
@@ -529,7 +529,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
                 row.Controls.Add(AdiSoyadiCell);
 
                 TableCell IliIlcesiCell = new TableCell();
-                Ilce ilce = new IlceService().GetById(item.Ilcesi);
+                Ilce ilce = new IlceService().GetById(item.Ilcesi, LoggingContext);
                 IliIlcesiCell.Text = item.Adres+" "+ ilce != null ? ilce.IlAdi + "/" + ilce.IlceAdi : string.Empty;
                 row.Controls.Add(IliIlcesiCell);
 

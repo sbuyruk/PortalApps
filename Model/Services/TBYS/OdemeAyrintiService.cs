@@ -1,3 +1,4 @@
+using System.Globalization;
 using DAO.Repositories.TBYS;
 using DAO.Ortak;
 using DAO.Repositories.Ortak;
@@ -42,9 +43,34 @@ namespace Model.Services.TBYS
         public bool Delete(OdemeAyrinti item, SqlTransactionContext tx) { if (item == null || item.Id == 0) return false; bool ok = repository.Delete(item.Id, tx, context); if (ok) Audit("DELETE", item.Id, tx); return ok; }
         private void Audit(string operation, int id, SqlTransactionContext tx) { if (PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, operation, "OdemeAyrinti", id.ToString(), tx); }
         public bool DeleteBySozlesmeId(int id) { if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = DeleteBySozlesmeId(id, tx); if (ok) tx.Complete(); return ok; } return repository.DeleteBySozlesmeId(id); }
-        public bool DeleteBySozlesmeId(int id, SqlTransactionContext tx) { return repository.DeleteBySozlesmeId(id, tx, context); }
-        public bool DeleteByOdemeIdOdemePlaniId(int odemeId, int planId) { return repository.DeleteByOdemeIdOdemePlaniId(odemeId, planId); }
-        public bool DeleteByOdemeIdOdemePlaniId(int odemeId, int planId, SqlTransactionContext transaction) { return repository.DeleteByOdemeIdOdemePlaniId(odemeId, planId, transaction, context); }
+        public bool DeleteBySozlesmeId(int id, SqlTransactionContext tx)
+        {
+            DataTable rows = repository.SelectBySozlesmeId(id, tx, context);
+            if (rows == null || rows.Rows.Count == 0) return true;
+            if (!repository.DeleteBySozlesmeId(id, tx, context)) return false;
+            foreach (DataRow row in rows.Rows)
+                Audit("DELETE", Convert.ToInt32(row["Id"], CultureInfo.InvariantCulture), tx);
+            return true;
+        }
+        public bool DeleteByOdemeIdOdemePlaniId(int odemeId, int planId)
+        {
+            if (context == null) return repository.DeleteByOdemeIdOdemePlaniId(odemeId, planId);
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                bool deleted = DeleteByOdemeIdOdemePlaniId(odemeId, planId, transaction);
+                if (deleted) transaction.Complete();
+                return deleted;
+            }
+        }
+        public bool DeleteByOdemeIdOdemePlaniId(int odemeId, int planId, SqlTransactionContext transaction)
+        {
+            DataTable rows = repository.SelectByOdemeIdOdemePlaniId(odemeId, planId, transaction, context);
+            if (rows == null || rows.Rows.Count == 0) return true;
+            if (!repository.DeleteByOdemeIdOdemePlaniId(odemeId, planId, transaction, context)) return false;
+            foreach (DataRow row in rows.Rows)
+                Audit("DELETE", Convert.ToInt32(row["Id"], CultureInfo.InvariantCulture), transaction);
+            return true;
+        }
         private static List<OdemeAyrinti> ToList(DataTable t) { return new OdemeAyrinti().ToList<OdemeAyrinti>(t); }
         private static OdemeAyrinti Map(DataTable t) { return ToList(t).FirstOrDefault(); }
     }

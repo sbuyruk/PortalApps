@@ -184,7 +184,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         {
             if (!Page.IsPostBack)
             {
-                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName, LoggingContext);
                 BolgeIdQS = bolge == null ? 0 : bolge.Id;
                 BolgeDDLDoldur();
                 DateTime now = DateTime.Now;
@@ -329,22 +329,31 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         }
         protected void SilNowBtn_Click(object sender, EventArgs e)
         {
-            KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(SozlesmeIdHdn.Value.ConvertToInt());
-            if (kiraSozlesme != null)
+            try
             {
-
-                Odeme odeme = new Odeme();
-                bool silindiMi = new Model.Services.TBYS.OdemeService(LoggingContext).OdemeyiSilOdemePlaniniGuncelle(OdemeIdHdn.Value.ConvertToInt(), string.Empty, OdemePlaniIdIdHdn.Value.ConvertToInt(), CurrentUserName);
-                if (silindiMi)
+                KiraSozlesme kiraSozlesme = new KiraSozlesme();
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(SozlesmeIdHdn.Value.ConvertToInt());
+                if (kiraSozlesme != null)
                 {
-                    RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?KiraciId=" + KiraciIdQS + "&Bittar=" + BittarQS + "&Bastar=" + BastarQS);
+
+                    Odeme odeme = new Odeme();
+                    bool silindiMi = new Model.Services.TBYS.OdemeService(LoggingContext).OdemeyiSilOdemePlaniniGuncelle(OdemeIdHdn.Value.ConvertToInt(), string.Empty, OdemePlaniIdIdHdn.Value.ConvertToInt(), CurrentUserName);
+                    if (silindiMi)
+                    {
+                        RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?KiraciId=" + KiraciIdQS + "&Bittar=" + BittarQS + "&Bastar=" + BastarQS);
+                    }
+
+                }
+                else
+                {
+                    MessageHelper.PublishMessage("Sözleşme Bulunamadı", ProjeConstants.MESAJ_HATA);
                 }
 
             }
-            else
+            catch (Exception error)
             {
-                MessageHelper.PublishMessage("Sözleşme Bulunamadı", ProjeConstants.MESAJ_HATA);
+                if (error is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraciAylikOdemeWP.SilNowBtn_Click", error);
             }
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
@@ -461,13 +470,13 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
             List<Bolge> list = new List<Bolge>();
             if (BolgeIdQS == ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT)
             {
-                list = new BolgeService().GetActive(ProjeConstants.BOLGE_HEPSI_INT);
+                list = new BolgeService().GetActive(ProjeConstants.BOLGE_HEPSI_INT, LoggingContext);
                 BolgeDDL.Items.Add(new System.Web.UI.WebControls.ListItem(ProjeConstants.BOLGE_HEPSI, ProjeConstants.BOLGE_HEPSI_INT.ToString()));
 
             }
             else
             {
-                list = new BolgeService().GetActive(BolgeIdQS);
+                list = new BolgeService().GetActive(BolgeIdQS, LoggingContext);
             }
             foreach (Bolge item in list)
             {
