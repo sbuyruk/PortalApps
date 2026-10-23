@@ -44,6 +44,8 @@ namespace DAO.Repositories.IKYS
         {
             SqlQuery query = new SqlQuery("SELECT * FROM Kimlik_Table WHERE PersonelId=@PersonelId ORDER BY Id");
             query.AddParameter("@PersonelId", personelId);
+            if (context != null && context.Project == "Portal")
+                return PortalSqlReadExecutor.Select(query, context, "KimlikRepository.SelectByPersonelId");
             Stopwatch clock = Stopwatch.StartNew();
             bool succeeded = false;
             try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }

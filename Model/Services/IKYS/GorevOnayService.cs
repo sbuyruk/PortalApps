@@ -135,5 +135,6 @@ namespace Model.Services.IKYS
             DataTable dataTable = repository.SelectByBirimIdAndDurum(birimId, (int)onayBekliyor);
             return dataTable == null ? new List<GorevOnay>() : ToList(dataTable);
         }
+        public List<GorevOnay> SelectByBirimIdAndDurum(int birimId, GorevOnay.AmirOnayDurumu onayBekliyor, PortalLogContext context) { return ToList(repository.SelectByBirimIdAndDurum(birimId, (int)onayBekliyor, context)); }
     }
 }

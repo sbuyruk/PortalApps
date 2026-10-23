@@ -31,11 +31,11 @@
                         </div>
                         <div class="user-info">
                             <div class="user-name">
-                                <p><%#Eval("Isim") %></p>
+                                <p><%# System.Web.HttpUtility.HtmlEncode(System.Convert.ToString(Eval("Isim"))) %></p>
                             </div>
                             <div class="user-passenger">
                                 <div class="passenger-name">
-                                    <p><%#Eval("Bolum") %></p>
+                                    <p><%# System.Web.HttpUtility.HtmlEncode(System.Convert.ToString(Eval("Bolum"))) %></p>
                                 </div>
                             </div>
                     </li>
@@ -72,10 +72,10 @@
                                             </div>
                                             <div class="col">
                                                 <div class="fw-bold">
-                                                    <p><%#Eval("Isim") %></p>
+                                                    <p><%# System.Web.HttpUtility.HtmlEncode(System.Convert.ToString(Eval("Isim"))) %></p>
                                                 </div>
                                                 <div class="fw-bold">
-                                                    <p><%#Eval("Bolum") %></p>
+                                                    <p><%# System.Web.HttpUtility.HtmlEncode(System.Convert.ToString(Eval("Bolum"))) %></p>
                                                 </div>
                                             </div>
                                         </li>

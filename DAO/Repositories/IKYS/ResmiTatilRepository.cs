@@ -67,6 +67,12 @@ namespace DAO.Repositories.IKYS
             q.AddParameter("@Gun", tarih.Day); q.AddParameter("@Ay", tarih.Month); q.AddParameter("@Tarih", tarih); return db.SelectFromDb(q, "");
         }
 
+        public DataTable SelectByDate(DateTime tarih, PortalLogContext context)
+        {
+            SqlQuery q = new SqlQuery("SELECT * FROM ResmiTatil_Table WHERE ((DAY(BaslamaTarihi)<=@Gun AND DAY(BitisTarihi)>=@Gun AND Ay=@Ay AND Yil=0) AND (IlanTarihi IS NULL OR IlanTarihi<=@Tarih) AND (IptalTarihi IS NULL OR IptalTarihi>=@Tarih)) OR (BaslamaTarihi<=@Tarih AND BitisTarihi>=@Tarih)");
+            q.AddParameter("@Gun", tarih.Day); q.AddParameter("@Ay", tarih.Month); q.AddParameter("@Tarih", tarih); return PortalSqlReadExecutor.Select(q, context, "ResmiTatilRepository.SelectByDate");
+        }
+
         private DataTable TraceSelect(SqlQuery query, string name, PortalLogContext context)
         {
             Stopwatch clock = Stopwatch.StartNew();

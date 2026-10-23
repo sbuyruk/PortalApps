@@ -1,3 +1,5 @@
+using Portal_WebParts.Logging;
+using Utility.Logging;
 using Microsoft.SharePoint;
 using System;
 using System.ComponentModel;
@@ -12,6 +14,8 @@ namespace Portal_WebParts.GunlukYemekListesiMoveWP
     [ToolboxItemAttribute(false)]
     public partial class GunlukYemekListesiMoveWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("Portal", "GunlukYemekListesiMoveWP")); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -30,88 +34,56 @@ namespace Portal_WebParts.GunlukYemekListesiMoveWP
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            YemekTablosunuDoldur();
+            PortalWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
+            {
+                if (!Page.IsPostBack) PortalWebPartLog.RecordOpened(LogContext);
+                YemekTablosunuDoldur();
+            });
         }
         protected void YemekListesiBtn_Click(object sender, EventArgs e)
         {
-            YemekTablosunuDoldur();
+            PortalWebPartLog.ExecuteAction(LogContext, "YemekListesiBtn_Click", () =>
+            {
+                YemekTablosunuDoldur();
+            });
         }
         private DataTable VeriGetir()
         {
-            DataTable dataTable = new DataTable();
-            try
+            var table = new DataTable();
+            table.Columns.Add("YemekAdi", typeof(string));
+            table.Columns.Add("Kalori", typeof(string));
+            SPWeb web = SPContext.Current.Web;
+            if (web == null) throw new InvalidOperationException("SharePoint web bağlamı bulunamadı.");
+            var list = web.Lists["YemekMenusu"];
+            var query = new SPQuery { RowLimit = 1,
+                Query = "<Where><Eq><FieldRef Name='Tarih' /><Value Type='DateTime'><Today /></Value></Eq></Where><OrderBy><FieldRef Name='ID' Ascending='FALSE' /></OrderBy>" };
+            var menus = list.GetItems(query);
+            if (menus.Count == 0) return table;
+            double total = 0;
+            var menu = menus[0];
+            for (int i = 1; i <= 8; i++)
             {
-                DataColumn dataColumn = null;
-
-                // create the columns
-                dataColumn = new DataColumn("YemekAdi", typeof(string));
-                dataTable.Columns.Add(dataColumn);
-                dataColumn = new DataColumn("Kalori", typeof(string));
-                dataTable.Columns.Add(dataColumn);
-
-                SPWeb web = SPContext.Current.Web;
-
-                if (web != null)
-                {
-                    SPList list = web.Lists["YemekMenusu"];
-                    SPQuery query = new SPQuery();
-                    query.RowLimit = 1;
-                    query.Query = string.Format(@"<Where>
-                                                          <Eq>
-                                                             <FieldRef Name='Tarih' />
-                                                             <Value Type='DateTime'>
-                                                                <Today />
-                                                             </Value>
-                                                          </Eq>
-                                                  </Where>
-                                                  <OrderBy>
-                                                          <FieldRef Name='ID' Ascending='FALSE' />
-                                                  </OrderBy>");
-                    SPListItemCollection gununMenusu = list.GetItems(query);
-
-                    if (gununMenusu.Count > 0)
-                    {
-                        YokDiv.Attributes["style"] = "display : none";
-                        double toplamKalori = 0;
-
-                        foreach (SPListItem menu in gununMenusu)
-                        {
-                            for (int i = 1; i <= 8; i++)
-                            {
-                                if (!string.IsNullOrEmpty(Convert.ToString(menu["Yemek" + i])))
-                                {
-                                    DataRow dataRow = dataTable.NewRow();
-                                    dataRow["YemekAdi"] = Convert.ToString(menu["Yemek" + i]);
-                                    int kalori = Convert.ToInt32(menu["Yemek" + i + "Kalori"]);
-                                    dataRow["Kalori"] = kalori==0?"-" : kalori + " Kalori";
-                                    toplamKalori += Convert.ToDouble(menu["Yemek" + i + "Kalori"]);
-                                    dataTable.Rows.Add(dataRow);
-                                }
-                            }
-
-                        }
-                        ToplamLbl.Text = "Toplam " + toplamKalori.ToString() + " kalori";
-
-                    }
-
-                }
-                return dataTable;
+                string name = Convert.ToString(menu["Yemek" + i]);
+                if (string.IsNullOrWhiteSpace(name)) continue;
+                object value = menu["Yemek" + i + "Kalori"];
+                double calories = value == null ? 0 : Convert.ToDouble(value);
+                table.Rows.Add(name, calories == 0 ? "-" : calories.ToString("0.##") + " kalori");
+                total += calories;
             }
-
-            catch (Exception )
-            {
-                return null;
-            }
-
+            if (table.Rows.Count > 0) ToplamLbl.Text = "Toplam " + total.ToString("0.##") + " kalori";
+            return table;
         }
         private void YemekTablosunuDoldur()
         {
+            YokDiv.Attributes["style"] = "display:none";
+            TabloDiv.Attributes["style"] = "display:none";
+            ToplamLbl.Text = string.Empty;
             ResimleriYukle();
             YemekTableHeaders();
 
             DataTable dataTable = VeriGetir();
             int sira = 0;
-            if (dataTable != null)
+            if (dataTable != null && dataTable.Rows.Count > 0)
             {
                 YokDiv.Attributes["style"] = "display : none";
                 TabloDiv.Attributes["style"] = "display : block";
@@ -127,7 +99,7 @@ namespace Portal_WebParts.GunlukYemekListesiMoveWP
                     row.Controls.Add(siraCell);
 
                     TableCell yemekAdiCell = new TableCell();
-                    yemekAdiCell.Text = yemekAdi;
+                    yemekAdiCell.Text = System.Web.HttpUtility.HtmlEncode(yemekAdi);
                     row.Controls.Add(yemekAdiCell);
 
                     TableCell kaloriCell = new TableCell();
@@ -141,7 +113,7 @@ namespace Portal_WebParts.GunlukYemekListesiMoveWP
             {
                 YokDiv.Attributes["style"] = "display : block";
                 TabloDiv.Attributes["style"] = "display : none";
-                YokLbl.Text = DateTime.Now.ConvertToDatetimeEmptyIfNull() + " tarihi için tanimlanmis yemek menüsü bulunamamistir.";
+                YokLbl.Text = DateTime.Now.ConvertToDatetimeEmptyIfNull() + " tarihi için yemek menüsü tanımlanmamış.";
 
             }
 
@@ -176,9 +148,9 @@ namespace Portal_WebParts.GunlukYemekListesiMoveWP
 
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sira";
+            siraCell.Text = "Sıra";
             TableHeaderCell yemekCell = new TableHeaderCell();
-            yemekCell.Text = "Yemek Adi";
+            yemekCell.Text = "Yemek Adı";
             TableHeaderCell kaloriCell = new TableHeaderCell();
             kaloriCell.Text = "Kalori";
 

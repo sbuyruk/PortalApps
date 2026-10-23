@@ -1,3 +1,5 @@
+using Portal_WebParts.Logging;
+using Utility.Logging;
 using Microsoft.SharePoint;
 using System;
 using System.ComponentModel;
@@ -8,6 +10,8 @@ namespace Portal_WebParts.GununSozuWP
     [ToolboxItemAttribute(false)]
     public partial class GununSozuWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("Portal", "GununSozuWP")); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -25,53 +29,61 @@ namespace Portal_WebParts.GununSozuWP
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            using (SPSite site = new SPSite(SPContext.Current.Site.ID))
+            PortalWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
             {
-                using (SPWeb web = site.OpenWeb())
+                if (!Page.IsPostBack) PortalWebPartLog.RecordOpened(LogContext);
+                lblSubject.Text = string.Empty;
+                pnlAdmin.Visible = false;
+
+                using (SPSite site = new SPSite(SPContext.Current.Site.ID))
                 {
-                    string listname = "Günün Sözü";
-                    SPList list = web.Lists.TryGetList(listname);
-                    SPQuery q = new SPQuery();
-                    q.Query = "<OrderBy><FieldRef Name=\"Created\" Ascending=\"False\"/></OrderBy>";
-
-
-                    SPListItemCollection items = list.GetItems(q);
-
-                    if (items.Count > 0)
+                    using (SPWeb web = site.OpenWeb())
                     {
-                        foreach (SPListItem item in items)
+                        string listname = "Günün Sözü";
+                        SPList list = web.Lists.TryGetList(listname);
+                        if (list == null) throw new InvalidOperationException("Günün Sözü listesi bulunamadı.");
+                        SPQuery q = new SPQuery();
+                        q.Query = "<OrderBy><FieldRef Name=\"Created\" Ascending=\"False\"/></OrderBy>";
+
+
+                        SPListItemCollection items = list.GetItems(q);
+
+                        if (items.Count > 0)
                         {
-                            DateTime date = Convert.ToDateTime(item["Tarih"]);
-                            if (date.Month == DateTime.Now.Month && date.Day == DateTime.Now.Day)
+                            foreach (SPListItem item in items)
                             {
-                                lblSubject.Text = item.Title;
-                                break;
+                                DateTime date = Convert.ToDateTime(item["Tarih"]);
+                                if (date.Month == DateTime.Now.Month && date.Day == DateTime.Now.Day)
+                                {
+                                    lblSubject.Text = System.Web.HttpUtility.HtmlEncode(item.Title);
+                                    break;
+                                }
+                            }
+
+                        }
+                        if (string.IsNullOrEmpty(lblSubject.Text)) lblSubject.Text = "Bugün için söz tanımlanmamış.";
+                        try
+                        {
+                            // eger kullaninin duyuru listesine duyuru ekleme hakki varsa hyperlink gorunur oluyor
+                            if (list.DoesUserHavePermissions(SPBasePermissions.AddListItems))
+                            {
+                                lnkDuyuruEkle.NavigateUrl = list.RootFolder.ServerRelativeUrl + "/NewForm.aspx";
+                                pnlAdmin.Visible = true;
+                            }
+                            else
+                            {
+                                pnlAdmin.Visible = false;
                             }
                         }
-
-                    }
-                    site.CatchAccessDeniedException = true;
-                    try
-                    {
-                        // eger kullaninin duyuru listesine duyuru ekleme hakki varsa hyperlink gorunur oluyor
-                        if (list.DoesUserHavePermissions(SPBasePermissions.AddListItems))
-                        {
-                            lnkDuyuruEkle.NavigateUrl = list.RootFolder.ServerRelativeUrl + "/NewForm.aspx";
-                            pnlAdmin.Visible = true;
-                        }
-                        else
+                        catch (System.UnauthorizedAccessException)
                         {
                             pnlAdmin.Visible = false;
                         }
-                    }
-                    catch (System.UnauthorizedAccessException)
-                    {
-                        pnlAdmin.Visible = false;
-                    }
 
-                    site.CatchAccessDeniedException = true;
+                        site.CatchAccessDeniedException = true;
+                    }
                 }
-            }
+            });
         }
     }
 }
