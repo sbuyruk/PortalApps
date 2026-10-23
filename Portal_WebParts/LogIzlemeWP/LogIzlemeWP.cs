@@ -196,14 +196,27 @@ namespace Portal_WebParts.LogIzlemeWP
                     else html.Append(E(row.EventName == "WebPartOpened" ? "Webpart açıldı" : row.EventName ?? row.Operation));
                     html.Append("</td><td><details><summary>Ayrıntıyı göster</summary><dl><dt>İşlem kodu</dt><dd class='li-code'>")
                         .Append(E(row.OperationId.ToString())).Append("</dd><dt>Sayfa</dt><dd>").Append(E(row.PagePath)).Append("</dd>");
-                    if (SelectedKind == "Error") html.Append("<dt>Hata türü</dt><dd>").Append(E(row.ErrorType))
-                        .Append("</dd><dt>Olay</dt><dd>").Append(E(row.EventName)).Append("</dd>");
+                    if (SelectedKind == "Error")
+                    {
+                        html.Append("<dt>Hata türü</dt><dd>").Append(E(row.ErrorType))
+                            .Append("</dd><dt>Olay</dt><dd>").Append(E(row.EventName)).Append("</dd>");
+                        AppendTechnicalDetail(html, "Teknik özet", row.TechnicalSummary);
+                        AppendTechnicalDetail(html, "Çağrı yığını (Stack trace)", row.StackTrace);
+                        AppendTechnicalDetail(html, "İç hata", row.InnerException);
+                    }
                     html.Append("</dl></details></td></tr>");
                 }
                 html.Append("</tbody></table></div>");
             }
             html.Append("</section>");
             return html.ToString();
+        }
+
+        private static void AppendTechnicalDetail(StringBuilder html, string title, string value)
+        {
+            html.Append("<dt>").Append(E(title)).Append("</dt><dd><pre class='li-technical'>")
+                .Append(E(string.IsNullOrWhiteSpace(value) ? "Kaydedilmemiş." : value))
+                .Append("</pre></dd>");
         }
 
         private static TextBox DateInput(string id, string value)
@@ -238,6 +251,7 @@ namespace Portal_WebParts.LogIzlemeWP
 .li-monitor .li-scope{font-size:12px;color:#536879;margin:12px 0}.li-monitor .li-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.li-monitor .li-card{background:#fff;border:1px solid #dde5ed;border-radius:10px;padding:15px}.li-monitor .li-card span{font-size:12px;color:#536879}.li-monitor .li-card strong{display:block;font-size:25px;margin-top:6px;color:#173e4c}.li-monitor .li-hint{font-size:12px;margin:12px 0 18px}
 .li-monitor .li-results{background:#fff;border:1px solid #dde5ed;border-radius:12px;overflow:hidden}.li-monitor .li-caption{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:16px}.li-monitor h3{font-size:17px;margin:0;color:#203747}.li-monitor .li-caption span{font-size:12px;color:#536879}.li-monitor .li-scroll{overflow-x:auto}.li-monitor table{border-collapse:collapse;width:100%;min-width:760px}.li-monitor th{background:#edf3f7;padding:11px 14px;text-align:left;font-size:12px;color:#455f70}.li-monitor td{padding:14px;border-top:1px solid #e6edf2;vertical-align:top;font-size:13px;overflow-wrap:anywhere}.li-monitor tbody tr:hover{background:#f8fbfc}.li-monitor .li-time{white-space:nowrap}.li-monitor .li-project{font-size:11px;color:#176b78;font-weight:700}.li-monitor .li-error{display:inline-block;background:#fff0ed;color:#a33329;padding:2px 8px;border-radius:12px;font-size:12px;font-weight:600}
 .li-monitor summary{cursor:pointer;color:#176b78;white-space:nowrap}.li-monitor dt{font-size:11px;font-weight:600;margin-top:8px}.li-monitor dd{margin:3px 0;color:#536879;max-width:300px;overflow-wrap:anywhere}.li-monitor .li-code{font-family:Consolas,monospace;font-size:12px}.li-monitor .li-empty{padding:35px 20px;text-align:center}.li-monitor .li-notice{margin-top:16px;padding:18px;border:1px solid #e6cb8e;background:#fff9ed;border-radius:10px}.li-monitor .li-pager{display:flex;justify-content:flex-end;gap:10px;margin-top:14px}.li-monitor .li-secondary{border:1px solid #aabcc9;background:#fff;color:#244d61}.li-monitor input[disabled]{opacity:.45;cursor:default}.li-monitor .li-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.li-monitor .li-technical{white-space:pre-wrap;overflow-wrap:anywhere;max-height:260px;overflow:auto;margin:0;padding:10px;background:#edf3f7;border:1px solid #d5e0e9;border-radius:6px;font:12px/1.5 Consolas,monospace;user-select:text}
 @media(max-width:800px){.li-monitor{padding:14px}.li-monitor .li-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.li-monitor .li-filters{padding:12px}}
 </style>";
     }

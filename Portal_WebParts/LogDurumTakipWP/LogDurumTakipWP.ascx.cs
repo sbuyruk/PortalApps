@@ -130,7 +130,18 @@ namespace Portal_WebParts.LogDurumTakipWP
         {
             html.Append("<section class=\"pl-section\"><h3>SQL izleri</h3><table class=\"pl-table\"><thead><tr><th>Tarih-saat</th><th>WebPart</th><th>SQL işlemi</th><th>Repository / metot</th><th>Süre</th><th>Başarılı mı?</th></tr></thead><tbody>");
             if (rows.Count == 0) html.Append(Empty(6));
-            foreach (PortalLogEntry row in rows) AppendRow(html, row, row.SqlOperation ?? row.RepositoryMethod);
+            foreach (PortalLogEntry row in rows)
+            {
+                html.Append("<tr data-pl-row data-user=\"").Append(Encode(row.UserLogin))
+                    .Append("\" data-operationid=\"").Append(Encode(row.OperationId.ToString()))
+                    .Append("\" data-outcome=\"").Append(Encode(row.Outcome)).Append("\"><td>")
+                    .Append(Date(row.OccurredUtc)).Append("</td><td>").Append(Encode(row.WebPart))
+                    .Append("</td><td>").Append(Encode(row.SqlOperation)).Append("</td><td>")
+                    .Append(Encode(row.RepositoryMethod)).Append("</td><td>")
+                    .Append(row.DurationMs.HasValue ? row.DurationMs.Value.ToString(CultureInfo.InvariantCulture) + " ms" : "Veri yok")
+                    .Append("</td><td>").Append(row.Outcome == "Succeeded" ? "Başarılı" : row.Outcome == "Failed" ? "Başarısız" : "Bilinmiyor")
+                    .Append("</td></tr>");
+            }
             html.Append("</tbody></table></section>");
         }
 
@@ -141,7 +152,11 @@ namespace Portal_WebParts.LogDurumTakipWP
         }
 
         private static string Empty(int columns) { return "<tr><td colspan=\"" + columns.ToString(CultureInfo.InvariantCulture) + "\" class=\"pl-empty\">Kayıt bulunamadı.</td></tr>"; }
-        private static string Date(DateTime utc) { return Encode(utc.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture)); }
+        private static string Date(DateTime utc)
+        {
+            DateTime turkeyTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.SpecifyKind(utc, DateTimeKind.Utc), TurkeyTimeZone());
+            return Encode(turkeyTime.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture));
+        }
         private static string Message(string text) { return "<div class=\"pl-section\"><div class=\"pl-empty\">" + Encode(text) + "</div></div>"; }
         private static string Encode(string value) { return HttpUtility.HtmlEncode(value ?? string.Empty); }
     }

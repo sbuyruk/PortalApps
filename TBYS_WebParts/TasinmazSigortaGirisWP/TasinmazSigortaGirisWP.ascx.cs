@@ -416,7 +416,8 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             {
                 if (tasinmaz.AltBolum == ProjeConstants.ALTBOLUM_YOK)
                 {
-                    ListItem li = new ListItem(tasinmaz.BagimsizBolumNo, tasinmaz.BagimsizBolumNo);
+                    // No child section exists; the number is display text, not a section ID.
+                    ListItem li = new ListItem(tasinmaz.BagimsizBolumNo, "0");
                     BagimsizBolumDDL.Items.Add(li);
                     BagimsizBolumNoTxt.Text = tasinmaz.BagimsizBolumNo;
                     KullanimAmaciTxt.Text = sigorta.KullanimSekli;
@@ -628,6 +629,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         }
         protected void UpdateBtn_Click(object sender, EventArgs e)
         {
+            bool committed = false;
             try
             {
                 Sigorta sigorta = new Model.Services.TBYS.SigortaService(LoggingContext).GetById(SigortaIdQS.ConvertToInt());
@@ -641,14 +643,20 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                     MessageHelper.PublishMessage("Sigorta güncellenemedi.", ProjeConstants.MESAJ_HATA);
                     return;
                 }
+                committed = true;
+                PDFKaydet(sigorta, true);
+                PDFGoster(sigorta, true);
                 MessageHelper.PublishMessage("Sigorta güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
-                PDFKaydet(sigorta);
-                PDFGoster(sigorta);
             }
             catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error)
             {
-                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.UpdateBtn_Click", error);
+                if (committed)
+                {
+                    TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.DocumentAfterUpdate", error);
+                    Utility.HelperClasses.Messages.Warning("Sigorta güncellendi; poliçe belgesi işlemi tamamlanamadı. Tekrar güncellemeden önce kaydı ve belgeyi kontrol edin. Başvuru kodu: " + LoggingContext.OperationId.ToString("N"));
+                }
+                else TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.UpdateBtn_Click", error);
             }
         }
         protected void SilBtn_Click(object sender, EventArgs e)
@@ -815,7 +823,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.BelgeSilBtn_Click", ex);
             }
         }
-        private void PDFKaydet(Sigorta sigorta)
+        private void PDFKaydet(Sigorta sigorta, bool throwOnError = false)
         {
             try
             {
@@ -835,6 +843,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                     }
                     else
                     {
+                        if (throwOnError) throw new InvalidOperationException("Poliçe belgesi yüklenemedi.");
                         DosyaLnk.Visible = false;
                         BelgeSilBtn.Visible = false;
                         BelgeYukleFU.Visible = true;
@@ -850,6 +859,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             catch (Exception exception)
             {
                 if (exception is System.Threading.ThreadAbortException) throw;
+                if (throwOnError) throw;
                 TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.PDFKaydet", exception);
                 Exception ex = new Exception("Dosya Yüklenemedi");
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
@@ -857,7 +867,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.TasinmazSigortaGirisWP.PDFKaydet", exhelper.Exceptions);
             }
         }
-        private void PDFGoster(Sigorta sigorta)
+        private void PDFGoster(Sigorta sigorta, bool throwOnError = false)
         {
             try
             {
@@ -901,6 +911,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             catch (Exception exception)
             {
                 if (exception is System.Threading.ThreadAbortException) throw;
+                if (throwOnError) throw;
                 TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.PDFGoster", exception);
                 Exception ex = new Exception("PDF Yüklenemedi");
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
