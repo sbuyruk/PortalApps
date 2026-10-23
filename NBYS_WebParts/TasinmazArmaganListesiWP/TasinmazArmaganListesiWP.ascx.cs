@@ -218,7 +218,7 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
         private List<TasinmazBagisciListItem> GetDataList()
         {
             TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-            DataTable dataTable = new Model.Services.TBYS.TasinmazBagisciReportService(LoggingContext).GetTasinmazBagisci(GizliBagislarHaricChk.Checked);
+            DataTable dataTable = new Model.Services.TBYS.TasinmazBagisciReportService(LoggingContext).GetTasinmazBagisci(false);
             int SiraNo = 1;
             List<TasinmazBagisciListItem> list = new List<TasinmazBagisciListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -318,12 +318,5 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
 
         }
 
-        protected void GizliBagislarHaricChk_CheckedChanged(object sender, EventArgs e)
-        {
-            ExecuteAction("GizliBagislarHaricChk_CheckedChanged", () =>
-            {
-                TabloOlustur();
-            });
-        }
     }
 }

@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Web.UI.WebControls;
+using Image = System.Drawing.Image;
 using Utility.ProjeGlobal;
 
 namespace Portal_WebParts.Logging
