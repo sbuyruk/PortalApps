@@ -1,12 +1,12 @@
-using Model.NBYS;
+using MFYS_WebParts.Logging;
+using Model.Services.MFYS;
 using Model.Ortak;
-using Model.Services.NBYS;
+using Utility.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Globalization;
-using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
@@ -17,6 +17,33 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
     [ToolboxItemAttribute(false)]
     public partial class TarihBazindaGunlukBagisListesiWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("MFYS", "TarihBazindaGunlukBagisListesiWP")); } }
+        private MfysReportService Reports { get { return new MfysReportService(LogContext); } }
+        private void Run(string operation, Action action) { MfysWebPartLog.ExecuteAction(LogContext, operation, action, ClearReport); }
+        private void ClearReport()
+        {
+            ToplamLbl.Text = string.Empty;
+            UtilityHelper.ScriptCalistir(@"(function() {
+                var table = jQuery('#CustomDataTable');
+                table.closest('.dataTables_wrapper,.dt-container').hide();
+                table.hide();
+                if (jQuery.fn.DataTable && jQuery.fn.DataTable.isDataTable('#CustomDataTable')) {
+                    var api = table.DataTable();
+                    api.clear().draw();
+                    if (typeof api.buttons === 'function') api.buttons().disable();
+                }
+            })();");
+        }
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+            Run("RenderReport", () =>
+            {
+                TabloOlustur();
+            });
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -35,167 +62,50 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
         private IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
+            Run("Page_Load", () =>
             {
-                BagisTarihiTxt.Text = DateTime.Today.AddDays(-1).ConvertToDatetimeEmptyIfNull();
-                BankaDDLDoldur();
-                DovizCinsiDDLDoldur();
-                TabloOlustur(); 
-            }
+                if (!Page.IsPostBack)
+                {
+                    MfysWebPartLog.RecordOpened(LogContext);
+                    BagisTarihiTxt.Text = DateTime.Today.AddDays(-1).ToString("dd.MM.yyyy", CultureInfo.GetCultureInfo("tr-TR"));
+                    BankaDDLDoldur();
+                    DovizCinsiDDLDoldur();
+                }
+            });
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
-            UtilityHelper.ScriptCalistir(jsString);
-            NakitBagisHareketService nbh = new NakitBagisHareketService();
-            DateTime bagisTarihi = BagisTarihiTxt.Text.ConvertToDatetime();
-            string dovizCinsi = DovizCinsiDDL.SelectedItem.Value;
-            string bankaGrup = BankaDDL.SelectedItem.Value;
-            decimal tltoplam = nbh.GetDailyTotal(bagisTarihi, bankaGrup, dovizCinsi);
-            ToplamLbl.Text ="Toplam TL : " + tltoplam.ToString("N", culturInfo) + "TL (" + dovizCinsi+")";
+            var jsonData = TabloJson();
+            UtilityHelper.ScriptCalistir(CreateDataTable(jsonData));
         }
         private string TabloJson()
         {
-            string jSon = string.Empty;
-
-            try
-            {
-                List<BagisListItem> list = GetDataList();
-                var serializer = new JavaScriptSerializer();
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
-            return jSon;
+            return MfysWebPartLog.Json(GetDataList());
         }
         private string CreateDataTable(string jsonData)
         {
-            string tableString = @"
-                if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
-                    jQuery('#CustomDataTable').DataTable().destroy();
-                }
-                jQuery('#CustomDataTable tbody').empty();
-
-                jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
-                jQuery(document).ready(function () {
-                    jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiginde
-                            var api = this.api();
-                            var row = api.row(function (idx, data, node) { //secilen toplantiya gider
-                                return data['Secildi'] == true;
-                            });
-                            if (row.length > 0) {
-                                row.select()
-                                    .show()
-                                    .draw(false);
-                            }
-                        },
-                        'pageLength': 50,
-                        data: " + jsonData + @",
-                        columns: [
-                            { data: 'HesapKodu' },
-                            { data: 'HesapAdi' },
-                            { data: 'FaturaNo' },
-                            { data: 'Aciklama' },
-                            { data: 'ParaBirimi' },
-                            { data: 'ToplamBagis'},
-                            { data: 'Alacak'},
-                            { data: 'DovizliTutar' },
-                        ],
-                        columnDefs: [
-                            {
-                                targets: [5,7],
-                                className: 'dt-body-right'
-                            }
-                          ],
-                        'language': {
-                            'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
-                            'decimal': ',',
-                            'thousands': '.'
-                        },
-                        responsive: true,
-                        dom: 'Bfrtip',
-                        buttons: [
-                            {
-                                extend: 'print',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'excel',
-                                title: 'Tarih Bazinda Günlük Bagislar',
-                                filename: function(){
-                                    var d = new Date();
-                                    var n = d.getTime();
-                                    return 'TarihBazindaGunlukBagislar' + n;
-                                },
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'pdf',
-                                title: 'Tarih Bazinda Günlük Bagislar',
-                                filename: function(){
-                                    var d = new Date();
-                                    var n = d.getTime();
-                                    return 'TarihBazindaGunlukBagislar' + n;
-                                },
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'copy',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            , 'pageLength', 'colvis'
-                        ],
-                        });
-                    });
-
-            ";
-
-            return tableString;
+            return MfysWebPartLog.DataTableScript(jsonData,
+                new[] { "HesapKodu", "HesapAdi", "FaturaNo", "Aciklama", "ParaBirimi", "ToplamBagis", "Alacak", "DovizliTutar" }, new[] { 5, 7 },
+                "Tarih Bazında Günlük Bağışlar", "Tarih-Gunluk-Bagislari", 50);
         }
         private List<BagisListItem> GetDataList()
         {
-            DateTime bagisTarihi = BagisTarihiTxt.Text.ConvertToDatetime();
-            string bankaGrup = BankaDDL.SelectedItem.Value;
-            string dovizCinsi = DovizCinsiDDL.SelectedItem.Value;
-            string dovizCinsiText = DovizCinsiDDL.SelectedItem.Text;
-            NakitBagisHareketService nakitBagisHareket = new NakitBagisHareketService();
-            DataTable dataTable = nakitBagisHareket.GetDailyTotalsByBank(bagisTarihi, bankaGrup, dovizCinsi);
-
-            List<BagisListItem> list = new List<BagisListItem>();
-            
-            if (dataTable != null)
+            DateTime day = MfysWebPartLog.ReadDay(BagisTarihiTxt.Text);
+            string bank = MfysWebPartLog.RequireSelection(BankaDDL, "Bir banka seçin.", allowEmpty: true);
+            string currency = MfysWebPartLog.RequireSelection(DovizCinsiDDL, "Bir döviz cinsi seçin.");
+            DataTable table = Reports.DailyDonations(day, bank, currency);
+            var list = new List<BagisListItem>();
+            decimal totalTl = 0, totalCurrency = 0;
+            if (table != null) foreach (DataRow row in table.Rows)
             {
-                foreach (DataRow row in dataTable.Rows)
-                {
-                    string hesapKodu = row["HesapKodu"].ReturnEmptyIfNull().ToString();
-                    string hesapAdi = row["HesapAdi"].ReturnEmptyIfNull().ToString();
-                    decimal toplamBagis = row["ToplamBagis"].ReturnZeroIfNull().ConvertToDecimal();
-                    //string banka = row["Banka"].ToString();
-
-                    BagisListItem bagisListItem = new BagisListItem();
-                    bagisListItem.HesapKodu = hesapKodu;
-                    bagisListItem.HesapAdi = hesapAdi;
-                    bagisListItem.ToplamBagis = toplamBagis.ToString("N",culturInfo);
-                    bagisListItem.ParaBirimi = dovizCinsiText;
-                    bagisListItem.DovizliTutar = dovizCinsiText + " "+ toplamBagis.ToString("N",culturInfo);
-
-                    list.Add(bagisListItem);
-                }
+                decimal tl = row["ToplamBagis"].ReturnZeroIfNull().ConvertToDecimal();
+                decimal amount = currency == ProjeConstants.DOVIZ_TL ? tl : row["DovizTutari"].ReturnZeroIfNull().ConvertToDecimal();
+                list.Add(new BagisListItem { HesapKodu = Convert.ToString(row["HesapKodu"]), HesapAdi = Convert.ToString(row["HesapAdi"]),
+                    ToplamBagis = tl.ToString("N", culturInfo), ParaBirimi = currency, DovizliTutar = currency + " " + amount.ToString("N", culturInfo) });
+                totalTl += tl; totalCurrency += amount;
             }
+            ToplamLbl.Text = "Toplam: " + totalTl.ToString("N", culturInfo) + " TL"
+                + (currency == ProjeConstants.DOVIZ_TL ? string.Empty : " (" + totalCurrency.ToString("N", culturInfo) + " " + currency + ")");
             return list;
         }
         private void BankaDDLDoldur()
@@ -205,7 +115,7 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
             {
                 BankaDDL.Items.Clear();
                 BankaDDL.Items.Add(new ListItem("Tüm Bankalar", string.Empty));
-                List<string> list = new BankaTanimService().GetGroups();
+                List<string> list = Reports.BankGroups(false);
                 foreach (string bankaGrup in list)
                 {
                     BankaDDL.Items.Add(new ListItem(bankaGrup, bankaGrup));
@@ -226,26 +136,31 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
         }
         protected void BagisTarihiTxt_TextChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            // Filters are applied together during OnPreRender.
         }
         protected void BankaDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            // Filters are applied together during OnPreRender.
         }
         protected void DovizCinsiDDLIli_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BankaDDLDoldur();
-            TabloOlustur();
+            Run("DovizCinsiDDLIli_SelectedIndexChanged", () =>
+            {
+                BankaDDLDoldur();
+            });
         }
         protected void YenileBtn_Click(object sender, EventArgs e)
         {
-            TabloOlustur();
+            // Filters are applied together during OnPreRender.
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
+            Run("CloseBtn_Click", () =>
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                Page.Response.Redirect(newUrl);
+            });
         }
         private class BagisListItem
         {

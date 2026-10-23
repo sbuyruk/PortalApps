@@ -1,12 +1,12 @@
-using Model.NBYS;
+using MFYS_WebParts.Logging;
+using Model.Services.MFYS;
 using Model.Ortak;
-using Model.Services.NBYS;
+using Utility.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Globalization;
-using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
@@ -17,6 +17,35 @@ namespace MFYS_WebParts.BankaBazindaGunlukDovizBagisListesiWP
     [ToolboxItemAttribute(false)]
     public partial class BankaBazindaGunlukDovizBagisListesiWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("MFYS", "BankaBazindaGunlukDovizBagisListesiWP")); } }
+        private MfysReportService Reports { get { return new MfysReportService(LogContext); } }
+        private void Run(string operation, Action action) { MfysWebPartLog.ExecuteAction(LogContext, operation, action, ClearReport); }
+        private void ClearReport()
+        {
+            ToplamLbl.Text = string.Empty;
+            UtilityHelper.ScriptCalistir(@"(function() {
+                var table = jQuery('#CustomDataTable');
+                table.closest('.dataTables_wrapper,.dt-container').hide();
+                table.hide();
+                if (jQuery.fn.DataTable && jQuery.fn.DataTable.isDataTable('#CustomDataTable')) {
+                    var api = table.DataTable();
+                    api.clear().draw();
+                    if (typeof api.buttons === 'function') api.buttons().disable();
+                }
+            })();");
+        }
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+            Run("RenderReport", () =>
+            {
+                if (refreshBanks) BankaDDLDoldur();
+                TabloOlustur();
+            });
+        }
+        private bool refreshBanks;
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -35,222 +64,68 @@ namespace MFYS_WebParts.BankaBazindaGunlukDovizBagisListesiWP
         private IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
+            Run("Page_Load", () =>
             {
-                AyDDLDoldur();
-                YilDDLDoldur();
-                DovizCinsiDDLDoldur();
-                BankaDDLDoldur();
-                TabloOlustur();
-            }
+                if (!Page.IsPostBack)
+                {
+                    MfysWebPartLog.RecordOpened(LogContext);
+                    AyDDLDoldur();
+                    YilDDLDoldur();
+                    DovizCinsiDDLDoldur();
+                    refreshBanks = true;
+                }
+            });
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
-            UtilityHelper.ScriptCalistir(jsString);
+            var jsonData = TabloJson();
+            UtilityHelper.ScriptCalistir(CreateDataTable(jsonData));
         }
         private string TabloJson()
         {
-            string jSon = string.Empty;
-
-            try
-            {
-                List<BagisListItem> list = GetDataList();
-                var serializer = new JavaScriptSerializer();
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
-            return jSon;
+            return MfysWebPartLog.Json(GetDataList());
         }
         private string CreateDataTable(string jsonData)
         {
-            string tableString = @"
-                if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
-                    jQuery('#CustomDataTable').DataTable().destroy();
-                }
-                jQuery('#CustomDataTable tbody').empty();
-
-                jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
-                jQuery(document).ready(function () {
-                    jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiginde
-                            var api = this.api();
-                            var row = api.row(function (idx, data, node) { //secilen toplantiya gider
-                                return data['Secildi'] == true;
-                            });
-                            if (row.length > 0) {
-                                row.select()
-                                    .show()
-                                    .draw(false);
-                            }
-                        },
-                        data: " + jsonData + @",
-                        columns: [
-                            { data: 'BagisTarihi' },
-                            { data: 'DovizTutari' },
-                            { data: 'DovizKuru' },
-                            { data: 'TLKarsiligi'},
-                        ],
-                        columnDefs: [
-                            {
-                                targets: [1,2,3],
-                                className: 'dt-body-right'
-                            }
-                          ],
-                        'language': {
-                            'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
-                            'decimal': ',',
-                            'thousands': '.'
-                        },
-                        responsive: true,
-                        pageLength:50,
-                        dom: 'Bprti',
-                        buttons: [
-                            {
-                                extend: 'print',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'excel',
-                                title: 'Banka Bazinda Günlük Bagislar (Döviz)',
-                                filename: function(){
-                                    var d = new Date();
-                                    var n = d.getTime();
-                                    return 'BankaBazindaGunluk-Doviz-Bagislar' + n;
-                                },
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'pdf',
-                                title: 'Banka Bazinda Günlük Bagislar (Doviz)',
-                                filename: function(){
-                                    var d = new Date();
-                                    var n = d.getTime();
-                                    return 'BankaBazindaGunluk-Doviz-Bagislar' + n;
-                                },
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'copy',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            , 'pageLength', 'colvis'
-                        ],
-//
-                        rowGroup: {
-                            startRender: null,
-                            endRender: function ( rows, group ) {
-                            var toplamTutar = rows.data().pluck(4).reduce( function (a, b) {
-                                    return a + b.replace(/[^\d]/g, '')*1;
-                            }, 0) / rows.count();
-                salaryAvg = $.fn.dataTable.render.number(',', '.', 0, '$').display( salaryAvg );
- 
-                var ageAvg = rows
-                    .data()
-                    .pluck(3)
-                    .reduce( function (a, b) {
-                        return a + b*1;
-                    }, 0) / rows.count();
- 
-                return $('<tr/>')
-                    .append( '<td colspan=""3"">Averages for '+group+'</td>' )
-                    .append( '<td>'+ageAvg.toFixed(0)+'</td>' )
-                    .append( '<td/>' )
-                    .append( '<td>'+salaryAvg+'</td>' );
-            },
-            dataSrc: 2
-        }
-//
-                        });
-                    });
-
-            ";
-
-            return tableString;
+            return MfysWebPartLog.DataTableScript(jsonData,
+                new[] { "BagisTarihi", "DovizTutari", "DovizKuru", "TLKarsiligi" }, new[] { 1, 2, 3 },
+                "Banka Bazında Günlük Döviz Bağışları", "Banka-Gunluk-Doviz-Bagislari", 50);
         }
         private List<BagisListItem> GetDataList()
         {
-            int yil = YilDDL.SelectedItem.Value.ConvertToInt();
-            int ay = AyDDL.SelectedItem.Value.ConvertToInt();
-            List<BagisListItem> list = new List<BagisListItem>();
-            DateTime bastar= new DateTime(yil, ay, 1);
-            DateTime bittar= bastar.AddMonths(1).AddDays(-1);
-            string secilenBanka = BankaDDL.SelectedItem!=null?BankaDDL.SelectedItem.Text:string.Empty;
-            string dovizCinsi = DovizCinsiDDL.SelectedItem.Text;
-
-            NakitBagisHareketService nakitBagisHareket = new NakitBagisHareketService();
-            DataTable dataTable = nakitBagisHareket.GetCurrencyDonationsByDateBankGroup2(bastar, bittar, secilenBanka, dovizCinsi);
-            if (dataTable != null)
+            DateTime from, until;
+            MfysWebPartLog.ReadPeriod(YilDDL, AyDDL, out from, out until);
+            string bank = MfysWebPartLog.RequireSelection(BankaDDL, "Bir banka seçin.", allowEmpty: true);
+            string currency = MfysWebPartLog.RequireSelection(DovizCinsiDDL, "Bir döviz cinsi seçin.");
+            var list = new List<BagisListItem>();
+            decimal totalTl = 0, totalCurrency = 0;
+            DataTable table = Reports.CurrencyDonations(from, until, bank, currency);
+            if (table != null) foreach (DataRow row in table.Rows)
             {
-                decimal toplamTL = 0;
-                decimal toplamDoviz = 0;
-                foreach (DataRow row in dataTable.Rows)
-                {
-                    BagisListItem bagisListItem = new BagisListItem();
-
-                    string bagisTarihiStr = row["BagisTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
-                    decimal dovizTutari = row["DovizTutari"].ReturnEmptyIfNull().ConvertToDecimal();
-                    decimal dovizKuru = row["DovizKuru"].ReturnEmptyIfNull().ConvertToDecimal();
-                    decimal tlKarsiligi = row["BagisMiktari"].ReturnZeroIfNull().ConvertToDecimal();
-                    string banka = row["Banka"].ToString();
-                    bagisListItem.BagisTarihi= bagisTarihiStr;
-                    bagisListItem.DovizTutari= dovizTutari.ToString("N",culturInfo) + " " + dovizCinsi;
-                    bagisListItem.DovizKuru= dovizKuru.ToString("N4",culturInfo) + " " + ProjeConstants.DOVIZ_TL;
-                    bagisListItem.TLKarsiligi= tlKarsiligi.ToString("N",culturInfo) + " " + ProjeConstants.DOVIZ_TL;
-                    bagisListItem.Banka= banka;
-                    toplamTL += tlKarsiligi;
-                    toplamDoviz += dovizTutari;
-                    list.Add(bagisListItem);
-                }
-                ToplamLbl.Text="Toplam = " +toplamDoviz.ToString("N",culturInfo) +" " + dovizCinsi + " (" +toplamTL.ToString("N",culturInfo) + " " +ProjeConstants.DOVIZ_TL+") ";
+                decimal amount = row["DovizTutari"].ReturnZeroIfNull().ConvertToDecimal();
+                decimal rate = row["DovizKuru"].ReturnZeroIfNull().ConvertToDecimal();
+                decimal tl = row["BagisMiktari"].ReturnZeroIfNull().ConvertToDecimal();
+                list.Add(new BagisListItem { BagisTarihi = Convert.ToDateTime(row["BagisTarihi"]).ToString("dd.MM.yyyy", CultureInfo.GetCultureInfo("tr-TR")),
+                    DovizTutari = amount.ToString("N", culturInfo) + " " + currency,
+                    DovizKuru = rate.ToString("N4", culturInfo) + " TL", TLKarsiligi = tl.ToString("N", culturInfo) + " TL", Banka = Convert.ToString(row["Banka"]) });
+                totalTl += tl; totalCurrency += amount;
             }
+            ToplamLbl.Text = "Toplam: " + totalCurrency.ToString("N", culturInfo) + " " + currency + " (" + totalTl.ToString("N", culturInfo) + " TL)";
             return list;
         }
         private void BankaDDLDoldur()
         {
-            var selected = DovizCinsiDDL.SelectedItem != null ? DovizCinsiDDL.SelectedItem.Value : string.Empty;
+            string selected = BankaDDL.SelectedValue;
+            DateTime from, until;
+            MfysWebPartLog.ReadPeriod(YilDDL, AyDDL, out from, out until);
+            string currency = MfysWebPartLog.RequireSelection(DovizCinsiDDL, "Bir döviz cinsi seçin.");
+            List<string> banks = Reports.CurrencyBankGroups(from, until, currency);
             BankaDDL.Items.Clear();
-
-            int yil = YilDDL.SelectedItem.Value.ConvertToInt();
-            int ay = AyDDL.SelectedItem.Value.ConvertToInt();
-            string dovizCinsi = DovizCinsiDDL.SelectedItem != null ? DovizCinsiDDL.SelectedItem.Text : string.Empty;
-            DateTime bastar = new DateTime(yil, ay, 1);
-            DateTime bittar = bastar.AddMonths(1).AddDays(-1);
-
-            NakitBagisHareketService nakitBagisHareket = new NakitBagisHareketService();
-            List<string> bankaGrup2List = nakitBagisHareket.GetBankGroup2ByDateCurrency(bastar, bittar, dovizCinsi);
-            foreach (var item in bankaGrup2List)
-            {
-                BankaDDL.Items.Add(new ListItem(item, item));
-            }
-            UtilityHelper.SetDDLValue(BankaDDL, selected);
-
-            //if (BankaDDL.SelectedItem == null)
-            //{
-            //    BankaDDL.Items.Clear();
-            //    BankaTanim pBanka = new BankaTanim();
-            //    List<string> list = pBanka.SelectByBankaGrup2();
-            //    foreach (string banka in list)
-            //    {
-            //        BankaDDL.Items.Add(new ListItem(banka, banka));
-            //    }
-            //    //BankaDDL.Items.Add(new ListItem("Tüm Bankalar", "0"));
-
-            //}
+            foreach (string bank in banks) BankaDDL.Items.Add(new ListItem(bank, bank));
+            if (BankaDDL.Items.Count == 0) BankaDDL.Items.Add(new ListItem("Tüm Bankalar", string.Empty));
+            ListItem previous = BankaDDL.Items.FindByValue(selected);
+            if (previous != null) { BankaDDL.ClearSelection(); previous.Selected = true; }
+            refreshBanks = false;
         }
         private void DovizCinsiDDLDoldur()
         {
@@ -261,66 +136,60 @@ namespace MFYS_WebParts.BankaBazindaGunlukDovizBagisListesiWP
                 DovizCinsiDDL.Items.Add(new ListItem(ProjeConstants.DOVIZ_USD, ProjeConstants.DOVIZ_USD));
                 DovizCinsiDDL.Items.Add(new ListItem(ProjeConstants.DOVIZ_GBP, ProjeConstants.DOVIZ_GBP));
             }
-            
+
         }
         private void AyDDLDoldur()
         {
-            AyDDL.Items.Clear();
-            DateTime bugun = DateTime.Today;
-
-            for (int i = 0; i < 12; i++)
-            {
-                DateTime tarih = bugun.AddMonths(-i);
-                ListItem li = new ListItem(tarih.ToString("MMMM"), tarih.ToString("MM"));
-                AyDDL.Items.Add(li);
-            }
-            AyDDL.Items.Add(new ListItem("Tüm Aylar", "0"));
+            MfysWebPartLog.FillMonths(AyDDL);
         }
         private void YilDDLDoldur()
         {
-            YilDDL.Items.Clear();
-            DateTime bugun = DateTime.Today;
-
-            for (int i = 0; i < 2; i++)
-            {
-                DateTime tarih = bugun.AddYears(-i);
-                ListItem li = new ListItem(tarih.Year.ToString(), tarih.Year.ToString());
-                YilDDL.Items.Add(li);
-            }
+            MfysWebPartLog.FillYears(YilDDL);
         }
         protected void BagisTarihiTxt_TextChanged(object sender, EventArgs e)
         {
-            BankaDDLDoldur();
-            TabloOlustur();
+            Run("BagisTarihiTxt_TextChanged", () =>
+            {
+                refreshBanks = true;
+            });
         }
         protected void DovizCinsiDDLIli_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BankaDDLDoldur();
-            TabloOlustur();
+            Run("DovizCinsiDDLIli_SelectedIndexChanged", () =>
+            {
+                refreshBanks = true;
+            });
         }
         protected void BankaDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            // Filters are applied together during OnPreRender.
         }
         protected void AyDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BankaDDLDoldur();
-            TabloOlustur();
+            Run("AyDDL_SelectedIndexChanged", () =>
+            {
+                refreshBanks = true;
+            });
         }
         protected void YilDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BankaDDLDoldur();
-            TabloOlustur();
+            Run("YilDDL_SelectedIndexChanged", () =>
+            {
+                refreshBanks = true;
+            });
         }
         protected void YenileBtn_Click(object sender, EventArgs e)
         {
-            TabloOlustur();
+            // Filters are applied together during OnPreRender.
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
+            Run("CloseBtn_Click", () =>
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                Page.Response.Redirect(newUrl);
+            });
         }
         private class BagisListItem
         {

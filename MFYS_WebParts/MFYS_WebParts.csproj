@@ -57,6 +57,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logging\MfysWebPartLog.cs" />
     <Compile Include="AylikParaGirisleriWP\AylikParaGirisleriWP.ascx.cs">
       <DependentUpon>AylikParaGirisleriWP.ascx</DependentUpon>
     </Compile>
@@ -121,6 +122,10 @@
     <None Include="TarihBazindaGunlukBagisListesiWP\TarihBazindaGunlukBagisListesiWP.webpart" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DAO\DAO.csproj">
+      <Project>{1fa61ade-6fb6-4fea-95f1-d99c7523d18a}</Project>
+      <Name>DAO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{84F644D0-0931-4536-9EDC-CBE7A773F546}</Project>
       <Name>Model</Name>
