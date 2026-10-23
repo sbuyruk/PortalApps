@@ -46,10 +46,7 @@ namespace DAO.Repositories.IKYS
         {
             SqlQuery query = new SqlQuery("SELECT * FROM IletisimBilgileri_Table WHERE PersonelId=@PersonelId ORDER BY Adres");
             query.AddParameter("@PersonelId", personelId);
-            Stopwatch clock = Stopwatch.StartNew();
-            bool succeeded = false;
-            try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "IletisimBilgileri.SelectByPersonelId", clock.ElapsedMilliseconds, succeeded); }
+            return PortalSqlReadExecutor.Select(query, context, "IletisimBilgileri.SelectByPersonelId");
         }
         public DataTable SelectByPersonelId(int personelId, SqlTransactionContext transaction, PortalLogContext context)
         {

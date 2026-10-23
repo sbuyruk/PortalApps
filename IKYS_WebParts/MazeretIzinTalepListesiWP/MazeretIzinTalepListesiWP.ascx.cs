@@ -109,13 +109,13 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
 
                 IzinHareket izinHareket = new IzinHareket();
                 IzinDonem izinDonem = new IzinDonem();
-                izinDonem = new IzinDonemService().GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT, today);
+                izinDonem = new IzinDonemService().GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT, today, LoggingContext);
                 if (izinDonem != null)
                 {
                     DateTime izinDonemiBasi = izinDonem != null ? izinDonem.BaslangicTarihi : today.AddYears(-1);
                     DateTime izinDonemiSonu = izinDonem != null ? izinDonem.BitisTarihi : today.AddMonths(1); ;
                     //DataTable dataTable = izinHareket.SelectByIzinDonemiReturnDataTable(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT, izinDonemiBasi, threeMonthsLater);//3 ay içinde yeni izin dönemi basliyor olabilir
-                    DataTable dataTable = new IzinHareketService().GetByIzinDonemiReturnDataTable(izinDonem.Id, personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT);
+                    DataTable dataTable = new IzinHareketService().GetByIzinDonemiReturnDataTable(izinDonem.Id, personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT, LoggingContext);
                     int SiraNo = 1;
                     if (dataTable == null)
                     {
@@ -191,7 +191,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                 //int izinDonemiSayisi = (today.Year - izinDonemiBasTar.Year);
                 //izinDonemiSayisi = izinDonemiSayisi > 5 ? 5 : izinDonemiSayisi;
                 IzinDonem izinDonem = new IzinDonem();
-                List<IzinDonem> izinDonemiList = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT);
+                List<IzinDonem> izinDonemiList = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT, LoggingContext);
 
                 IzinHareket izinHareket = new IzinHareket();
 
@@ -319,36 +319,44 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
         }
         protected void IzinHareketleriBtn_Click(object sender, EventArgs e)
         {
-            int personelId = paramPersonelIdLbl.Value.ConvertToInt();
-            Personel personel = new Personel();
-            personel = new PersonelService().GetById(personelId, LoggingContext);
-            if (personel != null)
+            try
             {
-                PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
-                FillIzinHareketleriTable(personel);
-                FillIzinBilgileriTable(personel);
-                FillIzinTalebi(personel);
-                if (paramOnayIdLbl.Value.Equals("kabul"))
+                int personelId = paramPersonelIdLbl.Value.ConvertToInt();
+                Personel personel = new Personel();
+                personel = new PersonelService().GetById(personelId, LoggingContext);
+                if (personel != null)
                 {
-                    OnaylaModalBtn.Visible = false;
-                    KabuletModalBtn.Visible = true;
+                    PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
+                    FillIzinHareketleriTable(personel);
+                    FillIzinBilgileriTable(personel);
+                    FillIzinTalebi(personel);
+                    if (paramOnayIdLbl.Value.Equals("kabul"))
+                    {
+                        OnaylaModalBtn.Visible = false;
+                        KabuletModalBtn.Visible = true;
+                    }
+                    else if (paramOnayIdLbl.Value.Equals("onay"))
+                    {
+                        OnaylaModalBtn.Visible = true;
+                        KabuletModalBtn.Visible = false;
+                    }
+                    string openModal = "OpenModalOnay();";
+                    System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openModal, true);
                 }
-                else if (paramOnayIdLbl.Value.Equals("onay"))
-                {
-                    OnaylaModalBtn.Visible = true;
-                    KabuletModalBtn.Visible = false;
-                }
-                string openModal = "OpenModalOnay();";
-                System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openModal, true);
+            }
+            catch (Exception error)
+            {
+                ReportError("LeaveRequest.Details", error);
             }
         }
         private void FillIzinTalebi(Personel personel)
         {
             IzinTalep it = new IzinTalep();
             it = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), LoggingContext);
+            if (it == null) throw new InvalidOperationException("İzin talebi bulunamadı. Listeyi yenileyin.");
 
             IzinTanim izinTanim = new IzinTanim();
-            izinTanim = new IzinTanimService().GetById(it.IzinTipi);
+            izinTanim = new IzinTanimService().GetById(it.IzinTipi, LoggingContext);
             string izinTanimStr = izinTanim == null ? "" : izinTanim.Adi;
             IzinTalebiLbl.Text = personel.Adi + " " + personel.Soyadi + " Tarafindan " + it.BaslangicTarihi.ToString("dd.MM.yyyy") + " Tarihinde "
                 + it.BaslangicTarihi.ToString("HH:mm") + " - " + it.BitisTarihi.ToString("HH:mm") + " Saatleri Arasinda "
@@ -359,7 +367,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             if (!talep.EPostaGonder) return;
             try
             {
-                IKYSOrtak.IzinKabulRedOnayEPostasiGonder(talep.PersonelId, talep.Id, islem);
+                IKYSOrtak.IzinKabulRedOnayEPostasiGonder(talep.PersonelId, talep.Id, islem, LoggingContext);
             }
             catch (Exception error)
             {

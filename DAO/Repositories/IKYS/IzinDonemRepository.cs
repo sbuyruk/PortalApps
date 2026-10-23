@@ -14,6 +14,7 @@ namespace DAO.Repositories.IKYS
         public IzinDonemRepository() : this(new DbClass()) { }
         public IzinDonemRepository(DbClass db) { if (db == null) throw new ArgumentNullException("db"); this.db = db; queryBuilder = new CrudQueryBuilder(); }
         public DataTable SelectById(int id) { SqlQuery q = new SqlQuery("SELECT * FROM IzinDonem_Table WHERE Id=@Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, ""); }
+        public DataTable SelectById(int id, PortalLogContext context) { SqlQuery q = new SqlQuery("SELECT * FROM IzinDonem_Table WHERE Id=@Id"); q.AddParameter("@Id", id); return PortalSqlReadExecutor.Select(q, context, "IzinDonem.SelectById"); }
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
@@ -33,6 +34,11 @@ namespace DAO.Repositories.IKYS
             SqlQuery q = new SqlQuery("SELECT * FROM IzinDonem_Table WHERE PersonelId=@PersonelId AND (IzinTipi=@IzinTipi OR @IzinTipi=0) AND BaslangicTarihi<=@Tarih AND BitisTarihi>@OncekiTarih ORDER BY BaslangicTarihi");
             q.AddParameter("@PersonelId", personelId); q.AddParameter("@IzinTipi", izinTipi); q.AddParameter("@Tarih", tarih); q.AddParameter("@OncekiTarih", tarih.AddDays(-1)); return db.SelectFromDb(q, "");
         }
+        public DataTable SelectByIzinTarihi(int personelId, int izinTipi, DateTime tarih, PortalLogContext context)
+        {
+            SqlQuery q = new SqlQuery("SELECT * FROM IzinDonem_Table WHERE PersonelId=@PersonelId AND (IzinTipi=@IzinTipi OR @IzinTipi=0) AND BaslangicTarihi<=@Tarih AND BitisTarihi>@OncekiTarih ORDER BY BaslangicTarihi");
+            q.AddParameter("@PersonelId", personelId); q.AddParameter("@IzinTipi", izinTipi); q.AddParameter("@Tarih", tarih); q.AddParameter("@OncekiTarih", tarih.AddDays(-1)); return PortalSqlReadExecutor.Select(q, context, "IzinDonem.SelectByIzinTarihi");
+        }
         public DataTable SelectByIzinTarihi(int personelId, int izinTipi, DateTime tarih, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
@@ -49,6 +55,12 @@ namespace DAO.Repositories.IKYS
             string where = ""; if (personelId != 0) where += " PersonelId=@PersonelId"; if (izinTipi != 0) where += (where.Length == 0 ? "" : " AND ") + "IzinTipi=@IzinTipi"; if (where.Length > 0) where = " WHERE " + where;
             SqlQuery q = new SqlQuery("SELECT Id IzinDonemId, Id,PersonelId, BaslangicTarihi, BitisTarihi, Adi, IzinTipi, IzinHakki, KullanilanIzin, KalanIzin, Birim,Aciklama, Olusturan, OlusturmaTarihi, Degistiren, DegistirmeTarihi FROM IzinDonem_Table" + where + " ORDER BY BaslangicTarihi DESC");
             if (personelId != 0) q.AddParameter("@PersonelId", personelId); if (izinTipi != 0) q.AddParameter("@IzinTipi", izinTipi); return db.SelectFromDb(q, "");
+        }
+        public DataTable SelectByPersonelId(int personelId, int izinTipi, PortalLogContext context)
+        {
+            string where = ""; if (personelId != 0) where += " PersonelId=@PersonelId"; if (izinTipi != 0) where += (where.Length == 0 ? "" : " AND ") + "IzinTipi=@IzinTipi"; if (where.Length > 0) where = " WHERE " + where;
+            SqlQuery q = new SqlQuery("SELECT Id IzinDonemId, Id,PersonelId, BaslangicTarihi, BitisTarihi, Adi, IzinTipi, IzinHakki, KullanilanIzin, KalanIzin, Birim,Aciklama, Olusturan, OlusturmaTarihi, Degistiren, DegistirmeTarihi FROM IzinDonem_Table" + where + " ORDER BY BaslangicTarihi DESC");
+            if (personelId != 0) q.AddParameter("@PersonelId", personelId); if (izinTipi != 0) q.AddParameter("@IzinTipi", izinTipi); return PortalSqlReadExecutor.Select(q, context, "IzinDonem.SelectByPersonelId");
         }
         public DataTable SelectSumKalanIzinByPersonelId(int personelId, bool sadeceEskiDonemler)
         {

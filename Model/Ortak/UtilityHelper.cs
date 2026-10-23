@@ -475,6 +475,22 @@ namespace Model.Ortak
             }
             return deger;
         }
+        public static string ParametreDegeriSorgula(string parametreAdi, Utility.Logging.PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
+            if (string.IsNullOrEmpty(parametreAdi)) return null;
+            try
+            {
+                OrtakParametre parametre = new OrtakParametreService().GetByKey(parametreAdi, context);
+                return parametre == null ? null : parametre.Deger;
+            }
+            catch (Exception error)
+            {
+                if (error is System.Threading.ThreadAbortException) throw;
+                Utility.Logging.PortalTechnicalLog.WriteError(context, "OrtakParametre.Lookup", error);
+                return null;
+            }
+        }
 
         public static List<UserPrincipal> GetGroupMembers(string domain, string groupname)
         {

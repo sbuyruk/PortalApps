@@ -279,12 +279,12 @@ namespace IKYS_WebParts.IzinTalepListesiWP
             {
 
 
-                IzinDonem izinDonem = new IzinDonemService().GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, today);
+                IzinDonem izinDonem = new IzinDonemService().GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, today, LoggingContext);
                 if (izinDonem != null)
                 {
                     DateTime izinDonemiSonu = izinDonem != null ? izinDonem.BitisTarihi : today.AddMonths(1);
                     //DataTable dataTable = izinHareket.SelectByIzinDonemiReturnDataTable(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, izinDonemiBasi, threeMonthsLater);//3 ay içinde yeni izin dönemi basliyor olabilir
-                    DataTable dataTable = new IzinHareketService().GetByIzinDonemiReturnDataTable(izinDonem.Id, personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
+                    DataTable dataTable = new IzinHareketService().GetByIzinDonemiReturnDataTable(izinDonem.Id, personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, LoggingContext);
                     int SiraNo = 1;
                     if (dataTable == null)
                     {
@@ -364,7 +364,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
                 DateTime izinDonemiBasTar = ib.IzinDonemiBasTar;
                 //int izinDonemiSayisi = (today.Year - izinDonemiBasTar.Year);
                 //izinDonemiSayisi = izinDonemiSayisi > 5 ? 5 : izinDonemiSayisi;
-                List<IzinDonem> izinDonemiList = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
+                List<IzinDonem> izinDonemiList = new IzinDonemService().GetByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, LoggingContext);
 
 
                 IzinBilgileriTableHeaders();
@@ -464,7 +464,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
             if (!talep.EPostaGonder) return;
             try
             {
-                IKYSOrtak.IzinKabulRedOnayEPostasiGonder(talep.PersonelId, talep.Id, islem);
+                IKYSOrtak.IzinKabulRedOnayEPostasiGonder(talep.PersonelId, talep.Id, islem, LoggingContext);
             }
             catch (Exception error)
             {
@@ -601,33 +601,41 @@ namespace IKYS_WebParts.IzinTalepListesiWP
 
         protected void IzinHareketleriBtn_Click(object sender, EventArgs e)
         {
-            int personelId = paramPersonelIdLbl.Value.ConvertToInt();
-            Personel personel = new PersonelService().GetById(personelId, LoggingContext);
-            if (personel != null)
+            try
             {
-                PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
-                FillIzinTalebi(personel);
-                FillIzinHareketleriTable(personel);
-                FillIzinBilgileriTable(personel);
-                if (paramOnayIdLbl.Value.Equals("kabul"))
+                int personelId = paramPersonelIdLbl.Value.ConvertToInt();
+                Personel personel = new PersonelService().GetById(personelId, LoggingContext);
+                if (personel != null)
                 {
-                    OnaylaModalBtn.Visible = false;
-                    KabuletModalBtn.Visible = true;
+                    PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
+                    FillIzinTalebi(personel);
+                    FillIzinHareketleriTable(personel);
+                    FillIzinBilgileriTable(personel);
+                    if (paramOnayIdLbl.Value.Equals("kabul"))
+                    {
+                        OnaylaModalBtn.Visible = false;
+                        KabuletModalBtn.Visible = true;
+                    }
+                    else if (paramOnayIdLbl.Value.Equals("onay"))
+                    {
+                        OnaylaModalBtn.Visible = true;
+                        KabuletModalBtn.Visible = false;
+                    }
                 }
-                else if (paramOnayIdLbl.Value.Equals("onay"))
-                {
-                    OnaylaModalBtn.Visible = true;
-                    KabuletModalBtn.Visible = false;
-                }
+            }
+            catch (Exception error)
+            {
+                ReportError("LeaveRequest.Details", error);
             }
         }
 
         private void FillIzinTalebi(Personel personel)
         {
             IzinTalep izinTalebi = new IzinTalepService().GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), LoggingContext);
+            if (izinTalebi == null) throw new InvalidOperationException("İzin talebi bulunamadı. Listeyi yenileyin.");
             if (izinTalebi != null)
             {
-                IzinTanim izinTanim = new IzinTanimService().GetById(izinTalebi.IzinTipi);
+                IzinTanim izinTanim = new IzinTanimService().GetById(izinTalebi.IzinTipi, LoggingContext);
                 string izinTanimStr = izinTanim == null ? "" : izinTanim.Adi;
                 AciklamaTxt.Text = izinTalebi.Aciklama;
                 AdresLbl.Text = "Izin Adresi : " + izinTalebi.Adres;
