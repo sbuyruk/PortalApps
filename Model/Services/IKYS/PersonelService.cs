@@ -36,6 +36,12 @@ namespace Model.Services.IKYS
         {
             return MapSingle(repository.SelectById(id, context));
         }
+        public Personel GetById(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            return MapSingle(repository.SelectById(id, transaction, context));
+        }
 
         public List<Personel> GetAll()
         {
