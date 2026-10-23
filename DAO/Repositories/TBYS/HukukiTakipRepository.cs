@@ -10,12 +10,9 @@ namespace DAO.Repositories.TBYS
         private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
-        public HukukiTakipRepository() : this(new DbClass()) { }
-
-        public HukukiTakipRepository(DbClass db)
+        public HukukiTakipRepository()
         {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "HukukiTakipRepository");
+            db = new TbysSqlExecutor("HukukiTakipRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -43,6 +40,16 @@ namespace DAO.Repositories.TBYS
                 ORDER BY IslemTarihi");
             query.AddParameter("@SozlesmeId", sozlesmeId);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectBySozlesmeId(int sozlesmeId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT * FROM HukukiTakip_Table WITH (UPDLOCK, HOLDLOCK)
+                WHERE SozlesmeId=@SozlesmeId
+                ORDER BY IslemTarihi");
+            query.AddParameter("@SozlesmeId", sozlesmeId);
+            return db.SelectFromDb(query, transaction, context);
         }
 
         public DataTable SelectActiveList()
@@ -77,26 +84,11 @@ namespace DAO.Repositories.TBYS
                 WHERE A.Aktif=1"), "");
         }
 
-        public int Insert<T>(T entity)
-        {
-            return db.Insert(queryBuilder.BuildInsert(entity, "HukukiTakip_Table"));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, "HukukiTakip_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("HukukiTakip_Table", id), "");
-        }
-
-        public bool DeleteBySozlesmeId(int sozlesmeId)
+        public bool DeleteBySozlesmeId(int sozlesmeId, SqlTransactionContext transaction, PortalLogContext context)
         {
             SqlQuery query = new SqlQuery("DELETE HukukiTakip_Table WHERE SozlesmeId=@SozlesmeId");
             query.AddParameter("@SozlesmeId", sozlesmeId);
-            return db.DeleteFromDb(query, "");
+            return db.DeleteFromDb(query, transaction, context);
         }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context) { SqlQuery q = new SqlQuery("SELECT * FROM HukukiTakip_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, transaction, context); }

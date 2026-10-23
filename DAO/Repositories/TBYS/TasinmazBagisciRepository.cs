@@ -11,14 +11,8 @@ namespace DAO.Repositories.TBYS
         private readonly CrudQueryBuilder queryBuilder;
 
         public TasinmazBagisciRepository()
-            : this(new DbClass())
         {
-        }
-
-        public TasinmazBagisciRepository(DbClass db)
-        {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "TasinmazBagisciRepository");
+            db = new TbysSqlExecutor("TasinmazBagisciRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -71,21 +65,6 @@ namespace DAO.Repositories.TBYS
             SqlQuery q = new SqlQuery("SELECT * FROM TasinmazBagisci_Table WHERE Ili=@Ili");
             q.AddParameter("@Ili", ilAdi);
             return db.SelectFromDb(q, "");
-        }
-
-        public int Insert<T>(T item)
-        {
-            return db.Insert(queryBuilder.BuildInsert(item, "TasinmazBagisci_Table"));
-        }
-
-        public bool Update<T>(T item)
-        {
-            return db.Update2Db(queryBuilder.BuildUpdate(item, "TasinmazBagisci_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("TasinmazBagisci_Table", id), "");
         }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)

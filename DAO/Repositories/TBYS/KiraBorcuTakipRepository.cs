@@ -11,14 +11,8 @@ namespace DAO.Repositories.TBYS
         private readonly CrudQueryBuilder queryBuilder;
 
         public KiraBorcuTakipRepository()
-            : this(new DbClass())
         {
-        }
-
-        public KiraBorcuTakipRepository(DbClass db)
-        {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "KiraBorcuTakipRepository");
+            db = new TbysSqlExecutor("KiraBorcuTakipRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -89,21 +83,6 @@ namespace DAO.Repositories.TBYS
             }
             q.Sql = sql.ToString();
             return db.SelectFromDb(q, "");
-        }
-
-        public int Insert<T>(T entity)
-        {
-            return db.Insert(queryBuilder.BuildInsert(entity, "KiraBorcuTakip_Table"));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, "KiraBorcuTakip_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("KiraBorcuTakip_Table", id), "");
         }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)

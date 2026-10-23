@@ -193,9 +193,6 @@ namespace Utility.ProjeGlobal
         public const bool NBYS_UPDATE_LOG = true;
         public const bool NBYS_SAVE_LOG = true;
         //TBYS
-        public const bool TBYS_DELETE_LOG = true;
-        public const bool TBYS_UPDATE_LOG = false;
-        public const bool TBYS_SAVE_LOG = true;
         //TYS
         
         //PORTAL

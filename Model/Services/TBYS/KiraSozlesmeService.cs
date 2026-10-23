@@ -41,23 +41,16 @@ namespace Model.Services.TBYS
         {
             return Map(repository.SelectById(id));
         }
+        public KiraSozlesme GetById(int id, SqlTransactionContext transaction) { return Map(repository.SelectById(id, transaction, context)); }
         public int Save(KiraSozlesme item)
         {
-            if (context != null)
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                using (SqlTransactionContext transaction = new SqlTransactionContext())
-                {
-                    int id = Save(item, transaction);
-                    transaction.Complete();
-                    return id;
-                }
+                int id = Save(item, transaction);
+                transaction.Complete();
+                return id;
             }
-            if (item == null) throw new ArgumentNullException("item");
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-            if (item.Id > 0 && ProjeConstants.TBYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRASOZLESME);
-            return item.Id;
         }
 
         public int Save(KiraSozlesme item, SqlTransactionContext transaction)
@@ -72,26 +65,13 @@ namespace Model.Services.TBYS
         }
         public bool Update(KiraSozlesme item)
         {
-            if (context != null)
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                using (SqlTransactionContext transaction = new SqlTransactionContext())
-                {
-                    bool updated = Update(item, transaction);
-                    if (updated) transaction.Complete();
-                    return updated;
-                }
+                bool updated = Update(item, transaction);
+                if (updated) transaction.Complete();
+                return updated;
             }
-            if (item == null) return false;
-            KiraSozlesme old = GetById(item.Id);
-            bool ok = false;
-            if (item.Id != 0)
-            {
-                item.DegistirmeTarihi = DateTime.Now;
-                item.Degistiren = UtilityHelper.GetCurrentUserName();
-                ok = repository.Update(item);
-            }
-            if (ok && ProjeConstants.TBYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRASOZLESME);
-            return ok;
         }
 
         public bool Update(KiraSozlesme item, SqlTransactionContext transaction)
@@ -108,21 +88,13 @@ namespace Model.Services.TBYS
         }
         public bool Delete(KiraSozlesme item)
         {
-            if (context != null)
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                using (SqlTransactionContext transaction = new SqlTransactionContext())
-                {
-                    bool deleted = Delete(item, transaction);
-                    if (deleted) transaction.Complete();
-                    return deleted;
-                }
+                bool deleted = Delete(item, transaction);
+                if (deleted) transaction.Complete();
+                return deleted;
             }
-            if (item == null || item.Id == 0) return false;
-            KiraSozlesme old = GetById(item.Id);
-            if (old == null) return false;
-            bool ok = repository.Delete(item.Id);
-            if (ok && ProjeConstants.TBYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRASOZLESME);
-            return ok;
         }
 
         public bool Delete(KiraSozlesme item, SqlTransactionContext transaction)
@@ -140,7 +112,8 @@ namespace Model.Services.TBYS
             if (!PortalLogSettings.IsEnabled(context)) return;
             PortalLogRepository log = new PortalLogRepository();
             int auditId = log.RecordAudit(context, operation, "KiraSozlesme", id.ToString(CultureInfo.InvariantCulture), transaction);
-            string[] fields = { "KiraciId", "SozBasTar", "SozBitTar", "KiraBedeli", "OdemeSekli", "TaksitSayisi", "TeminatTutari", "Aktif", "SozlesmeDurumu", "DosyaNo" };
+            if (auditId == 0) return;
+            string[] fields = { "KiraciId", "SozBasTar", "SozBitTar", "KiraBedeli", "OdemeSekli", "TaksitSayisi", "TeminatTutari", "Aktif", "SozlesmeDurumu", "DosyaNo", "DevirAnaPara", "DevirFaizTutari", "DevirFaizliBakiye", "OdenenTeminatTutari", "IadeTeminatTutari", "KalanTeminatTutari", "BolgeId" };
             foreach (string field in fields)
             {
                 string oldValue = AuditValue(oldValues, field);
@@ -154,23 +127,30 @@ namespace Model.Services.TBYS
             if (table == null || table.Rows.Count == 0 || !table.Columns.Contains(field) || table.Rows[0][field] == DBNull.Value) return null;
             return Convert.ToString(table.Rows[0][field], CultureInfo.InvariantCulture);
         }
-        public bool UpdateByKiraciId(int bolgeId, int kiraciId) { return repository.UpdateByKiraciId(bolgeId, kiraciId); }
+        public bool UpdateByKiraciId(int bolgeId, int kiraciId)
+        {
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                foreach (KiraSozlesme item in GetAllByKiraciId(kiraciId, transaction))
+                {
+                    if (item.BolgeId == bolgeId) continue;
+                    item.BolgeId = bolgeId;
+                    if (!Update(item, transaction)) return false;
+                }
+                transaction.Complete();
+            }
+            return true;
+        }
         public bool UpdateActiveStatus(KiraSozlesme item, string durum, string degistirmeTar, bool aktif)
         {
-            if (context != null)
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                using (SqlTransactionContext transaction = new SqlTransactionContext())
-                {
-                    bool updated = UpdateActiveStatus(item, durum, degistirmeTar, aktif, transaction);
-                    if (updated) transaction.Complete();
-                    return updated;
-                }
+                bool updated = UpdateActiveStatus(item, durum, degistirmeTar, aktif, transaction);
+                if (updated) transaction.Complete();
+                return updated;
             }
-            if (item == null) return false;
-            item.Degistiren = UtilityHelper.GetCurrentUserName();
-            item.DegistirmeTarihi = DateTime.Now;
-            string durumDegistirmeTar = string.IsNullOrEmpty(degistirmeTar) ? DateTime.Now.ConvertToTimeSpanReturnInHHmm() : degistirmeTar;
-            return repository.UpdateActiveStatus(item.Id, aktif, durum, durumDegistirmeTar, item.Degistiren, item.DegistirmeTarihi);
         }
 
         public bool UpdateActiveStatus(KiraSozlesme item, string durum, string degistirmeTar, bool aktif, SqlTransactionContext transaction)
@@ -200,6 +180,11 @@ namespace Model.Services.TBYS
         public List<KiraSozlesme> GetList(int kiraciId, int aktif, int bolgeId)
         {
             return new KiraSozlesme().ToList<KiraSozlesme>(repository.SelectList(kiraciId, aktif, bolgeId));
+        }
+
+        public List<KiraSozlesme> GetList(int kiraciId, int aktif, int bolgeId, SqlTransactionContext transaction)
+        {
+            return new KiraSozlesme().ToList<KiraSozlesme>(repository.SelectList(kiraciId, aktif, bolgeId, transaction, context));
         }
         public DataTable GetRentIncreaseDue(int bolgeId, DateTime tarih)
         {

@@ -187,7 +187,7 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
                 }
 
                 KiraBakiyeDevriOtomatik bakiyeDevri = new KiraBakiyeDevriOtomatik(LoggingContext);
-                bool islendi = bakiyeDevri.DevirAl(kiraSozlesme, atlaBayrakKontrolu: true);
+                bool islendi = bakiyeDevri.DevirAl(kiraSozlesme);
                 if (islendi)
                 {
                     MessageHelper.PublishMessage("Devir alma islemi tamamlandi.", ProjeConstants.MESAJ_BASARILI, 2000);
@@ -233,7 +233,7 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
         {
             try
             {
-                TBYSOrtak.AktifSozleslemelerinBakiyeBorcunuHesapla();
+                TBYSOrtak.AktifSozleslemelerinBakiyeBorcunuHesapla(LoggingContext);
                 MessageHelper.PublishMessage("Ödeme planlari güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
                 TablosunuDoldur();
             }

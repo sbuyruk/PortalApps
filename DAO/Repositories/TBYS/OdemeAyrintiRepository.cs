@@ -11,14 +11,8 @@ namespace DAO.Repositories.TBYS
         private readonly CrudQueryBuilder queryBuilder;
 
         public OdemeAyrintiRepository()
-            : this(new DbClass())
         {
-        }
-
-        public OdemeAyrintiRepository(DbClass db)
-        {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "OdemeAyrintiRepository");
+            db = new TbysSqlExecutor("OdemeAyrintiRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -86,20 +80,6 @@ namespace DAO.Repositories.TBYS
             return db.SelectFromDb(q, "");
         }
 
-        public bool DeleteBySozlesmeId(int id)
-        {
-            SqlQuery q = new SqlQuery("DELETE OdemeAyrinti_Table WHERE SozlesmeId=@SozlesmeId");
-            q.AddParameter("@SozlesmeId", id);
-            return db.DeleteFromDb(q, "");
-        }
-
-        public bool DeleteByOdemeIdOdemePlaniId(int odemeId, int planId)
-        {
-            SqlQuery q = new SqlQuery("DELETE OdemeAyrinti_Table WHERE OdemeId=@OdemeId AND OdemePlaniId=@OdemePlaniId");
-            q.AddParameter("@OdemeId", odemeId);
-            q.AddParameter("@OdemePlaniId", planId);
-            return db.DeleteFromDb(q, "");
-        }
         public bool DeleteByOdemeIdOdemePlaniId(int odemeId, int planId, SqlTransactionContext transaction, PortalLogContext context)
         {
             SqlQuery q = new SqlQuery("DELETE OdemeAyrinti_Table WHERE OdemeId=@OdemeId AND OdemePlaniId=@OdemePlaniId");
@@ -139,21 +119,6 @@ namespace DAO.Repositories.TBYS
             SqlQuery q = new SqlQuery("SELECT GecikmeZammiOrani FROM OdemeAyrinti_Table WITH (UPDLOCK, HOLDLOCK) WHERE OdemePlaniId=@OdemePlaniId ORDER BY IlkTarih");
             q.AddParameter("@OdemePlaniId", planId);
             return db.SelectFromDb(q, transaction, context);
-        }
-
-        public int Insert<T>(T entity)
-        {
-            return db.Insert(queryBuilder.BuildInsert(entity, "OdemeAyrinti_Table"));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, "OdemeAyrinti_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("OdemeAyrinti_Table", id), "");
         }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context) { SqlQuery q = new SqlQuery("SELECT * FROM OdemeAyrinti_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, transaction, context); }

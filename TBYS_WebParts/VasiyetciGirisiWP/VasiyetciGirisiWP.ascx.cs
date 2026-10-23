@@ -247,7 +247,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                         IlceDDLDoldur();
                         if (IlcesiDDL.Items.FindByValue(vasiyetci.IkametIlcesi.ToString()) != null)
                             IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByValue(vasiyetci.IkametIlcesi.ToString()).Value;
-                        string bolge = UtilityHelper.BolgeGetir(ilItem.Value.ConvertToInt());
+                        string bolge = UtilityHelper.BolgeGetir(ilItem.Value.ConvertToInt(), LoggingContext);
                         SorumluBolgeTxt.Value = !string.IsNullOrEmpty(bolge) ? bolge : "";
                     }
 
@@ -511,7 +511,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
         {
             IlceDDLDoldur();
             int ilId = IliDDL.SelectedItem.Value.ConvertToInt();
-            string bolge = UtilityHelper.BolgeGetir(ilId);
+            string bolge = UtilityHelper.BolgeGetir(ilId, LoggingContext);
             SorumluBolgeTxt.Value = !string.IsNullOrEmpty(bolge) ? bolge : "";
         }
         protected void SagVefatDDL_SelectedIndexChanged(object sender, EventArgs e)
@@ -539,7 +539,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                 if (BekleYukleFU.HasFile)
                 {
                     string hedefDosyaAdi = @"Vasiyet" + VasiyetciIdQS + @".pdf";
-                    bool isOk= UtilityHelper.UploadFileToSharePoint(BekleYukleFU, ProjeConstants.TBYSBELGELERI_LIB,hedefDosyaAdi);
+                    bool isOk= UtilityHelper.UploadFileToSharePoint(BekleYukleFU, ProjeConstants.TBYSBELGELERI_LIB,hedefDosyaAdi, LoggingContext);
                     
                     if (isOk)
                     {

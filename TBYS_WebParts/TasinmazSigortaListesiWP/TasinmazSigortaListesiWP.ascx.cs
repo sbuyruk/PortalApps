@@ -754,7 +754,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
             DateTime basTarih = BaslangicTarihiTxt.Text.ConvertToDatetime().Date;
             DateTime bitTarih = BitisTarihiTxt.Text.ConvertToDatetime().Date;
 
-            List<string> policeDosyalari = UtilityHelper.GetFileNameListFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK);
+            List<string> policeDosyalari = UtilityHelper.GetFileNameListFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK, LoggingContext);
 
             Sigorta sigorta = new Sigorta();
             //DataTable dataTable = sigorta.SelectAllReturnDataTable();

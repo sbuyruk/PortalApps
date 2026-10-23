@@ -10,12 +10,9 @@ namespace DAO.Repositories.TBYS
         private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
-        public OnarimRepository() : this(new DbClass()) { }
-
-        public OnarimRepository(DbClass db)
+        public OnarimRepository()
         {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "OnarimRepository");
+            db = new TbysSqlExecutor("OnarimRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -105,21 +102,6 @@ namespace DAO.Repositories.TBYS
                 WHERE A.TasinmazId=@TasinmazId");
             query.AddParameter("@TasinmazId", tasinmazId);
             return db.SelectFromDb(query, "");
-        }
-
-        public int Insert<T>(T entity)
-        {
-            return db.Insert(queryBuilder.BuildInsert(entity, "Onarim_Table"));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, "Onarim_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("Onarim_Table", id), "");
         }
 
         public DataTable SelectByTasinmazId(int tasinmazId, SqlTransactionContext transaction, PortalLogContext context)

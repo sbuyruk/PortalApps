@@ -597,7 +597,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                 if (BelgeYukleFU.HasFile)
                 {
                     string hedefDosyaAdi = ProjeConstants.DOSYA_BAGISBILGIVETALEP_FORMU + bagisciId + ".pdf";
-                    bool isOk= UtilityHelper.UploadFileToSharePoint(BelgeYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi);
+                    bool isOk= UtilityHelper.UploadFileToSharePoint(BelgeYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi, LoggingContext);
                     if (isOk)
                     {
                         DosyaLnk.Visible = true;
@@ -613,7 +613,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                 if (TaahhutYukleFU.HasFile)
                 {
                     string hedefDosyaAdi = ProjeConstants.DOSYA_TAAHHUT_FORMU + bagisciId + ".pdf";
-                    bool isOk= UtilityHelper.UploadFileToSharePoint(TaahhutYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi);
+                    bool isOk= UtilityHelper.UploadFileToSharePoint(TaahhutYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi, LoggingContext);
                     if (isOk)
                     {
                         TaahhutSilBtn.Visible = true;
@@ -706,7 +706,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             try
             {
                 string dosyaAdi = ProjeConstants.DOSYA_BAGISBILGIVETALEP_FORMU + BagisciIdQS + ".pdf";
-                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
+                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi, LoggingContext))
                 {
                     MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                     BelgeSilBtn.Visible = false;
@@ -731,7 +731,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             {
                 string dosyaAdi = ProjeConstants.DOSYA_TAAHHUT_FORMU + BagisciIdQS + ".pdf";
 
-                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
+                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi, LoggingContext))
                 {
                     MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                     TaahhutSilBtn.Visible = false;

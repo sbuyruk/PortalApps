@@ -248,7 +248,7 @@ namespace TBYS_WebParts.MevcutKiracilarWP
 
                     TableCell kiralamaAmaciCell = new TableCell();
                     kiralamaAmaciCell.Text = kiralamaAmaci;
-                    
+
                     TableCell odemeSekliCell = new TableCell();
                     odemeSekliCell.Text = odemeSekli;
 
@@ -351,7 +351,16 @@ namespace TBYS_WebParts.MevcutKiracilarWP
         }
         protected void OdemePlanlariniGuncelleBtn_Click(object sender, EventArgs e)
         {
-            TBYSOrtak.AktifSozleslemelerinBakiyeBorcunuHesapla();
+            try
+            {
+                TBYSOrtak.AktifSozleslemelerinBakiyeBorcunuHesapla(LoggingContext);
+
+            }
+            catch (Exception error)
+            {
+                if (error is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.MevcutKiracilarWP.OdemePlanlariniGuncelleBtn_Click", error);
+            }
         }
 
     }

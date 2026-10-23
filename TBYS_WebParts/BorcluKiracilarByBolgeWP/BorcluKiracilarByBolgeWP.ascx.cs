@@ -130,7 +130,6 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP
             int ucAyBorcluOlanlar = 3;
             int dortAyBorcluOlanlar = 4;
 
-
             int ay = SecilenAyQS.ConvertToInt();
             int yil = SecilenYilQS.ConvertToInt();
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -216,7 +215,6 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP
             DataTable birAyBorcluIstDataTable = new Model.Services.TBYS.OdemePlaniRaporService(LoggingContext).GetBorcluByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL_INT, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
             int birAyBorcluIst = birAyBorcluIstDataTable == null ? 0 : birAyBorcluIstDataTable.Rows.Count;
 
-
             //Izm 
             DataTable dortAyBorcluIzmDataTable = new Model.Services.TBYS.OdemePlaniRaporService(LoggingContext).GetBorcluByBolgeTarih(ProjeConstants.BOLGE_IZMIR_INT, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
             int dortAyBorcluIzm = dortAyBorcluIzmDataTable == null ? 0 : dortAyBorcluIzmDataTable.Rows.Count;
@@ -229,7 +227,6 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP
 
             DataTable birAyBorcluIzmDataTable = new Model.Services.TBYS.OdemePlaniRaporService(LoggingContext).GetBorcluByBolgeTarih(ProjeConstants.BOLGE_IZMIR_INT, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
             int birAyBorcluIzm = birAyBorcluIzmDataTable == null ? 0 : birAyBorcluIzmDataTable.Rows.Count;
-
 
             //Mer 
             DataTable dortAyBorcluMerDataTable = new Model.Services.TBYS.OdemePlaniRaporService(LoggingContext).GetBorcluByBolgeTarih(ProjeConstants.BOLGE_MERSIN_INT, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
@@ -262,8 +259,6 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP
             int ucAyBorcluTop = ucAyBorcluAnk + ucAyBorcluIst + ucAyBorcluIzm + ucAyBorcluMer +ucAyBorcluErz;
             int dortAyBorcluTop = dortAyBorcluAnk + dortAyBorcluIst + dortAyBorcluIzm + dortAyBorcluMer+dortAyBorcluErz;
 
-
-
             //Genel Müdürlük
             HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Ank1AyCell, birAyBorcluAnk.ToString(), ProjeConstants.BOLGE_ANKARA_INT, birAyBorcluOlanlar, birAyBorcluOlanlar);
             HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Ank2AyCell, ikiAyBorcluAnk.ToString(), ProjeConstants.BOLGE_ANKARA_INT, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
@@ -287,7 +282,7 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP
             HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Mer2AyCell, ikiAyBorcluMer.ToString(), ProjeConstants.BOLGE_MERSIN_INT, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
             HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Mer3AyCell, ucAyBorcluMer.ToString(), ProjeConstants.BOLGE_MERSIN_INT, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
             HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Mer4AyCell, dortAyBorcluMer.ToString(), ProjeConstants.BOLGE_MERSIN_INT, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
-            
+
             //Erzurum
             HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Erz1AyCell, birAyBorcluErz.ToString(), ProjeConstants.BOLGE_ERZURUM_INT, birAyBorcluOlanlar, birAyBorcluOlanlar);
             HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Erz2AyCell, ikiAyBorcluErz.ToString(), ProjeConstants.BOLGE_ERZURUM_INT, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
@@ -299,7 +294,6 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP
             HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Top2AyCell, ikiAyBorcluTop.ToString(), ProjeConstants.BOLGE_HEPSI_INT, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
             HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Top3AyCell, ucAyBorcluTop.ToString(), ProjeConstants.BOLGE_HEPSI_INT, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
             HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Top4AyCell, dortAyBorcluTop.ToString(), ProjeConstants.BOLGE_HEPSI_INT, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
-
 
             //ay bölge toplamlari --en sag sütun
             string AnkTop = (birAyBorcluAnk + ikiAyBorcluAnk + ucAyBorcluAnk + dortAyBorcluAnk).ToString();
@@ -410,7 +404,16 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP
         }
         protected void OdemePlanlariniGuncelleBtn_Click(object sender, EventArgs e)
         {
-            TBYSOrtak.AktifSozleslemelerinBakiyeBorcunuHesapla();
+            try
+            {
+                TBYSOrtak.AktifSozleslemelerinBakiyeBorcunuHesapla(LoggingContext);
+
+            }
+            catch (Exception error)
+            {
+                if (error is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BorcluKiracilarByBolgeWP.OdemePlanlariniGuncelleBtn_Click", error);
+            }
         }
         protected void AyDDL_SelectedIndexChanged(object sender, EventArgs e)
         {

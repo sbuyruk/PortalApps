@@ -29,42 +29,33 @@ namespace Model.Services.TBYS
         public List<TasinmazBagisci> GetByIlAdi(string ilAdi) { return ToList(repository.SelectByIlAdi(ilAdi)); }
         public int Save(TasinmazBagisci item)
         {
-            if (context != null)
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                using (SqlTransactionContext transaction = new SqlTransactionContext())
-                {
-                    int id = Save(item, transaction);
-                    transaction.Complete();
-                    return id;
-                }
+                int id = Save(item, transaction);
+                transaction.Complete();
+                return id;
             }
-            if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi=DateTime.Now; item.Olusturan=UtilityHelper.GetCurrentUserName(); item.Id=repository.Insert(item); if(item.Id>0 && ProjeConstants.TBYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item,ProjeConstants.TBYS,ProjeConstants.TBYS_TASINMAZBAGISCI); return item.Id;
         }
         public bool Update(TasinmazBagisci item)
         {
-            if (context != null)
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                using (SqlTransactionContext transaction = new SqlTransactionContext())
-                {
-                    bool updated = Update(item, transaction);
-                    if (updated) transaction.Complete();
-                    return updated;
-                }
+                bool updated = Update(item, transaction);
+                if (updated) transaction.Complete();
+                return updated;
             }
-            if(item==null) throw new ArgumentNullException("item"); TasinmazBagisci old=GetById(item.Id); if(item.Id==0) return false; item.DegistirmeTarihi=DateTime.Now; item.Degistiren=UtilityHelper.GetCurrentUserName(); bool ok=repository.Update(item); if(ok && ProjeConstants.TBYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item,old,ProjeConstants.TBYS,ProjeConstants.TBYS_TASINMAZBAGISCI); return ok;
         }
         public bool Delete(TasinmazBagisci item)
         {
-            if (context != null)
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                using (SqlTransactionContext transaction = new SqlTransactionContext())
-                {
-                    bool deleted = Delete(item, transaction);
-                    if (deleted) transaction.Complete();
-                    return deleted;
-                }
+                bool deleted = Delete(item, transaction);
+                if (deleted) transaction.Complete();
+                return deleted;
             }
-            if(item==null || item.Id==0) return false; TasinmazBagisci old=GetById(item.Id); if(old==null) return false; bool ok=repository.Delete(item.Id); if(ok && ProjeConstants.TBYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old,ProjeConstants.TBYS,ProjeConstants.TBYS_TASINMAZBAGISCI); return ok;
         }
         public int Save(TasinmazBagisci item, SqlTransactionContext transaction)
         {
@@ -121,6 +112,7 @@ namespace Model.Services.TBYS
             RequireTransaction(transaction);
             PortalLogRepository log = new PortalLogRepository();
             int auditId = log.RecordAudit(context, operation, "TasinmazBagisci", id.ToString(CultureInfo.InvariantCulture), transaction);
+            if (auditId == 0) return;
             if (auditId <= 0) return;
             // Names, identity/contact details and free text are excluded from audit values.
             foreach (string field in new[] { "IlId", "IlceId", "Sag_vefat", "Gizli" })

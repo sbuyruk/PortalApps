@@ -10,12 +10,9 @@ namespace DAO.Repositories.TBYS
         private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
-        public OdemeSebebiTanimRepository() : this(new DbClass()) { }
-
-        public OdemeSebebiTanimRepository(DbClass db)
+        public OdemeSebebiTanimRepository()
         {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "OdemeSebebiTanimRepository");
+            db = new TbysSqlExecutor("OdemeSebebiTanimRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -31,21 +28,6 @@ namespace DAO.Repositories.TBYS
         public DataTable SelectAll()
         {
             return db.SelectFromDb(new SqlQuery("SELECT * FROM OdemeSebebiTanim_Table"), "");
-        }
-
-        public int Insert<T>(T entity)
-        {
-            return db.Insert(queryBuilder.BuildInsert(entity, "OdemeSebebiTanim_Table"));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, "OdemeSebebiTanim_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("OdemeSebebiTanim_Table", id), "");
         }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context) { SqlQuery q = new SqlQuery("SELECT * FROM OdemeSebebiTanim_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, transaction, context); }

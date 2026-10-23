@@ -10,14 +10,8 @@ namespace DAO.Repositories.TBYS
         private readonly TbysSqlExecutor db;
 
         public TasinmazBagisciReportRepository()
-            : this(new DbClass())
         {
-        }
-
-        public TasinmazBagisciReportRepository(DbClass db)
-        {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "TasinmazBagisciReportRepository");
+            db = new TbysSqlExecutor("TasinmazBagisciReportRepository");
         }
 
         public TasinmazBagisciReportRepository(PortalLogContext context)

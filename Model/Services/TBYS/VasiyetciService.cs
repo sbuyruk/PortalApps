@@ -70,65 +70,24 @@ namespace Model.Services.TBYS
 
         public int Save(Vasiyetci item)
         {
-            if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { int id = Save(item, tx); tx.Complete(); return id; }
-            if (item == null) throw new ArgumentNullException("item");
-
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-
-            if (item.Id > 0 && ProjeConstants.TBYS_SAVE_LOG)
-            {
-                OlayKayit olayKayit = new OlayKayit();
-                olayKayit.GirisOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_VASIYETCI);
-            }
-
-            return item.Id;
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext tx = new SqlTransactionContext()) { int id = Save(item, tx); tx.Complete(); return id; }
         }
 
         public int Save(Vasiyetci item, SqlTransactionContext tx) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item, tx, context); if (item.Id > 0 && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "INSERT", "Vasiyetci", item.Id.ToString(), tx); return item.Id; }
 
         public bool Update(Vasiyetci item)
         {
-            if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Update(item, tx); if (ok) tx.Complete(); return ok; }
-            if (item == null) throw new ArgumentNullException("item");
-
-            Vasiyetci oldItem = GetById(item.Id);
-            bool isSuccess = false;
-            if (item.Id != 0)
-            {
-                item.DegistirmeTarihi = DateTime.Now;
-                item.Degistiren = UtilityHelper.GetCurrentUserName();
-                isSuccess = repository.Update(item);
-            }
-
-            if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
-            {
-                OlayKayit olayKayit = new OlayKayit();
-                olayKayit.GuncellemeOlayKaydet(item, oldItem, ProjeConstants.TBYS, ProjeConstants.TBYS_VASIYETCI);
-            }
-
-            return isSuccess;
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Update(item, tx); if (ok) tx.Complete(); return ok; }
         }
 
         public bool Update(Vasiyetci item, SqlTransactionContext tx) { if (item == null || item.Id == 0) return false; item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); bool ok = repository.Update(item, tx, context); if (ok && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "UPDATE", "Vasiyetci", item.Id.ToString(), tx); return ok; }
 
         public bool Delete(Vasiyetci item)
         {
-            if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Delete(item, tx); if (ok) tx.Complete(); return ok; }
-            if (item == null || item.Id == 0) return false;
-
-            Vasiyetci oldItem = GetById(item.Id);
-            if (oldItem == null) return false;
-
-            bool isDeleted = repository.Delete(item.Id);
-            if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
-            {
-                OlayKayit olayKayit = new OlayKayit();
-                olayKayit.SilmeOlayKaydet(oldItem, ProjeConstants.TBYS, ProjeConstants.TBYS_VASIYETCI);
-            }
-
-            return isDeleted;
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Delete(item, tx); if (ok) tx.Complete(); return ok; }
         }
 
         public bool Delete(Vasiyetci item, SqlTransactionContext tx) { if (item == null || item.Id == 0) return false; bool ok = repository.Delete(item.Id, tx, context); if (ok && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "DELETE", "Vasiyetci", item.Id.ToString(), tx); return ok; }

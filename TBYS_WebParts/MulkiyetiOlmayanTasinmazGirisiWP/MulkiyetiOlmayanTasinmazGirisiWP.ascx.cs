@@ -287,7 +287,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
         private void BolgeTxtDoldur()
         {
             int ilId=IliDDL.SelectedItem!=null? IliDDL.SelectedItem.Value.ConvertToInt():0;
-            string bolge = UtilityHelper.BolgeGetir(ilId);
+            string bolge = UtilityHelper.BolgeGetir(ilId, LoggingContext);
             SorumluBolgeTxt.Text = !string.IsNullOrEmpty(bolge) ? bolge : "";
         }
         private void KirayaUygunlukDDLDoldur()

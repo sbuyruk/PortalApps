@@ -69,96 +69,46 @@ namespace Model.Services.TBYS
 
         public bool DeleteBySozlesmeId(SozlesmeTasinmaz item, int sozlesmeId)
         {
-            if (context != null)
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                using (SqlTransactionContext transaction = new SqlTransactionContext())
-                {
-                    bool deleted = DeleteBySozlesmeId(sozlesmeId, transaction);
-                    if (deleted) transaction.Complete();
-                    return deleted;
-                }
+                bool deleted = DeleteBySozlesmeId(sozlesmeId, transaction);
+                if (deleted) transaction.Complete();
+                return deleted;
             }
-            bool isDeleted = repository.DeleteBySozlesmeId(sozlesmeId);
-            if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
-            {
-                OlayKayit olayKayit = new OlayKayit();
-                olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_SOZLESMETASINMAZ);
-            }
-            return isDeleted;
         }
 
         public int Save(SozlesmeTasinmaz item)
         {
-            if (context != null)
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                using (SqlTransactionContext transaction = new SqlTransactionContext())
-                {
-                    int id = Save(item, transaction);
-                    transaction.Complete();
-                    return id;
-                }
+                int id = Save(item, transaction);
+                transaction.Complete();
+                return id;
             }
-            if (item == null) throw new ArgumentNullException("item");
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-            if (item.Id > 0 && ProjeConstants.TBYS_SAVE_LOG)
-            {
-                OlayKayit olayKayit = new OlayKayit();
-                olayKayit.GirisOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_SOZLESMETASINMAZ);
-            }
-            return item.Id;
         }
 
         public bool Update(SozlesmeTasinmaz item)
         {
-            if (context != null)
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                using (SqlTransactionContext transaction = new SqlTransactionContext())
-                {
-                    bool updated = Update(item, transaction);
-                    if (updated) transaction.Complete();
-                    return updated;
-                }
+                bool updated = Update(item, transaction);
+                if (updated) transaction.Complete();
+                return updated;
             }
-            if (item == null) throw new ArgumentNullException("item");
-            SozlesmeTasinmaz oldItem = GetById(item.Id);
-            bool isSuccess = false;
-            if (item.Id != 0)
-            {
-                item.DegistirmeTarihi = DateTime.Now;
-                item.Degistiren = UtilityHelper.GetCurrentUserName();
-                isSuccess = repository.Update(item);
-            }
-            if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
-            {
-                OlayKayit olayKayit = new OlayKayit();
-                olayKayit.GuncellemeOlayKaydet(item, oldItem, ProjeConstants.TBYS, ProjeConstants.TBYS_SOZLESMETASINMAZ);
-            }
-            return isSuccess;
         }
 
         public bool Delete(SozlesmeTasinmaz item)
         {
-            if (context != null)
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                using (SqlTransactionContext transaction = new SqlTransactionContext())
-                {
-                    bool deleted = Delete(item, transaction);
-                    if (deleted) transaction.Complete();
-                    return deleted;
-                }
+                bool deleted = Delete(item, transaction);
+                if (deleted) transaction.Complete();
+                return deleted;
             }
-            if (item == null || item.Id == 0) return false;
-            SozlesmeTasinmaz oldItem = GetById(item.Id);
-            if (oldItem == null) return false;
-            bool isDeleted = repository.Delete(item.Id);
-            if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
-            {
-                OlayKayit olayKayit = new OlayKayit();
-                olayKayit.SilmeOlayKaydet(oldItem, ProjeConstants.TBYS, ProjeConstants.TBYS_SOZLESMETASINMAZ);
-            }
-            return isDeleted;
         }
 
         public int Save(SozlesmeTasinmaz item, SqlTransactionContext transaction)
@@ -305,6 +255,7 @@ namespace Model.Services.TBYS
             RequireTransaction(transaction);
             PortalLogRepository log = new PortalLogRepository();
             int auditId = log.RecordAudit(context, operation, entityName, id.ToString(CultureInfo.InvariantCulture), transaction);
+            if (auditId == 0) return;
             if (auditId <= 0) return;
             foreach (string field in fields)
             {

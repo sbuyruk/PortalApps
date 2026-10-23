@@ -11,7 +11,7 @@ using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
-using System.Transactions;
+using DAO.Ortak;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
@@ -246,9 +246,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                     decimal tutar = dataRow["Tutar"].ConvertToDecimal();
                     string kiraci = dataRow["AdiSoyadi"].ToString();
 
-
                     OdemeListItem odemeListItem = new OdemeListItem();
-
 
                     odemeListItem.OdemeTarihi = odemeTarihi;
                     odemeListItem.Tutar = tutar;
@@ -313,7 +311,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                         destroy: true,
                         pageLength:100,
                         dom: 'rti',
-                        
+
                         });
                     });
 
@@ -336,8 +334,11 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
             try
             {
                 int savedCount = 0;
-                using (TransactionScope scope = new TransactionScope())
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
                 {
+                    if (kiraEkstreAktarma == null) throw new InvalidOperationException("Banka ekstresi bulunamadı.");
+                    kiraEkstreAktarma = new Model.Services.TBYS.KiraEkstreAktarmaService(LoggingContext).GetById(kiraEkstreAktarma.Id, transaction);
+                    if (kiraEkstreAktarma == null || kiraEkstreAktarma.AktarildiMi) throw new InvalidOperationException("Banka ekstresi aktarıma uygun değil.");
                     foreach (OdemeListItem item in OdemeAyristirmaListQS)
                     {
                         OdemeAyristirma odemeAyristirma = new OdemeAyristirma
@@ -360,16 +361,17 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                                 Aciklama = item.Aciklama,
                                 KiraciId = item.KiraciId,
                                 SozlesmeId = item.KiraSozlesmeId,
-                                OdemePlaniId = OdemePlaniGetir(item.KiraSozlesmeId, item.OdemeTarihi.ConvertToDatetime()),
+                                OdemePlaniId = OdemePlaniGetir(item.KiraSozlesmeId, item.OdemeTarihi.ConvertToDatetime(), transaction),
                                 OdemeTarihi = item.OdemeTarihi.ConvertToDatetime(),
                                 OdenenTutar = item.Tutar
                             };
-                            odemeAyristirma.OdemeId = new Model.Services.TBYS.OdemeService(LoggingContext).Save(kiraOdemesi);
+                            odemeAyristirma.OdemeId = new Model.Services.TBYS.OdemeService(LoggingContext).Save(kiraOdemesi, transaction);
                         }
                         else if (item.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT ||
                                  item.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_GECICITEMINAT_INT)
                         {
-                            KiraSozlesme kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(item.KiraSozlesmeId);
+                            KiraSozlesme kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(item.KiraSozlesmeId, transaction);
+                            if (kiraSozlesme == null) throw new InvalidOperationException("Teminatın sözleşmesi bulunamadı.");
                             if (kiraSozlesme != null)
                             {
                                 TeminatIslem teminatIslem = new TeminatIslem
@@ -381,12 +383,13 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                                     IslemTipi = item.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT ? ProjeConstants.TEMINAT_ODEMESI : ProjeConstants.TEMINAT_GECICITEMINATODEMESI,
                                     IslemTutari = item.Tutar
                                 };
-                                odemeAyristirma.TeminatIslemId = new Model.Services.TBYS.TeminatIslemService(LoggingContext).Save(teminatIslem);
+                                odemeAyristirma.TeminatIslemId = new Model.Services.TBYS.TeminatIslemService(LoggingContext).Save(teminatIslem, transaction);
                             }
                         }
 
-                        if (new Model.Services.TBYS.OdemeAyristirmaService(LoggingContext).Save(odemeAyristirma) > 0)
-                            savedCount++;
+                        if (new Model.Services.TBYS.OdemeAyristirmaService(LoggingContext).Save(odemeAyristirma, transaction) <= 0)
+                            throw new InvalidOperationException("Ödeme ayrıştırma satırı kaydedilemedi.");
+                        savedCount++;
                     }
 
                     if (kiraEkstreAktarma != null)
@@ -394,10 +397,12 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                         kiraEkstreAktarma.Aciklama += "--Ödeme Ayristirildi--";
                         kiraEkstreAktarma.AktarildiMi = true;
                         kiraEkstreAktarma.Degistiren = UtilityHelper.GetCurrentUserName();
-                        new Model.Services.TBYS.KiraEkstreAktarmaService(LoggingContext).Update(kiraEkstreAktarma);
+                        if (!new Model.Services.TBYS.KiraEkstreAktarmaService(LoggingContext).Update(kiraEkstreAktarma, transaction))
+                            throw new InvalidOperationException("Banka ekstresi güncellenemedi.");
                     }
 
-                    scope.Complete();
+                    if (savedCount == 0) throw new InvalidOperationException("Kaydedilecek ödeme ayrıştırması bulunamadı.");
+                    transaction.Complete();
                 }
                 if (savedCount > 0)
                 {
@@ -431,11 +436,12 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
             KaydetBtn.Visible = false;  
         }
 
-        private int OdemePlaniGetir(int kiraSozlesmeId,DateTime odemeTarihi)
+        private int OdemePlaniGetir(int kiraSozlesmeId,DateTime odemeTarihi, SqlTransactionContext transaction)
         {
             OdemePlani odemePlani = new OdemePlani();
-            odemePlani = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeIdOdemeTarihi(kiraSozlesmeId, odemeTarihi);
-            return odemePlani == null ? 0 : odemePlani.Id;
+            odemePlani = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeIdOdemeTarihi(kiraSozlesmeId, odemeTarihi, transaction);
+            if (odemePlani == null) throw new InvalidOperationException("Ödemenin ait olduğu plan bulunamadı.");
+            return odemePlani.Id;
         }
 
         protected void KiraOdemesiEkleBtn_Click(object sender, EventArgs e)
@@ -453,7 +459,6 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
             kiraEkstreAktarma = new Model.Services.TBYS.KiraEkstreAktarmaService(LoggingContext).GetById(KiraEkstreAktarmaIdQS.ConvertToInt());
             if (kiraEkstreAktarma != null)
             {
-
 
                 Kiraci kiraci = new Kiraci();
                 string kiraciAdi = string.Empty;
@@ -547,7 +552,6 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                         odemeListItem.Kiraci = (kiraci.Adi + " " + kiraci.Soyadi).Trim() + " (" + kiraci.Adres + ")" + " (Kiracı No:" + kiraci.Id + ")";
                     }
 
-
                     odemeListItem.OdemeTarihi = kiraEkstreAktarma.OdemeTarihi.ConvertToDDMMYYYHHmmFormat();
                     odemeListItem.OdemeSaati = kiraEkstreAktarma.OdemeTarihi.ToString("HH:mm");
                     odemeListItem.DovizCinsi = kiraEkstreAktarma.DovizCinsi;
@@ -559,13 +563,12 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                     odemeListItem.KiraciId = KiraciDDL.SelectedItem.Value.ConvertToInt();
                     odemeListItem.KiraSozlesmeId = SozlesmeGetir(kiraci.Id, OdemeTarihiLbl.Text.ConvertToDatetime());
                     odemeListItem.OdemeId = kiraEkstreAktarma.OdemeId;
-                    
+
                     if (!kiraEkstreAktarma.AktarildiMi)
                     {
                         odemeListItem.Duzenle = "<a href='#' class='btn btn-outline-primary' onclick=GuncelleModalDoldur('" + odemeListItem.GuId + "');>Düzenle</a>";
                         odemeListItem.Sil = "<a href='#' class='btn btn-outline-danger' onclick=SatirSil('" + odemeListItem.GuId + "')>Sil</a>";
                     }
-                    
 
                     OdemeAyristirmaListQS.Add(odemeListItem);
                     if (ToplamlariDuzenle(kiraEkstreAktarma.AktarildiMi)) 
@@ -630,7 +633,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
             decimal islemTutari = IslemTutariTxt.Value.ConvertToDecimal();
             if (islemTutari >= 0)
             {
-                
+
                 string guid = GuncelleGuidHdn.Value;
                 var odemeListItem = OdemeAyristirmaListQS.Find(x => x.GuId == guid);
                 decimal oncekiTutar = odemeListItem.Tutar;
@@ -639,7 +642,6 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                 odemeListItem.Aciklama = IslemAciklamaTxt.Text;
                 odemeListItem.KiraciId = KiraciDDL.SelectedItem.Value.ConvertToInt();
                 odemeListItem.KiraSozlesmeId = SozlesmeGetir(odemeListItem.KiraciId, OdemeTarihiLbl.Text.ConvertToDatetime());
-               
 
                 if (ToplamlariDuzenle(kiraEkstreAktarma==null || kiraEkstreAktarma.AktarildiMi))
                 {

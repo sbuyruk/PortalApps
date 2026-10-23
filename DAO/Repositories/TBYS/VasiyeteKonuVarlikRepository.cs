@@ -10,12 +10,9 @@ namespace DAO.Repositories.TBYS
         private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
-        public VasiyeteKonuVarlikRepository() : this(new DbClass()) { }
-
-        public VasiyeteKonuVarlikRepository(DbClass db)
+        public VasiyeteKonuVarlikRepository()
         {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "VasiyeteKonuVarlikRepository");
+            db = new TbysSqlExecutor("VasiyeteKonuVarlikRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -45,21 +42,6 @@ namespace DAO.Repositories.TBYS
                 ORDER BY VasiyetciId");
             query.AddParameter("@VasiyetciId", vasiyetciId);
             return db.SelectFromDb(query, "");
-        }
-
-        public int Insert<T>(T entity)
-        {
-            return db.Insert(queryBuilder.BuildInsert(entity, "VasiyeteKonuVarlik_Table"));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, "VasiyeteKonuVarlik_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("VasiyeteKonuVarlik_Table", id), "");
         }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context) { SqlQuery q = new SqlQuery("SELECT * FROM VasiyeteKonuVarlik_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, transaction, context); }

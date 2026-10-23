@@ -13,12 +13,9 @@ namespace DAO.Repositories.TBYS
         private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
-        public SigortaRepository() : this(new DbClass()) { }
-
-        public SigortaRepository(DbClass db)
+        public SigortaRepository()
         {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "SigortaRepository");
+            db = new TbysSqlExecutor("SigortaRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -163,21 +160,6 @@ namespace DAO.Repositories.TBYS
         public DataTable SelectMinId()
         {
             return db.SelectFromDb(new SqlQuery("SELECT MIN(Id) Id FROM Sigorta_Table"), "");
-        }
-
-        public int Insert<T>(T entity)
-        {
-            return db.Insert(queryBuilder.BuildInsert(entity, "Sigorta_Table"));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, "Sigorta_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("Sigorta_Table", id), "");
         }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)

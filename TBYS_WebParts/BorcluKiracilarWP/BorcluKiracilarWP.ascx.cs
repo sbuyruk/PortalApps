@@ -287,7 +287,6 @@ namespace TBYS_WebParts.BorcluKiracilarWP
 
             BorcluKiracilarTableHeaderRows();
 
-
             OdemePlani opl = new OdemePlani();
             DataTable dataTable = new Model.Services.TBYS.OdemePlaniRaporService(LoggingContext).GetBorcluByBolgeTarih(BolgeIdQS, vadeBastar, vadeBittar, AySayisiBasQS.ConvertToInt(), AySayisiBitQS.ConvertToInt());
 
@@ -323,10 +322,8 @@ namespace TBYS_WebParts.BorcluKiracilarWP
 
                     int borcluAyAdedi = taksitSayisi > 1 ? (int)(Math.Round((Math.Abs(faizliBakiyeDec) - kiraBedeliDec) / kiraBedeliDec)):aySayisi;
 
-
                     {
 
-                        
                         if (!bolge.Equals(tempBolge))// bolge degistiyse baslik ekle
                         {
                             if (!ilkKayit)
@@ -378,7 +375,6 @@ namespace TBYS_WebParts.BorcluKiracilarWP
                             //görüntüleyenler için
                             kiraciCell.Text = "<a href=# onclick=OpenModal(" + kiraSozlesmeId + "); type=button class=\'btn btn-link fw-bold\'>" + kiraci + "</a>";
                         }
-                            
 
                         TableCell ilkSozTarCell = new TableCell();
                         ilkSozTarCell.Text = ilkSozlesmeTar;
@@ -547,7 +543,16 @@ namespace TBYS_WebParts.BorcluKiracilarWP
         }
         protected void OdemePlanlariniGuncelleBtn_Click(object sender, EventArgs e)
         {
-            TBYSOrtak.AktifSozleslemelerinBakiyeBorcunuHesapla();
+            try
+            {
+                TBYSOrtak.AktifSozleslemelerinBakiyeBorcunuHesapla(LoggingContext);
+
+            }
+            catch (Exception error)
+            {
+                if (error is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BorcluKiracilarWP.OdemePlanlariniGuncelleBtn_Click", error);
+            }
         }
         protected void OdemePlaniGoruntuleBtn_Click(object sender, EventArgs e)
         {
@@ -563,11 +568,10 @@ namespace TBYS_WebParts.BorcluKiracilarWP
                         OdemePlaniGoruntule(kiraSozlesme);
                     }
                 }
-            
+
         }
         private void OdemePlaniGoruntule(KiraSozlesme kiraSozlesme)
         {
-            
 
             Kiraci kiraci = new Kiraci();
             kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(kiraSozlesme.KiraciId, LoggingContext);
@@ -575,7 +579,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
             {
                 KiraciTitleLbl.Text = kiraci.Adi + " " + kiraci.Soyadi;
             }
-            
+
             OdemePlani odemePlaniDao = new OdemePlani();
             List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeId(kiraSozlesme.Id);
             if (list.Count > 0)
@@ -613,7 +617,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
                 OdenenTutarCell.CssClass = "text-end";
                 OdenenTutarCell.Text = odemePlani.OdenenTutar.ToString("N", culturInfo);
                 row.Controls.Add(OdenenTutarCell);
-                
+
                 TableCell OdemeTarihiCell = new TableCell();
                 OdemeTarihiCell.CssClass = "text-end";
                 OdemeTarihiCell.Text = OdemeGetir(kiraSozlesme,odemePlani);
@@ -640,5 +644,4 @@ namespace TBYS_WebParts.BorcluKiracilarWP
         }
     }
 }
-
 

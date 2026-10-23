@@ -10,12 +10,9 @@ namespace DAO.Repositories.TBYS
         private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
-        public BagisRepository() : this(new DbClass()) { }
-
-        public BagisRepository(DbClass db)
+        public BagisRepository()
         {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "BagisRepository");
+            db = new TbysSqlExecutor("BagisRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -116,10 +113,6 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@BagisciId", bagisciId);
             return db.SelectFromDb(query, "");
         }
-
-        public int Insert<T>(T item) { return db.Insert(queryBuilder.BuildInsert(item, "Bagis_Table")); }
-        public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "Bagis_Table")); }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("Bagis_Table", id), ""); }
 
         private static string[] CreateParameterNames(int count)
         {

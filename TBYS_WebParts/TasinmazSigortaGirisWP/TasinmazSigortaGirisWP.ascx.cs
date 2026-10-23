@@ -788,7 +788,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                     if (!string.IsNullOrEmpty(dosyaAdi) )
                     {
 
-                        if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
+                        if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi, LoggingContext))
                         {
                             sigorta.PDFDosyasi = null;
                             if (!new Model.Services.TBYS.SigortaService(LoggingContext).UpdateDocument(sigorta))
@@ -831,7 +831,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 if (BelgeYukleFU.HasFile)
                 {
                     string hedefDosyaAdi = (ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK + AdresKoduQS).Trim() + ".pdf";
-                    bool isOk = UtilityHelper.UploadFileToSharePoint(BelgeYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi);
+                    bool isOk = UtilityHelper.UploadFileToSharePoint(BelgeYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi, LoggingContext);
                     if (isOk)
                     {
                         sigorta.PDFDosyasi = (hedefDosyaAdi).Trim();

@@ -35,14 +35,30 @@ namespace Model.Services.TBYS
         public decimal GetSumDelayAmount(int planId, SqlTransactionContext transaction) { DataTable t = repository.SelectSumDelayAmount(planId, transaction, context); return t != null && t.Rows.Count > 0 ? t.Rows[0]["Toplam"].ReturnZeroIfNull().ConvertToDecimal() : 0; }
         public decimal GetLastDelayRate(int planId) { return ToList(repository.SelectLastDelayRate(planId)).LastOrDefault()?.GecikmeZammiOrani ?? 0; }
         public decimal GetLastDelayRate(int planId, SqlTransactionContext transaction) { return ToList(repository.SelectLastDelayRate(planId, transaction, context)).LastOrDefault()?.GecikmeZammiOrani ?? 0; }
-        public int Save(OdemeAyrinti item) { if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { int id = Save(item, tx); tx.Complete(); return id; } if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item); if (item.Id > 0 && ProjeConstants.TBYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_ODEMEAYRINTI); return item.Id; }
+        public int Save(OdemeAyrinti item)
+        {
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext tx = new SqlTransactionContext()) { int id = Save(item, tx); tx.Complete(); return id; }
+        }
         public int Save(OdemeAyrinti item, SqlTransactionContext tx) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item, tx, context); if (item.Id > 0) Audit("INSERT", item.Id, tx); return item.Id; }
-        public bool Update(OdemeAyrinti item) { if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Update(item, tx); if (ok) tx.Complete(); return ok; } if (item == null) throw new ArgumentNullException("item"); OdemeAyrinti old = GetById(item.Id); bool result = false; if (item.Id != 0) { item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); result = repository.Update(item); } if (result && ProjeConstants.TBYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.TBYS, ProjeConstants.TBYS_ODEMEAYRINTI); return result; }
+        public bool Update(OdemeAyrinti item)
+        {
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Update(item, tx); if (ok) tx.Complete(); return ok; }
+        }
         public bool Update(OdemeAyrinti item, SqlTransactionContext tx) { if (item == null || item.Id == 0) return false; item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); bool ok = repository.Update(item, tx, context); if (ok) Audit("UPDATE", item.Id, tx); return ok; }
-        public bool Delete(OdemeAyrinti item) { if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Delete(item, tx); if (ok) tx.Complete(); return ok; } if (item == null || item.Id == 0) return false; OdemeAyrinti old = GetById(item.Id); if (old == null) return false; bool result = repository.Delete(item.Id); if (result && ProjeConstants.TBYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.TBYS, ProjeConstants.TBYS_ODEMEAYRINTI); return result; }
+        public bool Delete(OdemeAyrinti item)
+        {
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Delete(item, tx); if (ok) tx.Complete(); return ok; }
+        }
         public bool Delete(OdemeAyrinti item, SqlTransactionContext tx) { if (item == null || item.Id == 0) return false; bool ok = repository.Delete(item.Id, tx, context); if (ok) Audit("DELETE", item.Id, tx); return ok; }
         private void Audit(string operation, int id, SqlTransactionContext tx) { if (PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, operation, "OdemeAyrinti", id.ToString(), tx); }
-        public bool DeleteBySozlesmeId(int id) { if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = DeleteBySozlesmeId(id, tx); if (ok) tx.Complete(); return ok; } return repository.DeleteBySozlesmeId(id); }
+        public bool DeleteBySozlesmeId(int id)
+        {
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = DeleteBySozlesmeId(id, tx); if (ok) tx.Complete(); return ok; }
+        }
         public bool DeleteBySozlesmeId(int id, SqlTransactionContext tx)
         {
             DataTable rows = repository.SelectBySozlesmeId(id, tx, context);
@@ -54,7 +70,7 @@ namespace Model.Services.TBYS
         }
         public bool DeleteByOdemeIdOdemePlaniId(int odemeId, int planId)
         {
-            if (context == null) return repository.DeleteByOdemeIdOdemePlaniId(odemeId, planId);
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
                 bool deleted = DeleteByOdemeIdOdemePlaniId(odemeId, planId, transaction);

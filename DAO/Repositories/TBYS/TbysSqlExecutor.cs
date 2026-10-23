@@ -11,18 +11,17 @@ namespace DAO.Repositories.TBYS
     /// <summary>
     /// Explicit-context SQL path for migrated TBYS repositories. Business connections
     /// retain normal ambient transaction enlistment; technical traces are independent.
-    /// Legacy callers keep their injected DbClass until their workflow is migrated.
+    /// Context-free report compatibility uses this reader without legacy log writes.
     /// </summary>
     internal sealed class TbysSqlExecutor
     {
-        private readonly DbClass legacy;
         private readonly PortalLogContext context;
         private readonly string repositoryName;
 
-        internal TbysSqlExecutor(DbClass legacy, string repositoryName)
+        internal TbysSqlExecutor(string repositoryName)
         {
-            if (legacy == null) throw new ArgumentNullException("legacy", "Veritabanı erişimi gereklidir.");
-            this.legacy = legacy;
+            if (string.IsNullOrWhiteSpace(repositoryName))
+                throw new ArgumentException("Repository adı gereklidir.", "repositoryName");
             this.repositoryName = repositoryName;
         }
 
@@ -39,7 +38,6 @@ namespace DAO.Repositories.TBYS
 
         internal DataTable SelectFromDb(SqlQuery query, string identifier, [CallerMemberName] string method = "")
         {
-            if (legacy != null) return legacy.SelectFromDb(query, identifier);
             return Trace("SELECT", method, () =>
             {
                 using (SqlConnection connection = new SqlConnection(DBProcess.getConnectString()))
@@ -53,55 +51,6 @@ namespace DAO.Repositories.TBYS
                     return table.Rows.Count == 0 ? null : table;
                 }
             }, result => true);
-        }
-
-        internal int Insert(SqlQuery query, [CallerMemberName] string method = "")
-        {
-            if (legacy != null) return legacy.Insert(query);
-            RequireTbysWriteContext();
-            return Trace("INSERT", method, () =>
-            {
-                using (SqlConnection connection = new SqlConnection(DBProcess.getConnectString()))
-                using (SqlCommand command = new SqlCommand(query.Sql + ";SELECT SCOPE_IDENTITY()", connection))
-                {
-                    command.Parameters.AddRange(query.Parameters.ToArray());
-                    connection.Open();
-                    object value = command.ExecuteScalar();
-                    return value == null || value == DBNull.Value ? 0 : Convert.ToInt32(value);
-                }
-            }, result => result > 0);
-        }
-
-        internal bool Update2Db(SqlQuery query, [CallerMemberName] string method = "")
-        {
-            if (legacy != null) return legacy.Update2Db(query);
-            RequireTbysWriteContext();
-            return Trace("UPDATE", method, () => ExecuteNonQuery(query), result => result);
-        }
-
-        internal bool DeleteFromDb(SqlQuery query, string description, [CallerMemberName] string method = "")
-        {
-            if (legacy != null) return legacy.DeleteFromDb(query, description);
-            RequireTbysWriteContext();
-            return Trace("DELETE", method, () => ExecuteNonQuery(query), result => result);
-        }
-
-        private void RequireTbysWriteContext()
-        {
-            // NBYS reuses property reports through this adapter; its writes have a dedicated transaction path.
-            if (context.Project != "TBYS") throw new InvalidOperationException("Bu bağlam yalnızca taşınmaz verilerini okumak için kullanılabilir.");
-        }
-
-        private static bool ExecuteNonQuery(SqlQuery query)
-        {
-            using (SqlConnection connection = new SqlConnection(DBProcess.getConnectString()))
-            using (SqlCommand command = new SqlCommand(query.Sql, connection))
-            {
-                command.Parameters.AddRange(query.Parameters.ToArray());
-                connection.Open();
-                command.ExecuteNonQuery();
-                return true;
-            }
         }
 
         internal DataTable SelectFromDb(SqlQuery query, SqlTransactionContext transaction,
