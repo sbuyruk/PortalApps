@@ -105,15 +105,7 @@ namespace DAO.Repositories.IKYS
 
         public DataTable SelectActiveEmployees(int personelTipi, PortalLogContext context)
         {
-            Stopwatch clock = Stopwatch.StartNew();
-            bool succeeded = false;
-            try
-            {
-                DataTable result = db.SelectFromDb(CreateActiveEmployeesQuery(personelTipi), "");
-                succeeded = true;
-                return result;
-            }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Personel.SelectActiveEmployees", clock.ElapsedMilliseconds, succeeded); }
+            return PortalSqlReadExecutor.Select(CreateActiveEmployeesQuery(personelTipi), context, "Personel.SelectActiveEmployees");
         }
 
         private static SqlQuery CreateActiveEmployeesQuery(int personelTipi)

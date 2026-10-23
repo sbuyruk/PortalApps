@@ -34,7 +34,8 @@ namespace Model.Services.IKYS
             item.Olusturan = UtilityHelper.GetCurrentUserName();
             item.Id = repository.Insert(item, transaction, context);
             if (item.Id <= 0) throw new InvalidOperationException("İzin dönemi oluşturulamadı.");
-            new PortalLogRepository().RecordAudit(context, "INSERT", "IzinDonem", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            int auditId = new PortalLogRepository().RecordAudit(context, "INSERT", "IzinDonem", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            RecordChanges(null, item, auditId, transaction);
             return item.Id;
         }
         public bool Update(IzinDonem item) { if (item == null) throw new ArgumentNullException("item"); IzinDonem old = GetById(item.Id); bool ok = false; if (item.Id != 0) { item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); ok = repository.Update(item); } if (ok && ProjeConstants.IKYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINDONEM); return ok; }
@@ -48,7 +49,8 @@ namespace Model.Services.IKYS
             item.DegistirmeTarihi = DateTime.Now;
             item.Degistiren = UtilityHelper.GetCurrentUserName();
             if (!repository.Update(item, transaction, context)) return false;
-            new PortalLogRepository().RecordAudit(context, "UPDATE", "IzinDonem", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            int auditId = new PortalLogRepository().RecordAudit(context, "UPDATE", "IzinDonem", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            RecordChanges(old, item, auditId, transaction);
             return true;
         }
         public bool Delete(IzinDonem item) { if (item == null || item.Id == 0) return false; IzinDonem old = GetById(item.Id); if (old == null) return false; bool ok = repository.Delete(item.Id); if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINDONEM); return ok; }
@@ -59,7 +61,8 @@ namespace Model.Services.IKYS
             if (item == null || item.Id <= 0) return false;
             IzinDonem old = Map(repository.SelectById(item.Id, transaction, context));
             if (old == null || !repository.Delete(item.Id, transaction, context)) return false;
-            new PortalLogRepository().RecordAudit(context, "DELETE", "IzinDonem", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            int auditId = new PortalLogRepository().RecordAudit(context, "DELETE", "IzinDonem", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            RecordChanges(old, null, auditId, transaction);
             return true;
         }
         public IzinDonem GetByIzinTarihi(int personelId, int izinTipi, DateTime tarih) { return Map(repository.SelectByIzinTarihi(personelId, izinTipi, tarih)); }
@@ -69,11 +72,40 @@ namespace Model.Services.IKYS
         public List<IzinDonem> GetOncekiYillaraAit(int personelId, PortalLogContext context) { return Trace(context, "IzinDonem.SelectOncekiYillaraAit", () => ToList(repository.SelectOncekiYillaraAit(personelId))); }
         public List<IzinDonem> GetByPersonelId(int personelId, int izinTipi) { return ToList(repository.SelectByPersonelId(personelId, izinTipi)); }
         public List<IzinDonem> GetByPersonelId(int personelId, int izinTipi, PortalLogContext context) { return ToList(repository.SelectByPersonelId(personelId, izinTipi, context)); }
+        public List<IzinDonem> GetByPersonelId(int personelId, int izinTipi, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            return ToList(repository.SelectByPersonelId(personelId, izinTipi, transaction, context));
+        }
         public DataTable GetSumKalanIzinByPersonelId(int personelId, bool sadeceEskiDonemler) { return repository.SelectSumKalanIzinByPersonelId(personelId, sadeceEskiDonemler); }
         public string GetByPersonelIdReturnJson(int personelId, int izinTipi) { return new IzinHareketService().ConvertDataTableToString(repository.SelectByPersonelId(personelId, izinTipi)); }
         public DataTable GetByPersonelIdReturnDataTable(int personelId, int izinTipi) { return repository.SelectByPersonelIdReturnDataTable(personelId, izinTipi); }
-        public DataTable GetByPersonelIdReturnDataTable(int personelId, int izinTipi, PortalLogContext context) { return Trace(context, "IzinDonem.SelectByPersonelIdReturnDataTable", () => repository.SelectByPersonelIdReturnDataTable(personelId, izinTipi)); }
+        public DataTable GetByPersonelIdReturnDataTable(int personelId, int izinTipi, PortalLogContext context) { return repository.SelectByPersonelId(personelId, izinTipi, context); }
         public bool TryRecordWebPartOpened(PortalLogContext context) { return new DAO.Repositories.Ortak.PortalLogRepository().TryRecordWebPartOpened(context); }
+        private static void RecordChanges(IzinDonem old, IzinDonem current, int auditId, SqlTransactionContext transaction)
+        {
+            if (auditId == 0) return;
+            PortalLogRepository log = new PortalLogRepository();
+            AddChange(log, auditId, "PersonelId", old == null ? (object)null : old.PersonelId, current == null ? (object)null : current.PersonelId, transaction);
+            AddChange(log, auditId, "IzinTipi", old == null ? (object)null : old.IzinTipi, current == null ? (object)null : current.IzinTipi, transaction);
+            AddChange(log, auditId, "BaslangicTarihi", old == null ? (object)null : old.BaslangicTarihi, current == null ? (object)null : current.BaslangicTarihi, transaction);
+            AddChange(log, auditId, "BitisTarihi", old == null ? (object)null : old.BitisTarihi, current == null ? (object)null : current.BitisTarihi, transaction);
+            AddChange(log, auditId, "Adi", old == null ? null : old.Adi, current == null ? null : current.Adi, transaction);
+            AddChange(log, auditId, "IzinHakki", old == null ? null : old.IzinHakki, current == null ? null : current.IzinHakki, transaction);
+            AddChange(log, auditId, "KullanilanIzin", old == null ? null : old.KullanilanIzin, current == null ? null : current.KullanilanIzin, transaction);
+            AddChange(log, auditId, "KalanIzin", old == null ? null : old.KalanIzin, current == null ? null : current.KalanIzin, transaction);
+            AddChange(log, auditId, "Birim", old == null ? null : old.Birim, current == null ? null : current.Birim, transaction);
+            AddChange(log, auditId, "Aciklama", old == null ? null : old.Aciklama, current == null ? null : current.Aciklama, transaction);
+        }
+
+        private static void AddChange(PortalLogRepository log, int auditId, string field, object oldValue, object newValue, SqlTransactionContext transaction)
+        {
+            string oldText = oldValue == null ? null : Convert.ToString(oldValue, CultureInfo.InvariantCulture);
+            string newText = newValue == null ? null : Convert.ToString(newValue, CultureInfo.InvariantCulture);
+            if (!string.Equals(oldText, newText, StringComparison.Ordinal))
+                log.RecordAuditChange(auditId, field, oldText, newText, transaction);
+        }
         private static T Trace<T>(PortalLogContext context, string name, Func<T> action)
         {
             Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
