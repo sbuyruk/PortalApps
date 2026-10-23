@@ -12,12 +12,9 @@ namespace DAO.Repositories.TBYS
         private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
-        public KiraSozlesmeRepository() : this(new DbClass()) { }
-
-        public KiraSozlesmeRepository(DbClass db)
+        public KiraSozlesmeRepository()
         {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "KiraSozlesmeRepository");
+            db = new TbysSqlExecutor("KiraSozlesmeRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -48,30 +45,7 @@ namespace DAO.Repositories.TBYS
                 WHERE Aktif=1
                 ORDER BY CASE WHEN DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(DosyaNo,999999)"), "");
         }
-        public int Insert<T>(T entity) { return db.Insert(queryBuilder.BuildInsert(entity, "KiraSozlesme_Table")); }
-        public bool Update<T>(T entity) { return db.Update2Db(queryBuilder.BuildUpdate(entity, "KiraSozlesme_Table")); }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("KiraSozlesme_Table", id), ""); }
-        public bool UpdateByKiraciId(int bolgeId, int kiraciId)
-        {
-            SqlQuery query = new SqlQuery("UPDATE KiraSozlesme_Table SET BolgeId=@BolgeId WHERE KiraciId=@KiraciId");
-            query.AddParameter("@BolgeId", bolgeId);
-            query.AddParameter("@KiraciId", kiraciId);
-            return db.Update2Db(query);
-        }
-        public bool UpdateActiveStatus(int id, bool aktif, string durum, string durumDegistirmeTar, string degistiren, DateTime degistirmeTarihi)
-        {
-            SqlQuery query = new SqlQuery(@"UPDATE KiraSozlesme_Table
-                SET Aktif=@Aktif, SozlesmeDurumu=@Durum, DurumDegismeTar=@DurumDegismeTar,
-                    Degistiren=@Degistiren, DegistirmeTarihi=@DegistirmeTarihi
-                WHERE Aktif=1 AND Id=@Id");
-            query.AddParameter("@Aktif", aktif);
-            query.AddParameter("@Durum", durum);
-            query.AddParameter("@DurumDegismeTar", durumDegistirmeTar);
-            query.AddParameter("@Degistiren", degistiren);
-            query.AddParameter("@DegistirmeTarihi", degistirmeTarihi);
-            query.AddParameter("@Id", id);
-            return db.Update2Db(query);
-        }
+
         public bool UpdateActiveStatus(int id, bool aktif, string durum, string durumDegistirmeTar, string degistiren, DateTime degistirmeTarihi, SqlTransactionContext transaction, PortalLogContext context)
         {
             SqlQuery query = new SqlQuery(@"UPDATE KiraSozlesme_Table
@@ -127,6 +101,25 @@ namespace DAO.Repositories.TBYS
                 {0} {1} {2}
                 ORDER BY DosyaNo, S.Id", aktifStr, kiraciStr, bolgeStr);
             return db.SelectFromDb(new SqlQuery(sql), "");
+        }
+
+        public DataTable SelectList(int kiraciId, int aktif, int bolgeId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND S.BolgeId={0} ", bolgeId);
+            string aktifStr = aktif == ProjeConstants.KIRASOZLESME_AKTIF_HEPSI_INT ? "" : " AND S.Aktif = " + aktif;
+            string kiraciStr = kiraciId < 1 ? "" : " AND S.KiraciId=" + kiraciId;
+            string sql = string.Format(@"
+                SELECT S.*
+                FROM KiraSozlesme_Table S
+                    LEFT JOIN Kiraci_Table K on K.Id= S.KiraciId
+                    LEFT OUTER JOIN SozlesmeTasinmaz_Table C On C.SozlesmeId=S.Id
+                    LEFT OUTER JOIN Tasinmaz_Table D ON D.Id=C.TasinmazId
+                    LEFT OUTER JOIN BagimsizBolum_Table F ON F.TasinmazId=D.Id AND F.Id=C.BolumId
+                    INNER JOIN Bolge_Table H ON H.Id=S.BolgeId
+                WHERE 1 > 0
+                {0} {1} {2}
+                ORDER BY DosyaNo, S.Id", aktifStr, kiraciStr, bolgeStr);
+            return db.SelectFromDb(new SqlQuery(sql), transaction, context);
         }
         public DataTable SelectRentIncreaseDue(int bolgeId, string tarih)
         {

@@ -647,6 +647,36 @@ namespace Model.Ortak
             }
             return isOk;
         }
+
+        public static bool UploadFileToSharePoint(FileUpload fileBrowser, string spLibName, string hedefDosyaAdi, Utility.Logging.PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
+            bool isOk = false;
+            try
+            {
+                string destUrl = SPContext.Current.Web.Url;
+                SPWeb site = new SPSite(destUrl).OpenWeb();
+                SPList myList = site.Lists[spLibName];
+                string destFileUrl = myList.RootFolder.ServerRelativeUrl +"/"+ hedefDosyaAdi;
+                site.AllowUnsafeUpdates = true;
+
+                var imageFileData = fileBrowser.FileBytes;
+                using (var fileStream = new System.IO.MemoryStream())
+                {
+                    fileStream.Write(imageFileData, 0, imageFileData.Length);
+                    site.Files.Add(destFileUrl, fileStream, true/*overwrite*/);
+                }
+                isOk = true;
+            }
+            catch (Exception e)
+            {
+                if (e is System.Threading.ThreadAbortException) throw;
+                Utility.Logging.PortalTechnicalLog.WriteError(context, "UtilityHelper.UploadFileToSharePoint", e);
+                Messages.Error(Utility.Logging.PortalTechnicalLog.DefaultUserMessage + " Başvuru kodu: " + context.OperationId.ToString("N"));
+                isOk = false;
+            }
+            return isOk;
+        }
         public static bool DeleteFileFromSharePointLib(string subSite, string spLibName, string dosyaAdi)
         {
             try
@@ -672,6 +702,36 @@ namespace Model.Ortak
                 ExceptionHelper eh = new ExceptionHelper(e);
                 eh.Exceptions.Add(new Exception("Dosya Silinemedi"));
                 eh.PublishException();
+                return false;
+            }
+        }
+
+        public static bool DeleteFileFromSharePointLib(string subSite, string spLibName, string dosyaAdi, Utility.Logging.PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
+            try
+            {
+                using (SPSite site = new SPSite(RootURLGetir()))
+                using (SPWeb web = site.OpenWeb(subSite))
+                {
+                    // folder.Files[fileName] builds an internal urlOfFile value and can
+                    // fail for document libraries in sub-sites. Resolve the file from
+                    // its server-relative URL instead, as in DosyaVarMi.
+                    string fileUrl = web.Url.TrimEnd('/') + "/" + spLibName + "/" + dosyaAdi;
+                    SPFile file = web.GetFile(fileUrl);
+
+                    if (file == null || !file.Exists)
+                        return false;
+
+                    file.Delete();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                if (e is System.Threading.ThreadAbortException) throw;
+                Utility.Logging.PortalTechnicalLog.WriteError(context, "UtilityHelper.DeleteFileFromSharePointLib", e);
+                Messages.Error(Utility.Logging.PortalTechnicalLog.DefaultUserMessage + " Başvuru kodu: " + context.OperationId.ToString("N"));
                 return false;
             }
         }
@@ -744,6 +804,56 @@ namespace Model.Ortak
             }
             return list;
         }
+
+        public static List<string> GetFileNameListFromSharePointLib(string subSite, string spLibName, string partialFileName, Utility.Logging.PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
+            List<string> list = new List<string>();
+            try
+            {
+
+                SPSecurity.RunWithElevatedPrivileges(delegate ()
+                {
+                    //New SPSite object.
+                    using (SPSite site = new SPSite(RootURLGetir()))
+                    {
+                        //Do things by assuming the permission of the "system account".
+                        SPWeb web = site.AllWebs[subSite];
+                        SPFolder folder = web.Folders[spLibName];
+                        foreach (SPFile item in folder.Files)
+                        {
+                            if (item.Name.Contains(partialFileName))
+                            {
+                                list.Add(item.Name);
+                            }
+
+                        }
+                    }
+                });
+
+
+                //SPSite site = new SPSite(RootURLGetir());
+                //SPWeb web = site.AllWebs[subSite];
+                //SPFolder folder = web.Folders[spLibName];
+
+                //foreach (SPFile item in folder.Files)
+                //{
+                //    if (item.Name.Contains(partialFileName))
+                //    {
+                //        list.Add(item.Name);
+                //    }
+
+                //}
+
+            }
+            catch (Exception e)
+            {
+                if (e is System.Threading.ThreadAbortException) throw;
+                Utility.Logging.PortalTechnicalLog.WriteError(context, "UtilityHelper.GetFileNameListFromSharePointLib", e);
+                Messages.Error(Utility.Logging.PortalTechnicalLog.DefaultUserMessage + " Başvuru kodu: " + context.OperationId.ToString("N"));
+            }
+            return list;
+        }
         #endregion
         #region Table islemleri
         public static void SetTableHeaders(Table table,string[] headers)
@@ -770,6 +880,18 @@ namespace Model.Ortak
             {
                 Bolge bolge = new BolgeService().GetById(il.BolgeId);
                 bolgeAdi = bolge.KisaAdi;
+            }
+            return (bolgeAdi);
+        }
+
+        public static string BolgeGetir(int ilId, Utility.Logging.PortalLogContext context)
+        {
+            string bolgeAdi = string.Empty;
+            Il il = new IlService().GetById(ilId, context);
+            if (il != null)
+            {
+                Bolge bolge = new BolgeService().GetById(il.BolgeId, context);
+                bolgeAdi = bolge == null ? string.Empty : bolge.KisaAdi;
             }
             return (bolgeAdi);
         }

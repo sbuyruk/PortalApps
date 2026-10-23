@@ -41,62 +41,6 @@ namespace Model.Services.TBYS
             return ToList(repository.SelectByTasinmazId(tasinmazId));
         }
 
-        public int Save(SerhBeyanIrtifak item)
-        {
-            if (item == null) throw new ArgumentNullException("item");
-
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-
-            if (item.Id > 0 && ProjeConstants.TBYS_SAVE_LOG)
-            {
-                OlayKayit olayKayit = new OlayKayit();
-                olayKayit.GirisOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_TASINMAZTAAHHUT);
-            }
-
-            return item.Id;
-        }
-
-        public bool Update(SerhBeyanIrtifak item)
-        {
-            if (item == null) throw new ArgumentNullException("item");
-
-            SerhBeyanIrtifak oldItem = GetById(item.Id);
-            bool isSuccess = false;
-            if (item.Id != 0)
-            {
-                item.DegistirmeTarihi = DateTime.Now;
-                item.Degistiren = UtilityHelper.GetCurrentUserName();
-                isSuccess = repository.Update(item);
-            }
-
-            if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
-            {
-                OlayKayit olayKayit = new OlayKayit();
-                olayKayit.GuncellemeOlayKaydet(item, oldItem, ProjeConstants.TBYS, ProjeConstants.TBYS_TASINMAZTAAHHUT);
-            }
-
-            return isSuccess;
-        }
-
-        public bool Delete(SerhBeyanIrtifak item)
-        {
-            if (item == null || item.Id == 0) return false;
-
-            SerhBeyanIrtifak oldItem = GetById(item.Id);
-            if (oldItem == null) return false;
-
-            bool isDeleted = repository.Delete(item.Id);
-            if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
-            {
-                OlayKayit olayKayit = new OlayKayit();
-                olayKayit.SilmeOlayKaydet(oldItem, ProjeConstants.TBYS, ProjeConstants.TBYS_TASINMAZTAAHHUT);
-            }
-
-            return isDeleted;
-        }
-
         public SerhBeyanIrtifak GetById(int id, SqlTransactionContext transaction, PortalLogContext context) { RequireTransaction(transaction, context); return Map(repository.SelectById(id, transaction, context)); }
         public int Save(SerhBeyanIrtifak item, SqlTransactionContext transaction, PortalLogContext context) { RequireTransaction(transaction, context); if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item, transaction, context); if (item.Id > 0) RecordAudit("INSERT", item.Id, transaction, context); return item.Id; }
         public bool Update(SerhBeyanIrtifak item, SqlTransactionContext transaction, PortalLogContext context) { RequireTransaction(transaction, context); if (item == null || item.Id == 0) return false; item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); bool ok = repository.Update(item, transaction, context); if (ok) RecordAudit("UPDATE", item.Id, transaction, context); return ok; }
@@ -113,5 +57,38 @@ namespace Model.Services.TBYS
         {
             return ToList(table).FirstOrDefault();
         }
+        public int Save(SerhBeyanIrtifak item)
+        {
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                int result = Save(item, transaction, context);
+                if (result > 0) transaction.Complete();
+                return result;
+            }
+        }
+
+        public bool Update(SerhBeyanIrtifak item)
+        {
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                bool result = Update(item, transaction, context);
+                if (result) transaction.Complete();
+                return result;
+            }
+        }
+
+        public bool Delete(SerhBeyanIrtifak item)
+        {
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                bool result = Delete(item, transaction, context);
+                if (result) transaction.Complete();
+                return result;
+            }
+        }
+
     }
 }

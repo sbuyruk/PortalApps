@@ -149,41 +149,49 @@ namespace TBYS_WebParts.OdemePlaniWP
         private IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(KiraSozlesmeIdQS))
+            try
             {
-                IdLbl.Text = KiraSozlesmeIdQS;
-                KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
-                if (kiraSozlesme != null)
+                if (!string.IsNullOrEmpty(KiraSozlesmeIdQS))
                 {
-                    AdiLbl.Text = KiraciGetir(kiraSozlesme.KiraciId) + "( Sözleşme : " + kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull() + " - " + kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull() + ")";
-                    if (string.IsNullOrEmpty(KiraciIdQS))
-                        KiraciIdQS = kiraSozlesme.KiraciId.ToString();
-                    if (!Page.IsPostBack)
+                    IdLbl.Text = KiraSozlesmeIdQS;
+                    KiraSozlesme kiraSozlesme = new KiraSozlesme();
+                    kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
+                    if (kiraSozlesme != null)
                     {
-                        TBYSOrtak.BakiyeBorcHesapla(kiraSozlesme, LoggingContext);
-                        if (kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK))
+                        AdiLbl.Text = KiraciGetir(kiraSozlesme.KiraciId) + "( Sözleşme : " + kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull() + " - " + kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull() + ")";
+                        if (string.IsNullOrEmpty(KiraciIdQS))
+                            KiraciIdQS = kiraSozlesme.KiraciId.ToString();
+                        if (!Page.IsPostBack)
                         {
-                            GecikmeZammiTipiLbl.Text = "Gecikme Zammı : " + ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK;
-                        }
-                        else
-                        {
-                            GecikmeZammiTipiLbl.Text = "Gecikme Zammı : " + ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK;
+                            TBYSOrtak.BakiyeBorcHesapla(kiraSozlesme, LoggingContext);
+                            if (kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK))
+                            {
+                                GecikmeZammiTipiLbl.Text = "Gecikme Zammı : " + ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK;
+                            }
+                            else
+                            {
+                                GecikmeZammiTipiLbl.Text = "Gecikme Zammı : " + ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK;
 
+                            }
+                            GecikmeZammmiGunlukBtn.Visible = !kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK);
+                            GecikmeZammmiAylikBtn.Visible = !kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK); ;
                         }
-                        GecikmeZammmiGunlukBtn.Visible = !kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK);
-                        GecikmeZammmiAylikBtn.Visible = !kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK); ;
+
+                        OdemePlaniTablosunuDoldur(kiraSozlesme);
+                        EnableDisableOdemePlaniEkleBtn();
                     }
+                    else
+                    {
+                        MessageHelper.PublishMessage("Kira Sözleşmesi Bulunamadı", ProjeConstants.MESAJ_HATA);
+                    }
+                }
 
-                    OdemePlaniTablosunuDoldur(kiraSozlesme);
-                    EnableDisableOdemePlaniEkleBtn();
-                }
-                else
-                {
-                    MessageHelper.PublishMessage("Kira Sözleşmesi Bulunamadı", ProjeConstants.MESAJ_HATA);
-                }
             }
-
+            catch (Exception error)
+            {
+                if (error is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.OdemePlaniWP.Page_Load", error);
+            }
         }
 
         private string KiraciGetir(int kiraciId)
@@ -326,7 +334,6 @@ namespace TBYS_WebParts.OdemePlaniWP
                     };
                     FaizTutariCell.Controls.Add(GecikmeZammiTutariBtn);
                 }
-
 
                 TableCell FaizliBakiyeCell = new TableCell();
                 FaizliBakiyeCell.Text = op.FaizliBakiye.ToString("N", culturInfo);
@@ -881,7 +888,6 @@ namespace TBYS_WebParts.OdemePlaniWP
                     oncekiKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetPreviousCompleted(kiraSozlesme.Id, kiraSozlesme.DosyaNo);
                 }
 
-
                 RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + oncekiKiraSozlesme.Id);
             }
             catch (Exception ex)
@@ -890,7 +896,6 @@ namespace TBYS_WebParts.OdemePlaniWP
                 TbysWebPartLog.WriteError(LoggingContext, "TBYS.OdemePlaniWP.PrevBtn_Click", ex);
                 TbysWebPartLog.ReportError(LoggingContext, "TBYS.OdemePlaniWP.PrevBtn_Click", ex);
             }
-
 
         }
         protected void NextBtn_Click(object sender, EventArgs e)

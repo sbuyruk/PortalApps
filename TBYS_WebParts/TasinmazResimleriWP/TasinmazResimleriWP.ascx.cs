@@ -361,14 +361,14 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                 string body = "<p>Taşınmaz Id: <b>" + TasinmazIdQS + "</b> numaralı taşınmazda "
                     + "<strong>" + currentUser + "</strong> tarafından aşağıdaki işlem gerçekleştirilmiştir:</p>"
                     + "<p>" + islemAciklamasi + "</p>" ;
-                string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
-                MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
+                string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL, LoggingContext);
+                MailHelper.EPostaGonderVeyaHataVer(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
             }
             catch (Exception ex)
             {
                 if (ex is System.Threading.ThreadAbortException) throw;
                 TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazResimleriWP.BildirimEPostasiGonder", ex);
-                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazResimleriWP.BildirimEPostasiGonder", ex);
+                Messages.Warning("İşlem tamamlandı ancak bildirim e-postası gönderilemedi. Başvuru kodu: " + LoggingContext.OperationId.ToString("N"));
             }
         }
 
@@ -489,7 +489,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                 if (EmlakBeyaniYukleFU.HasFile)
                 {
                     string hedefDosyaAdi = ProjeConstants.DOSYA_EMLAKBEYAN_FORMU + tasinmazId + ".pdf";
-                    bool isOk = UtilityHelper.UploadFileToSharePoint(EmlakBeyaniYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi);
+                    bool isOk = UtilityHelper.UploadFileToSharePoint(EmlakBeyaniYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi, LoggingContext);
                     if (isOk)
                     {
                         EmlakBeyaniDosyaLnk.Visible = true;
@@ -506,7 +506,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                 if (YapiKayitYukleFU.HasFile)
                 {
                     string hedefDosyaAdi = ProjeConstants.DOSYA_YAPIKAYIT_BELGESI + tasinmazId + ".pdf";
-                    bool isOk = UtilityHelper.UploadFileToSharePoint(YapiKayitYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi);
+                    bool isOk = UtilityHelper.UploadFileToSharePoint(YapiKayitYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi, LoggingContext);
                     if (isOk)
                     {
                         YapiKayitDosyaLnk.Visible = true;
@@ -523,7 +523,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                 if (TapuKayitYukleFU.HasFile)
                 {
                     string hedefDosyaAdi = ProjeConstants.DOSYA_TAPUKAYIT_BELGESI + tasinmazId + ".pdf";
-                    bool isOk = UtilityHelper.UploadFileToSharePoint(TapuKayitYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi);
+                    bool isOk = UtilityHelper.UploadFileToSharePoint(TapuKayitYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi, LoggingContext);
                     if (isOk)
                     {
                         TapuKayitDosyaLnk.Visible = true;
@@ -540,7 +540,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                 if (ImarDurumuYukleFU.HasFile)
                 {
                     string hedefDosyaAdi = ProjeConstants.DOSYA_IMARDURUMU_BELGESI + tasinmazId + ".pdf";
-                    bool isOk = UtilityHelper.UploadFileToSharePoint(ImarDurumuYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi);
+                    bool isOk = UtilityHelper.UploadFileToSharePoint(ImarDurumuYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi, LoggingContext);
                     if (isOk)
                     {
                         ImarDurumuDosyaLnk.Visible = true;
@@ -557,7 +557,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                 if (TasinmazRaporuYukleFU.HasFile)
                 {
                     string hedefDosyaAdi = ProjeConstants.DOSYA_TASINMAZ_RAPORU + tasinmazId + ".pdf";
-                    bool isOk = UtilityHelper.UploadFileToSharePoint(TasinmazRaporuYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi);
+                    bool isOk = UtilityHelper.UploadFileToSharePoint(TasinmazRaporuYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi, LoggingContext);
                     if (isOk)
                     {
                         TasinmazRaporuDosyaLnk.Visible = true;
@@ -717,7 +717,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             try
             {
                 string dosyaAdi = ProjeConstants.DOSYA_EMLAKBEYAN_FORMU + TasinmazIdQS + ".pdf";
-                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
+                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi, LoggingContext))
                 {
                     MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                     EmlakBeyaniSilBtn.Visible = false;
@@ -742,7 +742,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             try
             {
                 string dosyaAdi = ProjeConstants.DOSYA_YAPIKAYIT_BELGESI + TasinmazIdQS + ".pdf";
-                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
+                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi, LoggingContext))
                 {
                     MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                     YapiKayitSilBtn.Visible = false;
@@ -767,7 +767,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             try
             {
                 string dosyaAdi = ProjeConstants.DOSYA_TAPUKAYIT_BELGESI + TasinmazIdQS + ".pdf";
-                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
+                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi, LoggingContext))
                 {
                     MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                     TapuKayitSilBtn.Visible = false;
@@ -792,7 +792,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             try
             {
                 string dosyaAdi = ProjeConstants.DOSYA_IMARDURUMU_BELGESI+ TasinmazIdQS + ".pdf";
-                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
+                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi, LoggingContext))
                 {
                     MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                     ImarDurumuSilBtn.Visible = false;
@@ -817,7 +817,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             try
             {
                 string dosyaAdi = ProjeConstants.DOSYA_TASINMAZ_RAPORU+ TasinmazIdQS + ".pdf";
-                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
+                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi, LoggingContext))
                 {
                     MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                     TasinmazRaporuSilBtn.Visible = false;

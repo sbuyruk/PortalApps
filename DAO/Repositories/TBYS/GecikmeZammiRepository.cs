@@ -10,12 +10,9 @@ namespace DAO.Repositories.TBYS
         private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
-        public GecikmeZammiRepository() : this(new DbClass()) { }
-
-        public GecikmeZammiRepository(DbClass db)
+        public GecikmeZammiRepository()
         {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "GecikmeZammiRepository");
+            db = new TbysSqlExecutor("GecikmeZammiRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -121,21 +118,6 @@ namespace DAO.Repositories.TBYS
                 SELECT *
                 FROM GecikmeZammi_Table
                 ORDER BY BaslangicTarihi DESC"), "");
-        }
-
-        public int Insert<T>(T entity)
-        {
-            return db.Insert(queryBuilder.BuildInsert(entity, "GecikmeZammi_Table"));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, "GecikmeZammi_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("GecikmeZammi_Table", id), "");
         }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)

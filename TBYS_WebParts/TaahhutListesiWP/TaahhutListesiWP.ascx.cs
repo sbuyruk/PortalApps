@@ -228,7 +228,7 @@ namespace TBYS_WebParts.TaahhutListesiWP
         {
             List<TasinmazTaahhutListItem> list = new List<TasinmazTaahhutListItem>();
             string pageUrl = ProjeConstants.PAGE_TASINMAZBAGISCI_GIRIS;
-            List<string> bagisciTaahhutFormuDosyalari = UtilityHelper.GetFileNameListFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, ProjeConstants.DOSYA_TAAHHUT_FORMU);
+            List<string> bagisciTaahhutFormuDosyalari = UtilityHelper.GetFileNameListFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, ProjeConstants.DOSYA_TAAHHUT_FORMU, LoggingContext);
             bool isEditable = BolgeIdQS == ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? true : false;
             TasinmazBagisci tb= new TasinmazBagisci();
             List<TasinmazBagisci> tblist =  new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetByBolge(BolgeIdQS);
@@ -247,7 +247,7 @@ namespace TBYS_WebParts.TaahhutListesiWP
                     tasinmazBagisciListItem.DogumTarihi = item.DogumTarihi.ConvertToDatetimeEmptyIfNull();
                     tasinmazBagisciListItem.Sag_vefat = item.Sag_vefat;
                     tasinmazBagisciListItem.Duzenle =string.Empty;
-                    tasinmazBagisciListItem.Bolge=UtilityHelper.BolgeGetir(item.IlId);
+                    tasinmazBagisciListItem.Bolge=UtilityHelper.BolgeGetir(item.IlId, LoggingContext);
                     if (isEditable)
                     {
                         tasinmazBagisciListItem.Duzenle = "<a href=" + pageUrl + @"?DestinationApp=TBD&BagisciId=" + item.Id + "  class='btn btn-outline-primary'>Düzenle</a>"; //"<a href=" + pageUrl + @"?DestinationApp=TBD&BagisciId=" + item.Id + "  class='btn btn-outline-primary'>Düzenle</a>";
@@ -271,7 +271,7 @@ namespace TBYS_WebParts.TaahhutListesiWP
                 tasinmazBagisciListItem.TaahhutAciklama = item.TaahhutAciklama;
 
                 tasinmazBagisciListItem.TaahhutFormu = FormLinkiGetir(bagisciTaahhutFormuDosyalari, ProjeConstants.DOSYA_TAAHHUT_FORMU, item.BagisciId.ToString(), "Taahhüt Formu", "btn btn-outline-secondary");
-                tasinmazBagisciListItem.Bolge = UtilityHelper.BolgeGetir(item.Ili);
+                tasinmazBagisciListItem.Bolge = UtilityHelper.BolgeGetir(item.Ili, LoggingContext);
                 tasinmazBagisciListItem.Bagisci = BagisciBilgisiGetir(item.BagisciId);
 
                 if (isEditable)

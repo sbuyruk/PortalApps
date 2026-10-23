@@ -29,25 +29,33 @@ namespace Model.Ortak
 
         #region TBYS
 
-        public static void BakiyeBorcHesapla(KiraSozlesme kiraSozlesme)
+        public static bool BakiyeBorcHesapla(KiraSozlesme kiraSozlesme, PortalLogContext context)
         {
-            bool isGecikmeZammiGunluk = kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK);
-            if (isGecikmeZammiGunluk)
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                TBYSOrtak.BakiyeBorcHesaplaGunlukGecikmeZammi(kiraSozlesme);
-            }
-            else
-            {
-                TBYSOrtak.BakiyeBorcHesaplaAylik(kiraSozlesme);
+                bool updated = BakiyeBorcHesapla(kiraSozlesme, context, transaction);
+                if (updated) transaction.Complete();
+                return updated;
             }
         }
 
-        public static bool BakiyeBorcHesapla(KiraSozlesme kiraSozlesme, PortalLogContext context)
+        public static bool BakiyeBorcHesapla(KiraSozlesme kiraSozlesme, PortalLogContext context, SqlTransactionContext transaction)
         {
-            if (kiraSozlesme == null || context == null) return false;
-            if (kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK))
-                return BakiyeBorcHesaplaGunlukGecikmeZammi(kiraSozlesme, context);
-            return BakiyeBorcHesaplaAylik(kiraSozlesme, context);
+            if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
+            if (transaction == null) throw new ArgumentNullException("transaction", "Veritabanı işlem bağlamı gereklidir.");
+            if (kiraSozlesme == null) return false;
+            KiraSozlesme current = new KiraSozlesmeService(context).GetById(kiraSozlesme.Id, transaction);
+            if (current == null) return false;
+            return current.GecikmeZammiTipi == ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK
+                ? BakiyeBorcHesaplaGunlukGecikmeZammi(current, context, transaction)
+                : BakiyeBorcHesaplaAylik(current, context, transaction);
+        }
+
+        public static void AktifSozleslemelerinBakiyeBorcunuHesapla(PortalLogContext context)
+        {
+            foreach (KiraSozlesme item in new KiraSozlesmeService(context).GetAllActive())
+                if (!BakiyeBorcHesapla(item, context))
+                    throw new InvalidOperationException("Sözleşmenin ödeme planı güncellenemedi.");
         }
 
         /// <summary>
@@ -60,140 +68,7 @@ namespace Model.Ortak
         /// </summary>
         /// <param name="kiraSozlesme"></param>
         /// <returns></returns>
-        public static void BakiyeBorcHesaplaAylik(KiraSozlesme kiraSozlesme)
-        {
-            DateTime today = DateTime.Today;
 
-            decimal faizToplami = 0;
-            decimal faizOrani = 1;
-            decimal anaParaToplami = 0;
-            decimal faizliBakiye = 0;
-            decimal devirAnaPara = 0;
-            decimal devirFaiz = 0;
-            faizOrani = ProjeConstants.YASAL_FAIZ_ORANI;
-
-            # region devir eden anapara ve faiz varsa dikkate al
-            OdemePlani odemePlaniDao = new OdemePlani();
-            List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
-            if (list.Count > 0)
-            {
-                OdemePlani odemePlaniDevir = list[0];
-                if (odemePlaniDevir != null)
-                {
-                    devirAnaPara = odemePlaniDevir.AnaPara;
-                    devirFaiz = odemePlaniDevir.FaizTutari;
-                }
-            }
-
-            #endregion
-            DateTime islemTarihi = kiraSozlesme.SozBitTar;//today; SB 24.02.2021 Sözlesmenin son ayina kadar faiz hesabini yapsin  Zekayi Bey ileriye dönük simülasyon gibi kullanmak istiyor 
-            foreach (OdemePlani odemePlani in list)
-            {
-                if (odemePlani.Sira == 0)
-                {
-                    continue;//devir satiri için hesap yapma
-                }
-                else
-                {
-                    DateTime vadeBasTar = odemePlani.VadeBasTar;//vade tarihinden itibaren
-                    #region Yasal Faiz Kontrolü
-                    YasalFaiz yasalFaiz = new YasalFaiz();
-                    yasalFaiz = new Model.Services.TBYS.YasalFaizService().GetByYearMonth(vadeBasTar.Year, vadeBasTar.Month);
-                    if (yasalFaiz == null)
-                    {
-                        Exception ex1 = new Exception(vadeBasTar.Month + "/" + vadeBasTar.Year + " Ayi için Yasal Faiz Orani girilmediginden Faiz Hesaplanamiyor.");
-                        Exception ex2 = new Exception("Yasal faiz menusunden " + vadeBasTar.Year + " yili için faiz orani girdikten sonra tekrar deneyiniz");
-                        ExceptionHelper exhelper = new ExceptionHelper();
-                        exhelper.Exceptions.Add(ex1);
-                        exhelper.Exceptions.Add(ex2);
-
-                        exhelper.PublishException();
-                    }
-                    #endregion
-                    else
-                    {
-                        faizOrani = yasalFaiz.FaizOrani <= 0 ? faizOrani : yasalFaiz.FaizOrani;
-
-                        if ((vadeBasTar != null) && (vadeBasTar <= islemTarihi))
-                        {
-
-                            decimal borc = (-1) * odemePlani.KiraBedeli;
-                            #region
-                            decimal anaPara = odemePlani.OdenenTutar + borc;
-
-                            anaParaToplami += anaPara + devirAnaPara;
-                            devirAnaPara = 0; //devirAnapara bir kere eklensin
-                            #endregion
-
-                            #region FaiztutariHesapla
-                            decimal faizTutari = 0;
-                            faizTutari = Math.Round(anaParaToplami * faizOrani / 100);
-
-                            if (islemTarihi.AddMonths(-1) < vadeBasTar && islemTarihi >= vadeBasTar) // islem tarihi  önceki vadeBastarihinden büyük ve simdiki vade tarihinden küçük esitse // 
-                            {
-
-                                faizTutari = 0;
-                            }
-
-                            faizTutari = faizTutari > 0 ? 0 : faizTutari;//arti faiz olmasin, kiracinin alacagi varsa faiz uyulamasin 
-                            #endregion
-
-                            #region AnaPara_Faiz_FaizliBakiyeyi_Bul
-                            //anaParaToplami += kalan;
-                            faizToplami += faizTutari + devirFaiz;
-                            devirFaiz = 0;//devirFaiz bir kere eklensin;
-                            faizliBakiye = anaParaToplami + faizToplami;
-                            #endregion
-
-                            #region OdemePlaniTablosunuGuncelle
-                            if (odemePlani.Sira == 0)
-                            {
-                                //devir satirini güncellemesin
-                            }
-                            else
-                            {
-                                //anaparadan artan varsa faiz ile mahsuplas
-                                if (anaParaToplami > 0 && faizToplami < 0)
-                                {
-                                    decimal fark = anaParaToplami + faizToplami;
-                                    if (fark > 0)//anaparadan faiz çikinca artan miktar var
-                                    {
-
-                                        anaParaToplami = anaParaToplami + faizToplami;
-                                        anaParaToplami = anaParaToplami < 0 ? 0 : anaParaToplami;
-                                        faizToplami = 0;
-                                    }
-                                    else if (fark < 0)//anaparadan faiz çikinca hala faiz borcu var var 
-                                    {
-
-                                        faizToplami = anaParaToplami + faizToplami;
-                                        faizToplami = faizToplami > 0 ? 0 : faizToplami;
-                                        anaParaToplami = 0;
-                                    }
-                                    else if (fark == 0)//anaparadan faiz çikinca kalan 0
-                                    {
-                                        anaParaToplami = 0;
-                                        faizToplami = 0;
-                                    }
-                                }
-
-                                Odeme odemeDao = new Odeme();
-                                var odenenTutar = new Model.Services.TBYS.OdemeService().GetSumBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlani.Id);
-                                odemePlani.OdenenTutar = odenenTutar;
-                                odemePlani.FaizliBakiye = faizliBakiye;
-                                odemePlani.FaizOrani = faizOrani;
-                                odemePlani.FaizTutari = faizTutari;
-                                odemePlani.AnaPara = anaParaToplami;
-                                new Model.Services.TBYS.OdemePlaniService().Update(odemePlani);
-                            }
-                            #endregion
-                        }
-                    }
-                }
-
-            }
-
-        }
         public static bool BakiyeBorcHesaplaAylik(KiraSozlesme kiraSozlesme, PortalLogContext context)
         {
             if (kiraSozlesme == null || context == null) return false;
@@ -225,7 +100,7 @@ namespace Model.Ortak
             {
                 if (odemePlani.Sira == 0 || odemePlani.VadeBasTar > kiraSozlesme.SozBitTar) continue;
                 YasalFaiz yasalFaiz = new YasalFaizService(context).GetByYearMonth(odemePlani.VadeBasTar.Year, odemePlani.VadeBasTar.Month, transaction);
-                if (yasalFaiz == null) continue;
+                if (yasalFaiz == null) throw new InvalidOperationException("İlgili dönem için yasal faiz oranı bulunamadı.");
                 faizOrani = yasalFaiz.FaizOrani <= 0 ? faizOrani : yasalFaiz.FaizOrani;
                 decimal borc = -odemePlani.KiraBedeli;
                 decimal anaPara = odemePlani.OdenenTutar + borc;
@@ -252,97 +127,6 @@ namespace Model.Ortak
                 if (!planService.Update(odemePlani, transaction)) return false;
             }
             return true;
-        }
-
-        public static void AktifSozleslemelerinBakiyeBorcunuHesapla()
-        {
-            DateTime saat = DateTime.Now;
-            KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-            List<KiraSozlesme> kiraSozlesmeListesi = new Model.Services.TBYS.KiraSozlesmeService().GetAllActive();
-            DateTime saat1 = DateTime.Now;
-            foreach (KiraSozlesme kiraSozlesme in kiraSozlesmeListesi)
-            {
-                if (kiraSozlesme != null)
-                {
-                    TBYSOrtak.BakiyeBorcHesapla(kiraSozlesme);
-                }
-            }
-        }
-        public static void BakiyeBorcHesaplaGunlukGecikmeZammi(KiraSozlesme kiraSozlesme)
-        {
-            OdemeAyrinti odemeAyrinti = new OdemeAyrinti();
-            new Model.Services.TBYS.OdemeAyrintiService().DeleteBySozlesmeId(kiraSozlesme.Id);
-
-            //bu kiraciya ait tüm ödeme planlarini al tarih sirali
-            OdemePlani op = new OdemePlani();
-            List<OdemePlani> opList = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
-            var faizToplami = 0m;
-            var faizTutari = 0m;
-            var anaParaToplami = 0m;
-            var devirFaiz = 0m;
-            foreach (var odemePlani in opList)
-            {
-                if (odemePlani.Sira == 0)
-                {
-
-                    anaParaToplami = odemePlani.AnaPara;
-                    devirFaiz = odemePlani.FaizTutari;
-                    continue;
-                }
-                //int sayac = 0;
-                //GunlukGecikmeZammiHesaplaRecursive(kiraSozlesme, odemePlani, odemePlani.VadeBasTar, odemePlani.VadeBitTar, ref anaParaBakiye, ref faizliBakiyeToplami, ref sayac);
-                OdemeAyrinti odemeAyrintiDao = new OdemeAyrinti();
-
-                GunlukGecikmeZammiHesaplaRecursiveDegil(kiraSozlesme, odemePlani, ref anaParaToplami);
-                anaParaToplami = anaParaToplami - odemePlani.KiraBedeli;
-                var gecikmeZammiTutari = new Model.Services.TBYS.OdemeAyrintiService().GetSumDelayAmount(odemePlani.Id);
-                var gecikmeZammiOrani = new Model.Services.TBYS.OdemeAyrintiService().GetLastDelayRate(odemePlani.Id);
-
-                faizToplami += gecikmeZammiTutari + devirFaiz;
-                devirFaiz = 0;//devirFaiz bir kere eklensin;
-
-                //anaparadan artan varsa faiz ile mahsuplas
-                if (anaParaToplami > 0 && faizToplami < 0)
-                {
-                    decimal fark = anaParaToplami + faizToplami;
-                    if (fark > 0)//anaparadan faiz çikinca artan miktar var
-                    {
-
-                        anaParaToplami = anaParaToplami + faizToplami;
-                        anaParaToplami = anaParaToplami < 0 ? 0 : anaParaToplami;
-                        faizToplami = 0;
-                    }
-                    else if (fark < 0)//anaparadan faiz çikinca hala faiz borcu var var 
-                    {
-
-                        faizToplami = anaParaToplami + faizToplami;
-                        faizToplami = faizToplami > 0 ? 0 : faizToplami;
-                        anaParaToplami = 0;
-                    }
-                    else if (fark == 0)//anaparadan faiz çikinca kalan 0
-                    {
-                        anaParaToplami = 0;
-                        faizToplami = 0;
-                    }
-
-                }
-
-                odemePlani.AnaPara = anaParaToplami;
-                odemePlani.FaizTutari = gecikmeZammiTutari;
-                odemePlani.FaizliBakiye = anaParaToplami+faizToplami;// anaParaToplami + gecikmeZammiTutari +devirFaiz ;
-                odemePlani.FaizOrani = gecikmeZammiOrani;
-
-                //ödeme plani Id ye ve sozId ye göre al
-                Odeme odemeDao = new Odeme();
-                var odenenTutar = new Model.Services.TBYS.OdemeService().GetSumBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlani.Id);
-                odemePlani.OdenenTutar = odenenTutar;
-                new Model.Services.TBYS.OdemePlaniService().Update(odemePlani);
-                //if ((DateTime.Today > odemePlani.VadeBasTar) && (DateTime.Today < odemePlani.VadeBitTar))
-                if (odemePlani.VadeBitTar >= DateTime.Today ) // vade dolmadiysa hesaplama yapma
-                {
-                    break;
-                }
-            }
         }
 
         public static bool BakiyeBorcHesaplaGunlukGecikmeZammi(KiraSozlesme kiraSozlesme, PortalLogContext context)
@@ -390,106 +174,6 @@ namespace Model.Ortak
             }
             return true;
         }
-        private static void OdemeAyrintiKaydetVeyaGuncelle(DateTime ilkTarih, DateTime sonTarih, KiraSozlesme kiraSozlesme, OdemePlani odemePlani, GecikmeZammi gz, int odemeId, DateTime odemeTarihi,
-            DateTime sonOdemeTarihi, int aySayisi, int gunSayisi,
-            decimal anaPara, decimal odenenTutar, decimal kalanAnaPara, decimal gecikmeZammiTutari, string aciklama)
-        {
-            string saveOrUpdate = "update";
-
-            OdemeAyrinti odemeAyrinti = new OdemeAyrinti();
-            odemeAyrinti = new Model.Services.TBYS.OdemeAyrintiService().GetByPlanAndDelay(kiraSozlesme, odemePlani.Id, gz.Id, odemeId);
-            if (odemeAyrinti == null)
-            {
-                odemeAyrinti = new OdemeAyrinti();
-                saveOrUpdate = "save";
-            }
-            odemeAyrinti.IlkTarih = ilkTarih;
-            odemeAyrinti.SonTarih = sonTarih;
-            odemeAyrinti.KiraciId = kiraSozlesme.KiraciId;
-            odemeAyrinti.SozlesmeId = odemePlani.SozlesmeId;
-            odemeAyrinti.OdemePlaniId = odemePlani.Id;
-            odemeAyrinti.OdemeId = odemeId;
-            odemeAyrinti.GecikmeZammiId = gz.Id;
-            odemeAyrinti.OdemePlaniSirasi = odemePlani.Sira;
-            odemeAyrinti.SonOdemeTarihi = sonOdemeTarihi;
-            odemeAyrinti.GecikmeZammiDegisimTar = gz.BaslangicTarihi;
-            odemeAyrinti.OdemeTarihi = odemeTarihi;
-            odemeAyrinti.AySayisi = aySayisi;
-            odemeAyrinti.GunSayisi = gunSayisi;
-            odemeAyrinti.GecikmeZammiOrani = gz.ZamOrani;
-            odemeAyrinti.AnaPara = anaPara;
-            odemeAyrinti.OdenenTutar = odenenTutar;
-            odemeAyrinti.KalanAnaPara = kalanAnaPara;
-            odemeAyrinti.GecikmeZammiTutari = gecikmeZammiTutari;
-            odemeAyrinti.Aciklama = aciklama;
-            if (saveOrUpdate.Equals("save"))
-            {
-                new Model.Services.TBYS.OdemeAyrintiService().Save(odemeAyrinti);
-            }
-            else
-            {
-                new Model.Services.TBYS.OdemeAyrintiService().Update(odemeAyrinti);
-            }
-
-        }
-        public static void GunlukGecikmeZammiHesaplaRecursiveDegil(KiraSozlesme kiraSozlesme, OdemePlani odemePlani,
-            ref decimal anaPara)
-        {
-            DateTime ilkTarih = odemePlani.VadeBasTar;
-            DateTime ikinciTarih = odemePlani.VadeBitTar;
-            GecikmeZammiService gecikmeZammiService = new GecikmeZammiService();
-            List<GecikmeZammi> gzList = gecikmeZammiService.GetByDateRange(ilkTarih, ikinciTarih);
-            if (gzList.Count >= 1)
-            {
-                foreach (var gecikmeZammi in gzList) //gecikme zammi dongusu
-                {
-                    // bu sürede ödeme var mi
-                    Odeme odemeDao = new Odeme();
-                    List<Odeme> odemeList = new Model.Services.TBYS.OdemeService().GetByKiraciVadeBasTarVadeBitTar(kiraSozlesme.Id, kiraSozlesme.KiraciId, ilkTarih, ikinciTarih);
-                    if (odemeList.Count > 0)//odeme var
-                    {
-                        //ödeme yapilan tarihe kadarki olusan faizler
-                        foreach (var odeme1 in odemeList)//odeme dongusu
-                        {
-                            ikinciTarih = odeme1.OdemeTarihi;
-                            int aySayisi = (ikinciTarih - ilkTarih).Days >= (odemePlani.VadeBitTar - odemePlani.VadeBasTar).Days ? 1 : 0;
-                            int kalangunSayisi = 0;
-                            if (aySayisi < 1)
-                            {
-                                kalangunSayisi = (ikinciTarih.AddDays(1) - ilkTarih).Days;
-                                kalangunSayisi = kalangunSayisi < 0 ? 0 : kalangunSayisi;
-                            }
-                            GecikmeZammiHesabi(kiraSozlesme, odemePlani, ilkTarih, ikinciTarih, odeme1, aySayisi, kalangunSayisi, gecikmeZammi, ref anaPara);
-                            ilkTarih = odeme1.OdemeTarihi.AddDays(1);
-                        }
-                        //son ödemeden vade bitimine kadar kalan anaparanin faizi
-                        ilkTarih = ikinciTarih.AddDays(1);
-                        ikinciTarih = gecikmeZammi.BitisTarihi > ProjeConstants.NULL_TARIH ? gecikmeZammi.BitisTarihi : odemePlani.VadeBitTar;
-
-                        int gunSayisi = (ikinciTarih.AddDays(1) - ilkTarih).Days;
-                        gunSayisi = gunSayisi < 0 ? 0 : gunSayisi;
-                        GecikmeZammiHesabi(kiraSozlesme, odemePlani, ilkTarih, ikinciTarih, null, 0, gunSayisi, gecikmeZammi, ref anaPara);
-
-                    }
-                    else // hiç ödeme yok
-                    {
-                        int aySayisi = (ikinciTarih - ilkTarih).Days >= (odemePlani.VadeBitTar - odemePlani.VadeBasTar).Days ? 1 : 0;
-                        int gunSayisi = 0;
-                        if (aySayisi < 1)
-                        {
-                            gunSayisi = (ikinciTarih.AddDays(1) - ilkTarih).Days;
-                            gunSayisi = gunSayisi < 0 ? 0 : gunSayisi;
-                        }
-                        GecikmeZammiHesabi(kiraSozlesme, odemePlani, ilkTarih, ikinciTarih, null, aySayisi, gunSayisi, gecikmeZammi, ref anaPara);
-                    }
-
-                }
-            }
-            else //gecikme zammi listesi bos
-            {
-                MessageHelper.PublishMessage("Gecikme zammi orani bulunamadi, islem yapabilmek için Gecikme Zammi Oranlarini giriniz.", ProjeConstants.MESAJ_HATA);
-            }
-        }
 
         private static void GunlukGecikmeZammiHesaplaRecursiveDegil(KiraSozlesme kiraSozlesme, OdemePlani odemePlani,
             ref decimal anaPara, PortalLogContext context, SqlTransactionContext transaction)
@@ -523,112 +207,6 @@ namespace Model.Ortak
                 }
             }
         }
-        //public static void GunlukGecikmeZammiHesaplaRecursive(KiraSozlesme kiraSozlesme, OdemePlani odemePlani, DateTime ilkTarih, DateTime ikinciTarih,
-        //    ref decimal anaPara, ref decimal faizliBakiyeToplami, ref int sayac)
-        //{
-        //    // eger recursif fonksiyondan çikmazsa diye
-        //    if (sayac++ > 31)
-        //    {
-        //        MessageHelper.PublishMessage("OdemePlaniId=" + odemePlani.Id + " olan ve " + odemePlani.Ay + " Ayina ait gecikme zammi hesabinda hata olustu.", ProjeConstants.MESAJ_HATA);
-        //        //TODO burada ödeme planinin degerleri bos gözüksün
-        //        return;
-        //    }
-        //    IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-        //    GecikmeZammi gzDao = new GecikmeZammi();
-        //    List<GecikmeZammi> gzList = gzDao.SelectByBaslangicTarihi(ilkTarih);
-        //    if ((gzList.Count == 0) || (ikinciTarih == ilkTarih)) //ikinciTarih == ilkTarih olursa ayin son günü yapilan ödemeyi dikkate almiyor
-        //    {
-        //        return;
-        //    }
-        //    else if (gzList.Count >= 1)
-        //    {
-        //        GecikmeZammi gecikmeZammi = gzList[0];
-        //        ilkTarih = (gecikmeZammi.BaslangicTarihi < odemePlani.VadeBasTar) ? (odemePlani.VadeBasTar < ilkTarih ? ilkTarih : odemePlani.VadeBasTar) : gecikmeZammi.BaslangicTarihi;
-        //        ikinciTarih = gecikmeZammi.BitisTarihi > ProjeConstants.NULL_TARIH ? (gecikmeZammi.BitisTarihi < odemePlani.VadeBitTar ? gecikmeZammi.BitisTarihi : odemePlani.VadeBitTar) : odemePlani.VadeBitTar;
-
-        //        Odeme odemeDao = new Odeme();
-        //        List<Odeme> odemeList = new Model.Services.TBYS.OdemeService().GetByKiraciVadeBasTarVadeBitTar(kiraSozlesme.Id, kiraSozlesme.KiraciId, ilkTarih, ikinciTarih);
-        //        if (odemeList.Count >= 1)
-        //        {
-        //            Odeme odeme = odemeList[0];
-        //            if (odeme != null)
-        //            {
-        //                ikinciTarih = odeme.OdemeTarihi;
-        //                int aySayisi = (ikinciTarih - ilkTarih).Days >= (odemePlani.VadeBitTar - odemePlani.VadeBasTar).Days ? 1 : 0;
-        //                int gunSayisi = 0;
-        //                if (aySayisi < 1)
-        //                {
-        //                    gunSayisi = (ikinciTarih.AddDays(1) - ilkTarih).Days;
-        //                    gunSayisi = gunSayisi < 0 ? 0 : gunSayisi;
-        //                }
-
-        //                GecikmeZammiHesabi(kiraSozlesme, odemePlani, ilkTarih, ikinciTarih, odeme, aySayisi, gunSayisi, gecikmeZammi, ref anaPara, ref faizliBakiyeToplami);
-        //                if (odeme != null)
-        //                {
-        //                    ilkTarih = odeme.OdemeTarihi.AddDays(1);
-        //                }
-        //                else
-        //                {
-        //                    ilkTarih = gecikmeZammi.BitisTarihi > ProjeConstants.NULL_TARIH ? (odemePlani.VadeBitTar > gecikmeZammi.BitisTarihi ? gecikmeZammi.BitisTarihi.AddDays(1) : odemePlani.VadeBitTar) : odemePlani.VadeBitTar;
-        //                }
-        //                ikinciTarih = odemePlani.VadeBitTar;
-        //                GunlukGecikmeZammiHesaplaRecursive(kiraSozlesme, odemePlani, ilkTarih, ikinciTarih, ref anaPara, ref faizliBakiyeToplami, ref sayac);
-        //            }
-
-        //        }
-        //        else //odeme yapilmamissa
-        //        {
-        //            int aySayisi = (ikinciTarih - ilkTarih).Days >= (odemePlani.VadeBitTar - odemePlani.VadeBasTar).Days ? 1 : 0;
-        //            int gunSayisi = 0;
-        //            if (aySayisi < 1)
-        //            {
-        //                gunSayisi = (ikinciTarih.AddDays(1) - ilkTarih).Days;
-        //                gunSayisi = gunSayisi < 0 ? 0 : gunSayisi;
-        //            }
-
-        //            GecikmeZammiHesabi(kiraSozlesme, odemePlani, ilkTarih, ikinciTarih, null, aySayisi, gunSayisi, gecikmeZammi, ref anaPara, ref faizliBakiyeToplami);
-
-        //            ilkTarih = gecikmeZammi.BitisTarihi > ProjeConstants.NULL_TARIH ? (odemePlani.VadeBitTar > gecikmeZammi.BitisTarihi ? gecikmeZammi.BitisTarihi.AddDays(1) : odemePlani.VadeBitTar) : odemePlani.VadeBitTar;
-        //            ikinciTarih = odemePlani.VadeBitTar;
-        //            GunlukGecikmeZammiHesaplaRecursive(kiraSozlesme, odemePlani, ilkTarih, ikinciTarih, ref anaPara, ref faizliBakiyeToplami, ref sayac);
-        //        }
-
-        //    }
-
-        //}
-
-        private static void GecikmeZammiHesabi(KiraSozlesme kiraSozlesme, OdemePlani odemePlani, DateTime ilkTarih, DateTime ikinciTarih, Odeme odeme, int aySayisi, int gunSayisi, GecikmeZammi gz,
-            ref decimal anaPara)
-        {
-            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            var gunZamTutari = 0M;
-            var ayZamTutari = 0M;
-            //var anaPara = odemePlani.AnaPara;
-            decimal zamOrani = gz.ZamOrani;
-            decimal odenenTutar = odeme == null ? 0 : odeme.OdenenTutar;
-            int odemeId = odeme == null ? 0 : odeme.Id;
-            DateTime odemeTarihi = odeme == null ? new DateTime() : odeme.OdemeTarihi;
-            if (odemePlani.Sira > 0)
-            {
-                var kalanAnaPara = anaPara + odenenTutar;// + çünkü ana para - geliyor
-                ayZamTutari = anaPara * aySayisi * zamOrani / 100;
-                gunZamTutari = anaPara * gunSayisi * (zamOrani / 30) / 100;
-
-                var gecikmeZammiTutari = (ayZamTutari + gunZamTutari);
-
-                var ayAciklama = (anaPara).ToString("N", culturInfo) + "TL x " + aySayisi.ToString() + "ay x " + zamOrani.ToString("N", culturInfo) + "/100 ";
-                var gunAciklama = (anaPara).ToString("N", culturInfo) + "TL x " + gunSayisi.ToString() + "gün x (" + zamOrani.ToString("N", culturInfo) + "/30)/100 ";
-                var aciklama = ayZamTutari < 0 ? ayAciklama : gunZamTutari < 0 ? gunAciklama : "";
-
-                gecikmeZammiTutari = gecikmeZammiTutari > 0 ? 0 : gecikmeZammiTutari;// +faiz olmasin
-                OdemeAyrintiKaydetVeyaGuncelle(ilkTarih, ikinciTarih, kiraSozlesme, odemePlani, gz, odemeId, odemeTarihi, odemePlani.VadeBitTar, aySayisi, gunSayisi,
-                           anaPara, odenenTutar, kalanAnaPara, gecikmeZammiTutari, aciklama);
-                anaPara = kalanAnaPara;
-            }
-
-
-        }
-
         private static void GecikmeZammiHesabi(DateTime ilkTarih, DateTime ikinciTarih, KiraSozlesme kiraSozlesme, OdemePlani odemePlani, GecikmeZammi gz, Odeme odeme, int aySayisi, int gunSayisi, ref decimal anaPara, PortalLogContext context, SqlTransactionContext transaction)
         {
             if (odemePlani.Sira <= 0) return;
@@ -669,111 +247,6 @@ namespace Model.Ortak
             ayrinti.GecikmeZammiTutari = gecikmeZammiTutari;
             ayrinti.Aciklama = aciklama;
             if (ayrinti.Id == 0) service.Save(ayrinti, transaction); else service.Update(ayrinti, transaction);
-        }
-        public static bool OdemeYap(KiraSozlesme kiraSozlesme, DateTime odemetarihi, decimal odenenTutar, string aciklama, ref int odemeId)
-        {
-            odemeId = 0;
-            bool odemeYapildiMi = false;
-            try
-            {
-                if (kiraSozlesme != null)
-                {
-                    DateTime odemeTarihi = odemetarihi;
-                    int yil = odemeTarihi.Year;
-                    int ay = odemeTarihi.Month;
-
-                    OdemePlani odemePlaniDao = new OdemePlani();
-                    List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeId(kiraSozlesme.Id);
-                    if (list.Count > 0)
-                    {
-                        OdemePlani odemePlani = list[1];//ilk taksit, lits[0] da devir kaydi var
-
-                        if (odemeTarihi < odemePlani.OdemeBasTar)// ödeme baslama tarihinden önce ödeme yapilmis
-                        {
-                            odemePlani = new Model.Services.TBYS.OdemePlaniService().GetFirstBySozlesmeId(kiraSozlesme.Id);//odemeyi ilk OdemePlanina kaydet
-                            Odeme odeme = new Odeme();
-                            odeme = new Model.Services.TBYS.OdemeService().OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
-                            odemeYapildiMi = true;
-                            odemeId = odeme.Id;
-                        }
-                        else if (odemeTarihi > odemePlani.OdemeBitTar)//ödeme bitis tarihinden sonra ödeme yapilmis
-                        {
-                            //
-                            // Taksit SB
-                            // sözlesme yilliksa ve ödeme sözlesme bitmeden yapilmissa
-                            if ((kiraSozlesme.OdemeSekli == ProjeConstants.KIRA_ODMSEKLI_YILLIK) &&
-                                odemeTarihi < kiraSozlesme.SozBitTar)
-                            {
-                                if (kiraSozlesme.SozBitTar >= odemeTarihi)
-                                {
-                                    odemePlani = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi);
-                                }
-                                else //1 taksitte ödenenlerde odemem plani tarihe göre bulunanamayabiliyor o yüzden son takside eklesin
-                                {
-                                    odemePlani = new Model.Services.TBYS.OdemePlaniService().GetLastBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet
-                                }
-                                if (odemePlani == null)
-                                    throw (new Exception("Ödeme Plani mevcut degil."));
-                                else
-                                {
-                                    Odeme odeme = new Odeme();
-                                    odeme = new Model.Services.TBYS.OdemeService().OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
-                                    odemeYapildiMi = true;
-                                    odemeId = odeme.Id;
-                                }
-                            }
-                            else
-
-                            {
-                                //throw (new Exception("Ödeme Tarihi Sözlesme bitisinden sonra olamaz."));
-                                odemePlani = new Model.Services.TBYS.OdemePlaniService().GetLastBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet
-                                if (odemePlani != null)
-                                {
-                                    Odeme odeme = new Odeme();
-                                    odeme = new Model.Services.TBYS.OdemeService().OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
-                                    odemeYapildiMi = true;
-                                    odemeId = odeme.Id;
-                                }
-                                else
-                                {
-                                    throw (new Exception("Ödeme Plani Bulunamadi."));
-                                }
-
-                            }
-
-                        }
-                        else //odeme bas- bit arasinda yapilmis
-                        {
-                            odemePlani = new Model.Services.TBYS.OdemePlaniService().GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi);
-                            if (odemePlani == null)
-                            {
-                                odemePlani = new Model.Services.TBYS.OdemePlaniService().GetLastBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet
-                            }
-                            if (odemePlani == null)
-                                throw (new Exception("Ödeme Plani mevcut degil."));
-                            else
-                            {
-                                Odeme odeme = new Odeme();
-                                odeme = new Model.Services.TBYS.OdemeService().OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
-                                odemeYapildiMi = true;
-                                odemeId = odeme.Id;
-                            }
-                        }
-
-                    }
-                    else //odemePlani listesi bos
-                        throw (new Exception("Ödeme Plani mevcut degil."));
-                }
-                else //kiraSozlesme null
-                    throw (new Exception("Kira Sözlesmesi mevcut degil."));
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.Exceptions.Add(new Exception("Ödeme Yapilamadi."));
-                exHelper.PublishException();
-            }
-            return odemeYapildiMi;
         }
 
         public static bool OdemeYap(KiraSozlesme kiraSozlesme, DateTime odemetarihi, decimal odenenTutar, string aciklama, ref int odemeId, PortalLogContext context)
@@ -823,71 +296,6 @@ namespace Model.Ortak
             return true;
         }
 
-        public static void TeminatIslemleriniHesaplaVeKaydet(KiraSozlesme kiraSozlesme)
-        {
-            decimal toplamOdeme = 0m;
-            decimal toplamIade = 0m;
-            TeminatIslem teminatIslemDao = new TeminatIslem();
-            DataTable dataTable = new Model.Services.TBYS.TeminatIslemService().GetSumByKiraciIdGroupByType(kiraSozlesme.KiraciId);
-            if (dataTable != null)
-            {
-                foreach (DataRow row in dataTable.Rows)
-                {
-                    string islemTipi = row["IslemTipi"].ToString();
-                    decimal islemToplami = row["IslemToplami"].ReturnZeroIfNull().ConvertToDecimal();
-
-
-                    switch (islemTipi)
-                    {
-                        case ProjeConstants.TEMINAT_ODEMESI:
-                            {
-                                toplamOdeme += islemToplami;
-                                break;
-                            }
-                        case ProjeConstants.TEMINAT_GECICITEMINATODEMESI:
-                            {
-                                toplamOdeme += islemToplami;
-                                break;
-                            }
-                        case ProjeConstants.TEMINAT_KIRACIYAIADE:
-                            {
-                                toplamIade += islemToplami;
-                                break;
-                            }
-                        case ProjeConstants.TEMINAT_KIRAYAMAHSUP:
-                            {
-                                toplamIade += islemToplami;
-                                break;
-                            }
-                        case ProjeConstants.TEMINAT_HASARAMAHSUP:
-                            {
-                                toplamIade += islemToplami;
-                                break;
-                            }
-                        case ProjeConstants.TEMINAT_AIDATAMAHSUP:
-                            {
-                                toplamIade += islemToplami;
-                                break;
-                            }
-                        case ProjeConstants.TEMINAT_VAKFABAGIS:
-                            {
-                                toplamIade += islemToplami;
-                                break;
-                            }
-                        default:
-                            break;
-                    }
-
-
-                }
-
-            }
-            kiraSozlesme.OdenenTeminatTutari = toplamOdeme;
-            kiraSozlesme.IadeTeminatTutari = toplamIade;
-            kiraSozlesme.KalanTeminatTutari = toplamOdeme - toplamIade;
-            new Model.Services.TBYS.KiraSozlesmeService().Update(kiraSozlesme);
-        }
-
         public static bool TeminatIslemleriniHesaplaVeKaydet(KiraSozlesme kiraSozlesme, PortalLogContext context)
         {
             if (kiraSozlesme == null || context == null) return false;
@@ -899,8 +307,11 @@ namespace Model.Ortak
             }
         }
 
-        private static bool TeminatIslemleriniHesaplaVeKaydet(KiraSozlesme kiraSozlesme, PortalLogContext context, SqlTransactionContext transaction)
+        public static bool TeminatIslemleriniHesaplaVeKaydet(KiraSozlesme kiraSozlesme, PortalLogContext context, SqlTransactionContext transaction)
         {
+            if (kiraSozlesme == null) return false;
+            kiraSozlesme = new KiraSozlesmeService(context).GetById(kiraSozlesme.Id, transaction);
+            if (kiraSozlesme == null) return false;
             decimal toplamOdeme = 0m;
             decimal toplamIade = 0m;
             DataTable dataTable = new Model.Services.TBYS.TeminatIslemService(context).GetSumByKiraciIdGroupByType(kiraSozlesme.KiraciId, transaction);

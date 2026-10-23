@@ -11,14 +11,8 @@ namespace DAO.Repositories.TBYS
         private readonly CrudQueryBuilder queryBuilder;
 
         public YasalFaizRepository()
-            : this(new DbClass())
         {
-        }
-
-        public YasalFaizRepository(DbClass db)
-        {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "YasalFaizRepository");
+            db = new TbysSqlExecutor("YasalFaizRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -58,21 +52,6 @@ namespace DAO.Repositories.TBYS
         public DataTable SelectLatestRate(string columnName)
         {
             return db.SelectFromDb(new SqlQuery("SELECT * FROM YasalFaiz_Table WHERE " + columnName + " IS NOT NULL AND " + columnName + " > 0 ORDER BY Yil DESC, Ay DESC"), "");
-        }
-
-        public int Insert<T>(T entity)
-        {
-            return db.Insert(queryBuilder.BuildInsert(entity, "YasalFaiz_Table"));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, "YasalFaiz_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("YasalFaiz_Table", id), "");
         }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)

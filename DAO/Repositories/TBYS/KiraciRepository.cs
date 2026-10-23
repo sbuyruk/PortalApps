@@ -11,12 +11,9 @@ namespace DAO.Repositories.TBYS
     {
         private readonly TbysSqlExecutor db;
 
-        public KiraciRepository() : this(new DbClass()) { }
-
-        public KiraciRepository(DbClass db)
+        public KiraciRepository()
         {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "KiraciRepository");
+            db = new TbysSqlExecutor("KiraciRepository");
         }
 
         public KiraciRepository(PortalLogContext context)
@@ -131,9 +128,6 @@ namespace DAO.Repositories.TBYS
             query.Sql += " ORDER BY B.SozBasTar DESC";
             return db.SelectFromDb(query, "");
         }
-        public int Insert<T>(T entity) { return db.Insert(new CrudQueryBuilder().BuildInsert(entity, "Kiraci_Table")); }
-        public bool Update<T>(T entity) { return db.Update2Db(new CrudQueryBuilder().BuildUpdate(entity, "Kiraci_Table")); }
-        public bool Delete(int id) { return db.DeleteFromDb(new CrudQueryBuilder().BuildDelete("Kiraci_Table", id), ""); }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
         {

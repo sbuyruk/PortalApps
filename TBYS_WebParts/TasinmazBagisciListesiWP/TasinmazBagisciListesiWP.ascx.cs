@@ -224,8 +224,8 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
         {
 
             DataTable dataTable = GetBagisciData();
-            List<string> bagisciBilgiFormuDosyalari = UtilityHelper.GetFileNameListFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, ProjeConstants.DOSYA_BAGISBILGIVETALEP_FORMU);
-            List<string> bagisciTaahhutFormuDosyalari = UtilityHelper.GetFileNameListFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, ProjeConstants.DOSYA_TAAHHUT_FORMU);
+            List<string> bagisciBilgiFormuDosyalari = UtilityHelper.GetFileNameListFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, ProjeConstants.DOSYA_BAGISBILGIVETALEP_FORMU, LoggingContext);
+            List<string> bagisciTaahhutFormuDosyalari = UtilityHelper.GetFileNameListFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, ProjeConstants.DOSYA_TAAHHUT_FORMU, LoggingContext);
             List<TasinmazBagisciListItem> list = new List<TasinmazBagisciListItem>();
             foreach (DataRow row in dataTable.Rows)
             {

@@ -172,7 +172,8 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                             SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
                             SozlesmeLbl.Text = " ( " +kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull() + " - " + kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull() + " Tarihli Sözleşme )";
                         }
-                        TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme);
+                        if (!TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme, LoggingContext))
+                            throw new InvalidOperationException("Teminat toplamları güncellenemedi.");
                         IslemTipiDDLDoldur();
                         TeminatCinsiDDLDoldur();
                         TeminatBilgileriniDoldur(kiraSozlesme);
@@ -282,7 +283,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 TeminatCinsiDDL.Items.Add(new ListItem(ProjeConstants.TEMINATCINSI_IPOTEK, ProjeConstants.TEMINATCINSI_IPOTEK));
                 TeminatCinsiDDL.Items.Add(new ListItem(ProjeConstants.TEMINATCINSI_NAKIT_USD, ProjeConstants.TEMINATCINSI_NAKIT_USD));
                 TeminatCinsiDDL.Items.Add(new ListItem(ProjeConstants.TEMINATCINSI_NAKIT_EURO, ProjeConstants.TEMINATCINSI_NAKIT_EURO));
-                
+
             }
             if (TeminatCinsiDDL.Items.FindByValue(ProjeConstants.TEMINATCINSI_NAKIT_TL) != null)
                 TeminatCinsiDDL.SelectedValue = TeminatCinsiDDL.Items.FindByValue(ProjeConstants.TEMINATCINSI_NAKIT_TL).Value;
@@ -396,7 +397,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                         destroy: true,
                         pageLength:10,
                         dom: 'rti',
-                        
+
                         });
                     });
 
@@ -404,7 +405,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
 
             return tableString;
         }
-            
+
         #endregion
         protected void TeminatGuncelleBtn_Click(object sender, EventArgs e)
         {
@@ -561,7 +562,8 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                                 new Model.Services.TBYS.TeminatIslemService(LoggingContext).Update(teminatIslem);
                             }
                         }
-                        TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme);
+                        if (!TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme, LoggingContext))
+                            throw new InvalidOperationException("Teminat toplamları güncellenemedi.");
                         RedirectToPage(ProjeConstants.PAGE_TEMINAT_ISLEMLERI + "?KiraSozlesmeId=" + KiraSozlesmeIdQS);
                     }
                     else
@@ -570,7 +572,6 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     }
 
                 }
-
 
             }
             catch (Exception error)
@@ -605,7 +606,8 @@ namespace TBYS_WebParts.TeminatIslemleriWP
 
                             if (mahsupEdilecekKiraSozlesme != null)
                             {
-                                TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme);
+                                if (!TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme, LoggingContext))
+                                    throw new InvalidOperationException("Teminat toplamları güncellenemedi.");
                                 TeminatBilgileriniDoldur(kiraSozlesme);
                                 TabloOlustur(kiraSozlesme.KiraciId);
                                 MessageHelper.PublishMessage("Teminat İşlemi Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
@@ -627,7 +629,6 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     MessageHelper.PublishMessage("Teminat İşlemi bulunamadı!", ProjeConstants.MESAJ_HATA);
                 }
 
-
             }
             catch (Exception error)
             {
@@ -637,40 +638,50 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         }
         protected void ModalSilNowBtn_Click(object sender, EventArgs e)
         {
-            int teminatId = TeminatIslemIdSilLbl.Value.ConvertToInt();
-
-            TeminatIslem teminatIslem = new TeminatIslem();
-            teminatIslem = new Model.Services.TBYS.TeminatIslemService(LoggingContext).GetById(teminatId);
-            if (teminatIslem != null)
+            try
             {
-                bool silindiMi = new Model.Services.TBYS.TeminatIslemService(LoggingContext).Delete(teminatIslem);
-                KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
-                if (kiraSozlesme != null)
-                {
-                    if (teminatIslem.IslemTipi.Equals(ProjeConstants.TEMINAT_KIRAYAMAHSUP) && silindiMi)
-                    {
-                        Odeme odeme = new Odeme();
-                        odeme = new Model.Services.TBYS.OdemeService(LoggingContext).GetById(teminatIslem.OdemeId);
-                        if (odeme != null)
-                        {
-                            bool odemeSilindiMi = new Model.Services.TBYS.OdemeService(LoggingContext).Delete(odeme);
-                        }
+                int teminatId = TeminatIslemIdSilLbl.Value.ConvertToInt();
 
+                TeminatIslem teminatIslem = new TeminatIslem();
+                teminatIslem = new Model.Services.TBYS.TeminatIslemService(LoggingContext).GetById(teminatId);
+                if (teminatIslem != null)
+                {
+                    bool silindiMi = new Model.Services.TBYS.TeminatIslemService(LoggingContext).Delete(teminatIslem);
+                    KiraSozlesme kiraSozlesme = new KiraSozlesme();
+                    kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
+                    if (kiraSozlesme != null)
+                    {
+                        if (teminatIslem.IslemTipi.Equals(ProjeConstants.TEMINAT_KIRAYAMAHSUP) && silindiMi)
+                        {
+                            Odeme odeme = new Odeme();
+                            odeme = new Model.Services.TBYS.OdemeService(LoggingContext).GetById(teminatIslem.OdemeId);
+                            if (odeme != null)
+                            {
+                                bool odemeSilindiMi = new Model.Services.TBYS.OdemeService(LoggingContext).Delete(odeme);
+                            }
+
+                        }
+                        if (!TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme, LoggingContext))
+                            throw new InvalidOperationException("Teminat toplamları güncellenemedi.");
+                        TeminatBilgileriniDoldur(kiraSozlesme);
+                        TabloOlustur(kiraSozlesme.KiraciId);
+                        MessageHelper.PublishMessage("Teminat İşlemi Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
-                    TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme);
-                    TeminatBilgileriniDoldur(kiraSozlesme);
-                    TabloOlustur(kiraSozlesme.KiraciId);
-                    MessageHelper.PublishMessage("Teminat İşlemi Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    else
+                    {
+                        MessageHelper.PublishMessage("Teminat İşlemi Silindi. Teminata ait sözleşme bulunamadı!", ProjeConstants.MESAJ_BILGI, 4000);
+                    }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Teminat İşlemi Silindi. Teminata ait sözleşme bulunamadı!", ProjeConstants.MESAJ_BILGI, 4000);
+                    MessageHelper.PublishMessage("Teminat İşlemi bulunamadı!", ProjeConstants.MESAJ_HATA);
                 }
+
             }
-            else
+            catch (Exception error)
             {
-                MessageHelper.PublishMessage("Teminat İşlemi bulunamadı!", ProjeConstants.MESAJ_HATA);
+                if (error is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TeminatIslemleriWP.ModalSilNowBtn_Click", error);
             }
         }
 

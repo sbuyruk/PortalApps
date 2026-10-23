@@ -11,14 +11,8 @@ namespace DAO.Repositories.TBYS
         private readonly CrudQueryBuilder queryBuilder;
 
         public OdemePlaniRepository()
-            : this(new DbClass())
         {
-        }
-
-        public OdemePlaniRepository(DbClass db)
-        {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "OdemePlaniRepository");
+            db = new TbysSqlExecutor("OdemePlaniRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -89,28 +83,6 @@ namespace DAO.Repositories.TBYS
             SqlQuery q = new SqlQuery("SELECT * FROM OdemePlani_Table WHERE SozlesmeId=@SozlesmeId AND Sira=1");
             q.AddParameter("@SozlesmeId", id);
             return db.SelectFromDb(q, "");
-        }
-
-        public bool DeleteBySozlesmeId(int id)
-        {
-            SqlQuery q = new SqlQuery("DELETE OdemePlani_Table WHERE SozlesmeId=@SozlesmeId");
-            q.AddParameter("@SozlesmeId", id);
-            return db.DeleteFromDb(q, "");
-        }
-
-        public int Insert<T>(T entity)
-        {
-            return db.Insert(queryBuilder.BuildInsert(entity, "OdemePlani_Table"));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, "OdemePlani_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("OdemePlani_Table", id), "");
         }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)

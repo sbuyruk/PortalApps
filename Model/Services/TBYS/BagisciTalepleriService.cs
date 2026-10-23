@@ -30,67 +30,35 @@ namespace Model.Services.TBYS
         public List<BagisciTalepleri> GetAll() { return ToList(repository.SelectAll()); }
         public int Save(BagisciTalepleri item)
         {
-            if (context != null)
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                using (SqlTransactionContext transaction = new SqlTransactionContext())
-                {
-                    int id = Save(item, transaction);
-                    transaction.Complete();
-                    return id;
-                }
+                int id = Save(item, transaction);
+                transaction.Complete();
+                return id;
             }
-            if (item == null) throw new ArgumentNullException("item");
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-            if (item.Id > 0 && ProjeConstants.TBYS_SAVE_LOG)
-                new OlayKayit().GirisOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_BAGISCITALEPLERI);
-            return item.Id;
         }
 
         public bool Update(BagisciTalepleri item)
         {
-            if (context != null)
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                using (SqlTransactionContext transaction = new SqlTransactionContext())
-                {
-                    bool updated = Update(item, transaction);
-                    if (updated) transaction.Complete();
-                    return updated;
-                }
+                bool updated = Update(item, transaction);
+                if (updated) transaction.Complete();
+                return updated;
             }
-            if (item == null) throw new ArgumentNullException("item");
-            BagisciTalepleri old = GetById(item.Id);
-            bool ok = false;
-            if (item.Id != 0)
-            {
-                item.DegistirmeTarihi = DateTime.Now;
-                item.Degistiren = UtilityHelper.GetCurrentUserName();
-                ok = repository.Update(item);
-            }
-            if (ok && ProjeConstants.TBYS_UPDATE_LOG)
-                new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.TBYS, ProjeConstants.TBYS_BAGISCITALEPLERI);
-            return ok;
         }
 
         public bool Delete(BagisciTalepleri item)
         {
-            if (context != null)
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                using (SqlTransactionContext transaction = new SqlTransactionContext())
-                {
-                    bool deleted = Delete(item, transaction);
-                    if (deleted) transaction.Complete();
-                    return deleted;
-                }
+                bool deleted = Delete(item, transaction);
+                if (deleted) transaction.Complete();
+                return deleted;
             }
-            if (item == null || item.Id == 0) return false;
-            BagisciTalepleri old = GetById(item.Id);
-            if (old == null) return false;
-            bool ok = repository.Delete(item.Id);
-            if (ok && ProjeConstants.TBYS_DELETE_LOG)
-                new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.TBYS, ProjeConstants.TBYS_BAGISCITALEPLERI);
-            return ok;
         }
 
         public List<BagisciTalepleri> GetByBagisciId(int bagisciId) { return ToList(repository.SelectByBagisciId(bagisciId)); }
@@ -162,6 +130,7 @@ namespace Model.Services.TBYS
             RequireTransaction(transaction);
             PortalLogRepository log = new PortalLogRepository();
             int auditId = log.RecordAudit(context, operation, "BagisciTalepleri", id.ToString(CultureInfo.InvariantCulture), transaction);
+            if (auditId == 0) return;
             if (auditId <= 0) return;
             foreach (string field in new[] { "BagisciId" })
             {

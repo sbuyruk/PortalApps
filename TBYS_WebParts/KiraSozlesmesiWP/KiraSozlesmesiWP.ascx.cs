@@ -16,7 +16,7 @@ using Utility.HelperClasses;
 using Utility.Logging;
 using TBYS_WebParts.Logging;
 using Utility.ProjeGlobal;
-using System.Transactions;
+using DAO.Ortak;
 
 namespace TBYS_WebParts.KiraSozlesmesiWP
 {
@@ -195,7 +195,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
 
                     if (kiraSozlesme.Aktif)
                     {
-                        
+
                         AktifSozlesmeYukle(kiraSozlesme);
                         TitleLbl.CssClass = "col-form-label text-danger fw-bold";
                         imgUrl = newUrl + "/../" + ProjeConstants.RESIMLER_TBYS + "/sozlesme-aktif.png";
@@ -208,13 +208,12 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
                         TitleLbl.CssClass = "col-form-label text-secondary fw-bold";
                         SozlesmeDurumuDiv.Attributes["style"] = "display:block";
                     }
-                    
+
                     AktifPasifImg.ImageUrl = imgUrl;
                     PDFGoster(kiraSozlesme);
                     ButonlariGosterGizle();
                 }
 
-                
             }
         }
         private void ButonlariGosterGizle()
@@ -410,7 +409,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             KalanTeminatTutariTxt.Value = kiraSozlesme.KalanTeminatTutari.ToString("N", culturInfo);
             TeminatTutariTxt.Value = kiraSozlesme.TeminatTutari.ToString();
             TeminatOdemeTarTxt.Value = kiraSozlesme.TeminatOdemeTarihi.ConvertToDatetimeEmptyIfNull();
-            
+
             TeminatAciklamaTxt.Text = kiraSozlesme.TeminatAciklama;
             AciklamaTxt.Text = kiraSozlesme.Aciklama;
             ArtisAyiTxt.Text = kiraSozlesme.ArtisAyi;
@@ -634,8 +633,6 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.SozlesmeSil", e);
             }
 
-
-
         }
         private bool SozlesmeGuncelle(KiraSozlesme kiraSozlesme)
         {
@@ -644,7 +641,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             {
                 bool odemePlaniVar = false;
                 bool odemePlaniSilindi = true;
-               
+
                 if (kiraSozlesme != null)
                 {
                     odemePlaniVar = GecerliOdemePlaniVarMi(kiraSozlesme);
@@ -654,7 +651,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                     }
                     kiraSozlesmeGuncellendi = UpdateKiraSozlesme();
                 }
-               
+
             }
             catch (Exception e)
             {
@@ -706,7 +703,6 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 OdemePlani odemePlani = list[0];
                 odemePlaniVar = odemePlani.SozlesmeId == kiraSozlesme.Id;
             }
-
 
             return odemePlaniVar;
         }
@@ -803,7 +799,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             {
                 SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
             }
-                
+
         }
         protected void OdemePlaniGoruntuleBtn_Click(object sender, EventArgs e)
         {
@@ -1141,11 +1137,9 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                         ArtisOraniLbl.ForeColor = System.Drawing.Color.Black;
                     }
 
-                    
                 }
 
             }
-
 
             //borcu var mi kontrol et
             //borcu yoksa sözlesmeyi bitir
@@ -1325,7 +1319,6 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                         SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
                     }
 
-
                     //string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                     //Page.Response.Redirect(currentUrl, true);
                 }
@@ -1463,7 +1456,6 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                 TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.PrevBtn_Click", ex);
             }
 
-
         }
         protected void NextBtn_Click(object sender, EventArgs e)
         {
@@ -1528,23 +1520,24 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
             //Sozleşme numaralarını bulsun ve değiştirsin
             try
             {
-                KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                List<KiraSozlesme> list = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetList(
-                    KiraciIdQS.ConvertToInt(), ProjeConstants.KIRASOZLESME_AKTIF_HEPSI_INT, ProjeConstants.BOLGE_HEPSI_INT);
-                if (list != null)
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
                 {
-                    int yeniDosyaNo = YeniDosyaNoDDL.SelectedValue.ConvertToInt();
-                    using (TransactionScope scope = new TransactionScope())
+                    Model.Services.TBYS.KiraSozlesmeService service = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext);
+                    List<KiraSozlesme> list = service.GetList(KiraciIdQS.ConvertToInt(),
+                        ProjeConstants.KIRASOZLESME_AKTIF_HEPSI_INT, ProjeConstants.BOLGE_HEPSI_INT, transaction);
+                    foreach (KiraSozlesme item in list)
                     {
-                        foreach (KiraSozlesme item in list)
-                        {
-                            item.DosyaNo = yeniDosyaNo;
-                            new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Update(item);
-                        }
-                        scope.Complete();
-                        DosyaNoTxt.Text= YeniDosyaNoDDL.SelectedValue;
+                        KiraSozlesme current = service.GetById(item.Id, transaction);
+                        if (current == null) throw new InvalidOperationException("Sözleşme bulunamadı.");
+                        int number = YeniDosyaNoDDL.SelectedValue.ConvertToInt();
+                        if (current.DosyaNo == number) continue;
+                        current.DosyaNo = number;
+                        if (!service.Update(current, transaction))
+                            throw new InvalidOperationException("Sözleşmenin dosya numarası güncellenemedi.");
                     }
+                    transaction.Complete();
                 }
+                DosyaNoTxt.Text = YeniDosyaNoDDL.SelectedValue;
             }
             catch (Exception ex)
             {
@@ -1720,7 +1713,6 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
 
                         list.Remove(tempSozlesmeItem);
 
-
                         //tempSozlesmeItem.Adres += "@" + adres;
                         tasinmazAdedi++;
                         list.Add(tempSozlesmeItem);
@@ -1773,7 +1765,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                         MessageHelper.PublishMessage("Silinecek dosya bulunamadı", ProjeConstants.MESAJ_HATA);
                         return;
                     }
-                    if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
+                    if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi, LoggingContext))
                     {
                         MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                         BelgeSilBtn.Visible = false;
@@ -1803,7 +1795,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                 if (BelgeYukleFU.HasFile)
                 {
                     string hedefDosyaAdi = ProjeConstants.DOSYA_KIRASOZLESMESI + kiraSozlesme.Id + ".pdf";
-                    bool isOk = UtilityHelper.UploadFileToSharePoint(BelgeYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi);
+                    bool isOk = UtilityHelper.UploadFileToSharePoint(BelgeYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi, LoggingContext);
                     if (isOk)
                     {
                         kiraSozlesme.SozlesmePDFDosyasi = hedefDosyaAdi;

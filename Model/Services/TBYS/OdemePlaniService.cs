@@ -36,8 +36,8 @@ namespace Model.Services.TBYS
         public OdemePlani GetFirstBySozlesmeId(int id, SqlTransactionContext transaction) { return GetBySozlesmeId(id, transaction).FirstOrDefault(x => x.Sira == 1); }
         public int Save(OdemePlani item)
         {
-            if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { int id = Save(item, tx); tx.Complete(); return id; }
-            if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item); if (item.Id > 0 && ProjeConstants.TBYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_ODEMEPLANI); return item.Id;
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext tx = new SqlTransactionContext()) { int id = Save(item, tx); tx.Complete(); return id; }
         }
         public int Save(OdemePlani item, SqlTransactionContext transaction)
         {
@@ -45,8 +45,8 @@ namespace Model.Services.TBYS
         }
         public bool Update(OdemePlani item)
         {
-            if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Update(item, tx); if (ok) tx.Complete(); return ok; }
-            if (item == null) throw new ArgumentNullException("item"); OdemePlani old = GetById(item.Id); bool result = false; if (item.Id != 0) { item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); result = repository.Update(item); } if (result && ProjeConstants.TBYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.TBYS, ProjeConstants.TBYS_ODEMEPLANI); return result;
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Update(item, tx); if (ok) tx.Complete(); return ok; }
         }
         public bool Update(OdemePlani item, SqlTransactionContext transaction)
         {
@@ -54,8 +54,8 @@ namespace Model.Services.TBYS
         }
         public bool Delete(OdemePlani item)
         {
-            if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Delete(item, tx); if (ok) tx.Complete(); return ok; }
-            if (item == null || item.Id == 0) return false; OdemePlani old = GetById(item.Id); if (old == null) return false; bool result = repository.Delete(item.Id); if (result && ProjeConstants.TBYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.TBYS, ProjeConstants.TBYS_ODEMEPLANI); return result;
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Delete(item, tx); if (ok) tx.Complete(); return ok; }
         }
         public bool Delete(OdemePlani item, SqlTransactionContext transaction)
         {
@@ -63,8 +63,8 @@ namespace Model.Services.TBYS
         }
         public bool DeleteBySozlesmeId(OdemePlani item, int id)
         {
-            if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = DeleteBySozlesmeId(item, id, tx); if (ok) tx.Complete(); return ok; }
-            bool result = repository.DeleteBySozlesmeId(id); if (result && ProjeConstants.TBYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_ODEMEPLANI); return result;
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = DeleteBySozlesmeId(item, id, tx); if (ok) tx.Complete(); return ok; }
         }
         public bool DeleteBySozlesmeId(OdemePlani item, int id, SqlTransactionContext transaction)
         {
@@ -75,6 +75,7 @@ namespace Model.Services.TBYS
         {
             if (!PortalLogSettings.IsEnabled(context)) return;
             PortalLogRepository log = new PortalLogRepository(); int auditId = log.RecordAudit(context, operation, "OdemePlani", id.ToString(CultureInfo.InvariantCulture), transaction);
+            if (auditId == 0) return;
             string[] fields = { "SozlesmeId", "Yil", "Ay", "VadeBasTar", "VadeBitTar", "KiraBedeli", "OdenenTutar", "AnaPara", "FaizliBakiye", "FaizOrani", "FaizTutari", "Sira" };
             foreach (string field in fields) { string oldValue = AuditValue(oldValues, field); string newValue = AuditValue(current, field); if (oldValue != newValue) log.RecordAuditChange(auditId, field, oldValue, newValue, transaction); }
         }
@@ -82,8 +83,8 @@ namespace Model.Services.TBYS
         private static DataTable SingleRow(DataTable source, DataRow row) { DataTable result = source.Clone(); result.ImportRow(row); return result; }
         public bool CreatePaymentPlan(KiraSozlesme kiraSozlesme)
         {
-            if (context != null) using (SqlTransactionContext tx = new SqlTransactionContext()) { bool created = CreatePaymentPlan(kiraSozlesme, tx); if (created) tx.Complete(); return created; }
-            return CreatePaymentPlan(kiraSozlesme, null);
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext tx = new SqlTransactionContext()) { bool created = CreatePaymentPlan(kiraSozlesme, tx); if (created) tx.Complete(); return created; }
         }
         private bool CreatePaymentPlan(KiraSozlesme kiraSozlesme, SqlTransactionContext transaction)
         {
@@ -117,13 +118,13 @@ namespace Model.Services.TBYS
         private void SaveNew(KiraSozlesme kiraSozlesme, int yil, string ay, DateTime vadeBaslangic, DateTime vadeBitis, DateTime odemeBaslangic, DateTime odemeBitis, decimal aylikKira, int sira, SqlTransactionContext transaction)
         {
             OdemePlani item = new OdemePlani { SozlesmeId = kiraSozlesme.Id, Yil = yil, Ay = ay, VadeBasTar = vadeBaslangic, VadeBitTar = vadeBitis, KiraBedeli = aylikKira, AnaPara = 0, FaizTutari = 0, OdenenTutar = 0, OdemeBasTar = odemeBaslangic, OdemeBitTar = odemeBitis, Sira = sira, Aciklama = "" };
-            int id = transaction == null ? Save(item) : Save(item, transaction);
+            int id = Save(item, transaction);
             if (id <= 0) throw new InvalidOperationException("Ödeme planı satırı kaydedilemedi.");
         }
         private void SaveCarryOver(KiraSozlesme kiraSozlesme, decimal anaPara, decimal faizTutari, string aciklama, int sira, SqlTransactionContext transaction)
         {
             OdemePlani item = new OdemePlani { SozlesmeId = kiraSozlesme.Id, VadeBitTar = kiraSozlesme.SozBasTar.AddDays(-1), AnaPara = anaPara, FaizTutari = faizTutari, FaizliBakiye = anaPara + faizTutari, OdenenTutar = 0, Aciklama = aciklama, Sira = sira };
-            int id = transaction == null ? Save(item) : Save(item, transaction);
+            int id = Save(item, transaction);
             if (id <= 0) throw new InvalidOperationException("Ödeme planı satırı kaydedilemedi.");
         }
         private static List<OdemePlani> ToList(DataTable t) { return new OdemePlani().ToList<OdemePlani>(t); }

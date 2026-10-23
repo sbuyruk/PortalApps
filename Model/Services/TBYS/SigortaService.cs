@@ -120,85 +120,35 @@ namespace Model.Services.TBYS
 
         public int Save(Sigorta item)
         {
-            if (context != null)
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                using (SqlTransactionContext transaction = new SqlTransactionContext())
-                {
-                    int id = Save(item, transaction, context);
-                    transaction.Complete();
-                    return id;
-                }
+                int id = Save(item, transaction, context);
+                transaction.Complete();
+                return id;
             }
-            if (item == null) throw new ArgumentNullException("item");
-
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-
-            if (item.Id > 0 && ProjeConstants.TBYS_SAVE_LOG)
-            {
-                OlayKayit olayKayit = new OlayKayit();
-                olayKayit.GirisOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_SIGORTA);
-            }
-
-            return item.Id;
         }
 
         public bool Update(Sigorta item)
         {
-            if (context != null)
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                using (SqlTransactionContext transaction = new SqlTransactionContext())
-                {
-                    bool updated = Update(item, transaction, context);
-                    if (updated) transaction.Complete();
-                    return updated;
-                }
+                bool updated = Update(item, transaction, context);
+                if (updated) transaction.Complete();
+                return updated;
             }
-            if (item == null) throw new ArgumentNullException("item");
-
-            Sigorta oldItem = GetById(item.Id);
-            bool isSuccess = false;
-            if (item.Id != 0)
-            {
-                item.DegistirmeTarihi = DateTime.Now;
-                item.Degistiren = UtilityHelper.GetCurrentUserName();
-                isSuccess = repository.Update(item);
-            }
-
-            if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
-            {
-                OlayKayit olayKayit = new OlayKayit();
-                olayKayit.GuncellemeOlayKaydet(item, oldItem, ProjeConstants.TBYS, ProjeConstants.TBYS_SIGORTA);
-            }
-
-            return isSuccess;
         }
 
         public bool Delete(Sigorta item)
         {
-            if (context != null)
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                using (SqlTransactionContext transaction = new SqlTransactionContext())
-                {
-                    bool deleted = Delete(item, transaction, context);
-                    if (deleted) transaction.Complete();
-                    return deleted;
-                }
+                bool deleted = Delete(item, transaction, context);
+                if (deleted) transaction.Complete();
+                return deleted;
             }
-            if (item == null || item.Id == 0) return false;
-
-            Sigorta oldItem = GetById(item.Id);
-            if (oldItem == null) return false;
-
-            bool isDeleted = repository.Delete(item.Id);
-            if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
-            {
-                OlayKayit olayKayit = new OlayKayit();
-                olayKayit.SilmeOlayKaydet(oldItem, ProjeConstants.TBYS, ProjeConstants.TBYS_SIGORTA);
-            }
-
-            return isDeleted;
         }
 
         public Sigorta GetLatestByTasinmazId(int tasinmazId, SqlTransactionContext transaction, PortalLogContext context)
@@ -352,6 +302,7 @@ namespace Model.Services.TBYS
             RequireTransaction(transaction, context);
             PortalLogRepository log = new PortalLogRepository();
             int auditId = log.RecordAudit(context, operation, entityName, entityId.ToString(CultureInfo.InvariantCulture), transaction);
+            if (auditId == 0) return;
             if (auditId <= 0) return;
             foreach (string field in fields)
             {

@@ -143,7 +143,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                     kiraci = new Kiraci();
                     kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetMin();
                 }
-                
+
                 if (kiraci != null)
                 {
                     bool isKiraciLoaded = KiraciBilgileriniDoldur(kiraci);
@@ -176,7 +176,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
 
                 IliLbl.Text = kiraci.Ili;
                 IlcesiLbl.Text = kiraci.Ilcesi;
-                SorumluBolgeLbl.Text = UtilityHelper.BolgeGetir(kiraci.IlId);
+                SorumluBolgeLbl.Text = UtilityHelper.BolgeGetir(kiraci.IlId, LoggingContext);
                 KiralamaAmaciLbl.Text = kiraci.KiralamaAmaci;
                 AdresLbl.Text = kiraci.Adres;
                 TelefonLbl.Text = kiraci.Telefon;
@@ -221,8 +221,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
         private void SozlesmelerTablosunuDoldur(int kiraciId)
         {
             List<KiraSozlesmeListItem> kiraSozlesmeItemListesi = new List<KiraSozlesmeListItem>();
-          
-            
+
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
             List<KiraSozlesme> sozlesmeListesi = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetAllByKiraciId(kiraciId);
             foreach (var kiraSozlesme in sozlesmeListesi)
@@ -257,11 +256,9 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                     kiraSozlesmeListItem.DevirFaiz = sonFaizTutari.ToString("N", culturInfo) + " (" + kiraSozlesme.DevirFaizTutari.ToString("N", culturInfo) + ")";
                     kiraSozlesmeListItem.DevirFaizliBakiye = sonFaizliBakiye.ToString("N", culturInfo) + " (" + kiraSozlesme.DevirFaizliBakiye.ToString("N", culturInfo) + ")";
 
-                   
                     kiraSozlesmeItemListesi.Add(kiraSozlesmeListItem);
                 }
             }
-
 
             var serializer = new JavaScriptSerializer();
             var jsonData = serializer.Serialize(kiraSozlesmeItemListesi);
@@ -270,16 +267,6 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
             UtilityHelper.ScriptCalistir(jsString);
         }
 
-        private void OdemeleriHesaplaOdemePlaniniGuncelle(int kiraciId)
-        {
-            KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-            List<KiraSozlesme> sozlesmeListesi = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetAllByKiraciId(kiraciId);
-            sozlesmeListesi = sozlesmeListesi.OrderBy(x => x.SozBasTar).ToList();
-            foreach (var kiraSozlesme in sozlesmeListesi)
-            {
-                TBYSOrtak.BakiyeBorcHesapla(kiraSozlesme, LoggingContext);
-            }
-        }
         private string CreateDataTable(string jsonData)
         {
             string tableString = @"
@@ -292,7 +279,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        
+
                         data: " + jsonData + @",
                         columns: [
                             { data: 'DosyaNo' },
@@ -436,48 +423,20 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
         }
         protected void DevirAlBtn_Click(object sender, EventArgs e)
         {
-            KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(paramSozlesmeIdLbl.Value.ConvertToInt());
-            if (kiraSozlesme != null)
+            try
             {
-                KiraSozlesme oncekiKiraSozlesmesi = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetPreviousByTenant(kiraSozlesme.KiraciId, kiraSozlesme.SozBasTar);
-                if (oncekiKiraSozlesmesi != null)
-                {
-                    //önceki ödeme planının son satırındaki anapara, faiztutari, faizlibakiye alanlarını al, sözleşmenin devir alanlarına koy
-                    OdemePlani odemePlaniDao = new OdemePlani();
-                    List<OdemePlani> oncekiOdemePlaniList = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeId(oncekiKiraSozlesmesi.Id);
-                    OdemePlani oncekiOdemePlani = oncekiOdemePlaniList[oncekiOdemePlaniList.Count - 1];
-                    kiraSozlesme.DevirAnaPara = oncekiOdemePlani.AnaPara;
-                    kiraSozlesme.DevirFaizliBakiye = oncekiOdemePlani.FaizliBakiye;
-                    kiraSozlesme.DevirFaizTutari = kiraSozlesme.DevirFaizliBakiye - kiraSozlesme.DevirAnaPara;
-                    bool devirAlanlariGuncellendi= new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Update(kiraSozlesme);
-                    if (devirAlanlariGuncellendi)
-                    {
-                        //Ödeme Planında devir satırını güncelle 0ncı satır
-                    List<OdemePlani> odemePlaniList= new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeId(kiraSozlesme.Id);
-                        OdemePlani odemePlani = odemePlaniList[0];//devir satiri
-                        if (odemePlani != null)
-                        {
-                            if ((odemePlani.AnaPara != kiraSozlesme.DevirAnaPara)
-                                || (odemePlani.FaizTutari != kiraSozlesme.DevirFaizTutari)
-                                || (odemePlani.FaizliBakiye != kiraSozlesme.DevirFaizliBakiye))
-                            {
-                                odemePlani.AnaPara = kiraSozlesme.DevirAnaPara;
-                                odemePlani.FaizTutari = kiraSozlesme.DevirFaizTutari;
-                                odemePlani.FaizliBakiye = kiraSozlesme.DevirFaizliBakiye;
-                                if (new Model.Services.TBYS.OdemePlaniService(LoggingContext).Update(odemePlani))
-                                {
-                                    OdemeleriHesaplaOdemePlaniniGuncelle(kiraSozlesme.KiraciId);
-                                    SozlesmelerTablosunuDoldur(kiraSozlesme.KiraciId);
-                                    MessageHelper.PublishMessage("Devir alma işlemi tamamlandı.", ProjeConstants.MESAJ_BASARILI,2000);
-                                }
-                                
-                            }
-                        }
-                    }
-                }
+                KiraSozlesme item = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(paramSozlesmeIdLbl.Value.ConvertToInt());
+                if (item == null) throw new InvalidOperationException("Sözleşme bulunamadı.");
+                bool changed = new KiraBakiyeDevriOtomatik(LoggingContext).DevirAl(item);
+                SozlesmelerTablosunuDoldur(item.KiraciId);
+                MessageHelper.PublishMessage(changed ? "Devir alma işlemi tamamlandı." : "Devir alınacak fark bulunamadı.",
+                    changed ? ProjeConstants.MESAJ_BASARILI : ProjeConstants.MESAJ_BILGI, 2000);
             }
-                
+            catch (Exception error)
+            {
+                if (error is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraBakiyeDevriWP.DevirAlBtn_Click", error);
+            }
         }
         protected void KiraKartiBtn_Click(object sender, EventArgs e)
         {
@@ -520,7 +479,6 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                 TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraBakiyeDevriWP.OdemePlaniBtn_Click", ex);
                 TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraBakiyeDevriWP.OdemePlaniBtn_Click", ex);
             }
-
 
         }
         protected void PrevBtn_Click(object sender, EventArgs e)

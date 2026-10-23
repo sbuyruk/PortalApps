@@ -12,14 +12,8 @@ namespace DAO.Repositories.TBYS
         private readonly CrudQueryBuilder queryBuilder;
 
         public OdemeRepository()
-            : this(new DbClass())
         {
-        }
-
-        public OdemeRepository(DbClass db)
-        {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "OdemeRepository");
+            db = new TbysSqlExecutor("OdemeRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -203,28 +197,6 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@SozlesmeId", sozlesmeId);
             query.AddParameter("@OdemePlaniId", odemePlaniId);
             return db.SelectFromDb(query, transaction, context);
-        }
-
-        public bool DeleteBySozlesmeId(int id)
-        {
-            SqlQuery q = new SqlQuery("DELETE Odeme_Table WHERE SozlesmeId=@SozlesmeId");
-            q.AddParameter("@SozlesmeId", id);
-            return db.DeleteFromDb(q, "");
-        }
-
-        public int Insert<T>(T entity)
-        {
-            return db.Insert(queryBuilder.BuildInsert(entity, "Odeme_Table"));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, "Odeme_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("Odeme_Table", id), "");
         }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context) { SqlQuery q = new SqlQuery("SELECT * FROM Odeme_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, transaction, context); }

@@ -10,12 +10,9 @@ namespace DAO.Repositories.TBYS
         private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
-        public TasinmazTaahhutRepository() : this(new DbClass()) { }
-
-        public TasinmazTaahhutRepository(DbClass db)
+        public TasinmazTaahhutRepository()
         {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "TasinmazTaahhutRepository");
+            db = new TbysSqlExecutor("TasinmazTaahhutRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -117,21 +114,6 @@ namespace DAO.Repositories.TBYS
             if (excludeDeceased)
                 query.AddParameter("@SagVefat", sagValue);
             return db.SelectFromDb(query, "");
-        }
-
-        public int Insert<T>(T entity)
-        {
-            return db.Insert(queryBuilder.BuildInsert(entity, "TasinmazTaahhut_Table"));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, "TasinmazTaahhut_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("TasinmazTaahhut_Table", id), "");
         }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)

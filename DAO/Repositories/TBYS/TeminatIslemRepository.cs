@@ -11,14 +11,8 @@ namespace DAO.Repositories.TBYS
         private readonly CrudQueryBuilder queryBuilder;
 
         public TeminatIslemRepository()
-            : this(new DbClass())
         {
-        }
-
-        public TeminatIslemRepository(DbClass db)
-        {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "TeminatIslemRepository");
+            db = new TbysSqlExecutor("TeminatIslemRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -41,6 +35,13 @@ namespace DAO.Repositories.TBYS
             SqlQuery q = new SqlQuery("SELECT * FROM TeminatIslem_Table WHERE SozlesmeId=@SozlesmeId ORDER BY TeminatIslemTarihi");
             q.AddParameter("@SozlesmeId", id);
             return db.SelectFromDb(q, "");
+        }
+
+        public DataTable SelectBySozlesmeId(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery q = new SqlQuery("SELECT * FROM TeminatIslem_Table WITH (UPDLOCK, HOLDLOCK) WHERE SozlesmeId=@SozlesmeId ORDER BY IslemTarihi, Id");
+            q.AddParameter("@SozlesmeId", id);
+            return db.SelectFromDb(q, transaction, context);
         }
 
         public DataTable SelectByKiraciId(int id)
@@ -77,26 +78,11 @@ namespace DAO.Repositories.TBYS
             return db.SelectFromDb(q, transaction, context);
         }
 
-        public bool DeleteBySozlesmeId(int id)
+        public bool DeleteBySozlesmeId(int id, SqlTransactionContext transaction, PortalLogContext context)
         {
             SqlQuery q = new SqlQuery("DELETE TeminatIslem_Table WHERE SozlesmeId=@SozlesmeId");
             q.AddParameter("@SozlesmeId", id);
-            return db.DeleteFromDb(q, "");
-        }
-
-        public int Insert<T>(T entity)
-        {
-            return db.Insert(queryBuilder.BuildInsert(entity, "TeminatIslem_Table"));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, "TeminatIslem_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("TeminatIslem_Table", id), "");
+            return db.DeleteFromDb(q, transaction, context);
         }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context) { SqlQuery q = new SqlQuery("SELECT * FROM TeminatIslem_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, transaction, context); }

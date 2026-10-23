@@ -10,12 +10,9 @@ namespace DAO.Repositories.TBYS
         private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
-        public SozlesmeTasinmazRepository() : this(new DbClass()) { }
-
-        public SozlesmeTasinmazRepository(DbClass db)
+        public SozlesmeTasinmazRepository()
         {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "SozlesmeTasinmazRepository");
+            db = new TbysSqlExecutor("SozlesmeTasinmazRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -134,28 +131,6 @@ namespace DAO.Repositories.TBYS
             SqlQuery query = new SqlQuery("SELECT * FROM SozlesmeTasinmaz_Table WHERE BolumId=@BolumId");
             query.AddParameter("@BolumId", bolumId);
             return db.SelectFromDb(query, "");
-        }
-
-        public bool DeleteBySozlesmeId(int sozlesmeId)
-        {
-            SqlQuery query = new SqlQuery("DELETE FROM SozlesmeTasinmaz_Table WHERE SozlesmeId=@SozlesmeId");
-            query.AddParameter("@SozlesmeId", sozlesmeId);
-            return db.DeleteFromDb(query, "");
-        }
-
-        public int Insert<T>(T entity)
-        {
-            return db.Insert(queryBuilder.BuildInsert(entity, "SozlesmeTasinmaz_Table"));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, "SozlesmeTasinmaz_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("SozlesmeTasinmaz_Table", id), "");
         }
 
         public DataTable SelectByTasinmazId(int tasinmazId, SqlTransactionContext transaction, PortalLogContext context)

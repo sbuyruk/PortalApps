@@ -8,8 +8,11 @@ namespace DAO.Repositories.TBYS
     public class OdemePlaniRaporRepository
     {
         private readonly TbysSqlExecutor db;
-        public OdemePlaniRaporRepository() : this(new DbClass()) { }
-        public OdemePlaniRaporRepository(DbClass db) { if (db == null) throw new ArgumentNullException("db"); this.db = new TbysSqlExecutor(db, "OdemePlaniRaporRepository"); }
+        public OdemePlaniRaporRepository()
+        {
+            db = new TbysSqlExecutor("OdemePlaniRaporRepository");
+        }
+
         public OdemePlaniRaporRepository(PortalLogContext context) { db = new TbysSqlExecutor(context, "OdemePlaniRaporRepository"); }
 
         public DataTable SelectBorcluByBolgeTarih(int bolgeId, DateTime ilkTarih, DateTime sonTarih, int ayBas, int ayBit, int allRegionId, int headquartersRegionId)

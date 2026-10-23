@@ -11,12 +11,9 @@ namespace DAO.Repositories.TBYS
         private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
-        public TasinmazRepository() : this(new DbClass()) { }
-
-        public TasinmazRepository(DbClass db)
+        public TasinmazRepository()
         {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "TasinmazRepository");
+            db = new TbysSqlExecutor("TasinmazRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -241,10 +238,6 @@ namespace DAO.Repositories.TBYS
         public DataTable SelectNext(int id) { SqlQuery q = new SqlQuery("SELECT * FROM Tasinmaz_Table WHERE EnvanterdeMi=1 AND Id>@Id ORDER BY Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, ""); }
         public DataTable SelectPrev(int id) { SqlQuery q = new SqlQuery("SELECT * FROM Tasinmaz_Table WHERE EnvanterdeMi=1 AND Id<@Id ORDER BY Id DESC"); q.AddParameter("@Id", id); return db.SelectFromDb(q, ""); }
         public DataTable SelectExtreme(bool max) { return db.SelectFromDb(new SqlQuery("SELECT " + (max ? "MAX" : "MIN") + "(Id) Id FROM Tasinmaz_Table WHERE EnvanterdeMi=1"), ""); }
-
-        public int Insert<T>(T item) { return db.Insert(queryBuilder.BuildInsert(item, "Tasinmaz_Table")); }
-        public bool Update<T>(T item) { return db.Update2Db(queryBuilder.BuildUpdate(item, "Tasinmaz_Table")); }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete("Tasinmaz_Table", id), ""); }
 
         public int Insert<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
         {

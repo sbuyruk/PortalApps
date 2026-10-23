@@ -10,12 +10,9 @@ namespace DAO.Repositories.TBYS
         private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
-        public VasiyetciRepository() : this(new DbClass()) { }
-
-        public VasiyetciRepository(DbClass db)
+        public VasiyetciRepository()
         {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = new TbysSqlExecutor(db, "VasiyetciRepository");
+            db = new TbysSqlExecutor("VasiyetciRepository");
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -87,21 +84,6 @@ namespace DAO.Repositories.TBYS
             if (onlyAlive)
                 query.AddParameter("@SagVefat", deceasedValue);
             return db.SelectFromDb(query, "");
-        }
-
-        public int Insert<T>(T entity)
-        {
-            return db.Insert(queryBuilder.BuildInsert(entity, "Vasiyetci_Table"));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, "Vasiyetci_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("Vasiyetci_Table", id), "");
         }
 
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context) { SqlQuery q = new SqlQuery("SELECT * FROM Vasiyetci_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id"); q.AddParameter("@Id", id); return db.SelectFromDb(q, transaction, context); }
