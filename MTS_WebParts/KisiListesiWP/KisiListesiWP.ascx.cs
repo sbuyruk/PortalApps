@@ -13,6 +13,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using Model.Ortak;
 
 namespace MTS_WebParts.KisiListesiWP
 {
