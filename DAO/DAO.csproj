@@ -45,6 +45,7 @@
     <AssemblyOriginatorKeyFile>daokey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Repositories\IKYS\SalaryScaleWriteRepository.cs" />
     <Compile Include="Repositories\MFYS\MfysReportRepository.cs" />
     <Compile Include="Repositories\MTS\MtsActivityWriteRepository.cs" />
     <Compile Include="Repositories\MTS\MtsSqlExecutor.cs" />

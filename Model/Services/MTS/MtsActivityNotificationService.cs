@@ -1,15 +1,67 @@
 using Model.MTS;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Text;
 using Utility.ProjeGlobal;
+using Utility.Logging;
 
 namespace Model.Services.MTS
 {
     public static class MtsActivityNotificationService
     {
+        // Called only after the activity transaction has committed. Do not mark new invitations as sent here.
+        public static int SendCalendarUpdates(Faaliyet saved, PortalLogContext context)
+        {
+            if (saved == null || context == null || context.Project != "MTS")
+                throw new ArgumentException("Faaliyet ve MTS log bağlamı gereklidir.");
+            var current = new FaaliyetService(context).GetById(saved.Id);
+            if (current == null || MtsContactWriteService.Version(current) != MtsContactWriteService.Version(saved))
+                throw new InvalidOperationException("Faaliyet yeniden değişti. Takvim bildirimlerinden önce güncel kaydı kontrol edin.");
+            var participants = new FaaliyetKatilimService(context).GetByFaaliyetId(saved.Id)
+                .Where(row => row.TakvimDaveti == ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILDI)
+                .GroupBy(row => row.KatilimciId).Select(group => group.First()).ToList();
+            int failures = 0;
+            var recipients = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            if (saved.TakvimeIslendi)
+            {
+                try { SendUpdateOnce(saved, ProjeConstants.PARAM_OZELKALEMMAILADRESI, recipients); }
+                catch (System.Threading.ThreadAbortException) { throw; }
+                catch (Exception error)
+                {
+                    failures++;
+                    PortalTechnicalLog.WriteError(context, "MTS.Calendar.SpecialCalendarUpdate", error);
+                }
+            }
+            foreach (var participant in participants)
+            {
+                try
+                {
+                    var person = new KisiService(context).GetById(participant.KatilimciId);
+                    if (person == null || string.IsNullOrWhiteSpace(person.EPosta))
+                        throw new InvalidOperationException("Davet gönderilmiş katılımcının kişi veya e-posta bilgisi bulunamadı.");
+                    SendUpdateOnce(saved, person.EPosta, recipients);
+                }
+                catch (System.Threading.ThreadAbortException) { throw; }
+                catch (Exception error)
+                {
+                    failures++;
+                    PortalTechnicalLog.WriteError(context, "MTS.Calendar.ParticipantUpdate", error);
+                }
+            }
+            return failures;
+        }
+
+        private static void SendUpdateOnce(Faaliyet item, string recipient, HashSet<string> recipients)
+        {
+            var address = new MailAddress(recipient);
+            if (recipients.Add(address.Address))
+                Send(item, address.Address, item.AcikTarih || item.FaaliyetDurumu == ProjeConstants.FAALIYET_DURUMU_IPTALEDILDI_INT);
+        }
+
         // SMTP is outside the business transaction. Failure must remain visible to the caller.
         public static void Send(Faaliyet item, string recipient, bool cancel)
         {

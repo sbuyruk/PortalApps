@@ -45,6 +45,7 @@
     <AssemblyOriginatorKeyFile>modelkey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Services\IKYS\SalaryScaleWriteService.cs" />
     <Compile Include="Services\MFYS\MfysReportService.cs" />
     <Compile Include="Services\MTS\MtsActivityWriteService.cs" />
     <Compile Include="Services\MTS\MtsActivityNotificationService.cs" />
