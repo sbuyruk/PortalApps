@@ -47,7 +47,6 @@ namespace Model.Services.IKYS
         public int Save(GorevTanim item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return Save(item);
             if (item == null) throw new ArgumentNullException("item");
             item.OlusturmaTarihi = DateTime.Now;
             item.Olusturan = UtilityHelper.GetCurrentUserName();
@@ -78,7 +77,6 @@ namespace Model.Services.IKYS
         public bool Update(GorevTanim item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return Update(item);
             if (item == null || item.Id <= 0) return false;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
@@ -130,7 +128,6 @@ namespace Model.Services.IKYS
         public bool Delete(GorevTanim item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return Delete(item);
             if (item == null || item.Id <= 0) return false;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
@@ -149,7 +146,6 @@ namespace Model.Services.IKYS
         public GorevTanim GetByPersonelId(int personelId, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return GetByPersonelId(personelId);
             return Map(repository.SelectByPersonelId(personelId, context));
         }
         public GorevTanim GetByPersonelId(int personelId, SqlTransactionContext transaction, PortalLogContext context)
@@ -173,10 +169,12 @@ namespace Model.Services.IKYS
             if (!workRepository.UpdateGorevId(work.Id, gorevId, UtilityHelper.GetCurrentUserName(), transaction, context))
                 throw new InvalidOperationException("Personel görev bilgisi güncellenemedi.");
             int auditId = log.RecordAudit(context, "UPDATE", "IsBilgileri", work.Id.ToString(CultureInfo.InvariantCulture), transaction);
+            if (auditId == 0) return;
             log.RecordAuditChange(auditId, "GorevId", oldGorevId.ToString(CultureInfo.InvariantCulture), gorevId.ToString(CultureInfo.InvariantCulture), transaction);
         }
         private static void RecordChanges(GorevTanim old, GorevTanim current, int auditId, SqlTransactionContext transaction)
         {
+            if (auditId == 0) return;
             PortalLogRepository log = new PortalLogRepository();
             AddChange(log, auditId, "BirimId", old == null ? null : old.BirimId.ToString(CultureInfo.InvariantCulture), current == null ? null : current.BirimId.ToString(CultureInfo.InvariantCulture), transaction);
             AddChange(log, auditId, "PersonelId", old == null ? null : old.PersonelId.ToString(CultureInfo.InvariantCulture), current == null ? null : current.PersonelId.ToString(CultureInfo.InvariantCulture), transaction);

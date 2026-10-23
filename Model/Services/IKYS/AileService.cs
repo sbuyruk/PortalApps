@@ -25,7 +25,6 @@ namespace Model.Services.IKYS
         public int Save(Aile item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return Save(item);
             if (item == null) throw new ArgumentNullException("item");
             item.OlusturmaTarihi = DateTime.Now;
             item.Olusturan = UtilityHelper.GetCurrentUserName();
@@ -43,7 +42,6 @@ namespace Model.Services.IKYS
         public bool Update(Aile item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return Update(item);
             if (item == null || item.Id <= 0) return false;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
@@ -62,7 +60,6 @@ namespace Model.Services.IKYS
         public bool Delete(Aile item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return Delete(item);
             if (item == null || item.Id <= 0) return false;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
@@ -80,6 +77,7 @@ namespace Model.Services.IKYS
         public Aile GetEnGencCocukByPersonelId(int personelId) { return Map(repository.SelectEnGencCocukByPersonelId(personelId, ProjeConstants.PER_YAKINLIKDERECESI_COCUK_INT)); }
         private static void RecordChanges(Aile old, Aile current, int auditId, SqlTransactionContext transaction)
         {
+            if (auditId == 0) return;
             PortalLogRepository log = new PortalLogRepository();
             AddChange(log, auditId, "PersonelId", old == null ? null : old.PersonelId.ToString(CultureInfo.InvariantCulture), current == null ? null : current.PersonelId.ToString(CultureInfo.InvariantCulture), transaction);
             AddChange(log, auditId, "YakinlikDerecesi", old == null ? null : old.YakinlikDerecesi.ToString(CultureInfo.InvariantCulture), current == null ? null : current.YakinlikDerecesi.ToString(CultureInfo.InvariantCulture), transaction);

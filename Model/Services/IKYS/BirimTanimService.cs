@@ -28,7 +28,6 @@ namespace Model.Services.IKYS
         public int Save(BirimTanim item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return Save(item);
             if (item == null) throw new ArgumentNullException("item");
             item.OlusturmaTarihi = DateTime.Now;
             item.Olusturan = UtilityHelper.GetCurrentUserName();
@@ -46,7 +45,6 @@ namespace Model.Services.IKYS
         public bool Update(BirimTanim item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return Update(item);
             if (item == null || item.Id <= 0) return false;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
@@ -65,7 +63,6 @@ namespace Model.Services.IKYS
         public bool Delete(BirimTanim item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return Delete(item);
             if (item == null || item.Id <= 0) return false;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
@@ -89,6 +86,7 @@ namespace Model.Services.IKYS
         private static BirimTanim Map(DataTable table) { return ToList(table).FirstOrDefault(); }
         private static void RecordChanges(BirimTanim old, BirimTanim current, int auditId, SqlTransactionContext transaction)
         {
+            if (auditId == 0) return;
             PortalLogRepository log = new PortalLogRepository();
             AddChange(log, auditId, "Adi", old == null ? null : old.Adi, current == null ? null : current.Adi, transaction);
             AddChange(log, auditId, "KisaAdi", old == null ? null : old.KisaAdi, current == null ? null : current.KisaAdi, transaction);

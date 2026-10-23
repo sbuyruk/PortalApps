@@ -43,7 +43,6 @@ namespace Model.Services.IKYS
         public int Save(UcretTanim item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return Save(item);
             if (item == null) throw new ArgumentNullException("item");
             item.OlusturmaTarihi = DateTime.Now;
             item.Olusturan = UtilityHelper.GetCurrentUserName();
@@ -61,7 +60,6 @@ namespace Model.Services.IKYS
         public bool Update(UcretTanim item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return Update(item);
             if (item == null || item.Id <= 0) return false;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
@@ -80,7 +78,6 @@ namespace Model.Services.IKYS
         public bool Delete(UcretTanim item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return Delete(item);
             if (item == null || item.Id <= 0) return false;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
@@ -95,6 +92,7 @@ namespace Model.Services.IKYS
 
         private static void RecordChanges(UcretTanim old, UcretTanim current, int auditId, SqlTransactionContext transaction)
         {
+            if (auditId == 0) return;
             PortalLogRepository log = new PortalLogRepository();
             AddChange(log, auditId, "GrupId", old == null ? null : old.GrupId.ToString(CultureInfo.InvariantCulture), current == null ? null : current.GrupId.ToString(CultureInfo.InvariantCulture), transaction);
             AddChange(log, auditId, "Derece", old == null ? null : old.Derece.ToString(CultureInfo.InvariantCulture), current == null ? null : current.Derece.ToString(CultureInfo.InvariantCulture), transaction);
@@ -136,7 +134,6 @@ namespace Model.Services.IKYS
         public bool DeleteByGrupId(int grupId, UcretTanim auditItem, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return DeleteByGrupId(grupId, auditItem);
             if (grupId <= 0) return false;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {

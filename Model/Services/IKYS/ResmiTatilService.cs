@@ -30,7 +30,6 @@ namespace Model.Services.IKYS
         public int Save(ResmiTatil item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return Save(item);
             if (item == null) throw new ArgumentNullException("item");
             item.OlusturmaTarihi = DateTime.Now;
             item.Olusturan = UtilityHelper.GetCurrentUserName();
@@ -48,7 +47,6 @@ namespace Model.Services.IKYS
         public bool Update(ResmiTatil item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return Update(item);
             if (item == null || item.Id <= 0) return false;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
@@ -67,7 +65,6 @@ namespace Model.Services.IKYS
         public bool Delete(ResmiTatil item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return Delete(item);
             if (item == null || item.Id <= 0) return false;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
@@ -104,6 +101,7 @@ namespace Model.Services.IKYS
         private static ResmiTatil Map(DataTable table) { return ToList(table).FirstOrDefault(); }
         private static void RecordChanges(ResmiTatil old, ResmiTatil current, int auditId, SqlTransactionContext transaction)
         {
+            if (auditId == 0) return;
             PortalLogRepository log = new PortalLogRepository();
             AddChange(log, auditId, "Gun", old == null ? null : old.Gun.ToString(CultureInfo.InvariantCulture), current == null ? null : current.Gun.ToString(CultureInfo.InvariantCulture), transaction);
             AddChange(log, auditId, "Ay", old == null ? null : old.Ay.ToString(CultureInfo.InvariantCulture), current == null ? null : current.Ay.ToString(CultureInfo.InvariantCulture), transaction);
