@@ -35,7 +35,7 @@ namespace DAO.Repositories.IKYS
         {
             SqlQuery query = new SqlQuery("SELECT * FROM Personel_Table WHERE Id=@Id");
             query.AddParameter("@Id", id);
-            if (context != null && context.Project == "Portal")
+            if (context != null && (context.Project == "Portal" || context.Project == "MTS"))
                 return PortalSqlReadExecutor.Select(query, context, "PersonelRepository.SelectById");
             Stopwatch clock = Stopwatch.StartNew();
             bool succeeded = false;
@@ -67,7 +67,7 @@ namespace DAO.Repositories.IKYS
         {
             SqlQuery query = new SqlQuery("SELECT * FROM Personel_Table WHERE KullaniciAdi=@KullaniciAdi ORDER BY Id");
             query.AddParameter("@KullaniciAdi", userName);
-            if (context != null && context.Project == "Portal")
+            if (context != null && (context.Project == "Portal" || context.Project == "MTS"))
                 return PortalSqlReadExecutor.Select(query, context, "PersonelRepository.SelectByUserName");
             Stopwatch clock = Stopwatch.StartNew();
             bool succeeded = false;
@@ -178,6 +178,15 @@ namespace DAO.Repositories.IKYS
                 FROM Personel_Table P INNER JOIN IsBilgileri_Table I ON P.Id=I.PersonelId LEFT JOIN UnvanTanim_Table U ON I.UnvanId=U.Id
                 LEFT JOIN BirimTanim_Table B ON I.BirimId=B.Id LEFT JOIN GorevTanim_Table G ON I.GorevId=G.Id LEFT JOIN IletisimBilgileri_Table H ON H.PersonelId=P.Id
                 WHERE P.Id=@PersonelId ORDER BY I.ProtokolSiraNo"); query.AddParameter("@PersonelId", personelId); return PortalSqlReadExecutor.Select(query, context, "PersonelRepository.SelectPersonelReturnDataTable");
+        }
+
+        public DataTable SelectCalendarCelebrations(int type, PortalLogContext context)
+        {
+            var query = new SqlQuery(@"SELECT A.Adi,A.Soyadi,B.DogumTar,B.DogumGunuKutlama,B.MedeniHali,B.EvlilikTar,B.EvlilikKutlama
+                FROM Personel_Table A INNER JOIN Kimlik_Table B ON B.PersonelId=A.Id
+                INNER JOIN IsBilgileri_Table C ON C.PersonelId=A.Id WHERE A.Tipi=@Tipi AND C.CalismaDurumu=1");
+            query.AddParameter("@Tipi", type);
+            return PortalSqlReadExecutor.Select(query, context, "PersonelRepository.SelectCalendarCelebrations");
         }
 
         public DataTable SelectEmployeeListReturnDataTable(int personelTipi, bool includeAllTypes)

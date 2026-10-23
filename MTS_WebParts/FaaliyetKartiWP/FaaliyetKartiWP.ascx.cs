@@ -1,3 +1,6 @@
+using MTS_WebParts.Logging;
+using Utility.Logging;
+using System.Web;
 using Model.IKYS;
 using Model.MTS;
 using Model.NBYS;
@@ -18,6 +21,10 @@ namespace MTS_WebParts.FaaliyetKartiWP
     [ToolboxItemAttribute(false)]
     public partial class FaaliyetKartiWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("MTS", "FaaliyetKartiWP")); } }
+        private static string Encode(object value) { return HttpUtility.HtmlEncode(Convert.ToString(value)); }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -59,17 +66,27 @@ namespace MTS_WebParts.FaaliyetKartiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            IdLbl.Text = " ( Faaliyet No: " + FaaliyetIdQS.ToString() + " )";
-            FaaliyetBilgileriniDoldur();
-            AniObjesiBilgileriTableDoldur();
+            MtsWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
+            {
+                if (!Page.IsPostBack) MtsWebPartLog.RecordOpened(LogContext);
+                int id;
+                if (!int.TryParse(FaaliyetIdQS, out id) || id <= 0)
+                    throw new MtsInputException("Geçerli bir faaliyet seçin. Faaliyet listesinden kaydı yeniden açın.");
+                IdLbl.Text = " ( Faaliyet No: " + id + " )";
+                while (FaaliyetKartiBilgileriTable.Rows.Count > 1) FaaliyetKartiBilgileriTable.Rows.RemoveAt(1);
+                while (AniObjesiBilgileriTable.Rows.Count > 2) AniObjesiBilgileriTable.Rows.RemoveAt(2);
+                FaaliyetBilgileriniDoldur();
+                AniObjesiBilgileriTableDoldur();
+            });
+            MainCardDiv.Visible = !MtsWebPartLog.HasFailed(LogContext);
+            ExcelBtn.Enabled = MainCardDiv.Visible;
         }
         private void AniObjesiBilgileriTableDoldur()
         {
             /***
              * FaaliyetKatilim_Table'dan Bu Faaliyetya katilanlari getir
              * **/
-            FaaliyetKatilimService faaliyetKatilimService = new FaaliyetKatilimService();
+            FaaliyetKatilimService faaliyetKatilimService = new FaaliyetKatilimService(LogContext);
             List<FaaliyetKatilim> liste = faaliyetKatilimService.GetByFaaliyetId(FaaliyetIdQS.ConvertToInt());
             foreach (var item in liste)
             {
@@ -80,14 +97,14 @@ namespace MTS_WebParts.FaaliyetKartiWP
                 TableCell getirilenAniObjesiCell = new TableCell();
                 ////////////////
                 Kisi kisi = new Kisi();
-                kisi = new Model.Services.MTS.KisiService().GetById(item.KatilimciId);
+                kisi = new Model.Services.MTS.KisiService(LogContext).GetById(item.KatilimciId);
                 if (kisi != null)
                 {
-                    katilimciAdiSoyadiCell.Text = kisi.Adi + " " + kisi.Soyadi;
-                    kurumuCell.Text = item.KurumGorev;
+                    katilimciAdiSoyadiCell.Text = Encode(kisi.Adi + " " + kisi.Soyadi);
+                    kurumuCell.Text = Encode(item.KurumGorev);
 
                     //Burada verilen ani objeleri aliniyor
-                    AniObjesiDagitimService aniObjesiDagitimService = new AniObjesiDagitimService();
+                    AniObjesiDagitimService aniObjesiDagitimService = new AniObjesiDagitimService(LogContext);
                     DataTable dataTable = aniObjesiDagitimService.GetDistributionTable(FaaliyetIdQS.ConvertToInt(), kisi.Id);
                     if (dataTable != null)
                     {
@@ -102,19 +119,20 @@ namespace MTS_WebParts.FaaliyetKartiWP
                             }
 
                         }
-                        verilenAniObjesiCell.Text = objeStr;
+                        verilenAniObjesiCell.Text = Encode(objeStr);
                     }
 
                     //Getirilen Ani Objeleri ayrica aliniyor
                     AniObjesiDagitim getirilenAniObjesi = aniObjesiDagitimService.GetGetirilen(FaaliyetIdQS.ConvertToInt(), kisi.Id);
                     if (getirilenAniObjesi != null)
                     {
-                        getirilenAniObjesiCell.Text = getirilenAniObjesi.GetirilenAniObjesi;
+                        getirilenAniObjesiCell.Text = Encode(getirilenAniObjesi.GetirilenAniObjesi);
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kisi Bulunamadi", ProjeConstants.MESAJ_HATA);
+                    katilimciAdiSoyadiCell.Text = Encode("Kişi kaydı bulunamadı.");
+                    kurumuCell.Text = Encode(item.KurumGorev);
                 }
 
                 tableRow.Controls.Add(katilimciAdiSoyadiCell);
@@ -127,7 +145,7 @@ namespace MTS_WebParts.FaaliyetKartiWP
         }
         private void FaaliyetBilgileriniDoldur()
         {
-            Faaliyet faaliyet = new FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
+            Faaliyet faaliyet = new FaaliyetService(LogContext).GetById(FaaliyetIdQS.ConvertToInt());
 
 
             if (faaliyet != null)
@@ -163,17 +181,17 @@ namespace MTS_WebParts.FaaliyetKartiWP
                 row3.Controls.Add(r3c2);
 
 
-                r1c1.Text = "Faaliyet Tipi : " + faaliyet.FaaliyetTipi;
-                r1c2.Text = "Faaliyet Tarihi : " + faaliyet.BaslangicTarihi.ToString("dd-MM-yyyy") + "-" + faaliyet.BitisTarihi.ToString("dd-MM-yyyy");
-                r1c3.Text = "Faaliyet Saati : " + faaliyet.BaslangicSaati + "-" + faaliyet.BitisSaati;
+                r1c1.Text = Encode("Faaliyet Tipi : " + faaliyet.FaaliyetTipi);
+                r1c2.Text = Encode("Faaliyet Tarihi : " + faaliyet.BaslangicTarihi.ToString("dd-MM-yyyy") + "-" + faaliyet.BitisTarihi.ToString("dd-MM-yyyy"));
+                r1c3.Text = Encode("Faaliyet Saati : " + faaliyet.BaslangicSaati + "-" + faaliyet.BitisSaati);
 
 
-                r2c1.Text = "Faaliyet Yeri : " + (faaliyet.FaaliyetYeriStr== null ? "" : faaliyet.FaaliyetYeriStr);
-                r2c2.Text = "Faaliyet Amaci : " + MTSOrtak.ParseFaaliyetAmaci(faaliyet.FaaliyetAmaciId.ToString());
-                r2c3.Text = "Faaliyet Durumu : " + MTSOrtak.ParseFaaliyetDurumu(faaliyet.FaaliyetDurumu.ConvertToInt());
+                r2c1.Text = Encode("Faaliyet Yeri : " + (faaliyet.FaaliyetYeriStr== null ? "" : faaliyet.FaaliyetYeriStr));
+                r2c2.Text = Encode("Faaliyet Amaci : " + MTSOrtak.ParseFaaliyetAmaci(faaliyet.FaaliyetAmaciId.ToString()));
+                r2c3.Text = Encode("Faaliyet Durumu : " + MTSOrtak.ParseFaaliyetDurumu(faaliyet.FaaliyetDurumu.ConvertToInt()));
 
-                r3c1.Text = "Faaliyet Konusu : " + faaliyet.FaaliyetKonusu;
-                r3c2.Text = "Açiklama : " + faaliyet.Aciklama;
+                r3c1.Text = Encode("Faaliyet Konusu : " + faaliyet.FaaliyetKonusu);
+                r3c2.Text = Encode("Açiklama : " + faaliyet.Aciklama);
                 r3c2.ColumnSpan = 2;
 
                 BorderEkle(row1);
@@ -186,26 +204,28 @@ namespace MTS_WebParts.FaaliyetKartiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Faaliyet Bulunamadi", ProjeConstants.MESAJ_HATA);
+                throw new MtsInputException("Faaliyet bulunamadı. Faaliyet listesini yenileyip yeniden seçin.");
             }
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
+            MtsWebPartLog.ExecuteAction(LogContext, "CloseBtn_Click", () =>
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                Page.Response.Redirect(newUrl);
+
+            });
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            try
+            MtsWebPartLog.ExecuteAction(LogContext, "ExcelBtn_Click", () =>
             {
+
                 ExportToExcel();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+
+
+            });
         }
         protected void ExportToExcel()
         {
@@ -216,7 +236,7 @@ namespace MTS_WebParts.FaaliyetKartiWP
             System.IO.StringWriter tw = new System.IO.StringWriter();
             System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
 
-            //Get the HTML for the control.             
+            //Get the HTML for the control.
             MainCardDiv.RenderControl(hw);
             //Write the HTML back to the browser.
             //Response.ContentType = application/vnd.ms-excel;
@@ -246,30 +266,37 @@ namespace MTS_WebParts.FaaliyetKartiWP
         }
         protected void FaaliyetListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FAALIYET_LIST);
+            MtsWebPartLog.ExecuteAction(LogContext, "FaaliyetListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FAALIYET_LIST);
+
+            });
         }
         protected void FaaliyetTakvimiBtn_Click(object sender, EventArgs e)
         {
-            Faaliyet faaliyet = new FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
-            RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM + "?InitialDate=" + faaliyet.BaslangicTarihi.ToString("yyyy-MM-dd"));
+            MtsWebPartLog.ExecuteAction(LogContext, "FaaliyetTakvimiBtn_Click", () =>
+            {
+                Faaliyet faaliyet = new FaaliyetService(LogContext).GetById(FaaliyetIdQS.ConvertToInt());
+                if (faaliyet == null) throw new MtsInputException("Faaliyet bulunamadı. Listeyi yenileyin.");
+                RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM + "?InitialDate=" + faaliyet.BaslangicTarihi.ToString("yyyy-MM-dd"));
+
+            });
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
+
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
                 Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+
         }
         protected void FaaliyeteGitBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + FaaliyetIdQS);
+            MtsWebPartLog.ExecuteAction(LogContext, "FaaliyeteGitBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + FaaliyetIdQS);
+
+            });
         }
     }
 }

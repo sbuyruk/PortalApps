@@ -37,6 +37,13 @@ namespace Model.Services.Portal
             return Map(r.SelectById(id));
         }
 
+        public Toplanti GetById(int id, PortalLogContext context) { return Map(r.SelectById(id, context)); }
+        public DataTable GetByParticipant(int id, PortalLogContext context) { return r.SelectByParticipant(id, context); }
+        public List<Toplanti> GetByParticipantDate(int id, DateTime day, PortalLogContext context)
+        {
+            return List(r.SelectByParticipantDate(id, day.Date, day.Date.AddDays(1).AddMilliseconds(-3), context));
+        }
+
         public List<Toplanti> GetAll()
         {
             return List(r.SelectAll());

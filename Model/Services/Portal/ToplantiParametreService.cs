@@ -32,6 +32,8 @@ namespace Model.Services.Portal
             return Map(r.SelectById(id));
         }
 
+        public ToplantiParametre GetById(int id, PortalLogContext context) { return Map(r.SelectById(id, context)); }
+
         public List<ToplantiParametre> GetAll()
         {
             return List(r.SelectAll());

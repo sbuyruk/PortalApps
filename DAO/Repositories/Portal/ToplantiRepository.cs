@@ -46,6 +46,13 @@ namespace DAO.Repositories.Portal
             return Select(q);
         }
 
+        public DataTable SelectById(int id, PortalLogContext context)
+        {
+            var q = new SqlQuery("SELECT * FROM Toplanti_Table WHERE Id=@Id");
+            q.AddParameter("@Id", id);
+            return PortalSqlReadExecutor.Select(q, context, "ToplantiRepository.SelectById");
+        }
+
         public DataTable SelectAll()
         {
             return Select(new SqlQuery("SELECT * FROM Toplanti_Table ORDER BY ToplantiKonusu"));
@@ -115,6 +122,13 @@ namespace DAO.Repositories.Portal
             return Select(q);
         }
 
+        public DataTable SelectByParticipant(int id, PortalLogContext context)
+        {
+            var q = new SqlQuery("SELECT C.Adi,C.Soyadi,B.KatilimciId,A.Id ToplantiId,B.Id KatilimId,D.ProtokolSiraNo,A.* FROM Toplanti_Table A LEFT JOIN ToplantiKatilim_Table B ON A.Id=B.ToplantiId LEFT JOIN Personel_Table C ON C.Id=B.KatilimciId LEFT JOIN IsBilgileri_Table D ON D.PersonelId=C.Id WHERE B.KatilimciId=@Id ORDER BY A.Id,ProtokolSiraNo,Adi,Soyadi");
+            q.AddParameter("@Id", id);
+            return PortalSqlReadExecutor.Select(q, context, "ToplantiRepository.SelectByParticipant");
+        }
+
         public DataTable SelectByParticipantDate(int id, DateTime from, DateTime to)
         {
             var q = new SqlQuery("SELECT C.Adi,C.Soyadi,B.KatilimciId,A.Id ToplantiId,B.Id KatilimId,D.ProtokolSiraNo,A.* FROM Toplanti_Table A LEFT JOIN ToplantiKatilim_Table B ON A.Id=B.ToplantiId LEFT JOIN Personel_Table C ON C.Id=B.KatilimciId LEFT JOIN IsBilgileri_Table D ON D.PersonelId=C.Id WHERE B.KatilimciId=@Id AND (A.BaslangicTarihi<=@To AND A.BitisTarihi>=@From) ORDER BY A.BaslangicTarihi");
@@ -122,6 +136,15 @@ namespace DAO.Repositories.Portal
             q.AddParameter("@From", from);
             q.AddParameter("@To", to);
             return Select(q);
+        }
+
+        public DataTable SelectByParticipantDate(int id, DateTime from, DateTime to, PortalLogContext context)
+        {
+            var q = new SqlQuery("SELECT C.Adi,C.Soyadi,B.KatilimciId,A.Id ToplantiId,B.Id KatilimId,D.ProtokolSiraNo,A.* FROM Toplanti_Table A LEFT JOIN ToplantiKatilim_Table B ON A.Id=B.ToplantiId LEFT JOIN Personel_Table C ON C.Id=B.KatilimciId LEFT JOIN IsBilgileri_Table D ON D.PersonelId=C.Id WHERE B.KatilimciId=@Id AND (A.BaslangicTarihi<=@To AND A.BitisTarihi>=@From) ORDER BY A.BaslangicTarihi");
+            q.AddParameter("@Id", id);
+            q.AddParameter("@From", from);
+            q.AddParameter("@To", to);
+            return PortalSqlReadExecutor.Select(q, context, "ToplantiRepository.SelectByParticipantDate");
         }
 
         public int Insert<T>(T x)

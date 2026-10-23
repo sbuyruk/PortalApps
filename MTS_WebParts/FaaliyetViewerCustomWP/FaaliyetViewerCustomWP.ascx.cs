@@ -1,3 +1,6 @@
+using MTS_WebParts.Logging;
+using Utility.Logging;
+using System.Web;
 using Microsoft.Web.Hosting.Administration;
 using Model.IKYS;
 using Model.MTS;
@@ -8,7 +11,6 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Web.UI;
-using System.Web;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
@@ -22,6 +24,10 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
     [ToolboxItemAttribute(false)]
     public partial class FaaliyetViewerCustomWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("MTS", "FaaliyetViewerCustomWP")); } }
+        private static string Encode(object value) { return HttpUtility.HtmlEncode(Convert.ToString(value)); }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -38,57 +44,59 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
             this.ChromeType = PartChromeType.None;
         }
 
+        private DateTime CalendarMonth
+        {
+            get
+            {
+                DateTime date;
+                string value = Page.Request.QueryString["InitialDate"];
+                if (string.IsNullOrWhiteSpace(value)) date = DateTime.Today;
+                else if (!DateTime.TryParseExact(value, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out date)
+                    || date.Year < 1753 || date.Year > 9998)
+                    throw new MtsInputException("Takvim tarihi geçersiz. Takvimi faaliyet listesinden yeniden açın.");
+                return new DateTime(date.Year, date.Month, 1);
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
-            TableHeaders();
-            TableRows();
+            MtsWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
+            {
+                if (!Page.IsPostBack) MtsWebPartLog.RecordOpened(LogContext);
+                TableHeaders();
+                TableRows();
+            });
+            CalendarTable.Visible = !MtsWebPartLog.HasFailed(LogContext);
+            ExcelBtn.Enabled = CalendarTable.Visible;
         }
 
         private void TableRows()
         {
-            DateTime date = new DateTime(2022, 12, 01);
-            for (int i = 0; i < 5; i++)
+            DateTime month = CalendarMonth;
+            DateTime day = month.AddDays(-(((int)month.DayOfWeek + 6) % 7));
+            while (day < month.AddMonths(1))
             {
-                TableRow dayRow = new TableRow();
-                for (int j = 1; j <= 7; j++)
+                var row = new TableRow();
+                for (int i = 0; i < 7; i++, day = day.AddDays(1))
                 {
-                    TableCell dayH1 = new TableCell
-                    {
-                        Text = GetDayText(date, j),
-                        BorderStyle = BorderStyle.Solid,
-                        HorizontalAlign = HorizontalAlign.Left,
-
-                    };
-                    if ((date.DayOfWeek == DayOfWeek.Saturday) ||
-                        (date.DayOfWeek == DayOfWeek.Sunday))
-                    {
-                        dayH1.BackColor = Color.LightPink;
-                    }
-
-                    if (!string.IsNullOrEmpty(dayH1.Text.Trim()) || date.Day > 1)
-                    {
-                        date = date.AddDays(1);
-                    }
-                    dayRow.Controls.Add(dayH1);
-
+                    var cell = new TableCell { Text = day.Month == month.Month ? GetDayText(day, ((int)day.DayOfWeek + 6) % 7 + 1) : "",
+                        BorderStyle = BorderStyle.Solid, HorizontalAlign = HorizontalAlign.Left };
+                    if (i >= 5) cell.BackColor = Color.LightPink;
+                    row.Cells.Add(cell);
                 }
-
-                CalendarTable.Controls.Add(dayRow);
+                CalendarTable.Rows.Add(row);
             }
-
-
         }
 
         private string GetDayText(DateTime date, int day)
         {
             List<FaaliyetListItem> gunlukFaaliyetListesi = new List<FaaliyetListItem>();
             string text = string.Empty;
-            int dayInt = (int)date.DayOfWeek;
+            int dayInt = ((int)date.DayOfWeek + 6) % 7 + 1;
             if (dayInt == day)
             {
                 text = "<h2 align='right'>" + date.Day.ToString() + "</h2> ";
                 Faaliyet faaliyet = new Faaliyet();
-                List<Faaliyet> faaliyetListesi = new Model.Services.MTS.FaaliyetService().GetByDate(date);
+                List<Faaliyet> faaliyetListesi = new Model.Services.MTS.FaaliyetService(LogContext).GetByDate(date);
                 foreach (var item in faaliyetListesi)
                 {
                     FaaliyetListItem gunlukFaaliyet = new FaaliyetListItem
@@ -104,7 +112,7 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
                     };
                     gunlukFaaliyetListesi.Add(gunlukFaaliyet);
                 }
-                List<Toplanti> toplantiListesi = new Model.Services.Portal.ToplantiService().GetByParticipantDate(ProjeConstants.GENELMUDUR_PERSONELID, date);
+                List<Toplanti> toplantiListesi = new Model.Services.Portal.ToplantiService().GetByParticipantDate(ProjeConstants.GENELMUDUR_PERSONELID, date, LogContext);
                 foreach (var item in toplantiListesi)
                 {
                     FaaliyetListItem gunlukFaaliyet = new FaaliyetListItem
@@ -124,7 +132,7 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
                 foreach (var item in gunlukFaaliyetListesi)
                 {
 
-                    string konuStr = " " + item.Konusu;
+                    string konuStr = " " + Encode(item.Konusu);
                     string iptalStrAc = string.Empty;
                     string iptalStrKapa = string.Empty;
                     string renkStr = string.Empty;
@@ -203,7 +211,7 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
                 default:
                     break;
             }
-            if (item.Durumu.Equals(ProjeConstants.FAALIYET_DURUMU_PLANLANDI_INT.ToString()))
+            if (item.Durumu == ProjeConstants.FAALIYET_DURUMU_PLANLANDI_INT)
             {
                 faaliyetRengi.BackgroundColor = Color.LightGray.Name;
                 faaliyetRengi.TextColor = Color.Black.Name;
@@ -217,7 +225,7 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
             TableHeaderCell baslikCell = new TableHeaderCell();
 
 
-            baslikCell.Text = "Aralik 2022";
+            baslikCell.Text = CalendarMonth.ToString("MMMM yyyy", CultureInfo.GetCultureInfo("tr-TR"));
             baslikCell.Font.Bold = true;
             baslikCell.ColumnSpan = 7;
             thbaslik.HorizontalAlign = HorizontalAlign.Center;
@@ -290,7 +298,7 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
             for (int i = 0; i < 7; i++)
             {
                 if (date.DayOfWeek == dayOfWeek)
-                    return date.ToString("dddd"); //date.DayOfWeek.ToString(); //date.DayOfWeek.ToString("dddd");
+                    return date.ToString("dddd", CultureInfo.GetCultureInfo("tr-TR")); //date.DayOfWeek.ToString(); //date.DayOfWeek.ToString("dddd");
 
                 else
                     date = date.AddDays(1);
@@ -299,24 +307,19 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            MtsWebPartLog.ExecuteAction(LogContext, "CloseBtn_Click", () =>
             {
+
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+
+
+            });
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-
-            TableHeaders();
-            TableRows();
-            ExportToExcel();
+            MtsWebPartLog.ExecuteAction(LogContext, "ExcelBtn_Click", ExportToExcel);
         }
         protected void ExportToExcel()
         {
@@ -326,7 +329,7 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
             StringWriter tw = new System.IO.StringWriter();
             HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
 
-            //Get the HTML for the control.             
+            //Get the HTML for the control.
             CalendarTable.RenderControl(hw);
             //Write the HTML back to the browser.
             //Response.ContentType = application/vnd.ms-excel;

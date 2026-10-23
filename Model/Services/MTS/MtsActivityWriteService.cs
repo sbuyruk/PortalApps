@@ -64,7 +64,7 @@ namespace Model.Services.MTS
             saved = completed;
             return MtsActivityResult.Completed;
         }
-        // Used by calendar writers in the next piece; dates change without replacing unrelated fields.
+        // Calendar moves retain the rendered version and do not replace unrelated fields.
         public MtsActivityResult Move(int activityId, string version, DateTime start, DateTime end, out Faaliyet saved)
         {
             saved = null;
@@ -76,7 +76,9 @@ namespace Model.Services.MTS
                 var current = First<Faaliyet>(Records.Read("Faaliyet_Table", activityId, transaction));
                 if (current == null) return MtsActivityResult.NotFound;
                 if (MtsContactWriteService.Version(current) != version) return MtsActivityResult.Changed;
+                if (current.AcikTarih) return MtsActivityResult.InvalidInput;
                 current.BaslangicTarihi = start; current.BitisTarihi = end;
+                if (current.UniqueId == Guid.Empty) current.UniqueId = Guid.NewGuid();
                 current.BaslangicSaati = start.ToString("HH:mm"); current.BitisSaati = end.ToString("HH:mm");
                 Stamp(current, current); Records.Save("Faaliyet_Table", current, current.Id, transaction);
                 completed = First<Faaliyet>(Records.Read("Faaliyet_Table", current.Id, transaction));
@@ -352,7 +354,11 @@ namespace Model.Services.MTS
         {
             Stamp(stock, stock.Id > 0 ? stock : null); stock.SonIslemTarihi = DateTime.Now; stock.SonIslemYapan = context.UserLogin;
         }
-        private static List<T> List<T>(DataTable rows) where T : new() { return new Kisi().ToList<T>(rows); }
+        private static List<T> List<T>(DataTable rows) where T : new()
+        {
+            if (typeof(T) == typeof(Faaliyet)) return FaaliyetService.ToList(rows).Cast<T>().ToList();
+            return new Kisi().ToList<T>(rows);
+        }
         private static T First<T>(DataTable rows) where T : new() { return List<T>(rows).FirstOrDefault(); }
     }
 }

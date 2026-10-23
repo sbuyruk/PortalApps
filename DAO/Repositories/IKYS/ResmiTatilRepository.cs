@@ -57,7 +57,7 @@ namespace DAO.Repositories.IKYS
             SqlQuery query = new SqlQuery("SELECT * FROM ResmiTatil_Table WHERE Yil=0 OR BaslamaTarihi BETWEEN @Baslangic AND @Bitis ORDER BY BaslamaTarihi");
             query.AddParameter("@Baslangic", baslangic);
             query.AddParameter("@Bitis", bitis);
-            return TraceSelect(query, "ResmiTatil.SelectByTarih", context);
+            return PortalSqlReadExecutor.Select(query, context, "ResmiTatilRepository.SelectByTarih");
         }
         public DataTable SelectBySonIkiYil(DateTime baslangic, DateTime bitis) { SqlQuery q = new SqlQuery("SELECT * FROM ResmiTatil_Table WHERE Yil=0 OR BaslamaTarihi BETWEEN @Baslangic AND @Bitis ORDER BY MONTH(BaslamaTarihi),DAY(BaslamaTarihi)"); q.AddParameter("@Baslangic", baslangic); q.AddParameter("@Bitis", bitis); return db.SelectFromDb(q, ""); }
         public DataTable SelectByYil(int yil) { SqlQuery q = new SqlQuery("SELECT * FROM ResmiTatil_Table WHERE Yil=0 OR Yil=@Yil ORDER BY MONTH(BaslamaTarihi),DAY(BaslamaTarihi)"); q.AddParameter("@Yil", yil); return db.SelectFromDb(q, ""); }

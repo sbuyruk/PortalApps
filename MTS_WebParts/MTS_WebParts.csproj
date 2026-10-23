@@ -77,6 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logging\MtsWebPartLog.cs" />
+    <Compile Include="Logging\MtsCalendar.cs" />
     <Compile Include="AcikTarihliFaaliyetListesiWP\AcikTarihliFaaliyetListesiWP.ascx.cs">
       <DependentUpon>AcikTarihliFaaliyetListesiWP.ascx</DependentUpon>
     </Compile>
