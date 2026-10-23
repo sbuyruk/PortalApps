@@ -83,6 +83,12 @@ namespace Model.Services.IKYS
         public List<ResmiTatil> GetByYil(int yil) { return ToList(repository.SelectByYil(yil)); }
         public bool IsResmiTatil(DateTime tarih) { return repository.SelectByDate(tarih) != null; }
         public bool IsResmiTatil(DateTime tarih, PortalLogContext context) { return repository.SelectByDate(tarih, context) != null; }
+        public bool IsResmiTatil(DateTime tarih, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction");
+            if (context == null) throw new ArgumentNullException("context");
+            return repository.SelectByDate(tarih, transaction, context) != null;
+        }
         public string GetAllReturnJson(DateTime baslangic, DateTime bitis)
         {
             List<ResmiTatil> list = GetByTarih(baslangic, bitis); List<CalendarEvent> events = new List<CalendarEvent>(); Faaliyet faaliyet = new Faaliyet();
