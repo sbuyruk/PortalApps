@@ -303,6 +303,14 @@ namespace DAO.Repositories.IKYS
                 WHERE A.BaslangicTarihi>=@Since" + filters + " ORDER BY A.BaslangicTarihi DESC");
             q.AddParameter("@Since", new DateTime(sinceYear, 1, 1)); if (personelId > 0) q.AddParameter("@PersonelId", personelId); if (donemId > 0) q.AddParameter("@DonemId", donemId); if (izinTipi > 0) q.AddParameter("@IzinTipi", izinTipi); return db.SelectFromDb(q, "");
         }
+        public DataTable SelectByPersonelIdDonemId(int personelId, int donemId, int izinTipi, PortalLogContext context)
+        {
+            int sinceYear = DateTime.Today.AddYears(-30).Year; string filters = personelId > 0 ? " AND A.PersonelId=@PersonelId" : ""; filters += donemId > 0 ? " AND A.IzinDonemId=@DonemId" : ""; filters += izinTipi > 0 ? " AND A.IzinTipi=@IzinTipi" : "";
+            SqlQuery q = new SqlQuery(@"SELECT A.Id IzinHareketId,P.Adi+' '+P.Soyadi AdiSoyadi,A.PersonelId,A.BaslangicTarihi,A.BitisTarihi,A.Sure,A.Birim,A.Sure+' '+A.Birim SureBirim,A.IzinTalepId,A.IzinDonemId,CONVERT(varchar,FORMAT(C.BaslangicTarihi,'dd.MM.yyyy')) +'-'+CONVERT(varchar,FORMAT(C.BitisTarihi,'dd.MM.yyyy')) IzinDonemi,C.Adi IzinDonemiYil,B.Adi IzinTipi,B.Id IzinTipiId,A.VekilImza,A.AmirImza,A.OnayImza,A.Adres,A.Mahsup,A.Aciklama,A.OncekiIzinStr,A.KullanilanIzinStr,A.KalanIzinStr
+                FROM IzinHareket_Table A INNER JOIN Personel_Table P ON P.Id=A.PersonelId INNER JOIN IzinTanim_Table B ON B.Id=A.IzinTipi LEFT OUTER JOIN IzinDonem_Table C ON C.Id=A.IzinDonemId
+                WHERE A.BaslangicTarihi>=@Since" + filters + " ORDER BY A.BaslangicTarihi DESC");
+            q.AddParameter("@Since", new DateTime(sinceYear, 1, 1)); if (personelId > 0) q.AddParameter("@PersonelId", personelId); if (donemId > 0) q.AddParameter("@DonemId", donemId); if (izinTipi > 0) q.AddParameter("@IzinTipi", izinTipi); return PortalSqlReadExecutor.Select(q, context, "IzinHareket.SelectByPersonelIdDonemId");
+        }
         public DataTable SelectDigerByPersonelId(int personelId) { SqlQuery q = new SqlQuery("SELECT *, B.Adi IzinTipiAdi FROM IzinHareket_Table A INNER JOIN IzinTanim_Table B ON B.Id=A.IzinTipi WHERE IzinTipi NOT IN (1,2) AND PersonelId=@PersonelId ORDER BY A.BaslangicTarihi DESC"); q.AddParameter("@PersonelId", personelId); return db.SelectFromDb(q, ""); }
     }
 }

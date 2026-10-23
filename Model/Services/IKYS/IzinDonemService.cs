@@ -21,7 +21,7 @@ namespace Model.Services.IKYS
         public IzinDonemService() : this(new IzinDonemRepository()) { }
         public IzinDonemService(IzinDonemRepository repository) { if (repository == null) throw new ArgumentNullException("repository"); this.repository = repository; }
         public IzinDonem GetById(int id) { return Map(repository.SelectById(id)); }
-        public IzinDonem GetById(int id, PortalLogContext context) { return Trace(context, "IzinDonem.SelectById", () => Map(repository.SelectById(id))); }
+        public IzinDonem GetById(int id, PortalLogContext context) { return Map(repository.SelectById(id, context)); }
         public IzinDonem GetById(int id, SqlTransactionContext transaction, PortalLogContext context) { return Map(repository.SelectById(id, transaction, context)); }
         public List<IzinDonem> GetAll() { return ToList(repository.SelectAll()); }
         public int Save(IzinDonem item) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item); if (item.Id > 0 && ProjeConstants.IKYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINDONEM); return item.Id; }
@@ -63,12 +63,12 @@ namespace Model.Services.IKYS
             return true;
         }
         public IzinDonem GetByIzinTarihi(int personelId, int izinTipi, DateTime tarih) { return Map(repository.SelectByIzinTarihi(personelId, izinTipi, tarih)); }
-        public IzinDonem GetByIzinTarihi(int personelId, int izinTipi, DateTime tarih, PortalLogContext context) { return Trace(context, "IzinDonem.SelectByIzinTarihi", () => Map(repository.SelectByIzinTarihi(personelId, izinTipi, tarih))); }
+        public IzinDonem GetByIzinTarihi(int personelId, int izinTipi, DateTime tarih, PortalLogContext context) { return Map(repository.SelectByIzinTarihi(personelId, izinTipi, tarih, context)); }
         public IzinDonem GetByIzinTarihi(int personelId, int izinTipi, DateTime tarih, SqlTransactionContext transaction, PortalLogContext context) { return Map(repository.SelectByIzinTarihi(personelId, izinTipi, tarih, transaction, context)); }
         public List<IzinDonem> GetOncekiYillaraAit(int personelId) { return ToList(repository.SelectOncekiYillaraAit(personelId)); }
         public List<IzinDonem> GetOncekiYillaraAit(int personelId, PortalLogContext context) { return Trace(context, "IzinDonem.SelectOncekiYillaraAit", () => ToList(repository.SelectOncekiYillaraAit(personelId))); }
         public List<IzinDonem> GetByPersonelId(int personelId, int izinTipi) { return ToList(repository.SelectByPersonelId(personelId, izinTipi)); }
-        public List<IzinDonem> GetByPersonelId(int personelId, int izinTipi, PortalLogContext context) { return Trace(context, "IzinDonem.SelectByPersonelId", () => ToList(repository.SelectByPersonelId(personelId, izinTipi))); }
+        public List<IzinDonem> GetByPersonelId(int personelId, int izinTipi, PortalLogContext context) { return ToList(repository.SelectByPersonelId(personelId, izinTipi, context)); }
         public DataTable GetSumKalanIzinByPersonelId(int personelId, bool sadeceEskiDonemler) { return repository.SelectSumKalanIzinByPersonelId(personelId, sadeceEskiDonemler); }
         public string GetByPersonelIdReturnJson(int personelId, int izinTipi) { return new IzinHareketService().ConvertDataTableToString(repository.SelectByPersonelId(personelId, izinTipi)); }
         public DataTable GetByPersonelIdReturnDataTable(int personelId, int izinTipi) { return repository.SelectByPersonelIdReturnDataTable(personelId, izinTipi); }

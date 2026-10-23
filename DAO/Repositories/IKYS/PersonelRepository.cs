@@ -35,12 +35,9 @@ namespace DAO.Repositories.IKYS
         {
             SqlQuery query = new SqlQuery("SELECT * FROM Personel_Table WHERE Id=@Id");
             query.AddParameter("@Id", id);
-            if (context != null && (context.Project == "Portal" || context.Project == "MTS"))
-                return PortalSqlReadExecutor.Select(query, context, "PersonelRepository.SelectById");
-            Stopwatch clock = Stopwatch.StartNew();
-            bool succeeded = false;
-            try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Personel.SelectById", clock.ElapsedMilliseconds, succeeded); }
+            string name = context != null && (context.Project == "Portal" || context.Project == "MTS")
+                ? "PersonelRepository.SelectById" : "Personel.SelectById";
+            return PortalSqlReadExecutor.Select(query, context, name);
         }
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)
         {

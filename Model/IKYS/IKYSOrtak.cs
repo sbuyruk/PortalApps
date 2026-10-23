@@ -242,11 +242,9 @@ namespace Model.Ortak
             return yilSayisi > 5 ? ProjeConstants.IZIN_SURESI_6_15 : ProjeConstants.IZIN_SURESI_1_5;
         }
 
-        private static string KalacakIzinHesapla(int izinDonemId, string sure)
+        private static string KalacakIzinHesapla(IzinDonem izinDonemi, string sure)
         {
             string sonuctaKalanIzin = string.Empty;
-            IzinDonem izinDonemi = new IzinDonem();
-            izinDonemi = new IzinDonemService().GetById(izinDonemId);
             if (izinDonemi != null)
             {
                 if (izinDonemi.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT)
@@ -270,15 +268,19 @@ namespace Model.Ortak
             }
             return sonuctaKalanIzin;
         }
-        public static void IzinKabulRedOnayEPostasiGonder(int personelId, int izinTalepId, string kabulRedOnay)
+
+        public static void IzinKabulRedOnayEPostasiGonder(int personelId, int izinTalepId, string kabulRedOnay, Utility.Logging.PortalLogContext context)
         {
+            if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
             Personel personel = new Personel();
-            personel = new PersonelService().GetById(personelId);
+            personel = new PersonelService().GetById(personelId, context);
 
             if (personel != null)
             {
                 IzinTalep izinTalep = new IzinTalep();
-                izinTalep = new IzinTalepService().GetById(izinTalepId);
+                izinTalep = new IzinTalepService().GetById(izinTalepId, context);
+                if (izinTalep == null || izinTalep.PersonelId != personelId)
+                    throw new InvalidOperationException("Bildirim için izin talebi bulunamadı.");
                 if (izinTalep != null)
                 {
                     string userto = personel.KullaniciAdi + "@tskgv.local";
@@ -286,7 +288,7 @@ namespace Model.Ortak
                     string bastarBittar = izinTalep.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinTalep.BitisTarihi.ConvertToDatetimeEmptyIfNull();
                     //  string izintipi=izinTalep.IzinTipi?Pr
                     IzinTanim izintipi = new IzinTanim();
-                    izintipi = new IzinTanimService().GetById(izinTalep.IzinTipi);
+                    izintipi = new IzinTanimService().GetById(izinTalep.IzinTipi, context);
                     string izintipiStr = izintipi == null ? "" : izintipi.Adi;
 
                     string subject = bastarBittar + " tarihleri arasindaki " + izintipiStr + " Izin talebiniz.";
@@ -305,7 +307,8 @@ namespace Model.Ortak
                     string rawUrl = System.Web.HttpContext.Current.Request.RawUrl.ToString();
                     int index = currentUrl.IndexOf(rawUrl);
                     string rootUrl = (index < 0) ? currentUrl : currentUrl.Remove(index, rawUrl.Length);
-                    string sonIzin = KalacakIzinHesapla(izinTalep.IzinDonemId, izinTalep.Sure);
+                    IzinDonem izinDonemi = new IzinDonemService().GetById(izinTalep.IzinDonemId, context);
+                    string sonIzin = KalacakIzinHesapla(izinDonemi, izinTalep.Sure);
 
                     var izinBelgesiUrl = "";
 
@@ -316,7 +319,7 @@ namespace Model.Ortak
                     else if (izinTalep.IzinTipi.Equals(ProjeConstants.IZINTIPI_MAZERET_INT))
                     {
                         IzinDonem id = new IzinDonem();
-                        id = new IzinDonemService().GetById(izinTalep.IzinDonemId);
+                        id = izinDonemi;
                         string kalanIzin = string.Empty;
                         if (id != null)
                         {
@@ -353,13 +356,13 @@ namespace Model.Ortak
                             " kayitlara islenmistir.";
                     }
                     IletisimBilgileri ib = new IletisimBilgileri();
-                    ib = new IletisimBilgileriService().GetByPersonelId(personel.Id);
+                    ib = new IletisimBilgileriService().GetByPersonelId(personel.Id, context);
                     if (ib != null)
                     {
                         userto = ib.IntranetEPosta;
                     }
-                    string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
-                    MailHelper.EPostaGonder(from, userto, subject, userbody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
+                    string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL, context);
+                    MailHelper.EPostaGonderVeyaHataVer(from, userto, subject, userbody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
 
                     //string to = "izinonaymailgrubu@tskgv.local";
                     //subject = personel.Adi + " " + personel.Soyadi + " Yeni " + izintipiStr + " izin talebi ";
@@ -369,7 +372,7 @@ namespace Model.Ortak
             }
             else
             {
-                MessageHelper.PublishMessage("Personel ve/veya Izintalep bilgisi bulunamadi", ProjeConstants.MESAJ_HATA);
+                throw new InvalidOperationException("Bildirim için personel bilgisi bulunamadı.");
             }
 
         }

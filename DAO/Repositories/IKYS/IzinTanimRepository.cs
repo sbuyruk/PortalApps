@@ -56,10 +56,7 @@ namespace DAO.Repositories.IKYS
 
         private DataTable TraceSelect(SqlQuery query, string name, PortalLogContext context)
         {
-            Stopwatch clock = Stopwatch.StartNew();
-            bool succeeded = false;
-            try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", name, clock.ElapsedMilliseconds, succeeded); }
+            return PortalSqlReadExecutor.Select(query, context, name);
         }
 
         private static bool TraceWrite(SqlQuery query, string operation, string name, SqlTransactionContext transaction, PortalLogContext context)

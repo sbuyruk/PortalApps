@@ -245,13 +245,7 @@ namespace Model.Services.IKYS
             int izinTipi,
             PortalLogContext context)
         {
-            return Trace(
-                context,
-                "IzinHareket.SelectByPersonelIdDonemId",
-                () => repository.SelectByPersonelIdDonemId(
-                    personelId,
-                    izinDonemId,
-                    izinTipi));
+            return repository.SelectByPersonelIdDonemId(personelId, izinDonemId, izinTipi, context);
         }
 
         public string GetByPersonelIdDonemIdReturnJson(
