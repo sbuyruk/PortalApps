@@ -43,6 +43,11 @@ namespace Model.Services.TBYS
             return repository.SelectUnselectedParticipants();
         }
 
+        public DataTable GetUnselectedParticipants(Utility.Logging.PortalLogContext context)
+        {
+            return repository.SelectUnselectedParticipants(context);
+        }
+
         public DataTable GetDeprecatedByBolge(string bolge)
         {
             return repository.SelectDeprecatedByBolge(

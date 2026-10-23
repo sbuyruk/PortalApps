@@ -18,6 +18,8 @@ namespace Model.Services.MTS
         {
         }
 
+        public FaaliyetKatilimService(Utility.Logging.PortalLogContext context) : this(new FaaliyetKatilimRepository(context)) { }
+
         public FaaliyetKatilimService(FaaliyetKatilimRepository repository)
         {
             this.repository = repository ?? throw new ArgumentNullException("repository");

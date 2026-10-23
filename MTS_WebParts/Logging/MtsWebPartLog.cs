@@ -24,6 +24,33 @@ namespace MTS_WebParts.Logging
             return http != null && object.Equals(http.Items["PortalApps.MTS.FailedWebPart." + context.WebPart], true);
         }
 
+        internal static void RequireCompleted(Model.Services.MTS.MtsContactResult result)
+        {
+            switch (result)
+            {
+                case Model.Services.MTS.MtsContactResult.Completed: return;
+                case Model.Services.MTS.MtsContactResult.NotFound: throw new MtsInputException("Kayıt bulunamadı. Listeyi yenileyip yeniden seçin.");
+                case Model.Services.MTS.MtsContactResult.Duplicate: throw new MtsInputException("Bu T.C. kimlik numarasıyla kayıt var. Kişi listesini kontrol edin.");
+                case Model.Services.MTS.MtsContactResult.Changed: throw new MtsInputException("Kayıt veya ilişkili bilgiler değişti. Sayfayı yenileyip yeniden açın.");
+                case Model.Services.MTS.MtsContactResult.InUse: throw new MtsInputException("Kişinin faaliyet, iletişim, kurum/görev veya anı objesi kaydı var. Kişi silinemedi.");
+                case Model.Services.MTS.MtsContactResult.Restricted: throw new MtsInputException("Bu kişi için randevu kısıtı var. Randevu talebi veya faaliyet oluşturma işlemi yapılamadı.");
+                default: throw new MtsInputException("Bilgileri ve seçimleri kontrol edip yeniden deneyin.");
+            }
+        }
+
+        internal static void FinishCommitted(PortalLogContext context, string message, Action refresh)
+        {
+            try { refresh(); }
+            catch (ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                PortalTechnicalLog.WriteError(context, context.Project + "." + context.WebPart + ".AfterCommit", error);
+                Messages.Warning(message + " Ekran yenilenemedi. İşlemi tekrar kaydetmeden önce listeyi kontrol edin. Başvuru kodu: " + context.OperationId.ToString("N"));
+                return;
+            }
+            Messages.Success(message);
+        }
+
         internal static void ExecuteAction(PortalLogContext context, string operation, Action action)
         {
             HttpContext http = HttpContext.Current;

@@ -99,6 +99,25 @@ namespace DAO.Repositories.NBYS
             return Select(query, "");
         }
 
+        public DataTable SelectSecilmemisKatilimcilar(DateTime minimumBagisTarihi, decimal minimumBagisMiktari, Utility.Logging.PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT DISTINCT(A.Id) KatilimciId, A.Adi, A.Soyadi,
+                    A.Adres,A.Telefon1 Telefon,A.Sag,D.IlceAdi Ilce,C.IlAdi Il,MAX(B.BagisMiktari)
+                FROM NakitBagisci_Table A
+                    INNER JOIN Armagan_Table B ON B.BagisciId = A.Id
+                        AND Tarih > @MinimumBagisTarihi AND BagisMiktari >= @MinimumBagisMiktari
+                    LEFT JOIN Il_Table C ON C.Id = A.Ili
+                    LEFT JOIN Ilce_Table D ON D.Id = A.Ilcesi AND D.IlId = A.Ili
+                WHERE A.Sag = 1 AND A.TuzelKisi = 0 AND A.Adi IS NOT NULL
+                    AND A.Adi != '' AND A.Adi NOT LIKE '%BILINMEYEN%'
+                GROUP BY A.Id, A.Adi, A.Soyadi, A.Adres, A.Telefon1, A.Sag, D.IlceAdi, C.IlAdi
+                ORDER BY A.Id");
+            query.AddParameter("@MinimumBagisTarihi", minimumBagisTarihi);
+            query.AddParameter("@MinimumBagisMiktari", minimumBagisMiktari);
+            return PortalSqlReadExecutor.Select(query, context, "NakitBagisciReportRepository.SelectSecilmemisKatilimcilar");
+        }
+
         public DataTable SelectDuzenliBagisci(
             DateTime baslangicTarihi,
             DateTime bitisTarihi,

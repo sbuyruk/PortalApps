@@ -1,3 +1,5 @@
+using MTS_WebParts.Logging;
+using Utility.Logging;
 using Model.MTS;
 using Model.Services.NBYS;
 using Model.Services.TBYS;
@@ -20,6 +22,8 @@ namespace MTS_WebParts.BagisciListesiWP
     [ToolboxItemAttribute(false)]
     public partial class BagisciListesiWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("MTS", "BagisciListesiWP")); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -37,28 +41,18 @@ namespace MTS_WebParts.BagisciListesiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            MtsWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
             {
+                if (!Page.IsPostBack) MtsWebPartLog.RecordOpened(LogContext);
                 TabloOlustur();
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.PublishMessage(ex.Message, ProjeConstants.MESAJ_HATA);
-            }
+            });
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path);
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl);
+
         }
 
         private void TabloOlustur()
@@ -73,28 +67,21 @@ namespace MTS_WebParts.BagisciListesiWP
         {
             string jSon = string.Empty;
 
-            try
-            {
-                List<BagisciListItem> list = GetDataList();
-                var serializer = new JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
-            return jSon;
+            List<BagisciListItem> list = GetDataList();
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            jSon = serializer.Serialize(list);
+
+            return jSon.Replace("<", "\\u003c").Replace(">", "\\u003e").Replace("&", "\\u0026");
         }
         private List<BagisciListItem> GetDataList()
         {
             NakitBagisciReportService reportService = new NakitBagisciReportService();
-            DataTable dataTableNakit = reportService.GetSecilmemisFaaliyetKatilimcilari();
-            DataTable dataTableTasinmaz = new TasinmazBagisciReportService().GetUnselectedParticipants();
+            DataTable dataTableNakit = reportService.GetSecilmemisFaaliyetKatilimcilari(LogContext);
+            DataTable dataTableTasinmaz = new TasinmazBagisciReportService().GetUnselectedParticipants(LogContext);
 
-            dataTableTasinmaz.Merge(dataTableNakit);
+            if (dataTableTasinmaz == null) dataTableTasinmaz = dataTableNakit;
+            else if (dataTableNakit != null) dataTableTasinmaz.Merge(dataTableNakit);
             int SiraNo = 1;
             List<BagisciListItem> list = new List<BagisciListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -127,24 +114,22 @@ namespace MTS_WebParts.BagisciListesiWP
             }
             return list;
         }
-      
+
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            MtsWebPartLog.ExecuteAction(LogContext, "CloseBtn_Click", () =>
             {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path);
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void RandevuTakvimiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM);
+            MtsWebPartLog.ExecuteAction(LogContext, "RandevuTakvimiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM);
+            });
         }
         private class BagisciListItem
         {

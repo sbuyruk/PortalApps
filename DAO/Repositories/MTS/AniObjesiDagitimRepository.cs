@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+using Utility.Logging;
 using DAO.Ortak;
 using System;
 using System.Collections.Generic;
@@ -10,9 +12,25 @@ namespace DAO.Repositories.MTS
     {
         private const string TableName = "AniObjesiDagitim_Table";
         private readonly DbClass db;
+        private readonly PortalLogContext context;
         private readonly CrudQueryBuilder queryBuilder;
 
         public AniObjesiDagitimRepository() : this(new DbClass()) { }
+        public AniObjesiDagitimRepository(PortalLogContext context) : this(new DbClass())
+        {
+            if (context == null || context.Project != "MTS") throw new ArgumentException("MTS log bağlamı gereklidir.", "context");
+            this.context = context;
+        }
+        private DataTable Read(SqlQuery query, string identifier, [CallerMemberName] string method = "")
+        {
+            return context == null ? db.SelectFromDb(query, identifier)
+                : PortalSqlReadExecutor.Select(query, context, "AniObjesiDagitimRepository." + method);
+        }
+        private void RequireLegacyWrite()
+        {
+            if (context != null) throw new InvalidOperationException("MTS yazma işlemi transaction hizmeti üzerinden yapılmalıdır.");
+        }
+
         public AniObjesiDagitimRepository(DbClass db)
         {
             if (db == null) throw new ArgumentNullException("db");
@@ -23,12 +41,12 @@ namespace DAO.Repositories.MTS
         {
             SqlQuery query = new SqlQuery("SELECT * FROM " + TableName + " WHERE Id=@Id");
             query.AddParameter("@Id", id);
-            return db.SelectFromDb(query, "");
+            return Read(query, "");
         }
-        public DataTable SelectAll() { return db.SelectFromDb(new SqlQuery("SELECT * FROM " + TableName + " ORDER BY Id"), ""); }
-        public int Insert<T>(T entity) { return db.Insert(queryBuilder.BuildInsert(entity, TableName)); }
-        public bool Update<T>(T entity) { return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName)); }
-        public bool Delete(int id) { return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), ""); }
+        public DataTable SelectAll() { return Read(new SqlQuery("SELECT * FROM " + TableName + " ORDER BY Id"), ""); }
+        public int Insert<T>(T entity) { RequireLegacyWrite(); return db.Insert(queryBuilder.BuildInsert(entity, TableName)); }
+        public bool Update<T>(T entity) { RequireLegacyWrite(); return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName)); }
+        public bool Delete(int id) { RequireLegacyWrite(); return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), ""); }
 
         public DataTable SelectByFilter(int faaliyetId, int katilimciId, int aniObjesiId, string stokluMu, string verilenGetirilen, string mode)
         {
@@ -87,7 +105,7 @@ namespace DAO.Repositories.MTS
                 query.AddParameter("@VerilenAlinan", verilenGetirilen);
             if (mode == "single")
                 query.AddParameter("@AniObjesiId", aniObjesiId);
-            return db.SelectFromDb(query, "");
+            return Read(query, "");
         }
 
         public DataTable SelectEventDistribution(int faaliyetId, int katilimciId, Utility.Logging.PortalLogContext context)
@@ -108,7 +126,7 @@ namespace DAO.Repositories.MTS
             query.AddParameter("@FaaliyetId", faaliyetId);
             query.AddParameter("@KatilimciId", katilimciId);
             query.AddParameter("@VerilenAlinan", getirilenValue);
-            return db.SelectFromDb(query, "");
+            return Read(query, "");
         }
 
         public DataTable SelectGetirilen(int faaliyetId, int katilimciId, int getirilenValue, Utility.Logging.PortalLogContext context)
@@ -129,11 +147,11 @@ namespace DAO.Repositories.MTS
             query.AddParameter("@KatilimciId", katilimciId);
             query.AddParameter("@FaaliyetId", faaliyetId);
             query.AddParameter("@AniObjesiId", aniObjesiId);
-            return db.SelectFromDb(query, "");
+            return Read(query, "");
         }
 
         public int DeleteByActivityAndParticipant(int faaliyetId, int katilimciId, List<int> aniObjesiIds, out DataTable deletedItems)
-        {
+        { RequireLegacyWrite();
             List<string> parameters = new List<string>();
             SqlQuery selectQuery = new SqlQuery("SELECT * FROM AniObjesiDagitim_Table WHERE FaaliyetId = @FaaliyetId AND KatilimciId = @KatilimciId");
             selectQuery.AddParameter("@FaaliyetId", faaliyetId);
