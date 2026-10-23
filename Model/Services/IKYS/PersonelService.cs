@@ -65,7 +65,6 @@ namespace Model.Services.IKYS
         public int Save(Personel item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return Save(item);
             if (item == null) throw new ArgumentNullException("item");
             item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName();
             using (SqlTransactionContext transaction = new SqlTransactionContext())
@@ -90,7 +89,7 @@ namespace Model.Services.IKYS
         public bool Update(Personel item) { if (item == null) throw new ArgumentNullException("item"); Personel old = GetById(item.Id); bool ok = false; if (item.Id != 0) { item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); ok = repository.Update(item); } if (ok && ProjeConstants.IKYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.IKYS, ProjeConstants.IKYS_PERSONEL); return ok; }
         public bool Update(Personel item, PortalLogContext context)
         {
-            if (context == null) throw new ArgumentNullException("context"); if (!PortalLogSettings.IsEnabled(context)) return Update(item);
+            if (context == null) throw new ArgumentNullException("context");
             if (item == null || item.Id <= 0) return false;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
@@ -142,6 +141,7 @@ namespace Model.Services.IKYS
         public List<Personel> GetMeetingParticipants(int toplantiId, bool bilgiVerildi, PortalLogContext context) { return MapList(repository.SelectMeetingParticipants(toplantiId, bilgiVerildi, context)); }
         private static void RecordChanges(Personel old, Personel current, int auditId, SqlTransactionContext transaction)
         {
+            if (auditId == 0) return;
             PortalLogRepository log = new PortalLogRepository();
             AddChange(log, auditId, "PerId", old == null ? null : old.PerId.ToString(CultureInfo.InvariantCulture), current == null ? null : current.PerId.ToString(CultureInfo.InvariantCulture), transaction);
             AddChange(log, auditId, "SicilNo", old == null ? null : old.SicilNo.ToString(CultureInfo.InvariantCulture), current == null ? null : current.SicilNo.ToString(CultureInfo.InvariantCulture), transaction);

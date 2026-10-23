@@ -53,7 +53,6 @@ namespace Model.Services.IKYS
         public int Save(IzinTalep item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return Save(item);
             if (item == null) throw new ArgumentNullException("item");
             item.OlusturmaTarihi = DateTime.Now;
             item.Olusturan = UtilityHelper.GetCurrentUserName();
@@ -110,7 +109,6 @@ namespace Model.Services.IKYS
         public bool Update(IzinTalep item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return Update(item);
             if (item == null || item.Id <= 0) return false;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
@@ -153,7 +151,6 @@ namespace Model.Services.IKYS
         public bool Delete(IzinTalep item, PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
-            if (!PortalLogSettings.IsEnabled(context)) return Delete(item);
             if (item == null || item.Id <= 0) return false;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
@@ -256,6 +253,7 @@ namespace Model.Services.IKYS
 
         private static void RecordChanges(IzinTalep old, IzinTalep current, int auditId, SqlTransactionContext transaction)
         {
+            if (auditId == 0) return;
             PortalLogRepository log = new PortalLogRepository();
             AddChange(log, auditId, "PersonelId", old == null ? (int?)null : old.PersonelId, current == null ? (int?)null : current.PersonelId, transaction);
             AddChange(log, auditId, "IzinTipi", old == null ? (int?)null : old.IzinTipi, current == null ? (int?)null : current.IzinTipi, transaction);

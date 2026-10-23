@@ -23,7 +23,7 @@ namespace Model.Services.IKYS
         public int Save(IletisimBilgileri item) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item); if (item.Id > 0 && ProjeConstants.IKYS_SAVE_LOG) new OlayKayit().GirisOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_ILETISIMBILGILERI); return item.Id; }
         public int Save(IletisimBilgileri item, PortalLogContext context)
         {
-            if (context == null) throw new ArgumentNullException("context"); if (!PortalLogSettings.IsEnabled(context)) return Save(item);
+            if (context == null) throw new ArgumentNullException("context");
             if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName();
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
@@ -46,7 +46,7 @@ namespace Model.Services.IKYS
         public bool Update(IletisimBilgileri item) { if (item == null) throw new ArgumentNullException("item"); IletisimBilgileri old = GetById(item.Id); bool ok = false; if (item.Id != 0) { item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); ok = repository.Update(item); } if (ok && ProjeConstants.IKYS_UPDATE_LOG) new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.IKYS, ProjeConstants.IKYS_ILETISIMBILGILERI); return ok; }
         public bool Update(IletisimBilgileri item, PortalLogContext context)
         {
-            if (context == null) throw new ArgumentNullException("context"); if (!PortalLogSettings.IsEnabled(context)) return Update(item);
+            if (context == null) throw new ArgumentNullException("context");
             if (item == null || item.Id <= 0) return false;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
@@ -69,7 +69,7 @@ namespace Model.Services.IKYS
         public bool Delete(IletisimBilgileri item) { if (item == null || item.Id == 0) return false; IletisimBilgileri old = GetById(item.Id); if (old == null) return false; bool ok = repository.Delete(item.Id); if (ok && ProjeConstants.IKYS_DELETE_LOG) new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.IKYS, ProjeConstants.IKYS_ILETISIMBILGILERI); return ok; }
         public bool Delete(IletisimBilgileri item, PortalLogContext context)
         {
-            if (context == null) throw new ArgumentNullException("context"); if (!PortalLogSettings.IsEnabled(context)) return Delete(item);
+            if (context == null) throw new ArgumentNullException("context");
             if (item == null || item.Id <= 0) return false;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
@@ -88,6 +88,7 @@ namespace Model.Services.IKYS
         }
         private static void RecordChanges(IletisimBilgileri old, IletisimBilgileri current, int auditId, SqlTransactionContext transaction)
         {
+            if (auditId == 0) return;
             PortalLogRepository log = new PortalLogRepository();
             AddChange(log, auditId, "PersonelId", old == null ? null : old.PersonelId.ToString(CultureInfo.InvariantCulture), current == null ? null : current.PersonelId.ToString(CultureInfo.InvariantCulture), transaction);
             AddChange(log, auditId, "Ilcesi", old == null ? null : old.Ilcesi.ToString(CultureInfo.InvariantCulture), current == null ? null : current.Ilcesi.ToString(CultureInfo.InvariantCulture), transaction);
