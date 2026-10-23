@@ -119,6 +119,7 @@ namespace Model.Services.IKYS
         public DataTable GetActiveEmployeesReturnDataTable(Personel.PersonelTipi type) { return repository.SelectActiveEmployeesReturnDataTable((int)type, type == Personel.PersonelTipi.Tumu); }
         public DataTable GetPersonelReturnDataTable(int personelId) { return repository.SelectPersonelReturnDataTable(personelId); }
         public DataTable GetPersonelReturnDataTable(int personelId, PortalLogContext context) { return repository.SelectPersonelReturnDataTable(personelId, context); }
+        public DataTable GetCalendarCelebrations(PortalLogContext context) { return repository.SelectCalendarCelebrations((int)Personel.PersonelTipi.Kadrolu, context); }
         public DataTable GetEmployeeListReturnDataTable(Personel.PersonelTipi type) { return repository.SelectEmployeeListReturnDataTable((int)type, type == Personel.PersonelTipi.Tumu); }
         public DataTable GetEmployeeListReturnDataTable(Personel.PersonelTipi type, PortalLogContext context) { return repository.SelectEmployeeListReturnDataTable((int)type, type == Personel.PersonelTipi.Tumu, context); }
         public DataTable GetFormerEmployeeListReturnDataTable() { return repository.SelectFormerEmployeeListReturnDataTable(); }

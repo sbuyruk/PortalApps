@@ -45,6 +45,13 @@ namespace DAO.Repositories.Portal
             return Select(q);
         }
 
+        public DataTable SelectById(int id, PortalLogContext context)
+        {
+            var q = new SqlQuery("SELECT * FROM ToplantiParametre_Table WHERE Id=@Id");
+            q.AddParameter("@Id", id);
+            return PortalSqlReadExecutor.Select(q, context, "ToplantiParametreRepository.SelectById");
+        }
+
         public DataTable SelectAll()
         {
             return Select(new SqlQuery("SELECT * FROM ToplantiParametre_Table"));

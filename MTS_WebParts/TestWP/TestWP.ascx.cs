@@ -1,4 +1,7 @@
-using Microsoft.Office.Audit.Schema.SharePoint;
+using MTS_WebParts.Logging;
+using Utility.Logging;
+using Model.MTS;
+using Model.Services.MTS;
 using Model.Portal;
 using System;
 using System.ComponentModel;
@@ -11,6 +14,22 @@ namespace MTS_WebParts.TestWP
     [ToolboxItemAttribute(false)]
     public partial class TestWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("MTS", "TestWP")); } }
+        private Toplanti ReadSampleMeeting()
+        {
+            var meeting = new Model.Services.Portal.ToplantiService().GetById(1773, LogContext);
+            if (meeting == null) throw new MtsInputException("Örnek toplantı bulunamadı. Deneme verisini kontrol edin.");
+            return meeting;
+        }
+        private void SendSample(Toplanti meeting, string subject, string place, DateTime start, DateTime finish, bool cancel)
+        {
+            MtsActivityNotificationService.Send(new Faaliyet { UniqueId = meeting.UniqueId, FaaliyetKonusu = subject,
+                FaaliyetYeriStr = place, BaslangicTarihi = start, BitisTarihi = finish, Aciklama = meeting.Aciklama },
+                "asbuyruk@tskgv.org.tr", cancel);
+            Utility.HelperClasses.Messages.Success("Örnek takvim bildirimi gönderildi.");
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -28,53 +47,67 @@ namespace MTS_WebParts.TestWP
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
+            MtsWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
             {
-                PanelTextBox.Focus();
-                myTimer.Interval = 3000;
-                myTimer.Enabled = true;
-            }
+                if (!Page.IsPostBack)
+                {
+                    MtsWebPartLog.RecordOpened(LogContext);
+                    PanelTextBox.Focus();
+                    myTimer.Interval = 3000;
+                    myTimer.Enabled = true;
+                }
+
+            });
         }
 
         protected void myTimer_Tick(object sender, EventArgs e)
         {
-            System.Threading.Thread.Sleep(2000);
-            TimeLiteral.Text = DateTime.UtcNow.Ticks.ToString();
+            MtsWebPartLog.ExecuteAction(LogContext, "myTimer_Tick", () =>
+            {
+                TimeLiteral.Text = DateTime.UtcNow.Ticks.ToString();
+
+            });
         }
 
         protected void TakvimeEkleBtn_Click(object sender, EventArgs e)
         {
-            Toplanti toplanti = new Model.Services.Portal.ToplantiService().GetById(1773);
+            MtsWebPartLog.ExecuteAction(LogContext, "TakvimeEkleBtn_Click", () =>
+            {
+                Toplanti toplanti = ReadSampleMeeting();
 
-            string from = "Makam Takip Sistemi <mts@tskgv.local>";
-            string userto = "asbuyruk@tskgv.org.tr";
-            string baslik = "Deneme Randevu";
-            string yer = "Makam Odasi";
-            MailHelper.TakvimeEkle(toplanti.UniqueId, from, userto, baslik, DateTime.Now.AddDays(-10), DateTime.Now.AddHours(1), yer, toplanti.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
+                string baslik = "Deneme Randevu";
+                string yer = "Makam Odasi";
+                SendSample(toplanti, baslik, yer, DateTime.Now.AddDays(-10), DateTime.Now.AddHours(1), false);
+
+            });
         }
         protected void TakvimDegistirBtn_Click(object sender, EventArgs e)
         {
-            Toplanti toplanti = new Model.Services.Portal.ToplantiService().GetById(1773);
+            MtsWebPartLog.ExecuteAction(LogContext, "TakvimDegistirBtn_Click", () =>
+            {
+                Toplanti toplanti = ReadSampleMeeting();
 
-            string from = "Makam Takip Sistemi <mts@tskgv.local>";
-            string userto = "asbuyruk@tskgv.org.tr";
-            string baslik = "Deneme Randevu";
-            string yer = "Makam Odasi";
-            DateTime bastar = toplanti.BaslangicTarihi.AddDays(1);
-            DateTime bittar = toplanti.BitisTarihi.AddDays(1);
-            MailHelper.TakvimeEkle(toplanti.UniqueId, from, userto, baslik, bastar, bittar, yer, toplanti.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
+                string baslik = "Deneme Randevu";
+                string yer = "Makam Odasi";
+                DateTime bastar = toplanti.BaslangicTarihi.AddDays(1);
+                DateTime bittar = toplanti.BitisTarihi.AddDays(1);
+                SendSample(toplanti, baslik, yer, bastar, bittar, false);
+
+            });
         }
         protected void TakvimSilBtn_Click(object sender, EventArgs e)
         {
-            Toplanti toplanti = new Model.Services.Portal.ToplantiService().GetById(1773);
+            MtsWebPartLog.ExecuteAction(LogContext, "TakvimSilBtn_Click", () =>
+            {
+                Toplanti toplanti = ReadSampleMeeting();
 
-            string from = "Makam Takip Sistemi <mts@tskgv.local>";
-            string userto = "asbuyruk@tskgv.org.tr";
-            string baslik = "Deneme Randevu Degisti";
-            string yer = "Öbür Oda";
-            DateTime bastar = toplanti.BaslangicTarihi.AddDays(1);
-            DateTime bittar = toplanti.BitisTarihi.AddDays(1);
-            MailHelper.TakvimdenSil(toplanti.UniqueId, from, userto, baslik, bastar, bittar, yer, toplanti.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
+                string baslik = "Deneme Randevu Degisti";
+                string yer = "Öbür Oda";
+                DateTime bastar = toplanti.BaslangicTarihi.AddDays(1);
+                DateTime bittar = toplanti.BitisTarihi.AddDays(1);
+                SendSample(toplanti, baslik, yer, bastar, bittar, true);
+
+            });
         }
     }
 }

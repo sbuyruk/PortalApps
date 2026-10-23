@@ -49,7 +49,15 @@ namespace Model.Services.MTS
 
         public string GetCalendarJson(string acikTarih)
         {
+            Dictionary<int, string> versions;
+            return GetCalendarJson(acikTarih, out versions);
+        }
+
+        public string GetCalendarJson(string acikTarih, out Dictionary<int, string> versions)
+        {
             DataTable dataTable = GetAllData(acikTarih);
+            versions = new Dictionary<int, string>();
+            foreach (var activity in ToList(dataTable)) versions[activity.Id] = MtsContactWriteService.Version(activity);
             List<CalendarEvent> eventItems = new List<CalendarEvent>();
             if (dataTable != null)
             {
@@ -83,13 +91,13 @@ namespace Model.Services.MTS
                 }
             }
 
-            return new Faaliyet().ToJSON(eventItems);
+            return new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = int.MaxValue }.Serialize(eventItems);
         }
 
         public List<Faaliyet> GetByDate(DateTime tarih)
         {
             DateTime baslangic = new DateTime(tarih.Year, tarih.Month, tarih.Day);
-            DateTime bitis = UtilityHelper.TariheSaatEkle(tarih, "23:59");
+            DateTime bitis = baslangic.AddDays(1).AddMilliseconds(-3);
             return ToList(repository.SelectByDate(baslangic, bitis));
         }
 
@@ -152,8 +160,14 @@ namespace Model.Services.MTS
             return deleted;
         }
 
-        private static List<Faaliyet> ToList(DataTable table)
+        internal static List<Faaliyet> ToList(DataTable table)
         {
+            if (table != null && table.Columns.Contains("UniqueId"))
+            {
+                table = table.Copy();
+                foreach (DataRow row in table.Rows)
+                    if (string.IsNullOrWhiteSpace(Convert.ToString(row["UniqueId"]))) row["UniqueId"] = Guid.Empty;
+            }
             return new Faaliyet().ToList<Faaliyet>(table);
         }
 
