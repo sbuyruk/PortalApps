@@ -22,7 +22,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
         private void ReportError(string operation, Exception error)
         {
             PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context)) { new ExceptionHelper(error).PublishException(); return; }
+            if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
             MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
         }
@@ -448,175 +448,126 @@ namespace IKYS_WebParts.IzinTalepListesiWP
         {
             try
             {
-                bool loggingEnabled = PortalLogSettings.IsEnabled(LoggingContext);
-                bool transactionSucceeded = false;
-                IzinTalep izinTalep = null;
-                using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
-                {
-                //IzinTalep_Table da onayDurumu hanesini kayitlara islendi yap
-                IzinTalepService izinTalepService = new IzinTalepService();
-                izinTalep = loggingEnabled ? izinTalepService.GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), transaction, LoggingContext) : izinTalepService.GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), LoggingContext);
-                if (izinTalep != null)
-                {
-                    izinTalep.Aciklama = string.IsNullOrEmpty(AciklamaTxt.Text) ? izinTalep.Aciklama : AciklamaTxt.Text;
-                    izinTalep.OnayDurumu = ProjeConstants.PER_IZINTALEBI_KAYITLARAISLENDI_INT;
-                    izinTalep.Degistiren = CurrentUserName;
-                    bool kayitlaraIslendi = loggingEnabled ? izinTalepService.Update(izinTalep, transaction, LoggingContext) : izinTalepService.Update(izinTalep, LoggingContext);
-                    if (kayitlaraIslendi)
-                    {
-                        bool izinHareketTablosundaVarMi = loggingEnabled ? new IzinHareketService().GetByIzinTalepId(izinTalep.Id, transaction, LoggingContext) != null : IzinHareketTablosundaVarMI(izinTalep.Id);
-                        if (izinHareketTablosundaVarMi)
-                        {
-                            MessageHelper.PublishMessage("Bu Talep daha önce zaten onaylanmistir.", ProjeConstants.MESAJ_HATA);
-                        }
-                        else
-                        {
-                            IzinHareket ih = new IzinHareket();
-                            ih.PersonelId = izinTalep.PersonelId;
-                            ih.IzinTipi = izinTalep.IzinTipi;
-                            ih.IzinTalepId = izinTalep.Id;
-                            ih.BaslangicTarihi = izinTalep.BaslangicTarihi;
-                            ih.BitisTarihi = izinTalep.BitisTarihi;
-                            ih.Adres = izinTalep.Adres;
-                            ih.VekilImza = izinTalep.VekilImza;
-                            ih.AmirImza = izinTalep.AmirImza;
-                            ih.OnayImza = izinTalep.OnayImza;
-                            ih.Olusturan = CurrentUserName;
-                            ih.IzinDonemId = izinTalep.IzinDonemId;
-                            ih.Sure = izinTalep.Sure;
-                            ih.Birim = izinTalep.Birim;
-                            
-                            IzinHareketService izinHareketService = new IzinHareketService();
-                            int izinHareketId = loggingEnabled ? izinHareketService.Save(ih, transaction, LoggingContext) : izinHareketService.Save(ih);
-                             bool operationSucceeded = true;
-                            if (izinHareketId > 0)
-                            {
-                                if (ih.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT) 
-                                {
-                                    IzinDonemService izinDonemService = new IzinDonemService();
-                                    IzinDonem izinDonemi = loggingEnabled ? izinDonemService.GetById(ih.IzinDonemId, transaction, LoggingContext) : izinDonemService.GetById(ih.IzinDonemId);
-                                    if (izinDonemi != null)
-                                    {
-                                        ih.OncekiIzinStr = izinDonemi.KalanIzin.ToString();
-                                        ih.OncekiIzinStr = izinDonemi.KalanIzin.ToString();
-                                        ih.KullanilanIzinStr = izinTalep.Sure;
-                                        operationSucceeded = loggingEnabled ? izinDonemService.UpdateUsedLeave(izinDonemi, ih.Sure, true, CurrentUserName, transaction, LoggingContext) : izinDonemService.UpdateUsedLeave(izinDonemi, ih.Sure, true, CurrentUserName);
-                                        ih.KalanIzinStr = izinDonemi.KalanIzin.ToString();
-                                        operationSucceeded = operationSucceeded && (loggingEnabled ? izinHareketService.Update(ih, transaction, LoggingContext) : izinHareketService.Update(ih));//kalan izin hesaplandiktan sonra izinHareket tablosuna yazsin
-                                    }
-                                    else operationSucceeded = false;
-                                }
-                                if (ih.IzinTipi == ProjeConstants.IZINTIPI_UCRETSIZ_INT)
-                                {
-
-                                    IsBilgileriService isBilgileriService = new IsBilgileriService();
-                                    IsBilgileri ib = loggingEnabled ? isBilgileriService.GetById(ih.PersonelId, transaction, LoggingContext) : isBilgileriService.GetById(ih.PersonelId);
-                                    string baslamaTarStr = ib == null ? "" : ib.BaslamaTar.ConvertToDatetimeEmptyIfNull();
-                                    string izinDonemiBasTarStr = ib == null ? "" : ib.IzinDonemiBasTar.ConvertToDatetimeEmptyIfNull();
-
-                                    izinDonemiBasTarStr = string.IsNullOrEmpty(izinDonemiBasTarStr) ? baslamaTarStr : izinDonemiBasTarStr;
-                                    if (!string.IsNullOrEmpty(izinDonemiBasTarStr))
-                                    {
-                                        Personel personel = new PersonelService().GetById(ih.PersonelId, LoggingContext);
-                                        if ((personel != null) && (!personel.Asker_sivil.Equals(ProjeConstants.PER_ASKER_INT)))//asker degilse islem yap
-                                        {
-
-                                            int sureDays = ih.BitisTarihi.Subtract(ih.BaslangicTarihi).Days + 1; // +1 eklendi aksi halde 1 gün eksik yapiyor SB 23.03.2020
-                                            DateTime izinDonemiBasTar = izinDonemiBasTarStr.ConvertToDatetime();//ib.IzinDonemiBasTar;
-                                            DateTime yeniIzinDonemiBastar = izinDonemiBasTar.AddDays(sureDays);
-                                            ib.IzinDonemiBasTar = yeniIzinDonemiBastar;
-                                            try
-                                            {
-                                                bool issaved = loggingEnabled ? isBilgileriService.Update(ib, transaction, LoggingContext) : isBilgileriService.Update(ib);
-                                                if (issaved)
-                                                {
-
-                                                    MessageHelper.PublishMessage(izinDonemiBasTar + " olan Izin Dönemi Baslangiç Tarihi " +
-                                                    yeniIzinDonemiBastar + " olarak degistirilmistir.", ProjeConstants.MESAJ_BASARILI);
-                                                }
-
-                                            }
-                                            catch (Exception exception)
-                                            {
-                                                operationSucceeded = false;
-                                                ReportError("LeaveRequest.FreeLeavePeriodUpdate", exception);
-                                                MessageHelper.PublishMessage("Izin Dönemi Baslangiç Tarihi Ücretsiz izin Süresi Kadar Ertelenemedi", ProjeConstants.MESAJ_HATA);
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        operationSucceeded = false;
-                                        MessageHelper.PublishMessage("Ise Baslama Tarihi (Izin Dönemi Baslangiç Tarihi) bos oldugundan, Izin Dönemi Baslangiç Tarihi Ücretsiz izin Süresi Kadar Ertelenemedi", ProjeConstants.MESAJ_HATA);
-                                    }
-                                }
-                            }
-                            transactionSucceeded = operationSucceeded;
-                        }
-
-                    }
-                }
-                if (loggingEnabled && transactionSucceeded) transaction.Complete();
-                }
-                if (izinTalep.EPostaGonder)
-                {
-                    IKYSOrtak.IzinKabulRedOnayEPostasiGonder(izinTalep.PersonelId, izinTalep.Id, "Onay");
-                }
-                MessageHelper.PublishMessage("Izin Talebi " + ProjeConstants.PER_IZINTALEBI_KAYITLARAISLENDI, ProjeConstants.MESAJ_BASARILI, 2000);
+                IzinTalep talep = TalebiIsle(ProjeConstants.PER_IZINTALEBI_KAYITLARAISLENDI_INT);
+                if (talep == null) return;
+                MessageHelper.PublishMessage("İzin talebi kayıtlara işlendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                BildirimGonder(talep, "Onay");
                 TabloOlustur();
-
             }
             catch (Exception exception)
             {
                 ReportError("LeaveRequest.Approve", exception);
-
             }
-
         }
-        private bool IzinHareketTablosundaVarMI(int izinTalepId)
+        private void BildirimGonder(IzinTalep talep, string islem)
         {
-            bool kayitVarMi = false;
-            IzinHareket ih = new IzinHareketService().GetByIzinTalepId(izinTalepId);
-            if (ih == null)
+            if (!talep.EPostaGonder) return;
+            try
             {
-                kayitVarMi = false;
+                IKYSOrtak.IzinKabulRedOnayEPostasiGonder(talep.PersonelId, talep.Id, islem);
             }
-            else
+            catch (Exception error)
             {
-                kayitVarMi = true;
+                if (error is System.Threading.ThreadAbortException) throw;
+                PortalLogContext context = LoggingContext;
+                PortalTechnicalLog.WriteError(context, "LeaveRequest.Notification", error);
+                MessageHelper.PublishMessage("İşlem kaydedildi, ancak e-posta bildirimi gönderilemedi. Başvuru kodu: "
+                    + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
             }
-            return kayitVarMi;
+        }
+        private IzinTalep TalebiIsle(int hedefDurum)
+        {
+            PortalLogContext context = LoggingContext;
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                IzinTalepService service = new IzinTalepService();
+                IzinTalep talep = service.GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), transaction, context);
+                if (talep == null || talep.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT)
+                {
+                    MessageHelper.PublishMessage("İzin talebi bulunamadı. Listeyi yenileyin.", ProjeConstants.MESAJ_HATA);
+                    return null;
+                }
+                bool ilkAsama = talep.OnayDurumu == ProjeConstants.PER_IZINTALEBI_ISLEMBEKLIYOR
+                    || talep.OnayDurumu == ProjeConstants.PER_IZINTALEBI_DILEKCEBEKLIYOR;
+                bool kontrolEdildi = talep.OnayDurumu == ProjeConstants.PER_IZINTALEBI_KONTROLEDILDI_INT;
+                bool onayla = hedefDurum == ProjeConstants.PER_IZINTALEBI_KAYITLARAISLENDI_INT;
+                bool reddet = hedefDurum == ProjeConstants.PER_IZINTALEBI_REDDEDILDI;
+                if (!(onayla ? kontrolEdildi : reddet ? (ilkAsama || kontrolEdildi) : ilkAsama)
+                    || new IzinHareketService().GetByIzinTalepId(talep.Id, transaction, context) != null)
+                {
+                    MessageHelper.PublishMessage("Talebin durumu değişmiş veya talep kayıtlara işlenmiş. Listeyi yenileyin.", ProjeConstants.MESAJ_HATA);
+                    return null;
+                }
+                if (!string.IsNullOrEmpty(AciklamaTxt.Text)) talep.Aciklama = AciklamaTxt.Text;
+                talep.OnayDurumu = hedefDurum;
+                talep.Degistiren = CurrentUserName;
+                if (!service.Update(talep, transaction, context))
+                    throw new InvalidOperationException("İzin talebi güncellenemedi.");
+                if (onayla) TalepHareketiniKaydet(talep, transaction, context);
+                transaction.Complete();
+                return talep;
+            }
+        }
+
+        private void TalepHareketiniKaydet(IzinTalep talep, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            IzinHareket hareket = new IzinHareket();
+            hareket.PersonelId = talep.PersonelId;
+            hareket.IzinTipi = talep.IzinTipi;
+            hareket.IzinTalepId = talep.Id;
+            hareket.BaslangicTarihi = talep.BaslangicTarihi;
+            hareket.BitisTarihi = talep.BitisTarihi;
+            hareket.Adres = talep.Adres;
+            hareket.VekilImza = talep.VekilImza;
+            hareket.AmirImza = talep.AmirImza;
+            hareket.OnayImza = talep.OnayImza;
+            hareket.Olusturan = CurrentUserName;
+            hareket.IzinDonemId = talep.IzinDonemId;
+            hareket.Sure = talep.Sure;
+            hareket.Birim = talep.Birim;
+            if (hareket.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT)
+            {
+                IzinDonemService service = new IzinDonemService();
+                IzinDonem donem = service.GetById(hareket.IzinDonemId, transaction, context);
+                if (donem == null || donem.PersonelId != talep.PersonelId || donem.IzinTipi != talep.IzinTipi)
+                    throw new InvalidOperationException("Talebe ait izin dönemi bulunamadı.");
+                hareket.OncekiIzinStr = donem.KalanIzin;
+                hareket.KullanilanIzinStr = talep.Sure;
+                if (!service.UpdateUsedLeave(donem, hareket.Sure, true, CurrentUserName, transaction, context))
+                    throw new InvalidOperationException("Kullanılan izin güncellenemedi.");
+                hareket.KalanIzinStr = donem.KalanIzin;
+            }
+            if (hareket.IzinTipi == ProjeConstants.IZINTIPI_UCRETSIZ_INT)
+            {
+                Personel personel = new PersonelService().GetById(hareket.PersonelId, transaction, context);
+                if (personel == null) throw new InvalidOperationException("Personel bulunamadı.");
+                IsBilgileriService service = new IsBilgileriService();
+                IsBilgileri bilgi = service.GetByPersonelId(hareket.PersonelId, transaction, context);
+                string baslama = bilgi == null ? "" : bilgi.BaslamaTar.ConvertToDatetimeEmptyIfNull();
+                string donemBaslangici = bilgi == null ? "" : bilgi.IzinDonemiBasTar.ConvertToDatetimeEmptyIfNull();
+                donemBaslangici = string.IsNullOrEmpty(donemBaslangici) ? baslama : donemBaslangici;
+                if (string.IsNullOrEmpty(donemBaslangici))
+                    throw new InvalidOperationException("İzin dönemi başlangıç tarihi belirlenemedi.");
+                if (personel.Asker_sivil != ProjeConstants.PER_ASKER_INT)
+                {
+                    int gunSayisi = hareket.BitisTarihi.Subtract(hareket.BaslangicTarihi).Days + 1;
+                    bilgi.IzinDonemiBasTar = donemBaslangici.ConvertToDatetime().AddDays(gunSayisi);
+                    if (!service.Update(bilgi, transaction, context))
+                        throw new InvalidOperationException("Ücretsiz izin için dönem başlangıcı güncellenemedi.");
+                }
+            }
+            if (new IzinHareketService().Save(hareket, transaction, context) <= 0)
+                throw new InvalidOperationException("İzin hareketi oluşturulamadı.");
         }
         protected void KabulBtn_Click(object sender, EventArgs e)
         {
             try
             {
-                bool loggingEnabled = PortalLogSettings.IsEnabled(LoggingContext);
-                bool updated = false;
-                IzinTalep izinTalep;
-                using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
-                {
-                    //IzinTalep_Table da onayDurumu hanesini kontrol edildi yap
-                    IzinTalepService service = new IzinTalepService();
-                    izinTalep = loggingEnabled ? service.GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), transaction, LoggingContext) : service.GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), LoggingContext);
-                    if (izinTalep != null)
-                    {
-                        izinTalep.OnayDurumu = ProjeConstants.PER_IZINTALEBI_KONTROLEDILDI_INT;
-                        izinTalep.Aciklama = string.IsNullOrEmpty(AciklamaTxt.Text) ? izinTalep.Aciklama : AciklamaTxt.Text;
-                        izinTalep.Degistiren = CurrentUserName;
-                        updated = loggingEnabled ? service.Update(izinTalep, transaction, LoggingContext) : service.Update(izinTalep, LoggingContext);
-                    }
-                    if (loggingEnabled && updated) transaction.Complete();
-                }
-                if (updated)
-                {
-                    if (izinTalep.EPostaGonder)
-                    {
-                        IKYSOrtak.IzinKabulRedOnayEPostasiGonder(izinTalep.PersonelId, izinTalep.Id, "Kabul");
-                    }
-                    MessageHelper.PublishMessage("İzin Talebi " + ProjeConstants.PER_IZINTALEBI_KONTROLEDILDI, ProjeConstants.MESAJ_BASARILI, 2000);
-                    TabloOlustur();
-                }
+                IzinTalep talep = TalebiIsle(ProjeConstants.PER_IZINTALEBI_KONTROLEDILDI_INT);
+                if (talep == null) return;
+                MessageHelper.PublishMessage("İzin talebi kontrol edildi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                BildirimGonder(talep, "Kabul");
+                TabloOlustur();
             }
             catch (Exception exception)
             {
@@ -627,27 +578,10 @@ namespace IKYS_WebParts.IzinTalepListesiWP
         {
             try
             {
-                bool loggingEnabled = PortalLogSettings.IsEnabled(LoggingContext);
-                bool updated = false;
-                IzinTalep izinTalep;
-                using (SqlTransactionContext transaction = loggingEnabled ? new SqlTransactionContext() : null)
-                {
-                    IzinTalepService service = new IzinTalepService();
-                    izinTalep = loggingEnabled ? service.GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), transaction, LoggingContext) : service.GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), LoggingContext);
-                    if (izinTalep != null)
-                    {
-                        izinTalep.Aciklama = string.IsNullOrEmpty(AciklamaTxt.Text) ? izinTalep.Aciklama : AciklamaTxt.Text;
-                        izinTalep.OnayDurumu = ProjeConstants.PER_IZINTALEBI_REDDEDILDI;
-                        izinTalep.Degistiren = CurrentUserName;
-                        updated = loggingEnabled ? service.Update(izinTalep, transaction, LoggingContext) : service.Update(izinTalep, LoggingContext);
-                    }
-                    if (loggingEnabled && updated) transaction.Complete();
-                }
-                if (updated)
-                {
-                    if (izinTalep.EPostaGonder) IKYSOrtak.IzinKabulRedOnayEPostasiGonder(izinTalep.PersonelId, izinTalep.Id, "Red");
-                    MessageHelper.PublishMessage("Izin Talebi Reddedildi", ProjeConstants.MESAJ_BASARILI, 2000);
-                }
+                IzinTalep talep = TalebiIsle(ProjeConstants.PER_IZINTALEBI_REDDEDILDI);
+                if (talep == null) return;
+                MessageHelper.PublishMessage("İzin talebi reddedildi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                BildirimGonder(talep, "Red");
                 TabloOlustur();
             }
             catch (Exception exception)
