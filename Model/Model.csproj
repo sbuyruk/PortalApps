@@ -45,6 +45,8 @@
     <AssemblyOriginatorKeyFile>modelkey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Services\MTS\MtsActivityWriteService.cs" />
+    <Compile Include="Services\MTS\MtsActivityNotificationService.cs" />
     <Compile Include="Services\MTS\MtsContactWriteService.cs" />
     <Compile Include="Services\Portal\PortalToplantiNotificationService.cs" />
     <Compile Include="Services\Portal\PortalToplantiWriteService.cs" />

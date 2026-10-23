@@ -18,6 +18,8 @@ namespace Model.Services.MTS
         {
         }
 
+        public DepoTanimService(Utility.Logging.PortalLogContext context) : this(new DepoTanimRepository(context)) { }
+
         public DepoTanimService(DepoTanimRepository repository)
         {
             this.repository = repository ?? throw new ArgumentNullException("repository");

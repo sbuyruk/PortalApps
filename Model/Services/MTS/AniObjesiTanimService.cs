@@ -18,6 +18,8 @@ namespace Model.Services.MTS
         {
         }
 
+        public AniObjesiTanimService(Utility.Logging.PortalLogContext context) : this(new AniObjesiTanimRepository(context)) { }
+
         public AniObjesiTanimService(AniObjesiTanimRepository repository)
         {
             this.repository = repository ?? throw new ArgumentNullException("repository");

@@ -17,6 +17,8 @@ namespace Model.Services.MTS
         {
         }
 
+        public DepoStokService(Utility.Logging.PortalLogContext context) : this(new DepoStokRepository(context)) { }
+
         public DepoStokService(DepoStokRepository repository)
         {
             this.repository = repository ?? throw new ArgumentNullException("repository");

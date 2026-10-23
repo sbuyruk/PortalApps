@@ -1,3 +1,6 @@
+using MTS_WebParts.Logging;
+using Utility.Logging;
+using Model.Services.MTS;
 using Model.IKYS;
 using Model.MTS;
 using Model.NBYS;
@@ -23,6 +26,10 @@ namespace MTS_WebParts.FaaliyetGirisiWP
     [ToolboxItemAttribute(false)]
     public partial class FaaliyetGirisiWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("MTS", "FaaliyetGirisiWP")); } }
+        private MtsActivityWriteService Writer { get { return new MtsActivityWriteService(LogContext); } }
+        private string ActivityVersion { get { return ViewState["ActivityVersion"] as string; } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -40,7 +47,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         }
 
         #region Globals
-        
+
         private string FaaliyetIdQS
         {
             get
@@ -190,10 +197,11 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         #region PageLoad, DDL, Form vs
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            try
+            MtsWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
             {
-                if (!Page.IsPostBack) // sayfa ilk kez açiliyorsa 
+                if (!Page.IsPostBack) MtsWebPartLog.RecordOpened(LogContext);
+
+                if (!Page.IsPostBack) // sayfa ilk kez açiliyorsa
                 {
                     lblTime.Text = DateTime.Now.ToString("HH:mm ss");
                     RefreshTimer.Interval = 10000;
@@ -206,9 +214,10 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                     BaslangicSaatiDDLDoldur();
                     BitisSaatiDDLDoldur();
                     Faaliyet faaliyet = new Faaliyet();
-                    faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
+                    faaliyet = new Model.Services.MTS.FaaliyetService(LogContext).GetById(FaaliyetIdQS.ConvertToInt());
                     if (faaliyet == null)
                     {
+                        if (FaaliyetIdQS.ConvertToInt() > 0) throw new MtsInputException("Faaliyet bulunamadı. Listeden yeniden seçin.");
                         GirisiAc();
                     }
                     else
@@ -222,17 +231,14 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exhelper = new ExceptionHelper(ex);
-                exhelper.PublishException();
-            }
+            });
         }
         private void FaaliyetFormunuDoldur(Faaliyet faaliyet)
         {
             if (faaliyet != null)
             {
+                ViewState["ActivityVersion"] = MtsContactWriteService.Version(faaliyet);
+                ViewState["ActivityStale"] = false;
                 IdLbl.Text = " ( Faaliyet No: " + faaliyet.Id.ToString() + " )";
                 TumGunChk.Checked = faaliyet.TumGun;
                 AcikTarihChk.Checked = faaliyet.AcikTarih;
@@ -256,10 +262,12 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             }
 
         }
-        
+
 
         private void GirisiAc()
         {
+            StopTimer();
+            ViewState["NewActivityGuid"] = Guid.NewGuid();
             KatilimciBilgileriDiv.Attributes["style"] = "display:none";
             KaydetBtn.Visible = true;
             GuncelleBtn.Visible = false;
@@ -288,334 +296,240 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 FaaliyetKartiBtn.Visible = true;
                 FaaliyetSilBtn.Visible = true;
                 FaaliyetFormunuDoldur(faaliyet);
-                if (!string.IsNullOrEmpty(MesajQS))
-                {
-                    MessageHelper.PublishMessage("Faaliyet Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
-                    MesajQS = string.Empty;
-                }
+                MesajQS = string.Empty;
             }
             else
             {
                 GirisiAc();
-                MessageHelper.PublishMessage("Faaliyet bulunamadi. Yeni faaliyet girebilirsiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                Messages.Info("Faaliyet bulunamadı. Listeden yeniden seçin.");
             }
 
         }
         private void BaslangicSaatiDDLDoldur()
         {
             BasSaatDDL.Items.Clear();
-            TimeSpan bastarTS = new TimeSpan(0, 0, 0);
-            TimeSpan aralikTS = new TimeSpan(0, 5, 0);
-            TimeSpan bittarTS = new TimeSpan(23, 50, 0);
-
-            TimeSpan nextTS = bastarTS;
-
-            while (nextTS < bittarTS)
-            {
-                string bastarStr = string.Format("{0:00}:{1:00}", nextTS.Hours, nextTS.Minutes);
-                ListItem li = new ListItem(bastarStr);
-                BasSaatDDL.Items.Add(li);
-                nextTS += aralikTS;
-            }
+            for (int minute = 0; minute < 24 * 60; minute += 5) BasSaatDDL.Items.Add(TimeSpan.FromMinutes(minute).ToString(@"hh\:mm"));
             UtilityHelper.SetDDLValue(BasSaatDDL, "08:00");
-
         }
         protected void BasSaatDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BitisSaatiDDLDoldur();
+            MtsWebPartLog.ExecuteAction(LogContext, "BasSaatDDL_SelectedIndexChanged", () =>
+            {
+                BitisSaatiDDLDoldur();
+            });
         }
         private void BitisSaatiDDLDoldur()
         {
             BitSaatDDL.Items.Clear();
-            string basSaatStr = BasSaatDDL.SelectedItem == null ? "08:00" : BasSaatDDL.SelectedItem.Text;
-            if (BitisTarihiTxt.Text.ConvertToDatetime() > BaslangicTarihiTxt.Text.ConvertToDatetime())
-            {
-                basSaatStr = "08:00";
-            }
-            TimeSpan bastarTS = basSaatStr.ConvertToTimeSpan();
-            TimeSpan aralikTS = new TimeSpan(0, 5, 0);
-            TimeSpan bittarTS = new TimeSpan(23, 55, 0);
-
-            TimeSpan nextTS = bastarTS;
-
-            do
-            {
-                nextTS += aralikTS;
-                string bittarStr = string.Format("{0:00}:{1:00}", nextTS.Hours, nextTS.Minutes);
-                ListItem li = new ListItem(bittarStr);
-                BitSaatDDL.Items.Add(li);
-
-            } while (nextTS < bittarTS);
-            TimeSpan bittarValTS = bittarTS + aralikTS;
-            string bittarVal = string.Format("{0:00}:{1:00}", bittarValTS.Hours, bittarValTS.Minutes);
-            UtilityHelper.SetDDLValue(BitSaatDDL, bittarVal);
+            for (int minute = 0; minute < 24 * 60; minute += 5) BitSaatDDL.Items.Add(TimeSpan.FromMinutes(minute).ToString(@"hh\:mm"));
+            TimeSpan start;
+            if (!TimeSpan.TryParse(BasSaatDDL.SelectedValue, out start)) start = TimeSpan.FromHours(8);
+            TimeSpan end = start.Add(TimeSpan.FromMinutes(30));
+            if (end.TotalHours >= 24) end = new TimeSpan(23, 55, 0);
+            UtilityHelper.SetDDLValue(BitSaatDDL, end.ToString(@"hh\:mm"));
         }
+        private int CurrentActivityId()
+        {
+            int id;
+            if (object.Equals(ViewState["ActivityStale"], true)) throw new MtsInputException("Faaliyet bilgileri değişti. Sayfayı yenileyin.");
+            if (object.Equals(ViewState["ActivityDeleted"], true) || !int.TryParse(FaaliyetIdQS, out id) || id <= 0)
+                throw new MtsInputException("İşlem için kayıtlı bir faaliyet seçin.");
+            return id;
+        }
+        private int ModalActivityId()
+        {
+            int id = CurrentActivityId();
+            if (paramFaaliyetIdLbl.Value.ConvertToInt() != id) throw new MtsInputException("Faaliyeti yeniden açıp katılımcıyı seçin.");
+            return id;
+        }
+        private static int PositiveQuantity(string text)
+        {
+            int quantity;
+            if (!int.TryParse(text, out quantity) || quantity <= 0) throw new MtsInputException("Adedi pozitif bir tam sayı olarak girin.");
+            return quantity;
+        }
+        private static void RequireActivity(MtsActivityResult result)
+        {
+            switch (result)
+            {
+                case MtsActivityResult.Completed: return;
+                case MtsActivityResult.AlreadyCompleted: return;
+                case MtsActivityResult.NotFound: throw new MtsInputException("Kayıt bulunamadı. Listeyi yenileyin.");
+                case MtsActivityResult.Changed: throw new MtsInputException("Kayıt veya stok değişti. Sayfayı ve seçim penceresini yeniden açın.");
+                case MtsActivityResult.Duplicate: throw new MtsInputException("Bu kişi zaten faaliyete eklenmiş.");
+                case MtsActivityResult.InUse: throw new MtsInputException("İlişkili arama, katılım veya anı objesi kaydı var. İşlem yapılamadı.");
+                case MtsActivityResult.InsufficientStock: throw new MtsInputException("Seçilen depoda yeterli stok yok. Depoyu veya adedi değiştirin.");
+                case MtsActivityResult.InvalidRelation: throw new MtsInputException("Katılım, dağıtım veya depo ilişkisi geçersiz ya da birden fazla stok kaydı var. Kaydı kontrol edin.");
+                case MtsActivityResult.Restricted: throw new MtsInputException("Bu kişi için randevu kısıtı var. Kişi bilgilerini kontrol edin.");
+                default: throw new MtsInputException("Tarihleri, seçimleri ve adetleri kontrol edin. İade adedi verilen miktarı aşamaz.");
+            }
+        }
+        private void CaptureStockVersion()
+        {
+            ViewState["StockVersion"] = Writer.StockVersion(DepoDDL.SelectedValue.ConvertToInt(), StokluAniObjesiDDL.SelectedValue.ConvertToInt());
+            if (ViewState["StockVersion"] == null) throw new MtsInputException("Depoda tek bir geçerli stok kaydı bulunamadı. Seçimi kontrol edin.");
+        }
+        private void RefreshActivity()
+        {
+            var current = new FaaliyetService(LogContext).GetById(CurrentActivityId());
+            if (current == null) throw new MtsInputException("Faaliyet bulunamadı. Listeyi yenileyin.");
+            if (MtsContactWriteService.Version(current) != ActivityVersion)
+            {
+                DisableComponents(); StopTimer();
+                throw new MtsInputException("Faaliyet bilgileri değişti. Formu yeniden açın.");
+            }
+            TempFaaliyetQS = new TempFaaliyet(current);
+            KatilimciBilgileriniDoldur(current, true);
+        }
+        private void ReloadActivity()
+        {
+            var current = new FaaliyetService(LogContext).GetById(CurrentActivityId());
+            if (current == null) throw new MtsInputException("Faaliyet bulunamadı. Listeyi yenileyin.");
+            TempFaaliyetQS = new TempFaaliyet(current);
+            FaaliyetFormunuDoldur(current); KatilimciBilgileriniDoldur(current, true);
+        }
+        private void FinishActivity(string message, Action afterCommit)
+        {
+            try { afterCommit(); }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (MtsInputException warning) { Messages.Warning(message + " " + warning.Message); return; }
+            catch (Exception error)
+            {
+                PortalTechnicalLog.WriteError(LogContext, "MTS.Faaliyet.AfterCommit", error);
+                Messages.Warning(message + " Ekran veya bildirim adımı tamamlanamadı. İşlemi tekrar kaydetmeden önce kontrol edin. Başvuru kodu: " + LogContext.OperationId.ToString("N"));
+                return;
+            }
+            Messages.Success(message);
+        }
+        private void SaveActivity(bool update)
+        {
+            if (object.Equals(ViewState["ActivityDeleted"], true)) throw new MtsInputException("Faaliyet silindi. Listeden devam edin.");
+            if (!update && FaaliyetIdQS.ConvertToInt() > 0) throw new MtsInputException("Faaliyet zaten kaydedildi. Güncelleme düğmesini kullanın.");
+            if (string.IsNullOrWhiteSpace(FaaliyetKonusuTxt.Text)) throw new MtsInputException("Faaliyet konusunu girin.");
+            DateTime start, end; TimeSpan startTime, endTime;
+            var culture = CultureInfo.GetCultureInfo("tr-TR");
+            if (!DateTime.TryParse(BaslangicTarihiTxt.Text, culture, DateTimeStyles.None, out start)
+                || !DateTime.TryParse(BitisTarihiTxt.Text, culture, DateTimeStyles.None, out end)
+                || !TimeSpan.TryParseExact(BasSaatDDL.SelectedValue, @"hh\:mm", CultureInfo.InvariantCulture, out startTime)
+                || !TimeSpan.TryParseExact(BitSaatDDL.SelectedValue, @"hh\:mm", CultureInfo.InvariantCulture, out endTime))
+                throw new MtsInputException("Faaliyetin başlangıç ve bitiş tarihlerini ve saatlerini kontrol edin.");
+            start = start.Date.Add(startTime); end = end.Date.Add(endTime);
+            if (start < new DateTime(1753, 1, 1) || end <= start) throw new MtsInputException("Bitiş, başlangıçtan sonra olmalıdır. Tarih ve saatleri kontrol edin.");
+            int id = update ? CurrentActivityId() : 0;
+            var previous = update ? new FaaliyetService(LogContext).GetById(id) : null;
+            var input = new Faaliyet { Id = id, FaaliyetTipi = FaaliyetTipiDDL.SelectedValue,
+                FaaliyetAmaciId = FaaliyetAmaciDDL.SelectedValue.ConvertToInt(), FaaliyetDurumu = FaaliyetDurumuDDL.SelectedValue.ConvertToInt(),
+                FaaliyetKonusu = FaaliyetKonusuTxt.Text, FaaliyetYeriStr = FaaliyetYeriTxt.Text,
+                TumGun = TumGunChk.Checked, AcikTarih = AcikTarihChk.Checked, BaslangicTarihi = start, BitisTarihi = end,
+                BaslangicSaati = BasSaatDDL.SelectedValue, BitisSaati = BitSaatDDL.SelectedValue,
+                Aciklama = AciklamaTxt.Text, YoneticiNotu = YoneticiNotuTxt.Text,
+                TakvimeIslendi = OzelKalemTakvimiChk.Checked, DisIrtibatId = DisIrtibatIdQS.ConvertToInt() };
+            if (!update)
+            {
+                if (!(ViewState["NewActivityGuid"] is Guid)) throw new MtsInputException("Yeni faaliyet formunu yeniden açın.");
+                input.UniqueId = (Guid)ViewState["NewActivityGuid"];
+            }
+            Faaliyet saved;
+            var result = Writer.Save(input, ActivityVersion, out saved);
+            RequireActivity(result);
+            FaaliyetIdQS = saved.Id.ToString(); ViewState["ActivityVersion"] = MtsContactWriteService.Version(saved);
+            TempFaaliyetQS = new TempFaaliyet(saved); KaydetBtn.Visible = false; GuncelleBtn.Visible = true;
+            FinishActivity(result == MtsActivityResult.AlreadyCompleted ? "Faaliyet zaten kaydedilmiş. Güncel kayıt açıldı."
+                : update ? "Faaliyet güncellendi." : "Faaliyet kaydedildi.", () =>
+            {
+                DuzenleAc(saved); KatilimciBilgileriniDoldur(saved, true); RefreshTimer.Enabled = true;
+                if (result == MtsActivityResult.AlreadyCompleted) return;
+                if (saved.TakvimeIslendi && !saved.AcikTarih)
+                    MtsActivityNotificationService.Send(saved, ProjeConstants.PARAM_OZELKALEMMAILADRESI, saved.FaaliyetDurumu == ProjeConstants.FAALIYET_DURUMU_IPTALEDILDI_INT);
+                else if (previous != null && previous.TakvimeIslendi && !previous.AcikTarih)
+                    MtsActivityNotificationService.Send(previous, ProjeConstants.PARAM_OZELKALEMMAILADRESI, true);
+                if (update) KatilimcilaraTakvimDavetiGonder(saved);
+            });
+        }
+
         protected void KaydetBtn_Click(object sender, EventArgs e)
         {
-            int faaliyetId = 0;
-            try
+            MtsWebPartLog.ExecuteAction(LogContext, "KaydetBtn_Click", () =>
             {
-                Faaliyet faaliyet = new Faaliyet();
-                faaliyet.FaaliyetTipi = FaaliyetTipiDDL.SelectedItem.Text;
-                faaliyet.FaaliyetAmaciId = FaaliyetAmaciDDL.SelectedItem.Value.ConvertToInt();
-                faaliyet.FaaliyetKonusu = FaaliyetKonusuTxt.Text;
-                //faaliyet.FaaliyetYeri = FaaliyetYeriDDL.SelectedItem.Value.ConvertToInt();
-                faaliyet.FaaliyetYeriStr = FaaliyetYeriTxt.Text;
-                faaliyet.FaaliyetDurumu = FaaliyetDurumuDDL.SelectedItem.Value.ConvertToInt();
-                faaliyet.TumGun = TumGunChk.Checked.ConvertToBool();
-                faaliyet.AcikTarih = AcikTarihChk.Checked.ConvertToBool();
-                DateTime baslangictarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
-                DateTime bitistarihi = BitisTarihiTxt.Text.ConvertToDatetime();
-                string bassaat = BasSaatDDL.SelectedItem.Value;
-                string bitsaat = BitSaatDDL.SelectedItem.Value;
-                faaliyet.BaslangicTarihi = UtilityHelper.TariheSaatEkle(baslangictarihi, bassaat);
-                faaliyet.BitisTarihi = UtilityHelper.TariheSaatEkle(bitistarihi, bitsaat);
-                faaliyet.BaslangicSaati = bassaat;
-                faaliyet.BitisSaati = bitsaat;
-                faaliyet.Aciklama = AciklamaTxt.Text;
-                faaliyet.YoneticiNotu = YoneticiNotuTxt.Text;
-                faaliyet.TakvimeIslendi = OzelKalemTakvimiChk.Checked;
-                faaliyet.DisIrtibatId = DisIrtibatIdQS.ConvertToInt();
-                faaliyet.Olusturan = UtilityHelper.GetCurrentUserName();
-
-                if (string.IsNullOrEmpty(FaaliyetKonusuTxt.Text))
-                {
-                    MessageHelper.PublishMessage("Faaliyet Konusu Bos Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
-                }
-                else
-                {
-
-                    faaliyetId = faaliyet.Id = new Model.Services.MTS.FaaliyetService().Save(faaliyet);
-                    if (faaliyetId > 0)
-                    {
-                        FaaliyetIdQS = faaliyetId.ToString();
-                        //Save icinde olay kaydi var zaten, o yüzden kommentlendi
-                        //OlayKayit olayKayit = new OlayKayit();
-                        //olayKayit.GirisOlayKaydet(faaliyet, ProjeConstants.MTS, ProjeConstants.MTS_FAALIYET);
-                        MessageHelper.PublishMessage("Faaliyet Kaydedildi.", ProjeConstants.MESAJ_BASARILI, 2000);
-                        KatilimciBilgileriDiv.Attributes["style"] = "display:block";
-                        InitialDateQS = faaliyet.BaslangicTarihi.ToString("yyyy-MM-dd");
-                        OzelKalemTakvimineIsle(faaliyet, ProjeConstants.KAYDET);
-                        RedirectToPage(ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + FaaliyetIdQS + "&Mesaj=true");
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage("Faaliyet Kaydedilemedi.", ProjeConstants.MESAJ_HATA);
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-
-                ExceptionHelper eh = new ExceptionHelper(exception);
-                eh.PublishException();
-
-            }
-
+                SaveActivity(false);
+            });
         }
 
-        private void OzelKalemTakvimineIsle(Faaliyet faaliyet, string islemTipi)
-        {
-            if (OzelKalemTakvimiChk.Checked && faaliyet != null)
-            {
-                string from = ProjeConstants.PARAM_MTSMAILADRESI;
-                string userto = ProjeConstants.PARAM_OZELKALEMMAILADRESI;
-                string baslik = faaliyet.FaaliyetKonusu;
-                string faaliyetYeriStr = faaliyet.FaaliyetYeriStr;
 
-                if (islemTipi.Equals(ProjeConstants.KAYDET))
-                {
-                    MailHelper.TakvimeEkle(faaliyet.UniqueId, from, userto, baslik, faaliyet.BaslangicTarihi, faaliyet.BitisTarihi, faaliyetYeriStr,
-                        faaliyet.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
-
-                }else if (islemTipi.Equals(ProjeConstants.GUNCELLE))
-                {
-                    if (AcikTarihChk.Checked)
-                    {
-                        MailHelper.TakvimdenSil(faaliyet.UniqueId, from, userto, " -Açik Tarihe Alindi- " + baslik, faaliyet.BaslangicTarihi, faaliyet.BitisTarihi, faaliyetYeriStr,
-                            faaliyet.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
-                    }
-                    else
-                    {
-                        MailHelper.TakvimeEkle(faaliyet.UniqueId, from, userto, baslik, faaliyet.BaslangicTarihi, faaliyet.BitisTarihi, faaliyetYeriStr,
-                            faaliyet.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
-                    }
-                }else if (islemTipi.Equals(ProjeConstants.SIL))
-                {
-                    MailHelper.TakvimdenSil(faaliyet.UniqueId, from, userto, baslik, faaliyet.BaslangicTarihi, faaliyet.BitisTarihi, faaliyetYeriStr, 
-                        faaliyet.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
-                }
-
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Özel kalem takvimine islenmedi",ProjeConstants.MESAJ_BILGI,2000);
-            }
-        }
 
         protected void GuncelleBtn_Click(object sender, EventArgs e)
         {
-            bool guncellendiMi = false;
-            try
+            MtsWebPartLog.ExecuteAction(LogContext, "GuncelleBtn_Click", () =>
             {
-
-                Faaliyet faaliyet = new Faaliyet();
-                faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
-                Faaliyet faaliyetIlkHali = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
-                faaliyet.Degistiren = UtilityHelper.GetCurrentUserName();
-                if (faaliyet == null)
-                {
-                    MessageHelper.PublishMessage("Faaliyet bulunamadi", ProjeConstants.MESAJ_HATA, 5000);
-                }
-                else
-                {
-                    faaliyet.FaaliyetTipi = FaaliyetTipiDDL.SelectedItem.Text;
-                    faaliyet.FaaliyetAmaciId = FaaliyetAmaciDDL.SelectedItem.Value.ConvertToInt();
-                    faaliyet.FaaliyetKonusu = FaaliyetKonusuTxt.Text;
-                    faaliyet.FaaliyetYeriStr = FaaliyetYeriTxt.Text;
-                    faaliyet.FaaliyetDurumu = FaaliyetDurumuDDL.SelectedItem.Value.ConvertToInt();
-                    faaliyet.TumGun = TumGunChk.Checked.ConvertToBool();
-                    faaliyet.AcikTarih = AcikTarihChk.Checked.ConvertToBool();
-                    DateTime baslangictarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
-                    DateTime bitistarihi = BitisTarihiTxt.Text.ConvertToDatetime();
-                    string bassaat = BasSaatDDL.SelectedItem.Value;
-                    string bitsaat = BitSaatDDL.SelectedItem.Value;
-                    faaliyet.BaslangicTarihi = UtilityHelper.TariheSaatEkle(baslangictarihi, bassaat);
-                    faaliyet.BitisTarihi = UtilityHelper.TariheSaatEkle(bitistarihi, bitsaat);
-                    faaliyet.BaslangicSaati = bassaat;
-                    faaliyet.BitisSaati = bitsaat;
-                    faaliyet.Aciklama = AciklamaTxt.Text;
-                    faaliyet.YoneticiNotu = YoneticiNotuTxt.Text;
-                    faaliyet.TakvimeIslendi = OzelKalemTakvimiChk.Checked;
-                    faaliyet.DisIrtibatId = DisIrtibatIdQS.ConvertToInt();
-                    faaliyet.Degistiren = UtilityHelper.GetCurrentUserName();
-                    guncellendiMi = new Model.Services.MTS.FaaliyetService().Update(faaliyet);
-
-                    if (guncellendiMi)
-                    {
-                        TempFaaliyetQS = new TempFaaliyet(faaliyet);
-                        InitialDateQS = faaliyet.BaslangicTarihi.ToString("yyyy-MM-dd");
-                        //KatilimciBilgileriniDoldur();
-                        MessageHelper.PublishMessage("Faaliyet güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
-                        OzelKalemTakvimineIsle(faaliyet, ProjeConstants.GUNCELLE);
-                        KatilimcilaraTakvimDavetiGonder(faaliyet);
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage("Faaliyet güncellenemedi", ProjeConstants.MESAJ_HATA, 5000);
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exhelper = new ExceptionHelper(ex);
-                exhelper.Exceptions.Add(new Exception("Faaliyet güncellenemedi."));
-                exhelper.PublishException();
-            }
+                SaveActivity(true);
+            });
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            MtsWebPartLog.ExecuteAction(LogContext, "CloseBtn_Click", () =>
             {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path);
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void FaaliyetSilBtn_Click(object sender, EventArgs e)
         {
-            Faaliyet faaliyet = new Faaliyet();
-            faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
-            if (faaliyet != null)
+            MtsWebPartLog.ExecuteAction(LogContext, "FaaliyetSilBtn_Click", () =>
             {
-                if (!BaglantisiVarMi(faaliyet))
+                Faaliyet faaliyet = new Faaliyet();
+                faaliyet = new Model.Services.MTS.FaaliyetService(LogContext).GetById(FaaliyetIdQS.ConvertToInt());
+                if (faaliyet != null)
                 {
-                    FaaliyetSilPopupAc(sender);
-                }
+                    if (!BaglantisiVarMi(faaliyet))
+                    {
+                        FaaliyetSilPopupAc(sender);
+                    }
 
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Faaliyet bulunamadiginidan dolayi silinemedi.", ProjeConstants.MESAJ_HATA);
-            }
-            //Faaliyet Silme Kaldirildi SB 31.05.2021
-            //try
-            //{
-            //    Faaliyet faaliyet = new Faaliyet();
-            //    faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
-            //    if (faaliyet != null)
-            //    {
-            //        FaaliyetSilPopupAc(sender);
-            //    }
-            //}
-            //catch (Exception e1)
-            //{
-            //    ExceptionHelper eh = new ExceptionHelper();
-            //    Exception e2 = new Exception("Kisi silinemedi");
-            //    eh.Exceptions.Add(e2);
-            //    eh.Exceptions.Add(e1);
-            //    eh.PublishException();
-            //}
+                }
+                else
+                {
+                    Messages.Warning("Faaliyet bulunamadı. Listeden yeniden seçin.");
+                }
+            });
         }
 
         private bool BaglantisiVarMi(Faaliyet faaliyet)
         {
-            bool baglantisiVar = false;
-            ExceptionHelper eh = new ExceptionHelper();
-
-            AramaGorusme aramaGorusme = new Model.Services.MTS.AramaGorusmeService().GetByFaaliyetId(faaliyet.Id);
-
-            List<FaaliyetKatilim> faaliyetKatilimList = new Model.Services.MTS.FaaliyetKatilimService().GetByFaaliyetId(faaliyet.Id);
-            AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-            List<AniObjesiDagitim> aniObjesiDagitimList = new Model.Services.MTS.AniObjesiDagitimService().GetByFaaliyetId(faaliyet.Id);
-            if (aramaGorusme != null)
-            {
-                Exception ex = new Exception("Faaliyetin baglantili oldugu Arama/Görüsme bulunmaktadir.");
-                eh.Exceptions.Add(ex);
-                baglantisiVar = true;
-            }
-            if (faaliyetKatilimList.Count > 0)
-            {
-                Exception ex = new Exception("Faaliyetin baglantili oldugu Katilimci(lar) bulunmaktadir.");
-                eh.Exceptions.Add(ex);
-                baglantisiVar = true;
-            }
-            if (aniObjesiDagitimList.Count > 0)
-            {
-                Exception ex = new Exception("Faaliyetin baglantili oldugu Ani Objeleri bulunmaktadir.");
-                eh.Exceptions.Add(ex);
-                baglantisiVar = true;
-            }
-            if (baglantisiVar)
-            {
-                Exception ex = new Exception("Faaliyet, baglantilari nedeniyle silinemez. ");
-                eh.Exceptions.Add(ex);
-                eh.PublishException();
-            }
-            return baglantisiVar;
+            bool linked = new AramaGorusmeService(LogContext).GetByFaaliyetId(faaliyet.Id) != null
+                || new FaaliyetKatilimService(LogContext).GetByFaaliyetId(faaliyet.Id).Count > 0
+                || new AniObjesiDagitimService(LogContext).GetByFaaliyetId(faaliyet.Id).Count > 0;
+            if (linked) throw new MtsInputException("Faaliyetin arama, katılımcı veya anı objesi bağlantısı var. Faaliyet silinemez.");
+            return false;
         }
 
         protected void KisiListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_KISI_LIST);
+            MtsWebPartLog.ExecuteAction(LogContext, "KisiListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_KISI_LIST);
+            });
         }
         protected void FaaliyetListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FAALIYET_LIST + "?SecilenId=" + FaaliyetIdQS);
+            MtsWebPartLog.ExecuteAction(LogContext, "FaaliyetListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FAALIYET_LIST + "?SecilenId=" + FaaliyetIdQS);
+            });
         }
         protected void AcikTarihliFaaliyetListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_ACIKTARIHLIFAALIYET_LIST);
+            MtsWebPartLog.ExecuteAction(LogContext, "AcikTarihliFaaliyetListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_ACIKTARIHLIFAALIYET_LIST);
+            });
         }
         protected void FaaliyetTakvimiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM + "?InitialDate=" + InitialDateQS);
+            MtsWebPartLog.ExecuteAction(LogContext, "FaaliyetTakvimiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM + "?InitialDate=" + InitialDateQS);
+            });
         }
         private void FaaliyetSilPopupAc(object sender)
         {
@@ -632,41 +546,20 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         /// AniObjesiDagitim_Table'dan bu faaliyetId'li olanlari sil
         protected void FaaliyetSilNowBtn_Click(object sender, EventArgs e)
         {
-            bool silindi = false;
-            try
+            MtsWebPartLog.ExecuteAction(LogContext, "FaaliyetSilNowBtn_Click", () =>
             {
-                Faaliyet faaliyet = new Faaliyet();
-                faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
-                if (faaliyet != null)
+                Faaliyet deleted;
+                RequireActivity(Writer.Delete(CurrentActivityId(), ActivityVersion, out deleted));
+                ViewState["ActivityDeleted"] = true;
+                DisableComponents(); StopTimer();
+                FinishActivity("Faaliyet silindi. Faaliyet listesinden devam edebilirsiniz.", () =>
                 {
-                    //baglantisi yoksa sil
-                    if (!BaglantisiVarMi(faaliyet))
-                    {
-                        silindi = new Model.Services.MTS.FaaliyetService().Delete(faaliyet);
-                    }
-
-                    if (silindi)
-                    {
-                        MessageHelper.PublishMessage("Faaliyet Silindi", ProjeConstants.MESAJ_HATA);
-                        OzelKalemTakvimineIsle(faaliyet, ProjeConstants.SIL);
-                        RedirectToPage(ProjeConstants.PAGE_FAALIYET_LIST + "?Mesaj=true");
-                    }
-                }
-                if (!silindi)
-                {
-                    MessageHelper.PublishMessage("Faaliyet Silinemedi", ProjeConstants.MESAJ_HATA);
-                }
-            }
-            catch (Exception e1)
-            {
-                ExceptionHelper eh = new ExceptionHelper();
-                Exception e2 = new Exception("Faaliyet silinemedi");
-                eh.Exceptions.Add(e2);
-                eh.Exceptions.Add(e1);
-                eh.PublishException();
-            }
+                    if (deleted.TakvimeIslendi) MtsActivityNotificationService.Send(deleted, ProjeConstants.PARAM_OZELKALEMMAILADRESI, true);
+                    CloseModals();
+                });
+            });
         }
-       
+
         private void FaaliyetTipiDDLDoldur()
         {
             ListItem li = new ListItem(ProjeConstants.RANDEVU_VERILEN);
@@ -713,24 +606,17 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             FaaliyetDurumuDDL.Items.Add(li2);
             FaaliyetDurumuDDL.Items.Add(li3);
         }
-       
+
         private void FaaliyetYeriDoldur()
         {
-            Faaliyet faaliyetDdo = new Faaliyet();
-            List<string> list = new Model.Services.MTS.FaaliyetService().GetDistinctPlaces();
-
-            var fyerleristr = "\"" + string.Join("\", \"", list) + "\"";
-            StringBuilder fyerleri = new StringBuilder();
-            fyerleri.Append("[");
-            fyerleri.Append(fyerleristr);
-
-            fyerleri.Append("]");
-            UtilityHelper.ScriptCalistir("setDataSet(" + fyerleri + ");");
+            List<string> places = new FaaliyetService(LogContext).GetDistinctPlaces();
+            string json = new JavaScriptSerializer().Serialize(places).Replace("<", "\\u003c").Replace(">", "\\u003e").Replace("&", "\\u0026");
+            UtilityHelper.ScriptCalistir("setDataSet(" + json + ");");
         }
         private void StokluAniObjesiDDLDoldur()
         {
             StokluAniObjesiDDL.Items.Clear();
-            DataTable dataTable = new Model.Services.MTS.AniObjesiTanimService().GetStokluAniObjesiList();
+            DataTable dataTable = new Model.Services.MTS.AniObjesiTanimService(LogContext).GetStokluAniObjesiList();
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
@@ -749,7 +635,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         {
             DepoDDL.Items.Clear();
             int secilenAniObjesiId = StokluAniObjesiDDL != null && StokluAniObjesiDDL.SelectedItem != null ? StokluAniObjesiDDL.SelectedItem.Value.ConvertToInt() : 0;
-            DataTable dataTable = new Model.Services.MTS.DepoTanimService().GetStokluAniObjesiList(secilenAniObjesiId);
+            DataTable dataTable = new Model.Services.MTS.DepoTanimService(LogContext).GetStokluAniObjesiList(secilenAniObjesiId);
             if (dataTable != null)
             {
                 int i = 0;
@@ -767,25 +653,18 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl,false);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path);
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl,false);
+
         }
         private void DisIrtibatNoktasiDoldur(int kisiId, bool buttonsEnabled)
         {
             Kisi kisi = new Kisi();
-            kisi = new Model.Services.MTS.KisiService().GetById(kisiId);
+            kisi = new Model.Services.MTS.KisiService(LogContext).GetById(kisiId);
             if (kisi != null)
             {
-                DisIrtibatLbl.Text = "Irtibat Noktasi : " + kisi.Adi + " " + kisi.Soyadi;
+                DisIrtibatLbl.Text = System.Web.HttpUtility.HtmlEncode("İrtibat Noktası: " + kisi.Adi + " " + kisi.Soyadi);
                 DisIrtibatIdQS = kisi.Id.ToString();
                 DisIrtibatCikarBtn.Visible = buttonsEnabled;
             }
@@ -797,27 +676,20 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         }
         protected void IrtibatSecBtn_Click(object sender, EventArgs e)
         {
-            Faaliyet faaliyet = null;
-            int katilimciId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
-            if (katilimciId > 0)
+            MtsWebPartLog.ExecuteAction(LogContext, "IrtibatSecBtn_Click", () =>
             {
-                faaliyet = new Faaliyet();
-                faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
-                if (faaliyet != null)
-                {
-                    faaliyet.DisIrtibatId = katilimciId;
-                    new Model.Services.MTS.FaaliyetService().Update(faaliyet);
-                }
-            }
-
-            if (faaliyet != null)
-            {
-                KatilimciBilgileriniDoldur(faaliyet, true);
-            }
+                int personId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
+                if (personId <= 0) throw new MtsInputException("Listeden bir irtibat kişisi seçin.");
+                RequireActivity(Writer.SetContact(CurrentActivityId(), ActivityVersion, personId));
+                FinishActivity("İrtibat kişisi güncellendi.", ReloadActivity);
+            });
         }
         protected void FaaliyetDurumuDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //FaaliyetDurumuImg.ImageUrl = FaaliyetDurumuImgGetir(FaaliyetDurumuDDL.SelectedItem.Value.ConvertToInt());
+            MtsWebPartLog.ExecuteAction(LogContext, "FaaliyetDurumuDDL_SelectedIndexChanged", () =>
+            {
+                //FaaliyetDurumuImg.ImageUrl = FaaliyetDurumuImgGetir(FaaliyetDurumuDDL.SelectedItem.Value.ConvertToInt());
+            });
         }
         #region Katilimci Tablosu
         private void TabloOlustur(bool buttonsEnabled)
@@ -837,8 +709,8 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             jQuery('#CustomDataTable').DataTable({
             data: " + jsonData + @",
             columns: [
-                { data: 'AdiSoyadi' },
-                { data: 'Kurumu' },
+                { data: 'AdiSoyadi', render: jQuery.fn.dataTable.render.text() },
+                { data: 'Kurumu', render: jQuery.fn.dataTable.render.text() },
                 { data: 'KatilimciTipi', visible: false },
                 { data: 'AniObjesi' },
                 { data: 'TakvimDavetiBtn' },
@@ -878,31 +750,23 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         {
             string jSon = string.Empty;
 
-            try
+            List<KatilimciListItem> list = GetDataList(buttonsEnable);
+            if (buttonsEnable)
             {
-                List<KatilimciListItem> list = GetDataList(buttonsEnable);
-                if (buttonsEnable)
-                {
-                    KatilimciListQS = list.Select(a => a.KatilimciId + " " + a.AniObjesiStoklu + a.AniObjesiStoksuz).ToList();
-                }
+                KatilimciListQS = list.Select(a => a.KatilimciId + " " + a.ObjectState).ToList();
+            }
 
-                var serializer = new JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
-            return jSon;
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            jSon = serializer.Serialize(list);
+
+            return jSon.Replace("<", "\\u003c").Replace(">", "\\u003e").Replace("&", "\\u0026");
         }
         private List<KatilimciListItem> GetDataList(bool buttonsEnable)
         {
 
             Faaliyet faaliyetDao = new Faaliyet();
-            DataTable dataTable = new Model.Services.MTS.FaaliyetService().GetParticipantList(FaaliyetIdQS.ConvertToInt(), ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH, ProjeConstants.HEPSI);
+            DataTable dataTable = new Model.Services.MTS.FaaliyetService(LogContext).GetParticipantList(FaaliyetIdQS.ConvertToInt(), ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH, ProjeConstants.HEPSI);
             int SiraNo = 1;
             List<KatilimciListItem> list = new List<KatilimciListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -939,6 +803,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                     string getirilenAniObjeleri = GetirilenAniObjeleriniGetir(katilimciItem.KatilimciId.ConvertToInt(),
                         FaaliyetIdQS.ConvertToInt());
 
+                    katilimciItem.ObjectState = stokluAniObjeleri + "|" + stoksuzAniObjeleri + "|" + getirilenAniObjeleri;
                     if (buttonsEnable)
                     {
                         katilimciItem.AniObjesiStoksuz = "<a href='#' class='btn btn-outline-primary' onclick=StoksuzAniObjesiBtnClick(" + katilimciId + "," + FaaliyetIdQS + ")>Stoksuz Ani Objesi</a>" +
@@ -958,87 +823,68 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                     }
 
 
-                    katilimciItem.KisiKarti = "<a  target='_blank' href=" + ProjeConstants.PAGE_KISI_KARTI + "?KatilimciId=" + katilimciId + " class='btn btn-outline-info'>Kisi Karti</a>";
+                    katilimciItem.KisiKarti = "<a  target='_blank' href=" + ProjeConstants.PAGE_KISI_KARTI + "?KatilimciId=" + katilimciId + " class='btn btn-outline-info'>Kişi Kartı</a>";
                     if (buttonsEnable)
-                        katilimciItem.Cikar = "<a href='#' class='btn btn-outline-danger' onclick=KatilimciCikarBtnClick(" + katilimId + ")>Çikar</a>";
+                        katilimciItem.Cikar = "<a href='#' class='btn btn-outline-danger' onclick=KatilimciCikarBtnClick(" + katilimId + ")>Çıkar</a>";
 
                     list.Add(katilimciItem);
                 }
             }
             return list;
-        } 
+        }
         #endregion
 
         protected void FaaliyetKartiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FAALIYET_KARTI + "?FaaliyetId=" + FaaliyetIdQS);
+            MtsWebPartLog.ExecuteAction(LogContext, "FaaliyetKartiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FAALIYET_KARTI + "?FaaliyetId=" + FaaliyetIdQS);
+            });
         }
 
         protected void AcikTarihChk_CheckedChanged(object sender, EventArgs e)
         {
-            AcikTarihliKontrolu();
+            MtsWebPartLog.ExecuteAction(LogContext, "AcikTarihChk_CheckedChanged", () =>
+            {
+                AcikTarihliKontrolu();
+            });
         }
 
         private void AcikTarihliKontrolu()
         {
             Faaliyet faaliyet = new Faaliyet();
-            faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
+            faaliyet = new Model.Services.MTS.FaaliyetService(LogContext).GetById(FaaliyetIdQS.ConvertToInt());
             if (faaliyet == null && AcikTarihChk.Checked)
             {
                 OzelKalemTakvimiChk.Checked = false;
-                MessageHelper.PublishMessage("Açik Tarihli faaliyet oldugundan Özel Kalem takvimine gönderilmeyecek", ProjeConstants.MESAJ_BILGI, 2000);
+                Messages.Info("Açık tarihli faaliyet, kesin tarih verilene kadar özel kalem takvimine gönderilmeyecek.");
             }
         }
 
         protected void OzelKalemTakvimiChk_CheckedChanged(object sender, EventArgs e)
         {
-            AcikTarihliKontrolu();
+            MtsWebPartLog.ExecuteAction(LogContext, "OzelKalemTakvimiChk_CheckedChanged", () =>
+            {
+                AcikTarihliKontrolu();
+            });
         }
         #endregion
 
         #region Modal katilimci seçme ve ekleme
         protected void KatilimciEkleBtn_Click(object sender, EventArgs e)
         {
-            KatilimciModalAc();
+            MtsWebPartLog.ExecuteAction(LogContext, "KatilimciEkleBtn_Click", () =>
+            {
+                KatilimciModalAc();
+            });
         }
         protected void KatilimciCikarBtn_Click(object sender, EventArgs e)
         {
-            int faaliyetkatilimId = paramFaaliyetKatilimIdLbl.Value.ConvertToInt();
-            if (faaliyetkatilimId > 0)
+            MtsWebPartLog.ExecuteAction(LogContext, "KatilimciCikarBtn_Click", () =>
             {
-                FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
-                faaliyetKatilim = new Model.Services.MTS.FaaliyetKatilimService().GetById(faaliyetkatilimId);
-                if (faaliyetKatilim != null)
-                {
-                    AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-                    DataTable dataTable = new Model.Services.MTS.AniObjesiDagitimService().GetByParticipantActivity(faaliyetKatilim.KatilimciId, faaliyetKatilim.FaaliyetId, string.Empty);
-                    if (dataTable == null)
-                    {
-                        if (new Model.Services.MTS.FaaliyetKatilimService().Delete(faaliyetKatilim))
-                        {
-                            MessageHelper.PublishMessage("Katilimci faaliyetten çikarildi", ProjeConstants.MESAJ_BASARILI,2000);
-                        }
-                    }
-                    else
-                    {
-                        ExceptionHelper eh= new ExceptionHelper();
-                        Exception ex = new Exception("Faaliyetin baglantili oldugu Ani Objeleri bulunmaktadir.");
-                        eh.Exceptions.Add(ex);
-                        eh.PublishException();
-                    }
-                }
-
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Katilimci Bulunamadi", ProjeConstants.MESAJ_HATA);
-            }
-            Faaliyet faaliyet = new Faaliyet();
-            faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
-            if (faaliyet != null)
-            {
-                KatilimciBilgileriniDoldur(faaliyet, true);
-            }
+                RequireActivity(Writer.RemoveParticipant(CurrentActivityId(), paramFaaliyetKatilimIdLbl.Value.ConvertToInt()));
+                FinishActivity("Katılımcı faaliyetten çıkarıldı.", RefreshActivity);
+            });
         }
         private void KatilimciModalAc()
         {
@@ -1055,20 +901,12 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         {
             string jSon = string.Empty;
 
-            try
-            {
-                List<KatilimciListItem> list = GetModalDataList();
-                var serializer = new JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
-            return jSon;
+            List<KatilimciListItem> list = GetModalDataList();
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            jSon = serializer.Serialize(list);
+
+            return jSon.Replace("<", "\\u003c").Replace(">", "\\u003e").Replace("&", "\\u0026");
         }
         private string CreateModalDataTable(string jsonData)
         {
@@ -1081,8 +919,8 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             jQuery('#CustomModalDataTable').DataTable({
             data: " + jsonData + @",
             columns: [
-                { data: 'AdiSoyadi' },
-                { data: 'Kurumu' },
+                { data: 'AdiSoyadi', render: jQuery.fn.dataTable.render.text() },
+                { data: 'Kurumu', render: jQuery.fn.dataTable.render.text() },
                 { data: 'KatilimciSec' },
                 { data: 'IrtibatSec' }
             ],
@@ -1114,7 +952,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         {
 
             Kisi kisi = new Kisi();
-            DataTable dataTable = new Model.Services.MTS.KisiService().GetUnselectedParticipants(FaaliyetIdQS.ConvertToInt());
+            DataTable dataTable = new Model.Services.MTS.KisiService(LogContext).GetUnselectedParticipants(FaaliyetIdQS.ConvertToInt());
 
 
             int SiraNo = 1;
@@ -1160,53 +998,11 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         }
         protected void SecilenKatilimciyiKaydetNowBtn_Click(object sender, EventArgs e)
         {
-            int katilimciId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
-            int faaliyetId = paramFaaliyetIdLbl.Value.ConvertToInt();
-            if (katilimciId > 0)
+            MtsWebPartLog.ExecuteAction(LogContext, "SecilenKatilimciyiKaydetNowBtn_Click", () =>
             {
-                
-
-                FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
-
-                List<FaaliyetKatilim> list = new Model.Services.MTS.FaaliyetKatilimService().GetByFaaliyetAndKatilimci(faaliyetId, katilimciId);
-                if (list.Count < 1)
-                {
-                    string kurumGorevStr = string.Empty;
-
-                        Kisi katilimci = new Model.Services.MTS.KisiService().GetById(katilimciId);
-                        if (katilimci != null)
-                        {
-                            string kurum = string.Empty;
-                            string gorev = string.Empty;
-                            kurumGorevStr = new Model.Services.MTS.MTSKurumGorevService().GetByKisiId(katilimci.Id, ref kurum, ref gorev);
-                            if (string.IsNullOrEmpty(kurumGorevStr))
-                            {
-                                kurumGorevStr = katilimci.Kurumu + " / " + katilimci.Gorevi;
-                            }
-                        }
-                    
-                    
-                    
-
-                    faaliyetKatilim.KatilimciId = katilimciId;
-                    faaliyetKatilim.FaaliyetId = faaliyetId;
-                    faaliyetKatilim.KurumGorev = kurumGorevStr;
-                    int faaliyetKatilimId = new Model.Services.MTS.FaaliyetKatilimService().Save(faaliyetKatilim);
-                    
-                }
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Katilimci Bulunamadi", ProjeConstants.MESAJ_HATA);
-            }
-            Faaliyet faaliyet = new Faaliyet();
-            faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
-            if (faaliyet != null)
-            {
-                KatilimciBilgileriniDoldur(faaliyet, true);
-            }
-
-
+                RequireActivity(Writer.AddParticipant(ModalActivityId(), paramFaaliyetKatilimciIdLbl.Value.ConvertToInt()));
+                FinishActivity("Katılımcı faaliyete eklendi.", () => { RefreshActivity(); CloseModals(); });
+            });
         }
         private void KatilimciBilgileriniDoldur(Faaliyet faaliyet, bool buttonsEnabled)
         {
@@ -1230,7 +1026,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         #region Arama/Gorusme bilgileri
         private void AramaGorusmeBilgileriniDoldur(Faaliyet faaliyet)
         {
-            AramaGorusme aramaGorusme = new Model.Services.MTS.AramaGorusmeService().GetByFaaliyetId(faaliyet.Id);
+            AramaGorusme aramaGorusme = new Model.Services.MTS.AramaGorusmeService(LogContext).GetByFaaliyetId(faaliyet.Id);
             if (aramaGorusme != null)
             {
                 AramaGorusmeIdQS = aramaGorusme.Id.ToString();
@@ -1247,156 +1043,120 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         }
         protected void AramaGorusmeBtn_Click(object sender, EventArgs e)
         {
-            if (AramaGorusmeIdQS.ConvertToInt() > 0)
+            MtsWebPartLog.ExecuteAction(LogContext, "AramaGorusmeBtn_Click", () =>
             {
-                RedirectToPage(ProjeConstants.PAGE_ARAMAGORUSME_GIRIS + "?AramaGorusmeId=" + AramaGorusmeIdQS);
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Arama Görüsme baglantisi bulunamadi.", ProjeConstants.MESAJ_HATA);
-            }
+                if (AramaGorusmeIdQS.ConvertToInt() > 0)
+                {
+                    RedirectToPage(ProjeConstants.PAGE_ARAMAGORUSME_GIRIS + "?AramaGorusmeId=" + AramaGorusmeIdQS);
+                }
+                else
+                {
+                    Messages.Warning("Arama/görüşme bağlantısı bulunamadı. Kaydı listeden kontrol edin.");
+                }
+            });
         }
         #endregion
 
         #region Ani Objesi
         protected void AniObjesiSecBtn_Click(object sender, EventArgs e)
         {
-            int katilimciId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
-            int faaliyetId = paramFaaliyetIdLbl.Value.ConvertToInt();
-            if (katilimciId > 0)
+            MtsWebPartLog.ExecuteAction(LogContext, "AniObjesiSecBtn_Click", () =>
             {
-
-                    Kisi kisi = new Kisi();
-                    kisi = new Model.Services.MTS.KisiService().GetById(katilimciId);
-                    if (kisi != null)
-                    {
-                        AniObjesiHeaderLbl.InnerText = "Ani Objesi Seçimi (" + kisi.Adi + " " + kisi.Soyadi + ")";
-                        AniObjeleriTablosunuDoldur(faaliyetId, katilimciId);
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage("Kisi bulunamadi", ProjeConstants.MESAJ_HATA);
-                    }
-                
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Katilimci Bulunamadi", ProjeConstants.MESAJ_HATA);
-            }
-        }
-        protected void StokluAniObjesiSecBtn_Click(object sender, EventArgs e)
-        {
-            int aniObjesiDagitimId = paramStokluAniObjesiDagitimIdLbl.Value.ConvertToInt();
-
-            if (aniObjesiDagitimId > 0) //düzenle
-            {
-                bool isOk;
-                AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-                aniObjesiDagitim = new Model.Services.MTS.AniObjesiDagitimService().GetById(aniObjesiDagitimId);
-                if (aniObjesiDagitim != null)
-                {
-                    IadeEdilecekAdetTxt.Text = aniObjesiDagitim.Adet.ToString();
-                    AniObjesiTanim aniObjesiTanim = new AniObjesiTanim();
-                    aniObjesiTanim = new Model.Services.MTS.AniObjesiTanimService().GetById(aniObjesiDagitim.AniObjesiId);
-                    if (aniObjesiTanim != null)
-                    {
-                        IadeEdilecekAniObjesiTxt.Text = aniObjesiTanim.Adi;// + " (" + stokAdet +")";
-                        isOk = true;
-                    }
-                    else
-                    {
-                        isOk = false;
-                        MessageHelper.PublishMessage("Ani Objesi Tanimi bulunamadi", ProjeConstants.MESAJ_HATA);
-                    }
-                    DepoTanim depoTanim = new DepoTanim();
-                    depoTanim = new Model.Services.MTS.DepoTanimService().GetById(aniObjesiDagitim.CikisDepoId);
-                    if (depoTanim != null)
-                    {
-                        IadeEdilecekDepoTxt.Text = depoTanim.Adi;
-                        isOk = true;
-                    }
-                    else
-                    {
-                        isOk = false;
-                        MessageHelper.PublishMessage("Stoklu Depo Tanimi bulunamadi", ProjeConstants.MESAJ_HATA);
-                    }
-                    DagitimDiv.Attributes["style"] = "display:none";
-                    IadeDiv.Attributes["style"] = "display:block";
-
-                    if (isOk)
-                        UtilityHelper.ScriptCalistir("StokluAniObjesiModal();");
-                }
-                else
-                {
-                    MessageHelper.PublishMessage("Ani Objesi dagitimi bulunamadi", ProjeConstants.MESAJ_HATA);
-                }
-            }
-            else // ekle
-            {
-                DagitimDiv.Attributes["style"] = "display:block";
-                IadeDiv.Attributes["style"] = "display:none";
                 int katilimciId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
-                
+                int faaliyetId = paramFaaliyetIdLbl.Value.ConvertToInt();
                 if (katilimciId > 0)
                 {
 
                         Kisi kisi = new Kisi();
-                        kisi = new Model.Services.MTS.KisiService().GetById(katilimciId);
+                        kisi = new Model.Services.MTS.KisiService(LogContext).GetById(katilimciId);
                         if (kisi != null)
                         {
-
-                            StokluAniObjesiModalTitle.InnerText = "Stoklu Ani Objesi Seçimi (" + kisi.Adi + " " + kisi.Soyadi + ")";
-                            StokluAniObjesiDDLDoldur();
-                            DepoDDLDoldur();
-                            UtilityHelper.ScriptCalistir("StokluAniObjesiModal();");
+                            AniObjesiHeaderLbl.InnerText = "Ani Objesi Seçimi (" + kisi.Adi + " " + kisi.Soyadi + ")";
+                            AniObjeleriTablosunuDoldur(faaliyetId, katilimciId);
                         }
                         else
                         {
-                            MessageHelper.PublishMessage("Kisi bulunamadi", ProjeConstants.MESAJ_HATA);
+                            Messages.Warning("Kişi bulunamadı. Listeden yeniden seçin.");
+                        }
+
+                }
+                else
+                {
+                    Messages.Warning("Katılımcı bulunamadı. Listeden yeniden seçin.");
+                }
+            });
+        }
+        protected void StokluAniObjesiSecBtn_Click(object sender, EventArgs e)
+        {
+            MtsWebPartLog.ExecuteAction(LogContext, "StokluAniObjesiSecBtn_Click", () =>
+            {
+                int distributionId = paramStokluAniObjesiDagitimIdLbl.Value.ConvertToInt();
+                ViewState["StockVersion"] = ViewState["ReturnVersion"] = null;
+                if (distributionId > 0)
+                {
+                    var distribution = new AniObjesiDagitimService(LogContext).GetById(distributionId);
+                    if (distribution == null || distribution.FaaliyetId != CurrentActivityId())
+                        throw new MtsInputException("Dağıtım kaydı bulunamadı veya bu faaliyete ait değil.");
+                    var item = new AniObjesiTanimService(LogContext).GetById(distribution.AniObjesiId);
+                    var warehouse = new DepoTanimService(LogContext).GetById(distribution.CikisDepoId);
+                    if (item == null || warehouse == null) throw new MtsInputException("Anı objesi veya çıkış deposu bulunamadı. Kaydı kontrol edin.");
+                    IadeEdilecekAdetTxt.Text = distribution.Adet.ToString();
+                    IadeEdilecekAniObjesiTxt.Text = item.Adi; IadeEdilecekDepoTxt.Text = warehouse.Adi;
+                    ViewState["ReturnVersion"] = MtsContactWriteService.Version(distribution);
+                    DagitimDiv.Attributes["style"] = "display:none"; IadeDiv.Attributes["style"] = "display:block";
+                }
+                else
+                {
+                    ModalActivityId();
+                    var person = new KisiService(LogContext).GetById(paramFaaliyetKatilimciIdLbl.Value.ConvertToInt());
+                    if (person == null) throw new MtsInputException("Listeden geçerli bir katılımcı seçin.");
+                    StokluAniObjesiModalTitle.InnerText = "Stoklu Anı Objesi Seçimi (" + person.Adi + " " + person.Soyadi + ")";
+                    DagitimDiv.Attributes["style"] = "display:block"; IadeDiv.Attributes["style"] = "display:none";
+                    StokluAniObjesiDDLDoldur(); DepoDDLDoldur(); CaptureStockVersion();
+                }
+                UtilityHelper.ScriptCalistir("StokluAniObjesiModal();");
+            });
+        }
+        protected void GetirilenAniObjesiSecBtn_Click(object sender, EventArgs e)
+        {
+            MtsWebPartLog.ExecuteAction(LogContext, "GetirilenAniObjesiSecBtn_Click", () =>
+            {
+                int katilimciId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
+                int faaliyetId = paramFaaliyetIdLbl.Value.ConvertToInt();
+
+                if (katilimciId > 0)
+                {
+
+                        Kisi kisi = new Kisi();
+                        kisi = new Model.Services.MTS.KisiService(LogContext).GetById(katilimciId);
+                        if (kisi != null)
+                        {
+                            GetirilenAniObjesiModalTitle.InnerText = "Getirilen Ani Objesi (" + kisi.Adi + " " + kisi.Soyadi + ")";
+                            GetirilenAniObjesiniDoldur(faaliyetId, katilimciId);
+                        }
+                        else
+                        {
+                            Messages.Warning("Kişi bulunamadı. Listeden yeniden seçin.");
                         }
 
 
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Katilimci Bulunamadi", ProjeConstants.MESAJ_HATA);
+                    Messages.Warning("Katılımcı bulunamadı. Listeden yeniden seçin.");
                 }
-            }
-        }
-        protected void GetirilenAniObjesiSecBtn_Click(object sender, EventArgs e)
-        {
-            int katilimciId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
-            int faaliyetId = paramFaaliyetIdLbl.Value.ConvertToInt();
-
-            if (katilimciId > 0)
-            {
-
-                    Kisi kisi = new Kisi();
-                    kisi = new Model.Services.MTS.KisiService().GetById(katilimciId);
-                    if (kisi != null)
-                    {
-                        GetirilenAniObjesiModalTitle.InnerText = "Getirilen Ani Objesi (" + kisi.Adi + " " + kisi.Soyadi + ")";
-                        GetirilenAniObjesiniDoldur(faaliyetId, katilimciId);
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage("Kisi bulunamadi", ProjeConstants.MESAJ_HATA);
-                    }
-                
-
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Katilimci Bulunamadi", ProjeConstants.MESAJ_HATA);
-            }
+            });
         }
         public void GetirilenAniObjesiniDoldur(int faaliyetId, int katilimciId)
         {
+            if (faaliyetId != CurrentActivityId()) throw new MtsInputException("Faaliyeti yeniden açıp katılımcıyı seçin.");
+            ViewState["ReceivedVersion"] = Writer.ObjectVersion(faaliyetId, katilimciId);
             paramFaaliyetIdLbl.Value = faaliyetId.ToString();
             paramFaaliyetKatilimciIdLbl.Value = katilimciId.ToString();
 
+            GetirilenAniObjesiTxt.Text = string.Empty;
             AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
-            getirilenAniObjesi = new Model.Services.MTS.AniObjesiDagitimService().GetGetirilen(faaliyetId, katilimciId);
+            getirilenAniObjesi = new Model.Services.MTS.AniObjesiDagitimService(LogContext).GetGetirilen(faaliyetId, katilimciId);
             if (getirilenAniObjesi != null)
             {
                 GetirilenAniObjesiTxt.Text = getirilenAniObjesi.GetirilenAniObjesi;
@@ -1415,11 +1175,15 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         /// <param name="katilimciId"></param>
         private void AniObjeleriTablosunuDoldur(int faaliyetId, int katilimciId)
         {
+            if (faaliyetId != CurrentActivityId()) throw new MtsInputException("Faaliyeti yeniden açıp katılımcıyı seçin.");
+            ViewState["ObjectVersion"] = Writer.ObjectVersion(faaliyetId, katilimciId);
             paramFaaliyetIdLbl.Value = faaliyetId.ToString();
             paramFaaliyetKatilimciIdLbl.Value = katilimciId.ToString();
 
             AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-            DataTable dataTable = new Model.Services.MTS.AniObjesiDagitimService().GetDistributionTable(faaliyetId, katilimciId, ProjeConstants.MTS_ANIOBJESISTOKSUZ);
+            DataTable dataTable = new Model.Services.MTS.AniObjesiDagitimService(LogContext).GetDistributionTable(faaliyetId, katilimciId, ProjeConstants.MTS_ANIOBJESISTOKSUZ);
+            paramAniObjesiIdArray.Value = paramAniObjesiAdetArray.Value = string.Empty;
+            CustomAniObjesiModalDataTable.Rows.Clear();
             if (dataTable != null)
             {
                 //CheckBox[] aniObjesiChk = new CheckBox[AniObjesiList.Count];
@@ -1453,7 +1217,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
 
                         CheckBox chkBox = new CheckBox();
                         chkBox.ID = "chkBox" + aniObjesiId;
-                        chkBox.Text = deger;
+                        chkBox.Text = System.Web.HttpUtility.HtmlEncode(deger);
                         chkBox.Checked = aniObjesiDagitimId > 0;
                         if (chkBox.Checked)
                         {
@@ -1534,323 +1298,77 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         /// <param name="e"></param>
         protected void SecilenleriKaydetBtn_Click(object sender, EventArgs e)
         {
-            int faaliyetId = paramFaaliyetIdLbl.Value.ConvertToInt();
-            int katilimciId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
-
-            string idler = paramAniObjesiIdArray.Value;
-            string adetler = paramAniObjesiAdetArray.Value;
-            List<string> idList = idler.Split(',').ToList<string>();
-            List<string> adetList = adetler.Split(',').ToList<string>();
-
-            KaldirilanlariSil(idList, faaliyetId, katilimciId);
-
-            List<AniObjesiDagitim> objeList = new Model.Services.MTS.AniObjesiDagitimService().GetStoksuz(faaliyetId, katilimciId);
-            foreach (var item in objeList)
+            MtsWebPartLog.ExecuteAction(LogContext, "SecilenleriKaydetBtn_Click", () =>
             {
-                int index = idList.FindIndex(a => a == item.AniObjesiId.ToString());
-                if (index > -1)
+                int activityId = ModalActivityId(), personId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
+                var quantities = new Dictionary<int, int>();
+                string[] ids = string.IsNullOrWhiteSpace(paramAniObjesiIdArray.Value) ? new string[0] : paramAniObjesiIdArray.Value.Split(',');
+                string[] amounts = string.IsNullOrWhiteSpace(paramAniObjesiAdetArray.Value) ? new string[0] : paramAniObjesiAdetArray.Value.Split(',');
+                if (ids.Length != amounts.Length || ids.Length > 500) throw new MtsInputException("Anı objesi seçimlerini yeniden açıp kontrol edin.");
+                for (int i = 0; i < ids.Length; i++)
                 {
-                    int adet = adetList[index].ConvertToInt();
-
-                    if (index < 0) // ikinci listede yok, silinecek
-                    {
-                        new Model.Services.MTS.AniObjesiDagitimService().Delete(item);
-                    }
-                    else
-                    {
-
-                        if (adet == 0)//yeni adet sifirsa sil
-                        {
-
-                            new Model.Services.MTS.AniObjesiDagitimService().Delete(item);
-                        }
-                        else if (adet == item.Adet)//adet ayni bisey yapma
-                        {
-
-                        }
-                        else if (item.Adet == 0)//adet farkli //eski adet sifirsa insert et
-                        {
-
-                            item.Adet = adet;
-                            item.FaaliyetId = faaliyetId;
-                            item.KatilimciId = katilimciId;
-                            item.VerilisTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
-                            item.Olusturan = UtilityHelper.GetCurrentUserName();
-                            new Model.Services.MTS.AniObjesiDagitimService().Save(item);
-                        }
-                        else //eski adetle adet farkli  update et
-                        {
-                            item.Adet = adet;
-                            item.FaaliyetId = faaliyetId;
-                            item.KatilimciId = katilimciId;
-                            item.VerilisTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
-                            item.Degistiren = UtilityHelper.GetCurrentUserName();
-                            new Model.Services.MTS.AniObjesiDagitimService().Update(item);
-                        }
-                    }
+                    int id, quantity;
+                    if (!int.TryParse(ids[i], out id) || id <= 0 || !int.TryParse(amounts[i], out quantity) || quantity < 0 || quantities.ContainsKey(id))
+                        throw new MtsInputException("Anı objesi adetlerini sıfır veya pozitif tam sayı olarak girin.");
+                    quantities.Add(id, quantity);
                 }
-            }
-            if (objeList.Count < 1)
-            {
-                MessageHelper.PublishMessage("Hiç kayit seçilmedi. Devam etmek için en az bir kayit seçiniz.", ProjeConstants.MESAJ_BILGI);
-            }
-            Faaliyet faaliyet = new Faaliyet();
-            faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
-            if (faaliyet != null)
-            {
-                KatilimciBilgileriniDoldur(faaliyet, true);
-            }
-
+                RequireActivity(Writer.SaveObjects(activityId, personId, quantities, ViewState["ObjectVersion"] as string));
+                ViewState["ObjectVersion"] = null;
+                FinishActivity("Stoksuz anı objesi seçimleri kaydedildi.", () => { RefreshActivity(); CloseModals(); });
+            });
         }
         protected void GetirilenAniObjesiKaydetBtn_Click(object sender, EventArgs e)
         {
-            int faaliyetId = paramFaaliyetIdLbl.Value.ConvertToInt();
-            int katilimciId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
-
-            GetirilenAniObjesiKaydet(faaliyetId, katilimciId);
-
-            Faaliyet faaliyet = new Faaliyet();
-            faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
-            if (faaliyet != null)
+            MtsWebPartLog.ExecuteAction(LogContext, "GetirilenAniObjesiKaydetBtn_Click", () =>
             {
-                KatilimciBilgileriniDoldur(faaliyet, true);
-            }
-            CloseModals();
+                RequireActivity(Writer.SaveReceived(ModalActivityId(), paramFaaliyetKatilimciIdLbl.Value.ConvertToInt(),
+                    GetirilenAniObjesiTxt.Text, ViewState["ReceivedVersion"] as string));
+                ViewState["ReceivedVersion"] = null;
+                FinishActivity("Getirilen anı objesi bilgisi kaydedildi.", () => { RefreshActivity(); CloseModals(); });
+            });
         }
         protected void StokluAniObjesiKaydetBtn_Click(object sender, EventArgs e)
         {
-            int aniObjesiId = StokluAniObjesiDDL.SelectedItem.Value.ConvertToInt();
-            int depoId = DepoDDL.SelectedItem.Value.ConvertToInt();
-            int adet = StokluAdetTxt.Text.ConvertToInt();
-            AniObjesiTanim aniObjesiTanim = new Model.Services.MTS.AniObjesiTanimService().GetById(aniObjesiId);
-
-            if (aniObjesiTanim == null) // ani objesi var mi, yoksa
+            MtsWebPartLog.ExecuteAction(LogContext, "StokluAniObjesiKaydetBtn_Click", () =>
             {
-                MessageHelper.PublishMessage("Ani Objesi Bulunamadi. Devam etmek için farkli bir seçim yapiniz.", ProjeConstants.MESAJ_BILGI);
-            }
-            else //varsa
-            {
-                //TODO burda kaydet
-
-                //seçilen depoda adet kadar mevcut var mi?
-                DepoStok depoStok = new DepoStok();
-                depoStok = new Model.Services.MTS.DepoStokService().GetByDepoIdAniObjesiId(depoId, aniObjesiId, ProjeConstants.MTS_ANIOBJESISTOKLU);
-                if (depoStok != null)
-                {
-                    if (depoStok.SonAdet >= adet)
-                    {
-                        AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-                        int katilimciId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
-                        int faaliyetId = paramFaaliyetIdLbl.Value.ConvertToInt();
-                        aniObjesiDagitim = new Model.Services.MTS.AniObjesiDagitimService().GetByActivityParticipantObject(faaliyetId, katilimciId, aniObjesiId);
-                        if (aniObjesiDagitim == null)
-                        {
-                            aniObjesiDagitim = new AniObjesiDagitim();
-                            aniObjesiDagitim.Aciklama = adet + " adet verildi FaaliyetID=" + aniObjesiDagitim.FaaliyetId;
-                            aniObjesiDagitim.Adet = StokluAdetTxt.Text.ConvertToInt(); //ilk defa verildi
-                            aniObjesiDagitim.AniObjesiId = aniObjesiId;
-                            aniObjesiDagitim.CikisDepoId = depoId;
-                            aniObjesiDagitim.KatilimciId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
-                            aniObjesiDagitim.FaaliyetId = paramFaaliyetIdLbl.Value.ConvertToInt();
-                            aniObjesiDagitim.VerilisTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
-                            aniObjesiDagitim.VerilenAlinan = ProjeConstants.ANIOBJESI_VERILEN_INT;
-                            new Model.Services.MTS.AniObjesiDagitimService().Save(aniObjesiDagitim);
-                            //DepoStoktan düs
-
-                            depoStok.SonAdet -= adet;
-                            //depoStok.Aciklama+=adet+" adet verildi FaaliyetID=" + aniObjesiDagitim.FaaliyetId;
-                            depoStok.SonIslemYapan = UtilityHelper.GetCurrentUserName();
-                            new Model.Services.MTS.DepoStokService().Update(depoStok);
-                        }
-                        else
-                        {
-                            aniObjesiDagitim.Aciklama = adet + " adet verildi FaaliyetID=" + aniObjesiDagitim.FaaliyetId;
-                            aniObjesiDagitim.Adet += StokluAdetTxt.Text.ConvertToInt(); //adet artirildi
-                            aniObjesiDagitim.AniObjesiId = aniObjesiId;
-                            aniObjesiDagitim.CikisDepoId = depoId;
-                            aniObjesiDagitim.KatilimciId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
-                            aniObjesiDagitim.FaaliyetId = paramFaaliyetIdLbl.Value.ConvertToInt();
-                            aniObjesiDagitim.VerilisTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
-                            aniObjesiDagitim.VerilenAlinan = ProjeConstants.ANIOBJESI_VERILEN_INT;
-                            new Model.Services.MTS.AniObjesiDagitimService().Update(aniObjesiDagitim);
-                            //DepoStoktan düs
-
-                            depoStok.SonAdet -= adet;
-                            depoStok.Aciklama = adet + " adet verildi FaaliyetID=" + aniObjesiDagitim.FaaliyetId;
-                            depoStok.SonIslemYapan = UtilityHelper.GetCurrentUserName();
-                            new Model.Services.MTS.DepoStokService().Update(depoStok);
-                        }
-                    }
-                    else if (depoStok.SonAdet == 0)
-                    {
-                        MessageHelper.PublishMessage("Depoda ürün mevcudu bulunmuyor", ProjeConstants.MESAJ_HATA);
-                    }
-                    else if (depoStok.SonAdet < adet)
-                    {
-                        MessageHelper.PublishMessage("Depoda adedi yetersiz.", ProjeConstants.MESAJ_HATA);
-                    }
-                }
-                else
-                {
-                    MessageHelper.PublishMessage("Depoda ürün bulunmuyor", ProjeConstants.MESAJ_HATA);
-                }
-            }
-            Faaliyet faaliyet = new Faaliyet();
-            faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
-            if (faaliyet != null)
-            {
-                KatilimciBilgileriniDoldur(faaliyet, true);
-            }
-            CloseModals();
-
+                RequireActivity(Writer.Deliver(ModalActivityId(), paramFaaliyetKatilimciIdLbl.Value.ConvertToInt(),
+                    DepoDDL.SelectedValue.ConvertToInt(), StokluAniObjesiDDL.SelectedValue.ConvertToInt(),
+                    PositiveQuantity(StokluAdetTxt.Text), ViewState["StockVersion"] as string));
+                ViewState["StockVersion"] = null;
+                FinishActivity("Anı objesi verildi ve depo stoku güncellendi.", () => { RefreshActivity(); CloseModals(); });
+            });
         }
         protected void StokluAniObjesiIadeEtBtn_Click(object sender, EventArgs e)
         {
-            int aniObjesiDagitimId = paramStokluAniObjesiDagitimIdLbl.Value.ConvertToInt();
-            AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-            aniObjesiDagitim = new Model.Services.MTS.AniObjesiDagitimService().GetById(aniObjesiDagitimId);
-            if (aniObjesiDagitim != null)
+            MtsWebPartLog.ExecuteAction(LogContext, "StokluAniObjesiIadeEtBtn_Click", () =>
             {
-
-                int aniObjesiId = aniObjesiDagitim.AniObjesiId;
-                AniObjesiTanim aniObjesiTanim = new Model.Services.MTS.AniObjesiTanimService().GetById(aniObjesiId);
-
-                if (aniObjesiTanim == null) // ani objesi var mi, yoksa
-                {
-                    MessageHelper.PublishMessage("Ani Objesi Bulunamadi. Devam etmek için farkli bir seçim yapiniz.", ProjeConstants.MESAJ_BILGI);
-                }
-                else //varsa
-                {
-                    //burda iade et
-                    //aniObjesiDagitimdan Düs
-                    int adet = IadeEdilecekAdetTxt.Text.ConvertToInt();
-
-                    if (aniObjesiDagitim == null)
-                    {
-                        MessageHelper.PublishMessage("Iade edilemedi, Ani Objesi bulunamadi", ProjeConstants.MESAJ_HATA);
-                    }
-                    else if (adet > aniObjesiDagitim.Adet) // ani objesi var mi, yoksa
-                    {
-
-
-                        MessageHelper.PublishMessage("Iade edilecek miktarda Ani Objesi bulunmuyor. ", ProjeConstants.MESAJ_HATA);
-                    }
-                    else
-                    {
-                        int depoId = aniObjesiDagitim.CikisDepoId.ConvertToInt();
-                        aniObjesiDagitim.Aciklama = adet + " adet Iade edildi FaaliyetID=" + aniObjesiDagitim.FaaliyetId;
-                        aniObjesiDagitim.Adet -= adet; //adet artirildi
-                        aniObjesiDagitim.AniObjesiId = aniObjesiId;
-
-
-                        //DepoStok a ekle
-                        DepoStok depoStok = new DepoStok();
-                        depoStok = new Model.Services.MTS.DepoStokService().GetByDepoIdAniObjesiId(depoId, aniObjesiId, ProjeConstants.MTS_ANIOBJESISTOKLU);
-                        if (depoStok == null)
-                        {
-                            depoStok = new DepoStok();
-                            depoStok.DepoId = depoId;
-                            depoStok.AniObjesiId = aniObjesiId;
-                            depoStok.SonAdet = 0;
-                            depoStok.SonIslemTarihi = DateTime.Now;
-                            depoStok.SonIslemYapan = UtilityHelper.GetCurrentUserName();
-                        }
-
-                        depoStok.SonAdet += adet;
-                        depoStok.Aciklama = adet + " adet verildi FaaliyetID=" + aniObjesiDagitim.FaaliyetId;
-                        depoStok.SonIslemYapan = UtilityHelper.GetCurrentUserName();
-                        new Model.Services.MTS.DepoStokService().Update(depoStok);
-                        if (aniObjesiDagitim.Adet > 0)
-                        {
-                        new Model.Services.MTS.AniObjesiDagitimService().Update(aniObjesiDagitim);
-                        }
-                        else
-                        {
-                        new Model.Services.MTS.AniObjesiDagitimService().Delete(aniObjesiDagitim);
-                        }
-                    }
-
-
-                }
-                Faaliyet faaliyet = new Faaliyet();
-                faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
-                if (faaliyet != null)
-                {
-                    KatilimciBilgileriniDoldur(faaliyet, true);
-                }
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Ani Objesi dagitimi bulunamadi.", ProjeConstants.MESAJ_HATA);
-            }
-            CloseModals();
-
+                RequireActivity(Writer.Return(CurrentActivityId(), paramStokluAniObjesiDagitimIdLbl.Value.ConvertToInt(),
+                    PositiveQuantity(IadeEdilecekAdetTxt.Text), ViewState["ReturnVersion"] as string));
+                ViewState["ReturnVersion"] = null;
+                FinishActivity("Anı objesi çıkış deposuna iade edildi.", () => { RefreshActivity(); CloseModals(); });
+            });
         }
         protected void StokluAniObjesiDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DepoDDLDoldur();
-            string adet = DepoDDL.SelectedItem.Attributes["adet"].ReturnZeroIfNull().ToString();
-            //StokluAdetTxtRV.MaximumValue = adet.ConvertToInt()<1?"0":adet;
-            //StokluAdetTxtRV.MinimumValue = "1";
-            //StokluAdetTxt.Attributes.Remove("max");
-            //StokluAdetTxt.Attributes.Add("max", adet);
-            //StokluAdetTxt.Attributes.Add("min", "1");
+            MtsWebPartLog.ExecuteAction(LogContext, "StokluAniObjesiDDL_SelectedIndexChanged", () =>
+            {
+                DepoDDLDoldur(); CaptureStockVersion();
+            });
         }
         protected void DepoDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string adet = DepoDDL.SelectedItem.Attributes["adet"].ReturnZeroIfNull().ToString();
-            //StokluAdetTxtRV.MaximumValue = adet.ConvertToInt() < 1 ? "0" : adet;
-            //StokluAdetTxtRV.MinimumValue = "1";
-            //StokluAdetTxt.Attributes.Remove("max");
-            //StokluAdetTxt.Attributes.Add("max", adet);
-            //StokluAdetTxt.Attributes.Add("min", "1");
-        }
-        private void GetirilenAniObjesiKaydet(int faaliyetId, int katilimciId)
-        {
-            AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-            aniObjesiDagitim = new Model.Services.MTS.AniObjesiDagitimService().GetGetirilen(faaliyetId, katilimciId);
-
-            if (aniObjesiDagitim == null)
+            MtsWebPartLog.ExecuteAction(LogContext, "DepoDDL_SelectedIndexChanged", () =>
             {
-                aniObjesiDagitim = new AniObjesiDagitim();
-                aniObjesiDagitim.AniObjesiId = ProjeConstants.GETIRILEN_ANIOBJESIID_INT;
-                aniObjesiDagitim.FaaliyetId = faaliyetId;
-                aniObjesiDagitim.KatilimciId = katilimciId;
-
-                aniObjesiDagitim.GetirilenAniObjesi = GetirilenAniObjesiTxt.Text;
-                aniObjesiDagitim.VerilenAlinan = ProjeConstants.ANIOBJESI_GETIRILEN_INT;
-                aniObjesiDagitim.VerilisTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
-                aniObjesiDagitim.Olusturan = UtilityHelper.GetCurrentUserName();
-                new Model.Services.MTS.AniObjesiDagitimService().Save(aniObjesiDagitim);
-
-            }
-            else if (aniObjesiDagitim != null)
-            {
-                aniObjesiDagitim.GetirilenAniObjesi = GetirilenAniObjesiTxt.Text;
-                aniObjesiDagitim.Degistiren = UtilityHelper.GetCurrentUserName();
-                new Model.Services.MTS.AniObjesiDagitimService().Update(aniObjesiDagitim);
-            }
-
+                CaptureStockVersion();
+            });
         }
-        private void KaldirilanlariSil(List<string> idList, int faaliyetId, int katilimciId)
-        {
-            AniObjesiDagitim aniObjesiDagitimDao = new AniObjesiDagitim();
-                List<AniObjesiDagitim> objeList = new Model.Services.MTS.AniObjesiDagitimService().GetStoksuz(faaliyetId, katilimciId);
 
-            List<string> idList1 = objeList.Select(l => l.AniObjesiId.ToString()).ToList();
-            var firstNotSecond = idList1.Except(idList).ToList();
-            DeleteFirstList(firstNotSecond, faaliyetId, katilimciId);
-        }
-        private void DeleteFirstList(List<string> list, int faaliyetId, int katilimciId)
-        {
-            string joined = string.Join(",", list.ToArray());
-            AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-            new Model.Services.MTS.AniObjesiDagitimService().DeleteByActivityAndParticipant(faaliyetId, katilimciId, joined);
-        }
+
+
         private string AniObjeleriniGetir(int katilimciId, int faaliyetId, string stokluMu)
         {
             AniObjesiDagitim aniobjesiDagitim = new AniObjesiDagitim();
-            DataTable dataTable = new Model.Services.MTS.AniObjesiDagitimService().GetByParticipantActivity(katilimciId, faaliyetId, stokluMu);
+            DataTable dataTable = new Model.Services.MTS.AniObjesiDagitimService(LogContext).GetByParticipantActivity(katilimciId, faaliyetId, stokluMu);
             string aniObjeleri = string.Empty;
 
             if (dataTable != null)
@@ -1861,7 +1379,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                     {
                         int aniObjesiDagitimId = row["AniObjesiDagitimId"].ReturnZeroIfNull().ConvertToInt();
                         int depoId = row["CikisDepoId"].ReturnZeroIfNull().ConvertToInt();
-                        string aniObjesi = row["Adi"].ReturnEmptyIfNull().ToString();
+                        string aniObjesi = System.Web.HttpUtility.HtmlEncode(row["Adi"].ReturnEmptyIfNull().ToString());
                         string adet = row["Adet"].ReturnZeroIfNull().ToString();
                         if (stokluMu.Equals(ProjeConstants.MTS_ANIOBJESISTOKLU))
                         {
@@ -1877,167 +1395,82 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                     }
                 }
             }
-            return (aniObjeleri);
+            return aniObjeleri;
         }
         private string GetirilenAniObjeleriniGetir(int katilimciId, int faaliyetId)
         {
             AniObjesiDagitim aniobjesiDagitim = new AniObjesiDagitim();
-            string aniObjeleri = new Model.Services.MTS.AniObjesiDagitimService().GetGetirilenText(katilimciId, faaliyetId);
-            return (aniObjeleri);
+            string aniObjeleri = new Model.Services.MTS.AniObjesiDagitimService(LogContext).GetGetirilenText(katilimciId, faaliyetId);
+            return System.Web.HttpUtility.HtmlEncode(aniObjeleri ?? string.Empty);
         }
 
         protected void DisIrtibatCikarBtn_Click(object sender, EventArgs e)
         {
-            Faaliyet faaliyet = new Faaliyet();
-            faaliyet = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
-            if (faaliyet != null)
+            MtsWebPartLog.ExecuteAction(LogContext, "DisIrtibatCikarBtn_Click", () =>
             {
-                faaliyet.DisIrtibatId = 0;
-                new Model.Services.MTS.FaaliyetService().Update(faaliyet);
-                DisIrtibatLbl.Text = string.Empty;
-                DisIrtibatCikarBtn.Visible = false;
-                KatilimciBilgileriniDoldur(faaliyet, true);
-            }
+                RequireActivity(Writer.SetContact(CurrentActivityId(), ActivityVersion, 0));
+                FinishActivity("İrtibat kişisi kaldırıldı.", ReloadActivity);
+            });
         }
         #endregion
         #region Takvim Daveti
         private string TakvimDavetiBtnOlustur(int katilimId,string takvimDaveti, int katilimciId, string eposta)
         {
-            string btn = string.Empty;
-            if (!string.IsNullOrEmpty(eposta))
-            {
-                FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
-                faaliyetKatilim = new Model.Services.MTS.FaaliyetKatilimService().GetById(katilimId);
-                if (faaliyetKatilim != null && faaliyetKatilim.TakvimDaveti.Equals(ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILDI))
-                {
-                    btn =  ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILDI;
-                }
-                else
-                {
-                    btn = "<a href='#' class='btn btn-outline-info' onclick=TakvimDavetiyesiModalAc(" + katilimId + "," + FaaliyetIdQS + "," + katilimciId + "," + "," + eposta.ReturnQuotedValue() + ")>Davet Gönder</a>" +
-                                (string.IsNullOrEmpty(takvimDaveti) || takvimDaveti.Equals(ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILMEDI) ? string.Empty : "<br>" + ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILDI) + "";
-                }
-            }
-            else
-            {
-                btn = "E-posta adresi yok";
-            }
-
-
-            return btn;
+            if (string.IsNullOrWhiteSpace(eposta)) return "E-posta adresi yok";
+            if (takvimDaveti == ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILDI) return "Davet gönderildi";
+            string script = "TakvimDavetiyesiModalAc(" + katilimId + "," + FaaliyetIdQS.ConvertToInt() + "," + katilimciId + ","
+                + new JavaScriptSerializer().Serialize(eposta) + ");return false;";
+            return "<a href='#' class='btn btn-outline-info' onclick=\"" + System.Web.HttpUtility.HtmlAttributeEncode(script) + "\">Davet gönder</a>";
         }
-        private bool TakvimDavetiGonder(FaaliyetKatilim faaliyetKatilim, int faaliyetId, string toAdress, string islemTipi)
-        {
-            bool gonderildi = false;
-            Faaliyet faaliyet = new Faaliyet();
-            faaliyet = new Model.Services.MTS.FaaliyetService().GetById(faaliyetId);
-            if (faaliyet != null)
-            {
-                string from = ProjeConstants.PARAM_MTSMAILADRESI;
-                string userto = toAdress;
-                string baslik = faaliyet.FaaliyetKonusu;
-                string faaliyetYeriStr = faaliyet.FaaliyetYeriStr;
 
-
-
-                if (faaliyetKatilim == null 
-                    || string.IsNullOrEmpty(faaliyetKatilim.TakvimDaveti) 
-                    || faaliyetKatilim.TakvimDaveti.Equals(ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILMEDI))
-                {
-                    islemTipi = ProjeConstants.KAYDET;
-                }
-                
-                if (islemTipi.Equals(ProjeConstants.KAYDET))
-                {
-                    if (AcikTarihChk.Checked)
-                    {
-                        MessageHelper.PublishMessage("Açik Tarihli faaliyet oldugundan takvim daveti gönderilmedi", ProjeConstants.MESAJ_HATA);
-                    }
-                    else{
-                        MailHelper.TakvimeEkle(faaliyet.UniqueId, from, userto, baslik, faaliyet.BaslangicTarihi, faaliyet.BitisTarihi, faaliyetYeriStr,
-                                        faaliyet.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
-                        gonderildi = true;
-                    }
-
-                }
-                else if (islemTipi.Equals(ProjeConstants.GUNCELLE))
-                {
-                    if (AcikTarihChk.Checked)
-                    {
-                        MailHelper.TakvimdenSil(faaliyet.UniqueId, from, userto, " -Açik Tarihe Alindi- " + baslik, faaliyet.BaslangicTarihi, faaliyet.BitisTarihi, faaliyetYeriStr,
-                            faaliyet.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
-                        gonderildi = true;
-                    }
-                    else
-                    {
-                        MailHelper.TakvimeEkle(faaliyet.UniqueId, from, userto, baslik, faaliyet.BaslangicTarihi, faaliyet.BitisTarihi, faaliyetYeriStr,
-                            faaliyet.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
-                        gonderildi = true;
-                    }
-                }
-                else if (islemTipi.Equals(ProjeConstants.SIL))
-                {
-                    MailHelper.TakvimdenSil(faaliyet.UniqueId, from, userto, baslik, faaliyet.BaslangicTarihi, faaliyet.BitisTarihi, faaliyetYeriStr,
-                        faaliyet.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
-                    gonderildi = true;
-                }
-
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Takvim daveti gönderilmedi", ProjeConstants.MESAJ_BILGI, 2000);
-            }
-            return gonderildi;
-        }
         protected void TakvimDavetiGonderNowBtn_Click(object sender, EventArgs e)
         {
-            int katilimId = paramFaaliyetKatilimIdLbl.Value.ConvertToInt();
-            int katilimciId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
-            int faaliyetId = paramFaaliyetIdLbl.Value.ConvertToInt();
-
-            TakvimDavetiHazirla(faaliyetId,katilimId, katilimciId, ProjeConstants.GUNCELLE);
+            MtsWebPartLog.ExecuteAction(LogContext, "TakvimDavetiGonderNowBtn_Click", () =>
+            {
+                int activityId = ModalActivityId();
+                int participationId = paramFaaliyetKatilimIdLbl.Value.ConvertToInt();
+                var participation = new FaaliyetKatilimService(LogContext).GetById(participationId);
+                if (participation == null || participation.FaaliyetId != activityId) throw new MtsInputException("Katılım kaydı bulunamadı. Listeyi yenileyin.");
+                if (participation.TakvimDaveti == ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILDI)
+                    throw new MtsInputException("Bu katılımcıya davet gönderilmiş. Tekrar göndermeden önce kontrol edin.");
+                var activity = new FaaliyetService(LogContext).GetById(activityId);
+                if (activity == null || activity.AcikTarih) throw new MtsInputException("Önce faaliyete kesin bir tarih verin.");
+                bool sent = false;
+                try
+                {
+                    TakvimDavetiHazirla(activityId, participationId, participation.KatilimciId, ProjeConstants.KAYDET);
+                    sent = true;
+                    RefreshActivity(); CloseModals();
+                    Messages.Success("Takvim daveti gönderildi.");
+                }
+                catch (MtsInputException) when (!sent) { throw; }
+                catch (Exception error)
+                {
+                    PortalTechnicalLog.WriteError(LogContext, "MTS.Faaliyet.Invitation", error);
+                    Messages.Warning((sent ? "Takvim daveti gönderildi; ekran yenilenemedi. " : "Takvim daveti veya gönderim durumu tamamlanamadı. ")
+                        + "Yeniden göndermeden önce kontrol edin. Başvuru kodu: " + LogContext.OperationId.ToString("N"));
+                }
+            });
         }
 
         private void TakvimDavetiHazirla(int faaliyetId,int katilimId, int katilimciId, string islemTipi)
         {
-            Katilimci katilimci = new Model.Services.MTS.KatilimciService().GetKatilimci(katilimciId, ProjeConstants.FAALIYET_KATILIMCI_DIS_INT);
-            if (katilimci != null)
-            {
-                string epostaAdresi = katilimci != null ? katilimci.EPosta : string.Empty;
-
-                if (string.IsNullOrEmpty(epostaAdresi))
-                {
-                    MessageHelper.PublishMessage("Katilimcinin e-posta adresi bulunmuyor", ProjeConstants.MESAJ_HATA);
-                }
-                else
-                {
-                    try
-                    {
-                        FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
-                        faaliyetKatilim = new Model.Services.MTS.FaaliyetKatilimService().GetById(katilimId);
-                        if (faaliyetKatilim != null)
-                        {
-                            TakvimDavetiGonder(faaliyetKatilim, faaliyetId, epostaAdresi, islemTipi);
-                            faaliyetKatilim.TakvimDaveti = ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILDI;
-                            new Model.Services.MTS.FaaliyetKatilimService().Update(faaliyetKatilim);
-                        }
-
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageHelper.PublishMessage(ex.Message, ProjeConstants.MESAJ_HATA);
-                    }
-                }
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Katilimci bulunamadigindan takvim daveti gönderilmedi", ProjeConstants.MESAJ_HATA);
-            }
+            var activity = new FaaliyetService(LogContext).GetById(faaliyetId);
+            var participation = new FaaliyetKatilimService(LogContext).GetById(katilimId);
+            if (activity == null || participation == null || participation.FaaliyetId != faaliyetId || participation.KatilimciId != katilimciId)
+                throw new MtsInputException("Katılım kaydı bu faaliyete ait değil. Listeyi yenileyin.");
+            var person = new KisiService(LogContext).GetById(participation.KatilimciId);
+            if (person == null || string.IsNullOrWhiteSpace(person.EPosta)) throw new MtsInputException("Katılımcının e-posta adresi yok. Kişi bilgilerini kontrol edin.");
+            if (activity.AcikTarih && islemTipi == ProjeConstants.KAYDET) throw new MtsInputException("Açık tarihli faaliyet için takvim daveti gönderilemez.");
+            MtsActivityNotificationService.Send(activity, person.EPosta, activity.AcikTarih || activity.FaaliyetDurumu == ProjeConstants.FAALIYET_DURUMU_IPTALEDILDI_INT);
+            // SMTP has succeeded; a subsequent database error must not be described as unsent mail.
+            try { RequireActivity(Writer.MarkInvitation(faaliyetId, katilimId, MtsContactWriteService.Version(activity))); }
+            catch (Exception error) { throw new InvalidOperationException("Takvim daveti gönderildi; gönderim durumu kaydedilemedi. Yeniden göndermeden önce kontrol edin.", error); }
         }
 
         private void KatilimcilaraTakvimDavetiGonder(Faaliyet faaliyet)
         {
-            List<FaaliyetKatilim> list = new Model.Services.MTS.FaaliyetKatilimService().GetByFaaliyetId(faaliyet.Id);
+            List<FaaliyetKatilim> list = new Model.Services.MTS.FaaliyetKatilimService(LogContext).GetByFaaliyetId(faaliyet.Id);
             foreach (var item in list)
             {
                 if (string.IsNullOrEmpty(item.TakvimDaveti) || item.TakvimDaveti.Equals(ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILMEDI))
@@ -2056,43 +1489,34 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         #region timer
         protected void RefreshTimer_Tick(object sender, EventArgs e)
         {
-
-            Faaliyet sonHali = new Faaliyet();
-            sonHali = new Model.Services.MTS.FaaliyetService().GetById(FaaliyetIdQS.ConvertToInt());
-            if (sonHali != null)
+            MtsWebPartLog.ExecuteAction(LogContext, "RefreshTimer_Tick", () =>
             {
-                TempFaaliyet tempFaaliyetSonHali = new TempFaaliyet(sonHali);
-                if (!tempFaaliyetSonHali.Equals(TempFaaliyetQS))
+                var current = new FaaliyetService(LogContext).GetById(FaaliyetIdQS.ConvertToInt());
+                if (current == null)
                 {
-                    //faaliyet degisti
-                    DisableComponents();
-                    AddRefreshLink(FaaliyetIdQS.ConvertToInt(), TopBarDiv, "Faaliyet bilgileri degisti... Sayfayi yenilemek için lütfen tiklayin.", tempFaaliyetSonHali);
-                    CloseModals();
-                    KatilimciBilgileriniDoldur(sonHali, false);
-                    KatilimciEkleBtn.Visible = false;
-                    StopTimer();
-
+                    DisableComponents(); CloseModals(); StopTimer();
+                    Messages.Warning("Faaliyet artık bulunmuyor. Faaliyet listesinden devam edin.");
+                    return;
                 }
-                List<KatilimciListItem> katilimciListSonHali = GetDataList(true);
-                List<string> first = KatilimciListQS;
-                List<string> second = katilimciListSonHali.Select(a => a.KatilimciId + " " + a.AniObjesiStoklu + a.AniObjesiStoksuz).ToList();
-                var firstNotSecond = first.Except(second).ToList();
-                var secondNotFirst = second.Except(first).ToList();
-
-                bool katilimciListesiDegisti = firstNotSecond.Any() || secondNotFirst.Any();
-
-                if (katilimciListesiDegisti)
+                var snapshot = new TempFaaliyet(current);
+                if (!snapshot.Equals(TempFaaliyetQS))
                 {
-                    DisableComponents();
-                    AddRefreshLink(FaaliyetIdQS.ConvertToInt(), TopBarDiv, "Katilimci bilgileri degisti... Listeyi yenilemek için lütfen tiklayin.", tempFaaliyetSonHali);
-                    CloseModals();
-                    KatilimciBilgileriniDoldur(sonHali, false);
-                    KatilimciEkleBtn.Visible = false;
-                    StopTimer();
+                    DisableComponents(); CloseModals(); StopTimer();
+                    AddRefreshLink(current.Id, TopBarDiv, "Faaliyet bilgileri değişti. Sayfayı yenilemek için tıklayın.", snapshot);
+                    KatilimciBilgileriniDoldur(current, false);
+                    return;
                 }
-            }
-            //System.Threading.Thread.Sleep(9000);
-            lblTime.Text = DateTime.Now.ToString("HH:mm ss");
+                var latest = GetDataList(false).Select(x => x.KatilimciId + " " + x.ObjectState).ToList();
+                // Compare content, independent of action buttons that may be hidden in a stale form.
+                var before = KatilimciListQS ?? new List<string>();
+                if (before.Except(latest).Any() || latest.Except(before).Any())
+                {
+                    DisableComponents(); CloseModals(); StopTimer();
+                    AddRefreshLink(current.Id, TopBarDiv, "Katılımcı veya anı objesi bilgileri değişti. Listeyi yenilemek için tıklayın.", snapshot);
+                    KatilimciBilgileriniDoldur(current, false);
+                }
+                lblTime.Text = DateTime.Now.ToString("HH:mm ss");
+            });
         }
 
         private void CloseModals()
@@ -2108,13 +1532,15 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         private void AddRefreshLink(int faaliyetId, HtmlGenericControl divName, string message, TempFaaliyet tempFaaliyetSonHali)
         {
             HyperLink refreshLink = HyperLinkGetir(faaliyetId, message);
-           
+
             divName.Controls.Add(refreshLink);
 
         }
 
         private void DisableComponents()
         {
+            ViewState["ActivityStale"] = true;
+            FaaliyetSilBtn.Visible = KatilimciEkleBtn.Visible = false;
             FaaliyetTipiDDL.Enabled = false;
             FaaliyetAmaciDDL.Enabled = false;
             BaslangicTarihiTxt.Enabled = false;
@@ -2133,7 +1559,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         }
         private HyperLink HyperLinkGetir(int faaliyetId, string message)
         {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path);
             HyperLink hyperLink = new HyperLink
             {
                 Text = message,
@@ -2153,6 +1579,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         #region classes
         private class KatilimciListItem
         {
+            public string ObjectState { get; set; }
             public string Sirano { get; set; }
             public string KatilimciId { get; set; }
             public string KatilimciTipi { get; set; }
@@ -2166,7 +1593,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             public string GetirilenAniObjesi { get; set; }
             public string TakvimDavetiBtn{ get; set; }
             public string EPosta{ get; set; }
-            
+
             public string KisiKarti { get; set; }
             public string Cikar { get; set; }
             public string KatilimciSec { get; set; }
@@ -2215,7 +1642,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             public bool TakvimeIslendi{ get; set; }
             public override bool Equals(object obj)
             {
-                var other = obj as Faaliyet;
+                var other = obj as TempFaaliyet;
 
                 if (other == null)
                     return false;
@@ -2223,9 +1650,11 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 if (FaaliyetTipi != other.FaaliyetTipi
                     || FaaliyetAmaciId != other.FaaliyetAmaciId
                     || FaaliyetKonusu != other.FaaliyetKonusu
-                    || !FaaliyetYeriStr.Equals(other.FaaliyetYeriStr)
+                    || !string.Equals(FaaliyetYeriStr, other.FaaliyetYeriStr, StringComparison.Ordinal)
                     || TumGun != other.TumGun
                     || AcikTarih != other.AcikTarih
+                    || FaaliyetDurumu != other.FaaliyetDurumu
+                    || TakvimeIslendi != other.TakvimeIslendi
                     || DisIrtibatId != other.DisIrtibatId
                     || BaslangicTarihi != other.BaslangicTarihi
                     || BitisTarihi != other.BitisTarihi
@@ -2253,7 +1682,9 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                        BitisTarihi == other.BitisTarihi &&
                        BaslangicSaati == other.BaslangicSaati &&
                        BitisSaati == other.BitisSaati &&
-                       Aciklama == other.Aciklama;
+                       Aciklama == other.Aciklama &&
+                       YoneticiNotu == other.YoneticiNotu &&
+                       TakvimeIslendi == other.TakvimeIslendi;
             }
 
             public override int GetHashCode()
@@ -2287,6 +1718,6 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         }
         #endregion
 
-   
+
     }
 }
