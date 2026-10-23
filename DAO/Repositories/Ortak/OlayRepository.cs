@@ -63,6 +63,27 @@ namespace DAO.Repositories.Ortak
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectByDateAndProgram(DateTime islemTarihi, string program, Utility.Logging.PortalLogContext context)
+        {
+            string sql = "SELECT * FROM Olay_Table WHERE IslemTarihi>=@IslemTarihi";
+            SqlQuery query;
+
+            if (program == ProjeConstants.HEPSI || string.IsNullOrEmpty(program))
+            {
+                sql += " ORDER BY IslemTarihi DESC";
+                query = new SqlQuery(sql);
+            }
+            else
+            {
+                sql += " AND Program=@Program ORDER BY IslemTarihi DESC";
+                query = new SqlQuery(sql);
+                query.AddParameter("@Program", program);
+            }
+
+            query.AddParameter("@IslemTarihi", islemTarihi);
+            return PortalSqlReadExecutor.Select(query, context, "OlayRepository.SelectByDateAndProgram");
+        }
+
         public DataTable SelectAuditList()
         {
             const string sql = @"

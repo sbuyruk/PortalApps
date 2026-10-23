@@ -30,6 +30,7 @@ namespace Model.Services.MTS
         {
             return Map(repository.SelectById(id));
         }
+        public Kisi GetById(int id, Utility.Logging.PortalLogContext context) { return Map(repository.SelectById(id, context)); }
 
         public List<Kisi> GetAll()
         {

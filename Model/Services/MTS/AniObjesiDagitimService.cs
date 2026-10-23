@@ -38,10 +38,15 @@ namespace Model.Services.MTS
             return ToList(repository.SelectByFilter(faaliyetId, 0, 0, null, null, "activity"));
         }
 
+        public DataTable GetEventDistribution(int faaliyetId, int katilimciId, Utility.Logging.PortalLogContext context)
+        {
+            return repository.SelectEventDistribution(faaliyetId, katilimciId, context);
+        }
         public AniObjesiDagitim GetGetirilen(int faaliyetId, int katilimciId)
         {
             return Map(repository.SelectGetirilen(faaliyetId, katilimciId, ProjeConstants.ANIOBJESI_GETIRILEN_INT));
         }
+        public AniObjesiDagitim GetGetirilen(int faaliyetId, int katilimciId, Utility.Logging.PortalLogContext context) { return Map(repository.SelectGetirilen(faaliyetId, katilimciId, ProjeConstants.ANIOBJESI_GETIRILEN_INT, context)); }
 
         public DataTable GetDistributionTable(int faaliyetId, int katilimciId, string stokluMu = null)
         {
