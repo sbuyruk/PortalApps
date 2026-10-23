@@ -1,3 +1,5 @@
+using Portal_WebParts.Logging;
+using Utility.Logging;
 using Microsoft.SharePoint;
 using Model.Ortak;
 using Model.Services.Ortak;
@@ -16,6 +18,8 @@ namespace Portal_WebParts.LogDurumTakipWP
     [ToolboxItemAttribute(false)]
     public partial class LogDurumTakipWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("Portal", "LogDurumTakipWP")); } }
         public LogDurumTakipWP() { }
 
         protected override void OnInit(EventArgs e)
@@ -35,6 +39,7 @@ namespace Portal_WebParts.LogDurumTakipWP
             try
             {
                 if (!IsAuthorized()) { SetDashboardText(Message("Bu ekranı görüntüleme yetkiniz bulunmuyor.")); return; }
+                PortalWebPartLog.RecordOpened(LogContext);
                 DateTime localNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TurkeyTimeZone());
                 DateTime localStart = localNow.Date;
                 DateTime fromUtc = TimeZoneInfo.ConvertTimeToUtc(localStart, TurkeyTimeZone());
@@ -43,7 +48,12 @@ namespace Portal_WebParts.LogDurumTakipWP
                 List<PortalLogEntry> logs = service.GetLogs(new PortalLogFilter { FromUtc = fromUtc, ToUtc = toUtc, Page = 1, PageSize = 200 });
                 SetDashboardText(BuildDashboard(service, logs, service.GetSummary(fromUtc, toUtc)));
             }
-            catch (Exception) { SetDashboardText(Message("Log kayıtları şu anda yüklenemedi. Lütfen daha sonra tekrar deneyiniz.")); }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                PortalTechnicalLog.WriteError(LogContext, "Portal.LogDurumTakip.Load", error);
+                SetDashboardText(Message("Log kayıtları yüklenemedi. Lütfen yeniden deneyin. Başvuru kodu: " + LogContext.OperationId.ToString("N")));
+            }
         }
 
         private void SetDashboardText(string text)

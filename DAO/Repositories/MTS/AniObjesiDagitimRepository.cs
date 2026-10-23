@@ -90,6 +90,16 @@ namespace DAO.Repositories.MTS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectEventDistribution(int faaliyetId, int katilimciId, Utility.Logging.PortalLogContext context)
+        {
+            var query = new SqlQuery(@"SELECT A.Adi, B.Adet FROM AniObjesiTanim_Table A
+                INNER JOIN AniObjesiDagitim_Table B ON B.AniObjesiId=A.Id
+                WHERE B.FaaliyetId=@FaaliyetId AND B.KatilimciId=@KatilimciId AND B.Adet>0 ORDER BY A.Id");
+            query.AddParameter("@FaaliyetId", faaliyetId);
+            query.AddParameter("@KatilimciId", katilimciId);
+            return PortalSqlReadExecutor.Select(query, context, "AniObjesiDagitimRepository.SelectEventDistribution");
+        }
+
         public DataTable SelectGetirilen(int faaliyetId, int katilimciId, int getirilenValue)
         {
             SqlQuery query = new SqlQuery(@"SELECT * FROM AniObjesiDagitim_Table
@@ -99,6 +109,17 @@ namespace DAO.Repositories.MTS
             query.AddParameter("@KatilimciId", katilimciId);
             query.AddParameter("@VerilenAlinan", getirilenValue);
             return db.SelectFromDb(query, "");
+        }
+
+        public DataTable SelectGetirilen(int faaliyetId, int katilimciId, int getirilenValue, Utility.Logging.PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"SELECT * FROM AniObjesiDagitim_Table
+                WHERE FaaliyetId = @FaaliyetId AND KatilimciId = @KatilimciId
+                  AND VerilenAlinan = @VerilenAlinan ORDER BY Id");
+            query.AddParameter("@FaaliyetId", faaliyetId);
+            query.AddParameter("@KatilimciId", katilimciId);
+            query.AddParameter("@VerilenAlinan", getirilenValue);
+            return PortalSqlReadExecutor.Select(query, context, "AniObjesiDagitimRepository.SelectGetirilen");
         }
 
         public DataTable SelectGetirilenText(int katilimciId, int faaliyetId, int aniObjesiId)

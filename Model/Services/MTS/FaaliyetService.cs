@@ -28,6 +28,7 @@ namespace Model.Services.MTS
         {
             return Map(repository.SelectById(id));
         }
+        public Faaliyet GetById(int id, Utility.Logging.PortalLogContext context) { return Map(repository.SelectById(id, context)); }
 
         public List<Faaliyet> GetAll()
         {

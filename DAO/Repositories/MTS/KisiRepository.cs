@@ -31,6 +31,13 @@ namespace DAO.Repositories.MTS
             return db.SelectFromDb(query, "");
         }
 
+        public DataTable SelectById(int id, Utility.Logging.PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM Kisi_Table WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return PortalSqlReadExecutor.Select(query, context, "KisiRepository.SelectById");
+        }
+
         public DataTable SelectAll()
         {
             return db.SelectFromDb(new SqlQuery("SELECT * FROM Kisi_Table ORDER BY Adi"), "");

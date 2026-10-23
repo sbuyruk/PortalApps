@@ -25,6 +25,13 @@ namespace DAO.Repositories.MTS
             query.AddParameter("@Id", id);
             return db.SelectFromDb(query, "");
         }
+
+        public DataTable SelectById(int id, Utility.Logging.PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM " + TableName + " WHERE Id=@Id");
+            query.AddParameter("@Id", id);
+            return PortalSqlReadExecutor.Select(query, context, "FaaliyetRepository.SelectById");
+        }
         public DataTable SelectAll() { return db.SelectFromDb(new SqlQuery("SELECT * FROM " + TableName + " ORDER BY Id"), ""); }
         public int Insert<T>(T entity) { return db.Insert(queryBuilder.BuildInsert(entity, TableName)); }
         public bool Update<T>(T entity) { return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName)); }

@@ -39,6 +39,7 @@ namespace Model.Services.Ortak
         {
             return ToList(repository.SelectByDateAndProgram(islemTarihi, program));
         }
+        public List<Olay> GetByDateAndProgram(DateTime islemTarihi, string program, Utility.Logging.PortalLogContext context) { return ToList(repository.SelectByDateAndProgram(islemTarihi, program, context)); }
 
         public List<Olay> GetAuditList()
         {
