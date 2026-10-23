@@ -249,6 +249,7 @@ namespace DAO.Repositories.IKYS
             finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", name, clock.ElapsedMilliseconds, succeeded); }
         }
         public DataTable SelectActiveEmployeesReturnDT() { return db.SelectFromDb(new SqlQuery("SELECT P.Id PersonelId,P.Id Id,P.Adi,Soyadi,P.PerId,P.SicilNo,P.Tahsili,P.KullaniciAdi,P.Asker_sivil,U.Adi Unvan,G.Adi Gorev,B.Id BirimId,B.Adi Birim,I.IzinDonemiBasTar FROM Personel_Table P INNER JOIN IsBilgileri_Table I ON I.PersonelId=P.Id LEFT JOIN UnvanTanim_Table U ON I.UnvanId=U.Id LEFT JOIN BirimTanim_Table B ON I.BirimId=B.Id LEFT JOIN GorevTanim_Table G ON I.GorevId=G.Id WHERE I.CalismaDurumu=1 ORDER BY B.Sira,I.ProtokolSiraNo"), ""); }
+        public DataTable SelectActiveEmployeesReturnDT(PortalLogContext context) { return PortalSqlReadExecutor.Select(new SqlQuery("SELECT P.Id PersonelId,P.Id Id,P.Adi,Soyadi,P.PerId,P.SicilNo,P.Tahsili,P.KullaniciAdi,P.Asker_sivil,U.Adi Unvan,G.Adi Gorev,B.Id BirimId,B.Adi Birim,I.IzinDonemiBasTar FROM Personel_Table P INNER JOIN IsBilgileri_Table I ON I.PersonelId=P.Id LEFT JOIN UnvanTanim_Table U ON I.UnvanId=U.Id LEFT JOIN BirimTanim_Table B ON I.BirimId=B.Id LEFT JOIN GorevTanim_Table G ON I.GorevId=G.Id WHERE I.CalismaDurumu=1 ORDER BY B.Sira,I.ProtokolSiraNo"), context, "Personel.SelectActiveEmployeesReturnDT"); }
 
         public DataTable SelectActiveEmployeesByUnitReturnDataTable(IList<int> birimIds, bool allUnits)
         {

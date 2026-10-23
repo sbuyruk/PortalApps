@@ -271,7 +271,22 @@ namespace Model.Services.IKYS
                 "IzinHareket.SelectDigerByPersonelId",
                 () => ToList(repository.SelectDigerByPersonelId(personelId)));
         }
-        private static void RecordChanges(IzinHareket old,IzinHareket current,int auditId,SqlTransactionContext transaction) { if (auditId == 0) return; PortalLogRepository log=new PortalLogRepository(); Add(log,auditId,"PersonelId",old==null?(object)null:old.PersonelId,current==null?(object)null:current.PersonelId,transaction); Add(log,auditId,"IzinTipi",old==null?(object)null:old.IzinTipi,current==null?(object)null:current.IzinTipi,transaction); Add(log,auditId,"IzinTalepId",old==null?(object)null:old.IzinTalepId,current==null?(object)null:current.IzinTalepId,transaction); Add(log,auditId,"IzinDonemId",old==null?(object)null:old.IzinDonemId,current==null?(object)null:current.IzinDonemId,transaction); Add(log,auditId,"BaslangicTarihi",old==null?(object)null:old.BaslangicTarihi,current==null?(object)null:current.BaslangicTarihi,transaction); Add(log,auditId,"BitisTarihi",old==null?(object)null:old.BitisTarihi,current==null?(object)null:current.BitisTarihi,transaction); Add(log,auditId,"Mahsup",old==null?(object)null:old.Mahsup,current==null?(object)null:current.Mahsup,transaction); }
+        private static void RecordChanges(IzinHareket old, IzinHareket current, int auditId, SqlTransactionContext transaction)
+        {
+            if (auditId == 0) return;
+            PortalLogRepository log = new PortalLogRepository();
+            Add(log, auditId, "PersonelId", old == null ? (object)null : old.PersonelId, current == null ? (object)null : current.PersonelId, transaction);
+            Add(log, auditId, "IzinTipi", old == null ? (object)null : old.IzinTipi, current == null ? (object)null : current.IzinTipi, transaction);
+            Add(log, auditId, "IzinTalepId", old == null ? (object)null : old.IzinTalepId, current == null ? (object)null : current.IzinTalepId, transaction);
+            Add(log, auditId, "IzinDonemId", old == null ? (object)null : old.IzinDonemId, current == null ? (object)null : current.IzinDonemId, transaction);
+            Add(log, auditId, "BaslangicTarihi", old == null ? (object)null : old.BaslangicTarihi, current == null ? (object)null : current.BaslangicTarihi, transaction);
+            Add(log, auditId, "BitisTarihi", old == null ? (object)null : old.BitisTarihi, current == null ? (object)null : current.BitisTarihi, transaction);
+            Add(log, auditId, "Mahsup", old == null ? (object)null : old.Mahsup, current == null ? (object)null : current.Mahsup, transaction);
+            Add(log, auditId, "Sure", old == null ? (object)null : old.Sure, current == null ? (object)null : current.Sure, transaction);
+            Add(log, auditId, "Birim", old == null ? (object)null : old.Birim, current == null ? (object)null : current.Birim, transaction);
+            Add(log, auditId, "Adres", old == null ? (object)null : old.Adres, current == null ? (object)null : current.Adres, transaction);
+            Add(log, auditId, "Aciklama", old == null ? (object)null : old.Aciklama, current == null ? (object)null : current.Aciklama, transaction);
+        }
         private static void Add(PortalLogRepository log,int id,string field,object oldValue,object newValue,SqlTransactionContext transaction) { string a=oldValue==null?null:Convert.ToString(oldValue,CultureInfo.InvariantCulture); string b=newValue==null?null:Convert.ToString(newValue,CultureInfo.InvariantCulture); if(!string.Equals(a,b,StringComparison.Ordinal)) log.RecordAuditChange(id,field,a,b,transaction); }
         public bool TryRecordWebPartOpened(PortalLogContext context)
         {

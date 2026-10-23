@@ -140,6 +140,7 @@ namespace Model.Services.IKYS
         public List<Personel> GetSchemaActiveManagers(PortalLogContext context) { return MapList(repository.SelectSchemaActiveManagers(context)); }
         public DataTable GetSchemaEmployees(PortalLogContext context) { return repository.SelectSchemaEmployees(context); }
         public DataTable GetActiveEmployeesReturnDT() { return repository.SelectActiveEmployeesReturnDT(); }
+        public DataTable GetActiveEmployeesReturnDT(PortalLogContext context) { return repository.SelectActiveEmployeesReturnDT(context); }
         public DataTable GetActiveEmployeesByUnitReturnDT(string ids) { return repository.SelectActiveEmployeesByUnitReturnDataTable(ParseIds(ids), IsAllUnits(ids)); }
         public DataTable GetActiveEmployeesByUnitReturnDT(string ids, PortalLogContext context) { return repository.SelectActiveEmployeesByUnitReturnDataTable(ParseIds(ids), IsAllUnits(ids), context); }
         public List<Personel> GetActiveEmployeesByUnitReturnList(string ids) { return MapList(repository.SelectActiveEmployeesByUnitReturnList(ParseIds(ids), IsAllUnits(ids))); }
