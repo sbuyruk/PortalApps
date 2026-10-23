@@ -29,7 +29,7 @@ Tutarların inceleme noktaları:
 
 - Günlük banka TL raporunda mevcut `SUM(BagisMiktari + ISNULL(IadeMiktari,0))` hesabı korundu. Döviz detay raporunda mevcut `DovizTutari`, `DovizKuru` ve `BagisMiktari` alanları kullanılır. İade işareti veya kur hesaplama kuralı değiştirilmedi.
 - Günlük hesap raporunda TL toplamı `BagisMiktari`, döviz toplamı `DovizTutari` alanından gelir. Eski ekran aynı TL miktarını seçili döviz etiketiyle tekrar gösteriyordu. TL seçiminde iki tutar TL olarak tutarlıdır. Özellikle dövizli kayıtlarda iki alanı kaynak kayıtla karşılaştırın.
-- Aylık para girişlerinde mevcut ödeme/ayrıştırma join'i ve ödeme sebebi `A veya C` filtresi korundu. Ayrıştırılmış tutar varsa `TutarB`, yoksa `TutarA` kullanılır. Ödeme türü bazındaki mevcut muhasebe kuralı yeniden tanımlanmadı; birden çok ayrıştırma içeren kayıtlar kabul testine dahil edilmelidir.
+- Aylık para girişlerinde ödeme/ayrıştırma join'i korunur. Genel kontrol düzeltmesinde ödeme sebebi filtresi etkin satıra bağlandı: ayrıştırma satırı varsa kendi sebebi, ayrıştırma yoksa ana ödemenin sebebi kullanılır. Ayrıştırılmış tutar varsa `TutarB`, yoksa `TutarA` kullanılır. Ana ödemenin sebebi eşleşti diye başka sebeplere ayrılmış tutarlar artık tek sebep filtresine dahil edilmez. Birden çok ayrıştırma içeren kayıtlar kabul testine dahil edilmelidir.
 - Tüm toplamlar biçimlendirilmiş metinlerden değil decimal verilerden hesaplanır; aynı ekrandaki satırların kaynak kümesiyle aynı anda üretilir. Birden çok rapor isteği arasında eşzamanlı yeni veri girişi varsa farklı raporlar doğal olarak farklı anları gösterebilir.
 
 ## Tarayıcı ve kod üretimi

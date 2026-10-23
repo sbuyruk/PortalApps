@@ -88,14 +88,14 @@ namespace DAO.Repositories.MFYS
 
         public DataTable Payments(DateTime from, DateTime until, int? reason)
         {
-            // Preserve the legacy payment/split join and amount selection used by the report.
+            // Filter the effective row reason: a split owns its reason; only unsplit payments use the parent reason.
             var query = new SqlQuery(@"SELECT A.OdemeTarihi,A.OdemeSebebiId,B.OdemeSebebi OdemeSebebiA,D.OdemeSebebi OdemeSebebiB,
                     A.Adi AdiA,E.Adi AdiB,E.Soyadi,A.Tutar TutarA,C.Tutar TutarB,A.Aciklama AciklamaA,C.Aciklama AciklamaB
                 FROM KiraEkstreAktarma_Table A LEFT JOIN OdemeSebebiTanim_Table B ON B.Id=A.OdemeSebebiId
                 LEFT JOIN OdemeAyristirma_Table C ON C.KiraEkstreAktarmaId=A.Id
                 LEFT JOIN OdemeSebebiTanim_Table D ON D.Id=C.OdemeSebebiId LEFT JOIN Kiraci_Table E ON E.Id=A.KiraciId
                 WHERE A.OdemeTarihi>=@From AND A.OdemeTarihi<@Until"
-                + (reason.HasValue ? " AND (A.OdemeSebebiId=@Reason OR C.OdemeSebebiId=@Reason)" : "")
+                + (reason.HasValue ? " AND ((C.Id IS NULL AND A.OdemeSebebiId=@Reason) OR C.OdemeSebebiId=@Reason)" : "")
                 + " ORDER BY A.OdemeTarihi,A.Id,C.Id");
             Range(query, from, until);
             if (reason.HasValue) query.AddParameter("@Reason", reason.Value);

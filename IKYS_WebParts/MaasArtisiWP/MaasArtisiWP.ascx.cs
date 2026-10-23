@@ -1,202 +1,190 @@
+using DAO.Repositories.Ortak;
+using Model.Ortak;
+using Model.Services.IKYS;
 using System;
 using System.ComponentModel;
-using System.IO;
-using System.Text;
-using System.Web.UI;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.UI.WebControls.WebParts;
-using Utility.ProjeGlobal;
-using Model.TBYS;
 using Utility.HelperClasses;
 using Utility.Logging;
-using Model.Ortak;
-using Model.IKYS;
-using Model.Services.IKYS;
-using System.Web.Security;
-using System.Collections.Generic;
+using Utility.ProjeGlobal;
 
 namespace IKYS_WebParts.MaasArtisiWP
 {
-    [ToolboxItemAttribute(false)]
+    [ToolboxItem(false)]
     public partial class MaasArtisiWP : WebPart
     {
-        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("IKYS", "MaasArtisiWP"); } }
-        private void ReportError(string operation, Exception error)
+        private sealed class SalaryInputException : Exception
         {
-            PortalLogContext context = LoggingContext;
-            if (!PortalLogSettings.IsEnabled(context))
-            {
-                new ExceptionHelper(error).PublishException();
-                return;
-            }
-            PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            internal SalaryInputException(string message) : base(message) { }
         }
-        // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
-        // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
-        // for production. Because the SecurityPermission attribute bypasses the security check for callers of
-        // your constructor, it's not recommended for production purposes.
-        // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
-        public MaasArtisiWP()
-        {
-        }
+        private PortalLogContext logContext;
+        private PortalLogContext LoggingContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("IKYS", "MaasArtisiWP")); } }
+        private SalaryScaleWriteService Writer { get { return new SalaryScaleWriteService(LoggingContext); } }
+        private bool failed;
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
             InitializeControl();
-            this.ChromeType = PartChromeType.None;
+            ChromeType = PartChromeType.None;
+        }
+
+        private void Run(string operation, Action action)
+        {
+            if (failed) return;
+            try { action(); }
+            catch (ThreadAbortException) { throw; }
+            catch (SalaryInputException warning) { failed = true; Messages.Warning(warning.Message); }
+            catch (Exception error)
+            {
+                failed = true;
+                PortalTechnicalLog.WriteError(LoggingContext, "IKYS.MaasArtisiWP." + operation, error);
+                Messages.Error("Maaş artışı işlemi tamamlanamadı. Lütfen yeniden deneyin.", referenceCode: LoggingContext.OperationId.ToString("N"));
+            }
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
+            Run("Page_Load", () =>
             {
-                    new PersonelService().TryRecordWebPartOpened(LoggingContext);
-                UcretTanimService ucretTanimService = new UcretTanimService();
-                DateTime maxBitisTarihi = ucretTanimService.GetMaxBitisTarihi();
-                decimal agi = ucretTanimService.GetAgi(maxBitisTarihi);
-                AgiTxt.Text = agi.ToString();
-                ArtisYuzdesiTxt.Text = "10,00";
-                DateTime baslangicTarihi = maxBitisTarihi.AddDays(1);
-                BaslangicTarihiTxt.Text = baslangicTarihi.ConvertToDatetimeEmptyIfNull();
-                BitisTarihiTxt.Text = baslangicTarihi.AddMonths(6).AddDays(-1).ConvertToDatetimeEmptyIfNull();
+                if (!Page.IsPostBack)
+                {
+                    new PortalLogRepository().TryRecordWebPartOpened(LoggingContext);
+                    ApplySnapshot(Writer.Load());
+                }
+            });
+            if (failed) KaydetBtn.Enabled = SilBtn.Enabled = KaydetNowBtn.Enabled = DeleteNowBtn.Enabled = false;
+        }
+
+        private void ApplySnapshot(SalaryScaleSnapshot snapshot)
+        {
+            ViewState["SalaryVersion"] = snapshot.Version;
+            ViewState["CanDelete"] = snapshot.CanDelete;
+            KaydetBtn.Enabled = snapshot.Rows.Count > 0;
+            SilBtn.Enabled = snapshot.CanDelete;
+            if (snapshot.Rows.Count == 0) throw new SalaryInputException("Ücret tablosu bulunamadı. Önce mevcut ücret tanımlarını kontrol edin.");
+            var culture = CultureInfo.GetCultureInfo("tr-TR");
+            DateTime from = snapshot.Rows.Max(row => row.BitisTarihi).Date.AddDays(1);
+            BaslangicTarihiTxt.Text = from.ToString("dd.MM.yyyy", culture);
+            BitisTarihiTxt.Text = from.AddMonths(6).AddDays(-1).ToString("dd.MM.yyyy", culture);
+            AgiTxt.Text = snapshot.Rows[0].Agi.ToString("0.00", culture);
+            ArtisYuzdesiTxt.Text = "10,00";
+        }
+
+        private void ReadForm(out DateTime from, out DateTime to, out decimal increase, out decimal allowance)
+        {
+            var culture = CultureInfo.GetCultureInfo("tr-TR");
+            if (!DateTime.TryParseExact(BaslangicTarihiTxt.Text, "dd.MM.yyyy", culture, DateTimeStyles.None, out from)
+                || !DateTime.TryParseExact(BitisTarihiTxt.Text, "dd.MM.yyyy", culture, DateTimeStyles.None, out to)
+                || from < new DateTime(1753, 1, 1) || to < from)
+                throw new SalaryInputException("Geçerli bir tarih aralığı girin. Bitiş tarihi başlangıçtan önce olamaz.");
+            const NumberStyles styles = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
+            if (!decimal.TryParse(ArtisYuzdesiTxt.Text, styles, culture, out increase) || increase < 0
+                || !decimal.TryParse(AgiTxt.Text, styles, culture, out allowance) || allowance < 0)
+                throw new SalaryInputException("Artış yüzdesi ve AGİ için sıfır veya pozitif bir tutar girin. Ondalık ayırıcı olarak virgül kullanın.");
+        }
+
+        private string ConfirmedVersion(string action)
+        {
+            string version = ViewState["ConfirmationVersion"] as string;
+            if (!object.Equals(ViewState["ConfirmationAction"], action) || string.IsNullOrEmpty(version))
+                throw new SalaryInputException("İşlem onayı bulunamadı. Sayfayı yenileyip işlemi yeniden onaylayın.");
+            return version;
+        }
+
+        private static void RequireCompleted(SalaryScaleResult result)
+        {
+            switch (result)
+            {
+                case SalaryScaleResult.Completed: return;
+                case SalaryScaleResult.Changed: throw new SalaryInputException("Maaş tabloları başka bir işlemde değişti. Sayfayı yenileyip güncel bilgileri yeniden onaylayın.");
+                case SalaryScaleResult.NotFound: throw new SalaryInputException("Ücret tablosu bulunamadı. Sayfayı yenileyip mevcut tanımları kontrol edin.");
+                case SalaryScaleResult.LastGroup: throw new SalaryInputException("İlk ve tek ücret tablosu silinemez.");
+                case SalaryScaleResult.OverlappingPeriod: throw new SalaryInputException("Seçilen tarih aralığı mevcut bir ücret dönemiyle çakışıyor. Tarihleri kontrol edin.");
+                default: throw new SalaryInputException("Tarih, artış yüzdesi ve AGİ tutarını kontrol edip yeniden deneyin.");
             }
         }
 
-        #region Methods
-
-        private void KaydetModalAc()
+        private void Finish(SalaryScaleSnapshot snapshot, string message)
         {
-
-            MessageTitleLbl.Text = "Maaş Artışı";
-            MessageTextLbl.Text = BaslangicTarihiTxt.Text + " ile " + BitisTarihiTxt.Text + " arasında geçerli olacak ve %" + ArtisYuzdesiTxt.Text + " artış yapılacak şekilde maaş tabloları kaydedilsin mi?";
-            DeleteNowBtn.Visible = false;
-            KaydetNowBtn.Visible = true;
-            var openPopup = "OpenModal();";
-            UtilityHelper.ScriptCalistir(openPopup);
-        }
-        private void SilModalAc()
-        {
-            UcretTanimService ucretTanimService = new UcretTanimService();
-
-            List<UcretTanim> list = ucretTanimService.GetByMaxGrupId();
-            if (list.Count <= 1)
+            ViewState.Remove("ConfirmationVersion");
+            ViewState.Remove("ConfirmationAction");
+            try { ApplySnapshot(snapshot); }
+            catch (ThreadAbortException) { throw; }
+            catch (Exception error)
             {
-                MessageHelper.PublishMessage("Silinecek bir maaş artışı bulunamadı.", ProjeConstants.MESAJ_BILGI);
+                PortalTechnicalLog.WriteError(LoggingContext, "IKYS.MaasArtisiWP.AfterCommit", error);
+                KaydetBtn.Enabled = SilBtn.Enabled = KaydetNowBtn.Enabled = DeleteNowBtn.Enabled = false;
+                Messages.Warning(message + " Ekran yenilenemedi. İşlemi tekrarlamadan önce sayfayı yeniden açın. Başvuru kodu: " + LoggingContext.OperationId.ToString("N"));
                 return;
             }
-            UcretTanim ucretTanim = list[0];
-            MessageTitleLbl.Text = "Son Maaş Artışı ve bu artışa göre yapılan maaş listesi silinecek";
-            MessageTextLbl.Text = ucretTanim.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + " ile " + ucretTanim.BitisTarihi.ConvertToDatetimeEmptyIfNull() + " arasında geçerli olan artış silinsin mi?";
-            DeleteNowBtn.Visible = true;
-            KaydetNowBtn.Visible = false;
-            var openPopup = "OpenModal();";
-            UtilityHelper.ScriptCalistir(openPopup);
+            Messages.Success(message);
         }
-        private void RedirectToPage(string pageUrl)
-        {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ReportError("Unhandled", ex);
-            }
-        }
-        #endregion
-        #region Events
 
         protected void KaydetBtn_Click(object sender, EventArgs e)
         {
-
-            KaydetModalAc();
+            Run("KaydetBtn_Click", () =>
+            {
+                DateTime from, to; decimal increase, allowance;
+                ReadForm(out from, out to, out increase, out allowance);
+                ViewState["ConfirmationVersion"] = ViewState["SalaryVersion"];
+                ViewState["ConfirmationAction"] = "Create";
+                MessageTitleLbl.Text = "Maaş Artışı";
+                MessageTextLbl.Text = HttpUtility.HtmlEncode(from.ToString("dd.MM.yyyy") + "–" + to.ToString("dd.MM.yyyy")
+                    + " dönemi için %" + increase.ToString("0.00", CultureInfo.GetCultureInfo("tr-TR")) + " artışla maaş tabloları oluşturulsun mu?");
+                DeleteNowBtn.Visible = false; KaydetNowBtn.Visible = true;
+                UtilityHelper.ScriptCalistir("OpenModal();");
+            });
         }
+
         protected void SilBtn_Click(object sender, EventArgs e)
         {
-
-            SilModalAc();
+            Run("SilBtn_Click", () =>
+            {
+                if (!object.Equals(ViewState["CanDelete"], true)) throw new SalaryInputException("Silinebilecek bir maaş artışı bulunamadı. İlk ücret tablosu korunur.");
+                ViewState["ConfirmationVersion"] = ViewState["SalaryVersion"];
+                ViewState["ConfirmationAction"] = "Delete";
+                MessageTitleLbl.Text = "Son Maaş Artışını Sil";
+                MessageTextLbl.Text = "Son maaş artışına ait ücret tablosu ve bağlı maaş listeleri birlikte silinsin mi?";
+                DeleteNowBtn.Visible = true; KaydetNowBtn.Visible = false;
+                UtilityHelper.ScriptCalistir("OpenModal();");
+            });
         }
+
         protected void KaydetNowBtn_Click(object sender, EventArgs e)
         {
-            try
+            Run("KaydetNowBtn_Click", () =>
             {
-                UcretTanimService ucretTanimService = new UcretTanimService();
-
-                DateTime yeniBaslangicTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
-                DateTime yeniBitisTarihi = BitisTarihiTxt.Text.ConvertToDatetime();
-
-                List<UcretTanim> list = ucretTanimService.GetByMaxGrupId();
-                decimal artis = ArtisYuzdesiTxt.Text.ConvertToDecimal();
-                foreach (UcretTanim t in list)
-                {
-                    decimal zamliAltUcret = t.AltUcret + t.AltUcret * artis / 100;
-                    decimal zamliUstUcret = t.UstUcret + t.UstUcret * artis / 100;
-                    decimal zamliAskerUcret = t.AskerUcret + t.AskerUcret * artis / 100;
-
-                    UcretTanim yeniUcretTanim = new UcretTanim();
-                    yeniUcretTanim.AltUcret = zamliAltUcret;
-                    yeniUcretTanim.UstUcret = zamliUstUcret;
-                    yeniUcretTanim.AskerUcret = zamliAskerUcret;
-                    yeniUcretTanim.Agi = AgiTxt.Text.ConvertToDecimal();
-                    yeniUcretTanim.Derece = t.Derece;
-                    yeniUcretTanim.Kademe = t.Kademe;
-                    yeniUcretTanim.Unvan = t.Unvan;
-                    yeniUcretTanim.BaslangicTarihi = yeniBaslangicTarihi;
-                    yeniUcretTanim.BitisTarihi = yeniBitisTarihi;
-                    yeniUcretTanim.GrupId = t.GrupId + 1;
-                    int id = ucretTanimService.Save(yeniUcretTanim);
-                }
-            MessageHelper.PublishMessage("Tablolar oluşturuldu", ProjeConstants.MESAJ_BASARILI, 2000);
-                RedirectToPage(ProjeConstants.PAGE_MAAS_TABLOLARI );
-            }
-            catch (Exception ex)
-            {
-            MessageHelper.PublishMessage("Tablolar kaydedilirken hata oluştu" + ex.Message, ProjeConstants.MESAJ_HATA);
-                throw;
-            }
-
+                string version = ConfirmedVersion("Create");
+                DateTime from, to; decimal increase, allowance;
+                ReadForm(out from, out to, out increase, out allowance);
+                SalaryScaleSnapshot saved;
+                RequireCompleted(Writer.Create(from, to, increase, allowance, version, out saved));
+                Finish(saved, "Maaş tabloları oluşturuldu.");
+            });
         }
 
         protected void DeleteNowBtn_Click(object sender, EventArgs e)
         {
-            UcretTanimService ucretTanimService = new UcretTanimService();
-
-            List<UcretTanim> list = ucretTanimService.GetByMaxGrupId();
-            if (list.Count <= 1)
+            Run("DeleteNowBtn_Click", () =>
             {
-                MessageHelper.PublishMessage("Silinecek bir maaş artışı bulunamadı.", ProjeConstants.MESAJ_BILGI);
-                return;
-            }
-            UcretTanim ucretTanim = list[0];
-            int grupId = ucretTanim.GrupId;
-            try
-            {
-                bool isDeleted = ucretTanimService.DeleteByGrupId(grupId, ucretTanim);
-                if (isDeleted)
-                {
-                    //MessageHelper.PublishMessage("Son maas artisi silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
-                    new MaasHareketService().DeleteByGrupId(new MaasHareket(), grupId);
-                    RedirectToPage(ProjeConstants.PAGE_MAAS_TABLOLARI);
-                }
-
-            }
-            catch (Exception ex)
-            {
-                ReportError("Unhandled", ex);
-            }
+                SalaryScaleSnapshot saved;
+                RequireCompleted(Writer.Delete(ConfirmedVersion("Delete"), out saved));
+                Finish(saved, "Son maaş artışı ve bağlı maaş listeleri silindi.");
+            });
         }
 
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
+            Run("CloseBtn_Click", () =>
+            {
+                string current = Page.Request.Url.AbsolutePath;
+                Page.Response.Redirect(current.Substring(0, current.LastIndexOf('/') + 1) + ProjeConstants.PAGE_HOME);
+            });
         }
-
-        #endregion
     }
 }

@@ -132,18 +132,23 @@ namespace MTS_WebParts.Logging
 
         internal static void CompleteMove(PortalLogContext context, Faaliyet saved, Action refresh)
         {
+            int failures;
             try
             {
-                if (saved.TakvimeIslendi)
-                    Model.Services.MTS.MtsActivityNotificationService.Send(saved, ProjeConstants.PARAM_OZELKALEMMAILADRESI,
-                        saved.FaaliyetDurumu == ProjeConstants.FAALIYET_DURUMU_IPTALEDILDI_INT);
+                failures = Model.Services.MTS.MtsActivityNotificationService.SendCalendarUpdates(saved, context);
             }
+            catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error)
             {
                 PortalTechnicalLog.WriteError(context, "MTS." + context.WebPart + ".CalendarNotification", error);
+                failures = 1;
+            }
+            if (failures > 0)
+            {
                 try { refresh(); }
+                catch (System.Threading.ThreadAbortException) { throw; }
                 catch (Exception refreshError) { PortalTechnicalLog.WriteError(context, "MTS." + context.WebPart + ".AfterCommit", refreshError); }
-                Messages.Warning("Faaliyetin tarihi güncellendi. Özel kalem takvimine bildirim gönderilemedi. Kaydı tekrar değiştirmeden bildirimi kontrol edin. Başvuru kodu: " + context.OperationId.ToString("N"));
+                Messages.Warning("Faaliyetin tarih ve saati güncellendi. Bazı takvim bildirimleri tamamlanamadı. Kaydı tekrar değiştirmeden bildirimleri kontrol edin. Başvuru kodu: " + context.OperationId.ToString("N"));
                 return;
             }
             MtsWebPartLog.FinishCommitted(context, "Faaliyetin tarih ve saati güncellendi.", refresh);
