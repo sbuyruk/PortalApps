@@ -1,3 +1,5 @@
+using MTS_WebParts.Logging;
+using Utility.Logging;
 using Model.MTS;
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,8 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP
     [ToolboxItemAttribute(false)]
     public partial class AcikTarihliFaaliyetListesiWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("MTS", "AcikTarihliFaaliyetListesiWP")); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -56,16 +60,20 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP
                 ViewState["SecilenId"] = value;
             }
         }
+        protected override void OnPreRender(EventArgs e)
+        {
+            MtsWebPartLog.ExecuteAction(LogContext, "LoadList", TabloOlustur);
+            if (MtsWebPartLog.HasFailed(LogContext))
+                UtilityHelper.ScriptCalistir("jQuery('#CustomDataTable').hide();");
+            base.OnPreRender(e);
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            MtsWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
             {
-                TabloOlustur();
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.PublishMessage(ex.Message, ProjeConstants.MESAJ_HATA);
-            }
+                if (!Page.IsPostBack) MtsWebPartLog.RecordOpened(LogContext);
+            });
         }
         private void TabloOlustur()
         {
@@ -76,20 +84,12 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP
         {
             string jSon = string.Empty;
 
-            try
-            {
-                List<FaaliyetListItem> list = GetDataList();
-                var serializer = new JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
-            return jSon;
+            List<FaaliyetListItem> list = GetDataList();
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            jSon = serializer.Serialize(list);
+
+            return jSon.Replace("<", "\\u003c").Replace(">", "\\u003e").Replace("&", "\\u0026");
         }
         private List<FaaliyetListItem> GetDataList()
         {
@@ -117,7 +117,7 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP
 
             faaliyetAmaciIdStr =string.IsNullOrEmpty(faaliyetAmaciIdStr)?string.Empty:"("+ faaliyetAmaciIdStr +")";
             List<FaaliyetListItem> faaliyetList = new List<FaaliyetListItem>();
-            FaaliyetService faaliyetService = new FaaliyetService();
+            FaaliyetService faaliyetService = new FaaliyetService(LogContext);
             DataTable dataTable = faaliyetService.GetParticipantList(ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT, ProjeConstants.FAALIYET_ACIKTARIHLI, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH, faaliyetAmaciIdStr);
 
             if (dataTable != null)
@@ -178,34 +178,25 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP
         }
         private void RedirectToPage(string pageUrl)
         {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path);
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+            Page.Response.Redirect(newUrl);
+
         }
-       
+
         protected void YeniKayitBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FAALIYET_GIRIS);
+            MtsWebPartLog.ExecuteAction(LogContext, "YeniKayitBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FAALIYET_GIRIS);
+            });
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
-            try
+            MtsWebPartLog.ExecuteAction(LogContext, "ExcelBtn_Click", () =>
             {
                 ExportToExcel();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void ExportToExcel()
         {
@@ -242,33 +233,40 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
-            try
+            MtsWebPartLog.ExecuteAction(LogContext, "CloseBtn_Click", () =>
             {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path);
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
+            });
         }
         protected void KisiListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_KISI_LIST);
+            MtsWebPartLog.ExecuteAction(LogContext, "KisiListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_KISI_LIST);
+            });
         }
         protected void FaaliyetListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FAALIYET_LIST);
+            MtsWebPartLog.ExecuteAction(LogContext, "FaaliyetListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FAALIYET_LIST);
+            });
         }
         protected void AcikTarihliFaaliyetListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_ACIKTARIHLIFAALIYET_LIST);
+            MtsWebPartLog.ExecuteAction(LogContext, "AcikTarihliFaaliyetListesiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_ACIKTARIHLIFAALIYET_LIST);
+            });
         }
         protected void FaaliyetTakvimiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM);
+            MtsWebPartLog.ExecuteAction(LogContext, "FaaliyetTakvimiBtn_Click", () =>
+            {
+                RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM);
+            });
         }
         private class FaaliyetListItem
         {
@@ -286,28 +284,38 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP
         }
         protected void ToplantiChk_CheckedChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            MtsWebPartLog.ExecuteAction(LogContext, "ToplantiChk_CheckedChanged", () =>
+            {
 
+            });
         }
         protected void ZiyaretChk_CheckedChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            MtsWebPartLog.ExecuteAction(LogContext, "ZiyaretChk_CheckedChanged", () =>
+            {
 
+            });
         }
         protected void GorusmeChk_CheckedChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            MtsWebPartLog.ExecuteAction(LogContext, "GorusmeChk_CheckedChanged", () =>
+            {
 
+            });
         }
         protected void SeyahatChk_CheckedChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            MtsWebPartLog.ExecuteAction(LogContext, "SeyahatChk_CheckedChanged", () =>
+            {
 
+            });
         }
         protected void DavetChk_CheckedChanged(object sender, EventArgs e)
         {
-            TabloOlustur();
+            MtsWebPartLog.ExecuteAction(LogContext, "DavetChk_CheckedChanged", () =>
+            {
 
+            });
         }
     }
 }

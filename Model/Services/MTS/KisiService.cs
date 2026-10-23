@@ -18,6 +18,8 @@ namespace Model.Services.MTS
         {
         }
 
+        public KisiService(Utility.Logging.PortalLogContext context) : this(new KisiRepository(context)) { }
+
         public KisiService(KisiRepository repository)
         {
             if (repository == null)

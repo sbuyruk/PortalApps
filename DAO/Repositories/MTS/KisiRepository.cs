@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+using Utility.Logging;
 using DAO.Ortak;
 using System;
 using System.Data;
@@ -8,11 +10,29 @@ namespace DAO.Repositories.MTS
     public class KisiRepository
     {
         private readonly DbClass db;
+        private readonly PortalLogContext context;
         private readonly CrudQueryBuilder queryBuilder;
 
         public KisiRepository()
             : this(new DbClass())
         {
+        }
+
+        public KisiRepository(PortalLogContext context) : this(new DbClass())
+        {
+            if (context == null || context.Project != "MTS") throw new ArgumentException("MTS log bağlamı gereklidir.", "context");
+            this.context = context;
+        }
+
+        private DataTable Read(SqlQuery query, string identifier, [CallerMemberName] string method = "")
+        {
+            return context == null ? db.SelectFromDb(query, identifier)
+                : PortalSqlReadExecutor.Select(query, context, "KisiRepository." + method);
+        }
+
+        private void RequireLegacyWrite()
+        {
+            if (context != null) throw new InvalidOperationException("MTS yazma işlemi transaction hizmeti üzerinden yapılmalıdır.");
         }
 
         public KisiRepository(DbClass db)
@@ -28,7 +48,7 @@ namespace DAO.Repositories.MTS
         {
             SqlQuery query = new SqlQuery("SELECT * FROM Kisi_Table WHERE Id=@Id");
             query.AddParameter("@Id", id);
-            return db.SelectFromDb(query, "");
+            return Read(query, "");
         }
 
         public DataTable SelectById(int id, Utility.Logging.PortalLogContext context)
@@ -40,7 +60,7 @@ namespace DAO.Repositories.MTS
 
         public DataTable SelectAll()
         {
-            return db.SelectFromDb(new SqlQuery("SELECT * FROM Kisi_Table ORDER BY Adi"), "");
+            return Read(new SqlQuery("SELECT * FROM Kisi_Table ORDER BY Adi"), "");
         }
 
         public DataTable SelectAllData()
@@ -56,19 +76,19 @@ namespace DAO.Repositories.MTS
                     LEFT JOIN MTSUnvanTanim_Table G ON F.Id = A.MTSUnvanTanimId
                 ORDER BY A.Adi";
 
-            return db.SelectFromDb(new SqlQuery(sql), "");
+            return Read(new SqlQuery(sql), "");
         }
 
         public DataTable SelectBirthdayCelebrations()
         {
             SqlQuery query = new SqlQuery("SELECT * FROM Kisi_Table WHERE Kutlama=1 AND DogumTarihi IS NOT NULL AND DogumTarihi>@MinDate");
             query.AddParameter("@MinDate", new DateTime(1900, 1, 1));
-            return db.SelectFromDb(query, "");
+            return Read(query, "");
         }
 
         public DataTable SelectAllJsonData()
         {
-            return db.SelectFromDb(new SqlQuery("SELECT A.Id KisiId, A.Adi, A.Soyadi FROM Kisi_Table A"), "");
+            return Read(new SqlQuery("SELECT A.Id KisiId, A.Adi, A.Soyadi FROM Kisi_Table A"), "");
         }
 
         public DataTable SelectUnselectedParticipants(int faaliyetId)
@@ -92,7 +112,7 @@ namespace DAO.Repositories.MTS
             }
 
             query.AddParameter("@Durum", ProjeConstants.MTSGOREVDURUMU_GOREVDE);
-            return db.SelectFromDb(query, "");
+            return Read(query, "");
         }
 
         public DataTable SelectByName(string adi, string soyadi)
@@ -102,28 +122,28 @@ namespace DAO.Repositories.MTS
             SqlQuery query = new SqlQuery("SELECT * FROM Kisi_Table WHERE Adi=@Adi AND Soyadi=@Soyadi");
             query.AddParameter("@Adi", ad);
             query.AddParameter("@Soyadi", soyad);
-            return db.SelectFromDb(query, "");
+            return Read(query, "");
         }
 
         public DataTable SelectByTcKimlikNo(string tcKimlikNo)
         {
             SqlQuery query = new SqlQuery("SELECT * FROM Kisi_Table WHERE TCKimlikNo=@TCKimlikNo");
             query.AddParameter("@TCKimlikNo", tcKimlikNo);
-            return db.SelectFromDb(query, "");
+            return Read(query, "");
         }
 
         public int Insert<T>(T entity)
-        {
+        { RequireLegacyWrite();
             return db.Insert(queryBuilder.BuildInsert(entity, "Kisi_Table"));
         }
 
         public bool Update<T>(T entity)
-        {
+        { RequireLegacyWrite();
             return db.Update2Db(queryBuilder.BuildUpdate(entity, "Kisi_Table"));
         }
 
         public bool Delete(int id)
-        {
+        { RequireLegacyWrite();
             return db.DeleteFromDb(queryBuilder.BuildDelete("Kisi_Table", id), "");
         }
     }

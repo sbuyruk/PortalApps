@@ -37,10 +37,12 @@
     }
     function setDataSet(myset) {
         myjsons = myset;
+        jQuery('#CustomDataTable').show();
+        if (jQuery.fn.DataTable.isDataTable('#CustomDataTable')) {
+            jQuery('#CustomDataTable').DataTable().clear().rows.add(myset).draw();
+        }
     }
-    var myjsons = [{
-        "FaaliyetId": "", "BaslangicTarihi": "", "BitisTarihi": "", "FaaliyetYeri": "", "FaaliyetKonusu": "", "FaaliyetAmaci": "", "FaaliyetDurumu": "", "FaaliyetTipi": "", "Katilimci": "", "Duzenle": ""
-    }];
+    var myjsons = [];
     jQuery(document).ready(function () {
         jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
         jQuery('#CustomDataTable').DataTable({
@@ -57,15 +59,15 @@
             },
             data: myjsons,
             columns: [
-                { data: "FaaliyetId" },
-                { data: "BaslangicTarihi" },
-                { data: "BitisTarihi" },
-                { data: "FaaliyetYeri" },
-                { data: "FaaliyetKonusu" },
-                { data: "FaaliyetAmaci" },
-                { data: "FaaliyetDurumu" },
-                { data: "FaaliyetTipi" },
-                { data: "Katilimci" },
+                { data: "FaaliyetId" , render: jQuery.fn.dataTable.render.text() },
+                { data: "BaslangicTarihi" , render: jQuery.fn.dataTable.render.text() },
+                { data: "BitisTarihi" , render: jQuery.fn.dataTable.render.text() },
+                { data: "FaaliyetYeri" , render: jQuery.fn.dataTable.render.text() },
+                { data: "FaaliyetKonusu" , render: jQuery.fn.dataTable.render.text() },
+                { data: "FaaliyetAmaci" , render: jQuery.fn.dataTable.render.text() },
+                { data: "FaaliyetDurumu" , render: jQuery.fn.dataTable.render.text() },
+                { data: "FaaliyetTipi" , render: jQuery.fn.dataTable.render.text() },
+                { data: "Katilimci" , render: jQuery.fn.dataTable.render.text() },
                 { data: "Duzenle" },
 
             ],
@@ -104,8 +106,7 @@
                     exportOptions: {
                         columns: ':visible'
                     }
-                },
-                , 'pageLength', "colvis"
+                }, 'pageLength', "colvis"
             ],
             "createdRow": function (row, data, dataIndex) {
                 if (data.FaaliyetTipi == "Alınan Randevu") {
