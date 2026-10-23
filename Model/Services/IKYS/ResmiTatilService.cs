@@ -85,6 +85,7 @@ namespace Model.Services.IKYS
         public List<ResmiTatil> GetBySonIkiYil() { DateTime baslangic = new DateTime(DateTime.Today.AddYears(-1).Year, 1, 1); return ToList(repository.SelectBySonIkiYil(baslangic, baslangic.AddYears(2).AddDays(1))); }
         public List<ResmiTatil> GetByYil(int yil) { return ToList(repository.SelectByYil(yil)); }
         public bool IsResmiTatil(DateTime tarih) { return repository.SelectByDate(tarih) != null; }
+        public bool IsResmiTatil(DateTime tarih, PortalLogContext context) { return repository.SelectByDate(tarih, context) != null; }
         public string GetAllReturnJson(DateTime baslangic, DateTime bitis)
         {
             List<ResmiTatil> list = GetByTarih(baslangic, bitis); List<CalendarEvent> events = new List<CalendarEvent>(); Faaliyet faaliyet = new Faaliyet();

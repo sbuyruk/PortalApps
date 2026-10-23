@@ -1,3 +1,5 @@
+using Portal_WebParts.Logging;
+using Utility.Logging;
 using Model.IKYS;
 using Model.Ortak;
 using Model.Services.IKYS;
@@ -16,6 +18,8 @@ namespace Portal_WebParts.BildirimWP
     [ToolboxItemAttribute(false)]
     public partial class BildirimWP : WebPart
     {
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("Portal", "BildirimWP")); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -58,42 +62,26 @@ namespace Portal_WebParts.BildirimWP
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!ProjeConstants.AMIRONAYIETKINMI)
+            PortalWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
             {
-                return;
-            }
-            Personel personel = IKYSOrtak.PersonelGetir(CurrentUserName);
-            //Personel personel = new Personel();// 
-            //personel = personel.Select(1192);
-            //GorevOnay entity'sinde bu GorevOnay.AmirId==personel.Id ile eşleşen ve GorevOnay.AmirOnayi==AmirOnayDurumu.OnayBekliyor olan
-            //kayıtlar varsa bu kayıtları bir listeye koy
-            if (personel != null && personel.Id > 0)
-            {
-                List<BirimTanim> amirOlduguBirimler = new BirimTanimService().GetByAmirId(personel.Id);
-                foreach (var item in amirOlduguBirimler)
+                if (!ProjeConstants.AMIRONAYIETKINMI) return;
+                if (!Page.IsPostBack) PortalWebPartLog.RecordOpened(LogContext);
+                AmirOnayLbl.Text = string.Empty;
+                string login = LogContext.UserLogin ?? string.Empty;
+                Personel personel = new PersonelService().GetByUserName(login.Substring(login.LastIndexOf('\\') + 1), LogContext);
+                if (personel == null) throw new PortalInputException("Personel kaydınız bulunamadı. Bildirimler için sistem yöneticisine başvurun.");
+                var pending = new HashSet<int>();
+                foreach (var unit in new BirimTanimService().GetByAmirId(personel.Id, LogContext))
+                    foreach (var item in new GorevOnayService().SelectByBirimIdAndDurum(unit.Id, AmirOnayDurumu.OnayBekliyor, LogContext))
+                        pending.Add(item.Id);
+                if (pending.Count == 0) return;
+                AmirOnayLbl.Text = "Onayınızı bekleyen " + pending.Count + " görev var.";
+                if (!Page.IsPostBack)
                 {
-                    List<GorevOnay> gorevOnayListesi = new GorevOnayService().SelectByBirimIdAndDurum(item.Id, AmirOnayDurumu.OnayBekliyor);
-                    if (gorevOnayListesi != null && gorevOnayListesi.Count > 0)
-                    {
-                        string amirOnayMesaji = string.Empty;
-                        if (amirOlduguBirimler != null && amirOlduguBirimler.Count > 0)
-                        {
-                            AmirOnayLbl.Text = amirOnayMesaji = "Sizin Onayınızı Bekleyen Görev(ler) Var.";
-                            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_BEKLEYENISLEMLER;
-                            amirOnayMesaji += "<br/>Onay Bekleyen Görev Listesi İçin <a href='" + newUrl + "'>Tıklayınız</a>";
-
-                            //UtilityHelper.ScriptCalistir("ShowBildirimModal();");
-                            MessageHelper.PublishMessage(amirOnayMesaji, ProjeConstants.MESAJ_BILGI);
-                        }
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage("Kullanıcı bilgisi alınamadı.", ProjeConstants.MESAJ_BILGI, 2000);
-                    }
-
+                    string target = new Uri(Page.Request.Url, ProjeConstants.PAGE_BEKLEYENISLEMLER).AbsoluteUri;
+                    Utility.HelperClasses.Messages.Info(AmirOnayLbl.Text, "Bekleyen görevleri aç", target);
                 }
-            }
+            });
         }
     }
 }

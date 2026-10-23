@@ -35,6 +35,8 @@ namespace DAO.Repositories.IKYS
         {
             SqlQuery query = new SqlQuery("SELECT * FROM Personel_Table WHERE Id=@Id");
             query.AddParameter("@Id", id);
+            if (context != null && context.Project == "Portal")
+                return PortalSqlReadExecutor.Select(query, context, "PersonelRepository.SelectById");
             Stopwatch clock = Stopwatch.StartNew();
             bool succeeded = false;
             try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
@@ -65,6 +67,8 @@ namespace DAO.Repositories.IKYS
         {
             SqlQuery query = new SqlQuery("SELECT * FROM Personel_Table WHERE KullaniciAdi=@KullaniciAdi ORDER BY Id");
             query.AddParameter("@KullaniciAdi", userName);
+            if (context != null && context.Project == "Portal")
+                return PortalSqlReadExecutor.Select(query, context, "PersonelRepository.SelectByUserName");
             Stopwatch clock = Stopwatch.StartNew();
             bool succeeded = false;
             try { DataTable result = db.SelectFromDb(query, ""); succeeded = true; return result; }
@@ -273,7 +277,11 @@ namespace DAO.Repositories.IKYS
         }
 
         public DataTable SelectByDogumGunu(int gun, int ay) { SqlQuery q = new SqlQuery("SELECT * FROM Personel_Table A INNER JOIN Kimlik_Table B ON B.PersonelId=A.Id INNER JOIN IsBilgileri_Table C ON C.PersonelId=A.Id WHERE DATEPART(D,B.DogumTar)=@Gun AND DATEPART(M,B.DogumTar)=@Ay AND C.CalismaDurumu=1 AND B.DogumGunuKutlama=1 ORDER BY C.ProtokolSiraNo"); q.AddParameter("@Gun", gun); q.AddParameter("@Ay", ay); return db.SelectFromDb(q, ""); }
+
+        public DataTable SelectByDogumGunu(int gun, int ay, PortalLogContext context) { SqlQuery q = new SqlQuery("SELECT * FROM Personel_Table A INNER JOIN Kimlik_Table B ON B.PersonelId=A.Id INNER JOIN IsBilgileri_Table C ON C.PersonelId=A.Id WHERE DATEPART(D,B.DogumTar)=@Gun AND DATEPART(M,B.DogumTar)=@Ay AND C.CalismaDurumu=1 AND B.DogumGunuKutlama=1 ORDER BY C.ProtokolSiraNo"); q.AddParameter("@Gun", gun); q.AddParameter("@Ay", ay); return PortalSqlReadExecutor.Select(q, context, "PersonelRepository.SelectByDogumGunu"); }
         public DataTable SelectByEvlilikTarihi(int gun, int ay) { SqlQuery q = new SqlQuery("SELECT * FROM Personel_Table A INNER JOIN Kimlik_Table B ON B.PersonelId=A.Id INNER JOIN IsBilgileri_Table C ON C.PersonelId=A.Id WHERE B.EvlilikTar>'01.01.1900' AND DATEPART(D,B.EvlilikTar)=@Gun AND DATEPART(M,B.EvlilikTar)=@Ay AND C.CalismaDurumu=1 AND B.EvlilikKutlama=1 ORDER BY C.ProtokolSiraNo"); q.AddParameter("@Gun", gun); q.AddParameter("@Ay", ay); return db.SelectFromDb(q, ""); }
+
+        public DataTable SelectByEvlilikTarihi(int gun, int ay, PortalLogContext context) { SqlQuery q = new SqlQuery("SELECT * FROM Personel_Table A INNER JOIN Kimlik_Table B ON B.PersonelId=A.Id INNER JOIN IsBilgileri_Table C ON C.PersonelId=A.Id WHERE B.EvlilikTar>'01.01.1900' AND DATEPART(D,B.EvlilikTar)=@Gun AND DATEPART(M,B.EvlilikTar)=@Ay AND C.CalismaDurumu=1 AND B.EvlilikKutlama=1 ORDER BY C.ProtokolSiraNo"); q.AddParameter("@Gun", gun); q.AddParameter("@Ay", ay); return PortalSqlReadExecutor.Select(q, context, "PersonelRepository.SelectByEvlilikTarihi"); }
         public DataTable SelectUnselectedMeetingParticipants(int toplantiId) { return db.SelectFromDb(new SqlQuery("SELECT A.Id KatilimciId,A.Adi,A.Soyadi FROM Personel_Table A INNER JOIN IsBilgileri_Table B ON B.PersonelId=A.Id WHERE B.CalismaDurumu=1 ORDER BY B.ProtokolSiraNo,A.Adi,A.Soyadi"), ""); }
 
         public DataTable SelectUnselectedMeetingParticipants(int toplantiId, PortalLogContext context) { return PortalSqlReadExecutor.Select(new SqlQuery("SELECT A.Id KatilimciId,A.Adi,A.Soyadi FROM Personel_Table A INNER JOIN IsBilgileri_Table B ON B.PersonelId=A.Id WHERE B.CalismaDurumu=1 ORDER BY B.ProtokolSiraNo,A.Adi,A.Soyadi"), context, "PersonelRepository.SelectUnselectedMeetingParticipants"); }

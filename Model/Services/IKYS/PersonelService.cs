@@ -132,7 +132,9 @@ namespace Model.Services.IKYS
         public DataTable GetActiveEmployeesByUnitReturnDT(string ids, PortalLogContext context) { return repository.SelectActiveEmployeesByUnitReturnDataTable(ParseIds(ids), IsAllUnits(ids), context); }
         public List<Personel> GetActiveEmployeesByUnitReturnList(string ids) { return MapList(repository.SelectActiveEmployeesByUnitReturnList(ParseIds(ids), IsAllUnits(ids))); }
         public List<Personel> GetByBirthday(int gun, int ay) { return MapList(repository.SelectByDogumGunu(gun, ay)); }
+        public List<Personel> GetByBirthday(int gun, int ay, PortalLogContext context) { return MapList(repository.SelectByDogumGunu(gun, ay, context)); }
         public List<Personel> GetByMarriageDate(int gun, int ay) { return MapList(repository.SelectByEvlilikTarihi(gun, ay)); }
+        public List<Personel> GetByMarriageDate(int gun, int ay, PortalLogContext context) { return MapList(repository.SelectByEvlilikTarihi(gun, ay, context)); }
         public DataTable GetUnselectedMeetingParticipants(int toplantiId) { return repository.SelectUnselectedMeetingParticipants(toplantiId); }
         public DataTable GetUnselectedMeetingParticipants(int toplantiId, PortalLogContext context) { return repository.SelectUnselectedMeetingParticipants(toplantiId, context); }
         public List<Personel> GetMeetingParticipants(int toplantiId, bool bilgiVerildi) { return MapList(repository.SelectMeetingParticipants(toplantiId, bilgiVerildi)); }

@@ -53,6 +53,8 @@ namespace DAO.Repositories.IKYS
             return TraceWrite(queryBuilder.BuildDelete("BirimTanim_Table", id), "DELETE", "BirimTanim.Delete", transaction, context);
         }
         public DataTable SelectByAmirId(int amirId) { SqlQuery q = new SqlQuery("SELECT * FROM BirimTanim_Table WHERE AmirId=@AmirId ORDER BY ParentId,Sira"); q.AddParameter("@AmirId", amirId); return db.SelectFromDb(q, ""); }
+
+        public DataTable SelectByAmirId(int amirId, PortalLogContext context) { SqlQuery q = new SqlQuery("SELECT * FROM BirimTanim_Table WHERE AmirId=@AmirId ORDER BY ParentId,Sira"); q.AddParameter("@AmirId", amirId); return PortalSqlReadExecutor.Select(q, context, "BirimTanimRepository.SelectByAmirId"); }
         public DataTable SelectByBirimKaldirildi(bool kaldirildi) { SqlQuery q = new SqlQuery("SELECT * FROM BirimTanim_Table WHERE BirimKaldirildi=@Kaldirildi ORDER BY ParentId,Sira"); q.AddParameter("@Kaldirildi", kaldirildi); return db.SelectFromDb(q, ""); }
         public DataTable SelectByBirimKaldirildi(bool kaldirildi, PortalLogContext context)
         {

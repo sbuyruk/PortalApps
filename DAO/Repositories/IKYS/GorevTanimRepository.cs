@@ -29,6 +29,8 @@ namespace DAO.Repositories.IKYS
         {
             SqlQuery query = new SqlQuery("SELECT * FROM GorevTanim_Table WHERE Id=@Id");
             query.AddParameter("@Id", id);
+            if (context != null && context.Project == "Portal")
+                return PortalSqlReadExecutor.Select(query, context, "GorevTanimRepository.SelectById");
             return TraceSelect(query, "GorevTanim.SelectById", context);
         }
         public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context)

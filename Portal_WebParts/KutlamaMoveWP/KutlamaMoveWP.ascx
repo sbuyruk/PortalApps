@@ -99,8 +99,8 @@
                                             <img class="rounded-circle border" id="DisplayImage" src="<%#Eval("ResimPath")%>" height="80" />
                                         </div>
                                         <div class="col-md-8">
-                                            <label style="font-weight: bold; text-decoration: underline; font-style: italic"><%#Eval("Adi") %></label>
-                                            <label><%#Eval("Metin") %></label>
+                                            <label style="font-weight: bold; text-decoration: underline; font-style: italic"><%# System.Web.HttpUtility.HtmlEncode(System.Convert.ToString(Eval("Adi"))) %></label>
+                                            <label><%# System.Web.HttpUtility.HtmlEncode(System.Convert.ToString(Eval("Metin"))) %></label>
                                         </div>
                                     </div>
                                 </div>
@@ -130,8 +130,8 @@
                                             <img class="rounded-circle border" id="DisplayImage" src="<%#Eval("ResimPath")%>" height="80" />
                                         </div>
                                         <div class="col-md-8">
-                                            <label style="font-weight: bold; text-decoration: underline; font-style: italic"><%#Eval("Adi") %></label>
-                                            <label><%#Eval("Metin") %></label>
+                                            <label style="font-weight: bold; text-decoration: underline; font-style: italic"><%# System.Web.HttpUtility.HtmlEncode(System.Convert.ToString(Eval("Adi"))) %></label>
+                                            <label><%# System.Web.HttpUtility.HtmlEncode(System.Convert.ToString(Eval("Metin"))) %></label>
                                         </div>
                                     </div>
                                 </div>
