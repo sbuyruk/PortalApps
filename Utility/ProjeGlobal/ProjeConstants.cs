@@ -193,9 +193,6 @@ namespace Utility.ProjeGlobal
         //TYS
         
         //PORTAL
-        public const bool PORTAL_DELETE_LOG = false;
-        public const bool PORTAL_UPDATE_LOG = false;
-        public const bool PORTAL_SAVE_LOG = false;
 
 
         public const char DELIMITER = ';';

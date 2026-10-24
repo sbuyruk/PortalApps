@@ -8,34 +8,18 @@ namespace DAO.Repositories.Portal
 {
     public class DuyuruGosterimRepository
     {
-        private readonly PortalSqlExecutor sql;
+        private readonly PortalSqlExecutor sql = new PortalSqlExecutor("DuyuruGosterimRepository");
         public DuyuruGosterimRepository(PortalLogContext context)
         {
             sql = new PortalSqlExecutor(context, "DuyuruGosterimRepository");
         }
         private DataTable Select(SqlQuery query, [CallerMemberName] string method = "")
         {
-            return sql == null ? db.SelectFromDb(query, "") : sql.Select(query, method: method);
+            return sql.Select(query, method: method);
         }
-        private void RequireLegacyWrite()
-        {
-            if (sql != null) throw new InvalidOperationException("Duyuru yazmaları transaction servisi üzerinden yapılmalıdır.");
-        }
-        private readonly DbClass db;
-        private readonly CrudQueryBuilder b;
 
         public DuyuruGosterimRepository()
-            : this(new DbClass())
         {
-        }
-
-        public DuyuruGosterimRepository(DbClass db)
-        {
-            if (db == null)
-                throw new ArgumentNullException("db");
-
-            this.db = db;
-            b = new CrudQueryBuilder();
         }
 
         public DataTable SelectById(int id)
@@ -55,24 +39,6 @@ namespace DAO.Repositories.Portal
             var q = new SqlQuery("SELECT * FROM DuyuruGosterim_Table WHERE DuyuruId=@DuyuruId ORDER BY Id DESC");
             q.AddParameter("@DuyuruId", id);
             return Select(q);
-        }
-
-        public int Insert<T>(T x)
-        {
-            RequireLegacyWrite();
-            return db.Insert(b.BuildInsert(x, "DuyuruGosterim_Table"));
-        }
-
-        public bool Update<T>(T x)
-        {
-            RequireLegacyWrite();
-            return db.Update2Db(b.BuildUpdate(x, "DuyuruGosterim_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            RequireLegacyWrite();
-            return db.DeleteFromDb(b.BuildDelete("DuyuruGosterim_Table", id), "");
         }
     }
 }

@@ -47,35 +47,6 @@ namespace Model.Services.Portal
             return List(r.SelectByMeeting(t));
         }
 
-        public int Save(ToplantiKatilim x)
-        {
-            if (x == null)
-                throw new ArgumentNullException("x");
-
-            x.OlusturmaTarihi = DateTime.Now;
-            x.Id = r.Insert(x);
-            return x.Id;
-        }
-
-        public bool Update(ToplantiKatilim x)
-        {
-            if (x == null || x.Id == 0)
-                return false;
-
-            x.DegistirmeTarihi = DateTime.Now;
-            return r.Update(x);
-        }
-
-        public bool Delete(ToplantiKatilim x)
-        {
-            return x != null && x.Id != 0 && r.Delete(x.Id);
-        }
-
-        public bool DeleteByMeeting(int id)
-        {
-            return r.DeleteByMeeting(id);
-        }
-
         private static List<ToplantiKatilim> List(DataTable t)
         {
             return new ToplantiKatilim().ToList<ToplantiKatilim>(t);

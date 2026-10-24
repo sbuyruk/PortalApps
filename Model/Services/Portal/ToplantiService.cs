@@ -109,53 +109,6 @@ namespace Model.Services.Portal
             return ToJson(e).Replace("<", "\\u003c").Replace(">", "\\u003e").Replace("&", "\\u0026");
         }
 
-        public int Save(Toplanti x)
-        {
-            if (x == null)
-                throw new ArgumentNullException("x");
-
-            x.OlusturmaTarihi = DateTime.Now;
-            x.Olusturan = UtilityHelper.GetCurrentUserName();
-            x.Id = r.Insert(x);
-
-            if (x.Id > 0 && ProjeConstants.PORTAL_SAVE_LOG)
-                new OlayKayit().GirisOlayKaydet(x, ProjeConstants.PORTAL, ProjeConstants.PORTAL_TOPLANTI);
-
-            return x.Id;
-        }
-
-        public bool Update(Toplanti x)
-        {
-            if (x == null || x.Id == 0)
-                return false;
-
-            Toplanti old = GetById(x.Id);
-            x.DegistirmeTarihi = DateTime.Now;
-            x.Degistiren = UtilityHelper.GetCurrentUserName();
-            bool ok = r.Update(x);
-
-            if (ok && ProjeConstants.PORTAL_UPDATE_LOG)
-                new OlayKayit().GuncellemeOlayKaydet(x, old, ProjeConstants.PORTAL, ProjeConstants.PORTAL_TOPLANTI);
-
-            return ok;
-        }
-
-        public bool Delete(Toplanti x)
-        {
-            if (x == null || x.Id == 0)
-                return false;
-
-            Toplanti old = GetById(x.Id);
-            if (old == null)
-                return false;
-
-            bool ok = r.Delete(x.Id);
-            if (ok && ProjeConstants.PORTAL_DELETE_LOG)
-                new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.PORTAL, ProjeConstants.PORTAL_TOPLANTI);
-
-            return ok;
-        }
-
         private static List<Toplanti> List(DataTable t)
         {
             return new Toplanti().ToList<Toplanti>(t);
