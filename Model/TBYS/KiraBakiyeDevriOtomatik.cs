@@ -100,5 +100,9 @@ namespace Model.TBYS
         public List<int> IslenenSozlesmeIdleri { get; set; }
         public List<int> AtlananSozlesmeIdleri { get; set; }
         public Dictionary<int, string> HataliSozlesmeler { get; set; }
+
+        public int IslenenSayisi { get { return IslenenSozlesmeIdleri.Count; } }
+        public int AtlananSayisi { get { return AtlananSozlesmeIdleri.Count; } }
+        public int HataliSayisi { get { return HataliSozlesmeler.Count; } }
     }
 }
