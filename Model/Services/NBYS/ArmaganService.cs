@@ -111,16 +111,6 @@ namespace Model.Services.NBYS
                 bagisciId, armaganTanimId, transaction);
         }
 
-        public bool UpdateDurumByBolge(
-            string fromDurum, string toDurum, string baslangic, string bitis,
-            int armaganTanimId, int bolgeId)
-        {
-            int? bolgeFiltresi = bolgeId == ProjeConstants.BOLGE_HEPSI_INT ||
-                bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? (int?)null : bolgeId;
-            return repository.UpdateDurumByBolge(
-                fromDurum, toDurum, baslangic, bitis, armaganTanimId, bolgeFiltresi);
-        }
-
         public DataTable ListByDurumTarih(
             string durum, DateTime baslangic, DateTime bitis, string armaganTanimId,
             int bolgeId, int ilId)
@@ -177,86 +167,9 @@ namespace Model.Services.NBYS
             return repository.SelectVerilenArmaganlarGroupByBagisci();
         }
 
-        public int SaveOrUpdate(
-            Armagan armagan, DateTime baslangic, DateTime bitis,
-            int bagisciId, IList<NakitBagisHareket> bagisHareketleri)
-        {
-            if (armagan == null)
-                throw new ArgumentNullException("armagan");
-            if (bagisHareketleri == null)
-                throw new ArgumentNullException("bagisHareketleri");
-
-            try
-            {
-                Armagan existing = GetByBagisciIdDateRange(bagisciId, baslangic, bitis);
-                string durum = GetDonorStatus(bagisciId);
-                if (!string.IsNullOrEmpty(durum))
-                    armagan.Durum = durum;
-
-                int armaganId;
-                if (existing != null)
-                {
-                    // Legacy behavior: an existing period record is retained.
-                    Update(armagan);
-                    armaganId = existing.Id;
-                }
-                else
-                {
-                    armaganId = Save(armagan);
-                }
-
-                NakitBagisHareketService bagisHareketService = new NakitBagisHareketService();
-                foreach (NakitBagisHareket bagisHareketi in bagisHareketleri)
-                {
-                    bagisHareketi.ArmaganId = armaganId;
-                    try
-                    {
-                        bagisHareketService.Update(bagisHareketi);
-                    }
-                    catch (Exception exception)
-                    {
-                        new ExceptionHelper(exception).PublishException();
-                    }
-                }
-                return armaganId;
-            }
-            catch (Exception)
-            {
-                return 0;
-            }
-        }
-
-        private static string GetDonorStatus(int bagisciId)
-        {
-            NakitBagisci bagisci = new NakitBagisciService().GetById(bagisciId);
-            if (bagisci == null)
-                return string.Empty;
-            if (bagisci.BelgeIstemiyor)
-                return ProjeConstants.DURUM_BELGE_ISTEMIYOR;
-            if (bagisci.Ulasilamiyor)
-                return ProjeConstants.DURUM_ULASILAMADI;
-            return string.Empty;
-        }
-
-        public int Save(Armagan armagan)
-        {
-            if (armagan == null)
-                throw new ArgumentNullException("armagan");
-
-            armagan.OlusturmaTarihi = DateTime.Now;
-            armagan.Olusturan = UtilityHelper.GetCurrentUserName();
-            armagan.Id = repository.Insert(armagan);
-
-            if (armagan.Id > 0 && !repository.HasLogContext && ProjeConstants.NBYS_SAVE_LOG)
-            {
-                new OlayKayit().GirisOlayKaydet(
-                    armagan, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGAN);
-            }
-            return armagan.Id;
-        }
-
         public int Save(Armagan armagan, SqlTransactionContext transaction)
         {
+            if (!repository.HasLogContext) throw new InvalidOperationException("Yazma işlemi için NBYS log bağlamı gereklidir.");
             if (armagan == null)
                 throw new ArgumentNullException("armagan");
             if (transaction == null)
@@ -266,14 +179,6 @@ namespace Model.Services.NBYS
             armagan.Olusturan = UtilityHelper.GetCurrentUserName();
             armagan.Id = repository.Insert(armagan, transaction);
 
-            if (armagan.Id > 0 && !repository.HasLogContext && ProjeConstants.NBYS_SAVE_LOG)
-            {
-                new OlayKayit().GirisOlayKaydet(
-                    armagan,
-                    ProjeConstants.NBYS,
-                    ProjeConstants.NBYS_ARMAGAN,
-                    transaction);
-            }
             return armagan.Id;
         }
 
@@ -283,49 +188,9 @@ namespace Model.Services.NBYS
                 bagisciId, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID, belgeSirasi)).FirstOrDefault();
         }
 
-        public int SaveDuzenliBagisIfMissing(Armagan armagan)
-        {
-            if (armagan == null)
-                throw new ArgumentNullException("armagan");
-            if (!armagan.DuzenliBagis || armagan.KacinciBelge < 1
-                || armagan.ArmaganTanimId != ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID)
-                throw new ArgumentException("Geçerli bir düzenli bağış yılı belirtilmelidir.", "armagan");
-
-            armagan.OlusturmaTarihi = DateTime.Now;
-            armagan.Olusturan = UtilityHelper.GetCurrentUserName();
-            DataTable result = repository.InsertDuzenliBagisIfMissing(armagan);
-            armagan.Id = Convert.ToInt32(result.Rows[0]["Id"]);
-            if (Convert.ToBoolean(result.Rows[0]["Olusturuldu"]) && !repository.HasLogContext && ProjeConstants.NBYS_SAVE_LOG)
-            {
-                new OlayKayit().GirisOlayKaydet(
-                    armagan, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGAN);
-            }
-            return armagan.Id;
-        }
-
-        public bool Update(Armagan armagan)
-        {
-            if (armagan == null)
-                throw new ArgumentNullException("armagan");
-
-            Armagan previous = GetById(armagan.Id);
-            bool updated = false;
-            if (armagan.Id != 0)
-            {
-                armagan.DegistirmeTarihi = DateTime.Now;
-                armagan.Degistiren = UtilityHelper.GetCurrentUserName();
-                updated = repository.Update(armagan);
-            }
-            if (updated && !repository.HasLogContext && ProjeConstants.NBYS_UPDATE_LOG)
-            {
-                new OlayKayit().GuncellemeOlayKaydet(
-                    armagan, previous, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGAN);
-            }
-            return updated;
-        }
-
         public bool Update(Armagan armagan, SqlTransactionContext transaction)
         {
+            if (!repository.HasLogContext) throw new InvalidOperationException("Yazma işlemi için NBYS log bağlamı gereklidir.");
             if (armagan == null)
                 throw new ArgumentNullException("armagan");
             if (transaction == null)
@@ -333,40 +198,11 @@ namespace Model.Services.NBYS
             if (armagan.Id == 0)
                 return false;
 
-            Armagan previous = GetById(armagan.Id, transaction);
             armagan.DegistirmeTarihi = DateTime.Now;
             armagan.Degistiren = UtilityHelper.GetCurrentUserName();
             bool updated = repository.Update(armagan, transaction);
-            if (updated && !repository.HasLogContext && ProjeConstants.NBYS_UPDATE_LOG)
-            {
-                new OlayKayit().GuncellemeOlayKaydet(
-                    previous,
-                    armagan,
-                    ProjeConstants.NBYS,
-                    ProjeConstants.NBYS_ARMAGAN,
-                    transaction);
-            }
+
             return updated;
-        }
-
-        public bool Delete(Armagan armagan)
-        {
-            if (armagan == null)
-                throw new ArgumentNullException("armagan");
-            if (armagan.Id == 0)
-                return false;
-
-            Armagan previous = GetById(armagan.Id);
-            if (previous == null)
-                return false;
-
-            bool deleted = repository.Delete(armagan.Id);
-            if (deleted && !repository.HasLogContext && ProjeConstants.NBYS_DELETE_LOG)
-            {
-                new OlayKayit().SilmeOlayKaydet(
-                    previous, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGAN);
-            }
-            return deleted;
         }
 
         private static List<Armagan> Map(DataTable table)

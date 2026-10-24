@@ -41,8 +41,14 @@ namespace DAO.Repositories.NBYS
         {
             int id = sql.Insert(query, transaction);
             if (id <= 0) throw new InvalidOperationException("Kayıt oluşturulamadı.");
-            Audit("INSERT", id, null, Snapshot(id, transaction), transaction);
+            RecordInserted(id, transaction);
             return id;
+        }
+
+        internal void RecordInserted(int id, SqlTransactionContext transaction)
+        {
+            if (id <= 0) throw new InvalidOperationException("Kayıt oluşturulamadı.");
+            Audit("INSERT", id, null, Snapshot(id, transaction), transaction);
         }
 
         internal bool Update(SqlQuery query, int id, SqlTransactionContext transaction)

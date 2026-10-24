@@ -187,53 +187,6 @@ namespace DAO.Repositories.NBYS
             return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query);
         }
 
-        public DataTable InsertDuzenliBagisIfMissing<T>(T entity)
-        {
-            if (logContext != null) throw new InvalidOperationException("Bu işlem için transaction destekli düzenli bağış akışı gereklidir.");
-            SqlQuery query = queryBuilder.BuildInsert(entity, TableName);
-            // Aynı bağış yılına gelen eşzamanlı istekler de mevcut belgeyi kullanır.
-            query.Sql = @"SET XACT_ABORT ON;
-                BEGIN TRANSACTION;
-                DECLARE @MevcutId int, @Olusturuldu bit = 0;
-                SELECT TOP 1 @MevcutId=Id FROM Armagan_Table WITH (UPDLOCK, HOLDLOCK)
-                WHERE BagisciId=@BagisciId AND ArmaganTanimId=@ArmaganTanimId
-                    AND ISNULL(BelgeGecersizMi, 0)!=1
-                    AND ISNULL(NULLIF(KacinciBelge, 0), 1)=@KacinciBelge
-                ORDER BY Id DESC;
-                IF @MevcutId IS NULL
-                BEGIN
-                    " + query.Sql + @";
-                    SET @MevcutId=CONVERT(int, SCOPE_IDENTITY());
-                    SET @Olusturuldu=1;
-                END;
-                COMMIT TRANSACTION;
-                SELECT @MevcutId Id, @Olusturuldu Olusturuldu;";
-            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query);
-        }
-
-        public bool UpdateDurumByBolge(
-            string fromDurum, string toDurum, string baslangic, string bitis,
-            int armaganTanimId, int? bolgeId)
-        {
-            string bolgeKosulu = bolgeId.HasValue ? " AND Il_Table.BolgeId=@BolgeId" : string.Empty;
-            SqlQuery query = new SqlQuery(@"UPDATE A SET Durum=@ToDurum
-                FROM Armagan_Table A
-                INNER JOIN ArmaganTanim_Table ON A.ArmaganTanimId=ArmaganTanim_Table.Id
-                INNER JOIN NakitBagisci_Table ON A.BagisciId=NakitBagisci_Table.Id
-                INNER JOIN Il_Table ON Il_Table.Id=NakitBagisci_Table.Ili
-                WHERE A.BelgeGecersizMi!=1 AND A.Durum=@FromDurum
-                    AND A.Tarih BETWEEN @Baslangic AND @Bitis
-                    AND A.ArmaganTanimId=@ArmaganTanimId" + bolgeKosulu);
-            query.AddParameter("@ToDurum", toDurum);
-            query.AddParameter("@FromDurum", fromDurum);
-            query.AddParameter("@Baslangic", baslangic);
-            query.AddParameter("@Bitis", bitis);
-            query.AddParameter("@ArmaganTanimId", armaganTanimId);
-            if (bolgeId.HasValue)
-                query.AddParameter("@BolgeId", bolgeId.Value);
-            return LegacyWriteDb.Update2Db(query);
-        }
-
         public DataTable SelectByDurumTarih(
             string durum, DateTime baslangic, DateTime bitis, int? armaganTanimId,
             int? bolgeId, int? ilId)
@@ -277,12 +230,12 @@ namespace DAO.Repositories.NBYS
             if (armaganTanimId.HasValue) query.AddParameter("@ArmaganTanimId", armaganTanimId.Value);
             if (bolgeId.HasValue) query.AddParameter("@BolgeId", bolgeId.Value);
             if (ilId.HasValue) query.AddParameter("@IlId", ilId.Value);
-            if (transaction != null)
+            if (transaction == null)
             {
-                if (logContext == null) throw new InvalidOperationException("Belge işlemi için log bağlamı gereklidir.");
-                return new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query, transaction);
+                return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query);
             }
-            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query);
+            if (logContext == null) throw new InvalidOperationException("Belge işlemi için log bağlamı gereklidir.");
+            return new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query, transaction);
         }
 
         public DataTable SelectCountDurumByBolge(
@@ -358,45 +311,24 @@ namespace DAO.Repositories.NBYS
                 ORDER BY A.Tarih DESC"), "");
         }
 
-        public int Insert<T>(T entity)
-        {
-            return LegacyWriteDb.Insert(queryBuilder.BuildInsert(entity, TableName));
-        }
-
         public int Insert<T>(T entity, SqlTransactionContext transaction)
         {
-            return logContext == null ? transaction.Insert(queryBuilder.BuildInsert(entity, TableName))
-                : new NbysTransactionalWriter(logContext, TableName).Insert(queryBuilder.BuildInsert(entity, TableName), transaction);
-        }
-
-        public bool Update<T>(T entity)
-        {
-            return LegacyWriteDb.Update2Db(queryBuilder.BuildUpdate(entity, TableName));
+            if (logContext == null) throw new InvalidOperationException("Yazma işlemi için NBYS log bağlamı gereklidir.");
+            return new NbysTransactionalWriter(logContext, TableName).Insert(queryBuilder.BuildInsert(entity, TableName), transaction);
         }
 
         public bool Update<T>(T entity, SqlTransactionContext transaction)
         {
-            return logContext == null ? transaction.Update(queryBuilder.BuildUpdate(entity, TableName))
-                : new NbysTransactionalWriter(logContext, TableName).Update(queryBuilder.BuildUpdate(entity, TableName), NbysTransactionalWriter.Id(entity), transaction);
+            if (logContext == null) throw new InvalidOperationException("Yazma işlemi için NBYS log bağlamı gereklidir.");
+            return new NbysTransactionalWriter(logContext, TableName).Update(queryBuilder.BuildUpdate(entity, TableName), NbysTransactionalWriter.Id(entity), transaction);
         }
 
-        public bool Delete(int id)
-        {
-            return LegacyWriteDb.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), "");
-        }
         private DataTable Select(SqlQuery query, string ignored,
             [System.Runtime.CompilerServices.CallerMemberName] string method = "")
         {
             return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query, method: method);
         }
-        private DbClass LegacyWriteDb
-        {
-            get
-            {
-                if (logContext != null) throw new InvalidOperationException("Yazma işlemi için transaction gereklidir.");
-                return db;
-            }
-        }
+
         private DataTable SelectInTransaction(SqlQuery query, SqlTransactionContext transaction,
             [System.Runtime.CompilerServices.CallerMemberName] string method = "")
         {

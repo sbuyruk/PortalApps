@@ -42,142 +42,25 @@ namespace DAO.Repositories.NBYS
             queryBuilder = new CrudQueryBuilder();
         }
 
-        private DbClass LegacyWriteDb
-        {
-            get
-            {
-                RequireLegacyWrite();
-                return db;
-            }
-        }
-
-        private void RequireLegacyWrite()
-        {
-            if (readContext != null)
-                throw new InvalidOperationException("Bu erişim yalnızca okuma işlemlerini destekler.");
-        }
-
         private DataTable Select(SqlQuery query,
             [System.Runtime.CompilerServices.CallerMemberName] string method = "")
         {
             return readContext == null ? db.SelectFromDb(query, "") :
                 PortalSqlReadExecutor.Select(query, readContext, "NakitBagisHareketRepository." + method);
         }
-        public int Insert<T>(T entity)
-        {
-            return LegacyWriteDb.Insert(queryBuilder.BuildInsert(entity, TableName));
-        }
 
         public int Insert<T>(T entity, SqlTransactionContext transaction)
         {
+            if (readContext == null) throw new InvalidOperationException("Yazma işlemi için NBYS log bağlamı gereklidir.");
             if (transaction == null) throw new ArgumentNullException("transaction");
-            return readContext == null ? transaction.Insert(queryBuilder.BuildInsert(entity, TableName))
-                : new NbysTransactionalWriter(readContext, TableName).Insert(queryBuilder.BuildInsert(entity, TableName), transaction);
-        }
-
-        public bool Update<T>(T entity)
-        {
-            return LegacyWriteDb.Update2Db(queryBuilder.BuildUpdate(entity, TableName));
+            return new NbysTransactionalWriter(readContext, TableName).Insert(queryBuilder.BuildInsert(entity, TableName), transaction);
         }
 
         public bool Update<T>(T entity, SqlTransactionContext transaction)
         {
+            if (readContext == null) throw new InvalidOperationException("Yazma işlemi için NBYS log bağlamı gereklidir.");
             if (transaction == null) throw new ArgumentNullException("transaction");
-            return readContext == null ? transaction.Update(queryBuilder.BuildUpdate(entity, TableName))
-                : new NbysTransactionalWriter(readContext, TableName).Update(queryBuilder.BuildUpdate(entity, TableName), NbysTransactionalWriter.Id(entity), transaction);
-        }
-
-        public void UpdateRefund<TDonation, TGift>(TDonation donation, TGift gift)
-        {
-            if ((object)donation == null)
-                throw new ArgumentNullException("donation");
-
-            List<SqlQuery> queries = new List<SqlQuery>
-            {
-                queryBuilder.BuildUpdate(donation, TableName)
-            };
-
-            if ((object)gift != null)
-                queries.Add(queryBuilder.BuildUpdate(gift, "Armagan_Table"));
-
-            LegacyWriteDb.ExecuteTransaction(queries);
-        }
-
-        public void DeleteWithArchive<TDonationArchive, TGiftArchive>(
-            int donationId,
-            TDonationArchive donationArchive,
-            int? giftId,
-            TGiftArchive giftArchive)
-        {
-            if ((object)donationArchive == null)
-                throw new ArgumentNullException("donationArchive");
-
-            List<SqlQuery> queries = new List<SqlQuery>
-            {
-                queryBuilder.BuildDelete(TableName, donationId),
-                queryBuilder.BuildInsert(donationArchive, "SilinenKayit_Table")
-            };
-
-            if (giftId.HasValue)
-            {
-                if ((object)giftArchive == null)
-                    throw new ArgumentNullException("giftArchive");
-
-                queries.Add(queryBuilder.BuildDelete("Armagan_Table", giftId.Value));
-                queries.Add(queryBuilder.BuildInsert(giftArchive, "SilinenKayit_Table"));
-            }
-
-            LegacyWriteDb.ExecuteTransaction(queries);
-        }
-
-        public bool MergeDonor<TDonation, TDonationArchive, TGift, TGiftArchive, TDonorArchive>(
-            IList<TDonation> donations,
-            IList<TDonationArchive> donationArchives,
-            IList<TGift> gifts,
-            IList<TGiftArchive> giftArchives,
-            int sourceDonorId,
-            TDonorArchive donorArchive)
-        {
-            if (donations == null)
-                throw new ArgumentNullException("donations");
-            if (donationArchives == null)
-                throw new ArgumentNullException("donationArchives");
-            if (gifts == null)
-                throw new ArgumentNullException("gifts");
-            if (giftArchives == null)
-                throw new ArgumentNullException("giftArchives");
-            if ((object)donorArchive == null)
-                throw new ArgumentNullException("donorArchive");
-            if (donations.Count != donationArchives.Count)
-                throw new ArgumentException("Donation and archive counts must match.");
-            if (gifts.Count != giftArchives.Count)
-                throw new ArgumentException("Gift and archive counts must match.");
-
-            List<SqlQuery> queries = new List<SqlQuery>();
-            for (int i = 0; i < donations.Count; i++)
-            {
-                queries.Add(queryBuilder.BuildUpdate(donations[i], TableName));
-                queries.Add(queryBuilder.BuildInsert(donationArchives[i], "SilinenKayit_Table"));
-            }
-            for (int i = 0; i < gifts.Count; i++)
-            {
-                queries.Add(queryBuilder.BuildUpdate(gifts[i], "Armagan_Table"));
-                queries.Add(queryBuilder.BuildInsert(giftArchives[i], "SilinenKayit_Table"));
-            }
-
-            if (queries.Count == 0)
-                return false;
-
-            queries.Add(queryBuilder.BuildDelete("NakitBagisci_Table", sourceDonorId));
-            queries.Add(queryBuilder.BuildInsert(donorArchive, "SilinenKayit_Table"));
-
-            LegacyWriteDb.ExecuteTransaction(queries);
-            return true;
-        }
-
-        public bool Delete(int id)
-        {
-            return LegacyWriteDb.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), "");
+            return new NbysTransactionalWriter(readContext, TableName).Update(queryBuilder.BuildUpdate(entity, TableName), NbysTransactionalWriter.Id(entity), transaction);
         }
 
         public DataTable SelectById(int id)
