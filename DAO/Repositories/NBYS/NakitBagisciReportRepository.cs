@@ -23,23 +23,16 @@ namespace DAO.Repositories.NBYS
 
     public class NakitBagisciReportRepository
     {
-        private readonly DbClass db;
-        private readonly PortalLogContext context;
+        private readonly NbysSqlExecutor sqlReader = new NbysSqlExecutor("NakitBagisciReportRepository");
 
         public NakitBagisciReportRepository()
-            : this(new DbClass())
         {
         }
 
         public NakitBagisciReportRepository(PortalLogContext context)
         {
+            sqlReader = new NbysSqlExecutor(context, "NakitBagisciReportRepository");
             if (context == null || context.Project != "NBYS") throw new ArgumentException("NBYS log bağlamı gereklidir.", "context");
-            this.context = context;
-        }
-
-        public NakitBagisciReportRepository(DbClass db)
-        {
-            this.db = db;
         }
 
         public DataTable SelectBagisciGroupByBagisAdedi(
@@ -302,7 +295,7 @@ namespace DAO.Repositories.NBYS
         private DataTable Select(SqlQuery query, string ignored,
             [System.Runtime.CompilerServices.CallerMemberName] string method = "")
         {
-            return context == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(context, "NakitBagisciReportRepository").Select(query, method: method);
+            return sqlReader.Select(query, method: method);
         }
     }
 }

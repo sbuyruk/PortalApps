@@ -20,6 +20,8 @@ namespace Model.Services.NBYS
         private static ExceptionHelper ExecuteFileImport(
             Func<SqlTransactionContext, ExceptionHelper> import, string bankName, string fileName, PortalLogContext context)
         {
+            if (context == null || context.Project != "NBYS")
+                throw new ArgumentException("NBYS log bağlamı gereklidir.", "context");
             try
             {
                 ExceptionHelper result;
@@ -96,18 +98,18 @@ namespace Model.Services.NBYS
         {
             if (item.NakitBagisciId <= 0)
                 item.NakitBagisciId = new EkstreBagisciEslestirmeService(
-                    context == null ? new DAO.Repositories.NBYS.NakitBagisciRepository(transaction) : new DAO.Repositories.NBYS.NakitBagisciRepository(context))
+                    new DAO.Repositories.NBYS.NakitBagisciRepository(context))
                     .FindDonorId(item, transaction);
             int id = new EkstreAktarmaService(
-                context == null ? new DAO.Repositories.NBYS.EkstreAktarmaRepository(transaction) : new DAO.Repositories.NBYS.EkstreAktarmaRepository(context))
+                new DAO.Repositories.NBYS.EkstreAktarmaRepository(context))
                 .Save(item, transaction);
             result.SuccessCount++;
             return id;
         }
 
-        public static ExceptionHelper SaveAkBankFile(Stream fileStream, DateTime processTime, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveAkBankFile(Stream fileStream, DateTime processTime, string currentUser, string fileName, PortalLogContext context)
         {
-return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTime, currentUser, transaction, context), "AkBank", fileName, context);
+            return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTime, currentUser, transaction, context), "AkBank", fileName, context);
         }
 
         private static ExceptionHelper SaveAkBankFileCore(Stream fileStream, DateTime processTime, string currentUser, SqlTransactionContext transaction, PortalLogContext context)
@@ -169,7 +171,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveAkBankEkstreFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveAkBankEkstreFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveAkBankEkstreFileCore(fileStream, islemTarihi, currentUser, transaction, context), "AkBankEkstre", fileName, context);
         }
@@ -234,7 +236,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveGarantiBankFile(Stream filePath, DateTime processTime, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveGarantiBankFile(Stream filePath, DateTime processTime, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveGarantiBankFileCore(filePath, processTime, currentUser, transaction, context), "GarantiBank", fileName, context);
         }
@@ -322,7 +324,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveGarantiEkstreFile(Stream fileStream, DateTime processTime, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveGarantiEkstreFile(Stream fileStream, DateTime processTime, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveGarantiEkstreFileCore(fileStream, processTime, currentUser, transaction, context), "GarantiEkstre", fileName, context);
         }
@@ -465,7 +467,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             return exceptionHelper;
 
         }
-        public static ExceptionHelper SaveHalkbankFile(Stream filePath, DateTime processTime, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveHalkbankFile(Stream filePath, DateTime processTime, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveHalkbankFileCore(filePath, processTime, currentUser, transaction, context), "Halkbank", fileName, context);
         }
@@ -516,7 +518,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveHalkbank2File(Stream fileStream, DateTime processTime, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveHalkbank2File(Stream fileStream, DateTime processTime, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveHalkbank2FileCore(fileStream, processTime, currentUser, transaction, context), "Halkbank2", fileName, context);
         }
@@ -607,7 +609,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveFinansbankFile(Stream fileStream, DateTime processTime, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveFinansbankFile(Stream fileStream, DateTime processTime, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveFinansbankFileCore(fileStream, processTime, currentUser, transaction, context), "Finansbank", fileName, context);
         }
@@ -676,7 +678,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveFinansbankEkstreFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveFinansbankEkstreFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveFinansbankEkstreFileCore(fileStream, islemTarihi, currentUser, transaction, context), "FinansbankEkstre", fileName, context);
         }
@@ -767,7 +769,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
         /// </summary>
         /// <param name="checkedRows"></param>
         /// <returns></returns>
-        public static ExceptionHelper SaveIsBankFile(Stream filePath, DateTime processTime, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveIsBankFile(Stream filePath, DateTime processTime, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveIsBankFileCore(filePath, processTime, currentUser, transaction, context), "IsBank", fileName, context);
         }
@@ -829,7 +831,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
 
         }
 
-        public static ExceptionHelper SaveIsBankEkstreFile(Stream fileStream, DateTime processTime, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveIsBankEkstreFile(Stream fileStream, DateTime processTime, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveIsBankEkstreFileCore(fileStream, processTime, currentUser, transaction, context), "IsBankEkstre", fileName, context);
         }
@@ -943,7 +945,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             return exceptionHelper;
 
         }
-        public static ExceptionHelper SaveYKBEkstreFile(Stream fileStream, DateTime processTime, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveYKBEkstreFile(Stream fileStream, DateTime processTime, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveYKBEkstreFileCore(fileStream, processTime, currentUser, transaction, context), "YKBEkstre", fileName, context);
         }
@@ -1086,7 +1088,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
 
         }
 
-        public static ExceptionHelper SaveVakifBankFile(Stream fileStream, DateTime processTime, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveVakifBankFile(Stream fileStream, DateTime processTime, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveVakifBankFileCore(fileStream, processTime, currentUser, transaction, context), "VakifBank", fileName, context);
         }
@@ -1179,7 +1181,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveVakifBankGunlukTextFile(Stream filePath, DateTime processTime, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveVakifBankGunlukTextFile(Stream filePath, DateTime processTime, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveVakifBankGunlukTextFileCore(filePath, processTime, currentUser, transaction, context), "VakifBankGunlukText", fileName, context);
         }
@@ -1246,7 +1248,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveVakifBank2File(Stream fileStream, DateTime processTime, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveVakifBank2File(Stream fileStream, DateTime processTime, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveVakifBank2FileCore(fileStream, processTime, currentUser, transaction, context), "VakifBank2", fileName, context);
         }
@@ -1354,7 +1356,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveVakifKatilimFile(Stream fileStream, DateTime processTime, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveVakifKatilimFile(Stream fileStream, DateTime processTime, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveVakifKatilimFileCore(fileStream, processTime, currentUser, transaction, context), "VakifKatilim", fileName, context);
         }
@@ -1446,7 +1448,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveTEBBankFile(Stream filePath, DateTime processTime, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveTEBBankFile(Stream filePath, DateTime processTime, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveTEBBankFileCore(filePath, processTime, currentUser, transaction, context), "TEBBank", fileName, context);
         }
@@ -1530,7 +1532,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveZiraatFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveZiraatFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveZiraatFileCore(fileStream, islemTarihi, currentUser, transaction, context), "Ziraat", fileName, context);
         }
@@ -1617,7 +1619,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveKartIleFile(Stream fileStream, DateTime islemTarihi, string currentUser, DateTime bagisTarihi, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveKartIleFile(Stream fileStream, DateTime islemTarihi, string currentUser, DateTime bagisTarihi, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveKartIleFileCore(fileStream, islemTarihi, currentUser, bagisTarihi, transaction, context), "KartIle", fileName, context);
         }
@@ -1729,7 +1731,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveZiraatMT940File(Stream filePath, DateTime processTime, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveZiraatMT940File(Stream filePath, DateTime processTime, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveZiraatMT940FileCore(filePath, processTime, currentUser, transaction, context), "ZiraatMT940", fileName, context);
         }
@@ -1827,7 +1829,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveEDevletFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveEDevletFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveEDevletFileCore(fileStream, islemTarihi, currentUser, transaction, context), "EDevlet", fileName, context);
         }
@@ -1940,7 +1942,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
         private static bool BuKayitDahaOnceGirilmisMiByFisNo(string bankaLike, string fisNo, string aciklama, DateTime bagisTarihi, decimal tutar, SqlTransactionContext transaction, PortalLogContext context)
         {
             List<EkstreAktarma> ekstreAktarmaList = new EkstreAktarmaService(
-                context == null ? new DAO.Repositories.NBYS.EkstreAktarmaRepository(transaction) : new DAO.Repositories.NBYS.EkstreAktarmaRepository(context))
+                new DAO.Repositories.NBYS.EkstreAktarmaRepository(context))
                 .GetByBankAndReceipt(bankaLike, fisNo, transaction);
             foreach (var ekstreAktarma in ekstreAktarmaList)
             {
@@ -1955,7 +1957,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             return false;
         }
 
-        public static ExceptionHelper SaveZiraatEkstreFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveZiraatEkstreFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveZiraatEkstreFileCore(fileStream, islemTarihi, currentUser, transaction, context), "ZiraatEkstre", fileName, context);
         }
@@ -2107,7 +2109,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             return exceptionHelper;
         }
 
-        public static ExceptionHelper SaveZiraatKatilimFile(Stream fileStream, DateTime processTime, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveZiraatKatilimFile(Stream fileStream, DateTime processTime, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveZiraatKatilimFileCore(fileStream, processTime, currentUser, transaction, context), "ZiraatKatilim", fileName, context);
         }
@@ -2175,7 +2177,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveSMSVakifFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveSMSVakifFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveSMSVakifFileCore(fileStream, islemTarihi, currentUser, transaction, context), "SMSVakif", fileName, context);
         }
@@ -2252,7 +2254,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             }
             return exceptionHelper;
         }
-        public static ExceptionHelper SaveAlbarakaFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName = null, PortalLogContext context = null)
+        public static ExceptionHelper SaveAlbarakaFile(Stream fileStream, DateTime islemTarihi, string currentUser, string fileName, PortalLogContext context)
         {
             return ExecuteFileImport(transaction => SaveAlbarakaFileCore(fileStream, islemTarihi, currentUser, transaction, context), "Albaraka", fileName, context);
         }
@@ -2349,7 +2351,7 @@ return ExecuteFileImport(transaction => SaveAkBankFileCore(fileStream, processTi
             bool isInteger = Int32.TryParse(ilId, out id);
             if (isInteger)
             {
-                Il il = new IlService(context == null ? new DAO.Repositories.Ortak.IlRepository(transaction) : new DAO.Repositories.Ortak.IlRepository(context))
+                Il il = new IlService(new DAO.Repositories.Ortak.IlRepository(context))
                     .GetById(id, transaction);
                 if (il != null)
                 {

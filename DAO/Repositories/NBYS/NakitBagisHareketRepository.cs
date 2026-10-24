@@ -9,33 +9,23 @@ namespace DAO.Repositories.NBYS
 {
     public class NakitBagisHareketRepository
     {
+        private readonly NbysSqlExecutor sqlReader = new NbysSqlExecutor("NakitBagisHareketRepository");
         public bool HasLogContext { get { return readContext != null; } }
         private const string TableName = "NakitBagisHareket_Table";
-        private readonly DbClass db;
+
         private readonly PortalLogContext readContext;
         private readonly CrudQueryBuilder queryBuilder;
 
-        public NakitBagisHareketRepository() : this(new DbClass())
+        public NakitBagisHareketRepository()
         {
-        }
-
-        public NakitBagisHareketRepository(DbClass db)
-        {
-            if (db == null)
-                throw new ArgumentNullException("db");
-            this.db = db;
             queryBuilder = new CrudQueryBuilder();
         }
 
         // Explicit-context writes require a supplied transaction and use centralized audit.
-        public NakitBagisHareketRepository(SqlTransactionContext transaction)
-        {
-            if (transaction == null) throw new ArgumentNullException("transaction");
-            queryBuilder = new CrudQueryBuilder();
-        }
 
         public NakitBagisHareketRepository(PortalLogContext context)
         {
+            sqlReader = new NbysSqlExecutor(context, "NakitBagisHareketRepository");
             if (context == null || context.Project != "NBYS")
                 throw new ArgumentException("NBYS log bağlamı gereklidir.", "context");
             readContext = context;
@@ -45,8 +35,7 @@ namespace DAO.Repositories.NBYS
         private DataTable Select(SqlQuery query,
             [System.Runtime.CompilerServices.CallerMemberName] string method = "")
         {
-            return readContext == null ? db.SelectFromDb(query, "") :
-                PortalSqlReadExecutor.Select(query, readContext, "NakitBagisHareketRepository." + method);
+            return sqlReader.Select(query, method: method);
         }
 
         public int Insert<T>(T entity, SqlTransactionContext transaction)
@@ -674,7 +663,7 @@ namespace DAO.Repositories.NBYS
             [System.Runtime.CompilerServices.CallerMemberName] string method = "")
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
-            return readContext == null ? transaction.Select(query) : new NbysSqlExecutor(readContext, "NakitBagisHareketRepository").Select(query, transaction, method);
+            return sqlReader.Select(query, transaction, method);
         }
     }
 }

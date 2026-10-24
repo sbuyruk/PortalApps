@@ -7,25 +7,16 @@ namespace DAO.Repositories.NBYS
 {
     public class FTKRepository
     {
-        private const string TableName = "FTK_Table";
-        private readonly DbClass db;
-        private readonly PortalLogContext context;
-        private readonly CrudQueryBuilder queryBuilder;
+        private readonly NbysSqlExecutor sqlReader = new NbysSqlExecutor("FTKRepository");
 
-        public FTKRepository() : this(new DbClass()) { }
+        public FTKRepository()
+        {
+        }
 
         public FTKRepository(PortalLogContext context)
         {
+            sqlReader = new NbysSqlExecutor(context, "FTKRepository");
             if (context == null || context.Project != "NBYS") throw new ArgumentException("NBYS log bağlamı gereklidir.", "context");
-            this.context = context;
-            queryBuilder = new CrudQueryBuilder();
-        }
-
-        public FTKRepository(DbClass db)
-        {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
-            queryBuilder = new CrudQueryBuilder();
         }
 
         public DataTable SelectById(int id)
@@ -119,15 +110,6 @@ namespace DAO.Repositories.NBYS
             return Select(query);
         }
 
-        public bool DeleteByOperationAndCounter(int operationId, int counter)
-        {
-            SqlQuery query = new SqlQuery(
-                "DELETE FROM FTK_Table WHERE FTKIslemId=@FTKIslemId AND Sayac=@Sayac");
-            query.AddParameter("@FTKIslemId", operationId);
-            query.AddParameter("@Sayac", counter);
-            return LegacyWriteDb.DeleteFromDb(query, "");
-        }
-
         public DataTable SelectProvincesWithoutFTK(int? regionId, int? provinceId, int governorshipDistrictId)
         {
             string filters = regionId.HasValue ? " AND A.BolgeId=@BolgeId" : string.Empty;
@@ -159,22 +141,11 @@ namespace DAO.Repositories.NBYS
             return Select(query);
         }
 
-        public int Insert<T>(T entity) { return LegacyWriteDb.Insert(queryBuilder.BuildInsert(entity, TableName)); }
-        public bool Update<T>(T entity) { return LegacyWriteDb.Update2Db(queryBuilder.BuildUpdate(entity, TableName)); }
-        public bool Delete(int id) { return LegacyWriteDb.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), ""); }
         private DataTable Select(SqlQuery query,
             [System.Runtime.CompilerServices.CallerMemberName] string method = "")
         {
-            return context == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(context, "FTKRepository").Select(query, method: method);
+            return sqlReader.Select(query, method: method);
         }
 
-        private DbClass LegacyWriteDb
-        {
-            get
-            {
-                if (context != null) throw new InvalidOperationException("FTK yazmaları transaction destekli işlem servisini kullanmalıdır.");
-                return db;
-            }
-        }
     }
 }

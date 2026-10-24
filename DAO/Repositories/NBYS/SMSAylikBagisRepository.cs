@@ -8,10 +8,10 @@ namespace DAO.Repositories.NBYS
     public class SMSAylikBagisRepository
     {
         private const string TableName = "SMSAylikBagis_Table";
-        private readonly DbClass db;
+
         private readonly CrudQueryBuilder queryBuilder;
         private readonly PortalLogContext context;
-        private readonly NbysSqlExecutor sql;
+        private readonly NbysSqlExecutor sql = new NbysSqlExecutor("SMSAylikBagisRepository");
 
         public SMSAylikBagisRepository(PortalLogContext context)
         {
@@ -20,15 +20,8 @@ namespace DAO.Repositories.NBYS
             queryBuilder = new CrudQueryBuilder();
         }
 
-        public SMSAylikBagisRepository() : this(new DbClass())
+        public SMSAylikBagisRepository()
         {
-        }
-
-        public SMSAylikBagisRepository(DbClass db)
-        {
-            if (db == null)
-                throw new ArgumentNullException("db");
-            this.db = db;
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -36,7 +29,7 @@ namespace DAO.Repositories.NBYS
         {
             SqlQuery query = new SqlQuery("SELECT * FROM SMSAylikBagis_Table WHERE Id=@Id");
             query.AddParameter("@Id", id);
-            return sql == null ? db.SelectFromDb(query, "") : sql.Select(query);
+            return sql.Select(query);
         }
 
         public DataTable SelectByYear(int year)
@@ -46,25 +39,7 @@ namespace DAO.Repositories.NBYS
                 WHERE Yil=@Yil
                 ORDER BY Ay");
             query.AddParameter("@Yil", year);
-            return sql == null ? db.SelectFromDb(query, "") : sql.Select(query);
-        }
-
-        public int Insert<T>(T entity)
-        {
-            RequireLegacyWrite();
-            return db.Insert(queryBuilder.BuildInsert(entity, TableName));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            RequireLegacyWrite();
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName));
-        }
-
-        public bool Delete(int id)
-        {
-            RequireLegacyWrite();
-            return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), "");
+            return sql.Select(query);
         }
 
         public bool LockYear(int year, SqlTransactionContext transaction)
@@ -116,12 +91,8 @@ namespace DAO.Repositories.NBYS
         private void RequireTransaction(SqlTransactionContext transaction)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
-            if (sql == null) throw new InvalidOperationException("SMS yazma işlemi için açık NBYS log bağlamı gereklidir.");
+            if (context == null) throw new InvalidOperationException("SMS yazma işlemi için açık NBYS log bağlamı gereklidir.");
         }
 
-        private void RequireLegacyWrite()
-        {
-            if (sql != null) throw new InvalidOperationException("SMS yazma işlemi transaction servisi üzerinden yapılmalıdır.");
-        }
     }
 }

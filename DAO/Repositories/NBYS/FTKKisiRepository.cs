@@ -8,49 +8,24 @@ namespace DAO.Repositories.NBYS
 {
     public class FTKKisiRepository
     {
-        private const string TableName = "FTKKisi_Table";
-        private readonly DbClass db;
-        private readonly PortalLogContext readContext;
-        private readonly CrudQueryBuilder queryBuilder;
+        private readonly NbysSqlExecutor sqlReader = new NbysSqlExecutor("FTKKisiRepository");
 
-        public FTKKisiRepository() : this(new DbClass()) { }
-
-        public FTKKisiRepository(DbClass db)
+        public FTKKisiRepository()
         {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
-            queryBuilder = new CrudQueryBuilder();
         }
 
-        // This constructor is for migrated read-only workflows.
+        // Reads use centralized SQL tracing when a context is supplied.
         public FTKKisiRepository(PortalLogContext context)
         {
+            sqlReader = new NbysSqlExecutor(context, "FTKKisiRepository");
             if (context == null || context.Project != "NBYS")
                 throw new ArgumentException("NBYS log bağlamı gereklidir.", "context");
-            readContext = context;
-            queryBuilder = new CrudQueryBuilder();
-        }
-
-        private DbClass LegacyWriteDb
-        {
-            get
-            {
-                RequireLegacyWrite();
-                return db;
-            }
-        }
-
-        private void RequireLegacyWrite()
-        {
-            if (readContext != null)
-                throw new InvalidOperationException("Bu erişim yalnızca okuma işlemlerini destekler.");
         }
 
         private DataTable Select(SqlQuery query,
             [System.Runtime.CompilerServices.CallerMemberName] string method = "")
         {
-            return readContext == null ? db.SelectFromDb(query, "") :
-                PortalSqlReadExecutor.Select(query, readContext, "FTKKisiRepository." + method);
+            return sqlReader.Select(query, method: method);
         }
         public DataTable SelectById(int id)
         {
@@ -97,7 +72,7 @@ namespace DAO.Repositories.NBYS
         public DataTable SelectMembers(int provinceId, int districtId, int operationId,
             bool onlyActive, string activeStatus)
         {
-            string operationFilter = operationId < 0 || (readContext != null && operationId == 0) ? string.Empty : " AND A.Id=@FTKIslemId";
+            string operationFilter = operationId < 0 || (sqlReader.HasLogContext && operationId == 0) ? string.Empty : " AND A.Id=@FTKIslemId";
             string activeFilter = onlyActive ? " AND UyelikDurumu=@UyelikDurumu" : string.Empty;
             SqlQuery query = new SqlQuery(@"SELECT A.Id FTKIslemId, C.Id Id, C.Id FTKKisiId, A.*, C.*
                 FROM FTKKisi_Table C
@@ -129,19 +104,5 @@ namespace DAO.Repositories.NBYS
             return Select(query);
         }
 
-        public bool UpdateMembershipStatus(IList<int> ids, string status)
-        {
-            List<string> parameters = new List<string>();
-            for (int i = 0; i < ids.Count; i++) parameters.Add("@Id" + i);
-            SqlQuery query = new SqlQuery(@"UPDATE FTKKisi_Table SET UyelikDurumu=@UyelikDurumu
-                WHERE Id IN (" + string.Join(", ", parameters) + ")");
-            query.AddParameter("@UyelikDurumu", status);
-            for (int i = 0; i < ids.Count; i++) query.AddParameter(parameters[i], ids[i]);
-            return LegacyWriteDb.Update2Db(query);
-        }
-
-        public int Insert<T>(T entity) { return LegacyWriteDb.Insert(queryBuilder.BuildInsert(entity, TableName)); }
-        public bool Update<T>(T entity) { return LegacyWriteDb.Update2Db(queryBuilder.BuildUpdate(entity, TableName)); }
-        public bool Delete(int id) { return LegacyWriteDb.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), ""); }
     }
 }
