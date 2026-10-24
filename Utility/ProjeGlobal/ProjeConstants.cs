@@ -189,9 +189,6 @@ namespace Utility.ProjeGlobal
         //IKYS
         public static readonly bool AMIRONAYIETKINMI = true;
         //NBYS
-        public const bool NBYS_DELETE_LOG = true;
-        public const bool NBYS_UPDATE_LOG = true;
-        public const bool NBYS_SAVE_LOG = true;
         //TBYS
         //TYS
         

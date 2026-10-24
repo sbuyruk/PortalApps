@@ -85,19 +85,9 @@ namespace Model.Services.NBYS
                 : table.AsEnumerable().Select(row => row.Field<DateTime>("IslemTarihi").Date).Distinct().ToList();
         }
 
-        public int Save(EkstreAktarma item)
-        {
-            if (item == null) throw new ArgumentNullException("item");
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-            if (item.Id > 0 && !repository.HasLogContext && ProjeConstants.NBYS_SAVE_LOG)
-                new OlayKayit().GirisOlayKaydet(item, ProjeConstants.NBYS, ProjeConstants.NBYS_EKSTREAKTARMA);
-            return item.Id;
-        }
-
         public int Save(EkstreAktarma item, SqlTransactionContext transaction)
         {
+            if (!repository.HasLogContext) throw new InvalidOperationException("Yazma işlemi için NBYS log bağlamı gereklidir.");
             if (item == null) throw new ArgumentNullException("item");
             if (transaction == null) throw new ArgumentNullException("transaction");
             item.OlusturmaTarihi = DateTime.Now;
@@ -105,35 +95,12 @@ namespace Model.Services.NBYS
             item.Id = repository.Insert(item, transaction);
             if (item.Id <= 0)
                 throw new InvalidOperationException("Ekstre aktarımı veritabanına eklenemedi.");
-            if (!repository.HasLogContext && ProjeConstants.NBYS_SAVE_LOG)
-                new OlayKayit().GirisOlayKaydet(item, ProjeConstants.NBYS,
-                    ProjeConstants.NBYS_EKSTREAKTARMA, transaction);
             return item.Id;
-        }
-
-        public bool Update(EkstreAktarma item)
-        {
-            if (item == null) throw new ArgumentNullException("item");
-            EkstreAktarma previous = GetById(item.Id);
-            bool updated = false;
-            if (item.Id != 0)
-            {
-                // Çağıran taraf NakitBagisciId göndermediyse mevcut pozitif ilişkiyi koru.
-                // Pozitif bir değer gönderildiyse item üzerindeki değer güncellenir.
-                if (item.NakitBagisciId <= 0 && previous != null && previous.NakitBagisciId > 0)
-                    item.NakitBagisciId = previous.NakitBagisciId;
-
-                item.DegistirmeTarihi = DateTime.Now;
-                item.Degistiren = UtilityHelper.GetCurrentUserName();
-                updated = repository.Update(item);
-            }
-            if (updated && !repository.HasLogContext && ProjeConstants.NBYS_UPDATE_LOG)
-                new OlayKayit().GuncellemeOlayKaydet(item, previous, ProjeConstants.NBYS, ProjeConstants.NBYS_EKSTREAKTARMA);
-            return updated;
         }
 
         public bool Update(EkstreAktarma item, SqlTransactionContext transaction)
         {
+            if (!repository.HasLogContext) throw new InvalidOperationException("Yazma işlemi için NBYS log bağlamı gereklidir.");
             if (item == null) throw new ArgumentNullException("item");
             if (transaction == null) throw new ArgumentNullException("transaction");
             if (item.Id == 0) return false;
@@ -146,28 +113,7 @@ namespace Model.Services.NBYS
             item.Degistiren = UtilityHelper.GetCurrentUserName();
 
             bool updated = repository.Update(item, transaction);
-            if (updated && !repository.HasLogContext && ProjeConstants.NBYS_UPDATE_LOG)
-            {
-                new OlayKayit().GuncellemeOlayKaydet(
-                    previous,
-                    item,
-                    ProjeConstants.NBYS,
-                    ProjeConstants.NBYS_EKSTREAKTARMA,
-                    transaction);
-            }
             return updated;
-        }
-
-        public bool Delete(EkstreAktarma item)
-        {
-            if (item == null) throw new ArgumentNullException("item");
-            if (item.Id == 0) return false;
-            EkstreAktarma previous = GetById(item.Id);
-            if (previous == null) return false;
-            bool deleted = repository.Delete(item.Id);
-            if (deleted && !repository.HasLogContext && ProjeConstants.NBYS_DELETE_LOG)
-                new OlayKayit().SilmeOlayKaydet(previous, ProjeConstants.NBYS, ProjeConstants.NBYS_EKSTREAKTARMA);
-            return deleted;
         }
 
         private static List<int> ParseIds(string idList)

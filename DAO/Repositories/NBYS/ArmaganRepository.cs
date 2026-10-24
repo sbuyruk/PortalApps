@@ -7,34 +7,23 @@ namespace DAO.Repositories.NBYS
 {
     public class ArmaganRepository
     {
+        private readonly NbysSqlExecutor sqlReader = new NbysSqlExecutor("ArmaganRepository");
         public bool HasLogContext { get { return logContext != null; } }
         private const string TableName = "Armagan_Table";
-        private readonly DbClass db;
+
         private readonly PortalLogContext logContext;
         private readonly CrudQueryBuilder queryBuilder;
 
-        public ArmaganRepository() : this(new DbClass())
+        public ArmaganRepository()
         {
-        }
-
-        public ArmaganRepository(SqlTransactionContext transaction)
-        {
-            if (transaction == null) throw new ArgumentNullException("transaction");
             queryBuilder = new CrudQueryBuilder();
         }
 
         public ArmaganRepository(PortalLogContext context)
         {
+            sqlReader = new NbysSqlExecutor(context, "ArmaganRepository");
             if (context == null || context.Project != "NBYS") throw new ArgumentException("NBYS log bağlamı gereklidir.", "context");
             logContext = context;
-            queryBuilder = new CrudQueryBuilder();
-        }
-
-        public ArmaganRepository(DbClass db)
-        {
-            if (db == null)
-                throw new ArgumentNullException("db");
-            this.db = db;
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -43,7 +32,7 @@ namespace DAO.Repositories.NBYS
             SqlQuery query = new SqlQuery(
                 "SELECT * FROM Armagan_Table WHERE BelgeGecersizMi!=1 AND Id=@Id");
             query.AddParameter("@Id", id);
-            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query);
+            return sqlReader.Select(query);
         }
 
         public DataTable SelectById(int id, PortalLogContext context)
@@ -79,7 +68,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@BagisciId", bagisciId);
             query.AddParameter("@Baslangic", baslangic);
             query.AddParameter("@Bitis", bitis);
-            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query);
+            return sqlReader.Select(query);
         }
 
         public DataTable SelectByBagisciIdTanimIdDateRange(
@@ -93,7 +82,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@ArmaganTanimId", armaganTanimId);
             query.AddParameter("@Baslangic", baslangic);
             query.AddParameter("@Bitis", bitis);
-            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query);
+            return sqlReader.Select(query);
         }
 
         public DataTable SelectByBagisciId(int bagisciId)
@@ -101,7 +90,7 @@ namespace DAO.Repositories.NBYS
             SqlQuery query = new SqlQuery(@"SELECT * FROM Armagan_Table
                 WHERE BelgeGecersizMi!=1 AND BagisciId=@BagisciId");
             query.AddParameter("@BagisciId", bagisciId);
-            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query);
+            return sqlReader.Select(query);
         }
 
         public DataTable SelectByBagisciId(int bagisciId, SqlTransactionContext transaction)
@@ -120,7 +109,7 @@ namespace DAO.Repositories.NBYS
                 WHERE BagisciId=@BagisciId AND Durum=@Durum");
             query.AddParameter("@BagisciId", bagisciId);
             query.AddParameter("@Durum", durum);
-            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query);
+            return sqlReader.Select(query);
         }
 
         public DataTable SelectByBagisciIdAndDurum(
@@ -144,7 +133,7 @@ namespace DAO.Repositories.NBYS
                     AND ArmaganTanimId=@ArmaganTanimId");
             query.AddParameter("@BagisciId", bagisciId);
             query.AddParameter("@ArmaganTanimId", armaganTanimId);
-            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query);
+            return sqlReader.Select(query);
         }
 
         public int CountByBagisciIdAndTanimId(int bagisciId, int armaganTanimId)
@@ -154,7 +143,7 @@ namespace DAO.Repositories.NBYS
                     AND ArmaganTanimId=@ArmaganTanimId");
             query.AddParameter("@BagisciId", bagisciId);
             query.AddParameter("@ArmaganTanimId", armaganTanimId);
-            DataTable table = logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query);
+            DataTable table = sqlReader.Select(query);
             return table.Rows.Count == 0 ? 0 : Convert.ToInt32(table.Rows[0][0]);
         }
 
@@ -184,7 +173,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@BagisciId", bagisciId);
             query.AddParameter("@ArmaganTanimId", armaganTanimId);
             query.AddParameter("@BelgeSirasi", belgeSirasi);
-            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query);
+            return sqlReader.Select(query);
         }
 
         public DataTable SelectByDurumTarih(
@@ -232,10 +221,10 @@ namespace DAO.Repositories.NBYS
             if (ilId.HasValue) query.AddParameter("@IlId", ilId.Value);
             if (transaction == null)
             {
-                return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query);
+                return sqlReader.Select(query);
             }
             if (logContext == null) throw new InvalidOperationException("Belge işlemi için log bağlamı gereklidir.");
-            return new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query, transaction);
+            return sqlReader.Select(query, transaction);
         }
 
         public DataTable SelectCountDurumByBolge(
@@ -253,7 +242,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@Baslangic", baslangic);
             query.AddParameter("@Bitis", bitis);
             if (bolgeId.HasValue) query.AddParameter("@BolgeId", bolgeId.Value);
-            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query);
+            return sqlReader.Select(query);
         }
 
         public DataTable SelectCountByBagisTarihiBolge(DateTime baslangic, DateTime bitis)
@@ -268,7 +257,7 @@ namespace DAO.Repositories.NBYS
                 GROUP BY D.Id,A.ArmaganTanimId");
             query.AddParameter("@Baslangic", baslangic);
             query.AddParameter("@Bitis", bitis);
-            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query);
+            return sqlReader.Select(query);
         }
 
         public DataTable SelectByFilter(string filter, int excludedDonorId)
@@ -295,7 +284,7 @@ namespace DAO.Repositories.NBYS
             query.AddParameter("@ExcludedDonorId", excludedDonorId);
             query.AddParameter("@Filter", filter);
             if (regionId.HasValue) query.AddParameter("@RegionId", regionId.Value);
-            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query);
+            return sqlReader.Select(query);
         }
 
         public DataTable SelectVerilenArmaganlarGroupByBagisci()
@@ -326,14 +315,14 @@ namespace DAO.Repositories.NBYS
         private DataTable Select(SqlQuery query, string ignored,
             [System.Runtime.CompilerServices.CallerMemberName] string method = "")
         {
-            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query, method: method);
+            return sqlReader.Select(query, method: method);
         }
 
         private DataTable SelectInTransaction(SqlQuery query, SqlTransactionContext transaction,
             [System.Runtime.CompilerServices.CallerMemberName] string method = "")
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
-            return logContext == null ? transaction.Select(query) : new NbysSqlExecutor(logContext, "ArmaganRepository").Select(query, transaction, method);
+            return sqlReader.Select(query, transaction, method);
         }
     }
 }

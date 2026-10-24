@@ -7,42 +7,23 @@ namespace DAO.Repositories.NBYS
 {
     public class BankaTanimRepository
     {
-        public bool HasLogContext { get { return logContext != null; } }
-        private const string TableName = "BankaTanim_Table";
-        private readonly DbClass db;
-        private readonly PortalLogContext logContext;
-        private readonly CrudQueryBuilder queryBuilder;
+        private readonly NbysSqlExecutor sqlReader = new NbysSqlExecutor("BankaTanimRepository");
 
-        public BankaTanimRepository() : this(new DbClass())
+        public BankaTanimRepository()
         {
-        }
-
-        public BankaTanimRepository(SqlTransactionContext transaction)
-        {
-            if (transaction == null) throw new ArgumentNullException("transaction");
-            queryBuilder = new CrudQueryBuilder();
         }
 
         public BankaTanimRepository(PortalLogContext context)
         {
+            sqlReader = new NbysSqlExecutor(context, "BankaTanimRepository");
             if (context == null || context.Project != "NBYS") throw new ArgumentException("NBYS log bağlamı gereklidir.", "context");
-            logContext = context;
-            queryBuilder = new CrudQueryBuilder();
-        }
-
-        public BankaTanimRepository(DbClass db)
-        {
-            if (db == null)
-                throw new ArgumentNullException("db");
-            this.db = db;
-            queryBuilder = new CrudQueryBuilder();
         }
 
         public DataTable SelectById(int id)
         {
             SqlQuery query = new SqlQuery("SELECT * FROM BankaTanim_Table WHERE Id=@Id");
             query.AddParameter("@Id", id);
-            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "BankaTanimRepository").Select(query);
+            return sqlReader.Select(query);
         }
 
         public DataTable SelectAll()
@@ -56,7 +37,7 @@ namespace DAO.Repositories.NBYS
             SqlQuery query = new SqlQuery(
                 "SELECT * FROM BankaTanim_Table WHERE Banka=@Banka");
             query.AddParameter("@Banka", name);
-            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "BankaTanimRepository").Select(query);
+            return sqlReader.Select(query);
         }
 
         public DataTable SelectByName(string name, SqlTransactionContext transaction)
@@ -88,38 +69,17 @@ namespace DAO.Repositories.NBYS
                 "SELECT BankaGrup2 FROM BankaTanim_Table GROUP BY BankaGrup2"), "");
         }
 
-        public int Insert<T>(T entity)
-        {
-            return LegacyWriteDb.Insert(queryBuilder.BuildInsert(entity, TableName));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            return LegacyWriteDb.Update2Db(queryBuilder.BuildUpdate(entity, TableName));
-        }
-
-        public bool Delete(int id)
-        {
-            return LegacyWriteDb.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), "");
-        }
         private DataTable Select(SqlQuery query, string ignored,
             [System.Runtime.CompilerServices.CallerMemberName] string method = "")
         {
-            return logContext == null ? db.SelectFromDb(query, "") : new NbysSqlExecutor(logContext, "BankaTanimRepository").Select(query, method: method);
+            return sqlReader.Select(query, method: method);
         }
-        private DbClass LegacyWriteDb
-        {
-            get
-            {
-                if (logContext != null) throw new InvalidOperationException("Yazma işlemi için transaction gereklidir.");
-                return db;
-            }
-        }
+
         private DataTable SelectInTransaction(SqlQuery query, SqlTransactionContext transaction,
             [System.Runtime.CompilerServices.CallerMemberName] string method = "")
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
-            return logContext == null ? transaction.Select(query) : new NbysSqlExecutor(logContext, "BankaTanimRepository").Select(query, transaction, method);
+            return sqlReader.Select(query, transaction, method);
         }
     }
 }

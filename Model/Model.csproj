@@ -128,7 +128,6 @@
     <Compile Include="Portal\ProgramYetki.cs" />
     <Compile Include="Ortak\Variance.cs" />
     <Compile Include="TBYS\BagisciBagis.cs" />
-    <Compile Include="NBYS\NBYSOrtak.cs" />
     <Compile Include="IKYS\IletisimBilgileri.cs" />
     <Compile Include="IKYS\IsBilgileri.cs" />
     <Compile Include="IKYS\IsBilgileriItem.cs" />

@@ -62,56 +62,6 @@ namespace Model.Services.NBYS
             return Map(repository.SelectByGroupKeyAndValue(group, key, value)).FirstOrDefault();
         }
 
-        public int Save(NBYSParametre item)
-        {
-            if (context != null) return SaveChecked(item) == NBYSParametreWriteResult.Succeeded ? item.Id : 0;
-            if (item == null)
-                throw new ArgumentNullException("item");
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-            if (item.Id > 0 && ProjeConstants.NBYS_SAVE_LOG)
-                new OlayKayit().GirisOlayKaydet(
-                    item, ProjeConstants.NBYS, ProjeConstants.NBYS_NBYSPARAMETRE);
-            return item.Id;
-        }
-
-        public bool Update(NBYSParametre item)
-        {
-            if (context != null) return UpdateChecked(item) == NBYSParametreWriteResult.Succeeded;
-            if (item == null)
-                throw new ArgumentNullException("item");
-            NBYSParametre previous = GetById(item.Id);
-            bool updated = false;
-            if (item.Id != 0)
-            {
-                item.DegistirmeTarihi = DateTime.Now;
-                item.Degistiren = UtilityHelper.GetCurrentUserName();
-                updated = repository.Update(item);
-            }
-            if (updated && ProjeConstants.NBYS_UPDATE_LOG)
-                new OlayKayit().GuncellemeOlayKaydet(
-                    item, previous, ProjeConstants.NBYS, ProjeConstants.NBYS_NBYSPARAMETRE);
-            return updated;
-        }
-
-        public bool Delete(NBYSParametre item)
-        {
-            if (context != null) return DeleteChecked(item) == NBYSParametreWriteResult.Succeeded;
-            if (item == null)
-                throw new ArgumentNullException("item");
-            if (item.Id == 0)
-                return false;
-            NBYSParametre previous = GetById(item.Id);
-            if (previous == null)
-                return false;
-            bool deleted = repository.Delete(item.Id);
-            if (deleted && ProjeConstants.NBYS_DELETE_LOG)
-                new OlayKayit().SilmeOlayKaydet(
-                    previous, ProjeConstants.NBYS, ProjeConstants.NBYS_NBYSPARAMETRE);
-            return deleted;
-        }
-
         public NBYSParametreWriteResult SaveChecked(NBYSParametre item)
         {
             return Write(item, "INSERT");

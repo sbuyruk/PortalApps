@@ -11,8 +11,17 @@ namespace DAO.Repositories.NBYS
     // Explicit-context path: no legacy SQL writer, and no SQL text/values in traces.
     internal sealed class NbysSqlExecutor
     {
+        internal bool HasLogContext { get { return context != null; } }
         private readonly PortalLogContext context;
         private readonly string repositoryName;
+
+        // Shared report compatibility is read-only and never invokes the legacy logger.
+        internal NbysSqlExecutor(string repositoryName)
+        {
+            if (string.IsNullOrWhiteSpace(repositoryName))
+                throw new ArgumentException("Repository adı gereklidir.", "repositoryName");
+            this.repositoryName = repositoryName;
+        }
 
         internal NbysSqlExecutor(PortalLogContext context, string repositoryName)
         {
@@ -54,8 +63,9 @@ namespace DAO.Repositories.NBYS
             return Trace(operation, method, () => transaction.Update(query), result => result);
         }
 
-        private static void RequireTransaction(SqlTransactionContext transaction)
+        private void RequireTransaction(SqlTransactionContext transaction)
         {
+            if (context == null) throw new InvalidOperationException("Yazma işlemi için NBYS log bağlamı gereklidir.");
             if (transaction == null) throw new ArgumentNullException("transaction", "İşlem bağlamı gereklidir.");
         }
 

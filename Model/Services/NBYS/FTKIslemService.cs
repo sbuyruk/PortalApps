@@ -28,45 +28,6 @@ namespace Model.Services.NBYS
             return Map(repository.SelectByLocation(provinceId, districtId)).FirstOrDefault();
         }
 
-        public int Save(FTKIslem item)
-        {
-            if (item == null) throw new ArgumentNullException("item");
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-            if (item.Id > 0 && ProjeConstants.NBYS_SAVE_LOG)
-                new OlayKayit().GirisOlayKaydet(item, ProjeConstants.NBYS, ProjeConstants.NBYS_FTKISLEM);
-            return item.Id;
-        }
-
-        public bool Update(FTKIslem item)
-        {
-            if (item == null) throw new ArgumentNullException("item");
-            FTKIslem previous = GetById(item.Id);
-            bool updated = false;
-            if (item.Id != 0)
-            {
-                item.DegistirmeTarihi = DateTime.Now;
-                item.Degistiren = UtilityHelper.GetCurrentUserName();
-                updated = repository.Update(item);
-            }
-            if (updated && ProjeConstants.NBYS_UPDATE_LOG)
-                new OlayKayit().GuncellemeOlayKaydet(item, previous, ProjeConstants.NBYS, ProjeConstants.NBYS_FTKISLEM);
-            return updated;
-        }
-
-        public bool Delete(FTKIslem item)
-        {
-            if (item == null) throw new ArgumentNullException("item");
-            if (item.Id == 0) return false;
-            FTKIslem previous = GetById(item.Id);
-            if (previous == null) return false;
-            bool deleted = repository.Delete(item.Id);
-            if (deleted && ProjeConstants.NBYS_DELETE_LOG)
-                new OlayKayit().SilmeOlayKaydet(previous, ProjeConstants.NBYS, ProjeConstants.NBYS_FTKISLEM);
-            return deleted;
-        }
-
         private static List<FTKIslem> Map(DataTable table)
         {
             return new FTKIslem().ToList<FTKIslem>(table);

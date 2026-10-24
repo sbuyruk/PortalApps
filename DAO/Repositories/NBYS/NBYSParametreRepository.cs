@@ -8,19 +8,12 @@ namespace DAO.Repositories.NBYS
     public class NBYSParametreRepository
     {
         private const string TableName = "NBYSParametre_Table";
-        private readonly DbClass db;
-        private readonly NbysSqlExecutor sql;
+
+        private readonly NbysSqlExecutor sql = new NbysSqlExecutor("NBYSParametreRepository");
         private readonly CrudQueryBuilder queryBuilder;
 
-        public NBYSParametreRepository() : this(new DbClass())
+        public NBYSParametreRepository()
         {
-        }
-
-        public NBYSParametreRepository(DbClass db)
-        {
-            if (db == null)
-                throw new ArgumentNullException("db");
-            this.db = db;
             queryBuilder = new CrudQueryBuilder();
         }
 
@@ -32,7 +25,7 @@ namespace DAO.Repositories.NBYS
 
         private DataTable Select(SqlQuery query, [System.Runtime.CompilerServices.CallerMemberName] string method = "")
         {
-            return sql == null ? db.SelectFromDb(query, "") : sql.Select(query, method: method);
+            return sql.Select(query, method: method);
         }
 
         public DataTable SelectById(int id)
@@ -118,24 +111,8 @@ namespace DAO.Repositories.NBYS
         private void RequireTransaction(SqlTransactionContext transaction)
         {
             if (transaction == null) throw new ArgumentNullException("transaction", "İşlem bağlamı gereklidir.");
-            if (sql == null) throw new InvalidOperationException("Bu işlem için NBYS log bağlamı gereklidir.");
-        }
-        public int Insert<T>(T entity)
-        {
-            if (sql != null) throw new InvalidOperationException("Yazma işlemi için transaction gereklidir.");
-            return db.Insert(queryBuilder.BuildInsert(entity, TableName));
+            if (!sql.HasLogContext) throw new InvalidOperationException("Bu işlem için NBYS log bağlamı gereklidir.");
         }
 
-        public bool Update<T>(T entity)
-        {
-            if (sql != null) throw new InvalidOperationException("Yazma işlemi için transaction gereklidir.");
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName));
-        }
-
-        public bool Delete(int id)
-        {
-            if (sql != null) throw new InvalidOperationException("Yazma işlemi için transaction gereklidir.");
-            return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), "");
-        }
     }
 }
