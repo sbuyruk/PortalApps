@@ -1,24 +1,12 @@
 using DAO.Ortak;
 using System;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace DAO.Repositories.Ortak
 {
     public sealed class PortalLogReadRepository
     {
-        private readonly DbClass db;
-
-        public PortalLogReadRepository()
-            : this(new DbClass())
-        {
-        }
-
-        public PortalLogReadRepository(DbClass db)
-        {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
-        }
-
         public DataTable SelectLogs(DateTime? fromUtc, DateTime? toUtc, string project,
             string webPart, string userLogin, string operationId, string kind,
             string operation, string outcome, string errorLevel, int page, int pageSize)
@@ -49,7 +37,7 @@ namespace DAO.Repositories.Ortak
                 operationId, kind, operation, outcome, errorLevel);
             query.AddParameter("@Offset", (page - 1) * pageSize);
             query.AddParameter("@PageSize", pageSize);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectOperation(Guid operationId)
@@ -63,7 +51,7 @@ namespace DAO.Repositories.Ortak
                 WHERE OperationId = @OperationId
                 ORDER BY OccurredUtc ASC, Id ASC");
             query.AddParameter("@OperationId", operationId);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectChanges(long portalLogId)
@@ -75,7 +63,7 @@ namespace DAO.Repositories.Ortak
                 WHERE PortalLogId = @PortalLogId
                 ORDER BY Id ASC");
             query.AddParameter("@PortalLogId", portalLogId);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectSummary(DateTime fromUtc, DateTime toUtc)
@@ -108,7 +96,7 @@ namespace DAO.Repositories.Ortak
                     (SELECT ISNULL(MAX(ErrorCount), 0) FROM Errors) AS TopErrorCount");
             query.AddParameter("@FromUtc", fromUtc);
             query.AddParameter("@ToUtc", toUtc);
-            return db.SelectFromDb(query, "");
+            return Select(query);
         }
 
         public DataTable SelectMonitorSummary(DateTime fromUtc, DateTime toUtc,
@@ -117,6 +105,8 @@ namespace DAO.Repositories.Ortak
             SqlQuery query = new SqlQuery(@"
                 SELECT COUNT_BIG(CASE WHEN Kind = 'UserActivity' THEN 1 END) AS ActivityCount,
                        COUNT_BIG(CASE WHEN Kind = 'Error' THEN 1 END) AS ErrorCount,
+                       COUNT_BIG(CASE WHEN Kind = 'Audit' THEN 1 END) AS AuditCount,
+                       COUNT_BIG(CASE WHEN Kind = 'SqlTrace' THEN 1 END) AS SqlTraceCount,
                        COUNT_BIG(DISTINCT CASE WHEN Kind = 'UserActivity' THEN UserLogin END) AS ActiveUserCount,
                        AVG(CASE WHEN Kind = 'SqlTrace' THEN CAST(DurationMs AS decimal(18,2)) END) AS AverageSqlDurationMs
                 FROM dbo.PortalLog_Table
@@ -129,7 +119,21 @@ namespace DAO.Repositories.Ortak
             query.AddParameter("@Project", NullIfEmpty(project));
             query.AddParameter("@UserLogin", LikeValue(userLogin));
             query.AddParameter("@OperationId", LikeValue(operationId));
-            return db.SelectFromDb(query, "");
+            return Select(query);
+        }
+
+        // Monitoring queries must not produce their own SQL trace or invoke legacy logging.
+        private static DataTable Select(SqlQuery query)
+        {
+            using (SqlConnection connection = new SqlConnection(DBProcess.getConnectString()))
+            using (SqlCommand command = new SqlCommand(query.Sql, connection))
+            using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+            {
+                command.Parameters.AddRange(query.Parameters.ToArray());
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                return table.Rows.Count == 0 ? null : table;
+            }
         }
 
         private static void AddFilterParameters(SqlQuery query, DateTime? fromUtc, DateTime? toUtc,
