@@ -73,6 +73,8 @@ namespace Model.Services.Ortak
             {
                 ActivityCount = LongValue(row, "ActivityCount"),
                 ErrorCount = LongValue(row, "ErrorCount"),
+                AuditCount = LongValue(row, "AuditCount"),
+                SqlTraceCount = LongValue(row, "SqlTraceCount"),
                 ActiveUserCount = LongValue(row, "ActiveUserCount"),
                 AverageSqlDurationMs = NullableDecimal(row, "AverageSqlDurationMs")
             };

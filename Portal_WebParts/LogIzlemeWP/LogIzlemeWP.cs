@@ -1,3 +1,5 @@
+using Portal_WebParts.Logging;
+using Utility.Logging;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Administration;
 using Model.Ortak;
@@ -18,9 +20,11 @@ namespace Portal_WebParts.LogIzlemeWP
     public class LogIzlemeWP : WebPart
     {
         private const int PageSize = 25;
+        private PortalLogContext logContext;
+        private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("Portal", "LogIzlemeWP")); } }
         private TextBox fromDate, toDate, user, operationId;
         private DropDownList project;
-        private Button activityTab, errorTab, previous, next;
+        private Button activityTab, errorTab, auditTab, sqlTab, previous, next;
         private Literal overview, result;
         private Panel filterPanel, tabPanel, pager;
         private string SelectedKind
@@ -47,7 +51,7 @@ namespace Portal_WebParts.LogIzlemeWP
             Panel root = new Panel { CssClass = "li-monitor" };
             Controls.Add(root);
             root.Controls.Add(new LiteralControl(Styles));
-            root.Controls.Add(new LiteralControl("<header class='li-header'><span class='li-eyebrow'>PORTAL · İZLEME</span><h2>Log İzleme</h2><p>Kullanıcı etkinliklerini ve hataları seçtiğiniz dönem için inceleyin.</p></header>"));
+            root.Controls.Add(new LiteralControl("<header class='li-header'><span class='li-eyebrow'>PORTAL · İZLEME</span><h2>Log İzleme</h2><p>Kullanıcı etkinliklerini, işlem denetimlerini, SQL izlerini ve hataları seçtiğiniz dönem için inceleyin.</p></header>"));
             filterPanel = new Panel { CssClass = "li-filters" };
             root.Controls.Add(filterPanel);
             string today = TurkeyNow().ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
@@ -77,6 +81,12 @@ namespace Portal_WebParts.LogIzlemeWP
             errorTab.Click += delegate { SelectedKind = "Error"; PageNumber = 1; };
             tabPanel.Controls.Add(activityTab);
             tabPanel.Controls.Add(errorTab);
+            auditTab = MakeButton("Audits", "İşlem denetimi", "li-tab");
+            sqlTab = MakeButton("SqlTraces", "SQL izi", "li-tab");
+            auditTab.Click += delegate { SelectedKind = "Audit"; PageNumber = 1; };
+            sqlTab.Click += delegate { SelectedKind = "SqlTrace"; PageNumber = 1; };
+            tabPanel.Controls.Add(auditTab);
+            tabPanel.Controls.Add(sqlTab);
             result = new Literal { ID = "Result", EnableViewState = false };
             root.Controls.Add(result);
             pager = new Panel { CssClass = "li-pager" };
@@ -106,6 +116,7 @@ namespace Portal_WebParts.LogIzlemeWP
         {
             try
             {
+                if (!Page.IsPostBack) PortalWebPartLog.RecordOpened(LogContext);
                 DateTime start, end;
                 if (!DateTime.TryParseExact(fromDate.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture,
                         DateTimeStyles.None, out start)
@@ -128,7 +139,9 @@ namespace Portal_WebParts.LogIzlemeWP
                 };
                 PortalLogDashboardService service = new PortalLogDashboardService();
                 PortalLogMonitorSummary summary = service.GetMonitorSummary(filter);
-                long count = SelectedKind == "Error" ? summary.ErrorCount : summary.ActivityCount;
+                long count = SelectedKind == "Audit" ? summary.AuditCount
+                    : SelectedKind == "SqlTrace" ? summary.SqlTraceCount
+                    : SelectedKind == "Error" ? summary.ErrorCount : summary.ActivityCount;
                 int pages = (int)Math.Max(1L, Math.Min(int.MaxValue / PageSize, (count + PageSize - 1) / PageSize));
                 PageNumber = Math.Min(PageNumber, pages);
                 filter.Page = PageNumber;
@@ -137,15 +150,21 @@ namespace Portal_WebParts.LogIzlemeWP
                 errorTab.CssClass = "li-tab" + (SelectedKind == "Error" ? " li-active" : "");
                 activityTab.Attributes["aria-pressed"] = (SelectedKind == "UserActivity" ? "true" : "false");
                 errorTab.Attributes["aria-pressed"] = (SelectedKind == "Error" ? "true" : "false");
-                result.Text = BuildResults(summary, rows, start, end, count, pages);
+                auditTab.CssClass = "li-tab" + (SelectedKind == "Audit" ? " li-active" : "");
+                sqlTab.CssClass = "li-tab" + (SelectedKind == "SqlTrace" ? " li-active" : "");
+                auditTab.Attributes["aria-pressed"] = (SelectedKind == "Audit" ? "true" : "false");
+                sqlTab.Attributes["aria-pressed"] = (SelectedKind == "SqlTrace" ? "true" : "false");
+                result.Text = BuildResults(service, summary, rows, start, end, count, pages);
                 previous.Enabled = PageNumber > 1;
                 next.Enabled = PageNumber < pages;
                 pager.Visible = count > PageSize;
             }
+            catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error)
             {
                 overview.Text = string.Empty;
-                string reference = Guid.NewGuid().ToString("N");
+                string reference = LogContext.OperationId.ToString("N");
+                PortalTechnicalLog.WriteError(LogContext, "Portal.LogIzlemeWP.LoadResults", error);
                 try
                 {
                     SPDiagnosticsService.Local.WriteTrace(0,
@@ -157,7 +176,7 @@ namespace Portal_WebParts.LogIzlemeWP
             }
         }
 
-        private string BuildResults(PortalLogMonitorSummary summary, List<PortalLogEntry> rows,
+        private string BuildResults(PortalLogDashboardService service, PortalLogMonitorSummary summary, List<PortalLogEntry> rows,
             DateTime start, DateTime end, long count, int pages)
         {
             StringBuilder html = new StringBuilder();
@@ -174,7 +193,7 @@ namespace Portal_WebParts.LogIzlemeWP
             overview.Text = html.ToString();
             html.Clear();
             html.Append("<section class='li-results'><div class='li-caption'><h3>")
-                .Append(SelectedKind == "Error" ? "Hata kayıtları" : "Kullanıcı etkinlikleri")
+                .Append(KindTitle(SelectedKind))
                 .Append("</h3><span>").Append(count.ToString("N0")).Append(" kayıt · Sayfa ")
                 .Append(PageNumber).Append(" / ").Append(pages).Append("</span></div>");
             if (rows.Count == 0)
@@ -182,9 +201,9 @@ namespace Portal_WebParts.LogIzlemeWP
             else
             {
                 html.Append("<div class='li-scroll'><table><caption class='li-sr'>")
-                    .Append(SelectedKind == "Error" ? "Filtrelenen hata kayıtları" : "Filtrelenen kullanıcı etkinlikleri")
+                    .Append("Filtrelenen " + KindTitle(SelectedKind))
                     .Append("</caption><thead><tr><th scope='col'>Tarih / saat</th><th scope='col'>Kullanıcı</th><th scope='col'>Proje / Webpart</th><th scope='col'>")
-                    .Append(SelectedKind == "Error" ? "Hata" : "Etkinlik").Append("</th><th scope='col'>Ayrıntı</th></tr></thead><tbody>");
+                    .Append("İşlem").Append("</th><th scope='col'>Ayrıntı</th></tr></thead><tbody>");
                 foreach (PortalLogEntry row in rows)
                 {
                     html.Append("<tr><td class='li-time'>").Append(E(TimeZoneInfo.ConvertTimeFromUtc(
@@ -193,6 +212,10 @@ namespace Portal_WebParts.LogIzlemeWP
                         .Append(E(row.Project)).Append("</span><br/>").Append(E(row.WebPart)).Append("</td><td>");
                     if (SelectedKind == "Error")
                         html.Append("<span class='li-error'>Hata</span><p>").Append(E(row.UserMessage ?? "İşlem sırasında hata kaydedildi.")).Append("</p>");
+                    else if (SelectedKind == "Audit")
+                        html.Append(E(row.Operation)).Append(" · ").Append(E(row.EntityName));
+                    else if (SelectedKind == "SqlTrace")
+                        html.Append(E(row.SqlOperation)).Append(" · ").Append(E(row.RepositoryMethod));
                     else html.Append(E(row.EventName == "WebPartOpened" ? "Webpart açıldı" : row.EventName ?? row.Operation));
                     html.Append("</td><td><details><summary>Ayrıntıyı göster</summary><dl><dt>İşlem kodu</dt><dd class='li-code'>")
                         .Append(E(row.OperationId.ToString())).Append("</dd><dt>Sayfa</dt><dd>").Append(E(row.PagePath)).Append("</dd>");
@@ -204,6 +227,26 @@ namespace Portal_WebParts.LogIzlemeWP
                         AppendTechnicalDetail(html, "Çağrı yığını (Stack trace)", row.StackTrace);
                         AppendTechnicalDetail(html, "İç hata", row.InnerException);
                     }
+                    html.Append("<dt>Sonuç</dt><dd>").Append(E(row.Outcome)).Append("</dd>");
+                    if (SelectedKind == "Audit")
+                    {
+                        html.Append("<dt>Kayıt türü / kimliği</dt><dd>").Append(E(row.EntityName))
+                            .Append(" / ").Append(E(row.EntityId)).Append("</dd>");
+                        List<PortalAuditChangeItem> changes = service.GetChanges(row.Id);
+                        if (changes.Count == 0)
+                            html.Append("<dt>Alan değişiklikleri</dt><dd>Ayrıntılı alan farkı kaydedilmemiş.</dd>");
+                        foreach (PortalAuditChangeItem change in changes)
+                            html.Append("<dt>").Append(E(change.FieldName)).Append("</dt><dd>")
+                                .Append(E(change.OldValue)).Append(" → ").Append(E(change.NewValue)).Append("</dd>");
+                    }
+                    else if (SelectedKind == "SqlTrace")
+                    {
+                        html.Append("<dt>SQL işlemi</dt><dd>").Append(E(row.SqlOperation))
+                            .Append("</dd><dt>Kaynak metot</dt><dd>").Append(E(row.RepositoryMethod))
+                            .Append("</dd><dt>Süre</dt><dd>")
+                            .Append(row.DurationMs.HasValue ? E(row.DurationMs.Value.ToString(CultureInfo.InvariantCulture)) + " ms" : "Kaydedilmemiş.")
+                            .Append("</dd><dt>İşlem durumu</dt><dd>SQL sonucu iş transaction'ının commit edildiği anlamına gelmez.</dd>");
+                    }
                     html.Append("</dl></details></td></tr>");
                 }
                 html.Append("</tbody></table></div>");
@@ -212,6 +255,16 @@ namespace Portal_WebParts.LogIzlemeWP
             return html.ToString();
         }
 
+        private static string KindTitle(string kind)
+        {
+            switch (kind)
+            {
+                case "Error": return "Hata kayıtları";
+                case "Audit": return "İşlem denetimi kayıtları";
+                case "SqlTrace": return "SQL izleri";
+                default: return "Kullanıcı etkinlikleri";
+            }
+        }
         private static void AppendTechnicalDetail(StringBuilder html, string title, string value)
         {
             html.Append("<dt>").Append(E(title)).Append("</dt><dd><pre class='li-technical'>")
@@ -247,7 +300,7 @@ namespace Portal_WebParts.LogIzlemeWP
 .li-monitor{font:14px/1.5 'Segoe UI',Arial,sans-serif;color:#203747;background:#f4f7fa;padding:24px;border:1px solid #dde5ed;border-radius:16px}
 .li-monitor *{box-sizing:border-box}.li-monitor .li-header{margin-bottom:22px}.li-monitor .li-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;color:#357b85}.li-monitor h2{font-size:28px;color:#163646;margin:4px 0}.li-monitor p{margin:6px 0;color:#536879}
 .li-monitor .li-filters{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;background:#fff;border:1px solid #dde5ed;border-radius:12px;padding:16px}.li-monitor .li-field{flex:1 1 140px;min-width:0}.li-monitor label{display:block;font-size:12px;font-weight:600;margin-bottom:5px}.li-monitor input[type=text],.li-monitor input[type=date],.li-monitor select{width:100%;height:38px;border:1px solid #aabcc9;border-radius:6px;padding:6px;background:#fff;color:#203747}
-.li-monitor input[type=submit]{cursor:pointer;border-radius:7px;padding:9px 14px;font:600 13px 'Segoe UI',Arial,sans-serif;min-height:38px;margin:0}.li-monitor .li-primary{background:#176b78;color:#fff;border:1px solid #176b78}.li-monitor .li-tabs{display:flex;gap:8px;margin:22px 0 12px;border-bottom:1px solid #d5e0e9;padding-bottom:10px}.li-monitor .li-tab{background:transparent;color:#486171;border:1px solid transparent}.li-monitor .li-tab.li-active{background:#e0f0f1;color:#145b66;border-color:#a5cdd1}.li-monitor :focus-visible{outline:3px solid #2d7db8;outline-offset:3px}
+.li-monitor input[type=submit]{cursor:pointer;border-radius:7px;padding:9px 14px;font:600 13px 'Segoe UI',Arial,sans-serif;min-height:38px;margin:0}.li-monitor .li-primary{background:#176b78;color:#fff;border:1px solid #176b78}.li-monitor .li-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 12px;border-bottom:1px solid #d5e0e9;padding-bottom:10px}.li-monitor .li-tab{background:transparent;color:#486171;border:1px solid transparent}.li-monitor .li-tab.li-active{background:#e0f0f1;color:#145b66;border-color:#a5cdd1}.li-monitor :focus-visible{outline:3px solid #2d7db8;outline-offset:3px}
 .li-monitor .li-scope{font-size:12px;color:#536879;margin:12px 0}.li-monitor .li-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.li-monitor .li-card{background:#fff;border:1px solid #dde5ed;border-radius:10px;padding:15px}.li-monitor .li-card span{font-size:12px;color:#536879}.li-monitor .li-card strong{display:block;font-size:25px;margin-top:6px;color:#173e4c}.li-monitor .li-hint{font-size:12px;margin:12px 0 18px}
 .li-monitor .li-results{background:#fff;border:1px solid #dde5ed;border-radius:12px;overflow:hidden}.li-monitor .li-caption{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:16px}.li-monitor h3{font-size:17px;margin:0;color:#203747}.li-monitor .li-caption span{font-size:12px;color:#536879}.li-monitor .li-scroll{overflow-x:auto}.li-monitor table{border-collapse:collapse;width:100%;min-width:760px}.li-monitor th{background:#edf3f7;padding:11px 14px;text-align:left;font-size:12px;color:#455f70}.li-monitor td{padding:14px;border-top:1px solid #e6edf2;vertical-align:top;font-size:13px;overflow-wrap:anywhere}.li-monitor tbody tr:hover{background:#f8fbfc}.li-monitor .li-time{white-space:nowrap}.li-monitor .li-project{font-size:11px;color:#176b78;font-weight:700}.li-monitor .li-error{display:inline-block;background:#fff0ed;color:#a33329;padding:2px 8px;border-radius:12px;font-size:12px;font-weight:600}
 .li-monitor summary{cursor:pointer;color:#176b78;white-space:nowrap}.li-monitor dt{font-size:11px;font-weight:600;margin-top:8px}.li-monitor dd{margin:3px 0;color:#536879;max-width:300px;overflow-wrap:anywhere}.li-monitor .li-code{font-family:Consolas,monospace;font-size:12px}.li-monitor .li-empty{padding:35px 20px;text-align:center}.li-monitor .li-notice{margin-top:16px;padding:18px;border:1px solid #e6cb8e;background:#fff9ed;border-radius:10px}.li-monitor .li-pager{display:flex;justify-content:flex-end;gap:10px;margin-top:14px}.li-monitor .li-secondary{border:1px solid #aabcc9;background:#fff;color:#244d61}.li-monitor input[disabled]{opacity:.45;cursor:default}.li-monitor .li-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}

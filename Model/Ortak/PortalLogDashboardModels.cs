@@ -6,6 +6,8 @@ namespace Model.Ortak
     {
         public long ActivityCount { get; set; }
         public long ErrorCount { get; set; }
+        public long AuditCount { get; set; }
+        public long SqlTraceCount { get; set; }
         public long ActiveUserCount { get; set; }
         public decimal? AverageSqlDurationMs { get; set; }
     }

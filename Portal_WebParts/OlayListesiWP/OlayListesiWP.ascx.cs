@@ -1,10 +1,9 @@
 using Portal_WebParts.Logging;
 using Utility.Logging;
-using Model.IKYS;
+using Model.Services.Portal;
+using System.Globalization;
 using Model.MTS;
-using Model.NBYS;
 using Model.Ortak;
-using Model.TBYS;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -38,6 +37,7 @@ namespace Portal_WebParts.OlayListesiWP
             base.OnInit(e);
             InitializeControl();
             this.ChromeType = PartChromeType.None;
+            UpdatePanel2.ContentTemplateContainer.Controls.AddAt(0, new LiteralControl(BuildArchiveFilter()));
         }
         private DateTime SorguZamaniQS
         {
@@ -84,6 +84,7 @@ namespace Portal_WebParts.OlayListesiWP
         {
             PortalWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
             {
+                TitleLbl.Text = "Geçmiş Olay Arşivi";
                 if (!Page.IsPostBack) PortalWebPartLog.RecordOpened(LogContext);
                 TabloOlustur();
             });
@@ -104,17 +105,17 @@ namespace Portal_WebParts.OlayListesiWP
         }
         private string TabloJson()
         {
-            SorguZamaniQS = DateTime.Today;
+            SorguZamaniQS = ReadArchiveDay();
             var serializer = new JavaScriptSerializer { MaxJsonLength = Int32.MaxValue };
             return serializer.Serialize(OlayListItemDoldur(GetDataList(SorguZamaniQS)))
                 .Replace("<", "\\u003c").Replace(">", "\\u003e").Replace("&", "\\u0026");
         }
-        private List<Olay> GetDataList(DateTime tarih)
+        private List<PortalEventArchiveEntry> GetDataList(DateTime tarih)
         {
-            List<Olay> list = new Model.Services.Ortak.OlayService().GetByDateAndProgram(tarih, ProgramQS, LogContext);
+            List<PortalEventArchiveEntry> list = new PortalEventArchiveService(LogContext).GetDay(tarih, ProgramQS);
             return list;
         }
-        private List<OlayListItem> OlayListItemDoldur(List<Olay> list)
+        private List<OlayListItem> OlayListItemDoldur(List<PortalEventArchiveEntry> list)
         {
             List<OlayListItem> olayList = new List<OlayListItem>();
             foreach (var item in list)
@@ -134,7 +135,7 @@ namespace Portal_WebParts.OlayListesiWP
             return olayList;
         }
 
-        public string ParseAciklama(Olay olay)
+        public string ParseAciklama(PortalEventArchiveEntry olay)
         {
             int faaliyetId = 0, katilimciId = 0;
             foreach (string field in (olay.Aciklama ?? string.Empty).Split(ProjeConstants.DELIMITER))
@@ -168,6 +169,33 @@ namespace Portal_WebParts.OlayListesiWP
             return "(" + olay.IslemTarihi.ConvertToDDMMYYYHHmmFormat() + ") — " + activity + "<strong>"
                 + H(olay.IslemKonusu) + "</strong> bölümünde " + H(olay.IslemYapan) + " tarafından <strong>"
                 + H(olay.IslemTipi) + "</strong> işlemi yapılmıştır." + details;
+        }
+
+        private DateTime ReadArchiveDay()
+        {
+            string value = Page.Request.QueryString["ArsivTarihi"];
+            if (string.IsNullOrEmpty(value)) return DateTime.Today;
+            DateTime day;
+            if (!DateTime.TryParseExact(value, "yyyy-MM-dd", CultureInfo.InvariantCulture,
+                    DateTimeStyles.None, out day) || day < new DateTime(1753, 1, 1)
+                || day == DateTime.MaxValue.Date)
+                throw new PortalInputException("Geçerli bir arşiv tarihi seçiniz.");
+            return day;
+        }
+
+        private string BuildArchiveFilter()
+        {
+            DateTime day;
+            if (!DateTime.TryParseExact(Page.Request.QueryString["ArsivTarihi"], "yyyy-MM-dd",
+                    CultureInfo.InvariantCulture, DateTimeStyles.None, out day)
+                || day < new DateTime(1753, 1, 1) || day == DateTime.MaxValue.Date) day = DateTime.Today;
+            return "<div class='alert alert-info' role='note'>Bu ekran eski sistemdeki olay kayıtlarını salt okunur gösterir. "
+                + "Yeni kayıtlar için Log İzleme ekranındaki İşlem denetimi ve SQL izi sekmelerini kullanın. "
+                + "Açıklamadaki kişi, faaliyet ve anı objesi bilgileri varsa güncel iş kayıtlarından tamamlanır.</div>"
+                + "<div class='mb-3'><label>Arşiv tarihi <input type='date' class='form-control' min='1753-01-01' max='9999-12-30' value='"
+                + day.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) + "' /></label> "
+                + "<button type='button' class='btn btn-primary' onclick=\"var d=this.parentNode.querySelector('input').value;"
+                + "if(d){var u=new URL(window.location.href);u.searchParams.set('ArsivTarihi',d);window.location.assign(u.toString());}\">Arşivi listele</button></div>";
         }
 
         private static string H(string value) { return System.Web.HttpUtility.HtmlEncode(value ?? string.Empty); }
