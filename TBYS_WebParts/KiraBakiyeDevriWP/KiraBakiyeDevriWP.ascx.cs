@@ -1,3 +1,4 @@
+using DAO.Ortak;
 using Model.Ortak;
 using Model.TBYS;
 using System;
@@ -218,6 +219,21 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                 }
             }
         }
+        private void OdemeleriHesaplaOdemePlaniniGuncelle(int kiraciId)
+        {
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                List<KiraSozlesme> sozlesmeler = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext)
+                    .GetAllByKiraciId(kiraciId, transaction);
+                foreach (KiraSozlesme sozlesme in sozlesmeler.OrderBy(x => x.SozBasTar))
+                {
+                    if (!TBYSOrtak.BakiyeBorcHesapla(sozlesme, LoggingContext, transaction))
+                        throw new InvalidOperationException("Kiracının ödeme planları güncellenemedi.");
+                }
+                transaction.Complete();
+            }
+        }
+
         private void SozlesmelerTablosunuDoldur(int kiraciId)
         {
             List<KiraSozlesmeListItem> kiraSozlesmeItemListesi = new List<KiraSozlesmeListItem>();
