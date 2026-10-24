@@ -7,35 +7,18 @@ namespace DAO.Repositories.Portal
 {
     public class ToplantiKatilimRepository
     {
-        private readonly PortalSqlExecutor sql;
+        private readonly PortalSqlExecutor sql = new PortalSqlExecutor("ToplantiKatilimRepository");
         public ToplantiKatilimRepository(PortalLogContext context)
         {
             sql = new PortalSqlExecutor(context, "ToplantiKatilimRepository");
-            b = new CrudQueryBuilder();
         }
         private DataTable Select(SqlQuery query, [System.Runtime.CompilerServices.CallerMemberName] string method = "")
         {
-            return sql == null ? db.SelectFromDb(query, "") : sql.Select(query, method: method);
+            return sql.Select(query, method: method);
         }
-        private void RequireLegacyWrite()
-        {
-            if (sql != null) throw new InvalidOperationException("Toplantı yazma servisi kullanılmalıdır.");
-        }
-        private readonly DbClass db;
-        private readonly CrudQueryBuilder b;
 
         public ToplantiKatilimRepository()
-            : this(new DbClass())
         {
-        }
-
-        public ToplantiKatilimRepository(DbClass db)
-        {
-            if (db == null)
-                throw new ArgumentNullException("db");
-
-            this.db = db;
-            b = new CrudQueryBuilder();
         }
 
         public DataTable SelectById(int id)
@@ -63,32 +46,6 @@ namespace DAO.Repositories.Portal
             var q = new SqlQuery("SELECT * FROM ToplantiKatilim_Table WHERE ToplantiId=@ToplantiId");
             q.AddParameter("@ToplantiId", t);
             return Select(q);
-        }
-
-        public int Insert<T>(T x)
-        {
-            RequireLegacyWrite();
-            return db.Insert(b.BuildInsert(x, "ToplantiKatilim_Table"));
-        }
-
-        public bool Update<T>(T x)
-        {
-            RequireLegacyWrite();
-            return db.Update2Db(b.BuildUpdate(x, "ToplantiKatilim_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            RequireLegacyWrite();
-            return db.DeleteFromDb(b.BuildDelete("ToplantiKatilim_Table", id), "");
-        }
-
-        public bool DeleteByMeeting(int id)
-        {
-            RequireLegacyWrite();
-            var q = new SqlQuery("DELETE ToplantiKatilim_Table WHERE ToplantiId=@ToplantiId");
-            q.AddParameter("@ToplantiId", id);
-            return db.DeleteFromDb(q, "");
         }
     }
 }

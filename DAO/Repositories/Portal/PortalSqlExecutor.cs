@@ -14,6 +14,14 @@ namespace DAO.Repositories.Portal
         private readonly PortalLogContext context;
         private readonly string repositoryName;
 
+        // Shared context-free reads never invoke the legacy SQL or error writer.
+        internal PortalSqlExecutor(string repositoryName)
+        {
+            if (string.IsNullOrWhiteSpace(repositoryName))
+                throw new ArgumentException("Repository adı gereklidir.", "repositoryName");
+            this.repositoryName = repositoryName;
+        }
+
         internal PortalSqlExecutor(PortalLogContext context, string repositoryName)
         {
             if (context == null || context.Project != "Portal")
@@ -54,8 +62,9 @@ namespace DAO.Repositories.Portal
             return Trace(operation, method, () => transaction.Update(query), result => result);
         }
 
-        private static void RequireTransaction(SqlTransactionContext transaction)
+        private void RequireTransaction(SqlTransactionContext transaction)
         {
+            if (context == null) throw new InvalidOperationException("Yazma işlemi için Portal log bağlamı gereklidir.");
             if (transaction == null) throw new ArgumentNullException("transaction", "İşlem bağlamı gereklidir.");
         }
 

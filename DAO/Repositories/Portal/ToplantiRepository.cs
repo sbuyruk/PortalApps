@@ -8,35 +8,18 @@ namespace DAO.Repositories.Portal
 {
     public class ToplantiRepository
     {
-        private readonly PortalSqlExecutor sql;
+        private readonly PortalSqlExecutor sql = new PortalSqlExecutor("ToplantiRepository");
         public ToplantiRepository(PortalLogContext context)
         {
             sql = new PortalSqlExecutor(context, "ToplantiRepository");
-            b = new CrudQueryBuilder();
         }
         private DataTable Select(SqlQuery query, [System.Runtime.CompilerServices.CallerMemberName] string method = "")
         {
-            return sql == null ? db.SelectFromDb(query, "") : sql.Select(query, method: method);
+            return sql.Select(query, method: method);
         }
-        private void RequireLegacyWrite()
-        {
-            if (sql != null) throw new InvalidOperationException("Toplantı yazma servisi kullanılmalıdır.");
-        }
-        private readonly DbClass db;
-        private readonly CrudQueryBuilder b;
 
         public ToplantiRepository()
-            : this(new DbClass())
         {
-        }
-
-        public ToplantiRepository(DbClass db)
-        {
-            if (db == null)
-                throw new ArgumentNullException("db");
-
-            this.db = db;
-            b = new CrudQueryBuilder();
         }
 
         public DataTable SelectById(int id)
@@ -145,24 +128,6 @@ namespace DAO.Repositories.Portal
             q.AddParameter("@From", from);
             q.AddParameter("@To", to);
             return PortalSqlReadExecutor.Select(q, context, "ToplantiRepository.SelectByParticipantDate");
-        }
-
-        public int Insert<T>(T x)
-        {
-            RequireLegacyWrite();
-            return db.Insert(b.BuildInsert(x, "Toplanti_Table"));
-        }
-
-        public bool Update<T>(T x)
-        {
-            RequireLegacyWrite();
-            return db.Update2Db(b.BuildUpdate(x, "Toplanti_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            RequireLegacyWrite();
-            return db.DeleteFromDb(b.BuildDelete("Toplanti_Table", id), "");
         }
     }
 }

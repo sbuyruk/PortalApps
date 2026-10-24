@@ -10,34 +10,18 @@ namespace DAO.Repositories.Portal
 {
     public class DuyuruRepository
     {
-        private readonly PortalSqlExecutor sql;
+        private readonly PortalSqlExecutor sql = new PortalSqlExecutor("DuyuruRepository");
         public DuyuruRepository(PortalLogContext context)
         {
             sql = new PortalSqlExecutor(context, "DuyuruRepository");
         }
         private DataTable Select(SqlQuery query, [CallerMemberName] string method = "")
         {
-            return sql == null ? db.SelectFromDb(query, "") : sql.Select(query, method: method);
+            return sql.Select(query, method: method);
         }
-        private void RequireLegacyWrite()
-        {
-            if (sql != null) throw new InvalidOperationException("Duyuru yazmaları transaction servisi üzerinden yapılmalıdır.");
-        }
-        private readonly DbClass db;
-        private readonly CrudQueryBuilder queryBuilder;
 
         public DuyuruRepository()
-            : this(new DbClass())
         {
-        }
-
-        public DuyuruRepository(DbClass db)
-        {
-            if (db == null)
-                throw new ArgumentNullException("db");
-
-            this.db = db;
-            queryBuilder = new CrudQueryBuilder();
         }
 
         public DataTable SelectById(int id)
@@ -88,24 +72,6 @@ namespace DAO.Repositories.Portal
         public DataTable SelectAnnouncementList()
         {
             return Select(new SqlQuery("SELECT ROW_NUMBER() OVER (ORDER BY Id) AS Sirano, Id,Baslik,Metin,YayinBasTar,YayinBitTar,Tekrar,Popup,Aktif,FORMAT(YayinBasTar,'dd.MM.yyyy hh:mm') BaslamaTarihi,FORMAT(YayinBitTar,'dd.MM.yyyy hh:mm') BitisTarihi,DuyuruAlicilari,Aciklama,Resim,Olusturan,OlusturmaTarihi,Degistiren,DegistirmeTarihi FROM Duyuru_Table ORDER BY Aktif DESC,YayinBasTar DESC,Popup"));
-        }
-
-        public int Insert<T>(T entity)
-        {
-            RequireLegacyWrite();
-            return db.Insert(queryBuilder.BuildInsert(entity, "Duyuru_Table"));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            RequireLegacyWrite();
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, "Duyuru_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            RequireLegacyWrite();
-            return db.DeleteFromDb(queryBuilder.BuildDelete("Duyuru_Table", id), "");
         }
     }
 }

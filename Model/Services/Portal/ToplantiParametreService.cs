@@ -64,30 +64,6 @@ namespace Model.Services.Portal
             return List(r.SelectByGroupValue(g, d));
         }
 
-        public int Save(ToplantiParametre x)
-        {
-            if (x == null)
-                throw new ArgumentNullException("x");
-
-            x.OlusturmaTarihi = DateTime.Now;
-            x.Id = r.Insert(x);
-            return x.Id;
-        }
-
-        public bool Update(ToplantiParametre x)
-        {
-            if (x == null || x.Id == 0)
-                return false;
-
-            x.DegistirmeTarihi = DateTime.Now;
-            return r.Update(x);
-        }
-
-        public bool Delete(ToplantiParametre x)
-        {
-            return x != null && x.Id != 0 && r.Delete(x.Id);
-        }
-
         private static List<ToplantiParametre> List(DataTable t)
         {
             return new ToplantiParametre().ToList<ToplantiParametre>(t);

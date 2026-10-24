@@ -38,30 +38,6 @@ namespace Model.Services.Portal
             return List(r.SelectAll());
         }
 
-        public int Save(DuyuruOkuma x)
-        {
-            if (x == null)
-                throw new ArgumentNullException("x");
-
-            x.OlusturmaTarihi = DateTime.Now;
-            x.Id = r.Insert(x);
-            return x.Id;
-        }
-
-        public bool Update(DuyuruOkuma x)
-        {
-            if (x == null || x.Id == 0)
-                return false;
-
-            x.DegistirmeTarihi = DateTime.Now;
-            return r.Update(x);
-        }
-
-        public bool Delete(DuyuruOkuma x)
-        {
-            return x != null && x.Id != 0 && r.Delete(x.Id);
-        }
-
         public string GetByDuyuruId(int id)
         {
             return new DuyuruOkuma().ToJSON(r.SelectByDuyuruId(id));
