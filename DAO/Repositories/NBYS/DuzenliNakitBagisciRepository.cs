@@ -15,7 +15,6 @@ namespace DAO.Repositories.NBYS
         {
             sql = new NbysSqlExecutor(context, "DuzenliNakitBagisciRepository");
         }
-        private readonly CrudQueryBuilder queryBuilder = new CrudQueryBuilder();
 
         public DuzenliNakitBagisciRepository() : this(new DbClass())
         {
@@ -47,27 +46,5 @@ namespace DAO.Repositories.NBYS
             return sql == null ? db.SelectFromDb(query, "") : sql.Select(query);
         }
 
-        public int Insert<T>(T entity)
-        {
-            RequireLegacyWrite();
-            return db.Insert(queryBuilder.BuildInsert(entity, TableName));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            RequireLegacyWrite();
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName));
-        }
-
-        private void RequireLegacyWrite()
-        {
-            if (sql != null) throw new InvalidOperationException("Bağlamlı yazma için transaction kullanan düzenli bağışçı servisi gereklidir.");
-        }
-
-        public bool Delete(int id)
-        {
-            RequireLegacyWrite();
-            return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), "");
-        }
     }
 }

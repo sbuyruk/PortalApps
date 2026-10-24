@@ -31,29 +31,9 @@ namespace Model.Services.NBYS
             this.repository = repository;
         }
 
-        public int Save(NakitBagisci nakitBagisci)
-        {
-            if (nakitBagisci == null)
-                throw new ArgumentNullException("nakitBagisci");
-
-            nakitBagisci.OlusturmaTarihi = DateTime.Now;
-            nakitBagisci.Olusturan = UtilityHelper.GetCurrentUserName();
-            nakitBagisci.Id = repository.Insert(nakitBagisci);
-
-            if (nakitBagisci.Id > 0 && !repository.HasLogContext && ProjeConstants.NBYS_SAVE_LOG)
-            {
-                OlayKayit olayKayit = new OlayKayit();
-                olayKayit.GirisOlayKaydet(
-                    nakitBagisci,
-                    ProjeConstants.NBYS,
-                    ProjeConstants.NBYS_NAKITBAGISCI);
-            }
-
-            return nakitBagisci.Id;
-        }
-
         public int Save(NakitBagisci nakitBagisci, SqlTransactionContext transaction)
         {
+            if (!repository.HasLogContext) throw new InvalidOperationException("Yazma işlemi için NBYS log bağlamı gereklidir.");
             if (nakitBagisci == null)
                 throw new ArgumentNullException("nakitBagisci");
             if (transaction == null)
@@ -63,14 +43,6 @@ namespace Model.Services.NBYS
             nakitBagisci.Olusturan = UtilityHelper.GetCurrentUserName();
             nakitBagisci.Id = repository.Insert(nakitBagisci, transaction);
 
-            if (nakitBagisci.Id > 0 && !repository.HasLogContext && ProjeConstants.NBYS_SAVE_LOG)
-            {
-                new OlayKayit().GirisOlayKaydet(
-                    nakitBagisci,
-                    ProjeConstants.NBYS,
-                    ProjeConstants.NBYS_NAKITBAGISCI,
-                    transaction);
-            }
             return nakitBagisci.Id;
         }
 
@@ -165,35 +137,9 @@ namespace Model.Services.NBYS
                 bitisTarihi);
         }
 
-        public bool Update(NakitBagisci nakitBagisci)
-        {
-            if (nakitBagisci == null)
-                throw new ArgumentNullException("nakitBagisci");
-
-            NakitBagisci eskiNakitBagisci = GetById(nakitBagisci.Id);
-            bool isSaved = false;
-            if (nakitBagisci.Id != 0)
-            {
-                nakitBagisci.DegistirmeTarihi = DateTime.Now;
-                nakitBagisci.Degistiren = UtilityHelper.GetCurrentUserName();
-                isSaved = repository.Update(nakitBagisci);
-            }
-
-            if (isSaved && !repository.HasLogContext && ProjeConstants.NBYS_UPDATE_LOG)
-            {
-                OlayKayit olayKayit = new OlayKayit();
-                olayKayit.GuncellemeOlayKaydet(
-                    nakitBagisci,
-                    eskiNakitBagisci,
-                    ProjeConstants.NBYS,
-                    ProjeConstants.NBYS_NAKITBAGISCI);
-            }
-
-            return isSaved;
-        }
-
         public bool Update(NakitBagisci nakitBagisci, SqlTransactionContext transaction)
         {
+            if (!repository.HasLogContext) throw new InvalidOperationException("Yazma işlemi için NBYS log bağlamı gereklidir.");
             if (nakitBagisci == null)
                 throw new ArgumentNullException("nakitBagisci");
             if (transaction == null)
@@ -202,84 +148,16 @@ namespace Model.Services.NBYS
             if (nakitBagisci.Id == 0)
                 return false;
 
-            NakitBagisci previous = GetById(nakitBagisci.Id, transaction);
             nakitBagisci.DegistirmeTarihi = DateTime.Now;
             nakitBagisci.Degistiren = UtilityHelper.GetCurrentUserName();
             bool updated = repository.Update(nakitBagisci, transaction);
-            if (updated && !repository.HasLogContext && ProjeConstants.NBYS_UPDATE_LOG)
-            {
-                new OlayKayit().GuncellemeOlayKaydet(
-                    previous,
-                    nakitBagisci,
-                    ProjeConstants.NBYS,
-                    ProjeConstants.NBYS_NAKITBAGISCI,
-                    transaction);
-            }
+
             return updated;
-        }
-
-        public bool Update(NakitBagisci nakitBagisci, bool oncekiTuzelKisi, string currentUser)
-        {
-            bool isSaved = Update(nakitBagisci);
-            if (oncekiTuzelKisi != nakitBagisci.TuzelKisi)
-            {
-                var armaganList = new ArmaganService().GetByBagisciIdAndDurum(
-                    nakitBagisci.Id,
-                    ProjeConstants.DURUM_GONDERILMEDI);
-
-                foreach (Armagan item in armaganList)
-                {
-                    EkstreAktarmaTransferService.SaveArmagan(
-                        item.Tarih,
-                        nakitBagisci.TuzelKisi,
-                        item.BagisciId,
-                        0,
-                        currentUser);
-                }
-            }
-
-            return isSaved;
-        }
-
-        public bool Delete(NakitBagisci nakitBagisci)
-        {
-            if (nakitBagisci == null)
-                throw new ArgumentNullException("nakitBagisci");
-
-            if (nakitBagisci.Id == 0)
-                return false;
-
-            NakitBagisci silinecekNakitBagisci = GetById(nakitBagisci.Id);
-            if (silinecekNakitBagisci == null)
-                return false;
-
-            bool isDeleted = repository.Delete(nakitBagisci.Id);
-            if (isDeleted && !repository.HasLogContext && ProjeConstants.NBYS_DELETE_LOG)
-            {
-                OlayKayit olayKayit = new OlayKayit();
-                olayKayit.SilmeOlayKaydet(
-                    silinecekNakitBagisci,
-                    ProjeConstants.NBYS,
-                    ProjeConstants.NBYS_NAKITBAGISCI);
-            }
-
-            return isDeleted;
-        }
-
-        public int CreateBilinmeyenBagisci()
-        {
-            NakitBagisci bagisci = new NakitBagisci();
-            bagisci.OlusturmaTarihi = DateTime.Now;
-            bagisci.Olusturan = UtilityHelper.GetCurrentUserName();
-            return repository.CreateBilinmeyenBagisci(
-                bagisci,
-                ProjeConstants.NAKITBAGISCI_BILINMEYEN,
-                DateTime.Now,
-                UtilityHelper.GetCurrentUserName());
         }
 
         public int CreateBilinmeyenBagisci(SqlTransactionContext transaction)
         {
+            if (!repository.HasLogContext) throw new InvalidOperationException("Yazma işlemi için NBYS log bağlamı gereklidir.");
             if (transaction == null)
                 throw new ArgumentNullException("transaction");
 

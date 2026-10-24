@@ -39,29 +39,9 @@ namespace Model.Services.NBYS
             return Map(repository.SelectAll());
         }
 
-        public int Save(NakitBagisHareket bagisHareket)
-        {
-            if (bagisHareket == null)
-                throw new ArgumentNullException("bagisHareket");
-
-            DateTime minTarih = new DateTime(1987, 9, 1);
-            if (bagisHareket.BagisTarihi == default(DateTime) || bagisHareket.BagisTarihi < minTarih)
-                throw new ArgumentException("BagisTarihi boş olamaz ve 01.09.1987 tarihinden önce olamaz.");
-
-            bagisHareket.OlusturmaTarihi = DateTime.Now;
-            bagisHareket.Olusturan = UtilityHelper.GetCurrentUserName();
-            bagisHareket.Id = repository.Insert(bagisHareket);
-
-            if (bagisHareket.Id > 0 && !repository.HasLogContext && ProjeConstants.NBYS_SAVE_LOG)
-            {
-                new OlayKayit().GirisOlayKaydet(
-                    bagisHareket, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISHAREKET);
-            }
-            return bagisHareket.Id;
-        }
-
         public int Save(NakitBagisHareket bagisHareket, SqlTransactionContext transaction)
         {
+            if (!repository.HasLogContext) throw new InvalidOperationException("Yazma işlemi için NBYS log bağlamı gereklidir.");
             if (bagisHareket == null)
                 throw new ArgumentNullException("bagisHareket");
             if (transaction == null)
@@ -75,40 +55,12 @@ namespace Model.Services.NBYS
             bagisHareket.Olusturan = UtilityHelper.GetCurrentUserName();
             bagisHareket.Id = repository.Insert(bagisHareket, transaction);
 
-            if (bagisHareket.Id > 0 && !repository.HasLogContext && ProjeConstants.NBYS_SAVE_LOG)
-            {
-                new OlayKayit().GirisOlayKaydet(
-                    bagisHareket,
-                    ProjeConstants.NBYS,
-                    ProjeConstants.NBYS_NAKITBAGISHAREKET,
-                    transaction);
-            }
             return bagisHareket.Id;
-        }
-
-        public bool Update(NakitBagisHareket bagisHareket)
-        {
-            if (bagisHareket == null)
-                throw new ArgumentNullException("bagisHareket");
-
-            NakitBagisHareket previous = GetById(bagisHareket.Id);
-            bool updated = false;
-            if (bagisHareket.Id != 0)
-            {
-                bagisHareket.DegistirmeTarihi = DateTime.Now;
-                bagisHareket.Degistiren = UtilityHelper.GetCurrentUserName();
-                updated = repository.Update(bagisHareket);
-            }
-            if (updated && !repository.HasLogContext && ProjeConstants.NBYS_UPDATE_LOG)
-            {
-                new OlayKayit().GuncellemeOlayKaydet(
-                    bagisHareket, previous, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISHAREKET);
-            }
-            return updated;
         }
 
         public bool Update(NakitBagisHareket bagisHareket, SqlTransactionContext transaction)
         {
+            if (!repository.HasLogContext) throw new InvalidOperationException("Yazma işlemi için NBYS log bağlamı gereklidir.");
             if (bagisHareket == null)
                 throw new ArgumentNullException("bagisHareket");
             if (transaction == null)
@@ -116,124 +68,11 @@ namespace Model.Services.NBYS
             if (bagisHareket.Id == 0)
                 return false;
 
-            NakitBagisHareket previous = Map(
-                repository.SelectById(bagisHareket.Id, transaction)).FirstOrDefault();
             bagisHareket.DegistirmeTarihi = DateTime.Now;
             bagisHareket.Degistiren = UtilityHelper.GetCurrentUserName();
             bool updated = repository.Update(bagisHareket, transaction);
-            if (updated && !repository.HasLogContext && ProjeConstants.NBYS_UPDATE_LOG)
-            {
-                new OlayKayit().GuncellemeOlayKaydet(
-                    previous,
-                    bagisHareket,
-                    ProjeConstants.NBYS,
-                    ProjeConstants.NBYS_NAKITBAGISHAREKET,
-                    transaction);
-            }
+
             return updated;
-        }
-
-        public void UpdateRefund(NakitBagisHareket bagisHareket, Armagan armagan)
-        {
-            if (bagisHareket == null)
-                throw new ArgumentNullException("bagisHareket");
-
-            bagisHareket.DegistirmeTarihi = DateTime.Now;
-            bagisHareket.Degistiren = UtilityHelper.GetCurrentUserName();
-
-            // Armagan.GetUpdateSQL'in mevcut tarih davranışını koru.
-            if (armagan != null)
-                armagan.OlusturmaTarihi = DateTime.Now;
-
-            repository.UpdateRefund(bagisHareket, armagan);
-        }
-
-        public void DeleteWithArchive(
-            NakitBagisHareket bagisHareket,
-            SilinenKayit bagisHareketArchive,
-            Armagan armagan,
-            SilinenKayit armaganArchive)
-        {
-            if (bagisHareket == null)
-                throw new ArgumentNullException("bagisHareket");
-            if (bagisHareketArchive == null)
-                throw new ArgumentNullException("bagisHareketArchive");
-
-            bagisHareketArchive.OlusturmaTarihi = DateTime.Now;
-            if (armaganArchive != null)
-                armaganArchive.OlusturmaTarihi = DateTime.Now;
-
-            repository.DeleteWithArchive(
-                bagisHareket.Id,
-                bagisHareketArchive,
-                armagan != null ? (int?)armagan.Id : null,
-                armaganArchive);
-        }
-
-        public bool MergeDonor(
-            IList<NakitBagisHareket> bagisHareketleri,
-            IList<SilinenKayit> bagisHareketArsivleri,
-            IList<Armagan> armaganlar,
-            IList<SilinenKayit> armaganArsivleri,
-            NakitBagisci kaynakBagisci,
-            SilinenKayit kaynakBagisciArsivi)
-        {
-            if (bagisHareketleri == null)
-                throw new ArgumentNullException("bagisHareketleri");
-            if (bagisHareketArsivleri == null)
-                throw new ArgumentNullException("bagisHareketArsivleri");
-            if (armaganlar == null)
-                throw new ArgumentNullException("armaganlar");
-            if (armaganArsivleri == null)
-                throw new ArgumentNullException("armaganArsivleri");
-            if (kaynakBagisci == null)
-                throw new ArgumentNullException("kaynakBagisci");
-            if (kaynakBagisciArsivi == null)
-                throw new ArgumentNullException("kaynakBagisciArsivi");
-
-            DateTime now = DateTime.Now;
-            string currentUser = UtilityHelper.GetCurrentUserName();
-
-            foreach (NakitBagisHareket bagisHareketi in bagisHareketleri)
-            {
-                bagisHareketi.DegistirmeTarihi = now;
-                bagisHareketi.Degistiren = currentUser;
-            }
-            foreach (Armagan armagan in armaganlar)
-                armagan.OlusturmaTarihi = now;
-            foreach (SilinenKayit archive in bagisHareketArsivleri)
-                archive.OlusturmaTarihi = now;
-            foreach (SilinenKayit archive in armaganArsivleri)
-                archive.OlusturmaTarihi = now;
-            kaynakBagisciArsivi.OlusturmaTarihi = now;
-
-            return repository.MergeDonor(
-                bagisHareketleri,
-                bagisHareketArsivleri,
-                armaganlar,
-                armaganArsivleri,
-                kaynakBagisci.Id,
-                kaynakBagisciArsivi);
-        }
-
-        public bool Delete(NakitBagisHareket bagisHareket)
-        {
-            if (bagisHareket == null)
-                throw new ArgumentNullException("bagisHareket");
-            if (bagisHareket.Id == 0)
-                return false;
-
-            NakitBagisHareket previous = GetById(bagisHareket.Id);
-            if (previous == null)
-                return false;
-
-            bool deleted = repository.Delete(bagisHareket.Id);
-            if (deleted && !repository.HasLogContext && ProjeConstants.NBYS_DELETE_LOG)
-            {
-                new OlayKayit().SilmeOlayKaydet(
-                    previous, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISHAREKET);
-            }
-            return deleted;
         }
 
         public List<NakitBagisHareket> GetByBagisciId(int bagisciId)

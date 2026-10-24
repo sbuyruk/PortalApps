@@ -4,7 +4,6 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
-using Utility.ProjeGlobal;
 
 namespace DAO.Repositories.NBYS
 {
@@ -42,123 +41,28 @@ namespace DAO.Repositories.NBYS
             crudQueryBuilder = new CrudQueryBuilder();
         }
 
-        private DbClass LegacyWriteDb
-        {
-            get { RequireLegacyWrite(); return db; }
-        }
-
-        private void RequireLegacyWrite()
-        {
-            if (readContext != null)
-                throw new InvalidOperationException("Bu erişim yalnızca okuma işlemlerini destekler.");
-        }
-
         private DataTable Select(SqlQuery query,
             [System.Runtime.CompilerServices.CallerMemberName] string method = "")
         {
             return readContext == null ? db.SelectFromDb(query, "") :
                 PortalSqlReadExecutor.Select(query, readContext, "NakitBagisciRepository." + method);
         }
-        public int Insert<T>(T entity)
-        {
-            SqlQuery query = crudQueryBuilder.BuildInsert(entity, TableName);
-            return LegacyWriteDb.Insert(query);
-        }
 
         public int Insert<T>(T entity, SqlTransactionContext transaction)
         {
+            if (readContext == null) throw new InvalidOperationException("Yazma işlemi için NBYS log bağlamı gereklidir.");
             if (transaction == null) throw new ArgumentNullException("transaction");
-            return readContext == null ? transaction.Insert(crudQueryBuilder.BuildInsert(entity, TableName))
-                : new NbysTransactionalWriter(readContext, TableName).Insert(crudQueryBuilder.BuildInsert(entity, TableName), transaction);
-        }
-
-        public bool Update<T>(T entity)
-        {
-            SqlQuery query = crudQueryBuilder.BuildUpdate(entity, TableName);
-            return LegacyWriteDb.Update2Db(query);
+            return new NbysTransactionalWriter(readContext, TableName).Insert(crudQueryBuilder.BuildInsert(entity, TableName), transaction);
         }
 
         public bool Update<T>(T entity, SqlTransactionContext transaction)
         {
+            if (readContext == null) throw new InvalidOperationException("Yazma işlemi için NBYS log bağlamı gereklidir.");
             if (transaction == null) throw new ArgumentNullException("transaction");
-            return readContext == null ? transaction.Update(crudQueryBuilder.BuildUpdate(entity, TableName))
-                : new NbysTransactionalWriter(readContext, TableName).Update(crudQueryBuilder.BuildUpdate(entity, TableName), NbysTransactionalWriter.Id(entity), transaction);
-        }
-
-        public bool Delete(int id)
-        {
-            SqlQuery query = crudQueryBuilder.BuildDelete(TableName, id);
-            return LegacyWriteDb.DeleteFromDb(query, "");
+            return new NbysTransactionalWriter(readContext, TableName).Update(crudQueryBuilder.BuildUpdate(entity, TableName), NbysTransactionalWriter.Id(entity), transaction);
         }
 
         // Both commands use the same connection and transaction; the identity never leaves this operation.
-        public int CreateBilinmeyenBagisci<T>(T entity, string namePrefix, DateTime modifiedAt, string modifiedBy)
-        {
-            RequireLegacyWrite();
-            SqlQuery insert = crudQueryBuilder.BuildInsert(entity, TableName);
-            NormalizeLegacyNullStrings(entity, insert);
-            insert.Sql += ";SELECT SCOPE_IDENTITY()";
-            SqlQuery current = insert;
-            int sqlType = ProjeConstants.SQL_INSERT;
-
-            using (SqlConnection connection = new SqlConnection(DBProcess.getConnectString()))
-            {
-                connection.Open();
-                using (SqlTransaction transaction = connection.BeginTransaction())
-                {
-                    try
-                    {
-                        int id;
-                        using (SqlCommand command = new SqlCommand(insert.Sql, connection, transaction))
-                        {
-                            command.Parameters.AddRange(insert.Parameters.ToArray());
-                            object result = command.ExecuteScalar();
-                            if (result == null || result == DBNull.Value)
-                                throw new InvalidOperationException("Bilinmeyen bagisci kimligi alinamadi.");
-                            id = Convert.ToInt32(result);
-                            if (id <= 0)
-                                throw new InvalidOperationException("Bilinmeyen bagisci kimligi gecersiz.");
-                        }
-                        if (ProjeConstants.GENEL_SAVE_LOG)
-                            DbClass.SorguyuLogla("INSERT", true, insert.ToLogString(), "Id=" + id);
-
-                        sqlType = ProjeConstants.SQL_UPDATE;
-                        current = new SqlQuery(@"UPDATE NakitBagisci_Table
-                            SET Adi=@Adi, Aciklama=@Aciklama,
-                                DegistirmeTarihi=@DegistirmeTarihi, Degistiren=@Degistiren
-                            WHERE Id=@Id");
-                        string idText = id.ToString(CultureInfo.InvariantCulture);
-                        current.AddParameter("@Id", id);
-                        current.AddParameter("@Adi", namePrefix + "_" + idText);
-                        current.AddParameter("@Aciklama", namePrefix + " Bagisçi Id= " + idText);
-                        current.AddParameter("@DegistirmeTarihi", modifiedAt);
-                        current.AddParameter("@Degistiren", modifiedBy ?? string.Empty);
-                        using (SqlCommand command = new SqlCommand(current.Sql, connection, transaction))
-                        {
-                            command.Parameters.AddRange(current.Parameters.ToArray());
-                            command.ExecuteNonQuery();
-                        }
-                        if (ProjeConstants.GENEL_UPDATE_LOG)
-                            DbClass.SorguyuLogla("UPDATE", true, current.ToLogString(), string.Empty);
-
-                        transaction.Commit();
-                        return id;
-                    }
-                    catch (Exception ex)
-                    {
-                        // Attempt rollback before logging, even if the logging database is unavailable.
-                        try { transaction.Rollback(); }
-                        catch (Exception) { /* Preserve the original operation error. */ }
-                        try
-                        {
-                            DbClass.SorguyuLogla("SQL_TYPE=" + sqlType, false, current.ToLogString(), ex.Message);
-                        }
-                        catch (Exception) { /* Preserve the original operation error. */ }
-                        throw;
-                    }
-                }
-            }
-        }
 
         public int CreateBilinmeyenBagisci<T>(
             T entity,
@@ -167,12 +71,14 @@ namespace DAO.Repositories.NBYS
             string modifiedBy,
             SqlTransactionContext transaction)
         {
+            if (readContext == null) throw new InvalidOperationException("Yazma işlemi için NBYS log bağlamı gereklidir.");
             if (transaction == null)
                 throw new ArgumentNullException("transaction");
 
             SqlQuery insert = crudQueryBuilder.BuildInsert(entity, TableName);
             NormalizeLegacyNullStrings(entity, insert);
-            int id = readContext == null ? transaction.Insert(insert) : new NbysTransactionalWriter(readContext, TableName).Insert(insert, transaction);
+            NbysSqlExecutor sql = new NbysSqlExecutor(readContext, "NakitBagisciRepository");
+            int id = sql.Insert(insert, transaction);
             if (id <= 0)
                 throw new InvalidOperationException("Bilinmeyen bagisci kimligi gecersiz.");
 
@@ -186,8 +92,9 @@ namespace DAO.Repositories.NBYS
             update.AddParameter("@Aciklama", namePrefix + " Bagisçi Id= " + idText);
             update.AddParameter("@DegistirmeTarihi", modifiedAt);
             update.AddParameter("@Degistiren", modifiedBy ?? string.Empty);
-            if (readContext == null) transaction.Update(update);
-            else new NbysTransactionalWriter(readContext, TableName).Update(update, id, transaction);
+            if (!sql.Write(update, "UPDATE", transaction))
+                throw new InvalidOperationException("Bilinmeyen bağışçı bilgileri güncellenemedi.");
+            new NbysTransactionalWriter(readContext, TableName).RecordInserted(id, transaction);
             return id;
         }
 
