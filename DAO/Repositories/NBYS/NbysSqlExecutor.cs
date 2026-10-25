@@ -46,21 +46,21 @@ namespace DAO.Repositories.NBYS
                     adapter.Fill(table);
                     return table.Rows.Count == 0 ? null : table;
                 }
-            }, result => true);
+            }, result => true, transaction);
         }
 
         internal int Insert(SqlQuery query, SqlTransactionContext transaction,
             [CallerMemberName] string method = "")
         {
             RequireTransaction(transaction);
-            return Trace("INSERT", method, () => transaction.Insert(query), result => result > 0);
+            return Trace("INSERT", method, () => transaction.Insert(query), result => result > 0, transaction);
         }
 
         internal bool Write(SqlQuery query, string operation, SqlTransactionContext transaction,
             [CallerMemberName] string method = "")
         {
             RequireTransaction(transaction);
-            return Trace(operation, method, () => transaction.Update(query), result => result);
+            return Trace(operation, method, () => transaction.Update(query), result => result, transaction);
         }
 
         private void RequireTransaction(SqlTransactionContext transaction)
@@ -69,7 +69,8 @@ namespace DAO.Repositories.NBYS
             if (transaction == null) throw new ArgumentNullException("transaction", "İşlem bağlamı gereklidir.");
         }
 
-        private T Trace<T>(string operation, string method, Func<T> execute, Predicate<T> succeeded)
+        private T Trace<T>(string operation, string method, Func<T> execute, Predicate<T> succeeded,
+            SqlTransactionContext transaction)
         {
             Stopwatch clock = Stopwatch.StartNew();
             bool success = false;
@@ -82,8 +83,12 @@ namespace DAO.Repositories.NBYS
             finally
             {
                 clock.Stop();
-                PortalTechnicalLog.WriteSqlTrace(context, operation, repositoryName + "." + method,
-                    clock.ElapsedMilliseconds, success);
+                if (transaction == null)
+                    PortalTechnicalLog.WriteSqlTrace(context, operation, repositoryName + "." + method,
+                        clock.ElapsedMilliseconds, success);
+                else
+                    transaction.DeferSqlTrace(context, operation, repositoryName + "." + method,
+                        clock.ElapsedMilliseconds, success);
             }
         }
     }
