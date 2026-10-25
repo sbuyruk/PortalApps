@@ -24,7 +24,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             PortalLogContext context = LoggingContext;
             if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -176,7 +176,6 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             }
             else
             {
-                // MessageHelper.PublishMessage("Ise baslama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
             }
         }
         private void FillIzinBilgileriTable(Personel personel)
@@ -222,7 +221,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Ise baslama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Ise baslama tarihi belirlenemedi");
             }
         }
         private void IzinHareketTableHeaders()
@@ -278,7 +277,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             {
                 IzinTalep talep = TalebiIsle(ProjeConstants.PER_IZINTALEBI_KAYITLARAISLENDI_INT);
                 if (talep == null) return;
-                MessageHelper.PublishMessage("İzin talebi kayıtlara işlendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                Messages.Success("İzin talebi kayıtlara işlendi.", 2000);
                 BildirimGonder(talep, "Onay");
                 TabloOlustur();
             }
@@ -293,7 +292,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             {
                 IzinTalep talep = TalebiIsle(ProjeConstants.PER_IZINTALEBI_KONTROLEDILDI_INT);
                 if (talep == null) return;
-                MessageHelper.PublishMessage("İzin talebi kontrol edildi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                Messages.Success("İzin talebi kontrol edildi.", 2000);
                 BildirimGonder(talep, "Kabul");
                 TabloOlustur();
             }
@@ -308,7 +307,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             {
                 IzinTalep talep = TalebiIsle(ProjeConstants.PER_IZINTALEBI_REDDEDILDI);
                 if (talep == null) return;
-                MessageHelper.PublishMessage("İzin talebi reddedildi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                Messages.Success("İzin talebi reddedildi.", 2000);
                 BildirimGonder(talep, "Red");
                 TabloOlustur();
             }
@@ -374,8 +373,8 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                 if (error is System.Threading.ThreadAbortException) throw;
                 PortalLogContext context = LoggingContext;
                 PortalTechnicalLog.WriteError(context, "LeaveRequest.Notification", error);
-                MessageHelper.PublishMessage("İşlem kaydedildi, ancak e-posta bildirimi gönderilemedi. Başvuru kodu: "
-                    + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+                Messages.Error("İşlem kaydedildi, ancak e-posta bildirimi gönderilemedi. Başvuru kodu: "
+                    + context.OperationId.ToString("N"));
             }
         }
         private IzinTalep TalebiIsle(int hedefDurum)
@@ -387,7 +386,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                 IzinTalep talep = service.GetById(paramIzinTalepIdLbl.Value.ConvertToInt(), transaction, context);
                 if (talep == null || talep.IzinTipi != ProjeConstants.IZINTIPI_MAZERET_INT)
                 {
-                    MessageHelper.PublishMessage("İzin talebi bulunamadı. Listeyi yenileyin.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("İzin talebi bulunamadı. Listeyi yenileyin.");
                     return null;
                 }
                 bool ilkAsama = talep.OnayDurumu == ProjeConstants.PER_IZINTALEBI_ISLEMBEKLIYOR
@@ -398,7 +397,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                 if (!(onayla ? kontrolEdildi : reddet ? (ilkAsama || kontrolEdildi) : ilkAsama)
                     || new IzinHareketService().GetByIzinTalepId(talep.Id, transaction, context) != null)
                 {
-                    MessageHelper.PublishMessage("Talebin durumu değişmiş veya talep kayıtlara işlenmiş. Listeyi yenileyin.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Talebin durumu değişmiş veya talep kayıtlara işlenmiş. Listeyi yenileyin.");
                     return null;
                 }
                 if (!string.IsNullOrEmpty(AciklamaTxt.Text)) talep.Aciklama = AciklamaTxt.Text;

@@ -25,7 +25,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
             PortalLogContext context = LoggingContext;
             if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -552,7 +552,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
             }
             else
             {
-                MessageHelper.PublishMessage("Ise baslama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Ise baslama tarihi belirlenemedi");
             }
         }
         private void FillMazeretIzinDonemleriTable(Personel personel)
@@ -616,7 +616,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
             }
             else
             {
-                MessageHelper.PublishMessage("Ise baslama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Ise baslama tarihi belirlenemedi");
             }
         }
         private void UcretliIzinDonemleriTableHeaders()
@@ -843,7 +843,6 @@ namespace IKYS_WebParts.KisiselSayfaWP
             }
             else
             {
-                // MessageHelper.PublishMessage("Ise baslama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
             }
         }
         private void FillMazeretIzinHareketleriTable(Personel personel)
@@ -936,7 +935,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
             }
             else
             {
-                MessageHelper.PublishMessage("Ise baslama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Ise baslama tarihi belirlenemedi");
             }
         }
         private void IzinTalepTableHeaders()
@@ -1104,15 +1103,15 @@ namespace IKYS_WebParts.KisiselSayfaWP
                             {
                                 bool isdeleted = new IzinTalepService().Delete(izinTalep, LoggingContext);
                                 if (isdeleted)
-                                    MessageHelper.PublishMessage("İzin talebi silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                                    Messages.Success("İzin talebi silindi", 2000);
                                 else
-                                    MessageHelper.PublishMessage("İzin talebi silinemedi ", ProjeConstants.MESAJ_HATA);
+                                    Messages.Error("İzin talebi silinemedi ");
                                 //FillIzinTalepleriTable(personel);  zaten postback de yeniden yükleniyor
                                 Timer1_Tick(null, null);
                             }
                             else
                             {
-                                MessageHelper.PublishMessage("İzin talebi bulunamadı, talebiniz zaten silinmiş olabilir. Lütfen kontrol ediniz.", ProjeConstants.MESAJ_BILGI);
+                                Messages.Info("İzin talebi bulunamadı, talebiniz zaten silinmiş olabilir. Lütfen kontrol ediniz.");
                             }
 
                         };
@@ -1173,9 +1172,9 @@ namespace IKYS_WebParts.KisiselSayfaWP
                             izinTalep.Degistiren = CurrentUserName;
                                 bool isclosed = new IzinTalepService().Update(izinTalep, LoggingContext);
                             if (isclosed)
-                                MessageHelper.PublishMessage("Izin talebi kapatildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                                Messages.Success("Izin talebi kapatildi", 2000);
                             else
-                                MessageHelper.PublishMessage("Izin talebi kapatilamadi ", ProjeConstants.MESAJ_HATA);
+                                Messages.Error("Izin talebi kapatilamadi ");
                             Timer1_Tick(null, null);
                         };
                         KapatCell.Controls.Add(kapatBtn);
@@ -1338,7 +1337,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
 
             if (personel == null)
             {
-                MessageHelper.PublishMessage("Personel bulunamadi", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Personel bulunamadi");
                 return new List<GorevOnayListItem>();
             }
             else
@@ -1457,7 +1456,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
         {
             if (personel == null)
             {
-                MessageHelper.PublishMessage("Personel bulunamadi", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Personel bulunamadi");
                 return new List<DereceKademeListItem>();
             }
             else

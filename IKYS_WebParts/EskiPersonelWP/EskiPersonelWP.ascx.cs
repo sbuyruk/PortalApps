@@ -27,7 +27,7 @@ namespace IKYS_WebParts.EskiPersonelWP
             if (error == null || error is System.Threading.ThreadAbortException) return;
             PortalLogContext context = LoggingContext;
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
 
         private void ExecutePersonelAction(string operation, Action action)
@@ -258,7 +258,7 @@ namespace IKYS_WebParts.EskiPersonelWP
                     }
                     if (!string.IsNullOrEmpty(MesajQS))
                     {
-                        MessageHelper.PublishMessage("Personel kaydedildi, lütfen Kimlik, Eğitim, İletişim, Aile vb. bilgileri tamamlayınız", ProjeConstants.MESAJ_BASARILI, 2000);
+                        Messages.Success("Personel kaydedildi, lütfen Kimlik, Eğitim, İletişim, Aile vb. bilgileri tamamlayınız", 2000);
                         MesajQS = string.Empty;
                     }
                 }
@@ -747,7 +747,7 @@ namespace IKYS_WebParts.EskiPersonelWP
             }
             else
             {
-                MessageHelper.PublishMessage("İşe başlama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
+                Messages.Error("İşe başlama tarihi belirlenemedi");
             }
         }
         private void FillIzinHareketleriTable(Personel personel)
@@ -842,7 +842,7 @@ namespace IKYS_WebParts.EskiPersonelWP
             }
             else
             {
-                MessageHelper.PublishMessage("İşe başlama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
+                Messages.Error("İşe başlama tarihi belirlenemedi");
             }
         }
         private void FillMazeretIzinHareketleriTable(Personel personel)
@@ -932,7 +932,6 @@ namespace IKYS_WebParts.EskiPersonelWP
             }
             else
             {
-                // MessageHelper.PublishMessage("Ise baslama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
             }
         }
         private void FillDigerIzinlerTable(Personel personel)
@@ -1493,9 +1492,10 @@ namespace IKYS_WebParts.EskiPersonelWP
                         updated = true;
                     }
                 }
-                MessageHelper.PublishMessage(updated ? "Personel ve kimlik bilgileri güncellendi."
-                    : "Personel ve kimlik bilgileri güncellenemedi. Değişiklikler kaydedilmedi.",
-                    updated ? ProjeConstants.MESAJ_BASARILI : ProjeConstants.MESAJ_HATA);
+                if (updated)
+                    Messages.Success("Personel ve kimlik bilgileri güncellendi.");
+                else
+                    Messages.Error("Personel ve kimlik bilgileri güncellenemedi. Değişiklikler kaydedilmedi.");
             });
         }
         protected void KadrosuzUpdateIsBilgileriBtn_Click(object sender, EventArgs e)
@@ -1515,8 +1515,10 @@ namespace IKYS_WebParts.EskiPersonelWP
                         updated = true;
                     }
                 }
-                MessageHelper.PublishMessage(updated ? "İş bilgileri güncellendi." : "İş bilgileri güncellenemedi.",
-                    updated ? ProjeConstants.MESAJ_BASARILI : ProjeConstants.MESAJ_HATA);
+                if (updated)
+                    Messages.Success("İş bilgileri güncellendi.");
+                else
+                    Messages.Error("İş bilgileri güncellenemedi.");
             });
         }
         protected void UpdateIsBilgileriBtn_Click(object sender, EventArgs e)
@@ -1537,8 +1539,10 @@ namespace IKYS_WebParts.EskiPersonelWP
                         updated = true;
                     }
                 }
-                MessageHelper.PublishMessage(updated ? "İş bilgileri güncellendi." : "İş bilgileri güncellenemedi.",
-                    updated ? ProjeConstants.MESAJ_BASARILI : ProjeConstants.MESAJ_HATA);
+                if (updated)
+                    Messages.Success("İş bilgileri güncellendi.");
+                else
+                    Messages.Error("İş bilgileri güncellenemedi.");
             });
         }
         protected void UpdateIletisimBtn_Click(object sender, EventArgs e)
@@ -1558,8 +1562,10 @@ namespace IKYS_WebParts.EskiPersonelWP
                         updated = true;
                     }
                 }
-                MessageHelper.PublishMessage(updated ? "İletişim bilgileri güncellendi." : "İletişim bilgileri güncellenemedi.",
-                    updated ? ProjeConstants.MESAJ_BASARILI : ProjeConstants.MESAJ_HATA);
+                if (updated)
+                    Messages.Success("İletişim bilgileri güncellendi.");
+                else
+                    Messages.Error("İletişim bilgileri güncellenemedi.");
             });
         }
         protected void AileDuzenleBtn_Click(object sender, EventArgs e)
@@ -1818,7 +1824,7 @@ namespace IKYS_WebParts.EskiPersonelWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage(kimlikNo + " TCNumarasi zaten kayitli", ProjeConstants.MESAJ_HATA);
+                    Messages.Error(kimlikNo + " TCNumarasi zaten kayitli");
                 }
 
             }
@@ -1932,7 +1938,7 @@ namespace IKYS_WebParts.EskiPersonelWP
             }
             else
             {
-                MessageHelper.PublishMessage("Resim Seçmediniz.", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Resim Seçmediniz.");
             }
 
         }
@@ -1956,7 +1962,7 @@ namespace IKYS_WebParts.EskiPersonelWP
             }
             else
             {
-                MessageHelper.PublishMessage("İşlem tamamlandı. Resim yüklendi.", ProjeConstants.MESAJ_BASARILI);
+                Messages.Success("İşlem tamamlandı. Resim yüklendi.");
             }
         }
         protected void PersonelTipiDDL_SelectedIndexChanged(object sender, EventArgs e)

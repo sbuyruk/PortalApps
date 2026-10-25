@@ -27,7 +27,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             PortalLogContext context = LoggingContext;
             if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -174,7 +174,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                         GorevOnay gorevOnay = new GorevOnayService().GetById(GorevOnayIdQS.ConvertToInt(), LoggingContext);
                         if (gorevOnay == null)
                         {
-                            MessageHelper.PublishMessage("Görev kaydı bulunamadı. Yeni görev girişi yapabilirsiniz.", ProjeConstants.MESAJ_HATA);
+                            Messages.Error("Görev kaydı bulunamadı. Yeni görev girişi yapabilirsiniz.");
                             OpenGiris();
                         }
                         else
@@ -721,7 +721,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Kayıt bulunamadı", ProjeConstants.MESAJ_BILGI);
+                Messages.Info("Kayıt bulunamadı");
             }
         }
 
@@ -861,7 +861,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 DateTime bitTarih = BitisTarihiTxt.Text.ConvertToDatetime();
                 if (basTarih > bitTarih)
                 {
-                    MessageHelper.PublishMessage("Başlangıç tarihi bitiş tarihinden sonra olamaz.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Başlangıç tarihi bitiş tarihinden sonra olamaz.");
                     isEmpty = true;
                 }
             }
@@ -881,7 +881,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     isDateUsed = new GorevOnayService().HasDateConflict(personelId, basTarih, bitTarih, gorevOnayId, LoggingContext);
                     if (isDateUsed)
                     {
-                        MessageHelper.PublishMessage("Bu tarihlerde başka bir görev kaydı bulunmaktadır.", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Bu tarihlerde başka bir görev kaydı bulunmaktadır.");
                     }
                 }
             }
@@ -974,14 +974,14 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             Harcirah baslangicHarcirah = HarcirahGetir(PersonelDDL.SelectedItem.Value.ConvertToInt(), BaslangicTarihiTxt.Text.ConvertToDatetime());
             if (baslangicHarcirah == null)
             {
-                MessageHelper.PublishMessage("Harcırah bilgisi bulunamadı!", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Harcırah bilgisi bulunamadı!");
                 return;
             }
 
             Harcirah bitisHarcirah = HarcirahGetir(PersonelDDL.SelectedItem.Value.ConvertToInt(), BitisTarihiTxt.Text.ConvertToDatetime());
             if (bitisHarcirah == null)
             {
-                MessageHelper.PublishMessage("Bitiş tarihine göre harcırah bilgisi bulunamadı!", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Bitiş tarihine göre harcırah bilgisi bulunamadı!");
                 return;
             }
 
@@ -1132,7 +1132,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Personel Bulunamadı!", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Personel Bulunamadı!");
                 }
 
             }
@@ -1155,13 +1155,13 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                         bool isUpdated = Guncelle();
                         if (isUpdated)
                         {
-                            MessageHelper.PublishMessage("Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                            Messages.Success("Güncellendi", 2000);
                         }
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Personel Bulunamadı!", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Personel Bulunamadı!");
                 }
 
             }
@@ -1190,7 +1190,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     bool isDeleted = GorevOnayiSil(gorevOnay);
                     if (isDeleted)
                     {
-                        MessageHelper.PublishMessage("Görev Onayı Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        Messages.Success("Görev Onayı Silindi", 2000);
                         RedirectToPage(ProjeConstants.PAGE_GOREVONAY_LIST + "?Mesaj=true");
                     }
                 }
@@ -1234,12 +1234,14 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                             {
                                 //amire mail gönder
                                 //personele  mail gönder
-                                IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Giriş", LoggingContext);
+                                if (!IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Giriş", LoggingContext))
+                                    Messages.Warning("Bilgiler kaydedildi ancak bildirim e-postası gönderilemedi. Başvuru kodu: " + LoggingContext.OperationId.ToString("N"));
                             }
                             else
                             {
                                 //IKYS yetkili birim için mail gönder
-                                IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Giriş",false, LoggingContext);
+                                if (!IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Giriş",false, LoggingContext))
+                                    Messages.Warning("Bilgiler kaydedildi ancak bildirim e-postası gönderilemedi. Başvuru kodu: " + LoggingContext.OperationId.ToString("N"));
                             }
                         }
                     }

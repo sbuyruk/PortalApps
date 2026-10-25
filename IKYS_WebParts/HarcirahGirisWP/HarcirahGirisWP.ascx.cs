@@ -23,7 +23,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
             PortalLogContext context = LoggingContext;
             if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         public HarcirahGirisWP()
         {
@@ -188,7 +188,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
             {
                 if (string.IsNullOrWhiteSpace(YeniBaslangicTarihiTxt.Text))
                 {
-                    MessageHelper.PublishMessage("Başlangıç tarihi zorunludur.", ProjeConstants.MESAJ_BILGI, 3000);
+                    Messages.Info("Başlangıç tarihi zorunludur.", 3000);
                     return;
                 }
 
@@ -197,7 +197,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
                 if (string.IsNullOrWhiteSpace(seciliUlke) ||
                     seciliUlke == ProjeConstants.BOS_INT.ToString())
                 {
-                    MessageHelper.PublishMessage("Ülke seçilmelidir.", ProjeConstants.MESAJ_BILGI, 3000);
+                    Messages.Info("Ülke seçilmelidir.", 3000);
                     return;
                 }
 
@@ -244,7 +244,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
 
                 if (kadroUlkeKombinasyonlari.Count == 0)
                 {
-                MessageHelper.PublishMessage("Seçili ülke için kadro grubu/ülke tanımı bulunamadı.", ProjeConstants.MESAJ_BILGI, 3000);
+                Messages.Info("Seçili ülke için kadro grubu/ülke tanımı bulunamadı.", 3000);
                     return;
                 }
 
@@ -282,7 +282,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
                     }
                 }
 
-                MessageHelper.PublishMessage(eklendi + " kayıt eklendi.", ProjeConstants.MESAJ_BASARILI, 3000);
+                Messages.Success(eklendi + " kayıt eklendi.", 3000);
                 RedirectToSelf();
             }
             catch (Exception ex)
@@ -397,7 +397,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
 
                         if (new HarcirahService().Update(item, LoggingContext))
                         {
-                            MessageHelper.PublishMessage("Güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                            Messages.Success("Güncellendi.", 2000);
                             RedirectToSelf();
                         }
                     }
@@ -425,7 +425,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
 
                         if (new HarcirahService().Delete(item, LoggingContext))
                         {
-                            MessageHelper.PublishMessage("Silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                            Messages.Success("Silindi.", 2000);
                             RedirectToSelf();
                         }
                     }

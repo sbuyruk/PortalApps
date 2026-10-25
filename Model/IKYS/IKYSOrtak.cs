@@ -511,7 +511,7 @@ namespace Model.Ortak
 
         #endregion IKYS
 
-        public static void IzinTalepOlusturmaEPostasiGonder(Personel personel, int izinTalepId, Utility.Logging.PortalLogContext context)
+        public static bool IzinTalepOlusturmaEPostasiGonder(Personel personel, int izinTalepId, Utility.Logging.PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
             try
@@ -557,21 +557,22 @@ namespace Model.Ortak
                 }
 
 
+                return true;
             }
             catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error)
             {
                 Utility.Logging.PortalTechnicalLog.WriteError(context, "IKYS.Notification", error);
-                Messages.Warning("Bilgiler kaydedildi ancak bildirim e-postası gönderilemedi. Başvuru kodu: " + context.OperationId.ToString("N"));
+                return false;
             }
         }
 
-        public static void GorevOnayEPostasiGonder(Personel personel, int gorevOnayId, string tip, Utility.Logging.PortalLogContext context)
+        public static bool GorevOnayEPostasiGonder(Personel personel, int gorevOnayId, string tip, Utility.Logging.PortalLogContext context)
         {
-            GorevOnayEPostasiGonder(personel, gorevOnayId, tip, null, "Giriş", true, context);
+            return GorevOnayEPostasiGonder(personel, gorevOnayId, tip, null, "Giriş", true, context);
         }
 
-        public static void GorevOnayEPostasiGonder(Personel personel, int gorevOnayId, string tip, List<string> ekEpostaAdresleri, string durum, bool isAddMailGrubuToAdress, Utility.Logging.PortalLogContext context)
+        public static bool GorevOnayEPostasiGonder(Personel personel, int gorevOnayId, string tip, List<string> ekEpostaAdresleri, string durum, bool isAddMailGrubuToAdress, Utility.Logging.PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
             try
@@ -641,16 +642,17 @@ namespace Model.Ortak
                     }
                 }
 
+                return true;
             }
             catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error)
             {
                 Utility.Logging.PortalTechnicalLog.WriteError(context, "IKYS.Notification", error);
-                Messages.Warning("Bilgiler kaydedildi ancak bildirim e-postası gönderilemedi. Başvuru kodu: " + context.OperationId.ToString("N"));
+                return false;
             }
         }
 
-        public static void BilgiSistemMailGrubunaEPostaGonder(PersonelItem personelItem, string baslik, Utility.Logging.PortalLogContext context)
+        public static bool BilgiSistemMailGrubunaEPostaGonder(PersonelItem personelItem, string baslik, Utility.Logging.PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
             try
@@ -679,12 +681,13 @@ namespace Model.Ortak
                     }
                 }
 
+                return true;
             }
             catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error)
             {
                 Utility.Logging.PortalTechnicalLog.WriteError(context, "IKYS.Notification", error);
-                Messages.Warning("Bilgiler kaydedildi ancak bildirim e-postası gönderilemedi. Başvuru kodu: " + context.OperationId.ToString("N"));
+                return false;
             }
         }
 
@@ -754,9 +757,9 @@ namespace Model.Ortak
 
             return kalanIzinToplami;
         }
-        public static void GorevOnayEPostasiGonder(Personel personel, int gorevOnayId, string tip, List<string> ekEpostaAdresleri, string durum, Utility.Logging.PortalLogContext context)
+        public static bool GorevOnayEPostasiGonder(Personel personel, int gorevOnayId, string tip, List<string> ekEpostaAdresleri, string durum, Utility.Logging.PortalLogContext context)
         {
-            GorevOnayEPostasiGonder(personel, gorevOnayId, tip, ekEpostaAdresleri, durum, true, context);
+            return GorevOnayEPostasiGonder(personel, gorevOnayId, tip, ekEpostaAdresleri, durum, true, context);
         }
     }
 }

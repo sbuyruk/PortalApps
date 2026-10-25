@@ -32,7 +32,7 @@ namespace IKYS_WebParts.MaasOlusturmaWP
             PortalLogContext context = LoggingContext;
             if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -443,7 +443,7 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
                 MaasHareket item = service.GetByTarih(TarihDDL.SelectedItem.Value.ConvertToDatetime(), transaction, context);
                 if (item == null)
                 {
-                    MessageHelper.PublishMessage("Silinecek bir maaş kaydı bulunamadı.", ProjeConstants.MESAJ_BILGI);
+                    Messages.Info("Silinecek bir maaş kaydı bulunamadı.");
                     return;
                 }
                 if (!service.DeleteByGrupId(item, item.GrupId, transaction, context))

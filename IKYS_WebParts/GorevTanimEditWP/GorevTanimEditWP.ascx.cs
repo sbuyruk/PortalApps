@@ -22,7 +22,7 @@ namespace IKYS_WebParts.GorevTanimEditWP
             PortalLogContext context = LoggingContext;
             if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -196,7 +196,7 @@ namespace IKYS_WebParts.GorevTanimEditWP
                 int id = new GorevTanimService().Save(gorev, LoggingContext);
                 if (id > 0)
                 {
-                    MessageHelper.PublishMessage("Yeni görev kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Yeni görev kaydedildi", 2000);
                     GorevTanimIdQS = id.ToString();
                     SaveBtn.Visible = false;
                     UpdateBtn.Visible = true;
@@ -204,7 +204,7 @@ namespace IKYS_WebParts.GorevTanimEditWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Görev kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Görev kaydedilemedi");
                     UpdateBtn.Visible = false;
                     SaveBtn.Visible = true;
                 }
@@ -234,15 +234,15 @@ namespace IKYS_WebParts.GorevTanimEditWP
                         if (new GorevTanimService().Delete(gorevTanim, LoggingContext))
                             RedirectToPage(ProjeConstants.PAGE_GOREVTANIM_LIST + "?Mesaj=true");
                         else
-                            MessageHelper.PublishMessage("Kadro silinemedi.", ProjeConstants.MESAJ_HATA);
+                            Messages.Error("Kadro silinemedi.");
                     }
                 }
                 else
                 {
                     Personel personel = new PersonelService().GetById(isBilgileri.PersonelId, LoggingContext);
                     string adi = personel != null ? "(" + personel.Adi + " " + personel.Soyadi + ")" : string.Empty;
-                    MessageHelper.PublishMessage("Bu kadroda tanımlı personel bulunmaktadır. " + adi +
-                        " Kadroyu silmek için önce kadroyu boşaltın.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Bu kadroda tanımlı personel bulunmaktadır. " + adi +
+                        " Kadroyu silmek için önce kadroyu boşaltın.");
                 }
             }
             catch (System.Threading.ThreadAbortException)
@@ -274,7 +274,7 @@ namespace IKYS_WebParts.GorevTanimEditWP
                     if (isupdated)
                     {
 
-                        MessageHelper.PublishMessage("Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        Messages.Success("Güncellendi", 2000);
                     }
 
                 }

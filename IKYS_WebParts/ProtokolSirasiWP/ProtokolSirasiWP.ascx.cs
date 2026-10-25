@@ -25,7 +25,7 @@ namespace IKYS_WebParts.ProtokolSirasiWP
             PortalLogContext context = LoggingContext;
             if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -225,12 +225,12 @@ $('#CustomDataTable').on( 'draw.dt', function () {
                     transaction.Complete();
                 }
                 TabloOlustur();
-                MessageHelper.PublishMessage("Sıralama kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                Messages.Success("Sıralama kaydedildi", 2000);
             }
             catch (Exception ex)
             {
                 ReportError("ProtokolSirasi.Save", ex);
-                MessageHelper.PublishMessage("Sıralama kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Sıralama kaydedilemedi");
             }
 
         }

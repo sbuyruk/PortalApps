@@ -26,7 +26,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             PortalLogContext context = LoggingContext;
             if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -214,7 +214,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
         {
             if (personel == null)
             {
-                MessageHelper.PublishMessage("Personel bulunamadı", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Personel bulunamadı");
                 return new List<DereceKademeListItem>();
             }
             else
@@ -270,7 +270,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
         {
             if (personel == null)
             {
-                MessageHelper.PublishMessage("Personel bulunamadı", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Personel bulunamadı");
             }
             else
             {
@@ -307,11 +307,11 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                 };
 
                 new DereceKademeDegisimService().Save(dereceKademeDegisim, LoggingContext);
-                MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Kaydedildi.", ProjeConstants.MESAJ_BASARILI);
+                Messages.Success("Derece ve Kademe Değişikliği Kaydedildi.");
             }
             catch (Exception)
             {
-                MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Kaydedilemedi.", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Derece ve Kademe Değişikliği Kaydedilemedi.");
             }
         }
         private void UpdateDereceKademeDegisim(int id, string degisim, DateTime degisimTarihi, int derece, int kademe, string aciklama)
@@ -323,7 +323,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                 DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisimService().GetById(id, LoggingContext);
                 if (dereceKademeDegisim == null)
                 {
-                    MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Bulunamadı.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Derece ve Kademe Değişikliği Bulunamadı.");
                     return;
                 }
                 dereceKademeDegisim.Degisim = degisim;
@@ -332,11 +332,11 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                 dereceKademeDegisim.Kademe = kademe;
                 dereceKademeDegisim.Aciklama = aciklama;
                 new DereceKademeDegisimService().Update(dereceKademeDegisim, LoggingContext);
-                MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Güncellendi.", ProjeConstants.MESAJ_BASARILI);
+                Messages.Success("Derece ve Kademe Değişikliği Güncellendi.");
             }
             catch (Exception)
             {
-                MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Güncellenemedi.", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Derece ve Kademe Değişikliği Güncellenemedi.");
             }
         }
         private void SilDereceKademeDegisim(int id, string degisim, DateTime degisimTarihi, int derece, int kademe, string aciklama)
@@ -348,16 +348,16 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                 DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisimService().GetById(id, LoggingContext);
                 if (dereceKademeDegisim == null)
                 {
-                    MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Bulunamadı.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Derece ve Kademe Değişikliği Bulunamadı.");
                     return;
                 }
 
                 new DereceKademeDegisimService().Delete(dereceKademeDegisim, LoggingContext);
-                MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Silindi.", ProjeConstants.MESAJ_BASARILI);
+                Messages.Success("Derece ve Kademe Değişikliği Silindi.");
             }
             catch (Exception)
             {
-                MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Silinemedi.", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Derece ve Kademe Değişikliği Silinemedi.");
             }
         }
         private void DereceDDLDoldur()
@@ -413,7 +413,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             //kademe == Gecerli kademe  VE derece==gecerli derece ise kayit yapmasin
             if (GecerliKademeTxt.Text.ConvertToInt() == kademe && GecerliDereceTxt.Text.ConvertToInt() == derece)
             {
-                MessageHelper.PublishMessage("Kayıt yapabilmek için geçerli derece ve kademeden farklı bir değer seçmelisiniz.", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Kayıt yapabilmek için geçerli derece ve kademeden farklı bir değer seçmelisiniz.");
             }
             else
             {
@@ -475,7 +475,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Personel Bulunamadı!", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Personel Bulunamadı!");
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_PERSONEL_LIST;
                 Page.Response.Redirect(newUrl);

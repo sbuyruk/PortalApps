@@ -24,7 +24,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
             PortalLogContext context = LoggingContext;
             if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -426,11 +426,11 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                     if (isSuccess)
                     {
                         OnaylandiMailiGonder(gorevOnay);
-                        MessageHelper.PublishMessage("Görev onaylandı.", ProjeConstants.MESAJ_BILGI);
+                        Messages.Info("Görev onaylandı.");
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Onaylama işlemi başarısız oldu.", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Onaylama işlemi başarısız oldu.");
                     }
                 }
                 TabloOlustur();
@@ -455,11 +455,11 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                     if (isSuccess)
                     {
                         ReddedildiMailiGonder(gorevOnay);
-                        MessageHelper.PublishMessage("Görev reddedildi.", ProjeConstants.MESAJ_BILGI);
+                        Messages.Info("Görev reddedildi.");
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Reddetme işlemi başarısız oldu.", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Reddetme işlemi başarısız oldu.");
                     }
                 }
                 TabloOlustur();
@@ -494,7 +494,8 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                     }
                     //amire mail gönder
                     //personele  mail gönder
-                    IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Onay", LoggingContext);
+                    if (!IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Onay", LoggingContext))
+                        Messages.Warning("Bilgiler kaydedildi ancak bildirim e-postası gönderilemedi. Başvuru kodu: " + LoggingContext.OperationId.ToString("N"));
 
                 }
             }
@@ -528,7 +529,8 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                     }
                     //amire mail gönder
                     //personele  mail gönder
-                    IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Red", LoggingContext);
+                    if (!IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi", emailList, "Red", LoggingContext))
+                        Messages.Warning("Bilgiler kaydedildi ancak bildirim e-postası gönderilemedi. Başvuru kodu: " + LoggingContext.OperationId.ToString("N"));
 
                 }
             }

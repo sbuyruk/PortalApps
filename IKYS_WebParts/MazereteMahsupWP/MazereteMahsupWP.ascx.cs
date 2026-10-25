@@ -22,7 +22,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
             if (error is System.Threading.ThreadAbortException) return;
             PortalLogContext context = LoggingContext;
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -161,7 +161,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
                     new IzinHareketService().TryRecordWebPartOpened(LoggingContext);
                     if (!string.IsNullOrEmpty(MahsupMesajiQS))
                     {
-                        MessageHelper.PublishMessage("Mahsup Tamamlandi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        Messages.Success("Mahsup Tamamlandi", 2000);
                         MahsupMesajiQS = string.Empty;
                     }
                 }
@@ -201,12 +201,12 @@ namespace IKYS_WebParts.MazereteMahsupWP
                 IzinDonem mazeret = service.GetByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT, today, transaction, context);
                 if (mazeret == null)
                 {
-                    MessageHelper.PublishMessage("Mahsup işlemi yapılamaz. Mazeret izin dönemi bulunamadı; listeyi yenileyin.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Mahsup işlemi yapılamaz. Mazeret izin dönemi bulunamadı; listeyi yenileyin.");
                     return false;
                 }
                 if ((int)mazeret.KalanIzin.ConvertToTimeSpan().TotalHours >= 8)
                 {
-                    MessageHelper.PublishMessage("Mazeret izni bakiyesi değişmiş. Bu işlem için kalan süre 8 saatten az olmalıdır; listeyi yenileyin.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Mazeret izni bakiyesi değişmiş. Bu işlem için kalan süre 8 saatten az olmalıdır; listeyi yenileyin.");
                     return false;
                 }
                 if (ucretli == null)
@@ -549,7 +549,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
             }
             else
             {
-                MessageHelper.PublishMessage("Ise baslama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Ise baslama tarihi belirlenemedi");
             }
         }
         private void IzinDonemTableHeaders()
@@ -685,7 +685,7 @@ namespace IKYS_WebParts.MazereteMahsupWP
                 bool isSaved = BirGunMahsupEt();
                 if (isSaved)
                 {
-                    MessageHelper.PublishMessage("İzin Kaydı Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("İzin Kaydı Güncellendi", 2000);
                     RedirectToPage(ProjeConstants.PAGE_MAZERETEMAHSUP);
                 }
 
