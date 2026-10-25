@@ -46,7 +46,7 @@ namespace DAO.Repositories.TBYS
                 ORDER BY CASE WHEN DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(DosyaNo,999999)"), "");
         }
 
-        public bool UpdateActiveStatus(int id, bool aktif, string durum, string durumDegistirmeTar, string degistiren, DateTime degistirmeTarihi, SqlTransactionContext transaction, PortalLogContext context)
+        public bool UpdateActiveStatus(int id, bool aktif, string durum, DateTime durumDegistirmeTar, string degistiren, DateTime degistirmeTarihi, SqlTransactionContext transaction, PortalLogContext context)
         {
             SqlQuery query = new SqlQuery(@"UPDATE KiraSozlesme_Table
                 SET Aktif=@Aktif, SozlesmeDurumu=@Durum, DurumDegismeTar=@DurumDegismeTar,
@@ -58,7 +58,14 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@Degistiren", degistiren);
             query.AddParameter("@DegistirmeTarihi", degistirmeTarihi);
             query.AddParameter("@Id", id);
-            return db.Update2Db(query, transaction, context);
+            return db.UpdateExactlyOne(query, transaction, context);
+        }
+
+        public DataTable SelectRenewalRegion(string province, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT BolgeId FROM Il_Table WITH (HOLDLOCK) WHERE LOWER(IlAdi)=LOWER(@IlAdi) ORDER BY Id");
+            query.AddParameter("@IlAdi", province ?? string.Empty);
+            return db.SelectFromDb(query, transaction, context);
         }
         public DataTable SelectListReturnDataTable(int kiraciId, int aktif, int bolgeId)
         {

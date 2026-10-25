@@ -55,9 +55,11 @@ namespace Model.Services.TBYS
 
         public int Save(KiraSozlesme item, SqlTransactionContext transaction)
         {
+            if (transaction == null) throw new ArgumentNullException("transaction", "Veritabanı işlem bağlamı gereklidir.");
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
             if (item == null) throw new ArgumentNullException("item");
             item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
+            item.Olusturan = context.UserLogin;
             item.Id = repository.Insert(item, transaction, context);
             if (item.Id > 0)
                 RecordAudit("INSERT", item.Id, null, repository.SelectById(item.Id, transaction, context), transaction);
@@ -113,7 +115,7 @@ namespace Model.Services.TBYS
             PortalLogRepository log = new PortalLogRepository();
             int auditId = log.RecordAudit(context, operation, "KiraSozlesme", id.ToString(CultureInfo.InvariantCulture), transaction);
             if (auditId == 0) return;
-            string[] fields = { "KiraciId", "SozBasTar", "SozBitTar", "KiraBedeli", "OdemeSekli", "TaksitSayisi", "TeminatTutari", "Aktif", "SozlesmeDurumu", "DosyaNo", "DevirAnaPara", "DevirFaizTutari", "DevirFaizliBakiye", "OdenenTeminatTutari", "IadeTeminatTutari", "KalanTeminatTutari", "BolgeId" };
+            string[] fields = { "KiraciId", "SozBasTar", "SozBitTar", "KiraBedeli", "OdemeSekli", "TaksitSayisi", "TeminatTutari", "Aktif", "SozlesmeDurumu", "DurumDegismeTar", "DosyaNo", "DevirAnaPara", "DevirFaizTutari", "DevirFaizliBakiye", "OdenenTeminatTutari", "IadeTeminatTutari", "KalanTeminatTutari", "BolgeId" };
             foreach (string field in fields)
             {
                 string oldValue = AuditValue(oldValues, field);
@@ -155,12 +157,24 @@ namespace Model.Services.TBYS
 
         public bool UpdateActiveStatus(KiraSozlesme item, string durum, string degistirmeTar, bool aktif, SqlTransactionContext transaction)
         {
-            if (item == null || item.Id == 0) return false;
-            item.Degistiren = UtilityHelper.GetCurrentUserName();
-            item.DegistirmeTarihi = DateTime.Now;
-            string durumDegistirmeTar = string.IsNullOrEmpty(degistirmeTar) ? DateTime.Now.ConvertToTimeSpanReturnInHHmm() : degistirmeTar;
-            bool updated = repository.UpdateActiveStatus(item.Id, aktif, durum, durumDegistirmeTar, item.Degistiren, item.DegistirmeTarihi, transaction, context);
-            if (updated && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "UPDATE", "KiraSozlesme", item.Id.ToString(), transaction);
+            DateTime date = DateTime.Today;
+            if (!string.IsNullOrWhiteSpace(degistirmeTar)
+                && !DateTime.TryParse(degistirmeTar, CultureInfo.GetCultureInfo("tr-TR"), DateTimeStyles.None, out date))
+                return false;
+            return UpdateActiveStatus(item, durum, date, aktif, transaction);
+        }
+
+        public bool UpdateActiveStatus(KiraSozlesme item, string durum, DateTime date, bool aktif, SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction", "Veritabanı işlem bağlamı gereklidir.");
+            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+            if (item == null || item.Id <= 0 || date < new DateTime(1753, 1, 1)) return false;
+            DataTable previous = repository.SelectById(item.Id, transaction, context);
+            if (previous == null) return false;
+            bool updated = repository.UpdateActiveStatus(item.Id, aktif, durum, date,
+                context.UserLogin, DateTime.Now, transaction, context);
+            if (updated)
+                RecordAudit("UPDATE", item.Id, previous, repository.SelectById(item.Id, transaction, context), transaction);
             return updated;
         }
 

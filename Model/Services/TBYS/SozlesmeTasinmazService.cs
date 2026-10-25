@@ -43,6 +43,11 @@ namespace Model.Services.TBYS
         public SozlesmeTasinmaz GetById(int id) { return Map(repository.SelectById(id)); }
         public List<SozlesmeTasinmaz> GetAll() { return ToList(repository.SelectAll()); }
         public List<SozlesmeTasinmaz> GetBySozlesmeId(int id) { return ToList(repository.SelectBySozlesmeId(id)); }
+        public List<SozlesmeTasinmaz> GetBySozlesmeId(int id, SqlTransactionContext transaction)
+        {
+            RequireTransaction(transaction);
+            return ToList(repository.SelectBySozlesmeId(id, transaction, context));
+        }
         public List<SozlesmeTasinmaz> GetByTasinmazId(int id) { return ToList(repository.SelectByTasinmazId(id)); }
         public List<SozlesmeTasinmaz> GetBySozlesmeIdTasinmazId(int sozlesmeId, int tasinmazId, int bolumId) { return ToList(repository.SelectBySozlesmeIdTasinmazId(sozlesmeId, tasinmazId, bolumId)); }
         public List<SozlesmeTasinmaz> GetByBolumId(int bolumId) { return ToList(repository.SelectByBolumId(bolumId)); }
@@ -123,7 +128,7 @@ namespace Model.Services.TBYS
                 return item.Id;
             }
             item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
+            item.Olusturan = context.UserLogin;
             item.Id = repository.Insert(item, transaction, context);
             if (item.Id <= 0) throw new InvalidOperationException("Sözleşme bağlantısı oluşturulamadı.");
             DataTable saved = repository.SelectById(item.Id, transaction, context);
