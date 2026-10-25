@@ -9,35 +9,22 @@ namespace DAO.Repositories.MTS
 {
     public class AramaGorusmeRepository
     {
+        private readonly MtsSqlExecutor sql = new MtsSqlExecutor("AramaGorusmeRepository");
         private const string TableName = "AramaGorusme_Table";
-        private readonly DbClass db;
-        private readonly PortalLogContext context;
-        private readonly CrudQueryBuilder queryBuilder;
 
-        public AramaGorusmeRepository() : this(new DbClass()) { }
-        public AramaGorusmeRepository(PortalLogContext context) : this(new DbClass())
+        public AramaGorusmeRepository()
+        { }
+        public AramaGorusmeRepository(PortalLogContext context)
         {
             if (context == null || context.Project != "MTS") throw new ArgumentException("MTS log bağlamı gereklidir.", "context");
-            this.context = context;
+            sql = new MtsSqlExecutor(context, "AramaGorusmeRepository");
         }
 
         private DataTable Read(SqlQuery query, string identifier, [CallerMemberName] string method = "")
         {
-            return context == null ? db.SelectFromDb(query, identifier)
-                : PortalSqlReadExecutor.Select(query, context, "AramaGorusmeRepository." + method);
+            return sql.Select(query, method: method);
         }
 
-        private void RequireLegacyWrite()
-        {
-            if (context != null) throw new InvalidOperationException("MTS yazma işlemi transaction hizmeti üzerinden yapılmalıdır.");
-        }
-
-        public AramaGorusmeRepository(DbClass db)
-        {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
-            queryBuilder = new CrudQueryBuilder();
-        }
         public DataTable SelectById(int id)
         {
             SqlQuery query = new SqlQuery("SELECT * FROM " + TableName + " WHERE Id=@Id");
@@ -45,9 +32,6 @@ namespace DAO.Repositories.MTS
             return Read(query, "");
         }
         public DataTable SelectAll() { return Read(new SqlQuery("SELECT * FROM " + TableName + " ORDER BY Id"), ""); }
-        public int Insert<T>(T entity) { RequireLegacyWrite(); return db.Insert(queryBuilder.BuildInsert(entity, TableName)); }
-        public bool Update<T>(T entity) { RequireLegacyWrite(); return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName)); }
-        public bool Delete(int id) { RequireLegacyWrite(); return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), ""); }
 
         public DataTable SelectByFaaliyetId(int faaliyetId)
         {

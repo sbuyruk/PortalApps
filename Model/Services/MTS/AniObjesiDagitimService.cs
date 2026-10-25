@@ -124,59 +124,6 @@ namespace Model.Services.MTS
                 "katilimciFaaliyet");
         }
 
-        public int DeleteByActivityAndParticipant(int faaliyetId, int katilimciId, string aniObjesiIdList)
-        {
-            if (string.IsNullOrWhiteSpace(aniObjesiIdList))
-                return 0;
-
-            List<int> ids = aniObjesiIdList.Split(',').Select(value =>
-            {
-                int id;
-                if (!int.TryParse(value.Trim(), out id))
-                    throw new ArgumentException("Ani objesi listesi geçersiz bir değer içeriyor.", "aniObjesiIdList");
-                return id;
-            }).ToList();
-
-            DataTable deletedItems;
-            int deleted = repository.DeleteByActivityAndParticipant(faaliyetId, katilimciId, ids, out deletedItems);
-            if (deleted > 0 && ProjeConstants.MTS_DELETE_LOG)
-            {
-                foreach (AniObjesiDagitim item in ToList(deletedItems))
-                    new OlayKayit().SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESIDAGITIM);
-            }
-            return deleted;
-        }
-
-        public int Save(AniObjesiDagitim item)
-        {
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-            if (item.Id > 0 && ProjeConstants.MTS_SAVE_LOG)
-                new OlayKayit().GirisOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESIDAGITIM);
-            return item.Id;
-        }
-
-        public bool Update(AniObjesiDagitim item)
-        {
-            AniObjesiDagitim old = GetById(item.Id);
-            item.DegistirmeTarihi = DateTime.Now;
-            item.Degistiren = UtilityHelper.GetCurrentUserName();
-            bool updated = item.Id != 0 && repository.Update(item);
-            if (updated && ProjeConstants.MTS_UPDATE_LOG)
-                new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESIDAGITIM);
-            return updated;
-        }
-
-        public bool Delete(AniObjesiDagitim item)
-        {
-            AniObjesiDagitim old = GetById(item.Id);
-            bool deleted = item.Id != 0 && old != null && repository.Delete(item.Id);
-            if (deleted && ProjeConstants.MTS_DELETE_LOG)
-                new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESIDAGITIM);
-            return deleted;
-        }
-
         private static List<AniObjesiDagitim> ToList(DataTable table)
         {
             return new AniObjesiDagitim().ToList<AniObjesiDagitim>(table);

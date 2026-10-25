@@ -14,6 +14,14 @@ namespace DAO.Repositories.MTS
         private readonly PortalLogContext context;
         private readonly string repositoryName;
 
+        // Context-free report compatibility is read-only and never invokes legacy logging.
+        internal MtsSqlExecutor(string repositoryName)
+        {
+            if (string.IsNullOrWhiteSpace(repositoryName))
+                throw new ArgumentException("Repository adı gereklidir.", "repositoryName");
+            this.repositoryName = repositoryName;
+        }
+
         internal MtsSqlExecutor(PortalLogContext context, string repositoryName)
         {
             if (context == null || context.Project != "MTS")
@@ -54,8 +62,9 @@ namespace DAO.Repositories.MTS
             return Trace(operation, method, () => transaction.Update(query), result => result);
         }
 
-        private static void RequireTransaction(SqlTransactionContext transaction)
+        private void RequireTransaction(SqlTransactionContext transaction)
         {
+            if (context == null) throw new InvalidOperationException("Yazma işlemi için MTS log bağlamı gereklidir.");
             if (transaction == null) throw new ArgumentNullException("transaction", "İşlem bağlamı gereklidir.");
         }
 

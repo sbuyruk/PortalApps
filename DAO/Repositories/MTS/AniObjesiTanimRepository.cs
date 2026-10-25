@@ -8,33 +8,20 @@ namespace DAO.Repositories.MTS
 {
     public class AniObjesiTanimRepository
     {
+        private readonly MtsSqlExecutor sql = new MtsSqlExecutor("AniObjesiTanimRepository");
         private const string TableName = "AniObjesiTanim_Table";
-        private readonly DbClass db;
-        private readonly PortalLogContext context;
-        private readonly CrudQueryBuilder queryBuilder;
 
-        public AniObjesiTanimRepository() : this(new DbClass()) { }
+        public AniObjesiTanimRepository()
+        { }
 
-        public AniObjesiTanimRepository(PortalLogContext context) : this(new DbClass())
+        public AniObjesiTanimRepository(PortalLogContext context)
         {
             if (context == null || context.Project != "MTS") throw new ArgumentException("MTS log bağlamı gereklidir.", "context");
-            this.context = context;
+            sql = new MtsSqlExecutor(context, "AniObjesiTanimRepository");
         }
         private DataTable Read(SqlQuery query, string identifier, [CallerMemberName] string method = "")
         {
-            return context == null ? db.SelectFromDb(query, identifier)
-                : PortalSqlReadExecutor.Select(query, context, "AniObjesiTanimRepository." + method);
-        }
-        private void RequireLegacyWrite()
-        {
-            if (context != null) throw new InvalidOperationException("MTS yazma işlemi transaction hizmeti üzerinden yapılmalıdır.");
-        }
-
-        public AniObjesiTanimRepository(DbClass db)
-        {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
-            queryBuilder = new CrudQueryBuilder();
+            return sql.Select(query, method: method);
         }
 
         public DataTable SelectById(int id)
@@ -48,10 +35,6 @@ namespace DAO.Repositories.MTS
         {
             return Read(new SqlQuery("SELECT * FROM " + TableName + " ORDER BY Id"), "");
         }
-
-        public int Insert<T>(T entity) { RequireLegacyWrite(); return db.Insert(queryBuilder.BuildInsert(entity, TableName)); }
-        public bool Update<T>(T entity) { RequireLegacyWrite(); return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName)); }
-        public bool Delete(int id) { RequireLegacyWrite(); return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), ""); }
 
         public DataTable SelectStokluAniObjeleri(string stokluMu)
         {

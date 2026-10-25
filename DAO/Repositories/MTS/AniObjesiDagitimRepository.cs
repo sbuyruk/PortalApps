@@ -10,33 +10,21 @@ namespace DAO.Repositories.MTS
 {
     public class AniObjesiDagitimRepository
     {
+        private readonly MtsSqlExecutor sql = new MtsSqlExecutor("AniObjesiDagitimRepository");
         private const string TableName = "AniObjesiDagitim_Table";
-        private readonly DbClass db;
-        private readonly PortalLogContext context;
-        private readonly CrudQueryBuilder queryBuilder;
 
-        public AniObjesiDagitimRepository() : this(new DbClass()) { }
-        public AniObjesiDagitimRepository(PortalLogContext context) : this(new DbClass())
+        public AniObjesiDagitimRepository()
+        { }
+        public AniObjesiDagitimRepository(PortalLogContext context)
         {
             if (context == null || context.Project != "MTS") throw new ArgumentException("MTS log bağlamı gereklidir.", "context");
-            this.context = context;
+            sql = new MtsSqlExecutor(context, "AniObjesiDagitimRepository");
         }
         private DataTable Read(SqlQuery query, string identifier, [CallerMemberName] string method = "")
         {
-            return context == null ? db.SelectFromDb(query, identifier)
-                : PortalSqlReadExecutor.Select(query, context, "AniObjesiDagitimRepository." + method);
-        }
-        private void RequireLegacyWrite()
-        {
-            if (context != null) throw new InvalidOperationException("MTS yazma işlemi transaction hizmeti üzerinden yapılmalıdır.");
+            return sql.Select(query, method: method);
         }
 
-        public AniObjesiDagitimRepository(DbClass db)
-        {
-            if (db == null) throw new ArgumentNullException("db");
-            this.db = db;
-            queryBuilder = new CrudQueryBuilder();
-        }
         public DataTable SelectById(int id)
         {
             SqlQuery query = new SqlQuery("SELECT * FROM " + TableName + " WHERE Id=@Id");
@@ -44,9 +32,6 @@ namespace DAO.Repositories.MTS
             return Read(query, "");
         }
         public DataTable SelectAll() { return Read(new SqlQuery("SELECT * FROM " + TableName + " ORDER BY Id"), ""); }
-        public int Insert<T>(T entity) { RequireLegacyWrite(); return db.Insert(queryBuilder.BuildInsert(entity, TableName)); }
-        public bool Update<T>(T entity) { RequireLegacyWrite(); return db.Update2Db(queryBuilder.BuildUpdate(entity, TableName)); }
-        public bool Delete(int id) { RequireLegacyWrite(); return db.DeleteFromDb(queryBuilder.BuildDelete(TableName, id), ""); }
 
         public DataTable SelectByFilter(int faaliyetId, int katilimciId, int aniObjesiId, string stokluMu, string verilenGetirilen, string mode)
         {
@@ -150,27 +135,5 @@ namespace DAO.Repositories.MTS
             return Read(query, "");
         }
 
-        public int DeleteByActivityAndParticipant(int faaliyetId, int katilimciId, List<int> aniObjesiIds, out DataTable deletedItems)
-        { RequireLegacyWrite();
-            List<string> parameters = new List<string>();
-            SqlQuery selectQuery = new SqlQuery("SELECT * FROM AniObjesiDagitim_Table WHERE FaaliyetId = @FaaliyetId AND KatilimciId = @KatilimciId");
-            selectQuery.AddParameter("@FaaliyetId", faaliyetId);
-            selectQuery.AddParameter("@KatilimciId", katilimciId);
-            for (int i = 0; i < aniObjesiIds.Count; i++)
-            {
-                string parameter = "@AniObjesiId" + i;
-                parameters.Add(parameter);
-                selectQuery.Sql += (i == 0 ? " AND AniObjesiId IN (" : ", ") + parameter;
-                selectQuery.AddParameter(parameter, aniObjesiIds[i]);
-            }
-            selectQuery.Sql += ")";
-            deletedItems = db.SelectFromDb(selectQuery, "");
-            if (deletedItems == null || deletedItems.Rows.Count == 0) return 0;
-            SqlQuery deleteQuery = new SqlQuery("DELETE FROM AniObjesiDagitim_Table WHERE FaaliyetId = @FaaliyetId AND KatilimciId = @KatilimciId AND AniObjesiId IN (" + string.Join(", ", parameters) + ")");
-            deleteQuery.AddParameter("@FaaliyetId", faaliyetId);
-            deleteQuery.AddParameter("@KatilimciId", katilimciId);
-            for (int i = 0; i < aniObjesiIds.Count; i++) deleteQuery.AddParameter("@AniObjesiId" + i, aniObjesiIds[i]);
-            return db.DeleteFromDb(deleteQuery, "", true);
-        }
     }
 }

@@ -69,53 +69,6 @@ namespace Model.Services.MTS
             return Map(repository.SelectByTcKimlikNo(tcKimlikNo));
         }
 
-        public int Save(Kisi item)
-        {
-            if (item == null)
-                throw new ArgumentNullException("item");
-
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-
-            if (item.Id > 0 && ProjeConstants.MTS_SAVE_LOG)
-                new OlayKayit().GirisOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_KISI);
-
-            return item.Id;
-        }
-
-        public bool Update(Kisi item)
-        {
-            if (item == null || item.Id == 0)
-                return false;
-
-            Kisi old = GetById(item.Id);
-            item.DegistirmeTarihi = DateTime.Now;
-            item.Degistiren = UtilityHelper.GetCurrentUserName();
-            bool updated = repository.Update(item);
-
-            if (updated && ProjeConstants.MTS_UPDATE_LOG)
-                new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.MTS, ProjeConstants.MTS_KISI);
-
-            return updated;
-        }
-
-        public bool Delete(Kisi item)
-        {
-            if (item == null || item.Id == 0)
-                return false;
-
-            Kisi old = GetById(item.Id);
-            if (old == null)
-                return false;
-
-            bool deleted = repository.Delete(item.Id);
-            if (deleted && ProjeConstants.MTS_DELETE_LOG)
-                new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.MTS, ProjeConstants.MTS_KISI);
-
-            return deleted;
-        }
-
         private static List<Kisi> ToList(DataTable table)
         {
             return new Kisi().ToList<Kisi>(table);

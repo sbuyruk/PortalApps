@@ -129,37 +129,6 @@ namespace Model.Services.MTS
                 .Select(row => row.Field<string>("FaaliyetYeri")).Where(value => !string.IsNullOrWhiteSpace(value)).Distinct().ToList();
         }
 
-        public int Save(Faaliyet item)
-        {
-            item.UniqueId = Guid.NewGuid();
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-            if (item.Id > 0 && ProjeConstants.MTS_SAVE_LOG)
-                new OlayKayit().GirisOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_FAALIYET);
-            return item.Id;
-        }
-
-        public bool Update(Faaliyet item)
-        {
-            Faaliyet old = GetById(item.Id);
-            item.DegistirmeTarihi = DateTime.Now;
-            item.Degistiren = UtilityHelper.GetCurrentUserName();
-            bool updated = item.Id != 0 && repository.Update(item);
-            if (updated && ProjeConstants.MTS_UPDATE_LOG)
-                new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.MTS, ProjeConstants.MTS_FAALIYET);
-            return updated;
-        }
-
-        public bool Delete(Faaliyet item)
-        {
-            Faaliyet old = GetById(item.Id);
-            bool deleted = item.Id != 0 && old != null && repository.Delete(item.Id);
-            if (deleted && ProjeConstants.MTS_DELETE_LOG)
-                new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.MTS, ProjeConstants.MTS_FAALIYET);
-            return deleted;
-        }
-
         internal static List<Faaliyet> ToList(DataTable table)
         {
             if (table != null && table.Columns.Contains("UniqueId"))
