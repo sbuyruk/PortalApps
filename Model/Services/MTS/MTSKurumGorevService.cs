@@ -42,35 +42,6 @@ namespace Model.Services.MTS
             }
             return kurum + " " + gorev;
         }
-        public int Save(MTSKurumGorev item)
-        {
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-            if (item.Id > 0 && ProjeConstants.MTS_SAVE_LOG)
-                new OlayKayit().GirisOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_KURUMGOREV);
-            return item.Id;
-        }
-
-        public bool Update(MTSKurumGorev item)
-        {
-            MTSKurumGorev old = GetById(item.Id);
-            item.DegistirmeTarihi = DateTime.Now;
-            item.Degistiren = UtilityHelper.GetCurrentUserName();
-            bool updated = item.Id != 0 && repository.Update(item);
-            if (updated && ProjeConstants.MTS_UPDATE_LOG)
-                new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.MTS, ProjeConstants.MTS_KURUMGOREV);
-            return updated;
-        }
-
-        public bool Delete(MTSKurumGorev item)
-        {
-            MTSKurumGorev old = GetById(item.Id);
-            bool deleted = item.Id != 0 && old != null && repository.Delete(item.Id);
-            if (deleted && ProjeConstants.MTS_DELETE_LOG)
-                new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.MTS, ProjeConstants.MTS_KURUMTANIM);
-            return deleted;
-        }
 
         private static List<MTSKurumGorev> ToList(DataTable table)
         {

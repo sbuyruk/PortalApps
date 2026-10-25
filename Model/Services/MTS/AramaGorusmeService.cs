@@ -62,36 +62,6 @@ namespace Model.Services.MTS
                 ProjeConstants.MTSGOREVDURUMU_GOREVDE);
         }
 
-        public int Save(AramaGorusme item)
-        {
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-            if (item.Id > 0 && ProjeConstants.MTS_SAVE_LOG)
-                new OlayKayit().GirisOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_ARAMAGORUSME);
-            return item.Id;
-        }
-
-        public bool Update(AramaGorusme item)
-        {
-            AramaGorusme old = GetById(item.Id);
-            item.DegistirmeTarihi = DateTime.Now;
-            item.Degistiren = UtilityHelper.GetCurrentUserName();
-            bool updated = item.Id != 0 && repository.Update(item);
-            if (updated && ProjeConstants.MTS_UPDATE_LOG)
-                new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.MTS, ProjeConstants.MTS_ARAMAGORUSME);
-            return updated;
-        }
-
-        public bool Delete(AramaGorusme item)
-        {
-            AramaGorusme old = GetById(item.Id);
-            bool deleted = item.Id != 0 && old != null && repository.Delete(item.Id);
-            if (deleted && ProjeConstants.MTS_DELETE_LOG)
-                new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.MTS, ProjeConstants.MTS_ARAMAGORUSME);
-            return deleted;
-        }
-
         private static List<AramaGorusme> ToList(DataTable table)
         {
             return new AramaGorusme().ToList<AramaGorusme>(table);

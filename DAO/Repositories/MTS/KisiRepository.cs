@@ -9,39 +9,21 @@ namespace DAO.Repositories.MTS
 {
     public class KisiRepository
     {
-        private readonly DbClass db;
-        private readonly PortalLogContext context;
-        private readonly CrudQueryBuilder queryBuilder;
+        private readonly MtsSqlExecutor sql = new MtsSqlExecutor("KisiRepository");
 
         public KisiRepository()
-            : this(new DbClass())
         {
         }
 
-        public KisiRepository(PortalLogContext context) : this(new DbClass())
+        public KisiRepository(PortalLogContext context)
         {
             if (context == null || context.Project != "MTS") throw new ArgumentException("MTS log bağlamı gereklidir.", "context");
-            this.context = context;
+            sql = new MtsSqlExecutor(context, "KisiRepository");
         }
 
         private DataTable Read(SqlQuery query, string identifier, [CallerMemberName] string method = "")
         {
-            return context == null ? db.SelectFromDb(query, identifier)
-                : PortalSqlReadExecutor.Select(query, context, "KisiRepository." + method);
-        }
-
-        private void RequireLegacyWrite()
-        {
-            if (context != null) throw new InvalidOperationException("MTS yazma işlemi transaction hizmeti üzerinden yapılmalıdır.");
-        }
-
-        public KisiRepository(DbClass db)
-        {
-            if (db == null)
-                throw new ArgumentNullException("db");
-
-            this.db = db;
-            queryBuilder = new CrudQueryBuilder();
+            return sql.Select(query, method: method);
         }
 
         public DataTable SelectById(int id)
@@ -132,19 +114,5 @@ namespace DAO.Repositories.MTS
             return Read(query, "");
         }
 
-        public int Insert<T>(T entity)
-        { RequireLegacyWrite();
-            return db.Insert(queryBuilder.BuildInsert(entity, "Kisi_Table"));
-        }
-
-        public bool Update<T>(T entity)
-        { RequireLegacyWrite();
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, "Kisi_Table"));
-        }
-
-        public bool Delete(int id)
-        { RequireLegacyWrite();
-            return db.DeleteFromDb(queryBuilder.BuildDelete("Kisi_Table", id), "");
-        }
     }
 }

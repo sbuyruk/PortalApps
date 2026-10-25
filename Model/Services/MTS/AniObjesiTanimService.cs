@@ -35,36 +35,6 @@ namespace Model.Services.MTS
             return ToList(repository.SelectAll());
         }
 
-        public int Save(AniObjesiTanim item)
-        {
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item);
-            if (item.Id > 0 && ProjeConstants.MTS_SAVE_LOG)
-                new OlayKayit().GirisOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESITANIM);
-            return item.Id;
-        }
-
-        public bool Update(AniObjesiTanim item)
-        {
-            AniObjesiTanim old = GetById(item.Id);
-            item.DegistirmeTarihi = DateTime.Now;
-            item.Degistiren = UtilityHelper.GetCurrentUserName();
-            bool updated = item.Id != 0 && repository.Update(item);
-            if (updated && ProjeConstants.MTS_UPDATE_LOG)
-                new OlayKayit().GuncellemeOlayKaydet(item, old, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESITANIM);
-            return updated;
-        }
-
-        public bool Delete(AniObjesiTanim item)
-        {
-            AniObjesiTanim old = GetById(item.Id);
-            bool deleted = item.Id != 0 && old != null && repository.Delete(item.Id);
-            if (deleted && ProjeConstants.MTS_DELETE_LOG)
-                new OlayKayit().SilmeOlayKaydet(old, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESITANIM);
-            return deleted;
-        }
-
         public DataTable GetStokluAniObjesiList()
         {
             return repository.SelectStokluAniObjeleri(ProjeConstants.MTS_ANIOBJESISTOKLU);

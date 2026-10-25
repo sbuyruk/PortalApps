@@ -157,40 +157,33 @@ namespace Model.MTS
         public string ToJSON(List<CalendarEvent> eventList)
         {
             string json = "[]";
-            try
+
+            if (eventList != null)
             {
-                if (eventList != null)
+
+                JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+                List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+                Dictionary<string, object> childRow;
+                foreach (var item in eventList)
                 {
+                    childRow = new Dictionary<string, object>();
+                    childRow.Add("id", item.id);
+                    childRow.Add("title", item.title);
+                    //childRow.Add("description", item.description);
+                    childRow.Add("start", item.start);
+                    childRow.Add("end", item.end);
+                    childRow.Add("color", item.color);
+                    childRow.Add("textColor", item.textColor);
+                    childRow.Add("allDay", item.allDay);
+                    childRow.Add("url", item.url);
+                    childRow.Add("className", item.className);
 
-                    JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
-                    List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
-                    Dictionary<string, object> childRow;
-                    foreach (var item in eventList)
-                    {
-                        childRow = new Dictionary<string, object>();
-                        childRow.Add("id", item.id);
-                        childRow.Add("title", item.title);
-                        //childRow.Add("description", item.description);
-                        childRow.Add("start", item.start);
-                        childRow.Add("end", item.end);
-                        childRow.Add("color", item.color);
-                        childRow.Add("textColor", item.textColor);
-                        childRow.Add("allDay", item.allDay);
-                        childRow.Add("url", item.url);
-                        childRow.Add("className", item.className);
-
-                        parentRow.Add(childRow);
-                    }
-                    jsSerializer.MaxJsonLength = Int32.MaxValue;
-                    json = jsSerializer.Serialize(parentRow);
+                    parentRow.Add(childRow);
                 }
+                jsSerializer.MaxJsonLength = Int32.MaxValue;
+                json = jsSerializer.Serialize(parentRow);
             }
-            catch (Exception e)
-            {
-                ExceptionHelper eh = new ExceptionHelper(e);
-                eh.PublishException();
-                throw;
-            }
+
             return json;
         }
         public override int GetHashCode()
