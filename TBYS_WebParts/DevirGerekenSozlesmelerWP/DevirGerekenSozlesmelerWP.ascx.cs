@@ -182,7 +182,7 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
                 kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(HiddenSecilenId.Value.ConvertToInt());
                 if (kiraSozlesme == null)
                 {
-                    MessageHelper.PublishMessage("Sözlesme bulunamadi!", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Sözlesme bulunamadi!");
                     return;
                 }
 
@@ -190,11 +190,11 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
                 bool islendi = bakiyeDevri.DevirAl(kiraSozlesme);
                 if (islendi)
                 {
-                    MessageHelper.PublishMessage("Devir alma islemi tamamlandi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Devir alma islemi tamamlandi.", 2000);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Devir alinacak fark bulunamadi.", ProjeConstants.MESAJ_BILGI, 2000);
+                    Messages.Info("Devir alinacak fark bulunamadi.", 2000);
                 }
 
                 TablosunuDoldur();
@@ -215,10 +215,8 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
                 KiraBakiyeDevriOtomatik bakiyeDevri = new KiraBakiyeDevriOtomatik(LoggingContext);
                 KiraBakiyeDevriSonuc sonuc = bakiyeDevri.TumAktifSozlesmeleriIsle();
 
-                MessageHelper.PublishMessage(
-                    string.Format("Islenen: {0} | Atlanan: {1} | Hatali: {2}",
-                        sonuc.IslenenSayisi, sonuc.AtlananSayisi, sonuc.HataliSayisi),
-                    ProjeConstants.MESAJ_BASARILI, 4000);
+                Messages.Success(string.Format("Islenen: {0} | Atlanan: {1} | Hatali: {2}",
+                        sonuc.IslenenSayisi, sonuc.AtlananSayisi, sonuc.HataliSayisi), 4000);
 
                 TablosunuDoldur();
             }
@@ -234,7 +232,7 @@ namespace TBYS_WebParts.DevirGerekenSozlesmelerWP
             try
             {
                 TBYSOrtak.AktifSozleslemelerinBakiyeBorcunuHesapla(LoggingContext);
-                MessageHelper.PublishMessage("Ödeme planlari güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                Messages.Success("Ödeme planlari güncellendi.", 2000);
                 TablosunuDoldur();
             }
             catch (Exception ex)

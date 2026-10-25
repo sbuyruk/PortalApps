@@ -272,7 +272,7 @@ $('#CustomDataTable').on( 'draw.dt', function () {
                     }
                 }
                 TabloOlustur();
-                MessageHelper.PublishMessage("Siralama kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                Messages.Success("Siralama kaydedildi", 2000);
             }
             catch (Exception tbysError)
             {

@@ -450,7 +450,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
             }
             else
             {
-                MessageHelper.PublishMessage("Borçlu Kiraci bulunamadi", ProjeConstants.MESAJ_BILGI, 2000);
+                Messages.Info("Borçlu Kiraci bulunamadi", 2000);
             }
 
         }
@@ -837,7 +837,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
             }
             else
             {
-                MessageHelper.PublishMessage("Kiraci bulunamadi",ProjeConstants.MESAJ_HATA);
+                Messages.Error("Kiraci bulunamadi");
             }
         }
         protected void TakipIslemiModalDuzenleBtn_Click(object sender, EventArgs e)
@@ -916,7 +916,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kiraci bulunamadi", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Kiraci bulunamadi");
                 }
             }
         }
@@ -957,7 +957,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                 new KiraBorcuTakipService(LoggingContext).Save(kiraBorcuTakip);
                 UtilityHelper.ScriptCalistir("CloseKiraBocuTakibiModal();");
                 BorcluKiraclariTabloyaDoldur();
-                MessageHelper.PublishMessage("Takip islemi kaydedildi",ProjeConstants.MESAJ_BASARILI,2000);
+                Messages.Success("Takip islemi kaydedildi", 2000);
             }
             catch (Exception exception)
             {
@@ -992,7 +992,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                     new KiraBorcuTakipService(LoggingContext).Update(kiraBorcuTakip);
                     BorcluKiraclariTabloyaDoldur();
                     UtilityHelper.ScriptCalistir("CloseKiraBocuTakibiModal();");
-                    MessageHelper.PublishMessage("Takip islemi güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Takip islemi güncellendi", 2000);
                 }
             }
             catch (Exception exception)

@@ -471,7 +471,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
                         {
                             BagimsizBolumTablosunuDoldur(tasinmaz);
                         }
-                        MessageHelper.PublishMessage("Bağımsız Bölüm güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        Messages.Success("Bağımsız Bölüm güncellendi", 2000);
                         string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                         int queryIndex = newUrl.IndexOf("?");
                         if (queryIndex > 0)
@@ -481,12 +481,12 @@ namespace TBYS_WebParts.BagimsizBolumWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Bağımsız Bölüm güncellenemedi", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Bağımsız Bölüm güncellenemedi");
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Bağımsız Bölüm bulunamadı", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Bağımsız Bölüm bulunamadı");
                 }
             }
             catch (Exception error)
@@ -511,7 +511,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
                         {
                             BagimsizBolumTablosunuDoldur(tasinmaz);
                         }
-                        MessageHelper.PublishMessage("Bağımsız Bölüm silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        Messages.Success("Bağımsız Bölüm silindi", 2000);
                         string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                         int queryIndex = newUrl.IndexOf("?");
                         if (queryIndex > 0)
@@ -521,13 +521,13 @@ namespace TBYS_WebParts.BagimsizBolumWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Bağımsız bölüm silinemedi. Sözleşme bağlantılarını kontrol ediniz.", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Bağımsız bölüm silinemedi. Sözleşme bağlantılarını kontrol ediniz.");
                     }
 
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Bağımsız Bölüm silinemedi", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Bağımsız Bölüm silinemedi");
                 }
             }
             catch (Exception error)

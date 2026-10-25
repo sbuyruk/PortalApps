@@ -198,7 +198,7 @@ namespace TBYS_WebParts.BagisciYakinlariWP
                     {
                         if (!new BagisciYakinlariService(LoggingContext).Delete(bagisciYakini))
                         {
-                            MessageHelper.PublishMessage("Yakın kaydı silinemedi. Sayfayı yenileyip tekrar deneyiniz.", ProjeConstants.MESAJ_HATA);
+                            Messages.Error("Yakın kaydı silinemedi. Sayfayı yenileyip tekrar deneyiniz.");
                             return;
                         }
                         string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();

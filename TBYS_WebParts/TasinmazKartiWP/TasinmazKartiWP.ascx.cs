@@ -189,7 +189,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Taşınmaz Bulunamadı", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Taşınmaz Bulunamadı");
                     }
 
 
@@ -246,7 +246,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
                     else
                     {
                         EmlakBeyaniDosyaLnk.Visible = false;
-                        MessageHelper.PublishMessage("Lütfen Emlak Beyan Formunu pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                        Messages.Info("Lütfen Emlak Beyan Formunu pdf olarak yükleyiniz.", 2000);
                     }
                     string yapiKayitDosyaAdi = ProjeConstants.DOSYA_YAPIKAYIT_BELGESI + tasinmazId + ".pdf";
                     string yapiKayitDosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + yapiKayitDosyaAdi;
@@ -263,12 +263,12 @@ namespace TBYS_WebParts.TasinmazKartiWP
                     else
                     {
                         YapiKayitDosyaLnk.Visible = false;
-                        MessageHelper.PublishMessage("Lütfen Yapı Kayıt Belgesini pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                        Messages.Info("Lütfen Yapı Kayıt Belgesini pdf olarak yükleyiniz.", 2000);
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Bağışçı bulunamadı.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Bağışçı bulunamadı.");
                 }
 
             }
@@ -815,7 +815,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
                 ExportToExcel();
             }
             else
-                MessageHelper.PublishMessage("Taşınmaz bulunamadı", ProjeConstants.MESAJ_HATA, 2000);
+                Messages.Error("Taşınmaz bulunamadı", 2000);
         }
     }
 }

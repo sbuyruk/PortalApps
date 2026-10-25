@@ -153,7 +153,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
             {
                 if (!string.IsNullOrEmpty(MesajQS))
                 {
-                    MessageHelper.PublishMessage("Taşınmaz Eklendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Taşınmaz Eklendi", 2000);
                     MesajQS = string.Empty;
                 }
                 TasinmazBagisci bagisci = new TasinmazBagisci();
@@ -164,7 +164,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Bağışçı bulunamadı", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Bağışçı bulunamadı");
                 }
 
             }
@@ -368,18 +368,18 @@ namespace TBYS_WebParts.BagisciBagislariWP
                 Bagis bagis = new Model.Services.TBYS.BagisService(LoggingContext).GetById(BagisIdQS.ConvertToInt());
                 if (bagis == null || bagis.BagisciId != BagisciIdQS.ConvertToInt())
                 {
-                    MessageHelper.PublishMessage("Bağış ilişkisi değişmiş veya bulunamıyor. Sayfayı yenileyip tekrar deneyiniz.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Bağış ilişkisi değişmiş veya bulunamıyor. Sayfayı yenileyip tekrar deneyiniz.");
                     return;
                 }
                 if (!BagisSil(bagis))
                 {
-                    MessageHelper.PublishMessage("Bağış ilişkisi çıkarılamadı. Sayfayı yenileyip tekrar deneyiniz.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Bağış ilişkisi çıkarılamadı. Sayfayı yenileyip tekrar deneyiniz.");
                     return;
                 }
                 TasinmazBagisci donor = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetById(BagisciIdQS.ConvertToInt());
                 if (donor != null) BagisciTasinmazlarTablosunuDoldur(donor);
                 UtilityHelper.ScriptCalistir("CloseModal();");
-                MessageHelper.PublishMessage("Bağışlardan çıkarıldı.", ProjeConstants.MESAJ_BASARILI, 2000);
+                Messages.Success("Bağışlardan çıkarıldı.", 2000);
             }
             catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error)
@@ -475,7 +475,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
             {
                 Bagis bagis = new BagisService(LoggingContext).AssignToProperty(
                     paramTasinmazIdLbl.Value.ConvertToInt(), BagisciIdQS.ConvertToInt());
-                MessageHelper.PublishMessage("Bağış kaydedildi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                Messages.Success("Bağış kaydedildi.", 2000);
                 RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_BAGISLARI + "?Mesaj=true&DestinationApp=TBD&BagisciId=" + bagis.BagisciId);
             }
             catch (System.Threading.ThreadAbortException) { throw; }

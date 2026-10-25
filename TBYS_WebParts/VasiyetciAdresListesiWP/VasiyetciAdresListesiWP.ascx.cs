@@ -338,8 +338,8 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
                 if (uzunAdresliler.Count > 0)
                 {
                     string message = string.Join(Environment.NewLine, uzunAdresliler);
-                    MessageHelper.PublishMessage(message + Environment.NewLine +
-                        " adresi çok uzun oldugundan kesilerek kisaltildi. Lütfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
+                    Messages.Info(message + Environment.NewLine +
+                        " adresi çok uzun oldugundan kesilerek kisaltildi. Lütfen etiketini kontrol ediniz. ");
                 }
             }
 
@@ -423,10 +423,10 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
                 string etiketDosyaAdi = "Vasiyetci-Adres-Etiketi(" + zaman + ").docx";
                 bool etiketOlustuMu = YeniAdresEtiketDosyasiOlustur(etiketDosyaAdi);
                 if (etiketOlustuMu)
-                    MessageHelper.PublishMessage("Vasiyetçi adres etiketleri hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Vasiyetçi adres etiketleri hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz.", 2000);
                 else
                 {
-                    MessageHelper.PublishMessage("Adres etiketleri olusturulamadi.", ProjeConstants.MESAJ_BILGI, 3000);
+                    Messages.Info("Adres etiketleri olusturulamadi.", 3000);
                 }
 
             }

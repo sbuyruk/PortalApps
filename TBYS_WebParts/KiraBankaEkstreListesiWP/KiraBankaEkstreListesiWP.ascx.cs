@@ -220,9 +220,9 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
                             if (IslemQS.ToLower().Equals("kaydet"))
                             {
                                 if (MesajQS.ToLower().Equals("true"))
-                                    MessageHelper.PublishMessage("Aktarma tamamlandı.", ProjeConstants.MESAJ_BASARILI, 2000);
+                                    Messages.Success("Aktarma tamamlandı.", 2000);
                                 else
-                                    MessageHelper.PublishMessage("Aktarma yapılamadı.", ProjeConstants.MESAJ_HATA);
+                                    Messages.Error("Aktarma yapılamadı.");
                             }
                             MesajQS = string.Empty;
                         }
@@ -298,7 +298,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Hiç kayıt seçilmedi. Devam etmek için en az bir kayıt seçiniz.", ProjeConstants.MESAJ_BILGI);
+                Messages.Info("Hiç kayıt seçilmedi. Devam etmek için en az bir kayıt seçiniz.");
             }
         }
         public ExceptionHelper OdemeIslemleriniYap(List<KiraEkstreAktarma> listEkstreAktarma, string currentUser)
@@ -710,7 +710,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
 
             if (idList.Length < 1)
             {
-                MessageHelper.PublishMessage("Kaydetmek için kayıt seçiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                Messages.Info("Kaydetmek için kayıt seçiniz.", 2000);
             }
             else
             {

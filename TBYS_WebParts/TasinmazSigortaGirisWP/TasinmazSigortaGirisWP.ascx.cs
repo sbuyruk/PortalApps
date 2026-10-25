@@ -307,11 +307,11 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 DateTime sigortaBitisTarihi = sigorta.SigortaBitTar.ConvertToDatetime();
                 if (sigortaBitisTarihi <= DateTime.MinValue)
                 {
-                    MessageHelper.PublishMessage("Sigorta Bitis Tarihi Bos!", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Sigorta Bitis Tarihi Bos!");
                 }
                 else if (sigortaBitisTarihi <= DateTime.Today.AddMonths(1))
                 {
-                    MessageHelper.PublishMessage("Sigorta Vadesi " + sigorta.SigortaBitTar.ToString("dd.MM.yyyy") + " Tarihinde dolacaktır", ProjeConstants.MESAJ_BILGI);
+                    Messages.Info("Sigorta Vadesi " + sigorta.SigortaBitTar.ToString("dd.MM.yyyy") + " Tarihinde dolacaktır");
                 }
             }
 
@@ -443,7 +443,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
 
                     else {
                         BagimsizBolumNoTxt.Text = string.Empty;
-                        MessageHelper.PublishMessage("Taşınmazın ALTBÖLÜMÜ VAR seçilmesine rağmen taşınmaza ait bölüm tanımlanmamıştır.", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Taşınmazın ALTBÖLÜMÜ VAR seçilmesine rağmen taşınmaza ait bölüm tanımlanmamıştır.");
                     }
 
                 }
@@ -609,13 +609,13 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 Sigorta sigorta = SaveSigorta();
                 if (sigorta != null) //kaydettikten sonra önceki sayfaya dön
                 {
-                    MessageHelper.PublishMessage("Sigorta Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Sigorta Kaydedildi", 2000);
                     RedirectToPage(ProjeConstants.PAGE_TASINMAZSIGORTA_LIST + "?Mesaj=true");
 
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Sigorta kaydedilemedi.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Sigorta kaydedilemedi.");
                 }
 
 
@@ -635,18 +635,18 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 Sigorta sigorta = new Model.Services.TBYS.SigortaService(LoggingContext).GetById(SigortaIdQS.ConvertToInt());
                 if (sigorta == null)
                 {
-                    MessageHelper.PublishMessage("Sigorta kaydı bulunamadı.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Sigorta kaydı bulunamadı.");
                     return;
                 }
                 if (!UpdateSigorta(sigorta))
                 {
-                    MessageHelper.PublishMessage("Sigorta güncellenemedi.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Sigorta güncellenemedi.");
                     return;
                 }
                 committed = true;
                 PDFKaydet(sigorta, true);
                 PDFGoster(sigorta, true);
-                MessageHelper.PublishMessage("Sigorta güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                Messages.Success("Sigorta güncellendi.", 2000);
             }
             catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error)
@@ -690,7 +690,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Sigorta Silinemedi", ProjeConstants.MESAJ_BILGI);
+                    Messages.Info("Sigorta Silinemedi");
                 }
             }
             catch (Exception ex)
@@ -793,7 +793,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                             sigorta.PDFDosyasi = null;
                             if (!new Model.Services.TBYS.SigortaService(LoggingContext).UpdateDocument(sigorta))
                                 throw new InvalidOperationException("Silinen belgenin sigorta bağlantısı güncellenemedi.");
-                            MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                            Messages.Success(dosyaAdi + " Silindi", 2000);
                             BelgeSilBtn.Visible = false;
                             DosyaLnk.Visible = false;
                             BelgeYukleFU.Visible = true;
@@ -803,12 +803,12 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                         }
                         else
                         {
-                            MessageHelper.PublishMessage(dosyaAdi + " Silinemedi", ProjeConstants.MESAJ_HATA);
+                            Messages.Error(dosyaAdi + " Silinemedi");
                         }
                     }
                     else
                     {
-                        MessageHelper.PublishMessage(dosyaAdi + " Bulunamadı", ProjeConstants.MESAJ_HATA);
+                        Messages.Error(dosyaAdi + " Bulunamadı");
                     }
 
 
@@ -860,11 +860,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             {
                 if (exception is System.Threading.ThreadAbortException) throw;
                 if (throwOnError) throw;
-                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.PDFKaydet", exception);
-                Exception ex = new Exception("Dosya Yüklenemedi");
-                ExceptionHelper exhelper = new ExceptionHelper(exception);
-                exhelper.Exceptions.Add(ex);
-                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.TasinmazSigortaGirisWP.PDFKaydet", exhelper.Exceptions);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.PDFKaydet", exception);
             }
         }
         private void PDFGoster(Sigorta sigorta, bool throwOnError = false)
@@ -904,7 +900,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Poliçe bulunamadı.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Poliçe bulunamadı.");
                 }
 
             }

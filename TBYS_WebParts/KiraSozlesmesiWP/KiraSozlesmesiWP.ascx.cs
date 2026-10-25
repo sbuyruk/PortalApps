@@ -186,7 +186,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
                 kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
                 if (kiraSozlesme == null)
                 {
-                    MessageHelper.PublishMessage("Sözleşme Bulunamadı",ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Sözleşme Bulunamadı");
                 }else
                 {
                     string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -486,13 +486,13 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                     if (kiraSozlesme != null)
                     {
                         issaved = true;
-                        MessageHelper.PublishMessage("Kira Sözleşmesi Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        Messages.Success("Kira Sözleşmesi Güncellendi", 2000);
 
                     }
                     else
                     {
                         issaved = false;
-                        MessageHelper.PublishMessage("Kira Sözleşmesi Kayıt işlemi başarısız oldu.", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Kira Sözleşmesi Kayıt işlemi başarısız oldu.");
                     }
                 }
                 catch (Exception tbysError)
@@ -507,7 +507,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             else
             {
                 issaved = false;
-                MessageHelper.PublishMessage("Sözleşme Başlangıç ve Bitiş Tarihleri ile Kira Bedeli alanları dolu olmalıdır", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Sözleşme Başlangıç ve Bitiş Tarihleri ile Kira Bedeli alanları dolu olmalıdır");
             }
             return issaved;
         }
@@ -807,7 +807,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (string.IsNullOrEmpty(kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull()) || string.IsNullOrEmpty(kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull()))
             {
-                MessageHelper.PublishMessage("Ödeme planı Açılamıyor. Lütfen sözleşmenin başlama ve bitiş tarihlerini girerek tekrar deneyin.", ProjeConstants.MESAJ_BILGI, 2000);
+                Messages.Info("Ödeme planı Açılamıyor. Lütfen sözleşmenin başlama ve bitiş tarihlerini girerek tekrar deneyin.", 2000);
             }
             else if (kiraSozlesme != null)
             {
@@ -1762,12 +1762,12 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                     string dosyaAdi = kiraSozlesme.SozlesmePDFDosyasi; 
                     if (string.IsNullOrEmpty(dosyaAdi))
                     {
-                        MessageHelper.PublishMessage("Silinecek dosya bulunamadı", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Silinecek dosya bulunamadı");
                         return;
                     }
                     if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi, LoggingContext))
                     {
-                        MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        Messages.Success(dosyaAdi + " Silindi", 2000);
                         BelgeSilBtn.Visible = false;
                         DosyaLnk.Visible = false;
                         BelgeYukleFU.Visible = true;
@@ -1777,7 +1777,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                     }
                     else
                     {
-                        MessageHelper.PublishMessage(dosyaAdi + " Silinemedi", ProjeConstants.MESAJ_HATA);
+                        Messages.Error(dosyaAdi + " Silinemedi");
                     }
                 }
             }
@@ -1821,11 +1821,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
             catch (Exception exception)
             {
                 if (exception is System.Threading.ThreadAbortException) throw;
-                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.PDFKaydet", exception);
-                Exception ex = new Exception("Dosya Yüklenemedi");
-                ExceptionHelper exhelper = new ExceptionHelper(exception);
-                exhelper.Exceptions.Add(ex);
-                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.KiraSozlesmesiWP.PDFKaydet", exhelper.Exceptions);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.PDFKaydet", exception);
             }
         }
         private void PDFGoster(KiraSozlesme kiraSozlesme)
@@ -1858,7 +1854,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Sözleşme bulunamadı.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Sözleşme bulunamadı.");
                 }
 
             }

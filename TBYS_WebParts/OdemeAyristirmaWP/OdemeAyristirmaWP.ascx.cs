@@ -158,7 +158,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Ödeme Bulunamadı.", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Ödeme Bulunamadı.");
                     }
                 }
             }
@@ -406,11 +406,11 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                 }
                 if (savedCount > 0)
                 {
-                    MessageHelper.PublishMessage("Ödeme Bilgileri Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Ödeme Bilgileri Kaydedildi", 2000);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Ödeme Bilgileri Kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Ödeme Bilgileri Kaydedilemedi");
                 }
             }
             catch (Exception ex)
@@ -578,7 +578,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Ödenen tutarı aştınız.", ProjeConstants.MESAJ_HATA, 2000);
+                    Messages.Error("Ödenen tutarı aştınız.", 2000);
                 } 
             }
             TabloOlustur(kiraEkstreAktarma);
@@ -621,7 +621,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
             }
             else
             {
-                MessageHelper.PublishMessage("Kayıt bulunamadı", ProjeConstants.MESAJ_HATA, 2000);
+                Messages.Error("Kayıt bulunamadı", 2000);
             }
 
         }
@@ -650,7 +650,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
             }
             else
             {
-                MessageHelper.PublishMessage("Ödenen tutarı aştınız.", ProjeConstants.MESAJ_HATA, 2000);
+                Messages.Error("Ödenen tutarı aştınız.", 2000);
             }
             TabloOlustur(kiraEkstreAktarma);
             UtilityHelper.ScriptCalistir("CloseModal()");
@@ -691,7 +691,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
             if (fark < 0)
             {
                 toplamAsildiMi = true;
-                MessageHelper.PublishMessage("Toplam ödenen tutarı aştınız, girdiğiniz tutar listeye eklenmedi.", ProjeConstants.MESAJ_HATA, 2000);
+                Messages.Error("Toplam ödenen tutarı aştınız, girdiğiniz tutar listeye eklenmedi.", 2000);
             }
             else
             {

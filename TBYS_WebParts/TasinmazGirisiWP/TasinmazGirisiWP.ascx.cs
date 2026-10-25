@@ -212,7 +212,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
             }
             if (tasinmazBulunamadi)
-                MessageHelper.PublishMessage("Taşınmaz Bulunamadı!", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Taşınmaz Bulunamadı!");
 
 
         }
@@ -713,7 +713,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                     Page.Response.Redirect(newUrl, true);
                 }
                 else
-                    MessageHelper.PublishMessage("Taşınmaz Kaydı başarısız oldu.-TS001", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Taşınmaz Kaydı başarısız oldu.-TS001");
             }
             catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error)
@@ -728,11 +728,11 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 if (UpdateTasinmazData2Db(TasinmazIdQS.ConvertToInt()))
                 {
                     TasinmazDuzenle();
-                    MessageHelper.PublishMessage("Taşınmaz kaydı güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Taşınmaz kaydı güncellendi.", 2000);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Taşınmaz Güncellenemedi.-TS001", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Taşınmaz Güncellenemedi.-TS001");
                 }
             }
             catch (System.Threading.ThreadAbortException) { throw; }
@@ -761,7 +761,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
             if (tasinmaz == null)
             {
-                MessageHelper.PublishMessage("Taşınmaz bilgileri alınamadı.", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Taşınmaz bilgileri alınamadı.");
                 return;
             }
             SerhBeyanIrtifakTabloOlustur(tasinmaz);
@@ -774,7 +774,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             List<BagimsizBolum> bolumListesi = new BagimsizBolumService(LoggingContext).GetByTasinmazId(TasinmazIdQS.ConvertToInt());
             if (bolumListesi.Count == 0)
             {
-                MessageHelper.PublishMessage("Bu taşınmaza ait bağımsız bölüm bulunamadı.", ProjeConstants.MESAJ_BILGI,2000);
+                Messages.Info("Bu taşınmaza ait bağımsız bölüm bulunamadı.", 2000);
                 return;
             }
             //alınan listedeki her bir bolum için
@@ -814,7 +814,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
             if (tasinmaz == null)
             {
-                MessageHelper.PublishMessage("Taşınmaz bilgileri alınamadı.", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Taşınmaz bilgileri alınamadı.");
                 return;
             }
 
@@ -856,7 +856,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
                 if (tasinmaz == null)
                 {
-                    MessageHelper.PublishMessage("Taşınmaz bilgileri alınamadı.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Taşınmaz bilgileri alınamadı.");
                     return;
                 }
                 tasinmaz.MuhasebeyeKayitliDeger = MuhasebeyeKayitliDegerTxt.Value.ConvertToDecimal();
@@ -865,7 +865,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 tasinmaz.TahminiRayicDegeri = TahminiRayicDegeriTxt.Value.ConvertToDecimal();
                 if (!new Model.Services.TBYS.TasinmazService(LoggingContext).Update(tasinmaz))
                 {
-                    MessageHelper.PublishMessage("Taşınmaz değerleri güncellenemedi.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Taşınmaz değerleri güncellenemedi.");
                     return;
                 }
 
@@ -960,7 +960,6 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             ///Tasinmazin siinmesi bir dizi konrol ile yapilabilir. Su an silme yetkisi kaldirildi SB 24.06.2021
 //            if (true)
 //            {
-//                MessageHelper.PublishMessage("Taşınmaz silme yetkiniz bulunmamaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
 //            }
 //            else
 //            {
@@ -983,15 +982,12 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
 //                        }
 //                        else
-//                            MessageHelper.PublishMessage("Taşınmaz silinemedi", ProjeConstants.MESAJ_HATA);
 //                    }
 //                    else
 //                    {
-//                        MessageHelper.PublishMessage("Taşınmaza ait sözleşme bulunmamaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
 //                    }
 //                }
 //                else
-//                    MessageHelper.PublishMessage("Taşınmaz bulunamadı", ProjeConstants.MESAJ_HATA);
 //            }
         }
         protected void DeleteNowBtn_Click(object sender, EventArgs e)
@@ -1015,7 +1011,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             {
                 if (silinecekTasinmaz == null)
                 {
-                    MessageHelper.PublishMessage("Taşınmaz bulunamadı", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Taşınmaz bulunamadı");
                     return;
                 }
                 bool envanterdeMi = silinecekTasinmaz.EnvanterdeMi == ProjeConstants.TASINMAZ_ENVANTERDE;
@@ -1028,7 +1024,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Taşınmaz silinemedi. Kayıt artık mevcut olmayabilir veya bağlı bölüm, bağış, sözleşme, onarım ya da sigorta kaydı bulunabilir.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Taşınmaz silinemedi. Kayıt artık mevcut olmayabilir veya bağlı bölüm, bağış, sözleşme, onarım ya da sigorta kaydı bulunabilir.");
                 }
             }
             catch (Exception ex)
@@ -1063,7 +1059,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
             if (bagis == null)
             {
-                MessageHelper.PublishMessage("Bağışçı Bulunamadı. Bu taşınmaz henüz bir bağışçıyla ilişkilendirilmemiş. Lütfen Bağışçı sayfasından bağışçı ataması yapınız.", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Bağışçı Bulunamadı. Bu taşınmaz henüz bir bağışçıyla ilişkilendirilmemiş. Lütfen Bağışçı sayfasından bağışçı ataması yapınız.");
             }
             else
             {
@@ -1071,7 +1067,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 bagisci = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetById(bagis.BagisciId);
                 if (bagisci == null)
                 {
-                    MessageHelper.PublishMessage("Bağışçı Bulunamadı. Bu taşınmazın ilişkilendirildiği bağışçı bulunamadı. Lütfen Bağışçı sayfasından bağışçı ataması yapınız.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Bağışçı Bulunamadı. Bu taşınmazın ilişkilendirildiği bağışçı bulunamadı. Lütfen Bağışçı sayfasından bağışçı ataması yapınız.");
                 }
                 else
                 {
@@ -1331,7 +1327,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         {
             if (tasinmaz == null)
             {
-                MessageHelper.PublishMessage("Taşınmaz bulunamadı", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Taşınmaz bulunamadı");
                 return new List<SerhBeyanIrtifakListItem>();
             }
             else
@@ -1415,7 +1411,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 else
                 {
                     //hata mesaji ver, Şerh/Beyan/İrtifak kaydı bulunamadi
-                    MessageHelper.PublishMessage("Şerh Beyan ve İrtifak kaydı bulunamadı.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Şerh Beyan ve İrtifak kaydı bulunamadı.");
                 }
             }
             else if (islemTipi.Equals(ProjeConstants.SIL))
@@ -1486,11 +1482,11 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 {
                     BagimsizBolumTabloOlustur(tasinmaz);
                 }
-                MessageHelper.PublishMessage("Şerh Beyan ve İrtifak kaydı eklendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                Messages.Success("Şerh Beyan ve İrtifak kaydı eklendi.", 2000);
             }
             else
             {
-                MessageHelper.PublishMessage("Şerh Beyan ve İrtifak kaydı eklenemedi.", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Şerh Beyan ve İrtifak kaydı eklenemedi.");
             }
             ActiveTabQS = "SerhBeyanIrtifakLi";
             UtilityHelper.ScriptCalistir("setActiveTab('" + ActiveTabQS + "');");
@@ -1514,11 +1510,11 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                     {
                         BagimsizBolumTabloOlustur(tasinmaz);
                     }
-                    MessageHelper.PublishMessage("Şerh Beyan ve İrtifak kaydı silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Şerh Beyan ve İrtifak kaydı silindi.", 2000);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Şerh Beyan ve İrtifak kaydı silinemedi.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Şerh Beyan ve İrtifak kaydı silinemedi.");
                 }
             }
             ActiveTabQS = "SerhBeyanIrtifakLi";
@@ -1551,11 +1547,11 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                     {
                         BagimsizBolumTabloOlustur(tasinmaz);
                     }
-                    MessageHelper.PublishMessage("Şerh Beyan ve İrtifak kaydı güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Şerh Beyan ve İrtifak kaydı güncellendi.", 2000);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Şerh Beyan ve İrtifak kaydı güncellenemedi.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Şerh Beyan ve İrtifak kaydı güncellenemedi.");
                 }
                 ActiveTabQS = "SerhBeyanIrtifakLi";
                 UtilityHelper.ScriptCalistir("setActiveTab('" + ActiveTabQS + "');");

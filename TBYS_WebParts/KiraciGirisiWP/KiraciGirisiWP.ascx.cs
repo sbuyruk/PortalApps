@@ -105,7 +105,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Kiraci bulunamadi!", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Kiraci bulunamadi!");
                     }
                 }
                 SozlesmelerTablosunuDoldur(kiraci.Id);
@@ -474,7 +474,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kiraci Kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Kiraci Kaydedilemedi");
                 }
             }
             catch (Exception ex)
@@ -493,11 +493,11 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 Bolge bolge = BolgeGetir();
                 bool ksUpdateed = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).UpdateByKiraciId(bolge.Id, kiraci.Id);
                 SozlesmelerTablosunuDoldur(kiraci.Id);
-                MessageHelper.PublishMessage("Kiraci Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                Messages.Success("Kiraci Güncellendi", 2000);
             }
             else
             {
-                MessageHelper.PublishMessage("Kiraci Güncellenemedi", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Kiraci Güncellenemedi");
             }
         }
         private Bolge BolgeGetir()
@@ -610,7 +610,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetActiveByKiraciId(kiraci.Id);
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
-                    MessageHelper.PublishMessage("Zaten Bir kira sözlesmesi mevcut", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Zaten Bir kira sözlesmesi mevcut");
                 }
                 ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "YeniSozlesmeModalOnay();", true);
             }
@@ -638,7 +638,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Sözlesme Kaydi Açilamadi", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Sözlesme Kaydi Açilamadi");
             }
         }
         protected void BitenSozlesmeOnayBtn_Click(object sender, EventArgs e)
@@ -721,7 +721,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Sözlesme Kaydi Açilamadi", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Sözlesme Kaydi Açilamadi");
             }
         }
         protected void KiraKartiBtn_Click(object sender, EventArgs e)
@@ -756,7 +756,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
                         Page.Response.Redirect(newUrl, true);
                     }
                     else
-                        MessageHelper.PublishMessage("Bu kiraciya ait sözlesme kaydi bulunamadi", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Bu kiraciya ait sözlesme kaydi bulunamadi");
                 }
             }
             catch (Exception ex)
@@ -907,20 +907,20 @@ namespace TBYS_WebParts.KiraciGirisiWP
             {
                 if (kiraci==null)
                 {
-                    MessageHelper.PublishMessage("Kiraci bulunamadi.",ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Kiraci bulunamadi.");
                 }
                 else
                 {
                     //Sözlesmesi Var mi
                     if (SozlesmesiVarMi(kiraci))
                     {
-                        MessageHelper.PublishMessage("Kiraciya ait sözlesme bulundugundan kiraci silinemez.", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Kiraciya ait sözlesme bulundugundan kiraci silinemez.");
                     }
                     else
                     {
                         if (OdemesiVarMi(kiraci))
                         {
-                            MessageHelper.PublishMessage("Kiraci daha önce ödeme yaptigindan kiraci silinemez.", ProjeConstants.MESAJ_HATA);
+                            Messages.Error("Kiraci daha önce ödeme yaptigindan kiraci silinemez.");
                         }
                         else
                         {

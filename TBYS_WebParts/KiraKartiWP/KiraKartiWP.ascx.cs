@@ -177,12 +177,12 @@ namespace TBYS_WebParts.KiraKartiWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Kira Sözleşmesi Bulunamadı", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Kira Sözleşmesi Bulunamadı");
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Kiracı Bulunamadı");
                 }
             }
 
@@ -218,7 +218,7 @@ namespace TBYS_WebParts.KiraKartiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_BILGI);
+                Messages.Info("Kiracı Bulunamadı");
             }
         }
         private void TasinmazBilgileriniTabloyaYaz(KiraSozlesme ks)
@@ -243,7 +243,7 @@ namespace TBYS_WebParts.KiraKartiWP
                         bagimsizBolum = new BagimsizBolumService(LoggingContext).GetById(item.BolumId);
                         if (bagimsizBolum == null)
                         {
-                            MessageHelper.PublishMessage("Bağımsız bölüm bulunamadı. Sözleşmeden bağımsız bölüm kaydını düzeltmeniz gerekmektedir.",ProjeConstants.MESAJ_HATA);
+                            Messages.Error("Bağımsız bölüm bulunamadı. Sözleşmeden bağımsız bölüm kaydını düzeltmeniz gerekmektedir.");
                         }
                         else
                         {

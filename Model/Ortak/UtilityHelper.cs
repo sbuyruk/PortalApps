@@ -585,116 +585,60 @@ namespace Model.Ortak
         }
 
 
+        // File failures are handled by the caller's presentation boundary.
         public static bool UploadFileToSharePoint(FileUpload fileBrowser, string spLibName, string hedefDosyaAdi, Utility.Logging.PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
-            bool isOk = false;
-            try
+            string destUrl = SPContext.Current.Web.Url;
+            using (SPSite site = new SPSite(destUrl))
+            using (SPWeb web = site.OpenWeb())
             {
-                string destUrl = SPContext.Current.Web.Url;
-                SPWeb site = new SPSite(destUrl).OpenWeb();
-                SPList myList = site.Lists[spLibName];
-                string destFileUrl = myList.RootFolder.ServerRelativeUrl +"/"+ hedefDosyaAdi;
-                site.AllowUnsafeUpdates = true;
+                SPList myList = web.Lists[spLibName];
+                string destFileUrl = myList.RootFolder.ServerRelativeUrl + "/" + hedefDosyaAdi;
+                web.AllowUnsafeUpdates = true;
 
                 var imageFileData = fileBrowser.FileBytes;
                 using (var fileStream = new System.IO.MemoryStream())
                 {
                     fileStream.Write(imageFileData, 0, imageFileData.Length);
-                    site.Files.Add(destFileUrl, fileStream, true/*overwrite*/);
+                    web.Files.Add(destFileUrl, fileStream, true/*overwrite*/);
                 }
-                isOk = true;
+                return true;
             }
-            catch (Exception e)
-            {
-                if (e is System.Threading.ThreadAbortException) throw;
-                Utility.Logging.PortalTechnicalLog.WriteError(context, "UtilityHelper.UploadFileToSharePoint", e);
-                Messages.Error(Utility.Logging.PortalTechnicalLog.DefaultUserMessage + " Başvuru kodu: " + context.OperationId.ToString("N"));
-                isOk = false;
-            }
-            return isOk;
         }
-
 
         public static bool DeleteFileFromSharePointLib(string subSite, string spLibName, string dosyaAdi, Utility.Logging.PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
-            try
+            using (SPSite site = new SPSite(RootURLGetir()))
+            using (SPWeb web = site.OpenWeb(subSite))
             {
-                using (SPSite site = new SPSite(RootURLGetir()))
-                using (SPWeb web = site.OpenWeb(subSite))
-                {
-                    // folder.Files[fileName] builds an internal urlOfFile value and can
-                    // fail for document libraries in sub-sites. Resolve the file from
-                    // its server-relative URL instead, as in DosyaVarMi.
-                    string fileUrl = web.Url.TrimEnd('/') + "/" + spLibName + "/" + dosyaAdi;
-                    SPFile file = web.GetFile(fileUrl);
+                // Resolve files by their server-relative URL, including in sub-sites.
+                string fileUrl = web.Url.TrimEnd('/') + "/" + spLibName + "/" + dosyaAdi;
+                SPFile file = web.GetFile(fileUrl);
+                if (file == null || !file.Exists) return false;
 
-                    if (file == null || !file.Exists)
-                        return false;
-
-                    file.Delete();
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                if (e is System.Threading.ThreadAbortException) throw;
-                Utility.Logging.PortalTechnicalLog.WriteError(context, "UtilityHelper.DeleteFileFromSharePointLib", e);
-                Messages.Error(Utility.Logging.PortalTechnicalLog.DefaultUserMessage + " Başvuru kodu: " + context.OperationId.ToString("N"));
-                return false;
+                file.Delete();
+                return true;
             }
         }
-
-
 
         public static List<string> GetFileNameListFromSharePointLib(string subSite, string spLibName, string partialFileName, Utility.Logging.PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
             List<string> list = new List<string>();
-            try
+            SPSecurity.RunWithElevatedPrivileges(delegate ()
             {
-
-                SPSecurity.RunWithElevatedPrivileges(delegate ()
+                using (SPSite site = new SPSite(RootURLGetir()))
+                using (SPWeb web = site.AllWebs[subSite])
                 {
-                    //New SPSite object.
-                    using (SPSite site = new SPSite(RootURLGetir()))
+                    SPFolder folder = web.Folders[spLibName];
+                    foreach (SPFile item in folder.Files)
                     {
-                        //Do things by assuming the permission of the "system account".
-                        SPWeb web = site.AllWebs[subSite];
-                        SPFolder folder = web.Folders[spLibName];
-                        foreach (SPFile item in folder.Files)
-                        {
-                            if (item.Name.Contains(partialFileName))
-                            {
-                                list.Add(item.Name);
-                            }
-
-                        }
+                        if (item.Name.Contains(partialFileName)) list.Add(item.Name);
                     }
-                });
-
-
-                //SPSite site = new SPSite(RootURLGetir());
-                //SPWeb web = site.AllWebs[subSite];
-                //SPFolder folder = web.Folders[spLibName];
-
-                //foreach (SPFile item in folder.Files)
-                //{
-                //    if (item.Name.Contains(partialFileName))
-                //    {
-                //        list.Add(item.Name);
-                //    }
-
-                //}
-
-            }
-            catch (Exception e)
-            {
-                if (e is System.Threading.ThreadAbortException) throw;
-                Utility.Logging.PortalTechnicalLog.WriteError(context, "UtilityHelper.GetFileNameListFromSharePointLib", e);
-                Messages.Error(Utility.Logging.PortalTechnicalLog.DefaultUserMessage + " Başvuru kodu: " + context.OperationId.ToString("N"));
-            }
+                }
+            });
             return list;
         }
         #endregion

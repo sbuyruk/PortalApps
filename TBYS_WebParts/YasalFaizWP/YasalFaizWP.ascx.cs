@@ -462,7 +462,6 @@ namespace TBYS_WebParts.YasalFaizWP
         //                        yasalFaiz.Degistiren = CurrentUserName;
         //                        if (new Model.Services.TBYS.YasalFaizService(LoggingContext).Update(yasalFaiz))
         //                        {
-        //                            MessageHelper.PublishMessage("Kayit Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
         //                            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
         //                            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
         //                            newUrl += "/" + ProjeConstants.PAGE_YASALFAIZ;
@@ -473,7 +472,6 @@ namespace TBYS_WebParts.YasalFaizWP
         //                catch (Exception)
         //                {
 
-        //                    MessageHelper.PublishMessage("Faiz Oranlari Kaydedilemedi", ProjeConstants.MESAJ_HATA);
         //                }
 
 
@@ -525,7 +523,7 @@ namespace TBYS_WebParts.YasalFaizWP
                 List<YasalFaiz> edits = new List<YasalFaiz>();
                 for (int month = 1; month <= 12; month++) edits.Add(ReadMonthValues(month));
                 new Model.Services.TBYS.YasalFaizService(LoggingContext).UpdateMonths(edits);
-                MessageHelper.PublishMessage("Kayıtlar güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                Messages.Success("Kayıtlar güncellendi.", 2000);
             }
             catch (Exception error)
             {
@@ -546,7 +544,7 @@ namespace TBYS_WebParts.YasalFaizWP
                     throw new InvalidOperationException("Güncellenecek ay belirlenemedi.");
                 new Model.Services.TBYS.YasalFaizService(LoggingContext)
                     .UpdateMonths(new List<YasalFaiz> { ReadMonthValues(month) });
-                MessageHelper.PublishMessage("Kayıt güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                Messages.Success("Kayıt güncellendi.", 2000);
             }
             catch (Exception error)
             {
