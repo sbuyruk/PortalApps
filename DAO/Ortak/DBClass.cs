@@ -1,18 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Data.SqlTypes;
-using Utility.HelperClasses;
-using Utility.ProjeGlobal;
 
 namespace DAO.Ortak
 {
     [Serializable]
     public class DbClass
     {
-        string created = string.Empty;
-        public List<DBObject> DBObjectList = new List<DBObject>();
 
         public int Insert(string sqlString)
         {
@@ -196,41 +190,6 @@ namespace DAO.Ortak
 
         #region Parametreli sorgu overload'ları (SQL injection korumalı)
 
-        /// <summary>
-        /// Verilen sorguları tek bir SqlTransaction içinde sırayla çalıştırır.
-        /// Herhangi biri hata verirse tümü geri alınır (rollback) ve hata fırlatılır.
-        /// </summary>
-        public void ExecuteTransaction(List<SqlQuery> queries)
-        {
-            if (queries == null || queries.Count == 0)
-                return;
-
-            using (SqlConnection con = new SqlConnection(DBProcess.getConnectString()))
-            {
-                con.Open();
-                using (SqlTransaction transaction = con.BeginTransaction())
-                {
-                    try
-                    {
-                        foreach (SqlQuery query in queries)
-                        {
-                            using (SqlCommand cmd = new SqlCommand(query.Sql, con, transaction))
-                            {
-                                cmd.Parameters.AddRange(query.Parameters.ToArray());
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                        transaction.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        transaction.Rollback();
-                        throw;
-                    }
-                }
-            }
-        }
-
         public int Insert(SqlQuery query)
         {
             int id = 0;
@@ -346,143 +305,6 @@ namespace DAO.Ortak
         }
 
         #endregion
-
-        private SqlTransaction DBTransaction;
-        public List<DBObject> ExecuteTransaction()
-        {
-            string connectString = DBProcess.getConnectString();
-            SqlConnection dBConnection = new SqlConnection(connectString);
-            using (dBConnection)
-            {
-                string sqlString = string.Empty;
-                int sqlType = ProjeConstants.SQL_BOS;
-                try
-                {
-                    if (dBConnection.State == ConnectionState.Closed)
-                    {
-                        dBConnection.Open();
-
-                        DBTransaction = dBConnection.BeginTransaction();
-
-                        foreach (DBObject item in DBObjectList)
-                        {
-                            sqlString = item.SQLString.Replace(ProjeConstants.SQL_GENERIC_INT_VALUE.ToString(),"{"+ item.SQLStringParamIndex + "}");
-                            sqlType = item.SQLType;
-                            switch (sqlType)
-                            {
-                                case ProjeConstants.SQL_INSERT:
-                                    {
-                                        if (item.UseReturnIdAsParam)
-                                        {
-                                            string pval = ((DBObject)DBObjectList[item.DbObjectParamIndex]).ReturnId.ToString();
-                                            sqlString = string.Format(sqlString, pval);
-                                        }
-                                        SqlCommand cmd = new SqlCommand(sqlString, dBConnection);
-                                        cmd.Transaction = DBTransaction;
-                                        //cmd.ExecuteNonQuery();
-                                        int id = cmd.ExecuteScalar().ConvertToInt();
-                                        item.ReturnId = id;
-                                        item.Success = true;
-                                        break;
-                                    }
-                                case ProjeConstants.SQL_UPDATE:
-                                    {
-                                        if (item.UseReturnIdAsParam)
-                                        {
-                                            string pval = ((DBObject)DBObjectList[item.DbObjectParamIndex]).ReturnId.ToString();
-                                            sqlString = string.Format(sqlString, pval);
-                                        }
-                                        SqlCommand cmd = new SqlCommand(sqlString, dBConnection);
-                                        cmd.Transaction = DBTransaction;
-                                        item.RowsAffected = cmd.ExecuteNonQuery();
-                                        item.Success = true;
-                                        break;
-                                    }
-                                case ProjeConstants.SQL_DELETE:
-                                    {
-                                        SqlCommand cmd = new SqlCommand(sqlString, dBConnection);
-                                        cmd.Transaction = DBTransaction;
-                                        item.RowsAffected = cmd.ExecuteNonQuery();
-                                        item.Success = true;
-                                        break;
-                                    }
-                                case ProjeConstants.SQL_SELECT:
-                                    {
-                                        SqlCommand cmd = new SqlCommand(sqlString, dBConnection);
-                                        cmd.Transaction = DBTransaction;
-                                        item.RowsAffected = cmd.ExecuteNonQuery();
-                                        item.Success = true;
-                                        break;
-                                    }
-                            }
-                        }
-                    }
-                    DBTransaction.Commit();
-                }
-                catch (Exception)
-                {
-                    DBTransaction.Rollback();
-
-                    foreach (DBObject item in DBObjectList)
-                    {
-                        item.Success = false;
-                    }
-                    throw;
-                }
-                finally
-                {
-                    dBConnection.Close();
-                }
-                return DBObjectList;
-            }
-        }
-        //private SqlTransaction DBTransaction {
-        //    get;
-        //    set;
-        //}
-        //private List<string> QueryList= new List<string>();
-        //public SqlTransaction StartTransaction()
-        //{
-        //    DBTransaction=DBConnection.BeginTransaction();
-        //    QueryList.Clear();
-        //    return DBTransaction;
-
-        //}
-        //public bool EndTransaction()
-        //{
-        //    bool isSaved = false;
-        //    using (DBConnection)
-        //    {
-        //        try
-        //        {
-        //            if (DBConnection.State == ConnectionState.Closed)
-        //            {
-        //                DBConnection.Open();
-
-        //                foreach (string sqlString in QueryList)
-        //                {
-        //                    SqlCommand cmd = new SqlCommand(sqlString, DBConnection);
-        //                    cmd.Transaction = DBTransaction;
-        //                    cmd.ExecuteNonQuery();
-        //                    isSaved = true;
-        //                }
-
-        //                DBConnection.Close();
-
-        //            }
-        //            if (isSaved)
-        //                DBTransaction.Commit();
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            isSaved = false;
-        //            DBTransaction.Rollback();
-        //            throw;
-        //        }
-        //        return isSaved;
-        //    }
-        //}
-        //private SqlConnection DBConnection = new SqlConnection(DBProcess.getConnectString());
 
     }
 }

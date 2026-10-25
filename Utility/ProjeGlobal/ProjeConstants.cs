@@ -170,13 +170,6 @@ namespace Utility.ProjeGlobal
         
         public const int GENELMUDUR_PERSONELID = 1184;
 
-        public const int SQL_SELECT = 0;
-        public const int SQL_UPDATE = 1;
-        public const int SQL_DELETE = 2;
-        public const int SQL_INSERT = 3;
-        public const int SQL_BOS = 99;
-        public const int SQL_SELECTWITHFILTER = 4;
-        public const int SQL_GENERIC_INT_VALUE = 987654321;
         public const string GIZLI_STRING = "GİZLİ";
         //MTS
         //IKYS

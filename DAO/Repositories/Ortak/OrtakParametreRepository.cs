@@ -7,7 +7,6 @@ namespace DAO.Repositories.Ortak
     public class OrtakParametreRepository
     {
         private readonly DbClass db;
-        private readonly CrudQueryBuilder queryBuilder;
 
         public OrtakParametreRepository()
             : this(new DbClass())
@@ -20,7 +19,6 @@ namespace DAO.Repositories.Ortak
                 throw new ArgumentNullException("db");
 
             this.db = db;
-            queryBuilder = new CrudQueryBuilder();
         }
 
         public DataTable SelectById(int id)
@@ -69,19 +67,5 @@ namespace DAO.Repositories.Ortak
             return db.SelectFromDb(query, "");
         }
 
-        public int Insert<T>(T entity)
-        {
-            return db.Insert(queryBuilder.BuildInsert(entity, "OrtakParametre_Table"));
-        }
-
-        public bool Update<T>(T entity)
-        {
-            return db.Update2Db(queryBuilder.BuildUpdate(entity, "OrtakParametre_Table"));
-        }
-
-        public bool Delete(int id)
-        {
-            return db.DeleteFromDb(queryBuilder.BuildDelete("OrtakParametre_Table", id), "");
-        }
     }
 }
