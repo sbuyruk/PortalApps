@@ -927,7 +927,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                         string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/"
                             + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + newId;
                         Page.Response.Redirect(newUrl, false);
-                        Page.Context.ApplicationInstance.CompleteRequest();
+                        System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
                         return;
                 }
             }
