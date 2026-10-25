@@ -28,7 +28,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             if (error == null || error is System.Threading.ThreadAbortException) return;
             PortalLogContext context = LoggingContext;
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
 
         private void ExecutePersonelAction(string operation, Action action)
@@ -45,7 +45,8 @@ namespace IKYS_WebParts.PersonelGirisiWP
             {
                 // The business transaction has committed before the notification reads or sends mail.
                 PersonelItem item = new PersonelItem(LoggingContext) { PersonelId = personel.Id };
-                IKYSOrtak.BilgiSistemMailGrubunaEPostaGonder(item, subject, LoggingContext);
+                if (!IKYSOrtak.BilgiSistemMailGrubunaEPostaGonder(item, subject, LoggingContext))
+                    Messages.Warning("Bilgiler kaydedildi ancak bildirim e-postası gönderilemedi. Başvuru kodu: " + LoggingContext.OperationId.ToString("N"));
             }
             catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error)
@@ -276,7 +277,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                     }
                     if (!string.IsNullOrEmpty(MesajQS))
                     {
-                        MessageHelper.PublishMessage("Personel Kaydedildi, lütfen Kimlik, Egitim, Iletisim, Aile vb bilgileri Tamamlayiniz", ProjeConstants.MESAJ_BASARILI, 2000);
+                        Messages.Success("Personel Kaydedildi, lütfen Kimlik, Egitim, Iletisim, Aile vb bilgileri Tamamlayiniz", 2000);
                         MesajQS = string.Empty;
                     }
                 }
@@ -783,7 +784,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Ise baslama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Ise baslama tarihi belirlenemedi");
             }
         }
         private void FillIzinHareketleriTable(Personel personel)
@@ -877,7 +878,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Ise baslama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Ise baslama tarihi belirlenemedi");
             }
         }
         private void FillMazeretIzinHareketleriTable(Personel personel)
@@ -967,7 +968,6 @@ namespace IKYS_WebParts.PersonelGirisiWP
             }
             else
             {
-                // MessageHelper.PublishMessage("Ise baslama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
             }
         }
         private void FillDigerIzinlerTable(Personel personel)
@@ -1543,9 +1543,10 @@ namespace IKYS_WebParts.PersonelGirisiWP
                         updated = true;
                     }
                 }
-                MessageHelper.PublishMessage(updated ? "Personel ve kimlik bilgileri güncellendi."
-                    : "Personel ve kimlik bilgileri güncellenemedi. Değişiklikler kaydedilmedi.",
-                    updated ? ProjeConstants.MESAJ_BASARILI : ProjeConstants.MESAJ_HATA);
+                if (updated)
+                    Messages.Success("Personel ve kimlik bilgileri güncellendi.");
+                else
+                    Messages.Error("Personel ve kimlik bilgileri güncellenemedi. Değişiklikler kaydedilmedi.");
             });
         }
         protected void KadrosuzUpdateIsBilgileriBtn_Click(object sender, EventArgs e)
@@ -1567,8 +1568,10 @@ namespace IKYS_WebParts.PersonelGirisiWP
                     }
                 }
                 if (updated) NotifyInformationSystems(personel, notificationSubject);
-                MessageHelper.PublishMessage(updated ? "İş bilgileri güncellendi." : "İş bilgileri güncellenemedi.",
-                    updated ? ProjeConstants.MESAJ_BASARILI : ProjeConstants.MESAJ_HATA);
+                if (updated)
+                    Messages.Success("İş bilgileri güncellendi.");
+                else
+                    Messages.Error("İş bilgileri güncellenemedi.");
             });
         }
         protected void UpdateIsBilgileriBtn_Click(object sender, EventArgs e)
@@ -1595,8 +1598,10 @@ namespace IKYS_WebParts.PersonelGirisiWP
                     NotifyInformationSystems(personel, notificationSubject);
                     FillIsBilgileri(personel, new IsBilgileriService().GetByPersonelId(personel.Id, context));
                 }
-                MessageHelper.PublishMessage(updated ? "İş bilgileri güncellendi." : "İş bilgileri güncellenemedi.",
-                    updated ? ProjeConstants.MESAJ_BASARILI : ProjeConstants.MESAJ_HATA);
+                if (updated)
+                    Messages.Success("İş bilgileri güncellendi.");
+                else
+                    Messages.Error("İş bilgileri güncellenemedi.");
             });
         }
         protected void UpdateIletisimBtn_Click(object sender, EventArgs e)
@@ -1618,8 +1623,10 @@ namespace IKYS_WebParts.PersonelGirisiWP
                     }
                 }
                 if (updated) NotifyInformationSystems(personel, notificationSubject);
-                MessageHelper.PublishMessage(updated ? "İletişim bilgileri güncellendi." : "İletişim bilgileri güncellenemedi.",
-                    updated ? ProjeConstants.MESAJ_BASARILI : ProjeConstants.MESAJ_HATA);
+                if (updated)
+                    Messages.Success("İletişim bilgileri güncellendi.");
+                else
+                    Messages.Error("İletişim bilgileri güncellenemedi.");
             });
         }
         protected void AileDuzenleBtn_Click(object sender, EventArgs e)
@@ -1916,7 +1923,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage(kimlikNo + " TCNumarasi zaten kayitli", ProjeConstants.MESAJ_HATA);
+                    Messages.Error(kimlikNo + " TCNumarasi zaten kayitli");
                 }
 
             }
@@ -2031,7 +2038,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Resim Seçmediniz.", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Resim Seçmediniz.");
             }
 
         }
@@ -2055,7 +2062,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Islem Tamamlandi.Resim yüklendi.", ProjeConstants.MESAJ_BASARILI);
+                Messages.Success("Islem Tamamlandi.Resim yüklendi.");
             }
         }
         protected void PersonelTipiDDL_SelectedIndexChanged(object sender, EventArgs e)

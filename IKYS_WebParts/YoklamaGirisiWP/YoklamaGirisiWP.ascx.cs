@@ -23,7 +23,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
             PortalLogContext context = LoggingContext;
             if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -541,7 +541,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Kayıt bulunamadı", ProjeConstants.MESAJ_BILGI);
+                Messages.Info("Kayıt bulunamadı");
             }
         }
         private string SelectDDLValue(DropDownList ddlList, string value)
@@ -613,31 +613,32 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                             }
                             else
                             {
-                                IKYSOrtak.GorevOnayEPostasiGonder(personel, yoklama.Id, "SehirIci", LoggingContext);
+                                if (!IKYSOrtak.GorevOnayEPostasiGonder(personel, yoklama.Id, "SehirIci", LoggingContext))
+                                    Messages.Warning("Bilgiler kaydedildi ancak bildirim e-postası gönderilemedi. Başvuru kodu: " + LoggingContext.OperationId.ToString("N"));
                             }
 
                             SaveBtn.Visible = false;
                             if ((BulunmamaSebebiDDL.SelectedItem.Value.ConvertToInt() == ProjeConstants.BULUNMAMASEBEBI_GOREVLI_INT)
                                 && AciklamaTxt.Text.Contains(ProjeConstants.BULUNMAMASEBEBI_GOREVLI_UZAKTANCALISMA))
                             {
-                                MessageHelper.PublishMessage("Görev Kaydedildi. Formun çıktısını 'Rapor Al' düğmesine tıklayarak alabilirsiniz", ProjeConstants.MESAJ_BASARILI, 4000);
+                                Messages.Success("Görev Kaydedildi. Formun çıktısını 'Rapor Al' düğmesine tıklayarak alabilirsiniz", 4000);
                                 RaporAlBtn.Visible = true;
                             }
                             else
                             {
-                                MessageHelper.PublishMessage("Kaydedildi. ", ProjeConstants.MESAJ_BASARILI, 4000);
+                                Messages.Success("Kaydedildi. ", 4000);
                             }
 
                         }
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Lütfen bilgileri tamamlayınız.", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Lütfen bilgileri tamamlayınız.");
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Personel Bulunamadı!", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Personel Bulunamadı!");
                 }
 
             }
@@ -651,7 +652,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
             Yoklama yoklama = new Yoklama();
             if (CakismaVarMi(0))
             {
-                MessageHelper.PublishMessage("Kaydedilemedi. Girilen tarihle çakisan bir görev bulunmaktadir. ", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Kaydedilemedi. Girilen tarihle çakisan bir görev bulunmaktadir. ");
             }
             else
             {
@@ -751,17 +752,17 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                         bool isUpdated = Guncelle();
                         if (isUpdated)
                         {
-                            MessageHelper.PublishMessage("Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                            Messages.Success("Güncellendi", 2000);
                         }
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Lütfen bilgileri tamamlayiniz.", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Lütfen bilgileri tamamlayiniz.");
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Personel Bulunamadi!", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Personel Bulunamadi!");
                 }
 
             }
@@ -777,7 +778,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
 
             if (CakismaVarMi(YoklamaIdQS.ConvertToInt()))
             {
-                MessageHelper.PublishMessage("Kaydedilemedi. Girilen tarihle çakisan bir görev bulunmaktadir. ", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Kaydedilemedi. Girilen tarihle çakisan bir görev bulunmaktadir. ");
             }
             else
             {
@@ -865,7 +866,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                     bool isDeleted = YoklamaKaydiSil(yoklama);
                     if (isDeleted)
                     {
-                        MessageHelper.PublishMessage("Yoklama Kaydi Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        Messages.Success("Yoklama Kaydi Silindi", 2000);
                         RedirectToPage(ProjeConstants.PAGE_YOKLAMA_LIST + (string.IsNullOrEmpty(AuthQS)? "?":"?AUTH="+AuthQS+"&")+ "Mesaj=true");
                     }
                 }

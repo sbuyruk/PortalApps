@@ -23,7 +23,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
             PortalLogContext context = LoggingContext;
             if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -314,7 +314,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Lütfen izin baslangiç ve bitis tarihi seçiniz", ProjeConstants.MESAJ_BILGI);
+                    Messages.Info("Lütfen izin baslangiç ve bitis tarihi seçiniz");
                 }
 
             }
@@ -381,14 +381,14 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
             }
             if (basarisizlar.Count > 0)
             {
-                MessageHelper.PublishMessage(tamamlanan + " personelin kaydı tamamlandı; " + basarisizlar.Count
+                Messages.Error(tamamlanan + " personelin kaydı tamamlandı; " + basarisizlar.Count
                     + " personelin kaydı tamamlanamadı. Tamamlanan kayıtlar korunmuştur; yeniden yalnız başarısız personelleri seçiniz. Başarısız personeller: "
-                    + string.Join(", ", basarisizlar) + ". Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+                    + string.Join(", ", basarisizlar) + ". Başvuru kodu: " + context.OperationId.ToString("N"));
                 return false;
             }
             if (tamamlanan == 0)
             {
-                MessageHelper.PublishMessage("İzin uygulanacak personel bulunamadı.", ProjeConstants.MESAJ_BILGI);
+                Messages.Info("İzin uygulanacak personel bulunamadı.");
                 return false;
             }
             return true;
@@ -412,7 +412,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Personel Bulunamadi!", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Personel Bulunamadi!");
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_PERSONEL_LIST;
                 Page.Response.Redirect(newUrl);
@@ -486,16 +486,16 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                         FillHaricTutulanTable();
 
                         //MailGonder(personel);
-                        MessageHelper.PublishMessage("Toplu izin girisi tamamlandi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        Messages.Success("Toplu izin girisi tamamlandi", 2000);
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Toplu izin kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Toplu izin kaydedilemedi");
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Lütfen izin baslangiç ve bitis tarihi seçiniz", ProjeConstants.MESAJ_BILGI);
+                    Messages.Info("Lütfen izin baslangiç ve bitis tarihi seçiniz");
                 }
 
             }

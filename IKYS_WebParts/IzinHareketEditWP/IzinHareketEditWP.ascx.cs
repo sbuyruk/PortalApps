@@ -22,7 +22,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             if (error == null || error is System.Threading.ThreadAbortException) return;
             PortalLogContext context = LoggingContext;
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -211,7 +211,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
                     AciklamaTxt.Enabled = false;
                     AmirImzaDDL.Enabled = false;
                     VekilImzaDDL.Enabled = false;
-                    MessageHelper.PublishMessage("İzin düzenleme süresi geçtiği için değişiklik yapılamaz.", ProjeConstants.MESAJ_BILGI,3000);
+                    Messages.Info("İzin düzenleme süresi geçtiği için değişiklik yapılamaz.", 3000);
                 }
             }
             catch (System.Threading.ThreadAbortException) { throw; }
@@ -267,7 +267,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             }
             else
             {
-                MessageHelper.PublishMessage("İzin kaydı bulunamadı", ProjeConstants.MESAJ_BILGI);
+                Messages.Info("İzin kaydı bulunamadı");
             }
 
 
@@ -571,10 +571,10 @@ namespace IKYS_WebParts.IzinHareketEditWP
             try
             {
                 bool updated = IzinHareketGuncelle(IzinHareketIdQS.ConvertToInt());
-                MessageHelper.PublishMessage(updated ? "İzin kaydı güncellendi."
-                    : "İzin kaydı güncellenemedi. Değişiklikler kaydedilmedi.",
-                    updated ? ProjeConstants.MESAJ_BASARILI : ProjeConstants.MESAJ_HATA,
-                    updated ? 2000 : 0);
+                if (updated)
+                    Messages.Success("İzin kaydı güncellendi.", 2000);
+                else
+                    Messages.Error("İzin kaydı güncellenemedi. Değişiklikler kaydedilmedi.");
             }
             catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error) { ReportError("IzinHareket.Update", error); }
@@ -623,11 +623,11 @@ namespace IKYS_WebParts.IzinHareketEditWP
             {
                 if (IzinHareketSil(IzinHareketIdQS.ConvertToInt()))
                 {
-                    MessageHelper.PublishMessage("İzin kaydı silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("İzin kaydı silindi.", 2000);
                     RedirectToPage(ProjeConstants.PAGE_IZINHAREKET_LIST);
                 }
                 else
-                    MessageHelper.PublishMessage("İzin kaydı silinemedi. Değişiklikler kaydedilmedi.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("İzin kaydı silinemedi. Değişiklikler kaydedilmedi.");
             }
             catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error) { ReportError("IzinHareket.Delete", error); }

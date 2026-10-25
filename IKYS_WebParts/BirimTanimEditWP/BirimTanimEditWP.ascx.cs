@@ -22,7 +22,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
             PortalLogContext context = LoggingContext;
             if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -203,14 +203,14 @@ namespace IKYS_WebParts.BirimTanimEditWP
                     int id = new BirimTanimService().Save(birim, LoggingContext);
                     if (id > 0)
                     {
-                        MessageHelper.PublishMessage("Yeni birim kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        Messages.Success("Yeni birim kaydedildi", 2000);
                         SecilenIdQS = BirimIdQS = id.ToString();
                         SaveBtn.Visible = false;
                         UpdateBtn.Visible = true;
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Birim kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Birim kaydedilemedi");
                         UpdateBtn.Visible = false;
                         SaveBtn.Visible = true;
                     }
@@ -244,9 +244,9 @@ namespace IKYS_WebParts.BirimTanimEditWP
                     birim.Degistiren = CurrentUserName;
                     bool isupdated = new BirimTanimService().Update(birim, LoggingContext);
                     if (isupdated)
-                        MessageHelper.PublishMessage("Birim Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        Messages.Success("Birim Güncellendi", 2000);
                     else
-                        MessageHelper.PublishMessage("Birim Güncellenemedi", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Birim Güncellenemedi");
                 }
             }
             catch (Exception exception)

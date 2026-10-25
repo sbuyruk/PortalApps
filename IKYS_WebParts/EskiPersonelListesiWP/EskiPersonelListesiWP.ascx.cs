@@ -27,7 +27,7 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
             PortalLogContext context = LoggingContext;
             if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -87,7 +87,6 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
         {
             var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
             UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
-            //MessageHelper.PublishMessage(string.Format("T1:{0} , T2:{1}, T3:{2}, T4:{3}, T5:{4}",t1.ToString("ss:fff"),t2.ToString("ss:fff"), t3.ToString("ss:fff"), t4.ToString("ss:fff"), t5.ToString("ss:fff")), ProjeConstants.MESAJ_BILGI);
         }
 
         private string TabloJson()

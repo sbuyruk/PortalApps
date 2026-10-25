@@ -28,7 +28,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
             PortalLogContext context = LoggingContext;
             if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -217,10 +217,10 @@ namespace IKYS_WebParts.EgitimGirisiWP
                         if (isDeleted)
                         {
                             FillOkulTable(personel);
-                            MessageHelper.PublishMessage("Kayıt Silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                            Messages.Success("Kayıt Silindi.", 2000);
                         }
                         else
-                            MessageHelper.PublishMessage("Kayıt Silinemedi.", ProjeConstants.MESAJ_HATA);
+                            Messages.Error("Kayıt Silinemedi.");
                     }
                     catch (Exception exception)
                     {
@@ -278,10 +278,10 @@ namespace IKYS_WebParts.EgitimGirisiWP
                         if (isDeleted)
                         {
                             FillKursTable(personel);
-                            MessageHelper.PublishMessage("Kayıt Silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                            Messages.Success("Kayıt Silindi.", 2000);
                         }
                         else
-                            MessageHelper.PublishMessage("Kayıt Silinemedi.", ProjeConstants.MESAJ_HATA);
+                            Messages.Error("Kayıt Silinemedi.");
                     }
                     catch (Exception exception)
                     {
@@ -339,10 +339,10 @@ namespace IKYS_WebParts.EgitimGirisiWP
                         if (isDeleted)
                         {
                             FillIsyeriTable(personel);
-                            MessageHelper.PublishMessage("Kayıt Silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                            Messages.Success("Kayıt Silindi.", 2000);
                         }
                         else
-                            MessageHelper.PublishMessage("Kayıt Silinemedi.", ProjeConstants.MESAJ_HATA);
+                            Messages.Error("Kayıt Silinemedi.");
                     }
                     catch (Exception exception)
                     {
@@ -405,10 +405,10 @@ namespace IKYS_WebParts.EgitimGirisiWP
                         if (isDeleted)
                         {
                             FillYabanciDilTable(personel);
-                            MessageHelper.PublishMessage("Kayıt Silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                            Messages.Success("Kayıt Silindi.", 2000);
                         }
                         else
-                            MessageHelper.PublishMessage("Kayıt Silinemedi.", ProjeConstants.MESAJ_HATA);
+                            Messages.Error("Kayıt Silinemedi.");
                     }
                     catch (Exception exception)
                     {
@@ -544,11 +544,11 @@ namespace IKYS_WebParts.EgitimGirisiWP
                 {
                     Personel personel = PersonelGetir();
                     FillOkulTable(personel);
-                    MessageHelper.PublishMessage("Kayıt Eklendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Kayıt Eklendi.", 2000);
                 }
 
                 else
-                    MessageHelper.PublishMessage("Kayıt Eklenemedi.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Kayıt Eklenemedi.");
             }
             catch (Exception exception)
             {
@@ -625,11 +625,11 @@ namespace IKYS_WebParts.EgitimGirisiWP
                 {
                     Personel personel = PersonelGetir();
                     FillKursTable(personel);
-                    MessageHelper.PublishMessage("Kayıt Eklendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Kayıt Eklendi.", 2000);
                 }
 
                 else
-                    MessageHelper.PublishMessage("Kayıt Eklenemedi.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Kayıt Eklenemedi.");
             }
             catch (Exception exception)
             {
@@ -646,11 +646,11 @@ namespace IKYS_WebParts.EgitimGirisiWP
                 {
                     Personel personel = PersonelGetir();
                     FillIsyeriTable(personel);
-                    MessageHelper.PublishMessage("Kayıt Eklendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Kayıt Eklendi.", 2000);
                 }
 
                 else
-                    MessageHelper.PublishMessage("Kayıt Eklenemedi.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Kayıt Eklenemedi.");
             }
             catch (Exception exception)
             {
@@ -668,11 +668,11 @@ namespace IKYS_WebParts.EgitimGirisiWP
                 {
                     Personel personel = PersonelGetir();
                     FillYabanciDilTable(personel);
-                    MessageHelper.PublishMessage("Kayıt Eklendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Kayıt Eklendi.", 2000);
                 }
 
                 else
-                    MessageHelper.PublishMessage("Kayıt Eklenemedi.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Kayıt Eklenemedi.");
             }
             catch (Exception exception)
             {

@@ -24,7 +24,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
             PortalLogContext context = LoggingContext;
             if (error is System.Threading.ThreadAbortException) return;
             PortalTechnicalLog.WriteError(context, operation, error);
-            MessageHelper.PublishMessage("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"), ProjeConstants.MESAJ_HATA);
+            Messages.Error("İşlem tamamlanamadı. Lütfen tekrar deneyin. Başvuru kodu: " + context.OperationId.ToString("N"));
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -115,7 +115,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
                     new IzinHareketService().TryRecordWebPartOpened(LoggingContext);
                     if (!string.IsNullOrEmpty(MesajQS))
                     {
-                        MessageHelper.PublishMessage("Mahsup Tamamlandi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        Messages.Success("Mahsup Tamamlandi", 2000);
                         MesajQS = string.Empty;
                     }
                     FillPersonelDDL();
@@ -272,7 +272,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
             }
             else
             {
-                MessageHelper.PublishMessage("Ise baslama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Ise baslama tarihi belirlenemedi");
             }
         }
         private void IzinBilgileriTableHeaders()
@@ -373,7 +373,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
                 int hedefId = ModalDonemDDL.SelectedItem == null ? 0 : ModalDonemDDL.SelectedItem.Value.ConvertToInt();
                 if (hedefId <= 0 || hedefId == hareket.IzinDonemId)
                 {
-                    MessageHelper.PublishMessage("Farklı bir hedef izin dönemi seçiniz.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Farklı bir hedef izin dönemi seçiniz.");
                     return false;
                 }
                 IzinDonem eski = donemService.GetById(hareket.IzinDonemId, transaction, context);
