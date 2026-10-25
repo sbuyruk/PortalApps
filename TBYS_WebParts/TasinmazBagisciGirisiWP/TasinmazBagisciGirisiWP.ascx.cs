@@ -456,7 +456,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("İşlem Tamamlandı. Resim yüklendi.", ProjeConstants.MESAJ_BASARILI);
+                Messages.Success("İşlem Tamamlandı. Resim yüklendi.");
             }
         }
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
@@ -475,12 +475,12 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                 TasinmazBagisci bagisci = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetById(BagisciIdQS.ConvertToInt());
                 if (bagisci == null)
                 {
-                    MessageHelper.PublishMessage("Bağışçı kaydı bulunamadı.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Bağışçı kaydı bulunamadı.");
                     return;
                 }
                 if (!new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).Delete(bagisci))
                 {
-                    MessageHelper.PublishMessage("Bağışçı silinemedi. Kayıt artık mevcut olmayabilir veya bağlı taşınmaz, bağış, talep, yakın ya da taahhüt kaydı bulunabilir.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Bağışçı silinemedi. Kayıt artık mevcut olmayabilir veya bağlı taşınmaz, bağış, talep, yakın ya da taahhüt kaydı bulunabilir.");
                     return;
                 }
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -528,13 +528,13 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                         SaveImageFiles2SP(bagisci.Foto);
                     }
                     PDFKaydet(bagisci.Id);
-                    MessageHelper.PublishMessage("Bağışçı Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Bağışçı Kaydedildi", 2000);
                     RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_LIST + "?Mesaj=true" + "&SecilenId=" + bagisci.Id);
 
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Bağışçı Kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Bağışçı Kaydedilemedi");
                 }
 
 
@@ -560,11 +560,11 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                     }
                     PDFKaydet(bagisci.Id);
                     PDFGoster(bagisci);
-                    MessageHelper.PublishMessage("Bağışçı Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Bağışçı Güncellendi", 2000);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Bağışçı Güncellenemedi", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Bağışçı Güncellenemedi");
                 }
 
 
@@ -601,14 +601,14 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                     if (isOk)
                     {
                         DosyaLnk.Visible = true;
-                        MessageHelper.PublishMessage("Bilgi Formu Yüklendi", ProjeConstants.MESAJ_BASARILI, 2000); 
+                        Messages.Success("Bilgi Formu Yüklendi", 2000);
                     }
                 }
                 else
                 {
                     DosyaLnk.Visible = false;
                     BelgeSilBtn.Visible = false;
-                    MessageHelper.PublishMessage("Lütfen Bağışçı Bilgi ve Talep Belgesi yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                    Messages.Info("Lütfen Bağışçı Bilgi ve Talep Belgesi yükleyiniz.", 2000);
                 }
                 if (TaahhutYukleFU.HasFile)
                 {
@@ -617,23 +617,19 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                     if (isOk)
                     {
                         TaahhutSilBtn.Visible = true;
-                        MessageHelper.PublishMessage("Taahhüt Belgesi yüklendi", ProjeConstants.MESAJ_BASARILI, 2000); 
+                        Messages.Success("Taahhüt Belgesi yüklendi", 2000);
                     }
                 }
                 else
                 {
                     TaahhutDosyaLnk.Visible = false;
-                    MessageHelper.PublishMessage("Lütfen Taahhüt Belgesi yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                    Messages.Info("Lütfen Taahhüt Belgesi yükleyiniz.", 2000);
                 }
             }
             catch (Exception exception)
             {
                 if (exception is System.Threading.ThreadAbortException) throw;
-                TbysWebPartLog.WriteError(LoggingContext, "TBYS.TasinmazBagisciGirisiWP.PDFKaydet", exception);
-                Exception ex = new Exception("Dosya Yüklenemedi");
-                ExceptionHelper exhelper = new ExceptionHelper(exception);
-                exhelper.Exceptions.Add(ex);
-                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.TasinmazBagisciGirisiWP.PDFKaydet", exhelper.Exceptions);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazBagisciGirisiWP.PDFKaydet", exception);
             }
         }
         private void PDFGoster(TasinmazBagisci bagisci)
@@ -661,7 +657,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                         DosyaLnk.Visible = false;
                         BelgeSilBtn.Visible = false;
                         BelgeYukleFU.Visible = true;
-                        MessageHelper.PublishMessage("Lütfen Bağışçı Bilgi ve Talep Formunu pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                        Messages.Info("Lütfen Bağışçı Bilgi ve Talep Formunu pdf olarak yükleyiniz.", 2000);
                     }
                     string taahhutDosyaAdi = ProjeConstants.DOSYA_TAAHHUT_FORMU + bagisci.Id + ".pdf";
                     string taahhutDosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + taahhutDosyaAdi;
@@ -681,12 +677,12 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                         TaahhutDosyaLnk.Visible = false;
                         TaahhutSilBtn.Visible = false;
                         TaahhutYukleFU.Visible = true;
-                        MessageHelper.PublishMessage("Lütfen Bağışçı Taahhüt Formunu pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                        Messages.Info("Lütfen Bağışçı Taahhüt Formunu pdf olarak yükleyiniz.", 2000);
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Bağışçı bulunamadı.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Bağışçı bulunamadı.");
                 }
                 
             }
@@ -708,13 +704,13 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                 string dosyaAdi = ProjeConstants.DOSYA_BAGISBILGIVETALEP_FORMU + BagisciIdQS + ".pdf";
                 if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi, LoggingContext))
                 {
-                    MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success(dosyaAdi + " Silindi", 2000);
                     BelgeSilBtn.Visible = false;
                     DosyaLnk.Visible = false;
                 }
                 else
                 {
-                    MessageHelper.PublishMessage(dosyaAdi + " Silinemedi", ProjeConstants.MESAJ_HATA);
+                    Messages.Error(dosyaAdi + " Silinemedi");
                 }
             }
             catch (Exception ex)
@@ -733,14 +729,14 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
 
                 if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi, LoggingContext))
                 {
-                    MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success(dosyaAdi + " Silindi", 2000);
                     TaahhutSilBtn.Visible = false;
                     TaahhutDosyaLnk.Visible = false;
                     TaahhutYukleFU.Visible = true;
                 }
                 else
                 {
-                    MessageHelper.PublishMessage(dosyaAdi + " Silinemedi", ProjeConstants.MESAJ_HATA);
+                    Messages.Error(dosyaAdi + " Silinemedi");
                 }
             }
             catch (Exception ex)

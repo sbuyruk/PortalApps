@@ -292,7 +292,7 @@ namespace TBYS_WebParts.MevcutKiracilarWP
             }
             else
             {
-                MessageHelper.PublishMessage("Borçlu Kiraci bulunamadi", ProjeConstants.MESAJ_BILGI, 2000);
+                Messages.Info("Borçlu Kiraci bulunamadi", 2000);
             }
 
         }

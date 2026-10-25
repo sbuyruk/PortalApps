@@ -350,7 +350,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP
                         int tasinmazId = sigorta.TasinmazId;
                         if (!new Model.Services.TBYS.SigortaService(LoggingContext).Delete(sigorta))
                         {
-                            MessageHelper.PublishMessage("Sigorta kaydı silinemedi. Sayfayı yenileyip tekrar deneyiniz.", ProjeConstants.MESAJ_HATA);
+                            Messages.Error("Sigorta kaydı silinemedi. Sayfayı yenileyip tekrar deneyiniz.");
                             return;
                         }
                         string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();

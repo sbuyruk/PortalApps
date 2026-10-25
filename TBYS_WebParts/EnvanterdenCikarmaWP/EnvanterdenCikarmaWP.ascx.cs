@@ -313,7 +313,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                 {
                     UpdateBtn.Visible = true;
                     EnvanterdenCikarBtn.Visible = false;
-                    MessageHelper.PublishMessage("(Envanterde olmayan) Taşınmaz Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("(Envanterde olmayan) Taşınmaz Güncellendi", 2000);
                 }
             }
             catch (Exception ex)
@@ -367,7 +367,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Envanterden çikarma islemi basarisiz oldu", ProjeConstants.MESAJ_HATA, 2000);
+                    Messages.Error("Envanterden çikarma islemi basarisiz oldu", 2000);
                 }
             }
             catch (Exception ex)

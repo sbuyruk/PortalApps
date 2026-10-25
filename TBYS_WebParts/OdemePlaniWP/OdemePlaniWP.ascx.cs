@@ -182,7 +182,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Kira Sözleşmesi Bulunamadı", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Kira Sözleşmesi Bulunamadı");
                     }
                 }
 
@@ -402,7 +402,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             }
             else
             {
-                MessageHelper.PublishMessage("Kira Sözleşmesi Bulunamadı", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Kira Sözleşmesi Bulunamadı");
             }
         }
         protected void KiraciKartiBtn_Click(object sender, EventArgs e)
@@ -419,12 +419,12 @@ namespace TBYS_WebParts.OdemePlaniWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Kiracı Bulunamadı");
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Kiracı Bulunamadı");
             }
         }
         protected void KiraciBtn_Click(object sender, EventArgs e)
@@ -441,12 +441,12 @@ namespace TBYS_WebParts.OdemePlaniWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Kiracı Bulunamadı");
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Kiracı Bulunamadı");
             }
 
         }
@@ -484,7 +484,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                 // kira sozlesmesinin sozbastar ve sozbittar alanlari dolu degilse
                 if (string.IsNullOrEmpty(kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull()) || string.IsNullOrEmpty(kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull()))
                 {
-                    MessageHelper.PublishMessage("Bu sözleşme için ödeme Plani oluşturulamaz. Ödeme Plani oluşturabilmek için, Lütfen Kira Sözleşmesinde Sözleşme Başlangıç ve Bitiş tarihini giriniz", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Bu sözleşme için ödeme Plani oluşturulamaz. Ödeme Plani oluşturabilmek için, Lütfen Kira Sözleşmesinde Sözleşme Başlangıç ve Bitiş tarihini giriniz");
                 }
                 else
                 {
@@ -517,7 +517,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                 OdemePlaniEkleBtn.Visible = false;
                 OdemePlaniSilBtn.Visible = false;
                 //TumunuOdeBtn.Visible = false;
-                MessageHelper.PublishMessage("Ödeme planı oluşturulamıyor. Lütfen sözleşmenin başlama ve bitiş tarihlerini girerek tekrar deneyin.", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Ödeme planı oluşturulamıyor. Lütfen sözleşmenin başlama ve bitiş tarihlerini girerek tekrar deneyin.");
             }
             else //if (SozlesmeGecerli(kiraSozlesme.SozBitTar))
             {
@@ -563,13 +563,13 @@ namespace TBYS_WebParts.OdemePlaniWP
                 }
                 else// odeme plani var
                 {
-                    MessageHelper.PublishMessage("Ödeme planı oluşturulamaz. Zaten geçerli bir ödeme planı mevcut.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Ödeme planı oluşturulamaz. Zaten geçerli bir ödeme planı mevcut.");
                 }
             }
 
             if (isSaved)
             {
-                MessageHelper.PublishMessage("Ödeme planı oluşturuldu. Ödeme planı geçerlilik tarihi " + kiraSozlesme.SozBitTar + " -" + kiraSozlesme.SozBitTar, ProjeConstants.MESAJ_BASARILI, 2000);
+                Messages.Success("Ödeme planı oluşturuldu. Ödeme planı geçerlilik tarihi " + kiraSozlesme.SozBitTar + " -" + kiraSozlesme.SozBitTar, 2000);
             }
             return isSaved;
         }

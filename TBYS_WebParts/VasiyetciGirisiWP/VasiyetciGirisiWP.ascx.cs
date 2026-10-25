@@ -265,7 +265,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Vasiyetçi Bulunamadı", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Vasiyetçi Bulunamadı");
                 }
 
             }
@@ -395,11 +395,11 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                 yeniVasiyetci.Olusturan = UtilityHelper.GetCurrentUserLoginName();
                 if (string.IsNullOrEmpty(AdiTxt.Text))
                 {
-                    MessageHelper.PublishMessage("Vasiyetçi Adı Boş Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
+                    Messages.Error("Vasiyetçi Adı Boş Olamaz.", 2000);
                 }
                 else if (string.IsNullOrEmpty(SoyadiTxt.Text))
                 {
-                    MessageHelper.PublishMessage("Vasiyetçi Soyadı Boş Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
+                    Messages.Error("Vasiyetçi Soyadı Boş Olamaz.", 2000);
                 }
                 else
                 {
@@ -408,11 +408,11 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                     {
                         VasiyetciIdQS = yeniId.ToString();
                         RedirectToPage(ProjeConstants.PAGE_VASIYETCI_GIRISI + "?DestinationApp=Duzenle&VasiyetciId=" + VasiyetciIdQS);
-                        MessageHelper.PublishMessage("Vasiyetçi Kaydedildi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                        Messages.Success("Vasiyetçi Kaydedildi.", 2000);
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Vasiyetçi Kaydedilemedi.", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Vasiyetçi Kaydedilemedi.");
                     }
                 }
 
@@ -479,22 +479,22 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
 
                 if (string.IsNullOrEmpty(AdiTxt.Text))
                 {
-                    MessageHelper.PublishMessage("Vasiyetçi Adı Boş Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
+                    Messages.Error("Vasiyetçi Adı Boş Olamaz.", 2000);
                 }
                 else if (string.IsNullOrEmpty(SoyadiTxt.Text))
                 {
-                    MessageHelper.PublishMessage("Vasiyetçi Soyadı Boş Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
+                    Messages.Error("Vasiyetçi Soyadı Boş Olamaz.", 2000);
                 }
                 else
                 {
                     bool guncellendiMi = new Model.Services.TBYS.VasiyetciService(LoggingContext).Update(vasiyetci);
                     if (guncellendiMi)
                     {
-                        MessageHelper.PublishMessage("Vasiyetçi Güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                        Messages.Success("Vasiyetçi Güncellendi.", 2000);
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Vasiyetçi Güncellenmedi.", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Vasiyetçi Güncellenmedi.");
                     }
                 }
 
@@ -549,23 +549,19 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                         DosyaLnk.NavigateUrl = dosyaUrl;
 
                         DosyaLnk.Visible = true;
-                        MessageHelper.PublishMessage("PDF Yüklendi", ProjeConstants.MESAJ_BASARILI, 2000); 
+                        Messages.Success("PDF Yüklendi", 2000);
                     }
                 }
                 else
                 {
                     DosyaLnk.Visible = false;
-                    MessageHelper.PublishMessage("Lütfen bir pdf belgesi seçiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                    Messages.Info("Lütfen bir pdf belgesi seçiniz.", 2000);
                 }
             }
             catch (Exception exception)
             {
                 if (exception is System.Threading.ThreadAbortException) throw;
-                TbysWebPartLog.WriteError(LoggingContext, "TBYS.VasiyetciGirisiWP.YukleBtn_Click", exception);
-                Exception ex = new Exception("PDF Yüklenemedi");
-                ExceptionHelper exhelper = new ExceptionHelper(exception);
-                exhelper.Exceptions.Add(ex);
-                TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.VasiyetciGirisiWP.YukleBtn_Click", exhelper.Exceptions);
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.VasiyetciGirisiWP.YukleBtn_Click", exception);
             }
         }
 
@@ -691,7 +687,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Vasiyete konu varlık listesi dolu olduğundan Vasiyetçi silinemiyor. Lütfen önce Vasiyete Konu Varlık Listesindeki varlıkları siliniz", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Vasiyete konu varlık listesi dolu olduğundan Vasiyetçi silinemiyor. Lütfen önce Vasiyete Konu Varlık Listesindeki varlıkları siliniz");
                     }
                 }
             }
@@ -720,7 +716,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                 }
                 if (!silindi)
                 {
-                    MessageHelper.PublishMessage("Vasiyetçi Silinemedi", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Vasiyetçi Silinemedi");
                 }
             }
             catch (Exception e1)
@@ -745,16 +741,16 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                 if (silindi)
                 {
                     RedirectToPage(ProjeConstants.PAGE_VASIYETCI_GIRISI + "?DestinationApp=Duzenle&VasiyetciId=" + VasiyetciIdQS);
-                    MessageHelper.PublishMessage("Kayıt Silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Kayıt Silindi.", 2000);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kayıt Silinemedi.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Kayıt Silinemedi.");
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("Vasiyet Bulunamadı", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Vasiyet Bulunamadı");
             }
 
         }

@@ -207,7 +207,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Kiracı Bulunamadı");
                 }
                 if (BolgeIdQS.ConvertToInt() == ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS.ConvertToInt() == ProjeConstants.BOLGE_GENELMUDURLUK_INT)
                 {
@@ -346,7 +346,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Sözleşme Bulunamadı", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Sözleşme Bulunamadı");
                 }
 
             }
@@ -386,7 +386,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
             }
             else
             {
-                MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Kiracı Bulunamadı");
             }
 
 
@@ -404,7 +404,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                 kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetCompletedByKiraciId(KiraciIdQS.ConvertToInt());
 
                 if (kiraSozlesme == null)
-                    MessageHelper.PublishMessage("Kiracıya ait bir Kira Sözleşmesi bulunamadı.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Kiracıya ait bir Kira Sözleşmesi bulunamadı.");
             }
         }
         protected void SozlesmeListBtn_Click(object sender, EventArgs e)
@@ -451,12 +451,12 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("OdemePlani Bulunamadi", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("OdemePlani Bulunamadi");
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("Kira Sözlesmesi Bulunamadi", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Kira Sözlesmesi Bulunamadi");
             }
 
         }

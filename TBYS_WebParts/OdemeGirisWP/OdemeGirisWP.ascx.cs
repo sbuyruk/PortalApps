@@ -333,7 +333,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                     KaydetBtn.Visible = false;
                     GuncelleBtn.Visible = false;
                     SilBtn.Visible = false;
-                    MessageHelper.PublishMessage("Ödeme yapmak için bir kiracı seçmelisiniz.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Ödeme yapmak için bir kiracı seçmelisiniz.");
                 }
             }
             catch (Exception exception)
@@ -379,7 +379,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                         KaydetBtn.Visible = false;
                         GuncelleBtn.Visible = false;
                         SilBtn.Visible = false;
-                        MessageHelper.PublishMessage("Ödeme yapmak için bir kiracı seçmelisiniz.", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Ödeme yapmak için bir kiracı seçmelisiniz.");
                     }
                 }
             }
@@ -491,7 +491,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             }
             else
             {
-                MessageHelper.PublishMessage("Sözleşme Bulunamadı", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Sözleşme Bulunamadı");
             }
         }
         protected void GuncelleBtn_Click(object sender, EventArgs e)
@@ -516,7 +516,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             }
             else
             {
-                MessageHelper.PublishMessage("Sözleşme Bulunamadı", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Sözleşme Bulunamadı");
             }
         }
         protected void SilBtn_Click(object sender, EventArgs e)
@@ -541,7 +541,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             }
             else
             {
-                MessageHelper.PublishMessage("Sözleşme Bulunamadı", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Sözleşme Bulunamadı");
             }
         }
         protected void OnaylaBtn_Click(object sender, EventArgs e)
@@ -610,7 +610,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                         }
                         else
                         {
-                            MessageHelper.PublishMessage("Sözleşme Bulunamadı", ProjeConstants.MESAJ_HATA);
+                            Messages.Error("Sözleşme Bulunamadı");
                         }
                     }
 
@@ -618,7 +618,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Sözleşme Bulunamadı", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Sözleşme Bulunamadı");
                 }
 
                 ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "CloseModalOnay();", true);
@@ -722,7 +722,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             }
             else
             {
-                MessageHelper.PublishMessage("Kiraci Bulunamadi", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Kiraci Bulunamadi");
             }
 
 
@@ -740,7 +740,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                 kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetCompletedByKiraciId(KiraciIdQS.ConvertToInt());
 
                 if (kiraSozlesme == null)
-                    MessageHelper.PublishMessage("Kiracıya ait bir Kira Sözleşmesi bulunamadı.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Kiracıya ait bir Kira Sözleşmesi bulunamadı.");
             }
         }
         protected void OdemePlaniBtn_Click(object sender, EventArgs e)
@@ -755,12 +755,12 @@ namespace TBYS_WebParts.OdemeGirisWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Ödeme Planı Bulunamadı", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Ödeme Planı Bulunamadı");
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("Kira Sözleşmesi Bulunamadı", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Kira Sözleşmesi Bulunamadı");
             }
 
         }

@@ -135,7 +135,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
                         GecikmeZammiService gecikmeZammiService = new GecikmeZammiService(LoggingContext);
                         if (gecikmeZammiService.UpdatePeriod(item))
                         {
-                            MessageHelper.PublishMessage("Kayıt Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                            Messages.Success("Kayıt Güncellendi", 2000);
                             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
                             newUrl += "/" + ProjeConstants.PAGE_GECIKMEZAMMI;
@@ -165,7 +165,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
                         GecikmeZammiService gecikmeZammiService = new GecikmeZammiService(LoggingContext);
                         if (gecikmeZammiService.DeletePeriod(item.Id))
                         {
-                            MessageHelper.PublishMessage("Kayıt Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                            Messages.Success("Kayıt Silindi", 2000);
                             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
                             newUrl += "/" + ProjeConstants.PAGE_GECIKMEZAMMI;
@@ -227,7 +227,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
                     Aciklama = YeniAciklamaTxt.Value
                 };
                 new GecikmeZammiService(LoggingContext).SavePeriod(yeni);
-                MessageHelper.PublishMessage("Kayıt eklendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                Messages.Success("Kayıt eklendi.", 2000);
                 RedirectToPage(ProjeConstants.PAGE_GECIKMEZAMMI);
             }
             catch (Exception error)

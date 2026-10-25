@@ -282,7 +282,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP
                         int tasinmazId = onarim.TasinmazId;
                         if (!new Model.Services.TBYS.OnarimService(LoggingContext).Delete(onarim))
                         {
-                            MessageHelper.PublishMessage("Onarım kaydı silinemedi. Sayfayı yenileyip tekrar deneyiniz.", ProjeConstants.MESAJ_HATA);
+                            Messages.Error("Onarım kaydı silinemedi. Sayfayı yenileyip tekrar deneyiniz.");
                             return;
                         }
                         string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();

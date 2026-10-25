@@ -391,10 +391,10 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
                 if (isYaziOlusturuldu)
                 {
                     YeniAdresEtiketDosyasiOlustur(etiketDosyaAdi);
-                    MessageHelper.PublishMessage("Dosyalar hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Dosyalar hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz", 2000);
                 }
                 else
-                    MessageHelper.PublishMessage("Hata Olustu", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Hata Olustu");
                 TabloOlustur();
             }
             catch (Exception ex)
@@ -690,8 +690,8 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
                 if (uzunAdresliler.Count > 0)
                 {
                     string message = string.Join(Environment.NewLine, uzunAdresliler);
-                    MessageHelper.PublishMessage(message + Environment.NewLine +
-                        " adresi çok uzun oldugundan kesilerek kisaltildi. Lütfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
+                    Messages.Info(message + Environment.NewLine +
+                        " adresi çok uzun oldugundan kesilerek kisaltildi. Lütfen etiketini kontrol ediniz. ");
                 }
             }
 

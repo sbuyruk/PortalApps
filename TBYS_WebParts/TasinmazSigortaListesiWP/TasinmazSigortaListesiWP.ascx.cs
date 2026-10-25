@@ -420,7 +420,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
             {
                 if (!string.IsNullOrEmpty(MesajQS))
                 {
-                    MessageHelper.PublishMessage("Sigorta Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Sigorta Silindi", 2000);
                     MesajQS = string.Empty;
                 }
                 if (!Page.IsPostBack)

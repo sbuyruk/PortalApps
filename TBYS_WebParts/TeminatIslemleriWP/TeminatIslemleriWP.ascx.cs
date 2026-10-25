@@ -181,7 +181,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Kira Sözleşmesi Bulunamadı.", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Kira Sözleşmesi Bulunamadı.");
                     }
                 }
                 TabloOlustur(kiraSozlesme.KiraciId);
@@ -427,11 +427,11 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     bool guncellendiMi = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Update(kiraSozlesme);
                     if (guncellendiMi)
                     {
-                        MessageHelper.PublishMessage("Teminat bilgileri güncellendi.", ProjeConstants.MESAJ_BASARILI);
+                        Messages.Success("Teminat bilgileri güncellendi.");
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Teminat bilgileri güncellenemedi.", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Teminat bilgileri güncellenemedi.");
                     }
                 }
                 catch (Exception exception)
@@ -444,7 +444,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             }
             else
             {
-                MessageHelper.PublishMessage("Kira Sözleşmesi Bulunamadı ", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Kira Sözleşmesi Bulunamadı ");
             }
 
         }
@@ -467,7 +467,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             }
             else
             {
-                MessageHelper.PublishMessage("Sözleşme Bulunamadı", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Sözleşme Bulunamadı");
             }
         }
         protected void ModalEkleBtn_Click(object sender, EventArgs e)
@@ -568,7 +568,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Mahsup edilecek bir sözleşme bulunamadı", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Mahsup edilecek bir sözleşme bulunamadı");
                     }
 
                 }
@@ -610,7 +610,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                                     throw new InvalidOperationException("Teminat toplamları güncellenemedi.");
                                 TeminatBilgileriniDoldur(kiraSozlesme);
                                 TabloOlustur(kiraSozlesme.KiraciId);
-                                MessageHelper.PublishMessage("Teminat İşlemi Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                                Messages.Success("Teminat İşlemi Güncellendi", 2000);
                                 if (teminatIslem.IslemTipi.Equals(ProjeConstants.TEMINAT_KIRAYAMAHSUP))
                                 {
                                     OdemeyiGuncelle(mahsupEdilecekKiraSozlesme, teminatIslem.IslemTarihi, teminatIslem.IslemTutari, teminatIslem.OdemeId, teminatIslem.Aciklama);
@@ -620,13 +620,13 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                         }
                         else
                         {
-                            MessageHelper.PublishMessage("Teminata ait sözleşme bulunamadı!", ProjeConstants.MESAJ_HATA);
+                            Messages.Error("Teminata ait sözleşme bulunamadı!");
                         }
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Teminat İşlemi bulunamadı!", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Teminat İşlemi bulunamadı!");
                 }
 
             }
@@ -665,16 +665,16 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                             throw new InvalidOperationException("Teminat toplamları güncellenemedi.");
                         TeminatBilgileriniDoldur(kiraSozlesme);
                         TabloOlustur(kiraSozlesme.KiraciId);
-                        MessageHelper.PublishMessage("Teminat İşlemi Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        Messages.Success("Teminat İşlemi Silindi", 2000);
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Teminat İşlemi Silindi. Teminata ait sözleşme bulunamadı!", ProjeConstants.MESAJ_BILGI, 4000);
+                        Messages.Info("Teminat İşlemi Silindi. Teminata ait sözleşme bulunamadı!", 4000);
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Teminat İşlemi bulunamadı!", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Teminat İşlemi bulunamadı!");
                 }
 
             }
@@ -744,7 +744,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             }
             else
             {
-                MessageHelper.PublishMessage("Sözleşme kaydı bulunamadı", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Sözleşme kaydı bulunamadı");
             }
         }
         protected void OdemePlaninaGitBtn_Click(object sender, EventArgs e)
@@ -762,7 +762,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     Page.Response.Redirect(newUrl, true);
                 }
                 else
-                    MessageHelper.PublishMessage("Bu kiracıya ait sözleşme kaydı bulunamadı", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Bu kiracıya ait sözleşme kaydı bulunamadı");
 
             }
             catch (Exception ex)

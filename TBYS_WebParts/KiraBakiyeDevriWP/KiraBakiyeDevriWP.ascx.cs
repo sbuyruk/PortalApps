@@ -157,7 +157,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kiracı bulunamadı!", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Kiracı bulunamadı!");
                 }
             }
         }
@@ -445,8 +445,10 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                 if (item == null) throw new InvalidOperationException("Sözleşme bulunamadı.");
                 bool changed = new KiraBakiyeDevriOtomatik(LoggingContext).DevirAl(item);
                 SozlesmelerTablosunuDoldur(item.KiraciId);
-                MessageHelper.PublishMessage(changed ? "Devir alma işlemi tamamlandı." : "Devir alınacak fark bulunamadı.",
-                    changed ? ProjeConstants.MESAJ_BASARILI : ProjeConstants.MESAJ_BILGI, 2000);
+                if (changed)
+                    Messages.Success("Devir alma işlemi tamamlandı.", 2000);
+                else
+                    Messages.Info("Devir alınacak fark bulunamadı.", 2000);
             }
             catch (Exception error)
             {
@@ -486,7 +488,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                         Page.Response.Redirect(newUrl, true);
                     }
                     else
-                        MessageHelper.PublishMessage("Bu kiracıya ait sözleşme kaydı bulunamadı", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Bu kiracıya ait sözleşme kaydı bulunamadı");
                 }
             }
             catch (Exception ex)

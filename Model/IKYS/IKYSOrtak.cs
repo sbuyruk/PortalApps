@@ -442,33 +442,6 @@ namespace Model.Ortak
             return personel;
         }
 
-        public static string PersonelinBolgesiniGetir_Deprecated(string currentUserName)
-        {
-            Personel personel = PersonelGetir(currentUserName);
-
-            if (personel != null)
-            {
-                PersonelItem personelItem = new PersonelItem();
-                personelItem.PersonelId = personel.Id;
-                if (personelItem.IsBilgileriItem.Birim != null)
-                {
-                    string birimAdi = personelItem.IsBilgileriItem.Birim.Adi;
-                    string bolge = birimAdi.Contains(ProjeConstants.BOLGE_ISTANBUL) ? ProjeConstants.BOLGE_ISTANBUL :
-                        (birimAdi.Contains(ProjeConstants.BOLGE_IZMIR) ? ProjeConstants.BOLGE_IZMIR :
-                        (birimAdi.Contains(ProjeConstants.BOLGE_MERSIN) ? ProjeConstants.BOLGE_MERSIN : string.Empty));
-                    return bolge;
-                }
-                else
-                {
-                    return string.Empty;
-                }
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Personel bulunamadi", ProjeConstants.MESAJ_HATA);
-                return string.Empty;
-            }
-        }
         public static Bolge BolgeGetirByUserName(string currentUserName)
         {
             Personel personel = PersonelGetir(currentUserName);

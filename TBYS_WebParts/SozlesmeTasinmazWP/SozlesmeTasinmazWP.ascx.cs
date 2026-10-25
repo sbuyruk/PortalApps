@@ -293,7 +293,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                     {
                         if (!new Model.Services.TBYS.SozlesmeTasinmazService(LoggingContext).Delete(sozlesmeTasinmaz))
                         {
-                            MessageHelper.PublishMessage("Sözleşme bağlantısı çıkarılamadı. Sayfayı yenileyip tekrar deneyiniz.", ProjeConstants.MESAJ_HATA);
+                            Messages.Error("Sözleşme bağlantısı çıkarılamadı. Sayfayı yenileyip tekrar deneyiniz.");
                             return;
                         }
                         string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();

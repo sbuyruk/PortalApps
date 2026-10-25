@@ -250,7 +250,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 TasinmazFormunuDoldur(tasinmaz);
             }
             if (tasinmazBulunamadi)
-                MessageHelper.PublishMessage("Taşınmaz Bulunamadı!", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Taşınmaz Bulunamadı!");
         }
         private void DDLleriDoldur()
         {
@@ -471,7 +471,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                     Page.Response.Redirect(newUrl, true);
                 }
                 else
-                    MessageHelper.PublishMessage("Taşınmaz Kaydı başarısız oldu.-TS001", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Taşınmaz Kaydı başarısız oldu.-TS001");
             }
             catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error)
@@ -486,11 +486,11 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 if (updateTasinmazData2Db(TasinmazIdQS.ConvertToInt()))
                 {
                     SigortaBtn.Visible = true;
-                    MessageHelper.PublishMessage("Taşınmaz kaydı güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    Messages.Success("Taşınmaz kaydı güncellendi.", 2000);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Taşınmaz Güncellenemedi.-TS001", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Taşınmaz Güncellenemedi.-TS001");
                 }
             }
             catch (System.Threading.ThreadAbortException) { throw; }
@@ -528,7 +528,6 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             }
             //else
             //{
-            //    MessageHelper.PublishMessage("Bu tasinmazin Sigortasi Bulunamadı. Lütfen sigorta Durumunu seçip kaydettikten sonra tekrar deneyiniz.", ProjeConstants.MESAJ_HATA);
             //}
 
         }
@@ -574,10 +573,10 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                         Page.Response.Redirect(newUrl, true);
                     }
                     else
-                        MessageHelper.PublishMessage("Taşınmaz silinemedi. Kayıt artık mevcut olmayabilir veya bağlı bölüm, bağış, sözleşme, onarım ya da sigorta kaydı bulunabilir.", ProjeConstants.MESAJ_HATA);
+                        Messages.Error("Taşınmaz silinemedi. Kayıt artık mevcut olmayabilir veya bağlı bölüm, bağış, sözleşme, onarım ya da sigorta kaydı bulunabilir.");
                 }
                 else
-                    MessageHelper.PublishMessage("Taşınmaz silinemedi. Kayıt artık mevcut olmayabilir veya bağlı bölüm, bağış, sözleşme, onarım ya da sigorta kaydı bulunabilir.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Taşınmaz silinemedi. Kayıt artık mevcut olmayabilir veya bağlı bölüm, bağış, sözleşme, onarım ya da sigorta kaydı bulunabilir.");
             }
             catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error)
@@ -609,7 +608,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
 
             if (bagis == null)
             {
-                MessageHelper.PublishMessage("Bağışçı Bulunamadı. Bu taşınmaz henüz bir bağışçıyla ilişkilendirilmemiş. Lütfen Bağışçı sayfasından bağışçı ataması yapınız.", ProjeConstants.MESAJ_HATA);
+                Messages.Error("Bağışçı Bulunamadı. Bu taşınmaz henüz bir bağışçıyla ilişkilendirilmemiş. Lütfen Bağışçı sayfasından bağışçı ataması yapınız.");
             }
             else
             {
@@ -617,7 +616,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 bagisci = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).GetById(bagis.BagisciId);
                 if (bagisci == null)
                 {
-                    MessageHelper.PublishMessage("Bağışçı Bulunamadı. Bu taşınmazın ilişkilendirildiği bağışçı bulunamadı. Lütfen Bağışçı sayfasından bağışçı ataması yapınız.", ProjeConstants.MESAJ_HATA);
+                    Messages.Error("Bağışçı Bulunamadı. Bu taşınmazın ilişkilendirildiği bağışçı bulunamadı. Lütfen Bağışçı sayfasından bağışçı ataması yapınız.");
                 }
                 else
                 {

@@ -1,4 +1,7 @@
+using Model.IKYS;
 using Model.Ortak;
+using Model.Services.IKYS;
+using Model.Services.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -179,9 +182,7 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    AuthQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(UtilityHelper.GetCurrentUserLoginName());
-                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName, LoggingContext);
-                    BolgeIdQS = bolge == null ? 0 : bolge.Id;
+                    KullaniciBolgesiniYukle();
                     if (!string.IsNullOrEmpty(AuthQS) && !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM))
                     {
                         TitleLbl.Text = "Kira Sözlesme Listesi" + " (" + AuthQS + " Bölgesi)";
@@ -196,6 +197,31 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
                 TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmeListesiWP.Page_Load", ex);
             }
         }
+        private void KullaniciBolgesiniYukle()
+        {
+            PortalLogContext context = LoggingContext;
+            AuthQS = string.Empty;
+            BolgeIdQS = 0;
+            Personel personel = IKYSOrtak.PersonelGetir(CurrentUserName, context);
+            if (personel == null)
+            {
+                Messages.Error("Personel bulunamadı.");
+                return;
+            }
+            IsBilgileri isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id, context);
+            if (isBilgileri == null) throw new InvalidOperationException("Personelin iş bilgileri bulunamadı.");
+            BirimTanim birim = new BirimTanimService().GetById(isBilgileri.BirimId, context);
+            if (birim == null) return;
+
+            // Preserve the existing unit-name mapping used by AuthQS and the list title.
+            string birimAdi = birim.Adi;
+            AuthQS = birimAdi.Contains(ProjeConstants.BOLGE_ISTANBUL) ? ProjeConstants.BOLGE_ISTANBUL :
+                (birimAdi.Contains(ProjeConstants.BOLGE_IZMIR) ? ProjeConstants.BOLGE_IZMIR :
+                (birimAdi.Contains(ProjeConstants.BOLGE_MERSIN) ? ProjeConstants.BOLGE_MERSIN : string.Empty));
+            Bolge bolge = new BolgeService().GetById(birim.BolgeId, context);
+            BolgeIdQS = bolge == null ? 0 : bolge.Id;
+        }
+
         private void TabloOlustur()
         {
             var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
