@@ -45,7 +45,7 @@ namespace DAO.Repositories.IKYS
             SqlQuery query = new SqlQuery("SELECT * FROM Personel_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id"); query.AddParameter("@Id", id);
             Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
             try { DataTable result = transaction.Select(query); succeeded = true; return result; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Personel.SelectById", clock.ElapsedMilliseconds, succeeded); }
+            finally { transaction.DeferSqlTrace(context, "SELECT", "Personel.SelectById", clock.ElapsedMilliseconds, succeeded); }
         }
 
         public DataTable SelectAll()
@@ -82,7 +82,7 @@ namespace DAO.Repositories.IKYS
             if (transaction == null) throw new ArgumentNullException("transaction");
             Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
             try { int id = transaction.Insert(queryBuilder.BuildInsert(entity, "Personel_Table")); succeeded = id > 0; return id; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "INSERT", "Personel.Insert", clock.ElapsedMilliseconds, succeeded); }
+            finally { transaction.DeferSqlTrace(context, "INSERT", "Personel.Insert", clock.ElapsedMilliseconds, succeeded); }
         }
 
         public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
@@ -90,7 +90,7 @@ namespace DAO.Repositories.IKYS
             if (transaction == null) throw new ArgumentNullException("transaction");
             Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
             try { succeeded = transaction.Update(queryBuilder.BuildUpdate(entity, "Personel_Table")); return succeeded; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "UPDATE", "Personel.Update", clock.ElapsedMilliseconds, succeeded); }
+            finally { transaction.DeferSqlTrace(context, "UPDATE", "Personel.Update", clock.ElapsedMilliseconds, succeeded); }
         }
 
 

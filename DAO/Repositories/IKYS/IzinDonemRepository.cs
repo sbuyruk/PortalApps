@@ -78,21 +78,21 @@ namespace DAO.Repositories.IKYS
         {
             Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
             try { DataTable result = transaction.Select(query); succeeded = true; return result; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", name, clock.ElapsedMilliseconds, succeeded); }
+            finally { transaction.DeferSqlTrace(context, "SELECT", name, clock.ElapsedMilliseconds, succeeded); }
         }
         private static int TraceInsert(SqlQuery query, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
             Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
             try { int id = transaction.Insert(query); succeeded = id > 0; return id; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "INSERT", "IzinDonem.Insert", clock.ElapsedMilliseconds, succeeded); }
+            finally { transaction.DeferSqlTrace(context, "INSERT", "IzinDonem.Insert", clock.ElapsedMilliseconds, succeeded); }
         }
         private static bool TraceWrite(SqlQuery query, string operation, string name, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
             Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
             try { succeeded = transaction.Update(query); return succeeded; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, operation, name, clock.ElapsedMilliseconds, succeeded); }
+            finally { transaction.DeferSqlTrace(context, operation, name, clock.ElapsedMilliseconds, succeeded); }
         }
 
         public DataTable SelectAll(PortalLogContext context)

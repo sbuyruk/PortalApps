@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using Utility.Logging;
 
 namespace DAO.Ortak
 {
@@ -13,6 +15,15 @@ namespace DAO.Ortak
         private readonly SqlConnection connection;
         private readonly SqlTransaction transaction;
         private bool completed;
+        private readonly List<Action> pendingSqlTraces = new List<Action>();
+
+        // Capture only metadata here; technical logging runs after the connection is disposed.
+        public void DeferSqlTrace(PortalLogContext context, string operation, string method,
+            long durationMilliseconds, bool succeeded)
+        {
+            pendingSqlTraces.Add(() => PortalTechnicalLog.WriteSqlTrace(
+                context, operation, method, durationMilliseconds, succeeded));
+        }
 
         public SqlTransactionContext()
         {
@@ -100,8 +111,16 @@ namespace DAO.Ortak
             }
             finally
             {
-                transaction.Dispose();
-                connection.Dispose();
+                try
+                {
+                    transaction.Dispose();
+                }
+                finally
+                {
+                    connection.Dispose();
+                    foreach (Action trace in pendingSqlTraces) trace();
+                    pendingSqlTraces.Clear();
+                }
             }
         }
     }

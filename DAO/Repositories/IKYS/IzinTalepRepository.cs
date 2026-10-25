@@ -43,7 +43,7 @@ namespace DAO.Repositories.IKYS
             Stopwatch clock = Stopwatch.StartNew();
             bool succeeded = false;
             try { DataTable result = transaction.Select(query); succeeded = true; return result; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "IzinTalep.SelectById", clock.ElapsedMilliseconds, succeeded); }
+            finally { transaction.DeferSqlTrace(context, "SELECT", "IzinTalep.SelectById", clock.ElapsedMilliseconds, succeeded); }
         }
 
         public DataTable SelectAll()
@@ -63,7 +63,7 @@ namespace DAO.Repositories.IKYS
             Stopwatch clock = Stopwatch.StartNew();
             bool succeeded = false;
             try { int id = transaction.Insert(queryBuilder.BuildInsert(item, "IzinTalep_Table")); succeeded = id > 0; return id; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "INSERT", "IzinTalep.Insert", clock.ElapsedMilliseconds, succeeded); }
+            finally { transaction.DeferSqlTrace(context, "INSERT", "IzinTalep.Insert", clock.ElapsedMilliseconds, succeeded); }
         }
 
         public bool Update<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
@@ -209,7 +209,7 @@ namespace DAO.Repositories.IKYS
         {
             Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
             try { succeeded = transaction.Update(query); return succeeded; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, operation, name, clock.ElapsedMilliseconds, succeeded); }
+            finally { transaction.DeferSqlTrace(context, operation, name, clock.ElapsedMilliseconds, succeeded); }
         }
     }
 }

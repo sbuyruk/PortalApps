@@ -36,8 +36,14 @@ namespace DAO.Ortak
             finally
             {
                 clock.Stop();
-                PortalTechnicalLog.WriteSqlTrace(context, "SELECT", repositoryMethod,
-                    clock.ElapsedMilliseconds, succeeded);
+                // IKYS migration: preserve technical traces without opening a second
+                // connection while the business transaction is active.
+                if (transaction != null && context.Project == "IKYS")
+                    transaction.DeferSqlTrace(context, "SELECT", repositoryMethod,
+                        clock.ElapsedMilliseconds, succeeded);
+                else
+                    PortalTechnicalLog.WriteSqlTrace(context, "SELECT", repositoryMethod,
+                        clock.ElapsedMilliseconds, succeeded);
             }
         }
     }
