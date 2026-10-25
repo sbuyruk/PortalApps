@@ -2,7 +2,7 @@
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/" >
   <Module Name="TestWP" List="113" Url="_catalogs/wp">
     <File Path="TestWP\TestWP.webpart" Url="MTS_WebParts_TestWP.webpart" Type="GhostableInLibrary" >
-      <Property Name="Group" Value="Custom" />
+      <Property Name="Group" Value="_Hidden" />
     </File>
   </Module>
 </Elements>

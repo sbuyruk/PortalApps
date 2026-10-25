@@ -7,8 +7,8 @@
     </metaData>
     <data>
       <properties>
-        <property name="Title" type="string">MTS_WebParts - MtsOlayListesiWP</property>
-        <property name="Description" type="string">My Visual Web Part</property>
+        <property name="Title" type="string">MTS Geçmiş Olay Arşivi</property>
+        <property name="Description" type="string">Geçmiş MTS olaylarının salt okunur arşivi. Yeni kayıtlar Log İzleme ekranındadır.</property>
       </properties>
     </data>
   </webPart>
