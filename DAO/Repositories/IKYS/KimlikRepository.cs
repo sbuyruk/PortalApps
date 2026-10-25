@@ -19,7 +19,7 @@ namespace DAO.Repositories.IKYS
             SqlQuery query = new SqlQuery("SELECT * FROM Kimlik_Table WITH (UPDLOCK, HOLDLOCK) WHERE Id=@Id"); query.AddParameter("@Id", id);
             Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
             try { DataTable result = transaction.Select(query); succeeded = true; return result; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Kimlik.SelectById", clock.ElapsedMilliseconds, succeeded); }
+            finally { transaction.DeferSqlTrace(context, "SELECT", "Kimlik.SelectById", clock.ElapsedMilliseconds, succeeded); }
         }
         public DataTable SelectAll() { return db.SelectFromDb(new SqlQuery("SELECT * FROM Kimlik_Table"), ""); }
 
@@ -28,7 +28,7 @@ namespace DAO.Repositories.IKYS
             if (transaction == null) throw new ArgumentNullException("transaction");
             Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
             try { int id = transaction.Insert(queryBuilder.BuildInsert(item, "Kimlik_Table")); succeeded = id > 0; return id; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "INSERT", "Kimlik.Insert", clock.ElapsedMilliseconds, succeeded); }
+            finally { transaction.DeferSqlTrace(context, "INSERT", "Kimlik.Insert", clock.ElapsedMilliseconds, succeeded); }
         }
 
         public bool Update<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
@@ -36,7 +36,7 @@ namespace DAO.Repositories.IKYS
             if (transaction == null) throw new ArgumentNullException("transaction");
             Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
             try { succeeded = transaction.Update(queryBuilder.BuildUpdate(item, "Kimlik_Table")); return succeeded; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "UPDATE", "Kimlik.Update", clock.ElapsedMilliseconds, succeeded); }
+            finally { transaction.DeferSqlTrace(context, "UPDATE", "Kimlik.Update", clock.ElapsedMilliseconds, succeeded); }
         }
 
         public DataTable SelectByPersonelId(int personelId) { SqlQuery q = new SqlQuery("SELECT * FROM Kimlik_Table WHERE PersonelId=@PersonelId ORDER BY Id"); q.AddParameter("@PersonelId", personelId); return db.SelectFromDb(q, ""); }
@@ -49,7 +49,7 @@ namespace DAO.Repositories.IKYS
             query.AddParameter("@PersonelId", personelId);
             Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
             try { DataTable result = transaction.Select(query); succeeded = true; return result; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "Kimlik.SelectByPersonelId", clock.ElapsedMilliseconds, succeeded); }
+            finally { transaction.DeferSqlTrace(context, "SELECT", "Kimlik.SelectByPersonelId", clock.ElapsedMilliseconds, succeeded); }
         }
         public DataTable SelectByTcKimlikNo(string kimlikNo) { SqlQuery q = new SqlQuery("SELECT * FROM Kimlik_Table WHERE TCKimlikNo=@TCKimlikNo ORDER BY Id"); q.AddParameter("@TCKimlikNo", kimlikNo); return db.SelectFromDb(q, ""); }
         public DataTable SelectByTcKimlikNo(string kimlikNo, PortalLogContext context)

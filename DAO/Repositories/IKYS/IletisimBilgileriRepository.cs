@@ -27,7 +27,7 @@ namespace DAO.Repositories.IKYS
             if (transaction == null) throw new ArgumentNullException("transaction");
             Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
             try { int id = transaction.Insert(queryBuilder.BuildInsert(item, "IletisimBilgileri_Table")); succeeded = id > 0; return id; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "INSERT", "IletisimBilgileri.Insert", clock.ElapsedMilliseconds, succeeded); }
+            finally { transaction.DeferSqlTrace(context, "INSERT", "IletisimBilgileri.Insert", clock.ElapsedMilliseconds, succeeded); }
         }
 
         public bool Update<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
@@ -59,13 +59,13 @@ namespace DAO.Repositories.IKYS
         {
             Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
             try { DataTable result = transaction.Select(query); succeeded = true; return result; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", name, clock.ElapsedMilliseconds, succeeded); }
+            finally { transaction.DeferSqlTrace(context, "SELECT", name, clock.ElapsedMilliseconds, succeeded); }
         }
         private static bool TraceWrite(SqlQuery query, string operation, string name, SqlTransactionContext transaction, PortalLogContext context)
         {
             Stopwatch clock = Stopwatch.StartNew(); bool succeeded = false;
             try { succeeded = transaction.Update(query); return succeeded; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, operation, name, clock.ElapsedMilliseconds, succeeded); }
+            finally { transaction.DeferSqlTrace(context, operation, name, clock.ElapsedMilliseconds, succeeded); }
         }
 
         public DataTable SelectById(int id, PortalLogContext context)

@@ -64,7 +64,7 @@ namespace DAO.Repositories.IKYS
             }
             finally
             {
-                PortalTechnicalLog.WriteSqlTrace(
+                transaction.DeferSqlTrace(
                     context,
                     "SELECT",
                     "IzinHareket.SelectById",
@@ -139,7 +139,7 @@ namespace DAO.Repositories.IKYS
             }
             finally
             {
-                PortalTechnicalLog.WriteSqlTrace(
+                transaction.DeferSqlTrace(
                     context,
                     "SELECT",
                     "IzinHareket.SelectByIzinTalepId",
@@ -199,7 +199,7 @@ namespace DAO.Repositories.IKYS
             }
             finally
             {
-                PortalTechnicalLog.WriteSqlTrace(
+                transaction.DeferSqlTrace(
                     context,
                     "INSERT",
                     "IzinHareket.Insert",
@@ -229,7 +229,7 @@ namespace DAO.Repositories.IKYS
             }
             finally
             {
-                PortalTechnicalLog.WriteSqlTrace(
+                transaction.DeferSqlTrace(
                     context,
                     operation,
                     name,

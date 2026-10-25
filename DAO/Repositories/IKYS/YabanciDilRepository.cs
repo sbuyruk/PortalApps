@@ -21,7 +21,7 @@ namespace DAO.Repositories.IKYS
             Stopwatch clock = Stopwatch.StartNew();
             bool succeeded = false;
             try { DataTable result = transaction.Select(query); succeeded = true; return result; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "SELECT", "YabanciDil.SelectById", clock.ElapsedMilliseconds, succeeded); }
+            finally { transaction.DeferSqlTrace(context, "SELECT", "YabanciDil.SelectById", clock.ElapsedMilliseconds, succeeded); }
         }
         public DataTable SelectAll() { return db.SelectFromDb(new SqlQuery("SELECT * FROM YabanciDil_Table"), ""); }
 
@@ -31,7 +31,7 @@ namespace DAO.Repositories.IKYS
             Stopwatch clock = Stopwatch.StartNew();
             bool succeeded = false;
             try { int id = transaction.Insert(queryBuilder.BuildInsert(item, "YabanciDil_Table")); succeeded = id > 0; return id; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, "INSERT", "YabanciDil.Insert", clock.ElapsedMilliseconds, succeeded); }
+            finally { transaction.DeferSqlTrace(context, "INSERT", "YabanciDil.Insert", clock.ElapsedMilliseconds, succeeded); }
         }
 
         public bool Update<T>(T item, SqlTransactionContext transaction, PortalLogContext context)
@@ -53,7 +53,7 @@ namespace DAO.Repositories.IKYS
             Stopwatch clock = Stopwatch.StartNew();
             bool succeeded = false;
             try { succeeded = transaction.Update(query); return succeeded; }
-            finally { PortalTechnicalLog.WriteSqlTrace(context, operation, name, clock.ElapsedMilliseconds, succeeded); }
+            finally { transaction.DeferSqlTrace(context, operation, name, clock.ElapsedMilliseconds, succeeded); }
         }
 
         public DataTable SelectById(int id, PortalLogContext context)

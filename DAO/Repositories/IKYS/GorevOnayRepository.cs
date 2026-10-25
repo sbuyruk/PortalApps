@@ -41,7 +41,7 @@ namespace DAO.Repositories.IKYS
             query.AddParameter("@Id", id);
             return PortalSqlReadExecutor.Select(query, context, "GorevOnay.SelectById");
         }
-        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context) { if (transaction == null) throw new ArgumentNullException("transaction"); SqlQuery q = new SqlQuery("SELECT * FROM GorevOnay_Table WITH (UPDLOCK,HOLDLOCK) WHERE Id=@Id"); q.AddParameter("@Id", id); Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { DataTable result=transaction.Select(q); ok=true; return result; } finally { PortalTechnicalLog.WriteSqlTrace(context,"SELECT","GorevOnay.SelectById",clock.ElapsedMilliseconds,ok); } }
+        public DataTable SelectById(int id, SqlTransactionContext transaction, PortalLogContext context) { if (transaction == null) throw new ArgumentNullException("transaction"); SqlQuery q = new SqlQuery("SELECT * FROM GorevOnay_Table WITH (UPDLOCK,HOLDLOCK) WHERE Id=@Id"); q.AddParameter("@Id", id); Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { DataTable result=transaction.Select(q); ok=true; return result; } finally { transaction.DeferSqlTrace(context,"SELECT","GorevOnay.SelectById",clock.ElapsedMilliseconds,ok); } }
         public DataTable SelectAll(PortalLogContext context)
         {
             return PortalSqlReadExecutor.Select(new SqlQuery("SELECT * FROM GorevOnay_Table"), context, "GorevOnay.SelectAll");
@@ -123,8 +123,8 @@ namespace DAO.Repositories.IKYS
             return PortalSqlReadExecutor.Select(query, context, "GorevOnay.SelectForDateConflict");
         }
         private DataTable TraceSelect(string name, Func<DataTable> action, PortalLogContext context) { Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { DataTable result=action(); ok=true; return result; } finally { PortalTechnicalLog.WriteSqlTrace(context,"SELECT",name,clock.ElapsedMilliseconds,ok); } }
-        private static int TraceInsert(SqlQuery query, SqlTransactionContext transaction, PortalLogContext context) { if(transaction==null) throw new ArgumentNullException("transaction"); Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { int id=transaction.Insert(query); ok=id>0; return id; } finally { PortalTechnicalLog.WriteSqlTrace(context,"INSERT","GorevOnay.Insert",clock.ElapsedMilliseconds,ok); } }
-        private static bool TraceWrite(SqlQuery query,string operation,string name,SqlTransactionContext transaction,PortalLogContext context) { if(transaction==null) throw new ArgumentNullException("transaction"); Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { ok=transaction.Update(query); return ok; } finally { PortalTechnicalLog.WriteSqlTrace(context,operation,name,clock.ElapsedMilliseconds,ok); } }
+        private static int TraceInsert(SqlQuery query, SqlTransactionContext transaction, PortalLogContext context) { if(transaction==null) throw new ArgumentNullException("transaction"); Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { int id=transaction.Insert(query); ok=id>0; return id; } finally { transaction.DeferSqlTrace(context,"INSERT","GorevOnay.Insert",clock.ElapsedMilliseconds,ok); } }
+        private static bool TraceWrite(SqlQuery query,string operation,string name,SqlTransactionContext transaction,PortalLogContext context) { if(transaction==null) throw new ArgumentNullException("transaction"); Stopwatch clock=Stopwatch.StartNew(); bool ok=false; try { ok=transaction.Update(query); return ok; } finally { transaction.DeferSqlTrace(context,operation,name,clock.ElapsedMilliseconds,ok); } }
 
 
         public DataTable SelectAllReturnDataTable(int personelId, DateTime since)
