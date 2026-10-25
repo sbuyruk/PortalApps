@@ -187,6 +187,7 @@
     <Compile Include="Services\IKYS\DereceKademeDegisimService.cs" />
     <Compile Include="Services\TBYS\TasinmazService.cs" />
     <Compile Include="Services\TBYS\KiraSozlesmeService.cs" />
+    <Compile Include="Services\TBYS\KiraSozlesmeYenilemeService.cs" />
     <Compile Include="Services\TBYS\KiraEkstreAktarmaService.cs" />
     <Compile Include="Services\TBYS\KiraBorcuTakipService.cs" />
     <Compile Include="Services\TBYS\BagimsizBolumService.cs" />

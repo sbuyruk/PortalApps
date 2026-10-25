@@ -25,6 +25,29 @@ namespace DAO.Ortak
                 context, operation, method, durationMilliseconds, succeeded));
         }
 
+        /// <summary>
+        /// Executes a single DML statement and returns its row count. The output parameter
+        /// avoids ExecuteNonQuery counts contributed by triggers or suppressed by NOCOUNT.
+        /// Do not pass batches with statements following the DML.
+        /// </summary>
+        public int ExecuteAffectedRows(SqlQuery query)
+        {
+            if (query == null) throw new ArgumentNullException("query", "Sorgu gereklidir.");
+            const string parameterName = "@__PortalAffectedRows";
+            foreach (SqlParameter parameter in query.Parameters)
+                if (string.Equals(parameter.ParameterName, parameterName, StringComparison.OrdinalIgnoreCase))
+                    throw new ArgumentException("Sorgu ayrılmış bir parametre adını kullanıyor.", "query");
+            using (SqlCommand command = new SqlCommand(
+                query.Sql + "; SET " + parameterName + " = @@ROWCOUNT;", connection, transaction))
+            {
+                command.Parameters.AddRange(query.Parameters.ToArray());
+                SqlParameter affected = command.Parameters.Add(parameterName, SqlDbType.Int);
+                affected.Direction = ParameterDirection.Output;
+                command.ExecuteNonQuery();
+                return Convert.ToInt32(affected.Value);
+            }
+        }
+
         public SqlTransactionContext()
         {
             connection = new SqlConnection(DBProcess.getConnectString());
