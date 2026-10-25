@@ -45,7 +45,7 @@ Metin taraması parçalı ad üretimi (`'Olay_' + 'Table'`), şifreli tanım vey
 
 | Bağımlılık / kaynak | Okuma mı yazma mı? | Sahibi | Gereklilik / yapılacak iş | Durum / kanıt |
 | --- | --- | --- | --- | --- |
-| Portal/MTS geçmiş arşivi | Okuma | Uygulama | Geçmiş erişimi korunacak | Kaynakta mevcut; runtime bekliyor |
+| Portal/MTS eski arşiv WebPart ve ortak arşiv katmanı | Artık yok | Uygulama | Kullanıcı isteğiyle kaynak ve dağıtım bağlantıları kaldırıldı | Güncel paket yayımı ve eski sayfa/galeri temizliği bekliyor |
 | SQL nesneleri / trigger / synonym | İncelenecek | Belirlenecek | 03–08 sonuçlarına göre | Bekliyor |
 | SQL Agent / ETL / rapor / dış uygulama | İncelenecek | Belirlenecek | DBA ve sistem sahipleriyle tamamlanacak | Bekliyor |
 
@@ -85,9 +85,14 @@ Her satır için kabul koşulları:
 
 Özellikle son iki parçanın regresyonları: IKYS AD erişim hatası; bildirim sırasında ortak parametre SELECT hatası; TBYS bildirimleri/dosyalar; NBYS sonuç sayaçları. Gerçek AD yokluğu ile AD erişim arızasını ve eksik parametre ile başarısız parametre sorgusunu ayırın. Hata, ikinci null hatasına veya yanlış SMTP devamına dönüşmemeli. Ayrıntılar [son kapanış notunda](../../EskiLoglamaSonKapanis.md).
 
-## 5. Geçmiş erişimini doğrulayın
+## 5. Eski ekranların kaldırılmasını doğrulayın
 
-Portal/MTS arşivlerinde kayıtlı ve kayıtsız günleri, program/tarih filtrelerini ve silinmiş ilişkili iş verilerini kontrol edin. Yeni işlem geçmiş arşivinde görünmemeli; uygun merkezi kayıt Log İzleme'de görünmeli. Arşiv okumak eski veriyi değiştirmemeli veya merkezi audit'e yeniden eklememeli.
+Kullanıcı isteğiyle MtsOlayListesiWP ve Portal OlayListesiWP proje/feature dağıtımından, tüketicisiz kalan PortalEventArchive katmanı da DAO/Model'den kaldırıldı. Uygulama kaynaklarında Olay_Table/SQLLog_Table erişimi kalmadı. Aşağıdaki sayfa temizliği, bu eski ekranları yeni assembly'lerden önce devreden çıkarmak içindir.
+
+Yayım öncesi iki WebPart'ın tüm sayfa örneklerini (kapalı/kişisel görünümler dahil), gezinme bağlantılarını ve galeri öğelerini kaldırın. Sonrasında kayıp WebPart hatası olmadığını, galeriden yeniden eklenemediklerini ve diğer Portal/MTS ekranlarının çalıştığını doğrulayın. WebPartSearchWP'deki OlayListesiWP arama varsayılanı bu eski örnekleri bulmak içindir; kaldırılan tipe veya tabloya çalışan bir bağımlılık değildir.
+
+Yeni kayıtlar merkezi Log İzleme'de uygun proje/sekme ile görünmeli; eski tablo verileri uygulama içindeki bu ekranlardan artık gösterilmez. Geçmiş veriyi saklama ve drop kararı kullanıcıdadır; bu dal tablo/veri değiştirmez.
+
 
 MTS TestWP eski sayfa örneğinde yalnızca devre dışı bildirimi beklenir; örnek e-posta veya timer çalışmamalı. Mevcut galeri öğesi önceki metadata güncellemesini almamışsa farm envanterinde ayrıca kaydedin; tüm feature'ı kaldırmayın.
 
@@ -103,7 +108,7 @@ MTS TestWP eski sayfa örneğinde yalnızca devre dışı bildirimi beklenir; ö
 | Yazma yetkisi kısıtlama kararı ve geri dönüş planı | Ayrı karar; uygulanmadı |
 | Tablo kaldırma | Bu kapsamda yok |
 
-Uygulama kabulü ve dış yazıcıların kapanışı doğrulanınca arşivleme/yetki kısıtlama adımı ayrıca hazırlanabilir. Okuma arşivinin ihtiyaç duyduğu erişim korunmalı; şema/DB düzeyindeki ortak haklar körlemesine kaldırılmamalıdır. Geçmiş tablolar ve veriler bu aşamada silinmez.
+Uygulama kabulü ve dış yazıcıların kapanışı doğrulanınca arşivleme/yetki kısıtlama adımı ayrıca hazırlanabilir. Varsa harici arşiv/rapor erişimleri ayrıca değerlendirilmelidir; şema/DB düzeyindeki ortak haklar körlemesine kaldırılmamalıdır. Geçmiş tablolar ve veriler bu aşamada silinmez.
 
 ## Hazırlık doğrulaması
 

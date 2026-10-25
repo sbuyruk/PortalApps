@@ -166,14 +166,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LogDurumTakipWP.ascx</DependentUpon>
     </Compile>
-    <Compile Include="OlayListesiWP\OlayListesiWP.ascx.cs">
-      <DependentUpon>OlayListesiWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="OlayListesiWP\OlayListesiWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OlayListesiWP.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ToplantiGirisiWP\ToplantiGirisiWP.ascx.cs">
       <DependentUpon>ToplantiGirisiWP.ascx</DependentUpon>
@@ -274,10 +266,6 @@
     <None Include="LogDurumTakipWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{7a1b9b59-af4c-4374-a623-b3c21bc8f204}</SharePointProjectItemId>
     </None>
-    <None Include="OlayListesiWP\OlayListesiWP.webpart" />
-    <None Include="OlayListesiWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{c591681a-fe12-4670-ae75-d410db7152f6}</SharePointProjectItemId>
-    </None>
     <None Include="packages.config" />
     <None Include="Package\Package.package">
       <PackageId>{e9fb6750-958c-4ac5-a438-e8cbb227e13b}</PackageId>
@@ -364,11 +352,6 @@
     <Content Include="LogDurumTakipWP\LogDurumTakipWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>LogDurumTakipWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="OlayListesiWP\Elements.xml" />
-    <Content Include="OlayListesiWP\OlayListesiWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>OlayListesiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="ToplantiGirisiWP\Elements.xml" />
     <Content Include="ToplantiGirisiWP\ToplantiGirisiWP.ascx">

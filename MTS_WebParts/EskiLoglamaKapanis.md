@@ -1,5 +1,20 @@
 # MTS eski loglama kapanışı
 
+## Sonraki değişiklik: MtsOlayListesiWP kaldırıldı
+
+Kullanıcının açık isteğiyle codex/mts-olay-webpart-kaldir dalında MtsOlayListesiWP kaldırıldı. Başlangıç master'ı temiz ve canlı uzak master ile aynı commit'teydi: 35d319bd7a3778675c0fba97bf779c3edf8e03ae (PR #557). Aşağıdaki ilk kapanış metni tarihsel arşiv davranışını anlatır; MTS arşiv ekranı artık güncel dağıtımın parçası değildir.
+
+- .ascx, .ascx.cs, .webpart, Elements.xml ve spdata/SafeControl tanımı kaldırıldı. MTS csproj içindeki iki Compile, iki None ve iki Content kaydı; Feature2 içindeki tek WebPart öğesi kaldırıldı.
+- MtsOlayListesiWP.ascx.g.cs AGENTS.md kuralı gereği değiştirilmedi/silinmedi; yalnızca Compile kaydı kaldırıldı. Diskte kalan üretilmiş kaynak derlenmez veya dağıtılmaz. Kaynak ASCX kaldırıldığından yeniden üretim gerekmez.
+- Feature2'nin diğer yedi ekranı ve paket içindeki iki feature bağlantısı korunur. Tüm feature/paket kaldırılmaz.
+- Kullanıcının sonraki isteğiyle aynı dala Portal OlayListesiWP ve ortak PortalEventArchive katmanının kaldırılması da eklendi. Uygulamada Olay_Table/SQLLog_Table okuması/yazması kalmadı. Birleşik kapsam ve yayım adımları [Portal kapanış notunun başındadır](../Portal_WebParts/EskiLoglamaKapanisParca2.md). Veritabanına dokunulmadı.
+
+Yayım öncesi: SharePoint'teki mevcut sayfalardan bu WebPart'ın tüm örneklerini (kapalı örnekler ve kişisel görünümler dahil), ona ait gezinme bağlantılarını ve WebPart galerisindeki MTS_WebParts_MtsOlayListesiWP.webpart öğesini kaldırın. Kaynak/paket değişikliği mevcut içerik veritabanındaki sayfa ve galeri öğelerinin otomatik temizlendiğini garanti etmez. Eski tip yeni assembly'de olmayacağından kalan sayfa örnekleri yükleme hatası verebilir. Site feature'ını toptan devre dışı bırakmayın.
+
+Birleşik statik kontroller: dokuz projede 802 Compile yolu geçerli; MTS feature'larındaki kalan 16 öğe ve iki paket bağlantısı korunur. MTS/Portal toplam 109 SharePoint XML dosyası parse edildi. Üretilmiş dosyalar ve merkezi transaction/log altyapısı değişmedi; kaldırılan ortak arşiv API'lerine derlenen kaynaklarda referans kalmadı. UTF-8/BOM ve git diff --check temiz.
+
+Kullanıcı kontrolleri: solution'ı Visual Studio'da derleyin; Test sunucusunda MTS paketini güncelleyin; galeriden yeni MtsOlayListesiWP eklenemediğini ve eski sayfalarda kayıp WebPart hatası kalmadığını doğrulayın. Feature2'deki diğer ekranları ve merkezi Log İzleme'de MTS filtresini kontrol edin. Portal geçmiş arşivi de kaldırıldı; merkezi Log İzleme ve iş/audit/SQL/hata davranışı korunmalı. Codex build/test/debug/yayım çalıştırmadı.
+
 Tarih: 2026-10-25
 Dal: codex/mts-eski-log-kapanis
 Başlangıç: f07d3930e744f6ec2698df651f11de3fa089ee2d (PR #553).
