@@ -74,7 +74,6 @@
     <Compile Include="HelperClasses\ExceptionHelper.cs" />
     <Compile Include="HelperClasses\ImportAlreadyProcessedException.cs" />
     <Compile Include="HelperClasses\HelperFunctions.cs" />
-    <Compile Include="HelperClasses\LogHelper.cs" />
     <Compile Include="HelperClasses\MailHelper.cs" />
     <Compile Include="HelperClasses\MessageHelper.cs" />
     <Compile Include="HelperClasses\Messages.cs" />

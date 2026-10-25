@@ -22,34 +22,6 @@ namespace Utility.HelperClasses
             Exceptions.Add(ex);
         }
 
-        /// <summary>Legacy presentation entry point; new WebParts map results at their UI boundary.</summary>
-        public void PublishException()
-        {
-            foreach (Exception error in Exceptions)
-            {
-                if (error == null) continue;
-                try
-                {
-                    // Exception.ToString() includes the inner exception chain.
-                    LogHelper.WriteTrace(error);
-                }
-                catch (Exception)
-                {
-                    // A logging failure must not prevent a safe user notification.
-                }
-                if (error is ImportAlreadyProcessedException)
-                    Messages.Warning(string.IsNullOrWhiteSpace(error.Message)
-                        ? "Bu kayıt daha önce işlenmiş." : error.Message);
-                else
-                    Messages.Error("İşlem tamamlanamadı. Lütfen yeniden deneyin.");
-            }
-        }
-
-        public void PublishImportExceptions()
-        {
-            // Keep the import API, but never disclose arbitrary exception.Message values.
-            PublishException();
-        }
         public bool HasException()
         {
             return Exceptions.Count > 0;

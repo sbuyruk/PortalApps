@@ -458,38 +458,14 @@ namespace Model.Ortak
             }
             return formatliTelNo == null ? string.Empty : formatliTelNo;
         }
-        public static string ParametreDegeriSorgula(string parametreAdi)
-        {
-            string deger = null;
-            try
-            {
-                if (!string.IsNullOrEmpty(parametreAdi))
-                {
-                    OrtakParametre ortakParametre = new OrtakParametreService().GetByKey(parametreAdi);
-                    deger = ortakParametre?.Deger;
-                }
-            }
-            catch (Exception ex)
-            {
-                LogHelper.WriteTrace(ex);
-            }
-            return deger;
-        }
+
         public static string ParametreDegeriSorgula(string parametreAdi, Utility.Logging.PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
             if (string.IsNullOrEmpty(parametreAdi)) return null;
-            try
-            {
-                OrtakParametre parametre = new OrtakParametreService().GetByKey(parametreAdi, context);
-                return parametre == null ? null : parametre.Deger;
-            }
-            catch (Exception error)
-            {
-                if (error is System.Threading.ThreadAbortException) throw;
-                Utility.Logging.PortalTechnicalLog.WriteError(context, "OrtakParametre.Lookup", error);
-                return null;
-            }
+            // A failed lookup is not a missing parameter; report it once at the caller's boundary.
+            OrtakParametre parametre = new OrtakParametreService().GetByKey(parametreAdi, context);
+            return parametre == null ? null : parametre.Deger;
         }
 
         public static List<UserPrincipal> GetGroupMembers(string domain, string groupname)
@@ -527,24 +503,12 @@ namespace Model.Ortak
 
         public static bool IsGroup(string domain, string groupname)
         {
-            try
+            // The context-aware notification boundary owns error reporting.
+            using (HostingEnvironment.Impersonate())
+            using (PrincipalContext ctx = new PrincipalContext(ContextType.Domain, domain))
+            using (GroupPrincipal group = GroupPrincipal.FindByIdentity(ctx, groupname))
             {
-                //burayi application pool yetkisi ile çalistir
-                using (HostingEnvironment.Impersonate())
-                {
-                    // This code runs as the application pool user
-                    PrincipalContext ctx = new PrincipalContext(ContextType.Domain, domain);
-                    GroupPrincipal group = GroupPrincipal.FindByIdentity(ctx, groupname);
-                    return group != null;
-                }
-
-                
-            }
-            catch (Exception e)
-            {
-
-                MessageHelper.PublishMessage("IsGroup() hatasi : "+ e.Message,ProjeConstants.MESAJ_HATA);
-                return false;
+                return group != null;
             }
         }
         #endregion
@@ -619,34 +583,7 @@ namespace Model.Ortak
 
             }
         }
-        public static bool UploadFileToSharePoint(FileUpload fileBrowser, string spLibName, string hedefDosyaAdi)
-        {
-            bool isOk = false;
-            try
-            {
-                string destUrl = SPContext.Current.Web.Url;
-                SPWeb site = new SPSite(destUrl).OpenWeb();
-                SPList myList = site.Lists[spLibName];
-                string destFileUrl = myList.RootFolder.ServerRelativeUrl +"/"+ hedefDosyaAdi;
-                site.AllowUnsafeUpdates = true;
 
-                var imageFileData = fileBrowser.FileBytes;
-                using (var fileStream = new System.IO.MemoryStream())
-                {
-                    fileStream.Write(imageFileData, 0, imageFileData.Length);
-                    site.Files.Add(destFileUrl, fileStream, true/*overwrite*/);
-                }
-                isOk = true;
-            }
-            catch (Exception e)
-            {
-                ExceptionHelper eh = new ExceptionHelper(e);
-                eh.Exceptions.Add(new Exception("Dosya Yüklenemedi"));
-                eh.PublishException();
-                isOk = false;
-            }
-            return isOk;
-        }
 
         public static bool UploadFileToSharePoint(FileUpload fileBrowser, string spLibName, string hedefDosyaAdi, Utility.Logging.PortalLogContext context)
         {
@@ -677,34 +614,7 @@ namespace Model.Ortak
             }
             return isOk;
         }
-        public static bool DeleteFileFromSharePointLib(string subSite, string spLibName, string dosyaAdi)
-        {
-            try
-            {
-                using (SPSite site = new SPSite(RootURLGetir()))
-                using (SPWeb web = site.OpenWeb(subSite))
-                {
-                    // folder.Files[fileName] builds an internal urlOfFile value and can
-                    // fail for document libraries in sub-sites. Resolve the file from
-                    // its server-relative URL instead, as in DosyaVarMi.
-                    string fileUrl = web.Url.TrimEnd('/') + "/" + spLibName + "/" + dosyaAdi;
-                    SPFile file = web.GetFile(fileUrl);
 
-                    if (file == null || !file.Exists)
-                        return false;
-
-                    file.Delete();
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                ExceptionHelper eh = new ExceptionHelper(e);
-                eh.Exceptions.Add(new Exception("Dosya Silinemedi"));
-                eh.PublishException();
-                return false;
-            }
-        }
 
         public static bool DeleteFileFromSharePointLib(string subSite, string spLibName, string dosyaAdi, Utility.Logging.PortalLogContext context)
         {
@@ -735,75 +645,8 @@ namespace Model.Ortak
                 return false;
             }
         }
-        public static List<SPFile> GetFileListFromSharePointLib(string subSite, string spLibName, string partialFileName)
-        {
-            List<SPFile> list = new List<SPFile>();
-            try
-            {
-                SPSite site = new SPSite(RootURLGetir());
-                SPWeb web = site.AllWebs[subSite];
-                SPFolder folder = web.Folders[spLibName];
-                
-                foreach (SPFile item in folder.Files)
-                {
-                    list.Add(item);
-                }
-                
-            }
-            catch (Exception e)
-            {
-                ExceptionHelper eh = new ExceptionHelper(e);
-                eh.PublishException();
-            }
-            return list;
-        }
-        public static List<string> GetFileNameListFromSharePointLib(string subSite, string spLibName, string partialFileName)
-        {
-            List<string> list = new List<string>();
-            try
-            {
-
-                SPSecurity.RunWithElevatedPrivileges(delegate ()
-                {
-                    //New SPSite object.
-                    using (SPSite site = new SPSite(RootURLGetir()))
-                    {
-                        //Do things by assuming the permission of the "system account".
-                        SPWeb web = site.AllWebs[subSite];
-                        SPFolder folder = web.Folders[spLibName];
-                        foreach (SPFile item in folder.Files)
-                        {
-                            if (item.Name.Contains(partialFileName))
-                            {
-                                list.Add(item.Name);
-                            }
-
-                        }
-                    }
-                });
 
 
-                //SPSite site = new SPSite(RootURLGetir());
-                //SPWeb web = site.AllWebs[subSite];
-                //SPFolder folder = web.Folders[spLibName];
-                
-                //foreach (SPFile item in folder.Files)
-                //{
-                //    if (item.Name.Contains(partialFileName))
-                //    {
-                //        list.Add(item.Name);
-                //    }
-                    
-                //}
-                
-            }
-            catch (Exception e)
-            {
-                ExceptionHelper eh = new ExceptionHelper(e);
-                eh.PublishException();
-            }
-            return list;
-        }
 
         public static List<string> GetFileNameListFromSharePointLib(string subSite, string spLibName, string partialFileName, Utility.Logging.PortalLogContext context)
         {
