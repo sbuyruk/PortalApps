@@ -57,6 +57,12 @@ namespace Model.Services.NBYS
             return Map(repository.SelectByGroupAndKey(group, key)).FirstOrDefault();
         }
 
+        public NBYSParametre GetByGroupAndKey(string group, string key, PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
+            return Map(repository.SelectByGroupAndKey(group, key, context)).FirstOrDefault();
+        }
+
         public NBYSParametre GetByGroupKeyAndValue(string group, string key, string value)
         {
             return Map(repository.SelectByGroupKeyAndValue(group, key, value)).FirstOrDefault();

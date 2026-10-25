@@ -8,72 +8,71 @@ namespace Model.IKYS
     [Serializable]
     public class IsBilgileriItem : EntityBase
     {
-        [field: NonSerialized]
-        internal Utility.Logging.PortalLogContext LoggingContext { get; set; }
+        public IsBilgileriItem(Utility.Logging.PortalLogContext context)
+        {
+            LoggingContext = context;
+        }
+
+        [NonSerialized]
+        private Utility.Logging.PortalLogContext loggingContext;
+        internal Utility.Logging.PortalLogContext LoggingContext
+        {
+            get
+            {
+                if (loggingContext == null)
+                    throw new InvalidOperationException("Personel bilgilerini okumak için log bağlamı gereklidir.");
+                return loggingContext;
+            }
+            set
+            {
+                if (value == null) throw new ArgumentNullException("value", "Log bağlamı gereklidir.");
+                loggingContext = value;
+            }
+        }
         public int PersonelId { get; set; }
         private IsBilgileri _IsBilgileri
         {
             get
             {
-                return (LoggingContext == null ? new IsBilgileriService().GetByPersonelId(PersonelId) : new IsBilgileriService().GetByPersonelId(PersonelId, LoggingContext));
-            }
-            set
-            {
-                _IsBilgileri = value;
+                return new IsBilgileriService().GetByPersonelId(PersonelId, LoggingContext);
             }
         }
         private UnvanTanim _Unvan
         {
             get
             {
-                return (LoggingContext == null ? new UnvanTanimService().GetById(_IsBilgileri.UnvanId) : new UnvanTanimService().GetById(_IsBilgileri.UnvanId, LoggingContext));
-            }
-            set
-            {
-                _Unvan = value;
+                return new UnvanTanimService().GetById(_IsBilgileri.UnvanId, LoggingContext);
             }
         }
         private BirimTanim _Birim
         {
             get
             {
-                return (LoggingContext == null ? new BirimTanimService().GetById(_IsBilgileri.BirimId) : new BirimTanimService().GetById(_IsBilgileri.BirimId, LoggingContext));
-            }
-            set
-            {
-                _Birim = value;
+                return new BirimTanimService().GetById(_IsBilgileri.BirimId, LoggingContext);
             }
         }
         private Bolge _Bolge
         {
             get
             {
-                return (LoggingContext == null ? new BolgeService().GetById(_Birim.BolgeId) : new BolgeService().GetById(_Birim.BolgeId, LoggingContext));
-            }
-            set
-            {
-                _Bolge = value;
+                return new BolgeService().GetById(_Birim.BolgeId, LoggingContext);
             }
         }
         public IsBilgileri IsBilgileri
         {
             get { return _IsBilgileri; }
-            set { _IsBilgileri = value; }
         }
         public UnvanTanim Unvan
         {
             get { return _Unvan; }
-            set { _Unvan = value; }
         }
         public BirimTanim Birim
         {
             get { return _Birim; }
-            set { _Birim = value; }
         }
         public Bolge Bolge
         {
             get { return _Bolge; }
-            set { _Bolge = value; }
         }
     }
 }

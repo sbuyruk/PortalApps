@@ -436,15 +436,16 @@ namespace Model.Ortak
         {
             if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
             Personel personel = PersonelGetir(currentUserName, context);
-            if (personel == null)
-            {
-                Messages.Error("Personel bulunamadı.");
-                return null;
-            }
+            if (personel == null) throw new InvalidOperationException("Kullanıcıya ait personel kaydı bulunamadı.");
             IsBilgileri isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id, context);
-            if (isBilgileri == null) return null;
+            if (isBilgileri == null) throw new InvalidOperationException("Personelin iş bilgileri bulunamadı.");
             BirimTanim birim = new BirimTanimService().GetById(isBilgileri.BirimId, context);
-            return birim == null ? null : new Model.Services.Ortak.BolgeService().GetById(birim.BolgeId, context);
+            if (birim == null) throw new InvalidOperationException("Personelin birim bilgisi bulunamadı.");
+            Bolge bolge = new Model.Services.Ortak.BolgeService().GetById(birim.BolgeId, context);
+            // Missing assignments must not become the all-regions filter in callers.
+            if (bolge == null || bolge.Id <= 0)
+                throw new InvalidOperationException("Personelin geçerli bir bölge bilgisi bulunamadı.");
+            return bolge;
         }
 
         #endregion IKYS

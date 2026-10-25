@@ -263,7 +263,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 if (!Page.IsPostBack)
                 {
                     new PersonelService().TryRecordWebPartOpened(LoggingContext);
-                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_IKYSYONERGE, ProjeConstants.IKYSBELGELERI_LIB, ProjeConstants.PAGE_PERSONEL_EDIT);
+                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_IKYSYONERGE, ProjeConstants.IKYSBELGELERI_LIB, ProjeConstants.PAGE_PERSONEL_EDIT, LoggingContext);
                     FillData2DDLs();
                     if (String.IsNullOrEmpty(DestinationAppQS) || String.Equals(DestinationAppQS, ""))
                     {
