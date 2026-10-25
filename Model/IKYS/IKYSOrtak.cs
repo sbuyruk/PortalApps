@@ -432,41 +432,6 @@ namespace Model.Ortak
         }
 
 
-        public static Personel PersonelGetir(string currentUserName)
-        {
-            Personel personel = new Personel();
-            {
-                string userName = currentUserName.Substring(currentUserName.LastIndexOf("\\") + 1, currentUserName.Length - currentUserName.LastIndexOf("\\") - 1);
-                personel = new PersonelService().GetByUserName(userName);
-            }
-            return personel;
-        }
-
-        public static Bolge BolgeGetirByUserName(string currentUserName)
-        {
-            Personel personel = PersonelGetir(currentUserName);
-
-            if (personel != null)
-            {
-                PersonelItem personelItem = new PersonelItem();
-                personelItem.PersonelId = personel.Id;
-                if (personelItem.IsBilgileriItem.Bolge != null)
-                {
-                    Bolge bolge = personelItem.IsBilgileriItem.Bolge;
-                    return bolge;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Personel bulunamadi", ProjeConstants.MESAJ_HATA);
-                return null;
-            }
-        }
-
         public static Bolge BolgeGetirByUserName(string currentUserName, Utility.Logging.PortalLogContext context)
         {
             if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
