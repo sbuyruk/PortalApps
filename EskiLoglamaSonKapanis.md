@@ -1,5 +1,7 @@
 # Eski loglama altyapısı — son ortak kapanış
 
+Güncel ek: Kullanıcının isteğiyle codex/mts-olay-webpart-kaldir dalında hem MtsOlayListesiWP hem Portal OlayListesiWP ve ortak PortalEventArchive katmanı kaldırıldı. Bu belgedeki arşiv okuması ifadeleri önceki durumu anlatır; güncel uygulama kaynaklarında Olay_Table/SQLLog_Table erişimi kalmadı. Yayım öncesi mevcut sayfa/galeri öğelerini kaldırma ve doğrulama adımları [Portal kapanış notunun başındadır](Portal_WebParts/EskiLoglamaKapanisParca2.md).
+
 Tarih: 2026-10-25
 Dal: codex/ortak-loglama-son-kapanis
 Başlangıç: 3745626c0ade5b70764008c59275d2c33cc3a738 (PR #555).

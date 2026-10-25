@@ -1,5 +1,22 @@
 # Portal eski loglamayı kapatma — parça 2/2
 
+## Güncel ek: OlayListesiWP ve ortak arşiv kaldırıldı
+
+Kullanıcının açık isteğiyle, devam eden codex/mts-olay-webpart-kaldir dalına Portal OlayListesiWP kaldırılması da eklendi. Dalın başlangıcı 35d319bd7a3778675c0fba97bf779c3edf8e03ae; ilk değişiklikten önce master temizliği ve canlı uzak master eşitliği doğrulanmıştı. Bu ek kullanıcı isteği doğrultusunda aynı, henüz commit edilmemiş değişiklik parçasındadır.
+
+OlayListesiWP'nin .ascx/.ascx.cs/.webpart, Elements.xml, spdata/SafeControl dosyaları ve altı csproj kaydı kaldırıldı. Feature1 içindeki c591681a-fe12-4670-ae75-d410db7152f6 öğesi çıkarıldı. Diğer 17 Portal feature öğesi ve paket feature bağlantısı korunur. MTS'deki kaldırmayla birlikte PortalEventArchiveService, PortalEventArchiveEntry ve PortalEventArchiveRepository tüketicisiz kaldığından iki ortak dosya ve DAO/Model Compile kayıtları da kaldırıldı.
+
+İki WebPart'ın .ascx.g.cs dosyaları AGENTS.md gereği değiştirilmedi/silinmedi; yalnızca Compile kayıtları kaldırıldı. Diskte kalan bu üretilmiş dosyalar derlenmez/dağıtılmaz, kod üretimi gerekmez. WebPartSearchWP'nin arama kutusundaki OlayListesiWP varsayılan metni eski örnekleri bulmaya yarayan arama girdisidir; tip veya tablo erişimi değildir, korundu.
+
+Yayım öncesinde Portal ve MTS eski WebPart örneklerini tüm SharePoint sayfalarından, kapalı/kişisel görünümlerden ve gezinme bağlantılarından kaldırın. Galeride Portal_WebParts_OlayListesiWP.webpart ve MTS_WebParts_MtsOlayListesiWP.webpart öğelerini kaldırın. Güncelleme mevcut içerik DB'sindeki sayfa/galeri kayıtlarını otomatik temizlemeyebilir; eski tip assembly'de bulunmayacağından kalan örnekler yükleme hatası verebilir. Diğer ekranlar için gereken feature'ları toptan devre dışı bırakmayın.
+
+Statik kontroller: dokuz projede 802 Compile yolu geçerli. MTS'de 16, Portal'da 17 kalan feature öğesi ve toplam üç paket feature bağlantısı çözümleniyor. Toplam 109 kalan SharePoint XML dosyası parse edildi. Uygulama kaynak/proje/config taramasında Olay_Table, SQLLog_Table veya PortalEventArchive bağımlılığı kalmadı; üretilmiş iki dosya ve merkezi log/transaction dosyaları değişmedi. UTF-8/BOM ve git diff --check temiz.
+
+Kullanıcı testleri: solution derlemesi; Test ortamında güncel DAO/Model ve Portal/MTS paketlerinin yayımı; eski sayfalarda kayıp WebPart hatası olmaması; iki tipin galeriden eklenememesi; diğer Portal/MTS ekranları ve Log İzleme sekmelerinin çalışması. Log açık/kapalı temsilî işlerde audit/transaction ve SQL/hata davranışı korunmalı. Codex build/test/debug/yayım çalıştırmadı.
+
+Bu parça eski tabloları veya geçmiş satırları silmez. Kullanıcı DB bağımlılığı olmadığını bildirmiştir; uygulama kodundaki son eski tablo okuması da bu parçada kaldırılmıştır. Drop işlemleri kullanıcıya aittir ve kaldırılmış kodun tüm ilgili ortamlara yayımlandığı doğrulandıktan sonra ele alınmalıdır. Aşağıdaki önceki kapanış kaydı tarihsel arşiv durumunu anlatır.
+
+
 Tarih: 24.10.2026  
 Dal: codex/portal-eski-log-kapanis  
 Başlangıç master: 57f8d6ce052e19c90a5a22d16d15ffdee78a69ba (Portal PR #550 ve TBYS düzeltmesi PR #551 sonrası).
