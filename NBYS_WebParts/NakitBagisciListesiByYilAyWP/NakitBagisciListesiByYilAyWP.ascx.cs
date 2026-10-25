@@ -1,6 +1,8 @@
 using NBYS_WebParts.Logging;
 using Utility.Logging;
+using Model.IKYS;
 using Model.NBYS;
+using Model.Services.IKYS;
 using Model.Ortak;
 using Model.Services.Ortak;
 using Model.Services.NBYS;
@@ -124,14 +126,29 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
                     DateTime d2 = DateTime.Now;
                     DateTime d3 = DateTime.Now;
                     DateTime d4 = DateTime.Now;
-                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
-                    BolgeIdQS = bolge == null ? 0 : bolge.Id;
+                    BolgeIdQS = KullaniciBolgesiniGetir().Id;
                     AyDDLDoldur();
                     YilDDLDoldur();
 
                     TabloOlustur();
                 }
             });
+        }
+
+        private Bolge KullaniciBolgesiniGetir()
+        {
+            PortalLogContext context = LoggingContext;
+            Personel personel = IKYSOrtak.PersonelGetir(CurrentUserName, context);
+            if (personel == null) throw new InvalidOperationException("Kullanıcıya ait personel kaydı bulunamadı.");
+            IsBilgileri isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id, context);
+            if (isBilgileri == null) throw new InvalidOperationException("Personelin iş bilgileri bulunamadı.");
+            BirimTanim birim = new BirimTanimService().GetById(isBilgileri.BirimId, context);
+            if (birim == null) throw new InvalidOperationException("Personelin birim bilgisi bulunamadı.");
+            Bolge bolge = new BolgeService().GetById(birim.BolgeId, context);
+            // Zero means all regions in the report query; missing assignments must stop loading.
+            if (bolge == null || bolge.Id <= 0)
+                throw new InvalidOperationException("Personelin geçerli bir bölge bilgisi bulunamadı.");
+            return bolge;
         }
 
         private void AyDDLDoldur()
