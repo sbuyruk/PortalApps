@@ -58,6 +58,16 @@ namespace DAO.Repositories.NBYS
             return Select(query);
         }
 
+        // Shared parameter reads retain the calling project's log context.
+        public DataTable SelectByGroupAndKey(string group, string key, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"SELECT * FROM NBYSParametre_Table
+                WHERE Grup=@Grup AND Anahtar=@Anahtar ORDER BY Sira,Anahtar");
+            query.AddParameter("@Grup", group);
+            query.AddParameter("@Anahtar", key);
+            return PortalSqlReadExecutor.Select(query, context, "NBYSParametreRepository.SelectByGroupAndKey");
+        }
+
         public DataTable SelectByGroupKeyAndValue(string group, string key, string value)
         {
             SqlQuery query = new SqlQuery(@"SELECT * FROM NBYSParametre_Table

@@ -689,18 +689,13 @@ namespace Model.Ortak
             var attribute = (DisplayAttribute)Attribute.GetCustomAttribute(fieldInfo, typeof(DisplayAttribute));
             return attribute?.Name ?? enumValue.ToString();
         }
-        public static string YonergeURLGetir(string grup, string lib, string anahtar)
-        {
-            return YonergeURLGetir(grup, lib, anahtar, null);
-        }
-
         public static string YonergeURLGetir(string grup, string lib, string anahtar, Utility.Logging.PortalLogContext context)
         {
+            if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
 
             string url = UtilityHelper.URLGetir();
             string yonergeUrl = url + "/../" + lib + "/yonerge/default.pdf";
-            NBYSParametreService service = context == null ? new NBYSParametreService() : new NBYSParametreService(context);
-            NBYSParametre param = service.GetByGroupAndKey(grup, anahtar);
+            NBYSParametre param = new NBYSParametreService().GetByGroupAndKey(grup, anahtar, context);
             if (param != null)
             {
                 yonergeUrl = url + "/../" + lib + "/yonerge/" + param.Deger;
