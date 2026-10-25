@@ -120,13 +120,9 @@
     <Compile Include="MTS\FaaliyetKatilim.cs" />
     <Compile Include="NBYS\BagisaVesileOlanTesekkur.cs" />
     <Compile Include="NBYS\DuzenliNakitBagisci.cs" />
-    <Compile Include="Ortak\Extentions.cs" />
     <Compile Include="Ortak\Bolge.cs" />
-    <Compile Include="Ortak\Olay.cs" />
-    <Compile Include="Ortak\OlayKayit.cs" />
     <Compile Include="Ortak\PortalLogDashboardModels.cs" />
     <Compile Include="Portal\ProgramYetki.cs" />
-    <Compile Include="Ortak\Variance.cs" />
     <Compile Include="TBYS\BagisciBagis.cs" />
     <Compile Include="IKYS\IletisimBilgileri.cs" />
     <Compile Include="IKYS\IsBilgileri.cs" />
@@ -160,7 +156,6 @@
     <Compile Include="NBYS\NakitBagisci.cs" />
     <Compile Include="Services\NBYS\NakitBagisciReportService.cs" />
     <Compile Include="Services\Ortak\BolgeService.cs" />
-    <Compile Include="Services\Ortak\OlayService.cs" />
     <Compile Include="Services\Ortak\PortalLogDashboardService.cs" />
     <Compile Include="Services\Ortak\OrtakParametreService.cs" />
     <Compile Include="Services\Ortak\SilinenKayitService.cs" />

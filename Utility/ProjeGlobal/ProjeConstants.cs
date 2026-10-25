@@ -178,10 +178,6 @@ namespace Utility.ProjeGlobal
         public const int SQL_SELECTWITHFILTER = 4;
         public const int SQL_GENERIC_INT_VALUE = 987654321;
         public const string GIZLI_STRING = "GİZLİ";
-        //Bagimsiz genel log
-        public static bool GENEL_DELETE_LOG = false;
-        public static bool GENEL_UPDATE_LOG = false;
-        public static bool GENEL_SAVE_LOG = false;
         //MTS
         //IKYS
         public static readonly bool AMIRONAYIETKINMI = true;

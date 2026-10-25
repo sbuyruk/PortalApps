@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Text;
 
 namespace DAO.Ortak
 {
@@ -27,17 +26,6 @@ namespace DAO.Ortak
             Parameters.Add(new SqlParameter(name, value ?? System.DBNull.Value));
         }
 
-        /// <summary>
-        /// Loglama amaçlı; sorgu ve parametre değerlerini metin olarak döndürür.
-        /// </summary>
-        public string ToLogString()
-        {
-            StringBuilder sb = new StringBuilder(Sql);
-            foreach (SqlParameter p in Parameters)
-            {
-                sb.AppendFormat(" [{0}={1}]", p.ParameterName, p.Value);
-            }
-            return sb.ToString();
-        }
+
     }
 }
