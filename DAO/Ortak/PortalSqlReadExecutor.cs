@@ -36,9 +36,9 @@ namespace DAO.Ortak
             finally
             {
                 clock.Stop();
-                // IKYS migration: preserve technical traces without opening a second
-                // connection while the business transaction is active.
-                if (transaction != null && context.Project == "IKYS")
+                // Preserve technical traces without opening a second connection
+                // while the caller's business transaction is active, for every project.
+                if (transaction != null)
                     transaction.DeferSqlTrace(context, "SELECT", repositoryMethod,
                         clock.ElapsedMilliseconds, succeeded);
                 else
