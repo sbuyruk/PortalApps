@@ -883,100 +883,57 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             }
             return islemBaslatildi;
         }
-        private decimal SozlesmeBasTarIcinTufeArtisliKiraBedeliBul(KiraSozlesme kiraSozlesme, DateTime yenibastar)
-        {
-            decimal yeniKiraBedeli = kiraSozlesme.KiraBedeli;
-            YasalFaiz yasalFaiz = new YasalFaiz();
-            yasalFaiz = new Model.Services.TBYS.YasalFaizService(LoggingContext).GetByYearMonth(yenibastar.Year, yenibastar.Month);
-            if (yasalFaiz != null)
-            {
-                Kiraci kiraci = new Kiraci();
-                kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(kiraSozlesme.KiraciId);
-                if ((yenibastar >= ProjeConstants.SINIRLIKIRAARTISI_BASLAMATARIHI) &&
-                    (yenibastar <= ProjeConstants.SINIRLIKIRAARTISI_BITISTARIHI) &&
-                    kiraci.KiralamaAmaci.Equals(ProjeConstants.SINIRLIKIRAARTISI_UYGULANACAKTASINMAZCINSI))
-                {
-                    yeniKiraBedeli = kiraSozlesme.KiraBedeli + kiraSozlesme.KiraBedeli * ProjeConstants.SINIRLIKIRAARTISI_ORANI / 100;
-                }
-                else
-                {
-                    yeniKiraBedeli = kiraSozlesme.KiraBedeli + kiraSozlesme.KiraBedeli * yasalFaiz.Tufe / 100; 
-                }
-            }
-            return yeniKiraBedeli;
-        }
         private void SozlesmeyiBitir()
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
-                new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).UpdateActiveStatus(kiraSozlesme, ProjeConstants.KIRASOZLESME_DURUMU_BITTI, ModalDurumDegismeTarTxt.Text, ProjeConstants.KIRASOZLESME_AKTIFDEGILBOOL);
+                if (!new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).UpdateActiveStatus(kiraSozlesme, ProjeConstants.KIRASOZLESME_DURUMU_BITTI, ModalDurumDegismeTarTxt.Text, ProjeConstants.KIRASOZLESME_AKTIFDEGILBOOL))
+                {
+                    Messages.Warning("Sözleşme durumu değiştirilemedi. Tarihi kontrol edip sayfayı yenileyiniz.");
+                    return;
+                }
                 RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_LIST + "?SozlesmeId=" + KiraSozlesmeIdQS);
             }
         }
         private void SozlesmeyiYenile()
         {
-            int yeniId = 0;
             try
             {
-                //mevcut Sözlesmeyi bitir
-                int eskiKiraSozlesmeId = KiraSozlesmeIdQS.ConvertToInt();
-                KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(eskiKiraSozlesmeId);
-                if (kiraSozlesme != null)
+                DateTime changedAt;
+                if (!DateTime.TryParse(ModalDurumDegismeTarTxt.Text,
+                    CultureInfo.GetCultureInfo("tr-TR"), DateTimeStyles.None, out changedAt))
                 {
-                    kiraSozlesme.Degistiren = CurrentUserName;
-                    // TO DO SB atomic
-                    new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).UpdateActiveStatus(kiraSozlesme, ProjeConstants.KIRASOZLESME_DURUMU_YENILENDI, ModalDurumDegismeTarTxt.Text, ProjeConstants.KIRASOZLESME_AKTIFDEGILBOOL);
-                    //yeni Sözlesmeyi kaydet
-                    KiraSozlesme yeniSozlesme = new KiraSozlesme();
-                    yeniSozlesme = kiraSozlesme;
-                    //yeniSozlesme.Id = yeniId;
-                    yeniSozlesme.KiraciId = kiraSozlesme.KiraciId;
-                    yeniSozlesme.IlkSozlesmeTar = string.IsNullOrEmpty(kiraSozlesme.IlkSozlesmeTar.ConvertToDatetimeEmptyIfNull()) ? DateTime.Today : kiraSozlesme.IlkSozlesmeTar;
-                    DateTime bastar = string.IsNullOrEmpty(kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull()) ? DateTime.Today : kiraSozlesme.SozBasTar;
-                    DateTime yenibastar = bastar.AddYears(1);
-                    DateTime yenibittar = yenibastar.AddYears(1);
-                    yeniSozlesme.SozBasTar = yenibastar;
-                    yeniSozlesme.SozBitTar = yenibittar;
-                    yeniSozlesme.KiraBedeli = Math.Round(SozlesmeBasTarIcinTufeArtisliKiraBedeliBul(kiraSozlesme, yenibastar));
-                    yeniSozlesme.DevirAnaPara = DevirAnaParaHesapla(kiraSozlesme);
-                    yeniSozlesme.DevirFaizliBakiye = DevirFaizliBakiyeHesapla(kiraSozlesme);
-                    yeniSozlesme.DevirFaizTutari = DevirFaizTutariHesapla(kiraSozlesme);
-                    yeniSozlesme.ArtisAyi = ArtisAyiTxt.Text;
-                    //if (!string.IsNullOrEmpty(kiraSozlesme.TeminatIadeTarihi.ConvertToDatetimeEmptyIfNull()))
-                    //    yeniSozlesme.TeminatIadeTarihi = kiraSozlesme.TeminatIadeTarihi.AddYears(1);
-
-                    yeniSozlesme.SozlesmeDurumu = ProjeConstants.KIRASOZLESME_DURUMU_DEVAM;
-                    yeniSozlesme.Degistiren = CurrentUserName;
-                    yeniSozlesme.BolgeId = BolgeIdGetir(yeniSozlesme);
-                    yeniId = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Save(yeniSozlesme);
-                    yeniSozlesme.Id = yeniId;
-                    //eski sözlesme tasinmaz bilgilerini al
-                    SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-                    List<SozlesmeTasinmaz> stlist = new Model.Services.TBYS.SozlesmeTasinmazService(LoggingContext).GetBySozlesmeId(eskiKiraSozlesmeId);
-                    //yeni sözlesmeye aktar ve kaydet
-                    foreach (SozlesmeTasinmaz item in stlist)
-                    {
-                        SozlesmeTasinmaz yeniST = new SozlesmeTasinmaz();
-                        yeniST.SozlesmeId = yeniSozlesme.Id;
-                        yeniST.TasinmazId = item.TasinmazId;
-                        yeniST.BolumId = item.BolumId;
-                    new Model.Services.TBYS.SozlesmeTasinmazService(LoggingContext).Save(yeniST);
-                    }
+                    Messages.Warning("Geçerli bir durum değişikliği tarihi giriniz.");
+                    return;
                 }
-                //yeni sözlesmeye git
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + yeniId;
-                Page.Response.Redirect(newUrl);
-
+                int newId;
+                var result = new Model.Services.TBYS.KiraSozlesmeYenilemeService(LoggingContext)
+                    .Renew(KiraSozlesmeIdQS.ConvertToInt(), changedAt, ArtisAyiTxt.Text, out newId);
+                switch (result)
+                {
+                    case Model.Services.TBYS.KiraSozlesmeYenilemeResult.NotFound:
+                        Messages.Warning("Yenilenecek sözleşme bulunamadı. Sayfayı yenileyiniz.");
+                        return;
+                    case Model.Services.TBYS.KiraSozlesmeYenilemeResult.Inactive:
+                        Messages.Warning("Sözleşme artık aktif değil. Daha önce yenilenmiş veya kapatılmış olabilir; sayfayı yenileyiniz.");
+                        return;
+                    case Model.Services.TBYS.KiraSozlesmeYenilemeResult.InvalidInput:
+                        Messages.Warning("Sözleşme ve tarih bilgilerini kontrol ediniz.");
+                        return;
+                    case Model.Services.TBYS.KiraSozlesmeYenilemeResult.Completed:
+                        string currentUrl = Page.Request.Url.ToString();
+                        string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/"
+                            + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + newId;
+                        Page.Response.Redirect(newUrl, false);
+                        Page.Context.ApplicationInstance.CompleteRequest();
+                        return;
+                }
             }
             catch (Exception ex)
             {
                 if (ex is System.Threading.ThreadAbortException) throw;
-                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.SozlesmeyiYenile", ex);
-
                 TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.SozlesmeyiYenile", ex);
             }
         }
@@ -1293,6 +1250,11 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
         protected void OnaylaBtn_Click(object sender, EventArgs e)
         {
             UtilityHelper.ScriptCalistir("CloseModal();");
+            if (SenderHF.Value == "YenileBorcuDevret" || SenderHF.Value == "Yenile")
+            {
+                SozlesmeyiYenile();
+                return;
+            }
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
@@ -1322,16 +1284,6 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                     //string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                     //Page.Response.Redirect(currentUrl, true);
                 }
-                else if (SenderHF.Value.Equals("YenileBorcuDevret"))
-                {
-
-                    SozlesmeyiYenile();
-                }
-                else if (SenderHF.Value.Equals("Yenile"))
-                {
-
-                    SozlesmeyiYenile();
-                }
                 else if (SenderHF.Value.Equals("SozlesmeyiBitir"))
                 {
 
@@ -1341,7 +1293,11 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                 {
 
                     HukukiIslemlereEkle(kiraSozlesme);
-                    new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).UpdateActiveStatus(kiraSozlesme, ProjeConstants.KIRASOZLESME_DURUMU_TAKIP, ModalDurumDegismeTarTxt.Text, ProjeConstants.KIRASOZLESME_AKTIFDEGILBOOL);
+                    if (!new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).UpdateActiveStatus(kiraSozlesme, ProjeConstants.KIRASOZLESME_DURUMU_TAKIP, ModalDurumDegismeTarTxt.Text, ProjeConstants.KIRASOZLESME_AKTIFDEGILBOOL))
+                    {
+                        Messages.Warning("Sözleşme durumu değiştirilemedi. Tarihi kontrol edip sayfayı yenileyiniz.");
+                        return;
+                    }
                     RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_LIST + "?SozlesmeId=" + KiraSozlesmeIdQS);
                 }
                 else if (SenderHF.Value.Equals("SozlesmeyiFeshet"))

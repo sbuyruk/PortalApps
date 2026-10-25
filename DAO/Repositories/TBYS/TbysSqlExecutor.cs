@@ -57,28 +57,41 @@ namespace DAO.Repositories.TBYS
             PortalLogContext logContext, [CallerMemberName] string method = "")
         {
             ValidateTransaction(transaction, logContext);
-            return Trace(logContext, "SELECT", method, () => transaction.Select(query), result => true);
+            return Trace(logContext, "SELECT", method, () => transaction.Select(query), result => true, transaction);
         }
 
         internal int Insert(SqlQuery query, SqlTransactionContext transaction,
             PortalLogContext logContext, [CallerMemberName] string method = "")
         {
             ValidateTransaction(transaction, logContext);
-            return Trace(logContext, "INSERT", method, () => transaction.Insert(query), result => result > 0);
+            return Trace(logContext, "INSERT", method, () => transaction.Insert(query), result => result > 0, transaction);
         }
 
         internal bool Update2Db(SqlQuery query, SqlTransactionContext transaction,
             PortalLogContext logContext, [CallerMemberName] string method = "")
         {
             ValidateTransaction(transaction, logContext);
-            return Trace(logContext, "UPDATE", method, () => transaction.Update(query), result => result);
+            return Trace(logContext, "UPDATE", method, () => transaction.Update(query), result => result, transaction);
+        }
+
+        internal bool UpdateExactlyOne(SqlQuery query, SqlTransactionContext transaction,
+            PortalLogContext logContext, [CallerMemberName] string method = "")
+        {
+            ValidateTransaction(transaction, logContext);
+            return Trace(logContext, "UPDATE", method, () =>
+            {
+                int affected = transaction.ExecuteAffectedRows(query);
+                if (affected > 1)
+                    throw new InvalidOperationException("Güncelleme beklenenden fazla kaydı etkiledi.");
+                return affected == 1;
+            }, result => result, transaction);
         }
 
         internal bool DeleteFromDb(SqlQuery query, SqlTransactionContext transaction,
             PortalLogContext logContext, [CallerMemberName] string method = "")
         {
             ValidateTransaction(transaction, logContext);
-            return Trace(logContext, "DELETE", method, () => transaction.Update(query), result => result);
+            return Trace(logContext, "DELETE", method, () => transaction.Update(query), result => result, transaction);
         }
 
         private static void ValidateTransaction(SqlTransactionContext transaction, PortalLogContext logContext)
@@ -94,7 +107,7 @@ namespace DAO.Repositories.TBYS
         }
 
         private T Trace<T>(PortalLogContext logContext, string operation, string method,
-            Func<T> execute, Predicate<T> isSuccessful)
+            Func<T> execute, Predicate<T> isSuccessful, SqlTransactionContext transaction = null)
         {
             Stopwatch clock = Stopwatch.StartNew();
             bool succeeded = false;
@@ -108,8 +121,12 @@ namespace DAO.Repositories.TBYS
             {
                 clock.Stop();
                 // Only the static repository/method names are passed, never SQL or parameter values.
-                PortalTechnicalLog.WriteSqlTrace(logContext, operation, repositoryName + "." + method,
-                    clock.ElapsedMilliseconds, succeeded);
+                if (transaction == null)
+                    PortalTechnicalLog.WriteSqlTrace(logContext, operation, repositoryName + "." + method,
+                        clock.ElapsedMilliseconds, succeeded);
+                else
+                    transaction.DeferSqlTrace(logContext, operation, repositoryName + "." + method,
+                        clock.ElapsedMilliseconds, succeeded);
             }
         }
     }
