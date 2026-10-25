@@ -669,29 +669,6 @@ namespace Utility.HelperClasses
             }
             return lines;
         }
-        public static List<string> ConvertTextFileToList(Stream fileStream, Encoding encoding)
-        {
-            List<string> lines = new List<string>();
-            string line = string.Empty;
-
-            try
-            {
-                using (var streamReader = new StreamReader(fileStream, encoding))
-                {
-                    line = String.Empty;
-                    while ((line = streamReader.ReadLine()) != null)
-                    {
-                        lines.Add(line);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-
-                MessageHelper.PublishMessage(ex.Message, ProjeConstants.MESAJ_HATA);
-            }
-            return lines;
-        }
         public static bool ConvertToBool(this object value)
         {
             bool result = false;

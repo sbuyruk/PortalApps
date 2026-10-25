@@ -64,30 +64,6 @@ namespace Model.Services.Ortak
             return ToList(repository.SelectByGroupValue(group, value));
         }
 
-        public int Save(OrtakParametre item)
-        {
-            if (item == null)
-                throw new ArgumentNullException("item");
-
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Id = repository.Insert(item);
-            return item.Id;
-        }
-
-        public bool Update(OrtakParametre item)
-        {
-            if (item == null || item.Id == 0)
-                return false;
-
-            item.DegistirmeTarihi = DateTime.Now;
-            return repository.Update(item);
-        }
-
-        public bool Delete(OrtakParametre item)
-        {
-            return item != null && item.Id != 0 && repository.Delete(item.Id);
-        }
-
         private static List<OrtakParametre> ToList(DataTable table)
         {
             return new OrtakParametre().ToList<OrtakParametre>(table);

@@ -92,8 +92,6 @@
   <ItemGroup>
     <Compile Include="Ortak\DBClass.cs" />
     <Compile Include="Ortak\CrudQueryBuilder.cs" />
-    <Compile Include="Ortak\DBObject.cs" />
-    <Compile Include="Ortak\DbParam.cs" />
     <Compile Include="Ortak\DBProcess.cs" />
     <Compile Include="Ortak\SqlQuery.cs" />
     <Compile Include="Ortak\SqlTransactionContext.cs" />
@@ -103,7 +101,6 @@
     <Compile Include="Repositories\Ortak\PortalLogRepository.cs" />
     <Compile Include="Repositories\Ortak\PortalLogReadRepository.cs" />
     <Compile Include="Repositories\Ortak\OrtakParametreRepository.cs" />
-    <Compile Include="Repositories\Ortak\SilinenKayitRepository.cs" />
     <Compile Include="Repositories\IKYS\PersonelRepository.cs" />
     <Compile Include="Repositories\IKYS\IzinTalepRepository.cs" />
     <Compile Include="Repositories\IKYS\MahsupRepository.cs" />
