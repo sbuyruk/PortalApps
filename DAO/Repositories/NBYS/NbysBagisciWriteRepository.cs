@@ -105,13 +105,13 @@ namespace DAO.Repositories.NBYS
         public int SaveDonor<T>(T item, int id, SqlTransactionContext transaction)
         {
             return Save(item, id, "NakitBagisci_Table", "NakitBagisci",
-                new[] { "Ili", "Ilcesi", "TuzelKisi", "Sag", "Ulasilamiyor", "BelgeIstemiyor", "DergiGonderilmesin" }, transaction, "SaveDonor");
+                NbysAuditPolicy.DonorFields, transaction, "SaveDonor");
         }
 
         public int SaveGift<T>(T item, int id, SqlTransactionContext transaction)
         {
             return Save(item, id, "Armagan_Table", "Armagan",
-                new[] { "BagisciId", "ArmaganTanimId", "Tarih", "Durum", "BagisMiktari", "DovizCinsi", "CokluBagis" }, transaction, "SaveGift");
+                NbysAuditPolicy.GiftFields, transaction, "SaveGift");
         }
 
         public DataTable SelectDonationOwner(int id, SqlTransactionContext transaction)
@@ -166,7 +166,7 @@ namespace DAO.Repositories.NBYS
         public int SaveRefundGift<T>(T item, int id, SqlTransactionContext transaction)
         {
             return Save(item, id, "Armagan_Table", "Armagan",
-                new[] { "BagisciId", "ArmaganTanimId", "Durum", "BelgeGecersizMi", "GecersizNBHareketId", "BagisMiktari", "ArmaganBagisMiktari", "IadeMiktari" },
+                NbysAuditPolicy.GiftFields,
                 transaction, "SaveRefundGift");
         }
 
@@ -225,8 +225,8 @@ namespace DAO.Repositories.NBYS
             DataTable previous = ReadStoredRecord(table, id, transaction);
             if (previous == null) throw new InvalidOperationException("Silinecek kayıt bulunamadı.");
             if (!sql.Write(builder.BuildDelete(table, id), "DELETE", transaction)) throw new InvalidOperationException("Kayıt silinemedi.");
-            string[] fields = table == "NakitBagisci_Table" ? new[] { "Ili", "Ilcesi", "TuzelKisi" }
-                : table == "Armagan_Table" ? new[] { "BagisciId", "ArmaganTanimId", "Durum", "BagisMiktari" }
+            string[] fields = table == "NakitBagisci_Table" ? NbysAuditPolicy.DonorFields
+                : table == "Armagan_Table" ? NbysAuditPolicy.GiftFields
                 : new[] { "BagisciId", "ArmaganId", "BagisTarihi", "BagisMiktari", "IadeEdildiMi", "IadeMiktari" };
             RecordAudit("DELETE", table.Substring(0, table.Length - "_Table".Length), id, previous, null, fields, transaction);
         }
@@ -295,20 +295,7 @@ namespace DAO.Repositories.NBYS
             PortalLogRepository log = new PortalLogRepository();
             int auditId = log.RecordAudit(context, operation, entity, id.ToString(CultureInfo.InvariantCulture), transaction);
             if (auditId <= 0) return;
-            foreach (string field in fields)
-            {
-                string oldValue = Value(previous, field);
-                string newValue = Value(saved, field);
-                if (oldValue != newValue) log.RecordAuditChange(auditId, field, oldValue, newValue, transaction);
-            }
-        }
-
-        private static string Value(DataTable table, string field)
-        {
-            if (table == null || table.Rows.Count == 0 || table.Rows[0].IsNull(field)) return null;
-            object value = table.Rows[0][field];
-            return value is DateTime ? ((DateTime)value).ToString("o", CultureInfo.InvariantCulture)
-                : Convert.ToString(value, CultureInfo.InvariantCulture);
+            NbysAuditPolicy.RecordChanges(log, auditId, entity, previous, saved, fields, transaction);
         }
 
         private static void RequireTransaction(SqlTransactionContext transaction)
