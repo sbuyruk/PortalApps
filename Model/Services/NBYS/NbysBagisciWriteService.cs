@@ -5,14 +5,24 @@ using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Web.Script.Serialization;
 using Utility.HelperClasses;
 using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace Model.Services.NBYS
 {
-    public enum NbysBagisciSaveResult { Saved, NotFound, Forbidden, NameRequired }
+    public enum NbysBagisciSaveResult { Saved, NotFound, Forbidden, NameRequired, Changed }
+
+    public sealed class NbysBagisciEditSnapshot
+    {
+        public NakitBagisci Donor { get; internal set; }
+        public string Version { get; internal set; }
+    }
 
     public sealed class NbysBagisciWriteService
     {
@@ -38,25 +48,43 @@ namespace Model.Services.NBYS
             return donorRegion != null && donorRegion.Id == userRegion.Id;
         }
 
-        public NbysBagisciSaveResult Save(NakitBagisci item)
+        public NbysBagisciSaveResult LoadForEdit(int id, out NbysBagisciEditSnapshot snapshot)
         {
-            if (item == null) throw new ArgumentNullException("item", "Bağışçı bilgisi gereklidir.");
-            if (string.IsNullOrWhiteSpace(item.Adi)) return NbysBagisciSaveResult.NameRequired;
+            snapshot = null;
+            if (id <= 0) return NbysBagisciSaveResult.NotFound;
+            NbysBagisciEditSnapshot loaded;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
                 Bolge userRegion = Map<Bolge>(repository.SelectUserRegion(context.UserLogin, transaction)).FirstOrDefault();
                 if (userRegion == null) return NbysBagisciSaveResult.Forbidden;
-                int userRegionId = userRegion.Id;
-                NakitBagisci previous = item.Id > 0 ? Map<NakitBagisci>(repository.SelectDonor(item.Id, transaction)).FirstOrDefault() : null;
+                DataTable rows = repository.SelectDonor(id, transaction);
+                loaded = Snapshot(rows);
+                if (loaded == null) return NbysBagisciSaveResult.NotFound;
+                if (!CanWriteProvince(userRegion.Id, loaded.Donor.Ili, transaction)) return NbysBagisciSaveResult.Forbidden;
+                transaction.Complete();
+            }
+            snapshot = loaded;
+            return NbysBagisciSaveResult.Saved;
+        }
+
+        public NbysBagisciSaveResult Save(NakitBagisci item, string expectedVersion, out NbysBagisciEditSnapshot saved)
+        {
+            saved = null;
+            if (item == null) throw new ArgumentNullException("item", "Bağışçı bilgisi gereklidir.");
+            if (string.IsNullOrWhiteSpace(item.Adi)) return NbysBagisciSaveResult.NameRequired;
+            NbysBagisciEditSnapshot completed;
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                Bolge userRegion = Map<Bolge>(repository.SelectUserRegion(context.UserLogin, transaction)).FirstOrDefault();
+                if (userRegion == null) return NbysBagisciSaveResult.Forbidden;
+                NbysBagisciEditSnapshot original = item.Id > 0 ? Snapshot(repository.SelectDonor(item.Id, transaction)) : null;
+                NakitBagisci previous = original == null ? null : original.Donor;
                 if (item.Id > 0 && previous == null) return NbysBagisciSaveResult.NotFound;
                 int provinceId = previous == null ? item.Ili : previous.Ili;
-                if (userRegionId != ProjeConstants.BOLGE_HEPSI_INT && userRegionId != ProjeConstants.BOLGE_GENELMUDURLUK_INT)
-                {
-                    DataTable region = repository.SelectProvinceRegion(provinceId, transaction);
-                    if (userRegionId <= 0 || region == null || region.Rows[0].IsNull("BolgeId")
-                        || Convert.ToInt32(region.Rows[0]["BolgeId"]) != userRegionId)
-                        return NbysBagisciSaveResult.Forbidden;
-                }
+                if (!CanWriteProvince(userRegion.Id, provinceId, transaction)) return NbysBagisciSaveResult.Forbidden;
+                // Reject stale forms before changing the donor, recalculating gifts or writing audit records.
+                if (previous != null && (string.IsNullOrEmpty(expectedVersion) || original.Version != expectedVersion))
+                    return NbysBagisciSaveResult.Changed;
                 string user = UtilityHelper.GetCurrentUserName();
                 if (previous == null)
                 {
@@ -75,9 +103,43 @@ namespace Model.Services.NBYS
                 item.Id = repository.SaveDonor(item, item.Id, transaction);
                 if (previous != null && previous.TuzelKisi != item.TuzelKisi)
                     RecalculatePendingGifts(item, user, transaction);
+                completed = Snapshot(repository.SelectDonor(item.Id, transaction));
+                if (completed == null) throw new InvalidOperationException("Kaydedilen bağışçı bilgileri okunamadı.");
                 transaction.Complete();
             } // Commit completes in Dispose, before the UI receives Saved.
+            saved = completed;
             return NbysBagisciSaveResult.Saved;
+        }
+
+        private bool CanWriteProvince(int userRegionId, int provinceId, SqlTransactionContext transaction)
+        {
+            if (userRegionId == ProjeConstants.BOLGE_HEPSI_INT || userRegionId == ProjeConstants.BOLGE_GENELMUDURLUK_INT)
+                return true;
+            DataTable region = repository.SelectProvinceRegion(provinceId, transaction);
+            return userRegionId > 0 && region != null && region.Rows.Count > 0 && !region.Rows[0].IsNull("BolgeId")
+                && Convert.ToInt32(region.Rows[0]["BolgeId"]) == userRegionId;
+        }
+
+        private static NbysBagisciEditSnapshot Snapshot(DataTable rows)
+        {
+            if (rows == null || rows.Rows.Count == 0) return null;
+            // Hash the same raw row used to fill the form, including ownership and audit fields.
+            var values = rows.Columns.Cast<DataColumn>().OrderBy(c => c.ColumnName, StringComparer.Ordinal)
+                .Select(c => new { Name = c.ColumnName, Type = c.DataType.FullName, Value = VersionValue(rows.Rows[0][c]) }).ToArray();
+            string json = new JavaScriptSerializer().Serialize(values);
+            string version;
+            using (SHA256 hash = SHA256.Create()) version = Convert.ToBase64String(hash.ComputeHash(Encoding.UTF8.GetBytes(json)));
+            return new NbysBagisciEditSnapshot { Donor = Map<NakitBagisci>(rows).FirstOrDefault(), Version = version };
+        }
+
+        private static string VersionValue(object value)
+        {
+            if (value == DBNull.Value) return null;
+            if (value is DateTime) return ((DateTime)value).ToString("o", CultureInfo.InvariantCulture);
+            if (value is byte[]) return Convert.ToBase64String((byte[])value);
+            if (value is double) return ((double)value).ToString("R", CultureInfo.InvariantCulture);
+            if (value is float) return ((float)value).ToString("R", CultureInfo.InvariantCulture);
+            return Convert.ToString(value, CultureInfo.InvariantCulture);
         }
 
         private void RecalculatePendingGifts(NakitBagisci donor, string user, SqlTransactionContext transaction)

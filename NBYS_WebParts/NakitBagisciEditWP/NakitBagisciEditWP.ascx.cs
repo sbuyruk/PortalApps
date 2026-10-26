@@ -21,6 +21,12 @@ namespace NBYS_WebParts.NakitBagisciEditWP
     {
         private bool canEditCurrentDonor;
 
+        private string DonorEditVersion
+        {
+            get { return ViewState["DonorEditVersion"] as string; }
+            set { ViewState["DonorEditVersion"] = value; }
+        }
+
         private PortalLogContext LoggingContext
         {
             get { return PortalLogContext.FromCurrentRequest("NBYS", "NakitBagisciEditWP"); }
@@ -180,14 +186,24 @@ namespace NBYS_WebParts.NakitBagisciEditWP
                         canEditCurrentDonor = true;
                         if (!Page.IsPostBack)
                         {
+                            NbysBagisciEditSnapshot snapshot;
+                            NbysBagisciSaveResult result = new NbysBagisciWriteService(LoggingContext)
+                                .LoadForEdit(NakitBagisciIdQS.ConvertToInt(), out snapshot);
+                            if (result != NbysBagisciSaveResult.Saved)
+                            {
+                                canEditCurrentDonor = false;
+                                KaydetBtn.Visible = false;
+                                Messages.Warning(result == NbysBagisciSaveResult.NotFound
+                                    ? "Bağışçı bulunamadı. Listeyi yenileyip tekrar seçin."
+                                    : "Bu bağışçının bilgilerini görüntüleme yetkiniz yok.");
+                                return;
+                            }
+                            canEditCurrentDonor = false;
                             FillIlData();
                             FillIlceData();
-                            if (!string.IsNullOrEmpty(NakitBagisciIdQS))
-                            {
-
-                                NakitBagisciFormunuDoldur();
-                            }
-
+                            NakitBagisciFormunuDoldur(snapshot.Donor);
+                            DonorEditVersion = snapshot.Version;
+                            canEditCurrentDonor = true;
                         }
                     }
                     else
@@ -240,50 +256,42 @@ namespace NBYS_WebParts.NakitBagisciEditWP
 
 
         }
-        private void NakitBagisciFormunuDoldur()
+        private void NakitBagisciFormunuDoldur(NakitBagisci nakitBagisci)
         {
             KaydetBtn.Attributes["Class"] = "btn btn-outline-primary";
             KaydetBtn.Text = "Güncelle";
-            if (!string.IsNullOrEmpty(NakitBagisciIdQS))
+            if (nakitBagisci != null)
             {
-                int nakitBagisciId = NakitBagisciIdQS.ConvertToInt();
+                IdLbl.Text = nakitBagisci.Id.ToString();
+                AdiTxt.Text = nakitBagisci.Adi.ReturnEmptyIfNull().ToString();
+                TCKimlikNoTxt.Text = nakitBagisci.TCKimlikNo.ReturnEmptyIfNull().ToString();
+                AdresTxt.Text = nakitBagisci.Adres.ReturnEmptyIfNull().ToString();
+                MeslekTxt.Text = nakitBagisci.Meslek.ReturnEmptyIfNull().ToString();
 
-                NakitBagisciService service = new NakitBagisciService(LoggingContext);
-                NakitBagisci nakitBagisci = service.GetById(nakitBagisciId);
-                if (nakitBagisci != null)
+                //TextInfo culturInfo
+                //string upperCaseIl = culturInfo.ToUpper(nakitBagisci.Ili.ReturnEmptyIfNull().ToString());
+                string ilstr = nakitBagisci.Ili.ReturnEmptyIfNull().ToString();
+                if (IliDDL.Items.FindByValue(ilstr) != null)
                 {
-                    IdLbl.Text = nakitBagisciId.ToString();
-                    AdiTxt.Text = nakitBagisci.Adi.ReturnEmptyIfNull().ToString();
-                    TCKimlikNoTxt.Text = nakitBagisci.TCKimlikNo.ReturnEmptyIfNull().ToString();
-                    AdresTxt.Text = nakitBagisci.Adres.ReturnEmptyIfNull().ToString();
-                    MeslekTxt.Text = nakitBagisci.Meslek.ReturnEmptyIfNull().ToString();
-
-                    //TextInfo culturInfo
-                    //string upperCaseIl = culturInfo.ToUpper(nakitBagisci.Ili.ReturnEmptyIfNull().ToString());
-                    string ilstr = nakitBagisci.Ili.ReturnEmptyIfNull().ToString();
-                    if (IliDDL.Items.FindByValue(ilstr) != null)
-                    {
-                        IliDDL.SelectedValue = IliDDL.Items.FindByValue(ilstr).Value;
-                    }
-                    FillIlceData();
-                    string ilcestr = nakitBagisci.Ilcesi.ReturnEmptyIfNull().ToString();
-                    if (IlcesiDDL.Items.FindByValue(ilcestr) != null)
-                    {
-                        IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByValue(ilcestr).Value;
-                    }
-                    Telefon1Txt.Text = nakitBagisci.Telefon1.ReturnEmptyIfNull().ToString();
-                    Telefon2Txt.Text = nakitBagisci.Telefon2.ReturnEmptyIfNull().ToString();
-                    EPostaTxt.Text = nakitBagisci.Eposta.ReturnEmptyIfNull().ToString();
-                    PostaKoduTxt.Text = nakitBagisci.PostaKodu.ReturnEmptyIfNull().ToString();
-                    TuzelKisiChk.Checked = nakitBagisci.TuzelKisi.ConvertToBool();
-                    SagChk.Checked = nakitBagisci.Sag.ConvertToBool();
-                    AciklamaTxt.Text = nakitBagisci.Aciklama.ReturnEmptyIfNull().ToString();
-                    UlasilamiyorChk.Checked = nakitBagisci.Ulasilamiyor.ConvertToBool();
-                    BelgeIstemiyorChk.Checked = nakitBagisci.BelgeIstemiyor.ConvertToBool();
-                    DergiGonderilmesinChk.Checked = nakitBagisci.DergiGonderilmesin.ConvertToBool();
+                    IliDDL.SelectedValue = IliDDL.Items.FindByValue(ilstr).Value;
                 }
+                FillIlceData();
+                string ilcestr = nakitBagisci.Ilcesi.ReturnEmptyIfNull().ToString();
+                if (IlcesiDDL.Items.FindByValue(ilcestr) != null)
+                {
+                    IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByValue(ilcestr).Value;
+                }
+                Telefon1Txt.Text = nakitBagisci.Telefon1.ReturnEmptyIfNull().ToString();
+                Telefon2Txt.Text = nakitBagisci.Telefon2.ReturnEmptyIfNull().ToString();
+                EPostaTxt.Text = nakitBagisci.Eposta.ReturnEmptyIfNull().ToString();
+                PostaKoduTxt.Text = nakitBagisci.PostaKodu.ReturnEmptyIfNull().ToString();
+                TuzelKisiChk.Checked = nakitBagisci.TuzelKisi.ConvertToBool();
+                SagChk.Checked = nakitBagisci.Sag.ConvertToBool();
+                AciklamaTxt.Text = nakitBagisci.Aciklama.ReturnEmptyIfNull().ToString();
+                UlasilamiyorChk.Checked = nakitBagisci.Ulasilamiyor.ConvertToBool();
+                BelgeIstemiyorChk.Checked = nakitBagisci.BelgeIstemiyor.ConvertToBool();
+                DergiGonderilmesinChk.Checked = nakitBagisci.DergiGonderilmesin.ConvertToBool();
             }
-
         }
         protected void KaydetBtn_Click(object sender, EventArgs e)
         {
@@ -302,27 +310,46 @@ namespace NBYS_WebParts.NakitBagisciEditWP
                     return;
                 }
                 int id = NakitBagisciIdQS.ConvertToInt();
-                NakitBagisci item = id > 0 ? new NakitBagisciService(LoggingContext).GetById(id) : new NakitBagisci();
-                if (item == null)
+                if (id <= 0)
                 {
                     Messages.Warning("Bağışçı bulunamadı. Listeyi yenileyip tekrar seçin.");
                     return;
                 }
+                NakitBagisci item = new NakitBagisci { Id = id };
                 if (IliDDL.SelectedItem == null || IlcesiDDL.SelectedItem == null)
                 {
                     Messages.Warning("İl ve ilçe seçenekleri yüklenemedi. Sayfayı yenileyip tekrar deneyin.");
                     return;
                 }
                 FillDonorFromForm(item);
-                NbysBagisciSaveResult result = new NbysBagisciWriteService(LoggingContext).Save(item);
+                NbysBagisciEditSnapshot saved;
+                NbysBagisciSaveResult result = new NbysBagisciWriteService(LoggingContext).Save(item, DonorEditVersion, out saved);
                 if (result == NbysBagisciSaveResult.NotFound)
                     Messages.Warning("Bağışçı bulunamadı. Listeyi yenileyip tekrar seçin.");
                 else if (result == NbysBagisciSaveResult.Forbidden)
                     Messages.Warning("Bu bağışçının bilgilerini değiştirme yetkiniz yok.");
                 else if (result == NbysBagisciSaveResult.NameRequired)
                     Messages.Warning("Bağışçı adını girin.");
-                else
+                else if (result == NbysBagisciSaveResult.Changed)
+                    Messages.Warning("Bağışçı kaydı siz ekranı açtıktan sonra değiştirildi. Değişiklikleriniz kaydedilmedi. Sayfayı yenileyip güncel bilgileri kontrol edin.");
+                else if (result == NbysBagisciSaveResult.Saved)
+                {
+                    try
+                    {
+                        if (saved == null) throw new InvalidOperationException("Kaydedilen bağışçı bilgileri okunamadı.");
+                        NakitBagisciFormunuDoldur(saved.Donor);
+                        DonorEditVersion = saved.Version;
+                    }
+                    catch (System.Threading.ThreadAbortException) { throw; }
+                    catch (Exception error)
+                    {
+                        NbysWebPartLog.ReportError(LoggingContext, "NBYS.NakitBagisciEditWP.RefreshAfterWrite", error,
+                            "Bağışçı bilgileri kaydedildi ancak ekran yenilenemedi. Sayfayı yenileyin.");
+                        return;
+                    }
                     Messages.Success("Bağışçı bilgileri kaydedildi.", 4000);
+                }
+                else throw new InvalidOperationException("Bağışçı işlem sonucu tanınamadı.");
             });
         }
         private void FillDonorFromForm(NakitBagisci nakitBagisci)
