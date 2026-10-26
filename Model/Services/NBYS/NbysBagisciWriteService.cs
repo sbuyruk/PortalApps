@@ -146,17 +146,17 @@ namespace Model.Services.NBYS
         {
             if (donor.Adi.Contains(ProjeConstants.NAKITBAGISCI_BILINMEYEN)) return;
             List<Armagan> pending = Map<Armagan>(repository.SelectGifts(donor.Id, ProjeConstants.DURUM_GONDERILMEDI, transaction));
-            // Keep the existing monthly entitlement rule, including its inclusive midnight end.
+            // Include the entire month, excluding the first instant of the following month.
             foreach (Armagan pendingGift in pending)
             {
                 DateTime start = new DateTime(pendingGift.Tarih.Year, pendingGift.Tarih.Month, 1);
-                DateTime end = start.AddMonths(1).AddDays(-1);
-                List<NakitBagisHareket> donations = Map<NakitBagisHareket>(repository.SelectPeriodDonations(donor.Id, start, end, transaction));
+                DateTime endExclusive = start.AddMonths(1);
+                List<NakitBagisHareket> donations = Map<NakitBagisHareket>(repository.SelectPeriodDonations(donor.Id, start, endExclusive, transaction));
                 decimal amount = donations.Sum(donation => donation.BagisMiktari);
                 ArmaganTanim definition = Map<ArmaganTanim>(repository.SelectGiftDefinition(amount, donor.TuzelKisi, transaction)).FirstOrDefault();
                 // As in the existing rule, no entitlement leaves the period gift unchanged.
                 if (definition == null || definition.Id == ProjeConstants.ARMAGAN_YOKID) continue;
-                Armagan gift = Map<Armagan>(repository.SelectPeriodGifts(donor.Id, start, end, null, transaction)).FirstOrDefault()
+                Armagan gift = Map<Armagan>(repository.SelectPeriodGifts(donor.Id, start, endExclusive, null, transaction)).FirstOrDefault()
                     ?? new Armagan();
                 gift.CokluBagis = false;
                 gift.BagisciId = donor.Id;
@@ -170,6 +170,7 @@ namespace Model.Services.NBYS
                     gift.Durum = ProjeConstants.DURUM_EDEVLETTENBELGEGONDERILDI;
                 if (Map<Armagan>(repository.SelectGifts(donor.Id, ProjeConstants.DURUM_PARAIADE, transaction)).Count > 0)
                     gift.Durum = ProjeConstants.DURUM_DAHAONCEIADE;
+                // Previous entitlement must exclude gifts belonging to the current month.
                 if (definition.Id != ProjeConstants.ARMAGAN_TESEKKURID && Map<Armagan>(repository.SelectPeriodGifts(
                     donor.Id, new DateTime(2005, 1, 1), start, definition.Id, transaction)).Count > 0)
                     gift.ArmaganTanimId = ProjeConstants.ARMAGAN_TESEKKURID;

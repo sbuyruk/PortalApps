@@ -65,29 +65,29 @@ namespace DAO.Repositories.NBYS
             return sql.Select(query, transaction);
         }
 
-        public DataTable SelectPeriodGifts(int donorId, DateTime start, DateTime end,
+        public DataTable SelectPeriodGifts(int donorId, DateTime start, DateTime endExclusive,
             int? definitionId, SqlTransactionContext transaction)
         {
             RequireTransaction(transaction);
             SqlQuery query = new SqlQuery(@"SELECT * FROM Armagan_Table WITH (UPDLOCK, HOLDLOCK)
-                WHERE BelgeGecersizMi!=1 AND BagisciId=@BagisciId AND Tarih BETWEEN @Baslangic AND @Bitis"
+                WHERE BelgeGecersizMi!=1 AND BagisciId=@BagisciId AND Tarih>=@Baslangic AND Tarih<@BitisHaric"
                 + (definitionId.HasValue ? " AND ArmaganTanimId=@ArmaganTanimId" : ""));
             query.AddParameter("@BagisciId", donorId);
             query.AddParameter("@Baslangic", start);
-            query.AddParameter("@Bitis", end);
+            query.AddParameter("@BitisHaric", endExclusive);
             if (definitionId.HasValue) query.AddParameter("@ArmaganTanimId", definitionId.Value);
             return sql.Select(query, transaction);
         }
 
-        public DataTable SelectPeriodDonations(int donorId, DateTime start, DateTime end,
+        public DataTable SelectPeriodDonations(int donorId, DateTime start, DateTime endExclusive,
             SqlTransactionContext transaction)
         {
             RequireTransaction(transaction);
             SqlQuery query = new SqlQuery(@"SELECT * FROM NakitBagisHareket_Table WITH (UPDLOCK, HOLDLOCK)
-                WHERE BagisciId=@BagisciId AND BagisTarihi BETWEEN @Baslangic AND @Bitis");
+                WHERE BagisciId=@BagisciId AND BagisTarihi>=@Baslangic AND BagisTarihi<@BitisHaric");
             query.AddParameter("@BagisciId", donorId);
             query.AddParameter("@Baslangic", start);
-            query.AddParameter("@Bitis", end);
+            query.AddParameter("@BitisHaric", endExclusive);
             return sql.Select(query, transaction);
         }
 
