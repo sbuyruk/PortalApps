@@ -274,6 +274,11 @@ namespace Portal_WebParts.ToplantiGirisiWP
             Toplanti toplanti = new Toplanti();
             var loaded = new PortalToplantiWriteService(LogContext).Load(ToplantiIdQS.ConvertToInt());
             if (loaded == null) throw new PortalInputException("Toplantı bulunamadı. Lütfen listeyi yenileyin.");
+            if (!loaded.CanEdit)
+            {
+                BilesenleriEkisizlestir();
+                return;
+            }
             toplanti = loaded.After;
             MeetingVersion = loaded.Version;
             if (toplanti != null)
@@ -317,7 +322,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
 
         private void GirisiAc()
         {
-            if (ToplantiyaYetkiliMi())
+            if (new PortalToplantiWriteService(LogContext).CanCreate())
             {
                 KatilimciBilgileriDiv.Attributes["style"] = "display:block";
                 KaydetBtn.Visible = true;
@@ -360,39 +365,17 @@ namespace Portal_WebParts.ToplantiGirisiWP
             KatilimciModalAcBtn.Visible = false;
             throw new PortalInputException("Toplantı işlemleri için yetkilendirilmediğinizden dolayı işlem yapamazsınız.");
         }
-        private bool ToplantiyaYetkiliMi()
-        {
-            bool yetkiliMi = false;
-            Personel personel = new Personel();
-            personel = PersonelGetir();
-            if (personel != null)
-            {
-                ToplantiParametre toplantiParametre = new ToplantiParametre();
-                string adiSoyadi = personel.Adi + " " + personel.Soyadi;
-                List<ToplantiParametre> liste = new Model.Services.Portal.ToplantiParametreService(LogContext).GetByGroupValue(ProjeConstants.PARAM_TOPLANTIYETKILISI, adiSoyadi);
-                yetkiliMi = liste.Count > 0 || new Model.Services.Portal.ToplantiParametreService(LogContext).GetByGroupValue(ProjeConstants.PARAM_TOPLANTIYONETICISI, adiSoyadi).Count > 0;
-            }
-
-            return yetkiliMi;
-        }
         private void DuzenleAc()
         {
-            if (ToplantiyaYetkiliMi())
+            if (ToplantiIdQS.ConvertToInt() > 0)
             {
-                if (ToplantiIdQS.ConvertToInt() > 0)
-                {
-                    ToplantiFormunuDoldur();
-                    KatilimciBilgileriniDoldur();
-                }
-                else
-                {
-                    GirisiAc();
-                    throw new PortalInputException("Toplantı bulunamadı. Yeni toplantı girebilirsiniz.");
-                }
+                ToplantiFormunuDoldur();
+                KatilimciBilgileriniDoldur();
             }
             else
             {
-                BilesenleriEkisizlestir();
+                GirisiAc();
+                throw new PortalInputException("Toplantı bulunamadı. Yeni toplantı girebilirsiniz.");
             }
         }
         private void ToplantiYeriDoldurDDL()
@@ -561,14 +544,6 @@ namespace Portal_WebParts.ToplantiGirisiWP
             {
                 BitisSaatiDDLDoldur();
             });
-        }
-
-        private Personel PersonelGetir()
-        {
-            string login = LogContext.UserLogin ?? string.Empty;
-            var person = new PersonelService().GetByUserName(login.Substring(login.LastIndexOf('\\') + 1), LogContext);
-            if (person == null) throw new PortalInputException("Personel kaydınız bulunamadı. Lütfen sistem yöneticisine başvurun.");
-            return person;
         }
 
         private void KaydetOnayPopupAc()

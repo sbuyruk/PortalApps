@@ -20,6 +20,7 @@ namespace Portal_WebParts.ToplantiListesiWP
     public partial class ToplantiListesiWP : WebPart
     {
         private PortalLogContext logContext;
+        private readonly Dictionary<int, bool> meetingOwnerPermissions = new Dictionary<int, bool>();
         private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("Portal", "ToplantiListesiWP")); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -166,7 +167,6 @@ namespace Portal_WebParts.ToplantiListesiWP
                     string toplantiKonusu = row["ToplantiKonusu"].ToString();
                     int toplantiKoordinator = row["Koordinator"].ConvertToInt();
                     string toplantiDisKatilimcilar = row["DisKatilimcilar"].ToString();
-                    string olusturan = row["Olusturan"].ReturnEmptyIfNull().ToString();
 
                     DateTime basTar = row["BaslangicTarihi"].ConvertToDatetime();
                     DateTime bitTar = row["BitisTarihi"].ConvertToDatetime();
@@ -223,15 +223,12 @@ namespace Portal_WebParts.ToplantiListesiWP
 
                         toplantiListItem.Katilimci += string.IsNullOrEmpty(katilimci) ? string.Empty : katilimci + seperator;
                         toplantiListItem.BilgiVerilenler += string.IsNullOrEmpty(bilgiVerilenAdiSoyadi) ? string.Empty : bilgiVerilenAdiSoyadi + seperator;
-                        //kullanici bilgisini al
-                        string currentuser = UtilityHelper.GetCurrentUserName();
-
                         if (toplantiListItem.BitisTarihi.ConvertToDatetime() < DateTime.Now)
                         {
                             toplantiListItem.Duzenle = string.Empty;
                         }
                         else
-                            toplantiListItem.Duzenle = ToplantiYetkisineGoreDegerAta(toplantiId, toplantiYetkilisi, currentuser, olusturan);
+                            toplantiListItem.Duzenle = ToplantiYetkisineGoreDegerAta(toplantiId, toplantiYetkilisi);
 
                         tempToplantiListItem = toplantiListItem;
                         toplantiList.Add(tempToplantiListItem);
@@ -317,85 +314,17 @@ namespace Portal_WebParts.ToplantiListesiWP
 
             return tableString;
         }
-        private string ToplantiYetkisineGoreDegerAta(int toplantiId, int toplantiYetkilisi, string currentuser, string olusturan)
+        private string ToplantiYetkisineGoreDegerAta(int toplantiId, int toplantiYetkilisi)
         {
-            string sonuc = string.Empty;
-            int goruntuleyenininBirimi = 0;
-            int toplantiYetkilisiBirimi = 0;
-            if (currentuser.Equals(olusturan))
+            bool allowed;
+            if (!meetingOwnerPermissions.TryGetValue(toplantiYetkilisi, out allowed))
             {
-                sonuc = "<a href=" + ProjeConstants.PAGE_TOPLANTI_GIRIS + "?ToplantiId=" + toplantiId + " class='btn btn-outline-primary'>Düzenle</a>";
+                allowed = new PortalToplantiWriteService(LogContext).CanManageMeetingsOf(toplantiYetkilisi);
+                meetingOwnerPermissions.Add(toplantiYetkilisi, allowed);
             }
-            else
-            {
-                Personel personel = new Personel();
-                personel = PersonelGetir();
-                bool toplantiYoneticisi = false;
-                if (personel != null)
-                {
-
-                    ToplantiParametre toplantiParametre = new ToplantiParametre();
-                    string adiSoyadi = personel.Adi + " " + personel.Soyadi;
-                    List<ToplantiParametre> adminliste = new Model.Services.Portal.ToplantiParametreService(LogContext).GetByGroupValue(ProjeConstants.PARAM_TOPLANTIYONETICISI, adiSoyadi);
-
-                    if (adminliste.Count > 0)
-                    {
-                        toplantiYoneticisi = true;
-                    }
-                    else
-                    {
-                        List<ToplantiParametre> liste = new Model.Services.Portal.ToplantiParametreService(LogContext).GetByGroupValue(ProjeConstants.PARAM_TOPLANTIYETKILISI, adiSoyadi);
-                        if (liste.Count > 0)
-                        {
-
-                            IsBilgileri ib = new IsBilgileri();
-                            ib = new IsBilgileriService().GetByPersonelId(personel.Id, LogContext);
-
-                            if (ib != null)
-                            {
-                                goruntuleyenininBirimi = ib.BirimId;
-                            }
-
-                            ib = new IsBilgileriService().GetByPersonelId(toplantiYetkilisi, LogContext);
-
-                            if (ib != null)
-                            {
-                                toplantiYetkilisiBirimi = ib.BirimId;
-                            }
-                            ///sonuc = "<a href=" + ProjeConstants.PAGE_TOPLANTI_GIRIS + "?ToplantiId=" + toplantiId + " class='btn btn-outline-primary'>Düzenle</a>";
-                        }
-                    }
-
-                }
-                if ((toplantiYetkilisiBirimi != 0 && goruntuleyenininBirimi != 0 && toplantiYetkilisiBirimi == goruntuleyenininBirimi) ||
-                     toplantiYoneticisi)
-                {
-                    sonuc = "<a href=" + ProjeConstants.PAGE_TOPLANTI_GIRIS + "?ToplantiId=" + toplantiId + " class='btn btn-outline-primary'>Düzenle</a>";
-                }
-
-            }
-            return sonuc;
-        }
-        private Personel PersonelGetir()
-        {
-            Personel personel = new Personel();
-
-            if (!string.IsNullOrEmpty(PersonelIdQS))
-            {
-                personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), LogContext);
-
-            }
-            else
-            {
-                string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-                personel = new PersonelService().GetByUserName(userName, LogContext);
-                if (personel != null)
-                    PersonelIdQS = personel.Id.ToString();
-                else
-                    throw new PortalInputException("Personel kaydı bulunamadı.");
-            }
-
-            return personel;
+            return allowed
+                ? "<a href=" + ProjeConstants.PAGE_TOPLANTI_GIRIS + "?ToplantiId=" + toplantiId + " class='btn btn-outline-primary'>Düzenle</a>"
+                : string.Empty;
         }
         private void RedirectToPage(string pageUrl)
         {
