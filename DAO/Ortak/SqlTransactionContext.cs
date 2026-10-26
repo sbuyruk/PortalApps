@@ -48,9 +48,14 @@ namespace DAO.Ortak
             }
         }
 
-        public SqlTransactionContext()
+        public SqlTransactionContext() : this(DBProcess.getConnectString())
         {
-            connection = new SqlConnection(DBProcess.getConnectString());
+        }
+
+        public SqlTransactionContext(string connectionString)
+        {
+            if (string.IsNullOrWhiteSpace(connectionString)) throw new ArgumentException("Bağlantı bilgisi gereklidir.", "connectionString");
+            connection = new SqlConnection(connectionString);
             try
             {
                 connection.Open();

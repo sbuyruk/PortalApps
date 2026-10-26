@@ -24,6 +24,7 @@ namespace Model.Services.Portal
         public List<ToplantiKatilim> Participants { get; set; }
         public string Version { get; set; }
         public bool CanEdit { get; set; }
+        public string Location { get; set; }
     }
 
     public sealed class PortalToplantiWriteService
@@ -134,7 +135,9 @@ namespace Model.Services.Portal
                 Toplanti saved = First<Toplanti>(repository.Read("Toplanti_Table", input.Id, transaction));
                 var participants = List<ToplantiKatilim>(repository.Participants(input.Id, transaction));
                 completed = new PortalToplantiChange { Before = current, After = saved, PreviousParticipants = previous,
-                    Participants = participants, Version = Version(saved, participants) };
+                    Participants = participants, Version = Version(saved, participants),
+                    Location = saved.ToplantiYeri == ProjeConstants.PARAM_DIGER_INT ? saved.ToplantiYeriDiger : place.Deger };
+                QueueNotification(completed, transaction);
                 transaction.Complete();
             }
             change = completed;
@@ -153,9 +156,12 @@ namespace Model.Services.Portal
                 if (!CanEdit(Actor(transaction), current, transaction)) return PortalToplantiResult.Forbidden;
                 var previous = List<ToplantiKatilim>(repository.Participants(id, transaction));
                 if (Version(current, previous) != expectedVersion) return PortalToplantiResult.Changed;
+                var place = First<ToplantiParametre>(repository.Read("ToplantiParametre_Table", current.ToplantiYeri, transaction));
                 foreach (var participant in previous) repository.Delete("ToplantiKatilim_Table", participant.Id, transaction);
                 repository.Delete("Toplanti_Table", id, transaction);
-                completed = new PortalToplantiChange { Before = current, PreviousParticipants = previous, Participants = new List<ToplantiKatilim>() };
+                completed = new PortalToplantiChange { Before = current, PreviousParticipants = previous, Participants = new List<ToplantiKatilim>(),
+                    Location = current.ToplantiYeri == ProjeConstants.PARAM_DIGER_INT ? current.ToplantiYeriDiger : place == null ? string.Empty : place.Deger };
+                QueueNotification(completed, transaction);
                 transaction.Complete();
             }
             change = completed;
@@ -197,6 +203,12 @@ namespace Model.Services.Portal
                 transaction.Complete();
             }
             return PortalToplantiResult.Completed;
+        }
+
+        private void QueueNotification(PortalToplantiChange change, SqlTransactionContext transaction)
+        {
+            string payload = PortalToplantiOutboxPayload.Serialize(change);
+            PortalToplantiOutboxRepository.Enqueue((change.After ?? change.Before).Id, payload, context, transaction);
         }
 
         private DataRow Actor(SqlTransactionContext transaction)

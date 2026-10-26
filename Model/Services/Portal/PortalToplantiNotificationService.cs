@@ -1,7 +1,6 @@
 using Model.Ortak;
 using Model.Portal;
-using Model.Services.IKYS;
-using Model.Services.Ortak;
+using DAO.Repositories.Portal;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
@@ -11,28 +10,42 @@ using System.Net.Mail;
 using System.Net.Mime;
 using System.Text;
 using System.Web;
+using System.Web.Script.Serialization;
 using Utility.Logging;
 using Utility.ProjeGlobal;
 
 namespace Model.Services.Portal
 {
-    // Called only after the database transaction has committed. Never emits UI messages.
+    public sealed class PortalToplantiMail
+    {
+        public string Recipient { get; set; }
+        public string Subject { get; set; }
+        public string Body { get; set; }
+        public string Method { get; set; }
+    }
+
+    // Sends only durable queue entries, outside the meeting transaction and HTTP request.
     public sealed class PortalToplantiNotificationService
     {
         private readonly PortalLogContext context;
-        public PortalToplantiNotificationService(PortalLogContext context) { this.context = context; }
-
-        public bool Send(PortalToplantiChange change)
+        private readonly PortalToplantiOutboxRepository repository;
+        private readonly PortalToplantiOutboxItem outboxItem;
+        private readonly List<PortalToplantiMail> plan = new List<PortalToplantiMail>();
+        internal PortalToplantiNotificationService(PortalToplantiOutboxRepository repository, PortalToplantiOutboxItem item)
         {
+            this.repository = repository; outboxItem = item; context = item.Context;
+        }
+
+        internal bool Send(PortalToplantiChange change)
+        {
+            if (outboxItem.DeliveryPlan != null)
+                return SendPlan(change, PlanSerializer().Deserialize<List<PortalToplantiMail>>(outboxItem.DeliveryPlan));
             bool complete = true;
             var sent = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             Toplanti item = change.After ?? change.Before;
             bool deleted = change.After == null;
             string action = deleted ? "iptal edildi" : change.Before == null ? "oluşturuldu" : "güncellendi";
-            string smtp = Parameter(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
-            if (string.IsNullOrWhiteSpace(smtp)) smtp = ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI;
-            string location = item.ToplantiYeri == ProjeConstants.PARAM_DIGER_INT ? item.ToplantiYeriDiger
-                : (new ToplantiParametreService(context).GetById(item.ToplantiYeri) ?? new ToplantiParametre()).Deger;
+            string location = change.Location;
             string body = "<p>Toplantı " + action + ".</p><p>" + H(item.ToplantiKonusu) + "</p><p>"
                 + item.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm") + " – " + item.BitisTarihi.ToString("dd.MM.yyyy HH:mm")
                 + "</p><p>Yer: " + H(location) + "</p><p>" + H(item.Aciklama) + "</p><p>Dış katılımcılar: "
@@ -44,6 +57,7 @@ namespace Model.Services.Portal
             {
                 Attempt(() =>
                 {
+                    repository.Renew(outboxItem);
                     var old = change.PreviousParticipants.FirstOrDefault(p => p.KatilimciId == id);
                     var current = change.Participants.FirstOrDefault(p => p.KatilimciId == id);
                     bool removed = current == null;
@@ -52,18 +66,17 @@ namespace Model.Services.Portal
                     string address = Address(id);
                     string personBody = removed && !deleted ? "<p>Toplantının katılımcı listesinden çıkarıldınız.</p>" + body
                         : current != null && current.Bilgi ? "<p>Bilgi amacıyla gönderilmiştir.</p>" + body : body;
-                    SendMail(smtp, address, "Toplantı " + action + ": " + item.ToplantiKonusu, personBody,
-                        item, location, cancel ? "CANCEL" : invite ? "REQUEST" : null);
-                    sent.Add(address);
+                    AddDelivery(sent, address, "Toplantı " + action + ": " + item.ToplantiKonusu, personBody,
+                        cancel ? "CANCEL" : invite ? "REQUEST" : null);
                 }, ref complete);
             }
             Attempt(() =>
             {
+                repository.Renew(outboxItem);
                 string address = Address(item.ToplantiYetkilisi);
                 if (!sent.Contains(address))
                 {
-                    SendMail(smtp, address, "Toplantı " + action + ": " + item.ToplantiKonusu, body, item, location, null);
-                    sent.Add(address);
+                    AddDelivery(sent, address, "Toplantı " + action + ": " + item.ToplantiKonusu, body, null);
                 }
             }, ref complete);
             var groups = new List<string> { ProjeConstants.PARAM_TOPLANTI_MAILGRUBU };
@@ -73,10 +86,10 @@ namespace Model.Services.Portal
             {
                 Attempt(() =>
                 {
+                    repository.Renew(outboxItem);
                     string address = Parameter(key);
                     if (string.IsNullOrWhiteSpace(address)) throw new InvalidOperationException("Toplantı bildirim grubu tanımlı değil: " + key);
                     string groupName = address.Split('@')[0];
-                    using (System.Web.Hosting.HostingEnvironment.Impersonate())
                     using (var domain = new PrincipalContext(ContextType.Domain, "TSKGV"))
                     using (var group = GroupPrincipal.FindByIdentity(domain, groupName))
                     {
@@ -92,10 +105,10 @@ namespace Model.Services.Portal
                                     string recipient = user.EmailAddress;
                                     Attempt(() =>
                                     {
+                                        repository.Renew(outboxItem);
                                         if (string.IsNullOrWhiteSpace(recipient)) throw new InvalidOperationException("Bildirim alıcısının e-posta adresi eksik.");
                                         if (sent.Contains(recipient)) return;
-                                        SendMail(smtp, recipient, "Toplantı " + action + ": " + item.ToplantiKonusu, body, item, location, null);
-                                        sent.Add(recipient);
+                                        AddDelivery(sent, recipient, "Toplantı " + action + ": " + item.ToplantiKonusu, body, null);
                                     }, ref complete);
                                 }
                             }
@@ -103,34 +116,75 @@ namespace Model.Services.Portal
                     }
                 }, ref complete);
             }
-            return complete;
+            // Freeze the complete recipient list before any SMTP call. Later AD membership changes cannot
+            // remove a failed recipient or add a new recipient halfway through retries of this event.
+            if (!complete) return false;
+            repository.SavePlan(outboxItem, PlanSerializer().Serialize(plan));
+            return SendPlan(change, plan);
         }
         private string Parameter(string key)
         {
-            var parameter = new OrtakParametreService().GetByKey(key, context);
-            return parameter == null ? null : parameter.Deger;
+            return repository.Parameter(key);
         }
         private string Address(int personId)
         {
-            var contact = new IletisimBilgileriService().GetByPersonelId(personId, context);
-            if (contact == null || string.IsNullOrWhiteSpace(contact.IntranetEPosta))
+            string address = repository.Address(personId);
+            if (string.IsNullOrWhiteSpace(address))
                 throw new InvalidOperationException("Toplantı alıcısının e-posta adresi eksik.");
-            return contact.IntranetEPosta.Trim();
+            return address.Trim();
         }
         private void Attempt(Action send, ref bool complete)
         {
             try { send(); }
+            catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error)
             {
                 complete = false;
                 PortalTechnicalLog.WriteError(context, "Portal.Toplanti.Notification", error);
             }
         }
-        private static void SendMail(string smtp, string address, string subject, string body, Toplanti item, string location, string method)
+        private static JavaScriptSerializer PlanSerializer()
+        {
+            return new JavaScriptSerializer { MaxJsonLength = 16777216 };
+        }
+        private void AddDelivery(HashSet<string> sent, string address, string subject, string body, string method)
+        {
+            string recipient = new MailAddress(address).Address.Trim();
+            if (recipient.Length > 320) throw new InvalidOperationException("Bildirim alıcısının e-posta adresi çok uzun.");
+            if (sent.Contains(recipient)) return;
+            plan.Add(new PortalToplantiMail { Recipient = recipient, Subject = subject, Body = body, Method = method });
+            sent.Add(recipient);
+        }
+
+        private bool SendPlan(PortalToplantiChange change, List<PortalToplantiMail> deliveries)
+        {
+            if (deliveries == null || deliveries.Count == 0) throw new InvalidOperationException("Bildirim alıcı planı boş.");
+            var sent = repository.Delivered(outboxItem.Id);
+            string smtp = Parameter(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
+            if (string.IsNullOrWhiteSpace(smtp)) smtp = ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI;
+            bool complete = true;
+            foreach (PortalToplantiMail delivery in deliveries)
+            {
+                if (sent.Contains(delivery.Recipient)) continue;
+                Attempt(() =>
+                {
+                    repository.Renew(outboxItem);
+                    SendMail(smtp, delivery.Recipient, delivery.Subject, delivery.Body, change.After ?? change.Before,
+                        change.Location, delivery.Method, outboxItem.Id, outboxItem.CreatedUtc);
+                    repository.MarkDelivered(outboxItem, delivery.Recipient);
+                    sent.Add(delivery.Recipient);
+                }, ref complete);
+            }
+            return complete;
+        }
+
+        private static void SendMail(string smtp, string address, string subject, string body, Toplanti item, string location,
+            string method, int sequence, DateTime createdUtc)
         {
             using (var client = new SmtpClient(smtp))
             using (var message = new MailMessage())
             {
+                client.Timeout = 30000;
                 message.From = new MailAddress("tys@tskgv.local", "Toplantı Yönetim Sistemi");
                 message.To.Add(new MailAddress(address));
                 message.Subject = subject;
@@ -146,10 +200,11 @@ namespace Model.Services.Portal
                     var calendar = new StringBuilder();
                     calendar.Append("BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//TSKGV//PortalApps//TR\r\nMETHOD:").Append(method);
                     calendar.Append("\r\nBEGIN:VEVENT\r\nUID:").Append(item.UniqueId);
-                    calendar.Append("\r\nDTSTAMP:").Append(DateTime.UtcNow.ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture));
+                    calendar.Append("\r\nDTSTAMP:").Append(createdUtc.ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture));
                     calendar.Append("\r\nDTSTART:").Append(start.ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture));
                     calendar.Append("\r\nDTEND:").Append(end.ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture));
-                    calendar.Append("\r\nSEQUENCE:").Append(((long)(DateTime.UtcNow - new DateTime(2000, 1, 1)).TotalSeconds).ToString(CultureInfo.InvariantCulture));
+                    // Reserve the old time-based sequence range so existing invitations accept the new revision.
+                    calendar.Append("\r\nSEQUENCE:").Append((1000000000L + sequence).ToString(CultureInfo.InvariantCulture));
                     calendar.Append("\r\nSUMMARY:").Append(Ics(item.ToplantiKonusu));
                     calendar.Append("\r\nLOCATION:").Append(Ics(location));
                     calendar.Append("\r\nDESCRIPTION:").Append(Ics(item.Aciklama));

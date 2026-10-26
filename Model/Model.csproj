@@ -51,6 +51,7 @@
     <Compile Include="Services\MTS\MtsActivityNotificationService.cs" />
     <Compile Include="Services\MTS\MtsContactWriteService.cs" />
     <Compile Include="Services\Portal\PortalToplantiNotificationService.cs" />
+    <Compile Include="Services\Portal\PortalToplantiOutboxDispatcher.cs" />
     <Compile Include="Services\Portal\PortalToplantiWriteService.cs" />
     <Compile Include="Services\NBYS\NbysSmsWriteService.cs" />
     <Compile Include="Services\NBYS\NbysFtkNotificationService.cs" />
