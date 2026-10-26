@@ -14,6 +14,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.IO;
+using System.Security;
 using System.Text.RegularExpressions;
 using System.Web.Script.Serialization;
 using System.Web.UI;
@@ -645,10 +646,11 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                 {
                     docText = sr.ReadToEnd();
                 }
-                foreach (KeyValuePair<string, string> item in dict)
+                // Replace once so values remain literal text and cannot introduce XML or replacement syntax.
+                if (dict.Count > 0)
                 {
-                    Regex regexText = new Regex(item.Key);
-                    docText = regexText.Replace(docText, item.Value);
+                    docText = Regex.Replace(docText, string.Join("|", dict.Keys.Select(Regex.Escape)),
+                        match => SecurityElement.Escape(dict[match.Value] ?? string.Empty));
                 }
                 using (StreamWriter sw = new StreamWriter(wordDoc.MainDocumentPart.GetStream(FileMode.Create)))
                 {
@@ -799,10 +801,11 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                     docText = sr.ReadToEnd();
                 }
 
-                foreach (KeyValuePair<string, string> item in dict)
+                // Replace once so values remain literal text and cannot introduce XML or replacement syntax.
+                if (dict.Count > 0)
                 {
-                    Regex regexText = new Regex(item.Key);
-                    docText = regexText.Replace(docText, item.Value);
+                    docText = Regex.Replace(docText, string.Join("|", dict.Keys.Select(Regex.Escape)),
+                        match => SecurityElement.Escape(dict[match.Value] ?? string.Empty));
                 }
 
                 using (StreamWriter sw = new StreamWriter(
