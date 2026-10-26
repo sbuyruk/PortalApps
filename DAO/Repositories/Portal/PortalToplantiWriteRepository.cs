@@ -56,7 +56,7 @@ namespace DAO.Repositories.Portal
             if (string.IsNullOrWhiteSpace(login)) return null;
             // Return up to two people so the service can reject ambiguous account bindings.
             // Multiple job-history rows must not turn one person into multiple candidates.
-            var query = new SqlQuery(@"SELECT TOP (2) P.Id,P.Adi,P.Soyadi,I.BirimId
+            var query = new SqlQuery(@"SELECT TOP (2) P.Id,I.BirimId
                 FROM Personel_Table P WITH (HOLDLOCK)
                 OUTER APPLY
                 (
@@ -66,14 +66,6 @@ namespace DAO.Repositories.Portal
                 WHERE P.KullaniciAdi=@Login ORDER BY P.Id");
             query.AddParameter("@Login", login);
             return sql.Select(query, transaction);
-        }
-
-        public bool HasRole(string group, string name, SqlTransactionContext transaction)
-        {
-            Require(transaction);
-            var query = new SqlQuery("SELECT Id FROM ToplantiParametre_Table WITH (HOLDLOCK) WHERE Grup=@Group AND Deger=@Name");
-            query.AddParameter("@Group", group); query.AddParameter("@Name", name);
-            return sql.Select(query, transaction) != null;
         }
 
         public bool SameUnit(int ownerId, int unitId, SqlTransactionContext transaction)

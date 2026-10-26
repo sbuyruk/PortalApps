@@ -183,8 +183,7 @@ namespace Model.Services.Portal
                 {
                     input.Grup = current == null ? input.Grup : current.Grup;
                     input.Deger = (input.Deger ?? string.Empty).Trim();
-                    if (input.Deger.Length == 0 || !new[] { ProjeConstants.PARAM_TOPLANTIYERI,
-                        ProjeConstants.PARAM_TOPLANTIYETKILISI, ProjeConstants.PARAM_TOPLANTIYONETICISI }.Contains(input.Grup))
+                    if (input.Deger.Length == 0 || input.Grup != ProjeConstants.PARAM_TOPLANTIYERI)
                         return PortalToplantiResult.InvalidInput;
                     if (repository.DuplicateParameter(input.Id, input.Grup, input.Deger, transaction)) return PortalToplantiResult.Duplicate;
                     if (current != null && current.Id == ProjeConstants.PARAM_DIGER_INT && input.Deger != current.Deger)
@@ -207,10 +206,8 @@ namespace Model.Services.Portal
             if (actor == null || string.IsNullOrWhiteSpace(context.UserLogin)) return false;
             // Employees can manage their own meetings and those owned by their current unit.
             if (current == null || current.ToplantiYetkilisi == Convert.ToInt32(actor["Id"])) return true;
-            if (!actor.IsNull("BirimId")
-                && repository.SameUnit(current.ToplantiYetkilisi, Convert.ToInt32(actor["BirimId"]), transaction)) return true;
-            string name = Convert.ToString(actor["Adi"]) + " " + Convert.ToString(actor["Soyadi"]);
-            return repository.HasRole(ProjeConstants.PARAM_TOPLANTIYONETICISI, name, transaction);
+            return !actor.IsNull("BirimId")
+                && repository.SameUnit(current.ToplantiYetkilisi, Convert.ToInt32(actor["BirimId"]), transaction);
         }
         private void Stamp(EntityBase item, EntityBase current)
         {
