@@ -39,6 +39,7 @@ namespace NBYS_WebParts.Logging
                 case NbysGiftWriteResult.RefundProtected: warning = "Para iadesi durumunu bu ekrandan değiştiremezsiniz. Para iadesi için Bağış İadesi ekranını kullanın."; break;
                 case NbysGiftWriteResult.NotSent: warning = "Belge iadesi yalnızca durumu ‘Gönderildi’ olan armağanlarda yapılabilir. Listeyi yenileyip durumu kontrol edin."; break;
                 case NbysGiftWriteResult.Conflict: warning = "Kaydın bağışçı bağlantısı değişmiş. Sayfayı yenileyip tekrar deneyin."; break;
+                case NbysGiftWriteResult.Changed: warning = "Armağan kaydı siz ekranı açtıktan sonra değiştirildi. Değişiklikleriniz kaydedilmedi. Sayfayı yenileyip güncel bilgileri kontrol edin."; break;
                 default: throw new InvalidOperationException("Armağan işlem sonucu tanınamadı.");
             }
             Messages.Warning(warning);

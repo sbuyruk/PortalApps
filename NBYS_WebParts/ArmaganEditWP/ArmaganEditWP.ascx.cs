@@ -241,6 +241,11 @@ namespace NBYS_WebParts.ArmaganEditWP
             get { return ViewState["BolgeId"] is int ? (int)ViewState["BolgeId"] : -1; }
             set { ViewState["BolgeId"] = value; }
         }
+        private string GiftEditVersion
+        {
+            get { return ViewState["GiftEditVersion"] as string; }
+            set { ViewState["GiftEditVersion"] = value; }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             ExecuteAction("Page_Load", () =>
@@ -254,7 +259,25 @@ namespace NBYS_WebParts.ArmaganEditWP
                     KaydetBtn.Visible = false;
                     StopForWarning("Geçerli bir armağan kaydı seçin."); return;
                 }
-                Armagan gift = new ArmaganService(LoggingContext).GetById(id);
+                Armagan gift;
+                if (!Page.IsPostBack)
+                {
+                    NbysGiftEditSnapshot snapshot;
+                    NbysGiftWriteResult result = new NbysGiftWriteService(LoggingContext).LoadForEdit(id, out snapshot);
+                    if (result != NbysGiftWriteResult.Completed)
+                    {
+                        KaydetBtn.Visible = false;
+                        canProcess = false;
+                        NbysGiftFeedback.Show(LoggingContext, result, string.Empty, () => { });
+                        return;
+                    }
+                    gift = snapshot.Gift;
+                    GiftEditVersion = snapshot.Version;
+                }
+                else
+                {
+                    gift = new ArmaganService(LoggingContext).GetById(id);
+                }
                 if (gift == null)
                 {
                     KaydetBtn.Visible = false;
@@ -371,13 +394,14 @@ namespace NBYS_WebParts.ArmaganEditWP
                 Armagan input = new Armagan { Id = id, ArmaganTanimId = definitionId, BagisMiktari = amount,
                     Durum = DurumDDL.SelectedValue, Tarih = date, Aciklama = AciklamaTxt.Text,
                     BelgedeYazanIsim = BelgedeYazanIsimTxt.Text, BagisMiktariYazmasin = BagisMiktariYazmasinChk.Checked };
-                NbysGiftWriteResult result = new NbysGiftWriteService(LoggingContext).Update(input);
+                NbysGiftEditSnapshot saved;
+                NbysGiftWriteResult result = new NbysGiftWriteService(LoggingContext).Update(input, GiftEditVersion, out saved);
                 NbysGiftFeedback.Show(LoggingContext, result, "Armağan kaydı güncellendi.", () =>
                 {
-                    Armagan saved = new ArmaganService(LoggingContext).GetById(id);
                     if (saved == null) throw new InvalidOperationException("Güncellenen armağan okunamadı.");
-                    FillArmaganForm(saved);
-                    DurumDDL.Enabled = saved.Durum != ProjeConstants.DURUM_PARAIADE;
+                    FillArmaganForm(saved.Gift);
+                    GiftEditVersion = saved.Version;
+                    DurumDDL.Enabled = saved.Gift.Durum != ProjeConstants.DURUM_PARAIADE;
                 });
             });
         }
