@@ -23,6 +23,7 @@ namespace Model.Services.Portal
         public List<ToplantiKatilim> PreviousParticipants { get; set; }
         public List<ToplantiKatilim> Participants { get; set; }
         public string Version { get; set; }
+        public bool CanEdit { get; set; }
     }
 
     public sealed class PortalToplantiWriteService
@@ -43,9 +44,38 @@ namespace Model.Services.Portal
                 Toplanti current = First<Toplanti>(repository.Read("Toplanti_Table", id, transaction));
                 if (current == null) return null;
                 var participants = List<ToplantiKatilim>(repository.Participants(id, transaction));
-                var result = new PortalToplantiChange { After = current, Participants = participants, Version = Version(current, participants) };
+                var result = new PortalToplantiChange { After = current, Participants = participants,
+                    Version = Version(current, participants), CanEdit = CanEdit(Actor(transaction), current, transaction) };
                 transaction.Complete();
                 return result;
+            }
+        }
+
+        public bool CanCreate()
+        {
+            return GetCurrentPersonId().HasValue;
+        }
+
+        // Listing hint only; Save/Delete recheck the persisted meeting and caller in their own transaction.
+        public bool CanManageMeetingsOf(int ownerId)
+        {
+            if (ownerId < 0) return false;
+            using (var transaction = new SqlTransactionContext())
+            {
+                bool allowed = CanEdit(Actor(transaction), new Toplanti { ToplantiYetkilisi = ownerId }, transaction);
+                transaction.Complete();
+                return allowed;
+            }
+        }
+
+        public int? GetCurrentPersonId()
+        {
+            using (var transaction = new SqlTransactionContext())
+            {
+                DataRow actor = string.IsNullOrWhiteSpace(context.UserLogin) ? null : Actor(transaction);
+                int? personId = actor == null ? (int?)null : Convert.ToInt32(actor["Id"]);
+                transaction.Complete();
+                return personId;
             }
         }
 
@@ -170,16 +200,17 @@ namespace Model.Services.Portal
         private DataRow Actor(SqlTransactionContext transaction)
         {
             DataTable rows = repository.CurrentPerson(transaction);
-            return rows == null ? null : rows.Rows[0];
+            return rows == null || rows.Rows.Count != 1 ? null : rows.Rows[0];
         }
         private bool CanEdit(DataRow actor, Toplanti current, SqlTransactionContext transaction)
         {
             if (actor == null || string.IsNullOrWhiteSpace(context.UserLogin)) return false;
+            // Employees can manage their own meetings and those owned by their current unit.
+            if (current == null || current.ToplantiYetkilisi == Convert.ToInt32(actor["Id"])) return true;
+            if (!actor.IsNull("BirimId")
+                && repository.SameUnit(current.ToplantiYetkilisi, Convert.ToInt32(actor["BirimId"]), transaction)) return true;
             string name = Convert.ToString(actor["Adi"]) + " " + Convert.ToString(actor["Soyadi"]);
-            if (repository.HasRole(ProjeConstants.PARAM_TOPLANTIYONETICISI, name, transaction)) return true;
-            if (!repository.HasRole(ProjeConstants.PARAM_TOPLANTIYETKILISI, name, transaction)) return false;
-            return current == null || current.ToplantiYetkilisi == Convert.ToInt32(actor["Id"])
-                || (!actor.IsNull("BirimId") && repository.SameUnit(current.ToplantiYetkilisi, Convert.ToInt32(actor["BirimId"]), transaction));
+            return repository.HasRole(ProjeConstants.PARAM_TOPLANTIYONETICISI, name, transaction);
         }
         private void Stamp(EntityBase item, EntityBase current)
         {

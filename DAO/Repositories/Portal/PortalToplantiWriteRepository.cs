@@ -52,10 +52,19 @@ namespace DAO.Repositories.Portal
         {
             Require(transaction);
             string login = context.UserLogin ?? string.Empty;
-            var query = new SqlQuery(@"SELECT TOP (1) P.Id,P.Adi,P.Soyadi,I.BirimId FROM Personel_Table P
-                LEFT JOIN IsBilgileri_Table I ON I.PersonelId=P.Id
-                WHERE P.KullaniciAdi=@Login ORDER BY P.Id,I.Id DESC");
-            query.AddParameter("@Login", login.Substring(login.LastIndexOf('\\') + 1));
+            login = login.Substring(login.LastIndexOf('\\') + 1);
+            if (string.IsNullOrWhiteSpace(login)) return null;
+            // Return up to two people so the service can reject ambiguous account bindings.
+            // Multiple job-history rows must not turn one person into multiple candidates.
+            var query = new SqlQuery(@"SELECT TOP (2) P.Id,P.Adi,P.Soyadi,I.BirimId
+                FROM Personel_Table P WITH (HOLDLOCK)
+                OUTER APPLY
+                (
+                    SELECT TOP (1) B.BirimId FROM IsBilgileri_Table B WITH (HOLDLOCK)
+                    WHERE B.PersonelId=P.Id ORDER BY B.Id DESC
+                ) I
+                WHERE P.KullaniciAdi=@Login ORDER BY P.Id");
+            query.AddParameter("@Login", login);
             return sql.Select(query, transaction);
         }
 
@@ -70,9 +79,13 @@ namespace DAO.Repositories.Portal
         public bool SameUnit(int ownerId, int unitId, SqlTransactionContext transaction)
         {
             Require(transaction);
-            var query = new SqlQuery("SELECT Id FROM IsBilgileri_Table WHERE PersonelId=@Owner AND BirimId=@Unit");
-            query.AddParameter("@Owner", ownerId); query.AddParameter("@Unit", unitId);
-            return unitId > 0 && sql.Select(query, transaction) != null;
+            if (unitId <= 0) return false;
+            var query = new SqlQuery(@"SELECT TOP (1) BirimId FROM IsBilgileri_Table WITH (HOLDLOCK)
+                WHERE PersonelId=@Owner ORDER BY Id DESC");
+            query.AddParameter("@Owner", ownerId);
+            DataTable rows = sql.Select(query, transaction);
+            return rows != null && !rows.Rows[0].IsNull("BirimId")
+                && Convert.ToInt32(rows.Rows[0]["BirimId"]) == unitId;
         }
 
         public bool PersonExists(int id, SqlTransactionContext transaction)
