@@ -53,14 +53,8 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
         private void ToplantiGrupDDLDoldur()
         {
 
-            ListItem li0 = new ListItem(ProjeConstants.PARAM_TOPLANTIYERI);
-            ListItem li1 = new ListItem(ProjeConstants.PARAM_TOPLANTIYETKILISI);
-            ListItem li2 = new ListItem(ProjeConstants.PARAM_TOPLANTIYONETICISI);
-
             ToplantiGrupDDL.Items.Clear();
-            ToplantiGrupDDL.Items.Add(li0);
-            ToplantiGrupDDL.Items.Add(li1);
-            ToplantiGrupDDL.Items.Add(li2);
+            ToplantiGrupDDL.Items.Add(new ListItem(ProjeConstants.PARAM_TOPLANTIYERI));
         }
         protected void ToplantiGrupDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -309,11 +303,5 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
             });
         }
 
-        private List<ToplantiParametre> AyniIsimdeVarMi(string grup, string deger)
-        {
-            ToplantiParametre toplantiParametreDAO = new ToplantiParametre();
-            List<ToplantiParametre> list = new Model.Services.Portal.ToplantiParametreService(LogContext).GetByGroupValue(grup, deger);
-            return list;
-        }
     }
 }

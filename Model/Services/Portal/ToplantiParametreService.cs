@@ -1,6 +1,5 @@
 using Utility.Logging;
 using DAO.Repositories.Portal;
-using Model.Ortak;
 using Model.Portal;
 using System;
 using System.Collections.Generic;
@@ -34,34 +33,9 @@ namespace Model.Services.Portal
 
         public ToplantiParametre GetById(int id, PortalLogContext context) { return Map(r.SelectById(id, context)); }
 
-        public List<ToplantiParametre> GetAll()
-        {
-            return List(r.SelectAll());
-        }
-
         public List<ToplantiParametre> GetByGroup(string g)
         {
             return List(r.SelectByGroup(g));
-        }
-
-        public List<ToplantiParametre> GetUnselected(string g)
-        {
-            return List(r.SelectByGroupUnselected(g));
-        }
-
-        public List<ToplantiParametre> GetSelected(string g)
-        {
-            return List(r.SelectByGroupSelected(g));
-        }
-
-        public DataTable GetAllData()
-        {
-            return r.SelectAllData();
-        }
-
-        public List<ToplantiParametre> GetByGroupValue(string g, string d)
-        {
-            return List(r.SelectByGroupValue(g, d));
         }
 
         private static List<ToplantiParametre> List(DataTable t)

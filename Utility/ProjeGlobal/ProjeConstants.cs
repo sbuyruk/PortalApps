@@ -1194,9 +1194,7 @@ namespace Utility.ProjeGlobal
         public const string PARAM_DIGER = "Diğer";
         public const int PARAM_DIGER_INT = 3;
         public const string PARAM_TOPLANTIYERI = "Toplantı Yeri";
-        public const string PARAM_TOPLANTIYETKILISI = "Toplantı Yetkilisi";
         public const string PARAM_TOPLANTIYERI_INT = "1";
-        public const string PARAM_TOPLANTIYONETICISI = "Toplantı Yöneticisi";
 
         public static TimeSpan TOPLANTI_BASLAMAZAMANI = new TimeSpan(6, 0, 0);
         public static TimeSpan TOPLANTI_BITISZAMANI = new TimeSpan(23, 45, 0);

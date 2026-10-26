@@ -37,30 +37,6 @@ namespace Portal_WebParts.ToplantiListesiWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
-        private string PersonelIdQS
-        {
-            get
-            {
-
-                if (ViewState["PersonelId"] == null)
-                {
-                    if (Page.Request.QueryString["PersonelId"] != null)
-                    {
-                        ViewState["PersonelId"] = Page.Request.QueryString["PersonelId"];
-                    }
-                    else
-                    {
-                        ViewState["PersonelId"] = string.Empty;
-                    }
-                }
-                return ViewState["PersonelId"].ToString();
-            }
-
-            set
-            {
-                ViewState["PersonelId"] = value;
-            }
-        }
         private string SecilenToplantiIdQS
         {
             get
@@ -83,23 +59,6 @@ namespace Portal_WebParts.ToplantiListesiWP
             set
             {
                 ViewState["SecilenToplantiId"] = value;
-            }
-        }
-        private string CurrentUserName
-        {
-            get
-            {
-
-                if (ViewState["CurrentUserName"] == null)
-                {
-                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
-                }
-                return ViewState["CurrentUserName"].ToString();
-            }
-
-            set
-            {
-                ViewState["CurrentUserName"] = value;
             }
         }
         protected void Page_Load(object sender, EventArgs e)
