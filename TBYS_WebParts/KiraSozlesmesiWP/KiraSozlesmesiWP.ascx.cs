@@ -23,6 +23,12 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
     [ToolboxItemAttribute(false)]
     public partial class KiraSozlesmesiWP : WebPart
     {
+        private string ContractEditVersion
+        {
+            get { return ViewState["ContractEditVersion"] as string; }
+            set { ViewState["ContractEditVersion"] = value; }
+        }
+
         private PortalLogContext LoggingContext
         {
             get
@@ -182,8 +188,9 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
             {
                 Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName, LoggingContext);
                 BolgeIdQS = bolge == null ? 0 : bolge.Id;
-                KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
+                var snapshot = new KiraSozlesmeDuzenlemeService(LoggingContext).Load(KiraSozlesmeIdQS.ConvertToInt());
+                KiraSozlesme kiraSozlesme = snapshot == null ? null : snapshot.Contract;
+                ContractEditVersion = snapshot == null ? null : snapshot.Version;
                 if (kiraSozlesme == null)
                 {
                     Messages.Error("Sözleşme Bulunamadı");
@@ -474,7 +481,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 retVal = false;
             return retVal;
         }
-        private bool UpdateKiraSozlesme()
+        private bool UpdateKiraSozlesme(bool confirmPlanDeletion = false)
         {
             bool issaved = false;
             if (ValidateTosave())
@@ -482,17 +489,20 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 try
                 {
                     //decimal kb = Convert.ToDecimal(KiraBedeliTxt.Value);
-                    KiraSozlesme kiraSozlesme = UpdateKiraSozlesmeData2Db();
+                    KiraSozlesme kiraSozlesme = UpdateKiraSozlesmeData2Db(confirmPlanDeletion);
                     if (kiraSozlesme != null)
                     {
                         issaved = true;
+                        KiraSozlesmeFormunuDoldur(kiraSozlesme);
+                        PDFKaydet(kiraSozlesme);
+                        PDFGoster(kiraSozlesme);
+                        SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
                         Messages.Success("Kira Sözleşmesi Güncellendi", 2000);
 
                     }
                     else
                     {
                         issaved = false;
-                        Messages.Error("Kira Sözleşmesi Kayıt işlemi başarısız oldu.");
                     }
                 }
                 catch (Exception tbysError)
@@ -511,10 +521,15 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             }
             return issaved;
         }
-        private KiraSozlesme UpdateKiraSozlesmeData2Db()
+        private KiraSozlesme UpdateKiraSozlesmeData2Db(bool confirmPlanDeletion)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
+            if (kiraSozlesme == null)
+            {
+                Messages.Warning("Sözleşme artık bulunamıyor. Listeyi yenileyiniz.");
+                return null;
+            }
             kiraSozlesme.DosyaNo = DosyaNoTxt.Text.ConvertToInt();
             kiraSozlesme.DevirAnaPara = DevirAnaParaTxt.Value.ConvertToDecimal();
             kiraSozlesme.DevirFaizTutari = DevirFaizTutariTxt.Text.ConvertToDecimal();
@@ -550,40 +565,23 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 kiraSozlesme.SozlesmeDurumu = SozlesmeDurumuDDL.SelectedValue;
                 kiraSozlesme.DurumDegismeTar = DurumDegismeTarTxt.Value.ConvertToDatetime(); 
             }
-            kiraSozlesme.BolgeId = BolgeIdGetir(kiraSozlesme);
-            kiraSozlesme.GecikmeZammiTipi = string.IsNullOrEmpty(kiraSozlesme.GecikmeZammiTipi)?ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK: kiraSozlesme.GecikmeZammiTipi;
-            bool guncellendiMi = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Update(kiraSozlesme);
-            if (guncellendiMi)
+            KiraSozlesmeDuzenlemeSnapshot saved;
+            var result = new KiraSozlesmeDuzenlemeService(LoggingContext)
+                .Save(kiraSozlesme, ContractEditVersion, confirmPlanDeletion, out saved);
+            if (result != KiraSozlesmeDuzenlemeResult.Completed)
             {
-                //devirAnaPara, devirFaiz, devirFaizliBakiye degisti ise OdemePlanini güncelle
-                OdemePlani odemePlani = new OdemePlani();
-                odemePlani = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeIdSira(kiraSozlesme.Id, 0);
-                if (odemePlani != null)
-                {
-                    if ((odemePlani.AnaPara != DevirAnaParaTxt.Value.ConvertToDecimal())
-                        || (odemePlani.FaizTutari != DevirFaizTutariTxt.Text.ConvertToDecimal())
-                        || (odemePlani.FaizliBakiye != DevirFaizliBakiyeTxt.Value.ConvertToDecimal()))
-                    {
-                        decimal devirAnaPara = DevirAnaParaTxt.Value.ConvertToDecimal();
-                        decimal devirFaizTutari = DevirFaizTutariTxt.Text.ConvertToDecimal();
-
-                        odemePlani.AnaPara = devirAnaPara;
-                        odemePlani.FaizTutari = devirFaizTutari;
-                        odemePlani.FaizliBakiye = devirAnaPara + devirFaizTutari;
-                        new Model.Services.TBYS.OdemePlaniService(LoggingContext).Update(odemePlani);
-                        if ((kiraSozlesme.Aktif)&&(kiraSozlesme.SozlesmeDurumu.Equals(ProjeConstants.KIRASOZLESME_DURUMU_TAKIP)))
-                        {
-                            HukukiiIslemlereEkle(kiraSozlesme);
-                        }
-                        else
-                        {
-                            HukukiIslemleriGuncelle(kiraSozlesme);
-                        }
-                    }
-                }
-
+                string message = result == KiraSozlesmeDuzenlemeResult.Changed
+                    ? "Sözleşme siz ekranı açtıktan sonra değiştirildi. Değişiklikleriniz kaydedilmedi. Sayfayı yenileyip güncel bilgileri kontrol ediniz."
+                    : result == KiraSozlesmeDuzenlemeResult.NotFound
+                        ? "Sözleşme artık bulunamıyor. Listeyi yenileyiniz."
+                        : result == KiraSozlesmeDuzenlemeResult.ConfirmationRequired
+                            ? "Ödeme planını etkileyen değişiklikler için güncelleme işlemini yeniden onaylayınız."
+                            : "Sözleşmenin tarih, kira bedeli ve taksit bilgilerini kontrol ediniz.";
+                Messages.Warning(message);
+                return null;
             }
-            return kiraSozlesme;
+            ContractEditVersion = saved.Version;
+            return saved.Contract;
         }
         private void SozlesmeSil()
         {
@@ -633,34 +631,6 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.SozlesmeSil", e);
             }
 
-        }
-        private bool SozlesmeGuncelle(KiraSozlesme kiraSozlesme)
-        {
-            bool kiraSozlesmeGuncellendi = false;
-            try
-            {
-                bool odemePlaniVar = false;
-                bool odemePlaniSilindi = true;
-
-                if (kiraSozlesme != null)
-                {
-                    odemePlaniVar = GecerliOdemePlaniVarMi(kiraSozlesme);
-                    if (odemePlaniVar)
-                    {
-                        odemePlaniSilindi = OdemePlaniSil(kiraSozlesme);
-                    }
-                    kiraSozlesmeGuncellendi = UpdateKiraSozlesme();
-                }
-
-            }
-            catch (Exception e)
-            {
-                if (e is System.Threading.ThreadAbortException) throw;
-                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.SozlesmeGuncelle", e);
-                UtilityHelper.ScriptCalistir("CloseModal();");
-                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.SozlesmeGuncelle", e);
-            }
-            return kiraSozlesmeGuncellendi;
         }
         private bool OdemePlaniSil(KiraSozlesme kiraSozlesme)
         {
@@ -1212,6 +1182,8 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 if (sozlesmeDegisti)
                 {
                     SenderHF.Value = "Update";
+                    if (BelgeYukleFU.HasFile)
+                        Messages.Info("Sözleşme değişikliğini onayladıktan sonra belge dosyasını yeniden seçip yükleyiniz.");
                     MessageLbl.Text = @"Onayladığınız takdirde, bu sözleşme güncellenmeden önce sözleşmeye ait ÖDEME PLANI silinecek.
 Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabilir.
 Ayrica sözleşme güncellendikten sonra yeni ödeme plani olusturmalisiniz.";
@@ -1221,11 +1193,7 @@ Ayrica sözleşme güncellendikten sonra yeni ödeme plani olusturmalisiniz.";
                 else
                 {
                     UpdateKiraSozlesme();
-                    AktifSozlesmeYukle(kiraSozlesme);
                 }
-                PDFKaydet(kiraSozlesme);
-                PDFGoster(kiraSozlesme);
-                SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
             }
 
         }
@@ -1255,6 +1223,11 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                 SozlesmeyiYenile();
                 return;
             }
+            if (SenderHF.Value == "Update")
+            {
+                UpdateKiraSozlesme(true);
+                return;
+            }
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
@@ -1263,26 +1236,6 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                 {
                     SozlesmeSil();
                     OncekiSayfayaDon();
-                }
-                else if (SenderHF.Value.Equals("Update"))
-                {
-
-                    bool guncellendiMi= SozlesmeGuncelle(kiraSozlesme);
-                    if (guncellendiMi)
-                    {
-                        if (kiraSozlesme.Aktif)
-                        {
-                            AktifSozlesmeYukle(kiraSozlesme);
-                        }
-                        else
-                        {
-                            BitenSozlesmeYukle(kiraSozlesme);
-                        }
-                        SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
-                    }
-
-                    //string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                    //Page.Response.Redirect(currentUrl, true);
                 }
                 else if (SenderHF.Value.Equals("SozlesmeyiBitir"))
                 {
@@ -1755,7 +1708,15 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                     if (isOk)
                     {
                         kiraSozlesme.SozlesmePDFDosyasi = hedefDosyaAdi;
-                    new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Update(kiraSozlesme);
+                        KiraSozlesmeDuzenlemeSnapshot saved;
+                        var result = new KiraSozlesmeDuzenlemeService(LoggingContext)
+                            .SaveDocumentPath(kiraSozlesme.Id, hedefDosyaAdi, ContractEditVersion, out saved);
+                        if (result != KiraSozlesmeDuzenlemeResult.Completed)
+                        {
+                            Messages.Warning("Sözleşme değiştiği için belge bağlantısı kaydedilemedi. Sayfayı yenileyip belgeyi kontrol ediniz.");
+                            return;
+                        }
+                        ContractEditVersion = saved.Version;
                         DosyaLnk.Visible = true;
                         BelgeSilBtn.Visible = true;
                         BelgeYukleFU.Visible=false; 
