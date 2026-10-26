@@ -23,9 +23,9 @@ namespace DAO.Repositories.NBYS
             switch (table)
             {
                 case "EkstreAktarma_Table": fields = new[] { "NakitBagisciId", "NakitBagisHareketId", "AktarildiMi", "BagisTarihi", "Tutar", "DovizCinsi", "DovizTutari", "DovizKuru", "KurTarihi", "ElleKayit", "TuzelKisi", "BelgeIstemiyor" }; break;
-                case "NakitBagisci_Table": fields = new[] { "Ili", "Ilcesi", "TuzelKisi", "Sag", "Ulasilamiyor", "BelgeIstemiyor", "DergiGonderilmesin" }; break;
+                case "NakitBagisci_Table": fields = NbysAuditPolicy.DonorFields; break;
                 case "NakitBagisHareket_Table": fields = new[] { "BagisciId", "ArmaganId", "EkstreAktarmaId", "BankaId", "BagisTarihi", "BagisMiktari", "DovizCinsi", "DovizTutari", "DovizKuru", "KurTarihi" }; break;
-                case "Armagan_Table": fields = new[] { "BagisciId", "ArmaganTanimId", "Tarih", "Durum", "BagisMiktari", "DovizCinsi", "CokluBagis", "KacinciBelge", "DuzenliBagis", "BagisMiktariYazmasin" }; break;
+                case "Armagan_Table": fields = NbysAuditPolicy.GiftFields; break;
                 case "Bagis_Table": fields = new[] { "ArmaganDurumu", "ArmaganTarihi" }; break;
                 case "SMSAylikBagis_Table": fields = new[] { "Yil", "Ay", "TurkcellSMSAdedi", "VodafoneSMSAdedi", "TurkTelekomSMSAdedi", "SMSTutari", "DovizCinsi", "IslemTarihi" }; break;
                 case "BagisaVesileOlanTesekkur_Table": fields = new[] { "BelgeTarihi" }; break;
@@ -90,18 +90,7 @@ namespace DAO.Repositories.NBYS
             PortalLogRepository log = new PortalLogRepository();
             int auditId = log.RecordAudit(context, operation, table.Substring(0, table.Length - 6), id.ToString(CultureInfo.InvariantCulture), transaction);
             if (auditId <= 0) return;
-            foreach (string field in fields)
-            {
-                string before = Value(previous, field), after = Value(saved, field);
-                if (before != after) log.RecordAuditChange(auditId, field, before, after, transaction);
-            }
-        }
-
-        private static string Value(DataTable rows, string field)
-        {
-            if (rows == null || rows.Rows[0].IsNull(field)) return null;
-            object value = rows.Rows[0][field];
-            return value is DateTime ? ((DateTime)value).ToString("o", CultureInfo.InvariantCulture) : Convert.ToString(value, CultureInfo.InvariantCulture);
+            NbysAuditPolicy.RecordChanges(log, auditId, table.Substring(0, table.Length - 6), previous, saved, fields, transaction);
         }
     }
 }
