@@ -228,7 +228,7 @@ namespace Model.Services.TBYS
         public DataTable GetTransferRequiredActiveContracts() { return repository.SelectTransferRequiredActiveContracts(); }
         public KiraSozlesme GetNext(int id, int dosyaNo) { return Map(repository.SelectNext(id, dosyaNo)) ?? GetMin(); }
         public KiraSozlesme GetPreviousByTenant(int kiraciId, DateTime sozBasTar) { return Map(repository.SelectPreviousByTenant(kiraciId, sozBasTar.ReturnTRDateFormat())); }
-        public KiraSozlesme GetPreviousByTenant(int kiraciId, DateTime sozBasTar, SqlTransactionContext transaction) { return Map(repository.SelectPreviousByTenant(kiraciId, sozBasTar.ReturnTRDateFormat(), transaction, context)); }
+        public KiraSozlesme GetPreviousByTenant(int kiraciId, DateTime sozBasTar, SqlTransactionContext transaction) { return Map(repository.SelectPreviousByTenant(kiraciId, sozBasTar, transaction, context)); }
         public KiraSozlesme GetPrevious(int id, int dosyaNo) { return Map(repository.SelectPrevious(id, dosyaNo)) ?? GetMax(); }
         public KiraSozlesme GetMax() { return Map(repository.SelectMax()); }
         public KiraSozlesme GetMin() { return Map(repository.SelectMin()); }

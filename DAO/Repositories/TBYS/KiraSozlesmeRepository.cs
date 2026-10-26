@@ -362,7 +362,7 @@ namespace DAO.Repositories.TBYS
             string sql = string.Format("SELECT * FROM KiraSozlesme_Table WHERE KiraciId={0} AND SozBastar < {1} ORDER BY SozBasTar DESC", kiraciId.ReturnQuotedValue(), sozBasTar);
             return db.SelectFromDb(new SqlQuery(sql), "");
         }
-        public DataTable SelectPreviousByTenant(int kiraciId, string sozBasTar, SqlTransactionContext transaction, PortalLogContext context)
+        public DataTable SelectPreviousByTenant(int kiraciId, DateTime sozBasTar, SqlTransactionContext transaction, PortalLogContext context)
         {
             SqlQuery query = new SqlQuery("SELECT TOP (1) * FROM KiraSozlesme_Table WITH (UPDLOCK, HOLDLOCK) WHERE KiraciId=@KiraciId AND SozBastar < @SozBasTar ORDER BY SozBasTar DESC");
             query.AddParameter("@KiraciId", kiraciId);
