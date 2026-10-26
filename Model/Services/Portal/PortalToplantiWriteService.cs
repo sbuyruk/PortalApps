@@ -14,7 +14,7 @@ using Utility.ProjeGlobal;
 
 namespace Model.Services.Portal
 {
-    public enum PortalToplantiResult { Completed, NotFound, InvalidInput, Forbidden, Changed, Overlap, Duplicate, InUse, Unchanged }
+    public enum PortalToplantiResult { Completed, NotFound, InvalidInput, Forbidden, Changed, Overlap, Duplicate, InUse, Unchanged, InvalidParameterGroup }
 
     public sealed class PortalToplantiChange
     {
@@ -172,6 +172,9 @@ namespace Model.Services.Portal
                 if (string.IsNullOrWhiteSpace(context.UserLogin)) return PortalToplantiResult.Forbidden;
                 var current = input.Id > 0 ? First<ToplantiParametre>(repository.Read("ToplantiParametre_Table", input.Id, transaction)) : null;
                 if (input.Id > 0 && current == null) return PortalToplantiResult.NotFound;
+                // Use the locked record's group for both update and delete; never trust the form's group.
+                if (current != null && current.Grup != ProjeConstants.PARAM_TOPLANTIYERI)
+                    return PortalToplantiResult.InvalidParameterGroup;
                 if (delete)
                 {
                     if (current == null) return PortalToplantiResult.NotFound;
@@ -183,8 +186,8 @@ namespace Model.Services.Portal
                 {
                     input.Grup = current == null ? input.Grup : current.Grup;
                     input.Deger = (input.Deger ?? string.Empty).Trim();
-                    if (input.Deger.Length == 0 || input.Grup != ProjeConstants.PARAM_TOPLANTIYERI)
-                        return PortalToplantiResult.InvalidInput;
+                    if (input.Grup != ProjeConstants.PARAM_TOPLANTIYERI) return PortalToplantiResult.InvalidParameterGroup;
+                    if (input.Deger.Length == 0) return PortalToplantiResult.InvalidInput;
                     if (repository.DuplicateParameter(input.Id, input.Grup, input.Deger, transaction)) return PortalToplantiResult.Duplicate;
                     if (current != null && current.Id == ProjeConstants.PARAM_DIGER_INT && input.Deger != current.Deger)
                         return PortalToplantiResult.InUse;

@@ -264,6 +264,7 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
                 case PortalToplantiResult.NotFound: throw new PortalInputException("Parametre bulunamadı. Lütfen listeyi yenileyin.");
                 case PortalToplantiResult.InUse: throw new PortalInputException("Bu parametre kullanımda veya sistem için gerekli. İşlem yapılamadı.");
                 case PortalToplantiResult.Forbidden: throw new PortalInputException("İşlem için oturumunuzu yenileyin.");
+                case PortalToplantiResult.InvalidParameterGroup: throw new PortalInputException("Bu ekranda yalnızca toplantı yeri grubundaki parametreler yönetilebilir. Listeyi yenileyip geçerli bir kayıt seçin.");
                 default: throw new PortalInputException("Parametre grubunu seçin ve adını girin.");
             }
             try
