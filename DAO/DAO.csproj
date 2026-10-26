@@ -51,6 +51,7 @@
     <Compile Include="Repositories\MTS\MtsSqlExecutor.cs" />
     <Compile Include="Repositories\MTS\MtsContactWriteRepository.cs" />
     <Compile Include="Repositories\Portal\PortalToplantiWriteRepository.cs" />
+    <Compile Include="Repositories\Portal\PortalToplantiOutboxRepository.cs" />
     <Compile Include="Repositories\NBYS\NbysSupportReadRepository.cs" />
     <Compile Include="Repositories\NBYS\NbysReportWriteRepository.cs" />
     <Compile Include="Repositories\NBYS\NbysBagisciWriteRepository.cs" />

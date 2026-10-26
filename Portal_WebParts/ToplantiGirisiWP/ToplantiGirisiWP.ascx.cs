@@ -621,7 +621,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
         }
         private void FinishMeeting(PortalToplantiChange change, string message)
         {
-            // The database commit has completed. Disable repeat submits before SMTP or UI work.
+            // The meeting and its notification queue entry have committed together.
             ViewState["MeetingCompleted"] = true;
             ToplantiIdQS = (change.After ?? change.Before).Id.ToString();
             KaydetBtn.Visible = GuncelleBtn.Visible = ToplantiSilBtn.Visible = false;
@@ -629,15 +629,12 @@ namespace Portal_WebParts.ToplantiGirisiWP
             try
             {
                 UtilityHelper.ScriptCalistir("['ModalOnayDiv','ModalSilDiv'].forEach(function(id){var element=document.getElementById(id);if(element){var modal=bootstrap.Modal.getInstance(element);if(modal)modal.hide();}});");
-                if (new PortalToplantiNotificationService(LogContext).Send(change))
-                    Messages.Success(message + " E-posta bildirimleri gönderildi. Toplantı listesinden devam edebilirsiniz.");
-                else
-                    Messages.Warning(message + " Bazı e-posta bildirimleri gönderilemedi. İşlemi tekrar kaydetmeyin; sistem yöneticisine başvurun. Başvuru kodu: " + LogContext.OperationId.ToString("N"));
+                Messages.Success(message + " E-posta bildirimleri gönderim sırasına alındı. Toplantı listesinden devam edebilirsiniz.");
             }
             catch (Exception error)
             {
                 PortalWebPartLog.ReportError(LogContext, "Portal.Toplanti.AfterCommit", error,
-                    message + " Bildirimler tamamlanamadı. İşlemi tekrar kaydetmeyin; sistem yöneticisine başvurun.");
+                    message + " Bildirimler gönderim sırasına alındı ancak ekran yenilenemedi. İşlemi tekrar kaydetmeyin; sayfayı yenileyin.");
             }
         }
         private static void RequireCompleted(PortalToplantiResult result)

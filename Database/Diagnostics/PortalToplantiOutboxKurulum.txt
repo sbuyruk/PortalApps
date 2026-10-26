@@ -1,0 +1,90 @@
+TOPLANTI BİLDİRİM KUYRUĞU — KURULUM VE KABUL
+
+Bu değişiklik yeni toplantı, güncelleme ve silme bildirimlerini kapsar. Diğer
+modüllerin e-postalarını değiştirmez. Önceden kaçırılmış bildirimleri üretmez.
+
+DEVREYE ALMA SIRASI
+1. Hedef veritabanını yedekleyin. Database/Migrations/20261026_PortalToplantiOutbox.sql
+   betiğini uygulamadan önce çalıştırın. Betik iki yeni tablo ve indeks oluşturur;
+   mevcut toplantı tablolarını değiştirmez. Silinen toplantıların iptal bildirimleri
+   korunacağından kuyrukta toplantı tablosuna bağlı bir foreign key yoktur.
+2. Kullanıcı Visual Studio/Test sunucusunda derler ve uygulamayı yayımlar.
+   Yeni DAO.dll, Model.dll ve Utility.dll sürümlerini aynı gönderim klasörüne koyun.
+   Scripts/Send-PortalToplantiOutbox.ps1 dosyasını da sunucuya kopyalayın.
+3. Windows Görev Zamanlayıcı'da 64-bit Windows PowerShell 5.1 ile her dakika çalışan
+   bir görev oluşturun. Yeni örnek çakışma ayarını "Yeni örnek başlatma" yapın.
+   Görevin standart çıktısını/hata sonucunu izleyin. Örnek argümanlar:
+
+   -NoProfile -NonInteractive -File "C:\PortalAppsJobs\Send-PortalToplantiOutbox.ps1" -WebConfigPath "C:\inetpub\wwwroot\wss\VirtualDirectories\80\web.config" -AssemblyDirectory "C:\PortalAppsJobs\bin" -BatchSize 20
+
+   Örnek yolları ortamınıza göre değiştirin. Görev hesabına web.config ve assembly
+   dosyalarını okuma, hedef veritabanındaki kuyruk/alıcı tablolarında SELECT/INSERT/
+   UPDATE, OrtakParametre_Table ve IletisimBilgileri_Table üzerinde SELECT yetkisi
+   verin. Integrated Security kullanılıyorsa SQL bağlantısı görev hesabıyla açılır.
+   Hesabın TSKGV etki alanında grup üyelerini/e-postalarını okuyabilmesi ve SMTP'ye
+   erişebilmesi gerekir. Şifreli connectionStrings için hesabın çözme yetkisi olmalı.
+   Betik bağlantı bilgilerini komut satırına veya görev çıktısına yazmaz.
+4. Görevi kullanıcı Test sunucusunda bir kez elle çalıştırıp sonucu değerlendirir;
+   ardından periyodik çalışmayı etkinleştirir. Uygulama sunucusunda SharePoint ve
+   uygulamanın framework bağımlılıkları kurulu olmalıdır. GAC'de olmayan gerekli
+   üçüncü taraf assembly'lerini de gönderim klasörüne koyun. PowerShell 7 kullanmayın.
+
+DAVRANIŞ
+- Toplantı ve kuyruk kaydı aynı SQL transaction içinde yazılır. Kuyruk yazılamazsa
+  toplantı işlemi geri alınır. Kullanıcıya "gönderim sırasına alındı" mesajı gösterilir.
+- Görev çalışmıyorsa bildirimler Pending durumunda bekler; web isteği SMTP beklemez.
+- Alıcılar ilk hazırlık sırasında personel iletişim kayıtları ve bildirim gruplarından
+  çözülür. Tüm çözümleme başarılı olmadan SMTP gönderimi başlamaz. Hazırlanan alıcı
+  listesi ve mesaj gövdeleri kalıcı tutulur; sonraki denemelerde yeniden oluşturulmaz.
+  Adresi/grubu eksik bir kayıt bu hazırlığı engeller; sebep giderilip görev yenilenir.
+- SMTP sunucu adresi her denemede mevcut ortak parametreden okunur. SMTP erişimini
+  düzeltmek kalıcı alıcı planını değiştirmez. Plan oluşturulduktan sonra yanlış bir
+  alıcı adresini düzeltmek için kontrollü yönetici müdahalesi gerekir.
+- Başarıyla SMTP'ye teslim edilip veritabanına işaretlenen alıcı tekrar gönderilmez.
+  Aynı toplantının önceki Pending/Processing bildirimi bitmeden yenisine geçilmez.
+- Başarısız denemeler 2, 4, 8, 16, 32, 60 ve 60 dakika sonra yeniden denenir.
+  Sekizinci başarısızlıkta Failed olur; otomatik deneme durur. Daha yeni bildirimler
+  Failed durumundaki eski kaydı beklemez. Zamanlar UTC'dir.
+- İşleme hakkı beş dakikalıktır; her gönderimden önce ve sonuç yazımında yenilenir.
+  Yarıda kesilen görev, hakkı sona erince yeniden alınabilir. SMTP zaman aşımı 30 sn.
+- SMTP teslimi ile SQL başarı işareti arasında kesinti olursa aynı e-posta tekrar
+  gönderilebilir. SMTP ile kesin "yalnızca bir kez" teslim garantisi verilemez.
+  Gönderildi kaydı, alıcının gelen kutusuna ulaştığını veya okuduğunu garanti etmez.
+- İleti takvim UID'si korunur. Yeniden denemede SEQUENCE ve DTSTAMP değiştirilmez.
+
+İZLEME VE YENİDEN DENEME
+Database/Diagnostics/PortalToplantiOutboxKontrol.sql ile Pending/Processing/Failed
+kayıtlarını ve en eski bekleyen görevi izleyin. Görev çıkış kodları: 0 başarılı/iş yok,
+2 tamamlanamayan bildirim var, 1 görev çalışamadı. LastError ham hata/kimlik bilgisi
+içermez. OperationId, toplantı işleminin audit kayıtlarıyla ilişkilendirme sağlar.
+Failed kayıt için önce sebebi giderin; ardından kontrol betiğindeki yorumlu örneği
+ilgili kimlik için uygulayın. Başarılı alıcı kayıtlarını silmeyin. Aynı toplantının
+daha yeni bildirimi gönderilmişse eski daveti yeniden açmak takvim durumunu
+karıştırabilir; önce toplantı sırasını inceleyin.
+Kuyruk içeriği toplantı bilgilerini ve alıcı e-postalarını içerir. Tablo erişimini
+görev/yönetici hesabıyla sınırlandırın; kurumun saklama süresine göre Sent kayıtları
+ve bağlı alıcılar birlikte arşivlenmelidir. Otomatik silme bu parçada eklenmemiştir.
+
+TOPLU KABUL SENARYOLARI (KULLANICI TARAFINDAN TEST ORTAMINDA)
+1. Yeni toplantı, güncelleme, katılımcı çıkarma ve silme: doğru REQUEST/CANCEL ve
+   bilgi mesajları; mevcut UID; yalnızca bir kuyruk kaydı ve doğru işlem audit'i.
+2. Görev kapalıyken kayıt: toplantı kaydolur, Pending oluşur; görev açılınca gönderilir.
+3. SMTP kapalıyken: toplantı korunur; deneme sayısı ve NextAttemptUtc artar. SMTP
+   açılınca gönderim tamamlanır. Başarılı alıcılara sonraki denemede tekrar gönderilmez.
+4. Eksik kişi e-postası / bulunamayan AD grubu: hazırlık tamamlanmaz, SMTP başlamaz;
+   eksik veri düzeltildiğinde tekrar hazırlanır. Hazırlık sonrası AD üyelik değişikliği
+   aynı olayın planını değiştirmez.
+5. Görevi yarıda durdurma ve iki görev başlatma: geçerli tek işleme hakkı; süresi
+   dolan görev devam edebilir; aynı toplantının bildirimleri sıralı işlenir.
+6. Toplantı transaction'ını geri aldıran hata: toplantı ve kuyruk birlikte geri alınır.
+7. Sekiz başarısız deneme: Failed, otomatik duruş, kontrollü yeniden açma.
+8. Görev hesabı/SQL/SMTP erişim hataları: betik sır/ham istisna yazmadan hata kodu döner.
+9. Toplantı saatleri: kayıt, bildirim gövdesi ve takvim eki aynı yerel saati göstermeli;
+   XML içerik SQL saatlerini korur, yalnızca ICS içinde UTC'ye dönüştürülür.
+
+GERİ DÖNÜŞ
+Önce zamanlanmış görevi durdurun. Önceki uygulama sürümüne dönülecekse bekleyen
+kayıtları ve son bildirim sırasını değerlendirin. Yeni kuyruk tablolarını/başarılı
+alıcı kayıtlarını otomatik silmeyin; koruyup yönetici gözetiminde işlem yapın.
+
+Bu dosyadaki kurulum ve kabul adımları Codex tarafından çalıştırılmamıştır.
