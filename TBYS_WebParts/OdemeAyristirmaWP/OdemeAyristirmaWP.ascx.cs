@@ -324,12 +324,14 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
         {
             KiraEkstreAktarma kiraEkstreAktarma = new KiraEkstreAktarma();
             kiraEkstreAktarma = new Model.Services.TBYS.KiraEkstreAktarmaService(LoggingContext).GetById(KiraEkstreAktarmaIdQS.ConvertToInt());
-            OdemeAyristirmaAtomicKaydet(kiraEkstreAktarma);
-            DisableAllButtons();
+            if (OdemeAyristirmaAtomicKaydet(kiraEkstreAktarma))
+            {
+                DisableAllButtons();
+            }
             TabloOlustur(kiraEkstreAktarma);
         }
 
-        private void OdemeAyristirmaAtomicKaydet(KiraEkstreAktarma kiraEkstreAktarma)
+        private bool OdemeAyristirmaAtomicKaydet(KiraEkstreAktarma kiraEkstreAktarma)
         {
             try
             {
@@ -412,13 +414,14 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                 {
                     Messages.Error("Ödeme Bilgileri Kaydedilemedi");
                 }
+                return savedCount > 0;
             }
             catch (Exception ex)
             {
                 if (ex is System.Threading.ThreadAbortException) throw;
                 TbysWebPartLog.WriteError(LoggingContext, "TBYS.OdemeAyristirmaWP.OdemeAyristirmaAtomicKaydet", ex);
                 TbysWebPartLog.ReportError(LoggingContext, "TBYS.OdemeAyristirmaWP.OdemeAyristirmaAtomicKaydet", ex);
-
+                return false;
             }
         }
 

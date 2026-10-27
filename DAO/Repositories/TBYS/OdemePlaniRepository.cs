@@ -51,14 +51,14 @@ namespace DAO.Repositories.TBYS
 
         public DataTable SelectBySozlesmeIdOdemeTarihi(int id, DateTime tarih)
         {
-            SqlQuery q = new SqlQuery("SELECT * FROM OdemePlani_Table WHERE Sira!=0 AND SozlesmeId=@SozlesmeId AND @OdemeTarihi BETWEEN VadeBasTar AND DateADD(day,-1,DATEADD(month,1,VadeBasTar)) ORDER BY VadeBasTar");
+            SqlQuery q = new SqlQuery("SELECT * FROM OdemePlani_Table WHERE Sira!=0 AND SozlesmeId=@SozlesmeId AND @OdemeTarihi >= VadeBasTar AND @OdemeTarihi < DATEADD(month,1,VadeBasTar) ORDER BY VadeBasTar");
             q.AddParameter("@SozlesmeId", id);
             q.AddParameter("@OdemeTarihi", tarih);
             return db.SelectFromDb(q, "");
         }
         public DataTable SelectBySozlesmeIdOdemeTarihi(int id, DateTime tarih, SqlTransactionContext transaction, PortalLogContext context)
         {
-            SqlQuery q = new SqlQuery("SELECT * FROM OdemePlani_Table WITH (UPDLOCK, HOLDLOCK) WHERE Sira!=0 AND SozlesmeId=@SozlesmeId AND @OdemeTarihi BETWEEN VadeBasTar AND DateADD(day,-1,DATEADD(month,1,VadeBasTar)) ORDER BY VadeBasTar");
+            SqlQuery q = new SqlQuery("SELECT * FROM OdemePlani_Table WITH (UPDLOCK, HOLDLOCK) WHERE Sira!=0 AND SozlesmeId=@SozlesmeId AND @OdemeTarihi >= VadeBasTar AND @OdemeTarihi < DATEADD(month,1,VadeBasTar) ORDER BY VadeBasTar");
             q.AddParameter("@SozlesmeId", id);
             q.AddParameter("@OdemeTarihi", tarih);
             return db.SelectFromDb(q, transaction, context);
