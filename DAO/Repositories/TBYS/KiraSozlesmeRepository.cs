@@ -244,13 +244,26 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@KiraciId", kiraciId);
             return db.SelectFromDb(query, "");
         }
-        public DataTable SelectNearestByKiraciIdAndDate(int kiraciId, string tarih)
+        public DataTable SelectNearestByKiraciIdAndDate(int kiraciId, DateTime tarih)
         {
-            string sql = string.Format("SELECT * FROM KiraSozlesme_Table WHERE KiraciId={0} AND SozBitTar >= {1} ORDER BY SozBasTar", kiraciId.ReturnQuotedValue(), tarih);
-            DataTable table = db.SelectFromDb(new SqlQuery(sql), "");
-            if (table != null) return table;
-            sql = string.Format("SELECT * FROM KiraSozlesme_Table WHERE KiraciId={0} AND SozBasTar < {1} ORDER BY SozBasTar DESC", kiraciId.ReturnQuotedValue(), tarih);
-            return db.SelectFromDb(new SqlQuery(sql), "");
+            DateTime odemeGunu = tarih.Date;
+            SqlQuery query = new SqlQuery("SELECT TOP (1) * FROM KiraSozlesme_Table WHERE KiraciId=@KiraciId AND SozBasTar <= @OdemeGunu AND SozBitTar >= @OdemeGunu ORDER BY SozBasTar DESC, Id DESC");
+            query.AddParameter("@KiraciId", kiraciId);
+            query.AddParameter("@OdemeGunu", odemeGunu);
+            DataTable table = db.SelectFromDb(query, "");
+            if (table != null && table.Rows.Count > 0) return table;
+
+            // Preserve the legacy preference for the next contract when the date is outside all contracts.
+            query = new SqlQuery("SELECT TOP (1) * FROM KiraSozlesme_Table WHERE KiraciId=@KiraciId AND SozBasTar > @OdemeGunu AND SozBitTar >= @OdemeGunu ORDER BY SozBasTar, Id DESC");
+            query.AddParameter("@KiraciId", kiraciId);
+            query.AddParameter("@OdemeGunu", odemeGunu);
+            table = db.SelectFromDb(query, "");
+            if (table != null && table.Rows.Count > 0) return table;
+
+            query = new SqlQuery("SELECT TOP (1) * FROM KiraSozlesme_Table WHERE KiraciId=@KiraciId AND SozBasTar < @OdemeGunu ORDER BY SozBasTar DESC, Id DESC");
+            query.AddParameter("@KiraciId", kiraciId);
+            query.AddParameter("@OdemeGunu", odemeGunu);
+            return db.SelectFromDb(query, "");
         }
         public DataTable SelectByTasinmazId(int tasinmazId)
         {
