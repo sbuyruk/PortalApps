@@ -128,6 +128,12 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
             if (!isVakifBank2Aktarildi && Vakifbank2FU.HasFile)
             {
                 var exceptionHelper = SaveVakifBank2File(Vakifbank2FU.FileContent, DateTime.Now, CurrentUserName);
+                if (exceptionHelper.AlreadyProcessedCount > 0)
+                {
+                    Messages.Warning(string.Format(cultureInfo,
+                        "İşlem numarası daha önce kayıtlı olan {0} satır atlandı. Diğer satırların işlenmesine devam edildi.",
+                        exceptionHelper.AlreadyProcessedCount));
+                }
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
                     Vakifbank2FU.Enabled = true;
@@ -279,8 +285,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                             List<KiraEkstreAktarma> bulunanIslemNolar = new Model.Services.TBYS.KiraEkstreAktarmaService(LoggingContext).GetByIslemNo(islemno);
                             if (bulunanIslemNolar.Count > 0)
                             {
-                                Exception kayitVar = new Exception("İşlem Numarası Çakışıyor. (" + adi + ", " + tutar + "TL, " + hareketTar);
-                                exceptionHelper.Exceptions.Add(kayitVar);
+                                exceptionHelper.AlreadyProcessedCount++;
                                 continue;
                             }
                             int kiraciId = 0;
