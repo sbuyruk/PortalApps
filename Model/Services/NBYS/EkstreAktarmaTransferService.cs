@@ -65,10 +65,15 @@ namespace Model.Services.NBYS
                     : SaveNakitBagisciFromEkstre(current, currentUser, transaction, context);
                 NakitBagisci donor = DonorService(context, transaction).GetById(donorId, transaction);
                 if (donor == null) throw new InvalidOperationException("Aktarılacak bağışçı bulunamadı.");
+                // Match regular-certificate lock order: donor -> gifts -> donation movements.
+                // Keep these locks in the same transaction and reuse the locked gift snapshot below.
+                List<Armagan> existingGifts = donor.Adi.Contains(ProjeConstants.NAKITBAGISCI_BILINMEYEN)
+                    ? new List<Armagan>()
+                    : GiftService(context, transaction).GetByBagisciId(donor.Id, transaction);
                 NakitBagisHareket donation = SaveBagisFromEkstreAktarma(current, donorId, currentUser, transaction, context);
                 if (donation.Id <= 0) throw new InvalidOperationException("Bağış kaydı oluşturulamadı.");
                 if (donation.BagisciId != donorId) throw new InvalidOperationException("Ekstre ve bağışın bağışçı bağlantıları tutarsız.");
-                ArmaganTransferResult giftResult = SaveArmaganYeniWithResult(current, ref donation, currentUser, transaction, context);
+                ArmaganTransferResult giftResult = SaveArmaganYeniWithResult(current, ref donation, currentUser, transaction, context, donor, existingGifts);
                 if (giftResult == ArmaganTransferResult.TechnicalFailure) throw new InvalidOperationException("Armağan oluşturulamadı.");
                 if (donor.Adi.Contains(ProjeConstants.NAKITBAGISCI_BILINMEYEN))
                     current.Aciklama += "-NBYS- Adı BİLİNMEYEN bağışçı olduğundan armağan oluşturulmadı ";
@@ -85,15 +90,14 @@ namespace Model.Services.NBYS
             EkstreAktarma ekstreAktarma,
             ref NakitBagisHareket nakitBagisHareket,
             string currentUser,
-            SqlTransactionContext transaction, PortalLogContext context)
+            SqlTransactionContext transaction, PortalLogContext context,
+            NakitBagisci nakitBagisci, List<Armagan> alinanArmaganListesi)
         {
             RequireContext(context);
             if (transaction == null) throw new ArgumentNullException("transaction", "İşlem bağlamı gereklidir.");
             bool isArmaganSaved = false;
             bool armaganAlreadyExists = false;
             bool armaganTechnicalFailure = false;
-            NakitBagisciService nakitBagisciService = DonorService(context, transaction);
-            NakitBagisci nakitBagisci = nakitBagisciService.GetById(nakitBagisHareket.BagisciId, transaction);
             //nakit bagisçi null veya bilinmeyen ise armagan üretmesin
             if ((nakitBagisci == null) || (nakitBagisci.Adi.Contains(ProjeConstants.NAKITBAGISCI_BILINMEYEN)))
             {
@@ -104,7 +108,6 @@ namespace Model.Services.NBYS
                 int armaganId = 0;
 
                 //Su ana kadar aldigi ArmaganTanimId leri bul
-                List<Armagan> alinanArmaganListesi = GiftService(context, transaction).GetByBagisciId(nakitBagisci.Id, transaction);
                 List<int> alinanArmaganTanimIdListesi = new List<int>();
                 foreach (Armagan item in alinanArmaganListesi)
                 {
