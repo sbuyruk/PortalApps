@@ -1,15 +1,13 @@
 using Portal_WebParts.Logging;
 using Utility.Logging;
 using Model.IKYS;
-using Model.Ortak;
 using Model.Services.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Web.Services.Description;
+using System.Globalization;
+using System.Web.UI;
 using System.Web.UI.WebControls.WebParts;
-using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 using static Model.IKYS.GorevOnay;
 
@@ -19,6 +17,7 @@ namespace Portal_WebParts.BildirimWP
     public partial class BildirimWP : WebPart
     {
         private PortalLogContext logContext;
+        private string kisiselGorevMesaji;
         private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("Portal", "BildirimWP")); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -35,44 +34,47 @@ namespace Portal_WebParts.BildirimWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
-        protected override void Render(System.Web.UI.HtmlTextWriter writer)
+        protected override void Render(HtmlTextWriter writer)
         {
+            if (!string.IsNullOrEmpty(kisiselGorevMesaji))
+            {
+                writer.AddAttribute(HtmlTextWriterAttribute.Class, "alert alert-info");
+                writer.AddAttribute("role", "status");
+                writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                writer.WriteEncodedText(kisiselGorevMesaji);
+                writer.Write(" ");
+                writer.AddAttribute(HtmlTextWriterAttribute.Href,
+                    new Uri(Page.Request.Url, ProjeConstants.PAGE_BEKLEYENISLEMLER).AbsoluteUri);
+                writer.RenderBeginTag(HtmlTextWriterTag.A);
+                writer.WriteEncodedText("Görevlerimi görüntüle");
+                writer.RenderEndTag();
+                writer.RenderEndTag();
+            }
             if (ProjeConstants.AMIRONAYIETKINMI)
             {
                 base.Render(writer);
             }
         }
-        private string CurrentUserName
-        {
-            get
-            {
-
-                if (ViewState["CurrentUserName"] == null)
-                {
-                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
-                }
-                return ViewState["CurrentUserName"].ToString();
-            }
-
-            set
-            {
-                ViewState["CurrentUserName"] = value;
-            }
-        }
-
         protected void Page_Load(object sender, EventArgs e)
         {
             PortalWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
             {
-                if (!ProjeConstants.AMIRONAYIETKINMI) return;
                 if (!Page.IsPostBack) PortalWebPartLog.RecordOpened(LogContext);
                 AmirOnayLbl.Text = string.Empty;
+                kisiselGorevMesaji = string.Empty;
                 string login = LogContext.UserLogin ?? string.Empty;
                 Personel personel = new PersonelService().GetByUserName(login.Substring(login.LastIndexOf('\\') + 1), LogContext);
-                if (personel == null) throw new PortalInputException("Personel kaydınız bulunamadı. Bildirimler için sistem yöneticisine başvurun.");
+                if (personel == null || personel.Id <= 0) throw new PortalInputException("Personel kaydınız bulunamadı. Bildirimler için sistem yöneticisine başvurun.");
+                GorevOnayService gorevOnayService = new GorevOnayService();
+                int kisiselBekleyenSayisi = gorevOnayService.GetOnayBekleyenGorevSayisiByPersonelId(personel.Id, LogContext);
+                if (kisiselBekleyenSayisi > 0)
+                    kisiselGorevMesaji = "Amir onayı bekleyen "
+                        + kisiselBekleyenSayisi.ToString(CultureInfo.InvariantCulture) + " göreviniz bulunmaktadır.";
+
+                if (!ProjeConstants.AMIRONAYIETKINMI) return;
                 var pending = new HashSet<int>();
                 foreach (var unit in new BirimTanimService().GetByAmirId(personel.Id, LogContext))
-                    foreach (var item in new GorevOnayService().SelectByBirimIdAndDurum(unit.Id, AmirOnayDurumu.OnayBekliyor, LogContext))
+                    foreach (var item in gorevOnayService.SelectByBirimIdAndDurum(unit.Id, AmirOnayDurumu.OnayBekliyor, LogContext))
                         pending.Add(item.Id);
                 if (pending.Count == 0) return;
                 AmirOnayLbl.Text = "Onayınızı bekleyen " + pending.Count + " görev var.";
