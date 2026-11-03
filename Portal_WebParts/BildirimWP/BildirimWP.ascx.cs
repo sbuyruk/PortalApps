@@ -17,7 +17,6 @@ namespace Portal_WebParts.BildirimWP
     public partial class BildirimWP : WebPart
     {
         private PortalLogContext logContext;
-        private string kisiselGorevMesaji;
         private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("Portal", "BildirimWP")); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -36,20 +35,6 @@ namespace Portal_WebParts.BildirimWP
         }
         protected override void Render(HtmlTextWriter writer)
         {
-            if (!string.IsNullOrEmpty(kisiselGorevMesaji))
-            {
-                writer.AddAttribute(HtmlTextWriterAttribute.Class, "alert alert-info");
-                writer.AddAttribute("role", "status");
-                writer.RenderBeginTag(HtmlTextWriterTag.Div);
-                writer.WriteEncodedText(kisiselGorevMesaji);
-                writer.Write(" ");
-                writer.AddAttribute(HtmlTextWriterAttribute.Href,
-                    new Uri(Page.Request.Url, ProjeConstants.PAGE_BEKLEYENISLEMLER).AbsoluteUri);
-                writer.RenderBeginTag(HtmlTextWriterTag.A);
-                writer.WriteEncodedText("Görevlerimi görüntüle");
-                writer.RenderEndTag();
-                writer.RenderEndTag();
-            }
             if (ProjeConstants.AMIRONAYIETKINMI)
             {
                 base.Render(writer);
@@ -61,15 +46,18 @@ namespace Portal_WebParts.BildirimWP
             {
                 if (!Page.IsPostBack) PortalWebPartLog.RecordOpened(LogContext);
                 AmirOnayLbl.Text = string.Empty;
-                kisiselGorevMesaji = string.Empty;
                 string login = LogContext.UserLogin ?? string.Empty;
                 Personel personel = new PersonelService().GetByUserName(login.Substring(login.LastIndexOf('\\') + 1), LogContext);
                 if (personel == null || personel.Id <= 0) throw new PortalInputException("Personel kaydınız bulunamadı. Bildirimler için sistem yöneticisine başvurun.");
                 GorevOnayService gorevOnayService = new GorevOnayService();
                 int kisiselBekleyenSayisi = gorevOnayService.GetOnayBekleyenGorevSayisiByPersonelId(personel.Id, LogContext);
-                if (kisiselBekleyenSayisi > 0)
-                    kisiselGorevMesaji = "Amir onayı bekleyen "
+                if (kisiselBekleyenSayisi > 0 && !Page.IsPostBack)
+                {
+                    string kisiselGorevMesaji = "Amir onayı bekleyen "
                         + kisiselBekleyenSayisi.ToString(CultureInfo.InvariantCulture) + " göreviniz bulunmaktadır.";
+                    string target = new Uri(Page.Request.Url, ProjeConstants.PAGE_BEKLEYENISLEMLER).AbsoluteUri;
+                    Utility.HelperClasses.Messages.Info(kisiselGorevMesaji, "Görevlerimi görüntüle", target);
+                }
 
                 if (!ProjeConstants.AMIRONAYIETKINMI) return;
                 var pending = new HashSet<int>();
