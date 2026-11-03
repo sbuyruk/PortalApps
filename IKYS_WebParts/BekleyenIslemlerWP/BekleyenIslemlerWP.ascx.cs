@@ -5,7 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Globalization;
 using System.Linq;
+using System.Text;
+using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls.WebParts;
@@ -41,13 +44,9 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
-        protected override void Render(System.Web.UI.HtmlTextWriter writer)
-        {
-            if (ProjeConstants.AMIRONAYIETKINMI)
-            {
-                base.Render(writer);
-            }
-        }
+        protected string SaltOkunurGorevlerHtml { get; private set; } = string.Empty;
+        private Personel currentPersonel;
+        private bool currentPersonelResolved;
         private string CurrentUserName
         {
             get
@@ -114,10 +113,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
                     }
                     else
                     {
-                        //publish etmeden önce Burayı değiştirmeyi unutma
-                        Personel personel = IKYSOrtak.PersonelGetir(CurrentUserName, LoggingContext);
-                        //Personel personel = new Personel();//PersonelGetir();
-                        //personel = personel.Select(1192);
+                        Personel personel = GetCurrentPersonel();
                         if (personel != null && personel.Id > 0)
                         {
                             List<BirimTanim> amirOlduguBirimler = new BirimTanimService().GetByAmirId(personel.Id, LoggingContext);
@@ -148,10 +144,94 @@ namespace IKYS_WebParts.BekleyenIslemlerWP
             TabloDiv.Style["display"] = "none";
             MesajDiv.Style["display"] = "block";
         }
-        private Personel PersonelGetir()
+        private Personel GetCurrentPersonel()
         {
-            string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
-            return new PersonelService().GetByUserName(userName, LoggingContext);
+            if (!currentPersonelResolved)
+            {
+                currentPersonel = string.IsNullOrWhiteSpace(CurrentUserName)
+                    ? null : IKYSOrtak.PersonelGetir(CurrentUserName, LoggingContext);
+                currentPersonelResolved = true;
+            }
+            return currentPersonel;
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            // Refresh after approval/rejection events, including on postbacks.
+            TabloDiv.Visible = ProjeConstants.AMIRONAYIETKINMI
+                && (AuthQS.Equals("IKYS") || !string.IsNullOrEmpty(AmirBirimIdList));
+            MesajDiv.Style["display"] = TabloDiv.Visible ? "none" : "block";
+            try
+            {
+                SaltOkunurGorevleriOlustur();
+            }
+            catch (Exception ex)
+            {
+                MesajDiv.Style["display"] = "none";
+                ReportError("LoadReadOnlyTasks", ex);
+            }
+            base.OnPreRender(e);
+        }
+
+        private void SaltOkunurGorevleriOlustur()
+        {
+            bool ikysGorunumu = AuthQS.Equals("IKYS");
+            int? personelId = null;
+            if (!ikysGorunumu)
+            {
+                Personel personel = GetCurrentPersonel();
+                if (personel == null || personel.Id <= 0) return;
+                personelId = personel.Id;
+            }
+
+            GorevOnayService service = new GorevOnayService();
+            DataTable bekleyenler = service.GetOnayBekleyenGorevler(personelId, LoggingContext);
+            DataTable onaylananlar = service.GetSonOnaylananGorevler(personelId, LoggingContext);
+            StringBuilder html = new StringBuilder();
+            if (bekleyenler != null && bekleyenler.Rows.Count > 0)
+            {
+                html.Append("<section class='mt-4'><h4 class='section-title'>")
+                    .Append(ikysGorunumu ? "Onay Bekleyen Görevler" : "Onay Bekleyen Görevlerim")
+                    .Append("</h4>");
+                AppendSaltOkunurTablo(html, bekleyenler);
+                html.Append("</section>");
+            }
+            if (onaylananlar != null && onaylananlar.Rows.Count > 0)
+            {
+                html.Append("<details class='mt-4'><summary class='text-primary'>")
+                    .Append(ikysGorunumu ? "Son 5 Onaylanmış Görev" : "Son 5 Onaylanmış Görevim")
+                    .Append("</summary><p class='text-secondary mt-2'>Görev başlangıç tarihine göre en yeni kayıtlar gösterilmektedir.</p>");
+                AppendSaltOkunurTablo(html, onaylananlar);
+                html.Append("</details>");
+            }
+            SaltOkunurGorevlerHtml = html.ToString();
+            if (html.Length > 0) MesajDiv.Style["display"] = "none";
+        }
+
+        private static void AppendSaltOkunurTablo(StringBuilder html, DataTable table)
+        {
+            string[] columns = { "AdiSoyadi", "BaslangicTarihi", "BitisTarihi", "GorevinSebebi",
+                "GorevinYeri", "UlasimAraci", "Transfer", "Konaklama", "Aciklama" };
+            string[] titles = { "Adı Soyadı", "Başlangıç Tarihi", "Bitiş Tarihi", "Görevin Sebebi",
+                "Görevin Yeri", "Ulaşım Aracı", "Transfer", "Konaklama", "Açıklama" };
+            html.Append("<div class='table-responsive mt-2'><table class='table table-bordered table-striped'><thead><tr>");
+            foreach (string title in titles)
+                html.Append("<th scope='col'>").Append(HttpUtility.HtmlEncode(title)).Append("</th>");
+            html.Append("</tr></thead><tbody>");
+            foreach (DataRow row in table.Rows)
+            {
+                html.Append("<tr>");
+                foreach (string column in columns)
+                {
+                    object value = row[column];
+                    string text = value is DateTime
+                        ? ((DateTime)value).ToString("dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture)
+                        : Convert.ToString(value, CultureInfo.InvariantCulture);
+                    html.Append("<td>").Append(HttpUtility.HtmlEncode(text)).Append("</td>");
+                }
+                html.Append("</tr>");
+            }
+            html.Append("</tbody></table></div>");
         }
         private void TabloOlustur()
         {
