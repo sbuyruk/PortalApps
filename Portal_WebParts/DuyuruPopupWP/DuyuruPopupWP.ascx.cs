@@ -42,6 +42,8 @@ namespace Portal_WebParts.DuyuruPopupWP
         {
             base.OnInit(e);
             InitializeControl();
+            PortalModalActivity.Register(this, LoggingContext,
+                "[data-portal-log-owner='" + ClientID + "']");
             this.ChromeType = PartChromeType.None;
         }
         private string DuyuruIdQS
@@ -89,7 +91,6 @@ namespace Portal_WebParts.DuyuruPopupWP
         {
             ExecuteAction("Page_Load", () =>
             {
-                PortalWebPartLog.RecordOpened(LoggingContext);
                 //if (!Page.IsPostBack)
                 {
                     List<Duyuru> duyuruListesi = GetDuyuruList();
@@ -198,6 +199,7 @@ namespace Portal_WebParts.DuyuruPopupWP
                 modalDiv.ID = "modalDiv" + duyuru.Id.ToString();
                 modalDiv.Attributes["class"] = "modal fade text-center duyuru-modal";
                 modalDiv.Attributes["role"] = "dialog";
+                modalDiv.Attributes["data-portal-log-owner"] = ClientID;
                 ModalPlaceHolder.Controls.Add(modalDiv);
 
                 HtmlGenericControl modalDialogDiv = new HtmlGenericControl("div");

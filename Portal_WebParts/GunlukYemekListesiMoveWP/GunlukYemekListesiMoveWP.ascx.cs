@@ -29,6 +29,7 @@ namespace Portal_WebParts.GunlukYemekListesiMoveWP
         {
             base.OnInit(e);
             InitializeControl();
+            PortalModalActivity.Register(this, LogContext, "#YemekPopupDiv");
             this.ChromeType = PartChromeType.None;
         }
 
@@ -36,7 +37,6 @@ namespace Portal_WebParts.GunlukYemekListesiMoveWP
         {
             PortalWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
             {
-                if (!Page.IsPostBack) PortalWebPartLog.RecordOpened(LogContext);
                 YemekTablosunuDoldur();
             });
         }

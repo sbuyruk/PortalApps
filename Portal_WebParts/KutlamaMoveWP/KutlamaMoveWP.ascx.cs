@@ -30,6 +30,7 @@ namespace Portal_WebParts.KutlamaMoveWP
         {
             base.OnInit(e);
             InitializeControl();
+            PortalModalActivity.Register(this, LogContext, "#KutlamaPopupDiv");
             this.ChromeType = PartChromeType.None;
         }
         public List<Kutlama> listDogum;
@@ -40,7 +41,6 @@ namespace Portal_WebParts.KutlamaMoveWP
         {
             PortalWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
             {
-                if (!Page.IsPostBack) PortalWebPartLog.RecordOpened(LogContext);
                 DogumGunuDiv.Attributes["style"] = "display:none";
                 EvlilikDiv.Attributes["style"] = "display:none";
                 GenelMudurDiv.Attributes["style"] = "display:none";
