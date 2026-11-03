@@ -20,7 +20,7 @@ DuyuruPopupWP artık her postback'te açılış kaydı yazmaz. Duyuru/kutlama ç
 
 ## Uygulama ve inceleme noktaları
 
-- Ortak `Logging/PortalModalActivity.cs` kontrolü `OnInit` sırasında eklenir. Yeni ASCX alanı veya üretilen dosya değişikliği yoktur.
+- Ortak `Logging/PortalModalActivity.cs` yardımcısı `OnInit` sırasında kaydedilir. Callback'i mevcut webpartın `ICallbackEventHandler` uygulaması karşılar; kontrol ağacına yeni kontrol eklenmez. Yeni ASCX alanı veya üretilen dosya değişikliği yoktur.
 - Sunucu bildirimi ASP.NET `ICallbackEventHandler` kanalıyla yapılır. Kullanıcı, proje ve webpart bilgileri sunucudan alınır. İstek kimliği/event validation, ViewState ziyaret belirteci ve SharePoint form digest kontrolü uygulanır.
 - Dinleyici modal açan startup scriptlerinden önce kaydedilir. Duyurularda webpartın `ClientID` işareti kullanılarak ilgili modal seçilir. Dinleyici belge üzerinde olduğundan UpdatePanel ile yeniden oluşturulan modallarda da çalışır.
 - Callback gönderilmeden önce form verisi güncellenir; kısmi postback sonrası ViewState ve digest değerleri kullanılır.
@@ -28,6 +28,18 @@ DuyuruPopupWP artık her postback'te açılış kaydı yazmaz. Duyuru/kutlama ç
 - İstemcide bekleyen/tamamlanmış bildirim kontrolü, sunucuda atomik `HttpRuntime.Cache.Add` ile tekrar engeli vardır. Ziyaret belirteci ViewState içinde normal ve kısmi postback boyunca korunur. Birden fazla duyuru modalı aynı webpart için tek açılış sayılır.
 - Sunucu tekrar engeli 8 saatlik uygulama önbelleğidir. Önbellek tahliyesi, uygulama havuzu yeniden başlaması veya farklı sunucuya yönlendirme sonrası yeniden bildirim gelirse ek kayıt oluşabilir; veritabanında kalıcı benzersizlik kısıtı eklenmemiştir.
 - Kayıt yazılamazsa önbellek engeli kaldırılır. Modal tekrar açıldığında yeniden denenebilir; kullanıcıya teknik hata gösterilmez. Mevcut teknik hata kayıt yolu korunur.
+
+## Ana sayfa açılış hatası düzeltmesi
+
+Düzeltme dalı: `codex/portal-modal-callback-kontrol-hatasi`. Başlangıç: temiz `master` ve güncel `origin/master`, `8f1c71386895abb889b7dd6dd4d7ba0231cbc983`.
+
+Test sunucusundaki çağrı yığını, `KutlamaMoveWP.OnInit → PortalModalActivity.Register → ControlCollection.Add` yolunda hata oluştuğunu doğruladı. ASCX içindeki `<% ... %>` kod blokları kök denetim koleksiyonunu salt okunur yaptığından, önceki `owner.Controls.Add` çağrısı ana sayfanın ilk açılışını engelliyordu.
+
+Yemek, kutlama, duyuru ve bildirim webpartları artık callback'i doğrudan karşılayıp ortak yardımcıya yönlendirir. Yardımcı sınıf bir sunucu kontrolü olmaktan çıkarılmıştır; `Controls.Add` kullanılmaz. Ziyaret belirteci webpartın kendi ViewState alanında saklanır. Event validation kaydı `Page.SaveStateComplete` olayında, ViewState serileştirildikten sonra yapılır; böylece doğrulama verisi gönderilecek ViewState ile eşleşir. Modal gösterimi, form digest ve tekrar engeli kontrolleri korunur.
+
+Event validation ile ViewState ilişkisi için teknik başvuru: [Microsoft .NET Framework kaynak kodu — ClientScriptManager](https://github.com/microsoft/referencesource/blob/main/System.Web/UI/ClientScriptManager.cs).
+
+Bu düzeltmede `.ascx` ve `.ascx.g.cs` değişmedi; Run Custom Tool gerekmiyor. Build/test/debug çalıştırılmadı. Öncelikli Test sunucusu kontrolleri: ana sayfanın ilk açılması, dört modalın ilk açılış kaydı, duyuru UpdatePanel işlemi sonrasında callback doğrulaması ve aynı ziyarette tekrar açılışın yeni kayıt üretmemesidir.
 
 ASP.NET callback yaşam döngüsü için başvuru: [Microsoft Learn — Implementing Client Callbacks](https://learn.microsoft.com/en-us/previous-versions/aspnet/ms178208%28v%3Dvs.100%29).
 

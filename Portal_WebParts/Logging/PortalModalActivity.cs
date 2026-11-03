@@ -8,32 +8,46 @@ using Utility.Logging;
 namespace Portal_WebParts.Logging
 {
     // Uses the page's authenticated, event-validated callback channel; no full postback.
-    internal sealed class PortalModalActivity : Control, ICallbackEventHandler
+    internal sealed class PortalModalActivity
     {
         private const string TargetsKey = "PortalApps.Portal.ModalActivityTargets";
         private readonly string project;
         private readonly string webPart;
+        private readonly Control owner;
+        private readonly StateBag viewState;
+        private bool clientScriptRegistered;
         private string result = "retry";
 
-        private PortalModalActivity(PortalLogContext context)
+        private PortalModalActivity(Control owner, PortalLogContext context, StateBag viewState)
         {
-            ID = "PortalModalActivity";
+            this.owner = owner;
+            this.viewState = viewState;
             project = context.Project;
             webPart = context.WebPart;
         }
 
-        internal static void Register(Control owner, PortalLogContext context, string selector)
+        internal static PortalModalActivity Register(Control owner, PortalLogContext context,
+            string selector, StateBag viewState)
         {
-            var control = new PortalModalActivity(context);
-            owner.Controls.Add(control);
+            // ASCX inline code makes the root Controls collection read-only.
+            // The existing WebPart handles callbacks without adding any child controls.
+            var activity = new PortalModalActivity(owner, context, viewState);
             var targets = HttpContext.Current.Items[TargetsKey] as HashSet<string>;
             if (targets == null)
             {
                 targets = new HashSet<string>(StringComparer.Ordinal);
                 HttpContext.Current.Items[TargetsKey] = targets;
             }
-            targets.Add(control.UniqueID);
-            control.PreRender += delegate { control.RegisterClientScript(owner, selector); };
+            targets.Add(owner.UniqueID);
+            owner.PreRender += delegate { activity.RegisterClientScript(selector); };
+            // Event validation binds to serialized ViewState, which is available only
+            // after saving state. Use the page event even on partial postbacks.
+            owner.Page.SaveStateComplete += delegate
+            {
+                if (activity.clientScriptRegistered)
+                    owner.Page.ClientScript.RegisterForEventValidation(owner.UniqueID, activity.VisitToken);
+            };
+            return activity;
         }
 
         internal static bool IsLoggingCallback(HttpContext http)
@@ -48,17 +62,18 @@ namespace Portal_WebParts.Logging
         {
             get
             {
-                if (ViewState["VisitToken"] == null) ViewState["VisitToken"] = Guid.NewGuid().ToString("N");
-                return (string)ViewState["VisitToken"];
+                const string key = "Portal.ModalActivity.VisitToken";
+                if (viewState[key] == null) viewState[key] = Guid.NewGuid().ToString("N");
+                return (string)viewState[key];
             }
         }
 
-        private void RegisterClientScript(Control owner, string selector)
+        private void RegisterClientScript(string selector)
         {
-            string callback = Page.ClientScript.GetCallbackEventReference(this,
+            string callback = owner.Page.ClientScript.GetCallbackEventReference(owner,
                 Quote(VisitToken), "completed", "null", "failed", true);
             string script = @"(function () {
-    var key = " + Quote(UniqueID + ":" + VisitToken) + @";
+    var key = " + Quote(owner.UniqueID + ":" + VisitToken) + @";
     var states = window.portalModalActivityStates || (window.portalModalActivityStates = {});
     if (states[key]) return;
     var state = states[key] = { pending: false, logged: false };
@@ -80,24 +95,21 @@ namespace Portal_WebParts.Logging
 })();";
             // Client blocks run before startup scripts that can automatically show a modal.
             ScriptManager.RegisterClientScriptBlock(owner, typeof(PortalModalActivity),
-                UniqueID, script, true);
-        }
-
-        protected override void Render(HtmlTextWriter writer)
-        {
-            Page.ClientScript.RegisterForEventValidation(UniqueID, VisitToken);
+                owner.UniqueID, script, true);
+            clientScriptRegistered = true;
         }
 
         public void RaiseCallbackEvent(string eventArgument)
         {
-            Page.ClientScript.ValidateEvent(UniqueID, eventArgument);
+            owner.Page.ClientScript.ValidateEvent(owner.UniqueID, eventArgument);
+            HttpContext http = HttpContext.Current;
             if (!string.Equals(eventArgument, VisitToken, StringComparison.Ordinal)
-                || Context.User == null || Context.User.Identity == null
-                || !Context.User.Identity.IsAuthenticated) return;
+                || http == null || http.User == null || http.User.Identity == null
+                || !http.User.Identity.IsAuthenticated) return;
             if (!Microsoft.SharePoint.Utilities.SPUtility.ValidateFormDigest()) return;
 
             PortalLogContext context = PortalLogContext.FromCurrentRequest(project, webPart);
-            string cacheKey = "PortalApps.Portal.ModalOpened:" + context.UserLogin + ":" + UniqueID + ":" + VisitToken;
+            string cacheKey = "PortalApps.Portal.ModalOpened:" + context.UserLogin + ":" + owner.UniqueID + ":" + VisitToken;
             // The token survives normal/partial postbacks in ViewState. Cache.Add is atomic,
             // so concurrent callbacks and repeat openings do not multiply activity rows.
             if (HttpRuntime.Cache.Add(cacheKey, true, null, DateTime.UtcNow.AddHours(8),

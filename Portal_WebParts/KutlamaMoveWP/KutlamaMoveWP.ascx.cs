@@ -13,8 +13,17 @@ using Utility.ProjeGlobal;
 namespace Portal_WebParts.KutlamaMoveWP
 {
     [ToolboxItemAttribute(false)]
-    public partial class KutlamaMoveWP : WebPart
+    public partial class KutlamaMoveWP : WebPart, System.Web.UI.ICallbackEventHandler
     {
+        private PortalModalActivity modalActivity;
+        void System.Web.UI.ICallbackEventHandler.RaiseCallbackEvent(string eventArgument)
+        {
+            modalActivity.RaiseCallbackEvent(eventArgument);
+        }
+        string System.Web.UI.ICallbackEventHandler.GetCallbackResult()
+        {
+            return modalActivity.GetCallbackResult();
+        }
         private PortalLogContext logContext;
         private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("Portal", "KutlamaMoveWP")); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
@@ -30,7 +39,7 @@ namespace Portal_WebParts.KutlamaMoveWP
         {
             base.OnInit(e);
             InitializeControl();
-            PortalModalActivity.Register(this, LogContext, "#KutlamaPopupDiv");
+            modalActivity = PortalModalActivity.Register(this, LogContext, "#KutlamaPopupDiv", ViewState);
             this.ChromeType = PartChromeType.None;
         }
         public List<Kutlama> listDogum;

@@ -14,8 +14,17 @@ using static Model.IKYS.GorevOnay;
 namespace Portal_WebParts.BildirimWP
 {
     [ToolboxItemAttribute(false)]
-    public partial class BildirimWP : WebPart
+    public partial class BildirimWP : WebPart, System.Web.UI.ICallbackEventHandler
     {
+        private PortalModalActivity modalActivity;
+        void System.Web.UI.ICallbackEventHandler.RaiseCallbackEvent(string eventArgument)
+        {
+            modalActivity.RaiseCallbackEvent(eventArgument);
+        }
+        string System.Web.UI.ICallbackEventHandler.GetCallbackResult()
+        {
+            return modalActivity.GetCallbackResult();
+        }
         private PortalLogContext logContext;
         private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("Portal", "BildirimWP")); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
@@ -31,7 +40,7 @@ namespace Portal_WebParts.BildirimWP
         {
             base.OnInit(e);
             InitializeControl();
-            PortalModalActivity.Register(this, LogContext, "#ModalAcDiv");
+            modalActivity = PortalModalActivity.Register(this, LogContext, "#ModalAcDiv", ViewState);
             this.ChromeType = PartChromeType.None;
         }
         protected override void Render(HtmlTextWriter writer)
