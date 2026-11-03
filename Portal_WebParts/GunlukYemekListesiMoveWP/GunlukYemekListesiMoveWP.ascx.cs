@@ -12,8 +12,17 @@ using Utility.ProjeGlobal;
 namespace Portal_WebParts.GunlukYemekListesiMoveWP
 {
     [ToolboxItemAttribute(false)]
-    public partial class GunlukYemekListesiMoveWP : WebPart
+    public partial class GunlukYemekListesiMoveWP : WebPart, System.Web.UI.ICallbackEventHandler
     {
+        private PortalModalActivity modalActivity;
+        void System.Web.UI.ICallbackEventHandler.RaiseCallbackEvent(string eventArgument)
+        {
+            modalActivity.RaiseCallbackEvent(eventArgument);
+        }
+        string System.Web.UI.ICallbackEventHandler.GetCallbackResult()
+        {
+            return modalActivity.GetCallbackResult();
+        }
         private PortalLogContext logContext;
         private PortalLogContext LogContext { get { return logContext ?? (logContext = PortalLogContext.FromCurrentRequest("Portal", "GunlukYemekListesiMoveWP")); } }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
@@ -29,7 +38,7 @@ namespace Portal_WebParts.GunlukYemekListesiMoveWP
         {
             base.OnInit(e);
             InitializeControl();
-            PortalModalActivity.Register(this, LogContext, "#YemekPopupDiv");
+            modalActivity = PortalModalActivity.Register(this, LogContext, "#YemekPopupDiv", ViewState);
             this.ChromeType = PartChromeType.None;
         }
 

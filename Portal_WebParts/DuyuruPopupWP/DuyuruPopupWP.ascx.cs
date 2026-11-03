@@ -19,8 +19,17 @@ using Utility.ProjeGlobal;
 namespace Portal_WebParts.DuyuruPopupWP
 {
     [ToolboxItemAttribute(false)]
-    public partial class DuyuruPopupWP : WebPart
+    public partial class DuyuruPopupWP : WebPart, System.Web.UI.ICallbackEventHandler
     {
+        private PortalModalActivity modalActivity;
+        void System.Web.UI.ICallbackEventHandler.RaiseCallbackEvent(string eventArgument)
+        {
+            modalActivity.RaiseCallbackEvent(eventArgument);
+        }
+        string System.Web.UI.ICallbackEventHandler.GetCallbackResult()
+        {
+            return modalActivity.GetCallbackResult();
+        }
         private PortalLogContext LoggingContext
         {
             get { return PortalLogContext.FromCurrentRequest("Portal", "DuyuruPopupWP"); }
@@ -42,8 +51,8 @@ namespace Portal_WebParts.DuyuruPopupWP
         {
             base.OnInit(e);
             InitializeControl();
-            PortalModalActivity.Register(this, LoggingContext,
-                "[data-portal-log-owner='" + ClientID + "']");
+            modalActivity = PortalModalActivity.Register(this, LoggingContext,
+                "[data-portal-log-owner='" + ClientID + "']", ViewState);
             this.ChromeType = PartChromeType.None;
         }
         private string DuyuruIdQS
