@@ -202,6 +202,7 @@ namespace IKYS_WebParts.BekleyenIslemlerWP {
             @__ctrl.ID = "TabloDiv";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                <div class=""section-title""><i class=""bi bi-person-badge""></i> Amir Onayı Bekleyen Yurt İçi / Yurt Dışı Görevler</div>
                 <table id=""CustomDataTable"" class=""table table-bordered table-striped"" width=""100%"">
                     <thead>
                         <tr>
@@ -523,11 +524,13 @@ namespace IKYS_WebParts.BekleyenIslemlerWP {
             @__w.Write("\r\n                ");
             parameterContainer.Controls[2].RenderControl(@__w);
             @__w.Write("\r\n            </h3>\r\n        </div>\r\n        <div class=\"card-body\">\r\n           " +
-                    " <div class=\"section-title\"><i class=\"bi bi-person-badge\"></i> Amir Onayı Bekley" +
-                    "en Yurt İçi / Yurt Dışı GörevlerX</div>\r\n            ");
+                    " ");
             parameterContainer.Controls[3].RenderControl(@__w);
             @__w.Write("\r\n            ");
             parameterContainer.Controls[4].RenderControl(@__w);
+            @__w.Write("\r\n            ");
+    @__w.Write( SaltOkunurGorevlerHtml );
+
             @__w.Write("\r\n            <div style=\"display: none\">\r\n                ");
             parameterContainer.Controls[5].RenderControl(@__w);
             @__w.Write("\r\n                ");
