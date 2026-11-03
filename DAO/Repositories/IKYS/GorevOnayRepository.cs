@@ -287,6 +287,19 @@ namespace DAO.Repositories.IKYS
             return PortalSqlReadExecutor.Select(query, context, "GorevOnay.SelectAllBySecildi");
         }
 
+        public int CountOnayBekleyenGorevlerByPersonelId(int personelId, int onayBekliyor, PortalLogContext context)
+        {
+            if (personelId <= 0) throw new ArgumentOutOfRangeException("personelId");
+            SqlQuery query = new SqlQuery(@"
+                SELECT COUNT(*) Adet FROM GorevOnay_Table
+                WHERE PersonelId=@PersonelId AND AmirOnayi=@AmirOnayi");
+            query.AddParameter("@PersonelId", personelId);
+            query.AddParameter("@AmirOnayi", onayBekliyor);
+            DataTable table = PortalSqlReadExecutor.Select(query, context,
+                "GorevOnay.CountOnayBekleyenGorevlerByPersonelId");
+            return Convert.ToInt32(table.Rows[0]["Adet"]);
+        }
+
         public DataTable SelectOnayBekleyenGorevler(int? personelId, int onayBekliyor, PortalLogContext context)
         {
             return SelectSaltOkunurGorevler(personelId, onayBekliyor, false, context);

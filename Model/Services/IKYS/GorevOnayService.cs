@@ -146,6 +146,13 @@ namespace Model.Services.IKYS
         public List<GorevOnay> GetAllBySecildi(bool secildi, PortalLogContext context)
         { return ToList(repository.SelectAllBySecildi(secildi, context)); }
 
+        public int GetOnayBekleyenGorevSayisiByPersonelId(int personelId, PortalLogContext context)
+        {
+            if (context == null) throw new ArgumentNullException("context");
+            return repository.CountOnayBekleyenGorevlerByPersonelId(personelId,
+                (int)GorevOnay.AmirOnayDurumu.OnayBekliyor, context);
+        }
+
         // A null personnel ID requests the IKYS-wide view; callers resolve the current user otherwise.
         public DataTable GetOnayBekleyenGorevler(int? personelId, PortalLogContext context)
         {
