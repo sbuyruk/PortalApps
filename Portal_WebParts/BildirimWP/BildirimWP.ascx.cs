@@ -31,6 +31,7 @@ namespace Portal_WebParts.BildirimWP
         {
             base.OnInit(e);
             InitializeControl();
+            PortalModalActivity.Register(this, LogContext, "#ModalAcDiv");
             this.ChromeType = PartChromeType.None;
         }
         protected override void Render(HtmlTextWriter writer)
@@ -44,7 +45,6 @@ namespace Portal_WebParts.BildirimWP
         {
             PortalWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
             {
-                if (!Page.IsPostBack) PortalWebPartLog.RecordOpened(LogContext);
                 AmirOnayLbl.Text = string.Empty;
                 string login = LogContext.UserLogin ?? string.Empty;
                 Personel personel = new PersonelService().GetByUserName(login.Substring(login.LastIndexOf('\\') + 1), LogContext);

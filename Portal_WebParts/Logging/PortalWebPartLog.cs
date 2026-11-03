@@ -21,6 +21,8 @@ namespace Portal_WebParts.Logging
         internal static void ExecuteAction(PortalLogContext context, string operation, Action action)
         {
             HttpContext http = HttpContext.Current;
+            // An activity callback must not reload every WebPart or repeat its SQL traces.
+            if (PortalModalActivity.IsLoggingCallback(http)) return;
             string failedKey = "PortalApps.Portal.FailedWebPart." + context.WebPart;
             if (http != null && object.Equals(http.Items[failedKey], true)) return;
             try { action(); }
@@ -40,6 +42,7 @@ namespace Portal_WebParts.Logging
 
         internal static void RecordOpened(PortalLogContext context)
         {
+            if (PortalModalActivity.IsLoggingCallback(HttpContext.Current)) return;
             new PortalLogRepository().TryRecordWebPartOpened(context);
         }
 

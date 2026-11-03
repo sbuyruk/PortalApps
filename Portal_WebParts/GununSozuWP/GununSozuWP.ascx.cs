@@ -31,7 +31,6 @@ namespace Portal_WebParts.GununSozuWP
         {
             PortalWebPartLog.ExecuteAction(LogContext, "Page_Load", () =>
             {
-                if (!Page.IsPostBack) PortalWebPartLog.RecordOpened(LogContext);
                 lblSubject.Text = string.Empty;
                 pnlAdmin.Visible = false;
 
