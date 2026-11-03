@@ -287,6 +287,36 @@ namespace DAO.Repositories.IKYS
             return PortalSqlReadExecutor.Select(query, context, "GorevOnay.SelectAllBySecildi");
         }
 
+        public DataTable SelectOnayBekleyenGorevler(int? personelId, int onayBekliyor, PortalLogContext context)
+        {
+            return SelectSaltOkunurGorevler(personelId, onayBekliyor, false, context);
+        }
+
+        public DataTable SelectSonOnaylananGorevler(int? personelId, int onaylandi, PortalLogContext context)
+        {
+            return SelectSaltOkunurGorevler(personelId, onaylandi, true, context);
+        }
+
+        private DataTable SelectSaltOkunurGorevler(int? personelId, int amirOnayi, bool sonBes, PortalLogContext context)
+        {
+            if (personelId.HasValue && personelId.Value <= 0)
+                throw new ArgumentOutOfRangeException("personelId");
+
+            SqlQuery query = new SqlQuery("SELECT " + (sonBes ? "TOP (5) " : string.Empty) + @"
+                A.Id GorevOnayId, P.Adi+' '+P.Soyadi AdiSoyadi,
+                A.BaslangicTarihi, A.BitisTarihi, A.GorevinSebebi, A.GorevinYeri,
+                A.UlasimAraci, A.Transfer, A.Konaklama, A.Aciklama
+                FROM GorevOnay_Table A
+                    INNER JOIN Personel_Table P ON P.Id=A.PersonelId
+                WHERE A.AmirOnayi=@AmirOnayi"
+                + (personelId.HasValue ? " AND A.PersonelId=@PersonelId" : string.Empty)
+                + " ORDER BY A.BaslangicTarihi DESC, A.BitisTarihi DESC, A.Id DESC");
+            query.AddParameter("@AmirOnayi", amirOnayi);
+            if (personelId.HasValue) query.AddParameter("@PersonelId", personelId.Value);
+            return PortalSqlReadExecutor.Select(query, context,
+                sonBes ? "GorevOnay.SelectSonOnaylananGorevler" : "GorevOnay.SelectOnayBekleyenGorevler");
+        }
+
         public DataTable SelectBekleyenAmirOnayi(PortalLogContext context)
         {
             SqlQuery query = new SqlQuery(@"

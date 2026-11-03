@@ -61,11 +61,11 @@
             </h3>
         </div>
         <div class="card-body">
-            <div class="section-title"><i class="bi bi-person-badge"></i> Amir Onayı Bekleyen Yurt İçi / Yurt Dışı GörevlerX</div>
             <div class="form-group" id="MesajDiv" runat="server" style="display: none;">
                 <asp:Label ID="MesajLbl" runat="server" CssClass="col-form-label text-secondary" Text="Bekleyen işleminiz bulunmamaktadır."></asp:Label>
             </div>
             <div class="form-group m-4" id="TabloDiv" runat="server">
+                <div class="section-title"><i class="bi bi-person-badge"></i> Amir Onayı Bekleyen Yurt İçi / Yurt Dışı Görevler</div>
                 <table id="CustomDataTable" class="table table-bordered table-striped" width="100%">
                     <thead>
                         <tr>
@@ -85,6 +85,7 @@
                     </thead>
                 </table>
             </div>
+            <%= SaltOkunurGorevlerHtml %>
             <div style="display: none">
                 <input id="paramGorevOnayIdLbl" runat="server" style="border-style: none;" />
                 <asp:LinkButton ID="ModalOnaylaBtn" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="ModalOnaylaBtn_Click" />
