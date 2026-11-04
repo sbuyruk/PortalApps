@@ -449,10 +449,6 @@
                                                 <label class="form-label fw-semibold" for="DahiliTelefonuTxt">Dahili Telefonu</label>
                                                 <asp:TextBox ID="DahiliTelefonuTxt" runat="server" CssClass="form-control"></asp:TextBox>
                                             </div>
-                                            <%-- <div class="form-group m-0">
-                                                <label class="form-label fw-semibold" for="IntranetEPostaTxt">EPosta (Intarnet)</label>
-                                                <asp:TextBox ID="IntranetEPostaTxt" runat="server" CssClass="form-control"></asp:TextBox>
-                                            </div>--%>
                                             <div class="form-group m-0">
                                                 <label class="form-label fw-semibold" for="InternetEPostaTxt">EPosta (Internet)</label>
                                                 <asp:TextBox ID="InternetEPostaTxt" runat="server" CssClass="form-control"></asp:TextBox>

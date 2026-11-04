@@ -15,7 +15,6 @@ namespace Model.IKYS
         public string EvTelefonu { get; set; }
         public string CepTelefonu { get; set; }
         public string CepTelefonu2 { get; set; }
-        public string IntranetEPosta { get; set; }
         public string InternetEPosta { get; set; }
         public string OzelEPosta { get; set; }
         public string Plaka { get; set; }

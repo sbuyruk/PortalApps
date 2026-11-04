@@ -336,15 +336,6 @@ namespace IKYS_WebParts.KisiselSayfaWP
                 row2.Controls.Add(IlR1H5);
                 row2.Controls.Add(IlR1H6);
 
-                TableRow row3 = new TableRow();
-                TableCell IlR2H1 = new TableCell();
-                TableCell IlR2H2 = new TableCell();
-                IlR2H1.Font.Bold = true;
-                IlR2H1.Text = "Intranet EPosta";
-                IlR2H2.Text = iletisimBilgileri.IntranetEPosta;
-                row3.Controls.Add(IlR2H1);
-                row3.Controls.Add(IlR2H2);
-
                 TableRow row4 = new TableRow();
                 TableCell IlR2H3 = new TableCell();
                 TableCell IlR2H4 = new TableCell();
@@ -385,7 +376,6 @@ namespace IKYS_WebParts.KisiselSayfaWP
                 IletisimTable.Controls.Add(row0);
                 IletisimTable.Controls.Add(row1);
                 IletisimTable.Controls.Add(row2);
-                IletisimTable.Controls.Add(row3);
                 IletisimTable.Controls.Add(row4);
                 IletisimTable.Controls.Add(row5);
                 IletisimTable.Controls.Add(row6);

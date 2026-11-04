@@ -1,0 +1,37 @@
+IntranetEPosta alanının kaldırılması
+
+Değişiklik
+- IKYS izin talebi ve kabul/red/onay bildirimleri, NBYS FTK bildirimleri ve Portal toplantı katılımcı/yetkili bildirimleri InternetEPosta kullanır.
+- NBYS mevcut noktalı virgülle ayrılmış adres işleme davranışını korur. Portal toplantı katılımcı adresi tek geçerli adres olmalıdır.
+- Eski personel ekranındaki alan ve kişisel sayfadaki gösterimi kaldırılmıştır. Personel girişindeki yorum satırları temizlenmiştir.
+- Model özelliği ve yeni audit değişiklik kaydı kaldırılmıştır. Geçmiş audit kayıtları korunur.
+
+Yayın öncesi
+1. Diagnostics/IntranetEPostaKaldirmaKontrol.sql betiğini hedef veritabanında çalıştırın. Boş InternetEPosta adreslerini ve eski alanla farklı olan adresleri değerlendirin. Kurumsal SMTP üzerinden yeni adreslere gönderimi doğrulayın. Otomatik adres kopyalama yapılmaz.
+2. Veritabanı yedeğini alın. Sütuna bağlı constraint, index, view, procedure, trigger; SQL Agent işleri ve harici uygulama/raporları kontrol edin. Betik bağımlılıkları otomatik kaldırmaz. Arşiv tablosuna erişim ve saklama süresini kurum uygulamasına göre düzenleyin.
+3. Visual Studio 2026 içinde aşağıdaki kaynaklarda Run Custom Tool çalıştırın ve üretilen farkları inceleyin:
+   IKYS_WebParts/EskiPersonelWP/EskiPersonelWP.ascx
+   IKYS_WebParts/PersonelGirisiWP/PersonelGirisiWP.ascx
+   EskiPersonelWP.ascx.g.cs içinde eski kontrolün kalmaması gerekir. Üretilmiş dosyalar elle değiştirilmemiştir.
+4. Solution build ve test işlemlerini Visual Studio/Test sunucusunda yapın.
+5. Toplantı kuyruğunda DeliveryPlan oluşturulmuş kayıtlar eski adresleri saklar. Mümkünse geçiş öncesi kuyruğu tamamlayın. Failed/Processing kayıtları ayrıca değerlendirin; kaydedilmiş planlar otomatik değiştirilmez. Planı olmayan kayıtlar yeni kaynaktan adres alır.
+
+Yayın sırası
+1. Bakım aralığında eski uygulama trafiğini ve toplantı kuyruğu göndericilerini durdurun. IKYS, NBYS ve Portal'ın eski Model/DAO kopyalarının çalışmadığından emin olun.
+2. Yeni ortak Model/DAO ve etkilenen WebPart paketlerini dağıtın. Uygulamayı henüz kullanıma açmayın.
+3. Migrations/20261104_IletisimBilgileriIntranetEPostaKaldirma.sql betiğini çalıştırın. Eski değerler dbo.IletisimBilgileriIntranetEPostaArsiv_20261104 tablosuna arşivlenir, ardından sütun kaldırılır. Herhangi bir hata tüm transaction'ı geri alır.
+4. Trafiği ve göndericileri açın. Eski sürümle yeni şemayı birlikte çalıştırmayın. Sütun NOT NULL ve varsayılan değersizse yeni sürüm de sütun kaldırılmadan kayıt ekleyemeyebilir; bu nedenle adımlar aynı bakım aralığında tamamlanmalıdır.
+
+Kullanıcı tarafından doğrulanacak senaryolar
+- Yeni personel oluşturma, mevcut ve eski personelin iletişim bilgilerini kaydetme.
+- Kişisel sayfada ve eski personel ekranında Intranet alanının görünmemesi.
+- İzin oluşturma ve kabul/red/onay mesajlarının InternetEPosta adresine ulaşması.
+- NBYS FTK oluşturma/güncelleme bildirimi; boş ve birden fazla alıcı durumu.
+- Toplantı oluşturma/güncelleme/iptal, katılımcı çıkarma ve kuyrukta yeniden deneme.
+- Audit kayıtlarında kaldırılan alan için yeni değişiklik üretilmemesi.
+
+Geri dönüş
+Eski uygulama sürümüne dönmeden önce eski sütunun türü/null/default/constraint bilgilerini yayın öncesi alınan şemadan geri yükleyin. Arşivi IletisimId üzerinden eşleştirip eski değerleri geri alın; geçişten sonra oluşturulan kayıtların eski alan değerini ayrıca belirleyin. Ardından eski paketleri dağıtın. Arşiv tablosu tek başına tam veritabanı yedeği değildir.
+
+Doğrulama sınırı
+Codex build, test, debug veya veritabanı betiği çalıştırmamıştır. Değişiklikler kaynak ve diff incelemesiyle kontrol edilmiştir. Üretilmiş ASCX dosyalarının yeniden üretimi kullanıcı tarafından tamamlanmalıdır.

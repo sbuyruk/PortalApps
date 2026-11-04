@@ -43,10 +43,10 @@ namespace DAO.Repositories.NBYS
         public DataTable FtkMailRecipients(int regionId)
         {
             // Preserve active regional staff and the first contact row ordered by Adres.
-            SqlQuery query = new SqlQuery(@"SELECT C.IntranetEPosta FROM Personel_Table P
+            SqlQuery query = new SqlQuery(@"SELECT C.InternetEPosta FROM Personel_Table P
                 INNER JOIN IsBilgileri_Table I ON I.PersonelId=P.Id
                 INNER JOIN BirimTanim_Table B ON B.Id=I.BirimId
-                CROSS APPLY (SELECT TOP (1) IntranetEPosta FROM IletisimBilgileri_Table
+                CROSS APPLY (SELECT TOP (1) InternetEPosta FROM IletisimBilgileri_Table
                     WHERE PersonelId=P.Id ORDER BY Adres) C
                 WHERE I.CalismaDurumu=1 AND B.BolgeId=@RegionId ORDER BY I.ProtokolSiraNo");
             query.AddParameter("@RegionId", regionId);
