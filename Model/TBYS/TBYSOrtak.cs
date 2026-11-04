@@ -253,47 +253,46 @@ namespace Model.Ortak
         {
             odemeId = 0;
             if (kiraSozlesme == null || context == null) return false;
-            int savedId;
+            int savedId = 0;
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
-                Model.Services.TBYS.OdemePlaniService odemePlaniService = new Model.Services.TBYS.OdemePlaniService(context);
-                List<OdemePlani> planlar = odemePlaniService.GetBySozlesmeId(kiraSozlesme.Id, transaction);
-                if (planlar == null || planlar.Count < 2) return false;
-
-                DateTime odemeTarihi = odemetarihi;
-                OdemePlani odemePlani = planlar[1];
-                if (odemeTarihi < odemePlani.OdemeBasTar)
-                {
-                    odemePlani = planlar.FirstOrDefault(x => x.Sira > 0);
-                }
-                else if (odemeTarihi > odemePlani.OdemeBitTar)
-                {
-                    if (kiraSozlesme.OdemeSekli == ProjeConstants.KIRA_ODMSEKLI_YILLIK && odemeTarihi < kiraSozlesme.SozBitTar)
-                    {
-                        odemePlani = odemePlaniService.GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi, transaction)
-                            ?? planlar.LastOrDefault(x => x.Sira > 0);
-                    }
-                    else
-                    {
-                        odemePlani = planlar.LastOrDefault(x => x.Sira > 0);
-                    }
-                }
-                else
-                {
-                    odemePlani = odemePlaniService.GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi, transaction)
-                        ?? planlar.LastOrDefault(x => x.Sira > 0);
-                }
-
-                if (odemePlani == null) return false;
-                Odeme odeme = new Model.Services.TBYS.OdemeService(context)
-                    .OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName(), transaction);
-                if (odeme == null || odeme.Id <= 0) return false;
-                savedId = odeme.Id;
+                if (!OdemeYap(kiraSozlesme, odemetarihi, odenenTutar, aciklama, ref savedId, context, transaction)) return false;
                 transaction.Complete();
             }
 
             odemeId = savedId;
             return true;
+        }
+
+        public static bool OdemeYap(KiraSozlesme kiraSozlesme, DateTime odemeTarihi, decimal odenenTutar,
+            string aciklama, ref int odemeId, PortalLogContext context, SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction", "İşlem bağlamı gereklidir.");
+            odemeId = 0;
+            if (kiraSozlesme == null || context == null) return false;
+            OdemePlani plan = MahsupOdemePlaniGetir(kiraSozlesme, odemeTarihi, context, transaction);
+            if (plan == null) return false;
+            Odeme odeme = new OdemeService(context).OdemeyiKaydetOdemePlaniniGuncelle(
+                kiraSozlesme, plan, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName(), transaction);
+            if (odeme == null || odeme.Id <= 0) return false;
+            odemeId = odeme.Id;
+            return true;
+        }
+
+        internal static OdemePlani MahsupOdemePlaniGetir(KiraSozlesme kiraSozlesme, DateTime odemeTarihi,
+            PortalLogContext context, SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction", "İşlem bağlamı gereklidir.");
+            var service = new OdemePlaniService(context);
+            List<OdemePlani> plans = service.GetBySozlesmeId(kiraSozlesme.Id, transaction);
+            if (plans == null || plans.Count < 2) return null;
+            OdemePlani reference = plans[1];
+            if (odemeTarihi < reference.OdemeBasTar) return plans.FirstOrDefault(p => p.Sira > 0);
+            if (odemeTarihi > reference.OdemeBitTar
+                && !(kiraSozlesme.OdemeSekli == ProjeConstants.KIRA_ODMSEKLI_YILLIK && odemeTarihi < kiraSozlesme.SozBitTar))
+                return plans.LastOrDefault(p => p.Sira > 0);
+            return service.GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi, transaction)
+                ?? plans.LastOrDefault(p => p.Sira > 0);
         }
 
         public static bool TeminatIslemleriniHesaplaVeKaydet(KiraSozlesme kiraSozlesme, PortalLogContext context)

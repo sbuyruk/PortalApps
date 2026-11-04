@@ -58,6 +58,13 @@ namespace DAO.Repositories.TBYS
             return db.SelectFromDb(q, "");
         }
 
+        public DataTable SelectByOdemeId(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery q = new SqlQuery("SELECT * FROM TeminatIslem_Table WITH (UPDLOCK, HOLDLOCK) WHERE OdemeId=@OdemeId ORDER BY Id");
+            q.AddParameter("@OdemeId", id);
+            return db.SelectFromDb(q, transaction, context);
+        }
+
         public DataTable SelectSumPaidByKiraciId(int id)
         {
             SqlQuery q = new SqlQuery("SELECT SUM(IslemTutari) Toplam FROM TeminatIslem_Table WHERE IslemTipi='Teminat Ödemesi' AND KiraciId=@KiraciId");
