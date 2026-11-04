@@ -67,6 +67,7 @@ namespace Model.Services.TBYS
         public string GetAllReturnJson(PortalLogContext context) { return new Kiraci().ToJSON(new KiraciRepository(context).SelectAllReturnJson()); }
         public string GetAllReturnJson() { return new Kiraci().ToJSON(repository.SelectAllReturnJson()); }
         public DataTable GetAllReturnDataTable(string secim, int bolgeId) { return repository.SelectAllReturnDataTable(secim, bolgeId); }
+        public DataTable GetForTenantList(string secim, int bolgeId) { return repository.SelectForTenantList(secim, bolgeId); }
         public DataTable GetByBolge(string aktif, string bolge) { return repository.SelectByBolge(aktif, bolge); }
         public DataTable GetWithoutActiveContract(int bolgeId) { return repository.SelectWithoutActiveContract(bolgeId); }
         public DataTable GetByFilter(string filter) { return repository.SelectByFilter(filter); }
