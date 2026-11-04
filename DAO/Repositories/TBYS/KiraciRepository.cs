@@ -56,8 +56,24 @@ namespace DAO.Repositories.TBYS
         }
         public DataTable SelectAllReturnDataTable(string secim, int bolgeId)
         {
+            return SelectAllReturnDataTable(secim, bolgeId, false);
+        }
+
+        public DataTable SelectForTenantList(string secim, int bolgeId)
+        {
+            return secim == ProjeConstants.KIRASOZLESME_AKTIF_DEGIL_INT.ToString()
+                ? SelectWithoutActiveContract(bolgeId, true)
+                : SelectAllReturnDataTable(secim, bolgeId, true);
+        }
+
+        private DataTable SelectAllReturnDataTable(string secim, int bolgeId, bool includeLatestContract)
+        {
             StringBuilder sql = new StringBuilder(@"
-                SELECT C.IlAdi Ili,D.IlceAdi Ilcesi,D.IlceAdi, D.IlceAdi +'-'+ C.IlAdi As IlIlce,
+                SELECT " + (includeLatestContract ? @"
+                    (SELECT TOP (1) K.Id FROM KiraSozlesme_Table K
+                     WHERE K.KiraciId=A.Id AND K.Aktif=S.Aktif
+                     ORDER BY K.SozBasTar DESC) AS SonSozlesmeId," : "") + @"
+                    C.IlAdi Ili,D.IlceAdi Ilcesi,D.IlceAdi, D.IlceAdi +'-'+ C.IlAdi As IlIlce,
                     E.KisaAdi As Bolge,A.Id KiraciId, A.Adi, Soyadi, MAX(SozBasTar), COUNT(KiraciId),
                     MAX(S.Id) SozlesmeId,S.Aktif, S.KiraBedeli,S.OdemeSekli,TCKimlikNo,VergiDairesi,VergiNo, Semt,
                     A.Adres,A.Telefon,A.Eposta, A.KiralamaAmaci,A.Aciklama
@@ -86,8 +102,17 @@ namespace DAO.Repositories.TBYS
         }
         public DataTable SelectWithoutActiveContract(int bolgeId)
         {
+            return SelectWithoutActiveContract(bolgeId, false);
+        }
+
+        private DataTable SelectWithoutActiveContract(int bolgeId, bool includeLatestContract)
+        {
             StringBuilder sql = new StringBuilder(@"
-                SELECT A.KiraciId,B.Adi,A.Aktif,B.Soyadi,MAX(A.Id) SozlesmeId,F.IlAdi Ili,D.IlceAdi Ilcesi,D.IlceAdi,D.IlceAdi +'-'+ F.IlAdi As IlIlce,E.KisaAdi As Bolge,
+                SELECT " + (includeLatestContract ? @"
+                    (SELECT TOP (1) K.Id FROM KiraSozlesme_Table K
+                     WHERE K.KiraciId=A.KiraciId AND K.Aktif=A.Aktif
+                     ORDER BY K.SozBasTar DESC) AS SonSozlesmeId," : "") + @"
+                    A.KiraciId,B.Adi,A.Aktif,B.Soyadi,MAX(A.Id) SozlesmeId,F.IlAdi Ili,D.IlceAdi Ilcesi,D.IlceAdi,D.IlceAdi +'-'+ F.IlAdi As IlIlce,E.KisaAdi As Bolge,
                     TCKimlikNo,VergiDairesi,VergiNo,B.Semt,B.Adres,B.Telefon,B.Eposta,B.KiralamaAmaci
                 FROM Kiraci_Table B INNER JOIN KiraSozlesme_Table A ON A.KiraciId=B.Id
                     LEFT JOIN Il_Table F ON F.Id=B.IlId LEFT JOIN Ilce_Table D ON D.Id=B.IlceId LEFT JOIN Bolge_Table E ON E.Id=A.BolgeId

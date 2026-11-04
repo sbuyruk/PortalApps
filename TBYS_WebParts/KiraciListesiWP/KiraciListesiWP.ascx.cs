@@ -315,17 +315,10 @@ namespace TBYS_WebParts.KiraciListesiWP
         private List<KiraciListItem> GetDataList()
         {
 
-            Kiraci kiraci = new Kiraci();
             string kiraciSecimi = KiraciSecimiDDL.SelectedItem.Value;
-            DataTable dataTable;
-            if (KiraciSecimiDDL.SelectedItem.Value.ConvertToInt()==ProjeConstants.KIRASOZLESME_AKTIF_DEGIL_INT)
-            {
-                dataTable = new Model.Services.TBYS.KiraciService(LoggingContext).GetWithoutActiveContract(BolgeIdQS);
-            }
-            else
-            {
-                dataTable = new Model.Services.TBYS.KiraciService(LoggingContext).GetAllReturnDataTable(kiraciSecimi, BolgeIdQS);
-            }
+            DataTable dataTable = new Model.Services.TBYS.KiraciService(LoggingContext)
+                .GetForTenantList(kiraciSecimi, BolgeIdQS);
+            bool duzenleGorunsunMu = !string.IsNullOrEmpty(AuthQS) && AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM);
             int SiraNo = 1;
 
             List<KiraciListItem> list = new List<KiraciListItem>();
@@ -333,7 +326,6 @@ namespace TBYS_WebParts.KiraciListesiWP
             foreach (DataRow row in dataTable.Rows)
             {
                 string kiraciId = row["KiraciId"].ToString();
-                string sozlesmeId = row["SozlesmeId"].ToString();
                 string adi = row["Adi"].ToString();
                 string soyadi = row["Soyadi"].ToString();
 
@@ -350,26 +342,16 @@ namespace TBYS_WebParts.KiraciListesiWP
                 kiraciItem.Bolge = bolge;
                 kiraciItem.IlceIl = ilIlce;
                 kiraciItem.Adres = adres;
-                KiraSozlesme ks = new KiraSozlesme();
-
-                if (!aktif)
-                {
-                    ks = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetCompletedByKiraciId(kiraciId.ConvertToInt());
-                }
-                else
-                {
-                    ks = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetActiveByKiraciId(kiraciId.ConvertToInt());
-                }
-                
-                int sonSozlesmeId = ks != null ? ks.Id : sozlesmeId.ConvertToInt();
+                // Use the same latest-by-start-date contract selection in the list query.
+                bool sozlesmeVar = !row.IsNull("SonSozlesmeId");
+                string sonSozlesmeId = row["SonSozlesmeId"].ToString();
                  kiraciItem.KiraKarti = "<a  target='_blank' href=" + ProjeConstants.PAGE_KIRAKARTI + "?KiraciId=" + kiraciId + " class='btn btn-outline-secondary'>Kira Karti</a>";
                 
-                bool duzenleGorunsunMu = !string.IsNullOrEmpty(AuthQS) && AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM);
                 if (duzenleGorunsunMu)
                 {
-                    kiraciItem.Sozlesme = ks != null ? ("<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + sonSozlesmeId + " class='btn btn-outline-secondary'>Sözlesme</a>")
+                    kiraciItem.Sozlesme = sozlesmeVar ? ("<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + sonSozlesmeId + " class='btn btn-outline-secondary'>Sözlesme</a>")
                     : string.Empty;
-                    kiraciItem.Teminat = ks != null ? ("<a  target='_blank' href=" + ProjeConstants.PAGE_TEMINAT_ISLEMLERI + "?KiraSozlesmeId=" + sonSozlesmeId + " class='btn btn-outline-secondary'>Teminat</a>")
+                    kiraciItem.Teminat = sozlesmeVar ? ("<a  target='_blank' href=" + ProjeConstants.PAGE_TEMINAT_ISLEMLERI + "?KiraSozlesmeId=" + sonSozlesmeId + " class='btn btn-outline-secondary'>Teminat</a>")
                         : string.Empty;
                     kiraciItem.Bakiye = "<a  target='_blank' href=" + ProjeConstants.PAGE_KIRA_BAKIYEDEVRI + "?KiraciId=" + kiraciId + " class='btn btn-outline-secondary'>Bakiye Devri</a>";
 
