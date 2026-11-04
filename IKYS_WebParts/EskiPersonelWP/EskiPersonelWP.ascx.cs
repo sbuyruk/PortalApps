@@ -541,7 +541,6 @@ namespace IKYS_WebParts.EskiPersonelWP
             EvTelefonuTxt.Text = iletsimBilgileri.EvTelefonu;
             CepTelefonuTxt.Text = iletsimBilgileri.CepTelefonu;
             CepTelefonu2Txt.Text = iletsimBilgileri.CepTelefonu2;
-            IntranetEPostaTxt.Text = iletsimBilgileri.IntranetEPosta;
             InternetEPostaTxt.Text = iletsimBilgileri.InternetEPosta;
             OzelEPostaTxt.Text = iletsimBilgileri.OzelEPosta;
             PlakaTxt.Text = iletsimBilgileri.Plaka;
@@ -1764,7 +1763,6 @@ namespace IKYS_WebParts.EskiPersonelWP
             item.Ili = IkametIliDDL.SelectedItem.Value;
             item.Ilcesi = IkametIlcesiDDL.SelectedItem.Value.ConvertToInt();
             item.InternetEPosta = InternetEPostaTxt.Text;
-            item.IntranetEPosta = IntranetEPostaTxt.Text;
             item.OzelEPosta = OzelEPostaTxt.Text;
             item.PersonelId = personel.Id;
             item.PostaKodu = PostaKoduTxt.Text;

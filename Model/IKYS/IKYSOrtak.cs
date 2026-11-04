@@ -266,7 +266,7 @@ namespace Model.Ortak
                     ib = new IletisimBilgileriService().GetByPersonelId(personel.Id, context);
                     if (ib != null)
                     {
-                        userto = ib.IntranetEPosta;
+                        userto = ib.InternetEPosta;
                     }
                     string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL, context);
                     MailHelper.EPostaGonderVeyaHataVer(from, userto, subject, userbody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
@@ -477,7 +477,7 @@ namespace Model.Ortak
                     ib = new IletisimBilgileriService().GetByPersonelId(personel.Id, context);
                     if (ib != null)
                     {
-                        to = ib.IntranetEPosta;
+                        to = ib.InternetEPosta;
                     }
                     //Izin sahibine eposta gönder
                     string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL, context);

@@ -427,11 +427,6 @@
                                                 <asp:TextBox ID="DahiliTelefonuTxt" runat="server" CssClass="form-control"></asp:TextBox>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="IntranetEPostaTxt">EPosta (Intarnet)</label>
-                                                <asp:TextBox ID="IntranetEPostaTxt" runat="server" CssClass="form-control"></asp:TextBox>
-                                                <%--<asp:RequiredFieldValidator runat="server" ControlToValidate="IntranetEPostaTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>--%>
-                                            </div>
-                                            <div class="form-group m-0">
                                                 <label class="col-form-label" for="InternetEPostaTxt">EPosta (Internet)</label>
                                                 <asp:TextBox ID="InternetEPostaTxt" runat="server" CssClass="form-control"></asp:TextBox>
                                                 <%--<asp:RequiredFieldValidator runat="server" ControlToValidate="InternetEPostaTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>--%>

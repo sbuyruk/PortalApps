@@ -38,7 +38,7 @@ namespace Model.Services.NBYS
             if (rows != null)
                 foreach (DataRow row in rows.Rows)
                 {
-                    foreach (string value in Convert.ToString(row["IntranetEPosta"]).Split(';'))
+                    foreach (string value in Convert.ToString(row["InternetEPosta"]).Split(';'))
                     {
                         string address = value.Trim();
                         if (address.Length > 0) recipients.Add(address);

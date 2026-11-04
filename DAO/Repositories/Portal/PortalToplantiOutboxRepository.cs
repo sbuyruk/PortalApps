@@ -152,9 +152,9 @@ namespace DAO.Repositories.Portal
 
         public string Address(int personId)
         {
-            var query = new SqlQuery("SELECT TOP (1) IntranetEPosta FROM IletisimBilgileri_Table WHERE PersonelId=@Id ORDER BY Adres");
+            var query = new SqlQuery("SELECT TOP (1) InternetEPosta FROM IletisimBilgileri_Table WHERE PersonelId=@Id ORDER BY Adres");
             query.AddParameter("@Id", personId);
-            return ScalarText(query, "IntranetEPosta");
+            return ScalarText(query, "InternetEPosta");
         }
 
         private string ScalarText(SqlQuery query, string field)
