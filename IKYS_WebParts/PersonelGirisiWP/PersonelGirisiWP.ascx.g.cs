@@ -2352,7 +2352,6 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             @__parser.AddParsedSubObject(@__ctrl60);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                             </div>
-                                            
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""InternetEPostaTxt"">EPosta (Internet)</label>
                                                 "));
