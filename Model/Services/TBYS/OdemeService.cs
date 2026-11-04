@@ -144,19 +144,22 @@ namespace Model.Services.TBYS
             }
         }
 
-        private bool OdemeyiSilOdemePlaniniGuncelle(int odemeId, string aciklama, int odemePlaniId, string kullanici, SqlTransactionContext transaction)
+        internal bool OdemeyiSilOdemePlaniniGuncelle(int odemeId, string aciklama, int odemePlaniId, string kullanici, SqlTransactionContext transaction)
         {
+            if (transaction == null) throw new ArgumentNullException("transaction", "İşlem bağlamı gereklidir.");
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             Odeme odeme = GetById(odemeId, transaction);
-            if (odeme == null || !Delete(odeme, transaction)) return false;
+            if (odeme == null || odeme.OdemePlaniId != odemePlaniId) return false;
+
+            OdemePlaniService odemePlaniService = new OdemePlaniService(context);
+            OdemePlani odemePlani = odemePlaniService.GetById(odemePlaniId, transaction);
+            if (odemePlani == null || odemePlani.SozlesmeId != odeme.SozlesmeId) return false;
 
             OdemeAyrintiService odemeAyrintiService = new OdemeAyrintiService(context);
             if (odemeAyrintiService.GetByOdemeIdOdemePlaniId(odemeId, odemePlaniId, transaction).Count > 0
                 && !odemeAyrintiService.DeleteByOdemeIdOdemePlaniId(odemeId, odemePlaniId, transaction)) return false;
 
-            OdemePlaniService odemePlaniService = new OdemePlaniService(context);
-            OdemePlani odemePlani = odemePlaniService.GetById(odemePlaniId, transaction);
-            if (odemePlani == null) return false;
+            if (!Delete(odeme, transaction)) return false;
             odemePlani.OdenenTutar = GetSumBySozlesmeIdOdemePlaniId(odemePlani.SozlesmeId, odemePlani.Id, transaction);
             odemePlani.Aciklama += aciklama + Environment.NewLine +
                 " *" + odeme.OdemeTarihi.ConvertToDatetimeEmptyIfNull() + " tarihli " + odeme.OdenenTutar.ToString("N", culturInfo) + " ödeme silindi." + Environment.NewLine;
@@ -176,8 +179,9 @@ namespace Model.Services.TBYS
             }
         }
 
-        private bool OdemeyiVeOdemePlaniniGuncelle(int sozlesmeId, int oncekiOdemePlaniId, int yeniOdemePlaniId, int odemeId, DateTime odemeTarihi, decimal odenenTutar, string aciklama, string kullanici, SqlTransactionContext transaction)
+        internal bool OdemeyiVeOdemePlaniniGuncelle(int sozlesmeId, int oncekiOdemePlaniId, int yeniOdemePlaniId, int odemeId, DateTime odemeTarihi, decimal odenenTutar, string aciklama, string kullanici, SqlTransactionContext transaction)
         {
+            if (transaction == null) throw new ArgumentNullException("transaction", "İşlem bağlamı gereklidir.");
             OdemePlaniService odemePlaniService = new OdemePlaniService(context);
             OdemePlani oncekiOdemePlani = odemePlaniService.GetById(oncekiOdemePlaniId, transaction);
             OdemePlani yeniOdemePlani = odemePlaniService.GetById(yeniOdemePlaniId, transaction);

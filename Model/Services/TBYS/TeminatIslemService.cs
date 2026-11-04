@@ -21,10 +21,12 @@ namespace Model.Services.TBYS
         public TeminatIslemService(TeminatIslemRepository repository) { if (repository == null) throw new ArgumentNullException("repository"); this.repository = repository; }
         public TeminatIslemService(PortalLogContext context) : this(new TeminatIslemRepository(context)) { this.context = context; }
         public TeminatIslem GetById(int id) { return Map(repository.SelectById(id)); }
+        public TeminatIslem GetById(int id, SqlTransactionContext transaction) { return Map(repository.SelectById(id, transaction, context)); }
         public List<TeminatIslem> GetAll() { return ToList(repository.SelectAll()); }
         public List<TeminatIslem> GetBySozlesmeId(int id) { return ToList(repository.SelectBySozlesmeId(id)); }
         public List<TeminatIslem> GetByKiraciId(int id) { return ToList(repository.SelectByKiraciId(id)); }
         public List<TeminatIslem> GetByOdemeId(int id) { return ToList(repository.SelectByOdemeId(id)); }
+        public List<TeminatIslem> GetByOdemeId(int id, SqlTransactionContext transaction) { return ToList(repository.SelectByOdemeId(id, transaction, context)); }
         public decimal GetSumPaidByKiraciId(int id) { DataTable t = repository.SelectSumPaidByKiraciId(id); return t != null && t.Rows.Count > 0 ? t.Rows[0]["Toplam"].ReturnZeroIfNull().ConvertToDecimal() : 0; }
         public DataTable GetSumByKiraciIdGroupByType(int id) { return repository.SelectSumByKiraciIdGroupByType(id); }
         public DataTable GetSumByKiraciIdGroupByType(int id, SqlTransactionContext transaction) { return repository.SelectSumByKiraciIdGroupByType(id, transaction, context); }

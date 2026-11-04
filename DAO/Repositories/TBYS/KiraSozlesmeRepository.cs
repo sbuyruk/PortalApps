@@ -246,24 +246,31 @@ namespace DAO.Repositories.TBYS
         }
         public DataTable SelectNearestByKiraciIdAndDate(int kiraciId, DateTime tarih)
         {
+            return SelectNearestByKiraciIdAndDate(kiraciId, tarih, null, null);
+        }
+
+        public DataTable SelectNearestByKiraciIdAndDate(int kiraciId, DateTime tarih,
+            SqlTransactionContext transaction, PortalLogContext context)
+        {
             DateTime odemeGunu = tarih.Date;
-            SqlQuery query = new SqlQuery("SELECT TOP (1) * FROM KiraSozlesme_Table WHERE KiraciId=@KiraciId AND SozBasTar <= @OdemeGunu AND SozBitTar >= @OdemeGunu ORDER BY SozBasTar DESC, Id DESC");
+            string table = transaction == null ? "KiraSozlesme_Table" : "KiraSozlesme_Table WITH (UPDLOCK, HOLDLOCK)";
+            SqlQuery query = new SqlQuery("SELECT TOP (1) * FROM " + table + " WHERE KiraciId=@KiraciId AND SozBasTar <= @OdemeGunu AND SozBitTar >= @OdemeGunu ORDER BY SozBasTar DESC, Id DESC");
             query.AddParameter("@KiraciId", kiraciId);
             query.AddParameter("@OdemeGunu", odemeGunu);
-            DataTable table = db.SelectFromDb(query, "");
-            if (table != null && table.Rows.Count > 0) return table;
+            DataTable result = transaction == null ? db.SelectFromDb(query, "") : db.SelectFromDb(query, transaction, context);
+            if (result != null && result.Rows.Count > 0) return result;
 
             // Preserve the legacy preference for the next contract when the date is outside all contracts.
-            query = new SqlQuery("SELECT TOP (1) * FROM KiraSozlesme_Table WHERE KiraciId=@KiraciId AND SozBasTar > @OdemeGunu AND SozBitTar >= @OdemeGunu ORDER BY SozBasTar, Id DESC");
+            query = new SqlQuery("SELECT TOP (1) * FROM " + table + " WHERE KiraciId=@KiraciId AND SozBasTar > @OdemeGunu AND SozBitTar >= @OdemeGunu ORDER BY SozBasTar, Id DESC");
             query.AddParameter("@KiraciId", kiraciId);
             query.AddParameter("@OdemeGunu", odemeGunu);
-            table = db.SelectFromDb(query, "");
-            if (table != null && table.Rows.Count > 0) return table;
+            result = transaction == null ? db.SelectFromDb(query, "") : db.SelectFromDb(query, transaction, context);
+            if (result != null && result.Rows.Count > 0) return result;
 
-            query = new SqlQuery("SELECT TOP (1) * FROM KiraSozlesme_Table WHERE KiraciId=@KiraciId AND SozBasTar < @OdemeGunu ORDER BY SozBasTar DESC, Id DESC");
+            query = new SqlQuery("SELECT TOP (1) * FROM " + table + " WHERE KiraciId=@KiraciId AND SozBasTar < @OdemeGunu ORDER BY SozBasTar DESC, Id DESC");
             query.AddParameter("@KiraciId", kiraciId);
             query.AddParameter("@OdemeGunu", odemeGunu);
-            return db.SelectFromDb(query, "");
+            return transaction == null ? db.SelectFromDb(query, "") : db.SelectFromDb(query, transaction, context);
         }
         public DataTable SelectByTasinmazId(int tasinmazId)
         {

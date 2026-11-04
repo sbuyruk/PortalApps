@@ -448,28 +448,6 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             }
 
         }
-        private void OdemeyiGuncelle(KiraSozlesme kiraSozlesme, DateTime odemeTarihi, decimal odenenTutar, int odemeId, string aciklama)
-        {
-            bool guncellendiMi = false;
-            if (kiraSozlesme != null)
-            {
-                Odeme odeme = new Odeme();
-                odeme = new Model.Services.TBYS.OdemeService(LoggingContext).GetById(odemeId);
-                if (odeme != null)
-                {
-                    OdemePlani opl = new OdemePlani();
-                    opl = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi);
-                    int yeniOdemePlaniId = opl != null ? opl.Id : odeme.OdemePlaniId;
-                    guncellendiMi = new Model.Services.TBYS.OdemeService(LoggingContext).OdemeyiVeOdemePlaniniGuncelle(kiraSozlesme.Id, odeme.OdemePlaniId, yeniOdemePlaniId,
-                    odemeId, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
-                }
-
-            }
-            else
-            {
-                Messages.Error("Sözleşme Bulunamadı");
-            }
-        }
         protected void ModalEkleBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
@@ -508,7 +486,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 IslemTarihiTxt.Value = teminatIslem.IslemTarihi.ConvertToDatetimeEmptyIfNull();
                 IslemSaatiTxt.Value = teminatIslem.IslemTarihi.ToString("HH:mm");
                 IslemTutariTxt.Value = teminatIslem.IslemTutari.ToString("N", culturInfo);
-                IslemTipiDDL.SelectedItem.Value = teminatIslem.IslemTipi;
+                UtilityHelper.SetDDLValue(IslemTipiDDL, teminatIslem.IslemTipi);
                 IslemAciklamaTxt.Text = teminatIslem.Aciklama;
 
                 ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "OpenTeminatIslemiModal();", true);
@@ -525,54 +503,31 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 UtilityHelper.ScriptCalistir("OpenDeleteModalOnay();");
             }
         }
+        private TeminatIslem ReadTeminatInput()
+        {
+            return new TeminatIslem
+            {
+                IslemTipi = IslemTipiDDL.SelectedValue,
+                IslemTarihi = UtilityHelper.TariheSaatEkle(IslemTarihiTxt.Value.ConvertToDatetime(), IslemSaatiTxt.Value),
+                IslemTutari = IslemTutariTxt.Value.ConvertToDecimal(),
+                Aciklama = IslemAciklamaTxt.Text
+            };
+        }
+
+        private void RefreshTeminat()
+        {
+            KiraSozlesme contract = new KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
+            if (contract == null) throw new InvalidOperationException("Kira sözleşmesi bulunamadı.");
+            TeminatBilgileriniDoldur(contract);
+            TabloOlustur(contract.KiraciId);
+        }
+
         protected void ModalEkleNowBtn_Click(object sender, EventArgs e)
         {
             try
             {
-                KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
-                if (kiraSozlesme != null)
-                {
-
-                    TeminatIslem teminatIslem = new TeminatIslem();
-                    teminatIslem.KiraciId = kiraSozlesme.KiraciId;
-                    teminatIslem.Aciklama = IslemAciklamaTxt.Text;
-                    teminatIslem.DovizCinsi = ProjeConstants.DOVIZ_TL;
-                    teminatIslem.IslemTarihi = UtilityHelper.TariheSaatEkle(IslemTarihiTxt.Value.ConvertToDatetime(), IslemSaatiTxt.Value);
-                    teminatIslem.IslemTipi = IslemTipiDDL.SelectedValue;
-                    teminatIslem.IslemTutari = IslemTutariTxt.Value.ConvertToDecimal();
-                    teminatIslem.Olusturan = UtilityHelper.GetCurrentUserLoginName();
-                    int teminatIslemId = new Model.Services.TBYS.TeminatIslemService(LoggingContext).Save(teminatIslem);
-                    if (teminatIslemId > 0)
-                    {
-                        if (teminatIslem.IslemTipi.Equals(ProjeConstants.TEMINAT_KIRAYAMAHSUP))
-                        {
-                            KiraSozlesme mahsupEdilecekKiraSozlesme = new KiraSozlesme();
-                            mahsupEdilecekKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetByKiraciIdAndDate(kiraSozlesme.KiraciId, IslemTarihiTxt.Value.ConvertToDatetime());
-                            if (mahsupEdilecekKiraSozlesme == null)
-                            {
-                                mahsupEdilecekKiraSozlesme = new KiraSozlesme();
-                                mahsupEdilecekKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetNearestByKiraciIdAndDate(kiraSozlesme.KiraciId, IslemTarihiTxt.Value.ConvertToDatetime());
-                            }
-                            if (mahsupEdilecekKiraSozlesme != null)
-                            {
-                                int odemeId = 0;
-                                TBYSOrtak.OdemeYap(mahsupEdilecekKiraSozlesme, teminatIslem.IslemTarihi, teminatIslem.IslemTutari, teminatIslem.Aciklama, ref odemeId, LoggingContext);
-                                teminatIslem.OdemeId = odemeId;
-                                new Model.Services.TBYS.TeminatIslemService(LoggingContext).Update(teminatIslem);
-                            }
-                        }
-                        if (!TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme, LoggingContext))
-                            throw new InvalidOperationException("Teminat toplamları güncellenemedi.");
-                        RedirectToPage(ProjeConstants.PAGE_TEMINAT_ISLEMLERI + "?KiraSozlesmeId=" + KiraSozlesmeIdQS);
-                    }
-                    else
-                    {
-                        Messages.Error("Mahsup edilecek bir sözleşme bulunamadı");
-                    }
-
-                }
-
+                new TeminatIslemWriteService(LoggingContext).Save(KiraSozlesmeIdQS.ConvertToInt(), ReadTeminatInput());
+                RedirectToPage(ProjeConstants.PAGE_TEMINAT_ISLEMLERI + "?KiraSozlesmeId=" + KiraSozlesmeIdQS);
             }
             catch (Exception error)
             {
@@ -580,55 +535,15 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 TbysWebPartLog.ReportError(LoggingContext, "TBYS.TeminatIslemleriWP.ModalEkleNowBtn_Click", error);
             }
         }
+
         protected void ModalGuncelleNowBtn_Click(object sender, EventArgs e)
         {
             try
             {
-                TeminatIslem teminatIslem = new TeminatIslem();
-                teminatIslem = new Model.Services.TBYS.TeminatIslemService(LoggingContext).GetById(TeminatIslemIdGuncelleHdn.Value.ConvertToInt());
-                if (teminatIslem != null)
-                {
-
-                    teminatIslem.Aciklama = IslemAciklamaTxt.Text;
-                    teminatIslem.DovizCinsi = ProjeConstants.DOVIZ_TL;
-                    teminatIslem.IslemTarihi = UtilityHelper.TariheSaatEkle(IslemTarihiTxt.Value.ConvertToDatetime(), IslemSaatiTxt.Value);
-                    teminatIslem.IslemTipi = IslemTipiDDL.SelectedValue;
-                    teminatIslem.IslemTutari = IslemTutariTxt.Value.ConvertToDecimal();
-                    teminatIslem.Degistiren = UtilityHelper.GetCurrentUserLoginName();
-                    if (new Model.Services.TBYS.TeminatIslemService(LoggingContext).Update(teminatIslem))
-                    {
-                        KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                        kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
-                        if (kiraSozlesme != null)
-                        {
-                            KiraSozlesme mahsupEdilecekKiraSozlesme = new KiraSozlesme();
-                            mahsupEdilecekKiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetNearestByKiraciIdAndDate(kiraSozlesme.KiraciId, IslemTarihiTxt.Value.ConvertToDatetime());
-
-                            if (mahsupEdilecekKiraSozlesme != null)
-                            {
-                                if (!TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme, LoggingContext))
-                                    throw new InvalidOperationException("Teminat toplamları güncellenemedi.");
-                                TeminatBilgileriniDoldur(kiraSozlesme);
-                                TabloOlustur(kiraSozlesme.KiraciId);
-                                Messages.Success("Teminat İşlemi Güncellendi", 2000);
-                                if (teminatIslem.IslemTipi.Equals(ProjeConstants.TEMINAT_KIRAYAMAHSUP))
-                                {
-                                    OdemeyiGuncelle(mahsupEdilecekKiraSozlesme, teminatIslem.IslemTarihi, teminatIslem.IslemTutari, teminatIslem.OdemeId, teminatIslem.Aciklama);
-                                }
-                            }
-
-                        }
-                        else
-                        {
-                            Messages.Error("Teminata ait sözleşme bulunamadı!");
-                        }
-                    }
-                }
-                else
-                {
-                    Messages.Error("Teminat İşlemi bulunamadı!");
-                }
-
+                new TeminatIslemWriteService(LoggingContext).Update(KiraSozlesmeIdQS.ConvertToInt(),
+                    TeminatIslemIdGuncelleHdn.Value.ConvertToInt(), ReadTeminatInput());
+                RefreshTeminat();
+                Messages.Success("Teminat işlemi ve bağlı kayıtlar güncellendi.", 2000);
             }
             catch (Exception error)
             {
@@ -636,47 +551,15 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 TbysWebPartLog.ReportError(LoggingContext, "TBYS.TeminatIslemleriWP.ModalGuncelleNowBtn_Click", error);
             }
         }
+
         protected void ModalSilNowBtn_Click(object sender, EventArgs e)
         {
             try
             {
-                int teminatId = TeminatIslemIdSilLbl.Value.ConvertToInt();
-
-                TeminatIslem teminatIslem = new TeminatIslem();
-                teminatIslem = new Model.Services.TBYS.TeminatIslemService(LoggingContext).GetById(teminatId);
-                if (teminatIslem != null)
-                {
-                    bool silindiMi = new Model.Services.TBYS.TeminatIslemService(LoggingContext).Delete(teminatIslem);
-                    KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                    kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
-                    if (kiraSozlesme != null)
-                    {
-                        if (teminatIslem.IslemTipi.Equals(ProjeConstants.TEMINAT_KIRAYAMAHSUP) && silindiMi)
-                        {
-                            Odeme odeme = new Odeme();
-                            odeme = new Model.Services.TBYS.OdemeService(LoggingContext).GetById(teminatIslem.OdemeId);
-                            if (odeme != null)
-                            {
-                                bool odemeSilindiMi = new Model.Services.TBYS.OdemeService(LoggingContext).Delete(odeme);
-                            }
-
-                        }
-                        if (!TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme, LoggingContext))
-                            throw new InvalidOperationException("Teminat toplamları güncellenemedi.");
-                        TeminatBilgileriniDoldur(kiraSozlesme);
-                        TabloOlustur(kiraSozlesme.KiraciId);
-                        Messages.Success("Teminat İşlemi Silindi", 2000);
-                    }
-                    else
-                    {
-                        Messages.Info("Teminat İşlemi Silindi. Teminata ait sözleşme bulunamadı!", 4000);
-                    }
-                }
-                else
-                {
-                    Messages.Error("Teminat İşlemi bulunamadı!");
-                }
-
+                new TeminatIslemWriteService(LoggingContext).Delete(KiraSozlesmeIdQS.ConvertToInt(),
+                    TeminatIslemIdSilLbl.Value.ConvertToInt());
+                RefreshTeminat();
+                Messages.Success("Teminat işlemi ve bağlı kayıtlar silindi.", 2000);
             }
             catch (Exception error)
             {

@@ -208,6 +208,7 @@
     <Compile Include="Services\TBYS\OdemeSebebiTanimService.cs" />
     <Compile Include="Services\TBYS\OdemeAyrintiService.cs" />
     <Compile Include="Services\TBYS\TeminatIslemService.cs" />
+    <Compile Include="Services\TBYS\TeminatIslemWriteService.cs" />
     <Compile Include="Services\TBYS\OdemePlaniService.cs" />
     <Compile Include="Services\TBYS\OdemePlaniRaporService.cs" />
     <Compile Include="Services\TBYS\OdemeService.cs" />
