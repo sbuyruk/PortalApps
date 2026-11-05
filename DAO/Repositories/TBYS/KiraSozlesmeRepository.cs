@@ -31,6 +31,25 @@ namespace DAO.Repositories.TBYS
             return db.SelectFromDb(query, "");
         }
 
+        public bool HasProtectedDeleteLinks(int id, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT 1 AS InUse WHERE
+                    EXISTS (SELECT 1 FROM HukukiTakip_Table WITH (UPDLOCK, HOLDLOCK) WHERE SozlesmeId=@Id)
+                    OR EXISTS (SELECT 1 FROM KiraBorcuTakip_Table WITH (UPDLOCK, HOLDLOCK) WHERE KiraSozlesmeId=@Id)
+                    OR EXISTS (SELECT 1 FROM OdemePlani_Table P WITH (UPDLOCK, HOLDLOCK)
+                        INNER JOIN KiraBorcuTakip_Table K WITH (UPDLOCK, HOLDLOCK) ON K.OdemePlaniId=P.Id WHERE P.SozlesmeId=@Id)
+                    OR EXISTS (SELECT 1 FROM OdemeAyristirma_Table WITH (UPDLOCK, HOLDLOCK) WHERE SozlesmeId=@Id)
+                    OR EXISTS (SELECT 1 FROM Odeme_Table O WITH (UPDLOCK, HOLDLOCK)
+                        INNER JOIN TeminatIslem_Table T WITH (UPDLOCK, HOLDLOCK) ON T.OdemeId=O.Id WHERE O.SozlesmeId=@Id)
+                    OR EXISTS (SELECT 1 FROM Odeme_Table O WITH (UPDLOCK, HOLDLOCK)
+                        INNER JOIN KiraEkstreAktarma_Table E WITH (UPDLOCK, HOLDLOCK) ON E.OdemeId=O.Id WHERE O.SozlesmeId=@Id)
+                    OR EXISTS (SELECT 1 FROM Odeme_Table O WITH (UPDLOCK, HOLDLOCK)
+                        INNER JOIN OdemeAyristirma_Table A WITH (UPDLOCK, HOLDLOCK) ON A.OdemeId=O.Id WHERE O.SozlesmeId=@Id)");
+            query.AddParameter("@Id", id);
+            return db.SelectFromDb(query, transaction, context) != null;
+        }
+
         public DataTable SelectAll()
         {
             return db.SelectFromDb(new SqlQuery(@"
