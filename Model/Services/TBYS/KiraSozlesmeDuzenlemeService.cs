@@ -13,7 +13,7 @@ using Utility.ProjeGlobal;
 
 namespace Model.Services.TBYS
 {
-    public enum KiraSozlesmeDuzenlemeResult { Completed, Changed, NotFound, InvalidInput, ConfirmationRequired }
+    public enum KiraSozlesmeDuzenlemeResult { Completed, Changed, NotFound, InvalidInput, ConfirmationRequired, InUse, PaidInstallmentDatesChanged }
 
     public sealed class KiraSozlesmeDuzenlemeSnapshot
     {
@@ -52,12 +52,14 @@ namespace Model.Services.TBYS
                 if (string.IsNullOrEmpty(expectedVersion) || current.Version != expectedVersion)
                     return KiraSozlesmeDuzenlemeResult.Changed;
                 if (input.SozBasTar < new DateTime(1753, 1, 1) || input.SozBitTar < input.SozBasTar
-                    || input.KiraBedeli <= 0 || input.TaksitSayisi < 1 || input.TaksitSayisi > 12)
+                    || input.KiraBedeli <= 0 || input.TaksitSayisi < 1 || input.TaksitSayisi > 12
+                    || (input.OdemeSekli != ProjeConstants.KIRA_ODMSEKLI_AYLIK && input.OdemeSekli != ProjeConstants.KIRA_ODMSEKLI_YILLIK))
                     return KiraSozlesmeDuzenlemeResult.InvalidInput;
 
                 KiraSozlesme contract = current.Contract;
                 bool critical = contract.SozBasTar.Date != input.SozBasTar.Date || contract.SozBitTar.Date != input.SozBitTar.Date
-                    || contract.KiraBedeli != input.KiraBedeli || contract.TaksitSayisi != input.TaksitSayisi;
+                    || contract.KiraBedeli != input.KiraBedeli || contract.TaksitSayisi != input.TaksitSayisi
+                    || contract.OdemeSekli != input.OdemeSekli;
                 if (critical && !confirmPlanDeletion) return KiraSozlesmeDuzenlemeResult.ConfirmationRequired;
                 CopyEditableFields(input, contract);
                 Kiraci tenant = new Kiraci().ToList<Kiraci>(
@@ -70,9 +72,10 @@ namespace Model.Services.TBYS
                 var existingPlans = plans.GetBySozlesmeId(contract.Id, transaction);
                 if (critical && existingPlans.Count > 0)
                 {
-                    if (!new OdemeAyrintiService(context).DeleteBySozlesmeId(contract.Id, transaction)
-                        || !plans.DeleteBySozlesmeId(existingPlans[0], contract.Id, transaction))
-                        throw new InvalidOperationException("Sözleşmenin ödeme planı silinemedi.");
+                    if (!plans.RebuildPaymentPlan(contract, transaction))
+                        return KiraSozlesmeDuzenlemeResult.PaidInstallmentDatesChanged;
+                    if (!new OdemeAyrintiService(context).DeleteBySozlesmeId(contract.Id, transaction))
+                        throw new InvalidOperationException("Sözleşmenin ödeme ayrıntıları güncellenemedi.");
                 }
                 else if (!critical)
                 {
@@ -89,11 +92,39 @@ namespace Model.Services.TBYS
                 }
                 if (!new KiraSozlesmeService(context).Update(contract, transaction))
                     throw new InvalidOperationException("Sözleşme güncellenemedi.");
+                if (critical && existingPlans.Count > 0)
+                {
+                    if (!TBYSOrtak.BakiyeBorcHesapla(contract, context, transaction))
+                        throw new InvalidOperationException("Sözleşmenin ödeme planı hesaplanamadı.");
+                }
                 completed = Snapshot(repository.SelectById(contract.Id, transaction, context));
                 if (completed == null) throw new InvalidOperationException("Güncellenen sözleşme okunamadı.");
                 transaction.Complete();
             }
             saved = completed;
+            return KiraSozlesmeDuzenlemeResult.Completed;
+        }
+
+        public KiraSozlesmeDuzenlemeResult Delete(int id, string expectedVersion)
+        {
+            using (var transaction = new SqlTransactionContext())
+            {
+                var current = Snapshot(repository.SelectById(id, transaction, context));
+                if (current == null) return KiraSozlesmeDuzenlemeResult.NotFound;
+                if (string.IsNullOrEmpty(expectedVersion) || current.Version != expectedVersion)
+                    return KiraSozlesmeDuzenlemeResult.Changed;
+                if (repository.HasProtectedDeleteLinks(id, transaction, context))
+                    return KiraSozlesmeDuzenlemeResult.InUse;
+                var plans = new OdemePlaniService(context);
+                var existing = plans.GetBySozlesmeId(id, transaction);
+                if (!new OdemeAyrintiService(context).DeleteBySozlesmeId(id, transaction)
+                    || !new OdemeService(context).DeleteBySozlesmeId(id, transaction)
+                    || !plans.DeleteBySozlesmeId(existing.FirstOrDefault(), id, transaction)
+                    || !new SozlesmeTasinmazService(context).DeleteBySozlesmeId(id, transaction)
+                    || !new KiraSozlesmeService(context).Delete(current.Contract, transaction))
+                    throw new InvalidOperationException("Sözleşme ve bağlı kayıtlar silinemedi; işlem geri alındı.");
+                transaction.Complete();
+            }
             return KiraSozlesmeDuzenlemeResult.Completed;
         }
 

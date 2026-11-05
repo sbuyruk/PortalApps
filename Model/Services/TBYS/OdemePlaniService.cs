@@ -86,7 +86,35 @@ namespace Model.Services.TBYS
             if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
             using (SqlTransactionContext tx = new SqlTransactionContext()) { bool created = CreatePaymentPlan(kiraSozlesme, tx); if (created) tx.Complete(); return created; }
         }
-        private bool CreatePaymentPlan(KiraSozlesme kiraSozlesme, SqlTransactionContext transaction)
+        internal bool RebuildPaymentPlan(KiraSozlesme contract, SqlTransactionContext transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException("transaction", "İşlem bağlamı gereklidir.");
+            List<OdemePlani> existing = GetBySozlesmeId(contract.Id, transaction);
+            if (existing.Any(p => p.Sira < 0 || p.Sira > 12) || existing.GroupBy(p => p.Sira).Any(g => g.Count() > 1))
+                throw new InvalidOperationException("Ödeme planı sıraları tutarsız. Sözleşme güncellenmeden önce plan kontrol edilmelidir.");
+            var planIds = new HashSet<int>(existing.Select(p => p.Id));
+            DataTable payments = new OdemeRepository(context).SelectBySozlesmeId(contract.Id, transaction, context);
+            if (payments != null)
+                foreach (DataRow payment in payments.Rows)
+                {
+                    if (payment.IsNull("OdemePlaniId") || !planIds.Contains(Convert.ToInt32(payment["OdemePlaniId"]))
+                        || payment.IsNull("KiraciId") || Convert.ToInt32(payment["KiraciId"]) != contract.KiraciId)
+                        throw new InvalidOperationException("Sözleşmenin mevcut ödeme bağlantıları tutarsız. Güncellemeden önce kayıtlar kontrol edilmelidir.");
+                    OdemePlani paidPlan = existing.First(p => p.Id == Convert.ToInt32(payment["OdemePlaniId"]));
+                    DateTime due = contract.SozBasTar;
+                    for (int n = 1; n < paidPlan.Sira; n++) due = due.AddMonths(1);
+                    if (paidPlan.Sira == 0)
+                    {
+                        if (paidPlan.VadeBitTar != contract.SozBasTar.AddDays(-1)) return false;
+                    }
+                    else if (paidPlan.VadeBasTar != due || paidPlan.VadeBitTar != due.AddMonths(1).AddDays(-1))
+                        return false;
+                }
+            return CreatePaymentPlan(contract, transaction, existing.ToDictionary(p => p.Sira));
+        }
+
+        private bool CreatePaymentPlan(KiraSozlesme kiraSozlesme, SqlTransactionContext transaction,
+            Dictionary<int, OdemePlani> existing = null)
         {
             IFormatProvider cultureInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             int taksitSayisi = kiraSozlesme.TaksitSayisi;
@@ -99,33 +127,48 @@ namespace Model.Services.TBYS
             DateTime vadeBitis = vadeBaslangic.AddMonths(1).AddDays(-1);
             decimal aylikKira = kiraSozlesme.KiraBedeli;
             if (kiraSozlesme.OdemeSekli.Equals(ProjeConstants.KIRA_ODMSEKLI_YILLIK)) aylikKira = kiraSozlesme.KiraBedeli / taksitSayisi;
-            SaveCarryOver(kiraSozlesme, kiraSozlesme.DevirAnaPara, kiraSozlesme.DevirFaizTutari, "Önceki Sözlesmeden devir", 0, transaction);
+            SaveCarryOver(kiraSozlesme, kiraSozlesme.DevirAnaPara, kiraSozlesme.DevirFaizTutari, "Önceki Sözlesmeden devir", 0, transaction, existing);
             for (int i = 1; i <= taksitSayisi; i++)
             {
                 int yil = vadeBaslangic.Year; string ay = vadeBaslangic.ToString("MMMM", cultureInfo);
                 if ((ay + "/" + yil).Equals(bitisAyi + "/" + sozlesmeBitis.Year)) break;
-                SaveNew(kiraSozlesme, yil, ay, vadeBaslangic, vadeBitis, sozlesmeBaslangic, sozlesmeBitis, aylikKira, i, transaction);
+                SaveNew(kiraSozlesme, yil, ay, vadeBaslangic, vadeBitis, sozlesmeBaslangic, sozlesmeBitis, aylikKira, i, transaction, existing);
                 vadeBaslangic = vadeBaslangic.AddMonths(1); vadeBitis = vadeBaslangic.AddMonths(1).AddDays(-1);
             }
             for (int i = taksitSayisi + 1; i <= 12; i++)
             {
                 int yil = vadeBaslangic.Year; string ay = vadeBaslangic.ToString("MMMM", cultureInfo);
-                SaveNew(kiraSozlesme, yil, ay, vadeBaslangic, vadeBitis, sozlesmeBaslangic, sozlesmeBitis, 0, i, transaction);
+                SaveNew(kiraSozlesme, yil, ay, vadeBaslangic, vadeBitis, sozlesmeBaslangic, sozlesmeBitis, 0, i, transaction, existing);
                 vadeBaslangic = vadeBaslangic.AddMonths(1); vadeBitis = vadeBaslangic.AddMonths(1).AddDays(-1);
             }
             return true;
         }
-        private void SaveNew(KiraSozlesme kiraSozlesme, int yil, string ay, DateTime vadeBaslangic, DateTime vadeBitis, DateTime odemeBaslangic, DateTime odemeBitis, decimal aylikKira, int sira, SqlTransactionContext transaction)
+        private void SaveNew(KiraSozlesme kiraSozlesme, int yil, string ay, DateTime vadeBaslangic, DateTime vadeBitis, DateTime odemeBaslangic, DateTime odemeBitis, decimal aylikKira, int sira, SqlTransactionContext transaction, Dictionary<int, OdemePlani> existing)
         {
             OdemePlani item = new OdemePlani { SozlesmeId = kiraSozlesme.Id, Yil = yil, Ay = ay, VadeBasTar = vadeBaslangic, VadeBitTar = vadeBitis, KiraBedeli = aylikKira, AnaPara = 0, FaizTutari = 0, OdenenTutar = 0, OdemeBasTar = odemeBaslangic, OdemeBitTar = odemeBitis, Sira = sira, Aciklama = "" };
-            int id = Save(item, transaction);
-            if (id <= 0) throw new InvalidOperationException("Ödeme planı satırı kaydedilemedi.");
+            PersistPlan(item, transaction, existing);
         }
-        private void SaveCarryOver(KiraSozlesme kiraSozlesme, decimal anaPara, decimal faizTutari, string aciklama, int sira, SqlTransactionContext transaction)
+        private void SaveCarryOver(KiraSozlesme kiraSozlesme, decimal anaPara, decimal faizTutari, string aciklama, int sira, SqlTransactionContext transaction, Dictionary<int, OdemePlani> existing)
         {
             OdemePlani item = new OdemePlani { SozlesmeId = kiraSozlesme.Id, VadeBitTar = kiraSozlesme.SozBasTar.AddDays(-1), AnaPara = anaPara, FaizTutari = faizTutari, FaizliBakiye = anaPara + faizTutari, OdenenTutar = 0, Aciklama = aciklama, Sira = sira };
-            int id = Save(item, transaction);
-            if (id <= 0) throw new InvalidOperationException("Ödeme planı satırı kaydedilemedi.");
+            PersistPlan(item, transaction, existing);
+        }
+
+        private void PersistPlan(OdemePlani item, SqlTransactionContext transaction, Dictionary<int, OdemePlani> existing)
+        {
+            OdemePlani old;
+            if (existing != null && existing.TryGetValue(item.Sira, out old))
+            {
+                // Keep identities so payments, collection tracking and other links remain valid.
+                item.Id = old.Id;
+                item.Olusturan = old.Olusturan;
+                item.OlusturmaTarihi = old.OlusturmaTarihi;
+                item.Aciklama = old.Aciklama;
+                item.OdenenTutar = new OdemeService(context).GetSumBySozlesmeIdOdemePlaniId(item.SozlesmeId, item.Id, transaction);
+                if (!Update(item, transaction)) throw new InvalidOperationException("Ödeme planı satırı güncellenemedi.");
+            }
+            else if (Save(item, transaction) <= 0)
+                throw new InvalidOperationException("Ödeme planı satırı kaydedilemedi.");
         }
         private static List<OdemePlani> ToList(DataTable t) { return new OdemePlani().ToList<OdemePlani>(t); }
         private static OdemePlani Map(DataTable t) { return ToList(t).FirstOrDefault(); }

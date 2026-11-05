@@ -454,6 +454,8 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
         private bool SozlesmedeKritikAlanlarDegistiMi(KiraSozlesme kiraSozlesme)
         {
             bool retVal = false;
+            if (kiraSozlesme.OdemeSekli != OdemeSekliDDL.SelectedValue)
+                retVal = true;
             if (!kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull().Equals(SozBasTarTxt.Value))
                 retVal = true;
             if (!kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull().Equals(SozBitTarTxt.Value))
@@ -576,92 +578,38 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                         ? "Sözleşme artık bulunamıyor. Listeyi yenileyiniz."
                         : result == KiraSozlesmeDuzenlemeResult.ConfirmationRequired
                             ? "Ödeme planını etkileyen değişiklikler için güncelleme işlemini yeniden onaylayınız."
-                            : "Sözleşmenin tarih, kira bedeli ve taksit bilgilerini kontrol ediniz.";
+                            : result == KiraSozlesmeDuzenlemeResult.PaidInstallmentDatesChanged
+                                ? "Ödeme bulunan taksidin vade tarihleri değiştirilemez. Önce ödeme ve dönem bağlantılarını kontrol ediniz. Değişiklikler kaydedilmedi."
+                                : "Sözleşmenin tarih, kira bedeli, ödeme şekli ve taksit bilgilerini kontrol ediniz.";
                 Messages.Warning(message);
                 return null;
             }
             ContractEditVersion = saved.Version;
             return saved.Contract;
         }
-        private void SozlesmeSil()
+        private bool SozlesmeSil()
         {
-
             try
             {
-                bool sozlesmeSilindi = false;
-                bool odemePlaniSilindi = false;
-                bool odemePlaniVar = false;
-                bool odemeSilindi = false;
-                KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
-                if (kiraSozlesme != null)
-                {
-                    int kiraSozlesmeId = kiraSozlesme.Id;
-                    odemePlaniVar = GecerliOdemePlaniVarMi(kiraSozlesme);
-                    if (odemePlaniVar)
-                    {
-                        odemePlaniSilindi = OdemePlaniSil(kiraSozlesme);
-                    }
-                    if (odemePlaniSilindi || !odemePlaniVar)
-                    {
-                        sozlesmeSilindi = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Delete(kiraSozlesme);
-
-                    }
-                    if (sozlesmeSilindi)
-                    {
-                        Odeme odeme = new Odeme();
-                        odemeSilindi = new Model.Services.TBYS.OdemeService(LoggingContext).DeleteBySozlesmeId(kiraSozlesmeId);
-                        OdemeAyrinti odemeAyrintiDao = new OdemeAyrinti();
-                        List<OdemeAyrinti> odemeAyrintiListesi = new Model.Services.TBYS.OdemeAyrintiService(LoggingContext).GetBySozlesmeId(kiraSozlesme.Id);
-                        if (odemeAyrintiListesi.Count > 0)
-                        {
-                            new Model.Services.TBYS.OdemeAyrintiService(LoggingContext).DeleteBySozlesmeId(kiraSozlesme.Id);
-                        }
-
-                    }
-                    SozlesmeTasinmaz st = new SozlesmeTasinmaz();
-                    bool sozlesmeTasinmazSilindi = new Model.Services.TBYS.SozlesmeTasinmazService(LoggingContext).DeleteBySozlesmeId(st, kiraSozlesme.Id);
-                }
+                var result = new KiraSozlesmeDuzenlemeService(LoggingContext)
+                    .Delete(KiraSozlesmeIdQS.ConvertToInt(), ContractEditVersion);
+                if (result == KiraSozlesmeDuzenlemeResult.Completed) return true;
+                string message = result == KiraSozlesmeDuzenlemeResult.Changed
+                    ? "Sözleşme siz ekranı açtıktan sonra değiştirildi. Sayfayı yenileyip tekrar kontrol ediniz."
+                    : result == KiraSozlesmeDuzenlemeResult.InUse
+                        ? "Sözleşmeye bağlı banka, mahsup veya takip kayıtları var. Bağlantılar kontrol edilmeden sözleşme silinemez."
+                        : "Sözleşme artık bulunamıyor. Listeyi yenileyiniz.";
+                Messages.Warning(message);
+                return false;
             }
-            catch (Exception e)
+            catch (Exception error)
             {
-                if (e is System.Threading.ThreadAbortException) throw;
-                TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraSozlesmesiWP.SozlesmeSil", e);
-
-                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.SozlesmeSil", e);
+                if (error is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.SozlesmeSil", error);
+                return false;
             }
+        }
 
-        }
-        private bool OdemePlaniSil(KiraSozlesme kiraSozlesme)
-        {
-            bool silindi = false;
-            OdemePlani odemePlaniDao = new OdemePlani();
-            List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeId(kiraSozlesme.Id);
-            if (list.Count > 0)
-            {
-                OdemePlani op = list[0];
-                if (op.SozlesmeId == kiraSozlesme.Id)
-                {
-                    silindi = new Model.Services.TBYS.OdemePlaniService(LoggingContext).DeleteBySozlesmeId(op, kiraSozlesme.Id);
-                    if (silindi)
-                    {
-                        //Odeme odemeDao = new Odeme();
-                        //List<Odeme> odemeListesi = odemeDao.SelectBySozlesmeId(kiraSozlesme.Id);
-                        //if (list.Count > 0)
-                        //{
-                        //    odemeDao.DeleteBySozlesmeId(kiraSozlesme.Id);
-                        //}
-                        OdemeAyrinti odemeAyrintiDao = new OdemeAyrinti();
-                        List<OdemeAyrinti> odemeAyrintiListesi = new Model.Services.TBYS.OdemeAyrintiService(LoggingContext).GetBySozlesmeId(kiraSozlesme.Id);
-                        if (odemeAyrintiListesi.Count > 0)
-                        {
-                            new Model.Services.TBYS.OdemeAyrintiService(LoggingContext).DeleteBySozlesmeId(kiraSozlesme.Id);
-                        }
-                    }
-                }
-            }
-            return silindi;
-        }
         private bool GecerliOdemePlaniVarMi(KiraSozlesme kiraSozlesme)
         {
             bool odemePlaniVar = false;
@@ -1184,9 +1132,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                     SenderHF.Value = "Update";
                     if (BelgeYukleFU.HasFile)
                         Messages.Info("Sözleşme değişikliğini onayladıktan sonra belge dosyasını yeniden seçip yükleyiniz.");
-                    MessageLbl.Text = @"Onayladığınız takdirde, bu sözleşme güncellenmeden önce sözleşmeye ait ÖDEME PLANI silinecek.
-Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabilir.
-Ayrica sözleşme güncellendikten sonra yeni ödeme plani olusturmalisiniz.";
+                    MessageLbl.Text = "Onayladığınız takdirde sözleşme ve mevcut ödeme planı birlikte güncellenecek. Mevcut ödemelerin taksit bağlantıları korunarak plan tutarları ve bakiyeleri yeniden hesaplanacak.";
                     OnaylaBtn.Text = " Sözleşmeyi Güncelle ";
                     UtilityHelper.ScriptCalistir( "OpenModal();");
                 }
@@ -1203,8 +1149,7 @@ Ayrica sözleşme güncellendikten sonra yeni ödeme plani olusturmalisiniz.";
             YeniKiraBedeliDiv.Attributes["style"] = "display:none";
             ModalLbl.Text = "Sözleşme Silinecek";
             SenderHF.Value = "Delete";
-            MessageLbl.Text = @"Onayladığınız takdirde bu sözleşme ve bu sözleşmeye ait ÖDEME PLANI silinecek. 
-Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabilir.";
+            MessageLbl.Text = "Onayladığınız takdirde sözleşme, ödeme planı, ödeme hareketleri, ödeme ayrıntıları ve taşınmaz bağlantıları birlikte silinecek. Banka, mahsup veya takip kayıtlarıyla bağlantı varsa silme işlemi durdurulacak.";
             OnaylaBtn.Text = " Sözleşmeyi Sil ";
             UtilityHelper.ScriptCalistir("OpenModal();");
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
@@ -1228,16 +1173,16 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabili
                 UpdateKiraSozlesme(true);
                 return;
             }
+            if (SenderHF.Value == "Delete")
+            {
+                if (SozlesmeSil()) OncekiSayfayaDon();
+                return;
+            }
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
-                if (SenderHF.Value.Equals("Delete"))
-                {
-                    SozlesmeSil();
-                    OncekiSayfayaDon();
-                }
-                else if (SenderHF.Value.Equals("SozlesmeyiBitir"))
+                if (SenderHF.Value.Equals("SozlesmeyiBitir"))
                 {
 
                     SozlesmeyiBitir();
