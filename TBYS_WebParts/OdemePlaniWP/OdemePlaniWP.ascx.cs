@@ -821,53 +821,23 @@ namespace TBYS_WebParts.OdemePlaniWP
             ";
             UtilityHelper.ScriptCalistir(jsString);
         }
-        private bool OdemePlaniniKontrolEtVeSil(KiraSozlesme kiraSozlesme)
-        {
-            bool silindi = false;
-            OdemePlani odemePlaniDao = new OdemePlani();
-            List<OdemePlani> list = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeId(kiraSozlesme.Id);
-            if (list.Count > 0)
-            {
-                OdemePlani op = list[0];
-                if (op.SozlesmeId == kiraSozlesme.Id)
-                {
-                    silindi = new Model.Services.TBYS.OdemePlaniService(LoggingContext).DeleteBySozlesmeId(op, kiraSozlesme.Id);
-                    if (silindi)
-                    {
-                        //Odemeler de silinsin
-                        //Odeme odemeDao = new Odeme();
-                        //List<Odeme> odemeListesi = odemeDao.SelectBySozlesmeId(kiraSozlesme.Id);
-                        //if (odemeListesi.Count > 0)
-                        //{
-                        //    odemeDao.DeleteBySozlesmeId(kiraSozlesme.Id);
-                        //}
-                        OdemeAyrinti odemeAyrintiDao = new OdemeAyrinti();
-                        List<OdemeAyrinti> odemeAyrintiListesi = new Model.Services.TBYS.OdemeAyrintiService(LoggingContext).GetBySozlesmeId(kiraSozlesme.Id);
-                        if (odemeAyrintiListesi.Count > 0)
-                        {
-                            new Model.Services.TBYS.OdemeAyrintiService(LoggingContext).DeleteBySozlesmeId(kiraSozlesme.Id);
-                        }
-                    }
-                }
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-                newUrl += "/" + ProjeConstants.PAGE_ODEMEPLANI + "?KiraSozlesmeId=" + kiraSozlesme.Id;
-                Page.Response.Redirect(newUrl, true);
-            }
-            return silindi;
-        }
         protected void OdemePlaniSilBtn_Click(object sender, EventArgs e)
         {
             try
             {
-                bool odemePlaniSilindi = false;
-                KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
-                if (kiraSozlesme != null)
+                int contractId = KiraSozlesmeIdQS.ConvertToInt();
+                var result = new Model.Services.TBYS.OdemePlaniService(LoggingContext).DeletePlan(contractId);
+                if (result == Model.Services.TBYS.OdemePlaniSilmeResult.Completed)
                 {
-                    int kiraSozlesmeId = kiraSozlesme.Id;
-                    odemePlaniSilindi = OdemePlaniniKontrolEtVeSil(kiraSozlesme);
+                    string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                    string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
+                    newUrl += "/" + ProjeConstants.PAGE_ODEMEPLANI + "?KiraSozlesmeId=" + contractId;
+                    Page.Response.Redirect(newUrl, true);
                 }
+                else if (result == Model.Services.TBYS.OdemePlaniSilmeResult.InUse)
+                    Messages.Warning("Ödeme veya takip bağlantısı bulunan plan silinemez. Hiçbir kayıt silinmedi; bağlantılı kayıtları kontrol ediniz.");
+                else
+                    Messages.Warning("Sözleşme veya ödeme planı bulunamadı. Sayfayı yenileyip tekrar kontrol ediniz.");
             }
             catch (Exception ex)
             {
