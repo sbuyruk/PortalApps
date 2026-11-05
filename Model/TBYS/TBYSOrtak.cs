@@ -103,6 +103,7 @@ namespace Model.Ortak
                 if (yasalFaiz == null) throw new InvalidOperationException("İlgili dönem için yasal faiz oranı bulunamadı.");
                 faizOrani = yasalFaiz.FaizOrani <= 0 ? faizOrani : yasalFaiz.FaizOrani;
                 decimal borc = -odemePlani.KiraBedeli;
+                odemePlani.OdenenTutar = new Model.Services.TBYS.OdemeService(context).GetSumBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlani.Id, transaction);
                 decimal anaPara = odemePlani.OdenenTutar + borc;
                 anaParaToplami += anaPara + devirAnaPara;
                 devirAnaPara = 0;
@@ -119,7 +120,6 @@ namespace Model.Ortak
                     else if (fark < 0) { faizToplami = Math.Min(0, fark); anaParaToplami = 0; }
                     else { anaParaToplami = 0; faizToplami = 0; }
                 }
-                odemePlani.OdenenTutar = new Model.Services.TBYS.OdemeService(context).GetSumBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlani.Id, transaction);
                 odemePlani.FaizliBakiye = faizliBakiye;
                 odemePlani.FaizOrani = faizOrani;
                 odemePlani.FaizTutari = faizTutari;
