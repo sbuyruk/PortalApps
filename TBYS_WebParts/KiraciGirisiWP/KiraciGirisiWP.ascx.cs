@@ -610,7 +610,8 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetActiveByKiraciId(kiraci.Id);
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
-                    Messages.Error("Zaten Bir kira sözlesmesi mevcut");
+                    Messages.Warning("Kiracının aktif bir kira sözleşmesi zaten var. Yeni sözleşme oluşturulmadı.");
+                    return;
                 }
                 ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "YeniSozlesmeModalOnay();", true);
             }
@@ -626,19 +627,22 @@ namespace TBYS_WebParts.KiraciGirisiWP
         }
         protected void YeniSozlesmeOnayBtn_Click(object sender, EventArgs e)
         {
-            KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme.KiraciId = KiraciIdQS.ConvertToInt();
-            kiraSozlesme.Aktif = true;
-            kiraSozlesme.SozlesmeDurumu = ProjeConstants.KIRASOZLESME_DURUMU_DEVAM;
-            kiraSozlesme.Id = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Save(kiraSozlesme);
-            if (kiraSozlesme.Id > 0)
+            try
             {
-
-                RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_TASINMAZ + "?SenderApp=KD&KiraSozlesmeId=" + kiraSozlesme.Id);
+                int contractId;
+                var result = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext)
+                    .CreateActiveContract(KiraciIdQS.ConvertToInt(), out contractId);
+                if (result == Model.Services.TBYS.KiraSozlesmeOlusturmaResult.Completed)
+                    RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_TASINMAZ + "?SenderApp=KD&KiraSozlesmeId=" + contractId);
+                else if (result == Model.Services.TBYS.KiraSozlesmeOlusturmaResult.AlreadyExists)
+                    Messages.Warning("Kiracının aktif bir kira sözleşmesi zaten var. Yeni sözleşme oluşturulmadı.");
+                else
+                    Messages.Warning("Kiracı kaydı bulunamadı. Sayfayı yenileyip tekrar kontrol ediniz.");
             }
-            else
+            catch (Exception error)
             {
-                Messages.Error("Sözlesme Kaydi Açilamadi");
+                if (error is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraciGirisiWP.YeniSozlesmeOnayBtn_Click", error);
             }
         }
         protected void BitenSozlesmeOnayBtn_Click(object sender, EventArgs e)

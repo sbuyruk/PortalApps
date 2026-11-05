@@ -14,6 +14,8 @@ using System.Globalization;
 
 namespace Model.Services.TBYS
 {
+    public enum KiraSozlesmeOlusturmaResult { Completed, AlreadyExists, TenantNotFound, InvalidInput }
+
     public class KiraSozlesmeService
     {
         private readonly KiraSozlesmeRepository repository;
@@ -42,6 +44,34 @@ namespace Model.Services.TBYS
             return Map(repository.SelectById(id));
         }
         public KiraSozlesme GetById(int id, SqlTransactionContext transaction) { return Map(repository.SelectById(id, transaction, context)); }
+
+        public KiraSozlesmeOlusturmaResult CreateActiveContract(int tenantId, out int newId)
+        {
+            newId = 0;
+            if (tenantId <= 0) return KiraSozlesmeOlusturmaResult.InvalidInput;
+            if (context == null || context.Project != "TBYS" || string.IsNullOrWhiteSpace(context.UserLogin))
+                throw new InvalidOperationException("Bu işlem için TBYS kullanıcı bağlamı gereklidir.");
+            int savedId;
+            using (var transaction = new SqlTransactionContext())
+            {
+                // Serialize creation for this tenant, including when no contract exists yet.
+                if (new KiraciRepository(context).SelectById(tenantId, transaction, context) == null)
+                    return KiraSozlesmeOlusturmaResult.TenantNotFound;
+                if (repository.SelectActiveByKiraciId(tenantId, transaction, context) != null)
+                    return KiraSozlesmeOlusturmaResult.AlreadyExists;
+                savedId = Save(new KiraSozlesme
+                {
+                    KiraciId = tenantId,
+                    Aktif = true,
+                    SozlesmeDurumu = ProjeConstants.KIRASOZLESME_DURUMU_DEVAM
+                }, transaction);
+                if (savedId <= 0) throw new InvalidOperationException("Yeni kira sözleşmesi oluşturulamadı.");
+                transaction.Complete();
+            }
+            newId = savedId;
+            return KiraSozlesmeOlusturmaResult.Completed;
+        }
+
         public int Save(KiraSozlesme item)
         {
             if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");

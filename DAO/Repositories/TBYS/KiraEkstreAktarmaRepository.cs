@@ -46,6 +46,14 @@ namespace DAO.Repositories.TBYS
             return db.SelectFromDb(q, "");
         }
 
+        public DataTable SelectByIslemNo(string islemNo, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            // HOLDLOCK also protects the missing-key range until the INSERT is committed.
+            SqlQuery q = new SqlQuery("SELECT * FROM KiraEkstreAktarma_Table WITH (UPDLOCK, HOLDLOCK) WHERE IslemNo=@IslemNo");
+            q.AddParameter("@IslemNo", islemNo);
+            return db.SelectFromDb(q, transaction, context);
+        }
+
         public DataTable SelectByColumns(string adi, string soyadi, decimal tutar, DateTime odemeTarihi)
         {
             SqlQuery q = new SqlQuery("SELECT * FROM KiraEkstreAktarma_Table WHERE Adi=@Adi AND Soyadi=@Soyadi AND Tutar=@Tutar AND OdemeTarihi=@OdemeTarihi");

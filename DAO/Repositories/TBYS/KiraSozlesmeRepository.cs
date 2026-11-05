@@ -234,6 +234,13 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@KiraciId", kiraciId);
             return db.SelectFromDb(query, "");
         }
+
+        public DataTable SelectActiveByKiraciId(int kiraciId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery("SELECT * FROM KiraSozlesme_Table WITH (UPDLOCK, HOLDLOCK) WHERE Aktif=1 AND KiraciId=@KiraciId ORDER BY SozBasTar DESC, Id DESC");
+            query.AddParameter("@KiraciId", kiraciId);
+            return db.SelectFromDb(query, transaction, context);
+        }
         public DataTable SelectByKiraciId(int kiraciId)
         {
             SqlQuery query = new SqlQuery("SELECT * FROM KiraSozlesme_Table WHERE KiraciId=@KiraciId");
