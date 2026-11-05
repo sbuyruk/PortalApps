@@ -168,13 +168,19 @@ namespace Model.Services.TBYS
             else
             {
                 item = new HukukiTakip().ToList<HukukiTakip>(
-                    new HukukiTakipRepository(context).SelectBySozlesmeId(contract.Id, transaction, context)).FirstOrDefault();
+                    new HukukiTakipRepository(context).SelectBySozlesmeId(contract.Id, transaction, context))
+                    .Where(x => x.Aktif).OrderByDescending(x => x.IslemTarihi).ThenByDescending(x => x.Id).FirstOrDefault();
                 if (item == null) return;
                 item.Aktif = false;
                 item.Aciklama = ProjeConstants.KIRASOZLESME_DURUMU_TAKIPSONUCLANDI;
             }
             item.IslemTarihi = DateTime.Today;
-            if (service.Save(item, transaction) <= 0) throw new InvalidOperationException("Hukuki takip kaydı oluşturulamadı.");
+            if (item.Id > 0)
+            {
+                if (!service.Update(item, transaction)) throw new InvalidOperationException("Hukuki takip kaydı güncellenemedi.");
+            }
+            else if (service.Save(item, transaction) <= 0)
+                throw new InvalidOperationException("Hukuki takip kaydı oluşturulamadı.");
         }
 
         private static void CopyEditableFields(KiraSozlesme input, KiraSozlesme target)

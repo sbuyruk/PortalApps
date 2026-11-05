@@ -342,6 +342,8 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                     {
                         RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?KiraciId=" + KiraciIdQS + "&Bittar=" + BittarQS + "&Bastar=" + BastarQS);
                     }
+                    else
+                        Messages.Warning("Ödeme silinemedi. Kaydı yenileyiniz; teminat bağlantısı varsa Teminat İşlemleri ekranını kullanınız.");
 
                 }
                 else
@@ -696,7 +698,8 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                         {
                             item.Duzenle =string.Empty;
                         }
-                        item.Sil = "<a href=" + ProjeConstants.PAGE_ODEME_GIRIS + "?OdemeId=" + odemeId + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS + " class='btn btn-outline-danger'>Sil</a>";
+                        item.Sil = teminatId.ConvertToInt() > 0 ? string.Empty
+                            : "<a href=" + ProjeConstants.PAGE_ODEME_GIRIS + "?OdemeId=" + odemeId + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS + " class='btn btn-outline-danger'>Sil</a>";
                         list.Add(item);
                     }
                 }

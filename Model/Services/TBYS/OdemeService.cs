@@ -165,6 +165,9 @@ namespace Model.Services.TBYS
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             Odeme odeme = GetById(odemeId, transaction);
             if (odeme == null || odeme.OdemePlaniId != odemePlaniId) return false;
+            // The teminat workflow removes its link first in the same transaction.
+            // Generic payment deletion must not leave a live teminat movement behind.
+            if (new TeminatIslemService(context).GetByOdemeId(odemeId, transaction).Count > 0) return false;
 
             OdemePlaniService odemePlaniService = new OdemePlaniService(context);
             OdemePlani odemePlani = odemePlaniService.GetById(odemePlaniId, transaction);
@@ -188,6 +191,8 @@ namespace Model.Services.TBYS
             if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
             using (SqlTransactionContext transaction = new SqlTransactionContext())
             {
+                if (GetById(odemeId, transaction) == null) return false;
+                if (new TeminatIslemService(context).GetByOdemeId(odemeId, transaction).Count > 0) return false;
                 bool result = OdemeyiVeOdemePlaniniGuncelle(sozlesmeId, oncekiOdemePlaniId, yeniOdemePlaniId, odemeId, odemeTarihi, odenenTutar, aciklama, kullanici, transaction);
                 if (result) transaction.Complete();
                 return result;
