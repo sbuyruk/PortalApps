@@ -280,14 +280,6 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                                    .Replace("TÜRKİYE HALK BANKASI A.Ş.", "")
                                    .Replace("TÜRK EKONOMİ BANKASI A.Ş.", "").Trim();
 
-                            //işlem numarası varsa kaydı atla
-                            KiraEkstreAktarma keaDao = new KiraEkstreAktarma();
-                            List<KiraEkstreAktarma> bulunanIslemNolar = new Model.Services.TBYS.KiraEkstreAktarmaService(LoggingContext).GetByIslemNo(islemno);
-                            if (bulunanIslemNolar.Count > 0)
-                            {
-                                exceptionHelper.AlreadyProcessedCount++;
-                                continue;
-                            }
                             int kiraciId = 0;
                             if (true)// Borç Alacak Ayrımı için
                             {
@@ -335,7 +327,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                                     kiraEkstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                     kiraEkstreAktarma.Olusturan = currentUser;
 
-                                    new Model.Services.TBYS.KiraEkstreAktarmaService(LoggingContext).Save(kiraEkstreAktarma);
+                                    ImportRow(kiraEkstreAktarma, exceptionHelper);
                                 }
                                 else if (true)//Kira veya Teminat değilse 
                                 {
@@ -350,7 +342,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                                     kiraEkstreAktarma.IslemNo = islemno;
                                     kiraEkstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                     kiraEkstreAktarma.Olusturan = currentUser;
-                                    new Model.Services.TBYS.KiraEkstreAktarmaService(LoggingContext).Save(kiraEkstreAktarma);
+                                    ImportRow(kiraEkstreAktarma, exceptionHelper);
                                 }
                             }
                         }
@@ -360,6 +352,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                             TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraOdemeDosyasiYuklemeWP.SaveVakifBank2File", ex);
                             Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} ->", ProjeConstants.BANKA_VAKIF, aciklamaStr), ex);
                             exceptionHelper.Exceptions.Add(exception);
+                            exceptionHelper.ErrorCount++;
                         }
                     }
                 }
@@ -369,8 +362,17 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                 if (ex is System.Threading.ThreadAbortException) throw;
                 TbysWebPartLog.WriteError(LoggingContext, "TBYS.KiraOdemeDosyasiYuklemeWP.SaveVakifBank2File", ex);
                 exceptionHelper.Exceptions.Add(ex);
+                exceptionHelper.ErrorCount++;
             }
             return exceptionHelper;
+        }
+
+        private void ImportRow(KiraEkstreAktarma item, ExceptionHelper result)
+        {
+            if (new Model.Services.TBYS.KiraEkstreAktarmaService(LoggingContext).TryImport(item))
+                result.SuccessCount++;
+            else
+                result.AlreadyProcessedCount++;
         }
 
         private int OdemeSebebiBelirle(KiraEkstreAktarma kiraEkstreAktarma, string islem)

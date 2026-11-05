@@ -47,6 +47,24 @@ namespace Model.Services.TBYS
             if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
             using (SqlTransactionContext tx = new SqlTransactionContext()) { int id = Save(item, tx); tx.Complete(); return id; }
         }
+
+        public bool TryImport(KiraEkstreAktarma item)
+        {
+            if (context == null || context.Project != "TBYS" || string.IsNullOrWhiteSpace(context.UserLogin))
+                throw new InvalidOperationException("Bu işlem için TBYS kullanıcı bağlamı gereklidir.");
+            if (item == null || string.IsNullOrWhiteSpace(item.IslemNo))
+                throw new ArgumentException("Banka hareketinin işlem numarası boş olamaz.", "item");
+            using (var transaction = new SqlTransactionContext())
+            {
+                // Keep the existing IslemNo-based duplicate policy, but check and insert atomically.
+                if (repository.SelectByIslemNo(item.IslemNo, transaction, context) != null) return false;
+                if (Save(item, transaction) <= 0)
+                    throw new InvalidOperationException("Banka hareketi kaydedilemedi.");
+                transaction.Complete();
+            }
+            return true;
+        }
+
         public int Save(KiraEkstreAktarma item, SqlTransactionContext tx) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item, tx, context); if (item.Id > 0 && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "INSERT", "KiraEkstreAktarma", item.Id.ToString(), tx); return item.Id; }
         public bool Update(KiraEkstreAktarma item)
         {
