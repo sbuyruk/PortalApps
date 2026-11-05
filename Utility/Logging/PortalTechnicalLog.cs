@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Globalization;
+using System.Text;
 using System.Web.Configuration;
 
 namespace Utility.Logging
@@ -44,6 +47,112 @@ namespace Utility.Logging
             {
                 // Logging must not replace the SQL result or exception.
             }
+        }
+
+        /// <summary>Flushes TBYS traces in bounded batches after the business connection is closed.</summary>
+        public static void WriteSqlTraces(IEnumerable<PortalSqlTrace> traces)
+        {
+            try
+            {
+                if (traces == null) return;
+                // Each row has 14 parameters; 50 rows stay below SQL Server's parameter limit.
+                const int batchSize = 50;
+                List<PortalSqlTrace> batch = new List<PortalSqlTrace>(batchSize);
+                foreach (PortalSqlTrace trace in traces)
+                {
+                    if (trace == null || trace.Context == null) continue;
+                    if (trace.Context.Project != "TBYS")
+                    {
+                        WriteSqlTraceBatch(batch);
+                        batch.Clear();
+                        WriteSqlTrace(trace.Context, trace.Operation, trace.QueryName,
+                            trace.DurationMilliseconds, trace.Succeeded);
+                        continue;
+                    }
+                    if (!PortalLogSettings.IsEnabled(trace.Context)) continue;
+                    if (trace.Operation != "SELECT" && trace.Operation != "INSERT"
+                        && trace.Operation != "UPDATE" && trace.Operation != "DELETE") continue;
+                    batch.Add(trace);
+                    if (batch.Count == batchSize)
+                    {
+                        WriteSqlTraceBatch(batch);
+                        batch.Clear();
+                    }
+                }
+                WriteSqlTraceBatch(batch);
+            }
+            catch (Exception)
+            {
+                // Logging must not replace the business result or exception.
+            }
+        }
+
+        private static void WriteSqlTraceBatch(List<PortalSqlTrace> traces)
+        {
+            if (traces.Count == 0) return;
+            bool written = false;
+            bool canRetry = true;
+            try
+            {
+                // Resolve web.config and open a connection once per batch, not once per trace.
+                using (SqlConnection connection = new SqlConnection(GetConnectionString(traces[0].Context)))
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    StringBuilder sql = new StringBuilder(@"
+                        INSERT INTO PortalLog_Table
+                            (OccurredUtc, Kind, Project, WebPart, UserLogin, PagePath, OperationId,
+                             EventName, Operation, Outcome, SqlOperation, RepositoryMethod, DurationMs, Detail)
+                        VALUES ");
+                    for (int i = 0; i < traces.Count; i++)
+                    {
+                        PortalSqlTrace trace = traces[i];
+                        PortalLogRecord record = new PortalLogRecord(PortalLogKind.SqlTrace, trace.Context,
+                            trace.QueryName, trace.Succeeded ? "Succeeded" : "Failed", trace.DurationMilliseconds);
+                        string suffix = i.ToString(CultureInfo.InvariantCulture);
+                        if (i > 0) sql.Append(",");
+                        sql.Append("(@OccurredUtc" + suffix + ", @Kind" + suffix + ", @Project" + suffix
+                            + ", @WebPart" + suffix + ", @UserLogin" + suffix + ", @PagePath" + suffix
+                            + ", @OperationId" + suffix + ", @EventName" + suffix + ", @Operation" + suffix
+                            + ", @Outcome" + suffix + ", @SqlOperation" + suffix + ", @RepositoryMethod" + suffix
+                            + ", @DurationMs" + suffix + ", @Detail" + suffix + ")");
+                        AddSqlRecordParameters(command, record, trace.Operation, trace.QueryName, trace.Succeeded, suffix);
+                    }
+                    command.CommandText = sql.ToString();
+                    connection.Open();
+                    using (SqlTransaction transaction = connection.BeginTransaction())
+                    {
+                        command.Transaction = transaction;
+                        // Retry individually only if no batch may have committed.
+                        canRetry = false;
+                        try
+                        {
+                            command.ExecuteNonQuery();
+                            transaction.Commit();
+                            written = true;
+                        }
+                        catch (Exception)
+                        {
+                            try
+                            {
+                                transaction.Rollback();
+                                canRetry = true;
+                            }
+                            catch (Exception)
+                            {
+                                // An uncertain commit must not produce duplicate traces through a retry.
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // Technical logging is best effort and independent from the business transaction.
+            }
+            if (!written && canRetry)
+                foreach (PortalSqlTrace trace in traces)
+                    WriteSqlTrace(trace.Context, trace.Operation, trace.QueryName,
+                        trace.DurationMilliseconds, trace.Succeeded);
         }
 
         private static void WriteErrorRecord(PortalLogRecord record, Exception error, string detail)
@@ -98,15 +207,7 @@ namespace Utility.Logging
                         (@OccurredUtc, @Kind, @Project, @WebPart, @UserLogin, @PagePath, @OperationId,
                          @EventName, @Operation, @Outcome, @SqlOperation, @RepositoryMethod, @DurationMs, @Detail)", connection))
                 {
-                    AddCommonParameters(command, record);
-                    command.Parameters.AddWithValue("@EventName", queryName);
-                    // SELECT belongs to SqlOperation; the business Operation constraint excludes it.
-                    command.Parameters.AddWithValue("@Operation", operation == "SELECT" ? (object)DBNull.Value : operation);
-                    command.Parameters.AddWithValue("@Outcome", succeeded ? "Succeeded" : "Failed");
-                    command.Parameters.AddWithValue("@SqlOperation", operation);
-                    command.Parameters.AddWithValue("@RepositoryMethod", queryName);
-                    command.Parameters.AddWithValue("@DurationMs", record.DurationMilliseconds.HasValue ? (object)record.DurationMilliseconds.Value : DBNull.Value);
-                    command.Parameters.AddWithValue("@Detail", "SQL izi kaydedildi; sorgu metni ve parametreler kaydedilmedi.");
+                    AddSqlRecordParameters(command, record, operation, queryName, succeeded, "");
                     connection.Open();
                     command.ExecuteNonQuery();
                 }
@@ -117,15 +218,29 @@ namespace Utility.Logging
             }
         }
 
-        private static void AddCommonParameters(SqlCommand command, PortalLogRecord record)
+        private static void AddSqlRecordParameters(SqlCommand command, PortalLogRecord record,
+            string operation, string queryName, bool succeeded, string suffix)
         {
-            command.Parameters.AddWithValue("@OccurredUtc", record.OccurredUtc);
-            command.Parameters.AddWithValue("@Kind", record.Kind.ToString());
-            command.Parameters.AddWithValue("@Project", record.Context.Project);
-            command.Parameters.AddWithValue("@WebPart", record.Context.WebPart);
-            command.Parameters.AddWithValue("@UserLogin", record.Context.UserLogin);
-            command.Parameters.AddWithValue("@PagePath", record.Context.PagePath);
-            command.Parameters.AddWithValue("@OperationId", record.Context.OperationId);
+            AddCommonParameters(command, record, suffix);
+            command.Parameters.AddWithValue("@EventName" + suffix, queryName);
+            // SELECT belongs to SqlOperation; the business Operation constraint excludes it.
+            command.Parameters.AddWithValue("@Operation" + suffix, operation == "SELECT" ? (object)DBNull.Value : operation);
+            command.Parameters.AddWithValue("@Outcome" + suffix, succeeded ? "Succeeded" : "Failed");
+            command.Parameters.AddWithValue("@SqlOperation" + suffix, operation);
+            command.Parameters.AddWithValue("@RepositoryMethod" + suffix, queryName);
+            command.Parameters.AddWithValue("@DurationMs" + suffix, record.DurationMilliseconds.HasValue ? (object)record.DurationMilliseconds.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@Detail" + suffix, "SQL izi kaydedildi; sorgu metni ve parametreler kaydedilmedi.");
+        }
+
+        private static void AddCommonParameters(SqlCommand command, PortalLogRecord record, string suffix = "")
+        {
+            command.Parameters.AddWithValue("@OccurredUtc" + suffix, record.OccurredUtc);
+            command.Parameters.AddWithValue("@Kind" + suffix, record.Kind.ToString());
+            command.Parameters.AddWithValue("@Project" + suffix, record.Context.Project);
+            command.Parameters.AddWithValue("@WebPart" + suffix, record.Context.WebPart);
+            command.Parameters.AddWithValue("@UserLogin" + suffix, record.Context.UserLogin);
+            command.Parameters.AddWithValue("@PagePath" + suffix, record.Context.PagePath);
+            command.Parameters.AddWithValue("@OperationId" + suffix, record.Context.OperationId);
         }
 
         private static string GetConnectionString(PortalLogContext context)

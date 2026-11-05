@@ -2,6 +2,26 @@ using System;
 
 namespace Utility.Logging
 {
+    /// <summary>SQL trace metadata queued until the business transaction is disposed.</summary>
+    public sealed class PortalSqlTrace
+    {
+        public PortalLogContext Context { get; private set; }
+        public string Operation { get; private set; }
+        public string QueryName { get; private set; }
+        public long DurationMilliseconds { get; private set; }
+        public bool Succeeded { get; private set; }
+
+        public PortalSqlTrace(PortalLogContext context, string operation, string queryName,
+            long durationMilliseconds, bool succeeded)
+        {
+            Context = context;
+            Operation = operation;
+            QueryName = queryName;
+            DurationMilliseconds = durationMilliseconds;
+            Succeeded = succeeded;
+        }
+    }
+
     /// <summary>
     /// Shared event envelope. Do not place SQL parameters, entity snapshots or personal data in Name.
     /// Audit field allowlists and database persistence belong to the project migration stage.

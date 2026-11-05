@@ -15,13 +15,13 @@ namespace DAO.Ortak
         private readonly SqlConnection connection;
         private readonly SqlTransaction transaction;
         private bool completed;
-        private readonly List<Action> pendingSqlTraces = new List<Action>();
+        private readonly List<PortalSqlTrace> pendingSqlTraces = new List<PortalSqlTrace>();
 
         // Capture only metadata here; technical logging runs after the connection is disposed.
         public void DeferSqlTrace(PortalLogContext context, string operation, string method,
             long durationMilliseconds, bool succeeded)
         {
-            pendingSqlTraces.Add(() => PortalTechnicalLog.WriteSqlTrace(
+            pendingSqlTraces.Add(new PortalSqlTrace(
                 context, operation, method, durationMilliseconds, succeeded));
         }
 
@@ -146,7 +146,7 @@ namespace DAO.Ortak
                 finally
                 {
                     connection.Dispose();
-                    foreach (Action trace in pendingSqlTraces) trace();
+                    PortalTechnicalLog.WriteSqlTraces(pendingSqlTraces);
                     pendingSqlTraces.Clear();
                 }
             }
