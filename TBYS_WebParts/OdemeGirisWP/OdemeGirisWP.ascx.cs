@@ -373,6 +373,12 @@ namespace TBYS_WebParts.OdemeGirisWP
                         OdemePlaniDDLDoldur(odeme.SozlesmeId, odeme.OdemePlaniId, OdemePlaniDDL);
                         GuncelleBtn.Visible = true;
                         SilBtn.Visible = true;
+                        if (new Model.Services.TBYS.TeminatIslemService(LoggingContext).GetByOdemeId(odeme.Id).Count > 0)
+                        {
+                            GuncelleBtn.Visible = false;
+                            SilBtn.Visible = false;
+                            Messages.Warning("Bu ödeme teminat işlemine bağlıdır. Güncelleme ve silme için Teminat İşlemleri ekranını kullanınız.");
+                        }
                     }
                     else
                     {
@@ -589,6 +595,8 @@ namespace TBYS_WebParts.OdemeGirisWP
                             {
                                 RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?Mesaj=true&KiraciId=" + KiraciIdQS + "&Bastar=" + BastarQS+ "&Bittar=" + BittarQS);
                             }
+                            else
+                                Messages.Warning("Ödeme güncellenemedi. Kaydı yenileyiniz; teminat bağlantısı varsa Teminat İşlemleri ekranını kullanınız.");
 
                         }
 
@@ -606,6 +614,8 @@ namespace TBYS_WebParts.OdemeGirisWP
                             {
                                 RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?KiraciId=" + KiraciIdQS + "&Bastar=" + BastarQS+ "&Bittar=" + BittarQS);
                             }
+                            else
+                                Messages.Warning("Ödeme silinemedi. Kaydı yenileyiniz; teminat bağlantısı varsa Teminat İşlemleri ekranını kullanınız.");
 
                         }
                         else
