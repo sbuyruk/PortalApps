@@ -146,6 +146,13 @@ namespace Model.Ortak
             if (!ayrintiService.DeleteBySozlesmeId(kiraSozlesme.Id, transaction)) return false;
             Model.Services.TBYS.OdemePlaniService planService = new Model.Services.TBYS.OdemePlaniService(context);
             List<OdemePlani> planlar = planService.GetBySozlesmeId(kiraSozlesme.Id, transaction);
+            if (!planlar.Any(plan => plan.Sira != 0)) return true;
+            // These sources are read once in the same transaction and are not changed by this calculation.
+            Dictionary<int, List<GecikmeZammi>> planOranlari = new GecikmeZammiService(context)
+                .GetByContractPaymentPlans(kiraSozlesme.Id, transaction);
+            OdemeService odemeService = new OdemeService(context);
+            List<Odeme> sozlesmeOdemeleri = odemeService.GetForDailyCalculation(kiraSozlesme.Id, kiraSozlesme.KiraciId, transaction);
+            Dictionary<int, decimal> odemeToplamlari = odemeService.GetTotalsByPaymentPlan(kiraSozlesme.Id, transaction);
             decimal faizToplami = 0m;
             decimal anaParaToplami = 0m;
             decimal devirFaiz = 0m;
@@ -158,7 +165,11 @@ namespace Model.Ortak
                     continue;
                 }
 
-                GunlukGecikmeZammiHesaplaRecursiveDegil(kiraSozlesme, odemePlani, ref anaParaToplami, context, transaction);
+                List<GecikmeZammi> gecikmeZammiListesi;
+                if (!planOranlari.TryGetValue(odemePlani.Id, out gecikmeZammiListesi))
+                    gecikmeZammiListesi = new List<GecikmeZammi>();
+                GunlukGecikmeZammiHesaplaRecursiveDegil(kiraSozlesme, odemePlani, sozlesmeOdemeleri,
+                    gecikmeZammiListesi, ref anaParaToplami, context, transaction);
                 anaParaToplami -= odemePlani.KiraBedeli;
                 decimal gecikmeZammiTutari = ayrintiService.GetSumDelayAmount(odemePlani.Id, transaction);
                 decimal gecikmeZammiOrani = ayrintiService.GetLastDelayRate(odemePlani.Id, transaction);
@@ -168,7 +179,9 @@ namespace Model.Ortak
                 odemePlani.FaizTutari = gecikmeZammiTutari;
                 odemePlani.FaizliBakiye = anaParaToplami + faizToplami;
                 odemePlani.FaizOrani = gecikmeZammiOrani;
-                odemePlani.OdenenTutar = new Model.Services.TBYS.OdemeService(context).GetSumBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlani.Id, transaction);
+                decimal odenenTutar;
+                odemeToplamlari.TryGetValue(odemePlani.Id, out odenenTutar);
+                odemePlani.OdenenTutar = odenenTutar;
                 if (!planService.Update(odemePlani, transaction)) return false;
                 if (odemePlani.VadeBitTar >= DateTime.Today) break;
             }
@@ -176,15 +189,18 @@ namespace Model.Ortak
         }
 
         private static void GunlukGecikmeZammiHesaplaRecursiveDegil(KiraSozlesme kiraSozlesme, OdemePlani odemePlani,
+            List<Odeme> sozlesmeOdemeleri, List<GecikmeZammi> gecikmeZammiListesi,
             ref decimal anaPara, PortalLogContext context, SqlTransactionContext transaction)
         {
             DateTime ilkTarih = odemePlani.VadeBasTar;
             DateTime ikinciTarih = odemePlani.VadeBitTar;
-            List<GecikmeZammi> gecikmeZammiListesi = new GecikmeZammiService(context).GetByDateRange(ilkTarih, ikinciTarih, transaction);
             foreach (GecikmeZammi gecikmeZammi in gecikmeZammiListesi)
             {
-                List<Odeme> odemeler = new Model.Services.TBYS.OdemeService(context)
-                    .GetByKiraciVadeBasTarVadeBitTar(kiraSozlesme.Id, kiraSozlesme.KiraciId, ilkTarih, ikinciTarih, transaction);
+                // Preserve the existing inclusive 00:00 / 23:59 limits for each changing interval.
+                DateTime basTarih = UtilityHelper.TariheSaatEkle(new DateTime(ilkTarih.Year, ilkTarih.Month, ilkTarih.Day), "00:00");
+                DateTime bitTarih = UtilityHelper.TariheSaatEkle(new DateTime(ikinciTarih.Year, ikinciTarih.Month, ikinciTarih.Day), "23:59");
+                List<Odeme> odemeler = sozlesmeOdemeleri
+                    .Where(odeme => odeme.OdemeTarihi >= basTarih && odeme.OdemeTarihi <= bitTarih).ToList();
                 if (odemeler.Count > 0)
                 {
                     foreach (Odeme odeme in odemeler)

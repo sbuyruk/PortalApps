@@ -57,6 +57,16 @@ namespace Model.Services.TBYS
             return ToList(repository.SelectByDateRange(vadeBaslangicTarihi, vadeBitisTarihi, transaction, context));
         }
 
+        public Dictionary<int, List<GecikmeZammi>> GetByContractPaymentPlans(int sozlesmeId, SqlTransactionContext transaction)
+        {
+            Dictionary<int, List<GecikmeZammi>> rates = new Dictionary<int, List<GecikmeZammi>>();
+            DataTable rows = repository.SelectByContractPaymentPlans(sozlesmeId, transaction, context);
+            if (rows != null)
+                foreach (var group in rows.AsEnumerable().GroupBy(row => Convert.ToInt32(row["HesaplamaOdemePlaniId"])))
+                    rates.Add(group.Key, ToList(group.CopyToDataTable()));
+            return rates;
+        }
+
         public GecikmeZammi GetLatestByDate(DateTime sonOdemeTarihi)
         {
             return Map(repository.SelectLatestByDate(sonOdemeTarihi));

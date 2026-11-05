@@ -177,6 +177,28 @@ namespace DAO.Repositories.TBYS
             return db.SelectFromDb(query, transaction, context);
         }
 
+        public DataTable SelectForDailyCalculation(int sozlesmeId, int kiraciId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT * FROM Odeme_Table WITH (UPDLOCK, HOLDLOCK)
+                WHERE SozlesmeId=@SozlesmeId AND KiraciId=@KiraciId AND OdemeTarihi IS NOT NULL
+                ORDER BY OdemeTarihi");
+            query.AddParameter("@SozlesmeId", sozlesmeId);
+            query.AddParameter("@KiraciId", kiraciId);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
+        public DataTable SelectTotalsByPaymentPlan(int sozlesmeId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT OdemePlaniId, SUM(OdenenTutar) AS Toplam
+                FROM Odeme_Table WITH (UPDLOCK, HOLDLOCK)
+                WHERE SozlesmeId=@SozlesmeId AND OdemePlaniId IS NOT NULL
+                GROUP BY OdemePlaniId");
+            query.AddParameter("@SozlesmeId", sozlesmeId);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
         public DataTable SelectSumBySozlesmeIdOdemePlaniId(int sozlesmeId, int odemePlaniId)
         {
             SqlQuery query = new SqlQuery(@"

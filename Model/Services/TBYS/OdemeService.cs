@@ -41,6 +41,21 @@ namespace Model.Services.TBYS
             DateTime bitTarih = UtilityHelper.TariheSaatEkle(new DateTime(ikinciTarih.Year, ikinciTarih.Month, ikinciTarih.Day), "23:59");
             return ToList(repository.SelectByKiraciVadeBasTarVadeBitTar(sozlesmeId, kiraciId, basTarih, bitTarih, transaction, context));
         }
+        public List<Odeme> GetForDailyCalculation(int sozlesmeId, int kiraciId, SqlTransactionContext transaction)
+        {
+            return ToList(repository.SelectForDailyCalculation(sozlesmeId, kiraciId, transaction, context));
+        }
+
+        public Dictionary<int, decimal> GetTotalsByPaymentPlan(int sozlesmeId, SqlTransactionContext transaction)
+        {
+            Dictionary<int, decimal> totals = new Dictionary<int, decimal>();
+            DataTable rows = repository.SelectTotalsByPaymentPlan(sozlesmeId, transaction, context);
+            if (rows != null)
+                foreach (DataRow row in rows.Rows)
+                    totals.Add(Convert.ToInt32(row["OdemePlaniId"]), row["Toplam"].ToString().ConvertToDecimal());
+            return totals;
+        }
+
         public decimal GetSumBySozlesmeIdOdemePlaniId(int sozlesmeId, int odemePlaniId)
         {
             DataTable dataTable = repository.SelectSumBySozlesmeIdOdemePlaniId(sozlesmeId, odemePlaniId);
