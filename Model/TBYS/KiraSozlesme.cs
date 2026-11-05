@@ -3,6 +3,13 @@ using System;
 
 namespace Model.TBYS
 {
+    public class KiraSozlesmeDevirOzeti : KiraSozlesme
+    {
+        public bool OncekiSozlesmeVar { get; set; }
+        public decimal SonAnaPara { get; set; }
+        public decimal SonFaizliBakiye { get; set; }
+    }
+
     [Serializable]
     public class KiraSozlesme : EntityBase
     {

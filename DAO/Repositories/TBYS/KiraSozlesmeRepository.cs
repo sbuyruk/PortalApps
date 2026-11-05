@@ -253,6 +253,30 @@ namespace DAO.Repositories.TBYS
             query.AddParameter("@KiraciId", kiraciId);
             return db.SelectFromDb(query, "");
         }
+        public DataTable SelectBalanceTransferSummaryByTenant(int kiraciId)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT S.*, CAST(CASE WHEN PreviousContract.Id IS NULL THEN 0 ELSE 1 END AS bit) AS OncekiSozlesmeVar,
+                    LastPlan.AnaPara AS SonAnaPara, LastPlan.FaizliBakiye AS SonFaizliBakiye
+                FROM KiraSozlesme_Table S
+                OUTER APPLY (
+                    SELECT TOP (1) P.Id
+                    FROM KiraSozlesme_Table P
+                    WHERE P.KiraciId=S.KiraciId AND P.SozBasTar<S.SozBasTar
+                    ORDER BY P.SozBasTar DESC
+                ) PreviousContract
+                OUTER APPLY (
+                    SELECT TOP (1) O.AnaPara, O.FaizliBakiye
+                    FROM OdemePlani_Table O
+                    WHERE O.SozlesmeId=PreviousContract.Id
+                    ORDER BY O.Sira DESC
+                ) LastPlan
+                WHERE S.KiraciId=@KiraciId
+                ORDER BY S.SozBasTar DESC, S.DosyaNo");
+            query.AddParameter("@KiraciId", kiraciId);
+            return db.SelectFromDb(query, "");
+        }
+
         public DataTable SelectAllByKiraciId(int kiraciId, SqlTransactionContext transaction, PortalLogContext context)
         {
             SqlQuery query = new SqlQuery("SELECT * FROM KiraSozlesme_Table WITH (UPDLOCK, HOLDLOCK) WHERE KiraciId=@KiraciId ORDER BY SozBasTar DESC, DosyaNo");
