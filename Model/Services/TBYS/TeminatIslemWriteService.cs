@@ -1,4 +1,5 @@
 using DAO.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using Utility.Logging;

@@ -1,5 +1,6 @@
 using DAO.Ortak;
 using DAO.Repositories.TBYS;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Data;
