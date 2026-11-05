@@ -120,5 +120,24 @@ namespace DAO.Repositories.TBYS
             q.AddParameter("@SozlesmeId", id);
             return db.DeleteFromDb(q, transaction, context);
         }
+
+        public bool HasPaymentLinks(int contractId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT 1 AS InUse WHERE
+                    EXISTS (SELECT 1 FROM Odeme_Table WITH (UPDLOCK, HOLDLOCK) WHERE SozlesmeId=@Id)
+                    OR EXISTS (SELECT 1 FROM OdemePlani_Table P WITH (UPDLOCK, HOLDLOCK)
+                        INNER JOIN Odeme_Table O WITH (UPDLOCK, HOLDLOCK) ON O.OdemePlaniId=P.Id
+                        WHERE P.SozlesmeId=@Id)
+                    OR EXISTS (SELECT 1 FROM OdemePlani_Table WITH (UPDLOCK, HOLDLOCK)
+                        WHERE SozlesmeId=@Id AND ISNULL(OdenenTutar,0)<>0)
+                    OR EXISTS (SELECT 1 FROM OdemeAyrinti_Table WITH (UPDLOCK, HOLDLOCK)
+                        WHERE SozlesmeId=@Id AND ISNULL(OdemeId,0)>0)
+                    OR EXISTS (SELECT 1 FROM OdemePlani_Table P WITH (UPDLOCK, HOLDLOCK)
+                        INNER JOIN OdemeAyrinti_Table A WITH (UPDLOCK, HOLDLOCK) ON A.OdemePlaniId=P.Id
+                        WHERE P.SozlesmeId=@Id AND (ISNULL(A.OdemeId,0)>0 OR ISNULL(A.SozlesmeId,0)<>@Id))");
+            query.AddParameter("@Id", contractId);
+            return db.SelectFromDb(query, transaction, context) != null;
+        }
     }
 }

@@ -14,6 +14,8 @@ using Utility.ProjeGlobal;
 
 namespace Model.Services.TBYS
 {
+    public enum OdemePlaniSilmeResult { Completed, NotFound, InUse }
+
     public class OdemePlaniService
     {
         private readonly OdemePlaniRepository repository;
@@ -63,8 +65,31 @@ namespace Model.Services.TBYS
         }
         public bool DeleteBySozlesmeId(OdemePlani item, int id)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = DeleteBySozlesmeId(item, id, tx); if (ok) tx.Complete(); return ok; }
+            return DeletePlan(id) == OdemePlaniSilmeResult.Completed;
+        }
+
+        public OdemePlaniSilmeResult DeletePlan(int contractId)
+        {
+            if (context == null || context.Project != "TBYS" || string.IsNullOrWhiteSpace(context.UserLogin))
+                throw new InvalidOperationException("Bu işlem için TBYS kullanıcı bağlamı gereklidir.");
+            if (contractId <= 0) return OdemePlaniSilmeResult.NotFound;
+            using (var transaction = new SqlTransactionContext())
+            {
+                var contracts = new KiraSozlesmeRepository(context);
+                if (contracts.SelectById(contractId, transaction, context) == null)
+                    return OdemePlaniSilmeResult.NotFound;
+                List<OdemePlani> plans = GetBySozlesmeId(contractId, transaction);
+                if (plans.Count == 0) return OdemePlaniSilmeResult.NotFound;
+                // Lock dependent rows and missing-key ranges before any destructive operation.
+                if (repository.HasPaymentLinks(contractId, transaction, context)
+                    || contracts.HasProtectedDeleteLinks(contractId, transaction, context))
+                    return OdemePlaniSilmeResult.InUse;
+                if (!new OdemeAyrintiService(context).DeleteBySozlesmeId(contractId, transaction)
+                    || !DeleteBySozlesmeId(plans[0], contractId, transaction))
+                    throw new InvalidOperationException("Ödeme planı ve hesap ayrıntıları silinemedi; işlem geri alındı.");
+                transaction.Complete();
+            }
+            return OdemePlaniSilmeResult.Completed;
         }
         public bool DeleteBySozlesmeId(OdemePlani item, int id, SqlTransactionContext transaction)
         {
