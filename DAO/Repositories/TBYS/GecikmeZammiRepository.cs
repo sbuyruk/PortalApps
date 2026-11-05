@@ -79,6 +79,20 @@ namespace DAO.Repositories.TBYS
             return db.SelectFromDb(query, transaction, context);
         }
 
+        public DataTable SelectByContractPaymentPlans(int sozlesmeId, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery(@"
+                SELECT P.Id AS HesaplamaOdemePlaniId, G.*
+                FROM OdemePlani_Table P WITH (UPDLOCK, HOLDLOCK)
+                INNER JOIN GecikmeZammi_Table G WITH (UPDLOCK, HOLDLOCK)
+                    ON G.BaslangicTarihi <= P.VadeBitTar
+                    AND (G.BitisTarihi IS NULL OR G.BitisTarihi >= P.VadeBasTar)
+                WHERE P.SozlesmeId=@SozlesmeId AND P.Sira<>0
+                ORDER BY P.Sira, G.BaslangicTarihi DESC");
+            query.AddParameter("@SozlesmeId", sozlesmeId);
+            return db.SelectFromDb(query, transaction, context);
+        }
+
         public DataTable SelectLatestByDate(DateTime sonOdemeTarihi)
         {
             SqlQuery query = new SqlQuery(@"
