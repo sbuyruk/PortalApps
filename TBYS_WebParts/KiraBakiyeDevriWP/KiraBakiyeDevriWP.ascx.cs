@@ -238,8 +238,8 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
         {
             List<KiraSozlesmeListItem> kiraSozlesmeItemListesi = new List<KiraSozlesmeListItem>();
 
-            KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-            List<KiraSozlesme> sozlesmeListesi = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetAllByKiraciId(kiraciId);
+            List<KiraSozlesmeDevirOzeti> sozlesmeListesi = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext)
+                .GetBalanceTransferSummaryByTenant(kiraciId);
             foreach (var kiraSozlesme in sozlesmeListesi)
             {
                 if (kiraSozlesme != null)
@@ -254,17 +254,10 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                     decimal sonFaizliBakiye = 0;
                     decimal sonFaizTutari = 0;
                     kiraSozlesmeListItem.FarkVarMi = false;
-                    KiraSozlesme oncekiKiraSozlesmesi = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetPreviousByTenant(kiraSozlesme.KiraciId, kiraSozlesme.SozBasTar);
-                    if (oncekiKiraSozlesmesi != null)
+                    if (kiraSozlesme.OncekiSozlesmeVar)
                     {
-                        OdemePlani odemePlaniDao = new OdemePlani();
-                    List<OdemePlani> odemePlaniList = new Model.Services.TBYS.OdemePlaniService(LoggingContext).GetBySozlesmeId(oncekiKiraSozlesmesi.Id);
-                        if (odemePlaniList.Count>0)
-                        {
-                            OdemePlani odemePlani = odemePlaniList[odemePlaniList.Count - 1];
-                            sonAnaPara = odemePlani.AnaPara;
-                            sonFaizliBakiye = odemePlani.FaizliBakiye; 
-                        }
+                        sonAnaPara = kiraSozlesme.SonAnaPara;
+                        sonFaizliBakiye = kiraSozlesme.SonFaizliBakiye;
                         sonFaizTutari = sonFaizliBakiye - sonAnaPara;
                         kiraSozlesmeListItem.FarkVarMi = (sonAnaPara != kiraSozlesme.DevirAnaPara) || (sonFaizliBakiye != kiraSozlesme.DevirFaizliBakiye);
                     }

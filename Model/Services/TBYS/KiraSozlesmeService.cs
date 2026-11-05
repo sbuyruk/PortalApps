@@ -246,6 +246,10 @@ namespace Model.Services.TBYS
         public KiraSozlesme GetByKiraciId(int kiraciId) { return Map(repository.SelectByKiraciId(kiraciId)); }
         public List<KiraSozlesme> GetAllByKiraciId(int kiraciId) { return new KiraSozlesme().ToList<KiraSozlesme>(repository.SelectAllByKiraciId(kiraciId)); }
         public List<KiraSozlesme> GetAllByKiraciId(int kiraciId, SqlTransactionContext transaction) { return new KiraSozlesme().ToList<KiraSozlesme>(repository.SelectAllByKiraciId(kiraciId, transaction, context)); }
+        public List<KiraSozlesmeDevirOzeti> GetBalanceTransferSummaryByTenant(int kiraciId)
+        {
+            return new KiraSozlesme().ToList<KiraSozlesmeDevirOzeti>(repository.SelectBalanceTransferSummaryByTenant(kiraciId));
+        }
         public KiraSozlesme GetByKiraciIdAndDate(int kiraciId, DateTime tarih) { return Map(repository.SelectByKiraciIdAndDate(kiraciId, tarih.ReturnTRDateFormat())); }
         public KiraSozlesme GetCompletedByKiraciId(int kiraciId) { return Map(repository.SelectCompletedByKiraciId(kiraciId)); }
         public KiraSozlesme GetNearestByKiraciIdAndDate(int kiraciId, DateTime tarih) { return Map(repository.SelectNearestByKiraciIdAndDate(kiraciId, tarih)); }
