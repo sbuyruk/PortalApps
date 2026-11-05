@@ -270,6 +270,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             IslemTipiDDL.Items.Add(ProjeConstants.TEMINAT_HASARAMAHSUP);
             IslemTipiDDL.Items.Add(ProjeConstants.TEMINAT_AIDATAMAHSUP);
             IslemTipiDDL.Items.Add(ProjeConstants.TEMINAT_VAKFABAGIS);
+            IslemTipiDDL.Items.Add(ProjeConstants.TEMINAT_MUHASEBEDENAKTARILACAK);
         }
         private void TeminatCinsiDDLDoldur()
         {
@@ -427,7 +428,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     bool guncellendiMi = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Update(kiraSozlesme);
                     if (guncellendiMi)
                     {
-                        Messages.Success("Teminat bilgileri güncellendi.");
+                        Messages.Success("Teminat bilgileri güncellendi.",2000);
                     }
                     else
                     {

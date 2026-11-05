@@ -616,6 +616,7 @@ namespace Utility.ProjeGlobal
         public const string TEMINAT_HASARAMAHSUP = "Hasara Mahsup";
         public const string TEMINAT_AIDATAMAHSUP = "Aidata Mahsup";
         public const string TEMINAT_VAKFABAGIS = "Vakfa Bağış";
+        public const string TEMINAT_MUHASEBEDENAKTARILACAK = "Muhasebeden Aktarılacak Tutar";
         //Odeme Sebebi
         public const string ODEMESEBEBI_KIRA = "Kira";
         public const string ODEMESEBEBI_KESINTEMINAT = "Kesin Teminat";

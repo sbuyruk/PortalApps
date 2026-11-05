@@ -160,6 +160,7 @@ namespace Model.Services.TBYS
                 case ProjeConstants.TEMINAT_HASARAMAHSUP:
                 case ProjeConstants.TEMINAT_AIDATAMAHSUP:
                 case ProjeConstants.TEMINAT_VAKFABAGIS:
+                case ProjeConstants.TEMINAT_MUHASEBEDENAKTARILACAK:
                     return;
                 default:
                     throw new ArgumentException("Geçerli bir teminat işlem türü seçilmelidir.", "input");
