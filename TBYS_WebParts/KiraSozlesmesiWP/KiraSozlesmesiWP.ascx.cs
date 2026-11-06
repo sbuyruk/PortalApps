@@ -483,7 +483,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 retVal = false;
             return retVal;
         }
-        private bool UpdateKiraSozlesme(bool confirmPlanDeletion = false)
+        private bool UpdateKiraSozlesme(bool confirmPlanUpdate = false)
         {
             bool issaved = false;
             if (ValidateTosave())
@@ -491,7 +491,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 try
                 {
                     //decimal kb = Convert.ToDecimal(KiraBedeliTxt.Value);
-                    KiraSozlesme kiraSozlesme = UpdateKiraSozlesmeData2Db(confirmPlanDeletion);
+                    KiraSozlesme kiraSozlesme = UpdateKiraSozlesmeData2Db(confirmPlanUpdate);
                     if (kiraSozlesme != null)
                     {
                         issaved = true;
@@ -523,7 +523,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             }
             return issaved;
         }
-        private KiraSozlesme UpdateKiraSozlesmeData2Db(bool confirmPlanDeletion)
+        private KiraSozlesme UpdateKiraSozlesmeData2Db(bool confirmPlanUpdate)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
@@ -569,7 +569,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             }
             KiraSozlesmeDuzenlemeSnapshot saved;
             var result = new KiraSozlesmeDuzenlemeService(LoggingContext)
-                .Save(kiraSozlesme, ContractEditVersion, confirmPlanDeletion, out saved);
+                .Save(kiraSozlesme, ContractEditVersion, confirmPlanUpdate, out saved);
             if (result != KiraSozlesmeDuzenlemeResult.Completed)
             {
                 string message = result == KiraSozlesmeDuzenlemeResult.Changed
@@ -578,9 +578,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                         ? "Sözleşme artık bulunamıyor. Listeyi yenileyiniz."
                         : result == KiraSozlesmeDuzenlemeResult.ConfirmationRequired
                             ? "Ödeme planını etkileyen değişiklikler için güncelleme işlemini yeniden onaylayınız."
-                            : result == KiraSozlesmeDuzenlemeResult.PaidInstallmentDatesChanged
-                                ? "Ödeme bulunan taksidin vade tarihleri değiştirilemez. Önce ödeme ve dönem bağlantılarını kontrol ediniz. Değişiklikler kaydedilmedi."
-                                : "Sözleşmenin tarih, kira bedeli, ödeme şekli ve taksit bilgilerini kontrol ediniz.";
+                            : "Sözleşmenin tarih, kira bedeli, ödeme şekli ve taksit bilgilerini kontrol ediniz.";
                 Messages.Warning(message);
                 return null;
             }
@@ -1132,7 +1130,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                     SenderHF.Value = "Update";
                     if (BelgeYukleFU.HasFile)
                         Messages.Info("Sözleşme değişikliğini onayladıktan sonra belge dosyasını yeniden seçip yükleyiniz.");
-                    MessageLbl.Text = "Onayladığınız takdirde sözleşme ve mevcut ödeme planı birlikte güncellenecek. Mevcut ödemelerin taksit bağlantıları korunarak plan tutarları ve bakiyeleri yeniden hesaplanacak.";
+                    MessageLbl.Text = "Onayladığınız takdirde sözleşme ve mevcut ödeme planı birlikte güncellenecek. Başlangıç tarihi değiştirildiyse ödeme bulunan taksitler dahil tüm taksitlerin vade tarihleri yeni başlangıca göre düzenlenecek. Mevcut ödemelerin tarihleri, tutarları ve taksit bağlantıları korunacak; plan tutarları, faizler ve bakiyeler yeniden hesaplanacak.";
                     OnaylaBtn.Text = " Sözleşmeyi Güncelle ";
                     UtilityHelper.ScriptCalistir( "OpenModal();");
                 }
