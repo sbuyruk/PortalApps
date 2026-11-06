@@ -125,7 +125,7 @@ namespace Portal_WebParts.GunlukYemekListesiMoveWP
                 var button = new HtmlGenericControl("button");
                 button.Attributes["id"] = key + "_tab";
                 button.Attributes["type"] = "button";
-                button.Attributes["class"] = "nav-link text-nowrap" + (isToday ? " active" : "");
+                button.Attributes["class"] = "nav-link text-nowrap flex-shrink-0" + (isToday ? " active" : "");
                 button.Attributes["role"] = "tab";
                 button.Attributes["data-bs-toggle"] = "pill";
                 button.Attributes["data-bs-target"] = "#" + key;
