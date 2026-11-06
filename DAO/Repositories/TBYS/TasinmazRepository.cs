@@ -163,6 +163,17 @@ namespace DAO.Repositories.TBYS
                     LEFT JOIN KiraSozlesme_Table G ON G.Id=F.SozlesmeId LEFT JOIN Kiraci_Table H ON H.Id=G.KiraciId
                 WHERE T.EnvanterdeMi=1"), "");
         }
+        public DataTable SelectSalesList()
+        {
+            return db.SelectFromDb(new SqlQuery(@"
+                SELECT T.Adres, T.Ili, T.Ilcesi, T.AdaNo, T.ParselNo, T.Yuzolcumu, T.VakifHissesi,
+                    T.EnvanterdenCikmaBedeli AS SatisBedeli, T.EnvanterdenCikmaTarihi AS SatisTarihi, T.Aciklama
+                FROM Tasinmaz_Table T
+                WHERE T.EnvanterdeMi=0
+                    AND (T.EnvanterdenCikmaSebebi LIKE N'%Satış%' OR T.EnvanterdenCikmaSebebi LIKE N'%Kamulaştırma%')
+                ORDER BY T.EnvanterdenCikmaTarihi DESC, T.Id DESC"), "");
+        }
+
         public DataTable SelectAllOutOfInventoryReport()
         {
             return db.SelectFromDb(new SqlQuery(@"

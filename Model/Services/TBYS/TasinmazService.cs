@@ -87,6 +87,7 @@ namespace Model.Services.TBYS
         public DataTable GetOutOfInventoryList() { return repository.SelectOutOfInventoryList(true); }
         public DataTable GetAllInventoryReport() { return repository.SelectAllInventoryReport(); }
         public DataTable GetAllOutOfInventoryReport() { return repository.SelectAllOutOfInventoryReport(); }
+        public DataTable GetSalesList() { return repository.SelectSalesList(); }
 
         public Tasinmaz GetInventoryById(int id)
         {
