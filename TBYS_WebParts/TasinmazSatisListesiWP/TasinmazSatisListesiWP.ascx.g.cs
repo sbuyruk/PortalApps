@@ -49,6 +49,30 @@ namespace TBYS_WebParts.TasinmazSatisListesiWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControlTree(global::TBYS_WebParts.TasinmazSatisListesiWP.TasinmazSatisListesiWP @__ctrl) {
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<div class=\"col-xl small tasinmaz-satis-listesi\">\r\n    <div class=\"card shadow\"" +
+                        ">\r\n        <div class=\"card-header\"><h3 class=\"mb-2 text-danger fw-bold\">Taşınma" +
+                        "z Satış Listesi</h3></div>\r\n        <div class=\"card-body\">\r\n            <div cl" +
+                        "ass=\"row mb-3\">\r\n                <label class=\"col-md-2\">İl\r\n                   " +
+                        " <select class=\"form-control\" data-filter=\"il\"><option value=\"\">Tümü</option></s" +
+                        "elect>\r\n                </label>\r\n                <label class=\"col-md-2\">İlçe\r\n" +
+                        "                    <select class=\"form-control\" data-filter=\"ilce\"><option valu" +
+                        "e=\"\">Tümü</option></select>\r\n                </label>\r\n                <label cl" +
+                        "ass=\"col-md-2\">Ada<input type=\"text\" class=\"form-control\" data-filter=\"ada\" /></" +
+                        "label>\r\n                <label class=\"col-md-2\">Parsel<input type=\"text\" class=\"" +
+                        "form-control\" data-filter=\"parsel\" /></label>\r\n                <label class=\"col" +
+                        "-md-2\">Satış Tarihi (Başlangıç)<input type=\"date\" class=\"form-control\" data-filt" +
+                        "er=\"baslangic\" /></label>\r\n                <label class=\"col-md-2\">Satış Tarihi " +
+                        "(Bitiş)<input type=\"date\" class=\"form-control\" data-filter=\"bitis\" /></label>\r\n " +
+                        "           </div>\r\n            <button type=\"button\" class=\"btn btn-outline-seco" +
+                        "ndary mb-3\" data-action=\"temizle\">Filtreleri Temizle</button>\r\n            <p cl" +
+                        "ass=\"text-danger\" data-role=\"hata\" role=\"alert\" style=\"display:none\"></p>\r\n     " +
+                        "       <table class=\"table table-hover row-border\" data-role=\"satis-tablosu\" sty" +
+                        "le=\"width:100%\">\r\n                <thead><tr>\r\n                    <th>Adres</th" +
+                        "><th>İli</th><th>İlçesi</th><th>Ada</th><th>Parsel</th>\r\n                    <th" +
+                        ">Yüzölçümü</th><th>Vakıf Hissesi</th><th>Satış Bedeli</th><th>Satış Tarihi</th><" +
+                        "th>Açıklama</th>\r\n                </tr></thead>\r\n                <tbody></tbody>" +
+                        "\r\n            </table>\r\n        </div>\r\n    </div>\r\n</div>\r\n"));
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
