@@ -154,13 +154,16 @@ namespace Model.Ortak
             List<Odeme> sozlesmeOdemeleri = odemeService.GetForDailyCalculation(kiraSozlesme.Id, kiraSozlesme.KiraciId, transaction);
             Dictionary<int, decimal> odemeToplamlari = odemeService.GetTotalsByPaymentPlan(kiraSozlesme.Id, transaction);
             decimal faizToplami = 0m;
-            decimal anaParaToplami = 0m;
+            // Payments before the corrected first due date are opening credit, outside the daily intervals.
+            DateTime ilkVadeBaslangici = planlar.Where(plan => plan.Sira != 0).Min(plan => plan.VadeBasTar).Date;
+            decimal anaParaToplami = sozlesmeOdemeleri
+                .Where(odeme => odeme.OdemeTarihi < ilkVadeBaslangici).Sum(odeme => odeme.OdenenTutar);
             decimal devirFaiz = 0m;
             foreach (OdemePlani odemePlani in planlar)
             {
                 if (odemePlani.Sira == 0)
                 {
-                    anaParaToplami = odemePlani.AnaPara;
+                    anaParaToplami += odemePlani.AnaPara;
                     devirFaiz = odemePlani.FaizTutari;
                     continue;
                 }

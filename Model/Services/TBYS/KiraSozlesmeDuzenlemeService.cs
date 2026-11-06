@@ -14,7 +14,7 @@ using Utility.ProjeGlobal;
 
 namespace Model.Services.TBYS
 {
-    public enum KiraSozlesmeDuzenlemeResult { Completed, Changed, NotFound, InvalidInput, ConfirmationRequired, InUse, PaidInstallmentDatesChanged }
+    public enum KiraSozlesmeDuzenlemeResult { Completed, Changed, NotFound, InvalidInput, ConfirmationRequired, InUse }
 
     public sealed class KiraSozlesmeDuzenlemeSnapshot
     {
@@ -41,7 +41,7 @@ namespace Model.Services.TBYS
         }
 
         public KiraSozlesmeDuzenlemeResult Save(KiraSozlesme input, string expectedVersion,
-            bool confirmPlanDeletion, out KiraSozlesmeDuzenlemeSnapshot saved)
+            bool confirmPlanUpdate, out KiraSozlesmeDuzenlemeSnapshot saved)
         {
             saved = null;
             if (input == null || input.Id <= 0) return KiraSozlesmeDuzenlemeResult.InvalidInput;
@@ -61,7 +61,7 @@ namespace Model.Services.TBYS
                 bool critical = contract.SozBasTar.Date != input.SozBasTar.Date || contract.SozBitTar.Date != input.SozBitTar.Date
                     || contract.KiraBedeli != input.KiraBedeli || contract.TaksitSayisi != input.TaksitSayisi
                     || contract.OdemeSekli != input.OdemeSekli;
-                if (critical && !confirmPlanDeletion) return KiraSozlesmeDuzenlemeResult.ConfirmationRequired;
+                if (critical && !confirmPlanUpdate) return KiraSozlesmeDuzenlemeResult.ConfirmationRequired;
                 CopyEditableFields(input, contract);
                 Kiraci tenant = new Kiraci().ToList<Kiraci>(
                     new KiraciRepository(context).SelectById(contract.KiraciId, transaction, context)).FirstOrDefault();
@@ -73,8 +73,7 @@ namespace Model.Services.TBYS
                 var existingPlans = plans.GetBySozlesmeId(contract.Id, transaction);
                 if (critical && existingPlans.Count > 0)
                 {
-                    if (!plans.RebuildPaymentPlan(contract, transaction))
-                        return KiraSozlesmeDuzenlemeResult.PaidInstallmentDatesChanged;
+                    plans.RebuildPaymentPlan(contract, transaction);
                     if (!new OdemeAyrintiService(context).DeleteBySozlesmeId(contract.Id, transaction))
                         throw new InvalidOperationException("Sözleşmenin ödeme ayrıntıları güncellenemedi.");
                 }

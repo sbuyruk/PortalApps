@@ -111,7 +111,7 @@ namespace Model.Services.TBYS
             if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
             using (SqlTransactionContext tx = new SqlTransactionContext()) { bool created = CreatePaymentPlan(kiraSozlesme, tx); if (created) tx.Complete(); return created; }
         }
-        internal bool RebuildPaymentPlan(KiraSozlesme contract, SqlTransactionContext transaction)
+        internal void RebuildPaymentPlan(KiraSozlesme contract, SqlTransactionContext transaction)
         {
             if (transaction == null) throw new ArgumentNullException("transaction", "İşlem bağlamı gereklidir.");
             List<OdemePlani> existing = GetBySozlesmeId(contract.Id, transaction);
@@ -125,17 +125,9 @@ namespace Model.Services.TBYS
                     if (payment.IsNull("OdemePlaniId") || !planIds.Contains(Convert.ToInt32(payment["OdemePlaniId"]))
                         || payment.IsNull("KiraciId") || Convert.ToInt32(payment["KiraciId"]) != contract.KiraciId)
                         throw new InvalidOperationException("Sözleşmenin mevcut ödeme bağlantıları tutarsız. Güncellemeden önce kayıtlar kontrol edilmelidir.");
-                    OdemePlani paidPlan = existing.First(p => p.Id == Convert.ToInt32(payment["OdemePlaniId"]));
-                    DateTime due = contract.SozBasTar;
-                    for (int n = 1; n < paidPlan.Sira; n++) due = due.AddMonths(1);
-                    if (paidPlan.Sira == 0)
-                    {
-                        if (paidPlan.VadeBitTar != contract.SozBasTar.AddDays(-1)) return false;
-                    }
-                    else if (paidPlan.VadeBasTar != due || paidPlan.VadeBitTar != due.AddMonths(1).AddDays(-1))
-                        return false;
                 }
-            return CreatePaymentPlan(contract, transaction, existing.ToDictionary(p => p.Sira));
+            // Confirmed contract corrections move due dates while preserving installment identities and payment links.
+            CreatePaymentPlan(contract, transaction, existing.ToDictionary(p => p.Sira));
         }
 
         private bool CreatePaymentPlan(KiraSozlesme kiraSozlesme, SqlTransactionContext transaction,
