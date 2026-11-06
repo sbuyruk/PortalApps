@@ -597,6 +597,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TasinmazResimleriWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="TasinmazSatisListesiWP\TasinmazSatisListesiWP.ascx.cs">
+      <DependentUpon>TasinmazSatisListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="TasinmazSatisListesiWP\TasinmazSatisListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TasinmazSatisListesiWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="TasinmazSigortaGirisWP\TasinmazSigortaGirisWP.ascx.cs">
       <DependentUpon>TasinmazSigortaGirisWP.ascx</DependentUpon>
     </Compile>
@@ -974,6 +982,10 @@
       <SharePointProjectItemId>{5d98e1a5-8bb8-4257-9b42-016200142002}</SharePointProjectItemId>
     </None>
     <None Include="TasinmazResimleriWP\TasinmazResimleriWP.webpart" />
+    <None Include="TasinmazSatisListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{f507bad4-08fc-4104-a5bc-f7d32e6af66f}</SharePointProjectItemId>
+    </None>
+    <None Include="TasinmazSatisListesiWP\TasinmazSatisListesiWP.webpart" />
     <None Include="TasinmazSigortaGirisWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{d9cff67a-36fd-4da0-9f3a-10fbb8856a3a}</SharePointProjectItemId>
     </None>
@@ -1359,6 +1371,11 @@
     <Content Include="TasinmazResimleriWP\TasinmazResimleriWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>TasinmazResimleriWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="TasinmazSatisListesiWP\Elements.xml" />
+    <Content Include="TasinmazSatisListesiWP\TasinmazSatisListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>TasinmazSatisListesiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="TasinmazSigortaGirisWP\Elements.xml" />
     <Content Include="TasinmazSigortaGirisWP\TasinmazSigortaGirisWP.ascx">
