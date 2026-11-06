@@ -262,7 +262,7 @@ namespace Portal_WebParts.GunlukYemekListesiMoveWP {
 </div>
 
 <div class=""modal "" id=""YemekPopupDiv"" role=""dialog"">
-    <div class=""modal-dialog"">
+    <div class=""modal-dialog"" style=""width: calc(100% - 2rem); max-width: 960px; margin-left: auto; margin-right: auto;"">
         <!-- Modal content-->
         <div class=""modal-content"">
             <div class=""modal-body "">
