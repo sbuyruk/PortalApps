@@ -257,7 +257,7 @@ namespace Portal_WebParts.GunlukYemekListesiMoveWP {
         <span class=""icon"">
             <img src=""./../OrtakResimler/meat-icon.png"" alt="""">
         </span>
-        <span class=""wr"">Günlük Yemek Listesi</span>
+        <span class=""wr"">Haftalık Yemek Listesi</span>
     </a>
 </div>
 

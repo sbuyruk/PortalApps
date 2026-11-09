@@ -349,8 +349,10 @@ namespace Model.Ortak
                         case ProjeConstants.TEMINAT_HASARAMAHSUP:
                         case ProjeConstants.TEMINAT_AIDATAMAHSUP:
                         case ProjeConstants.TEMINAT_VAKFABAGIS:
-                        case ProjeConstants.TEMINAT_MUHASEBEDENAKTARILACAK:
                             toplamIade += islemToplami;
+                            break;
+                        case ProjeConstants.TEMINAT_MUHASEBEDENAKTARILACAK:
+                            toplamOdeme += islemToplami;
                             break;
                     }
                 }

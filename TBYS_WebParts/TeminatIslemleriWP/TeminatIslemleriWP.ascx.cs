@@ -535,6 +535,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 if (error is System.Threading.ThreadAbortException) throw;
                 TbysWebPartLog.ReportError(LoggingContext, "TBYS.TeminatIslemleriWP.ModalEkleNowBtn_Click", error);
             }
+            TabloOlustur(KiraSozlesmeIdQS.ConvertToInt());
         }
 
         protected void ModalGuncelleNowBtn_Click(object sender, EventArgs e)
