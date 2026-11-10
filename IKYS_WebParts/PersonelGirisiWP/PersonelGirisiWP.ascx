@@ -264,10 +264,6 @@
                                     <div class="form-group row">
                                         <div class="col">
                                             <div class="form-group m-0">
-                                                <label class="form-label fw-semibold" for="UnvanTanimDDL">Ünvanı</label>
-                                                <asp:DropDownList ID="UnvanTanimDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
-                                            </div>
-                                            <div class="form-group m-0">
                                                 <label class="form-label fw-semibold" for="SubeTxt">Şubesi/Birimi</label>
                                                 <asp:DropDownList ID="BirimDDL" runat="server" class="form-control form-select form-select-lg" AutoPostBack="true" OnSelectedIndexChanged="BirimDDL_SelectedIndexChanged"></asp:DropDownList>
                                             </div>
@@ -624,6 +620,10 @@
                                     <div>
                                         <asp:DropDownList ID="PersonelTipiDDL" runat="server" class="form-control form-select form-select-lg" OnSelectedIndexChanged="PersonelTipiDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label fw-semibold" for="UnvanTanimDDL">Ünvanı</label>
+                                    <asp:DropDownList ID="UnvanTanimDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
                                 </div>
                             </div>
                         </div>

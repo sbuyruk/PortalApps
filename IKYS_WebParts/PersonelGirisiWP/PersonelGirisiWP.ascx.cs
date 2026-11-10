@@ -1349,6 +1349,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
         private void FillUnvanTanimDDL()
         {
             UnvanTanimDDL.Items.Clear();
+            UnvanTanimDDL.Items.Add(new ListItem("", "0"));
             List<UnvanTanim> list = new UnvanTanimService().GetAll(LoggingContext);
             foreach (UnvanTanim un in list)
             {
@@ -1719,6 +1720,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 isBilgileri = new IsBilgileri
                 {
                     PersonelId = personel.Id,
+                    UnvanId = UnvanTanimDDL.SelectedValue.ConvertToInt(),
                     CalismaDurumu = ProjeConstants.PER_CALISIYOR_INT,
                     ProtokolSiraNo = 9999,
                     Olusturan = CurrentUserName
@@ -1784,6 +1786,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             if (item == null) return false;
             int oldBirimId = item.BirimId;
             int oldCalismaDurumu = item.CalismaDurumu;
+            item.UnvanId = UnvanTanimDDL.SelectedValue.ConvertToInt();
             item.BirimId = BirimDDL.SelectedItem.Value.ConvertToInt();
             item.BaslamaTar = KadrosuzIsbasTarihiTxt.Value.ConvertToDatetime();
             item.AyrilmaTar = KadrosuzAyrilmaTarihiTxt.Value.ConvertToDatetime();
