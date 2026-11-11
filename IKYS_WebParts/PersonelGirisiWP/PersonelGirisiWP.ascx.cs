@@ -319,6 +319,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             IzinNav.Visible = false;
 
             UpdateKimlikBtn.Visible = false;
+            PersonelTipiAyarlari();
 
         }
         private void OpenPersonelDuzenle()
@@ -445,6 +446,8 @@ namespace IKYS_WebParts.PersonelGirisiWP
         }
         private void FillKadrosuzIsBilgileri(Personel personel, IsBilgileri isb)
         {
+            KadrosuzKurumuTxt.Text = personel.Tipi == (int)PersonelTipi.Kadrosuz
+                ? isb.KadroHariciKurum ?? string.Empty : string.Empty;
             //birim
             UtilityHelper.SetDDLValue(KadrosuzBirimDDL, isb.BirimId.ToString());
             //Calisma Durumu
@@ -1530,6 +1533,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             ExecutePersonelAction("Personel.UpdateIdentity", () =>
             {
                 SetActiveTab("KimlikLi");
+                if (!KadroHariciKurumGecerliMi(PersonelTipiDDL.SelectedValue.ConvertToInt())) return;
                 PortalLogContext context = LoggingContext;
                 bool updated = false;
                 using (SqlTransactionContext transaction = new SqlTransactionContext())
@@ -1561,6 +1565,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 using (SqlTransactionContext transaction = new SqlTransactionContext())
                 {
                     personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), transaction, context);
+                    if (personel != null && !KadroHariciKurumGecerliMi(personel.Tipi)) return;
                     if (personel != null && KadrosuzIsBilgileriUpdate(personel, transaction, context, out notificationSubject))
                     {
                         transaction.Complete();
@@ -1586,6 +1591,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 using (SqlTransactionContext transaction = new SqlTransactionContext())
                 {
                     personel = new PersonelService().GetById(PersonelIdQS.ConvertToInt(), transaction, context);
+                    if (personel != null && !KadroHariciKurumGecerliMi(personel.Tipi)) return;
                     if (personel != null && IsBilgileriUpdate(personel, transaction, context, out notificationSubject))
                     {
                         IzinDonemiBilgileriniGuncelle(personel, transaction, context);
@@ -1659,6 +1665,11 @@ namespace IKYS_WebParts.PersonelGirisiWP
         private bool PersonelUpdate(Personel personel, SqlTransactionContext transaction, PortalLogContext context)
         {
             if (personel == null) return false;
+            int tipi = PersonelTipiDDL.SelectedValue.ConvertToInt();
+            IsBilgileri isBilgileri = new IsBilgileriService().GetByPersonelId(personel.Id, transaction, context);
+            if (isBilgileri == null) return false;
+            isBilgileri.KadroHariciKurum = KadroHariciKurumDegeri(tipi);
+            if (!new IsBilgileriService().Update(isBilgileri, transaction, context)) return false;
             personel.Adi = AdiTxt.Text;
             personel.Soyadi = SoyadiTxt.Text;
             personel.SicilNo = SicilNoTxt.Text.ConvertToInt();
@@ -1721,6 +1732,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 {
                     PersonelId = personel.Id,
                     UnvanId = UnvanTanimDDL.SelectedValue.ConvertToInt(),
+                    KadroHariciKurum = KadroHariciKurumDegeri(personel.Tipi),
                     CalismaDurumu = ProjeConstants.PER_CALISIYOR_INT,
                     ProtokolSiraNo = 9999,
                     Olusturan = CurrentUserName
@@ -1739,6 +1751,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             int oldCalismaDurumu = isBilgileri.CalismaDurumu;
             int oldGorevId = isBilgileri.GorevId;
             isBilgileri.UnvanId = UnvanTanimDDL.SelectedItem.Value.ConvertToInt();
+            isBilgileri.KadroHariciKurum = KadroHariciKurumDegeri(personel.Tipi);
             isBilgileri.GorevId = GorevTanimDDL.SelectedItem.Value.ConvertToInt();
             isBilgileri.BirimId = BirimDDL.SelectedItem.Value.ConvertToInt();
             isBilgileri.BaslamaTar = IsbasTarTxt.Value.ConvertToDatetime();
@@ -1787,6 +1800,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             int oldBirimId = item.BirimId;
             int oldCalismaDurumu = item.CalismaDurumu;
             item.UnvanId = UnvanTanimDDL.SelectedValue.ConvertToInt();
+            item.KadroHariciKurum = KadroHariciKurumDegeri(personel.Tipi);
             item.BirimId = BirimDDL.SelectedItem.Value.ConvertToInt();
             item.BaslamaTar = KadrosuzIsbasTarihiTxt.Value.ConvertToDatetime();
             item.AyrilmaTar = KadrosuzAyrilmaTarihiTxt.Value.ConvertToDatetime();
@@ -1892,6 +1906,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
         {
             try
             {
+                if (!KadroHariciKurumGecerliMi(PersonelTipiDDL.SelectedValue.ConvertToInt())) return;
                 //Girilen TC numarasi kayitli mi kontrol et
                 Kimlik kimlik = new Kimlik();
                 string kimlikNo = TCKimlikNoTxt.Text;
@@ -2072,8 +2087,31 @@ namespace IKYS_WebParts.PersonelGirisiWP
             PersonelTipiAyarlari(isDuzenle);
         }
 
+        private string KadroHariciKurumDegeri(int tipi)
+        {
+            return tipi == (int)PersonelTipi.Kadrosuz ? KadrosuzKurumuTxt.Text.Trim() : null;
+        }
+
+        private bool KadroHariciKurumGecerliMi(int tipi)
+        {
+            if (tipi != (int)PersonelTipi.Kadrosuz) return true;
+            string kurum = KadroHariciKurumDegeri(tipi);
+            if (string.IsNullOrWhiteSpace(kurum))
+            {
+                Messages.Error("Kadro harici personel için kurum bilgisi zorunludur.");
+                return false;
+            }
+            if (kurum.Length > 200)
+            {
+                Messages.Error("Kurum bilgisi en fazla 200 karakter olabilir.");
+                return false;
+            }
+            return true;
+        }
+
         private void PersonelTipiAyarlari(bool isDuzenle = false)
         {
+            Div1.Visible = PersonelTipiDDL.SelectedValue.ConvertToInt() == (int)PersonelTipi.Kadrosuz;
             KimlikNav.Visible = true;
             IsBilgileriNav.Visible = false;
             KadrosuzIsBilgileriNav.Visible = false;

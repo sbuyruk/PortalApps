@@ -352,13 +352,6 @@
                                                 <input runat="server" type="text" id="KadrosuzIsbasTarihiTxt" name="KadrosuzIsbasTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
                                             </div>
                                         </div>
-                                        <div class="col" id="Div1" runat="server">
-                                            <div class="form-group m-0">
-                                                <label class="form-label fw-semibold" for="KadrosuzKurumuTxt">Kurumu</label>
-                                                <asp:TextBox ID="KadrosuzKurumuTxt" runat="server" CssClass="form-control" type="text"></asp:TextBox>
-                                            </div>
-
-                                        </div>
                                         <div class="col">
                                             <div class="form-group m-0">
                                                 <label class="form-label fw-semibold" for="KadrosuzCalismaDurumuDDL">Çalışma Dur.</label>
@@ -624,6 +617,10 @@
                                 <div class="form-group">
                                     <label class="form-label fw-semibold" for="UnvanTanimDDL">Ünvanı</label>
                                     <asp:DropDownList ID="UnvanTanimDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
+                                </div>
+                                <div class="form-group" id="Div1" runat="server" visible="false">
+                                    <label class="form-label fw-semibold" for="KadrosuzKurumuTxt">Kurumu (zorunlu)</label>
+                                    <asp:TextBox ID="KadrosuzKurumuTxt" runat="server" CssClass="form-control" MaxLength="200"></asp:TextBox>
                                 </div>
                             </div>
                         </div>
