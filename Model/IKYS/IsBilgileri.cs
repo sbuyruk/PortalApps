@@ -9,6 +9,7 @@ namespace Model.IKYS
         public int UnvanId { get; set; }
         public int GorevId { get; set; }
         public int BirimId { get; set; }
+        public string KadroHariciKurum { get; set; }
         public DateTime BaslamaTar { get; set; }
         public DateTime IzinDonemiBasTar { get; set; }
         public int CalismaDurumu { get; set; }

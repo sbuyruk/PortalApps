@@ -97,6 +97,7 @@ namespace Model.Services.IKYS
             AddChange(log, auditId, "UnvanId", old == null ? null : old.UnvanId.ToString(CultureInfo.InvariantCulture), current == null ? null : current.UnvanId.ToString(CultureInfo.InvariantCulture), transaction);
             AddChange(log, auditId, "GorevId", old == null ? null : old.GorevId.ToString(CultureInfo.InvariantCulture), current == null ? null : current.GorevId.ToString(CultureInfo.InvariantCulture), transaction);
             AddChange(log, auditId, "BirimId", old == null ? null : old.BirimId.ToString(CultureInfo.InvariantCulture), current == null ? null : current.BirimId.ToString(CultureInfo.InvariantCulture), transaction);
+            AddChange(log, auditId, "KadroHariciKurum", old == null ? null : old.KadroHariciKurum, current == null ? null : current.KadroHariciKurum, transaction);
             AddChange(log, auditId, "CalismaDurumu", old == null ? null : old.CalismaDurumu.ToString(CultureInfo.InvariantCulture), current == null ? null : current.CalismaDurumu.ToString(CultureInfo.InvariantCulture), transaction);
             AddChange(log, auditId, "BaslamaTar", old == null ? null : old.BaslamaTar.ToString("o", CultureInfo.InvariantCulture), current == null ? null : current.BaslamaTar.ToString("o", CultureInfo.InvariantCulture), transaction);
             AddChange(log, auditId, "IzinDonemiBasTar", old == null ? null : old.IzinDonemiBasTar.ToString("o", CultureInfo.InvariantCulture), current == null ? null : current.IzinDonemiBasTar.ToString("o", CultureInfo.InvariantCulture), transaction);
