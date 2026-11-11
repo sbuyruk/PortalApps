@@ -264,6 +264,10 @@
                                     <div class="form-group row">
                                         <div class="col">
                                             <div class="form-group m-0">
+                                                <label class="form-label fw-semibold" for="UnvanTanimDDL">Ünvanı</label>
+                                                <asp:DropDownList ID="UnvanTanimDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
+                                            </div>
+                                            <div class="form-group m-0">
                                                 <label class="form-label fw-semibold" for="SubeTxt">Şubesi/Birimi</label>
                                                 <asp:DropDownList ID="BirimDDL" runat="server" class="form-control form-select form-select-lg" AutoPostBack="true" OnSelectedIndexChanged="BirimDDL_SelectedIndexChanged"></asp:DropDownList>
                                             </div>
@@ -343,6 +347,10 @@
                                 <div class="tab-pane" role="tabpanel" id="KadrosuzIsBilgileriDiv">
                                     <div class="form-group row">
                                         <div class="col">
+                                            <div class="form-group m-0">
+                                                <label class="form-label fw-semibold" for="KadrosuzUnvanTanimDDL">Ünvanı</label>
+                                                <asp:DropDownList ID="KadrosuzUnvanTanimDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
+                                            </div>
                                             <div class="form-group">
                                                 <label class="form-label fw-semibold" for="KadrosuzBirimDDL">Birim/Şube</label>
                                                 <asp:DropDownList ID="KadrosuzBirimDDL" runat="server" class="form-control form-select form-select-lg"></asp:DropDownList>
@@ -350,6 +358,12 @@
                                             <div class="form-group m-0">
                                                 <label class="form-label fw-semibold" for="KadrosuzIsbasTarihiTxt">İşe Baş.Tar.</label>
                                                 <input runat="server" type="text" id="KadrosuzIsbasTarihiTxt" name="KadrosuzIsbasTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col" id="Div1" runat="server" visible="false">
+                                            <div class="form-group m-0">
+                                                <label class="form-label fw-semibold" for="KadrosuzKurumuTxt">Kurumu (zorunlu)</label>
+                                                <asp:TextBox ID="KadrosuzKurumuTxt" runat="server" CssClass="form-control" MaxLength="200"></asp:TextBox>
                                             </div>
                                         </div>
                                         <div class="col">
@@ -613,14 +627,6 @@
                                     <div>
                                         <asp:DropDownList ID="PersonelTipiDDL" runat="server" class="form-control form-select form-select-lg" OnSelectedIndexChanged="PersonelTipiDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label fw-semibold" for="UnvanTanimDDL">Ünvanı</label>
-                                    <asp:DropDownList ID="UnvanTanimDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
-                                </div>
-                                <div class="form-group" id="Div1" runat="server" visible="false">
-                                    <label class="form-label fw-semibold" for="KadrosuzKurumuTxt">Kurumu (zorunlu)</label>
-                                    <asp:TextBox ID="KadrosuzKurumuTxt" runat="server" CssClass="form-control" MaxLength="200"></asp:TextBox>
                                 </div>
                             </div>
                         </div>
