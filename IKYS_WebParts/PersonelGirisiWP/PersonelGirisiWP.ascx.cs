@@ -446,6 +446,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
         }
         private void FillKadrosuzIsBilgileri(Personel personel, IsBilgileri isb)
         {
+            UtilityHelper.SetDDLValue(KadrosuzUnvanTanimDDL, isb.UnvanId.ToString());
             KadrosuzKurumuTxt.Text = personel.Tipi == (int)PersonelTipi.Kadrosuz
                 ? isb.KadroHariciKurum ?? string.Empty : string.Empty;
             //birim
@@ -1353,11 +1354,14 @@ namespace IKYS_WebParts.PersonelGirisiWP
         {
             UnvanTanimDDL.Items.Clear();
             UnvanTanimDDL.Items.Add(new ListItem("", "0"));
+            KadrosuzUnvanTanimDDL.Items.Clear();
+            KadrosuzUnvanTanimDDL.Items.Add(new ListItem("", "0"));
             List<UnvanTanim> list = new UnvanTanimService().GetAll(LoggingContext);
             foreach (UnvanTanim un in list)
             {
                 ListItem li = new ListItem(un.Adi.ReturnEmptyIfNull().ToString(), un.Id.ReturnZeroIfNull().ToString());
                 UnvanTanimDDL.Items.Add(li);
+                KadrosuzUnvanTanimDDL.Items.Add(new ListItem(li.Text, li.Value));
             }
         }
         private void FillMedeniHaliDDL()
@@ -1731,7 +1735,8 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 isBilgileri = new IsBilgileri
                 {
                     PersonelId = personel.Id,
-                    UnvanId = UnvanTanimDDL.SelectedValue.ConvertToInt(),
+                    UnvanId = personel.Tipi == (int)PersonelTipi.Kadrosuz
+                        ? KadrosuzUnvanTanimDDL.SelectedValue.ConvertToInt() : UnvanTanimDDL.SelectedValue.ConvertToInt(),
                     KadroHariciKurum = KadroHariciKurumDegeri(personel.Tipi),
                     CalismaDurumu = ProjeConstants.PER_CALISIYOR_INT,
                     ProtokolSiraNo = 9999,
@@ -1799,7 +1804,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             if (item == null) return false;
             int oldBirimId = item.BirimId;
             int oldCalismaDurumu = item.CalismaDurumu;
-            item.UnvanId = UnvanTanimDDL.SelectedValue.ConvertToInt();
+            item.UnvanId = KadrosuzUnvanTanimDDL.SelectedValue.ConvertToInt();
             item.KadroHariciKurum = KadroHariciKurumDegeri(personel.Tipi);
             item.BirimId = BirimDDL.SelectedItem.Value.ConvertToInt();
             item.BaslamaTar = KadrosuzIsbasTarihiTxt.Value.ConvertToDatetime();
@@ -2112,9 +2117,11 @@ namespace IKYS_WebParts.PersonelGirisiWP
         private void PersonelTipiAyarlari(bool isDuzenle = false)
         {
             Div1.Visible = PersonelTipiDDL.SelectedValue.ConvertToInt() == (int)PersonelTipi.Kadrosuz;
+            UpdateIsBilgileriBtn.Visible = isDuzenle;
+            KadrosuzUpdateIsBilgileriBtn.Visible = isDuzenle;
             KimlikNav.Visible = true;
-            IsBilgileriNav.Visible = false;
-            KadrosuzIsBilgileriNav.Visible = false;
+            IsBilgileriNav.Visible = PersonelTipiDDL.SelectedValue.ConvertToInt() == (int)PersonelTipi.Kadrolu;
+            KadrosuzIsBilgileriNav.Visible = PersonelTipiDDL.SelectedValue.ConvertToInt() == (int)PersonelTipi.Kadrosuz;
             IletisimNav.Visible = false;
             AileNav.Visible = false;
             EgitimNav.Visible = false;
