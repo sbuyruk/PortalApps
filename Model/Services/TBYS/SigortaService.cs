@@ -42,7 +42,15 @@ namespace Model.Services.TBYS
 
         public Sigorta GetById(int id)
         {
-            return Map(repository.SelectById(id));
+            try
+            {
+                return Map(repository.SelectById(id));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Sigorta", id, error);
+                throw;
+            }
         }
 
         public List<Sigorta> GetAll()
@@ -52,12 +60,28 @@ namespace Model.Services.TBYS
 
         public List<Sigorta> GetByTasinmazId(int tasinmazId)
         {
-            return new Sigorta().ToList<Sigorta>(repository.SelectByTasinmazId(tasinmazId));
+            try
+            {
+                return new Sigorta().ToList<Sigorta>(repository.SelectByTasinmazId(tasinmazId));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Tasinmaz", tasinmazId, error);
+                throw;
+            }
         }
 
         public List<Sigorta> GetByIdList(int id)
         {
-            return new Sigorta().ToList<Sigorta>(repository.SelectById(id));
+            try
+            {
+                return new Sigorta().ToList<Sigorta>(repository.SelectById(id));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Sigorta", id, error);
+                throw;
+            }
         }
 
         public DataTable GetInventoryList()
@@ -115,114 +139,194 @@ namespace Model.Services.TBYS
 
         public Sigorta GetLatestByTasinmazId(int tasinmazId)
         {
-            return GetByTasinmazId(tasinmazId).FirstOrDefault();
+            try
+            {
+                return GetByTasinmazId(tasinmazId).FirstOrDefault();
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Tasinmaz", tasinmazId, error);
+                throw;
+            }
         }
 
         public int Save(Sigorta item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                int id = Save(item, transaction, context);
-                transaction.Complete();
-                return id;
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    int id = Save(item, transaction, context);
+                    transaction.Complete();
+                    return id;
+                }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, item != null && item.Id > 0 ? "Sigorta" : "Tasinmaz", item == null ? 0 : (item.Id > 0 ? item.Id : item.TasinmazId), error);
+                throw;
             }
         }
 
         public bool Update(Sigorta item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                bool updated = Update(item, transaction, context);
-                if (updated) transaction.Complete();
-                return updated;
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool updated = Update(item, transaction, context);
+                    if (updated) transaction.Complete();
+                    return updated;
+                }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Sigorta", item == null ? 0 : item.Id, error);
+                throw;
             }
         }
 
         public bool Delete(Sigorta item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                bool deleted = Delete(item, transaction, context);
-                if (deleted) transaction.Complete();
-                return deleted;
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool deleted = Delete(item, transaction, context);
+                    if (deleted) transaction.Complete();
+                    return deleted;
+                }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Sigorta", item == null ? 0 : item.Id, error);
+                throw;
             }
         }
 
         public Sigorta GetLatestByTasinmazId(int tasinmazId, SqlTransactionContext transaction, PortalLogContext context)
         {
-            return Map(repository.SelectLatestByTasinmazId(tasinmazId, transaction, context));
+            try
+            {
+                return Map(repository.SelectLatestByTasinmazId(tasinmazId, transaction, context));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Tasinmaz", tasinmazId, error);
+                throw;
+            }
         }
 
         public int Save(Sigorta item, SqlTransactionContext transaction, PortalLogContext context)
         {
-            RequireTransaction(transaction, context);
-            if (item == null) throw new ArgumentNullException("item", "Kaydedilecek sigorta gereklidir.");
-            EnsureRelation(item, transaction, context);
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item, transaction, context);
-            if (item.Id <= 0) throw new InvalidOperationException("Sigorta kaydı oluşturulamadı.");
-            DataTable saved = repository.SelectById(item.Id, transaction, context);
-            if (saved == null) throw new InvalidOperationException("Kaydedilen sigorta okunamadı.");
-            RecordAudit("INSERT", item.Id, null, saved, transaction, context);
-            return item.Id;
+            try
+            {
+                RequireTransaction(transaction, context);
+                if (item == null) throw new ArgumentNullException("item", "Kaydedilecek sigorta gereklidir.");
+                EnsureRelation(item, transaction, context);
+                item.OlusturmaTarihi = DateTime.Now;
+                item.Olusturan = UtilityHelper.GetCurrentUserName();
+                item.Id = repository.Insert(item, transaction, context);
+                if (item.Id <= 0) throw new InvalidOperationException("Sigorta kaydı oluşturulamadı.");
+                DataTable saved = repository.SelectById(item.Id, transaction, context);
+                if (saved == null) throw new InvalidOperationException("Kaydedilen sigorta okunamadı.");
+                RecordAudit("INSERT", item.Id, null, saved, transaction, context);
+                return item.Id;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, item != null && item.Id > 0 ? "Sigorta" : "Tasinmaz", item == null ? 0 : (item.Id > 0 ? item.Id : item.TasinmazId), error);
+                throw;
+            }
         }
 
         public bool Update(Sigorta item, SqlTransactionContext transaction, PortalLogContext context)
         {
-            RequireTransaction(transaction, context);
-            if (item == null || item.Id <= 0) return false;
-            EnsureRelation(item, transaction, context);
-            DataTable oldValues = repository.SelectById(item.Id, transaction, context);
-            Sigorta old = Map(oldValues);
-            if (old == null) return false;
-            if (old.TasinmazId != item.TasinmazId)
-                throw new InvalidOperationException("Sigortanın bağlı taşınmazı değişmiş. Sayfayı yenileyip tekrar deneyiniz.");
-            item.OlusturmaTarihi = old.OlusturmaTarihi;
-            item.Olusturan = old.Olusturan;
-            item.DegistirmeTarihi = DateTime.Now;
-            item.Degistiren = UtilityHelper.GetCurrentUserName();
-            if (!repository.Update(item, transaction, context)) return false;
-            DataTable saved = repository.SelectById(item.Id, transaction, context);
-            if (saved == null) throw new InvalidOperationException("Güncellenen sigorta okunamadı.");
-            RecordAudit("UPDATE", item.Id, oldValues, saved, transaction, context);
-            return true;
+            try
+            {
+                RequireTransaction(transaction, context);
+                if (item == null || item.Id <= 0) return false;
+                EnsureRelation(item, transaction, context);
+                DataTable oldValues = repository.SelectById(item.Id, transaction, context);
+                Sigorta old = Map(oldValues);
+                if (old == null) return false;
+                if (old.TasinmazId != item.TasinmazId)
+                    throw new InvalidOperationException("Sigortanın bağlı taşınmazı değişmiş. Sayfayı yenileyip tekrar deneyiniz.");
+                item.OlusturmaTarihi = old.OlusturmaTarihi;
+                item.Olusturan = old.Olusturan;
+                item.DegistirmeTarihi = DateTime.Now;
+                item.Degistiren = UtilityHelper.GetCurrentUserName();
+                if (!repository.Update(item, transaction, context)) return false;
+                DataTable saved = repository.SelectById(item.Id, transaction, context);
+                if (saved == null) throw new InvalidOperationException("Güncellenen sigorta okunamadı.");
+                RecordAudit("UPDATE", item.Id, oldValues, saved, transaction, context);
+                return true;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Sigorta", item == null ? 0 : item.Id, error);
+                throw;
+            }
         }
 
         public bool Delete(Sigorta item, SqlTransactionContext transaction, PortalLogContext context)
         {
-            RequireTransaction(transaction, context);
-            if (item == null || item.Id <= 0) return false;
-            DataTable oldValues = repository.SelectById(item.Id, transaction, context);
-            Sigorta old = Map(oldValues);
-            if (old == null || old.TasinmazId != item.TasinmazId) return false;
-            if (!repository.Delete(item.Id, transaction, context)) return false;
-            RecordAudit("DELETE", item.Id, oldValues, null, transaction, context);
-            return true;
+            try
+            {
+                RequireTransaction(transaction, context);
+                if (item == null || item.Id <= 0) return false;
+                DataTable oldValues = repository.SelectById(item.Id, transaction, context);
+                Sigorta old = Map(oldValues);
+                if (old == null || old.TasinmazId != item.TasinmazId) return false;
+                if (!repository.Delete(item.Id, transaction, context)) return false;
+                RecordAudit("DELETE", item.Id, oldValues, null, transaction, context);
+                return true;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Sigorta", item == null ? 0 : item.Id, error);
+                throw;
+            }
         }
 
         public int SaveWithPropertyStatus(Sigorta item)
         {
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                int id = Save(item, transaction, context);
-                SynchronizePropertyStatus(item, transaction, context);
-                transaction.Complete();
-                return id;
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    int id = Save(item, transaction, context);
+                    SynchronizePropertyStatus(item, transaction, context);
+                    transaction.Complete();
+                    return id;
+                }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, item != null && item.Id > 0 ? "Sigorta" : "Tasinmaz", item == null ? 0 : (item.Id > 0 ? item.Id : item.TasinmazId), error);
+                throw;
             }
         }
 
         public bool UpdateWithPropertyStatus(Sigorta item)
         {
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                if (!Update(item, transaction, context)) return false;
-                SynchronizePropertyStatus(item, transaction, context);
-                transaction.Complete();
-                return true;
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    if (!Update(item, transaction, context)) return false;
+                    SynchronizePropertyStatus(item, transaction, context);
+                    transaction.Complete();
+                    return true;
+                }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Sigorta", item == null ? 0 : item.Id, error);
+                throw;
             }
         }
 
@@ -255,33 +359,49 @@ namespace Model.Services.TBYS
 
         public bool UpdateDocument(Sigorta item)
         {
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                bool updated = UpdateDocument(item, transaction, context);
-                if (updated) transaction.Complete();
-                return updated;
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool updated = UpdateDocument(item, transaction, context);
+                    if (updated) transaction.Complete();
+                    return updated;
+                }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Sigorta", item == null ? 0 : item.Id, error);
+                throw;
             }
         }
 
         public bool UpdateDocument(Sigorta item, SqlTransactionContext transaction, PortalLogContext context)
         {
-            RequireTransaction(transaction, context);
-            if (item == null || item.Id <= 0) return false;
-            DataTable oldValues = repository.SelectById(item.Id, transaction, context);
-            Sigorta old = Map(oldValues);
-            if (old == null || old.TasinmazId != item.TasinmazId) return false;
-            repository.UpdateDocument(item.Id, item.PDFDosyasi, DateTime.Now, UtilityHelper.GetCurrentUserName(), transaction, context);
-            DataTable saved = repository.SelectById(item.Id, transaction, context);
-            if (saved == null) throw new InvalidOperationException("Güncellenen sigorta belge bilgisi okunamadı.");
-            PortalLogRepository log = new PortalLogRepository();
-            int auditId = log.RecordAudit(context, "UPDATE", "Sigorta", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
-            if (auditId > 0)
+            try
             {
-                string oldValue = string.IsNullOrWhiteSpace(old.PDFDosyasi) ? "false" : "true";
-                string newValue = string.IsNullOrWhiteSpace(Convert.ToString(saved.Rows[0]["PDFDosyasi"])) ? "false" : "true";
-                if (oldValue != newValue) log.RecordAuditChange(auditId, "BelgeMevcut", oldValue, newValue, transaction);
+                RequireTransaction(transaction, context);
+                if (item == null || item.Id <= 0) return false;
+                DataTable oldValues = repository.SelectById(item.Id, transaction, context);
+                Sigorta old = Map(oldValues);
+                if (old == null || old.TasinmazId != item.TasinmazId) return false;
+                repository.UpdateDocument(item.Id, item.PDFDosyasi, DateTime.Now, UtilityHelper.GetCurrentUserName(), transaction, context);
+                DataTable saved = repository.SelectById(item.Id, transaction, context);
+                if (saved == null) throw new InvalidOperationException("Güncellenen sigorta belge bilgisi okunamadı.");
+                PortalLogRepository log = new PortalLogRepository();
+                int auditId = log.RecordAudit(context, "UPDATE", "Sigorta", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
+                if (auditId > 0)
+                {
+                    string oldValue = string.IsNullOrWhiteSpace(old.PDFDosyasi) ? "false" : "true";
+                    string newValue = string.IsNullOrWhiteSpace(Convert.ToString(saved.Rows[0]["PDFDosyasi"])) ? "false" : "true";
+                    if (oldValue != newValue) log.RecordAuditChange(auditId, "BelgeMevcut", oldValue, newValue, transaction);
+                }
+                return true;
             }
-            return true;
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Sigorta", item == null ? 0 : item.Id, error);
+                throw;
+            }
         }
 
         private static void RequireTransaction(SqlTransactionContext transaction, PortalLogContext context)

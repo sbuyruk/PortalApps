@@ -21,7 +21,8 @@ namespace TBYS_WebParts.SigortaEkleSilWP
         {
             get
             {
-                return PortalLogContext.FromCurrentRequest("TBYS", "SigortaEkleSilWP");
+                return PortalLogContext.FromCurrentRequest("TBYS", "SigortaEkleSilWP")
+                    .WithEntity("Tasinmaz", TasinmazIdQS.ConvertToInt());
             }
         }
 
@@ -211,6 +212,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP
         }
         protected void SigortaEkleBtn_Click(object sender, EventArgs e)
         {
+            PortalLogContext context = LoggingContext;
             try
             {
                 Sigorta sigorta = new Sigorta();
@@ -230,6 +232,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP
                 sigorta.Olusturan = CurrentUserName;
                 sigorta.BolumId = BagimsizBolumDDL.SelectedItem.Value.ConvertToInt();
                 int sigortaId = new Model.Services.TBYS.SigortaService(LoggingContext).Save(sigorta);
+                if (sigortaId > 0) context = context.WithEntity("Sigorta", sigortaId);
                 string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 int queryIndex = newUrl.IndexOf("?");
                 if (queryIndex > 0)
@@ -240,7 +243,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP
             catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error)
             {
-                TbysWebPartLog.ReportError(LoggingContext, "TBYS.SigortaEkleSilWP.SigortaEkleBtn_Click", error);
+                TbysWebPartLog.ReportError(context, "TBYS.SigortaEkleSilWP.SigortaEkleBtn_Click", error);
             }
         }
         protected void BackBtn_Click(object sender, EventArgs e)
@@ -345,6 +348,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP
                 SilBtn.CssClass = "btn btn-outline-danger";
                 SilBtn.Click += delegate
                 {
+                    PortalLogContext context = LoggingContext.WithEntity("Sigorta", sigorta.Id);
                     try
                     {
                         int tasinmazId = sigorta.TasinmazId;
@@ -362,7 +366,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP
                     catch (System.Threading.ThreadAbortException) { throw; }
                     catch (Exception error)
                     {
-                        TbysWebPartLog.ReportError(LoggingContext, "TBYS.SigortaEkleSilWP.Delete", error);
+                        TbysWebPartLog.ReportError(context, "TBYS.SigortaEkleSilWP.Delete", error);
                     }
                 };
                 SilCell.Controls.Add(SilBtn);

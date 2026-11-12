@@ -25,7 +25,8 @@ namespace TBYS_WebParts.TasinmazKartiWP
         {
             get
             {
-                return PortalLogContext.FromCurrentRequest("TBYS", "TasinmazKartiWP");
+                return PortalLogContext.FromCurrentRequest("TBYS", "TasinmazKartiWP")
+                    .WithEntity("Tasinmaz", TasinmazIdQS.ConvertToInt());
             }
         }
 

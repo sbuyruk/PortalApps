@@ -25,7 +25,8 @@ namespace TBYS_WebParts.KiraciGirisiWP
         {
             get
             {
-                return PortalLogContext.FromCurrentRequest("TBYS", "KiraciGirisiWP");
+                return PortalLogContext.FromCurrentRequest("TBYS", "KiraciGirisiWP")
+                    .WithEntity("Kiraci", KiraciIdQS.ConvertToInt());
             }
         }
 
@@ -224,7 +225,10 @@ namespace TBYS_WebParts.KiraciGirisiWP
             int id = new Model.Services.TBYS.KiraciService(LoggingContext).Save(kiraci);
             kiraci.Id = id;
             if (id > 0)
+            {
+                KiraciIdQS = id.ToString();
                 return kiraci;
+            }
             else
                 return null;
         }
@@ -486,18 +490,26 @@ namespace TBYS_WebParts.KiraciGirisiWP
         }
         protected void UpdateBtn_Click(object sender, EventArgs e)
         {
-            Kiraci kiraci = UpdateKiraciData2Db();
-            if (kiraci != null)
+            try
             {
-                KiraSozlesme ks = new KiraSozlesme();
-                Bolge bolge = BolgeGetir();
-                bool ksUpdateed = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).UpdateByKiraciId(bolge.Id, kiraci.Id);
-                SozlesmelerTablosunuDoldur(kiraci.Id);
-                Messages.Success("Kiraci Güncellendi", 2000);
+                Kiraci kiraci = UpdateKiraciData2Db();
+                if (kiraci != null)
+                {
+                    KiraSozlesme ks = new KiraSozlesme();
+                    Bolge bolge = BolgeGetir();
+                    bool ksUpdateed = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).UpdateByKiraciId(bolge.Id, kiraci.Id);
+                    SozlesmelerTablosunuDoldur(kiraci.Id);
+                    Messages.Success("Kiraci Güncellendi", 2000);
+                }
+                else
+                {
+                    Messages.Error("Kiraci Güncellenemedi");
+                }
             }
-            else
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
             {
-                Messages.Error("Kiraci Güncellenemedi");
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraciGirisiWP.UpdateBtn_Click", error);
             }
         }
         private Bolge BolgeGetir()
@@ -509,25 +521,32 @@ namespace TBYS_WebParts.KiraciGirisiWP
         }
         protected void SilBtn_Click(object sender, EventArgs e)
         {
-            Kiraci kiraci = new Kiraci();
-            kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
-            if (kiraci != null)//bu kiraci varsa
+            try
             {
-                KiraSozlesme kiraSozlesme = new KiraSozlesme();
-                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetByKiraciId(kiraci.Id);
-                if (kiraSozlesme != null) //bu sozlesme varsa
+                Kiraci kiraci = new Kiraci();
+                kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
+                if (kiraci != null)//bu kiraci varsa
                 {
-                    WarnDiv.Attributes["style"] = "display : block";
-                    DeleteDiv.Attributes["style"] = "display : none";
+                    KiraSozlesme kiraSozlesme = new KiraSozlesme();
+                    kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetByKiraciId(kiraci.Id);
+                    if (kiraSozlesme != null) //bu sozlesme varsa
+                    {
+                        WarnDiv.Attributes["style"] = "display : block";
+                        DeleteDiv.Attributes["style"] = "display : none";
+                    }
+                    else
+                    {
+                        DeleteDiv.Attributes["style"] = "display : block";
+                        WarnDiv.Attributes["style"] = "display : none";
+                    }
+                    ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "DeleteModalOnay();", true);
                 }
-                else
-                {
-                    DeleteDiv.Attributes["style"] = "display : block";
-                    WarnDiv.Attributes["style"] = "display : none";
-                }
-                ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "DeleteModalOnay();", true);
             }
-
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraciGirisiWP.SilBtn_Click", error);
+            }
         }
         protected void OdemePlaniGoruntuleBtn_Click(object sender, EventArgs e)
         {
@@ -891,17 +910,24 @@ namespace TBYS_WebParts.KiraciGirisiWP
 
         protected void DeleteNowBtn_Click(object sender, EventArgs e)
         {
-            Kiraci kiraci = new Kiraci();
-            kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
-            ///Kiracinin siinmesi bir dizi konrol ile yapilabilir. 
-            if (KiraciSilinebilirMi(kiraci))
+            try
             {
-                if (new Model.Services.TBYS.KiraciService(LoggingContext).Delete(kiraci))
+                Kiraci kiraci = new Kiraci();
+                kiraci = new Model.Services.TBYS.KiraciService(LoggingContext).GetById(KiraciIdQS.ConvertToInt());
+                ///Kiracinin siinmesi bir dizi konrol ile yapilabilir.
+                if (KiraciSilinebilirMi(kiraci))
                 {
-                    RedirectToPage(ProjeConstants.PAGE_KIRACI_LIST + "?Mesaj=true");
+                    if (new Model.Services.TBYS.KiraciService(LoggingContext).Delete(kiraci))
+                    {
+                        RedirectToPage(ProjeConstants.PAGE_KIRACI_LIST + "?Mesaj=true");
+                    }
                 }
-            } 
-
+            }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraciGirisiWP.DeleteNowBtn_Click", error);
+            }
         }
 
         private bool KiraciSilinebilirMi(Kiraci kiraci)

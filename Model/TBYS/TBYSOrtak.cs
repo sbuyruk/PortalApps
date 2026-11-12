@@ -31,24 +31,40 @@ namespace Model.Ortak
 
         public static bool BakiyeBorcHesapla(KiraSozlesme kiraSozlesme, PortalLogContext context)
         {
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                bool updated = BakiyeBorcHesapla(kiraSozlesme, context, transaction);
-                if (updated) transaction.Complete();
-                return updated;
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool updated = BakiyeBorcHesapla(kiraSozlesme, context, transaction);
+                    if (updated) transaction.Complete();
+                    return updated;
+                }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", kiraSozlesme == null ? 0 : kiraSozlesme.Id, error);
+                throw;
             }
         }
 
         public static bool BakiyeBorcHesapla(KiraSozlesme kiraSozlesme, PortalLogContext context, SqlTransactionContext transaction)
         {
-            if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
-            if (transaction == null) throw new ArgumentNullException("transaction", "Veritabanı işlem bağlamı gereklidir.");
-            if (kiraSozlesme == null) return false;
-            KiraSozlesme current = new KiraSozlesmeService(context).GetById(kiraSozlesme.Id, transaction);
-            if (current == null) return false;
-            return current.GecikmeZammiTipi == ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK
-                ? BakiyeBorcHesaplaGunlukGecikmeZammi(current, context, transaction)
-                : BakiyeBorcHesaplaAylik(current, context, transaction);
+            try
+            {
+                if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
+                if (transaction == null) throw new ArgumentNullException("transaction", "Veritabanı işlem bağlamı gereklidir.");
+                if (kiraSozlesme == null) return false;
+                KiraSozlesme current = new KiraSozlesmeService(context).GetById(kiraSozlesme.Id, transaction);
+                if (current == null) return false;
+                return current.GecikmeZammiTipi == ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK
+                    ? BakiyeBorcHesaplaGunlukGecikmeZammi(current, context, transaction)
+                    : BakiyeBorcHesaplaAylik(current, context, transaction);
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", kiraSozlesme == null ? 0 : kiraSozlesme.Id, error);
+                throw;
+            }
         }
 
         public static void AktifSozleslemelerinBakiyeBorcunuHesapla(PortalLogContext context)
@@ -270,32 +286,48 @@ namespace Model.Ortak
 
         public static bool OdemeYap(KiraSozlesme kiraSozlesme, DateTime odemetarihi, decimal odenenTutar, string aciklama, ref int odemeId, PortalLogContext context)
         {
-            odemeId = 0;
-            if (kiraSozlesme == null || context == null) return false;
-            int savedId = 0;
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                if (!OdemeYap(kiraSozlesme, odemetarihi, odenenTutar, aciklama, ref savedId, context, transaction)) return false;
-                transaction.Complete();
-            }
+                odemeId = 0;
+                if (kiraSozlesme == null || context == null) return false;
+                int savedId = 0;
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    if (!OdemeYap(kiraSozlesme, odemetarihi, odenenTutar, aciklama, ref savedId, context, transaction)) return false;
+                    transaction.Complete();
+                }
 
-            odemeId = savedId;
-            return true;
+                odemeId = savedId;
+                return true;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", kiraSozlesme == null ? 0 : kiraSozlesme.Id, error);
+                throw;
+            }
         }
 
         public static bool OdemeYap(KiraSozlesme kiraSozlesme, DateTime odemeTarihi, decimal odenenTutar,
             string aciklama, ref int odemeId, PortalLogContext context, SqlTransactionContext transaction)
         {
-            if (transaction == null) throw new ArgumentNullException("transaction", "İşlem bağlamı gereklidir.");
-            odemeId = 0;
-            if (kiraSozlesme == null || context == null) return false;
-            OdemePlani plan = MahsupOdemePlaniGetir(kiraSozlesme, odemeTarihi, context, transaction);
-            if (plan == null) return false;
-            Odeme odeme = new OdemeService(context).OdemeyiKaydetOdemePlaniniGuncelle(
-                kiraSozlesme, plan, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName(), transaction);
-            if (odeme == null || odeme.Id <= 0) return false;
-            odemeId = odeme.Id;
-            return true;
+            try
+            {
+                if (transaction == null) throw new ArgumentNullException("transaction", "İşlem bağlamı gereklidir.");
+                odemeId = 0;
+                if (kiraSozlesme == null || context == null) return false;
+                OdemePlani plan = MahsupOdemePlaniGetir(kiraSozlesme, odemeTarihi, context, transaction);
+                if (plan == null) return false;
+                Odeme odeme = new OdemeService(context).OdemeyiKaydetOdemePlaniniGuncelle(
+                    kiraSozlesme, plan, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName(), transaction);
+                if (odeme == null || odeme.Id <= 0) return false;
+                odemeId = odeme.Id;
+                return true;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", kiraSozlesme == null ? 0 : kiraSozlesme.Id, error);
+                throw;
+            }
         }
 
         internal static OdemePlani MahsupOdemePlaniGetir(KiraSozlesme kiraSozlesme, DateTime odemeTarihi,
@@ -316,51 +348,67 @@ namespace Model.Ortak
 
         public static bool TeminatIslemleriniHesaplaVeKaydet(KiraSozlesme kiraSozlesme, PortalLogContext context)
         {
-            if (kiraSozlesme == null || context == null) return false;
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                bool updated = TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme, context, transaction);
-                if (updated) transaction.Complete();
-                return updated;
+                if (kiraSozlesme == null || context == null) return false;
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool updated = TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme, context, transaction);
+                    if (updated) transaction.Complete();
+                    return updated;
+                }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", kiraSozlesme == null ? 0 : kiraSozlesme.Id, error);
+                throw;
             }
         }
 
         public static bool TeminatIslemleriniHesaplaVeKaydet(KiraSozlesme kiraSozlesme, PortalLogContext context, SqlTransactionContext transaction)
         {
-            if (kiraSozlesme == null) return false;
-            kiraSozlesme = new KiraSozlesmeService(context).GetById(kiraSozlesme.Id, transaction);
-            if (kiraSozlesme == null) return false;
-            decimal toplamOdeme = 0m;
-            decimal toplamIade = 0m;
-            DataTable dataTable = new Model.Services.TBYS.TeminatIslemService(context).GetSumByKiraciIdGroupByType(kiraSozlesme.KiraciId, transaction);
-            if (dataTable != null)
+            try
             {
-                foreach (DataRow row in dataTable.Rows)
+                if (kiraSozlesme == null) return false;
+                kiraSozlesme = new KiraSozlesmeService(context).GetById(kiraSozlesme.Id, transaction);
+                if (kiraSozlesme == null) return false;
+                decimal toplamOdeme = 0m;
+                decimal toplamIade = 0m;
+                DataTable dataTable = new Model.Services.TBYS.TeminatIslemService(context).GetSumByKiraciIdGroupByType(kiraSozlesme.KiraciId, transaction);
+                if (dataTable != null)
                 {
-                    decimal islemToplami = row["IslemToplami"].ReturnZeroIfNull().ConvertToDecimal();
-                    switch (row["IslemTipi"].ToString())
+                    foreach (DataRow row in dataTable.Rows)
                     {
-                        case ProjeConstants.TEMINAT_ODEMESI:
-                        case ProjeConstants.TEMINAT_GECICITEMINATODEMESI:
-                            toplamOdeme += islemToplami;
-                            break;
-                        case ProjeConstants.TEMINAT_KIRACIYAIADE:
-                        case ProjeConstants.TEMINAT_KIRAYAMAHSUP:
-                        case ProjeConstants.TEMINAT_HASARAMAHSUP:
-                        case ProjeConstants.TEMINAT_AIDATAMAHSUP:
-                        case ProjeConstants.TEMINAT_VAKFABAGIS:
-                            toplamIade += islemToplami;
-                            break;
-                        case ProjeConstants.TEMINAT_MUHASEBEDENAKTARILACAK:
-                            toplamOdeme += islemToplami;
-                            break;
+                        decimal islemToplami = row["IslemToplami"].ReturnZeroIfNull().ConvertToDecimal();
+                        switch (row["IslemTipi"].ToString())
+                        {
+                            case ProjeConstants.TEMINAT_ODEMESI:
+                            case ProjeConstants.TEMINAT_GECICITEMINATODEMESI:
+                                toplamOdeme += islemToplami;
+                                break;
+                            case ProjeConstants.TEMINAT_KIRACIYAIADE:
+                            case ProjeConstants.TEMINAT_KIRAYAMAHSUP:
+                            case ProjeConstants.TEMINAT_HASARAMAHSUP:
+                            case ProjeConstants.TEMINAT_AIDATAMAHSUP:
+                            case ProjeConstants.TEMINAT_VAKFABAGIS:
+                                toplamIade += islemToplami;
+                                break;
+                            case ProjeConstants.TEMINAT_MUHASEBEDENAKTARILACAK:
+                                toplamOdeme += islemToplami;
+                                break;
+                        }
                     }
                 }
+                kiraSozlesme.OdenenTeminatTutari = toplamOdeme;
+                kiraSozlesme.IadeTeminatTutari = toplamIade;
+                kiraSozlesme.KalanTeminatTutari = toplamOdeme - toplamIade;
+                return new Model.Services.TBYS.KiraSozlesmeService(context).Update(kiraSozlesme, transaction);
             }
-            kiraSozlesme.OdenenTeminatTutari = toplamOdeme;
-            kiraSozlesme.IadeTeminatTutari = toplamIade;
-            kiraSozlesme.KalanTeminatTutari = toplamOdeme - toplamIade;
-            return new Model.Services.TBYS.KiraSozlesmeService(context).Update(kiraSozlesme, transaction);
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", kiraSozlesme == null ? 0 : kiraSozlesme.Id, error);
+                throw;
+            }
         }
         #endregion TBYS
 

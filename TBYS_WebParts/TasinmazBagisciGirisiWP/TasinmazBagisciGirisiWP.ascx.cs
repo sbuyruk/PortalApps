@@ -22,7 +22,8 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         {
             get
             {
-                return PortalLogContext.FromCurrentRequest("TBYS", "TasinmazBagisciGirisiWP");
+                return PortalLogContext.FromCurrentRequest("TBYS", "TasinmazBagisciGirisiWP")
+                    .WithEntity("TasinmazBagisci", BagisciIdQS.ConvertToInt());
             }
         }
 
@@ -380,7 +381,10 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             int tasinmazBagisciId = new Model.Services.TBYS.TasinmazBagisciService(LoggingContext).Save(bagisci);
             bagisci.Id = tasinmazBagisciId;
             if (tasinmazBagisciId > 0)
+            {
+                BagisciIdQS = tasinmazBagisciId.ToString();
                 return bagisci;
+            }
             else
                 return null;
         }

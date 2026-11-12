@@ -30,7 +30,15 @@ namespace Model.Services.TBYS
 
         public HukukiTakip GetById(int id)
         {
-            return Map(repository.SelectById(id));
+            try
+            {
+                return Map(repository.SelectById(id));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "HukukiTakip", id, error);
+                throw;
+            }
         }
 
         public List<HukukiTakip> GetAll()
@@ -40,7 +48,15 @@ namespace Model.Services.TBYS
 
         public HukukiTakip GetBySozlesmeId(int sozlesmeId)
         {
-            return new HukukiTakip().ToList<HukukiTakip>(repository.SelectBySozlesmeId(sozlesmeId)).FirstOrDefault();
+            try
+            {
+                return new HukukiTakip().ToList<HukukiTakip>(repository.SelectBySozlesmeId(sozlesmeId)).FirstOrDefault();
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", sozlesmeId, error);
+                throw;
+            }
         }
 
         public string GetActiveListAsJson()
@@ -55,45 +71,115 @@ namespace Model.Services.TBYS
 
         public int Save(HukukiTakip item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext tx = new SqlTransactionContext()) { int id = Save(item, tx); tx.Complete(); return id; }
+            try
+            {
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext tx = new SqlTransactionContext()) { int id = Save(item, tx); tx.Complete(); return id; }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, item != null && item.Id > 0 ? "HukukiTakip" : "KiraSozlesme", item == null ? 0 : (item.Id > 0 ? item.Id : item.SozlesmeId), error);
+                throw;
+            }
         }
-        public int Save(HukukiTakip item, SqlTransactionContext tx) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item, tx, context); if (item.Id > 0 && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "INSERT", "HukukiTakip", item.Id.ToString(), tx); return item.Id; }
+        public int Save(HukukiTakip item, SqlTransactionContext tx) {
+            try
+            {
+                if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item, tx, context); if (item.Id > 0 && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "INSERT", "HukukiTakip", item.Id.ToString(), tx); return item.Id;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, item != null && item.Id > 0 ? "HukukiTakip" : "KiraSozlesme", item == null ? 0 : (item.Id > 0 ? item.Id : item.SozlesmeId), error);
+                throw;
+            }
+        }
 
         public bool Update(HukukiTakip item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Update(item, tx); if (ok) tx.Complete(); return ok; }
+            try
+            {
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Update(item, tx); if (ok) tx.Complete(); return ok; }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "HukukiTakip", item == null ? 0 : item.Id, error);
+                throw;
+            }
         }
-        public bool Update(HukukiTakip item, SqlTransactionContext tx) { if (item == null || item.Id == 0) return false; item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); bool ok = repository.Update(item, tx, context); if (ok && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "UPDATE", "HukukiTakip", item.Id.ToString(), tx); return ok; }
+        public bool Update(HukukiTakip item, SqlTransactionContext tx) {
+            try
+            {
+                if (item == null || item.Id == 0) return false; item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); bool ok = repository.Update(item, tx, context); if (ok && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "UPDATE", "HukukiTakip", item.Id.ToString(), tx); return ok;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "HukukiTakip", item == null ? 0 : item.Id, error);
+                throw;
+            }
+        }
 
         public bool Delete(HukukiTakip item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Delete(item, tx); if (ok) tx.Complete(); return ok; }
+            try
+            {
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Delete(item, tx); if (ok) tx.Complete(); return ok; }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "HukukiTakip", item == null ? 0 : item.Id, error);
+                throw;
+            }
         }
-        public bool Delete(HukukiTakip item, SqlTransactionContext tx) { if (item == null || item.Id == 0) return false; bool ok = repository.Delete(item.Id, tx, context); if (ok && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "DELETE", "HukukiTakip", item.Id.ToString(), tx); return ok; }
+        public bool Delete(HukukiTakip item, SqlTransactionContext tx) {
+            try
+            {
+                if (item == null || item.Id == 0) return false; bool ok = repository.Delete(item.Id, tx, context); if (ok && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "DELETE", "HukukiTakip", item.Id.ToString(), tx); return ok;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "HukukiTakip", item == null ? 0 : item.Id, error);
+                throw;
+            }
+        }
 
         public bool DeleteBySozlesmeId(int id)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                bool deleted = DeleteBySozlesmeId(id, transaction);
-                if (deleted) transaction.Complete();
-                return deleted;
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool deleted = DeleteBySozlesmeId(id, transaction);
+                    if (deleted) transaction.Complete();
+                    return deleted;
+                }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", id, error);
+                throw;
             }
         }
 
         public bool DeleteBySozlesmeId(int id, SqlTransactionContext transaction)
         {
-            DataTable rows = repository.SelectBySozlesmeId(id, transaction, context);
-            if (rows == null || rows.Rows.Count == 0) return true;
-            if (!repository.DeleteBySozlesmeId(id, transaction, context)) return false;
-            foreach (DataRow row in rows.Rows)
-                new PortalLogRepository().RecordAudit(context, "DELETE", "HukukiTakip",
-                    Convert.ToString(row["Id"], System.Globalization.CultureInfo.InvariantCulture), transaction);
-            return true;
+            try
+            {
+                DataTable rows = repository.SelectBySozlesmeId(id, transaction, context);
+                if (rows == null || rows.Rows.Count == 0) return true;
+                if (!repository.DeleteBySozlesmeId(id, transaction, context)) return false;
+                foreach (DataRow row in rows.Rows)
+                    new PortalLogRepository().RecordAudit(context, "DELETE", "HukukiTakip",
+                        Convert.ToString(row["Id"], System.Globalization.CultureInfo.InvariantCulture), transaction);
+                return true;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", id, error);
+                throw;
+            }
         }
 
         private static HukukiTakip Map(DataTable table)

@@ -20,7 +20,14 @@ namespace TBYS_WebParts.BagisciBagislariWP
     [ToolboxItemAttribute(false)]
     public partial class BagisciBagislariWP : WebPart
     {
-        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("TBYS", "BagisciBagislariWP"); } }
+        private PortalLogContext LoggingContext
+        {
+            get
+            {
+                return PortalLogContext.FromCurrentRequest("TBYS", "BagisciBagislariWP")
+                    .WithEntity("TasinmazBagisci", BagisciIdQS.ConvertToInt());
+            }
+        }
         private void ReportError(string operation, Exception error)
         {
             TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciBagislariWP." + operation, error);
@@ -343,7 +350,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
         {
             return bagis != null && new Model.Services.TBYS.BagisService(LoggingContext).Delete(bagis);
         }
-        private void RedirectToPage(string pageUrl)
+        private void RedirectToPage(string pageUrl, PortalLogContext context = null)
         {
             try
             {
@@ -357,12 +364,15 @@ namespace TBYS_WebParts.BagisciBagislariWP
             catch (Exception ex)
             {
                 if (ex is System.Threading.ThreadAbortException) throw;
-                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciBagislariWP.RedirectToPage", ex);
-                ReportError("Unhandled", ex);
+                TbysWebPartLog.WriteError(context ?? LoggingContext, "TBYS.BagisciBagislariWP.RedirectToPage", ex);
+                TbysWebPartLog.ReportError(context ?? LoggingContext, "TBYS.BagisciBagislariWP.RedirectToPage", ex);
             }
         }
         protected void CikarNowBtn_Click(object sender, EventArgs e)
         {
+            PortalLogContext context = LoggingContext;
+            int donationId = BagisIdQS.ConvertToInt();
+            if (donationId > 0) context = context.WithEntity("Bagis", donationId);
             try
             {
                 Bagis bagis = new Model.Services.TBYS.BagisService(LoggingContext).GetById(BagisIdQS.ConvertToInt());
@@ -385,7 +395,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
             catch (Exception error)
             {
                 UtilityHelper.ScriptCalistir("CloseModal();");
-                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciBagislariWP.CikarNowBtn_Click", error);
+                TbysWebPartLog.ReportError(context, "TBYS.BagisciBagislariWP.CikarNowBtn_Click", error);
             }
         }
         protected void BackBtn_Click(object sender, EventArgs e)
@@ -471,17 +481,19 @@ namespace TBYS_WebParts.BagisciBagislariWP
         }
         protected void TasinmazEkleNowBtnBtn_Click(object sender, EventArgs e)
         {
+            PortalLogContext context = LoggingContext;
             try
             {
                 Bagis bagis = new BagisService(LoggingContext).AssignToProperty(
                     paramTasinmazIdLbl.Value.ConvertToInt(), BagisciIdQS.ConvertToInt());
+                if (bagis != null && bagis.Id > 0) context = context.WithEntity("Bagis", bagis.Id);
                 Messages.Success("Bağış kaydedildi.", 2000);
-                RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_BAGISLARI + "?Mesaj=true&DestinationApp=TBD&BagisciId=" + bagis.BagisciId);
+                RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_BAGISLARI + "?Mesaj=true&DestinationApp=TBD&BagisciId=" + bagis.BagisciId, context);
             }
             catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error)
             {
-                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciBagislariWP.TasinmazEkleNowBtnBtn_Click", error);
+                TbysWebPartLog.ReportError(context, "TBYS.BagisciBagislariWP.TasinmazEkleNowBtnBtn_Click", error);
             }
         }
         private List<TasinmazListItem> GetModalDataList()

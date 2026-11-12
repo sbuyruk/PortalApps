@@ -203,7 +203,9 @@ namespace Portal_WebParts.LogIzlemeWP
                 html.Append("<div class='li-scroll'><table><caption class='li-sr'>")
                     .Append("Filtrelenen " + KindTitle(SelectedKind))
                     .Append("</caption><thead><tr><th scope='col'>Tarih / saat</th><th scope='col'>Kullanıcı</th><th scope='col'>Proje / Webpart</th><th scope='col'>")
-                    .Append("İşlem").Append("</th><th scope='col'>Ayrıntı</th></tr></thead><tbody>");
+                    .Append("İşlem").Append("</th>");
+                if (SelectedKind == "Error") html.Append("<th scope='col'>İlgili kayıt</th>");
+                html.Append("<th scope='col'>Ayrıntı</th></tr></thead><tbody>");
                 foreach (PortalLogEntry row in rows)
                 {
                     html.Append("<tr><td class='li-time'>").Append(E(TimeZoneInfo.ConvertTimeFromUtc(
@@ -217,7 +219,10 @@ namespace Portal_WebParts.LogIzlemeWP
                     else if (SelectedKind == "SqlTrace")
                         html.Append(E(row.SqlOperation)).Append(" · ").Append(E(row.RepositoryMethod));
                     else html.Append(E(row.EventName == "WebPartOpened" ? "Webpart açıldı" : row.EventName ?? row.Operation));
-                    html.Append("</td><td><details><summary>Ayrıntıyı göster</summary><dl><dt>İşlem kodu</dt><dd class='li-code'>")
+                    html.Append("</td>");
+                    if (SelectedKind == "Error")
+                        html.Append("<td class='li-code'>").Append(E(ErrorEntityText(row))).Append("</td>");
+                    html.Append("<td><details><summary>Ayrıntıyı göster</summary><dl><dt>İşlem kodu</dt><dd class='li-code'>")
                         .Append(E(row.OperationId.ToString())).Append("</dd><dt>Sayfa</dt><dd>").Append(E(row.PagePath)).Append("</dd>");
                     if (SelectedKind == "Error")
                     {
@@ -247,13 +252,90 @@ namespace Portal_WebParts.LogIzlemeWP
                             .Append(row.DurationMs.HasValue ? E(row.DurationMs.Value.ToString(CultureInfo.InvariantCulture)) + " ms" : "Kaydedilmemiş.")
                             .Append("</dd><dt>İşlem durumu</dt><dd>SQL sonucu iş transaction'ının commit edildiği anlamına gelmez.</dd>");
                     }
-                    html.Append("</dl></details></td></tr>");
+                    html.Append("</dl></details>");
+                    if (SelectedKind == "Error")
+                    {
+                        html.Append("<div class='li-copy'><button type='button' class='li-copy-button' onclick=\"")
+                            .Append(HttpUtility.HtmlAttributeEncode(CopyErrorScript))
+                            .Append("\">Satırı kopyala</button><span class='li-copy-status' role='status' aria-live='polite'></span>")
+                            .Append("<textarea class='li-copy-text' aria-label='Ayrıntı dahil hata kaydı' readonly hidden>")
+                            .Append(E(ErrorCopyText(row))).Append("</textarea></div>");
+                    }
+                    html.Append("</td></tr>");
                 }
                 html.Append("</tbody></table></div>");
             }
             html.Append("</section>");
             return html.ToString();
         }
+
+        private static string ErrorCopyText(PortalLogEntry row)
+        {
+            StringBuilder text = new StringBuilder();
+            text.AppendLine("Tarih / saat (Türkiye): " + TimeZoneInfo.ConvertTimeFromUtc(
+                DateTime.SpecifyKind(row.OccurredUtc, DateTimeKind.Utc), TurkeyZone()).ToString("dd.MM.yyyy HH:mm:ss"));
+            text.AppendLine("Kullanıcı: " + row.UserLogin);
+            text.AppendLine("Proje: " + row.Project);
+            text.AppendLine("Webpart: " + row.WebPart);
+            text.AppendLine("İşlem: Hata");
+            text.AppendLine("İlgili kayıt: " + ErrorEntityText(row));
+            text.AppendLine("Mesaj: " + (row.UserMessage ?? "İşlem sırasında hata kaydedildi."));
+            text.AppendLine("İşlem kodu: " + row.OperationId);
+            text.AppendLine("Sayfa: " + row.PagePath);
+            text.AppendLine("Hata türü: " + row.ErrorType);
+            text.AppendLine("Olay: " + row.EventName);
+            foreach (var detail in new[] {
+                new { Title = "Teknik özet", Value = row.TechnicalSummary },
+                new { Title = "Çağrı yığını (Stack trace)", Value = row.StackTrace },
+                new { Title = "İç hata", Value = row.InnerException } })
+                text.AppendLine(detail.Title + ": " + (string.IsNullOrWhiteSpace(detail.Value) ? "Kaydedilmemiş." : detail.Value));
+            text.Append("Sonuç: " + row.Outcome);
+            return text.ToString();
+        }
+
+        private static string ErrorEntityText(PortalLogEntry row)
+        {
+            if (string.IsNullOrWhiteSpace(row.EntityName) || string.IsNullOrWhiteSpace(row.EntityId))
+                return "İlgili kayıt belirtilmemiş";
+            if (row.EntityName == "TasinmazBagisci") return "BagisciId: " + row.EntityId;
+            if (row.EntityName == "Tasinmaz" || row.EntityName == "Kiraci"
+                || row.EntityName == "KiraSozlesme" || row.EntityName == "Odeme" || row.EntityName == "OdemePlani"
+                || row.EntityName == "TeminatIslem" || row.EntityName == "HukukiTakip"
+                || row.EntityName == "Sigorta" || row.EntityName == "Onarim"
+                || row.EntityName == "Bagis" || row.EntityName == "BagisciBagis"
+                || row.EntityName == "BagisciYakinlari" || row.EntityName == "BagisciTalepleri"
+                || row.EntityName == "TasinmazTaahhut")
+                return row.EntityName + "Id: " + row.EntityId;
+            return row.EntityName + " / " + row.EntityId;
+        }
+
+        private const string CopyErrorScript = @"
+(function(button) {
+    var container = button.parentNode;
+    var source = container.querySelector('textarea');
+    var status = container.querySelector('.li-copy-status');
+    status.textContent = '';
+    function copied() {
+        source.hidden = true;
+        status.textContent = 'Ayrıntı dahil satır kopyalandı.';
+        button.focus();
+    }
+    function fallback() {
+        source.hidden = false;
+        source.focus();
+        source.select();
+        source.setSelectionRange(0, source.value.length);
+        try {
+            if (document.execCommand('copy')) { copied(); return; }
+        } catch (error) { }
+        status.textContent = 'Otomatik kopyalama yapılamadı. Seçili metni Ctrl+C ile kopyalayabilirsiniz.';
+    }
+    try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(source.value).then(copied, fallback);
+        } else { fallback(); }
+    } catch (error) { fallback(); }
+})(this); return false;";
 
         private static string KindTitle(string kind)
         {
@@ -305,6 +387,7 @@ namespace Portal_WebParts.LogIzlemeWP
 .li-monitor .li-results{background:#fff;border:1px solid #dde5ed;border-radius:12px;overflow:hidden}.li-monitor .li-caption{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:16px}.li-monitor h3{font-size:17px;margin:0;color:#203747}.li-monitor .li-caption span{font-size:12px;color:#536879}.li-monitor .li-scroll{overflow-x:auto}.li-monitor table{border-collapse:collapse;width:100%;min-width:760px}.li-monitor th{background:#edf3f7;padding:11px 14px;text-align:left;font-size:12px;color:#455f70}.li-monitor td{padding:14px;border-top:1px solid #e6edf2;vertical-align:top;font-size:13px;overflow-wrap:anywhere}.li-monitor tbody tr:hover{background:#f8fbfc}.li-monitor .li-time{white-space:nowrap}.li-monitor .li-project{font-size:11px;color:#176b78;font-weight:700}.li-monitor .li-error{display:inline-block;background:#fff0ed;color:#a33329;padding:2px 8px;border-radius:12px;font-size:12px;font-weight:600}
 .li-monitor summary{cursor:pointer;color:#176b78;white-space:nowrap}.li-monitor dt{font-size:11px;font-weight:600;margin-top:8px}.li-monitor dd{margin:3px 0;color:#536879;max-width:300px;overflow-wrap:anywhere}.li-monitor .li-code{font-family:Consolas,monospace;font-size:12px}.li-monitor .li-empty{padding:35px 20px;text-align:center}.li-monitor .li-notice{margin-top:16px;padding:18px;border:1px solid #e6cb8e;background:#fff9ed;border-radius:10px}.li-monitor .li-pager{display:flex;justify-content:flex-end;gap:10px;margin-top:14px}.li-monitor .li-secondary{border:1px solid #aabcc9;background:#fff;color:#244d61}.li-monitor input[disabled]{opacity:.45;cursor:default}.li-monitor .li-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
 .li-monitor .li-technical{white-space:pre-wrap;overflow-wrap:anywhere;max-height:260px;overflow:auto;margin:0;padding:10px;background:#edf3f7;border:1px solid #d5e0e9;border-radius:6px;font:12px/1.5 Consolas,monospace;user-select:text}
+.li-monitor .li-copy{margin-top:10px}.li-monitor .li-copy-button{cursor:pointer;border:1px solid #aabcc9;border-radius:6px;padding:6px 10px;background:#fff;color:#244d61;font:600 12px 'Segoe UI',Arial,sans-serif}.li-monitor .li-copy-status{display:block;max-width:300px;margin-top:5px;font-size:12px;color:#536879}.li-monitor .li-copy-text{display:block;width:100%;min-width:240px;height:180px;margin-top:8px;white-space:pre;font:12px/1.5 Consolas,monospace}.li-monitor .li-copy-text[hidden]{display:none}
 @media(max-width:800px){.li-monitor{padding:14px}.li-monitor .li-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.li-monitor .li-filters{padding:12px}}
 </style>";
     }

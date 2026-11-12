@@ -33,7 +33,10 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
         {
             get
             {
-                return PortalLogContext.FromCurrentRequest("TBYS", "KiraSozlesmesiWP");
+                PortalLogContext context = PortalLogContext.FromCurrentRequest("TBYS", "KiraSozlesmesiWP");
+                int contractId = KiraSozlesmeIdQS.ConvertToInt();
+                return contractId > 0 ? context.WithEntity("KiraSozlesme", contractId)
+                    : context.WithEntity("Kiraci", KiraciIdQS.ConvertToInt());
             }
         }
 
@@ -1114,111 +1117,132 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
         }
         protected void UpdateBtn_Click(object sender, EventArgs e)
         {
-            ModalLbl.Text = "Sözleşme Güncellenecek";
-            KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
-            if (kiraSozlesme != null)
+            try
             {
-                ArtisOraniDiv.Attributes["style"] = "display:none";
-                YeniKiraBedeliDiv.Attributes["style"] = "display:none";
+                ModalLbl.Text = "Sözleşme Güncellenecek";
+                KiraSozlesme kiraSozlesme = new KiraSozlesme();
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
+                if (kiraSozlesme != null)
+                {
+                    ArtisOraniDiv.Attributes["style"] = "display:none";
+                    YeniKiraBedeliDiv.Attributes["style"] = "display:none";
 
-                // Sözleşmenin kritik bilgilerinde degisiklik var mi (Sozbastar,sozbittar,taksitsayisi,kirabedeli)
-                // Yoksa güncellemeyi yap
-                bool sozlesmeDegisti = SozlesmedeKritikAlanlarDegistiMi(kiraSozlesme);
-                if (sozlesmeDegisti)
-                {
-                    SenderHF.Value = "Update";
-                    if (BelgeYukleFU.HasFile)
-                        Messages.Info("Sözleşme değişikliğini onayladıktan sonra belge dosyasını yeniden seçip yükleyiniz.");
-                    MessageLbl.Text = "Onayladığınız takdirde sözleşme ve mevcut ödeme planı birlikte güncellenecek. Başlangıç tarihi değiştirildiyse ödeme bulunan taksitler dahil tüm taksitlerin vade tarihleri yeni başlangıca göre düzenlenecek. Mevcut ödemelerin tarihleri, tutarları ve taksit bağlantıları korunacak; plan tutarları, faizler ve bakiyeler yeniden hesaplanacak.";
-                    OnaylaBtn.Text = " Sözleşmeyi Güncelle ";
-                    UtilityHelper.ScriptCalistir( "OpenModal();");
-                }
-                else
-                {
-                    UpdateKiraSozlesme();
+                    // Sözleşmenin kritik bilgilerinde degisiklik var mi (Sozbastar,sozbittar,taksitsayisi,kirabedeli)
+                    // Yoksa güncellemeyi yap
+                    bool sozlesmeDegisti = SozlesmedeKritikAlanlarDegistiMi(kiraSozlesme);
+                    if (sozlesmeDegisti)
+                    {
+                        SenderHF.Value = "Update";
+                        if (BelgeYukleFU.HasFile)
+                            Messages.Info("Sözleşme değişikliğini onayladıktan sonra belge dosyasını yeniden seçip yükleyiniz.");
+                        MessageLbl.Text = "Onayladığınız takdirde sözleşme ve mevcut ödeme planı birlikte güncellenecek. Başlangıç tarihi değiştirildiyse ödeme bulunan taksitler dahil tüm taksitlerin vade tarihleri yeni başlangıca göre düzenlenecek. Mevcut ödemelerin tarihleri, tutarları ve taksit bağlantıları korunacak; plan tutarları, faizler ve bakiyeler yeniden hesaplanacak.";
+                        OnaylaBtn.Text = " Sözleşmeyi Güncelle ";
+                        UtilityHelper.ScriptCalistir( "OpenModal();");
+                    }
+                    else
+                    {
+                        UpdateKiraSozlesme();
+                    }
                 }
             }
-
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.UpdateBtn_Click", error);
+            }
         }
         protected void DeleteBtn_Click(object sender, EventArgs e)
         {
-            ArtisOraniDiv.Attributes["style"] = "display:none";
-            YeniKiraBedeliDiv.Attributes["style"] = "display:none";
-            ModalLbl.Text = "Sözleşme Silinecek";
-            SenderHF.Value = "Delete";
-            MessageLbl.Text = "Onayladığınız takdirde sözleşme, ödeme planı, ödeme hareketleri, ödeme ayrıntıları ve taşınmaz bağlantıları birlikte silinecek. Banka, mahsup veya takip kayıtlarıyla bağlantı varsa silme işlemi durdurulacak.";
-            OnaylaBtn.Text = " Sözleşmeyi Sil ";
-            UtilityHelper.ScriptCalistir("OpenModal();");
-            KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
-            if (kiraSozlesme != null)
+            try
             {
-                SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
+                ArtisOraniDiv.Attributes["style"] = "display:none";
+                YeniKiraBedeliDiv.Attributes["style"] = "display:none";
+                ModalLbl.Text = "Sözleşme Silinecek";
+                SenderHF.Value = "Delete";
+                MessageLbl.Text = "Onayladığınız takdirde sözleşme, ödeme planı, ödeme hareketleri, ödeme ayrıntıları ve taşınmaz bağlantıları birlikte silinecek. Banka, mahsup veya takip kayıtlarıyla bağlantı varsa silme işlemi durdurulacak.";
+                OnaylaBtn.Text = " Sözleşmeyi Sil ";
+                UtilityHelper.ScriptCalistir("OpenModal();");
+                KiraSozlesme kiraSozlesme = new KiraSozlesme();
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
+                if (kiraSozlesme != null)
+                {
+                    SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
+                }
             }
-
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.DeleteBtn_Click", error);
+            }
         }
         protected void OnaylaBtn_Click(object sender, EventArgs e)
         {
-            UtilityHelper.ScriptCalistir("CloseModal();");
-            if (SenderHF.Value == "YenileBorcuDevret" || SenderHF.Value == "Yenile")
+            try
             {
-                SozlesmeyiYenile();
-                return;
-            }
-            if (SenderHF.Value == "Update")
-            {
-                UpdateKiraSozlesme(true);
-                return;
-            }
-            if (SenderHF.Value == "Delete")
-            {
-                if (SozlesmeSil()) OncekiSayfayaDon();
-                return;
-            }
-            KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
-            if (kiraSozlesme != null)
-            {
-                if (SenderHF.Value.Equals("SozlesmeyiBitir"))
+                UtilityHelper.ScriptCalistir("CloseModal();");
+                if (SenderHF.Value == "YenileBorcuDevret" || SenderHF.Value == "Yenile")
                 {
-
-                    SozlesmeyiBitir();
+                    SozlesmeyiYenile();
+                    return;
                 }
-                else if (SenderHF.Value.Equals("SozlesmeBittiHukukiIslem"))
+                if (SenderHF.Value == "Update")
                 {
-
-                    HukukiIslemlereEkle(kiraSozlesme);
-                    if (!new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).UpdateActiveStatus(kiraSozlesme, ProjeConstants.KIRASOZLESME_DURUMU_TAKIP, ModalDurumDegismeTarTxt.Text, ProjeConstants.KIRASOZLESME_AKTIFDEGILBOOL))
+                    UpdateKiraSozlesme(true);
+                    return;
+                }
+                if (SenderHF.Value == "Delete")
+                {
+                    if (SozlesmeSil()) OncekiSayfayaDon();
+                    return;
+                }
+                KiraSozlesme kiraSozlesme = new KiraSozlesme();
+                kiraSozlesme = new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).GetById(KiraSozlesmeIdQS.ConvertToInt());
+                if (kiraSozlesme != null)
+                {
+                    if (SenderHF.Value.Equals("SozlesmeyiBitir"))
                     {
-                        Messages.Warning("Sözleşme durumu değiştirilemedi. Tarihi kontrol edip sayfayı yenileyiniz.");
-                        return;
+
+                        SozlesmeyiBitir();
                     }
-                    RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_LIST + "?SozlesmeId=" + KiraSozlesmeIdQS);
-                }
-                else if (SenderHF.Value.Equals("SozlesmeyiFeshet"))
-                {
-                    kiraSozlesme.SozlesmeDurumu = ProjeConstants.KIRASOZLESME_DURUMU_FESIH;
-                    kiraSozlesme.DurumDegismeTar = ModalDurumDegismeTarTxt.Text.ConvertToDatetime();
-                    kiraSozlesme.Aktif = ProjeConstants.KIRASOZLESME_AKTIF_DEGIL_INT.ConvertToBool();
-                    new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Update(kiraSozlesme);
-                    //new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).UpdateActiveStatus(kiraSozlesme, ProjeConstants.KIRASOZLESME_DURUMU_FESIH, ModalDurumDegismeTarTxt.Value);
-                    OdemePlanindaVadesiGelmeyenleriSifirYap(kiraSozlesme, ModalDurumDegismeTarTxt.Text);
-                    RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_LIST + "?SozlesmeId=" + KiraSozlesmeIdQS);
-                }
-                else if (SenderHF.Value.Equals("FesihHukukiIslem"))
-                {
-                    kiraSozlesme.SozlesmeDurumu = ProjeConstants.KIRASOZLESME_DURUMU_TAKIP;
-                    kiraSozlesme.DurumDegismeTar = ModalDurumDegismeTarTxt.Text.ConvertToDatetime();
-                    kiraSozlesme.Aktif = ProjeConstants.KIRASOZLESME_AKTIF_DEGIL_INT.ConvertToBool();
-                    new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Update(kiraSozlesme);
-                    //new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).UpdateActiveStatus(kiraSozlesme, ProjeConstants.KIRASOZLESME_DURUMU_TAKIP, ModalDurumDegismeTarTxt.Value);
-                    OdemePlanindaVadesiGelmeyenleriSifirYap(kiraSozlesme, ModalDurumDegismeTarTxt.Text);
-                    HukukiIslemlereEkle(kiraSozlesme);
-                    RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_LIST + "?SozlesmeId=" + KiraSozlesmeIdQS);
+                    else if (SenderHF.Value.Equals("SozlesmeBittiHukukiIslem"))
+                    {
+
+                        HukukiIslemlereEkle(kiraSozlesme);
+                        if (!new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).UpdateActiveStatus(kiraSozlesme, ProjeConstants.KIRASOZLESME_DURUMU_TAKIP, ModalDurumDegismeTarTxt.Text, ProjeConstants.KIRASOZLESME_AKTIFDEGILBOOL))
+                        {
+                            Messages.Warning("Sözleşme durumu değiştirilemedi. Tarihi kontrol edip sayfayı yenileyiniz.");
+                            return;
+                        }
+                        RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_LIST + "?SozlesmeId=" + KiraSozlesmeIdQS);
+                    }
+                    else if (SenderHF.Value.Equals("SozlesmeyiFeshet"))
+                    {
+                        kiraSozlesme.SozlesmeDurumu = ProjeConstants.KIRASOZLESME_DURUMU_FESIH;
+                        kiraSozlesme.DurumDegismeTar = ModalDurumDegismeTarTxt.Text.ConvertToDatetime();
+                        kiraSozlesme.Aktif = ProjeConstants.KIRASOZLESME_AKTIF_DEGIL_INT.ConvertToBool();
+                        new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Update(kiraSozlesme);
+                        //new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).UpdateActiveStatus(kiraSozlesme, ProjeConstants.KIRASOZLESME_DURUMU_FESIH, ModalDurumDegismeTarTxt.Value);
+                        OdemePlanindaVadesiGelmeyenleriSifirYap(kiraSozlesme, ModalDurumDegismeTarTxt.Text);
+                        RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_LIST + "?SozlesmeId=" + KiraSozlesmeIdQS);
+                    }
+                    else if (SenderHF.Value.Equals("FesihHukukiIslem"))
+                    {
+                        kiraSozlesme.SozlesmeDurumu = ProjeConstants.KIRASOZLESME_DURUMU_TAKIP;
+                        kiraSozlesme.DurumDegismeTar = ModalDurumDegismeTarTxt.Text.ConvertToDatetime();
+                        kiraSozlesme.Aktif = ProjeConstants.KIRASOZLESME_AKTIF_DEGIL_INT.ConvertToBool();
+                        new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).Update(kiraSozlesme);
+                        //new Model.Services.TBYS.KiraSozlesmeService(LoggingContext).UpdateActiveStatus(kiraSozlesme, ProjeConstants.KIRASOZLESME_DURUMU_TAKIP, ModalDurumDegismeTarTxt.Value);
+                        OdemePlanindaVadesiGelmeyenleriSifirYap(kiraSozlesme, ModalDurumDegismeTarTxt.Text);
+                        HukukiIslemlereEkle(kiraSozlesme);
+                        RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_LIST + "?SozlesmeId=" + KiraSozlesmeIdQS);
+                    }
                 }
             }
-
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.KiraSozlesmesiWP.OnaylaBtn_Click", error);
+            }
         }
         private void OdemePlanindaVadesiGelmeyenleriSifirYap(KiraSozlesme kiraSozlesme, string degistirmeTar)
         {

@@ -19,7 +19,8 @@ namespace TBYS_WebParts.BagisciYakinlariWP
         {
             get
             {
-                return PortalLogContext.FromCurrentRequest("TBYS", "BagisciYakinlariWP");
+                return PortalLogContext.FromCurrentRequest("TBYS", "BagisciYakinlariWP")
+                    .WithEntity("TasinmazBagisci", BagisciIdQS.ConvertToInt());
             }
         }
 
@@ -194,6 +195,7 @@ namespace TBYS_WebParts.BagisciYakinlariWP
                 SilBtn.CssClass = "btn btn-outline-danger";
                 SilBtn.Click += delegate
                 {
+                    PortalLogContext context = LoggingContext.WithEntity("BagisciYakinlari", bagisciYakini.Id);
                     try
                     {
                         if (!new BagisciYakinlariService(LoggingContext).Delete(bagisciYakini))
@@ -211,7 +213,7 @@ namespace TBYS_WebParts.BagisciYakinlariWP
                     catch (System.Threading.ThreadAbortException) { throw; }
                     catch (Exception error)
                     {
-                        TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciYakinlariWP.Delete", error);
+                        TbysWebPartLog.ReportError(context, "TBYS.BagisciYakinlariWP.Delete", error);
                     }
                 };
                 SilCell.Controls.Add(SilBtn);
@@ -253,6 +255,7 @@ namespace TBYS_WebParts.BagisciYakinlariWP
         }
         protected void SaveBtn_Click(object sender, EventArgs e)
         {
+            PortalLogContext context = LoggingContext;
             try
             {
                 BagisciYakinlari bagisciYakinlari = new BagisciYakinlari();
@@ -262,6 +265,7 @@ namespace TBYS_WebParts.BagisciYakinlariWP
                 bagisciYakinlari.BagisciId = BagisciIdQS.ConvertToInt();
                 int id = new BagisciYakinlariService(LoggingContext).Save(bagisciYakinlari);
                 bagisciYakinlari.Id = id;
+                if (id > 0) context = context.WithEntity("BagisciYakinlari", id);
                 string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 int queryIndex = newUrl.IndexOf("?");
                 if (queryIndex > 0)
@@ -273,7 +277,7 @@ namespace TBYS_WebParts.BagisciYakinlariWP
             catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error)
             {
-                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciYakinlariWP.SaveBtn_Click", error);
+                TbysWebPartLog.ReportError(context, "TBYS.BagisciYakinlariWP.SaveBtn_Click", error);
             }
         }
     }

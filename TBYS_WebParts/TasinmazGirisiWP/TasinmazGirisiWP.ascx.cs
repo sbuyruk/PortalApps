@@ -27,7 +27,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         {
             get
             {
-                return PortalLogContext.FromCurrentRequest("TBYS", "TasinmazGirisiWP");
+                return PortalLogContext.FromCurrentRequest("TBYS", "TasinmazGirisiWP")
+                    .WithEntity("Tasinmaz", TasinmazIdQS.ConvertToInt());
             }
         }
 
@@ -601,6 +602,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             tasinmaz.SatisPlaniAciklama = SatisPlaniAciklamaTxt.Text;
 
             new TasinmazService(LoggingContext).SaveWithRelations(tasinmaz, synchronizeDonor: true);
+            TasinmazIdQS = tasinmaz.Id.ToString();
             return tasinmaz;
         }
         private bool UpdateTasinmazData2Db(int tId)

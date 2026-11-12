@@ -30,136 +30,286 @@ namespace Model.Services.TBYS
         }
         public BagisService(BagisRepository repository) { if (repository == null) throw new ArgumentNullException("repository"); this.repository = repository; }
 
-        public Bagis GetById(int id) { return Map(repository.SelectById(id)); }
+        public Bagis GetById(int id) {
+            try
+            {
+                return Map(repository.SelectById(id));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Bagis", id, error);
+                throw;
+            }
+        }
         public List<Bagis> GetAll() { return ToList(repository.SelectAll()); }
-        public List<Bagis> GetByBagisciId(int bagisciId) { return ToList(repository.SelectByBagisciId(bagisciId)); }
-        public Bagis GetByTasinmazId(int tasinmazId) { return Map(repository.SelectByTasinmazId(tasinmazId)); }
-        public DataTable GetByBagisciIdGroupByKullanimSekli(int bagisciId) { return repository.SelectByBagisciIdGroupByKullanimSekli(bagisciId); }
-        public string GetByBagisciIdAsJson(int bagisciId) { return new Bagis().ToJSON(repository.SelectByBagisciIdAsJson(bagisciId)); }
-        public DataTable GetTasinmazByBagisciId(int bagisciId) { return repository.SelectTasinmazByBagisciId(bagisciId, null); }
-        public string GetTasinmazByBagisciIdAsJson(int bagisciId) { return new Bagis().ToJSON(GetTasinmazByBagisciId(bagisciId)); }
+        public List<Bagis> GetByBagisciId(int bagisciId) {
+            try
+            {
+                return ToList(repository.SelectByBagisciId(bagisciId));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "TasinmazBagisci", bagisciId, error);
+                throw;
+            }
+        }
+        public Bagis GetByTasinmazId(int tasinmazId) {
+            try
+            {
+                return Map(repository.SelectByTasinmazId(tasinmazId));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Tasinmaz", tasinmazId, error);
+                throw;
+            }
+        }
+        public DataTable GetByBagisciIdGroupByKullanimSekli(int bagisciId) {
+            try
+            {
+                return repository.SelectByBagisciIdGroupByKullanimSekli(bagisciId);
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "TasinmazBagisci", bagisciId, error);
+                throw;
+            }
+        }
+        public string GetByBagisciIdAsJson(int bagisciId) {
+            try
+            {
+                return new Bagis().ToJSON(repository.SelectByBagisciIdAsJson(bagisciId));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "TasinmazBagisci", bagisciId, error);
+                throw;
+            }
+        }
+        public DataTable GetTasinmazByBagisciId(int bagisciId) {
+            try
+            {
+                return repository.SelectTasinmazByBagisciId(bagisciId, null);
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "TasinmazBagisci", bagisciId, error);
+                throw;
+            }
+        }
+        public string GetTasinmazByBagisciIdAsJson(int bagisciId) {
+            try
+            {
+                return new Bagis().ToJSON(GetTasinmazByBagisciId(bagisciId));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "TasinmazBagisci", bagisciId, error);
+                throw;
+            }
+        }
         public DataTable GetSatisVsDahilTasinmazByBagisciId(int bagisciId)
         {
-            return repository.SelectTasinmazByBagisciId(bagisciId, Tasinmaz.SatisVsDahilEnvanterdenCikmaSebepleri);
+            try
+            {
+                return repository.SelectTasinmazByBagisciId(bagisciId, Tasinmaz.SatisVsDahilEnvanterdenCikmaSebepleri);
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "TasinmazBagisci", bagisciId, error);
+                throw;
+            }
         }
         public decimal GetSumTahminiRayicByBagisciId(int bagisciId)
         {
-            DataTable table = repository.SelectSumTahminiRayicByBagisciId(bagisciId);
-            return table != null && table.Rows.Count > 0 ? table.Rows[0]["Toplam"].ToString().ConvertToDecimal() : 0;
+            try
+            {
+                DataTable table = repository.SelectSumTahminiRayicByBagisciId(bagisciId);
+                return table != null && table.Rows.Count > 0 ? table.Rows[0]["Toplam"].ToString().ConvertToDecimal() : 0;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "TasinmazBagisci", bagisciId, error);
+                throw;
+            }
         }
         public int Save(Bagis item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                int id = Save(item, transaction);
-                transaction.Complete();
-                return id;
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    int id = Save(item, transaction);
+                    transaction.Complete();
+                    return id;
+                }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, item != null && item.Id > 0 ? "Bagis" : (item != null && item.TasinmazId > 0 ? "Tasinmaz" : "TasinmazBagisci"), item == null ? 0 : (item.Id > 0 ? item.Id : (item.TasinmazId > 0 ? item.TasinmazId : item.BagisciId)), error);
+                throw;
             }
         }
         public bool Update(Bagis item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                bool updated = Update(item, transaction);
-                if (updated) transaction.Complete();
-                return updated;
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool updated = Update(item, transaction);
+                    if (updated) transaction.Complete();
+                    return updated;
+                }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Bagis", item == null ? 0 : item.Id, error);
+                throw;
             }
         }
         public bool Delete(Bagis item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                bool deleted = Delete(item, transaction);
-                if (deleted) transaction.Complete();
-                return deleted;
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool deleted = Delete(item, transaction);
+                    if (deleted) transaction.Complete();
+                    return deleted;
+                }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Bagis", item == null ? 0 : item.Id, error);
+                throw;
             }
         }
         public Bagis AssignToProperty(int propertyId, int donorId)
         {
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                Bagis item = AssignToProperty(propertyId, donorId, transaction);
-                transaction.Complete();
-                return item;
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    Bagis item = AssignToProperty(propertyId, donorId, transaction);
+                    transaction.Complete();
+                    return item;
+                }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, propertyId > 0 ? "Tasinmaz" : "TasinmazBagisci", propertyId > 0 ? propertyId : donorId, error);
+                throw;
             }
         }
 
         public Bagis AssignToProperty(int propertyId, int donorId, SqlTransactionContext transaction)
         {
-            RequireTransaction(transaction);
-            Tasinmaz property = new Tasinmaz().ToList<Tasinmaz>(propertyRepository.SelectById(propertyId, transaction, context)).FirstOrDefault();
-            if (property == null) throw new InvalidOperationException("İlişkili taşınmaz kaydı bulunamadı.");
-            if (donorRepository.SelectById(donorId, transaction, context) == null)
-                throw new InvalidOperationException("İlişkili bağışçı kaydı bulunamadı.");
-            Bagis item = Map(repository.SelectByTasinmazId(propertyId, transaction, context));
-            if (item == null)
+            try
             {
-                item = new Bagis { TasinmazId = propertyId, BagisciId = donorId,
-                    BagisTarihi = property.EnvantereGirisTarihi, BagisYili = property.EnvantereGirisTarihi.Year, Envanterde = true };
-                Save(item, transaction);
+                RequireTransaction(transaction);
+                Tasinmaz property = new Tasinmaz().ToList<Tasinmaz>(propertyRepository.SelectById(propertyId, transaction, context)).FirstOrDefault();
+                if (property == null) throw new InvalidOperationException("İlişkili taşınmaz kaydı bulunamadı.");
+                if (donorRepository.SelectById(donorId, transaction, context) == null)
+                    throw new InvalidOperationException("İlişkili bağışçı kaydı bulunamadı.");
+                Bagis item = Map(repository.SelectByTasinmazId(propertyId, transaction, context));
+                if (item == null)
+                {
+                    item = new Bagis { TasinmazId = propertyId, BagisciId = donorId,
+                        BagisTarihi = property.EnvantereGirisTarihi, BagisYili = property.EnvantereGirisTarihi.Year, Envanterde = true };
+                    Save(item, transaction);
+                }
+                else
+                {
+                    item.BagisciId = donorId;
+                    if (!Update(item, transaction)) throw new InvalidOperationException("Bağış ilişkisi güncellenemedi.");
+                }
+                return item;
             }
-            else
+            catch (Exception error)
             {
-                item.BagisciId = donorId;
-                if (!Update(item, transaction)) throw new InvalidOperationException("Bağış ilişkisi güncellenemedi.");
+                PortalLogContext.AttachEntityToError(context, propertyId > 0 ? "Tasinmaz" : "TasinmazBagisci", propertyId > 0 ? propertyId : donorId, error);
+                throw;
             }
-            return item;
         }
 
         public int Save(Bagis item, SqlTransactionContext transaction)
         {
-            RequireTransaction(transaction);
-            if (item == null) throw new ArgumentNullException("item", "Kaydedilecek bağış gereklidir.");
-            EnsureParents(item, transaction);
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item, transaction, context);
-            if (item.Id <= 0) throw new InvalidOperationException("Bağış kaydı oluşturulamadı.");
-            DataTable saved = repository.SelectById(item.Id, transaction, context);
-            if (saved == null) throw new InvalidOperationException("Kaydedilen bağış okunamadı.");
-            RecordDonationAudit("INSERT", item.Id, null, saved, transaction);
-            SynchronizeProperty(item.TasinmazId, transaction);
-            return item.Id;
+            try
+            {
+                RequireTransaction(transaction);
+                if (item == null) throw new ArgumentNullException("item", "Kaydedilecek bağış gereklidir.");
+                EnsureParents(item, transaction);
+                item.OlusturmaTarihi = DateTime.Now;
+                item.Olusturan = UtilityHelper.GetCurrentUserName();
+                item.Id = repository.Insert(item, transaction, context);
+                if (item.Id <= 0) throw new InvalidOperationException("Bağış kaydı oluşturulamadı.");
+                DataTable saved = repository.SelectById(item.Id, transaction, context);
+                if (saved == null) throw new InvalidOperationException("Kaydedilen bağış okunamadı.");
+                RecordDonationAudit("INSERT", item.Id, null, saved, transaction);
+                SynchronizeProperty(item.TasinmazId, transaction);
+                return item.Id;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, item != null && item.Id > 0 ? "Bagis" : (item != null && item.TasinmazId > 0 ? "Tasinmaz" : "TasinmazBagisci"), item == null ? 0 : (item.Id > 0 ? item.Id : (item.TasinmazId > 0 ? item.TasinmazId : item.BagisciId)), error);
+                throw;
+            }
         }
 
         public bool Update(Bagis item, SqlTransactionContext transaction)
         {
-            RequireTransaction(transaction);
-            if (item == null || item.Id <= 0) return false;
-            EnsureParents(item, transaction);
-            DataTable oldValues = repository.SelectById(item.Id, transaction, context);
-            Bagis old = Map(oldValues);
-            if (old == null) return false;
-            if (old.TasinmazId != item.TasinmazId)
-                throw new InvalidOperationException("Bağışın bağlı taşınmazı değişmiş. Sayfayı yenileyip tekrar deneyiniz.");
-            item.OlusturmaTarihi = old.OlusturmaTarihi;
-            item.Olusturan = old.Olusturan;
-            item.DegistirmeTarihi = DateTime.Now;
-            item.Degistiren = UtilityHelper.GetCurrentUserName();
-            if (!repository.Update(item, transaction, context)) return false;
-            DataTable saved = repository.SelectById(item.Id, transaction, context);
-            if (saved == null) throw new InvalidOperationException("Güncellenen bağış okunamadı.");
-            RecordDonationAudit("UPDATE", item.Id, oldValues, saved, transaction);
-            SynchronizeProperty(item.TasinmazId, transaction);
-            return true;
+            try
+            {
+                RequireTransaction(transaction);
+                if (item == null || item.Id <= 0) return false;
+                EnsureParents(item, transaction);
+                DataTable oldValues = repository.SelectById(item.Id, transaction, context);
+                Bagis old = Map(oldValues);
+                if (old == null) return false;
+                if (old.TasinmazId != item.TasinmazId)
+                    throw new InvalidOperationException("Bağışın bağlı taşınmazı değişmiş. Sayfayı yenileyip tekrar deneyiniz.");
+                item.OlusturmaTarihi = old.OlusturmaTarihi;
+                item.Olusturan = old.Olusturan;
+                item.DegistirmeTarihi = DateTime.Now;
+                item.Degistiren = UtilityHelper.GetCurrentUserName();
+                if (!repository.Update(item, transaction, context)) return false;
+                DataTable saved = repository.SelectById(item.Id, transaction, context);
+                if (saved == null) throw new InvalidOperationException("Güncellenen bağış okunamadı.");
+                RecordDonationAudit("UPDATE", item.Id, oldValues, saved, transaction);
+                SynchronizeProperty(item.TasinmazId, transaction);
+                return true;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Bagis", item == null ? 0 : item.Id, error);
+                throw;
+            }
         }
 
         public bool Delete(Bagis item, SqlTransactionContext transaction)
         {
-            RequireTransaction(transaction);
-            if (item == null || item.Id <= 0) return false;
-            // Lock the property before its donation set, consistently with assignment.
-            DataTable property = propertyRepository.SelectById(item.TasinmazId, transaction, context);
-            DataTable oldValues = repository.SelectById(item.Id, transaction, context);
-            Bagis old = Map(oldValues);
-            if (old == null || old.TasinmazId != item.TasinmazId || old.BagisciId != item.BagisciId) return false;
-            if (!repository.Delete(item.Id, transaction, context)) return false;
-            RecordDonationAudit("DELETE", item.Id, oldValues, null, transaction);
-            if (property != null) SynchronizeProperty(item.TasinmazId, transaction);
-            return true;
+            try
+            {
+                RequireTransaction(transaction);
+                if (item == null || item.Id <= 0) return false;
+                // Lock the property before its donation set, consistently with assignment.
+                DataTable property = propertyRepository.SelectById(item.TasinmazId, transaction, context);
+                DataTable oldValues = repository.SelectById(item.Id, transaction, context);
+                Bagis old = Map(oldValues);
+                if (old == null || old.TasinmazId != item.TasinmazId || old.BagisciId != item.BagisciId) return false;
+                if (!repository.Delete(item.Id, transaction, context)) return false;
+                RecordDonationAudit("DELETE", item.Id, oldValues, null, transaction);
+                if (property != null) SynchronizeProperty(item.TasinmazId, transaction);
+                return true;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Bagis", item == null ? 0 : item.Id, error);
+                throw;
+            }
         }
 
         private void EnsureParents(Bagis item, SqlTransactionContext transaction)

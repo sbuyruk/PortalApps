@@ -36,7 +36,15 @@ namespace Model.Services.TBYS
 
         public Onarim GetById(int id)
         {
-            return Map(repository.SelectById(id));
+            try
+            {
+                return Map(repository.SelectById(id));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Onarim", id, error);
+                throw;
+            }
         }
 
         public List<Onarim> GetAll()
@@ -46,7 +54,15 @@ namespace Model.Services.TBYS
 
         public List<Onarim> GetByTasinmazId(int tasinmazId)
         {
-            return ToList(repository.SelectByTasinmazId(tasinmazId));
+            try
+            {
+                return ToList(repository.SelectByTasinmazId(tasinmazId));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Tasinmaz", tasinmazId, error);
+                throw;
+            }
         }
 
         public DataTable GetAllForDataTable()
@@ -56,7 +72,15 @@ namespace Model.Services.TBYS
 
         public List<Onarim> GetByOnarimId(int onarimId)
         {
-            return ToList(repository.SelectByOnarimId(onarimId));
+            try
+            {
+                return ToList(repository.SelectByOnarimId(onarimId));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Onarim", onarimId, error);
+                throw;
+            }
         }
 
         public Onarim GetNext(int onarimId)
@@ -83,88 +107,144 @@ namespace Model.Services.TBYS
 
         public List<Onarim> GetByTasinmazIdWithAddress(int tasinmazId)
         {
-            return ToList(repository.SelectByTasinmazIdWithAddress(tasinmazId));
+            try
+            {
+                return ToList(repository.SelectByTasinmazIdWithAddress(tasinmazId));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Tasinmaz", tasinmazId, error);
+                throw;
+            }
         }
 
         public int Save(Onarim item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                int id = Save(item, transaction);
-                transaction.Complete();
-                return id;
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    int id = Save(item, transaction);
+                    transaction.Complete();
+                    return id;
+                }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, item != null && item.Id > 0 ? "Onarim" : "Tasinmaz", item == null ? 0 : (item.Id > 0 ? item.Id : item.TasinmazId), error);
+                throw;
             }
         }
 
         public bool Update(Onarim item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                bool updated = Update(item, transaction);
-                if (updated) transaction.Complete();
-                return updated;
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool updated = Update(item, transaction);
+                    if (updated) transaction.Complete();
+                    return updated;
+                }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Onarim", item == null ? 0 : item.Id, error);
+                throw;
             }
         }
 
         public bool Delete(Onarim item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                bool deleted = Delete(item, transaction);
-                if (deleted) transaction.Complete();
-                return deleted;
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool deleted = Delete(item, transaction);
+                    if (deleted) transaction.Complete();
+                    return deleted;
+                }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Onarim", item == null ? 0 : item.Id, error);
+                throw;
             }
         }
 
         public int Save(Onarim item, SqlTransactionContext transaction)
         {
-            RequireTransaction(transaction);
-            if (item == null) throw new ArgumentNullException("item", "Kaydedilecek onarım gereklidir.");
-            EnsureParent(item.TasinmazId, transaction);
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item, transaction, context);
-            if (item.Id <= 0) throw new InvalidOperationException("Onarım kaydı oluşturulamadı.");
-            DataTable saved = repository.SelectById(item.Id, transaction, context);
-            if (saved == null) throw new InvalidOperationException("Kaydedilen onarım okunamadı.");
-            RecordAudit("INSERT", item.Id, null, saved, transaction);
-            return item.Id;
+            try
+            {
+                RequireTransaction(transaction);
+                if (item == null) throw new ArgumentNullException("item", "Kaydedilecek onarım gereklidir.");
+                EnsureParent(item.TasinmazId, transaction);
+                item.OlusturmaTarihi = DateTime.Now;
+                item.Olusturan = UtilityHelper.GetCurrentUserName();
+                item.Id = repository.Insert(item, transaction, context);
+                if (item.Id <= 0) throw new InvalidOperationException("Onarım kaydı oluşturulamadı.");
+                DataTable saved = repository.SelectById(item.Id, transaction, context);
+                if (saved == null) throw new InvalidOperationException("Kaydedilen onarım okunamadı.");
+                RecordAudit("INSERT", item.Id, null, saved, transaction);
+                return item.Id;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, item != null && item.Id > 0 ? "Onarim" : "Tasinmaz", item == null ? 0 : (item.Id > 0 ? item.Id : item.TasinmazId), error);
+                throw;
+            }
         }
 
         public bool Update(Onarim item, SqlTransactionContext transaction)
         {
-            RequireTransaction(transaction);
-            if (item == null || item.Id <= 0) return false;
-            EnsureParent(item.TasinmazId, transaction);
-            DataTable oldValues = repository.SelectById(item.Id, transaction, context);
-            Onarim old = Map(oldValues);
-            if (old == null) return false;
-            if (old.TasinmazId != item.TasinmazId)
-                throw new InvalidOperationException("Onarımın bağlı taşınmazı değişmiş. Sayfayı yenileyip tekrar deneyiniz.");
-            item.OlusturmaTarihi = old.OlusturmaTarihi;
-            item.Olusturan = old.Olusturan;
-            item.DegistirmeTarihi = DateTime.Now;
-            item.Degistiren = UtilityHelper.GetCurrentUserName();
-            if (!repository.Update(item, transaction, context)) return false;
-            DataTable saved = repository.SelectById(item.Id, transaction, context);
-            if (saved == null) throw new InvalidOperationException("Güncellenen onarım okunamadı.");
-            RecordAudit("UPDATE", item.Id, oldValues, saved, transaction);
-            return true;
+            try
+            {
+                RequireTransaction(transaction);
+                if (item == null || item.Id <= 0) return false;
+                EnsureParent(item.TasinmazId, transaction);
+                DataTable oldValues = repository.SelectById(item.Id, transaction, context);
+                Onarim old = Map(oldValues);
+                if (old == null) return false;
+                if (old.TasinmazId != item.TasinmazId)
+                    throw new InvalidOperationException("Onarımın bağlı taşınmazı değişmiş. Sayfayı yenileyip tekrar deneyiniz.");
+                item.OlusturmaTarihi = old.OlusturmaTarihi;
+                item.Olusturan = old.Olusturan;
+                item.DegistirmeTarihi = DateTime.Now;
+                item.Degistiren = UtilityHelper.GetCurrentUserName();
+                if (!repository.Update(item, transaction, context)) return false;
+                DataTable saved = repository.SelectById(item.Id, transaction, context);
+                if (saved == null) throw new InvalidOperationException("Güncellenen onarım okunamadı.");
+                RecordAudit("UPDATE", item.Id, oldValues, saved, transaction);
+                return true;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Onarim", item == null ? 0 : item.Id, error);
+                throw;
+            }
         }
 
         public bool Delete(Onarim item, SqlTransactionContext transaction)
         {
-            RequireTransaction(transaction);
-            if (item == null || item.Id <= 0) return false;
-            DataTable oldValues = repository.SelectById(item.Id, transaction, context);
-            Onarim old = Map(oldValues);
-            if (old == null || old.TasinmazId != item.TasinmazId) return false;
-            if (!repository.Delete(item.Id, transaction, context)) return false;
-            RecordAudit("DELETE", item.Id, oldValues, null, transaction);
-            return true;
+            try
+            {
+                RequireTransaction(transaction);
+                if (item == null || item.Id <= 0) return false;
+                DataTable oldValues = repository.SelectById(item.Id, transaction, context);
+                Onarim old = Map(oldValues);
+                if (old == null || old.TasinmazId != item.TasinmazId) return false;
+                if (!repository.Delete(item.Id, transaction, context)) return false;
+                RecordAudit("DELETE", item.Id, oldValues, null, transaction);
+                return true;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "Onarim", item == null ? 0 : item.Id, error);
+                throw;
+            }
         }
 
         private void EnsureParent(int id, SqlTransactionContext transaction)

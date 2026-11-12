@@ -18,10 +18,21 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
     [ToolboxItemAttribute(false)]
     public partial class BagisciTaahhutleriWP : WebPart
     {
-        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("TBYS", "BagisciTaahhutleriWP"); } }
-        private void ReportError(string operation, Exception error)
+        private PortalLogContext LoggingContext
         {
-            TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciTaahhutleriWP." + operation, error);
+            get
+            {
+                return PortalLogContext.FromCurrentRequest("TBYS", "BagisciTaahhutleriWP")
+                    .WithEntity("TasinmazBagisci", BagisciIdQS.ConvertToInt());
+            }
+        }
+        private PortalLogContext RecordContext(int recordId)
+        {
+            return recordId > 0 ? LoggingContext.WithEntity("TasinmazTaahhut", recordId) : LoggingContext;
+        }
+        private void ReportError(string operation, Exception error, PortalLogContext context = null)
+        {
+            TbysWebPartLog.ReportError(context ?? LoggingContext, "TBYS.BagisciTaahhutleriWP." + operation, error);
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -293,54 +304,64 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
         }
         protected void TaahhutModalDoldurBtnBtn_Click(object sender, EventArgs e)
         {
-            TaahhutKaydetBtn.Visible = false;
-            TaahhutGuncelleBtn.Visible = false;
-
-            int taahhutId = ParamTaahhutIdLbl.Value.ConvertToInt();
-            TasinmazTaahhut tasinmazTaahhut = new TasinmazTaahhut();
-            tasinmazTaahhut = new Model.Services.TBYS.TasinmazTaahhutService(LoggingContext).GetById(taahhutId);
-            if (tasinmazTaahhut != null)
+            PortalLogContext context = RecordContext(ParamTaahhutIdLbl.Value.ConvertToInt());
+            try
             {
-                AdiTxt.Text = tasinmazTaahhut.Adi;
-                SoyadiTxt.Text = tasinmazTaahhut.Soyadi;
-                TCKimlikNoTxt.Text = tasinmazTaahhut.TCKimlikNo.ToString();
-                DogumTarihiTxt.Text = tasinmazTaahhut.DogumTarihi.ConvertToDatetimeEmptyIfNull();
-                TelefonTxt.Text = tasinmazTaahhut.Telefon.ToString();
-                AdresTxt.Text = tasinmazTaahhut.Adres.ToString();
-                EvrakTarihiTxt.Text = tasinmazTaahhut.EvrakTarihi.ConvertToDatetimeEmptyIfNull();
-                EvrakSayisiTxt.Text = tasinmazTaahhut.EvrakSayisi;
-                UtilityHelper.SetDDLValue(SagVefatDDL, tasinmazTaahhut.Sag_vefat);
-                if (SagVefatDDL.SelectedItem.Text.Equals(ProjeConstants.BAGISCI_SAG))
+                TaahhutKaydetBtn.Visible = false;
+                TaahhutGuncelleBtn.Visible = false;
+
+                int taahhutId = ParamTaahhutIdLbl.Value.ConvertToInt();
+                TasinmazTaahhut tasinmazTaahhut = new TasinmazTaahhut();
+                tasinmazTaahhut = new Model.Services.TBYS.TasinmazTaahhutService(context).GetById(taahhutId);
+                if (tasinmazTaahhut != null)
                 {
-                    VefatTarihiTxt.Value = String.Empty;
-                    VefatTarihiDiv.Attributes["style"] = "display:none";
+                    AdiTxt.Text = tasinmazTaahhut.Adi;
+                    SoyadiTxt.Text = tasinmazTaahhut.Soyadi;
+                    TCKimlikNoTxt.Text = tasinmazTaahhut.TCKimlikNo.ToString();
+                    DogumTarihiTxt.Text = tasinmazTaahhut.DogumTarihi.ConvertToDatetimeEmptyIfNull();
+                    TelefonTxt.Text = tasinmazTaahhut.Telefon.ToString();
+                    AdresTxt.Text = tasinmazTaahhut.Adres.ToString();
+                    EvrakTarihiTxt.Text = tasinmazTaahhut.EvrakTarihi.ConvertToDatetimeEmptyIfNull();
+                    EvrakSayisiTxt.Text = tasinmazTaahhut.EvrakSayisi;
+                    UtilityHelper.SetDDLValue(SagVefatDDL, tasinmazTaahhut.Sag_vefat);
+                    if (SagVefatDDL.SelectedItem.Text.Equals(ProjeConstants.BAGISCI_SAG))
+                    {
+                        VefatTarihiTxt.Value = String.Empty;
+                        VefatTarihiDiv.Attributes["style"] = "display:none";
+                    }
+                    else if (SagVefatDDL.SelectedItem.Text.Equals(ProjeConstants.BAGISCI_VEFAT))
+                    {
+                        VefatTarihiTxt.Value = tasinmazTaahhut.VefatTarihi.ConvertToDatetimeEmptyIfNull();
+                        VefatTarihiDiv.Attributes["style"] = "display:block";
+                    }
+
+                    TaahhutAciklamaTxt.Text = string.IsNullOrEmpty(tasinmazTaahhut.TaahhutAciklama)? "Vakıf tarafından taahhütname verilmiştir.": tasinmazTaahhut.TaahhutAciklama;
+
+                    TaahhutGuncelleBtn.Visible = true;
+
+                    UtilityHelper.SetDDLValue(TasinmazDDL, tasinmazTaahhut.TasinmazId.ToString());
+                    UtilityHelper.SetDDLValue(IliDDL, tasinmazTaahhut.Ili.ToString());
+                    IlceDDLDoldur();
+                    UtilityHelper.SetDDLValue(IlcesiDDL, tasinmazTaahhut.Ilcesi.ToString());
                 }
-                else if (SagVefatDDL.SelectedItem.Text.Equals(ProjeConstants.BAGISCI_VEFAT))
+                else
                 {
-                    VefatTarihiTxt.Value = tasinmazTaahhut.VefatTarihi.ConvertToDatetimeEmptyIfNull();
-                    VefatTarihiDiv.Attributes["style"] = "display:block";
+                    AdiTxt.Text = SoyadiTxt.Text = TCKimlikNoTxt.Text = DogumTarihiTxt.Text = TelefonTxt.Text =
+                        AdresTxt.Text = EvrakTarihiTxt.Text = EvrakSayisiTxt.Text = string.Empty;
+                    TaahhutAciklamaTxt.Text = "Vakıf tarafından taahhütname verilmiştir.";
+
+                    TaahhutKaydetBtn.Visible = true;
                 }
-
-                TaahhutAciklamaTxt.Text = string.IsNullOrEmpty(tasinmazTaahhut.TaahhutAciklama)? "Vakıf tarafından taahhütname verilmiştir.": tasinmazTaahhut.TaahhutAciklama;
-
-                TaahhutGuncelleBtn.Visible = true;
-
-                UtilityHelper.SetDDLValue(TasinmazDDL, tasinmazTaahhut.TasinmazId.ToString());
-                UtilityHelper.SetDDLValue(IliDDL, tasinmazTaahhut.Ili.ToString());
-                IlceDDLDoldur();
-                UtilityHelper.SetDDLValue(IlcesiDDL, tasinmazTaahhut.Ilcesi.ToString());
             }
-            else
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
             {
-                AdiTxt.Text = SoyadiTxt.Text = TCKimlikNoTxt.Text = DogumTarihiTxt.Text = TelefonTxt.Text =
-                    AdresTxt.Text = EvrakTarihiTxt.Text = EvrakSayisiTxt.Text = string.Empty;
-                TaahhutAciklamaTxt.Text = "Vakıf tarafından taahhütname verilmiştir.";
-
-                TaahhutKaydetBtn.Visible = true;
+                TbysWebPartLog.ReportError(context, "TBYS.BagisciTaahhutleriWP.TaahhutModalDoldurBtnBtn_Click", error);
             }
         }
         protected void TaahhutKaydetBtn_Click(object sender, EventArgs e)
         {
+            PortalLogContext context = LoggingContext;
             try
             {
                 TasinmazTaahhut tt = new TasinmazTaahhut();
@@ -365,27 +386,29 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                 tt.TasinmazId = TasinmazDDL.SelectedValue.ConvertToInt();
                 tt.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
                 tt.Telefon = TelefonTxt.Text;
-                int id = new Model.Services.TBYS.TasinmazTaahhutService(LoggingContext).Save(tt);
+                int id = new Model.Services.TBYS.TasinmazTaahhutService(context).Save(tt);
+                if (id > 0) context = context.WithEntity("TasinmazTaahhut", id);
                 if (id > 0)
                     Messages.Success("Kaydedildi", 2000);
-                RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TAAHHUTLERI+ "?BagisciId=" + BagisciIdQS);
+                RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TAAHHUTLERI+ "?BagisciId=" + BagisciIdQS, context);
 
             }
             catch (Exception ex)
             {
                 if (ex is System.Threading.ThreadAbortException) throw;
-                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciTaahhutleriWP.TaahhutKaydetBtn_Click", ex);
+                TbysWebPartLog.WriteError(context, "TBYS.BagisciTaahhutleriWP.TaahhutKaydetBtn_Click", ex);
 
-                ReportError("Unhandled", ex);
+                ReportError("Unhandled", ex, context);
             }
         }
         protected void TaahhutGuncelle_Click(object sender, EventArgs e)
         {
+            PortalLogContext context = RecordContext(ParamTaahhutIdLbl.Value.ConvertToInt());
             try
             {
                 int taahhutId = ParamTaahhutIdLbl.Value.ConvertToInt();
                 TasinmazTaahhut tt = new TasinmazTaahhut();
-                tt = new Model.Services.TBYS.TasinmazTaahhutService(LoggingContext).GetById(taahhutId);
+                tt = new Model.Services.TBYS.TasinmazTaahhutService(context).GetById(taahhutId);
                 if (tt == null || tt.BagisciId != BagisciIdQS.ConvertToInt())
                 {
                     Messages.Error("Kaydın bağışçı ilişkisi değişmiş veya kayıt bulunamıyor. Sayfayı yenileyiniz.");
@@ -417,22 +440,22 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                     tt.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
                     tt.Telefon = TelefonTxt.Text;
                     //tt.TaahhutPdfAdi = TaahhutPdfAdi.Text;
-                    if (new Model.Services.TBYS.TasinmazTaahhutService(LoggingContext).Update(tt))
+                    if (new Model.Services.TBYS.TasinmazTaahhutService(context).Update(tt))
                         Messages.Success("Kaydedildi", 2000);
                     else
                         Messages.Error("Kaydedilemedi");
-                    RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TAAHHUTLERI+ "?BagisciId=" + BagisciIdQS);
+                    RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TAAHHUTLERI+ "?BagisciId=" + BagisciIdQS, context);
                 }
             }
             catch (Exception ex)
             {
                 if (ex is System.Threading.ThreadAbortException) throw;
-                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciTaahhutleriWP.TaahhutGuncelle_Click", ex);
+                TbysWebPartLog.WriteError(context, "TBYS.BagisciTaahhutleriWP.TaahhutGuncelle_Click", ex);
 
-                ReportError("Unhandled", ex);
+                ReportError("Unhandled", ex, context);
             }
         }
-        private void RedirectToPage(string pageUrl)
+        private void RedirectToPage(string pageUrl, PortalLogContext context = null)
         {
             try
             {
@@ -446,31 +469,32 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
             catch (Exception ex)
             {
                 if (ex is System.Threading.ThreadAbortException) throw;
-                TbysWebPartLog.WriteError(LoggingContext, "TBYS.BagisciTaahhutleriWP.RedirectToPage", ex);
-                ReportError("Unhandled", ex);
+                TbysWebPartLog.WriteError(context ?? LoggingContext, "TBYS.BagisciTaahhutleriWP.RedirectToPage", ex);
+                ReportError("Unhandled", ex, context);
             }
         }
         protected void TaahhutSilNowBtn_Click(object sender, EventArgs e)
         {
+            PortalLogContext context = RecordContext(ParamTaahhutIdLbl.Value.ConvertToInt());
             try
             {
-                TasinmazTaahhut item = new Model.Services.TBYS.TasinmazTaahhutService(LoggingContext).GetById(ParamTaahhutIdLbl.Value.ConvertToInt());
+                TasinmazTaahhut item = new Model.Services.TBYS.TasinmazTaahhutService(context).GetById(ParamTaahhutIdLbl.Value.ConvertToInt());
                 if (item == null || item.BagisciId != BagisciIdQS.ConvertToInt())
                 {
                     Messages.Error("Taahhüt kaydı değişmiş veya bulunamıyor. Sayfayı yenileyip tekrar deneyiniz.");
                     return;
                 }
-                if (!new Model.Services.TBYS.TasinmazTaahhutService(LoggingContext).Delete(item))
+                if (!new Model.Services.TBYS.TasinmazTaahhutService(context).Delete(item))
                 {
                     Messages.Error("Taahhüt kaydı silinemedi.");
                     return;
                 }
-                RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TAAHHUTLERI + "?BagisciId=" + BagisciIdQS);
+                RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_TAAHHUTLERI + "?BagisciId=" + BagisciIdQS, context);
             }
             catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error)
             {
-                TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagisciTaahhutleriWP.TaahhutSilNowBtn_Click", error);
+                TbysWebPartLog.ReportError(context, "TBYS.BagisciTaahhutleriWP.TaahhutSilNowBtn_Click", error);
             }
         }
         protected void BagisciyiTaahhutListesineEkleBtn_Click(object sender, EventArgs e)

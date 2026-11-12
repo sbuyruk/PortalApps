@@ -20,89 +20,113 @@ namespace Model.Services.TBYS
 
         public void Save(int contractId, TeminatIslem input)
         {
-            Validate(input);
-            using (var transaction = new SqlTransactionContext())
+            try
             {
-                KiraSozlesme contract = LoadContract(contractId, transaction);
-                var item = new TeminatIslem
+                Validate(input);
+                using (var transaction = new SqlTransactionContext())
                 {
-                    KiraciId = contract.KiraciId,
-                    IslemTipi = input.IslemTipi,
-                    IslemTarihi = input.IslemTarihi,
-                    IslemTutari = input.IslemTutari,
-                    DovizCinsi = ProjeConstants.DOVIZ_TL,
-                    Aciklama = input.Aciklama
-                };
-                if (item.IslemTipi == ProjeConstants.TEMINAT_KIRAYAMAHSUP)
-                {
-                    KiraSozlesme target = LoadPaymentContract(contract.KiraciId, item.IslemTarihi, transaction);
-                    int paymentId = 0;
-                    if (!TBYSOrtak.OdemeYap(target, item.IslemTarihi, item.IslemTutari, item.Aciklama,
-                        ref paymentId, context, transaction) || paymentId <= 0)
-                        throw new InvalidOperationException("Mahsup için uygun ödeme planı bulunamadı; işlem kaydedilmedi.");
-                    item.OdemeId = paymentId;
+                    KiraSozlesme contract = LoadContract(contractId, transaction);
+                    var item = new TeminatIslem
+                    {
+                        KiraciId = contract.KiraciId,
+                        IslemTipi = input.IslemTipi,
+                        IslemTarihi = input.IslemTarihi,
+                        IslemTutari = input.IslemTutari,
+                        DovizCinsi = ProjeConstants.DOVIZ_TL,
+                        Aciklama = input.Aciklama
+                    };
+                    if (item.IslemTipi == ProjeConstants.TEMINAT_KIRAYAMAHSUP)
+                    {
+                        KiraSozlesme target = LoadPaymentContract(contract.KiraciId, item.IslemTarihi, transaction);
+                        int paymentId = 0;
+                        if (!TBYSOrtak.OdemeYap(target, item.IslemTarihi, item.IslemTutari, item.Aciklama,
+                            ref paymentId, context, transaction) || paymentId <= 0)
+                            throw new InvalidOperationException("Mahsup için uygun ödeme planı bulunamadı; işlem kaydedilmedi.");
+                        item.OdemeId = paymentId;
+                    }
+                    if (new TeminatIslemService(context).Save(item, transaction) <= 0)
+                        throw new InvalidOperationException("Teminat işlemi kaydedilemedi.");
+                    UpdateTotals(contract, transaction);
+                    transaction.Complete();
                 }
-                if (new TeminatIslemService(context).Save(item, transaction) <= 0)
-                    throw new InvalidOperationException("Teminat işlemi kaydedilemedi.");
-                UpdateTotals(contract, transaction);
-                transaction.Complete();
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", contractId, error);
+                throw;
             }
         }
 
         public void Update(int contractId, int itemId, TeminatIslem input)
         {
-            Validate(input);
-            using (var transaction = new SqlTransactionContext())
+            try
             {
-                KiraSozlesme contract = LoadContract(contractId, transaction);
-                var service = new TeminatIslemService(context);
-                TeminatIslem item = LoadItem(service, itemId, contract.KiraciId, transaction);
-                // The persisted type and payment link cannot be replaced by form values.
-                if (item.IslemTipi != input.IslemTipi)
-                    throw new InvalidOperationException("Teminat işlem türü değiştirilemez.");
-                if (item.IslemTipi == ProjeConstants.TEMINAT_KIRAYAMAHSUP)
+                Validate(input);
+                using (var transaction = new SqlTransactionContext())
                 {
-                    var payments = new OdemeService(context);
-                    Odeme payment = LoadPayment(payments, item, transaction);
-                    KiraSozlesme target = LoadPaymentContract(contract.KiraciId, input.IslemTarihi, transaction);
-                    OdemePlani plan = TBYSOrtak.MahsupOdemePlaniGetir(target, input.IslemTarihi, context, transaction);
-                    if (plan == null)
-                        throw new InvalidOperationException("Mahsup için uygun ödeme planı bulunamadı; işlem güncellenmedi.");
-                    if (!payments.OdemeyiVeOdemePlaniniGuncelle(target.Id, payment.OdemePlaniId, plan.Id,
-                        payment.Id, input.IslemTarihi, input.IslemTutari, input.Aciklama, context.UserLogin, transaction))
-                        throw new InvalidOperationException("Mahsup ödemesi ve ödeme planı güncellenemedi.");
+                    KiraSozlesme contract = LoadContract(contractId, transaction);
+                    var service = new TeminatIslemService(context);
+                    TeminatIslem item = LoadItem(service, itemId, contract.KiraciId, transaction);
+                    // The persisted type and payment link cannot be replaced by form values.
+                    if (item.IslemTipi != input.IslemTipi)
+                        throw new InvalidOperationException("Teminat işlem türü değiştirilemez.");
+                    if (item.IslemTipi == ProjeConstants.TEMINAT_KIRAYAMAHSUP)
+                    {
+                        var payments = new OdemeService(context);
+                        Odeme payment = LoadPayment(payments, item, transaction);
+                        KiraSozlesme target = LoadPaymentContract(contract.KiraciId, input.IslemTarihi, transaction);
+                        OdemePlani plan = TBYSOrtak.MahsupOdemePlaniGetir(target, input.IslemTarihi, context, transaction);
+                        if (plan == null)
+                            throw new InvalidOperationException("Mahsup için uygun ödeme planı bulunamadı; işlem güncellenmedi.");
+                        if (!payments.OdemeyiVeOdemePlaniniGuncelle(target.Id, payment.OdemePlaniId, plan.Id,
+                            payment.Id, input.IslemTarihi, input.IslemTutari, input.Aciklama, context.UserLogin, transaction))
+                            throw new InvalidOperationException("Mahsup ödemesi ve ödeme planı güncellenemedi.");
+                    }
+                    item.IslemTarihi = input.IslemTarihi;
+                    item.IslemTutari = input.IslemTutari;
+                    item.Aciklama = input.Aciklama;
+                    if (!service.Update(item, transaction))
+                        throw new InvalidOperationException("Teminat işlemi güncellenemedi.");
+                    UpdateTotals(contract, transaction);
+                    transaction.Complete();
                 }
-                item.IslemTarihi = input.IslemTarihi;
-                item.IslemTutari = input.IslemTutari;
-                item.Aciklama = input.Aciklama;
-                if (!service.Update(item, transaction))
-                    throw new InvalidOperationException("Teminat işlemi güncellenemedi.");
-                UpdateTotals(contract, transaction);
-                transaction.Complete();
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "TeminatIslem", itemId, error);
+                throw;
             }
         }
 
         public void Delete(int contractId, int itemId)
         {
-            using (var transaction = new SqlTransactionContext())
+            try
             {
-                KiraSozlesme contract = LoadContract(contractId, transaction);
-                var service = new TeminatIslemService(context);
-                TeminatIslem item = LoadItem(service, itemId, contract.KiraciId, transaction);
-                if (item.IslemTipi == ProjeConstants.TEMINAT_KIRAYAMAHSUP)
+                using (var transaction = new SqlTransactionContext())
                 {
-                    var payments = new OdemeService(context);
-                    Odeme payment = LoadPayment(payments, item, transaction);
-                    // Remove the link before the payment; every following failure rolls both back.
-                    if (!service.Delete(item, transaction)
-                        || !payments.OdemeyiSilOdemePlaniniGuncelle(payment.Id, item.Aciklama,
-                            payment.OdemePlaniId, context.UserLogin, transaction))
-                        throw new InvalidOperationException("Mahsup işlemi ve bağlı ödeme silinemedi.");
+                    KiraSozlesme contract = LoadContract(contractId, transaction);
+                    var service = new TeminatIslemService(context);
+                    TeminatIslem item = LoadItem(service, itemId, contract.KiraciId, transaction);
+                    if (item.IslemTipi == ProjeConstants.TEMINAT_KIRAYAMAHSUP)
+                    {
+                        var payments = new OdemeService(context);
+                        Odeme payment = LoadPayment(payments, item, transaction);
+                        // Remove the link before the payment; every following failure rolls both back.
+                        if (!service.Delete(item, transaction)
+                            || !payments.OdemeyiSilOdemePlaniniGuncelle(payment.Id, item.Aciklama,
+                                payment.OdemePlaniId, context.UserLogin, transaction))
+                            throw new InvalidOperationException("Mahsup işlemi ve bağlı ödeme silinemedi.");
+                    }
+                    else if (!service.Delete(item, transaction))
+                        throw new InvalidOperationException("Teminat işlemi silinemedi.");
+                    UpdateTotals(contract, transaction);
+                    transaction.Complete();
                 }
-                else if (!service.Delete(item, transaction))
-                    throw new InvalidOperationException("Teminat işlemi silinemedi.");
-                UpdateTotals(contract, transaction);
-                transaction.Complete();
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "TeminatIslem", itemId, error);
+                throw;
             }
         }
 

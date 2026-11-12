@@ -50,11 +50,17 @@ namespace Model.Services.TBYS
 
         public Tasinmaz GetById(int id)
         {
-            return Map(repository.SelectById(id));
+            return PortalLogContext.ExecuteForEntity(context, "Tasinmaz", () => id, () =>
+            {
+                return Map(repository.SelectById(id));
+            });
         }
         public Tasinmaz GetById(int id, PortalLogContext context)
         {
-            return Map(new TasinmazRepository(context).SelectById(id));
+            return PortalLogContext.ExecuteForEntity(context, "Tasinmaz", () => id, () =>
+            {
+                return Map(new TasinmazRepository(context).SelectById(id));
+            });
         }
         public string GetAddressByBolumId(int tasinmazId, int bolumId)
         {
@@ -91,7 +97,10 @@ namespace Model.Services.TBYS
 
         public Tasinmaz GetInventoryById(int id)
         {
-            return Map(repository.SelectInventoryById(id));
+            return PortalLogContext.ExecuteForEntity(context, "Tasinmaz", () => id, () =>
+            {
+                return Map(repository.SelectInventoryById(id));
+            });
         }
 
         public List<Tasinmaz> GetInventory()
@@ -99,7 +108,13 @@ namespace Model.Services.TBYS
             return new Tasinmaz().ToList<Tasinmaz>(repository.SelectInventory());
         }
         public List<Tasinmaz> GetInventoryByIlAdi(string ilAdi) { return new Tasinmaz().ToList<Tasinmaz>(repository.SelectInventoryByIlAdi(ilAdi)); }
-        public Tasinmaz GetOutOfInventoryById(int id) { return Map(repository.SelectOutOfInventoryById(id)); }
+        public Tasinmaz GetOutOfInventoryById(int id)
+        {
+            return PortalLogContext.ExecuteForEntity(context, "Tasinmaz", () => id, () =>
+            {
+                return Map(repository.SelectOutOfInventoryById(id));
+            });
+        }
         public decimal GetInventoryValueTotal(string column, int bolgeId) { DataTable table = repository.SelectInventoryValueTotal(column, bolgeId, ProjeConstants.HEPSI_INT, ProjeConstants.BOLGE_GENELMUDURLUK_INT); return table != null && table.Rows.Count > 0 ? table.Rows[0]["Toplam"].ToString().ConvertToDecimal() : 0; }
         public decimal GetTahminiRayicToplami(int bolgeId) { return GetInventoryValueTotal("TahminiRayicDegeri", bolgeId); }
         public decimal GetEmlakBeyanDegeriToplami(int bolgeId) { return GetInventoryValueTotal("EmlakBeyanDegeri", bolgeId); }
@@ -175,130 +190,145 @@ namespace Model.Services.TBYS
 
         public int Save(Tasinmaz item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            return PortalLogContext.ExecuteForEntity(context, "Tasinmaz", () => item == null ? 0 : item.Id, () =>
             {
-                int id = Save(item, transaction);
-                transaction.Complete();
-                return id;
-            }
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    int id = Save(item, transaction);
+                    transaction.Complete();
+                    return id;
+                }
+            });
         }
 
         public bool Update(Tasinmaz item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            return PortalLogContext.ExecuteForEntity(context, "Tasinmaz", () => item == null ? 0 : item.Id, () =>
             {
-                bool updated = Update(item, transaction);
-                if (updated) transaction.Complete();
-                return updated;
-            }
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool updated = Update(item, transaction);
+                    if (updated) transaction.Complete();
+                    return updated;
+                }
+            });
         }
 
         public bool Delete(Tasinmaz item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            return PortalLogContext.ExecuteForEntity(context, "Tasinmaz", () => item == null ? 0 : item.Id, () =>
             {
-                bool deleted = Delete(item, transaction);
-                if (deleted) transaction.Complete();
-                return deleted;
-            }
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool deleted = Delete(item, transaction);
+                    if (deleted) transaction.Complete();
+                    return deleted;
+                }
+            });
         }
 
         public int CopyOutOfInventory(int sourceId)
         {
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            return PortalLogContext.ExecuteForEntity(context, "Tasinmaz", () => sourceId, () =>
             {
-                int id = CopyOutOfInventory(sourceId, transaction);
-                transaction.Complete();
-                return id;
-            }
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    int id = CopyOutOfInventory(sourceId, transaction);
+                    transaction.Complete();
+                    return id;
+                }
+            });
         }
 
         public int CopyOutOfInventory(int sourceId, SqlTransactionContext transaction)
         {
-            RequireTransaction(transaction);
-            Tasinmaz target = Map(repository.SelectById(sourceId, transaction, context));
-            if (target == null || target.EnvanterdeMi != ProjeConstants.TASINMAZ_ENVANTERDEN_CIKTI)
-                throw new InvalidOperationException("Kopyalanacak envanter dışı taşınmaz bulunamadı.");
-
-            // Read and lock the entire transfer set before creating the new property.
-            DataTable sourceSections = sectionRepository.SelectAllByTasinmazId(sourceId, transaction, context);
-            DataTable sourceDonation = donationRepository.SelectByTasinmazId(sourceId, transaction, context);
-            DataTable sourceInsurance = insuranceRepository.SelectLatestByTasinmazId(sourceId, transaction, context);
-            DataTable sourceRepairs = repairRepository.SelectAllByTasinmazId(sourceId, transaction, context);
-            DataTable sourceContracts = contractRepository.SelectAllByTasinmazId(sourceId, transaction, context);
-
-            Bagis oldDonation = new Bagis().ToList<Bagis>(sourceDonation).FirstOrDefault();
-            if (oldDonation != null)
+            return PortalLogContext.ExecuteForEntity(context, "Tasinmaz", () => sourceId, () =>
             {
-                TasinmazBagisci donor = new TasinmazBagisci().ToList<TasinmazBagisci>(
-                    donorRepository.SelectById(oldDonation.BagisciId, transaction, context)).FirstOrDefault();
-                if (donor == null) throw new InvalidOperationException("Taşınmazın ilişkili bağışçısı bulunamadı.");
-                target.BagisciId = donor.Id;
-                target.Bagisci = donor.Adi + ' ' + donor.Soyadi;
-            }
-            target.Id = 0;
-            target.EnvanterdeMi = ProjeConstants.TASINMAZ_ENVANTERDE;
-            target.EnvanterdenCikmaSebebi = string.Empty;
-            target.EnvanterdenCikmaBedeli = 0;
-            target.EnvanterdenCikmaTarihi = DateTime.MinValue;
-            target.Degistiren = null;
-            target.DegistirmeTarihi = DateTime.MinValue;
-            int targetId = Save(target, transaction);
+                RequireTransaction(transaction);
+                Tasinmaz target = Map(repository.SelectById(sourceId, transaction, context));
+                if (target == null || target.EnvanterdeMi != ProjeConstants.TASINMAZ_ENVANTERDEN_CIKTI)
+                    throw new InvalidOperationException("Kopyalanacak envanter dışı taşınmaz bulunamadı.");
 
-            Dictionary<int, int> sectionIds = new Dictionary<int, int>();
-            if (sourceSections != null)
-            {
-                foreach (DataRow row in sourceSections.Rows)
+                // Read and lock the entire transfer set before creating the new property.
+                DataTable sourceSections = sectionRepository.SelectAllByTasinmazId(sourceId, transaction, context);
+                DataTable sourceDonation = donationRepository.SelectByTasinmazId(sourceId, transaction, context);
+                DataTable sourceInsurance = insuranceRepository.SelectLatestByTasinmazId(sourceId, transaction, context);
+                DataTable sourceRepairs = repairRepository.SelectAllByTasinmazId(sourceId, transaction, context);
+                DataTable sourceContracts = contractRepository.SelectAllByTasinmazId(sourceId, transaction, context);
+
+                Bagis oldDonation = new Bagis().ToList<Bagis>(sourceDonation).FirstOrDefault();
+                if (oldDonation != null)
                 {
-                    BagimsizBolum section = new BagimsizBolum().ToList<BagimsizBolum>(SingleRow(row)).First();
-                    int oldId = section.Id;
-                    section.Id = 0;
-                    section.TasinmazId = targetId;
-                    section.Degistiren = null;
-                    section.DegistirmeTarihi = DateTime.MinValue;
-                    sectionIds.Add(oldId, sectionService.Save(section, transaction));
+                    TasinmazBagisci donor = new TasinmazBagisci().ToList<TasinmazBagisci>(
+                        donorRepository.SelectById(oldDonation.BagisciId, transaction, context)).FirstOrDefault();
+                    if (donor == null) throw new InvalidOperationException("Taşınmazın ilişkili bağışçısı bulunamadı.");
+                    target.BagisciId = donor.Id;
+                    target.Bagisci = donor.Adi + ' ' + donor.Soyadi;
                 }
-            }
-            if (oldDonation != null) CopyDonation(oldDonation, targetId, transaction);
-            if (sourceInsurance != null)
-            {
-                int insuranceId = Convert.ToInt32(sourceInsurance.Rows[0]["Id"]);
-                object sectionId = RemapSection(sourceInsurance.Rows[0]["BolumId"], sectionIds);
-                insuranceRepository.MoveToTasinmaz(insuranceId, sourceId, targetId, sectionId,
-                    DateTime.Now, UtilityHelper.GetCurrentUserName(), transaction, context);
-                DataTable saved = insuranceRepository.SelectById(insuranceId, transaction, context);
-                RecordRelationAudit("UPDATE", "Sigorta", insuranceId, sourceInsurance, saved,
-                    new[] { "TasinmazId", "BolumId" }, transaction);
-            }
-            if (sourceRepairs != null)
-            {
-                foreach (DataRow row in sourceRepairs.Rows)
+                target.Id = 0;
+                target.EnvanterdeMi = ProjeConstants.TASINMAZ_ENVANTERDE;
+                target.EnvanterdenCikmaSebebi = string.Empty;
+                target.EnvanterdenCikmaBedeli = 0;
+                target.EnvanterdenCikmaTarihi = DateTime.MinValue;
+                target.Degistiren = null;
+                target.DegistirmeTarihi = DateTime.MinValue;
+                int targetId = Save(target, transaction);
+
+                Dictionary<int, int> sectionIds = new Dictionary<int, int>();
+                if (sourceSections != null)
                 {
-                    int id = Convert.ToInt32(row["Id"]);
-                    repairRepository.MoveToTasinmaz(id, sourceId, targetId,
+                    foreach (DataRow row in sourceSections.Rows)
+                    {
+                        BagimsizBolum section = new BagimsizBolum().ToList<BagimsizBolum>(SingleRow(row)).First();
+                        int oldId = section.Id;
+                        section.Id = 0;
+                        section.TasinmazId = targetId;
+                        section.Degistiren = null;
+                        section.DegistirmeTarihi = DateTime.MinValue;
+                        sectionIds.Add(oldId, sectionService.Save(section, transaction));
+                    }
+                }
+                if (oldDonation != null) CopyDonation(oldDonation, targetId, transaction);
+                if (sourceInsurance != null)
+                {
+                    int insuranceId = Convert.ToInt32(sourceInsurance.Rows[0]["Id"]);
+                    object sectionId = RemapSection(sourceInsurance.Rows[0]["BolumId"], sectionIds);
+                    insuranceRepository.MoveToTasinmaz(insuranceId, sourceId, targetId, sectionId,
                         DateTime.Now, UtilityHelper.GetCurrentUserName(), transaction, context);
-                    DataTable saved = repairRepository.SelectById(id, transaction, context);
-                    RecordRelationAudit("UPDATE", "Onarim", id, SingleRow(row), saved,
-                        new[] { "TasinmazId" }, transaction);
+                    DataTable saved = insuranceRepository.SelectById(insuranceId, transaction, context);
+                    RecordRelationAudit("UPDATE", "Sigorta", insuranceId, sourceInsurance, saved,
+                        new[] { "TasinmazId", "BolumId" }, transaction);
                 }
-            }
-            if (sourceContracts != null)
-            {
-                foreach (DataRow row in sourceContracts.Rows)
+                if (sourceRepairs != null)
                 {
-                    int id = Convert.ToInt32(row["Id"]);
-                    object sectionId = RemapSection(row["BolumId"], sectionIds);
-                    contractRepository.MoveToTasinmaz(id, sourceId, targetId, sectionId,
-                        DateTime.Now, UtilityHelper.GetCurrentUserName(), transaction, context);
-                    DataTable saved = contractRepository.SelectById(id, transaction, context);
-                    RecordRelationAudit("UPDATE", "SozlesmeTasinmaz", id, SingleRow(row), saved,
-                        new[] { "SozlesmeId", "TasinmazId", "BolumId" }, transaction);
+                    foreach (DataRow row in sourceRepairs.Rows)
+                    {
+                        int id = Convert.ToInt32(row["Id"]);
+                        repairRepository.MoveToTasinmaz(id, sourceId, targetId,
+                            DateTime.Now, UtilityHelper.GetCurrentUserName(), transaction, context);
+                        DataTable saved = repairRepository.SelectById(id, transaction, context);
+                        RecordRelationAudit("UPDATE", "Onarim", id, SingleRow(row), saved,
+                            new[] { "TasinmazId" }, transaction);
+                    }
                 }
-            }
-            return targetId;
+                if (sourceContracts != null)
+                {
+                    foreach (DataRow row in sourceContracts.Rows)
+                    {
+                        int id = Convert.ToInt32(row["Id"]);
+                        object sectionId = RemapSection(row["BolumId"], sectionIds);
+                        contractRepository.MoveToTasinmaz(id, sourceId, targetId, sectionId,
+                            DateTime.Now, UtilityHelper.GetCurrentUserName(), transaction, context);
+                        DataTable saved = contractRepository.SelectById(id, transaction, context);
+                        RecordRelationAudit("UPDATE", "SozlesmeTasinmaz", id, SingleRow(row), saved,
+                            new[] { "SozlesmeId", "TasinmazId", "BolumId" }, transaction);
+                    }
+                }
+                return targetId;
+            });
         }
 
         private void CopyDonation(Bagis source, int targetId, SqlTransactionContext transaction)
@@ -357,78 +387,93 @@ namespace Model.Services.TBYS
 
         public int SaveWithRelations(Tasinmaz item, bool synchronizeDonor)
         {
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            return PortalLogContext.ExecuteForEntity(context, "Tasinmaz", () => item == null ? 0 : item.Id, () =>
             {
-                int id = Save(item, transaction);
-                if (synchronizeDonor && SynchronizeDonor(item, transaction) && !Update(item, transaction))
-                    throw new InvalidOperationException("Taşınmazın bağışçı bilgisi güncellenemedi.");
-                SynchronizeInsurance(item, transaction);
-                transaction.Complete();
-                return id;
-            }
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    int id = Save(item, transaction);
+                    if (synchronizeDonor && SynchronizeDonor(item, transaction) && !Update(item, transaction))
+                        throw new InvalidOperationException("Taşınmazın bağışçı bilgisi güncellenemedi.");
+                    SynchronizeInsurance(item, transaction);
+                    transaction.Complete();
+                    return id;
+                }
+            });
         }
 
         public bool UpdateWithRelations(Tasinmaz item, bool synchronizeDonor, bool synchronizeInsurance)
         {
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            return PortalLogContext.ExecuteForEntity(context, "Tasinmaz", () => item == null ? 0 : item.Id, () =>
             {
-                RequireTransaction(transaction);
-                if (item == null || item.Id <= 0 || repository.SelectById(item.Id, transaction, context) == null) return false;
-                if (synchronizeDonor) SynchronizeDonor(item, transaction);
-                if (!Update(item, transaction)) return false;
-                if (synchronizeInsurance) SynchronizeInsurance(item, transaction);
-                transaction.Complete();
-                return true;
-            }
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    RequireTransaction(transaction);
+                    if (item == null || item.Id <= 0 || repository.SelectById(item.Id, transaction, context) == null) return false;
+                    if (synchronizeDonor) SynchronizeDonor(item, transaction);
+                    if (!Update(item, transaction)) return false;
+                    if (synchronizeInsurance) SynchronizeInsurance(item, transaction);
+                    transaction.Complete();
+                    return true;
+                }
+            });
         }
 
         public int Save(Tasinmaz item, SqlTransactionContext transaction)
         {
-            RequireTransaction(transaction);
-            if (item == null) throw new ArgumentNullException("item", "Kaydedilecek taşınmaz gereklidir.");
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item, transaction, context);
-            if (item.Id <= 0) throw new InvalidOperationException("Taşınmaz kaydı oluşturulamadı.");
-            DataTable saved = repository.SelectById(item.Id, transaction, context);
-            if (saved == null) throw new InvalidOperationException("Kaydedilen taşınmaz okunamadı.");
-            RecordAudit("INSERT", item.Id, null, saved, transaction);
-            return item.Id;
+            return PortalLogContext.ExecuteForEntity(context, "Tasinmaz", () => item == null ? 0 : item.Id, () =>
+            {
+                RequireTransaction(transaction);
+                if (item == null) throw new ArgumentNullException("item", "Kaydedilecek taşınmaz gereklidir.");
+                item.OlusturmaTarihi = DateTime.Now;
+                item.Olusturan = UtilityHelper.GetCurrentUserName();
+                item.Id = repository.Insert(item, transaction, context);
+                if (item.Id <= 0) throw new InvalidOperationException("Taşınmaz kaydı oluşturulamadı.");
+                DataTable saved = repository.SelectById(item.Id, transaction, context);
+                if (saved == null) throw new InvalidOperationException("Kaydedilen taşınmaz okunamadı.");
+                RecordAudit("INSERT", item.Id, null, saved, transaction);
+                return item.Id;
+            });
         }
 
         public bool Update(Tasinmaz item, SqlTransactionContext transaction)
         {
-            RequireTransaction(transaction);
-            if (item == null || item.Id <= 0) return false;
-            DataTable oldValues = repository.SelectById(item.Id, transaction, context);
-            Tasinmaz old = Map(oldValues);
-            if (old == null) return false;
-            item.OlusturmaTarihi = old.OlusturmaTarihi;
-            item.Olusturan = old.Olusturan;
-            item.DegistirmeTarihi = DateTime.Now;
-            item.Degistiren = UtilityHelper.GetCurrentUserName();
-            if (!repository.Update(item, transaction, context)) return false;
-            DataTable saved = repository.SelectById(item.Id, transaction, context);
-            if (saved == null) throw new InvalidOperationException("Güncellenen taşınmaz okunamadı.");
-            RecordAudit("UPDATE", item.Id, oldValues, saved, transaction);
-            return true;
+            return PortalLogContext.ExecuteForEntity(context, "Tasinmaz", () => item == null ? 0 : item.Id, () =>
+            {
+                RequireTransaction(transaction);
+                if (item == null || item.Id <= 0) return false;
+                DataTable oldValues = repository.SelectById(item.Id, transaction, context);
+                Tasinmaz old = Map(oldValues);
+                if (old == null) return false;
+                item.OlusturmaTarihi = old.OlusturmaTarihi;
+                item.Olusturan = old.Olusturan;
+                item.DegistirmeTarihi = DateTime.Now;
+                item.Degistiren = UtilityHelper.GetCurrentUserName();
+                if (!repository.Update(item, transaction, context)) return false;
+                DataTable saved = repository.SelectById(item.Id, transaction, context);
+                if (saved == null) throw new InvalidOperationException("Güncellenen taşınmaz okunamadı.");
+                RecordAudit("UPDATE", item.Id, oldValues, saved, transaction);
+                return true;
+            });
         }
 
         public bool Delete(Tasinmaz item, SqlTransactionContext transaction)
         {
-            RequireTransaction(transaction);
-            if (item == null || item.Id <= 0) return false;
-            DataTable oldValues = repository.SelectById(item.Id, transaction, context);
-            if (oldValues == null) return false;
-            // Hold dependency locks until the delete and its audit commit together.
-            if (sectionRepository.SelectByTasinmazId(item.Id, transaction, context) != null ||
-                donationRepository.SelectByTasinmazId(item.Id, transaction, context) != null ||
-                contractRepository.SelectByTasinmazId(item.Id, transaction, context) != null ||
-                repairRepository.SelectByTasinmazId(item.Id, transaction, context) != null ||
-                insuranceService.GetLatestByTasinmazId(item.Id, transaction, context) != null) return false;
-            if (!repository.Delete(item.Id, transaction, context)) return false;
-            RecordAudit("DELETE", item.Id, oldValues, null, transaction);
-            return true;
+            return PortalLogContext.ExecuteForEntity(context, "Tasinmaz", () => item == null ? 0 : item.Id, () =>
+            {
+                RequireTransaction(transaction);
+                if (item == null || item.Id <= 0) return false;
+                DataTable oldValues = repository.SelectById(item.Id, transaction, context);
+                if (oldValues == null) return false;
+                // Hold dependency locks until the delete and its audit commit together.
+                if (sectionRepository.SelectByTasinmazId(item.Id, transaction, context) != null ||
+                    donationRepository.SelectByTasinmazId(item.Id, transaction, context) != null ||
+                    contractRepository.SelectByTasinmazId(item.Id, transaction, context) != null ||
+                    repairRepository.SelectByTasinmazId(item.Id, transaction, context) != null ||
+                    insuranceService.GetLatestByTasinmazId(item.Id, transaction, context) != null) return false;
+                if (!repository.Delete(item.Id, transaction, context)) return false;
+                RecordAudit("DELETE", item.Id, oldValues, null, transaction);
+                return true;
+            });
         }
 
         private bool SynchronizeDonor(Tasinmaz item, SqlTransactionContext transaction)

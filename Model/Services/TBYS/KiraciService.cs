@@ -29,12 +29,18 @@ namespace Model.Services.TBYS
 
         public Kiraci GetById(int id, PortalLogContext context)
         {
-            return Map(new KiraciRepository(context).SelectById(id));
+            return PortalLogContext.ExecuteForEntity(context, "Kiraci", () => id, () =>
+            {
+                return Map(new KiraciRepository(context).SelectById(id));
+            });
         }
 
         public Kiraci GetById(int id)
         {
-            return Map(repository.SelectById(id));
+            return PortalLogContext.ExecuteForEntity(context, "Kiraci", () => id, () =>
+            {
+                return Map(repository.SelectById(id));
+            });
         }
 
         public List<Kiraci> GetAll()
@@ -48,22 +54,65 @@ namespace Model.Services.TBYS
         }
         public int Save(Kiraci item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext tx = new SqlTransactionContext()) { int id = Save(item, tx); tx.Complete(); return id; }
+            return PortalLogContext.ExecuteForEntity(context, "Kiraci", () => item == null ? 0 : item.Id, () =>
+            {
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext tx = new SqlTransactionContext()) { int id = Save(item, tx); tx.Complete(); return id; }
+            });
         }
-        public int Save(Kiraci item, SqlTransactionContext tx) { if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item, tx, context); if (item.Id > 0 && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "INSERT", "Kiraci", item.Id.ToString(), tx); return item.Id; }
+        public int Save(Kiraci item, SqlTransactionContext tx)
+        {
+            return PortalLogContext.ExecuteForEntity(context, "Kiraci", () => item == null ? 0 : item.Id, () =>
+            {
+                if (item == null) throw new ArgumentNullException("item");
+                item.OlusturmaTarihi = DateTime.Now;
+                item.Olusturan = UtilityHelper.GetCurrentUserName();
+                item.Id = repository.Insert(item, tx, context);
+                if (item.Id > 0 && PortalLogSettings.IsEnabled(context))
+                    new PortalLogRepository().RecordAudit(context, "INSERT", "Kiraci", item.Id.ToString(), tx);
+                return item.Id;
+            });
+        }
         public bool Update(Kiraci item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext tx = new SqlTransactionContext()) { bool transactionSucceeded = Update(item, tx); if (transactionSucceeded) tx.Complete(); return transactionSucceeded; }
+            return PortalLogContext.ExecuteForEntity(context, "Kiraci", () => item == null ? 0 : item.Id, () =>
+            {
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext tx = new SqlTransactionContext()) { bool transactionSucceeded = Update(item, tx); if (transactionSucceeded) tx.Complete(); return transactionSucceeded; }
+            });
         }
-        public bool Update(Kiraci item, SqlTransactionContext tx) { if (item == null || item.Id == 0) return false; item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); bool ok = repository.Update(item, tx, context); if (ok && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "UPDATE", "Kiraci", item.Id.ToString(), tx); return ok; }
+        public bool Update(Kiraci item, SqlTransactionContext tx)
+        {
+            return PortalLogContext.ExecuteForEntity(context, "Kiraci", () => item == null ? 0 : item.Id, () =>
+            {
+                if (item == null || item.Id == 0) return false;
+                item.DegistirmeTarihi = DateTime.Now;
+                item.Degistiren = UtilityHelper.GetCurrentUserName();
+                bool ok = repository.Update(item, tx, context);
+                if (ok && PortalLogSettings.IsEnabled(context))
+                    new PortalLogRepository().RecordAudit(context, "UPDATE", "Kiraci", item.Id.ToString(), tx);
+                return ok;
+            });
+        }
         public bool Delete(Kiraci item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext tx = new SqlTransactionContext()) { bool transactionSucceeded = Delete(item, tx); if (transactionSucceeded) tx.Complete(); return transactionSucceeded; }
+            return PortalLogContext.ExecuteForEntity(context, "Kiraci", () => item == null ? 0 : item.Id, () =>
+            {
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext tx = new SqlTransactionContext()) { bool transactionSucceeded = Delete(item, tx); if (transactionSucceeded) tx.Complete(); return transactionSucceeded; }
+            });
         }
-        public bool Delete(Kiraci item, SqlTransactionContext tx) { if (item == null || item.Id == 0) return false; bool ok = repository.Delete(item.Id, tx, context); if (ok && PortalLogSettings.IsEnabled(context)) new PortalLogRepository().RecordAudit(context, "DELETE", "Kiraci", item.Id.ToString(), tx); return ok; }
+        public bool Delete(Kiraci item, SqlTransactionContext tx)
+        {
+            return PortalLogContext.ExecuteForEntity(context, "Kiraci", () => item == null ? 0 : item.Id, () =>
+            {
+                if (item == null || item.Id == 0) return false;
+                bool ok = repository.Delete(item.Id, tx, context);
+                if (ok && PortalLogSettings.IsEnabled(context))
+                    new PortalLogRepository().RecordAudit(context, "DELETE", "Kiraci", item.Id.ToString(), tx);
+                return ok;
+            });
+        }
         public string GetAllReturnJson(PortalLogContext context) { return new Kiraci().ToJSON(new KiraciRepository(context).SelectAllReturnJson()); }
         public string GetAllReturnJson() { return new Kiraci().ToJSON(repository.SelectAllReturnJson()); }
         public DataTable GetAllReturnDataTable(string secim, int bolgeId) { return repository.SelectAllReturnDataTable(secim, bolgeId); }

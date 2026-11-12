@@ -22,7 +22,16 @@ namespace TBYS_WebParts.OdemeGirisWP
         {
             get
             {
-                return PortalLogContext.FromCurrentRequest("TBYS", "OdemeGirisWP");
+                PortalLogContext context = PortalLogContext.FromCurrentRequest("TBYS", "OdemeGirisWP");
+                int paymentId = OdemeIdQS.ConvertToInt();
+                if (paymentId > 0) return context.WithEntity("Odeme", paymentId);
+                int planId = OdemePlaniDDL == null ? 0 : OdemePlaniDDL.SelectedValue.ConvertToInt();
+                if (planId <= 0) planId = OdemePlaniIdQS.ConvertToInt();
+                if (planId > 0) return context.WithEntity("OdemePlani", planId);
+                int contractId = SozlesmeDDL == null ? 0 : SozlesmeDDL.SelectedValue.ConvertToInt();
+                if (contractId <= 0) contractId = KiraSozlesmeIdQS.ConvertToInt();
+                return contractId > 0 ? context.WithEntity("KiraSozlesme", contractId)
+                    : context.WithEntity("Kiraci", KiraciIdQS.ConvertToInt());
             }
         }
 
@@ -571,8 +580,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                         bool odemeYapildiMi = TBYSOrtak.OdemeYap(kiraSozlesme, odemeTarihi, OdemeTutariTxt.Text.ConvertToDecimal(), AciklamaTxt.Text, ref odemeId, LoggingContext);
                         if (odemeYapildiMi)
                         {
-
-
+                            OdemeIdQS = odemeId.ToString(CultureInfo.InvariantCulture);
                             RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?Mesaj=true&KiraciId=" + KiraciIdQS + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS);
 
                         }

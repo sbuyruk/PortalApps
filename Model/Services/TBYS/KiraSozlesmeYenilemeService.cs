@@ -24,79 +24,87 @@ namespace Model.Services.TBYS
 
         public KiraSozlesmeYenilemeResult Renew(int contractId, DateTime changedAt, string increaseMonth, out int newId)
         {
-            newId = 0;
-            if (contractId <= 0 || changedAt < new DateTime(1753, 1, 1))
-                return KiraSozlesmeYenilemeResult.InvalidInput;
-
-            int savedId;
-            using (var transaction = new SqlTransactionContext())
+            try
             {
-                var contracts = new KiraSozlesmeService(context);
-                // The row lock serializes concurrent renewals of the same source contract.
-                KiraSozlesme previous = contracts.GetById(contractId, transaction);
-                if (previous == null) return KiraSozlesmeYenilemeResult.NotFound;
-                if (!previous.Aktif) return KiraSozlesmeYenilemeResult.Inactive;
+                newId = 0;
+                if (contractId <= 0 || changedAt < new DateTime(1753, 1, 1))
+                    return KiraSozlesmeYenilemeResult.InvalidInput;
 
-                var links = new SozlesmeTasinmazService(context);
-                var previousLinks = links.GetBySozlesmeId(contractId, transaction);
-                Kiraci tenant = new Kiraci().ToList<Kiraci>(
-                    new KiraciRepository(context).SelectById(previous.KiraciId, transaction, context)).FirstOrDefault();
-                if (tenant == null) throw new InvalidOperationException("Sözleşmenin kiracı kaydı bulunamadı.");
-
-                DateTime today = DateTime.Today;
-                DateTime start = previous.SozBasTar < new DateTime(1901, 1, 1) ? today : previous.SozBasTar;
-                if (start.Year > 9997) return KiraSozlesmeYenilemeResult.InvalidInput;
-                start = start.AddYears(1);
-                decimal rent = previous.KiraBedeli;
-                YasalFaiz rate = new YasalFaizService(context).GetByYearMonth(start.Year, start.Month, transaction);
-                if (rate != null)
+                int savedId;
+                using (var transaction = new SqlTransactionContext())
                 {
-                    decimal increase = start >= ProjeConstants.SINIRLIKIRAARTISI_BASLAMATARIHI
-                        && start <= ProjeConstants.SINIRLIKIRAARTISI_BITISTARIHI
-                        && tenant.KiralamaAmaci == ProjeConstants.SINIRLIKIRAARTISI_UYGULANACAKTASINMAZCINSI
-                            ? ProjeConstants.SINIRLIKIRAARTISI_ORANI : rate.Tufe;
-                    rent += rent * increase / 100;
-                }
+                    var contracts = new KiraSozlesmeService(context);
+                    // The row lock serializes concurrent renewals of the same source contract.
+                    KiraSozlesme previous = contracts.GetById(contractId, transaction);
+                    if (previous == null) return KiraSozlesmeYenilemeResult.NotFound;
+                    if (!previous.Aktif) return KiraSozlesmeYenilemeResult.Inactive;
 
-                DateTime balanceDate = previous.SozlesmeDurumu == ProjeConstants.KIRASOZLESME_DURUMU_TAKIP
-                    ? previous.DurumDegismeTar : today;
-                if (balanceDate < new DateTime(1753, 1, 1)) return KiraSozlesmeYenilemeResult.InvalidInput;
-                var plans = new OdemePlaniService(context);
-                OdemePlani balance = plans.GetBySozlesmeIdOdemeTarihi(contractId, balanceDate, transaction)
-                    ?? plans.GetBySozlesmeId(contractId, transaction).OrderBy(p => p.VadeBasTar).ThenBy(p => p.Id).LastOrDefault();
-                DataTable region = new KiraSozlesmeRepository(context).SelectRenewalRegion(tenant.Ili, transaction, context);
+                    var links = new SozlesmeTasinmazService(context);
+                    var previousLinks = links.GetBySozlesmeId(contractId, transaction);
+                    Kiraci tenant = new Kiraci().ToList<Kiraci>(
+                        new KiraciRepository(context).SelectById(previous.KiraciId, transaction, context)).FirstOrDefault();
+                    if (tenant == null) throw new InvalidOperationException("Sözleşmenin kiracı kaydı bulunamadı.");
 
-                KiraSozlesme next = CopyForRenewal(previous);
-                next.IlkSozlesmeTar = previous.IlkSozlesmeTar < new DateTime(1901, 1, 1) ? today : previous.IlkSozlesmeTar;
-                next.SozBasTar = start;
-                next.SozBitTar = start.AddYears(1);
-                next.KiraBedeli = Math.Round(rent);
-                next.DevirAnaPara = balance == null ? 0 : balance.AnaPara;
-                next.DevirFaizliBakiye = balance == null ? 0 : balance.FaizliBakiye;
-                next.DevirFaizTutari = next.DevirFaizliBakiye - next.DevirAnaPara;
-                next.ArtisAyi = increaseMonth;
-                next.BolgeId = region == null || region.Rows[0].IsNull("BolgeId") ? 0 : Convert.ToInt32(region.Rows[0]["BolgeId"]);
-                next.Aktif = true;
-                next.SozlesmeDurumu = ProjeConstants.KIRASOZLESME_DURUMU_DEVAM;
-                next.Degistiren = context.UserLogin;
-
-                if (!contracts.UpdateActiveStatus(previous, ProjeConstants.KIRASOZLESME_DURUMU_YENILENDI,
-                    changedAt, false, transaction)) return KiraSozlesmeYenilemeResult.Inactive;
-                savedId = contracts.Save(next, transaction);
-                if (savedId <= 0) throw new InvalidOperationException("Yeni sözleşme oluşturulamadı.");
-                foreach (SozlesmeTasinmaz link in previousLinks)
-                {
-                    int linkId = links.Save(new SozlesmeTasinmaz
+                    DateTime today = DateTime.Today;
+                    DateTime start = previous.SozBasTar < new DateTime(1901, 1, 1) ? today : previous.SozBasTar;
+                    if (start.Year > 9997) return KiraSozlesmeYenilemeResult.InvalidInput;
+                    start = start.AddYears(1);
+                    decimal rent = previous.KiraBedeli;
+                    YasalFaiz rate = new YasalFaizService(context).GetByYearMonth(start.Year, start.Month, transaction);
+                    if (rate != null)
                     {
-                        SozlesmeId = savedId, TasinmazId = link.TasinmazId, BolumId = link.BolumId
-                    }, transaction);
-                    if (linkId <= 0) throw new InvalidOperationException("Taşınmaz bağlantısı aktarılamadı.");
+                        decimal increase = start >= ProjeConstants.SINIRLIKIRAARTISI_BASLAMATARIHI
+                            && start <= ProjeConstants.SINIRLIKIRAARTISI_BITISTARIHI
+                            && tenant.KiralamaAmaci == ProjeConstants.SINIRLIKIRAARTISI_UYGULANACAKTASINMAZCINSI
+                                ? ProjeConstants.SINIRLIKIRAARTISI_ORANI : rate.Tufe;
+                        rent += rent * increase / 100;
+                    }
+
+                    DateTime balanceDate = previous.SozlesmeDurumu == ProjeConstants.KIRASOZLESME_DURUMU_TAKIP
+                        ? previous.DurumDegismeTar : today;
+                    if (balanceDate < new DateTime(1753, 1, 1)) return KiraSozlesmeYenilemeResult.InvalidInput;
+                    var plans = new OdemePlaniService(context);
+                    OdemePlani balance = plans.GetBySozlesmeIdOdemeTarihi(contractId, balanceDate, transaction)
+                        ?? plans.GetBySozlesmeId(contractId, transaction).OrderBy(p => p.VadeBasTar).ThenBy(p => p.Id).LastOrDefault();
+                    DataTable region = new KiraSozlesmeRepository(context).SelectRenewalRegion(tenant.Ili, transaction, context);
+
+                    KiraSozlesme next = CopyForRenewal(previous);
+                    next.IlkSozlesmeTar = previous.IlkSozlesmeTar < new DateTime(1901, 1, 1) ? today : previous.IlkSozlesmeTar;
+                    next.SozBasTar = start;
+                    next.SozBitTar = start.AddYears(1);
+                    next.KiraBedeli = Math.Round(rent);
+                    next.DevirAnaPara = balance == null ? 0 : balance.AnaPara;
+                    next.DevirFaizliBakiye = balance == null ? 0 : balance.FaizliBakiye;
+                    next.DevirFaizTutari = next.DevirFaizliBakiye - next.DevirAnaPara;
+                    next.ArtisAyi = increaseMonth;
+                    next.BolgeId = region == null || region.Rows[0].IsNull("BolgeId") ? 0 : Convert.ToInt32(region.Rows[0]["BolgeId"]);
+                    next.Aktif = true;
+                    next.SozlesmeDurumu = ProjeConstants.KIRASOZLESME_DURUMU_DEVAM;
+                    next.Degistiren = context.UserLogin;
+
+                    if (!contracts.UpdateActiveStatus(previous, ProjeConstants.KIRASOZLESME_DURUMU_YENILENDI,
+                        changedAt, false, transaction)) return KiraSozlesmeYenilemeResult.Inactive;
+                    savedId = contracts.Save(next, transaction);
+                    if (savedId <= 0) throw new InvalidOperationException("Yeni sözleşme oluşturulamadı.");
+                    foreach (SozlesmeTasinmaz link in previousLinks)
+                    {
+                        int linkId = links.Save(new SozlesmeTasinmaz
+                        {
+                            SozlesmeId = savedId, TasinmazId = link.TasinmazId, BolumId = link.BolumId
+                        }, transaction);
+                        if (linkId <= 0) throw new InvalidOperationException("Taşınmaz bağlantısı aktarılamadı.");
+                    }
+                    transaction.Complete();
                 }
-                transaction.Complete();
+                // Expose the new identity only after commit succeeds.
+                newId = savedId;
+                return KiraSozlesmeYenilemeResult.Completed;
             }
-            // Expose the new identity only after commit succeeds.
-            newId = savedId;
-            return KiraSozlesmeYenilemeResult.Completed;
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", contractId, error);
+                throw;
+            }
         }
 
         private static KiraSozlesme CopyForRenewal(KiraSozlesme source)

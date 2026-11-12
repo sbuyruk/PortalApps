@@ -21,7 +21,17 @@ namespace Model.Services.TBYS
         public TasinmazBagisciService() : this(new TasinmazBagisciRepository()) { }
         public TasinmazBagisciService(PortalLogContext context) : this(new TasinmazBagisciRepository(context)) { this.context = context; }
         public TasinmazBagisciService(TasinmazBagisciRepository repository) { if (repository == null) throw new ArgumentNullException("repository"); this.repository = repository; }
-        public TasinmazBagisci GetById(int id) { return Map(repository.SelectById(id)); }
+        public TasinmazBagisci GetById(int id) {
+            try
+            {
+                return Map(repository.SelectById(id));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "TasinmazBagisci", id, error);
+                throw;
+            }
+        }
         public List<TasinmazBagisci> GetAll() { return ToList(repository.SelectAll()); }
         public List<TasinmazBagisci> GetAllBySagVefat(string sag) { return ToList(repository.SelectAllBySagVefat(sag == ProjeConstants.HEPSI ? null : sag)); }
         public List<TasinmazBagisci> GetByBolge(int bolgeId) { return ToList(repository.SelectByBolge(bolgeId, bolgeId == ProjeConstants.BOLGE_HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT)); }
@@ -29,76 +39,124 @@ namespace Model.Services.TBYS
         public List<TasinmazBagisci> GetByIlAdi(string ilAdi) { return ToList(repository.SelectByIlAdi(ilAdi)); }
         public int Save(TasinmazBagisci item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                int id = Save(item, transaction);
-                transaction.Complete();
-                return id;
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    int id = Save(item, transaction);
+                    transaction.Complete();
+                    return id;
+                }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "TasinmazBagisci", item == null ? 0 : item.Id, error);
+                throw;
             }
         }
         public bool Update(TasinmazBagisci item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                bool updated = Update(item, transaction);
-                if (updated) transaction.Complete();
-                return updated;
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool updated = Update(item, transaction);
+                    if (updated) transaction.Complete();
+                    return updated;
+                }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "TasinmazBagisci", item == null ? 0 : item.Id, error);
+                throw;
             }
         }
         public bool Delete(TasinmazBagisci item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            try
             {
-                bool deleted = Delete(item, transaction);
-                if (deleted) transaction.Complete();
-                return deleted;
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    bool deleted = Delete(item, transaction);
+                    if (deleted) transaction.Complete();
+                    return deleted;
+                }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "TasinmazBagisci", item == null ? 0 : item.Id, error);
+                throw;
             }
         }
         public int Save(TasinmazBagisci item, SqlTransactionContext transaction)
         {
-            RequireTransaction(transaction);
-            if (item == null) throw new ArgumentNullException("item", "Kaydedilecek bağışçı gereklidir.");
-            item.OlusturmaTarihi = DateTime.Now;
-            item.Olusturan = UtilityHelper.GetCurrentUserName();
-            item.Id = repository.Insert(item, transaction, context);
-            if (item.Id <= 0) throw new InvalidOperationException("Bağışçı kaydı oluşturulamadı.");
-            DataTable saved = repository.SelectById(item.Id, transaction, context);
-            if (saved == null) throw new InvalidOperationException("Kaydedilen bağışçı okunamadı.");
-            RecordAudit("INSERT", item.Id, null, saved, transaction);
-            return item.Id;
+            try
+            {
+                RequireTransaction(transaction);
+                if (item == null) throw new ArgumentNullException("item", "Kaydedilecek bağışçı gereklidir.");
+                item.OlusturmaTarihi = DateTime.Now;
+                item.Olusturan = UtilityHelper.GetCurrentUserName();
+                item.Id = repository.Insert(item, transaction, context);
+                if (item.Id <= 0) throw new InvalidOperationException("Bağışçı kaydı oluşturulamadı.");
+                DataTable saved = repository.SelectById(item.Id, transaction, context);
+                if (saved == null) throw new InvalidOperationException("Kaydedilen bağışçı okunamadı.");
+                RecordAudit("INSERT", item.Id, null, saved, transaction);
+                return item.Id;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "TasinmazBagisci", item == null ? 0 : item.Id, error);
+                throw;
+            }
         }
 
         public bool Update(TasinmazBagisci item, SqlTransactionContext transaction)
         {
-            RequireTransaction(transaction);
-            if (item == null || item.Id <= 0) return false;
-            DataTable oldValues = repository.SelectById(item.Id, transaction, context);
-            TasinmazBagisci old = Map(oldValues);
-            if (old == null) return false;
-            item.OlusturmaTarihi = old.OlusturmaTarihi;
-            item.Olusturan = old.Olusturan;
-            item.DegistirmeTarihi = DateTime.Now;
-            item.Degistiren = UtilityHelper.GetCurrentUserName();
-            if (!repository.Update(item, transaction, context)) return false;
-            DataTable saved = repository.SelectById(item.Id, transaction, context);
-            if (saved == null) throw new InvalidOperationException("Güncellenen bağışçı okunamadı.");
-            RecordAudit("UPDATE", item.Id, oldValues, saved, transaction);
-            return true;
+            try
+            {
+                RequireTransaction(transaction);
+                if (item == null || item.Id <= 0) return false;
+                DataTable oldValues = repository.SelectById(item.Id, transaction, context);
+                TasinmazBagisci old = Map(oldValues);
+                if (old == null) return false;
+                item.OlusturmaTarihi = old.OlusturmaTarihi;
+                item.Olusturan = old.Olusturan;
+                item.DegistirmeTarihi = DateTime.Now;
+                item.Degistiren = UtilityHelper.GetCurrentUserName();
+                if (!repository.Update(item, transaction, context)) return false;
+                DataTable saved = repository.SelectById(item.Id, transaction, context);
+                if (saved == null) throw new InvalidOperationException("Güncellenen bağışçı okunamadı.");
+                RecordAudit("UPDATE", item.Id, oldValues, saved, transaction);
+                return true;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "TasinmazBagisci", item == null ? 0 : item.Id, error);
+                throw;
+            }
         }
 
         public bool Delete(TasinmazBagisci item, SqlTransactionContext transaction)
         {
-            RequireTransaction(transaction);
-            if (item == null || item.Id <= 0) return false;
-            DataTable oldValues = repository.SelectById(item.Id, transaction, context);
-            if (oldValues == null) return false;
-            if (repository.HasDependencies(item.Id, transaction, context)) return false;
-            if (!repository.Delete(item.Id, transaction, context)) return false;
-            RecordAudit("DELETE", item.Id, oldValues, null, transaction);
-            return true;
+            try
+            {
+                RequireTransaction(transaction);
+                if (item == null || item.Id <= 0) return false;
+                DataTable oldValues = repository.SelectById(item.Id, transaction, context);
+                if (oldValues == null) return false;
+                if (repository.HasDependencies(item.Id, transaction, context)) return false;
+                if (!repository.Delete(item.Id, transaction, context)) return false;
+                RecordAudit("DELETE", item.Id, oldValues, null, transaction);
+                return true;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "TasinmazBagisci", item == null ? 0 : item.Id, error);
+                throw;
+            }
         }
 
         private void RequireTransaction(SqlTransactionContext transaction)

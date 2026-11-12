@@ -24,7 +24,10 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
         {
             get
             {
-                return PortalLogContext.FromCurrentRequest("TBYS", "TasinmazBagisciKartiWP");
+                PortalLogContext context = PortalLogContext.FromCurrentRequest("TBYS", "TasinmazBagisciKartiWP");
+                int donorId = BagisciIdQS.ConvertToInt();
+                return donorId > 0 ? context.WithEntity("TasinmazBagisci", donorId)
+                    : context.WithEntity("Tasinmaz", TasinmazIdQS.ConvertToInt());
             }
         }
 

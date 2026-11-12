@@ -21,7 +21,10 @@ namespace TBYS_WebParts.OdemePlaniWP
         {
             get
             {
-                return PortalLogContext.FromCurrentRequest("TBYS", "OdemePlaniWP");
+                PortalLogContext context = PortalLogContext.FromCurrentRequest("TBYS", "OdemePlaniWP");
+                int contractId = KiraSozlesmeIdQS.ConvertToInt();
+                return contractId > 0 ? context.WithEntity("KiraSozlesme", contractId)
+                    : context.WithEntity("Kiraci", KiraciIdQS.ConvertToInt());
             }
         }
 

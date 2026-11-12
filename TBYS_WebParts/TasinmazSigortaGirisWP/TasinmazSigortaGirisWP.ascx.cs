@@ -22,7 +22,10 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         {
             get
             {
-                return PortalLogContext.FromCurrentRequest("TBYS", "TasinmazSigortaGirisWP");
+                PortalLogContext context = PortalLogContext.FromCurrentRequest("TBYS", "TasinmazSigortaGirisWP");
+                int insuranceId = SigortaIdQS.ConvertToInt();
+                return insuranceId > 0 ? context.WithEntity("Sigorta", insuranceId)
+                    : context.WithEntity("Tasinmaz", TasinmazIdQS.ConvertToInt());
             }
         }
 
@@ -524,6 +527,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             sigorta.Id = sigortaId;
             if (sigortaId > 0)
             {
+                SigortaIdQS = sigortaId.ToString();
                 string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 int queryIndex = newUrl.IndexOf("?");
                 if (queryIndex > 0)
@@ -661,16 +665,23 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         }
         protected void SilBtn_Click(object sender, EventArgs e)
         {
-            Sigorta sigorta = new Sigorta();
-            sigorta = new Model.Services.TBYS.SigortaService(LoggingContext).GetById(SigortaIdQS.ConvertToInt());
-            if (sigorta != null)
+            try
             {
-                Tasinmaz tasinmaz = new Tasinmaz();
-                string adres = new TasinmazService(LoggingContext).SelectByIdBolumId(sigorta.TasinmazId, sigorta.BolumId);
-                SilmeMesajiLbl.Text = adres + " adresindeki taşınmaza ait Sigorta silinecek";
-                ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "ModalOnay();", true);
+                Sigorta sigorta = new Sigorta();
+                sigorta = new Model.Services.TBYS.SigortaService(LoggingContext).GetById(SigortaIdQS.ConvertToInt());
+                if (sigorta != null)
+                {
+                    Tasinmaz tasinmaz = new Tasinmaz();
+                    string adres = new TasinmazService(LoggingContext).SelectByIdBolumId(sigorta.TasinmazId, sigorta.BolumId);
+                    SilmeMesajiLbl.Text = adres + " adresindeki taşınmaza ait Sigorta silinecek";
+                    ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "ModalOnay();", true);
+                }
             }
-
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazSigortaGirisWP.SilBtn_Click", error);
+            }
         }
         protected void SilNowBtn_Click(object sender, EventArgs e)
         {

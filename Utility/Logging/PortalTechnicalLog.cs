@@ -164,13 +164,16 @@ namespace Utility.Logging
                     INSERT INTO PortalLog_Table
                         (OccurredUtc, Kind, Project, WebPart, UserLogin, PagePath, OperationId,
                          EventName, Outcome, Detail, ErrorType, ErrorLevel, TechnicalSummary,
-                         StackTrace, InnerException, UserMessage)
+                         StackTrace, InnerException, UserMessage, EntityName, EntityId)
                     VALUES
                         (@OccurredUtc, @Kind, @Project, @WebPart, @UserLogin, @PagePath, @OperationId,
                          @EventName, @Outcome, @Detail, @ErrorType, @ErrorLevel, @TechnicalSummary,
-                         @StackTrace, @InnerException, @UserMessage)", connection))
+                         @StackTrace, @InnerException, @UserMessage, @EntityName, @EntityId)", connection))
                 {
                     AddCommonParameters(command, record);
+                    PortalLogContext entity = PortalLogContext.ErrorEntity(error, record.Context);
+                    command.Parameters.AddWithValue("@EntityName", (object)entity.EntityName ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@EntityId", (object)entity.EntityId ?? DBNull.Value);
                     command.Parameters.AddWithValue("@EventName", record.Name);
                     command.Parameters.AddWithValue("@Outcome", record.Outcome);
                     command.Parameters.AddWithValue("@Detail", (object)detail ?? DBNull.Value);

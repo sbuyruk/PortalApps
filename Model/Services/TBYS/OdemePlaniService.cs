@@ -23,11 +23,51 @@ namespace Model.Services.TBYS
         public OdemePlaniService() : this(new OdemePlaniRepository()) { }
         public OdemePlaniService(OdemePlaniRepository repository) { if (repository == null) throw new ArgumentNullException("repository"); this.repository = repository; }
         public OdemePlaniService(PortalLogContext context) : this(new OdemePlaniRepository(context)) { this.context = context; }
-        public OdemePlani GetById(int id) { return Map(repository.SelectById(id)); }
-        public OdemePlani GetById(int id, SqlTransactionContext transaction) { return Map(repository.SelectById(id, transaction, context)); }
+        public OdemePlani GetById(int id) {
+            try
+            {
+                return Map(repository.SelectById(id));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "OdemePlani", id, error);
+                throw;
+            }
+        }
+        public OdemePlani GetById(int id, SqlTransactionContext transaction) {
+            try
+            {
+                return Map(repository.SelectById(id, transaction, context));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "OdemePlani", id, error);
+                throw;
+            }
+        }
         public List<OdemePlani> GetAll() { return ToList(repository.SelectAll()); }
-        public List<OdemePlani> GetBySozlesmeId(int id) { return ToList(repository.SelectBySozlesmeId(id)); }
-        public List<OdemePlani> GetBySozlesmeId(int id, SqlTransactionContext transaction) { return ToList(repository.SelectBySozlesmeId(id, transaction, context)); }
+        public List<OdemePlani> GetBySozlesmeId(int id) {
+            try
+            {
+                return ToList(repository.SelectBySozlesmeId(id));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", id, error);
+                throw;
+            }
+        }
+        public List<OdemePlani> GetBySozlesmeId(int id, SqlTransactionContext transaction) {
+            try
+            {
+                return ToList(repository.SelectBySozlesmeId(id, transaction, context));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", id, error);
+                throw;
+            }
+        }
         public OdemePlani GetBySozlesmeIdSira(int id, int sira) { return Map(repository.SelectBySozlesmeIdSira(id, sira)); }
         public OdemePlani GetBySozlesmeIdOdemeTarihi(int id, DateTime tarih) { return Map(repository.SelectBySozlesmeIdOdemeTarihi(id, tarih)); }
         public OdemePlani GetBySozlesmeIdOdemeTarihi(int id, DateTime tarih, SqlTransactionContext transaction) { return Map(repository.SelectBySozlesmeIdOdemeTarihi(id, tarih, transaction, context)); }
@@ -38,62 +78,134 @@ namespace Model.Services.TBYS
         public OdemePlani GetFirstBySozlesmeId(int id, SqlTransactionContext transaction) { return GetBySozlesmeId(id, transaction).FirstOrDefault(x => x.Sira == 1); }
         public int Save(OdemePlani item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext tx = new SqlTransactionContext()) { int id = Save(item, tx); tx.Complete(); return id; }
+            try
+            {
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext tx = new SqlTransactionContext()) { int id = Save(item, tx); tx.Complete(); return id; }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "OdemePlani", item == null ? 0 : item.Id, error);
+                throw;
+            }
         }
         public int Save(OdemePlani item, SqlTransactionContext transaction)
         {
-            if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item, transaction, context); if (item.Id > 0) RecordAudit("INSERT", item.Id, null, repository.SelectById(item.Id, transaction, context), transaction); return item.Id;
+            try
+            {
+                if (item == null) throw new ArgumentNullException("item"); item.OlusturmaTarihi = DateTime.Now; item.Olusturan = UtilityHelper.GetCurrentUserName(); item.Id = repository.Insert(item, transaction, context); if (item.Id > 0) RecordAudit("INSERT", item.Id, null, repository.SelectById(item.Id, transaction, context), transaction); return item.Id;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "OdemePlani", item == null ? 0 : item.Id, error);
+                throw;
+            }
         }
         public bool Update(OdemePlani item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Update(item, tx); if (ok) tx.Complete(); return ok; }
+            try
+            {
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Update(item, tx); if (ok) tx.Complete(); return ok; }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "OdemePlani", item == null ? 0 : item.Id, error);
+                throw;
+            }
         }
         public bool Update(OdemePlani item, SqlTransactionContext transaction)
         {
-            if (item == null || item.Id == 0) return false; DataTable oldValues = repository.SelectById(item.Id, transaction, context); if (oldValues == null || oldValues.Rows.Count == 0) return false; item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); bool result = repository.Update(item, transaction, context); if (result) RecordAudit("UPDATE", item.Id, oldValues, repository.SelectById(item.Id, transaction, context), transaction); return result;
+            try
+            {
+                if (item == null || item.Id == 0) return false; DataTable oldValues = repository.SelectById(item.Id, transaction, context); if (oldValues == null || oldValues.Rows.Count == 0) return false; item.DegistirmeTarihi = DateTime.Now; item.Degistiren = UtilityHelper.GetCurrentUserName(); bool result = repository.Update(item, transaction, context); if (result) RecordAudit("UPDATE", item.Id, oldValues, repository.SelectById(item.Id, transaction, context), transaction); return result;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "OdemePlani", item == null ? 0 : item.Id, error);
+                throw;
+            }
         }
         public bool Delete(OdemePlani item)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Delete(item, tx); if (ok) tx.Complete(); return ok; }
+            try
+            {
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext tx = new SqlTransactionContext()) { bool ok = Delete(item, tx); if (ok) tx.Complete(); return ok; }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "OdemePlani", item == null ? 0 : item.Id, error);
+                throw;
+            }
         }
         public bool Delete(OdemePlani item, SqlTransactionContext transaction)
         {
-            if (item == null || item.Id == 0) return false; DataTable oldValues = repository.SelectById(item.Id, transaction, context); if (oldValues == null || oldValues.Rows.Count == 0) return false; bool result = repository.Delete(item.Id, transaction, context); if (result) RecordAudit("DELETE", item.Id, oldValues, null, transaction); return result;
+            try
+            {
+                if (item == null || item.Id == 0) return false; DataTable oldValues = repository.SelectById(item.Id, transaction, context); if (oldValues == null || oldValues.Rows.Count == 0) return false; bool result = repository.Delete(item.Id, transaction, context); if (result) RecordAudit("DELETE", item.Id, oldValues, null, transaction); return result;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "OdemePlani", item == null ? 0 : item.Id, error);
+                throw;
+            }
         }
         public bool DeleteBySozlesmeId(OdemePlani item, int id)
         {
-            return DeletePlan(id) == OdemePlaniSilmeResult.Completed;
+            try
+            {
+                return DeletePlan(id) == OdemePlaniSilmeResult.Completed;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", id, error);
+                throw;
+            }
         }
 
         public OdemePlaniSilmeResult DeletePlan(int contractId)
         {
-            if (context == null || context.Project != "TBYS" || string.IsNullOrWhiteSpace(context.UserLogin))
-                throw new InvalidOperationException("Bu işlem için TBYS kullanıcı bağlamı gereklidir.");
-            if (contractId <= 0) return OdemePlaniSilmeResult.NotFound;
-            using (var transaction = new SqlTransactionContext())
+            try
             {
-                var contracts = new KiraSozlesmeRepository(context);
-                if (contracts.SelectById(contractId, transaction, context) == null)
-                    return OdemePlaniSilmeResult.NotFound;
-                List<OdemePlani> plans = GetBySozlesmeId(contractId, transaction);
-                if (plans.Count == 0) return OdemePlaniSilmeResult.NotFound;
-                // Lock dependent rows and missing-key ranges before any destructive operation.
-                if (repository.HasPaymentLinks(contractId, transaction, context)
-                    || contracts.HasProtectedDeleteLinks(contractId, transaction, context))
-                    return OdemePlaniSilmeResult.InUse;
-                if (!new OdemeAyrintiService(context).DeleteBySozlesmeId(contractId, transaction)
-                    || !DeleteBySozlesmeId(plans[0], contractId, transaction))
-                    throw new InvalidOperationException("Ödeme planı ve hesap ayrıntıları silinemedi; işlem geri alındı.");
-                transaction.Complete();
+                if (context == null || context.Project != "TBYS" || string.IsNullOrWhiteSpace(context.UserLogin))
+                    throw new InvalidOperationException("Bu işlem için TBYS kullanıcı bağlamı gereklidir.");
+                if (contractId <= 0) return OdemePlaniSilmeResult.NotFound;
+                using (var transaction = new SqlTransactionContext())
+                {
+                    var contracts = new KiraSozlesmeRepository(context);
+                    if (contracts.SelectById(contractId, transaction, context) == null)
+                        return OdemePlaniSilmeResult.NotFound;
+                    List<OdemePlani> plans = GetBySozlesmeId(contractId, transaction);
+                    if (plans.Count == 0) return OdemePlaniSilmeResult.NotFound;
+                    // Lock dependent rows and missing-key ranges before any destructive operation.
+                    if (repository.HasPaymentLinks(contractId, transaction, context)
+                        || contracts.HasProtectedDeleteLinks(contractId, transaction, context))
+                        return OdemePlaniSilmeResult.InUse;
+                    if (!new OdemeAyrintiService(context).DeleteBySozlesmeId(contractId, transaction)
+                        || !DeleteBySozlesmeId(plans[0], contractId, transaction))
+                        throw new InvalidOperationException("Ödeme planı ve hesap ayrıntıları silinemedi; işlem geri alındı.");
+                    transaction.Complete();
+                }
+                return OdemePlaniSilmeResult.Completed;
             }
-            return OdemePlaniSilmeResult.Completed;
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", contractId, error);
+                throw;
+            }
         }
         public bool DeleteBySozlesmeId(OdemePlani item, int id, SqlTransactionContext transaction)
         {
-            DataTable oldValues = repository.SelectBySozlesmeId(id, transaction, context); bool result = repository.DeleteBySozlesmeId(id, transaction, context); if (result && oldValues != null) foreach (DataRow row in oldValues.Rows) RecordAudit("DELETE", Convert.ToInt32(row["Id"]), SingleRow(oldValues, row), null, transaction); return result;
+            try
+            {
+                DataTable oldValues = repository.SelectBySozlesmeId(id, transaction, context); bool result = repository.DeleteBySozlesmeId(id, transaction, context); if (result && oldValues != null) foreach (DataRow row in oldValues.Rows) RecordAudit("DELETE", Convert.ToInt32(row["Id"]), SingleRow(oldValues, row), null, transaction); return result;
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", id, error);
+                throw;
+            }
         }
 
         private void RecordAudit(string operation, int id, DataTable oldValues, DataTable current, SqlTransactionContext transaction)
@@ -108,26 +220,42 @@ namespace Model.Services.TBYS
         private static DataTable SingleRow(DataTable source, DataRow row) { DataTable result = source.Clone(); result.ImportRow(row); return result; }
         public bool CreatePaymentPlan(KiraSozlesme kiraSozlesme)
         {
-            if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
-            using (SqlTransactionContext tx = new SqlTransactionContext()) { bool created = CreatePaymentPlan(kiraSozlesme, tx); if (created) tx.Complete(); return created; }
+            try
+            {
+                if (context == null) throw new InvalidOperationException("Bu işlem için TBYS log bağlamı gereklidir.");
+                using (SqlTransactionContext tx = new SqlTransactionContext()) { bool created = CreatePaymentPlan(kiraSozlesme, tx); if (created) tx.Complete(); return created; }
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", kiraSozlesme == null ? 0 : kiraSozlesme.Id, error);
+                throw;
+            }
         }
         internal void RebuildPaymentPlan(KiraSozlesme contract, SqlTransactionContext transaction)
         {
-            if (transaction == null) throw new ArgumentNullException("transaction", "İşlem bağlamı gereklidir.");
-            List<OdemePlani> existing = GetBySozlesmeId(contract.Id, transaction);
-            if (existing.Any(p => p.Sira < 0 || p.Sira > 12) || existing.GroupBy(p => p.Sira).Any(g => g.Count() > 1))
-                throw new InvalidOperationException("Ödeme planı sıraları tutarsız. Sözleşme güncellenmeden önce plan kontrol edilmelidir.");
-            var planIds = new HashSet<int>(existing.Select(p => p.Id));
-            DataTable payments = new OdemeRepository(context).SelectBySozlesmeId(contract.Id, transaction, context);
-            if (payments != null)
-                foreach (DataRow payment in payments.Rows)
-                {
-                    if (payment.IsNull("OdemePlaniId") || !planIds.Contains(Convert.ToInt32(payment["OdemePlaniId"]))
-                        || payment.IsNull("KiraciId") || Convert.ToInt32(payment["KiraciId"]) != contract.KiraciId)
-                        throw new InvalidOperationException("Sözleşmenin mevcut ödeme bağlantıları tutarsız. Güncellemeden önce kayıtlar kontrol edilmelidir.");
-                }
-            // Confirmed contract corrections move due dates while preserving installment identities and payment links.
-            CreatePaymentPlan(contract, transaction, existing.ToDictionary(p => p.Sira));
+            try
+            {
+                if (transaction == null) throw new ArgumentNullException("transaction", "İşlem bağlamı gereklidir.");
+                List<OdemePlani> existing = GetBySozlesmeId(contract.Id, transaction);
+                if (existing.Any(p => p.Sira < 0 || p.Sira > 12) || existing.GroupBy(p => p.Sira).Any(g => g.Count() > 1))
+                    throw new InvalidOperationException("Ödeme planı sıraları tutarsız. Sözleşme güncellenmeden önce plan kontrol edilmelidir.");
+                var planIds = new HashSet<int>(existing.Select(p => p.Id));
+                DataTable payments = new OdemeRepository(context).SelectBySozlesmeId(contract.Id, transaction, context);
+                if (payments != null)
+                    foreach (DataRow payment in payments.Rows)
+                    {
+                        if (payment.IsNull("OdemePlaniId") || !planIds.Contains(Convert.ToInt32(payment["OdemePlaniId"]))
+                            || payment.IsNull("KiraciId") || Convert.ToInt32(payment["KiraciId"]) != contract.KiraciId)
+                            throw new InvalidOperationException("Sözleşmenin mevcut ödeme bağlantıları tutarsız. Güncellemeden önce kayıtlar kontrol edilmelidir.");
+                    }
+                // Confirmed contract corrections move due dates while preserving installment identities and payment links.
+                CreatePaymentPlan(contract, transaction, existing.ToDictionary(p => p.Sira));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", contract == null ? 0 : contract.Id, error);
+                throw;
+            }
         }
 
         private bool CreatePaymentPlan(KiraSozlesme kiraSozlesme, SqlTransactionContext transaction,

@@ -37,117 +37,149 @@ namespace Model.Services.TBYS
 
         public KiraSozlesmeDuzenlemeSnapshot Load(int id)
         {
-            return Snapshot(repository.SelectById(id));
+            try
+            {
+                return Snapshot(repository.SelectById(id));
+            }
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", id, error);
+                throw;
+            }
         }
 
         public KiraSozlesmeDuzenlemeResult Save(KiraSozlesme input, string expectedVersion,
             bool confirmPlanUpdate, out KiraSozlesmeDuzenlemeSnapshot saved)
         {
-            saved = null;
-            if (input == null || input.Id <= 0) return KiraSozlesmeDuzenlemeResult.InvalidInput;
-            KiraSozlesmeDuzenlemeSnapshot completed;
-            using (var transaction = new SqlTransactionContext())
+            try
             {
-                var current = Snapshot(repository.SelectById(input.Id, transaction, context));
-                if (current == null) return KiraSozlesmeDuzenlemeResult.NotFound;
-                if (string.IsNullOrEmpty(expectedVersion) || current.Version != expectedVersion)
-                    return KiraSozlesmeDuzenlemeResult.Changed;
-                if (input.SozBasTar < new DateTime(1753, 1, 1) || input.SozBitTar < input.SozBasTar
-                    || input.KiraBedeli <= 0 || input.TaksitSayisi < 1 || input.TaksitSayisi > 12
-                    || (input.OdemeSekli != ProjeConstants.KIRA_ODMSEKLI_AYLIK && input.OdemeSekli != ProjeConstants.KIRA_ODMSEKLI_YILLIK))
-                    return KiraSozlesmeDuzenlemeResult.InvalidInput;
-
-                KiraSozlesme contract = current.Contract;
-                bool critical = contract.SozBasTar.Date != input.SozBasTar.Date || contract.SozBitTar.Date != input.SozBitTar.Date
-                    || contract.KiraBedeli != input.KiraBedeli || contract.TaksitSayisi != input.TaksitSayisi
-                    || contract.OdemeSekli != input.OdemeSekli;
-                if (critical && !confirmPlanUpdate) return KiraSozlesmeDuzenlemeResult.ConfirmationRequired;
-                CopyEditableFields(input, contract);
-                Kiraci tenant = new Kiraci().ToList<Kiraci>(
-                    new KiraciRepository(context).SelectById(contract.KiraciId, transaction, context)).FirstOrDefault();
-                if (tenant == null) throw new InvalidOperationException("Sözleşmenin kiracı kaydı bulunamadı.");
-                DataTable region = repository.SelectRenewalRegion(tenant.Ili, transaction, context);
-                contract.BolgeId = region == null || region.Rows[0].IsNull("BolgeId") ? 0 : Convert.ToInt32(region.Rows[0]["BolgeId"]);
-
-                var plans = new OdemePlaniService(context);
-                var existingPlans = plans.GetBySozlesmeId(contract.Id, transaction);
-                if (critical && existingPlans.Count > 0)
+                saved = null;
+                if (input == null || input.Id <= 0) return KiraSozlesmeDuzenlemeResult.InvalidInput;
+                KiraSozlesmeDuzenlemeSnapshot completed;
+                using (var transaction = new SqlTransactionContext())
                 {
-                    plans.RebuildPaymentPlan(contract, transaction);
-                    if (!new OdemeAyrintiService(context).DeleteBySozlesmeId(contract.Id, transaction))
-                        throw new InvalidOperationException("Sözleşmenin ödeme ayrıntıları güncellenemedi.");
-                }
-                else if (!critical)
-                {
-                    OdemePlani carry = existingPlans.FirstOrDefault(p => p.Sira == 0);
-                    if (carry != null && (carry.AnaPara != contract.DevirAnaPara || carry.FaizTutari != contract.DevirFaizTutari
-                        || carry.FaizliBakiye != contract.DevirFaizliBakiye))
+                    var current = Snapshot(repository.SelectById(input.Id, transaction, context));
+                    if (current == null) return KiraSozlesmeDuzenlemeResult.NotFound;
+                    if (string.IsNullOrEmpty(expectedVersion) || current.Version != expectedVersion)
+                        return KiraSozlesmeDuzenlemeResult.Changed;
+                    if (input.SozBasTar < new DateTime(1753, 1, 1) || input.SozBitTar < input.SozBasTar
+                        || input.KiraBedeli <= 0 || input.TaksitSayisi < 1 || input.TaksitSayisi > 12
+                        || (input.OdemeSekli != ProjeConstants.KIRA_ODMSEKLI_AYLIK && input.OdemeSekli != ProjeConstants.KIRA_ODMSEKLI_YILLIK))
+                        return KiraSozlesmeDuzenlemeResult.InvalidInput;
+
+                    KiraSozlesme contract = current.Contract;
+                    bool critical = contract.SozBasTar.Date != input.SozBasTar.Date || contract.SozBitTar.Date != input.SozBitTar.Date
+                        || contract.KiraBedeli != input.KiraBedeli || contract.TaksitSayisi != input.TaksitSayisi
+                        || contract.OdemeSekli != input.OdemeSekli;
+                    if (critical && !confirmPlanUpdate) return KiraSozlesmeDuzenlemeResult.ConfirmationRequired;
+                    CopyEditableFields(input, contract);
+                    Kiraci tenant = new Kiraci().ToList<Kiraci>(
+                        new KiraciRepository(context).SelectById(contract.KiraciId, transaction, context)).FirstOrDefault();
+                    if (tenant == null) throw new InvalidOperationException("Sözleşmenin kiracı kaydı bulunamadı.");
+                    DataTable region = repository.SelectRenewalRegion(tenant.Ili, transaction, context);
+                    contract.BolgeId = region == null || region.Rows[0].IsNull("BolgeId") ? 0 : Convert.ToInt32(region.Rows[0]["BolgeId"]);
+
+                    var plans = new OdemePlaniService(context);
+                    var existingPlans = plans.GetBySozlesmeId(contract.Id, transaction);
+                    if (critical && existingPlans.Count > 0)
                     {
-                        carry.AnaPara = contract.DevirAnaPara;
-                        carry.FaizTutari = contract.DevirFaizTutari;
-                        carry.FaizliBakiye = carry.AnaPara + carry.FaizTutari;
-                        if (!plans.Update(carry, transaction)) throw new InvalidOperationException("Devir ödeme planı güncellenemedi.");
-                        UpdateLegalTracking(contract, plans, transaction);
+                        plans.RebuildPaymentPlan(contract, transaction);
+                        if (!new OdemeAyrintiService(context).DeleteBySozlesmeId(contract.Id, transaction))
+                            throw new InvalidOperationException("Sözleşmenin ödeme ayrıntıları güncellenemedi.");
                     }
+                    else if (!critical)
+                    {
+                        OdemePlani carry = existingPlans.FirstOrDefault(p => p.Sira == 0);
+                        if (carry != null && (carry.AnaPara != contract.DevirAnaPara || carry.FaizTutari != contract.DevirFaizTutari
+                            || carry.FaizliBakiye != contract.DevirFaizliBakiye))
+                        {
+                            carry.AnaPara = contract.DevirAnaPara;
+                            carry.FaizTutari = contract.DevirFaizTutari;
+                            carry.FaizliBakiye = carry.AnaPara + carry.FaizTutari;
+                            if (!plans.Update(carry, transaction)) throw new InvalidOperationException("Devir ödeme planı güncellenemedi.");
+                            UpdateLegalTracking(contract, plans, transaction);
+                        }
+                    }
+                    if (!new KiraSozlesmeService(context).Update(contract, transaction))
+                        throw new InvalidOperationException("Sözleşme güncellenemedi.");
+                    if (critical && existingPlans.Count > 0)
+                    {
+                        if (!TBYSOrtak.BakiyeBorcHesapla(contract, context, transaction))
+                            throw new InvalidOperationException("Sözleşmenin ödeme planı hesaplanamadı.");
+                    }
+                    completed = Snapshot(repository.SelectById(contract.Id, transaction, context));
+                    if (completed == null) throw new InvalidOperationException("Güncellenen sözleşme okunamadı.");
+                    transaction.Complete();
                 }
-                if (!new KiraSozlesmeService(context).Update(contract, transaction))
-                    throw new InvalidOperationException("Sözleşme güncellenemedi.");
-                if (critical && existingPlans.Count > 0)
-                {
-                    if (!TBYSOrtak.BakiyeBorcHesapla(contract, context, transaction))
-                        throw new InvalidOperationException("Sözleşmenin ödeme planı hesaplanamadı.");
-                }
-                completed = Snapshot(repository.SelectById(contract.Id, transaction, context));
-                if (completed == null) throw new InvalidOperationException("Güncellenen sözleşme okunamadı.");
-                transaction.Complete();
+                saved = completed;
+                return KiraSozlesmeDuzenlemeResult.Completed;
             }
-            saved = completed;
-            return KiraSozlesmeDuzenlemeResult.Completed;
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", input == null ? 0 : input.Id, error);
+                throw;
+            }
         }
 
         public KiraSozlesmeDuzenlemeResult Delete(int id, string expectedVersion)
         {
-            using (var transaction = new SqlTransactionContext())
+            try
             {
-                var current = Snapshot(repository.SelectById(id, transaction, context));
-                if (current == null) return KiraSozlesmeDuzenlemeResult.NotFound;
-                if (string.IsNullOrEmpty(expectedVersion) || current.Version != expectedVersion)
-                    return KiraSozlesmeDuzenlemeResult.Changed;
-                if (repository.HasProtectedDeleteLinks(id, transaction, context))
-                    return KiraSozlesmeDuzenlemeResult.InUse;
-                var plans = new OdemePlaniService(context);
-                var existing = plans.GetBySozlesmeId(id, transaction);
-                if (!new OdemeAyrintiService(context).DeleteBySozlesmeId(id, transaction)
-                    || !new OdemeService(context).DeleteBySozlesmeId(id, transaction)
-                    || !plans.DeleteBySozlesmeId(existing.FirstOrDefault(), id, transaction)
-                    || !new SozlesmeTasinmazService(context).DeleteBySozlesmeId(id, transaction)
-                    || !new KiraSozlesmeService(context).Delete(current.Contract, transaction))
-                    throw new InvalidOperationException("Sözleşme ve bağlı kayıtlar silinemedi; işlem geri alındı.");
-                transaction.Complete();
+                using (var transaction = new SqlTransactionContext())
+                {
+                    var current = Snapshot(repository.SelectById(id, transaction, context));
+                    if (current == null) return KiraSozlesmeDuzenlemeResult.NotFound;
+                    if (string.IsNullOrEmpty(expectedVersion) || current.Version != expectedVersion)
+                        return KiraSozlesmeDuzenlemeResult.Changed;
+                    if (repository.HasProtectedDeleteLinks(id, transaction, context))
+                        return KiraSozlesmeDuzenlemeResult.InUse;
+                    var plans = new OdemePlaniService(context);
+                    var existing = plans.GetBySozlesmeId(id, transaction);
+                    if (!new OdemeAyrintiService(context).DeleteBySozlesmeId(id, transaction)
+                        || !new OdemeService(context).DeleteBySozlesmeId(id, transaction)
+                        || !plans.DeleteBySozlesmeId(existing.FirstOrDefault(), id, transaction)
+                        || !new SozlesmeTasinmazService(context).DeleteBySozlesmeId(id, transaction)
+                        || !new KiraSozlesmeService(context).Delete(current.Contract, transaction))
+                        throw new InvalidOperationException("Sözleşme ve bağlı kayıtlar silinemedi; işlem geri alındı.");
+                    transaction.Complete();
+                }
+                return KiraSozlesmeDuzenlemeResult.Completed;
             }
-            return KiraSozlesmeDuzenlemeResult.Completed;
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", id, error);
+                throw;
+            }
         }
 
         public KiraSozlesmeDuzenlemeResult SaveDocumentPath(int id, string path, string expectedVersion,
             out KiraSozlesmeDuzenlemeSnapshot saved)
         {
-            saved = null;
-            KiraSozlesmeDuzenlemeSnapshot completed;
-            using (var transaction = new SqlTransactionContext())
+            try
             {
-                var current = Snapshot(repository.SelectById(id, transaction, context));
-                if (current == null) return KiraSozlesmeDuzenlemeResult.NotFound;
-                if (string.IsNullOrEmpty(expectedVersion) || current.Version != expectedVersion)
-                    return KiraSozlesmeDuzenlemeResult.Changed;
-                current.Contract.SozlesmePDFDosyasi = path;
-                if (!new KiraSozlesmeService(context).Update(current.Contract, transaction))
-                    throw new InvalidOperationException("Sözleşmenin belge bilgisi kaydedilemedi.");
-                completed = Snapshot(repository.SelectById(id, transaction, context));
-                if (completed == null) throw new InvalidOperationException("Sözleşmenin belge bilgisi okunamadı.");
-                transaction.Complete();
+                saved = null;
+                KiraSozlesmeDuzenlemeSnapshot completed;
+                using (var transaction = new SqlTransactionContext())
+                {
+                    var current = Snapshot(repository.SelectById(id, transaction, context));
+                    if (current == null) return KiraSozlesmeDuzenlemeResult.NotFound;
+                    if (string.IsNullOrEmpty(expectedVersion) || current.Version != expectedVersion)
+                        return KiraSozlesmeDuzenlemeResult.Changed;
+                    current.Contract.SozlesmePDFDosyasi = path;
+                    if (!new KiraSozlesmeService(context).Update(current.Contract, transaction))
+                        throw new InvalidOperationException("Sözleşmenin belge bilgisi kaydedilemedi.");
+                    completed = Snapshot(repository.SelectById(id, transaction, context));
+                    if (completed == null) throw new InvalidOperationException("Sözleşmenin belge bilgisi okunamadı.");
+                    transaction.Complete();
+                }
+                saved = completed;
+                return KiraSozlesmeDuzenlemeResult.Completed;
             }
-            saved = completed;
-            return KiraSozlesmeDuzenlemeResult.Completed;
+            catch (Exception error)
+            {
+                PortalLogContext.AttachEntityToError(context, "KiraSozlesme", id, error);
+                throw;
+            }
         }
 
         private void UpdateLegalTracking(KiraSozlesme contract, OdemePlaniService plans, SqlTransactionContext transaction)

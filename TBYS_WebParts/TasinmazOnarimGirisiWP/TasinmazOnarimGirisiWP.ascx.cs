@@ -21,7 +21,8 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP
         {
             get
             {
-                return PortalLogContext.FromCurrentRequest("TBYS", "TasinmazOnarimGirisiWP");
+                return PortalLogContext.FromCurrentRequest("TBYS", "TasinmazOnarimGirisiWP")
+                    .WithEntity("Tasinmaz", TasinmazIdQS.ConvertToInt());
             }
         }
 
@@ -172,6 +173,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP
         }
         protected void OnarimEkleBtn_Click(object sender, EventArgs e)
         {
+            PortalLogContext context = LoggingContext;
             try
             {
                 Onarim onarim = new Onarim();
@@ -183,6 +185,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP
                 onarim.TasinmazId = TasinmazIdQS.ConvertToInt();
                 onarim.Olusturan = CurrentUserName;
                 int onarimId = new Model.Services.TBYS.OnarimService(LoggingContext).Save(onarim);
+                if (onarimId > 0) context = context.WithEntity("Onarim", onarimId);
                 string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 int queryIndex = newUrl.IndexOf("?");
                 if (queryIndex > 0)
@@ -193,7 +196,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP
             catch (System.Threading.ThreadAbortException) { throw; }
             catch (Exception error)
             {
-                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazOnarimGirisiWP.OnarimEkleBtn_Click", error);
+                TbysWebPartLog.ReportError(context, "TBYS.TasinmazOnarimGirisiWP.OnarimEkleBtn_Click", error);
             }
         }
         protected void BackBtn_Click(object sender, EventArgs e)
@@ -277,6 +280,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP
                 SilBtn.CssClass = "btn btn-outline-danger";
                 SilBtn.Click += delegate
                 {
+                    PortalLogContext context = LoggingContext.WithEntity("Onarim", onarim.Id);
                     try
                     {
                         int tasinmazId = onarim.TasinmazId;
@@ -294,7 +298,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP
                     catch (System.Threading.ThreadAbortException) { throw; }
                     catch (Exception error)
                     {
-                        TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazOnarimGirisiWP.Delete", error);
+                        TbysWebPartLog.ReportError(context, "TBYS.TasinmazOnarimGirisiWP.Delete", error);
                     }
                 };
                 SilCell.Controls.Add(SilBtn);
