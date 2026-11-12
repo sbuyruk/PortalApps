@@ -32,6 +32,11 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             }
         }
 
+        private PortalLogContext SbiContext(int recordId)
+        {
+            return recordId > 0 ? LoggingContext.WithEntity("SerhBeyanIrtifak", recordId) : LoggingContext;
+        }
+
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
@@ -1361,84 +1366,91 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         }
         private void SerhBeyanIrtifakDivModalAc(string islemTipi,int serhBeyanIrtifakId=0)
         {
-            SBIKaydetBtn.Visible = false;
-            SBIGuncelleBtn.Visible = false;
-            SBIDeleteBtn.Visible = false;
-
-            if (islemTipi.Equals(ProjeConstants.KAYDET) )
+            PortalLogContext context = SbiContext(serhBeyanIrtifakId);
+            try
             {
-                //SerhBeyanIrtifakDiv modalini aç
-                //SerhBeyanIrtifakDiv içindeki alanlari hazirla
-                ModalBaslikLbl.InnerText = "Şerh Beyan ve İrtifak Ekle";
-                SerhBeyanIrtifakDDLDoldur();
-                MalikLehtarTxt.Text = string.Empty;
-                AciklamaTxt.Text = string.Empty;
-                TesisKurumTxt.Text = string.Empty;
-                TarihTxt.Value = string.Empty;
-                YevmiyeTxt.Text = string.Empty;
-                TerkinSebebiTxt.Text = string.Empty;
-                SBIAciklamaTxt.Text = string.Empty;
-                SBIKaydetBtn.Visible = true;
+                SBIKaydetBtn.Visible = false;
                 SBIGuncelleBtn.Visible = false;
-                UtilityHelper.ScriptCalistir("OpenSerhBeyanIrtifakModal();");
+                SBIDeleteBtn.Visible = false;
 
-
-            }
-            else if(islemTipi.Equals(ProjeConstants.GUNCELLE))
-            {
-                if (serhBeyanIrtifakId > 0)
+                if (islemTipi.Equals(ProjeConstants.KAYDET) )
                 {
                     //SerhBeyanIrtifakDiv modalini aç
                     //SerhBeyanIrtifakDiv içindeki alanlari hazirla
-                    ModalBaslikLbl.InnerText = "Şerh Beyan ve İrtifak Düzenle";
+                    ModalBaslikLbl.InnerText = "Şerh Beyan ve İrtifak Ekle";
                     SerhBeyanIrtifakDDLDoldur();
-
-                    //Seçilen Şerh Beyan ve İrtifak kaydini getir
-                    SerhBeyanIrtifak sbi = new SerhBeyanIrtifak();
-                    sbi = new SerhBeyanIrtifakService(LoggingContext).GetById(serhBeyanIrtifakId);
-                    if (sbi != null)
-                    {
-                        MalikLehtarTxt.Text = sbi.MalikLehtar;
-                        AciklamaTxt.Text = sbi.Aciklama;
-                        TesisKurumTxt.Text = sbi.TesisKurum;
-                        TarihTxt.Value = sbi.Tarih.ConvertToDatetimeEmptyIfNull();
-                        YevmiyeTxt.Text = sbi.Yevmiye;
-                        TerkinSebebiTxt.Text = sbi.TerkinSebebi;
-                        SBIAciklamaTxt.Text = sbi.Aciklama;
-
-                        SBIGuncelleBtn.Visible = true;
-                    }
+                    MalikLehtarTxt.Text = string.Empty;
+                    AciklamaTxt.Text = string.Empty;
+                    TesisKurumTxt.Text = string.Empty;
+                    TarihTxt.Value = string.Empty;
+                    YevmiyeTxt.Text = string.Empty;
+                    TerkinSebebiTxt.Text = string.Empty;
+                    SBIAciklamaTxt.Text = string.Empty;
+                    SBIKaydetBtn.Visible = true;
+                    SBIGuncelleBtn.Visible = false;
                     UtilityHelper.ScriptCalistir("OpenSerhBeyanIrtifakModal();");
-                }
-                else
-                {
-                    //hata mesaji ver, Şerh/Beyan/İrtifak kaydı bulunamadi
-                    Messages.Error("Şerh Beyan ve İrtifak kaydı bulunamadı.");
-                }
-            }
-            else if (islemTipi.Equals(ProjeConstants.SIL))
-            {
-                //Modali silme islemi onayi için aç
-                MesajLbl.Text = serhBeyanIrtifakId+ " Numaralı Şerh Beyan İrtifak Kaydı Silinecek";
-                MesajLbl1.Text = "Silme işlemini onaylıyor musunuz?";
-                KopyalaNowBtn.Visible = false;
-                SBIDeleteBtn.Visible = true;
-                UtilityHelper.ScriptCalistir("OpenModal();");
-            }
-            Tasinmaz tasinmaz = new Tasinmaz();
-            tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
-            if (tasinmaz != null)
-            {
-                SerhBeyanIrtifakTabloOlustur(tasinmaz);
-                if (tasinmaz.AltBolum)
-                {
-                    BagimsizBolumTabloOlustur(tasinmaz);
-                }
-            }
-            ActiveTabQS = "SerhBeyanIrtifakLi";
-            UtilityHelper.ScriptCalistir("setActiveTab('" + ActiveTabQS + "');");
 
 
+                }
+                else if(islemTipi.Equals(ProjeConstants.GUNCELLE))
+                {
+                    if (serhBeyanIrtifakId > 0)
+                    {
+                        //SerhBeyanIrtifakDiv modalini aç
+                        //SerhBeyanIrtifakDiv içindeki alanlari hazirla
+                        ModalBaslikLbl.InnerText = "Şerh Beyan ve İrtifak Düzenle";
+                        SerhBeyanIrtifakDDLDoldur();
+
+                        //Seçilen Şerh Beyan ve İrtifak kaydini getir
+                        SerhBeyanIrtifak sbi = new SerhBeyanIrtifak();
+                        sbi = new SerhBeyanIrtifakService(context).GetById(serhBeyanIrtifakId);
+                        if (sbi != null)
+                        {
+                            MalikLehtarTxt.Text = sbi.MalikLehtar;
+                            AciklamaTxt.Text = sbi.Aciklama;
+                            TesisKurumTxt.Text = sbi.TesisKurum;
+                            TarihTxt.Value = sbi.Tarih.ConvertToDatetimeEmptyIfNull();
+                            YevmiyeTxt.Text = sbi.Yevmiye;
+                            TerkinSebebiTxt.Text = sbi.TerkinSebebi;
+                            SBIAciklamaTxt.Text = sbi.Aciklama;
+
+                            SBIGuncelleBtn.Visible = true;
+                        }
+                        UtilityHelper.ScriptCalistir("OpenSerhBeyanIrtifakModal();");
+                    }
+                    else
+                    {
+                        //hata mesaji ver, Şerh/Beyan/İrtifak kaydı bulunamadi
+                        Messages.Error("Şerh Beyan ve İrtifak kaydı bulunamadı.");
+                    }
+                }
+                else if (islemTipi.Equals(ProjeConstants.SIL))
+                {
+                    //Modali silme islemi onayi için aç
+                    MesajLbl.Text = serhBeyanIrtifakId+ " Numaralı Şerh Beyan İrtifak Kaydı Silinecek";
+                    MesajLbl1.Text = "Silme işlemini onaylıyor musunuz?";
+                    KopyalaNowBtn.Visible = false;
+                    SBIDeleteBtn.Visible = true;
+                    UtilityHelper.ScriptCalistir("OpenModal();");
+                }
+                Tasinmaz tasinmaz = new Tasinmaz();
+                tasinmaz = new TasinmazService(context).Select(TasinmazIdQS.ConvertToInt());
+                if (tasinmaz != null)
+                {
+                    SerhBeyanIrtifakTabloOlustur(tasinmaz);
+                    if (tasinmaz.AltBolum)
+                    {
+                        BagimsizBolumTabloOlustur(tasinmaz);
+                    }
+                }
+                ActiveTabQS = "SerhBeyanIrtifakLi";
+                UtilityHelper.ScriptCalistir("setActiveTab('" + ActiveTabQS + "');");
+            }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(context, "TBYS.TasinmazGirisiWP.SerhBeyanIrtifakDivModalAc", error);
+            }
         }
 
         private void SerhBeyanIrtifakDDLDoldur()
@@ -1463,74 +1475,11 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         }
         protected void SBIKaydetBtn_Click(object sender, EventArgs e)
         {
-            SerhBeyanIrtifak sbi = new SerhBeyanIrtifak();
-            sbi.TasinmazId = TasinmazIdQS.ConvertToInt();
-            sbi.SBI = SerhBeyanIrtifakDDL.SelectedValue;
-            sbi.Aciklama = SBIAciklamaTxt.Text;
-            sbi.MalikLehtar = MalikLehtarTxt.Text;
-            sbi.TesisKurum = TesisKurumTxt.Text;
-            sbi.Tarih = TarihTxt.Value.ConvertToDatetime();
-            sbi.Yevmiye = YevmiyeTxt.Text;
-            sbi.TerkinSebebi = TerkinSebebiTxt.Text;
-            sbi.Olusturan = CurrentUserName;
-            int sbiId = new SerhBeyanIrtifakService(LoggingContext).Save(sbi);
-            if (sbiId > 0)
+            PortalLogContext context = LoggingContext;
+            try
             {
-                //SerhBeyanIrtifak tablosunu güncelle
-                Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
-                SerhBeyanIrtifakTabloOlustur(tasinmaz);
-                if (tasinmaz.AltBolum)
-                {
-                    BagimsizBolumTabloOlustur(tasinmaz);
-                }
-                Messages.Success("Şerh Beyan ve İrtifak kaydı eklendi.", 2000);
-            }
-            else
-            {
-                Messages.Error("Şerh Beyan ve İrtifak kaydı eklenemedi.");
-            }
-            ActiveTabQS = "SerhBeyanIrtifakLi";
-            UtilityHelper.ScriptCalistir("setActiveTab('" + ActiveTabQS + "');");
-        }
-        protected void SBIDeleteBtn_Click(object sender, EventArgs e)
-        {
-
-            int parametreId = parametreIdLbl.Value.ConvertToInt();
-            // SerhBeyanIrtifak tablosundan Id= parametreId olan kaydi güncelle
-            SerhBeyanIrtifak sbi = new SerhBeyanIrtifak();
-            sbi = new SerhBeyanIrtifakService(LoggingContext).GetById(parametreId);
-            if (sbi != null)
-            {
-                if (new SerhBeyanIrtifakService(LoggingContext).Delete(sbi))
-                {
-                    //SerhBeyanIrtifak tablosunu güncelle
-                    Tasinmaz tasinmaz = new Tasinmaz();
-                    tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
-                    SerhBeyanIrtifakTabloOlustur(tasinmaz);
-                    if (tasinmaz.AltBolum)
-                    {
-                        BagimsizBolumTabloOlustur(tasinmaz);
-                    }
-                    Messages.Success("Şerh Beyan ve İrtifak kaydı silindi.", 2000);
-                }
-                else
-                {
-                    Messages.Error("Şerh Beyan ve İrtifak kaydı silinemedi.");
-                }
-            }
-            ActiveTabQS = "SerhBeyanIrtifakLi";
-            UtilityHelper.ScriptCalistir("setActiveTab('" + ActiveTabQS + "');");
-        }
-        protected void SBIGuncelleBtn_Click(object sender, EventArgs e)
-        {
-
-            int parametreId = parametreIdLbl.Value.ConvertToInt();
-            // SerhBeyanIrtifak tablosundan Id= parametreId olan kaydi güncelle
-            SerhBeyanIrtifak sbi = new SerhBeyanIrtifak();
-            sbi = new SerhBeyanIrtifakService(LoggingContext).GetById(parametreId);
-            if (sbi != null)
-            {
+                SerhBeyanIrtifak sbi = new SerhBeyanIrtifak();
+                sbi.TasinmazId = TasinmazIdQS.ConvertToInt();
                 sbi.SBI = SerhBeyanIrtifakDDL.SelectedValue;
                 sbi.Aciklama = SBIAciklamaTxt.Text;
                 sbi.MalikLehtar = MalikLehtarTxt.Text;
@@ -1538,25 +1487,114 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 sbi.Tarih = TarihTxt.Value.ConvertToDatetime();
                 sbi.Yevmiye = YevmiyeTxt.Text;
                 sbi.TerkinSebebi = TerkinSebebiTxt.Text;
-                sbi.Degistiren = CurrentUserName;
-                if (new SerhBeyanIrtifakService(LoggingContext).Update(sbi))
+                sbi.Olusturan = CurrentUserName;
+                int sbiId = new SerhBeyanIrtifakService(context).Save(sbi);
+                if (sbiId > 0) context = context.WithEntity("SerhBeyanIrtifak", sbiId);
+                if (sbiId > 0)
                 {
                     //SerhBeyanIrtifak tablosunu güncelle
                     Tasinmaz tasinmaz = new Tasinmaz();
-                    tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt());
+                    tasinmaz = new TasinmazService(context).Select(TasinmazIdQS.ConvertToInt());
                     SerhBeyanIrtifakTabloOlustur(tasinmaz);
                     if (tasinmaz.AltBolum)
                     {
                         BagimsizBolumTabloOlustur(tasinmaz);
                     }
-                    Messages.Success("Şerh Beyan ve İrtifak kaydı güncellendi.", 2000);
+                    Messages.Success("Şerh Beyan ve İrtifak kaydı eklendi.", 2000);
                 }
                 else
                 {
-                    Messages.Error("Şerh Beyan ve İrtifak kaydı güncellenemedi.");
+                    Messages.Error("Şerh Beyan ve İrtifak kaydı eklenemedi.");
                 }
                 ActiveTabQS = "SerhBeyanIrtifakLi";
                 UtilityHelper.ScriptCalistir("setActiveTab('" + ActiveTabQS + "');");
+            }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(context, "TBYS.TasinmazGirisiWP.SBIKaydetBtn_Click", error);
+            }
+        }
+        protected void SBIDeleteBtn_Click(object sender, EventArgs e)
+        {
+            PortalLogContext context = SbiContext(parametreIdLbl.Value.ConvertToInt());
+            try
+            {
+                int parametreId = parametreIdLbl.Value.ConvertToInt();
+                // SerhBeyanIrtifak tablosundan Id= parametreId olan kaydi güncelle
+                SerhBeyanIrtifak sbi = new SerhBeyanIrtifak();
+                sbi = new SerhBeyanIrtifakService(context).GetById(parametreId);
+                if (sbi != null)
+                {
+                    if (new SerhBeyanIrtifakService(context).Delete(sbi))
+                    {
+                        //SerhBeyanIrtifak tablosunu güncelle
+                        Tasinmaz tasinmaz = new Tasinmaz();
+                        tasinmaz = new TasinmazService(context).Select(TasinmazIdQS.ConvertToInt());
+                        SerhBeyanIrtifakTabloOlustur(tasinmaz);
+                        if (tasinmaz.AltBolum)
+                        {
+                            BagimsizBolumTabloOlustur(tasinmaz);
+                        }
+                        Messages.Success("Şerh Beyan ve İrtifak kaydı silindi.", 2000);
+                    }
+                    else
+                    {
+                        Messages.Error("Şerh Beyan ve İrtifak kaydı silinemedi.");
+                    }
+                }
+                ActiveTabQS = "SerhBeyanIrtifakLi";
+                UtilityHelper.ScriptCalistir("setActiveTab('" + ActiveTabQS + "');");
+            }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(context, "TBYS.TasinmazGirisiWP.SBIDeleteBtn_Click", error);
+            }
+        }
+        protected void SBIGuncelleBtn_Click(object sender, EventArgs e)
+        {
+            PortalLogContext context = SbiContext(parametreIdLbl.Value.ConvertToInt());
+            try
+            {
+                int parametreId = parametreIdLbl.Value.ConvertToInt();
+                // SerhBeyanIrtifak tablosundan Id= parametreId olan kaydi güncelle
+                SerhBeyanIrtifak sbi = new SerhBeyanIrtifak();
+                sbi = new SerhBeyanIrtifakService(context).GetById(parametreId);
+                if (sbi != null)
+                {
+                    sbi.SBI = SerhBeyanIrtifakDDL.SelectedValue;
+                    sbi.Aciklama = SBIAciklamaTxt.Text;
+                    sbi.MalikLehtar = MalikLehtarTxt.Text;
+                    sbi.TesisKurum = TesisKurumTxt.Text;
+                    sbi.Tarih = TarihTxt.Value.ConvertToDatetime();
+                    sbi.Yevmiye = YevmiyeTxt.Text;
+                    sbi.TerkinSebebi = TerkinSebebiTxt.Text;
+                    sbi.Degistiren = CurrentUserName;
+                    if (new SerhBeyanIrtifakService(context).Update(sbi))
+                    {
+                        //SerhBeyanIrtifak tablosunu güncelle
+                        Tasinmaz tasinmaz = new Tasinmaz();
+                        tasinmaz = new TasinmazService(context).Select(TasinmazIdQS.ConvertToInt());
+                        SerhBeyanIrtifakTabloOlustur(tasinmaz);
+                        if (tasinmaz.AltBolum)
+                        {
+                            BagimsizBolumTabloOlustur(tasinmaz);
+                        }
+                        Messages.Success("Şerh Beyan ve İrtifak kaydı güncellendi.", 2000);
+                    }
+                    else
+                    {
+                        Messages.Error("Şerh Beyan ve İrtifak kaydı güncellenemedi.");
+                    }
+                    ActiveTabQS = "SerhBeyanIrtifakLi";
+                    UtilityHelper.ScriptCalistir("setActiveTab('" + ActiveTabQS + "');");
+                }
+            }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(context, "TBYS.TasinmazGirisiWP.SBIGuncelleBtn_Click", error);
             }
         }
         #endregion

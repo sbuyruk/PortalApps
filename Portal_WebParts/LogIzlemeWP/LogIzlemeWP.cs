@@ -304,7 +304,8 @@ namespace Portal_WebParts.LogIzlemeWP
                 || row.EntityName == "Sigorta" || row.EntityName == "Onarim"
                 || row.EntityName == "Bagis" || row.EntityName == "BagisciBagis"
                 || row.EntityName == "BagisciYakinlari" || row.EntityName == "BagisciTalepleri"
-                || row.EntityName == "TasinmazTaahhut")
+                || row.EntityName == "TasinmazTaahhut" || row.EntityName == "BagimsizBolum"
+                || row.EntityName == "SerhBeyanIrtifak")
                 return row.EntityName + "Id: " + row.EntityId;
             return row.EntityName + " / " + row.EntityId;
         }

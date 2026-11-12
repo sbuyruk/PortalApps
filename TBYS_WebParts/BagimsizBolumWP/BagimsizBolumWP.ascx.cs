@@ -17,10 +17,21 @@ namespace TBYS_WebParts.BagimsizBolumWP
     [ToolboxItemAttribute(false)]
     public partial class BagimsizBolumWP : WebPart
     {
-        private PortalLogContext LoggingContext { get { return PortalLogContext.FromCurrentRequest("TBYS", "BagimsizBolumWP"); } }
-        private void ReportError(string operation, Exception error)
+        private PortalLogContext LoggingContext
         {
-            TbysWebPartLog.ReportError(LoggingContext, "TBYS.BagimsizBolumWP." + operation, error);
+            get
+            {
+                return PortalLogContext.FromCurrentRequest("TBYS", "BagimsizBolumWP")
+                    .WithEntity("Tasinmaz", TasinmazIdQS.ConvertToInt());
+            }
+        }
+        private PortalLogContext SectionContext(int recordId)
+        {
+            return recordId > 0 ? LoggingContext.WithEntity("BagimsizBolum", recordId) : LoggingContext;
+        }
+        private void ReportError(string operation, Exception error, PortalLogContext context = null)
+        {
+            TbysWebPartLog.ReportError(context ?? LoggingContext, "TBYS.BagimsizBolumWP." + operation, error);
         }
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -302,51 +313,69 @@ namespace TBYS_WebParts.BagimsizBolumWP
         }
         private void BagimsizBolumEkleModalAc(Tasinmaz tasinmaz)
         {
-            KullanimAmaciDDLDoldur();
-            BagimsizBolumHeaderLbl.InnerText = "Bağımsız Bölüm Ekleme";
-            AdresTxt.Text = tasinmaz.Adres;
-            BolumNoTxt.Text = string.Empty;
-            BBBrutAlanTxt.Text = string.Empty;
-            BBNetAlanTxt.Text = string.Empty;
-            UtilityHelper.SetDDLValue(KullanimAmaciDDL, ProjeConstants.KIRALAMAAMACI_MESKEN);
-            AciklamaTxt.Text = string.Empty;
+            PortalLogContext context = LoggingContext;
+            try
+            {
+                KullanimAmaciDDLDoldur();
+                BagimsizBolumHeaderLbl.InnerText = "Bağımsız Bölüm Ekleme";
+                AdresTxt.Text = tasinmaz.Adres;
+                BolumNoTxt.Text = string.Empty;
+                BBBrutAlanTxt.Text = string.Empty;
+                BBNetAlanTxt.Text = string.Empty;
+                UtilityHelper.SetDDLValue(KullanimAmaciDDL, ProjeConstants.KIRALAMAAMACI_MESKEN);
+                AciklamaTxt.Text = string.Empty;
 
-            AciklamaTxt.Enabled = true;
-            BolumNoTxt.Enabled = true;
+                AciklamaTxt.Enabled = true;
+                BolumNoTxt.Enabled = true;
 
 
-            KaydetBtn.Visible = true;
-            GuncelleBtn.Visible = false;
-            SilBtn.Visible = false;
-            MessageLbl.Visible = false;
-            UtilityHelper.ScriptCalistir("BagimsizBolumModal();");
+                KaydetBtn.Visible = true;
+                GuncelleBtn.Visible = false;
+                SilBtn.Visible = false;
+                MessageLbl.Visible = false;
+                UtilityHelper.ScriptCalistir("BagimsizBolumModal();");
+            }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(context, "TBYS.BagimsizBolumWP.BagimsizBolumEkleModalAc", error);
+            }
         }
         private void BagimsizBolumDuzenleModalAc(Tasinmaz tasinmaz, BagimsizBolum bagimsizBolum)
         {
-            KullanimAmaciDDLDoldur();
-            BagimsizBolumHeaderLbl.InnerText = "Bağımsız Bölüm Düzenleme";
-            ParamBagimsizBolumIdLbl.Text = bagimsizBolum.Id.ToString();
-            AdresTxt.Text = tasinmaz.Adres;
-            BolumNoTxt.Text = bagimsizBolum.BolumNo;
-            NitelikTxt.Text = bagimsizBolum.Nitelik;
-            BBBrutAlanTxt.Text = bagimsizBolum.BBBrutAlan.ToString("N", TrCulture);
-            BBNetAlanTxt.Text = bagimsizBolum.BBNetAlan.ToString("N", TrCulture);
-            KullanimAmaciDDL.SelectedValue = bagimsizBolum.KullanimAmaci;
-            AciklamaTxt.Text = bagimsizBolum.Aciklama;
-            MuhasebeyeKayitliDegerTxt.Text = bagimsizBolum.MuhasebeyeKayitliDeger.ToString("N", TrCulture);
-            TahminiRayicDegeriTxt.Text = bagimsizBolum.TahminiRayicDegeri.ToString("N", TrCulture);
-            EmlakBeyanDegeriTxt.Text = bagimsizBolum.EmlakBeyanDegeri.ToString("N", TrCulture);
-            YaklasikPiyasaDegeriTxt.Text = bagimsizBolum.YaklasikPiyasaDegeri.ToString("N", TrCulture);
+            PortalLogContext context = SectionContext(bagimsizBolum == null ? 0 : bagimsizBolum.Id);
+            try
+            {
+                KullanimAmaciDDLDoldur();
+                BagimsizBolumHeaderLbl.InnerText = "Bağımsız Bölüm Düzenleme";
+                ParamBagimsizBolumIdLbl.Text = bagimsizBolum.Id.ToString();
+                AdresTxt.Text = tasinmaz.Adres;
+                BolumNoTxt.Text = bagimsizBolum.BolumNo;
+                NitelikTxt.Text = bagimsizBolum.Nitelik;
+                BBBrutAlanTxt.Text = bagimsizBolum.BBBrutAlan.ToString("N", TrCulture);
+                BBNetAlanTxt.Text = bagimsizBolum.BBNetAlan.ToString("N", TrCulture);
+                KullanimAmaciDDL.SelectedValue = bagimsizBolum.KullanimAmaci;
+                AciklamaTxt.Text = bagimsizBolum.Aciklama;
+                MuhasebeyeKayitliDegerTxt.Text = bagimsizBolum.MuhasebeyeKayitliDeger.ToString("N", TrCulture);
+                TahminiRayicDegeriTxt.Text = bagimsizBolum.TahminiRayicDegeri.ToString("N", TrCulture);
+                EmlakBeyanDegeriTxt.Text = bagimsizBolum.EmlakBeyanDegeri.ToString("N", TrCulture);
+                YaklasikPiyasaDegeriTxt.Text = bagimsizBolum.YaklasikPiyasaDegeri.ToString("N", TrCulture);
 
-            AciklamaTxt.Enabled = true;
-            BolumNoTxt.Enabled = true;
+                AciklamaTxt.Enabled = true;
+                BolumNoTxt.Enabled = true;
 
-            KaydetBtn.Visible = false;
-            GuncelleBtn.Visible = true;
-            SilBtn.Visible = false;
-            MessageLbl.Visible = false;
-            
-            UtilityHelper.ScriptCalistir("BagimsizBolumModal();");
+                KaydetBtn.Visible = false;
+                GuncelleBtn.Visible = true;
+                SilBtn.Visible = false;
+                MessageLbl.Visible = false;
+
+                UtilityHelper.ScriptCalistir("BagimsizBolumModal();");
+            }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(context, "TBYS.BagimsizBolumWP.BagimsizBolumDuzenleModalAc", error);
+            }
         }
 
         private void KullanimAmaciDDLDoldur()
@@ -362,44 +391,53 @@ namespace TBYS_WebParts.BagimsizBolumWP
 
         private void BagimsizBolumSilModalAc(Tasinmaz tasinmaz, BagimsizBolum bagimsizBolum)
         {
-            BagimsizBolumHeaderLbl.InnerText = "Bağımsız Bölüm Silme";
-            ParamBagimsizBolumIdLbl.Text = bagimsizBolum.Id.ToString();
-            AdresTxt.Text = tasinmaz.Adres;
-            BolumNoTxt.Text = bagimsizBolum.BolumNo;
-            NitelikTxt.Text = bagimsizBolum.Nitelik;
-            BBBrutAlanTxt.Text = bagimsizBolum.BBBrutAlan.ToString("N", TrCulture);
-            BBNetAlanTxt.Text = bagimsizBolum.BBNetAlan.ToString("N", TrCulture);
-            KullanimAmaciDDL.SelectedValue = bagimsizBolum.KullanimAmaci;
-            AciklamaTxt.Text = bagimsizBolum.Aciklama;
-            MuhasebeyeKayitliDegerTxt.Text = bagimsizBolum.MuhasebeyeKayitliDeger.ToString("N", TrCulture);
-            TahminiRayicDegeriTxt.Text = bagimsizBolum.TahminiRayicDegeri.ToString("N", TrCulture);
-            EmlakBeyanDegeriTxt.Text = bagimsizBolum.EmlakBeyanDegeri.ToString("N", TrCulture);
-            YaklasikPiyasaDegeriTxt.Text = bagimsizBolum.YaklasikPiyasaDegeri.ToString("N", TrCulture);
-
-            AciklamaTxt.Enabled = false;
-            BolumNoTxt.Enabled = false;
-
-            KaydetBtn.Visible = false;
-            GuncelleBtn.Visible = false;
-
-            MessageLbl.Text = "Bağımsız Bölüm silinecek. Onaylıyor musunuz?";
-            MessageLbl.CssClass = "col-form-label text-danger fw-bold";
-            MessageLbl.Visible = true;
-
-            if (BagimsizBolumSilinebilirMi(bagimsizBolum))
+            PortalLogContext context = SectionContext(bagimsizBolum == null ? 0 : bagimsizBolum.Id);
+            try
             {
-                SilBtn.Visible = true;
-                SilBtn.Text = "Bağımsız Bölümü Sil";
-                SilBtn.CssClass = "btn btn-outline-danger";
-            }
-            else
-            {
-                MessageLbl.Text = "Bu Bağımsız Bölüm ile ilişkilendirilmiş bir Sözleşme bulunmaktadır. Bağımsız Bölüm kaydı silinemez.";
+                BagimsizBolumHeaderLbl.InnerText = "Bağımsız Bölüm Silme";
+                ParamBagimsizBolumIdLbl.Text = bagimsizBolum.Id.ToString();
+                AdresTxt.Text = tasinmaz.Adres;
+                BolumNoTxt.Text = bagimsizBolum.BolumNo;
+                NitelikTxt.Text = bagimsizBolum.Nitelik;
+                BBBrutAlanTxt.Text = bagimsizBolum.BBBrutAlan.ToString("N", TrCulture);
+                BBNetAlanTxt.Text = bagimsizBolum.BBNetAlan.ToString("N", TrCulture);
+                KullanimAmaciDDL.SelectedValue = bagimsizBolum.KullanimAmaci;
+                AciklamaTxt.Text = bagimsizBolum.Aciklama;
+                MuhasebeyeKayitliDegerTxt.Text = bagimsizBolum.MuhasebeyeKayitliDeger.ToString("N", TrCulture);
+                TahminiRayicDegeriTxt.Text = bagimsizBolum.TahminiRayicDegeri.ToString("N", TrCulture);
+                EmlakBeyanDegeriTxt.Text = bagimsizBolum.EmlakBeyanDegeri.ToString("N", TrCulture);
+                YaklasikPiyasaDegeriTxt.Text = bagimsizBolum.YaklasikPiyasaDegeri.ToString("N", TrCulture);
+
+                AciklamaTxt.Enabled = false;
+                BolumNoTxt.Enabled = false;
+
+                KaydetBtn.Visible = false;
+                GuncelleBtn.Visible = false;
+
+                MessageLbl.Text = "Bağımsız Bölüm silinecek. Onaylıyor musunuz?";
                 MessageLbl.CssClass = "col-form-label text-danger fw-bold";
                 MessageLbl.Visible = true;
-                SilBtn.Visible = false;
+
+                if (BagimsizBolumSilinebilirMi(bagimsizBolum))
+                {
+                    SilBtn.Visible = true;
+                    SilBtn.Text = "Bağımsız Bölümü Sil";
+                    SilBtn.CssClass = "btn btn-outline-danger";
+                }
+                else
+                {
+                    MessageLbl.Text = "Bu Bağımsız Bölüm ile ilişkilendirilmiş bir Sözleşme bulunmaktadır. Bağımsız Bölüm kaydı silinemez.";
+                    MessageLbl.CssClass = "col-form-label text-danger fw-bold";
+                    MessageLbl.Visible = true;
+                    SilBtn.Visible = false;
+                }
+                UtilityHelper.ScriptCalistir("BagimsizBolumModal();");
             }
-            UtilityHelper.ScriptCalistir("BagimsizBolumModal();");
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                TbysWebPartLog.ReportError(context, "TBYS.BagimsizBolumWP.BagimsizBolumSilModalAc", error);
+            }
         }
         private bool BagimsizBolumSilinebilirMi(BagimsizBolum bagimsizBolum)
         {
@@ -414,6 +452,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
         }
         protected void KaydetBtn_Click(object sender, EventArgs e)
         {
+            PortalLogContext context = LoggingContext;
             try
             {
                 BagimsizBolum bagimsizBolum = new BagimsizBolum();
@@ -429,8 +468,9 @@ namespace TBYS_WebParts.BagimsizBolumWP
                 bagimsizBolum.EmlakBeyanDegeri = EmlakBeyanDegeriTxt.Text.ConvertToDecimal();
                 bagimsizBolum.YaklasikPiyasaDegeri = YaklasikPiyasaDegeriTxt.Text.ConvertToDecimal();
 
-                int bagimsizBolumId = new BagimsizBolumService(LoggingContext).Save(bagimsizBolum);
+                int bagimsizBolumId = new BagimsizBolumService(context).Save(bagimsizBolum);
                 bagimsizBolum.Id = bagimsizBolumId;
+                if (bagimsizBolumId > 0) context = context.WithEntity("BagimsizBolum", bagimsizBolumId);
                 string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 int queryIndex = newUrl.IndexOf("?");
                 if (queryIndex > 0)
@@ -441,15 +481,16 @@ namespace TBYS_WebParts.BagimsizBolumWP
             catch (Exception error)
             {
                 if (error is System.Threading.ThreadAbortException) throw;
-                ReportError("KaydetBtn_Click", error);
+                ReportError("KaydetBtn_Click", error, context);
             }
         }
         protected void GuncelleBtn_Click(object sender, EventArgs e)
         {
+            PortalLogContext context = SectionContext(ParamBagimsizBolumIdLbl.Text.ConvertToInt());
             try
             {
                 BagimsizBolum bagimsizBolum = new BagimsizBolum();
-                bagimsizBolum = new BagimsizBolumService(LoggingContext).GetById(ParamBagimsizBolumIdLbl.Text.ConvertToInt());
+                bagimsizBolum = new BagimsizBolumService(context).GetById(ParamBagimsizBolumIdLbl.Text.ConvertToInt());
                 if (bagimsizBolum != null)
                 {
                     bagimsizBolum.BolumNo = BolumNoTxt.Text;
@@ -463,10 +504,10 @@ namespace TBYS_WebParts.BagimsizBolumWP
                     bagimsizBolum.TahminiRayicDegeri = TahminiRayicDegeriTxt.Text.ConvertToDecimal();
                     bagimsizBolum.EmlakBeyanDegeri = EmlakBeyanDegeriTxt.Text.ConvertToDecimal();
                     bagimsizBolum.YaklasikPiyasaDegeri = YaklasikPiyasaDegeriTxt.Text.ConvertToDecimal();
-                    if (new BagimsizBolumService(LoggingContext).Update(bagimsizBolum))
+                    if (new BagimsizBolumService(context).Update(bagimsizBolum))
                     {
                         Tasinmaz tasinmaz = new Tasinmaz();
-                        tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt(), LoggingContext);
+                        tasinmaz = new TasinmazService(context).Select(TasinmazIdQS.ConvertToInt(), context);
                         if (tasinmaz != null)
                         {
                             BagimsizBolumTablosunuDoldur(tasinmaz);
@@ -492,21 +533,22 @@ namespace TBYS_WebParts.BagimsizBolumWP
             catch (Exception error)
             {
                 if (error is System.Threading.ThreadAbortException) throw;
-                ReportError("GuncelleBtn_Click", error);
+                ReportError("GuncelleBtn_Click", error, context);
             }
         }
         protected void SilBtn_Click(object sender, EventArgs e)
         {
+            PortalLogContext context = SectionContext(ParamBagimsizBolumIdLbl.Text.ConvertToInt());
             try
             {
                 BagimsizBolum bagimsizBolum = new BagimsizBolum();
-                bagimsizBolum = new BagimsizBolumService(LoggingContext).GetById(ParamBagimsizBolumIdLbl.Text.ConvertToInt());
+                bagimsizBolum = new BagimsizBolumService(context).GetById(ParamBagimsizBolumIdLbl.Text.ConvertToInt());
                 if (bagimsizBolum != null)
                 {
-                    if (new BagimsizBolumService(LoggingContext).Delete(bagimsizBolum))
+                    if (new BagimsizBolumService(context).Delete(bagimsizBolum))
                     {
                         Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = new TasinmazService(LoggingContext).Select(TasinmazIdQS.ConvertToInt(), LoggingContext);
+                tasinmaz = new TasinmazService(context).Select(TasinmazIdQS.ConvertToInt(), context);
                         if (tasinmaz != null)
                         {
                             BagimsizBolumTablosunuDoldur(tasinmaz);
@@ -533,7 +575,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
             catch (Exception error)
             {
                 if (error is System.Threading.ThreadAbortException) throw;
-                ReportError("SilBtn_Click", error);
+                ReportError("SilBtn_Click", error, context);
             }
         }
     }
