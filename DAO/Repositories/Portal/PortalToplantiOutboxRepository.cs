@@ -157,6 +157,22 @@ namespace DAO.Repositories.Portal
             return ScalarText(query, "InternetEPosta");
         }
 
+        public string PersonName(int personId)
+        {
+            var query = new SqlQuery(@"SELECT LTRIM(RTRIM(ISNULL(Adi,'')+' '+ISNULL(Soyadi,''))) AS AdiSoyadi
+                FROM Personel_Table WHERE Id=@Id");
+            query.AddParameter("@Id", personId);
+            return ScalarText(query, "AdiSoyadi");
+        }
+
+        public string CoordinatorName(int unitId)
+        {
+            var query = new SqlQuery(@"SELECT COALESCE(NULLIF(LTRIM(RTRIM(KisaAdi)),''),Adi) AS BirimAdi
+                FROM BirimTanim_Table WHERE Id=@Id");
+            query.AddParameter("@Id", unitId);
+            return ScalarText(query, "BirimAdi");
+        }
+
         private string ScalarText(SqlQuery query, string field)
         {
             string value;
