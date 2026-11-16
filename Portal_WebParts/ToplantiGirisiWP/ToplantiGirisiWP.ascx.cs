@@ -626,7 +626,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
             ToplantiIdQS = (change.After ?? change.Before).Id.ToString();
             KaydetBtn.Visible = GuncelleBtn.Visible = ToplantiSilBtn.Visible = false;
             KaydetNowBtn.Visible = GuncelleNowBtn.Visible = ToplantiSilNowBtn.Visible = false;
-            UtilityHelper.ScriptCalistir("OpenOnayModal();");
+            UtilityHelper.ScriptCalistir("CloseOnayModal();");
             try
             {
                 UtilityHelper.ScriptCalistir("['ModalOnayDiv','ModalSilDiv'].forEach(function(id){var element=document.getElementById(id);if(element){var modal=bootstrap.Modal.getInstance(element);if(modal)modal.hide();}});");
