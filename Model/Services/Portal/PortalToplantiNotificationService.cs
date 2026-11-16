@@ -28,6 +28,7 @@ namespace Model.Services.Portal
     // Sends only durable queue entries, outside the meeting transaction and HTTP request.
     public sealed class PortalToplantiNotificationService
     {
+        private const string Footer = "TYS™ Bilgi Sistemleri Kısmı tarafından geliştirilmiştir.";
         private readonly PortalLogContext context;
         private readonly PortalToplantiOutboxRepository repository;
         private readonly PortalToplantiOutboxItem outboxItem;
@@ -196,7 +197,8 @@ namespace Model.Services.Portal
                     .Append(H(detail.Value).Replace("\r\n", "\n").Replace("\r", "\n").Replace("\n", "<br />"))
                     .Append("</td></tr>");
             }
-            return html.Append("</table><p>Toplantı Yönetim Sistemi</p>").ToString();
+            return html.Append("</table><p style='font-family:Arial,sans-serif;font-size:11px;color:#888;margin-top:12px'>")
+                .Append(H(Footer)).Append("</p>").ToString();
         }
 
         private static string TextBody(string action, IEnumerable<KeyValuePair<string, string>> details)
@@ -204,7 +206,7 @@ namespace Model.Services.Portal
             var text = new StringBuilder("Toplantı " + action + ".\r\n\r\nToplantı Ayrıntıları\r\n");
             foreach (var detail in details)
                 text.Append(detail.Key).Append(": ").Append(detail.Value).Append("\r\n\r\n");
-            return text.Append("Toplantı Yönetim Sistemi").ToString();
+            return text.Append(Footer).ToString();
         }
         private string Parameter(string key)
         {
