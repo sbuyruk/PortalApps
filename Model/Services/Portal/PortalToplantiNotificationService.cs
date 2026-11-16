@@ -30,10 +30,13 @@ namespace Model.Services.Portal
         private readonly PortalLogContext context;
         private readonly PortalToplantiOutboxRepository repository;
         private readonly PortalToplantiOutboxItem outboxItem;
+        private readonly Action<int, Guid, Exception> reportError;
         private readonly List<PortalToplantiMail> plan = new List<PortalToplantiMail>();
-        internal PortalToplantiNotificationService(PortalToplantiOutboxRepository repository, PortalToplantiOutboxItem item)
+        internal PortalToplantiNotificationService(PortalToplantiOutboxRepository repository,
+            PortalToplantiOutboxItem item, Action<int, Guid, Exception> reportError)
         {
             this.repository = repository; outboxItem = item; context = item.Context;
+            this.reportError = reportError;
         }
 
         internal bool Send(PortalToplantiChange change)
@@ -140,7 +143,10 @@ namespace Model.Services.Portal
             catch (Exception error)
             {
                 complete = false;
-                PortalTechnicalLog.WriteError(context, "Portal.Toplanti.Notification", error);
+                if (reportError == null)
+                    PortalTechnicalLog.WriteError(context, "Portal.Toplanti.Notification", error);
+                else
+                    PortalToplantiOutboxDispatcher.ReportFailure(reportError, outboxItem, error);
             }
         }
         private static JavaScriptSerializer PlanSerializer()

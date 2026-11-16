@@ -103,10 +103,18 @@
         myModalInstance.show();
     }
     function CloseOnayModal() {
-        $("#ModalOnayDiv").modal('hide');
-        $('.modal-backdrop').remove()
-        $(document.body).removeClass("modal-open");
+        // Keep the confirmation open when Web Forms client validation fails.
+        if (typeof Page_ClientValidate === 'function' && !Page_ClientValidate('')) {
+            return false;
+        }
+
+        var element = document.getElementById('ModalOnayDiv');
+        if (element) {
+            bootstrap.Modal.getOrCreateInstance(element).hide();
+        }
+        return true;
     }
+
     function KatilimciSecimiModal() {
         var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KatilimciSecimiModal'));
         myModalInstance.show();
@@ -415,8 +423,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <asp:LinkButton ID="KaydetNowBtn" CssClass="btn btn-outline-success" runat="server" Text="Toplantıyı Kaydet" OnClick="KaydetNowBtn_Click" Visible="false"></asp:LinkButton>
-                        <asp:LinkButton ID="GuncelleNowBtn" CssClass="btn btn-outline-primary" runat="server"  Text="Toplantıyı Güncelle" OnClick="GuncelleNowBtn_Click" Visible="false"></asp:LinkButton>
+                        <asp:LinkButton ID="KaydetNowBtn" CssClass="btn btn-outline-success" runat="server" Text="Toplantıyı Kaydet" OnClientClick="if (!CloseOnayModal()) return false;" OnClick="KaydetNowBtn_Click" Visible="false"></asp:LinkButton>
+                        <asp:LinkButton ID="GuncelleNowBtn" CssClass="btn btn-outline-primary" runat="server"  Text="Toplantıyı Güncelle" OnClientClick="if (!CloseOnayModal()) return false;" OnClick="GuncelleNowBtn_Click" Visible="false"></asp:LinkButton>
                         <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </div>

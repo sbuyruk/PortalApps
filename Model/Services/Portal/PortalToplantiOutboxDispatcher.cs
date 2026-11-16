@@ -43,6 +43,13 @@ namespace Model.Services.Portal
         // Explicit connection information makes this usable outside an HTTP/SharePoint request.
         public static PortalToplantiDispatchResult ProcessPending(string connectionString, int batchSize = 20)
         {
+            return ProcessPending(connectionString, batchSize, null);
+        }
+
+        // The host supplies diagnostics because OWSTIMER cannot use HTTP web.config logging.
+        public static PortalToplantiDispatchResult ProcessPending(string connectionString, int batchSize,
+            Action<int, Guid, Exception> reportError)
+        {
             if (batchSize < 1 || batchSize > 100) throw new ArgumentOutOfRangeException("batchSize", "Parti büyüklüğü 1 ile 100 arasında olmalıdır.");
             var repository = new PortalToplantiOutboxRepository(connectionString);
             var result = new PortalToplantiDispatchResult();
@@ -58,13 +65,14 @@ namespace Model.Services.Portal
                     if (change == null || (change.Before == null && change.After == null)
                         || change.PreviousParticipants == null || change.Participants == null)
                         throw new InvalidOperationException("Bildirim içeriği geçersiz.");
-                    complete = new PortalToplantiNotificationService(repository, item).Send(change);
+                    complete = new PortalToplantiNotificationService(repository, item, reportError).Send(change);
                 }
                 catch (System.Threading.ThreadAbortException) { throw; }
                 catch (Exception failure)
                 {
                     // Never persist raw recipient data or credentials from exception messages.
                     error = "Bildirim işlenemedi. Hata türü: " + failure.GetType().Name;
+                    ReportFailure(reportError, item, failure);
                 }
                 // A persistence failure must stop the worker; the lease allows recovery on the next run.
                 repository.Finish(item, complete, error);
@@ -72,6 +80,18 @@ namespace Model.Services.Portal
                 if (complete) result.Sent++; else result.Incomplete++;
             }
             return result;
+        }
+
+        internal static void ReportFailure(Action<int, Guid, Exception> reportError,
+            PortalToplantiOutboxItem item, Exception error)
+        {
+            if (reportError == null) return;
+            try { reportError(item.Id, item.Context.OperationId, error); }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception)
+            {
+                // A host diagnostics failure must not affect delivery or queue persistence.
+            }
         }
     }
 }

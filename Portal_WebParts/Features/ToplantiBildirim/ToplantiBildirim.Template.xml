@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns="http://schemas.microsoft.com/sharepoint/"
+         ReceiverAssembly="$SharePoint.Project.AssemblyFullName$"
+         ReceiverClass="Portal_WebParts.Features.ToplantiBildirim.ToplantiBildirimEventReceiver">
+</Feature>

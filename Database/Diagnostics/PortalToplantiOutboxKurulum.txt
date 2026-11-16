@@ -1,90 +1,124 @@
-TOPLANTI BİLDİRİM KUYRUĞU — KURULUM VE KABUL
+TOPLANTI BİLDİRİM KUYRUĞU — SHAREPOINT TIMER JOB KURULUMU
 
-Bu değişiklik yeni toplantı, güncelleme ve silme bildirimlerini kapsar. Diğer
-modüllerin e-postalarını değiştirmez. Önceden kaçırılmış bildirimleri üretmez.
+Toplantı, güncelleme ve silme bildirimleri mevcut kalıcı kuyruktan gönderilir.
+Gönderici Portal_WebParts.wsp içindeki web uygulaması kapsamlı ayrı feature'dır.
+Windows Görev Zamanlayıcı, gönderim betiği veya ayrı DLL klasörü gerekmez.
+Önceden kaçırılmış ve kuyruğa hiç yazılmamış bildirimler kendiliğinden üretilmez.
 
-DEVREYE ALMA SIRASI
-1. Hedef veritabanını yedekleyin. Database/Migrations/20261026_PortalToplantiOutbox.sql
-   betiğini uygulamadan önce çalıştırın. Betik iki yeni tablo ve indeks oluşturur;
-   mevcut toplantı tablolarını değiştirmez. Silinen toplantıların iptal bildirimleri
-   korunacağından kuyrukta toplantı tablosuna bağlı bir foreign key yoktur.
-2. Kullanıcı Visual Studio/Test sunucusunda derler ve uygulamayı yayımlar.
-   Yeni DAO.dll, Model.dll ve Utility.dll sürümlerini aynı gönderim klasörüne koyun.
-   Scripts/Send-PortalToplantiOutbox.ps1 dosyasını da sunucuya kopyalayın.
-3. Windows Görev Zamanlayıcı'da 64-bit Windows PowerShell 5.1 ile her dakika çalışan
-   bir görev oluşturun. Yeni örnek çakışma ayarını "Yeni örnek başlatma" yapın.
-   Görevin standart çıktısını/hata sonucunu izleyin. Örnek argümanlar:
+DEVREYE ALMA SIRASI (KULLANICI TARAFINDAN TEST SUNUCUSUNDA)
+1. Eski Send-PortalToplantiOutbox.ps1 görevini kurduysanız devre dışı bırakın ve
+   çalışan örneğin bitmesini bekleyin. İki göndericiyi birlikte çalıştırmayın.
+   Bekleyen kuyruk ve başarılı alıcı kayıtlarını silmeyin/sıfırlamayın.
+2. Kuyruk tabloları henüz yoksa veritabanı yedeği alıp
+   Database/Migrations/20261026_PortalToplantiOutbox.sql betiğini uygulayın.
+   Tablolar zaten varsa Timer Job'a geçiş için yeni şema değişikliği gerekmez.
+3. Kullanıcı Visual Studio 2026/Test sunucusunda solution'ı derler, Portal_WebParts
+   WSP paketini üretir ve ilgili SharePoint web uygulamasına dağıtır. Pakette
+   Portal_WebParts.dll, Model.dll, DAO.dll ve Utility.dll aynı sürümden GAC'ye
+   dağıtılır. Ayrı bir gönderim klasörüne DLL kopyalamayın.
+   Mevcut web part feature'ının kapsamı değiştirilmemiştir.
+4. SharePoint Timer Service (SPTimerV4) hesabının hedef uygulamanın varsayılan
+   bölgesindeki web.config dosyasını okuyabildiğini doğrulayın. Gönderici bağlantıyı
+   her çalışmada bu dosyadaki TSKGV_Connection üzerinden okur; OWSTIMER.EXE.config
+   değiştirilmez, bağlantı/parola SharePoint job özelliklerine kopyalanmaz.
+   Job'ı çalıştırabilecek web uygulaması sunucularında IIS/web.config ve paket
+   bağımlılıkları bulunmalıdır. Şifreli connectionStrings kullanılıyorsa servis
+   hesabının bölümün şifresini çözme yetkisi de gerekir.
+   Integrated Security kullanılıyorsa SQL bağlantısı Timer servis hesabıyla açılır.
+   Bu hesaba kuyruk/alıcı tablolarında SELECT/INSERT/UPDATE; OrtakParametre_Table
+   ve IletisimBilgileri_Table üzerinde SELECT yetkisi verin. Hesabın TSKGV
+   etki alanındaki grup üyelerini/e-postalarını okuyabilmesi ve SMTP'ye erişmesi
+   gerekir. SharePoint farm veritabanı yetkileri bu uygulama yetkilerini sağlamaz.
+5. WSP dağıtımı tamamlanınca job'ı çalıştırabilecek sunucularda SPTimerV4 servisini
+   planlı olarak yeniden başlatın; aynı assembly sürümünde eski kodun bellekte
+   kalmasını önleyin. Bu işlem diğer timer job'ları da etkileyebilir.
+6. Merkezi Yönetim > Uygulama Yönetimi > Web uygulamalarını yönet bölümünde
+   doğru içerik web uygulamasını seçin. Özellikleri Yönet altında
+   "PortalApps Toplantı Bildirimleri" özelliğini etkinleştirin.
+   Bu bir site koleksiyonu özelliği değildir. Merkezi Yönetim web uygulamasında
+   etkinleştirilmez ve tüm uygulamalarda otomatik açılmaz. Etkinleştirilince
+   dakika başına çalışan job oluşturulur ve mevcut bekleyen mailler gönderilebilir.
+   Alternatif olarak SharePoint Management Shell'de gerçek uygulama URL'siyle:
 
-   -NoProfile -NonInteractive -File "C:\PortalAppsJobs\Send-PortalToplantiOutbox.ps1" -WebConfigPath "C:\inetpub\wwwroot\wss\VirtualDirectories\80\web.config" -AssemblyDirectory "C:\PortalAppsJobs\bin" -BatchSize 20
+   Enable-SPFeature -Identity "4c912518-6496-4395-bba3-51d939472bfd" -Url "https://portal-test"
 
-   Örnek yolları ortamınıza göre değiştirin. Görev hesabına web.config ve assembly
-   dosyalarını okuma, hedef veritabanındaki kuyruk/alıcı tablolarında SELECT/INSERT/
-   UPDATE, OrtakParametre_Table ve IletisimBilgileri_Table üzerinde SELECT yetkisi
-   verin. Integrated Security kullanılıyorsa SQL bağlantısı görev hesabıyla açılır.
-   Hesabın TSKGV etki alanında grup üyelerini/e-postalarını okuyabilmesi ve SMTP'ye
-   erişebilmesi gerekir. Şifreli connectionStrings için hesabın çözme yetkisi olmalı.
-   Betik bağlantı bilgilerini komut satırına veya görev çıktısına yazmaz.
-4. Görevi kullanıcı Test sunucusunda bir kez elle çalıştırıp sonucu değerlendirir;
-   ardından periyodik çalışmayı etkinleştirir. Uygulama sunucusunda SharePoint ve
-   uygulamanın framework bağımlılıkları kurulu olmalıdır. GAC'de olmayan gerekli
-   üçüncü taraf assembly'lerini de gönderim klasörüne koyun. PowerShell 7 kullanmayın.
+   Aynı kuyruğu kullanan birden fazla web uygulaması varsa gönderim özelliğini
+   yalnızca birinde açın. Her uygulama kendi varsayılan bölgesinin bağlantısını okur.
+7. Merkezi Yönetim > İzleme > Zamanlanmış İş Tanımlarını Gözden Geçir bölümünde
+   "PortalApps Toplantı Bildirimleri" işini ve doğru web uygulamasını doğrulayın.
+   İşi Şimdi Çalıştır ile tetikleyin veya bir sonraki zamanlanmış çalışmayı bekleyin.
+   Ardından iş geçmişini ve Database/Diagnostics/PortalToplantiOutboxKontrol.sql
+   sonucunu inceleyin. Başarılı gönderimde Pending kaydı Sent olur.
+   SharePoint Management Shell ile aynı işlem:
 
-DAVRANIŞ
-- Toplantı ve kuyruk kaydı aynı SQL transaction içinde yazılır. Kuyruk yazılamazsa
-  toplantı işlemi geri alınır. Kullanıcıya "gönderim sırasına alındı" mesajı gösterilir.
-- Görev çalışmıyorsa bildirimler Pending durumunda bekler; web isteği SMTP beklemez.
-- Alıcılar ilk hazırlık sırasında personel iletişim kayıtları ve bildirim gruplarından
-  çözülür. Tüm çözümleme başarılı olmadan SMTP gönderimi başlamaz. Hazırlanan alıcı
-  listesi ve mesaj gövdeleri kalıcı tutulur; sonraki denemelerde yeniden oluşturulmaz.
-  Adresi/grubu eksik bir kayıt bu hazırlığı engeller; sebep giderilip görev yenilenir.
-- SMTP sunucu adresi her denemede mevcut ortak parametreden okunur. SMTP erişimini
-  düzeltmek kalıcı alıcı planını değiştirmez. Plan oluşturulduktan sonra yanlış bir
-  alıcı adresini düzeltmek için kontrollü yönetici müdahalesi gerekir.
-- Başarıyla SMTP'ye teslim edilip veritabanına işaretlenen alıcı tekrar gönderilmez.
-  Aynı toplantının önceki Pending/Processing bildirimi bitmeden yenisine geçilmez.
-- Başarısız denemeler 2, 4, 8, 16, 32, 60 ve 60 dakika sonra yeniden denenir.
-  Sekizinci başarısızlıkta Failed olur; otomatik deneme durur. Daha yeni bildirimler
-  Failed durumundaki eski kaydı beklemez. Zamanlar UTC'dir.
-- İşleme hakkı beş dakikalıktır; her gönderimden önce ve sonuç yazımında yenilenir.
-  Yarıda kesilen görev, hakkı sona erince yeniden alınabilir. SMTP zaman aşımı 30 sn.
-- SMTP teslimi ile SQL başarı işareti arasında kesinti olursa aynı e-posta tekrar
-  gönderilebilir. SMTP ile kesin "yalnızca bir kez" teslim garantisi verilemez.
-  Gönderildi kaydı, alıcının gelen kutusuna ulaştığını veya okuduğunu garanti etmez.
-- İleti takvim UID'si korunur. Yeniden denemede SEQUENCE ve DTSTAMP değiştirilmez.
+   $job = @(Get-SPTimerJob -WebApplication "https://portal-test" |
+       Where-Object { $_.Name -eq "portalapps-toplanti-bildirim" })
+   if ($job.Count -ne 1) { throw "İlgili web uygulamasında tek bildirim işi bulunamadı." }
+   Start-SPTimerJob -Identity $job[0].Id
 
-İZLEME VE YENİDEN DENEME
-Database/Diagnostics/PortalToplantiOutboxKontrol.sql ile Pending/Processing/Failed
-kayıtlarını ve en eski bekleyen görevi izleyin. Görev çıkış kodları: 0 başarılı/iş yok,
-2 tamamlanamayan bildirim var, 1 görev çalışamadı. LastError ham hata/kimlik bilgisi
-içermez. OperationId, toplantı işleminin audit kayıtlarıyla ilişkilendirme sağlar.
-Failed kayıt için önce sebebi giderin; ardından kontrol betiğindeki yorumlu örneği
-ilgili kimlik için uygulayın. Başarılı alıcı kayıtlarını silmeyin. Aynı toplantının
-daha yeni bildirimi gönderilmişse eski daveti yeniden açmak takvim durumunu
-karıştırabilir; önce toplantı sırasını inceleyin.
-Kuyruk içeriği toplantı bilgilerini ve alıcı e-postalarını içerir. Tablo erişimini
-görev/yönetici hesabıyla sınırlandırın; kurumun saklama süresine göre Sent kayıtları
-ve bağlı alıcılar birlikte arşivlenmelidir. Otomatik silme bu parçada eklenmemiştir.
+ÇALIŞMA VE İZLEME
+- Job adı portalapps-toplanti-bildirim; görünen ad PortalApps Toplantı Bildirimleri.
+- Web uygulaması başına bir tanım oluşturulur. SPJobLockType.Job bir çalışmanın
+  farm sunucularında eşzamanlı çoğalmasını engeller. Mevcut SQL işleme hakkı ve
+  toplantı sırası kuralları da korunur. Her çalışmada en çok 20 kuyruk kaydı işlenir;
+  çok alıcılı gönderim bir dakikadan uzun sürebilir.
+- Toplantı ve kuyruk kaydı aynı SQL transaction içindedir; SMTP bu transaction'ın
+  dışındadır. Kullanıcı web sayfasında e-posta gönderimini beklemez.
+- Alıcılar/gruplar tamamen çözümlenmeden SMTP başlamaz. Eksik adres veya grup
+  bütün olayın alıcı planını engelleyebilir. Plan kaydedildikten sonra yeniden
+  denemelerde aynı plan kullanılır; başarılı alıcı kayıtları korunur.
+- Başarısızlıklar 2, 4, 8, 16, 32, 60 ve 60 dakika sonra yeniden denenir.
+  Sekizinci başarısızlık Failed olur ve otomatik deneme durur. Aynı toplantının
+  önceki Pending/Processing bildirimi bitmeden sonraki bekleyen bildirim alınmaz.
+  Failed kayıt sonraki bildirimi engellemez. Tablodaki zamanlar UTC'dir.
+- İşleme hakkı beş dakikadır ve işlem sırasında yenilenir. Kesilen işin kaydı,
+  hakkın süresi dolunca sonraki çalışmada yeniden alınabilir.
+- Başarısız alıcı/olay için ULS'de "PortalApps Toplantı Bildirimleri" kategorisine
+  OutboxId, OperationId, ExceptionType ve HResult yazılır. Ham istisna mesajı,
+  bağlantı dizesi, e-posta adresi ve toplantı gövdesi yazılmaz. HTTP bağlamına
+  bağımlı teknik log yerine job'ın ULS tanılaması kullanılır.
+- Eksik gönderim varsa kuyruk sonucu kaydedilir ve job geçmişi başarısız görünür;
+  kuyruk kendi zamanına göre yeniden denenir. Job başarısızlığı toplantıyı silmez.
+  ULS ile kuyruktaki LastError birlikte değerlendirilmelidir.
+- SMTP teslimi ile SQL başarı işareti arasındaki kesinti aynı e-postanın tekrar
+  gönderilmesine yol açabilir; kesin bir kez teslim garantisi yoktur. Sent,
+  SMTP'ye teslimi gösterir; gelen kutusuna ulaşmayı/okunmayı garanti etmez.
+- İleti UID, SEQUENCE, DTSTAMP ve REQUEST/CANCEL davranışları korunur.
+- Özellik devre dışı bırakılınca ilgili job tanımı kaldırılır; kuyruk ve başarılı
+  alıcı kayıtları korunur. Çalışmakta olan job anında iptal edilmez; bitmesini
+  bekleyin. Yeniden etkinleştirme bekleyen kayıtlarla devam eder.
+- Özellik kaldırılırken içerik web uygulamalarındaki ilgili job tanımları temizlenir.
 
-TOPLU KABUL SENARYOLARI (KULLANICI TARAFINDAN TEST ORTAMINDA)
-1. Yeni toplantı, güncelleme, katılımcı çıkarma ve silme: doğru REQUEST/CANCEL ve
-   bilgi mesajları; mevcut UID; yalnızca bir kuyruk kaydı ve doğru işlem audit'i.
-2. Görev kapalıyken kayıt: toplantı kaydolur, Pending oluşur; görev açılınca gönderilir.
-3. SMTP kapalıyken: toplantı korunur; deneme sayısı ve NextAttemptUtc artar. SMTP
-   açılınca gönderim tamamlanır. Başarılı alıcılara sonraki denemede tekrar gönderilmez.
-4. Eksik kişi e-postası / bulunamayan AD grubu: hazırlık tamamlanmaz, SMTP başlamaz;
-   eksik veri düzeltildiğinde tekrar hazırlanır. Hazırlık sonrası AD üyelik değişikliği
-   aynı olayın planını değiştirmez.
-5. Görevi yarıda durdurma ve iki görev başlatma: geçerli tek işleme hakkı; süresi
-   dolan görev devam edebilir; aynı toplantının bildirimleri sıralı işlenir.
-6. Toplantı transaction'ını geri aldıran hata: toplantı ve kuyruk birlikte geri alınır.
-7. Sekiz başarısız deneme: Failed, otomatik duruş, kontrollü yeniden açma.
-8. Görev hesabı/SQL/SMTP erişim hataları: betik sır/ham istisna yazmadan hata kodu döner.
-9. Toplantı saatleri: kayıt, bildirim gövdesi ve takvim eki aynı yerel saati göstermeli;
-   XML içerik SQL saatlerini korur, yalnızca ICS içinde UTC'ye dönüştürülür.
+KABUL KONTROLLERİ (KULLANICI TARAFINDAN)
+1. WSP paketinde yeni feature manifestinin WebApplication kapsamında olduğunu,
+   ReceiverAssembly/ReceiverClass alanlarının dolduğunu ve dört DLL'nin GAC
+   dağıtımında bulunduğunu kontrol edin. Varsayılan olarak etkinleşmemeli.
+2. Doğru web uygulamasında etkinleştirin; tek job ve dakika başına zamanlama
+   görünmeli. Tekrar etkinleştirme denemesi ikinci tanım oluşturmamalı.
+3. Mevcut Pending kaydını job ile gönderin; alıcı e-postası, takvim eki, Sent ve
+   PortalToplantiDelivery_Table kayıtlarını kontrol edin. İkinci çalışmada aynı
+   alıcıya yeniden gönderilmemeli.
+4. Yeni kayıt, güncelleme, katılımcı çıkarma ve silme bildirimlerini deneyin;
+   toplantı verisi, REQUEST/CANCEL ve mevcut UID doğrulanmalı.
+5. SMTP erişimi veya bir alıcının/grubun adresi eksikken job geçmişi, ULS,
+   LastError ve NextAttemptUtc gözlenmeli. Sorun giderilince yeniden denenmeli.
+6. Özelliği kapatın; job kaybolmalı, yeni kayıt Pending beklemeli. Yeniden açın;
+   tek job geri gelmeli ve bekleyen kayıtlar işlenmeli.
+7. Test ve diğer web uygulamalarının farklı bağlantılarını doğrulayın; seçilen
+   web uygulaması dışındaki veritabanına erişilmemeli. SPTimerV4 yeniden
+   başlatılınca job tanımı ve zamanlaması korunmalı.
 
-GERİ DÖNÜŞ
-Önce zamanlanmış görevi durdurun. Önceki uygulama sürümüne dönülecekse bekleyen
-kayıtları ve son bildirim sırasını değerlendirin. Yeni kuyruk tablolarını/başarılı
-alıcı kayıtlarını otomatik silmeyin; koruyup yönetici gözetiminde işlem yapın.
+YENİDEN DENEME VE GERİ DÖNÜŞ
+Failed kaydını yeniden açmadan önce sebebi giderin ve toplantıdaki bildirim sırasını
+inceleyin. Kontrol SQL'indeki yorumlu örneği yalnızca ilgili Failed kimliği için
+uygulayın; başarılı alıcıları silmeyin. Daha yeni bildirim gönderildiyse eski
+davetin açılması takvim durumunu karıştırabilir.
+Geri dönüşte önce yeni feature'ı devre dışı bırakıp çalışan job'ın bitmesini
+bekleyin; ardından önceki göndericiyi değerlendirin. İki göndericiyi birlikte
+etkinleştirmeyin. WSP'yi geri çekmeden önce feature'ı kapatın. Kuyruk/alıcı
+tablolarını koruyun; bu geçişte tablo temizliği veya yeni şema yoktur.
 
-Bu dosyadaki kurulum ve kabul adımları Codex tarafından çalıştırılmamıştır.
+Bu dosyadaki derleme, dağıtım ve kabul adımları Codex tarafından çalıştırılmamıştır.
+Kaynaklar:
+https://learn.microsoft.com/en-us/sharepoint/technical-reference/timer-job-reference-for-sharepoint-server
+https://learn.microsoft.com/en-us/previous-versions/office/developer/sharepoint-2010/ff464297(v=office.14)
