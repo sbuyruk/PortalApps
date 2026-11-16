@@ -6,6 +6,7 @@
     <projectOutputAssembly location="Utility.dll" deploymentTarget="GlobalAssemblyCache" projectPath="..\Utility\Utility.csproj" />
   </assemblies>
   <features>
+    <featureReference itemId="db02de16-286c-407e-ae1c-e37b2241af61" />
     <featureReference itemId="ab83d726-7c76-44ad-b4a3-be98ec7a02c9" />
   </features>
 </package>
