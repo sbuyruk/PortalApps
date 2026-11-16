@@ -2277,11 +2277,11 @@ namespace Portal_WebParts.ToplantiGirisiWP {
             parameterContainer.Controls[28].RenderControl(@__w);
             @__w.Write("\r\n    </div>\r\n</div>\r\n");
             parameterContainer.Controls[29].RenderControl(@__w);
-            @__w.Write("\n");
+            @__w.Write("\r\n");
             parameterContainer.Controls[30].RenderControl(@__w);
             @__w.Write("\r\n");
             parameterContainer.Controls[31].RenderControl(@__w);
-            @__w.Write("\n");
+            @__w.Write("\r\n");
             parameterContainer.Controls[32].RenderControl(@__w);
         }
         
