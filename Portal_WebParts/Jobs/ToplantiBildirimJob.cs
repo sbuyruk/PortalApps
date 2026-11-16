@@ -72,7 +72,10 @@ namespace Portal_WebParts.Jobs
                 throw new InvalidOperationException("Web uygulamasının web.config dosyası bu sunucuda bulunamadı.");
             var map = new WebConfigurationFileMap();
             map.VirtualDirectories.Add("/", new VirtualDirectoryMapping(directory, true));
-            Configuration configuration = WebConfigurationManager.OpenMappedWebConfiguration(map, "/");
+            // The site name belongs to this file map. Without an explicit name, activation
+            // inherits Central Administration's hosting site ID, which does not match the map.
+            string mappedSite = application.Id.ToString("D");
+            Configuration configuration = WebConfigurationManager.OpenMappedWebConfiguration(map, "/", mappedSite);
             ConnectionStringSettings connection = configuration.ConnectionStrings.ConnectionStrings["TSKGV_Connection"];
             if (connection == null || string.IsNullOrWhiteSpace(connection.ConnectionString))
                 throw new ConfigurationErrorsException("Web uygulamasında TSKGV_Connection bağlantısı bulunamadı.");

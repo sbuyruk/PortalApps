@@ -95,6 +95,9 @@ KABUL KONTROLLERİ (KULLANICI TARAFINDAN)
    dağıtımında bulunduğunu kontrol edin. Varsayılan olarak etkinleşmemeli.
 2. Doğru web uygulamasında etkinleştirin; tek job ve dakika başına zamanlama
    görünmeli. Tekrar etkinleştirme denemesi ikinci tanım oluşturmamalı.
+   Etkinleştirmeyi Merkezi Yönetim arayüzünden de deneyin. Merkezi Yönetim'in
+   IIS site kimliği 1'den farklıyken de işlem tamamlanmalı; site parametresi
+   hatası çıkmamalı. Yapılandırma eşlemesi kendi açık site kimliğini kullanır.
 3. Mevcut Pending kaydını job ile gönderin; alıcı e-postası, takvim eki, Sent ve
    PortalToplantiDelivery_Table kayıtlarını kontrol edin. İkinci çalışmada aynı
    alıcıya yeniden gönderilmemeli.
