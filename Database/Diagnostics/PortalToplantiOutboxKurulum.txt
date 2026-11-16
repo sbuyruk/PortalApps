@@ -65,6 +65,18 @@ DEVREYE ALMA SIRASI (KULLANICI TARAFINDAN TEST SUNUCUSUNDA)
   çok alıcılı gönderim bir dakikadan uzun sürebilir.
 - Toplantı ve kuyruk kaydı aynı SQL transaction içindedir; SMTP bu transaction'ın
   dışındadır. Kullanıcı web sayfasında e-posta gönderimini beklemez.
+- Başarılı kaydetme/güncelleme/silme sonrasında ToplantiListesi.aspx açılır.
+  Başarı mesajı, e-postaların gönderim sırasına alındığı bilgisiyle listede kullanıcı
+  kapatana kadar gösterilir. Kaydetme/güncellemede SecilenToplantiId ile ilgili
+  satır işaretlenir; silmede seçili kimlik gönderilmez. Doğrulama ve işlem
+  hatalarında, ayrıca değişiklik yapılmayan güncellemede formda kalınır.
+- Listeye taşınan bildirim, beş dakika geçerli ve kullanıcıya/liste yoluna bağlı
+  MachineKey korumalı bir HttpOnly çerezdir. Her işlem ayrı çerez kullanır;
+  liste mesajı gösterirken çerezi siler. Liste yenilenince mesaj tekrarlanmaz.
+  Yönlendirme normal ve UpdatePanel postback'lerinde aynı şekilde kullanılır;
+  sayfa mesajı içeren yanıt önbelleğe alınmaz, sonuç belirteci adres çubuğundan
+  temizlenir. ASP.NET Session veya sunucuya özel cache gerektirmez. Birden fazla
+  web sunucusunda web uygulamasının MachineKey ayarları aynı olmalıdır.
 - Alıcılar/gruplar tamamen çözümlenmeden SMTP başlamaz. Eksik adres veya grup
   bütün olayın alıcı planını engelleyebilir. Plan kaydedildikten sonra yeniden
   denemelerde aynı plan kullanılır; başarılı alıcı kayıtları korunur.
@@ -140,6 +152,19 @@ KABUL KONTROLLERİ (KULLANICI TARAFINDAN)
 10. TextBody alanı olmayan eski bir Pending planın kendi içeriğini koruyarak
     gönderilebildiğini; yeni bir planın yeniden denemede aynı HTML/düz metni
     kullandığını ve başarılı alıcıları atladığını doğrulayın.
+11. Yeni kayıt ve gerçek bir güncelleme sonrası otomatik listeye dönüşü, ilgili
+    satırın mevcut tarih filtresi içinde seçili görünmesini ve doğru başarı
+    mesajını kontrol edin. Silmede normal liste açılmalı ve silme mesajı çıkmalı.
+    Mesaj kendiliğinden kapanmamalı; kullanıcı kapatabilmeli. Listeyi yenilemek,
+    filtrelemek veya sonuç URL'sini yeniden açmak mesajı tekrar göstermemeli.
+12. İki ayrı sekmede farklı toplantı işlemlerini tamamlayın; sonuçlar birbirinin
+    üstüne yazılmamalı. Eksik alan, salon çakışması, yetki veya eski sürüm hatası
+    durumunda form korunmalı; başarı mesajı veya başarılı yönlendirme olmamalı.
+    Bir alanı değiştirmeden güncellemede mevcut bilgi mesajı formda gösterilmeli.
+13. Bildirim çerezini veya sonuç belirtecini değiştirmek, başka kullanıcıya taşımak
+    veya süresi dolduktan sonra açmak başarı mesajı üretmemeli. Normal ve kısmi
+    postback'lerde listeye geçişi kontrol edin. Bildirim aktarımında hata olursa
+    kaydın tamamlandığını söyleyen uyarı ve tekrar kaydetmeme bilgisi görünmeli.
 
 YENİDEN DENEME VE GERİ DÖNÜŞ
 Failed kaydını yeniden açmadan önce sebebi giderin ve toplantıdaki bildirim sırasını
