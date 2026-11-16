@@ -26,8 +26,9 @@ DEVREYE ALMA SIRASI (KULLANICI TARAFINDAN TEST SUNUCUSUNDA)
    hesabının bölümün şifresini çözme yetkisi de gerekir.
    Integrated Security kullanılıyorsa SQL bağlantısı Timer servis hesabıyla açılır.
    Bu hesaba kuyruk/alıcı tablolarında SELECT/INSERT/UPDATE; OrtakParametre_Table
-   ve IletisimBilgileri_Table üzerinde SELECT yetkisi verin. Hesabın TSKGV
-   etki alanındaki grup üyelerini/e-postalarını okuyabilmesi ve SMTP'ye erişmesi
+   ve IletisimBilgileri_Table, Personel_Table, BirimTanim_Table üzerinde SELECT
+   yetkisi verin. Hesabın TSKGV etki alanındaki grup üyelerini/e-postalarını
+   okuyabilmesi ve SMTP'ye erişmesi
    gerekir. SharePoint farm veritabanı yetkileri bu uygulama yetkilerini sağlamaz.
 5. WSP dağıtımı tamamlanınca job'ı çalıştırabilecek sunucularda SPTimerV4 servisini
    planlı olarak yeniden başlatın; aynı assembly sürümünde eski kodun bellekte
@@ -84,6 +85,23 @@ DEVREYE ALMA SIRASI (KULLANICI TARAFINDAN TEST SUNUCUSUNDA)
   gönderilmesine yol açabilir; kesin bir kez teslim garantisi yoktur. Sent,
   SMTP'ye teslimi gösterir; gelen kutusuna ulaşmayı/okunmayı garanti etmez.
 - İleti UID, SEQUENCE, DTSTAMP ve REQUEST/CANCEL davranışları korunur.
+- Yeni hazırlanan gönderim planlarında eski ayrıntı tablosunun alanları geri
+  eklenmiştir: toplantı numarası, konu, başlangıç/bitiş, yer, yetkili, koordinatör,
+  iç/dış katılımcılar, bilgi verilecek kişiler, çevrim içi durumu, ikram onayı,
+  gündem ve ikram malzemesi. HTML tablo ve takvim DESCRIPTION alanının düz metni
+  aynı alan listesinden oluşturulur. Outlook için X-ALT-DESC HTML açıklaması da
+  aynı tabloyu taşır; diğer takvim istemcileri düz DESCRIPTION metnini kullanabilir.
+  HTML değerleri kaçırılır, satır sonları korunur; uzun takvim satırları UTF-8
+  karakterleri bölünmeden katlanır.
+- Yetkili/katılımcı adları ve koordinatör birimi ilk plan hazırlanırken, job'ın
+  açıkça seçilmiş bağlantı bilgisini kullanan repository üzerinden okunur. Katılımcı kimlikleri
+  canlı toplantı tablosundan değil kuyruktaki olaydan alınır; silme bildiriminde
+  silinmeden önceki katılımcılar kullanılır. İsimler ve metinler planla sabitlenir.
+- Bu içerik güncellemesi yeni tablo veya migration gerektirmez. Planı henüz
+  hazırlanmamış Pending olaylar yeni biçimi kullanır. Önceden kaydedilmiş planlar
+  kendi HTML içeriğiyle devam eder; eksik TextBody eski paragraf gövdesinden
+  türetilir. Planlar veya başarılı alıcı kayıtları güncellenmez/silinmez ve
+  daha önce gönderilmiş e-postalar kendiliğinden yeniden gönderilmez.
 - Özellik devre dışı bırakılınca ilgili job tanımı kaldırılır; kuyruk ve başarılı
   alıcı kayıtları korunur. Çalışmakta olan job anında iptal edilmez; bitmesini
   bekleyin. Yeniden etkinleştirme bekleyen kayıtlarla devam eder.
@@ -110,6 +128,18 @@ KABUL KONTROLLERİ (KULLANICI TARAFINDAN)
 7. Test ve diğer web uygulamalarının farklı bağlantılarını doğrulayın; seçilen
    web uygulaması dışındaki veritabanına erişilmemeli. SPTimerV4 yeniden
    başlatılınca job tanımı ve zamanlaması korunmalı.
+8. Planı yeni hazırlanacak bir toplantıda yetkili, koordinatör, iç katılımcı,
+   bilgi alıcısı, dış katılımcı, çok satırlı gündem ve ikram bilgilerini doldurun.
+   Mail gövdesindeki tablo ile Outlook takvim davetinin açıklamasında aynı
+   alanların bulunduğunu kontrol edin. Türkçe karakterler, &, <, >, virgül,
+   noktalı virgül, ters bölü ve uzun açıklamalar bozulmamalı; HTML kodu veri
+   olarak görünmeli. Bilgi/grup maillerinde de ayrıntı tablosu bulunmalı.
+9. Aynı toplantıyı güncelleyip bir katılımcıyı çıkarın; ardından silme bildirimini
+   deneyin. Doğru alıcıya REQUEST/CANCEL gitmeli, silmede önceki katılımcılar
+   açıklamada görünmeli. Başarılı alıcıya tekrarlı gönderim yapılmamalı.
+10. TextBody alanı olmayan eski bir Pending planın kendi içeriğini koruyarak
+    gönderilebildiğini; yeni bir planın yeniden denemede aynı HTML/düz metni
+    kullandığını ve başarılı alıcıları atladığını doğrulayın.
 
 YENİDEN DENEME VE GERİ DÖNÜŞ
 Failed kaydını yeniden açmadan önce sebebi giderin ve toplantıdaki bildirim sırasını
@@ -125,3 +155,5 @@ Bu dosyadaki derleme, dağıtım ve kabul adımları Codex tarafından çalışt
 Kaynaklar:
 https://learn.microsoft.com/en-us/sharepoint/technical-reference/timer-job-reference-for-sharepoint-server
 https://learn.microsoft.com/en-us/previous-versions/office/developer/sharepoint-2010/ff464297(v=office.14)
+https://www.rfc-editor.org/rfc/rfc5545.html#section-3.1
+https://learn.microsoft.com/en-us/openspecs/exchange_server_protocols/ms-oxcical/d7f285da-9c7a-4597-803b-b74193c898a8
