@@ -1,4 +1,5 @@
 using Portal_WebParts.Logging;
+using Portal_WebParts.Notifications;
 using Utility.Logging;
 using Model.Services.Portal;
 using Model.IKYS;
@@ -617,11 +618,12 @@ namespace Portal_WebParts.ToplantiGirisiWP
                 return;
             }
             RequireCompleted(result);
-            FinishMeeting(change, update ? "Toplantı güncellendi." : "Toplantı kaydedildi.");
+            FinishMeeting(change, update ? ToplantiCompletion.Updated : ToplantiCompletion.Saved);
         }
-        private void FinishMeeting(PortalToplantiChange change, string message)
+        private void FinishMeeting(PortalToplantiChange change, ToplantiCompletion completion)
         {
             // The meeting and its notification queue entry have committed together.
+            string message = ToplantiCompletionNotice.Message(completion);
             ViewState["MeetingCompleted"] = true;
             ToplantiIdQS = (change.After ?? change.Before).Id.ToString();
             KaydetBtn.Visible = GuncelleBtn.Visible = ToplantiSilBtn.Visible = false;
@@ -654,12 +656,12 @@ namespace Portal_WebParts.ToplantiGirisiWP
                         });
                     }
                 })();");
-                Messages.Success(message + " E-posta bildirimleri gönderim sırasına alındı. Toplantı listesinden devam edebilirsiniz.");
+                ToplantiCompletionNotice.Redirect(Page, LogContext, completion, (change.After ?? change.Before).Id);
             }
             catch (Exception error)
             {
                 PortalWebPartLog.ReportError(LogContext, "Portal.Toplanti.AfterCommit", error,
-                    message + " Bildirimler gönderim sırasına alındı ancak ekran yenilenemedi. İşlemi tekrar kaydetmeyin; sayfayı yenileyin.");
+                    message + " Bildirimler gönderim sırasına alındı ancak toplantı listesi açılamadı. İşlemi tekrar kaydetmeyin; toplantı listesini açın.");
             }
         }
         private static void RequireCompleted(PortalToplantiResult result)
@@ -734,7 +736,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                     return;
                 }
                 RequireCompleted(result);
-                FinishMeeting(change, "Toplantı silindi.");
+                FinishMeeting(change, ToplantiCompletion.Deleted);
             });
         }
         protected void CloseBtn_Click(object sender, EventArgs e)

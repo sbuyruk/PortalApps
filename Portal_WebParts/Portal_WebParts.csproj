@@ -102,6 +102,7 @@
     <Compile Include="Logging\PortalWebPartLog.cs" />
     <Compile Include="Logging\PortalModalActivity.cs" />
     <Compile Include="Logging\PortalDuyuruImage.cs" />
+    <Compile Include="Notifications\ToplantiCompletionNotice.cs" />
     <Compile Include="DuyuruGirisiWP\DuyuruGirisiWP.ascx.cs">
       <DependentUpon>DuyuruGirisiWP.ascx</DependentUpon>
     </Compile>

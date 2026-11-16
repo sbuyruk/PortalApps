@@ -1,4 +1,5 @@
 using Portal_WebParts.Logging;
+using Portal_WebParts.Notifications;
 using Utility.Logging;
 using Model.Services.Portal;
 using Model.IKYS;
@@ -71,6 +72,7 @@ namespace Portal_WebParts.ToplantiListesiWP
                     BitisTarihiTxt.Text = DateTime.Today.AddMonths(12).ConvertToDatetimeEmptyIfNull();
                     BaslangicTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
                     TabloOlustur();
+                    ToplantiCompletionNotice.ShowOnce(Page, LogContext);
                 }
             });
         }
