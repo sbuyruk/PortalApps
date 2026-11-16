@@ -628,7 +628,32 @@ namespace Portal_WebParts.ToplantiGirisiWP
             KaydetNowBtn.Visible = GuncelleNowBtn.Visible = ToplantiSilNowBtn.Visible = false;
             try
             {
-                UtilityHelper.ScriptCalistir("['ModalOnayDiv','ModalSilDiv'].forEach(function(id){var element=document.getElementById(id);if(element){var modal=bootstrap.Modal.getInstance(element);if(modal)modal.hide();}});");
+                UtilityHelper.ScriptCalistir(@"(function () {
+                    ['ModalOnayDiv', 'ModalSilDiv'].forEach(function (id) {
+                        var element = document.getElementById(id);
+                        if (!element) return;
+                        var modal = bootstrap.Modal.getInstance(element);
+                        if (modal) modal.hide();
+                        element.classList.remove('show');
+                        element.style.display = 'none';
+                        element.setAttribute('aria-hidden', 'true');
+                        element.removeAttribute('aria-modal');
+                    });
+                    // UpdatePanel can replace the modal while leaving its backdrop in the body.
+                    if (!document.querySelector('.modal.show, .offcanvas.show') && document.querySelector('.modal-backdrop')) {
+                        document.querySelectorAll('.modal-backdrop').forEach(function (backdrop) {
+                            backdrop.remove();
+                        });
+                        document.body.classList.remove('modal-open');
+                        ['overflow', 'padding-right'].forEach(function (property) {
+                            var attribute = 'data-bs-' + property;
+                            var originalValue = document.body.getAttribute(attribute);
+                            if (originalValue === null) document.body.style.removeProperty(property);
+                            else document.body.style.setProperty(property, originalValue);
+                            document.body.removeAttribute(attribute);
+                        });
+                    }
+                })();");
                 Messages.Success(message + " E-posta bildirimleri gönderim sırasına alındı. Toplantı listesinden devam edebilirsiniz.");
             }
             catch (Exception error)

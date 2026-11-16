@@ -1847,6 +1847,7 @@ namespace Portal_WebParts.ToplantiGirisiWP {
             @__ctrl.ID = "KaydetNowBtn";
             @__ctrl.CssClass = "btn btn-outline-success";
             @__ctrl.Text = "Toplantıyı Kaydet";
+            @__ctrl.OnClientClick = "if (!CloseOnayModal()) return false;";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.KaydetNowBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KaydetNowBtn_Click);
@@ -1865,6 +1866,7 @@ namespace Portal_WebParts.ToplantiGirisiWP {
             @__ctrl.ID = "GuncelleNowBtn";
             @__ctrl.CssClass = "btn btn-outline-primary";
             @__ctrl.Text = "Toplantıyı Güncelle";
+            @__ctrl.OnClientClick = "if (!CloseOnayModal()) return false;";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.GuncelleNowBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.GuncelleNowBtn_Click);
@@ -2164,16 +2166,19 @@ namespace Portal_WebParts.ToplantiGirisiWP {
                     "nce(document.getElementById(\'ModalSilDiv\'));\r\n        myModalInstance.show();\r\n " +
                     "   }\r\n    function OpenOnayModal() {\r\n        var myModalInstance = bootstrap.Mo" +
                     "dal.getOrCreateInstance(document.getElementById(\'ModalOnayDiv\'));\r\n        myMod" +
-                    "alInstance.show();\r\n    }\r\n    function CloseOnayModal() {\r\n        $(\"#ModalOna" +
-                    "yDiv\").modal(\'hide\');\r\n        $(\'.modal-backdrop\').remove()\r\n        $(document" +
-                    ".body).removeClass(\"modal-open\");\r\n    }\r\n    function KatilimciSecimiModal() {\r" +
-                    "\n        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getE" +
-                    "lementById(\'KatilimciSecimiModal\'));\r\n        myModalInstance.show();\r\n    }\r\n\r\n" +
-                    "\r\n    function KatilimciSecildiBtnClick(thisRow, katilimciId, bilgi) {\r\n\r\n\r\n    " +
-                    "    var table = $(\'#CustomModalDataTable\').DataTable();\r\n        var pnum = tabl" +
-                    "e.page.info().page;\r\n\r\n        var indexes = table.row(thisRow).index();\r\n      " +
-                    "  table.rows(indexes).remove().draw();\r\n\r\n\r\n        table.page(pnum).draw(false)" +
-                    ";\r\n\r\n        document.getElementById(\'");
+                    "alInstance.show();\r\n    }\r\n    function CloseOnayModal() {\r\n        // Keep the " +
+                    "confirmation open when Web Forms client validation fails.\r\n        if (typeof Pa" +
+                    "ge_ClientValidate === \'function\' && !Page_ClientValidate(\'\')) {\r\n            ret" +
+                    "urn false;\r\n        }\r\n\r\n        var element = document.getElementById(\'ModalOna" +
+                    "yDiv\');\r\n        if (element) {\r\n            bootstrap.Modal.getOrCreateInstance" +
+                    "(element).hide();\r\n        }\r\n        return true;\r\n    }\r\n\r\n    function Katili" +
+                    "mciSecimiModal() {\r\n        var myModalInstance = bootstrap.Modal.getOrCreateIns" +
+                    "tance(document.getElementById(\'KatilimciSecimiModal\'));\r\n        myModalInstance" +
+                    ".show();\r\n    }\r\n\r\n\r\n    function KatilimciSecildiBtnClick(thisRow, katilimciId," +
+                    " bilgi) {\r\n\r\n\r\n        var table = $(\'#CustomModalDataTable\').DataTable();\r\n    " +
+                    "    var pnum = table.page.info().page;\r\n\r\n        var indexes = table.row(thisRo" +
+                    "w).index();\r\n        table.rows(indexes).remove().draw();\r\n\r\n\r\n        table.pag" +
+                    "e(pnum).draw(false);\r\n\r\n        document.getElementById(\'");
                          @__w.Write( paramToplantiKatilimciIdLbl.ClientID);
 
             @__w.Write("\').value = katilimciId;\r\n        document.getElementById(\'");
@@ -2272,11 +2277,11 @@ namespace Portal_WebParts.ToplantiGirisiWP {
             parameterContainer.Controls[28].RenderControl(@__w);
             @__w.Write("\r\n    </div>\r\n</div>\r\n");
             parameterContainer.Controls[29].RenderControl(@__w);
-            @__w.Write("\r\n");
+            @__w.Write("\n");
             parameterContainer.Controls[30].RenderControl(@__w);
             @__w.Write("\r\n");
             parameterContainer.Controls[31].RenderControl(@__w);
-            @__w.Write("\r\n");
+            @__w.Write("\n");
             parameterContainer.Controls[32].RenderControl(@__w);
         }
         
