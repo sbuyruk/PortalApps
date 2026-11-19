@@ -1188,7 +1188,7 @@ namespace Utility.ProjeGlobal
         public const string PARAM_BILGISISTEM_MAILGRUBU = "BilgiSistemMailGrubu";
         public const string PARAM_IKRAM_MAILGRUBU = "IkramMailGrubu";
         public const string PARAM_OZELKALEMMAILADRESI = "ozelkalem@tskgv.org.tr";//
-        public const string PARAM_MTSMAILADRESI = "Makam Takip Sistemi <mts@tskgv.local>";
+        public const string PARAM_MTSMAILADRESI = "Makam Takip Sistemi <mts@tskgv.org.tr>";
 
         #endregion
         //TOPLANTI
