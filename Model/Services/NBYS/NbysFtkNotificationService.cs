@@ -53,7 +53,7 @@ namespace Model.Services.NBYS
             using (SmtpClient smtp = new SmtpClient(host))
             using (MailMessage mail = new MailMessage())
             {
-                mail.From = new MailAddress("dgundur@tskgv.local");
+                mail.From = new MailAddress("dgundur@tskgv.org.tr");
                 foreach (string address in recipients) mail.To.Add(new MailAddress(address));
                 mail.Subject = subject;
                 mail.IsBodyHtml = true;

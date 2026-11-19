@@ -190,8 +190,8 @@ namespace Model.Ortak
                     throw new InvalidOperationException("Bildirim için izin talebi bulunamadı.");
                 if (izinTalep != null)
                 {
-                    string userto = personel.KullaniciAdi + "@tskgv.local";
-                    string from = "ikys@tskgv.local";
+                    string userto = personel.KullaniciAdi + "@tskgv.org.tr";
+                    string from = "ikys@tskgv.org.tr";
                     string bastarBittar = izinTalep.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinTalep.BitisTarihi.ConvertToDatetimeEmptyIfNull();
                     //  string izintipi=izinTalep.IzinTipi?Pr
                     IzinTanim izintipi = new IzinTanim();
@@ -271,7 +271,7 @@ namespace Model.Ortak
                     string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL, context);
                     MailHelper.EPostaGonderVeyaHataVer(from, userto, subject, userbody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
 
-                    //string to = "izinonaymailgrubu@tskgv.local";
+                    //string to = "izinonaymailgrubu@tskgv.org.tr";
                     //subject = personel.Adi + " " + personel.Soyadi + " Yeni " + izintipiStr + " izin talebi ";
 
                     //MailHelper.ePostaGonder(from, to, subject, userbody);
@@ -460,8 +460,8 @@ namespace Model.Ortak
                 if (izinTalep != null)
                 {
                     //EPostayi hazirla
-                    string to = personel.KullaniciAdi + "@tskgv.local";
-                    string from = "ikys@tskgv.local";
+                    string to = personel.KullaniciAdi + "@tskgv.org.tr";
+                    string from = "ikys@tskgv.org.tr";
                     string bastarBittar = izinTalep.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinTalep.BitisTarihi.ConvertToDatetimeEmptyIfNull();
                     //  string izintipi=izinTalep.IzinTipi?Pr
                     IzinTanim izintipi = new IzinTanim();
@@ -484,7 +484,7 @@ namespace Model.Ortak
                     MailHelper.EPostaGonderVeyaHataVer(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
 
                     //IKYS Onay grubuna eposta gönder
-                    to = "izinonaymailgrubu@tskgv.local";
+                    to = "izinonaymailgrubu@tskgv.org.tr";
                     subject = personel.Adi + " " + personel.Soyadi + " Yeni " + izintipiStr + " izin talebi ";
                     string url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/IzinTalepListesi.aspx'>Izin Talepleri </a>";
                     if (izinTalep.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT)
@@ -516,7 +516,7 @@ namespace Model.Ortak
             if (context == null) throw new ArgumentNullException("context", "Log bağlamı gereklidir.");
             try
             {
-                string from = "ikys@tskgv.local";
+                string from = "ikys@tskgv.org.tr";
                 string personelEposta = new IletisimBilgileriService().GetByPersonelId(personel.Id, context)?.InternetEPosta;
                 List<string> personelEpostaAdresleri = new List<string>();
                 List<string> amirEpostaAdresleri = new List<string>();
@@ -599,7 +599,7 @@ namespace Model.Ortak
                 personelItem.LoggingContext = context;
                 string userto = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_BILGISISTEM_MAILGRUBU, context);
 
-                string from = "IKYS <ikys@tskgv.local>";
+                string from = "IKYS <ikys@tskgv.org.tr>";
                 string subject = baslik;
 
 

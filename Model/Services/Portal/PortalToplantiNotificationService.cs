@@ -279,7 +279,7 @@ namespace Model.Services.Portal
             using (var message = new MailMessage())
             {
                 client.Timeout = 30000;
-                message.From = new MailAddress("tys@tskgv.local", "Toplantı Yönetim Sistemi");
+                message.From = new MailAddress("tys@tskgv.org.tr", "Toplantı Yönetim Sistemi");
                 message.To.Add(new MailAddress(address));
                 message.Subject = subject;
                 message.Body = textBody;
@@ -304,7 +304,7 @@ namespace Model.Services.Portal
                     calendar.Append("\r\nDESCRIPTION:").Append(Ics(textBody));
                     // Outlook's HTML calendar description keeps the same table as the email body.
                     calendar.Append("\r\nX-ALT-DESC;FMTTYPE=text/html:").Append(Ics(body));
-                    calendar.Append("\r\nORGANIZER:mailto:tys@tskgv.local\r\nATTENDEE;RSVP=TRUE:mailto:").Append(message.To[0].Address);
+                    calendar.Append("\r\nORGANIZER:mailto:tys@tskgv.org.tr\r\nATTENDEE;RSVP=TRUE:mailto:").Append(message.To[0].Address);
                     calendar.Append("\r\nSTATUS:").Append(method == "CANCEL" ? "CANCELLED" : "CONFIRMED");
                     calendar.Append("\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n");
                     var type = new ContentType("text/calendar");
