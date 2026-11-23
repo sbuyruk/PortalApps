@@ -888,9 +888,10 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             return (!isEmpty && !isDateUsed);
         }
 
-        private bool Guncelle()
+        private bool Guncelle(out GorevOnay yenidenOnayBekleyenGorev)
         {
             bool isUpdated = false;
+            yenidenOnayBekleyenGorev = null;
 
             GorevOnay gorevOnay = new GorevOnayService().GetById(GorevOnayIdQS.ConvertToInt(), LoggingContext);
             if (gorevOnay != null)
@@ -926,7 +927,10 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 gorevOnay.Yevmiye = YevmiyeTxt.Text;
                 gorevOnay.GunlukYevmiye = GunlukYevmiyeTxt.Text;
                 gorevOnay.AmirOnayi = (int)AmirOnayiBelirle();
-                isUpdated = new GorevOnayService().Update(gorevOnay, LoggingContext);
+                bool yenidenAmirOnayiBekliyor;
+                isUpdated = new GorevOnayService().Update(gorevOnay, LoggingContext, out yenidenAmirOnayiBekliyor);
+                if (isUpdated && yenidenAmirOnayiBekliyor)
+                    yenidenOnayBekleyenGorev = gorevOnay;
             }
             return isUpdated;
         }
@@ -1152,10 +1156,16 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     bool isValid = ValidateInputValues(GorevOnayIdQS.ConvertToInt());
                     if (isValid)
                     {
-                        bool isUpdated = Guncelle();
+                        GorevOnay yenidenOnayBekleyenGorev;
+                        bool isUpdated = Guncelle(out yenidenOnayBekleyenGorev);
                         if (isUpdated)
                         {
-                            Messages.Success("Güncellendi", 2000);
+                            PortalLogContext context = LoggingContext;
+                            if (yenidenOnayBekleyenGorev != null &&
+                                !IKYSOrtak.GorevYenidenOnayEpostasiGonder(yenidenOnayBekleyenGorev, context))
+                                Messages.Warning("Görev güncellendi ancak amire bildirim e-postası gönderilemedi. Başvuru kodu: " + context.OperationId.ToString("N"));
+                            else
+                                Messages.Success("Güncellendi", 2000);
                         }
                     }
                 }

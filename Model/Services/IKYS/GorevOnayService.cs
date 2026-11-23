@@ -36,7 +36,24 @@ namespace Model.Services.IKYS
         public int Save(GorevOnay item, PortalLogContext context) { if(context==null) throw new ArgumentNullException("context"); if(item==null) throw new ArgumentNullException("item"); item.OlusturmaTarihi=DateTime.Now; item.Olusturan=UtilityHelper.GetCurrentUserName(); using(SqlTransactionContext transaction=new SqlTransactionContext()) { item.Id=repository.Insert(item,transaction,context); int auditId=new PortalLogRepository().RecordAudit(context,"INSERT","GorevOnay",item.Id.ToString(CultureInfo.InvariantCulture),transaction); RecordChanges(null,item,auditId,transaction); transaction.Complete(); } return item.Id; }
 
 
-        public bool Update(GorevOnay item, PortalLogContext context) { if(context==null) throw new ArgumentNullException("context"); if(item==null||item.Id<=0) return false; using(SqlTransactionContext transaction=new SqlTransactionContext()) { GorevOnay old=Map(repository.SelectById(item.Id,transaction,context)); if(old==null) return false; item.DegistirmeTarihi=DateTime.Now; item.Degistiren=UtilityHelper.GetCurrentUserName(); if(!repository.Update(item,transaction,context)) return false; int auditId=new PortalLogRepository().RecordAudit(context,"UPDATE","GorevOnay",item.Id.ToString(CultureInfo.InvariantCulture),transaction); RecordChanges(old,item,auditId,transaction); transaction.Complete(); return true; } }
+        public bool Update(GorevOnay item, PortalLogContext context)
+        {
+            bool yenidenAmirOnayiBekliyor;
+            return Update(item, context, out yenidenAmirOnayiBekliyor);
+        }
+
+        public bool Update(GorevOnay item, PortalLogContext context, out bool yenidenAmirOnayiBekliyor)
+        {
+            if (context == null) throw new ArgumentNullException("context");
+            yenidenAmirOnayiBekliyor = false;
+            if (item == null || item.Id <= 0) return false;
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                if (!Update(item, transaction, context, out yenidenAmirOnayiBekliyor)) return false;
+                transaction.Complete();
+            }
+            return true;
+        }
 
 
         public bool Delete(GorevOnay item, PortalLogContext context) { if(context==null) throw new ArgumentNullException("context"); if(item==null||item.Id<=0) return false; using(SqlTransactionContext transaction=new SqlTransactionContext()) { GorevOnay old=Map(repository.SelectById(item.Id,transaction,context)); if(old==null||!repository.Delete(item.Id,transaction,context)) return false; int auditId=new PortalLogRepository().RecordAudit(context,"DELETE","GorevOnay",item.Id.ToString(CultureInfo.InvariantCulture),transaction); RecordChanges(old,null,auditId,transaction); transaction.Complete(); return true; } }
@@ -178,8 +195,16 @@ namespace Model.Services.IKYS
         }
         public bool Update(GorevOnay item, SqlTransactionContext transaction, PortalLogContext context)
         {
+            bool yenidenAmirOnayiBekliyor;
+            return Update(item, transaction, context, out yenidenAmirOnayiBekliyor);
+        }
+
+        private bool Update(GorevOnay item, SqlTransactionContext transaction, PortalLogContext context,
+            out bool yenidenAmirOnayiBekliyor)
+        {
             if (transaction == null) throw new ArgumentNullException("transaction");
             if (context == null) throw new ArgumentNullException("context");
+            yenidenAmirOnayiBekliyor = false;
             if (item == null || item.Id <= 0) return false;
             GorevOnay old = Map(repository.SelectById(item.Id, transaction, context));
             if (old == null) return false;
@@ -188,6 +213,8 @@ namespace Model.Services.IKYS
             if (!repository.Update(item, transaction, context)) return false;
             int auditId = new PortalLogRepository().RecordAudit(context, "UPDATE", "GorevOnay", item.Id.ToString(CultureInfo.InvariantCulture), transaction);
             RecordChanges(old, item, auditId, transaction);
+            int onayBekliyor = (int)GorevOnay.AmirOnayDurumu.OnayBekliyor;
+            yenidenAmirOnayiBekliyor = old.AmirOnayi != onayBekliyor && item.AmirOnayi == onayBekliyor;
             return true;
         }
 
