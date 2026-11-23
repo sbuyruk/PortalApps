@@ -506,6 +506,37 @@ namespace Model.Ortak
             }
         }
 
+        public static bool GorevYenidenOnayEpostasiGonder(GorevOnay gorevOnay, Utility.Logging.PortalLogContext context)
+        {
+            context = context.WithEntity("GorevOnay", gorevOnay.Id);
+            try
+            {
+                IsBilgileri isBilgileri = new IsBilgileriService().GetByPersonelId(gorevOnay.PersonelId, context);
+                BirimTanim birim = isBilgileri == null ? null : new BirimTanimService().GetById(isBilgileri.BirimId, context);
+                if (birim == null || birim.AmirId <= 0)
+                    throw new InvalidOperationException("Görevli personelin birim amiri bulunamadı.");
+
+                string amirEpostasi = new IletisimBilgileriService().GetByPersonelId(birim.AmirId, context)?.InternetEPosta;
+                if (string.IsNullOrWhiteSpace(amirEpostasi))
+                    throw new InvalidOperationException("Görevli personelin birim amirinin e-posta adresi bulunamadı.");
+
+                string konu = gorevOnay.Id + " numaralı görev yeniden onayınızı bekliyor";
+                string onaySayfasi = UtilityHelper.RootURLGetir() + "/KullaniciUygulamalari/Sayfalar/" + ProjeConstants.PAGE_BEKLEYENISLEMLER;
+                string icerik = konu + ".<br>Güncellenen görevi <a href='" + WebUtility.HtmlEncode(onaySayfasi) +
+                    "'>Bekleyen İşlemler</a> ekranında inceleyebilirsiniz.";
+                string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL, context);
+                MailHelper.EPostaGonderVeyaHataVer("ikys@tskgv.org.tr", amirEpostasi.Trim(), konu, icerik,
+                    smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
+                return true;
+            }
+            catch (System.Threading.ThreadAbortException) { throw; }
+            catch (Exception error)
+            {
+                Utility.Logging.PortalTechnicalLog.WriteError(context, "IKYS.Notification", error);
+                return false;
+            }
+        }
+
         public static bool GorevOnayEPostasiGonder(Personel personel, int gorevOnayId, string tip, Utility.Logging.PortalLogContext context)
         {
             return GorevOnayEPostasiGonder(personel, gorevOnayId, tip, null, "Giriş", true, context);
