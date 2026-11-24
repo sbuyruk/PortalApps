@@ -1,5 +1,6 @@
 using DAO.Ortak;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using Utility.Logging;
 using System.Linq;
@@ -8,6 +9,12 @@ namespace DAO.Repositories.TBYS
 {
     public class TasinmazRepository
     {
+        private static readonly string[] PhotoColumns =
+        {
+            "TasinmazFoto", "TasinmazFoto1", "TasinmazFoto2", "TasinmazFoto3", "TasinmazFoto4",
+            "TahkikatFoto", "KrokiFoto", "TapuFoto"
+        };
+
         private readonly TbysSqlExecutor db;
         private readonly CrudQueryBuilder queryBuilder;
 
@@ -258,6 +265,40 @@ namespace DAO.Repositories.TBYS
         public bool Update<T>(T entity, SqlTransactionContext transaction, PortalLogContext context)
         {
             return db.Update2Db(queryBuilder.BuildUpdate(entity, "Tasinmaz_Table"), transaction, context);
+        }
+
+        public bool UpdatePhotos(int id, IDictionary<string, string> photos, DateTime changedAt, string changedBy,
+            SqlTransactionContext transaction, PortalLogContext context)
+        {
+            SqlQuery query = new SqlQuery();
+            List<string> assignments = new List<string>();
+            foreach (KeyValuePair<string, string> photo in photos)
+            {
+                if (!PhotoColumns.Contains(photo.Key))
+                    throw new ArgumentException("Geçersiz taşınmaz fotoğraf alanı.", "photos");
+
+                assignments.Add(photo.Key + "=@" + photo.Key);
+                query.AddParameter("@" + photo.Key, photo.Value);
+            }
+
+            query.Sql = "UPDATE Tasinmaz_Table SET " + string.Join(", ", assignments) +
+                ", DegistirmeTarihi=@ChangedAt, Degistiren=@ChangedBy WHERE Id=@Id";
+            query.AddParameter("@Id", id);
+            query.AddParameter("@ChangedAt", changedAt);
+            query.AddParameter("@ChangedBy", changedBy);
+            return db.UpdateExactlyOne(query, transaction, context);
+        }
+
+        public bool CanRemovePhotoFile(string photoName, SqlTransactionContext transaction, PortalLogContext context)
+        {
+            if (string.IsNullOrWhiteSpace(photoName) || PhotoColumns.Contains(photoName, StringComparer.OrdinalIgnoreCase))
+                return false;
+
+            SqlQuery query = new SqlQuery("SELECT TOP (1) Id FROM Tasinmaz_Table WHERE @PhotoName IN (" +
+                string.Join(", ", PhotoColumns) + ")");
+            query.AddParameter("@PhotoName", photoName);
+            DataTable rows = db.SelectFromDb(query, transaction, context);
+            return rows == null || rows.Rows.Count == 0;
         }
 
         public bool Delete(int id, SqlTransactionContext transaction, PortalLogContext context)
