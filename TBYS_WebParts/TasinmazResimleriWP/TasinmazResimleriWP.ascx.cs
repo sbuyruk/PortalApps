@@ -8,6 +8,7 @@ using TBYS_WebParts.Logging;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -62,10 +63,22 @@ namespace TBYS_WebParts.TasinmazResimleriWP
         {
             base.OnInit(e);
             InitializeControl();
-            SaveBtn.Text = "Resimleri/Belgeleri Kaydet";
-            FileUpload5.Attributes["onchange"] = "readURL(this,'Image6')";
             this.ChromeType = PartChromeType.None;
         }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            Image[] resimler = { Image1, Image2, Image3, Image4, Image5, Image6, Image7, Image8 };
+            int fotografSayisi = resimler.Count(resim => resim.Attributes["data-photo-stored"] == "true");
+            FotografSayisiLbl.Text = fotografSayisi + " / " + resimler.Length + " yüklü";
+
+            HtmlAnchor[] belgeler = { TapuSenediDosyaLnk, EmlakBeyaniDosyaLnk, YapiKayitDosyaLnk, TapuKayitDosyaLnk,
+                ImarDurumuDosyaLnk, TasinmazRaporuDosyaLnk, VakiflarTasinmazBildirimiDosyaLnk };
+            BelgeSayisiLbl.Text = belgeler.Count(belge => belge.Visible) + " / " + belgeler.Length + " yüklü";
+        }
+
         public string SPImageListName { get; private set; }
         private string TasinmazIdQS
         {
@@ -163,40 +176,39 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             if (tasinmaz != null)
             {
                 EnvanterdeMiQS = tasinmaz.EnvanterdeMi.ToString();
-                AdiLbl.CssClass = "d-block fs-6 fw-normal text-muted mt-1";
-                AdiLbl.Text = HttpUtility.HtmlEncode(string.Format(
-                    "Adres: {0} | İlçe: {1} | İl: {2}",
-                    string.IsNullOrWhiteSpace(tasinmaz.Adres) ? "Belirtilmemiş" : tasinmaz.Adres,
-                    string.IsNullOrWhiteSpace(tasinmaz.Ilcesi) ? "Belirtilmemiş" : tasinmaz.Ilcesi,
-                    string.IsNullOrWhiteSpace(tasinmaz.Ili) ? "Belirtilmemiş" : tasinmaz.Ili));
+                IdLbl.Text = "Taşınmaz No " + tasinmaz.Id;
+                AdiLbl.Text = KonumDegeri(tasinmaz.Adres);
+                IlceLbl.Text = KonumDegeri(tasinmaz.Ilcesi);
+                IlLbl.Text = KonumDegeri(tasinmaz.Ili);
 
-                string newUrl = UtilityHelper.TbysURLGetir() + "/" + ProjeConstants.RESIMLER_TASINMAZ + "/";
-
-                string imgUrl1 = newUrl + (!string.IsNullOrEmpty(tasinmaz.TasinmazFoto) ? tasinmaz.TasinmazFoto : ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO) + ".jpg";
-                string imgUrl2 = newUrl + (!string.IsNullOrEmpty(tasinmaz.TasinmazFoto1) ? tasinmaz.TasinmazFoto1 : ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO1) + ".jpg";
-                string imgUrl3 = newUrl + (!string.IsNullOrEmpty(tasinmaz.TasinmazFoto2) ? tasinmaz.TasinmazFoto2 : ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO2) + ".jpg";
-                string imgUrl4 = newUrl + (!string.IsNullOrEmpty(tasinmaz.TahkikatFoto) ? tasinmaz.TahkikatFoto : ProjeConstants.PARAM_TASINMAZ_TAHKIKATFOTO) + ".jpg";
-                string imgUrl5 = newUrl + (!string.IsNullOrEmpty(tasinmaz.KrokiFoto) ? tasinmaz.KrokiFoto : ProjeConstants.PARAM_TASINMAZ_KROKIFOTO) + ".jpg";
-                string imgUrl6 = newUrl + (!string.IsNullOrEmpty(tasinmaz.TapuFoto) ? tasinmaz.TapuFoto : ProjeConstants.PARAM_TASINMAZ_TAPUFOTO) + ".jpg";
-                string imgUrl7 = newUrl + (!string.IsNullOrEmpty(tasinmaz.TasinmazFoto3) ? tasinmaz.TasinmazFoto3 : ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO3) + ".jpg";
-                string imgUrl8 = newUrl + (!string.IsNullOrEmpty(tasinmaz.TasinmazFoto4) ? tasinmaz.TasinmazFoto4 : ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO4) + ".jpg";
-
-                Image1.ImageUrl = imgUrl1;
-                Image2.ImageUrl = imgUrl2;
-                Image3.ImageUrl = imgUrl3;
-                Image4.ImageUrl = imgUrl4;
-                Image5.ImageUrl = imgUrl5;
-                Image6.ImageUrl = imgUrl6;
-                Image7.ImageUrl = imgUrl7;
-                Image8.ImageUrl = imgUrl8;
-
-                // onerror için base URL'i client-side'a gönder
-                TasinmazResimBaseUrl.Value = newUrl;
+                string kitaplikUrl = UtilityHelper.TbysURLGetir() + "/" + ProjeConstants.RESIMLER_TASINMAZ + "/";
+                ResmiGoster(Image1, kitaplikUrl, tasinmaz.TasinmazFoto, ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO);
+                ResmiGoster(Image2, kitaplikUrl, tasinmaz.TasinmazFoto1, ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO1);
+                ResmiGoster(Image3, kitaplikUrl, tasinmaz.TasinmazFoto2, ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO2);
+                ResmiGoster(Image4, kitaplikUrl, tasinmaz.TahkikatFoto, ProjeConstants.PARAM_TASINMAZ_TAHKIKATFOTO);
+                ResmiGoster(Image5, kitaplikUrl, tasinmaz.KrokiFoto, ProjeConstants.PARAM_TASINMAZ_KROKIFOTO);
+                ResmiGoster(Image6, kitaplikUrl, tasinmaz.TapuFoto, ProjeConstants.PARAM_TASINMAZ_TAPUFOTO);
+                ResmiGoster(Image7, kitaplikUrl, tasinmaz.TasinmazFoto3, ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO3);
+                ResmiGoster(Image8, kitaplikUrl, tasinmaz.TasinmazFoto4, ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO4);
+                TasinmazResimBaseUrl.Value = kitaplikUrl;
 
                 PDFGoster(tasinmaz.Id);
-                GuncellemeTarihiLbl.Text = tasinmaz.DegistirmeTarihi != null ? "Son Güncelleme: " + tasinmaz.DegistirmeTarihi.ToString("dd.MM.yyyy HH:mm") : string.Empty;
-                GuncelleyenLbl.Text = tasinmaz.Degistiren != null ? "Son Güncelleyen: " + tasinmaz.Degistiren : string.Empty;
+                GuncellemeTarihiLbl.Text = tasinmaz.DegistirmeTarihi > DateTime.MinValue ? "Son güncelleme " + tasinmaz.DegistirmeTarihi.ToString("dd.MM.yyyy HH:mm") : string.Empty;
+                GuncelleyenLbl.Text = string.IsNullOrWhiteSpace(tasinmaz.Degistiren) ? string.Empty : "Güncelleyen " + HttpUtility.HtmlEncode(tasinmaz.Degistiren);
             }
+        }
+
+        private static string KonumDegeri(string deger)
+        {
+            return string.IsNullOrWhiteSpace(deger) ? "Belirtilmemiş" : HttpUtility.HtmlEncode(deger);
+        }
+
+        private static void ResmiGoster(Image resim, string kitaplikUrl, string fotoAdi, string varsayilanFotoAdi)
+        {
+            bool fotografVar = !string.IsNullOrWhiteSpace(fotoAdi) &&
+                !string.Equals(fotoAdi, varsayilanFotoAdi, StringComparison.OrdinalIgnoreCase);
+            resim.ImageUrl = fotografVar ? kitaplikUrl + fotoAdi + ".jpg" : string.Empty;
+            resim.Attributes["data-photo-stored"] = fotografVar ? "true" : "false";
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
@@ -425,7 +437,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                     return;
                 }
 
-                resim.ImageUrl = kitaplikUrl + alan + ".jpg";
+                ResmiGoster(resim, kitaplikUrl, null, alan);
                 Messages.Success("Resim taşınmazdan kaldırıldı.", 2000);
                 BildirimEPostasiGonder("Resim taşınmazdan kaldırıldı. Dosya: <b>" + HttpUtility.HtmlEncode(fotoAdi) + ".jpg</b>");
             }
