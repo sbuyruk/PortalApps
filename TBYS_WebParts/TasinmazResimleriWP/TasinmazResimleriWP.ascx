@@ -16,8 +16,6 @@
         --tbys-accent: #07595c;
         --tbys-accent-soft: #e7f3f1;
         --tbys-danger: #923236;
-        width: 100%;
-        container: tbys-property / inline-size;
         color: var(--tbys-ink);
         font-size: 16px;
     }
@@ -71,14 +69,13 @@
     .tbys-property .tbys-location dt { color: var(--tbys-muted); font-size: 14px; font-weight: 400; }
     .tbys-property .tbys-location dd { margin: .15rem 0 0; font-weight: 600; overflow-wrap: anywhere; }
     .tbys-property .tbys-layout {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr);
+        display: flex;
+        flex-wrap: wrap;
         gap: 12px;
-        align-items: start;
+        align-items: flex-start;
     }
-    @container tbys-property (min-width: 840px) {
-        .tbys-property .tbys-layout { grid-template-columns: minmax(0, 1fr) clamp(300px, 27%, 380px); }
-    }
+    .tbys-property .tbys-gallery-panel { flex: 8 1 500px; }
+    .tbys-property .tbys-documents-panel { flex: 1 1 300px; }
     .tbys-property .tbys-panel-header {
         display: flex;
         align-items: baseline;
@@ -90,23 +87,14 @@
     }
     .tbys-property .tbys-panel-header h2 { margin: 0; font-size: 18px; font-weight: 700; color: var(--tbys-ink); }
     .tbys-property .tbys-count { color: var(--tbys-muted); font-size: 13px; white-space: nowrap; }
-    .tbys-property .tbys-panel:has(.tbys-photo-grid) { container: tbys-gallery / inline-size; }
     .tbys-property .tbys-photo-grid {
+        --tbys-photo-gap: 8px;
         display: grid;
-        grid-template-columns: minmax(0, 1fr);
-        gap: 8px;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, max(165px, calc((100% - 3 * var(--tbys-photo-gap)) / 4))), 1fr));
+        gap: var(--tbys-photo-gap);
         margin: 0;
         padding: .8rem;
         list-style: none;
-    }
-    @container tbys-gallery (min-width: 360px) {
-        .tbys-property .tbys-photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-    @container tbys-gallery (min-width: 530px) {
-        .tbys-property .tbys-photo-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    }
-    @container tbys-gallery (min-width: 710px) {
-        .tbys-property .tbys-photo-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     }
     .tbys-property .tbys-photo { min-width: 0; border: 1px solid var(--tbys-line); border-radius: .55rem; overflow: hidden; }
     .tbys-property .tbys-photo-preview { display: block; width: 100%; padding: 0; border: 0; background: var(--tbys-page); }
@@ -246,7 +234,7 @@
                         </dl>
                     </section>
                     <div class="tbys-layout">
-                        <section class="tbys-panel" aria-label="Fotoğraflar">
+                        <section class="tbys-panel tbys-gallery-panel" aria-label="Fotoğraflar">
                             <div class="tbys-panel-header">
                                 <h2>Fotoğraflar</h2>
                                 <asp:Label ID="FotografSayisiLbl" CssClass="tbys-count" runat="server" />
@@ -382,7 +370,7 @@
                             </li>
                             </ul>
                         </section>
-                        <section class="tbys-panel" aria-label="Belgeler">
+                        <section class="tbys-panel tbys-documents-panel" aria-label="Belgeler">
                             <div class="tbys-panel-header">
                                 <h2>Belgeler</h2>
                                 <asp:Label ID="BelgeSayisiLbl" CssClass="tbys-count" runat="server" />
