@@ -145,6 +145,19 @@
                     <div class="row">
                         <div class="col-3 border border-dark p-2">
                             <div class="form-group">
+                                <asp:Label CssClass="col-form-label fw-bold" runat="server" AssociatedControlID="TapuSenediYukleFU" Text="Tapu Senedi (PDF)" />
+                            </div>
+                            <div class="form-group text-center">
+                                <a id="TapuSenediDosyaLnk" runat="server" class="btn btn-outline-primary" data-fancybox data-type="pdf" data-width="960" data-height="720" href="#" visible="false">Tapu Senedi</a>
+                                <asp:LinkButton ID="TapuSenediSilBtn" CssClass="btn btn-outline-danger" runat="server" CausesValidation="false" Text="Sil" OnClick="TapuSenediSilBtn_Click"
+                                    OnClientClick="return confirm('Silme işlemini onaylıyor musunuz?');" Visible="false" />
+                            </div>
+                            <div class="form-group">
+                                <asp:FileUpload ID="TapuSenediYukleFU" CssClass="btn btn-danger form-control" runat="server" ToolTip="Yüklemek İçin PDF Dosya Seçiniz" accept=".pdf" />
+                            </div>
+                        </div>
+                        <div class="col-3 border border-dark p-2">
+                            <div class="form-group">
                                 <asp:Label CssClass="col-form-label fw-bold" ID="Label2" runat="server">Emlak Beyanı (pdf)</asp:Label>
                             </div>
                             <div class="form-group text-center">
@@ -185,6 +198,8 @@
                                 <asp:FileUpload ID="TapuKayitYukleFU" CssClass="btn btn-danger form-control" runat="server" ToolTip="Yüklemek İçin PDF Dosya Seçiniz" type="text" />
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-3 border border-dark p-2">
                             <div class="form-group">
                                 <asp:Label CssClass="col-form-label fw-bold" ID="Label4" runat="server">İmar Durumu Belgesi (pdf)</asp:Label>
@@ -199,8 +214,6 @@
                                 <asp:FileUpload ID="ImarDurumuYukleFU" CssClass="btn btn-danger form-control" runat="server" ToolTip="Yüklemek İçin PDF Dosya Seçiniz" type="text" />
                             </div>
                         </div>
-                    </div>
-                     <div class="row">
                         <div class="col-3 border border-dark p-2">
                             <div class="form-group">
                                 <asp:Label CssClass="col-form-label fw-bold" ID="Label5" runat="server">Taşınmaz Raporu (pdf)</asp:Label>
@@ -215,7 +228,20 @@
                                 <asp:FileUpload ID="TasinmazRaporuYukleFU" CssClass="btn btn-danger form-control" runat="server" ToolTip="Yüklemek İçin PDF Dosya Seçiniz" type="text" />
                             </div>
                         </div>
-                     </div>
+                        <div class="col-3 border border-dark p-2">
+                            <div class="form-group">
+                                <asp:Label CssClass="col-form-label fw-bold" runat="server" AssociatedControlID="VakiflarTasinmazBildirimiYukleFU" Text="Vakıflar Taşınmaz Bildirimi" />
+                            </div>
+                            <div class="form-group text-center">
+                                <a id="VakiflarTasinmazBildirimiDosyaLnk" runat="server" class="btn btn-outline-primary" data-fancybox data-type="pdf" data-width="960" data-height="720" href="#" visible="false">Vakıflar Taşınmaz Bildirimi</a>
+                                <asp:LinkButton ID="VakiflarTasinmazBildirimiSilBtn" CssClass="btn btn-outline-danger" runat="server" CausesValidation="false" Text="Sil" OnClick="VakiflarTasinmazBildirimiSilBtn_Click"
+                                    OnClientClick="return confirm('Silme işlemini onaylıyor musunuz?');" Visible="false" />
+                            </div>
+                            <div class="form-group">
+                                <asp:FileUpload ID="VakiflarTasinmazBildirimiYukleFU" CssClass="btn btn-danger form-control" runat="server" ToolTip="Yüklemek İçin PDF Dosya Seçiniz" accept=".pdf" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="card-footer">

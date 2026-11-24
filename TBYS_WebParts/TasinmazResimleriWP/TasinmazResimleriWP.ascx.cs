@@ -6,6 +6,8 @@ using System;
 using Utility.Logging;
 using TBYS_WebParts.Logging;
 using System.ComponentModel;
+using System.IO;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
@@ -17,6 +19,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP
     [ToolboxItemAttribute(false)]
     public partial class TasinmazResimleriWP : WebPart
     {
+        private const string TapuSenediDosyaKoku = "TapuSenedi";
+        private const string VakiflarTasinmazBildirimiDosyaKoku = "VakiflarTasinmazBildirimi";
+
         private PortalLogContext LoggingContext
         {
             get
@@ -205,6 +210,8 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             {
                 ExceptionHelper exhelper = updateTasinmazFoto2Db(tasinmaz);
                 PDFKaydet(tasinmaz.Id);
+                bool tapuSenediKaydedildi = EkPdfKaydet(TapuSenediYukleFU, TapuSenediDosyaKoku, "Tapu Senedi", tasinmaz.Id);
+                bool vakiflarBildirimiKaydedildi = EkPdfKaydet(VakiflarTasinmazBildirimiYukleFU, VakiflarTasinmazBildirimiDosyaKoku, "Vakıflar Taşınmaz Bildirimi", tasinmaz.Id);
                 PDFGoster(tasinmaz.Id);
                 if (exhelper.HasException())
                 {
@@ -212,7 +219,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                     exhelper.Exceptions.Add(ex);
                     TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.TasinmazResimleriWP.SaveBtn_Click", exhelper.Exceptions);
                 }
-                else
+                else if (tapuSenediKaydedildi && vakiflarBildirimiKaydedildi)
                 {
 
 
@@ -689,6 +696,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                         TasinmazRaporuYukleFU.Visible = true;
                         Messages.Info("Lütfen Taşınmaz Raporu Belgesini pdf olarak yükleyiniz.", 2000);
                     }
+
+                    EkPdfGoster(TapuSenediDosyaKoku, tasinmazId, TapuSenediYukleFU, TapuSenediDosyaLnk, TapuSenediSilBtn);
+                    EkPdfGoster(VakiflarTasinmazBildirimiDosyaKoku, tasinmazId, VakiflarTasinmazBildirimiYukleFU, VakiflarTasinmazBildirimiDosyaLnk, VakiflarTasinmazBildirimiSilBtn);
                 }
                 else
                 {
@@ -704,6 +714,88 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
                 exhelper.Exceptions.Add(ex);
                 TbysWebPartLog.ReportErrors(LoggingContext, "TBYS.TasinmazResimleriWP.PDFGoster", exhelper.Exceptions);
+            }
+        }
+
+        private bool EkPdfKaydet(FileUpload yukleme, string dosyaKoku, string belgeAdi, int tasinmazId)
+        {
+            if (!yukleme.HasFile)
+                return true;
+
+            try
+            {
+                if (!string.Equals(Path.GetExtension(yukleme.FileName), ".pdf", StringComparison.OrdinalIgnoreCase))
+                {
+                    Messages.Error(belgeAdi + " için PDF uzantılı bir dosya seçiniz.");
+                    return false;
+                }
+
+                string dosyaAdi = dosyaKoku + tasinmazId + ".pdf";
+                if (!UtilityHelper.UploadFileToSharePoint(yukleme, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi, LoggingContext))
+                {
+                    Messages.Error(belgeAdi + " yüklenemedi.");
+                    return false;
+                }
+
+                Messages.Success(belgeAdi + " yüklendi.", 2000);
+                BildirimEPostasiGonder(belgeAdi + " yüklendi. Dosya: <b>" + dosyaAdi + "</b>");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazResimleriWP.EkPdfKaydet", ex);
+                return false;
+            }
+        }
+
+        private void EkPdfGoster(string dosyaKoku, int tasinmazId, FileUpload yukleme, HtmlAnchor baglanti, LinkButton silme)
+        {
+            string dosyaAdi = dosyaKoku + tasinmazId + ".pdf";
+            string belgeKitapligiUrl = UtilityHelper.TbysBelgelerURLGetir();
+            bool dosyaVar = UtilityHelper.DosyaVarMi(belgeKitapligiUrl, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi);
+            if (dosyaVar)
+            {
+                baglanti.HRef = belgeKitapligiUrl + "/" + dosyaAdi;
+                baglanti.Target = "_blank";
+            }
+
+            baglanti.Visible = dosyaVar;
+            silme.Visible = dosyaVar;
+            yukleme.Visible = !dosyaVar;
+        }
+
+        protected void TapuSenediSilBtn_Click(object sender, EventArgs e)
+        {
+            EkPdfSil(TapuSenediDosyaKoku, "Tapu Senedi", TapuSenediYukleFU, TapuSenediDosyaLnk, TapuSenediSilBtn);
+        }
+
+        protected void VakiflarTasinmazBildirimiSilBtn_Click(object sender, EventArgs e)
+        {
+            EkPdfSil(VakiflarTasinmazBildirimiDosyaKoku, "Vakıflar Taşınmaz Bildirimi", VakiflarTasinmazBildirimiYukleFU, VakiflarTasinmazBildirimiDosyaLnk, VakiflarTasinmazBildirimiSilBtn);
+        }
+
+        private void EkPdfSil(string dosyaKoku, string belgeAdi, FileUpload yukleme, HtmlAnchor baglanti, LinkButton silme)
+        {
+            try
+            {
+                string dosyaAdi = dosyaKoku + TasinmazIdQS.ConvertToInt() + ".pdf";
+                if (!UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi, LoggingContext))
+                {
+                    Messages.Error(belgeAdi + " silinemedi.");
+                    return;
+                }
+
+                baglanti.Visible = false;
+                silme.Visible = false;
+                yukleme.Visible = true;
+                Messages.Success(belgeAdi + " silindi.", 2000);
+                BildirimEPostasiGonder(belgeAdi + " silindi. Dosya: <b>" + dosyaAdi + "</b>");
+            }
+            catch (Exception ex)
+            {
+                if (ex is System.Threading.ThreadAbortException) throw;
+                TbysWebPartLog.ReportError(LoggingContext, "TBYS.TasinmazResimleriWP.EkPdfSil", ex);
             }
         }
 
