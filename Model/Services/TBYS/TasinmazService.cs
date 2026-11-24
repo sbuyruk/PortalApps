@@ -456,6 +456,76 @@ namespace Model.Services.TBYS
             });
         }
 
+        public List<string> UpdatePhotos(int id, IDictionary<string, string> photos)
+        {
+            if (photos.Count == 0) return new List<string>();
+
+            return PortalLogContext.ExecuteForEntity(context, "Tasinmaz", () => id, () =>
+            {
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    RequireTransaction(transaction);
+                    DataTable previous = repository.SelectById(id, transaction, context);
+                    if (!SavePhotoChanges(id, photos, previous, transaction)) return null;
+
+                    List<string> oldPhotos = photos.Keys
+                        .Select(column => AuditValue(previous, column))
+                        .Where(photo => !string.IsNullOrWhiteSpace(photo))
+                        .Distinct(StringComparer.OrdinalIgnoreCase)
+                        .ToList();
+                    transaction.Complete();
+                    return oldPhotos;
+                }
+            });
+        }
+
+        public void RemoveUnusedPhotoFiles(IEnumerable<string> photos, Action<string> removeFile)
+        {
+            using (SqlTransactionContext transaction = new SqlTransactionContext())
+            {
+                RequireTransaction(transaction);
+                foreach (string photo in photos)
+                    if (repository.CanRemovePhotoFile(photo, transaction, context))
+                        removeFile(photo);
+                transaction.Complete();
+            }
+        }
+
+        public bool RemovePhoto(int id, string column, string expectedPhoto, Action<string> removeFile)
+        {
+            return PortalLogContext.ExecuteForEntity(context, "Tasinmaz", () => id, () =>
+            {
+                using (SqlTransactionContext transaction = new SqlTransactionContext())
+                {
+                    RequireTransaction(transaction);
+                    DataTable previous = repository.SelectById(id, transaction, context);
+                    if (!string.Equals(AuditValue(previous, column), expectedPhoto, StringComparison.Ordinal))
+                        return false;
+
+                    Dictionary<string, string> photos = new Dictionary<string, string> { { column, column } };
+                    if (!SavePhotoChanges(id, photos, previous, transaction)) return false;
+
+                    // Copies of a property can share the same file.
+                    if (repository.CanRemovePhotoFile(expectedPhoto, transaction, context))
+                        removeFile(expectedPhoto);
+
+                    transaction.Complete();
+                    return true;
+                }
+            });
+        }
+
+        private bool SavePhotoChanges(int id, IDictionary<string, string> photos, DataTable previous, SqlTransactionContext transaction)
+        {
+            if (previous == null || previous.Rows.Count == 0) return false;
+            if (!repository.UpdatePhotos(id, photos, DateTime.Now, UtilityHelper.GetCurrentUserName(), transaction, context)) return false;
+
+            DataTable saved = repository.SelectById(id, transaction, context);
+            if (saved == null) throw new InvalidOperationException("Güncellenen taşınmaz okunamadı.");
+            RecordAudit("UPDATE", id, previous, saved, transaction);
+            return true;
+        }
+
         public bool Delete(Tasinmaz item, SqlTransactionContext transaction)
         {
             return PortalLogContext.ExecuteForEntity(context, "Tasinmaz", () => item == null ? 0 : item.Id, () =>
