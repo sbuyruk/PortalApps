@@ -153,6 +153,26 @@
     .tbys-property .tbys-remove:hover { background: #fbecee; }
     .tbys-property :focus-visible { outline: 2px solid var(--tbys-accent); outline-offset: 2px; }
     .tbys-property .tbys-photo-preview:focus-visible { outline-offset: -3px; }
+    #ResimAcModal {
+        width: min(1120px, calc(100% - 24px));
+        max-height: calc(100% - 24px);
+        margin: auto;
+        padding: 0;
+        border: 1px solid var(--tbys-line);
+        border-radius: .75rem;
+        background: var(--tbys-surface);
+        color: var(--tbys-ink);
+    }
+    #ResimAcModal::backdrop { background: rgb(0 0 0 / 60%); }
+    #ResimAcModal .tbys-modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: .75rem;
+        padding: .75rem 1rem;
+        border-bottom: 1px solid var(--tbys-line);
+    }
+    #ResimAcModalBaslik { margin: 0; font-size: 18px; }
     #ResimAcModal .tbys-modal-image { display: block; width: 100%; max-height: 76vh; object-fit: contain; }
 </style>
 <script type="text/javascript">
@@ -186,18 +206,14 @@
 
     function tbysOpenPhotoModal(trigger) {
         var clickedImg = trigger.querySelector('img');
-        var modal = document.getElementById('ResimAcModal');
-        if (!modal || !clickedImg || !clickedImg.getAttribute('src')) return;
+        var dialog = document.getElementById('ResimAcModal');
+        if (!dialog || dialog.open || !clickedImg || !clickedImg.getAttribute('src')) return;
 
-        if (modal.parentElement !== document.body) {
-            document.body.appendChild(modal);
-        }
-
-        var modalImage = modal.querySelector('#MaximizedImg');
+        var modalImage = dialog.querySelector('#MaximizedImg');
         modalImage.src = clickedImg.src;
         modalImage.alt = clickedImg.alt;
-        modal.querySelector('#ResimAcModalBaslik').textContent = clickedImg.alt;
-        bootstrap.Modal.getOrCreateInstance(modal).show(trigger);
+        dialog.querySelector('#ResimAcModalBaslik').textContent = clickedImg.alt;
+        dialog.showModal();
     }
 
     function showDefaultImage(img) {
@@ -506,17 +522,11 @@
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
-    <div class="modal" id="ResimAcModal" tabindex="-1" aria-labelledby="ResimAcModalBaslik" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title fs-5" id="ResimAcModalBaslik">Fotoğraf</h2>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
-                </div>
-                <div class="modal-body">
-                    <img class="tbys-modal-image" id="MaximizedImg" alt="" />
-                </div>
-            </div>
+    <dialog id="ResimAcModal" aria-labelledby="ResimAcModalBaslik" onclick="if (event.target === this) this.close()">
+        <div class="tbys-modal-header">
+            <h2 id="ResimAcModalBaslik">Fotoğraf</h2>
+            <button type="button" class="btn btn-outline-secondary" onclick="this.closest('dialog').close()" autofocus>Kapat</button>
         </div>
-    </div>
+        <img class="tbys-modal-image" id="MaximizedImg" alt="" />
+    </dialog>
 </div>
