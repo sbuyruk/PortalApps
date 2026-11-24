@@ -153,7 +153,7 @@
     .tbys-property .tbys-remove:hover { background: #fbecee; }
     .tbys-property :focus-visible { outline: 2px solid var(--tbys-accent); outline-offset: 2px; }
     .tbys-property .tbys-photo-preview:focus-visible { outline-offset: -3px; }
-    .tbys-property .tbys-modal-image { display: block; width: 100%; max-height: 76vh; object-fit: contain; }
+    #ResimAcModal .tbys-modal-image { display: block; width: 100%; max-height: 76vh; object-fit: contain; }
 </style>
 <script type="text/javascript">
     function readURL(input, sender) {
@@ -184,14 +184,20 @@
         reader.readAsDataURL(selectedFile);
     }
 
-    function OpenModal(clickedImg) {
-        if (!clickedImg || !clickedImg.getAttribute('src')) return;
+    function tbysOpenPhotoModal(trigger) {
+        var clickedImg = trigger.querySelector('img');
+        var modal = document.getElementById('ResimAcModal');
+        if (!modal || !clickedImg || !clickedImg.getAttribute('src')) return;
 
-        var modalImage = document.getElementById('MaximizedImg');
+        if (modal.parentElement !== document.body) {
+            document.body.appendChild(modal);
+        }
+
+        var modalImage = modal.querySelector('#MaximizedImg');
         modalImage.src = clickedImg.src;
         modalImage.alt = clickedImg.alt;
-        document.getElementById('ResimAcModalBaslik').textContent = clickedImg.alt;
-        bootstrap.Modal.getOrCreateInstance(document.getElementById('ResimAcModal')).show();
+        modal.querySelector('#ResimAcModalBaslik').textContent = clickedImg.alt;
+        bootstrap.Modal.getOrCreateInstance(modal).show(trigger);
     }
 
     function showDefaultImage(img) {
@@ -242,7 +248,7 @@
                             <ul class="tbys-photo-grid">
                             <li class="tbys-photo">
                                 <div class="tbys-photo-media">
-                                    <button type="button" class="tbys-photo-preview" aria-label="Taşınmaz fotoğrafı önizlemesini aç" onclick="OpenModal(this.querySelector('img'))">
+                                    <button type="button" class="tbys-photo-preview" aria-label="Taşınmaz fotoğrafı önizlemesini aç" onclick="tbysOpenPhotoModal(this)">
                                         <asp:Image ID="Image1" ClientIDMode="Static" runat="server" AlternateText="Taşınmaz fotoğrafı" data-photo-stored="false" onerror="showDefaultImage(this)" />
                                     </button>
                                     <span class="tbys-photo-empty">Fotoğraf yok</span>
@@ -258,7 +264,7 @@
                             </li>
                             <li class="tbys-photo">
                                 <div class="tbys-photo-media">
-                                    <button type="button" class="tbys-photo-preview" aria-label="Taşınmaz fotoğrafı 2 önizlemesini aç" onclick="OpenModal(this.querySelector('img'))">
+                                    <button type="button" class="tbys-photo-preview" aria-label="Taşınmaz fotoğrafı 2 önizlemesini aç" onclick="tbysOpenPhotoModal(this)">
                                         <asp:Image ID="Image2" ClientIDMode="Static" runat="server" AlternateText="Taşınmaz fotoğrafı 2" data-photo-stored="false" onerror="showDefaultImage(this)" />
                                     </button>
                                     <span class="tbys-photo-empty">Fotoğraf yok</span>
@@ -274,7 +280,7 @@
                             </li>
                             <li class="tbys-photo">
                                 <div class="tbys-photo-media">
-                                    <button type="button" class="tbys-photo-preview" aria-label="Taşınmaz fotoğrafı 3 önizlemesini aç" onclick="OpenModal(this.querySelector('img'))">
+                                    <button type="button" class="tbys-photo-preview" aria-label="Taşınmaz fotoğrafı 3 önizlemesini aç" onclick="tbysOpenPhotoModal(this)">
                                         <asp:Image ID="Image3" ClientIDMode="Static" runat="server" AlternateText="Taşınmaz fotoğrafı 3" data-photo-stored="false" onerror="showDefaultImage(this)" />
                                     </button>
                                     <span class="tbys-photo-empty">Fotoğraf yok</span>
@@ -290,7 +296,7 @@
                             </li>
                             <li class="tbys-photo">
                                 <div class="tbys-photo-media">
-                                    <button type="button" class="tbys-photo-preview" aria-label="Tahkikat fotoğrafı önizlemesini aç" onclick="OpenModal(this.querySelector('img'))">
+                                    <button type="button" class="tbys-photo-preview" aria-label="Tahkikat fotoğrafı önizlemesini aç" onclick="tbysOpenPhotoModal(this)">
                                         <asp:Image ID="Image4" ClientIDMode="Static" runat="server" AlternateText="Tahkikat fotoğrafı" data-photo-stored="false" onerror="showDefaultImage(this)" />
                                     </button>
                                     <span class="tbys-photo-empty">Fotoğraf yok</span>
@@ -306,7 +312,7 @@
                             </li>
                             <li class="tbys-photo">
                                 <div class="tbys-photo-media">
-                                    <button type="button" class="tbys-photo-preview" aria-label="Kroki önizlemesini aç" onclick="OpenModal(this.querySelector('img'))">
+                                    <button type="button" class="tbys-photo-preview" aria-label="Kroki önizlemesini aç" onclick="tbysOpenPhotoModal(this)">
                                         <asp:Image ID="Image5" ClientIDMode="Static" runat="server" AlternateText="Kroki" data-photo-stored="false" onerror="showDefaultImage(this)" />
                                     </button>
                                     <span class="tbys-photo-empty">Fotoğraf yok</span>
@@ -322,7 +328,7 @@
                             </li>
                             <li class="tbys-photo">
                                 <div class="tbys-photo-media">
-                                    <button type="button" class="tbys-photo-preview" aria-label="Tapu fotoğrafı önizlemesini aç" onclick="OpenModal(this.querySelector('img'))">
+                                    <button type="button" class="tbys-photo-preview" aria-label="Tapu fotoğrafı önizlemesini aç" onclick="tbysOpenPhotoModal(this)">
                                         <asp:Image ID="Image6" ClientIDMode="Static" runat="server" AlternateText="Tapu fotoğrafı" data-photo-stored="false" onerror="showDefaultImage(this)" />
                                     </button>
                                     <span class="tbys-photo-empty">Fotoğraf yok</span>
@@ -338,7 +344,7 @@
                             </li>
                             <li class="tbys-photo">
                                 <div class="tbys-photo-media">
-                                    <button type="button" class="tbys-photo-preview" aria-label="Taşınmaz fotoğrafı 4 önizlemesini aç" onclick="OpenModal(this.querySelector('img'))">
+                                    <button type="button" class="tbys-photo-preview" aria-label="Taşınmaz fotoğrafı 4 önizlemesini aç" onclick="tbysOpenPhotoModal(this)">
                                         <asp:Image ID="Image7" ClientIDMode="Static" runat="server" AlternateText="Taşınmaz fotoğrafı 4" data-photo-stored="false" onerror="showDefaultImage(this)" />
                                     </button>
                                     <span class="tbys-photo-empty">Fotoğraf yok</span>
@@ -354,7 +360,7 @@
                             </li>
                             <li class="tbys-photo">
                                 <div class="tbys-photo-media">
-                                    <button type="button" class="tbys-photo-preview" aria-label="Taşınmaz fotoğrafı 5 önizlemesini aç" onclick="OpenModal(this.querySelector('img'))">
+                                    <button type="button" class="tbys-photo-preview" aria-label="Taşınmaz fotoğrafı 5 önizlemesini aç" onclick="tbysOpenPhotoModal(this)">
                                         <asp:Image ID="Image8" ClientIDMode="Static" runat="server" AlternateText="Taşınmaz fotoğrafı 5" data-photo-stored="false" onerror="showDefaultImage(this)" />
                                     </button>
                                     <span class="tbys-photo-empty">Fotoğraf yok</span>
@@ -500,7 +506,7 @@
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
-    <div class="modal fade" id="ResimAcModal" tabindex="-1" aria-labelledby="ResimAcModalBaslik" aria-hidden="true">
+    <div class="modal" id="ResimAcModal" tabindex="-1" aria-labelledby="ResimAcModalBaslik" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
