@@ -45,7 +45,15 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton BackBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton CloseBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl CardHeader;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
@@ -61,15 +69,15 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        protected global::System.Web.UI.WebControls.Label GuncellemeTarihiLbl;
+        protected global::System.Web.UI.WebControls.Label IlceLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        protected global::System.Web.UI.WebControls.Label GuncelleyenLbl;
+        protected global::System.Web.UI.WebControls.Label IlLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl CardHeader;
+        protected global::System.Web.UI.WebControls.Label FotografSayisiLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
@@ -166,6 +174,10 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload FileUpload7;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label BelgeSayisiLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
@@ -277,11 +289,15 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton SaveBtn;
+        protected global::System.Web.UI.WebControls.Label GuncellemeTarihiLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton BackBtn;
+        protected global::System.Web.UI.WebControls.Label GuncelleyenLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton SaveBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
@@ -312,83 +328,34 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlBackBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.BackBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "BackBtn";
+            @__ctrl.CssClass = "btn btn-sm btn-outline-secondary";
+            @__ctrl.Text = "Geri";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Click -= new System.EventHandler(this.BackBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.BackBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlCloseBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.CloseBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "CloseBtn";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "close");
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("&times;"));
+            @__ctrl.CssClass = "btn btn-sm btn-outline-secondary";
+            @__ctrl.Text = "Kapat";
+            @__ctrl.CausesValidation = false;
             @__ctrl.Click -= new System.EventHandler(this.CloseBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.CloseBtn_Click);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "18.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControlTitleLbl() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
-            this.TitleLbl = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-label text-danger fw-bold mb-1";
-            @__ctrl.ID = "TitleLbl";
-            @__ctrl.Text = "Taşınmaz Resimleri";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "18.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControlIdLbl() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
-            this.IdLbl = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-label text-white";
-            @__ctrl.ID = "IdLbl";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "18.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControlAdiLbl() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
-            this.AdiLbl = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-label text-muted";
-            @__ctrl.ID = "AdiLbl";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "18.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControlGuncellemeTarihiLbl() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
-            this.GuncellemeTarihiLbl = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-label text-muted";
-            @__ctrl.ID = "GuncellemeTarihiLbl";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "18.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControlGuncelleyenLbl() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
-            this.GuncelleyenLbl = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-label text-muted";
-            @__ctrl.ID = "GuncelleyenLbl";
             return @__ctrl;
         }
         
@@ -400,34 +367,95 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
             this.CardHeader = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "card-header");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "tbys-toolbar");
             @__ctrl.ID = "CardHeader";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <div class=\"tbys-route\"><strong>TBYS</strong> <span aria-hi" +
+                        "dden=\"true\">›</span> Taşınmazlar</div>\r\n                    <div class=\"tbys-too" +
+                        "lbar-actions\">\r\n                        "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
-            @__ctrl1 = this.@__BuildControlCloseBtn();
+            @__ctrl1 = this.@__BuildControlBackBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <h3 class=\"mb-2\">\r\n                        "));
-            global::System.Web.UI.WebControls.Label @__ctrl2;
-            @__ctrl2 = this.@__BuildControlTitleLbl();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl2;
+            @__ctrl2 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
-            global::System.Web.UI.WebControls.Label @__ctrl3;
-            @__ctrl3 = this.@__BuildControlIdLbl();
-            @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
-            global::System.Web.UI.WebControls.Label @__ctrl4;
-            @__ctrl4 = this.@__BuildControlAdiLbl();
-            @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
-            global::System.Web.UI.WebControls.Label @__ctrl5;
-            @__ctrl5 = this.@__BuildControlGuncellemeTarihiLbl();
-            @__parser.AddParsedSubObject(@__ctrl5);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
-            global::System.Web.UI.WebControls.Label @__ctrl6;
-            @__ctrl6 = this.@__BuildControlGuncelleyenLbl();
-            @__parser.AddParsedSubObject(@__ctrl6);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </h3>\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlTitleLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.TitleLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "TitleLbl";
+            @__ctrl.Text = "Taşınmaz Resimleri ve Belgeleri";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlIdLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.IdLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "IdLbl";
+            @__ctrl.CssClass = "tbys-record-id";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlAdiLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.AdiLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "AdiLbl";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlIlceLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.IlceLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "IlceLbl";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlIlLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.IlLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "IlLbl";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlFotografSayisiLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.FotografSayisiLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "FotografSayisiLbl";
+            @__ctrl.CssClass = "tbys-count";
             return @__ctrl;
         }
         
@@ -441,10 +469,21 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Image1";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.CssClass = "img-thumbnail";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onclick", "OpenModal(this)");
+            @__ctrl.AlternateText = "Taşınmaz fotoğrafı";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-photo-stored", "false");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "showDefaultImage(this)");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: 150px");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control3() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.AssociatedControlID = "FileUpload0";
+            @__ctrl.Text = "Taşınmaz fotoğrafı";
             return @__ctrl;
         }
         
@@ -456,10 +495,12 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ResimSil1Btn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-danger float-end mr-2";
             @__ctrl.ID = "ResimSil1Btn";
-            @__ctrl.Text = "Resmi Sil";
+            @__ctrl.CssClass = "tbys-remove";
+            @__ctrl.Text = "Sil";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Taşınmaz fotoğrafı dosyasını sil");
             @__ctrl.CausesValidation = false;
+            @__ctrl.OnClientClick = "return confirm(\'Fotoğrafı silmek istiyor musunuz?\');";
             @__ctrl.Click -= new System.EventHandler(this.ResimSil1Btn_Click);
             @__ctrl.Click += new System.EventHandler(this.ResimSil1Btn_Click);
             return @__ctrl;
@@ -474,9 +515,8 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.FileUpload0 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FileUpload0";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-danger form-control");
-            @__ctrl.ToolTip = "Yüklenecek Resmi Seçiniz";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            @__ctrl.CssClass = "tbys-file";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("accept", ".jpg");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onchange", "readURL(this,\'Image1\')");
             return @__ctrl;
         }
@@ -491,10 +531,21 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Image2";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.CssClass = "img-thumbnail";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onclick", "OpenModal(this)");
+            @__ctrl.AlternateText = "Taşınmaz fotoğrafı 2";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-photo-stored", "false");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "showDefaultImage(this)");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: 150px");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control4() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.AssociatedControlID = "FileUpload1";
+            @__ctrl.Text = "Taşınmaz fotoğrafı 2";
             return @__ctrl;
         }
         
@@ -506,10 +557,12 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ResimSil2Btn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-danger float-end mr-2";
             @__ctrl.ID = "ResimSil2Btn";
-            @__ctrl.Text = "Resmi Sil";
+            @__ctrl.CssClass = "tbys-remove";
+            @__ctrl.Text = "Sil";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Taşınmaz fotoğrafı 2 dosyasını sil");
             @__ctrl.CausesValidation = false;
+            @__ctrl.OnClientClick = "return confirm(\'Fotoğrafı silmek istiyor musunuz?\');";
             @__ctrl.Click -= new System.EventHandler(this.ResimSil2Btn_Click);
             @__ctrl.Click += new System.EventHandler(this.ResimSil2Btn_Click);
             return @__ctrl;
@@ -524,9 +577,8 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.FileUpload1 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FileUpload1";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-danger form-control");
-            @__ctrl.ToolTip = "Yüklenecek Resmi Seçiniz";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            @__ctrl.CssClass = "tbys-file";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("accept", ".jpg");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onchange", "readURL(this,\'Image2\')");
             return @__ctrl;
         }
@@ -541,10 +593,21 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Image3";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.CssClass = "img-thumbnail";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onclick", "OpenModal(this)");
+            @__ctrl.AlternateText = "Taşınmaz fotoğrafı 3";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-photo-stored", "false");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "showDefaultImage(this)");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: 150px");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control5() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.AssociatedControlID = "FileUpload2";
+            @__ctrl.Text = "Taşınmaz fotoğrafı 3";
             return @__ctrl;
         }
         
@@ -556,10 +619,12 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ResimSil3Btn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-danger float-end mr-2";
             @__ctrl.ID = "ResimSil3Btn";
-            @__ctrl.Text = "Resmi Sil";
+            @__ctrl.CssClass = "tbys-remove";
+            @__ctrl.Text = "Sil";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Taşınmaz fotoğrafı 3 dosyasını sil");
             @__ctrl.CausesValidation = false;
+            @__ctrl.OnClientClick = "return confirm(\'Fotoğrafı silmek istiyor musunuz?\');";
             @__ctrl.Click -= new System.EventHandler(this.ResimSil3Btn_Click);
             @__ctrl.Click += new System.EventHandler(this.ResimSil3Btn_Click);
             return @__ctrl;
@@ -574,9 +639,8 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.FileUpload2 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FileUpload2";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-danger form-control");
-            @__ctrl.ToolTip = "Yüklenecek Resmi Seçiniz";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            @__ctrl.CssClass = "tbys-file";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("accept", ".jpg");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onchange", "readURL(this,\'Image3\')");
             return @__ctrl;
         }
@@ -591,10 +655,21 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Image4";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.CssClass = "img-thumbnail";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onclick", "OpenModal(this)");
+            @__ctrl.AlternateText = "Tahkikat fotoğrafı";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-photo-stored", "false");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "showDefaultImage(this)");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: 150px");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control6() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.AssociatedControlID = "FileUpload3";
+            @__ctrl.Text = "Tahkikat fotoğrafı";
             return @__ctrl;
         }
         
@@ -606,10 +681,12 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ResimSil4Btn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-danger float-end mr-2";
             @__ctrl.ID = "ResimSil4Btn";
-            @__ctrl.Text = "Resmi Sil";
+            @__ctrl.CssClass = "tbys-remove";
+            @__ctrl.Text = "Sil";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Tahkikat fotoğrafı dosyasını sil");
             @__ctrl.CausesValidation = false;
+            @__ctrl.OnClientClick = "return confirm(\'Fotoğrafı silmek istiyor musunuz?\');";
             @__ctrl.Click -= new System.EventHandler(this.ResimSil4Btn_Click);
             @__ctrl.Click += new System.EventHandler(this.ResimSil4Btn_Click);
             return @__ctrl;
@@ -624,9 +701,8 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.FileUpload3 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FileUpload3";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-danger form-control");
-            @__ctrl.ToolTip = "Yüklenecek Resmi Seçiniz";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            @__ctrl.CssClass = "tbys-file";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("accept", ".jpg");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onchange", "readURL(this,\'Image4\')");
             return @__ctrl;
         }
@@ -641,10 +717,21 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Image5";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.CssClass = "img-thumbnail";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onclick", "OpenModal(this)");
+            @__ctrl.AlternateText = "Kroki";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-photo-stored", "false");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "showDefaultImage(this)");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: 150px");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control7() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.AssociatedControlID = "FileUpload4";
+            @__ctrl.Text = "Kroki";
             return @__ctrl;
         }
         
@@ -656,10 +743,12 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ResimSil5Btn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-danger float-end mr-2";
             @__ctrl.ID = "ResimSil5Btn";
-            @__ctrl.Text = "Resmi Sil";
+            @__ctrl.CssClass = "tbys-remove";
+            @__ctrl.Text = "Sil";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Kroki dosyasını sil");
             @__ctrl.CausesValidation = false;
+            @__ctrl.OnClientClick = "return confirm(\'Fotoğrafı silmek istiyor musunuz?\');";
             @__ctrl.Click -= new System.EventHandler(this.ResimSil5Btn_Click);
             @__ctrl.Click += new System.EventHandler(this.ResimSil5Btn_Click);
             return @__ctrl;
@@ -674,9 +763,8 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.FileUpload4 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FileUpload4";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-danger form-control");
-            @__ctrl.ToolTip = "Yüklenecek Resmi Seçiniz";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            @__ctrl.CssClass = "tbys-file";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("accept", ".jpg");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onchange", "readURL(this,\'Image5\')");
             return @__ctrl;
         }
@@ -691,10 +779,21 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Image6";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.CssClass = "img-thumbnail";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onclick", "OpenModal(this)");
+            @__ctrl.AlternateText = "Tapu fotoğrafı";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-photo-stored", "false");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "showDefaultImage(this)");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: 150px");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control8() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.AssociatedControlID = "FileUpload5";
+            @__ctrl.Text = "Tapu fotoğrafı";
             return @__ctrl;
         }
         
@@ -706,10 +805,12 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ResimSil6Btn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-danger float-end mr-2";
             @__ctrl.ID = "ResimSil6Btn";
-            @__ctrl.Text = "Resmi Sil";
+            @__ctrl.CssClass = "tbys-remove";
+            @__ctrl.Text = "Sil";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Tapu fotoğrafı dosyasını sil");
             @__ctrl.CausesValidation = false;
+            @__ctrl.OnClientClick = "return confirm(\'Fotoğrafı silmek istiyor musunuz?\');";
             @__ctrl.Click -= new System.EventHandler(this.ResimSil6Btn_Click);
             @__ctrl.Click += new System.EventHandler(this.ResimSil6Btn_Click);
             return @__ctrl;
@@ -724,10 +825,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.FileUpload5 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FileUpload5";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-danger form-control");
-            @__ctrl.ToolTip = "Yüklenecek Resmi Seçiniz";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onchange", "readURL(this,\'Image5\')");
+            @__ctrl.CssClass = "tbys-file";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("accept", ".jpg");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onchange", "readURL(this,\'Image6\')");
             return @__ctrl;
         }
         
@@ -741,10 +841,21 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Image7";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.CssClass = "img-thumbnail";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onclick", "OpenModal(this)");
+            @__ctrl.AlternateText = "Taşınmaz fotoğrafı 4";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-photo-stored", "false");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "showDefaultImage(this)");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: 150px");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control9() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.AssociatedControlID = "FileUpload6";
+            @__ctrl.Text = "Taşınmaz fotoğrafı 4";
             return @__ctrl;
         }
         
@@ -756,10 +867,12 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ResimSil7Btn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-danger float-end mr-2";
             @__ctrl.ID = "ResimSil7Btn";
-            @__ctrl.Text = "Resmi Sil";
+            @__ctrl.CssClass = "tbys-remove";
+            @__ctrl.Text = "Sil";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Taşınmaz fotoğrafı 4 dosyasını sil");
             @__ctrl.CausesValidation = false;
+            @__ctrl.OnClientClick = "return confirm(\'Fotoğrafı silmek istiyor musunuz?\');";
             @__ctrl.Click -= new System.EventHandler(this.ResimSil7Btn_Click);
             @__ctrl.Click += new System.EventHandler(this.ResimSil7Btn_Click);
             return @__ctrl;
@@ -774,9 +887,8 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.FileUpload6 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FileUpload6";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-danger form-control");
-            @__ctrl.ToolTip = "Yüklenecek Resmi Seçiniz";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            @__ctrl.CssClass = "tbys-file";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("accept", ".jpg");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onchange", "readURL(this,\'Image7\')");
             return @__ctrl;
         }
@@ -791,10 +903,21 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Image8";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.CssClass = "img-thumbnail";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onclick", "OpenModal(this)");
+            @__ctrl.AlternateText = "Taşınmaz fotoğrafı 5";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-photo-stored", "false");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "showDefaultImage(this)");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: 150px");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control10() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.AssociatedControlID = "FileUpload7";
+            @__ctrl.Text = "Taşınmaz fotoğrafı 5";
             return @__ctrl;
         }
         
@@ -806,10 +929,12 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ResimSil8Btn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-danger float-end mr-2";
             @__ctrl.ID = "ResimSil8Btn";
-            @__ctrl.Text = "Resmi Sil";
+            @__ctrl.CssClass = "tbys-remove";
+            @__ctrl.Text = "Sil";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Taşınmaz fotoğrafı 5 dosyasını sil");
             @__ctrl.CausesValidation = false;
+            @__ctrl.OnClientClick = "return confirm(\'Fotoğrafı silmek istiyor musunuz?\');";
             @__ctrl.Click -= new System.EventHandler(this.ResimSil8Btn_Click);
             @__ctrl.Click += new System.EventHandler(this.ResimSil8Btn_Click);
             return @__ctrl;
@@ -824,9 +949,8 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.FileUpload7 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FileUpload7";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-danger form-control");
-            @__ctrl.ToolTip = "Yüklenecek Resmi Seçiniz";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            @__ctrl.CssClass = "tbys-file";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("accept", ".jpg");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onchange", "readURL(this,\'Image8\')");
             return @__ctrl;
         }
@@ -834,12 +958,23 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control3() {
+        private global::System.Web.UI.WebControls.Label @__BuildControlBelgeSayisiLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.BelgeSayisiLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "BelgeSayisiLbl";
+            @__ctrl.CssClass = "tbys-count";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control11() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label fw-bold";
-            @__ctrl.AssociatedControlID = "TapuSenediYukleFU";
             @__ctrl.Text = "Tapu Senedi (PDF)";
             return @__ctrl;
         }
@@ -852,15 +987,16 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
             this.TapuSenediDosyaLnk = @__ctrl;
             @__ctrl.ID = "TapuSenediDosyaLnk";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-primary");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "tbys-document-open");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-width", "960");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-height", "720");
             @__ctrl.HRef = "#";
             @__ctrl.Visible = false;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Tapu Senedi (PDF) belgesini aç");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Tapu Senedi"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Aç"));
             return @__ctrl;
         }
         
@@ -873,10 +1009,11 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.TapuSenediSilBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TapuSenediSilBtn";
-            @__ctrl.CssClass = "btn btn-outline-danger";
+            @__ctrl.CssClass = "tbys-remove";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Sil";
-            @__ctrl.OnClientClick = "return confirm(\'Silme işlemini onaylıyor musunuz?\');";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Tapu Senedi (PDF) belgesini sil");
+            @__ctrl.OnClientClick = "return confirm(\'Belgeyi silmek istiyor musunuz?\');";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.TapuSenediSilBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.TapuSenediSilBtn_Click);
@@ -892,9 +1029,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.TapuSenediYukleFU = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TapuSenediYukleFU";
-            @__ctrl.CssClass = "btn btn-danger form-control";
-            @__ctrl.ToolTip = "Yüklemek İçin PDF Dosya Seçiniz";
+            @__ctrl.CssClass = "tbys-file";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("accept", ".pdf");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Tapu Senedi (PDF) için PDF dosyası seç");
             return @__ctrl;
         }
         
@@ -906,10 +1043,8 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.Label2 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.ID = "Label2";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Emlak Beyanı (pdf)"));
+            @__ctrl.Text = "Emlak Beyanı";
             return @__ctrl;
         }
         
@@ -921,14 +1056,16 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
             this.EmlakBeyaniDosyaLnk = @__ctrl;
             @__ctrl.ID = "EmlakBeyaniDosyaLnk";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-primary");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "tbys-document-open");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-width", "960");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-height", "720");
             @__ctrl.HRef = "#";
+            @__ctrl.Visible = false;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Emlak Beyanı belgesini aç");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Emlak Beyanı \r\n                                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Aç"));
             return @__ctrl;
         }
         
@@ -941,11 +1078,11 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.EmlakBeyaniSilBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "EmlakBeyaniSilBtn";
-            @__ctrl.CssClass = "btn btn-outline-danger";
+            @__ctrl.CssClass = "tbys-remove";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Sil";
-            @__ctrl.OnClientClick = "if(confirm(\' Silme İşlemini Onaylıyor musunuz?\')){return true;} else{return false" +
-                ";};";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Emlak Beyanı belgesini sil");
+            @__ctrl.OnClientClick = "return confirm(\'Belgeyi silmek istiyor musunuz?\');";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.EmlakBeyaniSilBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.EmlakBeyaniSilBtn_Click);
@@ -961,9 +1098,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.EmlakBeyaniYukleFU = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "EmlakBeyaniYukleFU";
-            @__ctrl.CssClass = "btn btn-danger form-control";
-            @__ctrl.ToolTip = "Yüklemek İçin PDF Dosya Seçiniz";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            @__ctrl.CssClass = "tbys-file";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("accept", ".pdf");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Emlak Beyanı için PDF dosyası seç");
             return @__ctrl;
         }
         
@@ -975,10 +1112,8 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.Label1 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.ID = "Label1";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Yapı Kayıt Belgesi (pdf)"));
+            @__ctrl.Text = "Yapı Kayıt Belgesi";
             return @__ctrl;
         }
         
@@ -990,14 +1125,16 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
             this.YapiKayitDosyaLnk = @__ctrl;
             @__ctrl.ID = "YapiKayitDosyaLnk";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-primary");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "tbys-document-open");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-width", "960");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-height", "720");
             @__ctrl.HRef = "#";
+            @__ctrl.Visible = false;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Yapı Kayıt Belgesi belgesini aç");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Yapı Kayıt Belgesi \r\n                                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Aç"));
             return @__ctrl;
         }
         
@@ -1010,11 +1147,11 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.YapiKayitSilBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YapiKayitSilBtn";
-            @__ctrl.CssClass = "btn btn-outline-danger";
+            @__ctrl.CssClass = "tbys-remove";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Sil";
-            @__ctrl.OnClientClick = "if(confirm(\' Silme İşlemini Onaylıyor musunuz?\')){return true;} else{return false" +
-                ";};";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Yapı Kayıt Belgesi belgesini sil");
+            @__ctrl.OnClientClick = "return confirm(\'Belgeyi silmek istiyor musunuz?\');";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.YapiKayitSilBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.YapiKayitSilBtn_Click);
@@ -1030,9 +1167,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.YapiKayitYukleFU = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YapiKayitYukleFU";
-            @__ctrl.CssClass = "btn btn-danger form-control";
-            @__ctrl.ToolTip = "Yüklemek İçin PDF Dosya Seçiniz";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            @__ctrl.CssClass = "tbys-file";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("accept", ".pdf");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Yapı Kayıt Belgesi için PDF dosyası seç");
             return @__ctrl;
         }
         
@@ -1044,10 +1181,8 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.Label3 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.ID = "Label3";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Tapu Kayıt Belgesi (pdf)"));
+            @__ctrl.Text = "Tapu Kayıt Belgesi";
             return @__ctrl;
         }
         
@@ -1059,14 +1194,16 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
             this.TapuKayitDosyaLnk = @__ctrl;
             @__ctrl.ID = "TapuKayitDosyaLnk";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-primary");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "tbys-document-open");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-width", "960");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-height", "720");
             @__ctrl.HRef = "#";
+            @__ctrl.Visible = false;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Tapu Kayıt Belgesi belgesini aç");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Tapu Kayıt Belgesi \r\n                                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Aç"));
             return @__ctrl;
         }
         
@@ -1079,11 +1216,11 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.TapuKayitSilBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TapuKayitSilBtn";
-            @__ctrl.CssClass = "btn btn-outline-danger";
+            @__ctrl.CssClass = "tbys-remove";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Sil";
-            @__ctrl.OnClientClick = "if(confirm(\' Silme İşlemini Onaylıyor musunuz?\')){return true;} else{return false" +
-                ";};";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Tapu Kayıt Belgesi belgesini sil");
+            @__ctrl.OnClientClick = "return confirm(\'Belgeyi silmek istiyor musunuz?\');";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.TapuKayitSilBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.TapuKayitSilBtn_Click);
@@ -1099,9 +1236,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.TapuKayitYukleFU = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TapuKayitYukleFU";
-            @__ctrl.CssClass = "btn btn-danger form-control";
-            @__ctrl.ToolTip = "Yüklemek İçin PDF Dosya Seçiniz";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            @__ctrl.CssClass = "tbys-file";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("accept", ".pdf");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Tapu Kayıt Belgesi için PDF dosyası seç");
             return @__ctrl;
         }
         
@@ -1113,10 +1250,8 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.Label4 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.ID = "Label4";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("İmar Durumu Belgesi (pdf)"));
+            @__ctrl.Text = "İmar Durumu Belgesi";
             return @__ctrl;
         }
         
@@ -1128,14 +1263,16 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
             this.ImarDurumuDosyaLnk = @__ctrl;
             @__ctrl.ID = "ImarDurumuDosyaLnk";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-primary");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "tbys-document-open");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-width", "960");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-height", "720");
             @__ctrl.HRef = "#";
+            @__ctrl.Visible = false;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "İmar Durumu Belgesi belgesini aç");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("İmar Durumu Belgesi \r\n                                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Aç"));
             return @__ctrl;
         }
         
@@ -1148,11 +1285,11 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.ImarDurumuSilBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ImarDurumuSilBtn";
-            @__ctrl.CssClass = "btn btn-outline-danger";
+            @__ctrl.CssClass = "tbys-remove";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Sil";
-            @__ctrl.OnClientClick = "if(confirm(\' Silme İşlemini Onaylıyor musunuz?\')){return true;} else{return false" +
-                ";};";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "İmar Durumu Belgesi belgesini sil");
+            @__ctrl.OnClientClick = "return confirm(\'Belgeyi silmek istiyor musunuz?\');";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.ImarDurumuSilBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.ImarDurumuSilBtn_Click);
@@ -1168,9 +1305,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.ImarDurumuYukleFU = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ImarDurumuYukleFU";
-            @__ctrl.CssClass = "btn btn-danger form-control";
-            @__ctrl.ToolTip = "Yüklemek İçin PDF Dosya Seçiniz";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            @__ctrl.CssClass = "tbys-file";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("accept", ".pdf");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "İmar Durumu Belgesi için PDF dosyası seç");
             return @__ctrl;
         }
         
@@ -1182,10 +1319,8 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.Label5 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.ID = "Label5";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Taşınmaz Raporu (pdf)"));
+            @__ctrl.Text = "Taşınmaz Raporu";
             return @__ctrl;
         }
         
@@ -1197,14 +1332,16 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
             this.TasinmazRaporuDosyaLnk = @__ctrl;
             @__ctrl.ID = "TasinmazRaporuDosyaLnk";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-primary");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "tbys-document-open");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-width", "960");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-height", "720");
             @__ctrl.HRef = "#";
+            @__ctrl.Visible = false;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Taşınmaz Raporu belgesini aç");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Taşınmaz Raporu \r\n                                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Aç"));
             return @__ctrl;
         }
         
@@ -1217,11 +1354,11 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.TasinmazRaporuSilBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TasinmazRaporuSilBtn";
-            @__ctrl.CssClass = "btn btn-outline-danger";
+            @__ctrl.CssClass = "tbys-remove";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Sil";
-            @__ctrl.OnClientClick = "if(confirm(\' Silme İşlemini Onaylıyor musunuz?\')){return true;} else{return false" +
-                ";};";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Taşınmaz Raporu belgesini sil");
+            @__ctrl.OnClientClick = "return confirm(\'Belgeyi silmek istiyor musunuz?\');";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.TasinmazRaporuSilBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.TasinmazRaporuSilBtn_Click);
@@ -1237,21 +1374,19 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.TasinmazRaporuYukleFU = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TasinmazRaporuYukleFU";
-            @__ctrl.CssClass = "btn btn-danger form-control";
-            @__ctrl.ToolTip = "Yüklemek İçin PDF Dosya Seçiniz";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            @__ctrl.CssClass = "tbys-file";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("accept", ".pdf");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Taşınmaz Raporu için PDF dosyası seç");
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control4() {
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control12() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label fw-bold";
-            @__ctrl.AssociatedControlID = "VakiflarTasinmazBildirimiYukleFU";
             @__ctrl.Text = "Vakıflar Taşınmaz Bildirimi";
             return @__ctrl;
         }
@@ -1264,15 +1399,16 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
             this.VakiflarTasinmazBildirimiDosyaLnk = @__ctrl;
             @__ctrl.ID = "VakiflarTasinmazBildirimiDosyaLnk";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-primary");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "tbys-document-open");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-width", "960");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-height", "720");
             @__ctrl.HRef = "#";
             @__ctrl.Visible = false;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Vakıflar Taşınmaz Bildirimi belgesini aç");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Vakıflar Taşınmaz Bildirimi"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Aç"));
             return @__ctrl;
         }
         
@@ -1285,10 +1421,11 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.VakiflarTasinmazBildirimiSilBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "VakiflarTasinmazBildirimiSilBtn";
-            @__ctrl.CssClass = "btn btn-outline-danger";
+            @__ctrl.CssClass = "tbys-remove";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Sil";
-            @__ctrl.OnClientClick = "return confirm(\'Silme işlemini onaylıyor musunuz?\');";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Vakıflar Taşınmaz Bildirimi belgesini sil");
+            @__ctrl.OnClientClick = "return confirm(\'Belgeyi silmek istiyor musunuz?\');";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.VakiflarTasinmazBildirimiSilBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.VakiflarTasinmazBildirimiSilBtn_Click);
@@ -1304,9 +1441,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.VakiflarTasinmazBildirimiYukleFU = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "VakiflarTasinmazBildirimiYukleFU";
-            @__ctrl.CssClass = "btn btn-danger form-control";
-            @__ctrl.ToolTip = "Yüklemek İçin PDF Dosya Seçiniz";
+            @__ctrl.CssClass = "tbys-file";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("accept", ".pdf");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("aria-label", "Vakıflar Taşınmaz Bildirimi için PDF dosyası seç");
             return @__ctrl;
         }
         
@@ -1318,298 +1455,482 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
             this.MainCardDiv = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "card-body alert-secondary");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "tbys-main");
             @__ctrl.ID = "MainCardDiv";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <div class=\"row m-1\">\r\n                        <div class=\"" +
-                        "col border border-dark p-2\">\r\n                            <div class=\"row\">\r\n   " +
-                        "                             <div class=\"col-10\">\r\n                             " +
-                        "       "));
-            global::System.Web.UI.WebControls.Image @__ctrl1;
-            @__ctrl1 = this.@__BuildControlImage1();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <section class=\"tbys-summary\" aria-label=\"Taşınmaz bilgiler" +
+                        "i\">\r\n                        <h1 class=\"tbys-title\">"));
+            global::System.Web.UI.WebControls.Label @__ctrl1;
+            @__ctrl1 = this.@__BuildControlTitleLbl();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                 <div c" +
-                        "lass=\"col-2\">\r\n                                     "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl2;
-            @__ctrl2 = this.@__BuildControlResimSil1Btn();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("</h1>\r\n                        "));
+            global::System.Web.UI.WebControls.Label @__ctrl2;
+            @__ctrl2 = this.@__BuildControlIdLbl();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                 </div>\r\n                            </div>\r\n  " +
-                        "                          "));
-            global::System.Web.UI.WebControls.FileUpload @__ctrl3;
-            @__ctrl3 = this.@__BuildControlFileUpload0();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <dl class=\"tbys-location\">\r\n                           " +
+                        " <div class=\"tbys-address\">\r\n                                <dt>Adres</dt>\r\n   " +
+                        "                             <dd>"));
+            global::System.Web.UI.WebControls.Label @__ctrl3;
+            @__ctrl3 = this.@__BuildControlAdiLbl();
             @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                       <div class=\"col border b" +
-                        "order-dark p-2\">\r\n                            <div class=\"row\">\r\n               " +
-                        "                 <div class=\"col-10\">\r\n                                    "));
-            global::System.Web.UI.WebControls.Image @__ctrl4;
-            @__ctrl4 = this.@__BuildControlImage2();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("</dd>\r\n                            </div>\r\n                            <div>\r\n   " +
+                        "                             <dt>İlçe</dt>\r\n                                <dd>" +
+                        ""));
+            global::System.Web.UI.WebControls.Label @__ctrl4;
+            @__ctrl4 = this.@__BuildControlIlceLbl();
             @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
-                        "ass=\"col-2\">\r\n                                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl5;
-            @__ctrl5 = this.@__BuildControlResimSil2Btn();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("</dd>\r\n                            </div>\r\n                            <div>\r\n   " +
+                        "                             <dt>İl</dt>\r\n                                <dd>"));
+            global::System.Web.UI.WebControls.Label @__ctrl5;
+            @__ctrl5 = this.@__BuildControlIlLbl();
             @__parser.AddParsedSubObject(@__ctrl5);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </div>\r\n   " +
-                        "                         "));
-            global::System.Web.UI.WebControls.FileUpload @__ctrl6;
-            @__ctrl6 = this.@__BuildControlFileUpload1();
-            @__parser.AddParsedSubObject(@__ctrl6);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col border " +
-                        "border-dark p-2\">\r\n                            <div class=\"row\">\r\n              " +
-                        "                  <div class=\"col-10\">\r\n                                    "));
-            global::System.Web.UI.WebControls.Image @__ctrl7;
-            @__ctrl7 = this.@__BuildControlImage3();
-            @__parser.AddParsedSubObject(@__ctrl7);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
-                        "ass=\"col-2\">\r\n                                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl8;
-            @__ctrl8 = this.@__BuildControlResimSil3Btn();
-            @__parser.AddParsedSubObject(@__ctrl8);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </div>\r\n   " +
-                        "                         "));
-            global::System.Web.UI.WebControls.FileUpload @__ctrl9;
-            @__ctrl9 = this.@__BuildControlFileUpload2();
-            @__parser.AddParsedSubObject(@__ctrl9);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col border " +
-                        "border-dark p-2\">\r\n                            <div class=\"row\">\r\n              " +
-                        "                  <div class=\"col-10\">\r\n                                    "));
-            global::System.Web.UI.WebControls.Image @__ctrl10;
-            @__ctrl10 = this.@__BuildControlImage4();
-            @__parser.AddParsedSubObject(@__ctrl10);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
-                        "ass=\"col-2\">\r\n                                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl11;
-            @__ctrl11 = this.@__BuildControlResimSil4Btn();
-            @__parser.AddParsedSubObject(@__ctrl11);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </div>\r\n   " +
-                        "                         "));
-            global::System.Web.UI.WebControls.FileUpload @__ctrl12;
-            @__ctrl12 = this.@__BuildControlFileUpload3();
-            @__parser.AddParsedSubObject(@__ctrl12);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                        </div>
-                    </div>
-                    <hr />
-                    <div class=""row"">
-
-                        <div class=""col border border-dark p-2"">
-                            <div class=""row"">
-                                <div class=""col-10"">
-                                    "));
-            global::System.Web.UI.WebControls.Image @__ctrl13;
-            @__ctrl13 = this.@__BuildControlImage5();
-            @__parser.AddParsedSubObject(@__ctrl13);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
-                        "ass=\"col-2\">\r\n                                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl14;
-            @__ctrl14 = this.@__BuildControlResimSil5Btn();
-            @__parser.AddParsedSubObject(@__ctrl14);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </div>\r\n   " +
-                        "                         "));
-            global::System.Web.UI.WebControls.FileUpload @__ctrl15;
-            @__ctrl15 = this.@__BuildControlFileUpload4();
-            @__parser.AddParsedSubObject(@__ctrl15);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col border " +
-                        "border-dark p-2\">\r\n                            <div class=\"row\">\r\n              " +
-                        "                  <div class=\"col-10\">\r\n                                    "));
-            global::System.Web.UI.WebControls.Image @__ctrl16;
-            @__ctrl16 = this.@__BuildControlImage6();
-            @__parser.AddParsedSubObject(@__ctrl16);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
-                        "ass=\"col-2\">\r\n                                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl17;
-            @__ctrl17 = this.@__BuildControlResimSil6Btn();
-            @__parser.AddParsedSubObject(@__ctrl17);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </div>\r\n   " +
-                        "                         "));
-            global::System.Web.UI.WebControls.FileUpload @__ctrl18;
-            @__ctrl18 = this.@__BuildControlFileUpload5();
-            @__parser.AddParsedSubObject(@__ctrl18);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col border " +
-                        "border-dark p-2\">\r\n                            <div class=\"row\">\r\n              " +
-                        "                  <div class=\"col-10\">\r\n                                    "));
-            global::System.Web.UI.WebControls.Image @__ctrl19;
-            @__ctrl19 = this.@__BuildControlImage7();
-            @__parser.AddParsedSubObject(@__ctrl19);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
-                        "ass=\"col-2\">\r\n                                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl20;
-            @__ctrl20 = this.@__BuildControlResimSil7Btn();
-            @__parser.AddParsedSubObject(@__ctrl20);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </div>\r\n   " +
-                        "                         "));
-            global::System.Web.UI.WebControls.FileUpload @__ctrl21;
-            @__ctrl21 = this.@__BuildControlFileUpload6();
-            @__parser.AddParsedSubObject(@__ctrl21);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col border " +
-                        "border-dark p-2\">\r\n                            <div class=\"row\">\r\n              " +
-                        "                  <div class=\"col-10\">\r\n                                    "));
-            global::System.Web.UI.WebControls.Image @__ctrl22;
-            @__ctrl22 = this.@__BuildControlImage8();
-            @__parser.AddParsedSubObject(@__ctrl22);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
-                        "ass=\"col-2\">\r\n                                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl23;
-            @__ctrl23 = this.@__BuildControlResimSil8Btn();
-            @__parser.AddParsedSubObject(@__ctrl23);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </div>\r\n   " +
-                        "                         "));
-            global::System.Web.UI.WebControls.FileUpload @__ctrl24;
-            @__ctrl24 = this.@__BuildControlFileUpload7();
-            @__parser.AddParsedSubObject(@__ctrl24);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                        </div>
-                    </div>
-                    <hr />
-                    <hr />
-                    <div class=""row"">
-                        <div class=""col-3 border border-dark p-2"">
-                            <div class=""form-group"">
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"</dd>
+                            </div>
+                        </dl>
+                    </section>
+                    <div class=""tbys-layout"">
+                        <section class=""tbys-panel"" aria-label=""Fotoğraflar"">
+                            <div class=""tbys-panel-header"">
+                                <h2>Fotoğraflar</h2>
                                 "));
-            global::System.Web.UI.WebControls.Label @__ctrl25;
-            @__ctrl25 = this.@__BuildControl__control3();
-            @__parser.AddParsedSubObject(@__ctrl25);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
-                        "m-group text-center\">\r\n                                "));
-            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl26;
-            @__ctrl26 = this.@__BuildControlTapuSenediDosyaLnk();
-            @__parser.AddParsedSubObject(@__ctrl26);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl27;
-            @__ctrl27 = this.@__BuildControlTapuSenediSilBtn();
-            @__parser.AddParsedSubObject(@__ctrl27);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
-                        "m-group\">\r\n                                "));
-            global::System.Web.UI.WebControls.FileUpload @__ctrl28;
-            @__ctrl28 = this.@__BuildControlTapuSenediYukleFU();
-            @__parser.AddParsedSubObject(@__ctrl28);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
-                        "             <div class=\"col-3 border border-dark p-2\">\r\n                       " +
-                        "     <div class=\"form-group\">\r\n                                "));
-            global::System.Web.UI.WebControls.Label @__ctrl29;
-            @__ctrl29 = this.@__BuildControlLabel2();
-            @__parser.AddParsedSubObject(@__ctrl29);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
-                        "m-group text-center\">\r\n                                "));
-            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl30;
-            @__ctrl30 = this.@__BuildControlEmlakBeyaniDosyaLnk();
-            @__parser.AddParsedSubObject(@__ctrl30);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl31;
-            @__ctrl31 = this.@__BuildControlEmlakBeyaniSilBtn();
-            @__parser.AddParsedSubObject(@__ctrl31);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
-                        "m-group\">\r\n                                "));
-            global::System.Web.UI.WebControls.FileUpload @__ctrl32;
-            @__ctrl32 = this.@__BuildControlEmlakBeyaniYukleFU();
-            @__parser.AddParsedSubObject(@__ctrl32);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
-                        "             <div class=\"col-3 border border-dark p-2\">\r\n                       " +
-                        "     <div class=\"form-group\">\r\n                                "));
-            global::System.Web.UI.WebControls.Label @__ctrl33;
-            @__ctrl33 = this.@__BuildControlLabel1();
-            @__parser.AddParsedSubObject(@__ctrl33);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
-                        "m-group text-center\">\r\n                                "));
-            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl34;
-            @__ctrl34 = this.@__BuildControlYapiKayitDosyaLnk();
-            @__parser.AddParsedSubObject(@__ctrl34);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl35;
-            @__ctrl35 = this.@__BuildControlYapiKayitSilBtn();
-            @__parser.AddParsedSubObject(@__ctrl35);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
-                        "m-group\">\r\n                                "));
-            global::System.Web.UI.WebControls.FileUpload @__ctrl36;
-            @__ctrl36 = this.@__BuildControlYapiKayitYukleFU();
-            @__parser.AddParsedSubObject(@__ctrl36);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
-                        "             <div class=\"col-3 border border-dark p-2\">\r\n                       " +
-                        "     <div class=\"form-group\">\r\n                                "));
-            global::System.Web.UI.WebControls.Label @__ctrl37;
-            @__ctrl37 = this.@__BuildControlLabel3();
-            @__parser.AddParsedSubObject(@__ctrl37);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
-                        "m-group text-center\">\r\n                                "));
-            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl38;
-            @__ctrl38 = this.@__BuildControlTapuKayitDosyaLnk();
-            @__parser.AddParsedSubObject(@__ctrl38);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl39;
-            @__ctrl39 = this.@__BuildControlTapuKayitSilBtn();
-            @__parser.AddParsedSubObject(@__ctrl39);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
-                        "m-group\">\r\n                                "));
-            global::System.Web.UI.WebControls.FileUpload @__ctrl40;
-            @__ctrl40 = this.@__BuildControlTapuKayitYukleFU();
-            @__parser.AddParsedSubObject(@__ctrl40);
+            global::System.Web.UI.WebControls.Label @__ctrl6;
+            @__ctrl6 = this.@__BuildControlFotografSayisiLbl();
+            @__parser.AddParsedSubObject(@__ctrl6);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                             </div>
-                        </div>
-                    </div>
-                    <div class=""row"">
-                        <div class=""col-3 border border-dark p-2"">
-                            <div class=""form-group"">
+                            <ul class=""tbys-photo-grid"">
+                            <li class=""tbys-photo"">
+                                <div class=""tbys-photo-media"">
+                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Taşınmaz fotoğrafı önizlemesini aç"" onclick=""OpenModal(this.querySelector('img'))"">
+                                        "));
+            global::System.Web.UI.WebControls.Image @__ctrl7;
+            @__ctrl7 = this.@__BuildControlImage1();
+            @__parser.AddParsedSubObject(@__ctrl7);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                    </button>
+                                    <span class=""tbys-photo-empty"">Fotoğraf yok</span>
+                                </div>
+                                <div class=""tbys-photo-body"">
+                                    <div class=""tbys-photo-label"">
+                                        "));
+            global::System.Web.UI.WebControls.Label @__ctrl8;
+            @__ctrl8 = this.@__BuildControl__control3();
+            @__parser.AddParsedSubObject(@__ctrl8);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl9;
+            @__ctrl9 = this.@__BuildControlResimSil1Btn();
+            @__parser.AddParsedSubObject(@__ctrl9);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                   " +
+                        " "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl10;
+            @__ctrl10 = this.@__BuildControlFileUpload0();
+            @__parser.AddParsedSubObject(@__ctrl10);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                </div>
+                            </li>
+                            <li class=""tbys-photo"">
+                                <div class=""tbys-photo-media"">
+                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Taşınmaz fotoğrafı 2 önizlemesini aç"" onclick=""OpenModal(this.querySelector('img'))"">
+                                        "));
+            global::System.Web.UI.WebControls.Image @__ctrl11;
+            @__ctrl11 = this.@__BuildControlImage2();
+            @__parser.AddParsedSubObject(@__ctrl11);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                    </button>
+                                    <span class=""tbys-photo-empty"">Fotoğraf yok</span>
+                                </div>
+                                <div class=""tbys-photo-body"">
+                                    <div class=""tbys-photo-label"">
+                                        "));
+            global::System.Web.UI.WebControls.Label @__ctrl12;
+            @__ctrl12 = this.@__BuildControl__control4();
+            @__parser.AddParsedSubObject(@__ctrl12);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl13;
+            @__ctrl13 = this.@__BuildControlResimSil2Btn();
+            @__parser.AddParsedSubObject(@__ctrl13);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                   " +
+                        " "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl14;
+            @__ctrl14 = this.@__BuildControlFileUpload1();
+            @__parser.AddParsedSubObject(@__ctrl14);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                </div>
+                            </li>
+                            <li class=""tbys-photo"">
+                                <div class=""tbys-photo-media"">
+                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Taşınmaz fotoğrafı 3 önizlemesini aç"" onclick=""OpenModal(this.querySelector('img'))"">
+                                        "));
+            global::System.Web.UI.WebControls.Image @__ctrl15;
+            @__ctrl15 = this.@__BuildControlImage3();
+            @__parser.AddParsedSubObject(@__ctrl15);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                    </button>
+                                    <span class=""tbys-photo-empty"">Fotoğraf yok</span>
+                                </div>
+                                <div class=""tbys-photo-body"">
+                                    <div class=""tbys-photo-label"">
+                                        "));
+            global::System.Web.UI.WebControls.Label @__ctrl16;
+            @__ctrl16 = this.@__BuildControl__control5();
+            @__parser.AddParsedSubObject(@__ctrl16);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl17;
+            @__ctrl17 = this.@__BuildControlResimSil3Btn();
+            @__parser.AddParsedSubObject(@__ctrl17);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                   " +
+                        " "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl18;
+            @__ctrl18 = this.@__BuildControlFileUpload2();
+            @__parser.AddParsedSubObject(@__ctrl18);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                </div>
+                            </li>
+                            <li class=""tbys-photo"">
+                                <div class=""tbys-photo-media"">
+                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Tahkikat fotoğrafı önizlemesini aç"" onclick=""OpenModal(this.querySelector('img'))"">
+                                        "));
+            global::System.Web.UI.WebControls.Image @__ctrl19;
+            @__ctrl19 = this.@__BuildControlImage4();
+            @__parser.AddParsedSubObject(@__ctrl19);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                    </button>
+                                    <span class=""tbys-photo-empty"">Fotoğraf yok</span>
+                                </div>
+                                <div class=""tbys-photo-body"">
+                                    <div class=""tbys-photo-label"">
+                                        "));
+            global::System.Web.UI.WebControls.Label @__ctrl20;
+            @__ctrl20 = this.@__BuildControl__control6();
+            @__parser.AddParsedSubObject(@__ctrl20);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl21;
+            @__ctrl21 = this.@__BuildControlResimSil4Btn();
+            @__parser.AddParsedSubObject(@__ctrl21);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                   " +
+                        " "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl22;
+            @__ctrl22 = this.@__BuildControlFileUpload3();
+            @__parser.AddParsedSubObject(@__ctrl22);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                </div>
+                            </li>
+                            <li class=""tbys-photo"">
+                                <div class=""tbys-photo-media"">
+                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Kroki önizlemesini aç"" onclick=""OpenModal(this.querySelector('img'))"">
+                                        "));
+            global::System.Web.UI.WebControls.Image @__ctrl23;
+            @__ctrl23 = this.@__BuildControlImage5();
+            @__parser.AddParsedSubObject(@__ctrl23);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                    </button>
+                                    <span class=""tbys-photo-empty"">Fotoğraf yok</span>
+                                </div>
+                                <div class=""tbys-photo-body"">
+                                    <div class=""tbys-photo-label"">
+                                        "));
+            global::System.Web.UI.WebControls.Label @__ctrl24;
+            @__ctrl24 = this.@__BuildControl__control7();
+            @__parser.AddParsedSubObject(@__ctrl24);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl25;
+            @__ctrl25 = this.@__BuildControlResimSil5Btn();
+            @__parser.AddParsedSubObject(@__ctrl25);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                   " +
+                        " "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl26;
+            @__ctrl26 = this.@__BuildControlFileUpload4();
+            @__parser.AddParsedSubObject(@__ctrl26);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                </div>
+                            </li>
+                            <li class=""tbys-photo"">
+                                <div class=""tbys-photo-media"">
+                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Tapu fotoğrafı önizlemesini aç"" onclick=""OpenModal(this.querySelector('img'))"">
+                                        "));
+            global::System.Web.UI.WebControls.Image @__ctrl27;
+            @__ctrl27 = this.@__BuildControlImage6();
+            @__parser.AddParsedSubObject(@__ctrl27);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                    </button>
+                                    <span class=""tbys-photo-empty"">Fotoğraf yok</span>
+                                </div>
+                                <div class=""tbys-photo-body"">
+                                    <div class=""tbys-photo-label"">
+                                        "));
+            global::System.Web.UI.WebControls.Label @__ctrl28;
+            @__ctrl28 = this.@__BuildControl__control8();
+            @__parser.AddParsedSubObject(@__ctrl28);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl29;
+            @__ctrl29 = this.@__BuildControlResimSil6Btn();
+            @__parser.AddParsedSubObject(@__ctrl29);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                   " +
+                        " "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl30;
+            @__ctrl30 = this.@__BuildControlFileUpload5();
+            @__parser.AddParsedSubObject(@__ctrl30);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                </div>
+                            </li>
+                            <li class=""tbys-photo"">
+                                <div class=""tbys-photo-media"">
+                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Taşınmaz fotoğrafı 4 önizlemesini aç"" onclick=""OpenModal(this.querySelector('img'))"">
+                                        "));
+            global::System.Web.UI.WebControls.Image @__ctrl31;
+            @__ctrl31 = this.@__BuildControlImage7();
+            @__parser.AddParsedSubObject(@__ctrl31);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                    </button>
+                                    <span class=""tbys-photo-empty"">Fotoğraf yok</span>
+                                </div>
+                                <div class=""tbys-photo-body"">
+                                    <div class=""tbys-photo-label"">
+                                        "));
+            global::System.Web.UI.WebControls.Label @__ctrl32;
+            @__ctrl32 = this.@__BuildControl__control9();
+            @__parser.AddParsedSubObject(@__ctrl32);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl33;
+            @__ctrl33 = this.@__BuildControlResimSil7Btn();
+            @__parser.AddParsedSubObject(@__ctrl33);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                   " +
+                        " "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl34;
+            @__ctrl34 = this.@__BuildControlFileUpload6();
+            @__parser.AddParsedSubObject(@__ctrl34);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                </div>
+                            </li>
+                            <li class=""tbys-photo"">
+                                <div class=""tbys-photo-media"">
+                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Taşınmaz fotoğrafı 5 önizlemesini aç"" onclick=""OpenModal(this.querySelector('img'))"">
+                                        "));
+            global::System.Web.UI.WebControls.Image @__ctrl35;
+            @__ctrl35 = this.@__BuildControlImage8();
+            @__parser.AddParsedSubObject(@__ctrl35);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                    </button>
+                                    <span class=""tbys-photo-empty"">Fotoğraf yok</span>
+                                </div>
+                                <div class=""tbys-photo-body"">
+                                    <div class=""tbys-photo-label"">
+                                        "));
+            global::System.Web.UI.WebControls.Label @__ctrl36;
+            @__ctrl36 = this.@__BuildControl__control10();
+            @__parser.AddParsedSubObject(@__ctrl36);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl37;
+            @__ctrl37 = this.@__BuildControlResimSil8Btn();
+            @__parser.AddParsedSubObject(@__ctrl37);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                   " +
+                        " "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl38;
+            @__ctrl38 = this.@__BuildControlFileUpload7();
+            @__parser.AddParsedSubObject(@__ctrl38);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                </div>
+                            </li>
+                            </ul>
+                        </section>
+                        <section class=""tbys-panel"" aria-label=""Belgeler"">
+                            <div class=""tbys-panel-header"">
+                                <h2>Belgeler</h2>
                                 "));
-            global::System.Web.UI.WebControls.Label @__ctrl41;
-            @__ctrl41 = this.@__BuildControlLabel4();
+            global::System.Web.UI.WebControls.Label @__ctrl39;
+            @__ctrl39 = this.@__BuildControlBelgeSayisiLbl();
+            @__parser.AddParsedSubObject(@__ctrl39);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <ul class=\"tbys" +
+                        "-documents\">\r\n                            <li class=\"tbys-document\">\r\n          " +
+                        "                      <div class=\"tbys-document-name\">\r\n                        " +
+                        "            "));
+            global::System.Web.UI.WebControls.Label @__ctrl40;
+            @__ctrl40 = this.@__BuildControl__control11();
+            @__parser.AddParsedSubObject(@__ctrl40);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                    <span class=""tbys-document-status tbys-document-missing"">Dosya yok</span>
+                                    <span class=""tbys-document-status tbys-document-ready"">Yüklü</span>
+                                </div>
+                                <div class=""tbys-document-actions"">
+                                    "));
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl41;
+            @__ctrl41 = this.@__BuildControlTapuSenediDosyaLnk();
             @__parser.AddParsedSubObject(@__ctrl41);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
-                        "m-group text-center\">\r\n                                "));
-            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl42;
-            @__ctrl42 = this.@__BuildControlImarDurumuDosyaLnk();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl42;
+            @__ctrl42 = this.@__BuildControlTapuSenediSilBtn();
             @__parser.AddParsedSubObject(@__ctrl42);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl43;
-            @__ctrl43 = this.@__BuildControlImarDurumuSilBtn();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl43;
+            @__ctrl43 = this.@__BuildControlTapuSenediYukleFU();
             @__parser.AddParsedSubObject(@__ctrl43);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
-                        "m-group\">\r\n                                "));
-            global::System.Web.UI.WebControls.FileUpload @__ctrl44;
-            @__ctrl44 = this.@__BuildControlImarDurumuYukleFU();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </li>\r\n    " +
+                        "                        <li class=\"tbys-document\">\r\n                            " +
+                        "    <div class=\"tbys-document-name\">\r\n                                    "));
+            global::System.Web.UI.WebControls.Label @__ctrl44;
+            @__ctrl44 = this.@__BuildControlLabel2();
             @__parser.AddParsedSubObject(@__ctrl44);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
-                        "             <div class=\"col-3 border border-dark p-2\">\r\n                       " +
-                        "     <div class=\"form-group\">\r\n                                "));
-            global::System.Web.UI.WebControls.Label @__ctrl45;
-            @__ctrl45 = this.@__BuildControlLabel5();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                    <span class=""tbys-document-status tbys-document-missing"">Dosya yok</span>
+                                    <span class=""tbys-document-status tbys-document-ready"">Yüklü</span>
+                                </div>
+                                <div class=""tbys-document-actions"">
+                                    "));
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl45;
+            @__ctrl45 = this.@__BuildControlEmlakBeyaniDosyaLnk();
             @__parser.AddParsedSubObject(@__ctrl45);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
-                        "m-group text-center\">\r\n                                "));
-            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl46;
-            @__ctrl46 = this.@__BuildControlTasinmazRaporuDosyaLnk();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl46;
+            @__ctrl46 = this.@__BuildControlEmlakBeyaniSilBtn();
             @__parser.AddParsedSubObject(@__ctrl46);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl47;
-            @__ctrl47 = this.@__BuildControlTasinmazRaporuSilBtn();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl47;
+            @__ctrl47 = this.@__BuildControlEmlakBeyaniYukleFU();
             @__parser.AddParsedSubObject(@__ctrl47);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
-                        "m-group\">\r\n                                "));
-            global::System.Web.UI.WebControls.FileUpload @__ctrl48;
-            @__ctrl48 = this.@__BuildControlTasinmazRaporuYukleFU();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </li>\r\n    " +
+                        "                        <li class=\"tbys-document\">\r\n                            " +
+                        "    <div class=\"tbys-document-name\">\r\n                                    "));
+            global::System.Web.UI.WebControls.Label @__ctrl48;
+            @__ctrl48 = this.@__BuildControlLabel1();
             @__parser.AddParsedSubObject(@__ctrl48);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
-                        "             <div class=\"col-3 border border-dark p-2\">\r\n                       " +
-                        "     <div class=\"form-group\">\r\n                                "));
-            global::System.Web.UI.WebControls.Label @__ctrl49;
-            @__ctrl49 = this.@__BuildControl__control4();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                    <span class=""tbys-document-status tbys-document-missing"">Dosya yok</span>
+                                    <span class=""tbys-document-status tbys-document-ready"">Yüklü</span>
+                                </div>
+                                <div class=""tbys-document-actions"">
+                                    "));
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl49;
+            @__ctrl49 = this.@__BuildControlYapiKayitDosyaLnk();
             @__parser.AddParsedSubObject(@__ctrl49);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
-                        "m-group text-center\">\r\n                                "));
-            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl50;
-            @__ctrl50 = this.@__BuildControlVakiflarTasinmazBildirimiDosyaLnk();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl50;
+            @__ctrl50 = this.@__BuildControlYapiKayitSilBtn();
             @__parser.AddParsedSubObject(@__ctrl50);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl51;
-            @__ctrl51 = this.@__BuildControlVakiflarTasinmazBildirimiSilBtn();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl51;
+            @__ctrl51 = this.@__BuildControlYapiKayitYukleFU();
             @__parser.AddParsedSubObject(@__ctrl51);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
-                        "m-group\">\r\n                                "));
-            global::System.Web.UI.WebControls.FileUpload @__ctrl52;
-            @__ctrl52 = this.@__BuildControlVakiflarTasinmazBildirimiYukleFU();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </li>\r\n    " +
+                        "                        <li class=\"tbys-document\">\r\n                            " +
+                        "    <div class=\"tbys-document-name\">\r\n                                    "));
+            global::System.Web.UI.WebControls.Label @__ctrl52;
+            @__ctrl52 = this.@__BuildControlLabel3();
             @__parser.AddParsedSubObject(@__ctrl52);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
-                        "         </div>\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                    <span class=""tbys-document-status tbys-document-missing"">Dosya yok</span>
+                                    <span class=""tbys-document-status tbys-document-ready"">Yüklü</span>
+                                </div>
+                                <div class=""tbys-document-actions"">
+                                    "));
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl53;
+            @__ctrl53 = this.@__BuildControlTapuKayitDosyaLnk();
+            @__parser.AddParsedSubObject(@__ctrl53);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl54;
+            @__ctrl54 = this.@__BuildControlTapuKayitSilBtn();
+            @__parser.AddParsedSubObject(@__ctrl54);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl55;
+            @__ctrl55 = this.@__BuildControlTapuKayitYukleFU();
+            @__parser.AddParsedSubObject(@__ctrl55);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </li>\r\n    " +
+                        "                        <li class=\"tbys-document\">\r\n                            " +
+                        "    <div class=\"tbys-document-name\">\r\n                                    "));
+            global::System.Web.UI.WebControls.Label @__ctrl56;
+            @__ctrl56 = this.@__BuildControlLabel4();
+            @__parser.AddParsedSubObject(@__ctrl56);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                    <span class=""tbys-document-status tbys-document-missing"">Dosya yok</span>
+                                    <span class=""tbys-document-status tbys-document-ready"">Yüklü</span>
+                                </div>
+                                <div class=""tbys-document-actions"">
+                                    "));
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl57;
+            @__ctrl57 = this.@__BuildControlImarDurumuDosyaLnk();
+            @__parser.AddParsedSubObject(@__ctrl57);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl58;
+            @__ctrl58 = this.@__BuildControlImarDurumuSilBtn();
+            @__parser.AddParsedSubObject(@__ctrl58);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl59;
+            @__ctrl59 = this.@__BuildControlImarDurumuYukleFU();
+            @__parser.AddParsedSubObject(@__ctrl59);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </li>\r\n    " +
+                        "                        <li class=\"tbys-document\">\r\n                            " +
+                        "    <div class=\"tbys-document-name\">\r\n                                    "));
+            global::System.Web.UI.WebControls.Label @__ctrl60;
+            @__ctrl60 = this.@__BuildControlLabel5();
+            @__parser.AddParsedSubObject(@__ctrl60);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                    <span class=""tbys-document-status tbys-document-missing"">Dosya yok</span>
+                                    <span class=""tbys-document-status tbys-document-ready"">Yüklü</span>
+                                </div>
+                                <div class=""tbys-document-actions"">
+                                    "));
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl61;
+            @__ctrl61 = this.@__BuildControlTasinmazRaporuDosyaLnk();
+            @__parser.AddParsedSubObject(@__ctrl61);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl62;
+            @__ctrl62 = this.@__BuildControlTasinmazRaporuSilBtn();
+            @__parser.AddParsedSubObject(@__ctrl62);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl63;
+            @__ctrl63 = this.@__BuildControlTasinmazRaporuYukleFU();
+            @__parser.AddParsedSubObject(@__ctrl63);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </li>\r\n    " +
+                        "                        <li class=\"tbys-document\">\r\n                            " +
+                        "    <div class=\"tbys-document-name\">\r\n                                    "));
+            global::System.Web.UI.WebControls.Label @__ctrl64;
+            @__ctrl64 = this.@__BuildControl__control12();
+            @__parser.AddParsedSubObject(@__ctrl64);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                    <span class=""tbys-document-status tbys-document-missing"">Dosya yok</span>
+                                    <span class=""tbys-document-status tbys-document-ready"">Yüklü</span>
+                                </div>
+                                <div class=""tbys-document-actions"">
+                                    "));
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl65;
+            @__ctrl65 = this.@__BuildControlVakiflarTasinmazBildirimiDosyaLnk();
+            @__parser.AddParsedSubObject(@__ctrl65);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl66;
+            @__ctrl66 = this.@__BuildControlVakiflarTasinmazBildirimiSilBtn();
+            @__parser.AddParsedSubObject(@__ctrl66);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl67;
+            @__ctrl67 = this.@__BuildControlVakiflarTasinmazBildirimiYukleFU();
+            @__parser.AddParsedSubObject(@__ctrl67);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </li>\r\n    " +
+                        "                        </ul>\r\n                        </section>\r\n             " +
+                        "       </div>\r\n                "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlGuncellemeTarihiLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.GuncellemeTarihiLbl = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "GuncellemeTarihiLbl";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlGuncelleyenLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.GuncelleyenLbl = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "GuncelleyenLbl";
             return @__ctrl;
         }
         
@@ -1623,8 +1944,8 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "SaveBtn";
-            @__ctrl.CssClass = "btn btn-outline-success";
-            @__ctrl.Text = "Resimleri Kaydet";
+            @__ctrl.CssClass = "btn tbys-save";
+            @__ctrl.Text = "Resimleri/Belgeleri Kaydet";
             @__ctrl.Click -= new System.EventHandler(this.SaveBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.SaveBtn_Click);
             return @__ctrl;
@@ -1633,27 +1954,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlBackBtn() {
-            global::System.Web.UI.WebControls.LinkButton @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.BackBtn = @__ctrl;
-            @__ctrl.TemplateControl = this;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
-            @__ctrl.ID = "BackBtn";
-            @__ctrl.Text = "Geri";
-            @__ctrl.CausesValidation = false;
-            @__ctrl.Click -= new System.EventHandler(this.BackBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.BackBtn_Click);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\"card shadow\">\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\"tbys-screen\">\r\n                "));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
             @__ctrl1 = this.@__BuildControlCardHeader();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -1661,21 +1964,26 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl2;
             @__ctrl2 = this.@__BuildControlMainCardDiv();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n                <div class=\"card-footer\">\r\n                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl3;
-            @__ctrl3 = this.@__BuildControlSaveBtn();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <div class=\"tbys-footer\">\r\n                    <div class=\"tbys" +
+                        "-update-info\">\r\n                        "));
+            global::System.Web.UI.WebControls.Label @__ctrl3;
+            @__ctrl3 = this.@__BuildControlGuncellemeTarihiLbl();
             @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl4;
-            @__ctrl4 = this.@__BuildControlBackBtn();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
+            global::System.Web.UI.WebControls.Label @__ctrl4;
+            @__ctrl4 = this.@__BuildControlGuncelleyenLbl();
             @__parser.AddParsedSubObject(@__ctrl4);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl5;
+            @__ctrl5 = this.@__BuildControlSaveBtn();
+            @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            </div>\r\n        "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        private global::System.Web.UI.PostBackTrigger @__BuildControl__control6() {
+        private global::System.Web.UI.PostBackTrigger @__BuildControl__control14() {
             global::System.Web.UI.PostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.PostBackTrigger();
             @__ctrl.ControlID = "SaveBtn";
@@ -1685,9 +1993,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        private void @__BuildControl__control5(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
+        private void @__BuildControl__control13(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
             global::System.Web.UI.PostBackTrigger @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control6();
+            @__ctrl1 = this.@__BuildControl__control14();
             @__ctrl.Add(@__ctrl1);
         }
         
@@ -1701,18 +2009,18 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control2));
             @__ctrl.ID = "UpdatePanel";
             @__ctrl.UpdateMode = global::System.Web.UI.UpdatePanelUpdateMode.Conditional;
-            this.@__BuildControl__control5(@__ctrl.Triggers);
+            this.@__BuildControl__control13(@__ctrl.Triggers);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        private void @__BuildControl__control7(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control15(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\'loaderMainContainer\'>\r\n                <div class=\'load" +
-                        "erContainer\'>\r\n                    <div class=\'loaderCircle\'></div>\r\n           " +
-                        "     </div>\r\n            </div>\r\n\r\n        "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\"loaderMainContainer\">\r\n                <div class=\"load" +
+                        "erContainer\">\r\n                    <div class=\"loaderCircle\"></div>\r\n           " +
+                        "     </div>\r\n            </div>\r\n        "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -1722,7 +2030,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             global::System.Web.UI.UpdateProgress @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdateProgress();
             this.updateProgress = @__ctrl;
-            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control7));
+            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control15));
             @__ctrl.ID = "updateProgress";
             return @__ctrl;
         }
@@ -1732,36 +2040,138 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControlTree(global::TBYS_WebParts.TasinmazResimleriWP.TasinmazResimleriWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-<script type=""text/javascript"">
-    function readURL(input, sender) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#' + sender).attr('src', e.target.result);
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-    function OpenModal(clickedImg) {
-        $('#MaximizedImg').attr('src', clickedImg.src);
-
-        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ResimAcModal'));
-        myModalInstance.show();
-
-    }
-    function showDefaultImage(img) {
-        img.onerror = null;
-        var baseUrl = $('#TasinmazResimBaseUrl').val();
-        var rootUrl = baseUrl.substring(0, baseUrl.indexOf('/', baseUrl.indexOf('//') + 2));
-        img.src = rootUrl + '/OrtakResimler/TasinmazFoto.jpg';
-    }
-</script>
-"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<style>\r\n    .tbys-property {\r\n        --tbys-page: #f3f6f9;\r\n        --tbys-su" +
+                        "rface: #fff;\r\n        --tbys-line: #dce5ec;\r\n        --tbys-ink: #1b2d40;\r\n     " +
+                        "   --tbys-muted: #516477;\r\n        --tbys-accent: #07595c;\r\n        --tbys-accen" +
+                        "t-soft: #e7f3f1;\r\n        --tbys-danger: #923236;\r\n        width: 100%;\r\n       " +
+                        " container: tbys-property / inline-size;\r\n        color: var(--tbys-ink);\r\n     " +
+                        "   font-size: 16px;\r\n    }\r\n    .tbys-property .tbys-screen {\r\n        backgroun" +
+                        "d: var(--tbys-page);\r\n        border: 1px solid var(--tbys-line);\r\n        borde" +
+                        "r-radius: 1rem;\r\n    }\r\n    .tbys-property .tbys-toolbar,\r\n    .tbys-property .t" +
+                        "bys-footer {\r\n        display: flex;\r\n        align-items: center;\r\n        just" +
+                        "ify-content: space-between;\r\n        flex-wrap: wrap;\r\n        gap: .75rem;\r\n   " +
+                        "     padding: .75rem clamp(.75rem, 2vw, 1.5rem);\r\n        background: var(--tbys" +
+                        "-surface);\r\n    }\r\n    .tbys-property .tbys-toolbar { border-bottom: 1px solid v" +
+                        "ar(--tbys-line); border-radius: 1rem 1rem 0 0; }\r\n    .tbys-property .tbys-foote" +
+                        "r { border-top: 1px solid var(--tbys-line); border-radius: 0 0 1rem 1rem; }\r\n   " +
+                        " .tbys-property .tbys-route { color: var(--tbys-muted); font-size: 14px; }\r\n    " +
+                        ".tbys-property .tbys-route strong { color: var(--tbys-ink); }\r\n    .tbys-propert" +
+                        "y .tbys-toolbar-actions,\r\n    .tbys-property .tbys-update-info { display: flex; " +
+                        "flex-wrap: wrap; align-items: center; gap: .5rem; }\r\n    .tbys-property .tbys-up" +
+                        "date-info,\r\n    .tbys-property .tbys-record-id { color: var(--tbys-muted); font-" +
+                        "size: 14px; }\r\n    .tbys-property .tbys-toolbar-actions .btn,\r\n    .tbys-propert" +
+                        "y .tbys-save { font-size: 14px; }\r\n    .tbys-property .tbys-save { margin-inline" +
+                        "-start: auto; color: #fff; background: var(--tbys-accent); border-color: var(--t" +
+                        "bys-accent); }\r\n    .tbys-property .tbys-save:hover { color: #fff; background: #" +
+                        "064749; border-color: #064749; }\r\n    .tbys-property .tbys-main { padding: clamp" +
+                        "(.75rem, 2vw, 1.5rem); }\r\n    .tbys-property .tbys-summary,\r\n    .tbys-property " +
+                        ".tbys-panel {\r\n        min-width: 0;\r\n        background: var(--tbys-surface);\r\n" +
+                        "        border: 1px solid var(--tbys-line);\r\n        border-radius: .75rem;\r\n   " +
+                        " }\r\n    .tbys-property .tbys-summary { padding: 1rem 1.125rem; margin-bottom: 1r" +
+                        "em; }\r\n    .tbys-property .tbys-title { color: var(--tbys-ink); font-size: clamp" +
+                        "(20px, 2vw, 25px); margin: 0 0 .25rem; font-weight: 700; }\r\n    .tbys-property ." +
+                        "tbys-location {\r\n        display: flex;\r\n        flex-wrap: wrap;\r\n        gap: " +
+                        ".65rem 1.5rem;\r\n        margin: .8rem 0 0;\r\n        padding-top: .75rem;\r\n      " +
+                        "  border-top: 1px solid var(--tbys-line);\r\n    }\r\n    .tbys-property .tbys-locat" +
+                        "ion > div { flex: 1 1 6rem; min-width: 0; }\r\n    .tbys-property .tbys-location ." +
+                        "tbys-address { flex: 4 1 16rem; }\r\n    .tbys-property .tbys-location dt { color:" +
+                        " var(--tbys-muted); font-size: 14px; font-weight: 400; }\r\n    .tbys-property .tb" +
+                        "ys-location dd { margin: .15rem 0 0; font-weight: 600; overflow-wrap: anywhere; " +
+                        "}\r\n    .tbys-property .tbys-layout {\r\n        display: grid;\r\n        grid-templ" +
+                        "ate-columns: minmax(0, 1fr);\r\n        gap: 12px;\r\n        align-items: start;\r\n " +
+                        "   }\r\n    @container tbys-property (min-width: 840px) {\r\n        .tbys-property " +
+                        ".tbys-layout { grid-template-columns: minmax(0, 1fr) clamp(300px, 27%, 380px); }" +
+                        "\r\n    }\r\n    .tbys-property .tbys-panel-header {\r\n        display: flex;\r\n      " +
+                        "  align-items: baseline;\r\n        justify-content: space-between;\r\n        flex-" +
+                        "wrap: wrap;\r\n        gap: .35rem .75rem;\r\n        padding: .875rem 1rem;\r\n      " +
+                        "  border-bottom: 1px solid var(--tbys-line);\r\n    }\r\n    .tbys-property .tbys-pa" +
+                        "nel-header h2 { margin: 0; font-size: 18px; font-weight: 700; color: var(--tbys-" +
+                        "ink); }\r\n    .tbys-property .tbys-count { color: var(--tbys-muted); font-size: 1" +
+                        "3px; white-space: nowrap; }\r\n    .tbys-property .tbys-panel:has(.tbys-photo-grid" +
+                        ") { container: tbys-gallery / inline-size; }\r\n    .tbys-property .tbys-photo-gri" +
+                        "d {\r\n        display: grid;\r\n        grid-template-columns: minmax(0, 1fr);\r\n   " +
+                        "     gap: 8px;\r\n        margin: 0;\r\n        padding: .8rem;\r\n        list-style:" +
+                        " none;\r\n    }\r\n    @container tbys-gallery (min-width: 360px) {\r\n        .tbys-p" +
+                        "roperty .tbys-photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }\r\n" +
+                        "    }\r\n    @container tbys-gallery (min-width: 530px) {\r\n        .tbys-property " +
+                        ".tbys-photo-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }\r\n    }\r\n " +
+                        "   @container tbys-gallery (min-width: 710px) {\r\n        .tbys-property .tbys-ph" +
+                        "oto-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }\r\n    }\r\n    .tbys" +
+                        "-property .tbys-photo { min-width: 0; border: 1px solid var(--tbys-line); border" +
+                        "-radius: .55rem; overflow: hidden; }\r\n    .tbys-property .tbys-photo-preview { d" +
+                        "isplay: block; width: 100%; padding: 0; border: 0; background: var(--tbys-page);" +
+                        " }\r\n    .tbys-property .tbys-photo-preview img { display: block; width: 100%; as" +
+                        "pect-ratio: 16 / 9; max-height: 120px; object-fit: cover; }\r\n    .tbys-property " +
+                        ".tbys-photo-empty { display: none; min-height: 2.5rem; padding: .45rem; place-it" +
+                        "ems: center; background: var(--tbys-page); color: var(--tbys-muted); font-size: " +
+                        "13px; }\r\n    .tbys-property .tbys-photo:has(img[data-photo-stored=\"false\"]:not([" +
+                        "data-photo-preview])) .tbys-photo-preview { display: none; }\r\n    .tbys-property" +
+                        " .tbys-photo:has(img[data-photo-stored=\"false\"]:not([data-photo-preview])) .tbys" +
+                        "-photo-empty { display: grid; }\r\n    .tbys-property .tbys-photo:has(img[data-pho" +
+                        "to-stored=\"false\"]) .tbys-remove { display: none; }\r\n    .tbys-property .tbys-ph" +
+                        "oto-body { display: grid; gap: .35rem; padding: .55rem; }\r\n    .tbys-property .t" +
+                        "bys-photo-label { display: flex; align-items: center; justify-content: space-bet" +
+                        "ween; gap: .35rem; font-size: 14px; font-weight: 600; }\r\n    .tbys-property .tby" +
+                        "s-photo-label label { margin: 0; overflow-wrap: anywhere; }\r\n    .tbys-property " +
+                        ".tbys-documents { list-style: none; margin: 0; padding: 0 1rem; }\r\n    .tbys-pro" +
+                        "perty .tbys-document {\r\n        display: flex;\r\n        flex-wrap: wrap;\r\n      " +
+                        "  align-items: center;\r\n        justify-content: space-between;\r\n        gap: .3" +
+                        "5rem .75rem;\r\n        padding: .65rem 0;\r\n        min-height: 3.5rem;\r\n        b" +
+                        "order-bottom: 1px solid var(--tbys-line);\r\n    }\r\n    .tbys-property .tbys-docum" +
+                        "ent:last-child { border-bottom: 0; }\r\n    .tbys-property .tbys-document-name { f" +
+                        "lex: 1 1 120px; min-width: 0; font-size: 15px; font-weight: 600; overflow-wrap: " +
+                        "anywhere; }\r\n    .tbys-property .tbys-document-status { display: block; color: v" +
+                        "ar(--tbys-muted); font-size: 13px; font-weight: 400; }\r\n    .tbys-property .tbys" +
+                        "-document-ready { display: none; color: var(--tbys-accent); }\r\n    .tbys-propert" +
+                        "y .tbys-document:has(.tbys-document-open) .tbys-document-ready { display: block;" +
+                        " }\r\n    .tbys-property .tbys-document:has(.tbys-document-open) .tbys-document-mi" +
+                        "ssing { display: none; }\r\n    .tbys-property .tbys-document-actions { display: f" +
+                        "lex; align-items: center; flex-wrap: wrap; justify-content: end; gap: .35rem; ma" +
+                        "x-width: 100%; margin-inline-start: auto; }\r\n    .tbys-property .tbys-document-a" +
+                        "ctions .tbys-file { width: 145px; }\r\n    .tbys-property .tbys-file { display: bl" +
+                        "ock; width: 100%; min-width: 0; max-width: 100%; color: var(--tbys-muted); font-" +
+                        "size: 13px; }\r\n    .tbys-property .tbys-file::file-selector-button {\r\n        pa" +
+                        "dding: .35rem .5rem;\r\n        margin-inline-end: .35rem;\r\n        border: 1px so" +
+                        "lid var(--tbys-line);\r\n        border-radius: .35rem;\r\n        background: var(-" +
+                        "-tbys-surface);\r\n        color: var(--tbys-ink);\r\n    }\r\n    .tbys-property .tby" +
+                        "s-document-open,\r\n    .tbys-property .tbys-remove {\r\n        display: inline-fle" +
+                        "x;\r\n        align-items: center;\r\n        justify-content: center;\r\n        min-" +
+                        "height: 26px;\r\n        padding: .2rem .45rem;\r\n        border-radius: .35rem;\r\n " +
+                        "       font-size: 13px;\r\n        font-weight: 600;\r\n        color: var(--tbys-ac" +
+                        "cent);\r\n        text-decoration: none;\r\n        white-space: nowrap;\r\n    }\r\n   " +
+                        " .tbys-property .tbys-remove { color: var(--tbys-danger); }\r\n    .tbys-property " +
+                        ".tbys-document-open:hover { background: var(--tbys-accent-soft); }\r\n    .tbys-pr" +
+                        "operty .tbys-remove:hover { background: #fbecee; }\r\n    .tbys-property :focus-vi" +
+                        "sible { outline: 2px solid var(--tbys-accent); outline-offset: 2px; }\r\n    .tbys" +
+                        "-property .tbys-photo-preview:focus-visible { outline-offset: -3px; }\r\n    .tbys" +
+                        "-property .tbys-modal-image { display: block; width: 100%; max-height: 76vh; obj" +
+                        "ect-fit: contain; }\r\n</style>\r\n<script type=\"text/javascript\">\r\n    function rea" +
+                        "dURL(input, sender) {\r\n        var image = document.getElementById(sender);\r\n   " +
+                        "     if (!image) return;\r\n\r\n        if (!input.files || !input.files[0]) {\r\n    " +
+                        "        if (image.dataset.originalSrc) {\r\n                image.src = image.data" +
+                        "set.originalSrc;\r\n            } else if (image.hasAttribute(\'data-original-src\')" +
+                        ") {\r\n                image.removeAttribute(\'src\');\r\n            }\r\n            d" +
+                        "elete image.dataset.photoPreview;\r\n            return;\r\n        }\r\n\r\n        if " +
+                        "(!image.hasAttribute(\'data-original-src\')) {\r\n            image.dataset.original" +
+                        "Src = image.getAttribute(\'src\') || \'\';\r\n        }\r\n        var selectedFile = in" +
+                        "put.files[0];\r\n        var reader = new FileReader();\r\n        reader.onload = f" +
+                        "unction (event) {\r\n            if (input.files[0] !== selectedFile) return;\r\n\r\n " +
+                        "           image.dataset.photoPreview = \"true\";\r\n            image.src = event.t" +
+                        "arget.result;\r\n        };\r\n        reader.readAsDataURL(selectedFile);\r\n    }\r\n\r" +
+                        "\n    function OpenModal(clickedImg) {\r\n        if (!clickedImg || !clickedImg.ge" +
+                        "tAttribute(\'src\')) return;\r\n\r\n        var modalImage = document.getElementById(\'" +
+                        "MaximizedImg\');\r\n        modalImage.src = clickedImg.src;\r\n        modalImage.al" +
+                        "t = clickedImg.alt;\r\n        document.getElementById(\'ResimAcModalBaslik\').textC" +
+                        "ontent = clickedImg.alt;\r\n        bootstrap.Modal.getOrCreateInstance(document.g" +
+                        "etElementById(\'ResimAcModal\')).show();\r\n    }\r\n\r\n    function showDefaultImage(i" +
+                        "mg) {\r\n        img.onerror = null;\r\n        var baseUrl = document.getElementByI" +
+                        "d(\'TasinmazResimBaseUrl\').value;\r\n        if (baseUrl) {\r\n            img.src = " +
+                        "new URL(\'/OrtakResimler/TasinmazFoto.jpg\', baseUrl).href;\r\n        }\r\n    }\r\n</s" +
+                        "cript>\r\n"));
             global::System.Web.UI.WebControls.HiddenField @__ctrl1;
             @__ctrl1 = this.@__BuildControlTasinmazResimBaseUrl();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<div class=\"container col-xl\">\r\n    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<div class=\"tbys-property\">\r\n    "));
             global::System.Web.UI.UpdatePanel @__ctrl2;
             @__ctrl2 = this.@__BuildControlUpdatePanel();
             @__parser.AddParsedSubObject(@__ctrl2);
@@ -1770,18 +2180,16 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl3 = this.@__BuildControlupdateProgress();
             @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-</div>
-<div class=""modal"" id=""ResimAcModal"" role=""dialog"">
-    <div class=""modal-dialog modal-lg"">
-        <!-- Modal content-->
-        <div class=""modal-content"">
-            <div class=""modal-header"">
-                <button type=""button"" class=""close"" data-bs-dismiss=""modal"">&times</button>
-            </div>
-            <img class=""img-responsive"" id=""MaximizedImg"" height=""1000"" width=""1000"" />
-
-            <div class=""modal-footer"">
-                <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
+    <div class=""modal fade"" id=""ResimAcModal"" tabindex=""-1"" aria-labelledby=""ResimAcModalBaslik"" aria-hidden=""true"">
+        <div class=""modal-dialog modal-xl modal-dialog-centered"">
+            <div class=""modal-content"">
+                <div class=""modal-header"">
+                    <h2 class=""modal-title fs-5"" id=""ResimAcModalBaslik"">Fotoğraf</h2>
+                    <button type=""button"" class=""btn-close"" data-bs-dismiss=""modal"" aria-label=""Kapat""></button>
+                </div>
+                <div class=""modal-body"">
+                    <img class=""tbys-modal-image"" id=""MaximizedImg"" alt="""" />
+                </div>
             </div>
         </div>
     </div>
