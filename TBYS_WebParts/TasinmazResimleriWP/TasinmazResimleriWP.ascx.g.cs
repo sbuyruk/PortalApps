@@ -1501,7 +1501,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
                             <ul class=""tbys-photo-grid"">
                             <li class=""tbys-photo"">
                                 <div class=""tbys-photo-media"">
-                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Taşınmaz fotoğrafı önizlemesini aç"" onclick=""OpenModal(this.querySelector('img'))"">
+                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Taşınmaz fotoğrafı önizlemesini aç"" onclick=""tbysOpenPhotoModal(this)"">
                                         "));
             global::System.Web.UI.WebControls.Image @__ctrl7;
             @__ctrl7 = this.@__BuildControlImage1();
@@ -1530,7 +1530,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
                             </li>
                             <li class=""tbys-photo"">
                                 <div class=""tbys-photo-media"">
-                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Taşınmaz fotoğrafı 2 önizlemesini aç"" onclick=""OpenModal(this.querySelector('img'))"">
+                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Taşınmaz fotoğrafı 2 önizlemesini aç"" onclick=""tbysOpenPhotoModal(this)"">
                                         "));
             global::System.Web.UI.WebControls.Image @__ctrl11;
             @__ctrl11 = this.@__BuildControlImage2();
@@ -1559,7 +1559,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
                             </li>
                             <li class=""tbys-photo"">
                                 <div class=""tbys-photo-media"">
-                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Taşınmaz fotoğrafı 3 önizlemesini aç"" onclick=""OpenModal(this.querySelector('img'))"">
+                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Taşınmaz fotoğrafı 3 önizlemesini aç"" onclick=""tbysOpenPhotoModal(this)"">
                                         "));
             global::System.Web.UI.WebControls.Image @__ctrl15;
             @__ctrl15 = this.@__BuildControlImage3();
@@ -1588,7 +1588,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
                             </li>
                             <li class=""tbys-photo"">
                                 <div class=""tbys-photo-media"">
-                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Tahkikat fotoğrafı önizlemesini aç"" onclick=""OpenModal(this.querySelector('img'))"">
+                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Tahkikat fotoğrafı önizlemesini aç"" onclick=""tbysOpenPhotoModal(this)"">
                                         "));
             global::System.Web.UI.WebControls.Image @__ctrl19;
             @__ctrl19 = this.@__BuildControlImage4();
@@ -1617,7 +1617,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
                             </li>
                             <li class=""tbys-photo"">
                                 <div class=""tbys-photo-media"">
-                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Kroki önizlemesini aç"" onclick=""OpenModal(this.querySelector('img'))"">
+                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Kroki önizlemesini aç"" onclick=""tbysOpenPhotoModal(this)"">
                                         "));
             global::System.Web.UI.WebControls.Image @__ctrl23;
             @__ctrl23 = this.@__BuildControlImage5();
@@ -1646,7 +1646,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
                             </li>
                             <li class=""tbys-photo"">
                                 <div class=""tbys-photo-media"">
-                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Tapu fotoğrafı önizlemesini aç"" onclick=""OpenModal(this.querySelector('img'))"">
+                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Tapu fotoğrafı önizlemesini aç"" onclick=""tbysOpenPhotoModal(this)"">
                                         "));
             global::System.Web.UI.WebControls.Image @__ctrl27;
             @__ctrl27 = this.@__BuildControlImage6();
@@ -1675,7 +1675,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
                             </li>
                             <li class=""tbys-photo"">
                                 <div class=""tbys-photo-media"">
-                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Taşınmaz fotoğrafı 4 önizlemesini aç"" onclick=""OpenModal(this.querySelector('img'))"">
+                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Taşınmaz fotoğrafı 4 önizlemesini aç"" onclick=""tbysOpenPhotoModal(this)"">
                                         "));
             global::System.Web.UI.WebControls.Image @__ctrl31;
             @__ctrl31 = this.@__BuildControlImage7();
@@ -1704,7 +1704,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
                             </li>
                             <li class=""tbys-photo"">
                                 <div class=""tbys-photo-media"">
-                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Taşınmaz fotoğrafı 5 önizlemesini aç"" onclick=""OpenModal(this.querySelector('img'))"">
+                                    <button type=""button"" class=""tbys-photo-preview"" aria-label=""Taşınmaz fotoğrafı 5 önizlemesini aç"" onclick=""tbysOpenPhotoModal(this)"">
                                         "));
             global::System.Web.UI.WebControls.Image @__ctrl35;
             @__ctrl35 = this.@__BuildControlImage8();
@@ -2137,30 +2137,39 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
                         "\r\n    .tbys-property .tbys-remove:hover { background: #fbecee; }\r\n    .tbys-prop" +
                         "erty :focus-visible { outline: 2px solid var(--tbys-accent); outline-offset: 2px" +
                         "; }\r\n    .tbys-property .tbys-photo-preview:focus-visible { outline-offset: -3px" +
-                        "; }\r\n    .tbys-property .tbys-modal-image { display: block; width: 100%; max-hei" +
-                        "ght: 76vh; object-fit: contain; }\r\n</style>\r\n<script type=\"text/javascript\">\r\n  " +
-                        "  function readURL(input, sender) {\r\n        var image = document.getElementById" +
-                        "(sender);\r\n        if (!image) return;\r\n\r\n        if (!input.files || !input.fil" +
-                        "es[0]) {\r\n            if (image.dataset.originalSrc) {\r\n                image.sr" +
-                        "c = image.dataset.originalSrc;\r\n            } else if (image.hasAttribute(\'data-" +
-                        "original-src\')) {\r\n                image.removeAttribute(\'src\');\r\n            }\r" +
-                        "\n            delete image.dataset.photoPreview;\r\n            return;\r\n        }\r" +
-                        "\n\r\n        if (!image.hasAttribute(\'data-original-src\')) {\r\n            image.da" +
-                        "taset.originalSrc = image.getAttribute(\'src\') || \'\';\r\n        }\r\n        var sel" +
-                        "ectedFile = input.files[0];\r\n        var reader = new FileReader();\r\n        rea" +
-                        "der.onload = function (event) {\r\n            if (input.files[0] !== selectedFile" +
-                        ") return;\r\n\r\n            image.dataset.photoPreview = \"true\";\r\n            image" +
-                        ".src = event.target.result;\r\n        };\r\n        reader.readAsDataURL(selectedFi" +
-                        "le);\r\n    }\r\n\r\n    function OpenModal(clickedImg) {\r\n        if (!clickedImg || " +
-                        "!clickedImg.getAttribute(\'src\')) return;\r\n\r\n        var modalImage = document.ge" +
-                        "tElementById(\'MaximizedImg\');\r\n        modalImage.src = clickedImg.src;\r\n       " +
-                        " modalImage.alt = clickedImg.alt;\r\n        document.getElementById(\'ResimAcModal" +
-                        "Baslik\').textContent = clickedImg.alt;\r\n        bootstrap.Modal.getOrCreateInsta" +
-                        "nce(document.getElementById(\'ResimAcModal\')).show();\r\n    }\r\n\r\n    function show" +
-                        "DefaultImage(img) {\r\n        img.onerror = null;\r\n        var baseUrl = document" +
-                        ".getElementById(\'TasinmazResimBaseUrl\').value;\r\n        if (baseUrl) {\r\n        " +
-                        "    img.src = new URL(\'/OrtakResimler/TasinmazFoto.jpg\', baseUrl).href;\r\n       " +
-                        " }\r\n    }\r\n</script>\r\n"));
+                        "; }\r\n    #ResimAcModal {\r\n        width: min(1120px, calc(100% - 24px));\r\n      " +
+                        "  max-height: calc(100% - 24px);\r\n        margin: auto;\r\n        padding: 0;\r\n  " +
+                        "      border: 1px solid var(--tbys-line);\r\n        border-radius: .75rem;\r\n     " +
+                        "   background: var(--tbys-surface);\r\n        color: var(--tbys-ink);\r\n    }\r\n   " +
+                        " #ResimAcModal::backdrop { background: rgb(0 0 0 / 60%); }\r\n    #ResimAcModal .t" +
+                        "bys-modal-header {\r\n        display: flex;\r\n        align-items: center;\r\n      " +
+                        "  justify-content: space-between;\r\n        gap: .75rem;\r\n        padding: .75rem" +
+                        " 1rem;\r\n        border-bottom: 1px solid var(--tbys-line);\r\n    }\r\n    #ResimAcM" +
+                        "odalBaslik { margin: 0; font-size: 18px; }\r\n    #ResimAcModal .tbys-modal-image " +
+                        "{ display: block; width: 100%; max-height: 76vh; object-fit: contain; }\r\n</style" +
+                        ">\r\n<script type=\"text/javascript\">\r\n    function readURL(input, sender) {\r\n     " +
+                        "   var image = document.getElementById(sender);\r\n        if (!image) return;\r\n\r\n" +
+                        "        if (!input.files || !input.files[0]) {\r\n            if (image.dataset.or" +
+                        "iginalSrc) {\r\n                image.src = image.dataset.originalSrc;\r\n          " +
+                        "  } else if (image.hasAttribute(\'data-original-src\')) {\r\n                image.r" +
+                        "emoveAttribute(\'src\');\r\n            }\r\n            delete image.dataset.photoPre" +
+                        "view;\r\n            return;\r\n        }\r\n\r\n        if (!image.hasAttribute(\'data-o" +
+                        "riginal-src\')) {\r\n            image.dataset.originalSrc = image.getAttribute(\'sr" +
+                        "c\') || \'\';\r\n        }\r\n        var selectedFile = input.files[0];\r\n        var r" +
+                        "eader = new FileReader();\r\n        reader.onload = function (event) {\r\n         " +
+                        "   if (input.files[0] !== selectedFile) return;\r\n\r\n            image.dataset.pho" +
+                        "toPreview = \"true\";\r\n            image.src = event.target.result;\r\n        };\r\n " +
+                        "       reader.readAsDataURL(selectedFile);\r\n    }\r\n\r\n    function tbysOpenPhotoM" +
+                        "odal(trigger) {\r\n        var clickedImg = trigger.querySelector(\'img\');\r\n       " +
+                        " var dialog = document.getElementById(\'ResimAcModal\');\r\n        if (!dialog || d" +
+                        "ialog.open || !clickedImg || !clickedImg.getAttribute(\'src\')) return;\r\n\r\n       " +
+                        " var modalImage = dialog.querySelector(\'#MaximizedImg\');\r\n        modalImage.src" +
+                        " = clickedImg.src;\r\n        modalImage.alt = clickedImg.alt;\r\n        dialog.que" +
+                        "rySelector(\'#ResimAcModalBaslik\').textContent = clickedImg.alt;\r\n        dialog." +
+                        "showModal();\r\n    }\r\n\r\n    function showDefaultImage(img) {\r\n        img.onerror" +
+                        " = null;\r\n        var baseUrl = document.getElementById(\'TasinmazResimBaseUrl\')." +
+                        "value;\r\n        if (baseUrl) {\r\n            img.src = new URL(\'/OrtakResimler/Ta" +
+                        "sinmazFoto.jpg\', baseUrl).href;\r\n        }\r\n    }\r\n</script>\r\n"));
             global::System.Web.UI.WebControls.HiddenField @__ctrl1;
             @__ctrl1 = this.@__BuildControlTasinmazResimBaseUrl();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -2173,19 +2182,13 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl3 = this.@__BuildControlupdateProgress();
             @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-    <div class=""modal fade"" id=""ResimAcModal"" tabindex=""-1"" aria-labelledby=""ResimAcModalBaslik"" aria-hidden=""true"">
-        <div class=""modal-dialog modal-xl modal-dialog-centered"">
-            <div class=""modal-content"">
-                <div class=""modal-header"">
-                    <h2 class=""modal-title fs-5"" id=""ResimAcModalBaslik"">Fotoğraf</h2>
-                    <button type=""button"" class=""btn-close"" data-bs-dismiss=""modal"" aria-label=""Kapat""></button>
-                </div>
-                <div class=""modal-body"">
-                    <img class=""tbys-modal-image"" id=""MaximizedImg"" alt="""" />
-                </div>
-            </div>
+    <dialog id=""ResimAcModal"" aria-labelledby=""ResimAcModalBaslik"" onclick=""if (event.target === this) this.close()"">
+        <div class=""tbys-modal-header"">
+            <h2 id=""ResimAcModalBaslik"">Fotoğraf</h2>
+            <button type=""button"" class=""btn btn-outline-secondary"" onclick=""this.closest('dialog').close()"" autofocus>Kapat</button>
         </div>
-    </div>
+        <img class=""tbys-modal-image"" id=""MaximizedImg"" alt="""" />
+    </dialog>
 </div>
 "));
         }
