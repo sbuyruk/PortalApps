@@ -592,6 +592,11 @@
     <Compile Include="TasinmazResimleriWP\TasinmazResimleriWP.ascx.cs">
       <DependentUpon>TasinmazResimleriWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="TasinmazResimleriWP\TasinmazResimleriWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TasinmazResimleriWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="TasinmazSatisListesiWP\TasinmazSatisListesiWP.ascx.cs">
       <DependentUpon>TasinmazSatisListesiWP.ascx</DependentUpon>
     </Compile>
@@ -1365,6 +1370,7 @@
     <Content Include="TasinmazResimleriWP\Elements.xml" />
     <Content Include="TasinmazResimleriWP\TasinmazResimleriWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>TasinmazResimleriWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="TasinmazSatisListesiWP\Elements.xml" />
     <Content Include="TasinmazSatisListesiWP\TasinmazSatisListesiWP.ascx">
